@@ -40,6 +40,7 @@ import classNames from "classnames";
 import * as LibraryIcon from "readium-desktop/renderer/assets/icons/library-icon.svg";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { ThButtonPrimary, ThButtonSecondary } from "readium-desktop/renderer/common/components/Buttons";
 
 const context = React.createContext<{
     selectSearchResult: IApiappSearchResultView;
@@ -218,13 +219,11 @@ export const ApiappAddFormDialog = () => {
 
     return <Dialog.Root>
         <Dialog.Trigger asChild>
-            <button
+            <ThButtonSecondary
                 style={{ display: enableAPIAPP ? "" : "none" }}
-                className={stylesButtons.button_nav_primary}
-            >
-                <SVG ariaHidden={true} svg={LibraryIcon} />
-                <span>{__("opds.addFormApiapp.title")}</span>
-            </button>
+                svg={LibraryIcon}
+                label={__("opds.addFormApiapp.title")}
+            />
         </Dialog.Trigger>
         <Dialog.Portal>
             <div className={stylesModals.modal_dialog_overlay}></div>
@@ -248,14 +247,18 @@ export const ApiappAddFormDialog = () => {
                         </div>
                         <div className={stylesModals.modal_dialog_footer}>
                             <Dialog.Close asChild>
-                                <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
+                                <ThButtonSecondary
+                                    label={__("dialog.cancel")}
+                                />
                             </Dialog.Close>
                             <Dialog.Close asChild>
-                                <button type="submit" ref={submitButtonRef} className={stylesButtons.button_primary_blue} onClick={() => {
-                                    addFeedAction();
-                                }}>
-                                    <SVG ariaHidden svg={AddIcon} />
-                                    {__("opds.addForm.addButton")}</button>
+                                <ThButtonPrimary
+                                    type="submit"
+                                    ref={submitButtonRef}
+                                    onClick={() => {addFeedAction();}}
+                                    label={__("opds.addForm.addButton")}
+                                    svg={AddIcon}
+                                />
                             </Dialog.Close>
                         </div>
                     </context.Provider>

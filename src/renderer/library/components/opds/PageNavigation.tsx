@@ -92,7 +92,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
 
         return (
             <div className={stylesPublication.opds_publication_wrapper} ref={this.fixedElementRef} style={{ width: "unset" }}>
-                {/* <button className={stylesButtons.button_primary_blue} onClick={() => console.log(pageLinks)}>Log "pageLinks"</button> */}
+                {/* <button className={stylesButtons.button_primary} onClick={() => console.log(pageLinks)}>Log "pageLinks"</button> */}
                 {/* <p className={stylesPublication.allBooks_header_pagination_title}>{__("catalog.numberOfPages")}</p> */}
                 <div className={stylesPublication.allBooks_header_pagination_container}>
                     <button

@@ -5,10 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
-
-import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { dialogActions, importActions, readerActions } from "readium-desktop/common/redux/actions/";
@@ -19,7 +15,6 @@ import * as ImportIcon from "readium-desktop/renderer/assets/icons/import.svg";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
-import SVG from "readium-desktop/renderer/common/components/SVG";
 import { dispatchOpdsLink } from "readium-desktop/renderer/library/opds/handleLink";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
@@ -27,6 +22,7 @@ import { findExtWithMimeType, findMimeTypeWithExtension, ADOBE_ADEPT_XML } from 
 
 import OpdsLinkProperties from "./OpdsLinkProperties";
 import { ContentType } from "readium-desktop/utils/contentType";
+import { ThButton, ThButtonPrimary, ThButtonSecondary } from "readium-desktop/renderer/common/components/Buttons";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -93,29 +89,24 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                 ? orderLinks(opdsPublicationView.openAccessLinks).map(
                     (ln, idx) =>
                         <div key={`openAccessControl-${idx}`} style={ln.properties && Object.keys(ln.properties).length ? boxStyle : {}}>
-                            <button
+                            <ThButton
+                                variant={feedLinksList.length > 0 ? "secondary" : "primary"}
                                 onClick={() => {
 
                                     if (ln.type === ContentType.Html || ln.type === ContentType.Xhtml) {
-                                        this.props.link(
-                                            ln,
-                                            this.props.location,
-                                        );
+                                        this.props.link(ln, this.props.location);
                                     } else {
-
-                                        verifyImport(
-                                            ln,
-                                            opdsPublicationView,
-                                        );
+                                        verifyImport(ln, opdsPublicationView);
                                     }
                                 }}
-                                className={feedLinksList.length > 0 ? stylesButtons.button_secondary : stylesButtons.button_primary}
                                 disabled={openAccessButtonIsDisabled(ln.url)}
-                                title={ln.title || __("catalog.addBookToLib")}
-                            >
-                                {`${__("catalog.addBookToLib")}${typeStr(ln)}`}
-                            </button>
-                            {ln.localBookshelfPublicationId ? <button className={stylesButtons.button_secondary} onClick={() => this.props.read(ln.localBookshelfPublicationId)}>{__("catalog.readBook")}</button> : <></>} 
+                                extendedLabel={ln.title || __("catalog.addBookToLib")}
+                                label={`${__("catalog.addBookToLib")}${typeStr(ln)}`}
+                            />
+                            {ln.localBookshelfPublicationId ? <ThButtonSecondary
+                                onClick={() => this.props.read(ln.localBookshelfPublicationId)}
+                                label={__("catalog.readBook")}
+                            /> : <></>} 
                             <OpdsLinkProperties
                                 properties={ln.properties}
                             />
@@ -128,7 +119,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                 ? orderLinks(opdsPublicationView.sampleOrPreviewLinks).map(
                     (ln, idx) =>
                         <div key={`sampleControl-${idx}`} style={ln.properties && Object.keys(ln.properties).length ? boxStyle : {}}>
-                            <button
+                            <ThButtonSecondary
                                 onClick={() => {
 
                                     if (ln.type === ContentType.Html || ln.type === ContentType.Xhtml) {
@@ -144,14 +135,13 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                         );
                                     }
                                 }}
-                                className={stylesButtons.button_secondary}
-                                disabled={sampleButtonIsDisabled(ln.url)}
-                                title={ln.title || __("opds.menu.addExtract")}
-                            >
-                                <SVG ariaHidden={true} svg={ImportIcon} />
-                                {`${__("opds.menu.addExtract")}${typeStr(ln)}`}
-                            </button>
-                            {ln.localBookshelfPublicationId ? <button className={stylesButtons.button_secondary} onClick={() => this.props.read(ln.localBookshelfPublicationId)}>{__("catalog.readBook")}</button> : <></>} 
+                            disabled={sampleButtonIsDisabled(ln.url)}
+                            extendedLabel={ln.title || __("opds.menu.addExtract")}
+                            svg={ImportIcon}
+                            label={`${__("opds.menu.addExtract")}${typeStr(ln)}`}
+                            />
+                            {ln.localBookshelfPublicationId ? 
+                            <ThButtonSecondary onClick={() => this.props.read(ln.localBookshelfPublicationId)} label={__("catalog.readBook")} /> : <></>} 
                             <OpdsLinkProperties
                                 properties={ln.properties}
                             />
@@ -166,8 +156,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                     ? orderLinks(opdsPublicationView.buyLinks).map(
                         (ln, idx) =>
                             <div key={`buyControl-${idx}`} style={ln.properties && Object.keys(ln.properties).length ? boxStyle : {}}>
-                                <button
-                                    className={classNames(stylesButtons.button_primary, stylesGlobal.mb_20)}
+                                <ThButtonPrimary
                                     onClick={
                                         () => this.props.link(
                                             ln,
@@ -176,11 +165,11 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                         )
                                     }
 
-                                >
-                                    <SVG ariaHidden={true} svg={CartFillIcon} />
-                                    {__("opds.menu.goBuyBook")}
-                                </button>
-                                {ln.localBookshelfPublicationId ? <button className={stylesButtons.button_secondary} onClick={() => this.props.read(ln.localBookshelfPublicationId)}>{__("catalog.readBook")}</button> : <></>} 
+                                svg={CartFillIcon}
+                                label={__("opds.menu.goBuyBook")}
+                                />
+                                {ln.localBookshelfPublicationId ? 
+                                <ThButtonSecondary onClick={() => this.props.read(ln.localBookshelfPublicationId)} label={__("catalog.readBook")} /> : <></>} 
                                 <OpdsLinkProperties properties={ln.properties} />
                             </div>,
                     )
@@ -191,18 +180,17 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                     ? orderLinks(opdsPublicationView.borrowLinks).map(
                         (ln, idx) =>
                             <div key={`borrowControl-${idx}`} style={ln.properties && Object.keys(ln.properties).length ? boxStyle : {}}>
-                                <button
-                                    className={buyList.length > 0 ? stylesButtons.button_secondary : stylesButtons.button_primary}
+                                <ThButton
+                                    variant={buyList.length > 0 ? "secondary" : "primary"}
                                     onClick={() => this.props.link(
                                         ln,
                                         this.props.location,
                                         `${__("opds.menu.goLoanBook")} (${opdsPublicationView.documentTitle})`)}
                                     disabled={ln.properties?.indirectAcquisitionTypes?.top === findMimeTypeWithExtension(ADOBE_ADEPT_XML)}
-                                >
-                                    <SVG ariaHidden svg={BorrowIcon} />
-                                    {__("opds.menu.goLoanBook")}
-                                </button>
-                                {ln.localBookshelfPublicationId ? <button className={stylesButtons.button_secondary} onClick={() => this.props.read(ln.localBookshelfPublicationId)}>{__("catalog.readBook")}</button> : <></>} 
+                                svg={BorrowIcon}
+                                label={__("opds.menu.goLoanBook")}
+                                />
+                                {ln.localBookshelfPublicationId ? <ThButtonSecondary onClick={() => this.props.read(ln.localBookshelfPublicationId)} label={__("catalog.readBook")} /> : <></>} 
                                 <OpdsLinkProperties properties={ln.properties} />
                             </div>,
                     )
@@ -213,15 +201,13 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                     ? orderLinks(opdsPublicationView.subscribeLinks).map(
                         (ln, idx) =>
                             <div key={`subscribeControl-${idx}`} style={ln.properties && Object.keys(ln.properties).length ? boxStyle : {}}>
-                                <button
-                                    className={stylesButtons.button_secondary}
+                                <ThButtonSecondary
                                     onClick={() => this.props.link(
                                         ln,
                                         this.props.location,
                                         `${__("opds.menu.goSubBook")} (${opdsPublicationView.documentTitle})`)}
-                                >
-                                    {__("opds.menu.goSubBook")}
-                                </button>
+                                label={__("opds.menu.goSubBook")}
+                                />
                                 <OpdsLinkProperties properties={ln.properties} />
                             </div>,
                     )
@@ -231,8 +217,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                 Array.isArray(opdsPublicationView.revokeLoanLinks) ? (
                     orderLinks(opdsPublicationView.revokeLoanLinks).map((ln, idx) => (
                         <div key={`revokeControl-${idx}`} style={ln.properties && Object.keys(ln.properties).length ? boxStyle : {}}>
-                            <button
-                                className={stylesButtons.button_secondary}
+                            <ThButtonSecondary
                                 onClick={() =>
                                     this.props.link(
                                         ln,
@@ -241,9 +226,8 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                         })`,
                                     )
                                 }
-                            >
-                                {__("opds.menu.goRevokeLoanBook")}
-                            </button>
+                                label={__("opds.menu.goRevokeLoanBook")}
+                            />
                             <OpdsLinkProperties properties={ln.properties} />
                         </div>
                     ))

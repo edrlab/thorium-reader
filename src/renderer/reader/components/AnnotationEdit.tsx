@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 
 import * as React from "react";
@@ -43,6 +42,7 @@ import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locator
 // @__ts-ignore TS1479
 import {subscribe} from "@github/paste-markdown";
 import { readerActions } from "readium-desktop/common/redux/actions";
+import { ThButtonPrimary, ThButtonSecondary } from "readium-desktop/renderer/common/components/Buttons";
 
 // import { readiumCSSDefaults } from "@r2-navigator-js/electron/common/readium-css-settings";
 
@@ -238,30 +238,15 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
         {/* <label htmlFor="addNote">{__("reader.annotations.addNote")}</label> */}
         <div className={stylesAnnotations.annotation_form_textarea_buttons}>
             {displayFromReaderMenu
-                ? <button className={stylesButtons.button_secondary_blue} aria-label={__("dialog.cancel")} onClick={cancel} type="button">{__("dialog.cancel")}</button>
-                : <Popover.Close className={stylesButtons.button_secondary_blue} aria-label={__("dialog.cancel")} onClick={cancel}>{__("dialog.cancel")}</Popover.Close>
+                ? <ThButtonSecondary label={__("dialog.cancel")} onClick={cancel} type="button" />
+                : <Popover.Close asChild><ThButtonSecondary label={__("dialog.cancel")} onClick={cancel} type="button" /></Popover.Close>
             }
             {displayFromReaderMenu
-                ? <button type="submit"
-                    className={stylesButtons.button_primary_blue}
-                    aria-label={__("reader.annotations.saveNote")}
-                    onClick={(e) => {
-                        e.preventDefault();
-
-                        const textareaValue = textAreaRef?.current?.value || "";
-                        const textareaNormalize = textareaValue.trim(); // also see trimNormaliseWhitespaceAndCollapse()
-                        save(hexToRgb(colorSelected), textareaNormalize, drawTypeSelected, tag ? [tag] : []);
-                        saveConfig();
-                    }}
-                >
-                    <SVG ariaHidden svg={SaveIcon} />
-                    {__("reader.annotations.saveNote")}
-                </button>
-                :
-                <Popover.Close
+                ? 
+                <ThButtonPrimary
                     type="submit"
-                    className={stylesButtons.button_primary_blue}
-                    aria-label={__("reader.annotations.saveNote")}
+                    svg={SaveIcon}
+                    label={__("reader.annotations.saveNote")}
                     onClick={(e) => {
                         e.preventDefault();
 
@@ -270,9 +255,21 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                         save(hexToRgb(colorSelected), textareaNormalize, drawTypeSelected, tag ? [tag] : []);
                         saveConfig();
                     }}
-                >
-                    <SVG ariaHidden svg={SaveIcon} />
-                    {__("reader.annotations.saveNote")}
+                />
+                :
+                <Popover.Close asChild>
+                    <ThButtonPrimary
+                    type="submit"
+                    label={__("reader.annotations.saveNote")}
+                    onClick={(e) => {
+                        e.preventDefault();
+
+                        const textareaValue = textAreaRef?.current?.value || "";
+                        const textareaNormalize = textareaValue.trim(); // also see trimNormaliseWhitespaceAndCollapse()
+                        save(hexToRgb(colorSelected), textareaNormalize, drawTypeSelected, tag ? [tag] : []);
+                        saveConfig();
+                    }}
+                    svg={SaveIcon} />
                 </Popover.Close>
             }
         </div>

@@ -23,6 +23,7 @@ import classNames from "classnames";
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";
 import * as PrinterIcon from "readium-desktop/renderer/assets/icons/printer-icon.svg";
+import { ThButtonPrimary, ThButtonSecondary } from "readium-desktop/renderer/common/components/Buttons";
 
 // const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -282,11 +283,11 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                 : <></>}
 
             <div className={stylesPrint.print_dialog_actions_buttons}>
-                <Dialog.Close className={stylesButtons.button_secondary_blue} aria-label={__("dialog.cancel")}>{__("dialog.cancel")}</Dialog.Close>
-                <Dialog.Close
+                <Dialog.Close asChild><ThButtonSecondary label={__("dialog.cancel")} /></Dialog.Close>
+                <Dialog.Close asChild>
+                    <ThButtonPrimary
                     type="submit"
-                    className={stylesButtons.button_primary_blue}
-                    aria-label={__("reader.print.print")}
+                    label={__("reader.print.print")}
                     disabled={!pagesToPrint.length}
                     onClick={(_e) => {
                         // e.preventDefault();
@@ -294,9 +295,8 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
 
                         dispatch(readerActions.print.build(publicationIdentifier, pagesToPrint)); // send to main process
                     }}
-                >
-                    <SVG ariaHidden svg={PrinterIcon} />
-                    {__("reader.print.print")}
+                svg={PrinterIcon}
+                />
                 </Dialog.Close>
             </div>
         </form>

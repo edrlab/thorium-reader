@@ -23,7 +23,7 @@ export const CatalogHeader: React.FC<React.PropsWithChildren<{ currentLocation: 
         <div style={{display: "flex", alignItems: "center", gap: "20px"}}>
             {previousLocation ?
             <Link
-                style={{width: "20px", height: "20px", transform: "rotate(180deg)"}}
+                style={{width: "20px", height: "20px", transform: "rotate(180deg)", color: "var(--color-brand-primary)"}}
                 to={{
                     pathname: previousLocation?.path,
                 }}

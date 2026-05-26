@@ -5,13 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-
 import debug_ from "debug";
 import * as React from "react";
 import { IOpdsTagView } from "readium-desktop/common/views/opds";
 import { TFormEvent } from "readium-desktop/typings/react";
-import SVG from "../../../SVG";
 import * as AddTagIcon from "readium-desktop/renderer/assets/icons/addTag-icon.svg";
 import * as TagIcon from "readium-desktop/renderer/assets/icons/tag-icon.svg";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
@@ -19,6 +16,7 @@ import { connect } from "react-redux";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { TranslatorProps, withTranslator } from "../../../hoc/translator";
 import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
+import { ThButtonSecondary } from "readium-desktop/renderer/common/components/Buttons";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends ReturnType<typeof mapStateToProps>, TranslatorProps {
@@ -87,13 +85,11 @@ class AddTag extends React.Component<IProps, IState> {
                     >
                         {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                     </ComboBox>
-                    <button style={{marginTop: "9px"}}
+                    <ThButtonSecondary style={{marginTop: "9px"}}
                         type="submit"
-                        className={stylesButtons.button_secondary_blue}
-                    >
-                        <SVG ariaHidden svg={AddTagIcon} />
-                        {__("catalog.addTagsButton")}
-                    </button>
+                        svg={AddTagIcon}
+                        label={__("catalog.addTagsButton")}
+                    />
                 </form>
                 : <></>
         );

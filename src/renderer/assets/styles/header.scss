@@ -73,6 +73,7 @@
       gap: 10px;
       display: flex;
       padding: 5px;
+      border: none;
 
       &[aria-pressed="true"] {
         color: inherit;
@@ -96,6 +97,10 @@
       align-items: center;
       justify-content: start;
       border-radius: 5px;
+
+      &:has(a[aria-pressed="true"]), &:has(button[aria-pressed="true"]) {
+        border: 1px solid var(--color-brand-primary);
+      }
 
       &:not(.active):focus-within {
         background-color: var(--color-gray-50);

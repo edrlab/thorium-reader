@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
 import * as React from "react";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -15,10 +14,10 @@ import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { dialogActions } from "readium-desktop/common/redux/actions";
-import SVG from "../../../common/components/SVG";
 import * as Trash from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_PUBNOTES } from "readium-desktop/common/streamerProtocol";
 import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import { ThButtonPrimary, ThButtonSecondary } from "readium-desktop/renderer/common/components/Buttons";
 
 const DeletePublicationConfirm = (props: { publicationView: PublicationView, trigger: React.ReactNode } & AlertDialog.AlertDialogProps) => {
     const [__] = useTranslator();
@@ -64,13 +63,15 @@ const DeletePublicationConfirm = (props: { publicationView: PublicationView, tri
                     </div> : <></>}
                     <div className={stylesAlertModals.AlertDialogButtonContainer}>
                         <AlertDialog.Cancel asChild>
-                            <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
+                            <ThButtonSecondary label={__("dialog.cancel")} />
                         </AlertDialog.Cancel>
                         <AlertDialog.Action asChild>
-                            <button className={stylesButtons.button_primary_blue} onClick={removeAction} type="button">
-                                <SVG ariaHidden svg={Trash} />
-                                {__("dialog.yes")}
-                            </button>
+                            <ThButtonPrimary
+                                type="button"
+                                onClick={removeAction}
+                                label={__("dialog.yes")}
+                                svg={Trash}
+                            />
                         </AlertDialog.Action>
                     </div>
                 </AlertDialog.Content>

@@ -65,6 +65,7 @@ import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
 import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-keys";
 import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/renderer/note";
 import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
+import { ThButtonSecondary } from "readium-desktop/renderer/common/components/Buttons";
 
 const noteColorCodeToColorTranslatorKeySet_ = {
     ["#000000"]: "publication.accessibility.accessibilityHazard.none" as TTranslatorKeyParameter,
@@ -1551,30 +1552,38 @@ const SaveResetApplyPreset = () => {
 
         <div className={stylesSettings.preset_settings_container}>
             <div>
-                <button className={stylesButtons.button_secondary_blue} style={{maxWidth: dockedMode ? "284px" : "", height: dockedMode ? "fit-content" : "30px"}} onClick={() => {
+                <ThButtonSecondary
+                style={{maxWidth: dockedMode ? "284px" : "", height: dockedMode ? "fit-content" : "30px"}}
+                onClick={() => {
                     dispatch(readerActions.configSetDefault.build(readerConfig));
-                }} disabled={!diffBetweenDefaultConfigAndConfig}>
-                    <SVG ariaHidden={true} svg={SaveIcon} />
-                    {__("reader.settings.preset.save")}</button>
+                }} 
+                disabled={!diffBetweenDefaultConfigAndConfig}
+                svg={SaveIcon}
+                label={__("reader.settings.preset.save")}
+            />
                 <p>{__("reader.settings.preset.saveDetails")}</p>
             </div>
 
             <div>
-                <button className={stylesButtons.button_secondary_blue} style={{maxWidth: dockedMode ? "284px" : "", height: dockedMode ? "fit-content" : "30px"}} onClick={applyPreferredConfig}>
-                    <SVG ariaHidden={true} svg={DoubleCheckIcon} />
-                    {__("reader.settings.preset.apply")}
-                </button>
+                <ThButtonSecondary
+                style={{maxWidth: dockedMode ? "284px" : "", height: dockedMode ? "fit-content" : "30px"}}
+                onClick={applyPreferredConfig}
+                svg={DoubleCheckIcon}
+                label={__("reader.settings.preset.apply")}
+            />
                 <p>{__("reader.settings.preset.applyDetails")}</p>
             </div>
 
             <div>
-                <button className={stylesButtons.button_secondary_blue} style={{maxWidth: dockedMode ? "284px" : "", height: dockedMode ? "fit-content" : "30px"}} onClick={() => {
+                <ThButtonSecondary
+                style={{maxWidth: dockedMode ? "284px" : "", height: dockedMode ? "fit-content" : "30px"}}
+                onClick={() => {
                     dispatch(readerActions.configSetDefault.build(readerConfigInitialState));
                     applyPreferredConfig();
-                }}>
-                    <SVG ariaHidden={true} svg={ResetIcon} />
-                    {__("reader.settings.preset.reset")}
-                </button>
+                }}
+                svg={ResetIcon}
+                label={__("reader.settings.preset.reset")}
+            />
                 <p>{__("reader.settings.preset.resetDetails")}</p>
             </div>
         </div>

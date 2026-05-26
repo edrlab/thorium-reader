@@ -1,7 +1,6 @@
 export declare const advanced_trigger: string;
 export declare const allowCustom: string;
 export declare const blink: string;
-export declare const btn_primary: string;
 export declare const button_transparency_icon: string;
 export declare const close_button_div: string;
 export declare const container: string;

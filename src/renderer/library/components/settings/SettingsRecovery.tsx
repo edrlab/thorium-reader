@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 
 import * as React from "react";
@@ -15,6 +14,7 @@ import classNames from "classnames";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
+import { ThButtonSecondary } from "readium-desktop/renderer/common/components/Buttons";
 
 const SettingsRecoveryConfirmDialog = (props: {
     open: boolean;
@@ -148,21 +148,17 @@ const SettingsRecovery = (props: {
 
                 <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
                     {isRecoveryChecked && recoverablePublications.length ? (
-                        <button
-                            className={stylesSettings.btn_primary}
+                        <ThButtonSecondary
                             disabled={isRecoveryLoading || isRecovering}
                             onClick={() => setConfirmRecoveryOpen(true)}
-                        >
-                            {isRecovering ? "Recovering..." : "Recover publications"}
-                        </button>
+                        label={isRecovering ? "Recovering..." : "Recover publications"}
+                        />
                     ) : null}
-                    <button
-                        className={stylesButtons.button_secondary_blue}
+                    <ThButtonSecondary
                         disabled={isRecoveryLoading || isRecovering}
                         onClick={checkRecoverablePublications}
-                    >
-                        {isRecoveryChecked ? "Check again" : "Check for recoverable publications"}
-                    </button>
+                    label={isRecoveryChecked ? "Check again" : "Check for recoverable publications"}
+                    />
                 </div>
             </section>
         </>

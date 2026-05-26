@@ -54,42 +54,29 @@ $setting_color: var(--color-brand-primary);
             }
         }
 
-        .btn_primary {
-            width: fit-content;
-            padding: 0 5px;
-            height: 35px;
-            border: 1px solid var(--color-button-border);
-            border-radius: 5px;
-            background-color: $settings_bg;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            color: $setting_color;
+        // .btn_primary {
+        //     width: fit-content;
+        //     padding: 0 5px;
+        //     height: 35px;
+        //     border: 1px solid var(--color-button-border);
+        //     border-radius: 5px;
+        //     background-color: $settings_bg;
+        //     display: flex;
+        //     align-items: center;
+        //     justify-content: center;
+        //     gap: 5px;
+        //     color: $setting_color;
 
-            &:focus-within, &:focus {
-                outline: var(--color-brand-primary) solid 1px !important;
-                outline-offset: 2px;
-                border-radius: 5px;
-                background-color: var(--color-brand-primary);
-                color: var(--color-neutral-base)!important;
+        //     p {
+        //         font-size: 14px;
+        //     }
 
-                svg {
-                    fill: var(--color-neutral-base)!important;
-                    color: var(--color-neutral-base)!important;
-                }
-            }
-
-            p {
-                font-size: 14px;
-            }
-
-            svg {
-                width: 20px;
-                height: 16px;
-                fill: $setting_color;
-            }
-        }
+        //     svg {
+        //         width: 20px;
+        //         height: 16px;
+        //         fill: $setting_color;
+        //     }
+        // }
     }
 
     h3,
@@ -122,7 +109,7 @@ $setting_color: var(--color-brand-primary);
     button {
         height: 30px;
         transition: 200ms;
-        // width: 80%;
+        width: unset;
         display: flex;
         align-items: center;
         justify-content: left;

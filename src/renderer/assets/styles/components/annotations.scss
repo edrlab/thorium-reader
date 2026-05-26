@@ -115,11 +115,6 @@
       color: var(--color-text-primary);
     }
 
-    .button_primary_blue:hover {
-      // color: var(--color-neutral-base);
-      background-color: var(--color-brand-primary);
-    }
-
     @include mx.scrollbar_styling;
 
     &::-webkit-scrollbar-track {
@@ -312,7 +307,7 @@
           width: fit-content;
           height: 25px;
 
-          &.button_primary_blue {
+          &.button_primary {
             color: var(--color-neutral-base);
 
             &:hover, &:focus:hover {

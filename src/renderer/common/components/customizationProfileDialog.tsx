@@ -27,6 +27,7 @@ import DOMPurify from "dompurify";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP } from "readium-desktop/common/streamerProtocol";
 import Loader from "./Loader";
+import { ThButtonPrimary, ThButtonSecondary } from "readium-desktop/renderer/common/components/Buttons";
 
 export const CustomizationProfileDialog: React.FC = () => {
 
@@ -147,7 +148,7 @@ export const CustomizationProfileDialog: React.FC = () => {
                     </AlertDialog.Description>
                     <div className={stylesAlertModals.AlertDialogButtonContainer} style={{justifyContent: "space-between", padding: "10px 20px"}}>
                         <AlertDialog.Cancel asChild disabled={customization.lock.state !== "IDLE"} onClick={() => { dispatch(customizationActions.activating.build("")); }}>
-                            <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
+                            <ThButtonSecondary label={__("dialog.cancel")} />
                         </AlertDialog.Cancel>
                         {customization.welcomeScreen.enable && profileInHistoryFound ? <div style={{ display: "flex", alignItems: "center", gap: "10px"}}>
                             <input 
@@ -200,9 +201,12 @@ export const CustomizationProfileDialog: React.FC = () => {
                             </label>
                         </div> : <></> }
                         <AlertDialog.Action asChild>
-                            <button disabled={!customization.welcomeScreen.enable} style={{display: customization.welcomeScreen.enable ? "block" : "none" }} className={stylesButtons.button_primary_blue} onClick={() => { dispatch(customizationActions.welcomeScreen.build(false)); }}>
-                                {__("dialog.yes")}
-                            </button>
+                            <ThButtonPrimary
+                                disabled={!customization.welcomeScreen.enable}
+                                onClick={() => { dispatch(customizationActions.welcomeScreen.build(false)); }}
+                                label={__("dialog.yes")}
+                                style={{display: customization.welcomeScreen.enable ? "block" : "none" }}
+                            />
                         </AlertDialog.Action>
                     </div>
                 </AlertDialog.Content>

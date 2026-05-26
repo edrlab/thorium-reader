@@ -39,7 +39,6 @@ import { availableLanguages } from "readium-desktop/common/services/translator";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { authActions, catalogActions, creatorActions, customizationActions, i18nActions, noteExport, screenReaderActions, settingsActions, themeActions } from "readium-desktop/common/redux/actions";
-import * as BinIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { TTheme } from "readium-desktop/common/redux/states/theme";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
@@ -63,6 +62,7 @@ import { convertMultiLangStringToString } from "readium-desktop/common/language-
 // import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import moment from "moment";
+import { ThButtonPrimary, ThButtonSecondary } from "readium-desktop/renderer/common/components/Buttons";
 
 // import { TagGroup, TagList, Tag, Label } from "react-aria-components";
 
@@ -156,12 +156,12 @@ export const Auth = () => {
     const dispatch = useDispatch();
 
     return (
-        <button
-            className={stylesSettings.btn_primary}
-            onClick={() => dispatch(authActions.wipeData.build())}>
-            <SVG ariaHidden svg={BinIcon} />
-            <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.auth.wipeData")}</p>
-        </button>
+        <ThButtonSecondary
+            onClick={() => dispatch(authActions.wipeData.build())}
+            svg={DeleteIcon}
+            dir={isRTL ? "rtl" : "ltr"}
+            label={__("settings.auth.wipeData")}
+        />
     );
 };
 
@@ -435,7 +435,7 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
             {
                 enableCheckbox ? <>
                     <TextArea style={{ minWidth: "-webkit-fill-available", maxWidth: "-webkit-fill-available" }} name="htmlContent" wrap="hard" ref={textAreaRef} defaultValue={htmlContent} maxLength={MAX_LEN} onChange={(a) => updateHtmlContentDebounced(a.currentTarget.value)}></TextArea>
-                    <button dir={isRTL ? "rtl" : "ltr"} className={stylesButtons.button_secondary_blue} onClick={resetHtmlContent}>{__("settings.note.export.applyDefaultTemplate")}</button>
+                    <ThButtonSecondary dir={isRTL ? "rtl" : "ltr"} onClick={resetHtmlContent} label={__("settings.note.export.applyDefaultTemplate")} />
                 </>
                     : <></>
             }
@@ -613,23 +613,22 @@ const Profiles = () => {
                                 <div className={stylesSettings.delete_profile_button} style={{ display: "flex", flexDirection: "row-reverse", width: "100%", margin: "-5px", zIndex: "10" }}>
                                     <Popover.Root>
                                         <Popover.Trigger asChild>
-                                            <button
+                                            <ThButtonPrimary
                                                 style={{ width: "16px", height: "16px" }}
-                                                title={__("catalog.delete")}
-                                            >
-                                                <SVG ariaHidden={true} svg={DeleteIcon} />
-                                            </button>
+                                                label={__("catalog.delete")}
+                                                svg={DeleteIcon}
+                                            />
                                         </Popover.Trigger>
                                         <Popover.Portal>
                                             <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesPopoverDialog.delete_item}>
-                                                <Popover.Close dir={isRTL ? "rtl" : "ltr"}
+                                                <Popover.Close dir={isRTL ? "rtl" : "ltr"} asChild>
+                                                    <ThButtonSecondary
                                                     onClick={() => {
                                                         dispatch(customizationActions.deleteProfile.build(profile.fileName));
                                                     }}
-                                                    title={__("catalog.delete")}
-                                                >
-                                                    <SVG ariaHidden={true} svg={DeleteIcon} />
-                                                    {__("reader.marks.delete")}
+                                                    label={__("reader.marks.delete")}
+                                                    svg={DeleteIcon}
+                                                />
                                                 </Popover.Close>
                                                 <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
                                             </Popover.Content>
@@ -824,28 +823,22 @@ const StorageSettings: React.FC<{}> = () => {
                         </div>
 
                         {!userDirectory && !isEditing ? (
-                            <button
-                                className={stylesButtons.button_secondary_blue}
+                            <ThButtonSecondary
                                 onClick={() => setConfirmAddOpen(true)}
-                            >
-                                Add external storage directory
-                            </button>
+                                label="Add external storage directory"
+                            />
                         ) : null}
 
                         {userDirectory && !isEditing ? (
                             <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-                                <button
-                                    className={stylesButtons.button_secondary_blue}
+                                <ThButtonSecondary
                                     onClick={() => setConfirmEditOpen(true)}
-                                >
-                                    Change external storage directory
-                                </button>
-                                <button
-                                    className={stylesButtons.button_secondary_blue}
+                                    label="Change external storage directory"
+                                />
+                                <ThButtonSecondary
                                     onClick={() => setConfirmDeleteOpen(true)}
-                                >
-                                    Remove external storage directory
-                                </button>
+                                    label="Remove external storage directory"
+                                />
                             </div>
                         ) : null}
                     </section>

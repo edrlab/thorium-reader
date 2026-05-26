@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesBookmarks from "readium-desktop/renderer/assets/styles/components/bookmarks.scss";
 
 import * as React from "react";
@@ -38,6 +37,7 @@ import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/componen
 // @__ts-ignore TS1479
 import {subscribe} from "@github/paste-markdown";
 import { readerActions } from "readium-desktop/common/redux/actions";
+import { ThButtonPrimary, ThButtonSecondary } from "readium-desktop/renderer/common/components/Buttons";
 
 interface IProps {
     save: (name: string, color: IColor, tag: string | undefined) => void,
@@ -166,13 +166,13 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
         </div>
         <div className={stylesBookmarks.bookmark_form_textarea_buttons}>
             {displayFromReaderMenu
-                ? <button className={stylesButtons.button_secondary_blue} aria-label={__("dialog.cancel")} onClick={cancel} type="button">{__("dialog.cancel")}</button>
-                : <Popover.Close className={stylesButtons.button_secondary_blue} aria-label={__("dialog.cancel")} onClick={cancel}>{__("dialog.cancel")}</Popover.Close>
+                ? <ThButtonSecondary label={__("dialog.cancel")} onClick={cancel} type="button" />
+                : <Popover.Close asChild><ThButtonSecondary label={__("dialog.cancel")} onClick={cancel} type="button" /></Popover.Close>
             }
-            <button type="submit"
-                className={stylesButtons.button_primary_blue}
-                aria-label={__("reader.marks.saveMark")}
-                onClick={(e) => {
+            <ThButtonPrimary
+            type="submit"
+            label={__("reader.marks.saveMark")}
+            onClick={(e) => {
                     e.preventDefault();
                     const textareaNormalize = textAreaValue.trim(); // also see trimNormaliseWhitespaceAndCollapse()
                     // if (textareaNormalize) {
@@ -180,10 +180,8 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
                     saveConfig();
                     // }
                 }}
-            >
-                <SVG ariaHidden svg={SaveIcon} />
-                {__("reader.marks.saveMark")}
-            </button>
+            svg={SaveIcon}
+            />
         </div>
     </form>;
 };

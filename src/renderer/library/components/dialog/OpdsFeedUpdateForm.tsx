@@ -23,6 +23,7 @@ import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import classNames from "classnames";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { connect } from "react-redux";
+import { ThButtonPrimary, ThButtonSecondary } from "readium-desktop/renderer/common/components/Buttons";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -108,17 +109,25 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
                                     required
                                 />
                             </div>
-                            <button onClick={() => this.setState({favorite : !favorite})} className={stylesButtons.button_nav_primary} style={{marginTop: "20px"}}>
-                                <SVG svg={StarIcon} ariaHidden className={favorite ? stylesCatalogs.catalog_favorite_icon_true : stylesCatalogs.catalog_favorite_icon_false} />
-                                {favorite ? <p>{__("catalog.removeFromFavorites")}</p> :  <p>{__("catalog.AddToFavorites")}</p>}
-                            </button>
+                            <ThButtonSecondary 
+                            onClick={() => this.setState({favorite : !favorite})}
+                            style={{marginTop: "20px"}}
+                            svg={StarIcon} 
+                            svgClassname={favorite ? stylesCatalogs.catalog_favorite_icon_true : stylesCatalogs.catalog_favorite_icon_false}
+                            label={favorite ? __("catalog.removeFromFavorites") : __("catalog.AddToFavorites")}
+                            />
                         </div>
                         <div className={stylesModals.modal_dialog_footer}>
                             <Dialog.Close asChild>
-                                <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
+                                <ThButtonSecondary label={__("dialog.cancel")} />
                             </Dialog.Close>
                             <Dialog.Close asChild>
-                                <button type="submit" disabled={!title || !url} className={stylesButtons.button_primary_blue} onClick={() => this.update()}>{__("opds.updateForm.updateButton")}</button>
+                                <ThButtonPrimary 
+                                type="submit" 
+                                disabled={!title || !url}  
+                                onClick={() => this.update()}
+                                label={__("opds.updateForm.updateButton")}
+                                />
                             </Dialog.Close>
                         </div>
                     </form>

@@ -110,28 +110,6 @@
   background-color: var(--color-brand-secondary);
   border-radius: 5px;
   transition: 200ms;
-
-  button {
-    padding: 5px;
-    color: var(--color-brand-primary);
-    height: unset;
-    border-radius: 5px;
-
-    &:hover {
-      background-color: var(--color-neutral-base);
-    }
-
-    &:focus {
-      background-color: var(--color-brand-primary);
-      border: 1px solid var(--color-neutral-base);
-      outline: 1px solid var(--color-brand-primary);
-      color: var(--color-neutral-base);
-    }
-
-    svg {
-      width: 10px;
-    }
-  }
 }
 
 

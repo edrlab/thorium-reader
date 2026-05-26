@@ -105,6 +105,7 @@ import { clone } from "ramda";
 import { marked } from "readium-desktop/renderer/common/marked/marked";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
+import { ThButton, ThButtonPrimary, ThButtonSecondary } from "readium-desktop/renderer/common/components/Buttons";
 
 (window as any).__shell_openExternal = (url: string) => url && /^https?:\/\//.test(url) ? shell.openExternal(url) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
 
@@ -1324,30 +1325,28 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                             >
                                                 <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByTag")}</Label>
                                                 <div style={{ display: "flex", gap: "10px" }}>
-                                                    <button
+                                                    <ThButton
+                                                    variant={tagArrayFilter === "all" ? "primary" : "secondary"}
+                                                    disabled={!selectTagOption.length} 
+                                                    style={{ width: "fit-content", minWidth: "unset" }} 
+                                                    onClick={() => {
+                                                        setTagArrayFilter("all");
+                                                        const detailsElement = document.getElementById("annotationListTagDetails") as HTMLDetailsElement;
+                                                        if (detailsElement) {
+                                                            detailsElement.open = true;
+                                                        }
+                                                    }}
+                                                    label={__("reader.annotations.filter.all")}
+                                                    />
+                                                    <ThButtonSecondary
                                                         disabled={!selectTagOption.length}
                                                         style={{ width: "fit-content", minWidth: "unset" }}
-                                                        className={tagArrayFilter === "all" ? stylesButtons.button_primary_blue : stylesButtons.button_secondary_blue}
-                                                        onClick={() => {
-                                                            setTagArrayFilter("all");
-                                                            const detailsElement = document.getElementById("annotationListTagDetails") as HTMLDetailsElement;
-                                                            if (detailsElement) {
-                                                                detailsElement.open = true;
-                                                            }
-
-                                                        }}>
-                                                        {__("reader.annotations.filter.all")}
-                                                    </button>
-                                                    <button
-                                                        disabled={!selectTagOption.length}
-                                                        style={{ width: "fit-content", minWidth: "unset" }}
-                                                        className={stylesButtons.button_secondary_blue}
                                                         onClick={() => {
                                                             setTagArrayFilter(new Set([]));
 
-                                                        }}>
-                                                        {__("reader.annotations.filter.none")}
-                                                    </button>
+                                                        }}
+                                                        label={__("reader.annotations.filter.none")}
+                                                    />
                                                 </div>
                                             </summary>
                                             {
@@ -1370,9 +1369,9 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                             <summary className={stylesAnnotations.annotations_filter_tagGroup}>
                                                 <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByColor")}</Label>
                                                 <div style={{ display: "flex", gap: "10px" }}>
-                                                    <button
+                                                    <ThButton
+                                                        variant={colorArrayFilter === "all" ? "primary" : "secondary"}
                                                         style={{ width: "fit-content", minWidth: "unset" }}
-                                                        className={colorArrayFilter === "all" ? stylesButtons.button_primary_blue : stylesButtons.button_secondary_blue}
                                                         onClick={() => {
                                                             setColorArrayFilter("all");
                                                             const detailsElement = document.getElementById("annotationListColorDetails") as HTMLDetailsElement;
@@ -1380,18 +1379,17 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                                                 detailsElement.open = true;
                                                             }
 
-                                                        }}>
-                                                        {__("reader.annotations.filter.all")}
-                                                    </button>
-                                                    <button
+                                                        }}
+                                                        label={__("reader.annotations.filter.all")}
+                                                    />
+                                                    <ThButtonSecondary
                                                         style={{ width: "fit-content", minWidth: "unset" }}
-                                                        className={stylesButtons.button_secondary_blue}
                                                         onClick={() => {
                                                             setColorArrayFilter(new Set([]));
 
-                                                        }}>
-                                                        {__("reader.annotations.filter.none")}
-                                                    </button>
+                                                        }}
+                                                        label={__("reader.annotations.filter.none")}
+                                                    />
                                                 </div>
                                             </summary>
                                             <TagList items={annotationsColors} className={stylesAnnotations.annotations_filter_taglist}>
@@ -1410,9 +1408,9 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                             <summary className={stylesAnnotations.annotations_filter_tagGroup}>
                                                 <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByDrawtype")}</Label>
                                                 <div style={{ display: "flex", gap: "10px" }}>
-                                                    <button
+                                                    <ThButton
+                                                        variant={drawTypeArrayFilter === "all" ? "primary" : "secondary"}
                                                         style={{ width: "fit-content", minWidth: "unset" }}
-                                                        className={drawTypeArrayFilter === "all" ? stylesButtons.button_primary_blue : stylesButtons.button_secondary_blue}
                                                         onClick={() => {
                                                             setDrawTypeArrayFilter("all");
                                                             const detailsElement = document.getElementById("annotationListDrawDetails") as HTMLDetailsElement;
@@ -1420,18 +1418,17 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                                                 detailsElement.open = true;
                                                             }
 
-                                                        }}>
-                                                        {__("reader.annotations.filter.all")}
-                                                    </button>
-                                                    <button
+                                                        }}
+                                                        label={__("reader.annotations.filter.all")}
+                                                    />
+                                                    <ThButtonSecondary
                                                         style={{ width: "fit-content", minWidth: "unset" }}
-                                                        className={stylesButtons.button_secondary_blue}
                                                         onClick={() => {
                                                             setDrawTypeArrayFilter(new Set([]));
 
-                                                        }}>
-                                                        {__("reader.annotations.filter.none")}
-                                                    </button>
+                                                        }}
+                                                        label={__("reader.annotations.filter.none")}
+                                                    />
                                                 </div>
                                             </summary>
                                             <TagList items={selectDrawtypesOptions} className={stylesAnnotations.annotations_filter_taglist}>
@@ -1452,30 +1449,28 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                             >
                                                 <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByCreator")}</Label>
                                                 <div style={{ display: "flex", gap: "10px" }}>
-                                                    <button
+                                                     <ThButton
+                                                        variant={creatorArrayFilter === "all" ? "primary" : "secondary"}
                                                         tabIndex={!selectCreatorOptions.length ? -1 : 0}
                                                         style={{ width: "fit-content", minWidth: "unset" }}
-                                                        className={creatorArrayFilter === "all" ? stylesButtons.button_primary_blue : stylesButtons.button_secondary_blue}
                                                         onClick={() => {
                                                             setCreatorArrayFilter("all");
                                                             const detailsElement = document.getElementById("annotationListCreator") as HTMLDetailsElement;
                                                             if (detailsElement) {
                                                                 detailsElement.open = true;
                                                             }
-
-                                                        }}>
-                                                        {__("reader.annotations.filter.all")}
-                                                    </button>
-                                                    <button
+                                                        }}
+                                                        label={__("reader.annotations.filter.all")}
+                                                    />
+                                                    <ThButtonSecondary
                                                         tabIndex={!selectCreatorOptions.length ? -1 : 0}
                                                         style={{ width: "fit-content", minWidth: "unset" }}
-                                                        className={stylesButtons.button_secondary_blue}
                                                         onClick={() => {
                                                             setCreatorArrayFilter(new Set([]));
 
-                                                        }}>
-                                                        {__("reader.annotations.filter.none")}
-                                                    </button>
+                                                        }}
+                                                        label={__("reader.annotations.filter.none")}
+                                                    />
                                                 </div>
                                             </summary>
                                             <TagList items={selectCreatorOptions} className={stylesAnnotations.annotations_filter_taglist} style={{ margin: !selectCreatorOptions.length ? "0" : "20px 0" }}>
@@ -1529,13 +1524,14 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                     </div>
 
                                     <Popover.Close aria-label={__("reader.annotations.export")} asChild>
-                                        <button onClick={async () => {
+                                        <ThButtonPrimary
+                                        onClick={async () => {
                                             const fileType = selectFileTypeRef.current?.value || "annotation";
                                             await getSaga().run(exportAnnotationSet, annotationListFiltered, publicationView, annotationTitleRef?.current?.value || annoSetTitle, fileType).toPromise();
-                                        }} className={stylesButtons.button_primary_blue}>
-                                            <SVG svg={SaveIcon} />
-                                            {__("reader.annotations.export")}
-                                        </button>
+                                        }}
+                                        svg={SaveIcon}
+                                        label={__("reader.annotations.export")}
+                                        />
                                     </Popover.Close>
                                 </div>
                             </Popover.Content>
@@ -1554,10 +1550,13 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                 </AlertDialog.Description>
                                 <div className={stylesAlertModals.AlertDialogButtonContainer}>
                                     <AlertDialog.Cancel asChild>
-                                        <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
+                                        <ThButtonSecondary
+                                        label={__("dialog.cancel")}
+                                        />
                                     </AlertDialog.Cancel>
                                     <AlertDialog.Action asChild>
-                                        <button className={stylesButtons.button_primary_blue} onClick={() => {
+                                        <ThButtonPrimary 
+                                        onClick={() => {
                                             updateDialogOrDockDataInfo({id: "", edit: false});
                                             for (const annotation of annotationListFiltered) {
 
@@ -1569,9 +1568,11 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                             setColorArrayFilter(new Set([]));
                                             setDrawTypeArrayFilter(new Set([]));
                                             setCreatorArrayFilter(new Set([]));
-                                        }} type="button">
-                                            <SVG ariaHidden svg={TrashIcon} />
-                                            {__("dialog.yes")}</button>
+                                        }} 
+                                        type="button"
+                                        svg={TrashIcon}
+                                        label={__("dialog.yes")}
+                                        />
                                     </AlertDialog.Action>
                                 </div>
                             </AlertDialog.Content>
@@ -2072,10 +2073,10 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                                             >
                                                 <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByTag")}</Label>
                                                 <div style={{ display: "flex", gap: "10px" }}>
-                                                    <button
+                                                    <ThButton
+                                                        variant={tagArrayFilter === "all" ? "primary" : "secondary"}
                                                         disabled={!selectTagOption.length}
                                                         style={{ width: "fit-content", minWidth: "unset" }}
-                                                        className={tagArrayFilter === "all" ? stylesButtons.button_primary_blue : stylesButtons.button_secondary_blue}
                                                         onClick={() => {
                                                             setTagArrayFilter("all");
                                                             const detailsElement = document.getElementById("bookmark-tags-list-details") as HTMLDetailsElement;
@@ -2083,19 +2084,18 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                                                                 detailsElement.open = true;
                                                             }
 
-                                                        }}>
-                                                        {__("reader.annotations.filter.all")}
-                                                    </button>
-                                                    <button
+                                                        }}
+                                                        label={__("reader.annotations.filter.all")}
+                                                    />
+                                                    <ThButtonSecondary
                                                         disabled={!selectTagOption.length}
                                                         style={{ width: "fit-content", minWidth: "unset" }}
-                                                        className={stylesButtons.button_secondary_blue}
                                                         onClick={() => {
                                                             setTagArrayFilter(new Set([]));
 
-                                                        }}>
-                                                        {__("reader.annotations.filter.none")}
-                                                    </button>
+                                                        }}
+                                                        label={__("reader.annotations.filter.none")}
+                                                    />
                                                 </div>
                                             </summary>
                                             {
@@ -2118,28 +2118,27 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                                             <summary className={stylesBookmarks.bookmarks_filter_tagGroup}>
                                                 <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByColor")}</Label>
                                                 <div style={{ display: "flex", gap: "10px" }}>
-                                                    <button
+                                                    <ThButton
+                                                        variant={colorArrayFilter === "all" ? "primary" : "secondary"}
                                                         style={{ width: "fit-content", minWidth: "unset" }}
-                                                        className={colorArrayFilter === "all" ? stylesButtons.button_primary_blue : stylesButtons.button_secondary_blue}
                                                         onClick={() => {
                                                             setColorArrayFilter("all");
                                                             const detailsElement = document.getElementById("bookmark-color-list") as HTMLDetailsElement;
-                                                            if (detailsElement) {
-                                                                detailsElement.open = true;
-                                                            }
+                                                                if (detailsElement) {
+                                                                    detailsElement.open = true;
+                                                                }
 
-                                                        }}>
-                                                        {__("reader.annotations.filter.all")}
-                                                    </button>
-                                                    <button
+                                                            }}
+                                                            label={__("reader.annotations.filter.all")}
+                                                        />
+                                                    <ThButtonSecondary
                                                         style={{ width: "fit-content", minWidth: "unset" }}
-                                                        className={stylesButtons.button_secondary_blue}
                                                         onClick={() => {
                                                             setColorArrayFilter(new Set([]));
 
-                                                        }}>
-                                                        {__("reader.annotations.filter.none")}
-                                                    </button>
+                                                        }}
+                                                        label={__("reader.annotations.filter.none")}
+                                                    />
                                                 </div>
                                             </summary>
                                             <TagList items={bookmarksColors} className={stylesBookmarks.bookmarks_filter_taglist}>
@@ -2160,10 +2159,10 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                                             >
                                                 <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByCreator")}</Label>
                                                 <div style={{ display: "flex", gap: "10px" }}>
-                                                    <button
+                                                    <ThButton
+                                                        variant={creatorArrayFilter === "all" ? "primary" : "secondary"}
                                                         tabIndex={!selectCreatorOptions.length ? -1 : 0}
                                                         style={{ width: "fit-content", minWidth: "unset" }}
-                                                        className={creatorArrayFilter === "all" ? stylesButtons.button_primary_blue : stylesButtons.button_secondary_blue}
                                                         onClick={() => {
                                                             setCreatorArrayFilter("all");
                                                             const detailsElement = document.getElementById("bookmark-creator-list-details") as HTMLDetailsElement;
@@ -2171,19 +2170,18 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                                                                 detailsElement.open = true;
                                                             }
 
-                                                        }}>
-                                                        {__("reader.annotations.filter.all")}
-                                                    </button>
-                                                    <button
+                                                        }}
+                                                        label={__("reader.annotations.filter.all")}
+                                                        />
+                                                    <ThButtonSecondary
                                                         tabIndex={!selectCreatorOptions.length ? -1 : 0}
                                                         style={{ width: "fit-content", minWidth: "unset" }}
-                                                        className={stylesButtons.button_secondary_blue}
                                                         onClick={() => {
                                                             setCreatorArrayFilter(new Set([]));
 
-                                                        }}>
-                                                        {__("reader.annotations.filter.none")}
-                                                    </button>
+                                                        }}
+                                                        label={__("reader.annotations.filter.none")}
+                                                    />
                                                 </div>
                                             </summary>
                                             <TagList items={selectCreatorOptions} className={stylesBookmarks.bookmarks_filter_taglist} style={{ margin: !selectCreatorOptions.length ? "0" : "20px 0" }}>
@@ -2246,13 +2244,14 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                                     </div>
 
                                     <Popover.Close aria-label={__("reader.annotations.export")} asChild>
-                                        <button onClick={async () => {
+                                        <ThButtonPrimary
+                                        onClick={async () => {
                                             const fileType = selectFileTypeRef.current?.value || "annotation";
                                             await getSaga().run(exportAnnotationSet, bookmarkListFiltered, publicationView, bookmarkTitleRef?.current?.value || annoSetTitle, fileType).toPromise();
-                                        }} className={stylesButtons.button_primary_blue}>
-                                            <SVG svg={SaveIcon} />
-                                            {__("reader.annotations.export")}
-                                        </button>
+                                        }} 
+                                        svg={SaveIcon}
+                                        label={__("reader.annotations.export")}
+                                        />
                                     </Popover.Close>
                                 </div>
                             </Popover.Content>
@@ -2271,10 +2270,11 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                                 </AlertDialog.Description>
                                 <div className={stylesAlertModals.AlertDialogButtonContainer}>
                                     <AlertDialog.Cancel asChild>
-                                        <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
+                                        <ThButtonSecondary label={__("dialog.cancel")} />
                                     </AlertDialog.Cancel>
                                     <AlertDialog.Action asChild>
-                                        <button className={stylesButtons.button_primary_blue} onClick={() => {
+                                        <ThButtonPrimary
+                                        onClick={() => {
                                             updateDialogOrDockDataInfo({id: "", edit: false});
                                             for (const bookmark of bookmarkListFiltered) {
 
@@ -2285,9 +2285,11 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                                             setCreatorArrayFilter(new Set([]));
                                             setColorArrayFilter(new Set([]));
                                             setTagArrayFilter(new Set([]));
-                                        }} type="button">
-                                            <SVG ariaHidden svg={TrashIcon} />
-                                            {__("dialog.yes")}</button>
+                                        }} 
+                                        type="button"
+                                        svg={TrashIcon}
+                                        label={__("dialog.yes")}
+                                        />
                                     </AlertDialog.Action>
                                 </div>
                             </AlertDialog.Content>
@@ -2736,10 +2738,8 @@ const GoToPageSection: React.FC<IBaseProps & { totalPages?: number }> = (props) 
                     {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                 </ComboBox>
             </div>
-            <button
+            <ThButtonPrimary
                 type="button"
-                className={stylesButtons.button_primary_blue}
-
                 onClick=
                 {(e) => {
                     const closeNavGotoPage = !dockedMode && !(e.shiftKey && e.altKey);
@@ -2768,10 +2768,9 @@ const GoToPageSection: React.FC<IBaseProps & { totalPages?: number }> = (props) 
                 disabled={
                     !(isFixedLayoutNoPageList || r2Publication.PageList || isDivina || isPdf)
                 }
-            >
-                <SVG ariaHidden svg={TargetIcon} />
-                {__("reader.navigation.goTo")}
-            </button>
+            svg={TargetIcon}
+            label={__("reader.navigation.goTo")}
+            />
         </form>
 
         {pageError &&

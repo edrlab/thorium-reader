@@ -28,7 +28,7 @@ export declare const annotations_options: string;
 export declare const annotations_sorting_container: string;
 export declare const annotations_tab: string;
 export declare const annotationsTitle_form_container: string;
-export declare const button_primary_blue: string;
+export declare const button_primary: string;
 export declare const colorPicker: string;
 export declare const CSS_END_components_annotations: string;
 export declare const CSS_START_components_annotations: string;

@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 
 import * as React from "react";
@@ -16,6 +15,7 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
+import { ThButtonPrimary } from "src/renderer/common/components/Buttons";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -42,11 +42,10 @@ class AuthSettings extends React.Component<IProps> {
                     <div className={stylesGlobal.heading}>
                         <h2>{__("catalog.opds.auth.login")}</h2>
                     </div>
-                    <button
-                        className={stylesButtons.button_primary}
-                        onClick={() => this.props.wipeData()}>
-                        {__("settings.auth.wipeData")}
-                    </button>
+                    <ThButtonPrimary
+                        onClick={() => this.props.wipeData()}
+                        label={__("settings.auth.wipeData")}
+                    />
                 </section>
             </>
         );

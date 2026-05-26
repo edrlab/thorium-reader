@@ -2,7 +2,7 @@ export declare const button_delete: string;
 export declare const button_edit: string;
 export declare const button_favorites: string;
 export declare const button_login: string;
-export declare const button_secondary_blue: string;
+export declare const button_secondary: string;
 export declare const button_transparency: string;
 export declare const catalog_breadcrumbSearch_Wrapper: string;
 export declare const catalog_container: string;

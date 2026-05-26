@@ -71,7 +71,7 @@
           text-overflow: ellipsis;
           overflow: hidden;
 
-          &.button_primary_blue {
+          &.button_primary {
             color: var(--color-neutral-base);
 
             &:hover, &:focus:hover {
@@ -110,7 +110,7 @@
       color: var(--color-text-primary);
     }
 
-    .button_primary_blue:hover {
+    .button_primary:hover {
       // color: var(--color-neutral-base);
       background-color: var(--color-brand-primary);
     }

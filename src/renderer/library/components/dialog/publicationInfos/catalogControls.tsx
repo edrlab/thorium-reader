@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
 import * as React from "react";
 import { connect } from "react-redux";
@@ -19,13 +18,13 @@ import * as ReadBook from "readium-desktop/renderer/assets/icons/readBook-icon.s
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
-import SVG from "readium-desktop/renderer/common/components/SVG";
 import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import DeletePublicationConfirm from "../DeletePublicationConfirm";
 import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
+import { ThButtonPrimary, ThButtonSecondary } from "readium-desktop/renderer/common/components/Buttons";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -59,32 +58,35 @@ export class CatalogControls extends React.Component<IProps, undefined> {
 
         return (
             <>
-                <button onClick={this.handleRead} className={stylesButtons.button_primary}>
-                    <SVG svg={ReadBook} ariaHidden />
-                    {__("catalog.readBook")}
-                </button>
+                <ThButtonPrimary
+                onClick={this.handleRead}
+                svg={ReadBook}
+                label={__("catalog.readBook")}
+                />
                 {this.props.isReading ?
-                <button disabled>
-                    <SVG ariaHidden svg={DoubleCheckIcon} />
-                    {__("publication.markAsRead")}
-                </button>
+                <ThButtonSecondary
+                    disabled
+                    svg={DoubleCheckIcon}
+                    label={__("publication.markAsRead")}
+                />
                 : <></>
                 }
                 <DeletePublicationConfirm
                     trigger={(
-                        <button className={stylesButtons.button_secondary}>
-                            <SVG svg={TrashIcon} ariaHidden />
-                            {__("catalog.deleteBook")}
-                        </button>
+                        <ThButtonSecondary
+                            svg={TrashIcon}
+                            label={__("catalog.deleteBook")}
+                        />
 
                     )}
                     publicationView={this.props.publicationView}
                 />
 
-                <button onClick={this.exportPublication} className={stylesButtons.button_secondary}>
-                    <SVG svg={SaveAsIcon} ariaHidden />
-                    {__("catalog.export")}
-                </button>
+                <ThButtonSecondary
+                    onClick={this.exportPublication}
+                    svg={SaveAsIcon}
+                    label={__("catalog.export")}
+                />
             </>
         );
     }
