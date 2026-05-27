@@ -331,6 +331,10 @@ if (nodeEnv !== "production") {
     config.optimization = {
         ...(config.optimization || {}),
         nodeEnv: false,
+        // jsdom generated WebIDL wrappers access CommonJS exports dynamically
+        // (Impl.implementation). Production usedExports can incorrectly remove
+        // those implementation exports from the bundled main process.
+        usedExports: false,
         minimize: true,
         minimizer: [
             new TerserPlugin({
