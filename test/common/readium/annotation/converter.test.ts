@@ -4,6 +4,7 @@ import {
     convertAnnotationStateArrayToReadiumAnnotationSet,
     convertAnnotationStateToReadiumAnnotation,
 } from "readium-desktop/common/readium/annotation/converter";
+import type { ITextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import { EDrawType, INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
@@ -17,6 +18,13 @@ const publicationView = {
     authorsLangString: [],
     publishersLangString: [],
 } as PublicationView;
+
+const textQuoteSelector: ITextQuoteSelector = {
+    type: "TextQuoteSelector",
+    exact: "selected text",
+    prefix: "",
+    suffix: "",
+};
 
 function createNote(overrides: Partial<INoteState> = {}): INoteState {
     return {
@@ -50,6 +58,7 @@ function createNote(overrides: Partial<INoteState> = {}): INoteState {
         tags: ["tag"],
         created: Date.UTC(2026, 0, 1),
         creator: {
+            id: "creator",
             urn: "urn:creator",
             name: "Creator",
             type: "Person",
@@ -57,12 +66,7 @@ function createNote(overrides: Partial<INoteState> = {}): INoteState {
         group: "annotation",
         readiumAnnotation: {
             export: {
-                selector: [{
-                    type: "TextQuoteSelector",
-                    exact: "selected text",
-                    prefix: "",
-                    suffix: "",
-                }],
+                selector: [textQuoteSelector],
             },
         },
         ...overrides,
