@@ -1220,7 +1220,6 @@
             "actions": {
                 "addDirectory": "Select an additional storage",
                 "changeDirectory": "Update additional storage",
-                "chooseFolder": "Choose directory",
                 "removeStorageDirectory": "Remove additional storage"
             },
             "beta": {
@@ -1233,8 +1232,7 @@
             "configuration": {
                 "chooseFolderDescription": "Choose the directory that Thorium should use as additional storage.",
                 "configuredDescription": "The additional storage is configured and ready to use for newly stored publications.",
-                "notConfiguredDescription": "Publications imported into Thorium Reader will be stored in the selected directory. Publications previously imported will stay in the original system storage.",
-                "title": "Additional Storage"
+                "notConfiguredDescription": "Publications imported into Thorium Reader will be stored in the selected directory. Publications previously imported will stay in the original system storage."
             },
             "dialogs": {
                 "add": {

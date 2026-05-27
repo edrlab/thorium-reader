@@ -1209,7 +1209,6 @@
             "actions": {
                 "addDirectory": "",
                 "changeDirectory": "",
-                "chooseFolder": "",
                 "removeStorageDirectory": ""
             },
             "beta": {
@@ -1222,8 +1221,7 @@
             "configuration": {
                 "chooseFolderDescription": "",
                 "configuredDescription": "",
-                "notConfiguredDescription": "",
-                "title": ""
+                "notConfiguredDescription": ""
             },
             "dialogs": {
                 "add": {

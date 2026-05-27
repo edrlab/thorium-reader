@@ -2800,6 +2800,7 @@ declare namespace typed_i18n {
     readonly "locations": {
       readonly "defaultDescription": string,
       readonly "defaultInternal": string,
+      readonly "externalStorage": string,
       readonly "title": string
     }
   },
@@ -3556,6 +3557,7 @@ declare namespace typed_i18n {
   readonly "locations": {
     readonly "defaultDescription": string,
     readonly "defaultInternal": string,
+    readonly "externalStorage": string,
     readonly "title": string
   }
 };
@@ -3635,10 +3637,12 @@ declare namespace typed_i18n {
   (_: "settings.storage.locations", __?: {}): {
   readonly "defaultDescription": string,
   readonly "defaultInternal": string,
+  readonly "externalStorage": string,
   readonly "title": string
 };
   (_: "settings.storage.locations.defaultDescription", __?: {}): string;
   (_: "settings.storage.locations.defaultInternal", __?: {}): string;
+  (_: "settings.storage.locations.externalStorage", __?: {}): string;
   (_: "settings.storage.locations.title", __?: {}): string;
   (_: "settings.tabs", __?: {}): {
   readonly "appearance": string,
