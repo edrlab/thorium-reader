@@ -1256,6 +1256,7 @@
             "locations": {
                 "defaultDescription": "Publications managed by the application are by default stored in:",
                 "defaultInternal": "System Storage",
+                "externalStorage": "External storage",
                 "title": "Locations"
             }
         },

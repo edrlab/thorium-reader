@@ -211,7 +211,7 @@
         "searchPlaceholder": "Поиск",
         "searchTitle": "Начать поиск",
         "settings": "Настройки",
-        "settingsLabel": "",
+        "settingsLabel": "Настройки приложения",
         "viewMode": "Режим просмотра"
     },
     "library": {
@@ -803,7 +803,7 @@
             "printDisabled": "Печать запрещена",
             "screenNext": "Вперёд",
             "screenPrevious": "Вернуться",
-            "settingsTitle": "Настройки"
+            "settingsTitle": "Настройки ридера"
         },
         "notes": {
             "colors": {
@@ -1268,6 +1268,7 @@
             "locations": {
                 "defaultDescription": "",
                 "defaultInternal": "",
+                "externalStorage": "",
                 "title": ""
             }
         },

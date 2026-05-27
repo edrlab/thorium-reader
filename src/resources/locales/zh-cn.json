@@ -1178,7 +1178,7 @@
             "noShortcutFound": "",
             "resetDefaults": "重置 (加载初始设置)",
             "save": "保存",
-            "searchPlaceholder": ""
+            "searchPlaceholder": "搜索快捷键"
         },
         "language": {
             "languageChoice": "选择语言"
@@ -1197,7 +1197,7 @@
         "profiles": {
             "info": "",
             "thorium": {
-                "description": "",
+                "description": "Thorium Vanilla 配置文件是原始版本，由 EDRLab 设计。",
                 "title": ""
             },
             "version": ""
@@ -1250,6 +1250,7 @@
             "locations": {
                 "defaultDescription": "",
                 "defaultInternal": "",
+                "externalStorage": "",
                 "title": ""
             }
         },
@@ -1257,7 +1258,7 @@
             "appearance": "外观",
             "general": "常规",
             "keyboardShortcuts": "键盘快捷键",
-            "profiles": "",
+            "profiles": "配置文件",
             "storage": ""
         },
         "theme": {
@@ -1293,7 +1294,7 @@
     },
     "wizard": {
         "buttons": {
-            "discover": "发现 Thorium 桌面版",
+            "discover": "发掘 Thorium 桌面版",
             "goToBooks": "查看我的出版物"
         },
         "description": {

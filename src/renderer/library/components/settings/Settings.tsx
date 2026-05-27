@@ -174,7 +174,7 @@ const ConnectionSettings: React.FC<{}> = () => {
     const isRTL = locale === "ar";
     return (
         <section className={stylesSettings.section} style={{ position: "relative" }}>
-            <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.auth.title")}</h4>
+            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.auth.title")}</h3>
             <div className={stylesSettings.session_text}>
                 <SVG ariaHidden svg={InfoIcon} />
                 <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.auth.help")}</p>
@@ -251,7 +251,7 @@ const ScreenReaderSettings: React.FC<{}> = () => {
     };
     return (
         <section className={stylesSettings.section} style={{ position: "relative" }}>
-            <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.message")}</h4>
+            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.message")}</h3>
             <div className={stylesSettings.session_text} style={{ margin: "0" }}>
                 <SVG ariaHidden svg={InfoIcon} />
                 <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.help")}</p>
@@ -286,7 +286,7 @@ const ScreenReaderSettings: React.FC<{}> = () => {
                         }
                     </div>
                     <div aria-hidden>
-                        <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.title")}</h4>
+                        <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.title")}</h3>
                     </div>
                 </label>
             </div>
@@ -342,7 +342,7 @@ const SaveCreatorSettings: React.FC<{}> = () => {
 
     return (
         <section className={stylesSettings.section} style={{ position: "relative" }}>
-            <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.annotationCreator.creator")}</h4>
+            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.annotationCreator.creator")}</h3>
             <div className={stylesSettings.session_text} style={{ margin: "0" }}>
                 <SVG ariaHidden svg={InfoIcon} />
                 <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.annotationCreator.help")}</p>
@@ -398,7 +398,7 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
 
         <section className={stylesSettings.section} style={{ position: "relative" }}>
 
-            <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.note.export.overrideHTMLTemplate")}</h4>
+            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.note.export.overrideHTMLTemplate")}</h3>
             <input type="checkbox" className={stylesGlobal.checkbox_custom_input} name="enableCheckbox" />
             <div dir={isRTL ? "rtl" : "ltr"} className={stylesAnnotations.annotations_checkbox}>
                 <input type="checkbox" id="enableCheckbox" className={stylesGlobal.checkbox_custom_input} name="enableCheckbox" checked={enableCheckbox} onChange={toggleEnableCheckbox} />
@@ -430,14 +430,14 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
                         }
                     </div>
                     <div aria-hidden>
-                        <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.note.export.enableCheckbox")}</h4>
+                        <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.note.export.enableCheckbox")}</h3>
                     </div>
                 </label>
             </div>
             {
                 enableCheckbox ? <>
                     <TextArea style={{ minWidth: "-webkit-fill-available", maxWidth: "-webkit-fill-available" }} name="htmlContent" wrap="hard" ref={textAreaRef} defaultValue={htmlContent} maxLength={MAX_LEN} onChange={(a) => updateHtmlContentDebounced(a.currentTarget.value)}></TextArea>
-                    <button dir={isRTL ? "rtl" : "ltr"} className={stylesSettings.btn_primary} onClick={resetHtmlContent}>{__("settings.note.export.applyDefaultTemplate")}</button>
+                    <button dir={isRTL ? "rtl" : "ltr"} className={stylesButtons.button_secondary_blue} onClick={resetHtmlContent}>{__("settings.note.export.applyDefaultTemplate")}</button>
                 </>
                     : <></>
             }
@@ -461,7 +461,7 @@ const ManageAccessToCatalogSettings = () => {
 
     return (
         <section className={stylesSettings.section} style={{ gap: "10px" }}>
-            <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.library.title")}</h4>
+            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.library.title")}</h3>
             <div dir={isRTL ? "rtl" : "ltr"} className={stylesAnnotations.annotations_checkbox}>
                 <input type="checkbox" id="enableAPIAPP" className={stylesGlobal.checkbox_custom_input} name="enableAPIAPP" checked={enableAPIAPP} onChange={toggleEnableAPIAPP} />
                 <label htmlFor="enableAPIAPP" className={stylesGlobal.checkbox_custom_label}>
@@ -492,7 +492,7 @@ const ManageAccessToCatalogSettings = () => {
                         }
                     </div>
                     <div aria-hidden>
-                        <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.library.enableAPIAPP")}</h4>
+                        <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.library.enableAPIAPP")}</h3>
                     </div>
                 </label>
             </div>
@@ -730,6 +730,7 @@ const StorageSettings: React.FC<{}> = () => {
                 onConfirm={() => {
                     setConfirmAddOpen(false);
                     setIsEditing(true);
+                    openFolderPicker();
                 }}
             />
             <StorageConfirmDialog
@@ -741,6 +742,7 @@ const StorageSettings: React.FC<{}> = () => {
                 onConfirm={() => {
                     setConfirmEditOpen(false);
                     setIsEditing(true);
+                    openFolderPicker();
                 }}
             />
             <StorageConfirmDialog
@@ -771,58 +773,34 @@ const StorageSettings: React.FC<{}> = () => {
                 
                 <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }}>
                         <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                            <p style={{ margin: 0, fontWeight: 600 }}>{__("settings.storage.locations.title")}</p>
+                            <h3>{__("settings.storage.locations.title")}</h3>
                             <div className={stylesSettings.storage_location} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                                 <p style={{ margin: 0 }}><strong>{__("settings.storage.locations.defaultInternal")}</strong></p>
                                 <p style={{ margin: 0 }}>{__("settings.storage.locations.defaultDescription")}</p>
                                 <button
-                                    className={stylesButtons.button_transparency}
-                                    style={{
-                                        justifyContent: "flex-start",
-                                        width: "100%",
-                                        height: "auto",
-                                        minHeight: "unset",
-                                        textAlign: "left",
-                                        whiteSpace: "normal",
-                                        overflowWrap: "anywhere",
-                                        wordBreak: "break-word",
-                                        lineHeight: 1.4,
-                                        fontSize: "14px",
-                                    }}
+                                    className={stylesButtons.button_nav_tertiary}
                                     onClick={() => dispatch(catalogActions.openDefaultDirectory.build())}
                                 >
                                     {defaultDirectory}
                                 </button>
                             </div>
+                    </div>
+                    </section>
+
+                    <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }}>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                            <h3>Configuration</h3>
                             {userDirectory ?
 
                                 <div className={stylesSettings.storage_location} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                                    <button
-                                        className={stylesButtons.button_transparency}
-                                        style={{
-                                            justifyContent: "flex-start",
-                                            width: "100%",
-                                            height: "auto",
-                                            minHeight: "unset",
-                                            textAlign: "left",
-                                            whiteSpace: "normal",
-                                            overflowWrap: "anywhere",
-                                            wordBreak: "break-word",
-                                            lineHeight: 1.4,
-                                            fontSize: "14px",
-                                        }}
+                                    <p style={{ margin: 0 }}><strong>{__("settings.storage.locations.externalStorage")}</strong></p>
+                                    <button className={stylesButtons.button_nav_tertiary} title={userDirectory}
                                         onClick={() => dispatch(catalogActions.openUserDirectory.build())}
                                     >
                                         {userDirectory}
                                     </button>
                                 </div> : <></>
                             }
-                    </div>
-                    </section>
-
-                    <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }}>
-                        <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                            <p style={{ margin: 0, fontWeight: 600 }}>{__("settings.storage.configuration.title")}</p>
                             {!userDirectory && !isEditing ? (
                                 <div className={stylesSettings.session_text} style={{ margin: 0, alignItems: "flex-start" }}>
                                     <SVG ariaHidden svg={InfoIcon} />
@@ -847,7 +825,7 @@ const StorageSettings: React.FC<{}> = () => {
 
                         {!userDirectory && !isEditing ? (
                             <button
-                                className={stylesSettings.btn_primary}
+                                className={stylesButtons.button_secondary_blue}
                                 onClick={() => setConfirmAddOpen(true)}
                             >
                                 {__("settings.storage.actions.addDirectory")}
@@ -857,7 +835,7 @@ const StorageSettings: React.FC<{}> = () => {
                         {userDirectory && !isEditing ? (
                             <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
                                 <button
-                                    className={stylesSettings.btn_primary}
+                                    className={stylesButtons.button_secondary_blue}
                                     onClick={() => setConfirmEditOpen(true)}
                                 >
                                     {__("settings.storage.actions.changeDirectory")}
@@ -867,25 +845,6 @@ const StorageSettings: React.FC<{}> = () => {
                                     onClick={() => setConfirmDeleteOpen(true)}
                                 >
                                     {__("settings.storage.actions.removeStorageDirectory")}
-                                </button>
-                            </div>
-                        ) : null}
-
-                        {isEditing ? (
-                            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
-                                <button
-                                    className={stylesSettings.btn_primary}
-                                    onClick={openFolderPicker}
-                                >
-                                    {__("settings.storage.actions.chooseFolder")}
-                                </button>
-                                <button
-                                    className={stylesButtons.button_transparency}
-                                    onClick={() => {
-                                        setIsEditing(false);
-                                    }}
-                                >
-                                    {__("dialog.cancel")}
                                 </button>
                             </div>
                         ) : null}
@@ -899,21 +858,13 @@ const StorageSettings: React.FC<{}> = () => {
     );
 };
 
-const TabHeader = (props: React.PropsWithChildren<{title: string, advancedTrigger: boolean}>) => {
+const ModalControlButton = () => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
     const isRTL = locale === "ar";
     return (
         <div key="modal-header" className={stylesSettings.close_button_div} style={{justifyContent: isRTL ? "end" : undefined}}>
-            <TabTitle title={props.title}>
-            {props.children}
-            {
-                props.advancedTrigger ? 
-                <AdvancedTrigger/>
-                : <></>
-            }
-            </TabTitle>
             <Dialog.Close asChild>
                 <button dir={isRTL ? "rtl" : "ltr"} data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
                     <SVG ariaHidden={true} svg={QuitIcon} />
@@ -948,11 +899,10 @@ export const Settings: React.FC<ISettingsProps> = () => {
                     // FALSE this to test sourcemaps:
                     true &&
                     <VisuallyHidden.Root>
-                        <Dialog.Title>{__("header.settings")}</Dialog.Title>
+                        <Dialog.Title asChild><h1>{__("header.settings")}</h1></Dialog.Title>
                     </VisuallyHidden.Root>
                 }
                 <Tabs.Root defaultValue="tab1" data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
-                    <TabHeader title={tabTitle} advancedTrigger={tabTitle === __("settings.tabs.keyboardShortcuts") ? true : false} />
                     <Tabs.List className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
                         <Tabs.Trigger value="tab1" onFocus={() => setTabTitle(__("settings.tabs.general"))}>
                             <SVG ariaHidden svg={CogIcon} />
@@ -975,7 +925,14 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.storage")}</h3>
                         </Tabs.Trigger>
                     </Tabs.List>
-                    <div className={stylesSettings.settings_content}>
+                    <TabTitle title={tabTitle}>
+                        {
+                            tabTitle === __("settings.tabs.keyboardShortcuts") ?
+                                <AdvancedTrigger />
+                                : <></>
+                        }
+                    </TabTitle>
+                    <div className={stylesSettings.settings_content} style={{ marginTop: "70px" }}>
                         <Tabs.Content value="tab1" tabIndex={-1}>
                             <div className={stylesSettings.settings_tab}>
                                 <LanguageSettings />
@@ -1008,6 +965,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             </div>
                         </Tabs.Content>
                     </div>
+                    <ModalControlButton />
                 </Tabs.Root>
 
                 {/* <div className={stylesSettings.close_button_div}>

@@ -1280,6 +1280,7 @@
             "locations": {
                 "defaultDescription": "",
                 "defaultInternal": "",
+                "externalStorage": "",
                 "title": ""
             }
         },

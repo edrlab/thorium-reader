@@ -4,11 +4,11 @@
 # https://app.unpkg.com/npm-scripts-lifecycle@1.0.0/files/package.json
 
 npm cache clear --force
-rm -rf node_modules/ && rm -f package-lock.json && sfw npm install --ignore-scripts --foreground-scripts && npm run build:prod
+rm -rf node_modules/ && rm -f package-lock.json && sfw npm install --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root && npm run build:prod
 
 npm audit
 npm outdated
-(npm exec --no --offline -- taze --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd . && npm exec --no --offline -- taze major --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd .) || echo OK
+(npm exec --no --offline -- taze --maturity-period 3 --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd . && npm exec --no --offline -- taze major --maturity-period 3 --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd .) || echo OK
 
 # npm install --foreground-scripts
 # TODO: preinstall, install and postinstall NPM lifecycle hooks for Electron, fsevents, ParcelWatcher, etc.?

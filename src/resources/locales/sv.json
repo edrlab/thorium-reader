@@ -45,11 +45,11 @@
             "title": "{{- appName}}-programuppdatering."
         },
         "window": {
-            "showLibrary": "Visa bibliotek/bokhylla"
+            "showLibrary": "Visa bokhylla"
         }
     },
     "catalog": {
-        "AddToFavorites": "Lägg till favoriter",
+        "AddToFavorites": "Lägg till i favoriter",
         "about": {
             "title": "Om {{- appName}}"
         },
@@ -73,9 +73,9 @@
         },
         "delete": "Ta bort",
         "deleteBook": "Ta bort",
-        "deleteTag": "Ta bort taggen",
+        "deleteTag": "Ta bort tagg",
         "description": "Beskrivning",
-        "emptyTagList": "Du har inga böcker med taggar.",
+        "emptyTagList": "Inga böcker med tagg.",
         "entry": {
             "continueReading": "Fortsätt läsa",
             "lastAdditions": "Nyligen tillagt"
@@ -90,12 +90,12 @@
         "logout": "Logga ut",
         "missing": "",
         "missingUnavailableDescription": "",
-        "moreInfo": "Information om publikationen",
+        "moreInfo": "Information om boken",
         "myBooks": "Mina böcker",
-        "noPublicationHelpL1": "Släpp en publikation här",
-        "noPublicationHelpL2": "eller använd \"{{- importTitle }}\"-knappen ovanför.",
+        "noPublicationHelpL1": "Dra och släpp filer här",
+        "noPublicationHelpL2": "eller använd \"{{- importTitle }}\" knappen ovan.",
         "noPublicationHelpL3": "LCP-skyddade filer stöds.",
-        "noPublicationHelpL4": "Filtyper som stöds:",
+        "noPublicationHelpL4": "Filformat som stöds:",
         "numberOfPages": "Antal sidor",
         "opds": {
             "auth": {
@@ -114,7 +114,7 @@
                 "availableSince": "Sedan",
                 "availableState": {
                     "available": "Tillgänglig",
-                    "ready": "Redo",
+                    "ready": "Klar",
                     "reserved": "Reserverad",
                     "unavailable": "Otillgänglig",
                     "unknown": "Okänt"
@@ -161,7 +161,7 @@
             "splashscreen": {
                 "fallbackWelcomeScreen": "Det finns ingen välkomstskärm",
                 "state": "Status: {{- state}}",
-                "title": "Tillhandahålla och aktivera anpassningsprofil"
+                "title": "Tilldelar och aktiverar anpassningsprofil"
             }
         },
         "deleteAnnotations": "Radera anteckningar?",
@@ -171,12 +171,12 @@
         "deleteBookmarksText_one": "Vill du radera {{- count}} bokmärke?",
         "deleteBookmarksText_other": "Vill du radera {{- count}} bokmärken?",
         "deleteFeed": "Vill du ta bort den här katalogen?",
-        "deletePublication": "Vill du ta bort den här publikationen?",
+        "deletePublication": "Vill du ta bort den här boken?",
         "deletePublicationWithNotes": "Varning: Det finns anteckningar och/eller bokmärken som också kommer att raderas! (Om du vill behålla dem så måste du exportera anteckningar och bokmärken innan du tar bort boken)",
         "import": "Vill du importera följande filer:",
-        "importError": "Det uppstod ett fel, kontrollera filtypen ({{acceptedExtension}})",
+        "importError": "Det uppstod ett fel, kontrollera filformatet ({{acceptedExtension}})",
         "renew": "Vill du förnya lånet?",
-        "return": "Vill du lämna tillbaka den här publikationen?",
+        "return": "Vill du lämna tillbaka den här boken?",
         "yes": "Ja"
     },
     "error": {
@@ -590,8 +590,8 @@
                 "descriptive": "Information om möjlighet att justera utseende saknas"
             },
             "ways-of-reading-visual-adjustments-unmodifiable": {
-                "compact": "Utseendet kan inte justeras",
-                "descriptive": "Text- och sidlayout kan inte justeras eftersom presentationen liknar en tryckt version, men läsprogram kan ha funktioner för att zooma in"
+                "compact": "",
+                "descriptive": ""
             }
         }
     },
@@ -793,7 +793,7 @@
             "printDisabled": "Utskrift förbjuden",
             "screenNext": "Nästa sida",
             "screenPrevious": "Föregående sida",
-            "settingsTitle": "Inställningar"
+            "settingsTitle": "Läsarinställningar"
         },
         "notes": {
             "colors": {
@@ -1256,6 +1256,7 @@
             "locations": {
                 "defaultDescription": "",
                 "defaultInternal": "",
+                "externalStorage": "",
                 "title": ""
             }
         },

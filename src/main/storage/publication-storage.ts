@@ -496,29 +496,35 @@ export class PublicationStorage {
         // }
 
         await this.ready();
-        const defaultPublicationDirectoryPath = path.join(this.defaultDirectory, identifier);
-        try {
-            const stat = await fs.promises.stat(defaultPublicationDirectoryPath);
-            if (stat.isDirectory()) {
-                await rmrf(defaultPublicationDirectoryPath);
-            }
-        } catch {
-            // ignore
-        }
 
+        let removedAtLeastOne = false;
+        let accessError: Error | undefined;
 
-        // TODO: rm or unlink?
-        if (this.userDirectory) {
-            const userPublicationDirectoryPath = path.join(this.userDirectory, identifier);
+        // Safe cleanup: once the publication has been removed, failed publication access to another directory
+        for (const directoryPath of this.getPublicationDirectoriesFromCurrentState()) {
+            const publicationPath = path.join(directoryPath, identifier);
+
             try {
-                const stat = await fs.promises.stat(userPublicationDirectoryPath);
-                if (stat.isDirectory()) {
-                    await rmrf(userPublicationDirectoryPath);
+                await fs.promises.stat(publicationPath);
+            } catch (e: any) {
+                if (e?.code !== "ENOENT") {
+                    accessError = new Error(`Failed to access publication storage at ${publicationPath}: ${e?.message || e}`);
                 }
-            } catch {
-                // ignore
+                continue;
+            }
+
+            try {
+                await rmrf(publicationPath);
+                removedAtLeastOne = true;
+            } catch (e: any) {
+                throw new Error(`Failed to remove publication storage at ${publicationPath}: ${e?.message || e}`);
             }
         }
+
+        if (!removedAtLeastOne && accessError) {
+            throw accessError;
+        }
+
     }
 
     public async getPublicationFilename(publicationView: PublicationView) {
