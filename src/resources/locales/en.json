@@ -684,6 +684,11 @@
             },
             "annotationsOptions": "Annotation Options",
             "date": "Modification date",
+            "error": {
+                "pdf": {
+                    "validationSelection": "Unable to create PDF annotation from this selection."
+                }
+            },
             "export": "Save notes as...",
             "filter": {
                 "all": "All",

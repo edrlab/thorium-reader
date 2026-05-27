@@ -694,6 +694,11 @@
             },
             "annotationsOptions": "Možnosti",
             "date": "Datum spremembe",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "Shrani zapiske kot ...",
             "filter": {
                 "all": "Vse",

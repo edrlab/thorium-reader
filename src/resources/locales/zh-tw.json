@@ -679,6 +679,11 @@
             },
             "annotationsOptions": "選項",
             "date": "修改日期",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "將註解另存為...",
             "filter": {
                 "all": "全部",

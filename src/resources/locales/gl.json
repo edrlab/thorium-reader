@@ -684,6 +684,11 @@
             },
             "annotationsOptions": "Opcións",
             "date": "",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "",
             "filter": {
                 "all": "",

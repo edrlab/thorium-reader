@@ -684,6 +684,11 @@
             },
             "annotationsOptions": "Valgmuligheder",
             "date": "Redigeringsdato",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "Gem noter som...",
             "filter": {
                 "all": "Alle",

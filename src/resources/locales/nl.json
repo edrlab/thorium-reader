@@ -684,6 +684,11 @@
             },
             "annotationsOptions": "Opties",
             "date": "Wijzigingsdatum",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "Bewaar aantekeningen als...",
             "filter": {
                 "all": "Alle",

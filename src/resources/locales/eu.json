@@ -684,6 +684,11 @@
             },
             "annotationsOptions": "Aukerak",
             "date": "",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "",
             "filter": {
                 "all": "",

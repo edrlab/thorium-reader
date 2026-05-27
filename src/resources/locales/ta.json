@@ -684,6 +684,11 @@
             },
             "annotationsOptions": "சிறுகுறிப்பு விருப்பங்கள்",
             "date": "மாற்றும் தேதி",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "குறிப்புகளை சேமிக்கவும் ...",
             "filter": {
                 "all": "அனைத்தும்",

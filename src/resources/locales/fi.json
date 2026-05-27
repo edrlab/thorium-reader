@@ -684,6 +684,11 @@
             },
             "annotationsOptions": "Muistiinpanojen asetukset",
             "date": "Muokkauspäivä",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "Tallenna nimellä...",
             "filter": {
                 "all": "Kaikki",

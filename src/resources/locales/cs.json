@@ -694,6 +694,11 @@
             },
             "annotationsOptions": "Možnosti anotace",
             "date": "Datum úpravy",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "Uložit poznámky jako...",
             "filter": {
                 "all": "Vše",

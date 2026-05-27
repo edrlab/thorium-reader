@@ -1694,6 +1694,9 @@ declare namespace typed_i18n {
     },
     readonly "annotationsOptions": string,
     readonly "date": string,
+    readonly "error": {
+      readonly "pdf": { readonly "validationSelection": string }
+    },
     readonly "export": string,
     readonly "filter": {
       readonly "all": string,
@@ -1942,6 +1945,9 @@ declare namespace typed_i18n {
   },
   readonly "annotationsOptions": string,
   readonly "date": string,
+  readonly "error": {
+    readonly "pdf": { readonly "validationSelection": string }
+  },
   readonly "export": string,
   readonly "filter": {
     readonly "all": string,
@@ -1980,6 +1986,9 @@ declare namespace typed_i18n {
   (_: "reader.annotations.annotationsExport.title", __?: {}): string;
   (_: "reader.annotations.annotationsOptions", __?: {}): string;
   (_: "reader.annotations.date", __?: {}): string;
+  (_: "reader.annotations.error", __?: {}): { readonly "pdf": { readonly "validationSelection": string } };
+  (_: "reader.annotations.error.pdf", __?: {}): { readonly "validationSelection": string };
+  (_: "reader.annotations.error.pdf.validationSelection", __?: {}): string;
   (_: "reader.annotations.export", __?: {}): string;
   (_: "reader.annotations.filter", __?: {}): {
   readonly "all": string,
@@ -2764,7 +2773,6 @@ declare namespace typed_i18n {
     readonly "actions": {
       readonly "addDirectory": string,
       readonly "changeDirectory": string,
-      readonly "chooseFolder": string,
       readonly "removeStorageDirectory": string
     },
     readonly "beta": {
@@ -2777,8 +2785,7 @@ declare namespace typed_i18n {
     readonly "configuration": {
       readonly "chooseFolderDescription": string,
       readonly "configuredDescription": string,
-      readonly "notConfiguredDescription": string,
-      readonly "title": string
+      readonly "notConfiguredDescription": string
     },
     readonly "dialogs": {
       readonly "add": {
@@ -3521,7 +3528,6 @@ declare namespace typed_i18n {
   readonly "actions": {
     readonly "addDirectory": string,
     readonly "changeDirectory": string,
-    readonly "chooseFolder": string,
     readonly "removeStorageDirectory": string
   },
   readonly "beta": {
@@ -3534,8 +3540,7 @@ declare namespace typed_i18n {
   readonly "configuration": {
     readonly "chooseFolderDescription": string,
     readonly "configuredDescription": string,
-    readonly "notConfiguredDescription": string,
-    readonly "title": string
+    readonly "notConfiguredDescription": string
   },
   readonly "dialogs": {
     readonly "add": {
@@ -3564,12 +3569,10 @@ declare namespace typed_i18n {
   (_: "settings.storage.actions", __?: {}): {
   readonly "addDirectory": string,
   readonly "changeDirectory": string,
-  readonly "chooseFolder": string,
   readonly "removeStorageDirectory": string
 };
   (_: "settings.storage.actions.addDirectory", __?: {}): string;
   (_: "settings.storage.actions.changeDirectory", __?: {}): string;
-  (_: "settings.storage.actions.chooseFolder", __?: {}): string;
   (_: "settings.storage.actions.removeStorageDirectory", __?: {}): string;
   (_: "settings.storage.beta", __?: {}): {
   readonly "availability": string,
@@ -3586,13 +3589,11 @@ declare namespace typed_i18n {
   (_: "settings.storage.configuration", __?: {}): {
   readonly "chooseFolderDescription": string,
   readonly "configuredDescription": string,
-  readonly "notConfiguredDescription": string,
-  readonly "title": string
+  readonly "notConfiguredDescription": string
 };
   (_: "settings.storage.configuration.chooseFolderDescription", __?: {}): string;
   (_: "settings.storage.configuration.configuredDescription", __?: {}): string;
   (_: "settings.storage.configuration.notConfiguredDescription", __?: {}): string;
-  (_: "settings.storage.configuration.title", __?: {}): string;
   (_: "settings.storage.dialogs", __?: {}): {
   readonly "add": {
     readonly "confirm": string,

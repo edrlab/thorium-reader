@@ -704,6 +704,11 @@
             },
             "annotationsOptions": "‪خيارات التعليق",
             "date": "تاريخ التعديل",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "حفظ الملاحظات باسم...",
             "filter": {
                 "all": "الكل",

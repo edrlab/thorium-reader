@@ -684,6 +684,11 @@
             },
             "annotationsOptions": "Açıklayıcı Not Seçenekleri",
             "date": "Değiştirme tarihi",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "Notları farklı kaydet...",
             "filter": {
                 "all": "Tümü",

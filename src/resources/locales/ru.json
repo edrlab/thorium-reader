@@ -694,6 +694,11 @@
             },
             "annotationsOptions": "Параметры аннотации",
             "date": "Дата изменения",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "Сохранить заметки как...",
             "filter": {
                 "all": "Все",

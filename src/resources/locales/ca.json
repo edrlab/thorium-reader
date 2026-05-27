@@ -689,6 +689,11 @@
             },
             "annotationsOptions": "Opcions",
             "date": "",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "",
             "filter": {
                 "all": "",

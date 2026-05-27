@@ -694,6 +694,11 @@
             },
             "annotationsOptions": "Pastabų parinktys",
             "date": "Keitimo data",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "Išsaugoti pastabas kaip...",
             "filter": {
                 "all": "Visos",

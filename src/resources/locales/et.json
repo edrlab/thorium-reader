@@ -684,6 +684,11 @@
             },
             "annotationsOptions": "Märkmete valikud",
             "date": "Muutmise kuupäev",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "Salvesta märkmed kui…",
             "filter": {
                 "all": "Kõik",

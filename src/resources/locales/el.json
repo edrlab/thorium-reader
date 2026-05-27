@@ -684,6 +684,11 @@
             },
             "annotationsOptions": "Επιλογές Σχολιασμού",
             "date": "Ημερομηνία τροποποίησης",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "Αποθήκευση σημειώσεων ως...",
             "filter": {
                 "all": "Όλα",

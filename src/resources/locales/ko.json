@@ -674,6 +674,11 @@
             },
             "annotationsOptions": "",
             "date": "",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "",
             "filter": {
                 "all": "",

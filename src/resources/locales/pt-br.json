@@ -689,6 +689,11 @@
             },
             "annotationsOptions": "Opções",
             "date": "Data de modificação",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "Salvar notas como...",
             "filter": {
                 "all": "Todos",

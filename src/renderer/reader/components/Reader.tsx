@@ -130,7 +130,7 @@ import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driv
 import { winCommonActions } from "readium-desktop/common/redux/actions";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { MiniLocatorExtended, minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
-import { translateContentFieldHelper } from "readium-desktop/common/services/translator";
+import { getTranslator, translateContentFieldHelper } from "readium-desktop/common/services/translator";
 import { getStore } from "../createStore";
 import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_PUB } from "readium-desktop/common/streamerProtocol";
 import { DockTypeName } from "readium-desktop/common/models/dock";
@@ -142,8 +142,6 @@ import { URL_PROTOCOL_FILEX } from "readium-desktop/common/streamerProtocol";
 const debug = debug_("readium-desktop:renderer:reader:components:Reader");
 const debugPdfAnnotationsHost = debug_("readium-desktop:renderer:reader:pdf:annotations:host");
 debug("_");
-
-const PDF_ANNOTATION_VALIDATION_ERROR_TOAST = "Unable to create PDF annotation from this selection.";
 
 let _firstMediaOverlaysPlay = true;
 
@@ -890,7 +888,7 @@ class Reader extends React.Component<IProps, IState> {
             });
             if (!pdfAnnotationDraft) {
                 if (payload?.draft) {
-                    this.props.toastError(PDF_ANNOTATION_VALIDATION_ERROR_TOAST);
+                    this.props.toastError(getTranslator().__("reader.annotations.error.pdf.validationSelection"));
                 }
                 return;
             }
@@ -921,7 +919,7 @@ class Reader extends React.Component<IProps, IState> {
         });
 
         if (!result && payload?.draft) {
-            this.props.toastError(PDF_ANNOTATION_VALIDATION_ERROR_TOAST);
+            this.props.toastError(getTranslator().__("reader.annotations.error.pdf.validationSelection"));
             return;
         }
     }
@@ -939,7 +937,7 @@ class Reader extends React.Component<IProps, IState> {
     private onPdfAnnotationSelectionError(payload: TPdfAnnotationSelectionErrorPayload) {
         this.skipNextPdfAnnotationEditor = false;
         debugPdfAnnotationsHost("annotation:selection-error", payload);
-        this.props.toastError(PDF_ANNOTATION_VALIDATION_ERROR_TOAST);
+        this.props.toastError(getTranslator().__("reader.annotations.error.pdf.validationSelection"));
     }
 
     private syncPdfAnnotations(extraNote?: INoteState) {

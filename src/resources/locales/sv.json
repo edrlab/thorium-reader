@@ -684,6 +684,11 @@
             },
             "annotationsOptions": "Alternativ",
             "date": "Redigeringsdatum",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "Spara anteckningar som...",
             "filter": {
                 "all": "Alla",

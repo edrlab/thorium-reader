@@ -679,6 +679,11 @@
             },
             "annotationsOptions": "メモのオプション",
             "date": "変更日",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "メモとして保存する…",
             "filter": {
                 "all": "すべて",
