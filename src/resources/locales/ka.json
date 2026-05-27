@@ -89,6 +89,7 @@
         "login": "",
         "logout": "",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "მეტი ინფორმაცია",
         "myBooks": "ჩემი წიგნები",
         "noPublicationHelpL1": "ჩააგდე პუბლიკაცია აქ",
@@ -105,6 +106,8 @@
                 "password": "",
                 "register": "",
                 "retry": "",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": ""
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "სტატუსი"
             }
         },
+        "openFolder": "",
         "publisher": "გამომცემელი",
         "readBook": "წაკითხვა",
         "released": "გამოცემის თარიღი",
@@ -245,7 +249,13 @@
             "success": "{{- title}} შემოტანა წარმატებით დასრულდა."
         },
         "open": {
-            "error": "პუბლიკაცია ვერ იხსნება: {{- err}}"
+            "error": "პუბლიკაცია ვერ იხსნება: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": ""
     },
@@ -562,10 +572,6 @@
                 "compact": "",
                 "descriptive": ""
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "",
                 "descriptive": ""
@@ -580,6 +586,10 @@
                 "descriptive": ""
             },
             "ways-of-reading-visual-adjustments-unknown": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
                 "compact": "",
                 "descriptive": ""
             }
@@ -788,6 +798,8 @@
         "notes": {
             "colors": {
                 "cyan": "",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "",
                 "orange": "",
                 "purple": "",
@@ -835,6 +847,7 @@
             },
             "customFontSelected": "",
             "customizeReader": "",
+            "defaultValue": "",
             "disabled": "",
             "display": "გამოსახულება",
             "disposition": {
@@ -850,6 +863,7 @@
             "lineSpacing": "ხაზების დაშორება",
             "margin": "მინდორი",
             "mathjax": "",
+            "mathjaxDescription": "",
             "noFootnotes": "სქოლიოს გათიშვა",
             "noRTLFlip": "",
             "noRuby": "",
@@ -1202,11 +1216,54 @@
         "session": {
             "title": "სესიის შენახვა"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "",
             "general": "",
             "keyboardShortcuts": "",
-            "profiles": ""
+            "profiles": "",
+            "storage": ""
         },
         "theme": {
             "auto": "",

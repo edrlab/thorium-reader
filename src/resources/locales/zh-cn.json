@@ -89,6 +89,7 @@
         "login": "登录",
         "logout": "登出",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "更多信息",
         "myBooks": "我的图书",
         "noPublicationHelpL1": "将文件拖放到此处",
@@ -105,6 +106,8 @@
                 "password": "密码",
                 "register": "注册",
                 "retry": "再试一次",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "用户名/电子邮件地址"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "状态"
             }
         },
+        "openFolder": "",
         "publisher": "出版社",
         "readBook": "阅读",
         "released": "出版日期",
@@ -240,7 +244,13 @@
             "success": "导入{{- title}}完成。"
         },
         "open": {
-            "error": "无法打开出版物: {{- err}}"
+            "error": "无法打开出版物: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": "登录数据已清空(包括访问令牌及本地身份文件)"
     },
@@ -557,10 +567,6 @@
                 "compact": "预录的音频片段",
                 "descriptive": "内容中嵌入了预录的音频片段"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "关于预录音频的信息不可用",
-                "descriptive": "关于预录音频的信息不可用"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "仅包含预录音频",
                 "descriptive": "有声书，无文本替代"
@@ -577,6 +583,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "关于外观可修改性的信息不可用",
                 "descriptive": "关于外观可修改性的信息不可用"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },
@@ -783,6 +793,8 @@
         "notes": {
             "colors": {
                 "cyan": "青色",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "绿色",
                 "orange": "橙色",
                 "purple": "紫色",
@@ -829,6 +841,7 @@
             },
             "customFontSelected": "您已选择自定义字体",
             "customizeReader": "自定义文本格式",
+            "defaultValue": "",
             "disabled": "已禁用",
             "display": "显示",
             "disposition": {
@@ -844,6 +857,7 @@
             "lineSpacing": "行间距",
             "margin": "页边距",
             "mathjax": "启用 MathJax",
+            "mathjaxDescription": "",
             "noFootnotes": "禁用脚注",
             "noRTLFlip": "禁用从右到左的界面布局",
             "noRuby": "隐藏日文振假名",
@@ -1196,11 +1210,54 @@
         "session": {
             "title": "保存登录状态"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "外观",
             "general": "常规",
             "keyboardShortcuts": "键盘快捷键",
-            "profiles": "配置文件"
+            "profiles": "配置文件",
+            "storage": ""
         },
         "theme": {
             "auto": "自动",

@@ -123,7 +123,7 @@ RUN cd /THORIUM/ &&\
     cd ../.. &&\
     (ls -alshFR --color=auto "$NPM_CONFIG_PREFIX/lib/node_modules/sfw/.sfw-cache" || echo OK) &&\
     (npm audit || echo OK) &&\
-    ((npm exec --no --offline -- taze --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd . && npm exec --no --offline -- taze major --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd .) || echo OK)
+    ((npm exec --no --offline -- taze --maturity-period 3 --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd . && npm exec --no --offline -- taze major --maturity-period 3 --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd .) || echo OK)
 
 ARG BUST_CACHE
 RUN cd /THORIUM/ &&\

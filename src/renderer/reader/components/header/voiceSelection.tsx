@@ -11,32 +11,22 @@ import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/componen
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { Collection, Header as ReactAriaHeader, ListBoxSection } from "react-aria-components";
 import { HoverEvent } from "@react-types/shared";
-
-// TypeScript GO:
-// The current file is a CommonJS module whose imports will produce 'require' calls;
-// however, the referenced file is an ECMAScript module and cannot be imported with 'require'.
-// Consider writing a dynamic 'import("...")' call instead.
-// To convert this file to an ECMAScript module, change its file extension to '.mts',
-// or add the field `"type": "module"` to 'package.json'.
-// @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
-// e__slint-disable-next-line @typescript-eslint/ban-ts-comment
-// @__ts-ignore TS1479
-import { IVoices, ILanguages } from "readium-speech";
+import type { ReadiumSpeechVoice, WebSpeechVoiceManager } from "@readium/speech";
 
 export type TLanguageOptions = Array<{ id: string, name: string, count: number }>;
 export type TVoiceOptions = Array<{ id: string, name: string, children: Array<{ id: string, name: string }> }>;
+export type TLanguage = ReturnType<WebSpeechVoiceManager["getLanguages"]>[number];
 
 export interface IProps {
-    // defaultVoices: IVoices[],
-    languages: ILanguages[];
-    selectedLanguage: ILanguages;
-    setSelectedLanguage: (v: ILanguages) => void;
-    voicesGroupByRegion: Array<[regionCode: string, voices: IVoices[]]>;
-    selectedVoice: IVoices;
-    setSelectedVoice: (v: IVoices) => void;
+    languages: TLanguage[];
+    selectedLanguage: TLanguage | undefined;
+    setSelectedLanguage: (v: TLanguage) => void;
+    voicesGroupByRegion: Array<[regionCode: string, voices: ReadiumSpeechVoice[]]>;
+    selectedVoice: ReadiumSpeechVoice | undefined;
+    setSelectedVoice: (v: ReadiumSpeechVoice) => void;
 }
 
-const createNameId = ({ name, voiceURI, language, index }: Pick<IVoices, "name" | "voiceURI" | "language"> & { index?: number }) => `${index || 0}__!!__${name}__!?__${voiceURI}__!?__${language}`;
+const createNameId = ({ name, voiceURI, language, index }: Pick<ReadiumSpeechVoice, "name" | "voiceURI" | "language"> & { index?: number }) => `${index || 0}__!!__${name}__!?__${voiceURI || ""}__!?__${language}`;
 
 export const VoiceSelection: React.FC<IProps> = (props) => {
 
@@ -51,7 +41,7 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
                 ({ name, voiceURI, language }, index2) => ({ id: createNameId({ name, voiceURI, language, index: index1 << 8 * index2}), name })),
         }));
 
-    const voices = voicesGroupByRegion.reduce<IVoices[]>((acc, [__unusedLangLocalized, voices]) => [...acc, ...voices], []);
+    const voices = voicesGroupByRegion.reduce<ReadiumSpeechVoice[]>((acc, [__unusedLangLocalized, voices]) => [...acc, ...voices], []);
 
     // console.log("LANGUAGEOPTIONS=", languageOptions);
     // console.log("VOICEOPTIONS", voiceOptions);

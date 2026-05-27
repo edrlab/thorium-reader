@@ -89,6 +89,7 @@
         "login": "Logi sisse",
         "logout": "Logi välja",
         "missing": " ",
+        "missingUnavailableDescription": "",
         "moreInfo": "Väljaande üksiksasjad",
         "myBooks": "Minu raamatud",
         "noPublicationHelpL1": "Lohista failid siia",
@@ -105,6 +106,8 @@
                 "password": "Salasõna",
                 "register": "Registreeru",
                 "retry": "Proovi uuesti",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Kasutajanimi / e-posti aadress"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "Olek"
             }
         },
+        "openFolder": "",
         "publisher": "Kirjastus",
         "readBook": "Loe",
         "released": "Avaldamise kuupäev",
@@ -245,7 +249,13 @@
             "success": "„{{- title}}“ väljaande importimine sai kenasti tehtud."
         },
         "open": {
-            "error": "Väljaande/teise laadimine ei õnnestunud: {{- err}}"
+            "error": "Väljaande/teise laadimine ei õnnestunud: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": "Sisselogimisandmed on eemaldatud (tunnusload ja küpsised)"
     },
@@ -562,10 +572,6 @@
                 "compact": "Eelsalvestatud heliklipid",
                 "descriptive": "Sisusse on lõimitud eelsalvestatud heliklipid"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "Puudub teave eelsalvestatud helilise sisu kohta",
-                "descriptive": "Puudub teave eelsalvestatud helilise sisu kohta"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "Sisu koosneb ainult lõimitud eelsalvestatud heliklippidest",
                 "descriptive": "Heliraamat ilma tekstilise alternatiivita"
@@ -582,6 +588,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Puudub teave välimuse muudetavuse kohta",
                 "descriptive": "Puudub teave välimuse muudetavuse kohta"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },
@@ -788,6 +798,8 @@
         "notes": {
             "colors": {
                 "cyan": "Rohekassinine",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "Roheline",
                 "orange": "Oranž",
                 "purple": "Purpurpunane",
@@ -835,6 +847,7 @@
             },
             "customFontSelected": "sa oled eelistanud kasutada isiklikku kirjatüüpi",
             "customizeReader": "Kohenda teksti vormindust",
+            "defaultValue": "",
             "disabled": "pole kasutusel",
             "display": "Ekraanivaade",
             "disposition": {
@@ -850,6 +863,7 @@
             "lineSpacing": "Reavahed",
             "margin": "Veeris",
             "mathjax": "Võta MathJax kasutusele",
+            "mathjaxDescription": "",
             "noFootnotes": "Keela hüpikaknaid sisaldavad joonealused märkused",
             "noRTLFlip": "Lülita välja paremalt vasakule lugemiseks mõeldud kasutajaliides",
             "noRuby": "Peida jaapani „Ruby“ vormingus märkused",
@@ -1202,11 +1216,54 @@
         "session": {
             "title": "Lülita sessioonide salvestamine sisse"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Välimus",
             "general": "Üldseadistused",
             "keyboardShortcuts": "Klaviatuuri kiirklahvid",
-            "profiles": "Profiilid"
+            "profiles": "Profiilid",
+            "storage": ""
         },
         "theme": {
             "auto": "Automaatne",

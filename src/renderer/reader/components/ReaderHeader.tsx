@@ -76,6 +76,7 @@ import { readerLocalActionAnnotations, readerLocalActionToggleMenu, readerLocalA
 import { AnnotationEdit } from "./AnnotationEdit";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import { VoiceSelection } from "./header/voiceSelection";
+import type { TLanguage } from "./header/voiceSelection";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 
 // TypeScript GO:
@@ -87,7 +88,8 @@ import { VoiceSelection } from "./header/voiceSelection";
 // @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
 // e__slint-disable-next-line @typescript-eslint/ban-ts-comment
 // @__ts-ignore TS1479
-import { convertToSpeechSynthesisVoices, filterOnLanguage, getLanguages, getVoices, groupByLanguages, groupByRegions, ILanguages, IVoices, parseSpeechSynthesisVoices } from "readium-speech";
+import { WebSpeechVoiceManager } from "@readium/speech";
+import type { ReadiumSpeechVoice } from "@readium/speech";
 
 import { BookmarkButton } from "./header/BookmarkButton";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
@@ -100,6 +102,12 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import { readerActions } from "readium-desktop/common/redux/actions";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
+
+const TTS_VOICE_FILTER_OPTIONS = {
+    excludeNovelty: true,
+    excludeVeryLowQuality: true,
+    removeDuplicates: true,
+};
 
 
 // function throttle(callback: (...args: any) => void, limit: number) {
@@ -184,7 +192,7 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 }
 
 
-// TGroupVoice -> Array<[regionCode: string, voices: IVoices[]]>
+// TGroupVoice -> Array<[regionCode: string, voices: ReadiumSpeechVoice[]]>
 
 interface IState {
     pdfScaleMode: IPdfPlayerScale | undefined;
@@ -194,13 +202,13 @@ interface IState {
     ttsPopoverOpen: boolean;
     // tabValue: string;
 
-    voices: IVoices[];
+    voices: ReadiumSpeechVoice[];
 
-    languages: ILanguages[];
-    voicesGroupByRegion: Array<[regionCode: string, voices: IVoices[]]>;
+    languages: TLanguage[];
+    voicesGroupByRegion: Array<[regionCode: string, voices: ReadiumSpeechVoice[]]>;
 
-    selectedLanguage: ILanguages | undefined;
-    selectedVoice: IVoices | undefined;
+    selectedLanguage: TLanguage | undefined;
+    selectedVoice: ReadiumSpeechVoice | undefined;
 }
 
 export class ReaderHeader extends React.Component<IProps, IState> {
@@ -209,6 +217,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
     private disableFullscreenRef: React.RefObject<HTMLButtonElement>;
     private navigationMenuButtonRef: React.RefObject<HTMLButtonElement>;
     private infoMenuButtonRef: React.RefObject<HTMLButtonElement>;
+    private webSpeechVoiceManager: WebSpeechVoiceManager | undefined;
 
     // private onwheel: React.WheelEventHandler<HTMLSelectElement>;
     // private timerFXLZoomDebounce: number | undefined;
@@ -281,9 +290,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         }
 
         if (!this.props.isDivina && !this.props.isPdf) {
-            getVoices(/*TODO Param? */).then((voices) => {
-                this.setVoices(voices);
-            });
+            this.setVoices().catch((err) => debug("TTS_READIUM_SPEECH_INIT_ERROR", err));
         }
     }
 
@@ -1326,24 +1333,101 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         );
     };
 
-    private setVoices(voices: IVoices[]) {
+    private async getWebSpeechVoiceManager() {
+        if (!this.webSpeechVoiceManager) {
+            this.webSpeechVoiceManager = await WebSpeechVoiceManager.initialize();
+        }
 
-        if (!Array.isArray(voices)) return;
-        const languages = getLanguages(voices, this.props.r2Publication.Metadata?.Language || [], this.props.locale);
+        return this.webSpeechVoiceManager;
+    }
+
+    private getPreferredPublicationLanguages() {
+        return this.props.r2Publication.Metadata?.Language || [];
+    }
+
+    private getBaseLanguage(language: string) {
+        return WebSpeechVoiceManager.extractLangRegionFromBCP47(language.replace("_", "-"))[0];
+    }
+
+    private isSameReadiumSpeechVoice(a: ReadiumSpeechVoice, b: ReadiumSpeechVoice) {
+        return (
+            a.offlineAvailability === b.offlineAvailability &&
+            a.language === b.language &&
+            a.name === b.name &&
+            a.voiceURI === b.voiceURI
+        );
+    }
+
+    private findReadiumSpeechVoice(voices: ReadiumSpeechVoice[], speechVoice: SpeechSynthesisVoice) {
+        const speechVoiceLanguage = speechVoice.lang.replace("_", "-");
+        const speechVoiceBaseLanguage = this.getBaseLanguage(speechVoiceLanguage);
+
+        return voices.find((voice) => {
+            const sameVoiceURI = !!voice.voiceURI && voice.voiceURI === speechVoice.voiceURI;
+            const sameName = voice.name === speechVoice.name || voice.originalName === speechVoice.name;
+            const sameLanguage = voice.language === speechVoiceLanguage || this.getBaseLanguage(voice.language) === speechVoiceBaseLanguage;
+            const sameOfflineAvailability = voice.offlineAvailability === speechVoice.localService;
+
+            return (sameVoiceURI || sameName) && sameLanguage && sameOfflineAvailability;
+        });
+    }
+
+    private findStoredDefaultVoices(voices: ReadiumSpeechVoice[]) {
+        return (this.props.ttsVoices || [])
+            .map((speechVoice) => this.findReadiumSpeechVoice(voices, speechVoice))
+            .filter((voice): voice is ReadiumSpeechVoice => !!voice);
+    }
+
+    private convertToSpeechSynthesisVoices(manager: WebSpeechVoiceManager, voices: ReadiumSpeechVoice[]): SpeechSynthesisVoice[] {
+        return voices
+            .map((voice) => manager.convertToSpeechSynthesisVoice(voice))
+            .filter((voice): voice is SpeechSynthesisVoice => !!voice);
+    }
+
+    private async getVoicesGroupByRegion(manager: WebSpeechVoiceManager, voices: ReadiumSpeechVoice[]): Promise<Array<[regionCode: string, voices: ReadiumSpeechVoice[]]>> {
+        const sortedVoices = await manager.sortVoicesByRegions(
+            this.getPreferredPublicationLanguages(),
+            voices,
+        );
+        const regions = manager.getRegions(this.props.locale, undefined, sortedVoices);
+        const regionLabels = new Map(regions.map(({ code, label }) => [code, label]));
+        const groupedVoicesByRegion = manager.groupVoices("region", sortedVoices);
+
+        return Object.entries(groupedVoicesByRegion).map(([regionCode, groupedVoices]) => [
+            regionLabels.get(regionCode) || regionCode,
+            groupedVoices,
+        ]);
+    }
+
+    private async setVoices() {
+        const manager = await this.getWebSpeechVoiceManager();
+        const voices = manager.getVoices(TTS_VOICE_FILTER_OPTIONS);
+        const sortedVoices = await manager.sortVoicesByLanguages(this.getPreferredPublicationLanguages(), voices);
+
+        const languages = manager.getLanguages(this.props.locale, undefined, sortedVoices);
         const selectedLanguage = languages[0];
 
-        const defaultVoices = parseSpeechSynthesisVoices(this.props.ttsVoices);
-        const newDefaultVoices = this.updateDefaultVoices(defaultVoices, voices);
-        // debug("TTS_SET_VOICE: DefaultVoices=", defaultVoices, defaultVoices.length);
+        if (!selectedLanguage) {
+            this.setState({
+                languages: languages,
+                selectedLanguage: undefined,
+                selectedVoice: undefined,
+                voices: sortedVoices,
+                voicesGroupByRegion: [],
+            });
+            return;
+        }
+
+        const newDefaultVoices = this.updateDefaultVoices(manager, sortedVoices);
         // debug("TTS_SET_VOICE: NewDefaultVoices=", newDefaultVoices, newDefaultVoices.length);
 
-        const selectedVoice = newDefaultVoices.find(({ language }) => language.split("-")[0].toLowerCase() === selectedLanguage.code);
+        const selectedVoice = newDefaultVoices.find(({ language }) => this.getBaseLanguage(language) === selectedLanguage.code);
 
         // debug("SELECTED_LANGUAGE", selectedLanguage);
         // debug("SELECTED_VOICE", selectedVoice);
 
-        const voicesFilteredOnLanguage = filterOnLanguage(voices, selectedLanguage?.code || "");
-        const voicesGroupedByRegions = groupByRegions(voicesFilteredOnLanguage, this.props.r2Publication.Metadata?.Language || [], this.props.locale);
+        const voicesFilteredOnLanguage = manager.filterVoices({ languages: selectedLanguage?.code || "" }, sortedVoices);
+        const voicesGroupedByRegions = await this.getVoicesGroupByRegion(manager, voicesFilteredOnLanguage);
 
 
         // debug("VOICES=", voices);
@@ -1352,39 +1436,33 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
         this.setState({
             languages: languages,
-            voicesGroupByRegion: Array.from(voicesGroupedByRegions.entries()),
+            voicesGroupByRegion: voicesGroupedByRegions,
             selectedLanguage: selectedLanguage,
             selectedVoice: selectedVoice,
-            voices: voices,
+            voices: sortedVoices,
         });
     };
 
-    private updateDefaultVoices(defaultVoices: IVoices[], voices: IVoices[], newDefaultVoice?: IVoices): IVoices[] {
+    private updateDefaultVoices(manager: WebSpeechVoiceManager, voices: ReadiumSpeechVoice[], newDefaultVoice?: ReadiumSpeechVoice): ReadiumSpeechVoice[] {
 
         // debug("SET_CHECK_DEFAULT_VOICE", newDefaultVoice);
 
-        if (newDefaultVoice && defaultVoices.find(({ voiceURI, name, language, offlineAvailability }) =>
-            `${voiceURI}_${name}_${language}_${offlineAvailability}` === `${newDefaultVoice.voiceURI}_${newDefaultVoice.name}_${newDefaultVoice.language}_${newDefaultVoice.offlineAvailability}`)
-        ) {
+        const defaultVoices = this.findStoredDefaultVoices(voices);
+        if (newDefaultVoice && defaultVoices.find((voice) => this.isSameReadiumSpeechVoice(voice, newDefaultVoice))) {
             return defaultVoices;
         }
 
         // debug("SET_CHECK_DEFAULT_VOICE defaultVoices=", defaultVoices, "len=", defaultVoices.length);
 
         const defaultVoicesMatchWithInstalledVoices = defaultVoices.filter((defaultVoice) =>
-            voices.find((voice) =>
-                defaultVoice.offlineAvailability === voice.offlineAvailability &&
-                defaultVoice.language === voice.language &&
-                defaultVoice.name === voice.name &&
-                defaultVoice.voiceURI === voice.voiceURI,
-            ));
+            voices.find((voice) => this.isSameReadiumSpeechVoice(voice, defaultVoice)));
 
         // debug("SET_CHECK_DEFAULT_VOICE defaultVoicesFilteredWithInstalledVoices=", defaultVoicesMatchWithInstalledVoices, "len=", defaultVoicesMatchWithInstalledVoices.length);
 
-        const defaultVoicesIsUniquePerLanguageMap = new Map<string, IVoices>();
+        const defaultVoicesIsUniquePerLanguageMap = new Map<string, ReadiumSpeechVoice>();
 
         if (newDefaultVoice) {
-            const langFromNewDefaultVoice = newDefaultVoice.language.split("-")[0].toLowerCase();
+            const langFromNewDefaultVoice = this.getBaseLanguage(newDefaultVoice.language);
             defaultVoicesIsUniquePerLanguageMap.set(langFromNewDefaultVoice, newDefaultVoice);
         }
 
@@ -1392,7 +1470,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
         for (const voice of defaultVoicesMatchWithInstalledVoices) {
             const { language } = voice;
-            const lang = language.split("-")[0].toLowerCase();
+            const lang = this.getBaseLanguage(language);
             if (!defaultVoicesIsUniquePerLanguageMap.has(lang)) {
                 defaultVoicesIsUniquePerLanguageMap.set(lang, voice);
             }
@@ -1400,12 +1478,12 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
         // debug("SET_CHECK_DEFAULT_VOICE defaultVoiceUniqueMap=", Array.from(defaultVoicesIsUniquePerLanguageMap.entries()));
 
-        const voicesGroupByLanguage = groupByLanguages(voices, this.props.r2Publication.Metadata?.Language || [], this.props.locale);
-        for (const [_langLabel, voicesFilteredByLanguage] of voicesGroupByLanguage) {
+        const voicesGroupByLanguage = Object.values(manager.groupVoices("languages", voices));
+        for (const voicesFilteredByLanguage of voicesGroupByLanguage) {
             const firstVoice = voicesFilteredByLanguage[0];
             if (!firstVoice) break;
             const langFromFirstVoice = voicesFilteredByLanguage[0]?.language || "";
-            const code = langFromFirstVoice.split("-")[0].toLowerCase();
+            const code = this.getBaseLanguage(langFromFirstVoice);
             if (!defaultVoicesIsUniquePerLanguageMap.has(code)) {
                 defaultVoicesIsUniquePerLanguageMap.set(code, firstVoice);
             }
@@ -1420,11 +1498,10 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             newDefaultVoices.reduce(
                 (acc, newDefaultVoice) =>
                     acc &&
-                    !!defaultVoices.find(({ voiceURI, name, language, offlineAvailability }) =>
-                        `${voiceURI}_${name}_${language}_${offlineAvailability}` === `${newDefaultVoice.voiceURI}_${newDefaultVoice.name}_${newDefaultVoice.language}_${newDefaultVoice.offlineAvailability}`)
+                    !!defaultVoices.find((voice) => this.isSameReadiumSpeechVoice(voice, newDefaultVoice))
                 , true);
 
-        const newDefaultVoicesReadyToBePersistedAndSendToNavigator = convertToSpeechSynthesisVoices(newDefaultVoices);
+        const newDefaultVoicesReadyToBePersistedAndSendToNavigator = this.convertToSpeechSynthesisVoices(manager, newDefaultVoices);
 
         if (!noDiff) {
             // debug("NewDefaultVoices -> send to Reader.tsx HandleTTSVoices");
@@ -1434,27 +1511,25 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         return newDefaultVoices;
     };
 
-    private setNewVoiceLanguage(selectedLanguage: ILanguages) {
+    private async setNewVoiceLanguage(selectedLanguage: TLanguage) {
 
         if (
-            this.state.selectedLanguage.code !== selectedLanguage.code ||
-            this.state.selectedLanguage.label !== selectedLanguage.label
+            this.state.selectedLanguage?.code !== selectedLanguage.code ||
+            this.state.selectedLanguage?.label !== selectedLanguage.label
         ) {
             // nothing
         } else {
             return ;
         }
 
-        const defaultVoiceSpeechSynthesis = this.props.ttsVoices;
-        const defaultVoices = parseSpeechSynthesisVoices(defaultVoiceSpeechSynthesis);
-
+        const manager = await this.getWebSpeechVoiceManager();
         const allVoices = this.state.voices;
-        const voicesFilteredOnLanguage = filterOnLanguage(allVoices, selectedLanguage.code);
-        const voicesGroupedByRegions = groupByRegions(voicesFilteredOnLanguage, this.props.r2Publication.Metadata?.Language || [], this.props.locale);
+        const defaultVoices = this.findStoredDefaultVoices(allVoices);
+        const voicesFilteredOnLanguage = manager.filterVoices({ languages: selectedLanguage.code }, allVoices);
 
 
-        const voicesGroupByRegionArrayNotMapObject = Array.from(voicesGroupedByRegions.entries());
-        const selectedVoice = defaultVoices.find(({ language }) => language.split("-")[0].toLowerCase() === selectedLanguage.code);
+        const voicesGroupByRegionArrayNotMapObject = await this.getVoicesGroupByRegion(manager, voicesFilteredOnLanguage);
+        const selectedVoice = defaultVoices.find(({ language }) => this.getBaseLanguage(language) === selectedLanguage.code);
 
         // debug("SELECTED_LANGUAGE_AFTER_LANGUAGE_UPDATED", selectedLanguage);
         // debug("SELECTED_VOICE_AFTER_LANGUAGE_UPDATED", selectedVoice);
@@ -1468,12 +1543,10 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         });
     };
 
-    private setNewVoiceVoice(selectedVoice: IVoices) {
+    private setNewVoiceVoice(selectedVoice: ReadiumSpeechVoice) {
         if (
-            this.state.selectedVoice.name !== selectedVoice.name ||
-            this.state.selectedVoice.voiceURI !== selectedVoice.voiceURI ||
-            this.state.selectedVoice.language !== selectedVoice.language ||
-            this.state.selectedVoice.offlineAvailability !== selectedVoice.offlineAvailability
+            !this.state.selectedVoice ||
+            !this.isSameReadiumSpeechVoice(this.state.selectedVoice, selectedVoice)
         ) {
             // nothing
         } else {
@@ -1486,13 +1559,11 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             this.props.handleTTSPause();
         }
 
-        setTimeout(() => {
-
-            const defaultVoiceSpeechSynthesis = this.props.ttsVoices;
-            const defaultVoices = parseSpeechSynthesisVoices(defaultVoiceSpeechSynthesis);
-
+        setTimeout(async () => {
+            const manager = await this.getWebSpeechVoiceManager();
             const allVoices = this.state.voices;
-            const newDefaultVoices = this.updateDefaultVoices(defaultVoices, allVoices, selectedVoice);
+            const defaultVoices = this.findStoredDefaultVoices(allVoices);
+            const newDefaultVoices = this.updateDefaultVoices(manager, allVoices, selectedVoice);
             debug("TTS_SELECTED_VOICE_UPDATED: DefaultVoices=", defaultVoices, defaultVoices.length);
             debug("TTS_SELECTED_VOICE_UPDATED: NewDefaultVoices=", newDefaultVoices, newDefaultVoices.length);
 

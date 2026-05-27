@@ -89,6 +89,7 @@
         "login": "Logga in",
         "logout": "Logga ut",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Information om boken",
         "myBooks": "Mina böcker",
         "noPublicationHelpL1": "Dra och släpp filer här",
@@ -105,6 +106,8 @@
                 "password": "Lösenord",
                 "register": "Registrera dig",
                 "retry": "Försök igen",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Användarnamn/e-postadress"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "Status"
             }
         },
+        "openFolder": "",
         "publisher": "Utgivare",
         "readBook": "Läs",
         "released": "Publicerad den",
@@ -245,7 +249,13 @@
             "success": "Importen av {{- title}} är slutförd."
         },
         "open": {
-            "error": "Publikationen kan inte öppnas: {{- err}}"
+            "error": "Publikationen kan inte öppnas: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": "Inloggningsdata rensades (åtkomstnycklar och kakor)"
     },
@@ -562,10 +572,6 @@
                 "compact": "Förinspelade ljudklipp",
                 "descriptive": "Innehåller förinspelade ljudklipp"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "Information om förinspelat ljud saknas",
-                "descriptive": "Information om förinspelat ljud saknas"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "Endast förinspelat ljud",
                 "descriptive": "Bok med ljud utan textalternativ"
@@ -582,6 +588,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Information om möjlighet att justera utseende saknas",
                 "descriptive": "Information om möjlighet att justera utseende saknas"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },
@@ -788,6 +798,8 @@
         "notes": {
             "colors": {
                 "cyan": "Cyan",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "Grön",
                 "orange": "Orange",
                 "purple": "Lila",
@@ -835,6 +847,7 @@
             },
             "customFontSelected": "Du har valt ett eget typsnitt",
             "customizeReader": "Anpassa textformatering",
+            "defaultValue": "",
             "disabled": "inaktiverad",
             "display": "Visning",
             "disposition": {
@@ -850,6 +863,7 @@
             "lineSpacing": "Radavstånd",
             "margin": "Marginaler",
             "mathjax": "Aktivera MathJax",
+            "mathjaxDescription": "",
             "noFootnotes": "Inaktivera popup-fotnoter",
             "noRTLFlip": "Inaktivera vänster-till-höger-gränssnitt",
             "noRuby": "Dölj japanska ruby-tecken",
@@ -1202,11 +1216,54 @@
         "session": {
             "title": "Spara session"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Utseende",
             "general": "Allmänt",
             "keyboardShortcuts": "Kortkommandon",
-            "profiles": "Profiler"
+            "profiles": "Profiler",
+            "storage": ""
         },
         "theme": {
             "auto": "Automatiskt",

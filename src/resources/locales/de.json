@@ -89,6 +89,7 @@
         "login": "",
         "logout": "",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Mehr Informationen",
         "myBooks": "Meine Bücher",
         "noPublicationHelpL1": "Legen Sie Ihre Bücher hier ab",
@@ -105,6 +106,8 @@
                 "password": "Passwort",
                 "register": "Registrieren",
                 "retry": "",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Benutzername / E-Mail-Adresse"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "Zustand"
             }
         },
+        "openFolder": "",
         "publisher": "Herausgeber",
         "readBook": "Lesen",
         "released": "Veröffentlicht am",
@@ -245,7 +249,13 @@
             "success": "Der Import von {{- title}} ist abgeschlossen."
         },
         "open": {
-            "error": "Die Publikation kann nicht geöffnet werden: {{- err}}"
+            "error": "Die Publikation kann nicht geöffnet werden: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": ""
     },
@@ -562,10 +572,6 @@
                 "compact": "",
                 "descriptive": ""
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "",
                 "descriptive": ""
@@ -580,6 +586,10 @@
                 "descriptive": ""
             },
             "ways-of-reading-visual-adjustments-unknown": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
                 "compact": "",
                 "descriptive": ""
             }
@@ -788,6 +798,8 @@
         "notes": {
             "colors": {
                 "cyan": "Türkis",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "Grün",
                 "orange": "Orange",
                 "purple": "Violett",
@@ -835,6 +847,7 @@
             },
             "customFontSelected": "Sie haben eine persönliche Schriftart gewählt",
             "customizeReader": "Anpassen der Textformatierung",
+            "defaultValue": "",
             "disabled": "deaktiviert",
             "display": "Lesefluss",
             "disposition": {
@@ -850,6 +863,7 @@
             "lineSpacing": "Zeilenabstand",
             "margin": "Seitenränder",
             "mathjax": "",
+            "mathjaxDescription": "",
             "noFootnotes": "Fußnoten deaktivieren",
             "noRTLFlip": "Rechts-nach-links-Benutzeroberfläche deaktivieren",
             "noRuby": "Japanische Ruby-Notationen ausblenden",
@@ -1202,11 +1216,54 @@
         "session": {
             "title": "Sitzung speichern"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Erscheinungsbild",
             "general": "Allgemein",
             "keyboardShortcuts": "Tastaturkürzel",
-            "profiles": ""
+            "profiles": "",
+            "storage": ""
         },
         "theme": {
             "auto": "Automatisch",

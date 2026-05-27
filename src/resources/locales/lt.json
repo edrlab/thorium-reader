@@ -89,6 +89,7 @@
         "login": "Prisijungti",
         "logout": "Atsijungti",
         "missing": " ",
+        "missingUnavailableDescription": "",
         "moreInfo": "Daugiau informacijos",
         "myBooks": "Mano leidiniai",
         "noPublicationHelpL1": "Nutempkite leidinį čia",
@@ -105,6 +106,8 @@
                 "password": "Slaptažodis",
                 "register": "Užsiregistruoti",
                 "retry": "Bandyti dar kartą",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Naudotojo vardas / El. pašto adresas"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "Būsena"
             }
         },
+        "openFolder": "",
         "publisher": "Leidėjas",
         "readBook": "Skaityti",
         "released": "Išleidimo data",
@@ -255,7 +259,13 @@
             "success": "[{{- title}}] importas baigtas."
         },
         "open": {
-            "error": "Nepavyko atverti leidinio : [{{- err}}]"
+            "error": "Nepavyko atverti leidinio : [{{- err}}]",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": "Prisijungimo duomenys išvalyti (prieigos žetonai ir slapukai)"
     },
@@ -572,10 +582,6 @@
                 "compact": "Iš anksto įrašyti garso įrašai",
                 "descriptive": "Turinyje įterpti iš anksto įrašyti garso įrašai"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "Informacijos apie iš anksto įrašytus garso įrašus nėra",
-                "descriptive": "Informacijos apie iš anksto įrašytus garso įrašus nėra"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "Tik iš anksto įrašytas garsas",
                 "descriptive": "Garsinė knyga be teksto alternatyvos"
@@ -592,6 +598,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Informacijos apie išvaizdos keitimo galimybes nėra",
                 "descriptive": "Informacijos apie išvaizdos keitimo galimybes nėra"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },
@@ -798,6 +808,8 @@
         "notes": {
             "colors": {
                 "cyan": "Žydra",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "Žalia",
                 "orange": "Oranžinė",
                 "purple": "Purpurinė",
@@ -847,6 +859,7 @@
             },
             "customFontSelected": "Pasirinkote asmeninį šriftą",
             "customizeReader": "Tinkinti teksto formatavimą",
+            "defaultValue": "",
             "disabled": "išjungta",
             "display": "Atvaizdavimas",
             "disposition": {
@@ -862,6 +875,7 @@
             "lineSpacing": "Eilučių išretinimas",
             "margin": "Paraštė",
             "mathjax": "Įgalinti MathJax",
+            "mathjaxDescription": "",
             "noFootnotes": "Išjungti iššokančias išnašas",
             "noRTLFlip": "Išjungti iš-dešinės-į-kairę naudotojo sąsają",
             "noRuby": "Slėpti japonų kalbos „ruby“ simbolius",
@@ -1214,11 +1228,54 @@
         "session": {
             "title": "Įgalinti sesijos išsaugojimą"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Išvaizda",
             "general": "Bendros",
             "keyboardShortcuts": "Spartieji klavišai",
-            "profiles": "Profiliai"
+            "profiles": "Profiliai",
+            "storage": ""
         },
         "theme": {
             "auto": "Automatinė",

@@ -11,6 +11,7 @@ import { removeUTF8BOM } from "readium-desktop/common/utils/bom";
 import { IHttpGetResult } from "readium-desktop/common/utils/http";
 import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
 import { IOpdsLinkView, IOpdsResultView, OPDS_OPEN_SEARCH_DATA_SEPARATOR } from "readium-desktop/common/views/opds";
+import { getTranslator } from "readium-desktop/common/services/translator";
 import { httpGet } from "readium-desktop/main/network/http";
 import {
     ContentType, contentTypeisOpds, contentTypeisOpdsAuth, contentTypeisXml, parseContentType,
@@ -118,14 +119,17 @@ export class OpdsService {
             if (wwwAuthenticate) {
                 const isValid = this.wwwAuthenticateIsValid(wwwAuthenticate);
                 if (isValid) {
+                    const translator = getTranslator();
                     const result: IOpdsResultView = {
-                        title: "Unauthorized",
+                        title: translator.translate("catalog.opds.auth.unauthorized"),
                         publications: [],
                     }; // need to refresh the page
 
                     const data = this.parseWwwAuthenticate(wwwAuthenticate);
                     if (!data.type) {
-                        result.title = `Unauthorized (unsupported WWWAuthenticate type '${wwwAuthenticate?.trim().split(" ")[0]}')`;
+                        result.title = translator.translate("catalog.opds.auth.unauthorizedUnsupportedType", {
+                            type: wwwAuthenticate?.trim().split(" ")[0],
+                        });
                         return result;
                     }
 
@@ -199,12 +203,13 @@ export class OpdsService {
         opdsAuthDoc.Title = ""; // realm || "basic authenticate"; NOT HUMAN-READABLE!
 
         const opdsAuth = new OPDSAuthentication();
+        const translator = getTranslator();
 
         opdsAuth.Type = "http://opds-spec.org/auth/" + data.type;
         opdsAuth.AdditionalJSON = {...data};
         opdsAuth.Labels = new OPDSAuthenticationLabels();
-        opdsAuth.Labels.Login = "LOGIN";
-        opdsAuth.Labels.Password = "PASSWORD";
+        opdsAuth.Labels.Login = translator.translate("catalog.opds.auth.login");
+        opdsAuth.Labels.Password = translator.translate("catalog.opds.auth.password");
 
         const opdsLink = new OPDSLink();
         opdsLink.Rel = ["authenticate"];
@@ -274,7 +279,7 @@ export class OpdsService {
             this.dispatchAuthenticationProcess(r2OpdsAuth, responseUrl);
 
             return {
-                title: "Unauthorized",
+                title: getTranslator().translate("catalog.opds.auth.unauthorized"),
                 publications: [],
             }; // need to refresh the page
 
