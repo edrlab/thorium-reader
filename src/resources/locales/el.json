@@ -106,8 +106,8 @@
                 "password": "Κωδικός πρόσβασης",
                 "register": "Εγγραφή",
                 "retry": "Ξαναπροσπαθήστε",
-                "unauthorized": "",
-                "unauthorizedUnsupportedType": "",
+                "unauthorized": "Χωρίς εξουσιοδότηση",
+                "unauthorizedUnsupportedType": "Χωρίς εξουσιοδότηση (μη υποστηριζόμενος τύπος WWWAuthenticate '{{- type}}')",
                 "username": "Όνομα χρήστη / διεύθυνση ηλεκτρονικού ταχυδρομείου"
             },
             "info": {
