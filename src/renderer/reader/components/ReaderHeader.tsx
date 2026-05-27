@@ -58,7 +58,7 @@ import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locator
 import { IPdfPlayerScale } from "../pdf/common/pdfReader.type";
 import HeaderSearch from "./header/HeaderSearch";
 import { IReaderMenuProps, IReaderSettingsProps } from "./options-values";
-import { ReaderMenu } from "./ReaderMenu";
+import { ReaderMenu } from "./ReaderMenu/ReaderMenu";
 // import {
 //     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 // } from "readium-desktop/renderer/common/keyboard";
