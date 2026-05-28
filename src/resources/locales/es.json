@@ -1006,6 +1006,18 @@
                     "description": "Volver al segmento de audio anterior de la narración (superposiciones multimedia EPUB3, lectura en voz alta con la función «Texto a voz» o audiolibro pregrabado). Esto omite cualquier estructura de la que se pueda salir en ese momento",
                     "name": "Segmento de audio anterior (alternativo)"
                 },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
+                    "description": "",
+                    "name": ""
+                },
                 "AudioStop": {
                     "description": "Detener audio (superposiciones multimedia EPUB3, lectura en voz alta con la función «Texto a voz» o audiolibro pregrabado)",
                     "name": "Detener el audio"

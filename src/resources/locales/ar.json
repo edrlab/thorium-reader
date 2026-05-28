@@ -1024,6 +1024,18 @@
                     "description": "انتقل إلى المقطع الصوتي السابق في السرد (EPUB Media Overlays، Text To Speech ، أو الكتاب الصوتي المسجل مسبقًا) هذا يتخطى أي عنصر قابل للتخطي",
                     "name": "المقطع الصوتي السابق (تخطي)"
                 },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
+                    "description": "",
+                    "name": ""
+                },
                 "AudioStop": {
                     "description": "إيقاف الصوت الحالي (EPUB Media Overlays، Text To Speech ، أو الكتاب الصوتي المسجل مسبقًا)",
                     "name": "إيقاف الصوت"

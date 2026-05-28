@@ -1012,6 +1012,18 @@
                     "description": "Wróć do poprzedniego segmentu audio w narracji (nakładki multimedialne EPUB3, odczyt głosowy TTS lub audiobook z nagraniem). Pomija aktualnie uciekającą strukturę",
                     "name": "Poprzedni segment audio (pominięcie)"
                 },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
+                    "description": "",
+                    "name": ""
+                },
                 "AudioStop": {
                     "description": "Zatrzymaj bieżące audio (nakładki multimedialne EPUB3, odczyt głosowy TTS lub audiobook z nagraniem)",
                     "name": "Zatrzymaj audio"

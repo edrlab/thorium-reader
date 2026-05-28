@@ -994,6 +994,18 @@
                     "description": "返回到叙述中的上一个音频片段（EPUB3 媒体覆盖、文本转语音朗读或预录有声读物）。此操作将跳过当前任何可跳过的结构",
                     "name": "上一个音频片段（跳过）"
                 },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
+                    "description": "",
+                    "name": ""
+                },
                 "AudioStop": {
                     "description": "停止当前音频（EPUB3 媒体覆盖、文本转语音朗读或预录有声读物）",
                     "name": "停止音频"

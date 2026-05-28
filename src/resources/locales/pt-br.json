@@ -1006,6 +1006,18 @@
                     "description": "Ir para o segmento anterior de áudio da narração (Media Overlays do EPUB 3, leitura em voz alta por texto-para-fala ou audiolivro pré-gravado). Ignora estruturas marcadas como puláveis",
                     "name": "Segmento anterior de áudio (pular)"
                 },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
+                    "description": "",
+                    "name": ""
+                },
                 "AudioStop": {
                     "description": "Parar o áudio atual (Media Overlays do EPUB 3, leitura em voz alta por texto-para-fala ou audiolivro pré-gravado)",
                     "name": "Parar áudio"

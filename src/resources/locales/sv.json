@@ -1000,6 +1000,18 @@
                     "description": "Gå tillbaka till föregående ljudavsnitt (e-bok med text och uppläsning, text-till-tal eller ljudbok). Hoppar över alla strukturer som kan hoppas över.",
                     "name": "Föregående ljudavsnitt (hoppa över)"
                 },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
+                    "description": "",
+                    "name": ""
+                },
                 "AudioStop": {
                     "description": "Stoppa uppspelningen (e-bok med text och uppläsning, text-till-tal eller ljudbok)",
                     "name": "Stoppa uppspelning av ljud"

@@ -1000,6 +1000,18 @@
                     "description": "Siirry edelliseen ääniosioon (tekstiä ja ääntä yhdistävä kirja, tekstistä puheeksi -toiminto tai äänikirja). Toiminto ohittaa rakenteet, jotka ovat ohitettavissa",
                     "name": "Edellinen ääniosio (ohita)"
                 },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
+                    "description": "",
+                    "name": ""
+                },
                 "AudioStop": {
                     "description": "Pysäytä nykyinen ääni (tekstiä ja ääntä yhdistävä kirja, tekstistä puheeksi -toiminto tai äänikirja)",
                     "name": "Lopeta ääni"

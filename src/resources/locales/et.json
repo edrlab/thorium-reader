@@ -1000,6 +1000,18 @@
                     "description": "Mine tagasi eelmise heliriba lõigu juurde (EPUB3 meediaülekate, kõnesüntees ettelugemise jaoks või eelnevalt salvestatud heliraamat). See jätab vahele kõik struktuurid, millest on hetkel võimalik väljuda",
                     "name": ""
                 },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
+                    "description": "",
+                    "name": ""
+                },
                 "AudioStop": {
                     "description": "Lõpeta praeguse heliriba kuulamine (EPUB3 meediaülekate, kõnesüntees ettelugemise jaoks või eelnevalt salvestatud heliraamat)",
                     "name": ""

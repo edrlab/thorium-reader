@@ -2552,6 +2552,18 @@ declare namespace typed_i18n {
         readonly "description": string,
         readonly "name": string
       },
+      readonly "AudioSpeedDecrease": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "AudioSpeedIncrease": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "AudioSpeedReset": {
+        readonly "description": string,
+        readonly "name": string
+      },
       readonly "AudioStop": {
         readonly "description": string,
         readonly "name": string
@@ -2892,6 +2904,18 @@ declare namespace typed_i18n {
       readonly "description": string,
       readonly "name": string
     },
+    readonly "AudioSpeedDecrease": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "AudioSpeedIncrease": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "AudioSpeedReset": {
+      readonly "description": string,
+      readonly "name": string
+    },
     readonly "AudioStop": {
       readonly "description": string,
       readonly "name": string
@@ -3126,6 +3150,18 @@ declare namespace typed_i18n {
     readonly "description": string,
     readonly "name": string
   },
+  readonly "AudioSpeedDecrease": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "AudioSpeedIncrease": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "AudioSpeedReset": {
+    readonly "description": string,
+    readonly "name": string
+  },
   readonly "AudioStop": {
     readonly "description": string,
     readonly "name": string
@@ -3338,6 +3374,15 @@ declare namespace typed_i18n {
   (_: "settings.keyboard.list.AudioPreviousAlt", __?: {}): { readonly "description": string, readonly "name": string };
   (_: "settings.keyboard.list.AudioPreviousAlt.description", __?: {}): string;
   (_: "settings.keyboard.list.AudioPreviousAlt.name", __?: {}): string;
+  (_: "settings.keyboard.list.AudioSpeedDecrease", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.AudioSpeedDecrease.description", __?: {}): string;
+  (_: "settings.keyboard.list.AudioSpeedDecrease.name", __?: {}): string;
+  (_: "settings.keyboard.list.AudioSpeedIncrease", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.AudioSpeedIncrease.description", __?: {}): string;
+  (_: "settings.keyboard.list.AudioSpeedIncrease.name", __?: {}): string;
+  (_: "settings.keyboard.list.AudioSpeedReset", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.AudioSpeedReset.description", __?: {}): string;
+  (_: "settings.keyboard.list.AudioSpeedReset.name", __?: {}): string;
   (_: "settings.keyboard.list.AudioStop", __?: {}): { readonly "description": string, readonly "name": string };
   (_: "settings.keyboard.list.AudioStop.description", __?: {}): string;
   (_: "settings.keyboard.list.AudioStop.name", __?: {}): string;

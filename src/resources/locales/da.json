@@ -1000,6 +1000,18 @@
                     "description": "Gå tilbage til forrige lydklip i en bog med tilhørende medier, tekst-til-tale eller oplæsning. Dette springer ud af den nuværende struktur, hvis muligt",
                     "name": "Forrige Lyd (spring ud)"
                 },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
+                    "description": "",
+                    "name": ""
+                },
                 "AudioStop": {
                     "description": "Stop afspilning af tilhørende medier, tekst-til-tale eller oplæsning",
                     "name": "Stop Afspilning"

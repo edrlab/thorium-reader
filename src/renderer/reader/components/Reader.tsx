@@ -349,6 +349,10 @@ class Reader extends React.Component<IProps, IState> {
         this.onKeyboardNavigationToBegin.bind(this);
         this.onKeyboardNavigationToEnd.bind(this);
 
+        this.onKeyboardAudioSpeedDecrease = this.onKeyboardAudioSpeedDecrease.bind(this);
+        this.onKeyboardAudioSpeedIncrease = this.onKeyboardAudioSpeedIncrease.bind(this);
+        this.onKeyboardAudioSpeedReset = this.onKeyboardAudioSpeedReset.bind(this);
+
         this.onKeyboardFixedLayoutZoomReset = this.onKeyboardFixedLayoutZoomReset.bind(this);
         this.onKeyboardFixedLayoutZoomIn = this.onKeyboardFixedLayoutZoomIn.bind(this);
         this.onKeyboardFixedLayoutZoomOut = this.onKeyboardFixedLayoutZoomOut.bind(this);
@@ -1381,6 +1385,19 @@ class Reader extends React.Component<IProps, IState> {
 
         registerKeyboardListener(
             true, // listen for key down (not key up)
+            this.props.keyboardShortcuts.AudioSpeedReset,
+            this.onKeyboardAudioSpeedReset);
+        registerKeyboardListener(
+            false, // listen for key down (not key up)
+            this.props.keyboardShortcuts.AudioSpeedDecrease,
+            this.onKeyboardAudioSpeedDecrease);
+        registerKeyboardListener(
+            false, // listen for key down (not key up)
+            this.props.keyboardShortcuts.AudioSpeedIncrease,
+            this.onKeyboardAudioSpeedIncrease);
+
+        registerKeyboardListener(
+            true, // listen for key down (not key up)
             this.props.keyboardShortcuts.FXLZoomReset,
             this.onKeyboardFixedLayoutZoomReset);
         registerKeyboardListener(
@@ -1569,6 +1586,10 @@ class Reader extends React.Component<IProps, IState> {
 
     private unregisterAllKeyboardListeners() {
 
+        unregisterKeyboardListener(this.onKeyboardAudioSpeedDecrease);
+        unregisterKeyboardListener(this.onKeyboardAudioSpeedIncrease);
+        unregisterKeyboardListener(this.onKeyboardAudioSpeedReset);
+
         unregisterKeyboardListener(this.onKeyboardFixedLayoutZoomReset);
         unregisterKeyboardListener(this.onKeyboardFixedLayoutZoomIn);
         unregisterKeyboardListener(this.onKeyboardFixedLayoutZoomOut);
@@ -1604,6 +1625,94 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardAnnotation);
         unregisterKeyboardListener(this.onKeyboardQuickAnnotation);
         unregisterKeyboardListener(this.onKeyboardPrint);
+    }
+
+    private onKeyboardAudioSpeedDecrease() {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardAudioSpeedDecrease)");
+            }
+            return;
+        }
+
+        this.onKeyboardAudioSpeedDelta(-0.1);
+    }
+    private onKeyboardAudioSpeedIncrease() {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardAudioSpeedIncrease)");
+            }
+            return;
+        }
+        this.onKeyboardAudioSpeedDelta(0.1);
+    }
+    private onKeyboardAudioSpeedDelta(DELTA: number) {
+
+        const MIN = 0.2;
+        const MAX = 6.0;
+
+        const ttsPlaybackRateOriginal = parseFloat(this.props.readerConfig.ttsPlaybackRate);
+        let ttsPlaybackRate = ttsPlaybackRateOriginal + DELTA;
+        ttsPlaybackRate = Math.round(ttsPlaybackRate * 100) / 100;
+        // console.log("AUDIO SPEED ttsPlaybackRate", ttsPlaybackRate);
+        if (ttsPlaybackRate < MIN) {
+            ttsPlaybackRate = MIN;
+        }
+        if (ttsPlaybackRate > MAX) {
+            ttsPlaybackRate = MAX;
+        }
+
+        const mediaOverlaysPlaybackRateOriginal = parseFloat(this.props.readerConfig.mediaOverlaysPlaybackRate);
+        let mediaOverlaysPlaybackRate = mediaOverlaysPlaybackRateOriginal + DELTA;
+        mediaOverlaysPlaybackRate = Math.round(mediaOverlaysPlaybackRate * 100) / 100;
+        // console.log("AUDIO SPEED mediaOverlaysPlaybackRate", mediaOverlaysPlaybackRate);
+        if (mediaOverlaysPlaybackRate < MIN) {
+            mediaOverlaysPlaybackRate = MIN;
+        }
+        if (mediaOverlaysPlaybackRate > MAX) {
+            mediaOverlaysPlaybackRate = MAX;
+        }
+
+        if (this.props.r2PublicationHasMediaOverlays) {
+            if (mediaOverlaysPlaybackRate !== mediaOverlaysPlaybackRateOriginal) {
+                this.handleMediaOverlaysPlaybackRate(mediaOverlaysPlaybackRate.toString());
+            }
+        }
+        if (!this.props.r2PublicationHasMediaOverlays || this.props.readerConfig.mediaOverlaysIgnoreAndUseTTS) {
+            if (ttsPlaybackRate !== ttsPlaybackRateOriginal) {
+                this.handleTTSPlaybackRate(ttsPlaybackRate.toString());
+            }
+        }
+    }
+    private onKeyboardAudioSpeedReset() {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardAudioSpeedReset)");
+            }
+            return;
+        }
+
+        if (this.props.r2PublicationHasMediaOverlays) {
+            if (this.props.readerConfig.mediaOverlaysPlaybackRate !== "1.0") {
+                this.handleMediaOverlaysPlaybackRate("1.0");
+            }
+        }
+        if (!this.props.r2PublicationHasMediaOverlays || this.props.readerConfig.mediaOverlaysIgnoreAndUseTTS) {
+            if (this.props.readerConfig.ttsPlaybackRate !== "1.0") {
+                this.handleTTSPlaybackRate("1.0");
+            }
+        }
+
+        // private handleTTSPlaybackRate(speed: string) {
+        //     ttsPlaybackRate(parseFloat(speed));
+        //     // this.setState({ ttsPlaybackRate: speed });
+        //     this.props.setConfig({ ttsPlaybackRate: speed });
+        // }
+        // private handleMediaOverlaysPlaybackRate(speed: string) {
+        //     mediaOverlaysPlaybackRate(parseFloat(speed));
+        //     // this.setState({ mediaOverlaysPlaybackRate: speed });
+        //     this.props.setConfig({ mediaOverlaysPlaybackRate: speed });
+        // }
     }
 
     private onKeyboardFixedLayoutZoomReset() {

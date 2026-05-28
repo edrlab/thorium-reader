@@ -1012,6 +1012,18 @@
                     "description": "Grįžti į ankstesnį garso segmentą pasakojime (EPUB3 leidinyje su teksto ir garso sinchronizacija, balso sintezėje arba iš anksto įrašytoje garsinėje knygoje). Bet kokia šiuo metu aktyvi teksto struktūra su išėjimo galimybe praleidžiama",
                     "name": "Ankstesnis garso segmentas (išėjimas)"
                 },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
+                    "description": "",
+                    "name": ""
+                },
                 "AudioStop": {
                     "description": "Stabdyti dabartinį garso įrašą (EPUB3 leidinyje su teksto ir garso sinchronizacija, balso sintezėje arba iš anksto įrašytoje garsinėje knygoje)",
                     "name": "Stabdyti garso įrašą"

@@ -438,31 +438,47 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             // setTabValue: (value: string) => this.setState({ tabValue: value}),
         // };
 
-        const playbackRate = [
-            { id: 0, value: 0.5, name: "0.5x" },
-            { id: 1, value: 0.75, name: "0.75x" },
-            { id: 2, value: 1, name: "1x" },
-            { id: 3, value: 1.25, name: "1.25x" },
-            { id: 4, value: 1.5, name: "1.5x" },
-            { id: 5, value: 1.75, name: "1.75x" },
-            { id: 6, value: 2, name: "2x" },
-            { id: 7, value: 2.25, name: "2.25x" },
-            { id: 8, value: 2.5, name: "2.5x" },
-            { id: 9, value: 2.75, name: "2.75x" },
-            { id: 10, value: 3, name: "3x" },
-            { id: 11, value: 3.25, name: "3.25x" },
-            { id: 12, value: 3.5, name: "3.5x" },
-            { id: 13, value: 3.75, name: "3.75x" },
-            { id: 14, value: 4, name: "4x" },
-            { id: 15, value: 4.25, name: "4.25x" },
-            { id: 16, value: 4.5, name: "4.5x" },
-            { id: 17, value: 4.75, name: "4.75x" },
-            { id: 18, value: 5, name: "5x" },
-            { id: 19, value: 5.25, name: "5.25x" },
-            { id: 20, value: 5.5, name: "5.5x" },
-            { id: 21, value: 5.75, name: "5.75x" },
-            { id: 22, value: 6.00, name: "6x" },
-        ];
+        const DELTA = 0.1;
+        const MIN = 0.2;
+        const MAX = 6.0;
+
+        const playbackRate = [] as Array<{id: number, value: number, name: string}>;
+        // [
+        //     { id: 0, value: 0.5, name: "0.5x" },
+        //     { id: 1, value: 0.75, name: "0.75x" },
+        //     { id: 2, value: 1, name: "1x" },
+        //     { id: 3, value: 1.25, name: "1.25x" },
+        //     { id: 4, value: 1.5, name: "1.5x" },
+        //     { id: 5, value: 1.75, name: "1.75x" },
+        //     { id: 6, value: 2, name: "2x" },
+        //     { id: 7, value: 2.25, name: "2.25x" },
+        //     { id: 8, value: 2.5, name: "2.5x" },
+        //     { id: 9, value: 2.75, name: "2.75x" },
+        //     { id: 10, value: 3, name: "3x" },
+        //     { id: 11, value: 3.25, name: "3.25x" },
+        //     { id: 12, value: 3.5, name: "3.5x" },
+        //     { id: 13, value: 3.75, name: "3.75x" },
+        //     { id: 14, value: 4, name: "4x" },
+        //     { id: 15, value: 4.25, name: "4.25x" },
+        //     { id: 16, value: 4.5, name: "4.5x" },
+        //     { id: 17, value: 4.75, name: "4.75x" },
+        //     { id: 18, value: 5, name: "5x" },
+        //     { id: 19, value: 5.25, name: "5.25x" },
+        //     { id: 20, value: 5.5, name: "5.5x" },
+        //     { id: 21, value: 5.75, name: "5.75x" },
+        //     { id: 22, value: 6.00, name: "6x" },
+        // ];
+        let counterID = 1; // 1-base! (to avoid falsy)
+        for (let v = MIN; v <= MAX; v += DELTA) {
+            v = Math.round(v * 100) / 100;
+            const name = `${v}x`.replace(/^([0-9]+)(\.0+)x$/g, "$1x");
+            // console.log("AUDIO SPEED", v, "---", name);
+            playbackRate.push({
+                id: counterID++,
+                value: v,
+                name,
+            });
+        }
 
         const isRTL = this.props.isRTLFlip();
 
@@ -809,9 +825,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                             defaultItems={playbackRate}
                                                                             // defaultSelectedKey={2}
                                                                             selectedKey={
-                                                                                this.props.ttsPlaybackRate ?
-                                                                                    playbackRate.find((rate) => rate.value.toString() === (useMO ? this.props.mediaOverlaysPlaybackRate : this.props.ttsPlaybackRate)).id :
-                                                                                    2
+                                                                                playbackRate.find((rate) => rate.value === (useMO ? parseFloat(this.props.mediaOverlaysPlaybackRate || "1.0") : parseFloat(this.props.ttsPlaybackRate || "1.0")))?.id || playbackRate.find((rate) => rate.value === 1)?.id || 1
                                                                             }
                                                                             onSelectionChange={(ev) => {
                                                                                 const v = playbackRate.find((option) => option.id === ev)?.value;

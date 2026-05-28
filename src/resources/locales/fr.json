@@ -1006,6 +1006,18 @@
                     "description": "Dans la fenêtre du lecteur, appelle la commande « précédent » pour l'audio (synthèse vocale, lecture à voix haute des superpositions multimédias EPUB3, ou « rembobiner » pour les livres audio). Raccourci clavier alternatif.",
                     "name": "Segment audio précédent (alternatif)"
                 },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
+                    "description": "",
+                    "name": ""
+                },
                 "AudioStop": {
                     "description": "Dans la fenêtre du lecteur, appelle la commande \"arrêter\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3, ou \"pause\" pour les livres audio).",
                     "name": "Arrêter l'Audio"

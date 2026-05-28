@@ -1000,6 +1000,18 @@
                     "description": "Move back to the previous audio segment in the narration (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook). This skips any currently escapable structure",
                     "name": "Previous Audio Segment (escape)"
                 },
+                "AudioSpeedDecrease": {
+                    "description": "Decrease the speed of EPUB3 Media Overlays audio playback or TTS read-aloud speech rate",
+                    "name": "Decrease audio speed"
+                },
+                "AudioSpeedIncrease": {
+                    "description": "Increase the speed of EPUB3 Media Overlays audio playback or TTS read-aloud speech rate",
+                    "name": "Increase audio speed"
+                },
+                "AudioSpeedReset": {
+                    "description": "Reset the speed of EPUB3 Media Overlays audio playback or TTS read-aloud speech rate",
+                    "name": "Reset audio speed"
+                },
                 "AudioStop": {
                     "description": "Stop current audio (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook)",
                     "name": "Stop Audio"
