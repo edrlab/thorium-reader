@@ -89,6 +89,7 @@
         "login": "Kirjaudu sisään",
         "logout": "Kirjaudu ulos",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Tietoa julkaisusta",
         "myBooks": "Omat kirjat",
         "noPublicationHelpL1": "Pudota julkaisu tähän",
@@ -105,6 +106,8 @@
                 "password": "Salasana",
                 "register": "Rekisteröidy",
                 "retry": "Yritä uudelleen",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Käyttäjätunnus / Sähköpostiosoite"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "Tila"
             }
         },
+        "openFolder": "",
         "publisher": "Julkaisija",
         "readBook": "Lue",
         "released": "Julkaistu",
@@ -245,7 +249,13 @@
             "success": "Julkaisun {{- title}} tuonti on valmis."
         },
         "open": {
-            "error": "Julkaisua ei voi avata: {{- err}}"
+            "error": "Julkaisua ei voi avata: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": "Kirjautumistiedot tyhjennettiin (pääsytunnukset ja evästeet)"
     },
@@ -578,6 +588,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Ei tietoa siitä, voiko ulkoasua mukauttaa",
                 "descriptive": "Ei tietoa siitä, voiko ulkoasua mukauttaa"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "Ulkoasua ei voi mukauttaa",
+                "descriptive": "Tekstin ja sivujen ulkoasu mukailee painettua versiota eikä ulkoasua voi mukauttaa. Lukuohjelmassa voi kuitenkin olla mahdollista zoomata."
             }
         }
     },
@@ -670,6 +684,11 @@
             },
             "annotationsOptions": "Muistiinpanojen asetukset",
             "date": "Muokkauspäivä",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "Tallenna nimellä...",
             "filter": {
                 "all": "Kaikki",
@@ -784,6 +803,8 @@
         "notes": {
             "colors": {
                 "cyan": "Turkoosi",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "Vihreä",
                 "orange": "Oranssi",
                 "purple": "Violetti",
@@ -831,6 +852,7 @@
             },
             "customFontSelected": "Olet valinnut oman fontin",
             "customizeReader": "Mukauta tekstin ulkoasua",
+            "defaultValue": "",
             "disabled": "ei käytössä",
             "display": "Näyttöasetukset",
             "disposition": {
@@ -846,6 +868,7 @@
             "lineSpacing": "Riviväli",
             "margin": "Marginaali",
             "mathjax": "Ota MathJax käyttöön",
+            "mathjaxDescription": "",
             "noFootnotes": "Älä näytä alaviitteitä popup-ikkunassa",
             "noRTLFlip": "Estä oikealta vasemmalle -käyttöliittymä",
             "noRuby": "Piilota japanin rubi-merkit",
@@ -976,6 +999,18 @@
                 "AudioPreviousAlt": {
                     "description": "Siirry edelliseen ääniosioon (tekstiä ja ääntä yhdistävä kirja, tekstistä puheeksi -toiminto tai äänikirja). Toiminto ohittaa rakenteet, jotka ovat ohitettavissa",
                     "name": "Edellinen ääniosio (ohita)"
+                },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
+                    "description": "",
+                    "name": ""
                 },
                 "AudioStop": {
                     "description": "Pysäytä nykyinen ääni (tekstiä ja ääntä yhdistävä kirja, tekstistä puheeksi -toiminto tai äänikirja)",
@@ -1198,11 +1233,54 @@
         "session": {
             "title": "Tallenna istunto"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Ulkoasu",
             "general": "Yleiset",
             "keyboardShortcuts": "Pikanäppäimet",
-            "profiles": "Profiilit"
+            "profiles": "Profiilit",
+            "storage": ""
         },
         "theme": {
             "auto": "Automaattinen",

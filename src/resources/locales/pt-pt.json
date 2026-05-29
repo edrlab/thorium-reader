@@ -89,6 +89,7 @@
         "login": "Iniciar sessão",
         "logout": "Terminar sessão",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Detalhes do documento",
         "myBooks": "Meus documentos",
         "noPublicationHelpL1": "Soltar ficheiros aqui",
@@ -105,6 +106,8 @@
                 "password": "Senha",
                 "register": "Registar",
                 "retry": "Tentar novamente",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Nome de utilizador / Endereço de email"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "Situação"
             }
         },
+        "openFolder": "",
         "publisher": "Editora",
         "readBook": "Ler",
         "released": "Publicado em",
@@ -250,7 +254,13 @@
             "success": "Foi concluída a importação de {{- title}}."
         },
         "open": {
-            "error": "Não foi possível carregar o documento: {{- err}}"
+            "error": "Não foi possível carregar o documento: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": "Os dados de autenticação foram limpos (tokens de acesso e cookies)"
     },
@@ -583,6 +593,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Sem informações disponíveis sobre a personalização da aparência",
                 "descriptive": "Sem informações disponíveis sobre personalização da aparência"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },
@@ -675,6 +689,11 @@
             },
             "annotationsOptions": "Opções de anotações",
             "date": "Data de alteração",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "Guardar anotações como...",
             "filter": {
                 "all": "Tudo",
@@ -789,6 +808,8 @@
         "notes": {
             "colors": {
                 "cyan": "Ciano",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "Verde",
                 "orange": "Laranja",
                 "purple": "Roxo",
@@ -837,6 +858,7 @@
             },
             "customFontSelected": "Escolheu um tipo de letra pessoal",
             "customizeReader": "Personalizar formatação do texto",
+            "defaultValue": "",
             "disabled": "desativado",
             "display": "Visualização",
             "disposition": {
@@ -852,6 +874,7 @@
             "lineSpacing": "Espaçamento de linhas",
             "margin": "Margem",
             "mathjax": "Ativar MathJax",
+            "mathjaxDescription": "",
             "noFootnotes": "Desativar janelas de notas de rodapé",
             "noRTLFlip": "Desativar interface Direita-para-esquerda",
             "noRuby": "Ocultar Ruby Japonês",
@@ -982,6 +1005,18 @@
                 "AudioPreviousAlt": {
                     "description": "",
                     "name": "Segmento áudio anterior (escape)"
+                },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
+                    "description": "",
+                    "name": ""
                 },
                 "AudioStop": {
                     "description": "",
@@ -1204,11 +1239,54 @@
         "session": {
             "title": "Ativar guardar sessão"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Visual",
             "general": "Geral",
             "keyboardShortcuts": "Atalhos de teclado",
-            "profiles": "Perfis"
+            "profiles": "Perfis",
+            "storage": ""
         },
         "theme": {
             "auto": "Automático",

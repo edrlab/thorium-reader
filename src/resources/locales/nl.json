@@ -89,6 +89,7 @@
         "login": "Inloggen",
         "logout": "Uitloggen",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Meer Informatie",
         "myBooks": "Mijn boeken",
         "noPublicationHelpL1": "Sleep een publicatie hier naar toe",
@@ -105,6 +106,8 @@
                 "password": "Wachtwoord",
                 "register": "Registreer",
                 "retry": "Probeer opnieuw",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Gebruikersnaam / e-mailadres"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "Status"
             }
         },
+        "openFolder": "",
         "publisher": "Uitgever",
         "readBook": "Gelezen",
         "released": "Uitgegeven op",
@@ -245,7 +249,13 @@
             "success": "Het toevoegen van {{- title}} is gelukt."
         },
         "open": {
-            "error": "De publicatie kan niet worden geopend: {{- err}}"
+            "error": "De publicatie kan niet worden geopend: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": "Login data is verwijderd (toegang tot logintekens en cookies)"
     },
@@ -578,6 +588,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Geen informatie beschikbaar over mogelijkheden weergave aan te passen",
                 "descriptive": "Geen informatie beschikbaar over de mogelijkheid weergave aan te passen"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },
@@ -670,6 +684,11 @@
             },
             "annotationsOptions": "Opties",
             "date": "Wijzigingsdatum",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "Bewaar aantekeningen als...",
             "filter": {
                 "all": "Alle",
@@ -784,6 +803,8 @@
         "notes": {
             "colors": {
                 "cyan": "Cyaan",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "Groen",
                 "orange": "Oranje",
                 "purple": "Paars",
@@ -831,6 +852,7 @@
             },
             "customFontSelected": "Je hebt een eigen lettertype gekozen",
             "customizeReader": "Pas de tekstopmaak aan",
+            "defaultValue": "",
             "disabled": "uitgeschakeld",
             "display": "Weergave",
             "disposition": {
@@ -846,6 +868,7 @@
             "lineSpacing": "Regelafstand",
             "margin": "Marge",
             "mathjax": "Schakel MathJax in",
+            "mathjaxDescription": "",
             "noFootnotes": "Verberg pop-up voetnoten",
             "noRTLFlip": "Schakel de rechts-naar-links-UI uit",
             "noRuby": "Verberg Japanse Ruby",
@@ -976,6 +999,18 @@
                 "AudioPreviousAlt": {
                     "description": "Spring terug naar vorig audiofragment in de vertelling (EPUB3 Media Overlappingen, Tekst naar Spraak hardop voorlezen, of voorgaand opgenomen audioboek). Dit slaat huidige verlaatbare structuren over",
                     "name": "Vorig Audiofragment (verlaat)"
+                },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
+                    "description": "",
+                    "name": ""
                 },
                 "AudioStop": {
                     "description": "Stop huidige audio (EPUB3 Media Overlappingen, Tekst naar Spraak hardop voorlezen, of voorgaand opgenomen audioboek)",
@@ -1198,11 +1233,54 @@
         "session": {
             "title": "Stel sessie bewaring in"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Verschijning",
             "general": "Algemeen",
             "keyboardShortcuts": "Toetsenbord sneltoetsen",
-            "profiles": "Profielen"
+            "profiles": "Profielen",
+            "storage": ""
         },
         "theme": {
             "auto": "Automatisch",

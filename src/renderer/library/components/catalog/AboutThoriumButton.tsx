@@ -36,6 +36,16 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
+async function getOsName() {
+    if ((navigator as any).userAgentData) {
+        const result = await (navigator as any).userAgentData.getHighEntropyValues(["architecture", "bitness", "platform"]);
+        return `${result.platform}-${result.architecture}_${result.bitness}`;
+    }
+
+    // Fallback
+    return navigator.platform || "unknown";
+}
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
 }
@@ -69,6 +79,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
         const displayVersionToast = !!(this.state.versionInfo && this.props.newVersionURL && this.props.newVersion);
         const locale = encodeURIComponent_RFC3986(this.props.locale);
         const app_version = encodeURIComponent_RFC3986(_APP_VERSION);
+        const source = encodeURIComponent_RFC3986("thorium-desktop");
 
         // const customizationProfileProvisionedAndActivated = this.props.customizationProvision.find(({id}) => this.props.customizationProfileId === id);
 
@@ -121,7 +132,10 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                     <p>{`v${_APP_VERSION}`}</p>
                     <a href="" onClick={async (ev) => {
                                 ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
-                                const href = `https://thorium.edrlab.org/?lang=${locale}&v=${app_version}`;
+                                const os = encodeURIComponent_RFC3986(
+                                    await getOsName().catch(() => navigator.platform || "unknown"),
+                                );
+                                const href = `https://thorium.edrlab.org/?lang=${locale}&v=${app_version}&source=${source}&os=${os}`;
                                 if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
                                     await shell.openExternal(href);
                                 }

@@ -89,6 +89,7 @@
         "login": "Login",
         "logout": "Logout",
         "missing": "",
+        "missingUnavailableDescription": "This publication cannot be opened because its stored files are unavailable. Re-import it, or go to Settings and then Storage to add or change the additional storage.",
         "moreInfo": "Publication Details",
         "myBooks": "My publications",
         "noPublicationHelpL1": "Drop files here",
@@ -105,6 +106,8 @@
                 "password": "Password",
                 "register": "Register",
                 "retry": "Try again",
+                "unauthorized": "Unauthorized",
+                "unauthorizedUnsupportedType": "Unauthorized (unsupported WWWAuthenticate type '{{- type}}')",
                 "username": "Username / Email Address"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "State"
             }
         },
+        "openFolder": "Open directory",
         "publisher": "Publisher",
         "readBook": "Read",
         "released": "Published on",
@@ -245,7 +249,13 @@
             "success": "Importing [{{- title}}] completed."
         },
         "open": {
-            "error": "Loading publication failed: [{{- err}}]"
+            "error": "Loading publication failed: [{{- err}}]",
+            "folderNotFound": "The publication directory cannot be found. Re-import it, or configure the additional storage in Settings > Storage."
+        },
+        "storage": {
+            "removed": "Publication directory removed.",
+            "updateFailed": "Failed to update publication directory: {{- message}}",
+            "updated": "Publication directory updated."
         },
         "wipeData": "Login data was cleared (access tokens and cookies)"
     },
@@ -578,6 +588,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "No information about appearance modifiability is available",
                 "descriptive": "No information about appearance modifiability is available"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "Appearance cannot be modified",
+                "descriptive": "Text and page layout cannot be modified as the reading experience is close to a print version, but reading systems can still provide zooming options"
             }
         }
     },
@@ -670,6 +684,11 @@
             },
             "annotationsOptions": "Annotation Options",
             "date": "Modification date",
+            "error": {
+                "pdf": {
+                    "validationSelection": "Unable to create PDF annotation from this selection."
+                }
+            },
             "export": "Save notes as...",
             "filter": {
                 "all": "All",
@@ -784,6 +803,8 @@
         "notes": {
             "colors": {
                 "cyan": "Cyan",
+                "darkorange": "Dark Orange",
+                "darkyellow": "Dark Yellow",
                 "green": "Green",
                 "orange": "Orange",
                 "purple": "Purple",
@@ -831,6 +852,7 @@
             },
             "customFontSelected": "You have chosen a personal font",
             "customizeReader": "Customize text formatting",
+            "defaultValue": "default value",
             "disabled": "disabled",
             "display": "Display",
             "disposition": {
@@ -846,6 +868,7 @@
             "lineSpacing": "Line spacing",
             "margin": "Margin",
             "mathjax": "Enable MathJax",
+            "mathjaxDescription": "MathJax",
             "noFootnotes": "Disable popup footnotes",
             "noRTLFlip": "Disable Right-To-Left UI",
             "noRuby": "Hide Japanese Ruby",
@@ -976,6 +999,18 @@
                 "AudioPreviousAlt": {
                     "description": "Move back to the previous audio segment in the narration (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook). This skips any currently escapable structure",
                     "name": "Previous Audio Segment (escape)"
+                },
+                "AudioSpeedDecrease": {
+                    "description": "Decrease the speed of EPUB3 Media Overlays audio playback or TTS read-aloud speech rate",
+                    "name": "Decrease audio speed"
+                },
+                "AudioSpeedIncrease": {
+                    "description": "Increase the speed of EPUB3 Media Overlays audio playback or TTS read-aloud speech rate",
+                    "name": "Increase audio speed"
+                },
+                "AudioSpeedReset": {
+                    "description": "Reset the speed of EPUB3 Media Overlays audio playback or TTS read-aloud speech rate",
+                    "name": "Reset audio speed"
                 },
                 "AudioStop": {
                     "description": "Stop current audio (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook)",
@@ -1198,11 +1233,54 @@
         "session": {
             "title": "Enable session saving"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "Select an additional storage",
+                "changeDirectory": "Update additional storage",
+                "removeStorageDirectory": "Remove additional storage"
+            },
+            "beta": {
+                "availability": "This feature works only with recent versions of Thorium; external folder books will not appear in Thorium 3.4 or earlier.",
+                "integrity": "You must keep this directory safe and accessible. Avoid deleting it, restricting access to it, or using slow or unstable storage, such as network drives.",
+                "migration": "Thorium does not automatically transfer your books: if you update the additional storage, you must manually move your publications to the new location. If you remove it, you must manually move your publications to the original storage.",
+                "summary": "Learn more about this feature, currently in beta",
+                "warning": "Do not manually alter the files in this folder, as this may cause issues with your books or the reader. Think of this folder as a secure library managed by Thorium."
+            },
+            "configuration": {
+                "chooseFolderDescription": "Choose the directory that Thorium should use as additional storage.",
+                "configuredDescription": "The additional storage is configured and ready to use for newly stored publications.",
+                "notConfiguredDescription": "Publications imported into Thorium Reader will be stored in the selected directory. Publications previously imported will stay in the original system storage."
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "Continue",
+                    "description": "This feature is currently in beta. Do you want to continue and configure an additional storage by selecting a directory?",
+                    "title": "Select an additional storage"
+                },
+                "edit": {
+                    "confirm": "Edit directory",
+                    "description": "Updating the additional storage requires care. Thorium will not migrate existing publications for you; you'll have to do it manually. Do you want to continue?",
+                    "title": "Update the additional storage"
+                },
+                "remove": {
+                    "confirm": "Remove directory",
+                    "description": "Removing the additional storage requires care. Thorium will not migrate existing publications for you; you'll have to do it manually. Do you want to continue?",
+                    "title": "Remove additional storage"
+                }
+            },
+            "locations": {
+                "defaultDescription": "Publications managed by the application are by default stored in:",
+                "defaultInternal": "System Storage",
+                "externalStorage": "External storage",
+                "title": "Locations"
+            }
+        },
         "tabs": {
             "appearance": "Appearance",
             "general": "General",
             "keyboardShortcuts": "Keyboard shortcuts",
-            "profiles": "Profiles"
+            "profiles": "Profiles",
+            "storage": "Storage"
         },
         "theme": {
             "auto": "Automatic",

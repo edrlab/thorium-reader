@@ -89,6 +89,7 @@
         "login": "Войти",
         "logout": "Выйти",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Дополнительные сведения",
         "myBooks": "Мои книги",
         "noPublicationHelpL1": "Перетащите сюда файлы",
@@ -105,6 +106,8 @@
                 "password": "Пароль",
                 "register": "Регистрация",
                 "retry": "Попробовать ещё раз",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Имя пользователя / Адрес электронной почты"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "Cостояние"
             }
         },
+        "openFolder": "",
         "publisher": "Издатель",
         "readBook": "Читать",
         "released": "Дата издания",
@@ -255,7 +259,13 @@
             "success": "Импорт {{- title}} закончен."
         },
         "open": {
-            "error": "Книга не может быть открыта : {{- err}}"
+            "error": "Книга не может быть открыта : {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": "Регистрационные данные (токены доступа и cookie-файлы) были очищены!"
     },
@@ -588,6 +598,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Информация о возможности изменения внешнего вида отсутствует",
                 "descriptive": "Информация о возможности изменения внешнего вида отсутствует"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },
@@ -680,6 +694,11 @@
             },
             "annotationsOptions": "Параметры аннотации",
             "date": "Дата изменения",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "Сохранить заметки как...",
             "filter": {
                 "all": "Все",
@@ -794,6 +813,8 @@
         "notes": {
             "colors": {
                 "cyan": "Циан",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "Зелёный",
                 "orange": "Оранжевый",
                 "purple": "Фиолетовый",
@@ -843,6 +864,7 @@
             },
             "customFontSelected": "Вы выбрали персональный шрифт",
             "customizeReader": "Настройка форматирования текста",
+            "defaultValue": "",
             "disabled": "отключено",
             "display": "Отображение",
             "disposition": {
@@ -858,6 +880,7 @@
             "lineSpacing": "Межстрочный интервал",
             "margin": "Отступ",
             "mathjax": "Включить MathJax",
+            "mathjaxDescription": "",
             "noFootnotes": "Отключить всплывающие примечания",
             "noRTLFlip": "Отключить интерфейс справа-налево",
             "noRuby": "Скрыть японские Ruby-аннотации",
@@ -988,6 +1011,18 @@
                 "AudioPreviousAlt": {
                     "description": "Вернуться к предыдущему аудиофрагменту (EPUB3 Media Overlays, озвучивание текста или предварительно записанная аудиокнига). Эта функция пропускает структуры, которые можно пропустить",
                     "name": "Предыдущий аудиосегмент (escape)"
+                },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
+                    "description": "",
+                    "name": ""
                 },
                 "AudioStop": {
                     "description": "Остановить воспроизведение текущее аудиоматериала (EPUB3 Media Overlays, озвучивание текста или предварительно записанную аудиокнигу)",
@@ -1210,11 +1245,54 @@
         "session": {
             "title": "Сохранение сеанса"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Внешний вид",
             "general": "Общие",
             "keyboardShortcuts": "Горячие клавиши",
-            "profiles": "Профили"
+            "profiles": "Профили",
+            "storage": ""
         },
         "theme": {
             "auto": "Автоматическая",

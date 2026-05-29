@@ -89,6 +89,7 @@
         "login": "تسجيل الدخول",
         "logout": "تسجيل الخروج",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "تفاصيل المنشور",
         "myBooks": "منشوراتي",
         "noPublicationHelpL1": "أفلت الملفات هنا",
@@ -105,6 +106,8 @@
                 "password": "كلمة المرور",
                 "register": "تسجيل",
                 "retry": "حاول مرة أخرى",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "اسم المستخدم / البريد الإلكتروني"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "الحالة"
             }
         },
+        "openFolder": "",
         "publisher": "الناشر",
         "readBook": "اقرأ",
         "released": "نُشر في",
@@ -265,7 +269,13 @@
             "success": "اكتمل استيراد [{{- title}}]."
         },
         "open": {
-            "error": "فشل تحميل المنشور: [{{- err}}]"
+            "error": "فشل تحميل المنشور: [{{- err}}]",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": "تم مسح بيانات تسجيل الدخول (رموز الوصول وملفات تعريف الارتباط)"
     },
@@ -598,6 +608,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "لا توجد معلومات عن إمكانية تعديل المظهر",
                 "descriptive": "لا توجد معلومات عن إمكانية تعديل المظهر"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },
@@ -690,6 +704,11 @@
             },
             "annotationsOptions": "‪خيارات التعليق",
             "date": "تاريخ التعديل",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "حفظ الملاحظات باسم...",
             "filter": {
                 "all": "الكل",
@@ -804,6 +823,8 @@
         "notes": {
             "colors": {
                 "cyan": "أزرق سماوي",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "أخضر",
                 "orange": "برتقالي",
                 "purple": "أرجواني",
@@ -855,6 +876,7 @@
             },
             "customFontSelected": "لقد اخترت خطاً شخصياً",
             "customizeReader": "تخصيص تنسيق النص",
+            "defaultValue": "",
             "disabled": "تم تعطيله",
             "display": "العرض",
             "disposition": {
@@ -870,6 +892,7 @@
             "lineSpacing": "تباعد الأسطر",
             "margin": "الهامش",
             "mathjax": "تفعيل MathJax",
+            "mathjaxDescription": "",
             "noFootnotes": "تعطيل الحواشي السفلية المنبثقة",
             "noRTLFlip": "تعطيل واجهة اليمين إلى اليسار",
             "noRuby": "إخفاء علامات روبي اليابانية",
@@ -1000,6 +1023,18 @@
                 "AudioPreviousAlt": {
                     "description": "انتقل إلى المقطع الصوتي السابق في السرد (EPUB Media Overlays، Text To Speech ، أو الكتاب الصوتي المسجل مسبقًا) هذا يتخطى أي عنصر قابل للتخطي",
                     "name": "المقطع الصوتي السابق (تخطي)"
+                },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
+                    "description": "",
+                    "name": ""
                 },
                 "AudioStop": {
                     "description": "إيقاف الصوت الحالي (EPUB Media Overlays، Text To Speech ، أو الكتاب الصوتي المسجل مسبقًا)",
@@ -1222,11 +1257,54 @@
         "session": {
             "title": "تفعيل حفظ الجلسة"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "المظهر",
             "general": "عام",
             "keyboardShortcuts": "اختصارات لوحة المفاتيح",
-            "profiles": "الملفات الشخصية"
+            "profiles": "الملفات الشخصية",
+            "storage": ""
         },
         "theme": {
             "auto": "تلقائي",

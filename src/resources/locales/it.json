@@ -89,6 +89,7 @@
         "login": "Login",
         "logout": "Logout",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Maggiori informazioni",
         "myBooks": "I miei libri",
         "noPublicationHelpL1": "Rilascia qui i file",
@@ -105,6 +106,8 @@
                 "password": "Password",
                 "register": "Registrati",
                 "retry": "Riprovare",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Nome utente / Indirizzo e-mail"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "Stato"
             }
         },
+        "openFolder": "",
         "publisher": "Editore",
         "readBook": "Leggi",
         "released": "Pubblicato il",
@@ -250,7 +254,13 @@
             "success": "L'importazione di {{- title}} è terminata."
         },
         "open": {
-            "error": "La pubblicazione non può essere aperta: {{- err}}"
+            "error": "La pubblicazione non può essere aperta: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": "I dati per il login sono stati cancellati (token d'accesso e cookies)"
     },
@@ -583,6 +593,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Nessuna informazione sulla possibilità di formattare il testo",
                 "descriptive": "Nessuna informazione sulla possibilità di formattare il testo"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },
@@ -675,6 +689,11 @@
             },
             "annotationsOptions": "Opzioni",
             "date": "Data di modifica",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "Salva le note in...",
             "filter": {
                 "all": "Tutte",
@@ -789,6 +808,8 @@
         "notes": {
             "colors": {
                 "cyan": "Ciano",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "Verde",
                 "orange": "Arancione",
                 "purple": "Viola",
@@ -837,6 +858,7 @@
             },
             "customFontSelected": "Hai scelto un font personale",
             "customizeReader": "Personalizza la formattazione del testo",
+            "defaultValue": "",
             "disabled": "Disattivato",
             "display": "Visualizzazione",
             "disposition": {
@@ -852,6 +874,7 @@
             "lineSpacing": "Spaziatura tra le linee",
             "margin": "Margine",
             "mathjax": "Abilita MathJax",
+            "mathjaxDescription": "",
             "noFootnotes": "Disattiva note a piè di pagina in elementi a comparsa",
             "noRTLFlip": "Disabilita l'interfaccia utente da destra a sinistra",
             "noRuby": "Nascondi Ruby Giapponese",
@@ -982,6 +1005,18 @@
                 "AudioPreviousAlt": {
                     "description": "Torna al segmento audio precedente nella narrazione (EPUB3 con Media Overlays, lettura ad alta voce con sintesi vocale o audiolibro preregistrato). Quest'azione salta qualsiasi struttura intermedia",
                     "name": "Segmento audio precedente (esci)"
+                },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
+                    "description": "",
+                    "name": ""
                 },
                 "AudioStop": {
                     "description": "Interrompi l'audio in riproduzione (EPUB3 con Media Overlays, lettura ad alta voce con sintesi vocale o audiolibro preregistrato)",
@@ -1204,11 +1239,54 @@
         "session": {
             "title": "Attiva il salvataggio della sessione di lettura"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Aspetto",
             "general": "Generale",
             "keyboardShortcuts": "Scorciatoie da tastiera",
-            "profiles": "Profili"
+            "profiles": "Profili",
+            "storage": ""
         },
         "theme": {
             "auto": "Automatico",

@@ -7,12 +7,17 @@ const { pathsToModuleNameMapper } = require("ts-jest");
 
 // const { compilerOptions } = require("./tsconfig");
 const fs = require("fs");
+const jestTsConfig = "<rootDir>/tsconfig.jest.json";
 let txt = fs.readFileSync("./tsconfig.json", { encoding: "utf8" }).replace(/\s*\/\/.*/g, "");
 txt = txt.replace(/^\s+\/\/.+/gm, "");
 // console.log(txt);
 const compilerOptions = JSON.parse(txt).compilerOptions;
 
-const pathMaps = pathsToModuleNameMapper(compilerOptions.paths, { prefix: "<rootDir>/" });
+const jestPathAliases = Object.fromEntries(
+    Object.entries(compilerOptions.paths)
+        .filter(([key]) => key !== "*"),
+);
+const pathMaps = pathsToModuleNameMapper(jestPathAliases, { prefix: "<rootDir>/" });
 // console.log(pathMaps);
 const moduleNameMapper = {
     "readium-desktop/main/di": "<rootDir>/test/main/di.ts", // see src/common/utils.ts convertMultiLangStringToString()
@@ -37,11 +42,12 @@ module.exports = {
             "ts-jest",
             {
                 babelConfig: false,
-                tsconfig: "<rootDir>/tsconfig.json",
+                tsconfig: jestTsConfig,
             },
         ],
     },
     moduleNameMapper,
+    moduleDirectories: ["node_modules", "<rootDir>"],
     moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
     transformIgnorePatterns: [
         "<rootDir>/node_modules/",
@@ -73,6 +79,7 @@ module.exports = {
         "<rootDir>/img/",
         "<rootDir>/release/",
         "<rootDir>/scripts/",
+        "<rootDir>/projects/pdf-annotations/harness/",
         "<rootDir>/src/",
     ],
     setupFilesAfterEnv: ["<rootDir>/scripts/jest_setup.js"],

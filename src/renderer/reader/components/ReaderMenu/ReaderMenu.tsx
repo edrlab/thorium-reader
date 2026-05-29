@@ -53,6 +53,7 @@ import { shell } from "electron";
 import { AnnotationList } from "./AnnotationList";
 import { BookmarkList } from "./BookmarkList";
 import { GoToPageSection } from "./GoToPageSection";
+import { createOrGetPdfEventBus } from "../../pdf/driver";
 
 (window as any).__shell_openExternal = (url: string) => url && /^https?:\/\//.test(url) ? shell.openExternal(url) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
 
@@ -441,7 +442,7 @@ const TabTitle = ({ value }: { value: string }) => {
 
 export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const { /* toggleMenu */ pdfToc, isDivina, isPdf, isAudiobook, focusMainAreaLandmarkAndCloseMenu,
-        pdfNumberOfPages, currentLocation, goToLocator /*openedSection: tabValue, setOpenedSection: setTabValue*/ } = props;
+        pdfNumberOfPages, currentLocation, goToLocator, goToPdfAnnotation /*openedSection: tabValue, setOpenedSection: setTabValue*/ } = props;
     const isEpub = !isDivina && !isPdf && !isAudiobook;
     const { /*doFocus, annotationUUID,*/ handleLinkClick /*, resetAnnotationUUID*/ } = props;
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
@@ -481,7 +482,12 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     React.useEffect(() => {
         console.log("Reader MENU set serialAnnotator mode to ", serialAnnotator);
         (window as any).__annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator = serialAnnotator;
-    }, [serialAnnotator]);
+        if (isPdf) {
+            createOrGetPdfEventBus().dispatch("annotations:set-instant-mode", {
+                enabled: serialAnnotator,
+            });
+        }
+    }, [isPdf, serialAnnotator]);
 
     const dockedModeRef = React.useRef<HTMLButtonElement>();
     const tabModeRef = React.useRef<HTMLDivElement>();
@@ -579,7 +585,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
             name: __("reader.marks.annotations"),
             disabled: false,
             svg: AnnotationIcon,
-            show: isEpub,
+            show: isPdf || isEpub,
         },
     ];
 
@@ -776,6 +782,8 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         <div className={classNames(stylesSettings.settings_tab, stylesAnnotations.annotations_tab)}>
                             <AnnotationList
                                 goToLocator={goToLocator}
+                                goToPdfAnnotation={goToPdfAnnotation}
+                                isPdf={isPdf}
                                 // resetAnnotationUUID={resetAnnotationUUID}
                                 // doFocus={doFocus}
                                 popoverBoundary={popoverBoundary.current}

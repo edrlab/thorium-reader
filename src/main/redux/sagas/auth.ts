@@ -52,6 +52,7 @@ import { getOpdsRequestCustomProtocolEventChannel, getOpdsRequestMediaCustomProt
 import { initClientSecretToken } from "./apiapp";
 import { digestAuthentication } from "readium-desktop/utils/digest";
 import isURL from "validator/lib/isURL";
+import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 
 // TypeScript GO:
 // The current file is a CommonJS module whose imports will produce 'require' calls;
@@ -74,6 +75,7 @@ import DOMPurify_ from "dompurify";
 const DOMPurify = DOMPurify_(new JSDOM("").window);
 
 const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
+const OPDS_AUTH_APPLICATION = "org.edrlab.thorium.desktop";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:auth";
@@ -601,6 +603,9 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
                 // redirect_uri: Optional, but good to include since it's mandatory if a client has more than one redirect URI configurated
                 // Note: Trailing slash is necessary as it is specified in the OPDS Authentication 1.0 specification
                 browserUrlParsed.searchParams.set("redirect_uri", `${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`);
+
+                browserUrlParsed.searchParams.set("application", OPDS_AUTH_APPLICATION);
+                browserUrlParsed.searchParams.set("application_version", _APP_VERSION);
 
                 browserUrl = browserUrlParsed.toString();
 

@@ -89,6 +89,7 @@
         "login": "Σύνδεση",
         "logout": "Αποσύνδεση",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Λεπτομέρειες βιβλίου",
         "myBooks": "Τα βιβλία μου",
         "noPublicationHelpL1": "Εναπόθεση αρχείων εδώ",
@@ -105,6 +106,8 @@
                 "password": "Κωδικός πρόσβασης",
                 "register": "Εγγραφή",
                 "retry": "Ξαναπροσπαθήστε",
+                "unauthorized": "Χωρίς εξουσιοδότηση",
+                "unauthorizedUnsupportedType": "Χωρίς εξουσιοδότηση (μη υποστηριζόμενος τύπος WWWAuthenticate '{{- type}}')",
                 "username": "Όνομα χρήστη / διεύθυνση ηλεκτρονικού ταχυδρομείου"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "Κατάσταση"
             }
         },
+        "openFolder": "",
         "publisher": "Εκδότης",
         "readBook": "Ανάγνωση",
         "released": "Δημοσιεύθηκε στις",
@@ -245,7 +249,13 @@
             "success": "Η εισαγωγή του {{- title}} έχει ολοκληρωθεί."
         },
         "open": {
-            "error": "Το βιβλίο δεν μπορεί να ανοίξει: {{- err}}"
+            "error": "Το βιβλίο δεν μπορεί να ανοίξει: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": "Τα στοιχεία σύνδεσης διαγράφηκαν (διακριτικά πρόσβασης και cookies)"
     },
@@ -578,6 +588,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Δεν υπάρχουν διαθέσιμες πληροφορίες σχετικά με τη δυνατότητα τροποποίησης της εμφάνισης",
                 "descriptive": "Δεν υπάρχουν διαθέσιμες πληροφορίες σχετικά με τη δυνατότητα τροποποίησης της εμφάνισης"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },
@@ -670,6 +684,11 @@
             },
             "annotationsOptions": "Επιλογές Σχολιασμού",
             "date": "Ημερομηνία τροποποίησης",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "Αποθήκευση σημειώσεων ως...",
             "filter": {
                 "all": "Όλα",
@@ -784,6 +803,8 @@
         "notes": {
             "colors": {
                 "cyan": "Κυανό",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "Πράσινο",
                 "orange": "Πορτοκαλί",
                 "purple": "Μωβ",
@@ -831,6 +852,7 @@
             },
             "customFontSelected": "Έχεις επιλέξει μια προσωπική γραμματοσειρά",
             "customizeReader": "Προσαρμογή μορφοποίησης κειμένου",
+            "defaultValue": "",
             "disabled": "απενεργοποιημένο",
             "display": "Εμφάνιση",
             "disposition": {
@@ -846,6 +868,7 @@
             "lineSpacing": "Διάστημα μεταξύ γραμμών",
             "margin": "Περιθώριο",
             "mathjax": "Ενεργοποίηση MathJax",
+            "mathjaxDescription": "",
             "noFootnotes": "Απενεργοποίηση αναδυόμενων υποσημειώσεων",
             "noRTLFlip": "Απενεργοποίηση Right-To-Left UI",
             "noRuby": "Κρύψιμο Japanese Ruby",
@@ -976,6 +999,18 @@
                 "AudioPreviousAlt": {
                     "description": "Μετάβαση στο προηγούμενο ηχητικό τμήμα της αφήγησης (Επικαλύψεις πολυμέσων EPUB3, κείμενο προς εκφώνηση ή ηχητικό βιβλίο). Αυτό παρακάμπτει κάθε τρέχουσα δρασκελιστική δομή",
                     "name": "Προηγούμενο τμήμα ήχου (escape)"
+                },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
+                    "description": "",
+                    "name": ""
                 },
                 "AudioStop": {
                     "description": "Διακοπή του τρέχοντος ήχου (Επικαλύψεις πολυμέσων EPUB3, εκφώνηση κειμένου ή ηχητικό βιβλίο)",
@@ -1198,11 +1233,54 @@
         "session": {
             "title": "Αποθήκευση συνεδρίας"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Εμφάνιση",
             "general": "Γενικά",
             "keyboardShortcuts": "Συντομεύσεις πληκτρολογίου",
-            "profiles": "Προφίλ"
+            "profiles": "Προφίλ",
+            "storage": ""
         },
         "theme": {
             "auto": "Αυτόματο",

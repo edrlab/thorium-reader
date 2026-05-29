@@ -89,6 +89,7 @@
         "login": "Zaloguj się",
         "logout": "Wyloguj się",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Szczegóły publikacji",
         "myBooks": "Moje publikacje",
         "noPublicationHelpL1": "Upuść pliki tutaj",
@@ -105,6 +106,8 @@
                 "password": "Hasło",
                 "register": "Rejestracja",
                 "retry": "Spróbuj ponownie",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Nazwa użytkownika / adres e-mail"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "Stan"
             }
         },
+        "openFolder": "",
         "publisher": "Wydawca",
         "readBook": "Czytaj",
         "released": "Opublikowano",
@@ -255,7 +259,13 @@
             "success": "Importowanie [{{- title}}] zakończone."
         },
         "open": {
-            "error": "Ładowanie publikacji nie powiodło się: [{{- err}}]"
+            "error": "Ładowanie publikacji nie powiodło się: [{{- err}}]",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": "Dane logowania zostały wyczyszczone (tokeny dostępu i pliki cookie)"
     },
@@ -588,6 +598,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Brak informacji o możliwości modyfikacji wyglądu",
                 "descriptive": "Brak informacji o możliwości modyfikacji wyglądu"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },
@@ -680,6 +694,11 @@
             },
             "annotationsOptions": "Opcje adnotacji",
             "date": "Data modyfikacji",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "Zapisz notatki jako...",
             "filter": {
                 "all": "Wszystkie",
@@ -794,6 +813,8 @@
         "notes": {
             "colors": {
                 "cyan": "Cyjan",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "Zielony",
                 "orange": "Pomarańczowy",
                 "purple": "Fioletowy",
@@ -843,6 +864,7 @@
             },
             "customFontSelected": "Wybrano własną czcionkę",
             "customizeReader": "Dostosuj formatowanie tekstu",
+            "defaultValue": "",
             "disabled": "wyłączone",
             "display": "Wyświetlanie",
             "disposition": {
@@ -858,6 +880,7 @@
             "lineSpacing": "Interlinia",
             "margin": "Margines",
             "mathjax": "Włącz MathJax",
+            "mathjaxDescription": "",
             "noFootnotes": "Wyłącz wyskakujące przypisy",
             "noRTLFlip": "Wyłącz interfejs od prawej do lewej",
             "noRuby": "Ukryj japońskie ruby",
@@ -988,6 +1011,18 @@
                 "AudioPreviousAlt": {
                     "description": "Wróć do poprzedniego segmentu audio w narracji (nakładki multimedialne EPUB3, odczyt głosowy TTS lub audiobook z nagraniem). Pomija aktualnie uciekającą strukturę",
                     "name": "Poprzedni segment audio (pominięcie)"
+                },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
+                    "description": "",
+                    "name": ""
                 },
                 "AudioStop": {
                     "description": "Zatrzymaj bieżące audio (nakładki multimedialne EPUB3, odczyt głosowy TTS lub audiobook z nagraniem)",
@@ -1210,11 +1245,54 @@
         "session": {
             "title": "Włącz zapisywanie sesji"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Wygląd",
             "general": "Ogólne",
             "keyboardShortcuts": "Skróty klawiszowe",
-            "profiles": "Profile"
+            "profiles": "Profile",
+            "storage": ""
         },
         "theme": {
             "auto": "Automatyczny",

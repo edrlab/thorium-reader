@@ -37,21 +37,28 @@ import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { EDrawType, INoteState, noteColorCodeToColorTranslatorKeySet, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
 
 import DOMPurify from "dompurify";
-import { clone } from "ramda";
 import { marked } from "readium-desktop/renderer/common/marked/marked";
 import { computeProgression } from "./ReaderMenu";
+import { buildAnnotationPanelSaveNote, canDeleteAnnotationInPanel, canEditAnnotationInPanel, getAnnotationCardText, getAnnotationPanelNavigation, getAnnotationSelectionText, getPdfAnnotationPageLabel } from "../../pdf/pdfAnnotationPanel";
 
-export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void, setCreatorFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+import debug_ from "debug";
 
-    const { goToLocator, setTagFilter, setCreatorFilter } = props;
+const debugPdfAnnotationsPanel = debug_("readium-desktop:renderer:reader:pdf:annotations:panel");
+
+export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, isSelected: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void, setCreatorFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator" | "goToPdfAnnotation">> = (props) => {
+
+    const { goToLocator, goToPdfAnnotation, setTagFilter, setCreatorFilter } = props;
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const dockingMode = useReaderConfig("readerDockingMode");
     const dockedMode = dockingMode !== "full";
-    const { annotation, isEdited, triggerEdition } = props;
+    const { annotation, isEdited, isSelected, triggerEdition } = props;
     const { uuid, textualValue, tags: tagsStringArrayMaybeUndefined } = annotation;
+    const canEditAnnotation = canEditAnnotationInPanel(annotation);
+    const canDeleteAnnotation = canDeleteAnnotationInPanel(annotation);
+    const isEditing = isEdited && canEditAnnotation;
     const tagsStringArray = tagsStringArrayMaybeUndefined || [];
     const tagName = tagsStringArray[0] || "";
-    const dockedEditAnnotation = isEdited && dockedMode;
+    const dockedEditAnnotation = isEditing && dockedMode;
     const annotationColor = rgbToHex(annotation.color);
 
     const [textParsed, setTextParsed] = React.useState<string>();
@@ -86,19 +93,13 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
     const save = React.useCallback((color: IColor, comment: string, drawType: TDrawType, tags: string[]) => {
         dispatch(readerActions.note.addUpdate.build(
             pubId,
-            {
-                uuid: annotation.uuid,
-                locatorExtended: clone(annotation.locatorExtended),
+            buildAnnotationPanelSaveNote(annotation, {
                 color,
-                textualValue: comment,
-                drawType: EDrawType[drawType],
+                comment,
+                drawType,
                 tags,
                 modified: (new Date()).getTime(),
-                created: annotation.created,
-                index: annotation.index,
-                group: "annotation",
-                creator: clone(annotation.creator),
-            },
+            }),
             annotation,
         ));
         triggerEdition(false);
@@ -118,9 +119,23 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
     }, [r2Publication, annotation]);
 
     // const bname = (annotation?.locatorExtended?.selectionInfo?.cleanText ? `${annotation.locatorExtended.selectionInfo.cleanText.slice(0, 20)}` : `${__("reader.navigation.annotationTitle")} ${index}`);
-    const btext = (annotation.locatorExtended?.selectionInfo?.cleanText ? `${annotation.locatorExtended.selectionInfo.cleanText}` : `${__("reader.navigation.annotationTitle")} ${uuid}`);
+    const btext = getAnnotationCardText(annotation, `${__("reader.navigation.annotationTitle")} ${uuid}`);
+    const selectionText = getAnnotationSelectionText(annotation);
+    const pdfPageLabel = getPdfAnnotationPageLabel(annotation, __("reader.navigation.page"));
+    const annotationPanelNavigation = getAnnotationPanelNavigation(annotation);
+    const annotationButtonRef = React.useRef<HTMLButtonElement>();
 
-    const bprogression = (percentRounded >= 0 ? `${percentRounded}% ` : "");
+    React.useEffect(() => {
+        if (isSelected && !isEditing) {
+            window.setTimeout(() => {
+                annotationButtonRef.current?.scrollIntoView({ block: "nearest" });
+                annotationButtonRef.current?.focus();
+            }, 0);
+        }
+    }, [isSelected, isEditing]);
+
+    const locationText = pdfPageLabel || (percentRounded >= 0 ? `${percentRounded}% ` : "");
+    const locationLabel = pdfPageLabel ? __("reader.navigation.page") : __("publication.progression.title");
 
     if (!uuid) {
         return <></>;
@@ -130,8 +145,14 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
 
     return (<li
         className={stylesAnnotations.annotations_line}
-        style={{ backgroundColor: dockedEditAnnotation ? "var(--color-gray-50" : "", borderLeft: dockedEditAnnotation ? "none" : `4px solid ${annotationColor}` }}
-        onKeyDown={isEdited ? (e) => {
+        data-selected={isSelected ? "true" : undefined}
+        style={{
+            backgroundColor: dockedEditAnnotation ? "var(--color-gray-50" : "",
+            borderLeft: dockedEditAnnotation ? "none" : `4px solid ${annotationColor}`,
+            outline: isSelected && !isEditing ? "2px solid var(--color-brand-primary)" : undefined,
+            outlineOffset: isSelected && !isEditing ? "2px" : undefined,
+        }}
+        onKeyDown={isEditing ? (e) => {
             if (e.key === "Escape") {
                 e.preventDefault();
                 e.stopPropagation();
@@ -146,17 +167,26 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
         aria-label={__("reader.annotations.note", {color: __(Object.entries(noteColorCodeToColorTranslatorKeySet).find(([colorHex]) => colorHex === annotationColor)?.[1])})}
     >
         <div className={stylesAnnotations.annnotation_container}>
-            {isEdited ?
+            {isEditing ?
                 <></>
                 : <button className={classNames(stylesAnnotations.annotation_name, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
+                    ref={annotationButtonRef}
                     // title={bname}
-                    aria-label={`${__("reader.goToContent")} (${btext})`}
+                    aria-label={annotationPanelNavigation ? `${__("reader.goToContent")} (${btext})` : btext}
+                    aria-current={isSelected ? "true" : undefined}
                     style={{ borderLeft: dockedEditAnnotation && "2px solid var(--color-brand-primary)" }}
                     onClick={(e) => {
                         e.preventDefault();
                         const closeNavAnnotation = !dockedMode && !(e.shiftKey && e.altKey);
-                        if (annotation.locatorExtended) {
-                            goToLocator(annotation.locatorExtended.locator, closeNavAnnotation);
+                        if (annotationPanelNavigation?.type === "epub") {
+                            goToLocator(annotationPanelNavigation.locator, closeNavAnnotation);
+                        } else if (annotationPanelNavigation?.type === "pdf") {
+                            goToPdfAnnotation(annotationPanelNavigation.target, closeNavAnnotation);
+                        } else if (annotation.pdfAnnotation) {
+                            debugPdfAnnotationsPanel("annotation panel navigation target invalid", {
+                                uuid: annotation.uuid,
+                                pdfAnnotation: annotation.pdfAnnotation,
+                            });
                         }
                         // dispatch(readerLocalActionAnnotations.focus.build(annotation));
                     }}
@@ -188,7 +218,7 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
                 </button>
             }
             {
-                isEdited
+                isEditing
                     ?
                     <FocusLock disabled={false} autoFocus={true}>
                         <AnnotationEdit
@@ -201,6 +231,7 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
                             tags={annotation.tags}
                             comment={annotation.textualValue}
                             locatorExtended={annotation.locatorExtended}
+                            selectionText={selectionText}
                         />
                     </FocusLock>
                     :
@@ -243,9 +274,9 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
                     <SVG ariaHidden svg={CalendarIcon} />
                     <p>{dateStr}</p>
                 </div>
-                <div aria-label={__("publication.progression.title")}>
+                <div aria-label={locationLabel}>
                     <SVG ariaHidden svg={BookOpenIcon} />
-                    <p>{bprogression}</p>
+                    <p>{locationText}</p>
                 </div>
                 {creatorName
                     ?
@@ -276,16 +307,16 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
                     : <></>
                 }
             </div>
-            <div className={stylesAnnotations.annotation_actions_buttons}>
-                <button
-                    id={`${uuid}_edit_button`}
-                    title={__("reader.marks.edit")}
-                    disabled={isEdited}
-                    onClick={() => triggerEdition(true)}
-                >
-                    <SVG ariaHidden={true} svg={EditIcon} />
-                </button>
-                {isEdited ?
+            {(canEditAnnotation || canDeleteAnnotation) ? <div className={stylesAnnotations.annotation_actions_buttons}>
+                {canEditAnnotation ? <button
+                        id={`${uuid}_edit_button`}
+                        title={__("reader.marks.edit")}
+                        disabled={isEditing}
+                        onClick={() => triggerEdition(true)}
+                    >
+                        <SVG ariaHidden={true} svg={EditIcon} />
+                    </button> : <></>}
+                {canDeleteAnnotation && isEdited ?
                 <button title={__("reader.marks.delete")}
                 className={stylesPopoverDialog.delete_item_edition}
                 onClick={() => {
@@ -297,7 +328,7 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
                     <SVG ariaHidden={true} svg={DeleteIcon} />
                     { !dockedMode ? __("reader.marks.delete") : undefined}
                 </button> :
-                <Popover.Root>
+                canDeleteAnnotation ? <Popover.Root>
                     <Popover.Trigger asChild>
                         <button
                         title={__("reader.marks.delete")}
@@ -321,9 +352,9 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
                         </Popover.Content>
                     </Popover.Portal>
 
-                </Popover.Root>
+                </Popover.Root> : <></>
                 }
-            </div>
+            </div> : <></> }
         </div>
     </li>);
 };

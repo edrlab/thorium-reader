@@ -35,7 +35,6 @@ import { apiappApi } from "./redux/sagas/api";
 import { RootState } from "./redux/states";
 import { OpdsService } from "./services/opds";
 import { LSDManager } from "./services/lsd";
-import { tryCatch } from "readium-desktop/utils/tryCatch";
 import { EOL } from "os";
 import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
 import { PublicationData } from "./storage/publication-data";
@@ -289,9 +288,8 @@ let getStorePromise: ReturnType<typeof getStorePromiseFn>;
 
 const createStoreFromDi = async () => {
 
-    const _store = await tryCatch(() => diMainGet("store"), "Store not init");
-    if (_store) {
-        return _store;
+    if (container.isBound(diSymbolTable.store)) {
+        return diMainGet("store");
     }
 
     // if (createStoreProcessLock.isLock) {

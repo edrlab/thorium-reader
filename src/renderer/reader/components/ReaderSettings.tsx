@@ -66,10 +66,14 @@ import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-
 import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/renderer/note";
 import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
 
+// WARNING: Do not remove these references; they are required by the i18n scanner/checker.
+// __("reader.notes.colors.darkyellow");
+// __("reader.notes.colors.darkorange");
+
 const noteColorCodeToColorTranslatorKeySet_ = {
     ["#000000"]: "publication.accessibility.accessibilityHazard.none" as TTranslatorKeyParameter,
-    [rgbToHex(readerConfigInitialState.ttsHighlightColor)]: "Dark Yellow" as TTranslatorKeyParameter,
-    [rgbToHex(readerConfigInitialState.ttsHighlightColor_WORD)]: "Dark Orange" as TTranslatorKeyParameter,
+    [rgbToHex(readerConfigInitialState.ttsHighlightColor)]: "reader.notes.colors.darkyellow" as TTranslatorKeyParameter,
+    [rgbToHex(readerConfigInitialState.ttsHighlightColor_WORD)]: "reader.notes.colors.darkorange" as TTranslatorKeyParameter,
     ...noteColorCodeToColorTranslatorKeySet,
 };
 
@@ -270,7 +274,7 @@ export const FontSize = () => {
                     setCurrentSliderValue(newValue.replace(/%/g, ""));
                     set({ fontSize: newValue });
                 }
-                } className={stylesSettings.reset_button} title="default value">
+                } className={stylesSettings.reset_button} title={__("reader.settings.defaultValue")}>
                     <SVG ariaHidden svg={ResetIcon} />
                 </button>
                 <button 
@@ -428,6 +432,7 @@ interface ITable {
 const Slider = ({ value, option, set }: { value: string, option: ITable, set: (a: Pick<ReaderConfig, "pageMargins" | "wordSpacing" | "letterSpacing" | "paraSpacing" | "lineHeight">) => void }) => {
     const [currentSliderValue, setCurrentSliderValue] = React.useState(option.defaultValue);
     const [currentIndex, setCurrentIndex] = React.useState(() => (optionsValues[option.parameter] ||  [] ).findIndex((el) => el === option.defaultValue) || 0);
+    const [__] = useTranslator();
 
     React.useEffect(() => {
         setCurrentSliderValue(value);
@@ -464,7 +469,7 @@ const Slider = ({ value, option, set }: { value: string, option: ITable, set: (a
                 <button
                     onClick={() => updateValue(0)}
                     className={stylesSettings.reset_button}
-                    title="default value"
+                    title={__("reader.settings.defaultValue")}
                 >
                     <SVG ariaHidden svg={ResetIcon} />
                 </button>
@@ -1223,7 +1228,7 @@ const ReadingDisplayCheckboxSettings = ({
             id: "mathjax",
             name: "mathjax",
             label: __("reader.settings.mathjax"),
-            description: "MathJax",
+            description: __("reader.settings.mathjaxDescription"),
             checked: enableMathJax,
             onChange: () => {
                 if (enableMathJax === false) {

@@ -301,6 +301,18 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                 name: `${__("settings.keyboard.list.CloseReader.name")}`,
                 description: `${__("settings.keyboard.list.CloseReader.description")}`,
             },
+            AudioSpeedReset: {
+                name: `${__("settings.keyboard.list.AudioSpeedReset.name")}`,
+                description: `${__("settings.keyboard.list.AudioSpeedReset.description")}`,
+            },
+            AudioSpeedDecrease: {
+                name: `${__("settings.keyboard.list.AudioSpeedDecrease.name")}`,
+                description: `${__("settings.keyboard.list.AudioSpeedDecrease.description")}`,
+            },
+            AudioSpeedIncrease: {
+                name: `${__("settings.keyboard.list.AudioSpeedIncrease.name")}`,
+                description: `${__("settings.keyboard.list.AudioSpeedIncrease.description")}`,
+            },
             FXLZoomIn: {
                 name: `${__("settings.keyboard.list.FXLZoomIn.name")}`,
                 description: `${__("settings.keyboard.list.FXLZoomIn.description")}`,
@@ -592,7 +604,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                             <p>{__("settings.keyboard.disclaimer")}</p>
                         </div> */}
                     </div>
-                    
+
                         <div>
 
                         <div style={{ display: "flex", justifyContent: "space-between" }}>

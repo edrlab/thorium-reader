@@ -89,6 +89,7 @@
         "login": "",
         "logout": "",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Подробности за книгата",
         "myBooks": "Моите книги",
         "noPublicationHelpL1": "Пусни книгата тук",
@@ -105,6 +106,8 @@
                 "password": "",
                 "register": "",
                 "retry": "",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": ""
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "Статус"
             }
         },
+        "openFolder": "",
         "publisher": "Издател",
         "readBook": "Прочети",
         "released": "Публикувано на",
@@ -245,7 +249,13 @@
             "success": "Добавянето на {{- title}} завърши."
         },
         "open": {
-            "error": "Книгата не може да бъде отворена: {{- err}}"
+            "error": "Книгата не може да бъде отворена: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": ""
     },
@@ -578,6 +588,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "",
                 "descriptive": ""
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },
@@ -670,6 +684,11 @@
             },
             "annotationsOptions": "",
             "date": "",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "",
             "filter": {
                 "all": "",
@@ -784,6 +803,8 @@
         "notes": {
             "colors": {
                 "cyan": "",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "",
                 "orange": "",
                 "purple": "",
@@ -831,6 +852,7 @@
             },
             "customFontSelected": "",
             "customizeReader": "",
+            "defaultValue": "",
             "disabled": "",
             "display": "Екран",
             "disposition": {
@@ -846,6 +868,7 @@
             "lineSpacing": "Разстояние между редовете",
             "margin": "Отстъпи",
             "mathjax": "",
+            "mathjaxDescription": "",
             "noFootnotes": "Деактивирайте бележките под линия",
             "noRTLFlip": "",
             "noRuby": "",
@@ -974,6 +997,18 @@
                     "name": ""
                 },
                 "AudioPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
                     "description": "",
                     "name": ""
                 },
@@ -1198,11 +1233,54 @@
         "session": {
             "title": "Запиши сесията"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "",
             "general": "",
             "keyboardShortcuts": "",
-            "profiles": ""
+            "profiles": "",
+            "storage": ""
         },
         "theme": {
             "auto": "",

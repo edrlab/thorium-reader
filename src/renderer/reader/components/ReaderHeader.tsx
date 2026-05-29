@@ -55,7 +55,7 @@ import {
 } from "@r2-navigator-js/electron/renderer/index";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
-import { IPdfPlayerScale } from "../pdf/common/pdfReader.type";
+import { IPdfPlayerScale, TPdfAnnotationDraftTransport } from "../pdf/common/pdfReader.type";
 import HeaderSearch from "./header/HeaderSearch";
 import { IReaderMenuProps, IReaderSettingsProps } from "./options-values";
 import { ReaderMenu } from "./ReaderMenu/ReaderMenu";
@@ -69,6 +69,7 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import { PublicationInfoReaderWithRadix, PublicationInfoReaderWithRadixContent, PublicationInfoReaderWithRadixTrigger } from "./dialog/publicationInfos/PublicationInfo";
 import { ReaderSettings, ReadingAudio } from "./ReaderSettings";
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
+import { triggerPdfAnnotation } from "readium-desktop/renderer/reader/pdf/pdfAnnotationHost";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { readerLocalActionAnnotations, readerLocalActionToggleMenu, readerLocalActionToggleSettings } from "../redux/actions";
@@ -176,6 +177,10 @@ interface IBaseProps extends TranslatorProps {
     setPdfPrintOpen: (value: boolean) => void;
 
     publicationView: PublicationView;
+
+    pdfAnnotationDraft?: TPdfAnnotationDraftTransport | undefined;
+    savePdfAnnotation?: (color: IColor, comment: string, drawType: TDrawType, tags: string[]) => void;
+    cancelPdfAnnotation?: () => void;
 }
 
 // IProps may typically extend:
@@ -433,31 +438,47 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             // setTabValue: (value: string) => this.setState({ tabValue: value}),
         // };
 
-        const playbackRate = [
-            { id: 0, value: 0.5, name: "0.5x" },
-            { id: 1, value: 0.75, name: "0.75x" },
-            { id: 2, value: 1, name: "1x" },
-            { id: 3, value: 1.25, name: "1.25x" },
-            { id: 4, value: 1.5, name: "1.5x" },
-            { id: 5, value: 1.75, name: "1.75x" },
-            { id: 6, value: 2, name: "2x" },
-            { id: 7, value: 2.25, name: "2.25x" },
-            { id: 8, value: 2.5, name: "2.5x" },
-            { id: 9, value: 2.75, name: "2.75x" },
-            { id: 10, value: 3, name: "3x" },
-            { id: 11, value: 3.25, name: "3.25x" },
-            { id: 12, value: 3.5, name: "3.5x" },
-            { id: 13, value: 3.75, name: "3.75x" },
-            { id: 14, value: 4, name: "4x" },
-            { id: 15, value: 4.25, name: "4.25x" },
-            { id: 16, value: 4.5, name: "4.5x" },
-            { id: 17, value: 4.75, name: "4.75x" },
-            { id: 18, value: 5, name: "5x" },
-            { id: 19, value: 5.25, name: "5.25x" },
-            { id: 20, value: 5.5, name: "5.5x" },
-            { id: 21, value: 5.75, name: "5.75x" },
-            { id: 22, value: 6.00, name: "6x" },
-        ];
+        const DELTA = 0.1;
+        const MIN = 0.2;
+        const MAX = 6.0;
+
+        const playbackRate = [] as Array<{id: number, value: number, name: string}>;
+        // [
+        //     { id: 0, value: 0.5, name: "0.5x" },
+        //     { id: 1, value: 0.75, name: "0.75x" },
+        //     { id: 2, value: 1, name: "1x" },
+        //     { id: 3, value: 1.25, name: "1.25x" },
+        //     { id: 4, value: 1.5, name: "1.5x" },
+        //     { id: 5, value: 1.75, name: "1.75x" },
+        //     { id: 6, value: 2, name: "2x" },
+        //     { id: 7, value: 2.25, name: "2.25x" },
+        //     { id: 8, value: 2.5, name: "2.5x" },
+        //     { id: 9, value: 2.75, name: "2.75x" },
+        //     { id: 10, value: 3, name: "3x" },
+        //     { id: 11, value: 3.25, name: "3.25x" },
+        //     { id: 12, value: 3.5, name: "3.5x" },
+        //     { id: 13, value: 3.75, name: "3.75x" },
+        //     { id: 14, value: 4, name: "4x" },
+        //     { id: 15, value: 4.25, name: "4.25x" },
+        //     { id: 16, value: 4.5, name: "4.5x" },
+        //     { id: 17, value: 4.75, name: "4.75x" },
+        //     { id: 18, value: 5, name: "5x" },
+        //     { id: 19, value: 5.25, name: "5.25x" },
+        //     { id: 20, value: 5.5, name: "5.5x" },
+        //     { id: 21, value: 5.75, name: "5.75x" },
+        //     { id: 22, value: 6.00, name: "6x" },
+        // ];
+        let counterID = 1; // 1-base! (to avoid falsy)
+        for (let v = MIN; v <= MAX; v += DELTA) {
+            v = Math.round(v * 100) / 100;
+            const name = `${v}x`.replace(/^([0-9]+)(\.0+)x$/g, "$1x");
+            // console.log("AUDIO SPEED", v, "---", name);
+            playbackRate.push({
+                id: counterID++,
+                value: v,
+                name,
+            });
+        }
 
         const isRTL = this.props.isRTLFlip();
 
@@ -522,6 +543,16 @@ export class ReaderHeader extends React.Component<IProps, IState> {
           );
 
         const isAudioBook = isAudiobookFn(this.props.r2Publication);
+        const annotationPopoverOpen = this.props.isPdf
+            ? !!this.props.pdfAnnotationDraft
+            : this.props.isAnnotationModeEnabled;
+        const closeAnnotationPopover = () => {
+            if (this.props.isPdf) {
+                this.props.cancelPdfAnnotation?.();
+            } else {
+                this.props.closeAnnotationEditionMode(this.props.isAnnotationModeEnabledFromKeyboard);
+            }
+        };
 
 
         const appOverlayElement = document.getElementById("app-overlay");
@@ -794,9 +825,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                             defaultItems={playbackRate}
                                                                             // defaultSelectedKey={2}
                                                                             selectedKey={
-                                                                                this.props.ttsPlaybackRate ?
-                                                                                    playbackRate.find((rate) => rate.value.toString() === (useMO ? this.props.mediaOverlaysPlaybackRate : this.props.ttsPlaybackRate)).id :
-                                                                                    2
+                                                                                playbackRate.find((rate) => rate.value === (useMO ? parseFloat(this.props.mediaOverlaysPlaybackRate || "1.0") : parseFloat(this.props.ttsPlaybackRate || "1.0")))?.id || playbackRate.find((rate) => rate.value === 1)?.id || 1
                                                                             }
                                                                             onSelectionChange={(ev) => {
                                                                                 const v = playbackRate.find((option) => option.id === ev)?.value;
@@ -892,30 +921,38 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
                         <BookmarkButton shortcutEnable={this.props.shortcutEnable} isOnSearch={this.props.isOnSearch} />
 
-                        <Popover.Root open={this.props.isAnnotationModeEnabled} onOpenChange={(open) => {
+                        <Popover.Root open={annotationPopoverOpen} onOpenChange={(open) => {
                             if (!open) {
-                                setTimeout(() => this.props.closeAnnotationEditionMode(this.props.isAnnotationModeEnabledFromKeyboard), 1); // trigger input onChange before the popover trigger
+                                setTimeout(closeAnnotationPopover, 1); // trigger input onChange before the popover trigger
                             }
                         }}>
                             <Popover.Trigger asChild>
                                 <li
-                                    {...(this.props.isAnnotationModeEnabled &&
+                                    {...(annotationPopoverOpen &&
                                         { style: { backgroundColor: "var(--color-brand-primary)" } })}
                                 >
                                     <input
-                                        disabled={this.props.isPdf || this.props.isDivina || isAudioBook}
+                                        disabled={this.props.isDivina || isAudioBook}
                                         id="annotationButton"
                                         aria-label={__("reader.navigation.annotationTitle")}
                                         className={stylesReader.bookmarkButton}
                                         type="checkbox"
-                                        checked={this.props.isAnnotationModeEnabled}
+                                        checked={annotationPopoverOpen}
                                         onKeyUp={(e) => {
                                             if (e.key === "Enter") {
-                                                this.props.triggerAnnotationBtn(false);
+                                                if (annotationPopoverOpen) {
+                                                    closeAnnotationPopover();
+                                                } else {
+                                                    this.triggerAnnotation(false);
+                                                }
                                             }
                                         }}
                                         onChange={() => {
-                                            this.props.triggerAnnotationBtn(false);
+                                            if (annotationPopoverOpen) {
+                                                closeAnnotationPopover();
+                                            } else {
+                                                this.triggerAnnotation(false);
+                                            }
                                         }}
                                     />
                                     {
@@ -928,7 +965,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         id="annotationLabel"
                                         title={__("reader.navigation.annotationTitle")}
                                     >
-                                        <SVG ariaHidden svg={AnnotationsIcon} className={classNames(stylesReaderHeader.annotationsIcon, this.props.isAnnotationModeEnabled ? stylesReaderHeader.active_svg : "")} />
+                                        <SVG ariaHidden svg={AnnotationsIcon} className={classNames(stylesReaderHeader.annotationsIcon, annotationPopoverOpen ? stylesReaderHeader.active_svg : "")} />
                                     </label>
                                 </li>
                             </Popover.Trigger>
@@ -939,16 +976,21 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 >
                                     <AnnotationEdit
                                         save={(color: IColor, comment: string, drawType: TDrawType, tags: string[]) => {
-                                            this.props.saveAnnotation(this.props.isAnnotationModeEnabledFromKeyboard, color, comment, drawType, tags);
+                                            if (this.props.isPdf) {
+                                                this.props.savePdfAnnotation?.(color, comment, drawType, tags);
+                                            } else {
+                                                this.props.saveAnnotation(this.props.isAnnotationModeEnabledFromKeyboard, color, comment, drawType, tags);
+                                            }
                                         }}
-                                        cancel={() => this.props.closeAnnotationEditionMode(this.props.isAnnotationModeEnabledFromKeyboard)}
+                                        cancel={closeAnnotationPopover}
                                         dockedMode={isDockedMode}
                                         uuid=""
                                         color={this.props.readerConfig.annotation_defaultColor}
                                         drawType={this.props.readerConfig.annotation_defaultDrawType}
                                         tags={[]}
                                         comment=""
-                                        locatorExtended={this.props.annotationLocatorExtended}
+                                        locatorExtended={this.props.isPdf ? undefined : this.props.annotationLocatorExtended}
+                                        selectionText={this.props.isPdf ? this.props.pdfAnnotationDraft?.quote : undefined}
                                     />
                                     <Popover.Arrow style={{ fill: "var(--color-gray-50" }} width={15} height={10} />
                                 </Popover.Content>
@@ -1294,6 +1336,15 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
     private setScaleMode = (mode: IPdfPlayerScale) => {
         this.setState({ pdfScaleMode: mode });
+    };
+
+    private triggerAnnotation = (fromKeyboard: boolean) => {
+        triggerPdfAnnotation(
+            this.props.isPdf,
+            fromKeyboard,
+            () => createOrGetPdfEventBus().dispatch("highlight:create-from-selection"),
+            this.props.triggerAnnotationBtn,
+        );
     };
 
     private async getWebSpeechVoiceManager() {
