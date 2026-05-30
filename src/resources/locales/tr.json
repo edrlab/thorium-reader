@@ -89,7 +89,7 @@
         "login": "Giriş yap",
         "logout": "Oturumu Kapat",
         "missing": "",
-        "missingUnavailableDescription": "",
+        "missingUnavailableDescription": "Bu eser, depolanan dosyaları mevcut olmadığından açılamıyor. Eseri yeniden içe aktarın veya Ayarlar'a ve ardından Depolama'ya gidip ilave depolama ekleyin veya değiştirin.",
         "moreInfo": "Eser Ayrıntıları",
         "myBooks": "Eserlerim",
         "noPublicationHelpL1": "Dosyaları buraya bırakın",
@@ -106,8 +106,8 @@
                 "password": "Şifre",
                 "register": "Kaydol",
                 "retry": "Yeniden dene",
-                "unauthorized": "",
-                "unauthorizedUnsupportedType": "",
+                "unauthorized": "Yetkilendirilmemiş",
+                "unauthorizedUnsupportedType": "Yetkilendirilmemiş (desteklenmeyen WWWAuthenticate türü '{{- type}}')",
                 "username": "Kullanıcı adı / E-posta adresi"
             },
             "info": {
@@ -129,7 +129,7 @@
                 "state": "Durum"
             }
         },
-        "openFolder": "",
+        "openFolder": "Dizin'i aç",
         "publisher": "Yayımcı",
         "readBook": "Oku",
         "released": "Yayın tarihi:",
@@ -647,7 +647,7 @@
         "expiredLcp": "Bu eserin LCP lisans süresi doldu.",
         "incorrectPassphrase": "Eserle eşleşen kayıtlı bir şifre yok veya girilen şifre hatalı.",
         "lcpEnd": "Son",
-        "lcpNotSupported": "",
+        "lcpNotSupported": "UYARI: Bu, Thorium Desktop okuyucu uygulamasının prodüksiyon LCP lisanslarını desteklemeyen ve yalnızca sertifika doğrulaması olmadan LCP 'temel profil' şifre çözme işlemini destekleyen bir ön sürümüdür.",
         "lcpRightsCopy": "Kopyalanmış karakterler",
         "lcpRightsPrint": "Basılı sayfalar",
         "lcpStart": "Başlat",
@@ -687,7 +687,7 @@
             "date": "Değiştirme tarihi",
             "error": {
                 "pdf": {
-                    "validationSelection": ""
+                    "validationSelection": "Bu seçimden PDF açıklayıcı notları oluşturulamadı."
                 }
             },
             "export": "Notları farklı kaydet...",
@@ -1002,16 +1002,16 @@
                     "name": "Önceki Sesli Bölüm (kaçın)"
                 },
                 "AudioSpeedDecrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "EPUB3 Medya Katmanlarındaki ses oynatım hızını veya TTS sesli okuma hızını azaltır",
+                    "name": "Oynatım hızını azalt"
                 },
                 "AudioSpeedIncrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "EPUB3 Medya Katmanlarındaki ses oynatım hızını veya TTS sesli okuma hızını arttırır",
+                    "name": "Oynatım hızını arttır"
                 },
                 "AudioSpeedReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "EPUB3 Medya Katmanlarındaki ses oynatım hızını veya TTS sesli okuma hızını sıfırlar",
+                    "name": "Oynatım hızını sıfırla"
                 },
                 "AudioStop": {
                     "description": "Mevcut sesli oynatımı durdur (EPUB3 Medya Katmanları, Metinden Sese okuma veya önceden kaydedilmiş sesli kitap)",
@@ -1273,7 +1273,7 @@
                 "defaultDescription": "",
                 "defaultInternal": "",
                 "externalStorage": "",
-                "title": ""
+                "title": "Konumlar"
             }
         },
         "tabs": {
@@ -1281,7 +1281,7 @@
             "general": "Genel",
             "keyboardShortcuts": "Klavye kısayolları",
             "profiles": "Profiller",
-            "storage": ""
+            "storage": "Depolama"
         },
         "theme": {
             "auto": "Otomatik",
