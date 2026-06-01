@@ -250,12 +250,12 @@
         },
         "open": {
             "error": "Publikationen kan inte öppnas: {{- err}}",
-            "folderNotFound": ""
+            "folderNotFound": "Mappen för publikationen kan inte hittas. Importera den igen eller ändra i Inställningar > Lagring."
         },
         "storage": {
-            "removed": "",
-            "updateFailed": "",
-            "updated": ""
+            "removed": "Mappen för publikationen borttagen.",
+            "updateFailed": "Kunde inte uppdatera mappen för publikationen: {{- message}}",
+            "updated": "Mappen för publikationen uppdaterad."
         },
         "wipeData": "Inloggningsdata rensades (åtkomstnycklar och kakor)"
     },
@@ -590,8 +590,8 @@
                 "descriptive": "Information om möjlighet att justera utseende saknas"
             },
             "ways-of-reading-visual-adjustments-unmodifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Utseendet kan inte ändras",
+                "descriptive": "Text och sidlayout kan inte ändras eftersom läsupplevelsen är nära en tryckt version, men lässystem kan erbjuda zoom-alternativ"
             }
         }
     },
@@ -647,7 +647,7 @@
         "expiredLcp": "Den här boken går inte att läsa eftersom LCP-licensen har löpt ut.",
         "incorrectPassphrase": "Inget sparat lösenord passar för publikationen, eller det angivna lösenordet är fel.",
         "lcpEnd": "Slut",
-        "lcpNotSupported": "",
+        "lcpNotSupported": "VARNING: detta är en förhandsversion av Thorium Desktop som inte stödjer produktionsversioner av LCP-licenser, utan stödjer bara dekryptering av LCP 'basic profile' utan certifikatvalidering.",
         "lcpRightsCopy": "Kopiera tecken",
         "lcpRightsPrint": "Kopiera utskrift",
         "lcpStart": "Start",
@@ -687,7 +687,7 @@
             "date": "Redigeringsdatum",
             "error": {
                 "pdf": {
-                    "validationSelection": ""
+                    "validationSelection": "Kan inte skapa en PDF-anteckning från den markerade texten."
                 }
             },
             "export": "Spara anteckningar som...",
@@ -804,8 +804,8 @@
         "notes": {
             "colors": {
                 "cyan": "Cyan",
-                "darkorange": "",
-                "darkyellow": "",
+                "darkorange": "Mörkorange",
+                "darkyellow": "Mörkgul",
                 "green": "Grön",
                 "orange": "Orange",
                 "purple": "Lila",
@@ -853,7 +853,7 @@
             },
             "customFontSelected": "Du har valt ett eget typsnitt",
             "customizeReader": "Anpassa textformatering",
-            "defaultValue": "",
+            "defaultValue": "standardvärde",
             "disabled": "inaktiverad",
             "display": "Visning",
             "disposition": {
@@ -869,7 +869,7 @@
             "lineSpacing": "Radavstånd",
             "margin": "Marginaler",
             "mathjax": "Aktivera MathJax",
-            "mathjaxDescription": "",
+            "mathjaxDescription": "MathJax",
             "noFootnotes": "Inaktivera popup-fotnoter",
             "noRTLFlip": "Inaktivera vänster-till-höger-gränssnitt",
             "noRuby": "Dölj japanska ruby-tecken",
@@ -1002,16 +1002,16 @@
                     "name": "Föregående ljudavsnitt (hoppa över)"
                 },
                 "AudioSpeedDecrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Minska hastigheten på ljudspår i EPUB3 Media Overlays eller uppläsningshastigheten för text-till-tal",
+                    "name": "Minska uppspelningshastigheten"
                 },
                 "AudioSpeedIncrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Öka hastigheten på ljudspår i EPUB3 Media Overlays eller uppläsningshastigheten för text-till-tal",
+                    "name": "Öka uppspelningshastigheten"
                 },
                 "AudioSpeedReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Återställ hastigheten för ljudspår i EPUB3 Media Overlays eller uppläsningshastigheten för text-till-tal",
+                    "name": "Återställ uppspelningshastigheten"
                 },
                 "AudioStop": {
                     "description": "Stoppa uppspelningen (e-bok med text och uppläsning, text-till-tal eller ljudbok)",
@@ -1236,9 +1236,9 @@
         },
         "storage": {
             "actions": {
-                "addDirectory": "",
-                "changeDirectory": "",
-                "removeStorageDirectory": ""
+                "addDirectory": "Välj extra lagring",
+                "changeDirectory": "Uppdatera extra lagring",
+                "removeStorageDirectory": "Ta bort extra lagring"
             },
             "beta": {
                 "availability": "",
