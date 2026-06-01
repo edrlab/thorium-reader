@@ -106,7 +106,7 @@
                 "password": "Password",
                 "register": "Registrati",
                 "retry": "Riprovare",
-                "unauthorized": "",
+                "unauthorized": "Non autorizzato",
                 "unauthorizedUnsupportedType": "",
                 "username": "Nome utente / Indirizzo e-mail"
             },
