@@ -89,7 +89,7 @@
         "login": "Log ind",
         "logout": "Log ud",
         "missing": "",
-        "missingUnavailableDescription": "",
+        "missingUnavailableDescription": "Denne bog kan ikke åbnes, da dens filer ikke er tilgængelige. Re-importér eller gå til Indstillinger og Lagerplads for at ændre eller tilføje mere lagerplads.",
         "moreInfo": "Bogdetaljer",
         "myBooks": "Mine bøger",
         "noPublicationHelpL1": "Træk en bog hertil",
@@ -106,8 +106,8 @@
                 "password": "Adgangskode",
                 "register": "Registrér",
                 "retry": "Prøv igen",
-                "unauthorized": "",
-                "unauthorizedUnsupportedType": "",
+                "unauthorized": "Uautoriseret",
+                "unauthorizedUnsupportedType": "Uautoriseret (ikke-understøttet type i WWWAuthenticate: '{{- type}}')",
                 "username": "Brugernavn / email-adresse"
             },
             "info": {
@@ -129,7 +129,7 @@
                 "state": "Tilstand"
             }
         },
-        "openFolder": "",
+        "openFolder": "Åben mappe",
         "publisher": "Udgiver",
         "readBook": "Læs bog",
         "released": "Udgivelsesdato",
@@ -250,12 +250,12 @@
         },
         "open": {
             "error": "Bogen kan ikke åbnes: {{- err}}",
-            "folderNotFound": ""
+            "folderNotFound": "Bogmappen kan ikke findes. Importer den igen, eller konfigurer ekstra lagerplads i Indstillinger under Lagerplads."
         },
         "storage": {
-            "removed": "",
-            "updateFailed": "",
-            "updated": ""
+            "removed": "Bogmappe blev fjernet.",
+            "updateFailed": "Fejl ved opdatering af bog-mappe: {{- message}}",
+            "updated": "Bog-mappe blev opdateret."
         },
         "wipeData": "Login data blev slettet (adgangsnøgler og cookies)"
     },
@@ -590,8 +590,8 @@
                 "descriptive": "Ingen information angiver om bogens udseende kan ændres"
             },
             "ways-of-reading-visual-adjustments-unmodifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Visningen kan ikke ændres",
+                "descriptive": "Tekst og sidelayout kan ikke ændres, da læseoplevelsen minder om en trykt version, men læsesystemer kan stadig tilbyde zoom indstillinger"
             }
         }
     },
@@ -647,7 +647,7 @@
         "expiredLcp": "Denne bog kan ikke læses, da LCP-licensen er udløbet.",
         "incorrectPassphrase": "Intet gemt nøgleord passer til bogen, eller det indtastede nøgleord er forkert.",
         "lcpEnd": "Slut",
-        "lcpNotSupported": "",
+        "lcpNotSupported": "ADVARSEL: Dette er en pre-release version af Thorium Desktop, som ikke understøtter rigtige LCP-licenser og kun understøtter LCP-dekryptering af 'grundlæggende profil' uden certifikatvalidering.",
         "lcpRightsCopy": "Kopierede bogstaver",
         "lcpRightsPrint": "Printede sider",
         "lcpStart": "Start",
@@ -687,7 +687,7 @@
             "date": "Redigeringsdato",
             "error": {
                 "pdf": {
-                    "validationSelection": ""
+                    "validationSelection": "Det var ikke muligt at oprette PDF-note fra dette valg."
                 }
             },
             "export": "Gem noter som...",
@@ -804,8 +804,8 @@
         "notes": {
             "colors": {
                 "cyan": "Cyan",
-                "darkorange": "",
-                "darkyellow": "",
+                "darkorange": "Mørkeorange",
+                "darkyellow": "Mørkegul",
                 "green": "Grøn",
                 "orange": "Orange",
                 "purple": "Lilla",
@@ -853,7 +853,7 @@
             },
             "customFontSelected": "Du har valgt en personlig skrifttype",
             "customizeReader": "Tilpas tekstformatering",
-            "defaultValue": "",
+            "defaultValue": "standard værdi",
             "disabled": "slået fra",
             "display": "Visning",
             "disposition": {
@@ -869,7 +869,7 @@
             "lineSpacing": "Linje-mellemrum",
             "margin": "Margen",
             "mathjax": "Slå MathJax til",
-            "mathjaxDescription": "",
+            "mathjaxDescription": "MathJax",
             "noFootnotes": "Slå popup med fodnoter fra",
             "noRTLFlip": "Slå højre-til-venstre UI fra",
             "noRuby": "Skjul japansk læsehjælp (Ruby)",
@@ -1002,16 +1002,16 @@
                     "name": "Forrige Lyd (spring ud)"
                 },
                 "AudioSpeedDecrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Reducer hastigheden på lydafspilning af forudindspillet lyd i EPUB3 eller TTS-højtlæsningshastighed",
+                    "name": "Sænk lydhastigheden"
                 },
                 "AudioSpeedIncrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Forøg hastigheden på lydafspilning af forudindspillet lyd i EPUB3 eller TTS-højtlæsningshastighed",
+                    "name": "Forøg lydhastigheden"
                 },
                 "AudioSpeedReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nulstil hastigheden på lydafspilning af forudindspillet lyd i EPUB3 eller TTS-højtlæsningshastighed",
+                    "name": "Nulstil lydhastigheden"
                 },
                 "AudioStop": {
                     "description": "Stop afspilning af tilhørende medier, tekst-til-tale eller oplæsning",
@@ -1236,44 +1236,44 @@
         },
         "storage": {
             "actions": {
-                "addDirectory": "",
-                "changeDirectory": "",
-                "removeStorageDirectory": ""
+                "addDirectory": "Vælg ekstra lagerplads",
+                "changeDirectory": "Opdater ekstra lagerplads",
+                "removeStorageDirectory": "Fjern ekstra lagerplads"
             },
             "beta": {
-                "availability": "",
-                "integrity": "",
-                "migration": "",
-                "summary": "",
-                "warning": ""
+                "availability": "Denne funktion virker kun med nyere versioner af Thorium; bøger i eksterne mapper vises ikke i Thorium 3.4 eller tidligere.",
+                "integrity": "Du skal holde denne mappe sikker og tilgængelig. Undgå at slette den, begrænse adgangen til den eller bruge langsom eller ustabil lagring, f.eks. et netværksdrev eller online drev.",
+                "migration": "Thorium overfører ikke automatisk dine bøger: Hvis du opdaterer den ekstra lagerplads, skal du manuelt flytte dine bøger til den nye placering. Hvis du fjerner den, skal du manuelt flytte dine bøger til den oprindelige lagerplads.",
+                "summary": "Læs mere om denne feature, som er i beta test",
+                "warning": "Du må ikke manuelt ændre filerne i denne mappe, da dette kan forårsage problemer med dine bøger eller læseren. Tænk på denne mappe som et sikkert bibliotek, der administreres af Thorium."
             },
             "configuration": {
-                "chooseFolderDescription": "",
-                "configuredDescription": "",
-                "notConfiguredDescription": ""
+                "chooseFolderDescription": "Vælg den mappe som Thorium skal benytte som ekstra lagerplads.",
+                "configuredDescription": "Den ekstra lagerplads er nu konfigureret og klar til brug med nye gemte bøger.",
+                "notConfiguredDescription": "Bøger importeret til Thorium Reader gemmes i den valgte mappe. Bøger, der tidligere er importeret, forbliver i det oprindelige systemlager."
             },
             "dialogs": {
                 "add": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Fortsæt",
+                    "description": "Denne feature er lige nu i beta test. Ønsker du at fortsætte med at konfigurere ekstra lagerplads, ved at vælge en mappe?",
+                    "title": "Vælg ekstra lagerplads"
                 },
                 "edit": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Rediger mappe",
+                    "description": "Opdatering af den ekstra lagerplads kræver omhu. Thorium migrerer ikke eksisterende bøger for dig; du bliver nødt til at gøre det manuelt. Ønsker du at fortsætte?",
+                    "title": "Opdater den ekstra lagerplads"
                 },
                 "remove": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Fjern mappe",
+                    "description": "Fjernelse af den ekstra lagerplads kræver omhu. Thorium migrerer ikke eksisterende bøger for dig; du bliver nødt til at gøre det manuelt. Ønsker du at fortsætte?",
+                    "title": "Fjern ekstra lagerplads"
                 }
             },
             "locations": {
-                "defaultDescription": "",
-                "defaultInternal": "",
-                "externalStorage": "",
-                "title": ""
+                "defaultDescription": "Bøger som administreres af denne læser, gemmes som standard i:",
+                "defaultInternal": "Systemlager",
+                "externalStorage": "Eksternt lager",
+                "title": "Placeringer"
             }
         },
         "tabs": {
@@ -1281,7 +1281,7 @@
             "general": "Generelt",
             "keyboardShortcuts": "Tastaturgenveje",
             "profiles": "Profiler",
-            "storage": ""
+            "storage": "Lagerplads"
         },
         "theme": {
             "auto": "Automatisk",
