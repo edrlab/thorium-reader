@@ -89,7 +89,7 @@
         "login": "Login",
         "logout": "Logout",
         "missing": "",
-        "missingUnavailableDescription": "",
+        "missingUnavailableDescription": "Questa pubblicazione non può essere aperta perché i file depositati non sono disponibili. Si prega di reimportarli o di cliccare su Impostazioni e poi su Memoria per aggiungere o modificare la memoria.",
         "moreInfo": "Maggiori informazioni",
         "myBooks": "I miei libri",
         "noPublicationHelpL1": "Rilascia qui i file",
@@ -107,7 +107,7 @@
                 "register": "Registrati",
                 "retry": "Riprovare",
                 "unauthorized": "Non autorizzato",
-                "unauthorizedUnsupportedType": "",
+                "unauthorizedUnsupportedType": "Non autorizzato (WWWAuthenticate type '{{- type}}' non supportato)",
                 "username": "Nome utente / Indirizzo e-mail"
             },
             "info": {
@@ -129,7 +129,7 @@
                 "state": "Stato"
             }
         },
-        "openFolder": "",
+        "openFolder": "Apri la cartella",
         "publisher": "Editore",
         "readBook": "Leggi",
         "released": "Pubblicato il",
@@ -255,12 +255,12 @@
         },
         "open": {
             "error": "La pubblicazione non può essere aperta: {{- err}}",
-            "folderNotFound": ""
+            "folderNotFound": "La cartella della pubblicazione non si trova. Reimportala o configura della memoria aggiuntiva in Impostazioni > Memoria."
         },
         "storage": {
-            "removed": "",
-            "updateFailed": "",
-            "updated": ""
+            "removed": "Cartella della pubblicazione eliminata.",
+            "updateFailed": "Aggiornamento della cartella della pubblicazione fallito: {{- message}}",
+            "updated": "Cartella della pubblicazione aggiornata."
         },
         "wipeData": "I dati per il login sono stati cancellati (token d'accesso e cookies)"
     },
@@ -294,7 +294,7 @@
             "error": "Impossibile accedere al feed OPDS",
             "noInternet": "Nessuna connessione internet",
             "noInternetMessage": "Controlla il cavo di connessione, il modem, il router o l connessione wifi",
-            "reject": "Si è verificato un errore inatteso durante l'elaborazione del feed OPDS!",
+            "reject": "Si è verificato un errore inatteso!",
             "timeout": "Si è verificato un timeout nella connessione, per favore riprova più tardi"
         },
         "next": "Successivo",
@@ -595,8 +595,8 @@
                 "descriptive": "Nessuna informazione sulla possibilità di formattare il testo"
             },
             "ways-of-reading-visual-adjustments-unmodifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "L'aspetto non può essere modificato",
+                "descriptive": "La formattazione del testo e della pagina sono simili alla versione a stampa e non possono essere modificate ma il sistema può fornire opzioni di zoom"
             }
         }
     },
@@ -652,7 +652,7 @@
         "expiredLcp": "Questa pubblicazione non può essere letta perché la licenza LCP è scaduta.",
         "incorrectPassphrase": "Nessuna passphrase memorizzata è associata alla pubblicazione, oppure la passphrase inserita è errata.",
         "lcpEnd": "Fine",
-        "lcpNotSupported": "",
+        "lcpNotSupported": "ATTENZIONE: questo è un prototipo di Thorium Reader che non supporta la produzione di licenze LCP e supporta unicamente la versione di base di LCP, senza convalida di certificato.",
         "lcpRightsCopy": "Caratteri copiati",
         "lcpRightsPrint": "Pagine stampate",
         "lcpStart": "Inizio",
@@ -692,7 +692,7 @@
             "date": "Data di modifica",
             "error": {
                 "pdf": {
-                    "validationSelection": ""
+                    "validationSelection": "Impossibile creare un'annotazione PDF da questa selezione."
                 }
             },
             "export": "Salva le note in...",
@@ -809,8 +809,8 @@
         "notes": {
             "colors": {
                 "cyan": "Ciano",
-                "darkorange": "",
-                "darkyellow": "",
+                "darkorange": "Arancione scuro",
+                "darkyellow": "Giallo scuro",
                 "green": "Verde",
                 "orange": "Arancione",
                 "purple": "Viola",
@@ -859,7 +859,7 @@
             },
             "customFontSelected": "Hai scelto un font personale",
             "customizeReader": "Personalizza la formattazione del testo",
-            "defaultValue": "",
+            "defaultValue": "valore predefinito",
             "disabled": "Disattivato",
             "display": "Visualizzazione",
             "disposition": {
@@ -875,7 +875,7 @@
             "lineSpacing": "Spaziatura tra le linee",
             "margin": "Margine",
             "mathjax": "Abilita MathJax",
-            "mathjaxDescription": "",
+            "mathjaxDescription": "MathJax",
             "noFootnotes": "Disattiva note a piè di pagina in elementi a comparsa",
             "noRTLFlip": "Disabilita l'interfaccia utente da destra a sinistra",
             "noRuby": "Nascondi Ruby Giapponese",
@@ -910,7 +910,7 @@
             "reduceMotion": "Riduci il movimento",
             "scrolled": "Scrollabile",
             "spacing": "Spaziatura",
-            "spreadModeEven": "",
+            "spreadModeEven": "Pagine affiancate 'pari' (l'impostazione predefinita è 'dispari')",
             "text": "Testo",
             "theme": {
                 "name": {
@@ -1008,16 +1008,16 @@
                     "name": "Segmento audio precedente (esci)"
                 },
                 "AudioSpeedDecrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Riduci la velocità della riproduzione dell'audio EPUB3 Media Overlays o della lettura ad alta voce",
+                    "name": "Riduci la velocità dell'audio"
                 },
                 "AudioSpeedIncrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Aumenta la velocità della riproduzione dell'audio EPUB3 Media Overlays o della lettura ad alta voce",
+                    "name": "Aumenta la velocità dell'audio"
                 },
                 "AudioSpeedReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Esegui il reset della velocità della riproduzione dell'audio EPUB3 Media Overlays o della lettura ad alta voce",
+                    "name": "Esegui il reset della velocità dell'audio"
                 },
                 "AudioStop": {
                     "description": "Interrompi l'audio in riproduzione (EPUB3 con Media Overlays, lettura ad alta voce con sintesi vocale o audiolibro preregistrato)",
@@ -1225,7 +1225,7 @@
             }
         },
         "profiles": {
-            "info": "",
+            "info": "Cambia il profilo per personalizzare l'app con il marchio e i colori del partner fornitore. Ogni profilo offre un'esperienza personalizzata.",
             "thorium": {
                 "description": "Il profilo originale è Thorium Vanilla, creato da EDRLab.",
                 "title": "Thorium vanilla"
@@ -1233,7 +1233,7 @@
             "version": "Versione: {{- version}}"
         },
         "screenReaderActivate": {
-            "help": "",
+            "help": "Quando l'applicazione rileva la presenza di tecnologia assistiva, l'interfaccia utente funziona meglio con i lettori di schermo",
             "message": "Supporto migliorato per screen reader",
             "title": "Migliora l’esperienza con lo screen reader"
         },
@@ -1242,44 +1242,44 @@
         },
         "storage": {
             "actions": {
-                "addDirectory": "",
-                "changeDirectory": "",
-                "removeStorageDirectory": ""
+                "addDirectory": "Seleziona uno spazio di archiviazione aggiuntivo",
+                "changeDirectory": "Aggiorna lo spazio d'archiviazione",
+                "removeStorageDirectory": "Rimuovi lo spazio d'archiviazione aggiuntivo"
             },
             "beta": {
-                "availability": "",
-                "integrity": "",
-                "migration": "",
-                "summary": "",
-                "warning": ""
+                "availability": "Questa configurazione funziona solo con le versioni recenti di Thorium; le cartelle esterne non appariranno nella versione Thorium 3.4 o quelle precedenti.",
+                "integrity": "È necessario mantenere questa directory al sicuro e accessibile. Si eviti di eliminarla, di limitarne l'accesso o di utilizzare supporti di archiviazione lenti o instabili, come le unità di rete condivisa.",
+                "migration": "Thorium non trasferisce automaticamente i tuoi libri: se lo spazio d'archiviazione viene aggiornato è necessario trasferire le pubblicazioni nel nuovo spazio. Se viene rimosso, è necessario trasferire le pubblicazioni nello spazio d'archiviazione d'origine.",
+                "summary": "Scopri di più su questa funzionalità, attualmente nella versione beta",
+                "warning": "Non modificare manualmente i file di questa cartella, si potrebbero verificare danni ai file dei libri o al reader. Immagina questa cartella come una biblioteca custodita e gestita da Thorium."
             },
             "configuration": {
-                "chooseFolderDescription": "",
-                "configuredDescription": "",
-                "notConfiguredDescription": ""
+                "chooseFolderDescription": "Scegli la directory che Thorium dovrebbe usare come spazio aggiuntivo d'archiviazione.",
+                "configuredDescription": "Lo spazio d'archiviazione aggiuntivo è configurato e pronto all'uso per depositare nuove pubblicazioni.",
+                "notConfiguredDescription": "Le pubblicazioni importate in Thorium Reader verranno depositate nella directory selezionata. Le pubblicazioni importate in precedenza rimarranno nello spazio d'archiviazione originale."
             },
             "dialogs": {
                 "add": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Continua",
+                    "description": "Questa funzionalità è attualmente nella versione beta. Desideri continuare e configurare lo spazio d'archiviazione aggiuntivo selezionando una directory?",
+                    "title": "Seleziona uno spazio d'archiviazione aggiuntivo"
                 },
                 "edit": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Modifica la directory",
+                    "description": "Aggiornare lo spazio d'archiviazione richiede prudenza. Thorium non trasferirà le pubblicazioni in modo automatico, sarà necessario farlo manualmente. Desideri continuare?",
+                    "title": "Aggiorna lo spazio d'archiviazione"
                 },
                 "remove": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Rimuovi directory",
+                    "description": "Rimuovere lo spazio d'archiviazione richiede prudenza. Thorium non trasferirà le pubblicazioni in modo automatico, sarà necessario farlo manualmente. Desideri continuare?",
+                    "title": "Rimuovi lo spazio d'archiviazione aggiuntivo"
                 }
             },
             "locations": {
-                "defaultDescription": "",
-                "defaultInternal": "",
-                "externalStorage": "",
-                "title": ""
+                "defaultDescription": "Le pubblicazioni gestite dall'applicazione sono archiviate per impostazione predefinita in:",
+                "defaultInternal": "Archiviazione di sistema",
+                "externalStorage": "Spazio d'archiviazione esterno",
+                "title": "Posizioni"
             }
         },
         "tabs": {
@@ -1287,7 +1287,7 @@
             "general": "Generale",
             "keyboardShortcuts": "Scorciatoie da tastiera",
             "profiles": "Profili",
-            "storage": ""
+            "storage": "Spazio d'archiviazione"
         },
         "theme": {
             "auto": "Automatico",
