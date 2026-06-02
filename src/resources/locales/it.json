@@ -89,7 +89,7 @@
         "login": "Login",
         "logout": "Logout",
         "missing": "",
-        "missingUnavailableDescription": "Questa pubblicazione non può essere aperta perché i file depositati non sono disponibili. Si prega di reimportarli o di cliccare su Impostazioni e poi su Memoria per aggiungere o modificare la memoria.",
+        "missingUnavailableDescription": "Questa pubblicazione non può essere aperta perché i file depositati non sono disponibili. Si prega di reimportarli o di cliccare su Impostazioni e poi su Spazio d'archiviazione per aggiungere o modificare lo spazio d'archiviazione.",
         "moreInfo": "Maggiori informazioni",
         "myBooks": "I miei libri",
         "noPublicationHelpL1": "Rilascia qui i file",
@@ -114,7 +114,7 @@
                 "availableSince": "Da",
                 "availableState": {
                     "available": "Disponibile",
-                    "ready": "Disponibil",
+                    "ready": "Disponibile",
                     "reserved": "Prenotato",
                     "unavailable": "Non disponibile",
                     "unknown": "Sconosciuto"
@@ -202,9 +202,9 @@
         "importTitle": "Importa una pubblicazione",
         "listTitle": "Vista a lista",
         "myCatalogs": "I miei cataloghi",
-        "refreshTitle": "Aggiorna",
+        "refreshTitle": "Ricarica",
         "searchPlaceholder": "Cerca",
-        "searchTitle": "Titolo, autore, formato o parola chiave",
+        "searchTitle": "Ricerca",
         "settings": "Impostazioni",
         "settingsLabel": "Impostazioni dell'applicazione",
         "viewMode": "Modalità di visualizzazione"
@@ -216,7 +216,7 @@
             "selectOption": "Seleziona un elemento"
         },
         "lcp": {
-            "hidePassphrase": "Nascondi la password",
+            "hidePassphrase": "Nascondi la passphrase",
             "hint": "Suggerimento:",
             "open": "Apri",
             "password": "Passphrase",
@@ -255,7 +255,7 @@
         },
         "open": {
             "error": "La pubblicazione non può essere aperta: {{- err}}",
-            "folderNotFound": "La cartella della pubblicazione non si trova. Reimportala o configura della memoria aggiuntiva in Impostazioni > Memoria."
+            "folderNotFound": "La cartella della pubblicazione non si trova. Reimportala o configura uno spazio d'archiviazione aggiuntivo in Impostazioni > Spazio d'archiviazione."
         },
         "storage": {
             "removed": "Cartella della pubblicazione eliminata.",
@@ -356,7 +356,7 @@
             },
             "additional-accessibility-information-tactile-graphics": {
                 "compact": "Grafica tattile inclusa",
-                "descriptive": "La grafica tattile è stata integrata per facilitare l'accesso agli elementi visivi alle persone non vedenti"
+                "descriptive": "La grafica tattile è stata integrata per facilitare l'accesso agli elementi visivi per le persone non vedenti"
             },
             "additional-accessibility-information-tactile-objects": {
                 "compact": "Oggetti 3D tattili",
