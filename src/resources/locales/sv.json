@@ -1070,7 +1070,7 @@
                     "name": "Gå till läsarinställningar"
                 },
                 "FocusSearch": {
-                    "description": "Flytta tangentbordsfokus till sökrutan i läsfönstret. I biblioteksfönstret påbörjas en sökning i bokhyllan eller i den aktiva katalogen.",
+                    "description": "I läsfönstret flyttas tangentbordsfokus till sökrutan, och i biblioteksfönstret söker detta i bokhyllan eller i den aktiva OPDS-katalogen",
                     "name": "Sökkommando"
                 },
                 "FocusToolbar": {
