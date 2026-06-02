@@ -144,6 +144,9 @@
         "annotations": {
             "descAuthor": "",
             "descCreator": "",
+            "descList_other": "",
+            "descNewer_other": "",
+            "descOlder_other": "",
             "descTitle": "",
             "importAll": "",
             "importWithoutConflict": "",
@@ -159,7 +162,9 @@
             }
         },
         "deleteAnnotations": "",
+        "deleteAnnotationsText_other": "",
         "deleteBookmarks": "",
+        "deleteBookmarksText_other": "",
         "deleteFeed": "카탈로그를 제거하겠습니까?",
         "deletePublication": "출판물을 제거하겠습니까?",
         "deletePublicationWithNotes": "",
@@ -805,7 +810,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- count}} 일치",
+                "founds_other": "{{- count}} 일치",
                 "input": "텍스트 입력",
                 "next": "다음",
                 "notFound": "일치하는 내용이 없습니다.",
