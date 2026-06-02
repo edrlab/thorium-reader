@@ -982,7 +982,7 @@
                     "name": "Slå på/av anteckningsmarginal"
                 },
                 "AudioNext": {
-                    "description": "Gå framåt till nästa ljudavsnitt (e-bok med text och uppläsning, text-till-tal eller ljudbok)",
+                    "description": "Gå framåt till nästa ljudavsnitt (e-bok med text och ljud, text-till-tal eller ljudbok)",
                     "name": "Nästa ljudavsnitt"
                 },
                 "AudioNextAlt": {
