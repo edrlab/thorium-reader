@@ -322,8 +322,8 @@
                 "descriptive": "Punktskrift"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "Fullständig ruby-annotering",
-                "descriptive": "Fullständig ruby-annotering"
+                "compact": "Fullständiga ruby-annoteringar",
+                "descriptive": "Fullständiga ruby-annoteringar"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
                 "compact": "Hög kontrast mellan förgrundsljud och bakgrundsljud",
@@ -342,8 +342,8 @@
                 "descriptive": "Innehåller sidnummer från tryckt förlaga"
             },
             "additional-accessibility-information-ruby-annotations": {
-                "compact": "Viss ruby-annotering",
-                "descriptive": "Viss ruby-annotering"
+                "compact": "Vissa ruby-annoteringar",
+                "descriptive": "Vissa ruby-annoteringar"
             },
             "additional-accessibility-information-sign-language": {
                 "compact": "Teckenspråk",
@@ -1209,13 +1209,13 @@
         },
         "library": {
             "enableAPIAPP": "Aktivera åtkomst till Dilicom PNB API",
-            "title": "Lägg till ett bibliotekskonto"
+            "title": "Tillgång till franska bibliotekskonton"
         },
         "note": {
             "export": {
                 "applyDefaultTemplate": "Använd standardmallen",
                 "enableCheckbox": "Anpassa HTML-mallen",
-                "overrideHTMLTemplate": "Export av anteckningar och bokmärken"
+                "overrideHTMLTemplate": "Exportera anteckningar och bokmärken"
             }
         },
         "profiles": {
@@ -1232,7 +1232,7 @@
             "title": "Förbättra skärmläsarupplevelsen"
         },
         "session": {
-            "title": "Spara session"
+            "title": "Spara sessioner"
         },
         "storage": {
             "actions": {
@@ -1286,7 +1286,7 @@
         "theme": {
             "auto": "Automatiskt",
             "dark": "Mörkt",
-            "description": "Applikationens tema matchar operativsystemet.",
+            "description": "Applikationens tema följer operativsystemet.",
             "light": "Ljust",
             "title": "Applikationens tema"
         }
