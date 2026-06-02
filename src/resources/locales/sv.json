@@ -740,7 +740,7 @@
             "title": "Bildvisare (zoom)",
             "zoomIn": "Zooma in",
             "zoomOut": "Zooma ut",
-            "zoomReset": "Återställ zoom"
+            "zoomReset": "Återställ zoomnivå"
         },
         "marks": {
             "annotations": "Anteckningar",
