@@ -817,7 +817,7 @@
             "search": {
                 "founds_one": "{{- count}} träff",
                 "founds_other": "{{- count}} träffar",
-                "input": "text att söka på",
+                "input": "text att söka efter",
                 "next": "Nästa",
                 "notFound": "inga träffar",
                 "previous": "Föregående",
@@ -871,11 +871,11 @@
             "mathjax": "Aktivera MathJax",
             "mathjaxDescription": "MathJax",
             "noFootnotes": "Inaktivera popup-fotnoter",
-            "noRTLFlip": "Inaktivera vänster-till-höger-gränssnitt",
+            "noRTLFlip": "Inaktivera höger-till-vänster-gränssnitt",
             "noRuby": "Dölj japanska ruby-tecken",
             "noTemporaryNavTargetOutline": "Inaktivera visuella hjälpmedel för navigering",
             "paginated": "Sidindelad",
-            "paraSpacing": "Styckesavstånd",
+            "paraSpacing": "Styckeavstånd",
             "pdfZoom": {
                 "name": {
                     "100pct": "100 %",
@@ -887,21 +887,21 @@
                     "fit": "sidstorlek",
                     "width": "sidbredd"
                 },
-                "title": "Zooma"
+                "title": "Zoom"
             },
             "preset": {
-                "apply": "Tillämpa egna läsinställningar",
-                "applyDetails": "Tillämpa dina sparade läsinställningar på den aktuella boken.",
-                "detail": "Spara/tillämpa/återställ dina läsinställningar.",
+                "apply": "Använd egna läsinställningar",
+                "applyDetails": "Använd dina sparade läsinställningar på den nuvarande boken.",
+                "detail": "Spara/använd/återställ dina läsinställningar.",
                 "reset": "Återställ läsinställningar",
-                "resetDetails": "Återställ dina läsinställningar till standard och tillämpa inställningarna på den aktuella boken.",
+                "resetDetails": "Återställ dina läsinställningar till standardinställningarna.",
                 "save": "Spara egna läsinställningar",
-                "saveDetails": "Spara de anpassade inställningarna för visning och textformatering. Du kan tillämpa dem på andra böcker genom att klicka på knappen nedan.",
+                "saveDetails": "Spara dina nuvarande inställningar för visning och textformatering. Du kan använda dem i andra böcker genom att klicka på \"Använd\" i andra läsarfönster.",
                 "title": "Förinställning"
             },
             "preview": "Förhandsvisning",
             "reduceFontSize": "Minska textstorlek",
-            "reduceMotion": "Minska rörelser",
+            "reduceMotion": "Minska rörelse",
             "scrolled": "Rullningsbar",
             "spacing": "Avstånd",
             "spreadModeEven": "Siduppslag \"jämna\" (standard är \"udda\")",
@@ -960,7 +960,7 @@
         "keyboard": {
             "advancedMenu": "Meny",
             "cancel": "Avbryt",
-            "disclaimer": "Kortkommandona baserar sig på QWERTY-tangentbordslayouten",
+            "disclaimer": "Kortkommandona baseras på den fysiska positionen för knappar på QWERTY-tangentbord",
             "editUserJson": "Redigera användarfil ...",
             "exportToHTML": "Export till HTML",
             "keyboardShortcuts": "Kortkommandon",
@@ -1200,7 +1200,7 @@
             },
             "loadUserJson": "Läs in från användarfil",
             "noShortcutFound": "Inget kortkommando hittades",
-            "resetDefaults": "Återställ (läs in standard)",
+            "resetDefaults": "Återställ (läs in standardvärden)",
             "save": "Spara",
             "searchPlaceholder": "Sök efter kortkommando"
         },
