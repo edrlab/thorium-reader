@@ -986,19 +986,19 @@
                     "name": "Nästa ljudavsnitt"
                 },
                 "AudioNextAlt": {
-                    "description": "Gå framåt till nästa ljudavsnitt (e-bok med text och uppläsning, text-till-tal eller ljudbok). Hoppar över alla strukturer som kan hoppas över.",
+                    "description": "Gå framåt till nästa ljudavsnitt (e-bok med text och ljud, text-till-tal eller ljudbok). Hoppar över alla strukturer som kan hoppas över.",
                     "name": "Nästa ljudavsnitt (hoppa över)"
                 },
                 "AudioPlayPause": {
-                    "description": "Starta eller pausa uppläsning (e-bok med text och uppläsning, text-till-tal eller ljudbok)",
+                    "description": "Starta eller pausa uppläsning (e-bok med text och ljud, text-till-tal eller ljudbok)",
                     "name": "Spela/pausa ljud"
                 },
                 "AudioPrevious": {
-                    "description": "Gå tillbaka till föregående ljudavsnitt (e-bok med text och uppläsning, text-till-tal eller ljudbok)",
+                    "description": "Gå tillbaka till föregående ljudavsnitt (e-bok med text och ljud, text-till-tal eller ljudbok)",
                     "name": "Föregående ljudavsnitt"
                 },
                 "AudioPreviousAlt": {
-                    "description": "Gå tillbaka till föregående ljudavsnitt (e-bok med text och uppläsning, text-till-tal eller ljudbok). Hoppar över alla strukturer som kan hoppas över.",
+                    "description": "Gå tillbaka till föregående ljudavsnitt (e-bok med text och ljud, text-till-tal eller ljudbok). Hoppar över alla strukturer som kan hoppas över.",
                     "name": "Föregående ljudavsnitt (hoppa över)"
                 },
                 "AudioSpeedDecrease": {
@@ -1014,8 +1014,8 @@
                     "name": "Återställ uppspelningshastigheten"
                 },
                 "AudioStop": {
-                    "description": "Stoppa uppspelningen (e-bok med text och uppläsning, text-till-tal eller ljudbok)",
-                    "name": "Stoppa uppspelning av ljud"
+                    "description": "Stoppa uppspelningen (e-bok med text och ljud, text-till-tal eller ljudbok)",
+                    "name": "Stoppa uppspelning"
                 },
                 "CloseReader": {
                     "description": "Stäng läsfönstret och återgå till biblioteket",
