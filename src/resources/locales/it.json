@@ -1300,7 +1300,7 @@
     "tts": {
         "highlight": {
             "mainColor": "Colore principale",
-            "maskBlockWordOutline": "Blocco mascherato, parola contornata",
+            "maskBlockWordOutline": "Mask Block, Word Outline",
             "maskBlockWordSolidBackground": "Blocco mascherato, parola con sfondo pieno",
             "maskBlockWordUnderline": "Blocco mascherato, parola sottolineata",
             "maskWordOutline": "Mascherato, parola contornata",
