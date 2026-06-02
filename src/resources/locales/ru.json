@@ -810,7 +810,7 @@
             "colors": {
                 "cyan": "Циан",
                 "darkorange": "",
-                "darkyellow": "",
+                "darkyellow": "Тёмно-жёлтый",
                 "green": "Зелёный",
                 "orange": "Оранжевый",
                 "purple": "Фиолетовый",
@@ -859,7 +859,7 @@
             },
             "customFontSelected": "Вы выбрали персональный шрифт",
             "customizeReader": "Настройка форматирования текста",
-            "defaultValue": "",
+            "defaultValue": "значение по умолчанию",
             "disabled": "отключено",
             "display": "Отображение",
             "disposition": {
@@ -875,7 +875,7 @@
             "lineSpacing": "Межстрочный интервал",
             "margin": "Отступ",
             "mathjax": "Включить MathJax",
-            "mathjaxDescription": "",
+            "mathjaxDescription": "MathJax",
             "noFootnotes": "Отключить всплывающие примечания",
             "noRTLFlip": "Отключить интерфейс справа-налево",
             "noRuby": "Скрыть японские Ruby-аннотации",
