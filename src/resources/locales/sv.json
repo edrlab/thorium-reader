@@ -365,19 +365,19 @@
         },
         "conformance": {
             "conformance-a": {
-                "compact": "Publikationen uppfyller tillgänglighetskrav på en grundläggande nivå",
-                "descriptive": "Publikationen anger att den uppfyller standarderna EPUB Accessibility och WCAG 2 nivå A"
+                "compact": "Boken uppfyller tillgänglighetskrav på en grundläggande nivå",
+                "descriptive": "Boken anger att den uppfyller standarderna EPUB Accessibility och WCAG 2 nivå A"
             },
             "conformance-aa": {
-                "compact": "Publikationen uppfyller tillgänglighetskrav på en vedertagen nivå",
-                "descriptive": "Publikationen anger att den uppfyller standarderna EPUB Accessibility och WCAG 2 nivå AA"
+                "compact": "Boken uppfyller tillgänglighetskrav på en vedertagen nivå",
+                "descriptive": "Boken anger att den uppfyller standarderna EPUB Accessibility och WCAG 2 nivå AA"
             },
             "conformance-aaa": {
-                "compact": "Publikationen uppfyller tillgänglighetskrav utöver en vedertagen nivå",
-                "descriptive": "Publikationen anger att den uppfyller standarderna EPUB Accessibility och WCAG 2 nivå AAA"
+                "compact": "Boken uppfyller tillgänglighetskrav över en vedertagen nivå",
+                "descriptive": "Boken anger att den uppfyller standarderna EPUB Accessibility och WCAG 2 nivå AAA"
             },
             "conformance-certifier": {
-                "compact": "Publikationen är certifierad av "
+                "compact": "Boken är certifierad av "
             },
             "conformance-certifier-credentials": {
                 "compact": "Certifierarens märkning är "
@@ -386,8 +386,8 @@
                 "compact": "Se certifieringsrapporten för mer information"
             },
             "conformance-details-claim": {
-                "compact": "Publikationen anger att den uppfyller kraven enligt",
-                "descriptive": "Publikationen anger att den uppfyller kraven enligt"
+                "compact": "Boken anger att den uppfyller kraven enligt",
+                "descriptive": "Boken anger att den uppfyller kraven enligt"
             },
             "conformance-details-epub-accessibility-1-0": {
                 "compact": "EPUB Accessibility 1.0",
@@ -426,18 +426,18 @@
             },
             "conformance-title": "Tillgänglighetskrav",
             "conformance-unknown-standard": {
-                "compact": "Det går inte att avgöra om publikationen uppfyller vedertagna tillgänglighetskrav",
-                "descriptive": "Det går inte att avgöra om publikationen uppfyller vedertagna tillgänglighetskrav"
+                "compact": "Det går inte att avgöra om boken uppfyller vedertagna tillgänglighetskrav",
+                "descriptive": "Det går inte att avgöra om boken uppfyller vedertagna tillgänglighetskrav"
             }
         },
         "hazards": {
             "hazards-flashing": {
                 "compact": "Blinkande innehåll",
-                "descriptive": "Publikationen har blinkande innehåll som kan vara skadligt för ljuskänsliga personer"
+                "descriptive": "Boken har blinkande innehåll som kan vara skadligt för ljuskänsliga personer"
             },
             "hazards-flashing-none": {
                 "compact": "Inget blinkande innehåll",
-                "descriptive": "Publikationen har inget blinkande innehåll"
+                "descriptive": "Boken har inget blinkande innehåll"
             },
             "hazards-flashing-unknown": {
                 "compact": "Förekomst av blinkande innehåll är okänd",
@@ -496,7 +496,7 @@
             },
             "navigation-structural": {
                 "compact": "Rubriker",
-                "descriptive": "Navigerbara element såsom rubriker eller tabeller"
+                "descriptive": "Navigerbara element som rubriker eller tabeller"
             },
             "navigation-title": "Navigering",
             "navigation-toc": {
@@ -510,15 +510,15 @@
                 "descriptive": "Kemiska formler i tillgängligt format (LaTeX)"
             },
             "rich-content-accessible-chemistry-as-mathml": {
-                "compact": "Kemiska formler i MathML",
+                "compact": "Kemiska formler i MathML-format",
                 "descriptive": "Kemiska formler i tillgängligt format (MathML)"
             },
             "rich-content-accessible-math-as-latex": {
-                "compact": "Matematik som LaTeX",
+                "compact": "Matematik i LaTeX-format",
                 "descriptive": "Matematiska formler i tillgängligt format (LaTeX)"
             },
             "rich-content-accessible-math-as-mathml": {
-                "compact": "Matematik som MathML",
+                "compact": "Matematik i MathML-format",
                 "descriptive": "Matematiska formler i tillgängligt format (MathML)"
             },
             "rich-content-accessible-math-described": {
@@ -526,16 +526,16 @@
                 "descriptive": "Innehåller textbeskrivningar av matematik"
             },
             "rich-content-closed-captions": {
-                "compact": "Videoklipp har undertext som kan sättas på/stängas av",
-                "descriptive": "Videoklipp som ingår i publikationen har undertext som kan sättas på och stängas av (stängda undertexter)"
+                "compact": "Videos har undertext som går att stänga av",
+                "descriptive": "Videos som ingår i boken har undertexter som går att stänga av"
             },
             "rich-content-extended": {
                 "compact": "Informationsrika bilder har utökade bildbeskrivningar",
                 "descriptive": "Informationsrika bilder har utökade bildbeskrivningar"
             },
             "rich-content-open-captions": {
-                "compact": "Videoklipp har undertext som inte kan stängas av",
-                "descriptive": "Videoklipp som ingår i publikationen har undertext som inte kan stängas av (öppna undertexter)"
+                "compact": "Videoklipp har undertext som alltid är synlig",
+                "descriptive": "Videos som ingår i boken har undertext som alltid är synlig (öppna undertexter)"
             },
             "rich-content-title": "Berikat innehåll",
             "rich-content-transcript": {
@@ -549,8 +549,8 @@
         },
         "ways-of-reading": {
             "ways-of-reading-nonvisual-reading-alt-text": {
-                "compact": "Har textalternativ (alt-texter)",
-                "descriptive": "Har textalternativ (alt-texter) till bilder"
+                "compact": "Har bildbeskrivningar (alt-texter)",
+                "descriptive": "Har bildbeskrivningar (alt-texter) till bildmaterial"
             },
             "ways-of-reading-nonvisual-reading-no-metadata": {
                 "compact": "Information om icke-visuell läsbarhet saknas",
@@ -561,12 +561,12 @@
                 "descriptive": "Innehållet går inte att läsa med uppläsningsfunktion eller punktskriftsskärm"
             },
             "ways-of-reading-nonvisual-reading-not-fully": {
-                "compact": "Inte läsbart i sin helhet med uppläsningsfunktion eller punktskriftsskärm",
+                "compact": "Inte helt läsbart med uppläsningsfunktion eller punktskriftsskärm",
                 "descriptive": "Allt innehåll går inte att läsa med uppläsningsfunktion eller punktskriftsskärm"
             },
             "ways-of-reading-nonvisual-reading-readable": {
                 "compact": "Kan läsas med uppläsningsfunktion eller punktskriftsskärm",
-                "descriptive": "Hela innehållet går att läsa med uppläsningsfunktion eller punktskriftsskärm"
+                "descriptive": "Allt innehåll går att läsa med uppläsningsfunktion eller punktskriftsskärm"
             },
             "ways-of-reading-prerecorded-audio-complementary": {
                 "compact": "Förinspelade ljudklipp",
