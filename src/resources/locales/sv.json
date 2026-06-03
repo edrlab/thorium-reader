@@ -88,7 +88,7 @@
         "lastRead": "Senast läst",
         "login": "Logga in",
         "logout": "Logga ut",
-        "missing": "",
+        "missing": "Filer saknas",
         "missingUnavailableDescription": "Den här publikationen kan inte öppnas eftersom de lagrade filerna inte går att öppna. Importera publikationen igen, eller gå till inställningar och sedan Lagring för att lägga till eller ändra ytterligare lagring.",
         "moreInfo": "Information om boken",
         "myBooks": "Mina böcker",
@@ -1244,7 +1244,7 @@
                 "availability": "Den här funktionen fungerar bara i nyare versioner av Thorium. Böcker i externa mappar kommer inte visas i Thorium 3.4 eller tidigare.",
                 "integrity": "",
                 "migration": "",
-                "summary": "",
+                "summary": "Läs mer om den här funktionen, som just nu är i beta",
                 "warning": ""
             },
             "configuration": {
@@ -1254,7 +1254,7 @@
             },
             "dialogs": {
                 "add": {
-                    "confirm": "",
+                    "confirm": "Fortsätt",
                     "description": "",
                     "title": ""
                 },
@@ -1273,7 +1273,7 @@
                 "defaultDescription": "",
                 "defaultInternal": "",
                 "externalStorage": "",
-                "title": ""
+                "title": "Platser"
             }
         },
         "tabs": {
@@ -1281,7 +1281,7 @@
             "general": "Allmänt",
             "keyboardShortcuts": "Kortkommandon",
             "profiles": "Profiler",
-            "storage": ""
+            "storage": "Lagring"
         },
         "theme": {
             "auto": "Automatiskt",
