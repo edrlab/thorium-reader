@@ -501,6 +501,58 @@ const ManageAccessToCatalogSettings = () => {
     );
 };
 
+const SharedComputerSettings = () => {
+
+    const [__] = useTranslator();
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const isRTL = locale === "ar";
+    const dispatch = useDispatch();
+    const lcpAutoDeleteExpiredPublications = useSelector((state: ILibraryRootState) => state.settings.lcpAutoDeleteExpiredPublications === true);
+
+    const toggleLcpAutoDeleteExpiredPublications = () => {
+        dispatch(settingsActions.lcpAutoDeleteExpiredPublications.build(!lcpAutoDeleteExpiredPublications));
+    };
+
+    return (
+        <section className={stylesSettings.section} style={{ gap: "10px" }}>
+            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.sharedComputer.title")}</h3>
+            <div dir={isRTL ? "rtl" : "ltr"} className={stylesAnnotations.annotations_checkbox}>
+                <input type="checkbox" id="lcpAutoDeleteExpiredPublications" className={stylesGlobal.checkbox_custom_input} name="lcpAutoDeleteExpiredPublications" checked={lcpAutoDeleteExpiredPublications} onChange={toggleLcpAutoDeleteExpiredPublications} />
+                <label htmlFor="lcpAutoDeleteExpiredPublications" className={stylesGlobal.checkbox_custom_label}>
+                    <div
+                        tabIndex={0}
+                        role="checkbox"
+                        aria-checked={lcpAutoDeleteExpiredPublications}
+                        aria-label={__("settings.sharedComputer.lcpAutoDeleteExpiredPublications")}
+                        onKeyDown={(e) => {
+                            if (e.key === " ") {
+                                e.preventDefault();
+                            }
+                        }}
+                        onKeyUp={(e) => {
+                            if (e.key === " ") {
+                                e.preventDefault();
+                                toggleLcpAutoDeleteExpiredPublications();
+                            }
+                        }}
+                        className={stylesGlobal.checkbox_custom}
+                        style={{ border: lcpAutoDeleteExpiredPublications ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: lcpAutoDeleteExpiredPublications ? "var(--color-brand-primary)" : "transparent" }}>
+                        {lcpAutoDeleteExpiredPublications ?
+                            <SVG ariaHidden svg={CheckIcon} />
+                            :
+                            <></>
+                        }
+                    </div>
+                    <div aria-hidden>
+                        <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.sharedComputer.lcpAutoDeleteExpiredPublications")}</h3>
+                        <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.sharedComputer.lcpAutoDeleteExpiredPublicationsDescription")}</p>
+                    </div>
+                </label>
+            </div>
+        </section>
+    );
+};
+
 const Themes = () => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
@@ -938,6 +990,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
                                 <LanguageSettings />
                                 <ScreenReaderSettings />
                                 <ConnectionSettings />
+                                <SharedComputerSettings />
                                 {/* <SaveSessionSettings /> */}
                                 <ManageAccessToCatalogSettings />
                                 <SaveCreatorSettings />

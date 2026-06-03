@@ -2781,6 +2781,11 @@ declare namespace typed_i18n {
     readonly "title": string
   },
   readonly "session": { readonly "title": string },
+  readonly "sharedComputer": {
+    readonly "lcpAutoDeleteExpiredPublications": string,
+    readonly "lcpAutoDeleteExpiredPublicationsDescription": string,
+    readonly "title": string
+  },
   readonly "storage": {
     readonly "actions": {
       readonly "addDirectory": string,
@@ -3569,6 +3574,14 @@ declare namespace typed_i18n {
   (_: "settings.screenReaderActivate.title", __?: {}): string;
   (_: "settings.session", __?: {}): { readonly "title": string };
   (_: "settings.session.title", __?: {}): string;
+  (_: "settings.sharedComputer", __?: {}): {
+  readonly "lcpAutoDeleteExpiredPublications": string,
+  readonly "lcpAutoDeleteExpiredPublicationsDescription": string,
+  readonly "title": string
+};
+  (_: "settings.sharedComputer.lcpAutoDeleteExpiredPublications", __?: {}): string;
+  (_: "settings.sharedComputer.lcpAutoDeleteExpiredPublicationsDescription", __?: {}): string;
+  (_: "settings.sharedComputer.title", __?: {}): string;
   (_: "settings.storage", __?: {}): {
   readonly "actions": {
     readonly "addDirectory": string,

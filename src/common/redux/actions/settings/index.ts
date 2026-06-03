@@ -6,7 +6,9 @@
 // ==LICENSE-END==
 
 import * as enableAPIAPP from "./enableAPIAPP";
+import * as lcpAutoDeleteExpiredPublications from "./lcpAutoDeleteExpiredPublications";
 
 export {
     enableAPIAPP,
+    lcpAutoDeleteExpiredPublications,
 };

@@ -1239,6 +1239,11 @@
         "session": {
             "title": "Attiva il salvataggio della sessione di lettura"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
         "storage": {
             "actions": {
                 "addDirectory": "",

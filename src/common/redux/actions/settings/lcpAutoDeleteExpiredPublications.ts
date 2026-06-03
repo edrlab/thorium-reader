@@ -8,15 +8,15 @@
 import { Action } from "readium-desktop/common/models/redux";
 import { ISettingsState } from "../../states/settings";
 
-export const ID = "ENABLE_APIAPP";
+export const ID = "SETTINGS_LCP_AUTO_DELETE_EXPIRED_PUBLICATIONS";
 
 export function build(state: boolean):
-    Action<typeof ID, Pick<ISettingsState, "enableAPIAPP">> {
+    Action<typeof ID, Pick<ISettingsState, "lcpAutoDeleteExpiredPublications">> {
 
     return {
         type: ID,
         payload: {
-            enableAPIAPP: state,
+            lcpAutoDeleteExpiredPublications: state,
         },
     };
 }

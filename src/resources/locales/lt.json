@@ -1245,6 +1245,11 @@
         "session": {
             "title": "Įgalinti sesijos išsaugojimą"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
         "storage": {
             "actions": {
                 "addDirectory": "",

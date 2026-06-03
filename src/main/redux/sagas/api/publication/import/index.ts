@@ -23,6 +23,7 @@ import { PublicationDocument } from "readium-desktop/main/db/document/publicatio
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { publicationApi } from "..";
+import { cleanupLcpPublicationIfNoLongerUsable } from "readium-desktop/main/redux/sagas/publication/lcpSharedWorkstationCleanup";
 
 // import { appActivate } from "readium-desktop/main/redux/sagas/win/library";
 // import { readerActions } from "readium-desktop/common/redux/actions";
@@ -64,7 +65,20 @@ export function* importFromLink(
         if (alreadyImported) {
 
             if (deep < 1) {
-                deep = 1;
+                const nextDeep = deep + 1;
+
+                const cleanedPublicationDocument = yield* callTyped(
+                    cleanupLcpPublicationIfNoLongerUsable,
+                    publicationDocument,
+                    "import-from-link",
+                    { force: true },
+                );
+                if (!cleanedPublicationDocument) {
+                    debug("restart import process after LCP cleanup");
+                    return yield* callTyped(importFromLink, link, willBeImmediatelyFollowedByOpen, pub, nextDeep);
+                }
+
+                deep = nextDeep;
 
                 if (!canOpenPublication(publicationView)) {
 
@@ -78,9 +92,10 @@ export function* importFromLink(
                     }
                     try {
                         debug("restart import process after publication was already imported, missing, but not deleted");
-                        yield* callTyped(importFromLink, link, willBeImmediatelyFollowedByOpen, pub, deep);
+                        return yield* callTyped(importFromLink, link, willBeImmediatelyFollowedByOpen, pub, deep);
                     } catch (e) {
                         debug("Error during the second import of the publication", e);
+                        return undefined;
                     }
                 } else {
 
@@ -189,7 +204,21 @@ export function* importFromFs(
                     if (alreadyImported) {
 
                         if (deep < 1) {
-                            deep = 1;
+                            const nextDeep = deep + 1;
+
+                            const cleanedPublicationDocument = yield* callTyped(
+                                cleanupLcpPublicationIfNoLongerUsable,
+                                publicationDocument,
+                                "import-from-fs",
+                                { force: true },
+                            );
+                            if (!cleanedPublicationDocument) {
+                                debug("restart import process after LCP cleanup");
+                                const publicationViews = yield* callTyped(importFromFs, fpath, willBeImmediatelyFollowedByOpen, nextDeep);
+                                return publicationViews?.[0];
+                            }
+
+                            deep = nextDeep;
 
                             if (!canOpenPublication(publicationView)) {
 
@@ -203,9 +232,11 @@ export function* importFromFs(
                                 }
                                 try {
                                     debug("restart import process after publication was already imported, missing, but not deleted");
-                                    yield* callTyped(importFromFs, fpath, willBeImmediatelyFollowedByOpen, deep);
+                                    const publicationViews = yield* callTyped(importFromFs, fpath, willBeImmediatelyFollowedByOpen, deep);
+                                    return publicationViews?.[0];
                                 } catch (e) {
                                     debug("Error during the second import of the publication", e);
+                                    return undefined;
                                 }
                             } else {
 

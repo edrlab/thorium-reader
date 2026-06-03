@@ -7,4 +7,5 @@
 
 export interface ISettingsState {
     enableAPIAPP: boolean; // false by default
+    lcpAutoDeleteExpiredPublications: boolean; // false by default
 }

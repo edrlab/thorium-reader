@@ -36,6 +36,7 @@ import * as lcp from "./lcp";
 import * as catalog from "./catalog";
 import * as annotation from "./note";
 import * as customization from "./customization";
+import * as lcpSharedWorkstationCleanup from "./publication/lcpSharedWorkstationCleanup";
 
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { sagaCustomizationProfileProvisioning } from "./customization";
@@ -132,6 +133,9 @@ export function* rootSaga() {
 
     // LCP saga
     yield lcp.saga();
+
+    // Shared workstation LCP cleanup saga
+    yield lcpSharedWorkstationCleanup.saga();
 
     // Annotation saga
     yield annotation.saga();

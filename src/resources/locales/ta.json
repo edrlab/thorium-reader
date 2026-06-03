@@ -1233,6 +1233,11 @@
         "session": {
             "title": "அமர்வு சேமிப்பை இயக்கவும்"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
         "storage": {
             "actions": {
                 "addDirectory": "",

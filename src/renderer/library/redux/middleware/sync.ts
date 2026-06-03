@@ -70,6 +70,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     creatorActions.set.ID,
 
     settingsActions.enableAPIAPP.ID,
+    settingsActions.lcpAutoDeleteExpiredPublications.ID,
 
     noteExport.overrideHTMLTemplate.ID,
 

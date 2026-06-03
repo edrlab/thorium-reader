@@ -1233,6 +1233,11 @@
         "session": {
             "title": "Enable session saving"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "Automatically delete unusable LCP publications and local user data",
+            "lcpAutoDeleteExpiredPublicationsDescription": "After LCP/LSD status synchronization, expired, returned, revoked or cancelled LCP publications are removed from the library with their local notes and reading state. Newly imported replacements can still remove an unusable previous copy even when this setting is off.",
+            "title": "Shared computer"
+        },
         "storage": {
             "actions": {
                 "addDirectory": "Select an additional storage",
