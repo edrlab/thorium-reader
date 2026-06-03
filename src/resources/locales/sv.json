@@ -11,7 +11,7 @@
     "apiapp": {
         "documentation": "Thorium-dokumentation",
         "howItWorks": "Hur fungerar det?",
-        "informations": "I Frankrike erbjuder många offentliga bibliotek en maskinläsbar katalog (liknande OPDS men inte identisk), som låter låntagare ladda ner digitala publikationer från deras personliga bokhylla. Med denna teknik integrerad i Thorium Reader kan du ladda ner en e-bok eller ljudbok direkt till Thorium Reader för omedelbar läsning.\nHur ansluter du ditt konto från ett franskt offentligt bibliotek till Thorium Reader? Det är enkelt. Ange en fransk stad eller en del av bibliotekets namn i sökfältet och tryck på sökknappen. En lista med offentliga bibliotek som motsvarar din sökning visas. Välj ett bibliotek och tryck på Lägg till. I den uppdaterade listan med kataloger, välj detta bibliotek: ett inloggningsformulär visas. Ange ditt användarnamn/e-postadress och lösenord, och tryck på Logga in. Du kan nu se innehållet i din personliga bokhylla, från vilken du kan ladda ner och läsa de e-böcker och ljudböcker du tidigare lånat.",
+        "informations": "I Frankrike erbjuder många offentliga bibliotek en maskinläsbar katalog (liknande OPDS men inte identisk), som låter låntagare ladda ner digitala böcker från sin bokhylla. Med denna teknik i Thorium Reader så kan du ladda ner e-böcker och ljudböcker för omedelbar läsning.\nDet är enkelt att ansluta ditt konto från ett franskt offentligt bibliotek? Skriv namnet på en fransk stad eller ett biblioteket i sökfältet och tryck på sökknappen. Välj ett bibliotek från träfflistan och tryck på \"Lägg till\". Klicka på biblioteket du just lagt till på katalogsidan, och ett inloggningsformulär visas. Ange ditt användarnamn/e-postadress och lösenord, och tryck på Logga in. Du kan nu se innehållet i din personliga bokhylla, där du kan ladda ner och läsa de e-böcker och ljudböcker du lånat.",
         "noLibraryFound": "Inget bibliotek hittades ({{- name}})"
     },
     "app": {
@@ -208,7 +208,7 @@
         "filter": {
             "addFilters": "Lägg till filter",
             "filterBy": "Filtrera efter",
-            "selectOption": "Välj ett objekt"
+            "selectOption": "Välj ett alternativ"
         },
         "lcp": {
             "hidePassphrase": "Dölj lösenordsfras",
@@ -223,10 +223,10 @@
             "whatIsLcpInfoDetailsLink": "För mer information, klicka på denna länk till EDRLabs webbplats."
         },
         "sorting": {
-            "addSorting": "Lägg till sortering",
+            "addSorting": "Sortering",
             "author": "Författare",
             "language": "Språk",
-            "readingState": "Läsläge",
+            "readingState": "Lässtatus",
             "sortBy": "Sortera efter: ",
             "title": "Titel"
         }
@@ -268,7 +268,7 @@
             "urlPlaceholder": "Länk"
         },
         "addFormApiapp": {
-            "title": "Lägg till bibliotekskonto"
+            "title": "Lägg till bibliotek"
         },
         "addMenu": "Lägg till ett OPDS-flöde",
         "breadcrumbRoot": "Kataloger",
@@ -647,12 +647,12 @@
         "expiredLcp": "Bokens LCP-licens har löpt ut.",
         "incorrectPassphrase": "Inget sparat lösenord passar för boken, eller så är det angivna lösenordet fel.",
         "lcpEnd": "Slut",
-        "lcpNotSupported": "VARNING: detta är en förhandsversion av Thorium Desktop som inte stödjer produktionsversioner av LCP-licenser, utan stödjer bara dekryptering av LCP 'basic profile' utan certifikatvalidering.",
+        "lcpNotSupported": "VARNING: detta är en förhandsversion av Thorium Desktop som inte stödjer produktionsversioner av LCP-licenser, utan stödjer bara dekryptering av LCP \"basic profile\" utan certifikatvalidering.",
         "lcpRightsCopy": "Kopierade tecken",
         "lcpRightsPrint": "Kopiera utskrift",
         "lcpStart": "Start",
         "licenceLCP": "Licens (LCP)",
-        "licenseCertificateDateInvalid": "Licensens signeringsdatum är ogiltigt. ({{- dateTime}}).",
+        "licenseCertificateDateInvalid": "Slutdatumet för LCP-licensen är tidigare än licensens startdatum ({{- dateTime}}).",
         "licenseOutOfDate": "LCP-licensen har löpt ut.",
         "licenseSignatureInvalid": "LCP-licensens signatur är ogiltig.",
         "licensed": "Licensierad",
@@ -755,7 +755,7 @@
             "toc": "Innehållsförteckning"
         },
         "media-overlays": {
-            "activate": "Aktivera uppläsning",
+            "activate": "Starta uppläsning",
             "captions": "Textremsa/Enkel vy",
             "captionsDescription": "Förenklad textvy med minimal formatering.",
             "disableContinuousPlay": "Sluta spela vid kapitelslut",
@@ -765,7 +765,7 @@
             "next": "Nästa",
             "pause": "Pausa",
             "play": "Läs upp",
-            "previous": "Föregående högläsning",
+            "previous": "Föregående",
             "skip": "Överhoppning",
             "skipDescription": "Hoppa över sekundärt innehåll som sidbrytningar, fotnoter och slutnoter.",
             "speed": "Uppläsningshastighet",
@@ -853,7 +853,7 @@
             },
             "customFontSelected": "Du har valt ett eget typsnitt",
             "customizeReader": "Anpassa textformatering",
-            "defaultValue": "standardvärde",
+            "defaultValue": "standard",
             "disabled": "inaktiverad",
             "display": "Visning",
             "disposition": {
@@ -904,7 +904,7 @@
             "reduceMotion": "Minska rörelse",
             "scrolled": "Rullningsbar",
             "spacing": "Avstånd",
-            "spreadModeEven": "Siduppslag \"jämna\" (standard är \"udda\")",
+            "spreadModeEven": "\"Jämna\" siduppslag (standard är \"udda\")",
             "text": "Text",
             "theme": {
                 "name": {
@@ -929,14 +929,14 @@
             "publicationNoToc": "Den här publikationen saknar innehållsförteckning"
         },
         "tts": {
-            "activate": "Aktivera text-till-tal",
+            "activate": "Starta text-till-tal",
             "language": "Språk för text-till-tal",
             "next": "Nästa",
             "options": "Alternativ för text-till-tal",
             "pause": "Pausa",
             "play": "Läs upp",
-            "previous": "Föregående text-till-tal",
-            "sentenceDetect": "Markera text-till-tal på meningsnivå",
+            "previous": "Föregående",
+            "sentenceDetect": "Markera uppläsning per mening",
             "sentenceDetectDescription": "Dela upp långa stycken i meningar.",
             "speed": "Uppläsningshastighet",
             "stop": "Stoppa text-till-tal",
@@ -945,8 +945,8 @@
     },
     "settings": {
         "annotationCreator": {
-            "creator": "Anteckningsförfattare (valfritt)",
-            "help": "Namnet du anger här kommer att inkluderas i metadatan när du exporterar anteckningar.",
+            "creator": "Författare för anteckningar (valfritt)",
+            "help": "Om du exporterar anteckningar kommer namnet du anger här användas i metadatan.",
             "name": "Namn",
             "organization": "Organisation",
             "person": "Person",
@@ -962,7 +962,7 @@
             "cancel": "Avbryt",
             "disclaimer": "Kortkommandona baseras på den fysiska positionen för knappar på QWERTY-tangentbord",
             "editUserJson": "Redigera användarfil ...",
-            "exportToHTML": "Export till HTML",
+            "exportToHTML": "Exportera till HTML",
             "keyboardShortcuts": "Kortkommandon",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1010,7 +1010,7 @@
                     "name": "Öka uppspelningshastigheten"
                 },
                 "AudioSpeedReset": {
-                    "description": "Återställ hastigheten för ljudspår i EPUB3 Media Overlays eller uppläsningshastigheten för text-till-tal",
+                    "description": "Återställ hastigheten för ljudspår i EPUB3 Media Overlays eller för uppläsningshastigheten för text-till-tal",
                     "name": "Återställ uppspelningshastigheten"
                 },
                 "AudioStop": {
@@ -1208,14 +1208,14 @@
             "languageChoice": "Språk"
         },
         "library": {
-            "enableAPIAPP": "Aktivera åtkomst till Dilicom PNB API",
+            "enableAPIAPP": "Aktivera PNB-bibliotek",
             "title": "Tillgång till franska bibliotekskonton"
         },
         "note": {
             "export": {
                 "applyDefaultTemplate": "Använd standardmallen",
                 "enableCheckbox": "Anpassa HTML-mallen",
-                "overrideHTMLTemplate": "Exportera anteckningar och bokmärken"
+                "overrideHTMLTemplate": "Export av anteckningar och bokmärken"
             }
         },
         "profiles": {
@@ -1288,7 +1288,7 @@
             "dark": "Mörkt",
             "description": "Applikationens tema följer operativsystemet.",
             "light": "Ljust",
-            "title": "Applikationens tema"
+            "title": "Tema"
         }
     },
     "tts": {
