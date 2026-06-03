@@ -652,6 +652,7 @@
         "expiredLcp": "A licença LCP desta publicação expirou.",
         "incorrectPassphrase": "Nenhuma senha armazenada funciona na publicação, ou a senha inserida é errada.",
         "lcpEnd": "Fim",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Caracteres copiados",
         "lcpRightsPrint": "Páginas impressas",
         "lcpStart": "Iniciar",

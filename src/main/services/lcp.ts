@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { dialog } from "electron";
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 import debug_ from "debug";
 import { shell } from "electron";
@@ -797,6 +798,18 @@ export class LcpManager {
         if (!r2Publication.LCP) {
             debug("unlockPublication !r2Publication.LCP ?");
             return null;
+        }
+
+        if ((
+            __TH__IS_DEV__
+            && !r2Publication.LCP.isNativeNodePlugin() // comment this to trigger the error in DEV mode even if the native LCP module is available
+            )
+            || __TH__IS_CI__) { // !__TH__IS_DEV__ && __TH__IS_PACKAGED__
+            try {
+                dialog.showErrorBox("LCP", this.translator.translate("publication.lcpNotSupported"));
+            } catch {
+                // ignore
+            }
         }
 
         try {

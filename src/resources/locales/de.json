@@ -647,6 +647,7 @@
         "expiredLcp": "Die LCP-Lizenz dieser Veröffentlichung ist abgelaufen.",
         "incorrectPassphrase": "Kein gespeichertes Passwort passt zu dieser Publikation oder das eingegebene Passwort ist falsch.",
         "lcpEnd": "Ende",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Kopierte Zeichen",
         "lcpRightsPrint": "Gedruckte Seiten",
         "lcpStart": "Start",

@@ -647,6 +647,7 @@
         "expiredLcp": "Dit boek kan niet gelezen worden omdat de LCP licentie verlopen is.",
         "incorrectPassphrase": "Geen opgeslagen wachtwoordzin past bij de publicatie of de ingevoerde wachtwoordzin is verkeerd.",
         "lcpEnd": "Einde",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Toegestaan aantal te kopiëren karakters",
         "lcpRightsPrint": "Toegestaan aantal af te drukken pagina's",
         "lcpStart": "Start",

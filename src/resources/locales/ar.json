@@ -667,6 +667,7 @@
         "expiredLcp": "انتهت صلاحية ترخيص LCP الخاص بهذا المنشور.",
         "incorrectPassphrase": "لا يوجد عبارة مرور مخزّنة تتناسب مع المنشور، أو أن عبارة المرور المكتوبة غير صحيحة.",
         "lcpEnd": "النهاية",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "الأحرف المنسوخة",
         "lcpRightsPrint": "الصفحات المطبوعة",
         "lcpStart": "البداية",

@@ -647,6 +647,7 @@
         "expiredLcp": "Тази книга не може да бъде прочетена, защото лицензът за LCP е изтекъл.",
         "incorrectPassphrase": "",
         "lcpEnd": "Край",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Копиране на символи",
         "lcpRightsPrint": "Печат на страници",
         "lcpStart": "Начало",

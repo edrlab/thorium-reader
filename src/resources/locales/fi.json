@@ -647,6 +647,7 @@
         "expiredLcp": "LCP-käyttöoikeus on päättynyt.",
         "incorrectPassphrase": "Yksikään tallennettu salasana ei käy julkaisuun tai annettu salasana on väärä.",
         "lcpEnd": "Loppu",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Kopioidut merkit",
         "lcpRightsPrint": "Tulostetut sivut",
         "lcpStart": "Aloita",

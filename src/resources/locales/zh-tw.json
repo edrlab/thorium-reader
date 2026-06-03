@@ -642,6 +642,7 @@
         "expiredLcp": "此書無法閱讀，因為 LCP 授權已到期。",
         "incorrectPassphrase": "沒有已儲存的密碼適合出版物，或輸入的密碼錯誤。",
         "lcpEnd": "結束",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "複製的文字",
         "lcpRightsPrint": "列印頁數",
         "lcpStart": "開始",

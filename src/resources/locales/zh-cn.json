@@ -642,6 +642,7 @@
         "expiredLcp": "此书无法阅读，因为LCP许可证已到期。",
         "incorrectPassphrase": "没有任何已存储的密码与该出版物匹配，或输入的密码错误。",
         "lcpEnd": "结束",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "许可证拷贝",
         "lcpRightsPrint": "许可证打印",
         "lcpStart": "开始",

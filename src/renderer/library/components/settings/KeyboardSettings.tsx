@@ -637,7 +637,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                         <h3 className={stylesKeys.keyshortElement_title}>{cname}</h3>
                                     {    cleanNames[id].description.length ?
                                         <TooltipTrigger>
-                                            <Button style={{ width: "15px" }} aria-label={cdesc}><SVG ariaHidden svg={InfoIcon} /></Button>
+                                            <Button style={{ width: "15px", height:"15px", marginLeft: "3px" }} aria-label={cdesc}><SVG ariaHidden svg={InfoIcon} /></Button>
                                             <Tooltip dir={isRTL ? "rtl" : "ltr"} style={{border: "1px solid var(--color-text-primary)", maxWidth: "300px", width: "fit-content", zIndex: "1000", backgroundColor: "var(--color-neutral-base)", borderRadius: "6px", padding: "5px", color: "var(--color-text-primary)"}}>
                                                 <OverlayArrow>
                                                 <svg width={8} height={8} viewBox="0 0 8 8">

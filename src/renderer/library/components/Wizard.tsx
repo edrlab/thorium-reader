@@ -180,12 +180,12 @@ export const WizardModal = () => {
                                                 style={{ color: "var(--color-brand-primary)", textDecoration: "none", fontSize: "16px", fontWeight: "500" }}
                                                 onClick={async (ev) => {
                                                     ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
-                                                    const href = "https://discord.gg/2GnubQbE";
+                                                    const href = "https://discord.com/invite/84wgWhFKDY";
                                                     if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
                                                         await shell.openExternal(href);
                                                     }
                                                 }}>
-                                                💬 {__("wizard.resources.discord", { url: "https://discord.gg/2GnubQbE" })}
+                                                💬 {__("wizard.resources.discord", { url: "https://discord.gg/84wgWhFKDY" })}
                                             </a>
                                         </div>
                                     </div>

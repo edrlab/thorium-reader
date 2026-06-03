@@ -657,6 +657,7 @@
         "expiredLcp": "Licencja LCP tej publikacji wygasła.",
         "incorrectPassphrase": "Żadne zapisane hasło dostępu nie pasuje do publikacji lub wprowadzone hasło jest nieprawidłowe.",
         "lcpEnd": "Koniec",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Skopiowane znaki",
         "lcpRightsPrint": "Wydrukowane strony",
         "lcpStart": "Początek",

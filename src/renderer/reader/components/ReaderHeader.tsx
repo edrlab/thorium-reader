@@ -916,7 +916,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         <li
                             {...(this.props.isOnSearch && { style: { backgroundColor: "var(--color-brand-primary)" } })}
                         >
-                            <HeaderSearch shortcutEnable={this.props.shortcutEnable} isPdf={this.props.isPdf} showSearchResults={this.props.showSearchResults} isAudiobook={isAudioBook} isDivina={this.props.isDivina}></HeaderSearch>
+                            <HeaderSearch shortcutEnable={this.props.shortcutEnable} isPdf={this.props.isPdf} showSearchResults={this.props.showSearchResults} isAudiobook={isAudioBook} isDivina={this.props.isDivina} currentLocation={this.props.currentLocation}></HeaderSearch>
                         </li>
 
                         <BookmarkButton shortcutEnable={this.props.shortcutEnable} isOnSearch={this.props.isOnSearch} />

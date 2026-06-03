@@ -29,11 +29,13 @@ import SearchFormPicker from "./SearchFormPicker";
 
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
     showSearchResults: () => void;
     isPdf: boolean;
+    currentLocation: MiniLocatorExtended;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -111,6 +113,7 @@ class SearchPicker extends React.Component<IProps, IState> {
                     isPdf={this.props.isPdf}
                     reset={() => this.setState({ foundNumber: 0, notFound: true })}
                     load={load}
+                    currentLocation={this.props.currentLocation}
                 ></SearchFormPicker>
 
                 {

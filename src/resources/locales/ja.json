@@ -642,6 +642,7 @@
         "expiredLcp": "この本のLCPライセンスの有効期限が切れました。",
         "incorrectPassphrase": "保存しているパスフレーズが本に適合しないか、入力したパスフレーズが間違っています。",
         "lcpEnd": "終了",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "文字列のコピー",
         "lcpRightsPrint": "ページを印刷",
         "lcpStart": "開始",

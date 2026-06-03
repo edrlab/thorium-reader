@@ -652,6 +652,7 @@
         "expiredLcp": "A licença PCL deste documento está expirada.",
         "incorrectPassphrase": "Nenhuma frase-passe armazenada corresponde à publicação ou a frase-passe introduzida está errada.",
         "lcpEnd": "Fim",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Caracteres copiados",
         "lcpRightsPrint": "Páginas impressas",
         "lcpStart": "Início",

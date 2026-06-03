@@ -657,6 +657,7 @@
         "expiredLcp": "Knjige ni mogoče prebrati, ker je licenca LCP potekla.",
         "incorrectPassphrase": "Nobeno shranjeno geslo ne ustreza publikaciji ali pa je vneseno geslo napačno.",
         "lcpEnd": "Konec",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Kopirani znaki",
         "lcpRightsPrint": "Tiskane strani",
         "lcpStart": "Začetek",

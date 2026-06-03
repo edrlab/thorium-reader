@@ -652,6 +652,7 @@
         "expiredLcp": "Aquest llibre no es pot llegir perquè la llicència LCP ha expirat.",
         "incorrectPassphrase": "",
         "lcpEnd": "Fi",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Còpia de personatges",
         "lcpRightsPrint": "Còpia d'impressora",
         "lcpStart": "Inici",

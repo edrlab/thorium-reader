@@ -647,6 +647,7 @@
         "expiredLcp": "Liburu hau ezin da irakurri LCP lizentzia iraungi delako.",
         "incorrectPassphrase": "",
         "lcpEnd": "Amaiera",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Pertsonaien kopia",
         "lcpRightsPrint": "Inprimagailuaren kopia",
         "lcpStart": "Hasiera",
