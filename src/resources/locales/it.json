@@ -88,7 +88,7 @@
         "lastRead": "Ultima lettura",
         "login": "Login",
         "logout": "Logout",
-        "missing": "",
+        "missing": "File mancanti",
         "missingUnavailableDescription": "Questa pubblicazione non può essere aperta perché i file depositati non sono disponibili. Si prega di reimportarli o di cliccare su Impostazioni e poi su Spazio d'archiviazione per aggiungere o modificare lo spazio d'archiviazione.",
         "moreInfo": "Maggiori informazioni",
         "myBooks": "I miei libri",
