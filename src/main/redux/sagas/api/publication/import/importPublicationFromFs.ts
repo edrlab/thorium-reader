@@ -326,12 +326,22 @@ export async function importPublicationFromFS(
             // if there are opened readers when there is an LCP update, the LCPL gets injected into EPUB META-INF/ so the readers are force-closed
             setTimeout(async () => {
 
-                debug("deferred lcpManager.checkPublicationLicenseUpdate() after publication import");
-                // DOES NOT MUTATE newPubDocument (returns a modified copy)
-                const updatedDoc = await lcpManager.checkPublicationLicenseUpdate(newPubDocument, false);// DOES NOT SKIP the network LSD checks!
-                // passphrase saved for doc.id with provider, this time (overrides old entry mapped on doc.id)
-                if (updatedDoc && lcpHashedPassphrase) {
-                    await lcpManager.saveSecret(updatedDoc, lcpHashedPassphrase);
+                try {
+                    debug("deferred lcpManager.checkPublicationLicenseUpdate() after publication import");
+                    const publicationDocument = await publicationRepository.get(newPubDocument.identifier);
+                    if (!publicationDocument) {
+                        debug("skip deferred lcpManager.checkPublicationLicenseUpdate(), publication no longer exists", newPubDocument.identifier);
+                        return;
+                    }
+
+                    // DOES NOT MUTATE publicationDocument (returns a modified copy)
+                    const updatedDoc = await lcpManager.checkPublicationLicenseUpdate(publicationDocument, false);// DOES NOT SKIP the network LSD checks!
+                    // passphrase saved for doc.id with provider, this time (overrides old entry mapped on doc.id)
+                    if (updatedDoc && lcpHashedPassphrase) {
+                        await lcpManager.saveSecret(updatedDoc, lcpHashedPassphrase);
+                    }
+                } catch (e) {
+                    debug("deferred lcpManager.checkPublicationLicenseUpdate() failed", newPubDocument.identifier, e);
                 }
 
             }, 300);

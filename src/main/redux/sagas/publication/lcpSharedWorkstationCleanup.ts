@@ -6,9 +6,9 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { settingsActions } from "readium-desktop/common/redux/actions";
-import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { lcpInfoIsNoLongerUsable } from "readium-desktop/common/lcp";
+import { lcpActions, settingsActions } from "readium-desktop/common/redux/actions";
+import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { RootState } from "readium-desktop/main/redux/states";
@@ -26,9 +26,27 @@ const LCP_SHARED_WORKSTATION_CLEANUP_INTERVAL_MS = 1000 * 60 * 15;
 const cleanupIsEnabled = (state: RootState) =>
     state.settings?.lcpAutoDeleteExpiredPublications === true;
 
+let cleanupAllInProgress = false;
+
 interface ICleanupLcpPublicationOptions {
     force?: boolean;
 }
+
+const tryAcquirePublicationFileLock = (identifier: string): boolean => {
+    const store = diMainGet("store");
+    const state: RootState = store.getState();
+    if (state.lcp.publicationFileLocks[identifier]) {
+        return false;
+    }
+
+    store.dispatch(lcpActions.publicationFileLock.build({ [identifier]: true }));
+    return true;
+};
+
+const releasePublicationFileLock = (identifier: string) => {
+    const store = diMainGet("store");
+    store.dispatch(lcpActions.publicationFileLock.build({ [identifier]: false }));
+};
 
 export function* cleanupLcpPublicationIfNoLongerUsable(
     publicationDocument: PublicationDocument,
@@ -63,32 +81,87 @@ export function* cleanupLcpPublicationIfNoLongerUsable(
         return evaluatedPublicationDocument;
     }
 
+    const publicationRepository = yield* callTyped(() => diMainGet("publication-repository"));
+    const latestPublicationDocument = yield* callTyped(
+        () => publicationRepository.get(evaluatedPublicationDocument.identifier),
+    );
+    if (!latestPublicationDocument) {
+        debug("publication already deleted before cleanup evaluation", evaluatedPublicationDocument.identifier, reason);
+        return undefined;
+    }
+    evaluatedPublicationDocument = latestPublicationDocument;
+
     if (!lcpInfoIsNoLongerUsable(evaluatedPublicationDocument?.lcp)) {
         return evaluatedPublicationDocument;
     }
 
-    const message = `LCP cleanup (${reason}): deleting publication and associated local user data: ${evaluatedPublicationDocument.identifier} "${evaluatedPublicationDocument.title || ""}"`;
-    debug(message);
-    const publicationApi = yield* callTyped(() => diMainGet("publication-api"));
-    yield* callTyped(publicationApi.delete, evaluatedPublicationDocument.identifier);
+    const lockAcquired = yield* callTyped(tryAcquirePublicationFileLock, evaluatedPublicationDocument.identifier);
+    if (!lockAcquired) {
+        debug("skip locked publication before deletion", evaluatedPublicationDocument.identifier, reason);
+        return evaluatedPublicationDocument;
+    }
+
+    try {
+        const enabledBeforeDelete = yield* selectTyped(cleanupIsEnabled);
+        if (!enabledBeforeDelete && !options.force) {
+            debug("skip deletion because shared workstation cleanup was disabled", evaluatedPublicationDocument.identifier, reason);
+            return evaluatedPublicationDocument;
+        }
+
+        const currentPublicationDocument = yield* callTyped(
+            () => publicationRepository.get(evaluatedPublicationDocument.identifier),
+        );
+        if (!currentPublicationDocument) {
+            debug("publication already deleted before final cleanup", evaluatedPublicationDocument.identifier, reason);
+            return undefined;
+        }
+
+        if (!currentPublicationDocument.lcp || !lcpInfoIsNoLongerUsable(currentPublicationDocument.lcp)) {
+            debug("skip deletion because publication is usable after final refresh", currentPublicationDocument.identifier, reason);
+            return currentPublicationDocument;
+        }
+
+        const message = `LCP cleanup (${reason}): deleting publication and associated local user data: ${currentPublicationDocument.identifier} "${currentPublicationDocument.title || ""}"`;
+        debug(message);
+        const publicationApi = yield* callTyped(() => diMainGet("publication-api"));
+        yield* callTyped(publicationApi.delete, currentPublicationDocument.identifier);
+    } finally {
+        yield* callTyped(releasePublicationFileLock, evaluatedPublicationDocument.identifier);
+    }
 
     return undefined;
 }
 
 export function* cleanupAllLcpPublicationsIfNoLongerUsable(reason: string): SagaGenerator<void> {
-    const enabled = yield* selectTyped(cleanupIsEnabled);
-    if (!enabled) {
+    if (cleanupAllInProgress) {
+        debug("skip cleanup scan already in progress", reason);
         return;
     }
 
-    const publicationRepository = yield* callTyped(() => diMainGet("publication-repository"));
-    const publicationDocuments = publicationRepository.findAll();
-    for (const publicationDocument of publicationDocuments) {
-        try {
-            yield* callTyped(cleanupLcpPublicationIfNoLongerUsable, publicationDocument, reason);
-        } catch (e) {
-            error(`${filename_}:cleanupAllLcpPublicationsIfNoLongerUsable:${publicationDocument.identifier}`, e);
+    cleanupAllInProgress = true;
+    try {
+        const enabled = yield* selectTyped(cleanupIsEnabled);
+        if (!enabled) {
+            return;
         }
+
+        const publicationRepository = yield* callTyped(() => diMainGet("publication-repository"));
+        const publicationDocuments = publicationRepository.findAll();
+        for (const publicationDocument of publicationDocuments) {
+            const enabledForPublication = yield* selectTyped(cleanupIsEnabled);
+            if (!enabledForPublication) {
+                debug("stop cleanup scan because shared workstation cleanup was disabled", reason);
+                return;
+            }
+
+            try {
+                yield* callTyped(cleanupLcpPublicationIfNoLongerUsable, publicationDocument, reason);
+            } catch (e) {
+                error(`${filename_}:cleanupAllLcpPublicationsIfNoLongerUsable:${publicationDocument.identifier}`, e);
+            }
+        }
+    } finally {
+        cleanupAllInProgress = false;
     }
 }
 
@@ -111,7 +184,7 @@ function* runPeriodicCleanup(): SagaGenerator<void> {
 export function saga() {
     return all([
         spawnTyped(runPeriodicCleanup),
-        takeSpawnEvery(
+        takeSpawnLeading(
             settingsActions.lcpAutoDeleteExpiredPublications.ID,
             runCleanupWhenEnabled,
             (e) => error(filename_ + ":runCleanupWhenEnabled", e),
