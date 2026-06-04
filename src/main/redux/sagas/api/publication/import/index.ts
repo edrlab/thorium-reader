@@ -123,7 +123,7 @@ export function* importFromLink(
         if (alreadyImported) {
 
             if (deep < 1) {
-                const nextDeep = deep + 1;
+                const retryDeep = deep + 1;
                 const replacementNotes = yield* callTyped(
                     () => getPersonalModeReplacementNotes(publicationDocument.identifier),
                 );
@@ -138,14 +138,12 @@ export function* importFromLink(
                 );
                 if (!cleanedPublicationDocument) {
                     debug("restart import process after LCP cleanup");
-                    const replacementPublicationView = yield* callTyped(importFromLink, link, willBeImmediatelyFollowedByOpen, pub, nextDeep);
+                    const replacementPublicationView = yield* callTyped(importFromLink, link, willBeImmediatelyFollowedByOpen, pub, retryDeep);
                     yield* callTyped(
                         () => restorePersonalModeReplacementNotes(replacementPublicationView?.identifier, replacementNotes),
                     );
                     return replacementPublicationView;
                 }
-
-                deep = nextDeep;
 
                 if (!canOpenPublication(publicationView)) {
 
@@ -159,7 +157,7 @@ export function* importFromLink(
                     }
                     try {
                         debug("restart import process after publication was already imported, missing, but not deleted");
-                        return yield* callTyped(importFromLink, link, willBeImmediatelyFollowedByOpen, pub, deep);
+                        return yield* callTyped(importFromLink, link, willBeImmediatelyFollowedByOpen, pub, retryDeep);
                     } catch (e) {
                         debug("Error during the second import of the publication", e);
                         return undefined;
@@ -174,6 +172,8 @@ export function* importFromLink(
                         ),
                     );
                 }
+            } else if (deep === 1) {
+                debug("importFromLink already imported after retry -> STOP!");
             } else if (deep > 1) {
                 debug("importFromLink too many call stack -> STOP!");
             }
@@ -271,7 +271,7 @@ export function* importFromFs(
                     if (alreadyImported) {
 
                         if (deep < 1) {
-                            const nextDeep = deep + 1;
+                            const retryDeep = deep + 1;
                             const replacementNotes = yield* callTyped(
                                 () => getPersonalModeReplacementNotes(publicationDocument.identifier),
                             );
@@ -286,15 +286,13 @@ export function* importFromFs(
                             );
                             if (!cleanedPublicationDocument) {
                                 debug("restart import process after LCP cleanup");
-                                const publicationViews = yield* callTyped(importFromFs, fpath, willBeImmediatelyFollowedByOpen, nextDeep);
+                                const publicationViews = yield* callTyped(importFromFs, fpath, willBeImmediatelyFollowedByOpen, retryDeep);
                                 const replacementPublicationView = publicationViews?.[0];
                                 yield* callTyped(
                                     () => restorePersonalModeReplacementNotes(replacementPublicationView?.identifier, replacementNotes),
                                 );
                                 return replacementPublicationView;
                             }
-
-                            deep = nextDeep;
 
                             if (!canOpenPublication(publicationView)) {
 
@@ -308,7 +306,7 @@ export function* importFromFs(
                                 }
                                 try {
                                     debug("restart import process after publication was already imported, missing, but not deleted");
-                                    const publicationViews = yield* callTyped(importFromFs, fpath, willBeImmediatelyFollowedByOpen, deep);
+                                    const publicationViews = yield* callTyped(importFromFs, fpath, willBeImmediatelyFollowedByOpen, retryDeep);
                                     return publicationViews?.[0];
                                 } catch (e) {
                                     debug("Error during the second import of the publication", e);
@@ -324,6 +322,8 @@ export function* importFromFs(
                                     ),
                                 );
                             }
+                        } else if (deep === 1) {
+                            debug("importFromFs already imported after retry -> STOP!");
                         } else if (deep > 1) {
                             debug("importFromFs too many call stack -> STOP!");
                         }

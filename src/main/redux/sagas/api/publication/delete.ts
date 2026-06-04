@@ -33,14 +33,28 @@ const releasePublicationFileLock = (identifier: string) => {
     store.dispatch(lcpActions.publicationFileLock.build({ [identifier]: false }));
 };
 
+const publicationNeedsLcpFileLock = async (identifier: string): Promise<boolean> => {
+    try {
+        const publicationRepository = diMainGet("publication-repository");
+        const publicationDocument = await publicationRepository.get(identifier);
+        return !!publicationDocument?.lcp;
+    } catch (e) {
+        debug("cannot determine whether publication needs LCP file lock, lock conservatively", identifier, e);
+        return true;
+    }
+};
+
 export function* deletePublication(
     publicationIdentifier: string,
     _preservePublicationOnFileSystem?: string,
     publicationFileLockAlreadyHeld = false,
 ): SagaGenerator<void> {
 
-    let publicationFileLockAcquired = publicationFileLockAlreadyHeld;
-    while (!publicationFileLockAcquired) {
+    const shouldUsePublicationFileLock = publicationFileLockAlreadyHeld ||
+        (yield* callTyped(publicationNeedsLcpFileLock, publicationIdentifier));
+
+    let publicationFileLockAcquired = !shouldUsePublicationFileLock || publicationFileLockAlreadyHeld;
+    while (shouldUsePublicationFileLock && !publicationFileLockAcquired) {
         publicationFileLockAcquired = yield* callTyped(tryAcquirePublicationFileLock, publicationIdentifier);
         if (!publicationFileLockAcquired) {
             debug("wait before deleting publication because LCP file lock is active", publicationIdentifier);
@@ -49,8 +63,8 @@ export function* deletePublication(
     }
 
     try {
-        // The shared-computer cleanup already owns the lock when it calls deletePublication().
-        // Manual deletes acquire it here so deletion cannot race with LCP/LSD license injection.
+        // LCP publications use this lock so deletion cannot race with LCP/LSD license injection.
+        // Non-LCP publications skip it; the shared-computer cleanup already owns it when needed.
         // yield put(readerActions.closeRequest.build(publicationIdentifier));
         yield* callTyped(RequesetToCloseAllReadersWithTheSamePubId, publicationIdentifier);
 
@@ -81,7 +95,7 @@ export function* deletePublication(
         // Remove from memory cache
         yield call(() => publicationViewConverter.removeFromMemoryCache(publicationIdentifier));
     } finally {
-        if (!publicationFileLockAlreadyHeld) {
+        if (shouldUsePublicationFileLock && !publicationFileLockAlreadyHeld) {
             yield* callTyped(releasePublicationFileLock, publicationIdentifier);
         }
     }
