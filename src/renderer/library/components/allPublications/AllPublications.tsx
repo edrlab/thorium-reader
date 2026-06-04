@@ -40,9 +40,9 @@ import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as stylesPublication from "readium-desktop/renderer/assets/styles/components/allPublicationsPage.scss";
 import { CellColumnFilter, CellGlobalFilter } from "./AllPublicationsSearch";
 import { DisplayType, IRouterLocationState } from "../../routing";
-import { FilterPopover, resetAllFilters } from "src/renderer/library/components/allPublications/AllPublicationsFilter";
-import { SortingPopover } from "src/renderer/library/components/allPublications/AllPublicationsSorting";
-import { LibraryNavigation, SelectTableHeaders } from "src/renderer/library/components/allPublications/AllPublicationsUtils";
+import { FilterPopover, resetAllFilters } from "readium-desktop/renderer/library/components/allPublications/AllPublicationsFilter";
+import { SortingPopover } from "readium-desktop/renderer/library/components/allPublications/AllPublicationsSorting";
+import { LibraryNavigation, SelectTableHeaders } from "readium-desktop/renderer/library/components/allPublications/AllPublicationsUtils";
 import PublicationCard from "../publication/PublicationCard";
 import { dialogActions, readerActions } from "readium-desktop/common/redux/actions";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
@@ -428,6 +428,7 @@ export const PublicationsTable: React.FC<ITableCellProps_TableView & ITableCellP
             selectedTag,
             setSelectedTag,
             displayPublicationInfo,
+            locale,
         };
 
         return [
@@ -620,18 +621,18 @@ export const PublicationsTable: React.FC<ITableCellProps_TableView & ITableCellP
             columnHelper.accessor("colDescription", {
                 header: __("catalog.description"),
                 id: "colDescription",
-                cell: React.memo((info: CellContext<IColumns, string>) =>
-                    <CellDescription value={info.getValue()} />,
-                ),
+                cell: React.memo(function CellDescriptionColumn(info: CellContext<IColumns, string>) {
+                    return <CellDescription value={info.getValue()} />;
+                }),
                 sortingFn: sortFunction,
                 size: parseInt(columnWidths["colDescription"]),
             }),
             columnHelper.accessor("col_a11y_accessibilitySummary", {
                 header: __("publication.accessibility.name"),
                 id: "col_a11y_accessibilitySummary",
-                cell: React.memo((info: CellContext<IColumns, string>) =>
-                    <CellDescription value={info.getValue()} />,
-                ),
+                cell: React.memo(function CellAccessibilityColumn(info: CellContext<IColumns, string>) {
+                    return <CellDescription value={info.getValue()} />;
+                }),
                 sortingFn: sortFunction,
                 size: parseInt(columnWidths["col_a11y_accessibilitySummary"]),
             }),

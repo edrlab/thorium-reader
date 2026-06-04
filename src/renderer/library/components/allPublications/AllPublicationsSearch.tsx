@@ -167,7 +167,7 @@ export const CellColumnFilter: React.FC<ITableCellProps_ColumnFilter> = (props) 
                 );
             }
         }
-    }, [onInputChange, props.showColumnFilters, props.column, props.accessibilitySupportEnabled, searchParamsFocus, searchParamsValue]);
+    }, [onInputChange, props.showColumnFilters, props.column, props.accessibilitySupportEnabled, searchParamsFocus, searchParamsValue, props]);
 
     const applyFilter = (value: string) => {
         const trimmed = value.trim();
