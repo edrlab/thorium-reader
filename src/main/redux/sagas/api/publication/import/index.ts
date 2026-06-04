@@ -404,5 +404,14 @@ export function* importFromFs(
     //     yield put(readerActions.detachModeRequest.build());
     // }
 
+    // TEST PURPOSE
+    // const identifier = publicationViews[0].identifier;
+    // yield* fork(function*() {
+    //     yield* delay(400);
+    //     debug("DELETE !!", identifier);
+    //     yield* callTyped(() => publicationApi.delete(identifier));
+    //     debug("END DELETE !!", identifier);
+    // });
+
     return publicationViews;
 }

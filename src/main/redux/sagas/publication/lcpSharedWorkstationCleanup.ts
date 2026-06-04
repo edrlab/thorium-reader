@@ -27,6 +27,7 @@ const LCP_SHARED_WORKSTATION_CLEANUP_INTERVAL_MS = 1000 * 60 * 15;
 const cleanupIsEnabled = (state: RootState) =>
     settingsLcpAutoDeleteExpiredPublicationsIsEnabled(state.settings);
 
+// Prevent overlapping full-library scans from the periodic timer and settings-triggered cleanup.
 let cleanupAllInProgress = false;
 
 interface ICleanupLcpPublicationOptions {
@@ -84,6 +85,7 @@ export function* cleanupLcpPublicationIfNoLongerUsable(
     if (!options.skipLicenseUpdate) {
         try {
             evaluatedPublicationDocument = yield* callTyped(
+                // DOES NOT MUTATE publicationDocument (returns a modified copy)
                 () => lcpManager.checkPublicationLicenseUpdate(publicationDocument, false),
             );
         } catch (e) {
@@ -176,7 +178,7 @@ export function* cleanupAllLcpPublicationsIfNoLongerUsable(reason: string): Saga
             try {
                 yield* callTyped(cleanupLcpPublicationIfNoLongerUsable, publicationDocument, reason);
             } catch (e) {
-                error(`${filename_}:cleanupAllLcpPublicationsIfNoLongerUsable:${publicationDocument.identifier}`, e);
+                debug(`ERROR: cleanupAllLcpPublicationsIfNoLongerUsable:${publicationDocument.identifier}`, e);
             }
         }
     } finally {
@@ -194,7 +196,7 @@ function* runPeriodicCleanup(): SagaGenerator<void> {
         try {
             yield* callTyped(cleanupAllLcpPublicationsIfNoLongerUsable, "periodic");
         } catch (e) {
-            error(filename_ + ":runPeriodicCleanup", e);
+            debug("ERROR: runPeriodicCleanup", e);
         }
         yield* delayTyped(LCP_SHARED_WORKSTATION_CLEANUP_INTERVAL_MS);
     }
