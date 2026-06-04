@@ -12,7 +12,8 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import Catalog from "./components/catalog/Catalog";
 import Browser from "./components/opds/Browser";
 import Opds from "./components/opds/Opds";
-import AllPublicationPage from "./components/searchResult/AllPublicationPage";
+// import AllPublicationPage from "./components/searchResult/AllPublicationPage";
+import { AllPublicationsPage } from "./components/allPublications/AllPublications";
 // import TagSearchResult from "./components/searchResult/TagSearchResult";
 // import TextSearchResult from "./components/searchResult/TextSearchResult";
 
@@ -83,7 +84,7 @@ const _routes = {
     "/library": {
         path: "/library",
         // exact: true,
-        component: AllPublicationPage,
+        component: AllPublicationsPage,
     } as Route,
     "/home": {
         path: "/home",
