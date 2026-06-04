@@ -29,6 +29,10 @@ import { isAcceptedExtension } from "readium-desktop/common/extension";
 import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
 import { PersistRootState, RootState } from "../redux/states";
 import { appendFileSyncWithRotation } from "readium-desktop/utils/log";
+import {
+    isSharedComputerCliSwitch,
+    SHARED_COMPUTER_CLI_OPTION,
+} from "./options";
 
 // Logger
 const debug = debug_("readium-desktop:cli:process");
@@ -73,17 +77,13 @@ let __appStarted = false;
 let __returnCode = 0;
 let __pendingCmd = 0;
 
-const SHARED_COMPUTER_CLI_OPTION = "shared-computer";
-const SHARED_COMPUTER_CLI_SWITCH = `--${SHARED_COMPUTER_CLI_OPTION}`;
-const SHARED_COMPUTER_CLI_NEGATED_SWITCH = "--no-shared-computer";
-
 interface ISharedComputerCliArgv {
     sharedComputer?: unknown;
-    "shared-computer"?: unknown;
+    [SHARED_COMPUTER_CLI_OPTION]?: unknown;
 }
 
 const sharedComputerCliOptionIsEnabled = (argv: ISharedComputerCliArgv) =>
-    argv.sharedComputer === true || argv["shared-computer"] === true;
+    argv.sharedComputer === true || argv[SHARED_COMPUTER_CLI_OPTION] === true;
 
 const createStoreFromDiWithCliSettings = async (argv: ISharedComputerCliArgv): Promise<Store<RootState>> => {
     const store = await createStoreFromDi();
@@ -408,9 +408,7 @@ export function commandLineMainEntry(
 const knownOption = (str: string) => [
     "--help",
     "--version",
-    SHARED_COMPUTER_CLI_SWITCH,
-    SHARED_COMPUTER_CLI_NEGATED_SWITCH,
-].includes(str) || str.startsWith(`${SHARED_COMPUTER_CLI_SWITCH}=`);
+].includes(str) || isSharedComputerCliSwitch(str);
 
 
 // Catch all unhandled rejection promise from CLI command
