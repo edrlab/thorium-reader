@@ -71,7 +71,9 @@ export function* importFromLink(
                     cleanupLcpPublicationIfNoLongerUsable,
                     publicationDocument,
                     "import-from-link",
-                    { force: true },
+                    // User-initiated replacement import may remove a locally expired old copy
+                    // even when LSD cannot confirm a terminal status.
+                    { force: true, allowLocalRightsEndFallback: true },
                 );
                 if (!cleanedPublicationDocument) {
                     debug("restart import process after LCP cleanup");
@@ -210,7 +212,9 @@ export function* importFromFs(
                                 cleanupLcpPublicationIfNoLongerUsable,
                                 publicationDocument,
                                 "import-from-fs",
-                                { force: true },
+                                // User-initiated replacement import may remove a locally expired old copy
+                                // even when LSD cannot confirm a terminal status.
+                                { force: true, allowLocalRightsEndFallback: true },
                             );
                             if (!cleanedPublicationDocument) {
                                 debug("restart import process after LCP cleanup");

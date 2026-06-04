@@ -125,10 +125,13 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string): Sag
             debug("ERROR on call lcpManager.checkPublicationLicenseUpdate", error);
         }
 
+        // The open flow has just performed the LSD check above, so the cleanup helper only
+        // evaluates/removes and deliberately skips a second network synchronization.
         const cleanedPublicationDocument = yield* callTyped(
             cleanupLcpPublicationIfNoLongerUsable,
             publicationDocument,
             "open-publication",
+            { skipLicenseUpdate: true },
         );
         if (!cleanedPublicationDocument) {
             throw new Error(translator.translate("publication.expiredLcp"));

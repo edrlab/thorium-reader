@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { lcpInfoIsNoLongerUsable } from "readium-desktop/common/lcp";
+import { lcpInfoHasConfirmedNoLongerUsableStatus, lcpInfoIsNoLongerUsable } from "readium-desktop/common/lcp";
 import { lcpActions, settingsActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
@@ -30,6 +30,8 @@ let cleanupAllInProgress = false;
 
 interface ICleanupLcpPublicationOptions {
     force?: boolean;
+    allowLocalRightsEndFallback?: boolean;
+    skipLicenseUpdate?: boolean;
 }
 
 const tryAcquirePublicationFileLock = (identifier: string): boolean => {
@@ -46,6 +48,17 @@ const tryAcquirePublicationFileLock = (identifier: string): boolean => {
 const releasePublicationFileLock = (identifier: string) => {
     const store = diMainGet("store");
     store.dispatch(lcpActions.publicationFileLock.build({ [identifier]: false }));
+};
+
+const lcpInfoCanBeDeleted = (
+    lcp: PublicationDocument["lcp"],
+    options: ICleanupLcpPublicationOptions,
+): boolean => {
+    // Background/shared-computer cleanup deletes only when LSD confirms a terminal status.
+    // User-initiated replacement imports pass allowLocalRightsEndFallback so an old local
+    // license with an expired rights.end can be removed before importing the new copy.
+    return lcpInfoHasConfirmedNoLongerUsableStatus(lcp) ||
+        (options.allowLocalRightsEndFallback === true && lcpInfoIsNoLongerUsable(lcp));
 };
 
 export function* cleanupLcpPublicationIfNoLongerUsable(
@@ -67,12 +80,16 @@ export function* cleanupLcpPublicationIfNoLongerUsable(
 
     const lcpManager = yield* callTyped(() => diMainGet("lcp-manager"));
     let evaluatedPublicationDocument = publicationDocument;
-    try {
-        evaluatedPublicationDocument = yield* callTyped(
-            () => lcpManager.checkPublicationLicenseUpdate(publicationDocument, false),
-        );
-    } catch (e) {
-        debug("checkPublicationLicenseUpdate failed", publicationDocument.identifier, e);
+    if (!options.skipLicenseUpdate) {
+        try {
+            evaluatedPublicationDocument = yield* callTyped(
+                () => lcpManager.checkPublicationLicenseUpdate(publicationDocument, false),
+            );
+        } catch (e) {
+            debug("checkPublicationLicenseUpdate failed", publicationDocument.identifier, e);
+        }
+    } else {
+        debug("skip license update check, caller already synchronized publication", publicationDocument.identifier, reason);
     }
 
     const refreshedPublicationFileLocks = yield* selectTyped((state: RootState) => state.lcp.publicationFileLocks);
@@ -91,7 +108,7 @@ export function* cleanupLcpPublicationIfNoLongerUsable(
     }
     evaluatedPublicationDocument = latestPublicationDocument;
 
-    if (!lcpInfoIsNoLongerUsable(evaluatedPublicationDocument?.lcp)) {
+    if (!lcpInfoCanBeDeleted(evaluatedPublicationDocument?.lcp, options)) {
         return evaluatedPublicationDocument;
     }
 
@@ -116,7 +133,7 @@ export function* cleanupLcpPublicationIfNoLongerUsable(
             return undefined;
         }
 
-        if (!currentPublicationDocument.lcp || !lcpInfoIsNoLongerUsable(currentPublicationDocument.lcp)) {
+        if (!currentPublicationDocument.lcp || !lcpInfoCanBeDeleted(currentPublicationDocument.lcp, options)) {
             debug("skip deletion because publication is usable after final refresh", currentPublicationDocument.identifier, reason);
             return currentPublicationDocument;
         }
@@ -124,7 +141,8 @@ export function* cleanupLcpPublicationIfNoLongerUsable(
         const message = `LCP cleanup (${reason}): deleting publication and associated local user data: ${currentPublicationDocument.identifier} "${currentPublicationDocument.title || ""}"`;
         debug(message);
         const publicationApi = yield* callTyped(() => diMainGet("publication-api"));
-        yield* callTyped(publicationApi.delete, currentPublicationDocument.identifier);
+        // The cleanup owns the LCP file lock from this point until the delete flow completes.
+        yield* callTyped(publicationApi.delete, currentPublicationDocument.identifier, undefined, true);
     } finally {
         yield* callTyped(releasePublicationFileLock, evaluatedPublicationDocument.identifier);
     }

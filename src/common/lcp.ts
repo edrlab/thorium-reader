@@ -31,6 +31,10 @@ export function lcpLsdStatusIsNoLongerUsable(lsdStatus: Pick<LsdStatus, "status"
         lsdStatus?.status === StatusEnum.Cancelled;
 }
 
+export function lcpInfoHasConfirmedNoLongerUsableStatus(lcp: Pick<LcpInfo, "lsd"> | undefined): boolean {
+    return lcpLsdStatusIsNoLongerUsable(lcp?.lsd?.lsdStatus);
+}
+
 export function lcpRightsEndIsExpired(rightsEndIso: string | undefined, nowMs = Date.now()): boolean {
     if (!rightsEndIso) {
         return false;
@@ -41,6 +45,9 @@ export function lcpRightsEndIsExpired(rightsEndIso: string | undefined, nowMs = 
 }
 
 export function lcpInfoIsNoLongerUsable(lcp: Pick<LcpInfo, "lsd" | "rights"> | undefined, nowMs = Date.now()): boolean {
+    // Broad local usability check. Automatic shared-computer deletion should prefer
+    // lcpInfoHasConfirmedNoLongerUsableStatus() unless a user-initiated flow explicitly accepts
+    // the local rights.end fallback.
     return lcpLsdStatusIsNoLongerUsable(lcp?.lsd?.lsdStatus) ||
         lcpRightsEndIsExpired(lcp?.rights?.end, nowMs);
 }
