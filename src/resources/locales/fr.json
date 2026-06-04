@@ -1242,7 +1242,7 @@
         },
         "sharedComputer": {
             "lcpAutoDeleteExpiredPublications": "Supprimer automatiquement les publications LCP inutilisables et les données locales",
-            "lcpAutoDeleteExpiredPublicationsDescription": "Après synchronisation du statut LCP/LSD, les publications LCP expirées, rendues, révoquées ou annulées sont retirées de la bibliothèque avec leurs notes et leur état de lecture locaux. L'import d'un nouvel exemplaire peut tout de même remplacer une copie précédente inutilisable lorsque cette option est désactivée.",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Après synchronisation du statut LCP/LSD, les publications LCP expirées, rendues, révoquées ou annulées sont retirées de la bibliothèque avec leurs notes et leur état de lecture locaux. En mode personnel, l'import d'un nouvel exemplaire peut tout de même remplacer une copie précédente inutilisable en préservant ses notes lorsque c'est possible.",
             "title": "Poste partagé"
         },
         "storage": {

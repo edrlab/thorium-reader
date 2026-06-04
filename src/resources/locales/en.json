@@ -1236,7 +1236,7 @@
         },
         "sharedComputer": {
             "lcpAutoDeleteExpiredPublications": "Automatically delete unusable LCP publications and local user data",
-            "lcpAutoDeleteExpiredPublicationsDescription": "After LCP/LSD status synchronization, expired, returned, revoked or cancelled LCP publications are removed from the library with their local notes and reading state. Newly imported replacements can still remove an unusable previous copy even when this setting is off.",
+            "lcpAutoDeleteExpiredPublicationsDescription": "After LCP/LSD status synchronization, expired, returned, revoked or cancelled LCP publications are removed from the library with their local notes and reading state. In personal mode, newly imported replacements can still replace an unusable previous copy while preserving its notes when possible.",
             "title": "Shared computer"
         },
         "storage": {

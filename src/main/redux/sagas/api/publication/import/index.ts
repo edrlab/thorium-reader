@@ -24,6 +24,9 @@ import { PublicationViewConverter } from "readium-desktop/main/converter/publica
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { publicationApi } from "..";
 import { cleanupLcpPublicationIfNoLongerUsable } from "readium-desktop/main/redux/sagas/publication/lcpSharedWorkstationCleanup";
+import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import { RootState } from "readium-desktop/main/redux/states";
+import { sqliteTableNoteInsertOrReplace, sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
 
 // import { appActivate } from "readium-desktop/main/redux/sagas/win/library";
 // import { readerActions } from "readium-desktop/common/redux/actions";
@@ -39,6 +42,61 @@ const convertDoc = async (doc: PublicationDocument, publicationViewConverter: Pu
         const pub = await publicationViewConverter.convertUnavailableDocumentToMinimalPublicationView(doc);
         debug("Convert to minimal view", pub);
         return pub;
+    }
+};
+
+interface IPersonalModeReplacementNotes {
+    noteTotalCount: number;
+    notes: INoteState[];
+}
+
+const emptyPersonalModeReplacementNotes = (): IPersonalModeReplacementNotes => ({
+    noteTotalCount: 0,
+    notes: [],
+});
+
+const getPersonalModeReplacementNotes = async (publicationIdentifier: string): Promise<IPersonalModeReplacementNotes> => {
+    const store = diMainGet("store");
+    const state: RootState = store.getState();
+    if (state.settings?.lcpAutoDeleteExpiredPublications === true) {
+        return emptyPersonalModeReplacementNotes();
+    }
+
+    const notes = sqliteTableSelectAllNotesWherePubId(publicationIdentifier);
+    const maxNoteIndex = notes.reduce((acc, note) => Math.max(acc, note.index || 0), 0);
+    const noteTotalCountState = await diMainGet("publication-data").readJsonObj(publicationIdentifier, "noteTotalCount") as {
+        state?: unknown;
+    } | undefined;
+    const noteTotalCount = typeof noteTotalCountState?.state === "number"
+        ? Math.max(noteTotalCountState.state, maxNoteIndex)
+        : maxNoteIndex;
+
+    debug(`captured ${notes.length} note(s) before personal-mode LCP replacement`, publicationIdentifier);
+    return {
+        noteTotalCount,
+        notes,
+    };
+};
+
+const restorePersonalModeReplacementNotes = async (
+    publicationIdentifier: string | undefined,
+    replacementNotes: IPersonalModeReplacementNotes,
+) => {
+    if (!publicationIdentifier) {
+        return;
+    }
+
+    // Replacement imports create a new publication identifier. Reassigning the captured
+    // note UUIDs with INSERT OR REPLACE preserves annotations/bookmarks even if the old
+    // publication delete saga has not finished deleting the previous pub_id rows yet.
+    if (replacementNotes.notes.length) {
+        sqliteTableNoteInsertOrReplace(publicationIdentifier, replacementNotes.notes);
+    }
+
+    if (replacementNotes.noteTotalCount > 0) {
+        await diMainGet("publication-data").writeJsonObj(publicationIdentifier, "noteTotalCount", {
+            state: replacementNotes.noteTotalCount,
+        });
     }
 };
 
@@ -66,6 +124,9 @@ export function* importFromLink(
 
             if (deep < 1) {
                 const nextDeep = deep + 1;
+                const replacementNotes = yield* callTyped(
+                    () => getPersonalModeReplacementNotes(publicationDocument.identifier),
+                );
 
                 const cleanedPublicationDocument = yield* callTyped(
                     cleanupLcpPublicationIfNoLongerUsable,
@@ -77,7 +138,11 @@ export function* importFromLink(
                 );
                 if (!cleanedPublicationDocument) {
                     debug("restart import process after LCP cleanup");
-                    return yield* callTyped(importFromLink, link, willBeImmediatelyFollowedByOpen, pub, nextDeep);
+                    const replacementPublicationView = yield* callTyped(importFromLink, link, willBeImmediatelyFollowedByOpen, pub, nextDeep);
+                    yield* callTyped(
+                        () => restorePersonalModeReplacementNotes(replacementPublicationView?.identifier, replacementNotes),
+                    );
+                    return replacementPublicationView;
                 }
 
                 deep = nextDeep;
@@ -207,6 +272,9 @@ export function* importFromFs(
 
                         if (deep < 1) {
                             const nextDeep = deep + 1;
+                            const replacementNotes = yield* callTyped(
+                                () => getPersonalModeReplacementNotes(publicationDocument.identifier),
+                            );
 
                             const cleanedPublicationDocument = yield* callTyped(
                                 cleanupLcpPublicationIfNoLongerUsable,
@@ -219,7 +287,11 @@ export function* importFromFs(
                             if (!cleanedPublicationDocument) {
                                 debug("restart import process after LCP cleanup");
                                 const publicationViews = yield* callTyped(importFromFs, fpath, willBeImmediatelyFollowedByOpen, nextDeep);
-                                return publicationViews?.[0];
+                                const replacementPublicationView = publicationViews?.[0];
+                                yield* callTyped(
+                                    () => restorePersonalModeReplacementNotes(replacementPublicationView?.identifier, replacementNotes),
+                                );
+                                return replacementPublicationView;
                             }
 
                             deep = nextDeep;
