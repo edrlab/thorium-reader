@@ -19,7 +19,7 @@
             "copy": "Kopieren",
             "cut": "Ausschneiden",
             "paste": "Einfügen",
-            "print": "",
+            "print": "Drucken",
             "redo": "Wiederherstellen",
             "selectAll": "Alle auswählen",
             "title": "Bearbeiten",
@@ -49,7 +49,7 @@
         }
     },
     "catalog": {
-        "AddToFavorites": "",
+        "AddToFavorites": "Zu Favoriten hinzufügen",
         "about": {
             "title": "Über {{-appName}} (online)"
         },
@@ -65,10 +65,10 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
-                "publications": "",
-                "screen": "",
-                "title": ""
+                "description": "Keine Profilbeschreibung",
+                "publications": "Publikationen",
+                "screen": "Kein Titel",
+                "title": "Profil-Titel"
             }
         },
         "delete": "Löschen",
@@ -86,10 +86,10 @@
         "importAnnotation": "Notizen importieren",
         "lang": "Sprache",
         "lastRead": "Zuletzt gelesen",
-        "login": "",
-        "logout": "",
-        "missing": "",
-        "missingUnavailableDescription": "",
+        "login": "Anmelden",
+        "logout": "Abmelden",
+        "missing": "Fehlende Dateien",
+        "missingUnavailableDescription": "Diese Publikation kann nicht geöffnet werden, da die darin gespeicherten Dateien nicht verfügbar sind. Importieren Sie sie erneut oder gehen Sie zu Einstellungen und dann zu Speicher, um zusätzlichen Speicherplatz hinzuzufügen oder anzupassen.",
         "moreInfo": "Mehr Informationen",
         "myBooks": "Meine Bücher",
         "noPublicationHelpL1": "Legen Sie Ihre Bücher hier ab",
@@ -100,14 +100,14 @@
         "opds": {
             "auth": {
                 "cancel": "Abbrechen",
-                "external": "",
-                "fallback": "",
+                "external": "Die Anmeldeseite wird in Ihrem Webbrowser geöffnet. Bitte befolgen Sie die Anweisungen. Sobald Sie sich angemeldet haben, leitet der Webbrowser Sie zurück zu dieser Anwendung.",
+                "fallback": "Hinweis: Sollten beim Anmelden über den Standard-Webbrowser Probleme auftreten, versuchen Sie es bitte erneut über die alternative Methode innerhalb der Anwendung.",
                 "login": "Anmelden",
                 "password": "Passwort",
                 "register": "Registrieren",
-                "retry": "",
-                "unauthorized": "",
-                "unauthorizedUnsupportedType": "",
+                "retry": "Erneut versuchen",
+                "unauthorized": "Unbefugt",
+                "unauthorizedUnsupportedType": "Unbefugt (Nicht unterstützter WWWAuthenticate-Typ '{{- type}}')",
                 "username": "Benutzername / E-Mail-Adresse"
             },
             "info": {
@@ -129,12 +129,12 @@
                 "state": "Zustand"
             }
         },
-        "openFolder": "",
+        "openFolder": "Verzeichnis öffnen",
         "publisher": "Herausgeber",
         "readBook": "Lesen",
         "released": "Veröffentlicht am",
-        "removeFromFavorites": "",
-        "selectTableHeaders": "",
+        "removeFromFavorites": "Aus Favoriten entfernen",
+        "selectTableHeaders": "Spalten zur Anzeige auswählen",
         "sort": "Sortieren nach",
         "tag": "Tag",
         "tags": "Tags",
@@ -159,20 +159,20 @@
         "cancel": "Abbrechen",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
-                "state": "",
-                "title": ""
+                "fallbackWelcomeScreen": "Kein Begrüßungsbildschirm vorhanden",
+                "state": "Status: {{- state}}",
+                "title": "Bereitstellung und Aktivierung des Anpassungsprofils"
             }
         },
         "deleteAnnotations": "Anmerkungen löschen?",
         "deleteAnnotationsText_one": "Sind Sie sicher, dass Sie {{- count}} Notiz(en) löschen wollen?",
         "deleteAnnotationsText_other": "Sind Sie sicher, dass Sie {{- count}} Notiz(en) löschen wollen?",
-        "deleteBookmarks": "",
-        "deleteBookmarksText_one": "",
-        "deleteBookmarksText_other": "",
+        "deleteBookmarks": "Lesezeichen löschen?",
+        "deleteBookmarksText_one": "Möchten Sie {{- count}} Lesezeichen wirklich löschen?",
+        "deleteBookmarksText_other": "Möchten Sie {{- count}} Lesezeichen wirklich löschen?",
         "deleteFeed": "Willst du diesen Katalog wirklich löschen?",
         "deletePublication": "Willst du diese Publikation wirklich löschen?",
-        "deletePublicationWithNotes": "",
+        "deletePublicationWithNotes": "Achtung: Diese Publikation enthält Anmerkungen und/oder Lesezeichen, die ebenfalls gelöscht werden! (Wenn Sie diese behalten möchten, sollten Sie die Notizen unbedingt exportieren, bevor Sie die Publikation entfernen.)",
         "import": "Import bestätigen:",
         "importError": "Ein Fehler ist aufgetreten, überprüfen Sie die Dateiendung ({{acceptedExtension}})",
         "renew": "Ausleihe verlängern?",
@@ -201,34 +201,34 @@
         "searchPlaceholder": "Suche",
         "searchTitle": "Suche starten",
         "settings": "Einstellungen",
-        "settingsLabel": "",
+        "settingsLabel": "Anwendungseinstellungen",
         "viewMode": "Ansichtsmodus"
     },
     "library": {
         "filter": {
-            "addFilters": "",
-            "filterBy": "",
-            "selectOption": ""
+            "addFilters": "Filter hinzufügen",
+            "filterBy": "Filtern nach",
+            "selectOption": "Wählen Sie einen Eintrag aus"
         },
         "lcp": {
-            "hidePassphrase": "",
+            "hidePassphrase": "Passwort ausblenden",
             "hint": "Hinweis:",
             "open": "Öffnen",
             "password": "Passwort",
             "sentence": "Diese LCP-geschütze Publikation benötigt zum Öffnen ein Passwort",
-            "showPassphrase": "",
+            "showPassphrase": "Passwort anzeigen",
             "urlHint": "Passwort vergessen? Klicke hier für Support.",
             "whatIsLcp?": "Was ist LCP?",
             "whatIsLcpInfoDetails": "LCP steht für „Licensed Content Protection“.",
             "whatIsLcpInfoDetailsLink": "Um mehr zu erfahren, klicken Sie auf diesen Link zur EDRLab-Website."
         },
         "sorting": {
-            "addSorting": "",
-            "author": "",
-            "language": "",
-            "readingState": "",
-            "sortBy": "",
-            "title": ""
+            "addSorting": "Sortierung hinzufügen",
+            "author": "Autor",
+            "language": "Sprache",
+            "readingState": "Lesestatus",
+            "sortBy": "Sortieren nach: ",
+            "title": "Titel"
         }
     },
     "message": {
@@ -250,14 +250,14 @@
         },
         "open": {
             "error": "Die Publikation kann nicht geöffnet werden: {{- err}}",
-            "folderNotFound": ""
+            "folderNotFound": "Das Publikationsverzeichnis wurde nicht gefunden. Importieren Sie es erneut oder richten Sie den zusätzlichen Speicher unter Einstellungen > Speicher ein."
         },
         "storage": {
-            "removed": "",
-            "updateFailed": "",
-            "updated": ""
+            "removed": "Verzeichnis der Publikationen entfernt.",
+            "updateFailed": "Das Aktualisieren des Publikationsverzeichnisses ist fehlgeschlagen: {{- message}}",
+            "updated": "Das Publikationsverzeichnis wurde aktualisiert."
         },
-        "wipeData": ""
+        "wipeData": "Die Anmeldedaten wurden gelöscht (Zugriffstoken und Cookies)"
     },
     "opds": {
         "addForm": {
@@ -294,7 +294,7 @@
         },
         "next": "Nächster",
         "previous": "Vorheriger",
-        "resumeBrowsing": "",
+        "resumeBrowsing": "Weiter stöbern",
         "shelf": "Bücherregal",
         "updateForm": {
             "name": "Name:",
@@ -306,292 +306,292 @@
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-title": ""
+            "accessibility-summary-title": "Zusammenfassung zur Barrierefreiheit"
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "ARIA-Rollen vorhanden",
+                "descriptive": "Der Inhalt wird mit ARIA-Rollen angereichert, um die Strukturierung zu optimieren und die Navigation zu erleichtern"
             },
             "additional-accessibility-information-audio-descriptions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Audi-Beschreibungen",
+                "descriptive": "Audi-Beschreibungen"
             },
             "additional-accessibility-information-braille": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Braille",
+                "descriptive": "Braille"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Vollständige Ruby-Anmerkungen",
+                "descriptive": "Vollständige Ruby-Anmerkungen"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Starker Kontrast zwischen Vordergrund- und Hintergrund-Audio",
+                "descriptive": "Starker Kontrast zwischen Vordergrund- und Hintergrund-Audio"
             },
             "additional-accessibility-information-high-contrast-between-text-and-background": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Starker Kontrast zwischen Vordergrund- und Hintergrund-Text",
+                "descriptive": "Starker Kontrast zwischen Vordergrund- und Hintergrund-Text"
             },
             "additional-accessibility-information-large-print": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Großdruck",
+                "descriptive": "Großdruck"
             },
             "additional-accessibility-information-page-breaks": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Seitenumbrüche enthalten",
+                "descriptive": "Seitenumbrüche aus der ursprünglichen Druckvorlage übernommen"
             },
             "additional-accessibility-information-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Einige Ruby-Annotationen",
+                "descriptive": "Einige Ruby-Annotationen"
             },
             "additional-accessibility-information-sign-language": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Gebärdensprache",
+                "descriptive": "Gebärdensprache"
             },
             "additional-accessibility-information-tactile-graphics": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Taktile Grafiken enthalten",
+                "descriptive": "Es wurden taktile Grafiken integriert, um blinden Menschen den Zugang zu visuellen Elementen zu erleichtern"
             },
             "additional-accessibility-information-tactile-objects": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Taktile 3D-Objekte",
+                "descriptive": "Taktile 3D-Objekte"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Hinweise zur Text-to-Speech-Funktion enthalten",
+                "descriptive": "Hinweise zur Text-to-Speech-Funktion enthalten"
             },
-            "additional-accessibility-information-title": ""
+            "additional-accessibility-information-title": "Weitere Informationen zur Barrierefreiheit"
         },
         "conformance": {
             "conformance-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Diese Veröffentlichung erfüllt die Mindeststandards für Barrierefreiheit",
+                "descriptive": "Die Publikation enthält eine Konformitätserklärung, wonach sie den EPUB-Barrierefreiheitsstandards und den WCAG 2 Level A entspricht"
             },
             "conformance-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Diese Veröffentlichung entspricht den anerkannten Standards für Barrierefreiheit",
+                "descriptive": "Die Publikation enthält eine Konformitätserklärung, wonach sie den EPUB-Barrierefreiheitsstandards und den WCAG 2 Level AA entspricht"
             },
             "conformance-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Diese Veröffentlichung übertrifft die anerkannten Standards für Barrierefreiheit",
+                "descriptive": "Die Publikation enthält eine Konformitätserklärung, wonach sie den EPUB-Barrierefreiheitsstandards und den WCAG 2 Level AAA entspricht"
             },
             "conformance-certifier": {
-                "compact": ""
+                "compact": "Die Veröffentlichung wurde zertifiziert durch "
             },
             "conformance-certifier-credentials": {
-                "compact": ""
+                "compact": "Die Berechtigungsnachweise des Zertifizierers lauten "
             },
             "conformance-details-certifier-report": {
-                "compact": ""
+                "compact": "Weitere Informationen finden Sie im Bericht des Zertifizierers"
             },
             "conformance-details-claim": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Diese Veröffentlichung gibt vor,",
+                "descriptive": "Diese Veröffentlichung gibt vor,"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB-Barrierefreiheit 1.0",
+                "descriptive": "EPUB-Barrierefreiheit 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB-Barrierefreiheit 1.1",
+                "descriptive": "EPUB-Barrierefreiheit 1.1"
             },
             "conformance-details-level-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Level A",
+                "descriptive": "Level A"
             },
             "conformance-details-level-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Level AA",
+                "descriptive": "Level AA"
             },
             "conformance-details-level-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Level AAA",
+                "descriptive": "Level AAA"
             },
             "conformance-details-wcag-2-0": {
-                "compact": ""
+                "compact": "WCAG 2.0"
             },
             "conformance-details-wcag-2-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.1",
+                "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.2",
+                "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.2"
             },
             "conformance-no": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Es liegen keine Informationen vor",
+                "descriptive": "Es liegen keine Informationen vor"
             },
-            "conformance-title": "",
+            "conformance-title": "Konformität",
             "conformance-unknown-standard": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Es lässt sich nicht feststellen, ob diese Veröffentlichung den anerkannten Standards für Barrierefreiheit entspricht",
+                "descriptive": "Es lässt sich nicht feststellen, ob diese Veröffentlichung den anerkannten Standards für Barrierefreiheit entspricht"
             }
         },
         "hazards": {
             "hazards-flashing": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Blinkende Inhalte",
+                "descriptive": "Die Publikation enthält blinkende Inhalte, die lichtempfindliche Anfälle auslösen können"
             },
             "hazards-flashing-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Keine blinkenden Inhalte",
+                "descriptive": "Die Veröffentlichung enthält keine blinkenden Inhalte"
             },
             "hazards-flashing-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Es ist nicht bekannt, ob blinkende Inhalte vorhanden sind",
+                "descriptive": "Es ist nicht bekannt, ob blinkende Inhalte vorhanden sind"
             },
             "hazards-motion": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bewegungssimulation",
+                "descriptive": "Die Veröffentlichung enthält Bewegungssimulationen, die Reisekrankheit auslösen können"
             },
             "hazards-motion-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Keine Bewegungssimulation",
+                "descriptive": "Die Veröffentlichung enthält keine Bewegungssimulation"
             },
             "hazards-motion-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Es ist nicht bekannt, ob eine Bewegungssimulation vorhanden ist",
+                "descriptive": "Es ist nicht bekannt, ob eine Bewegungssimulation vorhanden ist"
             },
             "hazards-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Es liegen keine Informationen vor",
+                "descriptive": "Es liegen keine Informationen vor"
             },
             "hazards-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Keine Gefahren",
+                "descriptive": "Die Puiblikation enthält keine Gefahren"
             },
             "hazards-sound": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Töne",
+                "descriptive": "Die Veröffentlichung enthält Töne, die als unangenehm empfunden werden können"
             },
             "hazards-sound-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Keine Töne",
+                "descriptive": "Die Publikation enthält keine Töne"
             },
             "hazards-sound-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Es ist nicht bekannt, ob Töne zu hören sind",
+                "descriptive": "Es ist nicht bekannt, ob Töne zu hören sind"
             },
-            "hazards-title": "",
+            "hazards-title": "Gefahren",
             "hazards-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Es ist nicht bekannt, ob Gefahren bestehen",
+                "descriptive": "Es ist nicht bekannt, ob Gefahren bestehen"
             }
         },
         "navigation": {
             "navigation-index": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Index",
+                "descriptive": "Verzeichnis mit Links zu den entsprechenden Einträgen"
             },
             "navigation-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Es liegen keine Informationen vor",
+                "descriptive": "Es liegen keine Informationen vor"
             },
             "navigation-page-navigation": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Zur Seite gehen",
+                "descriptive": "Seitenverzeichnis zum Aufrufen der Seiten aus der Druckvorlage"
             },
             "navigation-structural": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Überschriften",
+                "descriptive": "Elemente wie Überschriften, Tabellen usw. für eine strukturierte Navigation"
             },
-            "navigation-title": "",
+            "navigation-title": "Navigation",
             "navigation-toc": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Inhaltsverzeichnis",
+                "descriptive": "Inhaltsverzeichnis zu allen Kapiteln des Textes über Links"
             }
         },
         "rich-content": {
             "rich-content-accessible-chemistry-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Chemische Formeln in LaTeX",
+                "descriptive": "Chemische Formeln in barrierefreiem Format (LaTeX)"
             },
             "rich-content-accessible-chemistry-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Chemische Formeln in MathML",
+                "descriptive": "Chemische Formeln in barrierefreiem Format (MathML)"
             },
             "rich-content-accessible-math-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Mathematische Formeln als LaTeX",
+                "descriptive": "Mathematische Formeln in barrierefreiem Format (LaTeX)"
             },
             "rich-content-accessible-math-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Mathematische Formeln als MathML",
+                "descriptive": "Mathematische Formeln in barrierefreiem Format (MathML)"
             },
             "rich-content-accessible-math-described": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Es werden textliche Erläuterungen zur Mathematik bereitgestellt",
+                "descriptive": "Es werden textliche Erläuterungen zur Mathematik bereitgestellt"
             },
             "rich-content-closed-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Die Videos sind mit Untertiteln versehen",
+                "descriptive": "Die in den Publikationen enthaltenen Videos sind mit Untertiteln versehen"
             },
             "rich-content-extended": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Inhaltsreiche Bilder werden durch ausführliche Beschreibungen ergänzt",
+                "descriptive": "Inhaltsreiche Bilder werden durch ausführliche Beschreibungen ergänzt"
             },
             "rich-content-open-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Die Videos verfügen über offene Untertitel",
+                "descriptive": "Die in den Publikationen enthaltenen Videos verfügen über offene Untertitel"
             },
-            "rich-content-title": "",
+            "rich-content-title": "Formatiertert Inhalt",
             "rich-content-transcript": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Transkript(e) bereitgestellt",
+                "descriptive": "Transkript(e) bereitgestellt"
             },
             "rich-content-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Es liegen keine Informationen vor",
+                "descriptive": "Es liegen keine Informationen vor"
             }
         },
         "ways-of-reading": {
             "ways-of-reading-nonvisual-reading-alt-text": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Verfügt über Alternativtext",
+                "descriptive": "Verfügt über alternative Textbeschreibungen für Bilder"
             },
             "ways-of-reading-nonvisual-reading-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Es liegen keine Informationen zum nicht-visuellen Lesen vor",
+                "descriptive": "Es liegen keine Informationen zum nicht-visuellen Lesen vor"
             },
             "ways-of-reading-nonvisual-reading-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Nicht lesbar über Vorlesesysteme oder dynamisches Braille",
+                "descriptive": "Der Inhalt kann nicht über Vorlesesysteme oder dynamisches Braille wiedergegeben werden"
             },
             "ways-of-reading-nonvisual-reading-not-fully": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Nicht vollständig lesbar über Vorlesesysteme oder dynamisches Braille",
+                "descriptive": "Nicht aller Inhalt ist über Vorlesesysteme oder dynamisches Braille wiedergebbar"
             },
             "ways-of-reading-nonvisual-reading-readable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Lesbar über Vorlesesysteme oder dynamisches Braille",
+                "descriptive": "Aller Inhalt ist lesbar über Vorlesesysteme oder dynamisches Braille"
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Voraufgezeichnete Audioausschnitte",
+                "descriptive": "In den Inhalt sind vorab aufgezeichnete Audioausschnitte eingebettet"
             },
             "ways-of-reading-prerecorded-audio-only": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Nur aufgezeichnete Audiodateien",
+                "descriptive": "Hörbuch ohne Textversion"
             },
             "ways-of-reading-prerecorded-audio-synchronized": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Voraufgezeichnete Audiodatei, synchronisiert mit dem Text",
+                "descriptive": "Alle Inhalte sind als vorab aufgezeichnete Audioaufnahmen verfügbar, die mit dem Text synchronisiert sind"
             },
-            "ways-of-reading-title": "",
+            "ways-of-reading-title": "Lesarten",
             "ways-of-reading-visual-adjustments-modifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Das Erscheinungsbild kann angepasst werden",
+                "descriptive": "Das Erscheinungsbild des Textes und das Seitenlayout können entsprechend den Möglichkeiten des Lesesystems angepasst werden (Schriftart und Schriftgröße, Abstände zwischen Absätzen, Sätzen, Wörtern und Buchstaben sowie Hintergrund- und Textfarbe)"
             },
             "ways-of-reading-visual-adjustments-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Es liegen keine Informationen zur Anpassbarkeit des Erscheinungsbildes vor",
+                "descriptive": "Es liegen keine Informationen zur Anpassbarkeit des Erscheinungsbildes vor"
             },
             "ways-of-reading-visual-adjustments-unmodifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Das Erscheinungsbild kann nicht geändert werden",
+                "descriptive": "Text und Seitenlayout können nicht geändert werden, da das Leseerlebnis dem einer gedruckten Ausgabe sehr nahe kommt; Lesesysteme bieten jedoch weiterhin Zoomfunktionen an"
             }
         }
     },
@@ -647,7 +647,7 @@
         "expiredLcp": "Die LCP-Lizenz dieser Veröffentlichung ist abgelaufen.",
         "incorrectPassphrase": "Kein gespeichertes Passwort passt zu dieser Publikation oder das eingegebene Passwort ist falsch.",
         "lcpEnd": "Ende",
-        "lcpNotSupported": "",
+        "lcpNotSupported": "WARNUNG: Dies ist eine Vorabversion des Thorium Desktop Reader, die keine produktionsreifen LCP-Lizenzen unterstützt und lediglich die Entschlüsselung von LCP-Zertifikaten im „Basic Profile“ ohne Zertifikatsvalidierung ermöglicht.",
         "lcpRightsCopy": "Kopierte Zeichen",
         "lcpRightsPrint": "Gedruckte Seiten",
         "lcpStart": "Start",
@@ -687,7 +687,7 @@
             "date": "Änderungsdatum",
             "error": {
                 "pdf": {
-                    "validationSelection": ""
+                    "validationSelection": "Aus dieser Auswahl kann keine PDF-Anmerkung erstellt werden."
                 }
             },
             "export": "Notizen speichern als...",
@@ -721,26 +721,26 @@
             }
         },
         "bookmarks": {
-            "index": ""
+            "index": "Lesezeichen {{- index}}"
         },
         "divina": {
             "mute": "Audio stummschalten",
             "unmute": "Ton einschalten"
         },
         "dock": {
-            "dockDefault": "",
-            "dockLeft": "",
-            "dockRight": ""
+            "dockDefault": "Fenster als modales Popup anzeigen",
+            "dockLeft": "Dock-Leiste links",
+            "dockRight": "Dock-Leiste rechts"
         },
         "fxl": {
             "fit": "Einpassen"
         },
         "goToContent": "Zum Inhalt gehen",
         "imgViewer": {
-            "title": "",
-            "zoomIn": "",
-            "zoomOut": "",
-            "zoomReset": ""
+            "title": "Bildbetrachter (Zoom)",
+            "zoomIn": "Vergrößern",
+            "zoomOut": "Verkleinern",
+            "zoomReset": "Zoom zurücksetzen"
         },
         "marks": {
             "annotations": "Meine Anmerkungen",
@@ -749,7 +749,7 @@
             "edit": "Bearbeiten",
             "goTo": "Gehe zu Seite",
             "landmarks": "Navigationspunkte",
-            "saveMark": "Lesezeichen speichern",
+            "saveMark": "Speichern",
             "search": "Suche",
             "searchResult": "Suche [{{- searchText}}]",
             "toc": "Inhaltsverzeichnis"
@@ -760,8 +760,8 @@
             "captionsDescription": "Vereinfachte Textansicht mit minimalem Untertitel-Styling.",
             "disableContinuousPlay": "Deaktiviere automatisches Abspielen",
             "disableContinuousPlayDescription": "Das nächste Element wird nicht automatisch abgespielt, sondern die Wiedergabe wird unmittelbar nach Beendigung des aktuellen Elements angehalten.",
-            "ignoreAndUseTTS": "",
-            "ignoreAndUseTTSDescription": "",
+            "ignoreAndUseTTS": "Voraufgezeichnete Audiodateien ignorieren, TTS verwenden",
+            "ignoreAndUseTTSDescription": "EPUB Media Overlays ignorieren, stattdessen mit Text-to-Speech lesen",
             "next": "Nächstes Vorlesen",
             "pause": "Vorlesen pausieren",
             "play": "Vorlesen",
@@ -771,23 +771,23 @@
             "speed": "Vorlese-Wiedergabegeschwindigkeit",
             "stop": "Vorlesen beenden",
             "title": "Vorlesen",
-            "useTTSHighlightsForMO": "",
-            "useTTSHighlightsForMODescription": ""
+            "useTTSHighlightsForMO": "Benutzerdefinierte Hervorhebung",
+            "useTTSHighlightsForMODescription": "Benutzerdefinierte Stile deaktivieren"
         },
         "navigation": {
             "ZenModeExit": "Zen-Modus verlassen",
             "ZenModeTitle": "Zen-Modus",
             "annotationTitle": "Notizen",
             "backHomeTitle": "Zurück zum Bücherregal",
-            "bookmarkTitle": "Lesezeichen setzen",
+            "bookmarkTitle": "Lesezeichen",
             "currentPage": "Aktuelle Seite: {{- current}}",
             "currentPageTotal": "Aktuelle Seite: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Fenster loslösen",
+            "detachWindowTitle": "Bibliotheks-/Bücherregal-Fenster anzeigen",
             "goTo": "Gehe zu",
             "goToError": "Diese Seite existiert nicht",
             "goToPlaceHolder": "Eingabe der Seitenzahl",
             "goToTitle": "Gehe zur Seite",
-            "history": "",
+            "history": "Verlauf",
             "historyNext": "Vorwärts springen",
             "historyPrevious": "Zurückspringen",
             "infoTitle": "Informationen",
@@ -795,17 +795,17 @@
             "openTableOfContentsTitle": "Navigation",
             "page": "Seite",
             "pdfscalemode": "Seitenbreite / Seitenanpassung",
-            "print": "",
-            "printDisabled": "",
-            "screenNext": "",
-            "screenPrevious": "",
-            "settingsTitle": "Einstellungen"
+            "print": "Drucken",
+            "printDisabled": "Drucken verboten",
+            "screenNext": "Weiter",
+            "screenPrevious": "Zurück",
+            "settingsTitle": "Leseeinstellungen"
         },
         "notes": {
             "colors": {
                 "cyan": "Türkis",
-                "darkorange": "",
-                "darkyellow": "",
+                "darkorange": "Dunkelorange",
+                "darkyellow": "Dunkelgelb",
                 "green": "Grün",
                 "orange": "Orange",
                 "purple": "Violett",
@@ -827,22 +827,22 @@
             "searchTitle": "Suche:"
         },
         "print": {
-            "descriptionLcpCount": "",
-            "descriptionLcpPrintable": "",
-            "howTo": "",
-            "lcpInfo": "",
-            "noPagesLcpLimitReached": "",
-            "noPrintablePages": "",
-            "pageHelpInfo": "",
-            "pageHelpInfo1": "",
-            "pageHelpInfo2": "",
-            "pageHelpInfo3": "",
-            "pageHelpInfo4": "",
-            "pages": "",
-            "preview": "",
-            "print": "",
-            "printablePages": "",
-            "title": ""
+            "descriptionLcpCount": "Anzahl der verbleibenden Seiten: {{- count}}",
+            "descriptionLcpPrintable": "Zuvor gedruckte Seiten: {{- printable}} ({{- count}})",
+            "howTo": "So wählen Sie einen Seitenbereich zum Drucken aus",
+            "lcpInfo": "Die Anzahl der Seiten, die Sie aus dieser Publikation ausdrucken können, ist auf {{- count}} begrenzt. Wählen Sie hier die gewünschten Seiten aus.",
+            "noPagesLcpLimitReached": "Sie haben das LCP-Limit erreicht",
+            "noPrintablePages": "Keine Seiten zum Ausdrucken",
+            "pageHelpInfo": "Syntax für die Seitenauswahl:",
+            "pageHelpInfo1": "Geben Sie eine Seitenzahl ein, um auf eine bestimmte Seite zu verweisen (z. B. „6“)",
+            "pageHelpInfo2": "Geben Sie zwei durch einen Bindestrich getrennte Seitenzahlen ein, um einen zusammenhängenden Seitenbereich anzugeben (z. B. „6–13“)",
+            "pageHelpInfo3": "Verwenden Sie das Semikolon, um mehrere Seiten oder Seitenbereiche voneinander zu trennen (z. B. „5;14-20;37“)",
+            "pageHelpInfo4": "Lassen Sie die erste oder letzte Seite eines Bereichs weg, um auf die erste oder letzte Seite der Publikation zu verweisen (z. B. entspricht „-16“ dem Bereich „1–16“ und „34-“ dem Bereich „34–100“, vorausgesetzt, das Buch umfasst insgesamt 100 Seiten)",
+            "pages": "Seiten",
+            "preview": "Vorschau",
+            "print": "Drucken",
+            "printablePages": "Druckbare Seiten (insgesamt)",
+            "title": "Auswahl der druckbaren Seiten"
         },
         "settings": {
             "column": {
@@ -853,7 +853,7 @@
             },
             "customFontSelected": "Sie haben eine persönliche Schriftart gewählt",
             "customizeReader": "Anpassen der Textformatierung",
-            "defaultValue": "",
+            "defaultValue": "Standardwert",
             "disabled": "deaktiviert",
             "display": "Lesefluss",
             "disposition": {
@@ -861,15 +861,15 @@
             },
             "font": "Schriftart",
             "fontSize": "Schriftgröße",
-            "increaseFontSize": "",
+            "increaseFontSize": "Schriftgröße vergrößern",
             "infoCustomFont": "Wählen Sie eine benutzerdefinierte Schriftart aus dem Betriebssystem aus, indem Sie ihren Namen eingeben",
             "justification": "Textausrichtung",
             "justify": "Blocksatz",
             "letterSpacing": "Buchstabenabstand",
             "lineSpacing": "Zeilenabstand",
             "margin": "Seitenränder",
-            "mathjax": "",
-            "mathjaxDescription": "",
+            "mathjax": "MathJax aktivieren",
+            "mathjaxDescription": "MathJax",
             "noFootnotes": "Fußnoten deaktivieren",
             "noRTLFlip": "Rechts-nach-links-Benutzeroberfläche deaktivieren",
             "noRuby": "Japanische Ruby-Notationen ausblenden",
@@ -900,11 +900,11 @@
                 "title": "Einstellungen"
             },
             "preview": "Vorschau",
-            "reduceFontSize": "",
+            "reduceFontSize": "Schriftgröße verkleinern",
             "reduceMotion": "Bewegung reduzieren",
             "scrolled": "Fortlaufend",
             "spacing": "Abstand",
-            "spreadModeEven": "",
+            "spreadModeEven": "Doppelseiten „gerade“ (Standard ist „ungerade“)",
             "text": "Text",
             "theme": {
                 "name": {
@@ -960,233 +960,233 @@
         "keyboard": {
             "advancedMenu": "Menü",
             "cancel": "Abbrechen",
-            "disclaimer": "Tastenkombinationen orientieren sich am QWERTZ-Tastaturlayout.",
+            "disclaimer": "Tastenkombinationen orientieren sich am QWERTY-Tastaturlayout.",
             "editUserJson": "Benutzerdatei bearbeiten ...",
-            "exportToHTML": "",
+            "exportToHTML": "Nach HTML exportieren",
             "keyboardShortcuts": "Tastaturkürzel",
             "list": {
                 "AddBookmarkWithLabel": {
-                    "description": "",
-                    "name": ""
+                    "description": "Öffnen Sie das Dialogfeld zum Erstellen von Lesezeichen und bearbeiten Sie die Textbezeichnung (Anmerkung), die Farbe und das Tag",
+                    "name": "Lesezeichen mit Bezeichnung erstellen"
                 },
                 "AnnotationsCreate": {
-                    "description": "",
-                    "name": ""
+                    "description": "Öffnen Sie das Dialogfeld zur Erstellung von Anmerkungen für den ausgewählten Dokumenttext und bearbeiten Sie die Textnotiz, die Hervorhebungsfarbe und -art sowie das Tag",
+                    "name": "Anmerkung erstellen"
                 },
                 "AnnotationsCreateQuick": {
-                    "description": "",
-                    "name": ""
+                    "description": "Erstelle schnell eine Anmerkung für den ausgewählten Text, wobei die zuletzt verwendete Markierungsfarbe und der zuletzt verwendete Markierungstyp verwendet werden (Notiz und Tag bleiben leer)",
+                    "name": "Schnelle Anmerkung erstellen"
                 },
                 "AnnotationsToggleMargin": {
-                    "description": "",
-                    "name": ""
+                    "description": "Wechseln Sie die visuellen Anzeigen für Anmerkungen und Lesezeichen ab, entweder am Dokumentrand oder im Text",
+                    "name": "Anmerkungsrand ein-/ausblenden"
                 },
                 "AudioNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "Zum nächsten Audioabschnitt der Erzählung springen (EPUB 3 Media Overlays, Text-to-Speech oder vorab aufgenommenes Hörbuch)",
+                    "name": "Nächstes Audio-Segment"
                 },
                 "AudioNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Zum nächsten Audioabschnitt in der Erzählung springen (EPUB 3 Media Overlay, Text-to-Speech-Vorlesefunktion oder vorab aufgezeichnetes Hörbuch). Dabei werden alle derzeit überspringbaren Abschnitte übersprungen",
+                    "name": "Nächstes Audio-Segment (Esc)"
                 },
                 "AudioPlayPause": {
-                    "description": "",
-                    "name": ""
+                    "description": "Wiedergabe/Pause für die aktuelle Sprachausgabe umschalten (EPUB 3 Media Overlays, Text-to-Speech-Vorlesefunktion oder vorab aufgezeichnetes Hörbuch)",
+                    "name": "Audio abspielen/anhalten"
                 },
                 "AudioPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "Zurück zum vorherigen Audioabschnitt in der Erzählung (EPUB 3 Media Overlays, Text-to-Speech-Vorlesefunktion oder vorab aufgezeichnetes Hörbuch)",
+                    "name": "Vorheriges Audio-Segment"
                 },
                 "AudioPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Zurück zum vorherigen Audioabschnitt in der Erzählung springen (EPUB 3 Media Overlays, Text-to-Speech-Vorlesefunktion oder vorab aufgezeichnetes Hörbuch). Dabei werden alle derzeit überspringbaren Abschnitte übersprungen",
+                    "name": "Vorheriges Audio-Segment (Escape)"
                 },
                 "AudioSpeedDecrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Verringern Sie die Wiedergabegeschwindigkeit von EPUB 3 Media Overlays oder die Sprechgeschwindigkeit der TTS-Vorlesefunktion",
+                    "name": "Audiowiedergabegeschwindigkeit verringern"
                 },
                 "AudioSpeedIncrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Erhöhen Sie die Wiedergabegeschwindigkeit von EPUB 3 Media Overlays oder die Sprechgeschwindigkeit der TTS-Vorlesefunktion",
+                    "name": "Audiowiedergabegeschwindigkeit erhöhen"
                 },
                 "AudioSpeedReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Die Wiedergabegeschwindigkeit für Audio in EPUB 3 Media Overlays oder die Sprechgeschwindigkeit bei der TTS-Vorlesefunktion zurücksetzen",
+                    "name": "Audiogeschwindigkeit zurücksetzen"
                 },
                 "AudioStop": {
-                    "description": "",
-                    "name": ""
+                    "description": "Aktuelle Audiowiedergabe anhalten (EPUB 3 Media Overlays, Text-to-Speech-Vorlesefunktion oder vorab aufgezeichnete Hörbücher)",
+                    "name": "Audio anhalten"
                 },
                 "CloseReader": {
-                    "description": "",
-                    "name": ""
+                    "description": "Schließe das Lesefenster und kehre zur Bibliothek zurück",
+                    "name": "Lesefenster schließen"
                 },
                 "FXLZoomIn": {
-                    "description": "",
-                    "name": ""
+                    "description": "Vergrößern Sie eine einzelne Seite oder eine Doppelseite mit festem Layout.",
+                    "name": "FXL Vergrößern"
                 },
                 "FXLZoomOut": {
-                    "description": "",
-                    "name": ""
+                    "description": "Verkleinern Sie eine Seite mit festem Layout oder eine Doppelseite.",
+                    "name": "FXL Verkleinern"
                 },
                 "FXLZoomReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Zoom auf einer einzelnen Seite oder einer Doppelseite mit festem Layout zurücksetzen.",
+                    "name": "FXL-Zoom zurücksetzen"
                 },
                 "FocusMain": {
-                    "description": "",
-                    "name": ""
+                    "description": "Verschieben Sie den Tastaturfokus auf das „Haupt“-Orientierungspunkt in der grafischen Benutzeroberfläche. Im Reader-Fenster wird dadurch der Fokus auf den Inhalt der Publikation gesetzt",
+                    "name": "Zum Hauptinhalt"
                 },
                 "FocusMainDeep": {
-                    "description": "",
-                    "name": ""
+                    "description": "Im Lesefenster wird der Tastaturfokus damit mithilfe einer für Bildschirmleseprogramme zuverlässigeren Methode in den Inhalt der Publikation verschoben",
+                    "name": "Der Fokus liegt ganz auf dem Hauptinhalt"
                 },
                 "FocusReaderGotoPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Den Tastaturfokus auf den Abschnitt „Zur Seite springen“ im Navigationsbereich des Reader-Fensters setzen",
+                    "name": "Fokus auf „Zur Seite gehen“"
                 },
                 "FocusReaderNavigation": {
-                    "description": "",
-                    "name": ""
+                    "description": "Den Tastaturfokus auf den Navigationsbereich des Reader-Fensters verschieben",
+                    "name": "Fokus auf das Navigationsfeld"
                 },
                 "FocusReaderNavigationAnnotations": {
-                    "description": "",
-                    "name": ""
+                    "description": "Den Tastaturfokus auf den Abschnitt „Anmerkungen“ im Navigationsbereich des Reader-Fensters setzen",
+                    "name": "Fokus auf „Anmerkungen“"
                 },
                 "FocusReaderNavigationBookmarks": {
-                    "description": "",
-                    "name": ""
+                    "description": "Den Tastaturfokus auf den Bereich „Lesezeichen“ im Navigationsbereich des Reader-Fensters setzen",
+                    "name": "Fokus auf „Lesezeichen“"
                 },
                 "FocusReaderNavigationSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "Den Tastaturfokus auf den Bereich „Suche“ im Navigationsbereich des Reader-Fensters setzen",
+                    "name": "Fokus auf \"Suche\""
                 },
                 "FocusReaderNavigationTOC": {
-                    "description": "",
-                    "name": ""
+                    "description": "Den Tastaturfokus auf den Abschnitt „Inhaltsverzeichnis“ im Navigationsbereich des Reader-Fensters setzen",
+                    "name": "Fokus auf „Inhaltsverzeichnis“"
                 },
                 "FocusReaderSettings": {
-                    "description": "",
-                    "name": ""
+                    "description": "Den Tastaturfokus auf den Einstellungsbereich des Reader-Fensters (Anzeigeeinstellungen usw.) setzen",
+                    "name": "Fokus auf die Lesereinstellungen"
                 },
                 "FocusSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "Den Tastaturfokus auf das Suchfeld im Leserfenster setzen; im Bibliotheksfenster wird dadurch das Bücherregal oder der aktive OPDS-Feed durchsucht",
+                    "name": "Suchbefehl"
                 },
                 "FocusToolbar": {
-                    "description": "",
-                    "name": ""
+                    "description": "Den Tastaturfokus auf den Orientierungsbereich der grafischen Benutzeroberfläche unmittelbar vor dem „Überspringen“-Link setzen (wodurch der Fokus wiederum auf den Hauptinhaltsbereich des Bibliotheks- oder Reader-Fensters gesetzt wird)",
+                    "name": "Fokus auf die Symbolleiste"
                 },
                 "NavigateNextChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "Navigieren Sie im Lesefenster zum nächsten Dokument in der Lesereihenfolge der Publikation (z. B. zum nächsten Kapitel im Buch). Beachten Sie, dass es neben dieser Standardtastenkombination noch eine alternative Tastenkombination gibt",
+                    "name": "Zum nächsten Kapitel"
                 },
                 "NavigateNextChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Navigieren Sie im Lesefenster zum nächsten Dokument in der Lesereihenfolge der Publikation (z. B. zum nächsten Kapitel im Buch). Dies ist eine Alternative zur Standard-Tastenkombination.",
+                    "name": "Zum nächsten Kapitel (Alternative)"
                 },
                 "NavigateNextHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "Springe im Lesefenster einen Schritt vorwärts im Navigationsverlauf",
+                    "name": "Weiter zum nächsten Eintrag"
                 },
                 "NavigateNextLibraryPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Zeigen Sie im Bibliotheksfenster die nächste Seite einer paginierten Liste von Publikationen an. Beachten Sie, dass es neben dieser Standardtastenkombination noch eine alternative Tastenkombination gibt.",
+                    "name": "Zur nächsten Bibliotheksseite"
                 },
                 "NavigateNextLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Zeige im Bibliotheksfenster die nächste Seite einer paginierten Liste von Publikationen an. Dies ist eine Alternative zur Standard-Tastenkombination.",
+                    "name": "Zur nächsten Bibliotheksseite (Alternative)"
                 },
                 "NavigateNextOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Klicken Sie im Bibliotheksfenster für Kataloge/OPDS-Feeds auf den Link zur nächsten Seite. Beachten Sie, dass es neben dieser Standardtastenkombination noch eine alternative Tastenkombination gibt.",
+                    "name": "Zur nächsten OPDS-Seite"
                 },
                 "NavigateNextOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Folgen Sie im Bibliotheksfenster für Kataloge/OPDS-Feeds dem Link zur nächsten Seite. Dies ist eine Alternative zur Standard-Tastenkombination.",
+                    "name": "Zur nächsten OPDS-Seite (Alternative)"
                 },
                 "NavigateNextPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Blättern Sie im Lesefenster zur nächsten „Seite“ der Publikation. Beachten Sie, dass es neben dieser Standardtastenkombination noch eine alternative Tastenkombination gibt.",
+                    "name": "Zur nächsten Seite"
                 },
                 "NavigateNextPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Blättern Sie im Lesefenster zur nächsten „Seite“ der Publikation. Dies ist eine Alternative zur Standard-Tastenkombination.",
+                    "name": "Zur nächsten Seite (Alternative)"
                 },
                 "NavigatePreviousChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "Navigieren Sie im Lesefenster zum vorherigen Dokument in der Lesereihenfolge der Publikation (z. B. zum nächsten Kapitel im Buch). Beachten Sie, dass es neben dieser Standardtastenkombination noch eine alternative Tastenkombination gibt",
+                    "name": "Zum vorherigen Kapitel"
                 },
                 "NavigatePreviousChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Navigieren Sie im Lesefenster zum vorherigen Dokument in der Lesereihenfolge der Publikation (z. B. zum vorherigen Kapitel im Buch). Dies ist eine Alternative zur Standard-Tastenkombination.",
+                    "name": "Zum vorherigen Kapitel (Alternative)"
                 },
                 "NavigatePreviousHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "Springe im Lesefenster einen Schritt zurück im Navigationsverlauf",
+                    "name": "Zur vorherigen Ansicht"
                 },
                 "NavigatePreviousLibraryPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Zeige im Bibliotheksfenster die vorherige Seite einer paginierten Liste von Publikationen an. Beachte, dass es neben dieser Standardtastenkombination noch eine alternative Tastenkombination gibt.",
+                    "name": "Zur vorherigen Bibliotheksseite"
                 },
                 "NavigatePreviousLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Zeige im Bibliotheksfenster die vorherige Seite einer paginierten Liste von Publikationen an. Dies ist eine Alternative zur Standard-Tastenkombination.",
+                    "name": "Zur vorherigen Bibliotheksseite (Alternative)"
                 },
                 "NavigatePreviousOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Folgen Sie im Bibliotheksfenster für Kataloge/OPDS-Feeds dem Link zur vorherigen Seite. Beachten Sie, dass es neben dieser Standardtastenkombination noch eine alternative Tastenkombination gibt.",
+                    "name": "Zur vorherigen OPDS-Seite"
                 },
                 "NavigatePreviousOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Folgen Sie im Bibliotheksfenster für Kataloge/OPDS-Feeds dem Link zur vorherigen Seite. Dies ist eine Alternative zur Standard-Tastenkombination.",
+                    "name": "Zur vorherigen OPDS-Seite (Alternative)"
                 },
                 "NavigatePreviousPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Wechseln Sie im Lesefenster zur vorherigen „Seite“ der Publikation. Beachten Sie, dass es neben dieser Standardtastenkombination noch eine alternative Tastenkombination gibt.",
+                    "name": "Zurück zur vorherigen Seite"
                 },
                 "NavigatePreviousPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Wechseln Sie im Lesefenster zur vorherigen „Seite“ der Publikation. Dies ist eine Alternative zur Standard-Tastenkombination.",
+                    "name": "Zur vorherigen Seite (Alternative)"
                 },
                 "NavigateToBegin": {
-                    "description": "",
-                    "name": ""
+                    "description": "Gehen Sie im Lesefenster zum Anfang der Publikation",
+                    "name": "Zum Anfang"
                 },
                 "NavigateToEnd": {
-                    "description": "",
-                    "name": ""
+                    "description": "Im Lesefenster zum Ende der Publikation gehen",
+                    "name": "Zum Ende"
                 },
                 "OpenReaderInfo": {
-                    "description": "",
-                    "name": ""
+                    "description": "Im Lesefenster das Informationsfenster für die Publikation öffnen",
+                    "name": "Publikationsinformationen anzeigen"
                 },
                 "OpenReaderInfoWhereAmI": {
-                    "description": "",
-                    "name": ""
+                    "description": "Im Lesefenster das Popup-Fenster öffnen, das Informationen zur Publikation anzeigt, und den Fokus der Tastatur auf den Abschnitt, der den Kontext der aktuellen Leseposition anzeigt, setzen",
+                    "name": "Veröffentlichungsinformationen anzeigen, Leseort anzeigen"
                 },
                 "Print": {
-                    "description": "",
-                    "name": ""
+                    "description": "Im Lesefenster den Drucken-Dialog öffnen",
+                    "name": "Drucken"
                 },
                 "SearchNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "Wechseln Sie in der Suchfunktion des Lesofensters zum nächsten Suchergebnis. Beachten Sie, dass es neben dieser Standardtastenkombination noch eine alternative Tastenkombination gibt.",
+                    "name": "Suchergebnis Weiter"
                 },
                 "SearchNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Wechseln Sie in der Suchfunktion des Lesefensters zum nächsten Suchergebnis. Dies ist eine Alternative zur Standard-Tastenkombination.",
+                    "name": "Suchergebnis Weiter (Alternative)"
                 },
                 "SearchPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "Wechseln Sie in der Suchfunktion des Lesefensters zum vorherigen Suchergebnis. Beachten Sie, dass es neben dieser Standardtastenkombination noch eine alternative Tastenkombination gibt.",
+                    "name": "Suchergebnis Zurück"
                 },
                 "SearchPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Wechseln Sie in der Suchfunktion des Lesefensters zum vorherigen Suchergebnis. Dies ist eine Alternative zur Standard-Tastenkombination.",
+                    "name": "Suchergebnis Zurück (Alternative)"
                 },
                 "SpeakReaderInfoWhereAmI": {
-                    "description": "",
+                    "description": "Im Lesefenster den Kontext der aktuellen Leseposition unter Verwendung von Text, der mit Bildschirmleseprogrammen kompatibel ist, vorlesen",
                     "name": ""
                 },
                 "ToggleBookmark": {
