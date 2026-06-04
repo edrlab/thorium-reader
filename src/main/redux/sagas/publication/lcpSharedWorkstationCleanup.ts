@@ -9,6 +9,7 @@ import debug_ from "debug";
 import { lcpInfoHasConfirmedNoLongerUsableStatus, lcpInfoIsNoLongerUsable } from "readium-desktop/common/lcp";
 import { lcpActions, settingsActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
+import { settingsLcpAutoDeleteExpiredPublicationsIsEnabled } from "readium-desktop/common/redux/states/settings";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { RootState } from "readium-desktop/main/redux/states";
@@ -24,7 +25,7 @@ const LCP_SHARED_WORKSTATION_CLEANUP_STARTUP_DELAY_MS = 1000 * 30;
 const LCP_SHARED_WORKSTATION_CLEANUP_INTERVAL_MS = 1000 * 60 * 15;
 
 const cleanupIsEnabled = (state: RootState) =>
-    state.settings?.lcpAutoDeleteExpiredPublications === true;
+    settingsLcpAutoDeleteExpiredPublicationsIsEnabled(state.settings);
 
 let cleanupAllInProgress = false;
 
@@ -203,7 +204,10 @@ export function saga() {
     return all([
         spawnTyped(runPeriodicCleanup),
         takeSpawnLeading(
-            settingsActions.lcpAutoDeleteExpiredPublications.ID,
+            [
+                settingsActions.lcpAutoDeleteExpiredPublications.ID,
+                settingsActions.lcpAutoDeleteExpiredPublicationsForced.ID,
+            ],
             runCleanupWhenEnabled,
             (e) => error(filename_ + ":runCleanupWhenEnabled", e),
         ),

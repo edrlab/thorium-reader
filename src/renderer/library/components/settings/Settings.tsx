@@ -52,6 +52,7 @@ import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-ic
 import debounce from "debounce";
 import { INoteCreator } from "readium-desktop/common/redux/states/creator";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+import { settingsLcpAutoDeleteExpiredPublicationsIsEnabled } from "readium-desktop/common/redux/states/settings";
 import { ApiappHowDoesItWorkInfoBox } from "../dialog/ApiappAddForm";
 import SettingsRecovery from "./SettingsRecovery";
 import * as RadioGroup from "@radix-ui/react-radio-group";
@@ -507,9 +508,15 @@ const SharedComputerSettings = () => {
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
     const isRTL = locale === "ar";
     const dispatch = useDispatch();
-    const lcpAutoDeleteExpiredPublications = useSelector((state: ILibraryRootState) => state.settings.lcpAutoDeleteExpiredPublications === true);
+    const lcpAutoDeleteExpiredPublications = useSelector((state: ILibraryRootState) =>
+        settingsLcpAutoDeleteExpiredPublicationsIsEnabled(state.settings));
+    const lcpAutoDeleteExpiredPublicationsForced = useSelector((state: ILibraryRootState) =>
+        state.settings.lcpAutoDeleteExpiredPublicationsForced === true);
 
     const toggleLcpAutoDeleteExpiredPublications = () => {
+        if (lcpAutoDeleteExpiredPublicationsForced) {
+            return;
+        }
         dispatch(settingsActions.lcpAutoDeleteExpiredPublications.build(!lcpAutoDeleteExpiredPublications));
     };
 
@@ -517,12 +524,13 @@ const SharedComputerSettings = () => {
         <section className={stylesSettings.section} style={{ gap: "10px" }}>
             <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.sharedComputer.title")}</h3>
             <div dir={isRTL ? "rtl" : "ltr"} className={stylesAnnotations.annotations_checkbox}>
-                <input type="checkbox" id="lcpAutoDeleteExpiredPublications" className={stylesGlobal.checkbox_custom_input} name="lcpAutoDeleteExpiredPublications" checked={lcpAutoDeleteExpiredPublications} onChange={toggleLcpAutoDeleteExpiredPublications} />
+                <input type="checkbox" id="lcpAutoDeleteExpiredPublications" className={stylesGlobal.checkbox_custom_input} name="lcpAutoDeleteExpiredPublications" checked={lcpAutoDeleteExpiredPublications} disabled={lcpAutoDeleteExpiredPublicationsForced} onChange={toggleLcpAutoDeleteExpiredPublications} />
                 <label htmlFor="lcpAutoDeleteExpiredPublications" className={stylesGlobal.checkbox_custom_label}>
                     <div
-                        tabIndex={0}
+                        tabIndex={lcpAutoDeleteExpiredPublicationsForced ? -1 : 0}
                         role="checkbox"
                         aria-checked={lcpAutoDeleteExpiredPublications}
+                        aria-disabled={lcpAutoDeleteExpiredPublicationsForced}
                         aria-label={__("settings.sharedComputer.lcpAutoDeleteExpiredPublications")}
                         onKeyDown={(e) => {
                             if (e.key === " ") {
@@ -536,7 +544,12 @@ const SharedComputerSettings = () => {
                             }
                         }}
                         className={stylesGlobal.checkbox_custom}
-                        style={{ border: lcpAutoDeleteExpiredPublications ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: lcpAutoDeleteExpiredPublications ? "var(--color-brand-primary)" : "transparent" }}>
+                        style={{
+                            border: lcpAutoDeleteExpiredPublications ? "2px solid transparent" : "2px solid var(--color-text-primary)",
+                            backgroundColor: lcpAutoDeleteExpiredPublications ? "var(--color-brand-primary)" : "transparent",
+                            cursor: lcpAutoDeleteExpiredPublicationsForced ? "not-allowed" : undefined,
+                            opacity: lcpAutoDeleteExpiredPublicationsForced ? 0.65 : undefined,
+                        }}>
                         {lcpAutoDeleteExpiredPublications ?
                             <SVG ariaHidden svg={CheckIcon} />
                             :

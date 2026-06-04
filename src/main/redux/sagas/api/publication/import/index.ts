@@ -26,6 +26,7 @@ import { publicationApi } from "..";
 import { cleanupLcpPublicationIfNoLongerUsable } from "readium-desktop/main/redux/sagas/publication/lcpSharedWorkstationCleanup";
 import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import { RootState } from "readium-desktop/main/redux/states";
+import { settingsLcpAutoDeleteExpiredPublicationsIsEnabled } from "readium-desktop/common/redux/states/settings";
 import { sqliteTableNoteInsertOrReplace, sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
 import type { TFileTypePubData } from "readium-desktop/main/storage/publication-data";
 
@@ -73,7 +74,7 @@ const emptyPersonalModeReplacementUserData = (): IPersonalModeReplacementUserDat
 const getPersonalModeReplacementUserData = async (publicationIdentifier: string): Promise<IPersonalModeReplacementUserData> => {
     const store = diMainGet("store");
     const state: RootState = store.getState();
-    if (state.settings?.lcpAutoDeleteExpiredPublications === true) {
+    if (settingsLcpAutoDeleteExpiredPublicationsIsEnabled(state.settings)) {
         return emptyPersonalModeReplacementUserData();
     }
 

@@ -7,8 +7,10 @@
 
 import * as enableAPIAPP from "./enableAPIAPP";
 import * as lcpAutoDeleteExpiredPublications from "./lcpAutoDeleteExpiredPublications";
+import * as lcpAutoDeleteExpiredPublicationsForced from "./lcpAutoDeleteExpiredPublicationsForced";
 
 export {
     enableAPIAPP,
     lcpAutoDeleteExpiredPublications,
+    lcpAutoDeleteExpiredPublicationsForced,
 };

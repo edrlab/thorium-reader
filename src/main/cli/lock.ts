@@ -141,7 +141,12 @@ export function lockInstance() {
                 // ignore
             }
 
-            const argvFormated = argv.filter((arg) => !arg.startsWith("--"));
+            const argvFormated = argv.filter((arg) =>
+                !arg.startsWith("--") ||
+                arg === "--shared-computer" ||
+                arg === "--no-shared-computer" ||
+                arg.startsWith("--shared-computer="),
+            );
 
             const msg = "Start Command Line with: " + JSON.stringify(argvFormated, null, 4) + "\n";
             debug(msg);
