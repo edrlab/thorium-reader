@@ -89,7 +89,7 @@
         "login": "Iniciar sessão",
         "logout": "Terminar sessão",
         "missing": "",
-        "missingUnavailableDescription": "",
+        "missingUnavailableDescription": "Não foi possível abrir esta publicação porque os ficheiros armazenados não estão disponíveis. Importe-a novamente ou aceda a Definições -> Armazenamento para adicionar ou alterar o espaço de armazenamento adicional.",
         "moreInfo": "Detalhes do documento",
         "myBooks": "Meus documentos",
         "noPublicationHelpL1": "Soltar ficheiros aqui",
@@ -255,12 +255,12 @@
         },
         "open": {
             "error": "Não foi possível carregar o documento: {{- err}}",
-            "folderNotFound": ""
+            "folderNotFound": "A pasta da publicação não foi encontrada. Importe-a novamente ou configure o armazenamento adicional em Definições > Armazenamento."
         },
         "storage": {
-            "removed": "",
-            "updateFailed": "",
-            "updated": ""
+            "removed": "Pasta da publicação removida.",
+            "updateFailed": "Falha ao atualizar a pasta da publicação: {{- message}}",
+            "updated": "Pasta da publicação atualizada."
         },
         "wipeData": "Os dados de autenticação foram limpos (tokens de acesso e cookies)"
     },
@@ -1228,7 +1228,7 @@
             "info": "Alterne entre perfis para personalizar a aplicação com a marca e cores de um fornecedor parceiro. Cada perfil oferece uma experiência personalizada.",
             "thorium": {
                 "description": "O perfil Thorium Vanilla é o original, criado por EDRLab.",
-                "title": ""
+                "title": "Thorium vanilla"
             },
             "version": "Versão: {{- version}}"
         },
@@ -1242,44 +1242,44 @@
         },
         "storage": {
             "actions": {
-                "addDirectory": "",
-                "changeDirectory": "",
-                "removeStorageDirectory": ""
+                "addDirectory": "Selecionar um armazenamento adicional",
+                "changeDirectory": "Atualizar alojamento adicional",
+                "removeStorageDirectory": "Remover armazenamento adicional"
             },
             "beta": {
-                "availability": "",
-                "integrity": "",
-                "migration": "",
-                "summary": "",
-                "warning": ""
+                "availability": "Esta funcionalidade funciona apenas em versões recentes do Thorium; as pastas externas de livros não aparecerão no Thorium 3.4 ou versões mais antigas.",
+                "integrity": "Deve manter esta pasta segura e acessível. Evite eliminá-la, restringir o acesso ou utilizar armazenamento lento ou instável (por exemplo unidades de rede).",
+                "migration": "O Thorium não transfere os seus livros automaticamente: se atualizar o armazenamento adicional, tem de mover manualmente as suas publicações para o novo local. Se o remover, terá de mover manualmente as suas publicações de volta para o armazenamento original.",
+                "summary": "Saiba mais sobre esta funcionalidade, atualmente em versão beta",
+                "warning": "Não altere manualmente os ficheiros nesta pasta, pois pode causar problemas com os seus livros ou com o leitor. Considere esta pasta como uma biblioteca segura gerida pelo Thorium."
             },
             "configuration": {
-                "chooseFolderDescription": "",
-                "configuredDescription": "",
-                "notConfiguredDescription": ""
+                "chooseFolderDescription": "Escolha a pasta que o Thorium deve utilizar como armazenamento adicional.",
+                "configuredDescription": "O espaço de armazenamento adicional está configurado e pronto a utilizar para as novas publicações armazenadas.",
+                "notConfiguredDescription": "As publicações importadas para o Thorium Reader serão armazenadas na pasta selecionada. As publicações anteriormente importadas permanecerão no armazenamento original do sistema."
             },
             "dialogs": {
                 "add": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Continuar",
+                    "description": "Esta funcionalidade está atualmente em versão beta. Pretende continuar e configurar um armazenamento adicional selecionando uma pasta?",
+                    "title": "Selecionar armazenamento adicional"
                 },
                 "edit": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Editar pasta",
+                    "description": "A atualização do armazenamento adicional implica muito cuidado. O Thorium não migrará automaticamente as publicações existentes; terá de fazer isso manualmente. Deseja continuar?",
+                    "title": "Atualizar o armazenamento adicional"
                 },
                 "remove": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Remover pasta",
+                    "description": "Remover o armazenamento adicional implica muito cuidado. O Thorium não migrará automaticamente as publicações existentes; terá de fazer isso manualmente. Deseja continuar?",
+                    "title": "Remover armazenamento adicional"
                 }
             },
             "locations": {
-                "defaultDescription": "",
-                "defaultInternal": "",
-                "externalStorage": "",
-                "title": ""
+                "defaultDescription": "As publicações geridas pela aplicação são armazenadas, por predefinição, em:",
+                "defaultInternal": "Armazenamento do sistema",
+                "externalStorage": "Armazenamento externo",
+                "title": "Locais"
             }
         },
         "tabs": {
@@ -1287,7 +1287,7 @@
             "general": "Geral",
             "keyboardShortcuts": "Atalhos de teclado",
             "profiles": "Perfis",
-            "storage": ""
+            "storage": "Armazenamento"
         },
         "theme": {
             "auto": "Automático",
