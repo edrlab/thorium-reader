@@ -88,8 +88,8 @@
         "lastRead": "上次阅读",
         "login": "登录",
         "logout": "登出",
-        "missing": "",
-        "missingUnavailableDescription": "",
+        "missing": "缺失文件",
+        "missingUnavailableDescription": "打不开这个出版物，因为储存文件无法访问。请重新导入出版物，或导航至“设置-储存”，添加或改变附加储存位置。",
         "moreInfo": "更多信息",
         "myBooks": "我的图书",
         "noPublicationHelpL1": "将文件拖放到此处",
@@ -106,8 +106,8 @@
                 "password": "密码",
                 "register": "注册",
                 "retry": "再试一次",
-                "unauthorized": "",
-                "unauthorizedUnsupportedType": "",
+                "unauthorized": "未授权",
+                "unauthorizedUnsupportedType": "未授权(不支持的WWW认证类型 '{{- type}}')",
                 "username": "用户名/电子邮件地址"
             },
             "info": {
@@ -129,12 +129,12 @@
                 "state": "状态"
             }
         },
-        "openFolder": "",
+        "openFolder": "打开文件夹",
         "publisher": "出版社",
         "readBook": "阅读",
         "released": "出版日期",
         "removeFromFavorites": "从收藏中移除",
-        "selectTableHeaders": "",
+        "selectTableHeaders": "选择您想显示的列",
         "sort": "排序方式",
         "tag": "标签",
         "tags": "标签",
@@ -196,7 +196,7 @@
         "searchPlaceholder": "搜索",
         "searchTitle": "开始搜索",
         "settings": "设置",
-        "settingsLabel": "",
+        "settingsLabel": "应用设置",
         "viewMode": "查看模式"
     },
     "library": {
@@ -245,12 +245,12 @@
         },
         "open": {
             "error": "无法打开出版物: {{- err}}",
-            "folderNotFound": ""
+            "folderNotFound": "出版物文件路径无法找到。重新导入，或者在“设置>储存”选项中调整附加储存位置。"
         },
         "storage": {
-            "removed": "",
-            "updateFailed": "",
-            "updated": ""
+            "removed": "出版物文件路径被移除。",
+            "updateFailed": "更新出版物文件路径失败: {{- message}}",
+            "updated": "出版物文件路径已更新。"
         },
         "wipeData": "登录数据已清空(包括访问令牌及本地身份文件)"
     },
@@ -585,8 +585,8 @@
                 "descriptive": "关于外观可修改性的信息不可用"
             },
             "ways-of-reading-visual-adjustments-unmodifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "外观无法修改",
+                "descriptive": "文本和页面布局无法修改，因阅读体验已接近印刷版本，但阅读系统仍可提供文本缩放选项"
             }
         }
     },
@@ -642,7 +642,7 @@
         "expiredLcp": "此书无法阅读，因为LCP许可证已到期。",
         "incorrectPassphrase": "没有任何已存储的密码与该出版物匹配，或输入的密码错误。",
         "lcpEnd": "结束",
-        "lcpNotSupported": "",
+        "lcpNotSupported": "警告: 此为 Thorium Desktop 阅读器的预发布版本，不支持生产环境下的 LCP 许可证，仅支持无证书验证的 LCP“基础配置”解密。",
         "lcpRightsCopy": "许可证拷贝",
         "lcpRightsPrint": "许可证打印",
         "lcpStart": "开始",
@@ -682,7 +682,7 @@
             "date": "修改日期",
             "error": {
                 "pdf": {
-                    "validationSelection": ""
+                    "validationSelection": "无法在选择文本上创建PDF注释。"
                 }
             },
             "export": "将笔记另存为...",
