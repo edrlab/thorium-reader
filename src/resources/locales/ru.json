@@ -144,15 +144,15 @@
         "annotations": {
             "descAuthor": "автор '{{- author}}'",
             "descCreator": "создано",
-            "descList_few": "{{- count}} примечание(я/ий) {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
-            "descList_many": "{{- count}} примечание(я/ий) {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
-            "descList_one": "{{- count}} примечание(я/ий) {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
-            "descNewer_few": "Конфликт(ы): более новых заметок - {{- count}}",
-            "descNewer_many": "Конфликт(ы): более новых заметок - {{- count}}",
-            "descNewer_one": "Конфликт(ы): более новых заметок - {{- count}}",
-            "descOlder_few": "Конфликт(ы): более старых заметок - {{- count}}",
-            "descOlder_many": "Конфликт(ы): более старых заметок - {{- count}}",
-            "descOlder_one": "Конфликт(ы): более старых заметок - {{- count}}",
+            "descList_few": "{{- count}} примечания {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
+            "descList_many": "{{- count}} примечаний {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
+            "descList_one": "{{- count}} примечание {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
+            "descNewer_few": "Конфликт(ы): {{- count}} новейшие заметки",
+            "descNewer_many": "Конфликт(ы): {{- count}} новейших заметок",
+            "descNewer_one": "Конфликт(ы): {{- count}} новейшая заметка",
+            "descOlder_few": "Конфликт(ы): {{- count}} наиболее старые заметки",
+            "descOlder_many": "Конфликт(ы): {{- count}} наиболее старых заметок",
+            "descOlder_one": "Конфликт(ы): {{- count}} наиболее старая заметка",
             "descTitle": "Название аннотации: ",
             "importAll": "Импортировать все заметки",
             "importWithoutConflict": "Импортировать только заметки без конфликтов",
@@ -168,13 +168,13 @@
             }
         },
         "deleteAnnotations": "Удалить аннотации?",
-        "deleteAnnotationsText_few": "Вы уверены, что хотите удалить {{- count}} заметку(и/ок)?",
-        "deleteAnnotationsText_many": "Вы уверены, что хотите удалить {{- count}} заметку(и/ок)?",
-        "deleteAnnotationsText_one": "Вы уверены, что хотите удалить {{- count}} заметку(и/ок)?",
+        "deleteAnnotationsText_few": "Вы уверены, что хотите удалить {{- count}} заметки?",
+        "deleteAnnotationsText_many": "Вы уверены, что хотите удалить {{- count}} заметок?",
+        "deleteAnnotationsText_one": "Вы уверены, что хотите удалить {{- count}} заметку?",
         "deleteBookmarks": "Удалить закладки?",
-        "deleteBookmarksText_few": "Вы уверены, что хотите удалить {{- count}} закладку(и/ок)?",
-        "deleteBookmarksText_many": "Вы уверены, что хотите удалить {{- count}} закладку(и/ок)?",
-        "deleteBookmarksText_one": "Вы уверены, что хотите удалить {{- count}} закладку(и/ок)?",
+        "deleteBookmarksText_few": "Вы уверены, что хотите удалить {{- count}} закладки?",
+        "deleteBookmarksText_many": "Вы уверены, что хотите удалить {{- count}} закладок?",
+        "deleteBookmarksText_one": "Вы уверены, что хотите удалить {{- count}} закладку?",
         "deleteFeed": "Вы действительно хотите удалить этот каталог ?",
         "deletePublication": "Вы действительно хотите удалить эту книгу ?",
         "deletePublicationWithNotes": "Внимание: эта книга содержит аннотации и/или закладки, они также будут удалены! (Если вы хотите их сохранить, обязательно экспортируйте заметки перед удалением книги)",
@@ -603,7 +603,7 @@
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": "Подходит для TTS и программ чтения с экрана"
+                "textual": "Всё содержимое доступно для преобразования в синтезированную речь или динамический Брайляь"
             },
             "accessibilityFeature": {
                 "alternativeText": "Содержит альтернативный текст",
