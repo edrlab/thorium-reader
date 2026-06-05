@@ -26,7 +26,7 @@
             "undo": "Отменить"
         },
         "hide": "Скрыть {{- appName}}",
-        "quit": "Выйти {{- appName}}",
+        "quit": "Выйти из {{- appName}}",
         "session": {
             "exit": {
                 "askBox": {
@@ -80,10 +80,10 @@
             "continueReading": "Продолжить чтение",
             "lastAdditions": "Недавно добавленные"
         },
-        "export": "Экспорт",
-        "exportAnnotation": "Экспортировать заметки",
+        "export": "Экспорт книги",
+        "exportAnnotation": "Экспорт заметок",
         "format": "Формат",
-        "importAnnotation": "Импортировать заметки",
+        "importAnnotation": "Импорт заметок",
         "lang": "Язык",
         "lastRead": "Последнее чтение",
         "login": "Войти",
@@ -224,7 +224,7 @@
             "showPassphrase": "Показать парольную фразу",
             "urlHint": "Забыли парольную фразу? Поддержка доступна:",
             "whatIsLcp?": "Что такое LCP?",
-            "whatIsLcpInfoDetails": "LCP означает \"защита лицензионного контента\".",
+            "whatIsLcpInfoDetails": "LCP означает «защита лицензионного контента».",
             "whatIsLcpInfoDetailsLink": "Чтобы узнать больше, перейдите по этой ссылке на сайт EDRLab."
         },
         "sorting": {
@@ -262,7 +262,7 @@
             "updateFailed": "Не удалось обновить каталог публикаций: {{- message}}",
             "updated": "Каталог публикаций обновлён."
         },
-        "wipeData": "Регистрационные данные (токены доступа и cookie-файлы) были очищены!"
+        "wipeData": "Регистрационные данные (токены доступа и cookie-файлы) были очищены"
     },
     "opds": {
         "addForm": {
