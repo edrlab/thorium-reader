@@ -164,15 +164,15 @@
                 "title": "Tilldelar och aktiverar anpassningsprofil"
             }
         },
-        "deleteAnnotations": "Radera anteckningar?",
-        "deleteAnnotationsText_one": "Vill du radera {{- count}} anteckning?",
-        "deleteAnnotationsText_other": "Vill du radera {{- count}} anteckningar?",
+        "deleteAnnotations": "Ta bort anteckningar?",
+        "deleteAnnotationsText_one": "Vill du ta bort {{- count}} anteckning?",
+        "deleteAnnotationsText_other": "Vill du ta bort {{- count}} anteckningar?",
         "deleteBookmarks": "Radera bokmärken?",
-        "deleteBookmarksText_one": "Vill du radera {{- count}} bokmärke?",
-        "deleteBookmarksText_other": "Vill du radera {{- count}} bokmärken?",
+        "deleteBookmarksText_one": "Vill du ta bort {{- count}} bokmärke?",
+        "deleteBookmarksText_other": "Vill du ta bort {{- count}} bokmärken?",
         "deleteFeed": "Vill du ta bort den här katalogen?",
         "deletePublication": "Vill du ta bort den här boken?",
-        "deletePublicationWithNotes": "Varning: Det finns anteckningar och/eller bokmärken som också kommer att raderas! (Om du vill behålla dem så måste du exportera anteckningar och bokmärken innan du tar bort boken)",
+        "deletePublicationWithNotes": "Varning: Det finns anteckningar och/eller bokmärken som också kommer att tas bort! (Om du vill behålla dem så måste du exportera anteckningar och bokmärken innan du tar bort boken)",
         "import": "Vill du importera följande filer:",
         "importError": "Det uppstod ett fel, kontrollera filformatet ({{acceptedExtension}})",
         "renew": "Vill du förnya lånet?",
@@ -605,7 +605,7 @@
                 "displayTransformability": "Utseende på text och layout kan anpassas",
                 "longDescription": "Fullständiga bildbeskrivningar",
                 "printPageNumbers": "Innehåller sidnumrering från den tryckta förlagan",
-                "readingOrder": "Läsordning definierad",
+                "readingOrder": "Innehåller en läsordning",
                 "synchronizedAudioText": "Synkroniserat text och ljud",
                 "tableOfContents": "Innehåller innehållsförteckning"
             },
@@ -660,7 +660,7 @@
         "notStarted": "Ej påbörjad",
         "onGoing": "Pågående",
         "progression": {
-            "title": "Läsförlopp"
+            "title": "Läsposition"
         },
         "read": "Läst",
         "remainingTime": "Lån (återstående tid)",
@@ -670,7 +670,7 @@
         "revokedLcp": "Den här bokens LCP-licens har återkallats.",
         "seeLess": "Visa mindre",
         "seeMore": "Visa mer",
-        "timeLeft": "Tid kvar",
+        "timeLeft": "Återstående tid",
         "title": "Titel",
         "userKeyCheckInvalid": "Fel lösenord."
     },
@@ -714,7 +714,7 @@
             },
             "toggleMarginMarks": "Visa i marginalen",
             "type": {
-                "outline": "Kontur",
+                "outline": "Ram",
                 "solid": "Färgöverstrykning",
                 "strikethrough": "Genomstrykning",
                 "underline": "Understrykning"
