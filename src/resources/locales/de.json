@@ -241,7 +241,18 @@
             "success": "Import vollständig abgeschlossen."
         },
         "download": {
-            "error": "Der Download von [{{- title}}] ist fehlgeschlagen: {{- err}}"
+            "cancelled": "",
+            "error": "Der Download von [{{- title}}] ist fehlgeschlagen: {{- err}}",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "Es scheint, dass Sie die Publikation [{{- title}}] bereits in Ihren Katalog aufgenommen haben.",

@@ -236,7 +236,18 @@
             "success": "取り込みが正常に完了しました。"
         },
         "download": {
-            "error": "『{{- title}}』のダウンロードに失敗しました：{{- err}}"
+            "cancelled": "",
+            "error": "『{{- title}}』のダウンロードに失敗しました：{{- err}}",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "『{{- title}}』はすでに追加されています。",

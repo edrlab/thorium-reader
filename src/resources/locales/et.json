@@ -241,7 +241,18 @@
             "success": "Importimine õnnestus kenasti."
         },
         "download": {
-            "error": "„{{- title}}“ väljaande allalaadimine ei õnnestunud: {{- err}}"
+            "cancelled": "",
+            "error": "„{{- title}}“ väljaande allalaadimine ei õnnestunud: {{- err}}",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "„{{- title}}“ on juba imporditud.",

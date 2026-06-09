@@ -241,7 +241,18 @@
             "success": "Import completed successfully."
         },
         "download": {
-            "error": "Downloading [{{- title}}] failed: [{{- err}}]"
+            "cancelled": "Download cancelled.",
+            "error": "Downloading [{{- title}}] failed: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "Downloaded file integrity check failed: expected SHA-256 hash {{- expected}}, got {{- actual}}.",
+                "httpGet": "HTTP download failed: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "invalidFilename": "The temporary download filename is invalid.",
+                "invalidLink": "The download link is invalid.",
+                "invalidTempDirectory": "The temporary download directory is invalid.",
+                "lengthMismatch": "Downloaded file integrity check failed: expected {{- expected}} bytes, got {{- actual}} bytes.",
+                "readStreamMissing": "Download stream is unavailable.",
+                "tooManyFilenameAttempts": "Unable to create a unique temporary download filename: {{- path}}"
+            }
         },
         "import": {
             "alreadyImport": "[{{- title}}] was already imported.",

@@ -261,7 +261,18 @@
             "success": "اكتمل الاستيراد بنجاح."
         },
         "download": {
-            "error": "فشل تنزيل [{{- title}}]: [{{- err}}]"
+            "cancelled": "",
+            "error": "فشل تنزيل [{{- title}}]: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "تم استيراد [{{- title}}] مسبقًا.",

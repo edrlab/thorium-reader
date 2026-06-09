@@ -144,9 +144,6 @@
         "annotations": {
             "descAuthor": "",
             "descCreator": "",
-            "descList": "",
-            "descNewer": "",
-            "descOlder": "",
             "descTitle": "",
             "importAll": "",
             "importWithoutConflict": "",
@@ -162,9 +159,7 @@
             }
         },
         "deleteAnnotations": "",
-        "deleteAnnotationsText": "",
         "deleteBookmarks": "",
-        "deleteBookmarksText": "",
         "deleteFeed": "카탈로그를 제거하겠습니까?",
         "deletePublication": "출판물을 제거하겠습니까?",
         "deletePublicationWithNotes": "",
@@ -236,7 +231,18 @@
             "success": ""
         },
         "download": {
-            "error": "{{- title}} 다운로드 실패하였습니다: [{{- err}}]"
+            "cancelled": "",
+            "error": "{{- title}} 다운로드 실패하였습니다: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}}는 이미 추가된 도서입니다",

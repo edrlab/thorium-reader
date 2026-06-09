@@ -251,7 +251,18 @@
             "success": "Import úspěšně dokončen."
         },
         "download": {
-            "error": "Stahování publikace „{{- title}}“ selhalo: [{{- err}}]"
+            "cancelled": "",
+            "error": "Stahování publikace „{{- title}}“ selhalo: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "Publikace „{{- title}}“ je již nahráná.",

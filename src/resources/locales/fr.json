@@ -246,7 +246,18 @@
             "success": "Importation réussie"
         },
         "download": {
-            "error": "Le téléchargement de {{- title}} a échoué: [{{- err}}]"
+            "cancelled": "",
+            "error": "Le téléchargement de {{- title}} a échoué: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}} a déjà été ajouté.",

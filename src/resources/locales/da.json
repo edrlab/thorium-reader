@@ -241,7 +241,18 @@
             "success": "Import færdig."
         },
         "download": {
-            "error": "Download af {{- title}} er stødt på en fejl: [{{- err}}]"
+            "cancelled": "",
+            "error": "Download af {{- title}} er stødt på en fejl: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}} er allerede importeret.",

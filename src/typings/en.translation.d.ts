@@ -569,7 +569,20 @@ declare namespace typed_i18n {
     readonly "nothing": string,
     readonly "success": string
   },
-  readonly "download": { readonly "error": string },
+  readonly "download": {
+    readonly "cancelled": string,
+    readonly "error": string,
+    readonly "errors": {
+      readonly "hashMismatch": string,
+      readonly "httpGet": string,
+      readonly "invalidFilename": string,
+      readonly "invalidLink": string,
+      readonly "invalidTempDirectory": string,
+      readonly "lengthMismatch": string,
+      readonly "readStreamMissing": string,
+      readonly "tooManyFilenameAttempts": string
+    }
+  },
   readonly "import": {
     readonly "alreadyImport": string,
     readonly "fail": string,
@@ -600,8 +613,40 @@ declare namespace typed_i18n {
   (_: "message.annotations.noBelongTo", __?: {}): string;
   (_: "message.annotations.nothing", __?: {}): string;
   (_: "message.annotations.success", __?: {}): string;
-  (_: "message.download", __?: {}): { readonly "error": string };
+  (_: "message.download", __?: {}): {
+  readonly "cancelled": string,
+  readonly "error": string,
+  readonly "errors": {
+    readonly "hashMismatch": string,
+    readonly "httpGet": string,
+    readonly "invalidFilename": string,
+    readonly "invalidLink": string,
+    readonly "invalidTempDirectory": string,
+    readonly "lengthMismatch": string,
+    readonly "readStreamMissing": string,
+    readonly "tooManyFilenameAttempts": string
+  }
+};
+  (_: "message.download.cancelled", __?: {}): string;
   (_: "message.download.error", __?: {}): string;
+  (_: "message.download.errors", __?: {}): {
+  readonly "hashMismatch": string,
+  readonly "httpGet": string,
+  readonly "invalidFilename": string,
+  readonly "invalidLink": string,
+  readonly "invalidTempDirectory": string,
+  readonly "lengthMismatch": string,
+  readonly "readStreamMissing": string,
+  readonly "tooManyFilenameAttempts": string
+};
+  (_: "message.download.errors.hashMismatch", __?: {}): string;
+  (_: "message.download.errors.httpGet", __?: {}): string;
+  (_: "message.download.errors.invalidFilename", __?: {}): string;
+  (_: "message.download.errors.invalidLink", __?: {}): string;
+  (_: "message.download.errors.invalidTempDirectory", __?: {}): string;
+  (_: "message.download.errors.lengthMismatch", __?: {}): string;
+  (_: "message.download.errors.readStreamMissing", __?: {}): string;
+  (_: "message.download.errors.tooManyFilenameAttempts", __?: {}): string;
   (_: "message.import", __?: {}): {
   readonly "alreadyImport": string,
   readonly "fail": string,
