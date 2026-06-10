@@ -657,35 +657,36 @@ async function checkDownloadedFileIntegrity(pathFile: string, expectedLength?: n
         const expectedHashNormalized = expectedHash.trim();
         const sha256 = crypto.createHash("sha256");
         await new Promise<void>((resolve, reject) => {
-            const readStream = fs.createReadStream(pathFile);
-            //
-            // TODO? pipe() ?
-            // readStream.close()?
-            // readStream.destroy()?
-            //
-            // readStream.on("error", reject);
-            // readStream.on("end", resolve);
+            const readStream = fs.createReadStream(pathFile); // autoClose === true, readStream.isPaused() === true
+
+            readStream.on("error", reject);
+            readStream.on("end", resolve);
+
+            // piping API
+            readStream.pipe(sha256);
+
+            // flowing mode
             // readStream.on("data", (chunk: Buffer | string) => {
             //     sha256.update(chunk);
             // });
-            //
-            readStream.on("error", reject);
-            readStream.on("readable", () => {
-                const chunk = readStream.read();
-                if (chunk) {
-                    sha256.update(chunk);
-                } else {
-                    process.nextTick(() => {
-                        try {
-                            readStream.destroy();
-                        } catch (err) {
-                            console.log(`ERROR CLOSING STREAM: ${pathFile}`);
-                            console.log(err);
-                        }
-                    });
-                    resolve();
-                }
-            });
+
+            // paused mode
+            // readStream.on("readable", () => {
+            //     const chunk = readStream.read();
+            //     if (chunk) {
+            //         sha256.update(chunk);
+            //     } else {
+            //         process.nextTick(() => {
+            //             try {
+            //                 readStream.destroy();
+            //             } catch (err) {
+            //                 console.log(`ERROR CLOSING STREAM: ${pathFile}`);
+            //                 console.log(err);
+            //             }
+            //         });
+            //         resolve();
+            //     }
+            // });
         });
 
         const digest = sha256.digest();
