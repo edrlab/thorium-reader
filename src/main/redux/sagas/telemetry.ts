@@ -7,7 +7,7 @@
 
 import debug_ from "debug";
 
-import { _TELEMETRY_SECRET, _TELEMETRY_URL, _APP_VERSION } from "readium-desktop/preprocessor-directives";
+import { _TELEMETRY_SECRET, _TELEMETRY_SECRETDATA, _TELEMETRY_URL, _APP_VERSION, _APP_NAME } from "readium-desktop/preprocessor-directives";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 import { RootState } from "../states";
 import { version as osVersion } from "os";
@@ -27,6 +27,7 @@ import { httpPost } from "readium-desktop/main/network/http";
 import { Headers } from "node-fetch";
 
 import { createHmac } from "crypto";
+import * as crypto from "crypto";
 
 import isURL from "validator/lib/isURL";
 import { USER_DATA_FOLDER } from "readium-desktop/common/constant";
@@ -159,7 +160,45 @@ const sendTelemetry = async (queue: ITelemetryInfo[]) => {
 
 const telemetryHmac = (body: string) => {
 
-    const hmac = createHmac("sha1", _TELEMETRY_SECRET);
+    let secret = "";
+    if (!!_TELEMETRY_SECRET && !!_TELEMETRY_SECRETDATA) {
+        try {
+            const ___APP_NAME = _TELEMETRY_SECRETDATA.split("@")[0] || _APP_NAME;
+            const ___APP_VERSION = _TELEMETRY_SECRETDATA.split("@")[1] || _APP_VERSION;
+            const encrypted_ = Buffer.from(Buffer.from(_TELEMETRY_SECRET, "base64").toString("utf8"), "hex");
+            const AES_BLOCK_SIZE = 16;
+            const checkSum = crypto.createHash("sha256");
+            checkSum.update(___APP_NAME + ___APP_VERSION);
+            const hexStr = checkSum.digest("hex").toUpperCase();
+            // const b64Str = Buffer.from(hexStr, "hex").toString("base64");
+            const keyBuff = Buffer.from(hexStr, "hex");
+            const ivBuff = encrypted_.slice(0, AES_BLOCK_SIZE);
+            const encrypted = encrypted_.slice(AES_BLOCK_SIZE);
+            const decrypteds: Buffer[] = [];
+            const decryptStream = crypto.createDecipheriv("aes-256-cbc",
+                keyBuff,
+                ivBuff);
+            decryptStream.setAutoPadding(false);
+            const buff1 = decryptStream.update(encrypted);
+            if (buff1) {
+                decrypteds.push(buff1);
+            }
+            const buff2 = decryptStream.final();
+            if (buff2) {
+                decrypteds.push(buff2);
+            }
+            const decrypted = Buffer.concat(decrypteds);
+            const nPaddingBytes = decrypted[decrypted.length - 1];
+            const size = encrypted.length - nPaddingBytes;
+            const decryptedStr = decrypted.slice(0, size).toString("utf8");
+            const dec = decryptedStr.replace(___APP_NAME, "").replace(___APP_VERSION, "");
+            // debug("TELEMETRY SECRET DECRYPT: ", _TELEMETRY_SECRET, " ==> ", dec);
+            secret = dec;
+        } catch (_ex) {
+            // noop
+        }
+    }
+    const hmac = createHmac("sha1", secret);
     hmac.update(body, "utf8");
     return hmac.digest("hex"); // length always 40
 };

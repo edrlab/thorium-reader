@@ -310,11 +310,24 @@ export class OpdsFeedViewConverter {
 
         // transform to absolute url
         ln.Href = urlPathResolve(baseUrl, ln.Href);
+
+
+        // TODO: hash and length from OPDS/Webpub LINK not yet supported
+        // const additionalJSON = (ln as unknown as IWithAdditionalJSON).AdditionalJSON;
+        // const length = typeof (ln as unknown as { Length?: unknown }).Length === "number"
+        //     ? (ln as unknown as { Length: number }).Length
+        //     : typeof additionalJSON?.length === "number" ? additionalJSON.length : undefined;
+        // const hash = typeof (ln as unknown as { Hash?: unknown }).Hash === "string"
+        //     ? (ln as unknown as { Hash: string }).Hash
+        //     : typeof additionalJSON?.hash === "string" ? additionalJSON.hash : undefined;
+
         // safe copy on each filtered links
         return {
             url: ln.Href,
             title: ln.Title,
             type: ln.TypeLink,
+            // length,
+            // hash,
             properties: this.convertOpdsPropertiesToView(ln.Properties),
             rel: ln.Rel && ln.Rel.length > 0 ? ln.Rel[0] : undefined,
         };

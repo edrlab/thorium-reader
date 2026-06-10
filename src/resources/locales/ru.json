@@ -26,7 +26,7 @@
             "undo": "Отменить"
         },
         "hide": "Скрыть {{- appName}}",
-        "quit": "Выйти {{- appName}}",
+        "quit": "Выйти из {{- appName}}",
         "session": {
             "exit": {
                 "askBox": {
@@ -80,16 +80,16 @@
             "continueReading": "Продолжить чтение",
             "lastAdditions": "Недавно добавленные"
         },
-        "export": "Экспорт",
-        "exportAnnotation": "Экспортировать заметки",
+        "export": "Экспорт книги",
+        "exportAnnotation": "Экспорт заметок",
         "format": "Формат",
-        "importAnnotation": "Импортировать заметки",
+        "importAnnotation": "Импорт заметок",
         "lang": "Язык",
         "lastRead": "Последнее чтение",
         "login": "Войти",
         "logout": "Выйти",
-        "missing": "",
-        "missingUnavailableDescription": "",
+        "missing": "Файлы отсутствуют",
+        "missingUnavailableDescription": "Эту публикацию невозможно открыть, поскольку сохранённые в ней файлы недоступны. Повторно импортируйте её или перейдите в Настройки, а затем в Хранилище, чтобы добавить или изменить дополнительное хранилище.",
         "moreInfo": "Дополнительные сведения",
         "myBooks": "Мои книги",
         "noPublicationHelpL1": "Перетащите сюда файлы",
@@ -129,7 +129,7 @@
                 "state": "Cостояние"
             }
         },
-        "openFolder": "",
+        "openFolder": "Открыть каталог",
         "publisher": "Издатель",
         "readBook": "Читать",
         "released": "Дата издания",
@@ -144,17 +144,17 @@
         "annotations": {
             "descAuthor": "автор '{{- author}}'",
             "descCreator": "создано",
-            "descList_few": "{{- count}} примечание(я/ий) {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
-            "descList_many": "{{- count}} примечание(я/ий) {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
-            "descList_one": "{{- count}} примечание(я/ий) {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
+            "descList_few": "{{- count}} примечания {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
+            "descList_many": "{{- count}} примечаний {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
+            "descList_one": "{{- count}} примечание {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
             "descList_other": "",
-            "descNewer_few": "Конфликт(ы): более новых заметок - {{- count}}",
-            "descNewer_many": "Конфликт(ы): более новых заметок - {{- count}}",
-            "descNewer_one": "Конфликт(ы): более новых заметок - {{- count}}",
+            "descNewer_few": "Конфликт(ы): {{- count}} новейшие заметки",
+            "descNewer_many": "Конфликт(ы): {{- count}} новейших заметок",
+            "descNewer_one": "Конфликт(ы): {{- count}} новейшая заметка",
             "descNewer_other": "",
-            "descOlder_few": "Конфликт(ы): более старых заметок - {{- count}}",
-            "descOlder_many": "Конфликт(ы): более старых заметок - {{- count}}",
-            "descOlder_one": "Конфликт(ы): более старых заметок - {{- count}}",
+            "descOlder_few": "Конфликт(ы): {{- count}} наиболее старые заметки",
+            "descOlder_many": "Конфликт(ы): {{- count}} наиболее старых заметок",
+            "descOlder_one": "Конфликт(ы): {{- count}} наиболее старая заметка",
             "descOlder_other": "",
             "descTitle": "Название аннотации: ",
             "importAll": "Импортировать все заметки",
@@ -171,14 +171,14 @@
             }
         },
         "deleteAnnotations": "Удалить аннотации?",
-        "deleteAnnotationsText_few": "Вы уверены, что хотите удалить {{- count}} заметку(и/ок)?",
-        "deleteAnnotationsText_many": "Вы уверены, что хотите удалить {{- count}} заметку(и/ок)?",
-        "deleteAnnotationsText_one": "Вы уверены, что хотите удалить {{- count}} заметку(и/ок)?",
+        "deleteAnnotationsText_few": "Вы уверены, что хотите удалить {{- count}} заметки?",
+        "deleteAnnotationsText_many": "Вы уверены, что хотите удалить {{- count}} заметок?",
+        "deleteAnnotationsText_one": "Вы уверены, что хотите удалить {{- count}} заметку?",
         "deleteAnnotationsText_other": "",
         "deleteBookmarks": "Удалить закладки?",
-        "deleteBookmarksText_few": "Вы уверены, что хотите удалить {{- count}} закладку(и/ок)?",
-        "deleteBookmarksText_many": "Вы уверены, что хотите удалить {{- count}} закладку(и/ок)?",
-        "deleteBookmarksText_one": "Вы уверены, что хотите удалить {{- count}} закладку(и/ок)?",
+        "deleteBookmarksText_few": "Вы уверены, что хотите удалить {{- count}} закладки?",
+        "deleteBookmarksText_many": "Вы уверены, что хотите удалить {{- count}} закладок?",
+        "deleteBookmarksText_one": "Вы уверены, что хотите удалить {{- count}} закладку?",
         "deleteBookmarksText_other": "",
         "deleteFeed": "Вы действительно хотите удалить этот каталог ?",
         "deletePublication": "Вы действительно хотите удалить эту книгу ?",
@@ -229,7 +229,7 @@
             "showPassphrase": "Показать парольную фразу",
             "urlHint": "Забыли парольную фразу? Поддержка доступна:",
             "whatIsLcp?": "Что такое LCP?",
-            "whatIsLcpInfoDetails": "LCP означает \"защита лицензионного контента\".",
+            "whatIsLcpInfoDetails": "LCP означает «защита лицензионного контента».",
             "whatIsLcpInfoDetailsLink": "Чтобы узнать больше, перейдите по этой ссылке на сайт EDRLab."
         },
         "sorting": {
@@ -251,7 +251,18 @@
             "success": "Импорт успешно завершён."
         },
         "download": {
-            "error": "Загрузка {{- title}} не удалась: [{{- err}}]"
+            "cancelled": "",
+            "error": "Загрузка {{- title}} не удалась: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "[{{- title}}] уже импортировано.",
@@ -260,14 +271,14 @@
         },
         "open": {
             "error": "Книга не может быть открыта : {{- err}}",
-            "folderNotFound": ""
+            "folderNotFound": "Каталог публикации не найден. Повторно импортируйте его или настройте дополнительное хранилище в разделе Настройки > Хранилище."
         },
         "storage": {
             "removed": "Каталог публикаций удалён.",
             "updateFailed": "Не удалось обновить каталог публикаций: {{- message}}",
             "updated": "Каталог публикаций обновлён."
         },
-        "wipeData": "Регистрационные данные (токены доступа и cookie-файлы) были очищены!"
+        "wipeData": "Регистрационные данные (токены доступа и cookie-файлы) были очищены"
     },
     "opds": {
         "addForm": {
@@ -608,7 +619,7 @@
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": "Подходит для TTS и программ чтения с экрана"
+                "textual": "Всё содержимое доступно для преобразования в синтезированную речь или динамический Брайляь"
             },
             "accessibilityFeature": {
                 "alternativeText": "Содержит альтернативный текст",
@@ -827,7 +838,7 @@
             "search": {
                 "founds_few": "{{- count}} найдено",
                 "founds_many": "{{- count}} найдено",
-                "founds_one": "{{- count}} найдено",
+                "founds_one": "{{- count}} найден",
                 "founds_other": "",
                 "input": "подходящий текст",
                 "next": "Далее",
@@ -1212,7 +1223,7 @@
             },
             "loadUserJson": "Загрузить из пользовательского файла",
             "noShortcutFound": "Горячая клавиша с этой меткой не найдена",
-            "resetDefaults": "Сбросить (загрузка по умолчанию)",
+            "resetDefaults": "Сбросить (до исходных значений)",
             "save": "Сохранить",
             "searchPlaceholder": "Введите текст для поиска горячей клавиши"
         },
@@ -1283,7 +1294,7 @@
                 "remove": {
                     "confirm": "Удалить каталог",
                     "description": "Удаление дополнительного хранилища требует осторожности. Thorium не будет автоматически перемещать существующие публикации, это придётся сделать вручную. Хотите продолжить?",
-                    "title": "Удалить дополнительное хранилище"
+                    "title": "Удаление дополнительного хранилища"
                 }
             },
             "locations": {

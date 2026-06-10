@@ -236,7 +236,18 @@
             "success": "匯入已成功完成。"
         },
         "download": {
-            "error": "下載 [{{- title}}] 失敗：[{{- err}}]"
+            "cancelled": "",
+            "error": "下載 [{{- title}}] 失敗：[{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}} 已被匯入。",

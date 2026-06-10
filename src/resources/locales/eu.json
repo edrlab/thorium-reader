@@ -241,7 +241,18 @@
             "success": ""
         },
         "download": {
-            "error": "{- title}}-ren deskargak huts egin du [{- err}]"
+            "cancelled": "",
+            "error": "{- title}}-ren deskargak huts egin du [{- err}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{- title}} inportatuta zegoen",

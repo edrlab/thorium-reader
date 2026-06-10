@@ -241,7 +241,18 @@
             "success": "Επιτυχής ολοκλήρωση εισαγωγής."
         },
         "download": {
-            "error": "Η λήψη του {{- title}} απέτυχε: [{{- err}}]"
+            "cancelled": "",
+            "error": "Η λήψη του {{- title}} απέτυχε: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}} έχει ήδη εισαχθεί.",

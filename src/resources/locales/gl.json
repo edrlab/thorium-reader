@@ -241,7 +241,18 @@
             "success": ""
         },
         "download": {
-            "error": "A descarga de {{-  title}} fallou: [{{-  err}}]"
+            "cancelled": "",
+            "error": "A descarga de {{-  title}} fallou: [{{-  err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{-  title}} xa estaba importado",

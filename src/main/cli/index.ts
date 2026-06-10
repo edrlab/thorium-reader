@@ -344,24 +344,60 @@ const yargsInit = () =>
 export function commandLineMainEntry(
     processArgv = process.argv,
 ) {
-
     debug("process.argv", process.argv);
+    debug("process.env", process.env);
+
     if (!__TH__IS_DEV__ && __TH__IS_PACKAGED__) {
         // https://nodejs.org/fr/docs/guides/debugging-getting-started/#enable-inspector
         // SIGUSR1
 
+        // https://www.electronjs.org/docs/latest/api/environment-variables
+        for (const env of Object.keys(process.env)) {
+            debug("env", env);
+            if (env === "NODE_OPTIONS" ||
+                env === "NODE_EXTRA_CA_CERTS" ||
+                // env.startsWith("NODE_")
+                // && env !== "NODE_PATH"
+                // && env !== "NODE_ENV"
+                env.startsWith("ELECTRON_")) {
+                // process.exit(0);
+                app.exit(0);
+                return;
+            }
+        }
+
         // https://github.com/electron/fuses/issues/2
         for (const arg of process.argv) {
             debug("arg", arg);
-            if (arg.includes("--debug") ||
+            if (arg === "-r" ||
+                arg.includes("--require") ||
+                // https://www.electronjs.org/docs/latest/api/command-line-switches
+                arg.includes("--debug") ||
+                arg.includes("--log") ||
+                arg.includes("--dns") ||
+                arg.includes("--disk") ||
+                arg.includes("--flag") ||
+                arg.includes("--ignore") ||
+                arg.includes("--enable") ||
+                arg.includes("--disable") ||
+                arg.includes("--force") ||
+                arg.includes("--host") ||
+                arg.includes("--auth") ||
+                arg.includes("--proxy") ||
                 arg.includes("--remote") ||
+                arg.includes("--throw") ||
+                arg.includes("--trace") ||
+                arg.includes("--js") ||
+                arg.includes("--experimental") ||
+                // arg.includes("logging") ||
                 // https://www.electronjs.org/docs/api/command-line-switches#--remote-debugging-portport
                 // arg.includes("--remote-debugging-port") ||
                 // https://github.com/electron/electron/blob/73a017577e6d8cf67c76acb8f6a199c2b64ccb5d/shell/browser/electron_browser_main_parts.cc#L457
                 // arg.includes("--remote-debugging-pipe") ||
                 // arg.includes("--remote-allow-origins") ||
                 // https://www.electronjs.org/docs/api/command-line-switches#--inspecthostport
-                arg.includes("--inspect") ||
+                arg.includes("--inspect")
+                // ||
                 // https://www.electronjs.org/docs/api/command-line-switches#--inspect-brkhostport
                 // arg.includes("--inspect-brk") ||
                 // https://github.com/nodejs/node/blob/fef180c8a20f680d246d5b109589e6a0370e7e77/src/node_options.cc#L314-L360
@@ -371,11 +407,11 @@ export function commandLineMainEntry(
                 // https://www.electronjs.org/docs/api/command-line-switches#--inspect-publish-uidstderrhttp
                 // arg.includes("--inspect-publish-uid") ||
                 // https://www.electronjs.org/docs/api/command-line-switches#--js-flagsflags
-                arg.includes("--js-flags") ||
-                arg.includes("--experimental-network-inspector")
+                // arg.includes("--js-flags") ||
+                // arg.includes("--experimental-network-inspector")
             ) {
-                // process.exit1);
-                app.exit(1);
+                // process.exit(0);
+                app.exit(0);
                 return;
             }
         }

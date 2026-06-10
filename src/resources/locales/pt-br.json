@@ -246,7 +246,18 @@
             "success": "Importação concluída com sucesso."
         },
         "download": {
-            "error": "O download de {{- title}} falhou: [{{- err}}]"
+            "cancelled": "",
+            "error": "O download de {{- title}} falhou: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}} já foi importado.",

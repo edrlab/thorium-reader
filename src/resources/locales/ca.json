@@ -246,7 +246,18 @@
             "success": ""
         },
         "download": {
-            "error": "La descàrrega de {{- title}} ha fallat: [{{- err}}]"
+            "cancelled": "",
+            "error": "La descàrrega de {{- title}} ha fallat: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}} ja estava importat",

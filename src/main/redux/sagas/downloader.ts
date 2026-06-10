@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import * as crypto from "crypto";
 import * as fs from "fs";
 import * as path from "path";
 import { acceptedExtension, acceptedExtensionObject } from "readium-desktop/common/extension";
@@ -32,15 +33,34 @@ import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import isURL from "validator/lib/isURL";
 import { sanitizeForFilename } from "readium-desktop/common/safe-filename";
+import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-keys";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/downloader");
 
 type TDownloaderChannel = () => IDownloadProgression;
 
+const getDownloadErrorMessage = (key: TTranslatorKeyParameter, options?: Record<string, unknown>): string =>
+    getTranslator().translate(key, options) as string;
+
+const getErrorMessage = (err: unknown): string => {
+    if (err instanceof Error) {
+        return err.message;
+    }
+    return `${err}`;
+};
+
+
+// https://readium.org/lcp-specs/releases/lcp/latest#link-object
 export type IDownloaderLink = string | {
     href: string,
-    type: string,
+    rel?: string, // Link relationship to the document
+    title?: string, // Title of the link
+    type?: string, // Expected MIME media type value for the external resources
+    templated?: string, // Indicates that the href is a URI Template
+    profile?: string, // Expected profile used to identify the external resource
+    length?: number, // Content length in octets
+    hash?: string, // SHA-256 hash of the resource
 };
 
 export function* downloader(linkHrefArray: IDownloaderLink[], downloadLabel?: string): SagaGenerator<string[]> {
@@ -67,13 +87,13 @@ export function* downloader(linkHrefArray: IDownloaderLink[], downloadLabel?: st
 
     } catch (err) {
 
-        debug(err.toString());
+        debug(getErrorMessage(err));
 
         const translate = getTranslator().translate;
 
         yield* putTyped(toastActions.openRequest.build(
             ToastType.Error,
-            translate("message.download.error", { title: downloadLabel, err: `[${err}]` }),
+            translate("message.download.error", { title: downloadLabel, err: getErrorMessage(err) }),
         ));
 
         return [];
@@ -84,7 +104,7 @@ export function* downloader(linkHrefArray: IDownloaderLink[], downloadLabel?: st
 
             yield* putTyped(toastActions.openRequest.build(
                 ToastType.Success,
-                "cancelled", // TODO translate
+                getTranslator().translate("message.download.cancelled"),
             ));
         }
 
@@ -146,6 +166,9 @@ function* downloaderServiceDownloadProcessTask(chan: Channel<TDownloaderChannel>
     });
 
     yield* callTyped(downloaderServiceProcessTaskStreamPipeline, readStream, writeStream);
+    const length = typeof linkHref === "string" ? undefined : linkHref.length;
+    const hash = typeof linkHref === "string" ? undefined : linkHref.hash;
+    yield* callTyped(checkDownloadedFileIntegrity, pathFile, length, hash);
 
     return pathFile;
 }
@@ -306,12 +329,12 @@ function* downloadLinkRequest(linkHref: string, controller: AbortController): Sa
 
 function* downloadCreatePathFilename(pathDir: string, filename: string, rc = 0): SagaGenerator<string> {
 
-    ok(typeof pathDir === "string");
-    ok(typeof filename === "string");
+    ok(typeof pathDir === "string", getDownloadErrorMessage("message.download.errors.invalidTempDirectory"));
+    ok(typeof filename === "string", getDownloadErrorMessage("message.download.errors.invalidFilename"));
     const pathFile = path.resolve(pathDir, filename);
     debug("PathFile", pathFile);
 
-    ok(rc < 10, "Too many tries => " + pathFile);
+    ok(rc < 10, getDownloadErrorMessage("message.download.errors.tooManyFilenameAttempts", { path: pathFile }));
 
     const pathFileExists = yield* callTyped(async () => {
         try {
@@ -582,7 +605,11 @@ type TReturnDownloadLinkStream = [
 function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number, type?: string)
     : SagaGenerator<TReturnDownloadLinkStream> {
 
-    ok(data?.isSuccess, "http GET error: " + data?.statusMessage + " (" + data?.statusCode + ")" + " [" + data.url + "]");
+    ok(data?.isSuccess, getDownloadErrorMessage("message.download.errors.httpGet", {
+        statusMessage: data?.statusMessage,
+        statusCode: data?.statusCode,
+        url: data?.url,
+    }));
 
     // const url = data.responseUrl;
     const contentType = data.contentType;
@@ -598,7 +625,7 @@ function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number, type?:
     const pathFile = yield* callTyped(downloadCreatePathFilename, pathDir, filename);
     debug("PathFile", pathFile);
 
-    ok(readStream, "readStream not defined");
+    ok(readStream, getDownloadErrorMessage("message.download.errors.readStreamMissing"));
 
     const channel = downloadReadStreamProgression(readStream, contentLength, filename, typeof data.url === "string" ? data.url : data.url.toString());
 
@@ -610,10 +637,80 @@ function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number, type?:
     ] as TReturnDownloadLinkStream;
 }
 
+async function checkDownloadedFileIntegrity(pathFile: string, expectedLength?: number, expectedHash?: string): Promise<void> {
+
+    const shouldCheckLength = typeof expectedLength === "number" && Number.isFinite(expectedLength) && expectedLength >= 0;
+    const shouldCheckHash = typeof expectedHash === "string" && expectedHash.trim().length > 0;
+    if (!shouldCheckLength && !shouldCheckHash) {
+        return;
+    }
+
+    const stat = await fs.promises.stat(pathFile);
+    if (shouldCheckLength && stat.size !== expectedLength) {
+        throw new Error(getDownloadErrorMessage("message.download.errors.lengthMismatch", {
+            expected: expectedLength,
+            actual: stat.size,
+        }));
+    }
+
+    if (shouldCheckHash) {
+        const expectedHashNormalized = expectedHash.trim();
+        const hasher = crypto.createHash("sha256");
+        await new Promise<void>((resolve, reject) => {
+            const readStream = fs.createReadStream(pathFile); // autoClose === true, readStream.isPaused() === true
+
+            readStream.on("error", reject);
+            readStream.on("end", resolve);
+
+            // piping API
+            readStream.pipe(hasher);
+
+            // flowing mode
+            // readStream.on("data", (chunk: Buffer | string) => {
+            //     hasher.update(chunk);
+            // });
+
+            // paused mode
+            // readStream.on("readable", () => {
+            //     const chunk = readStream.read();
+            //     if (chunk) {
+            //         hasher.update(chunk);
+            //     } else {
+            //         process.nextTick(() => {
+            //             try {
+            //                 readStream.destroy();
+            //             } catch (err) {
+            //                 console.log(`ERROR CLOSING STREAM: ${pathFile}`);
+            //                 console.log(err);
+            //             }
+            //         });
+            //         resolve();
+            //     }
+            // });
+        });
+
+        const digest = hasher.digest();
+        const actualBase64 = digest.toString("base64");
+        const actualHex = digest.toString("hex");
+        if (expectedHashNormalized.toLowerCase() !== actualHex) {
+            throw new Error(getDownloadErrorMessage("message.download.errors.hashMismatch", {
+                expected: expectedHashNormalized,
+                actual: actualHex,
+            }));
+        }
+        if (expectedHashNormalized !== actualBase64) {
+            throw new Error(getDownloadErrorMessage("message.download.errors.hashMismatch", {
+                expected: expectedHashNormalized,
+                actual: actualBase64,
+            }));
+        }
+    }
+}
+
 type TReturnDownloadLinkProcess = TReturnDownloadLinkStream | undefined;
 function* downloadLinkProcess(linkHref: IDownloaderLink, id: number): SagaGenerator<TReturnDownloadLinkProcess> {
 
-    ok(linkHref);
+    ok(linkHref, getDownloadErrorMessage("message.download.errors.invalidLink"));
 
     const controller = new AbortController();
 

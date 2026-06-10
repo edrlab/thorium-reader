@@ -251,7 +251,18 @@
             "success": "Uvoz uspešno zaključen."
         },
         "download": {
-            "error": "Prenos {{- title}} ni uspel: [{{- err}}]"
+            "cancelled": "",
+            "error": "Prenos {{- title}} ni uspel: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}} je že uvožena",

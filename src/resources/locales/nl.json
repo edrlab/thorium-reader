@@ -241,7 +241,18 @@
             "success": "Import succesvol voltooid."
         },
         "download": {
-            "error": "Het downloaden van{{- title}} is mislukt: [{{- err}}]"
+            "cancelled": "",
+            "error": "Het downloaden van{{- title}} is mislukt: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}} is al toegevoegd.",
