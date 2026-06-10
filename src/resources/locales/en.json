@@ -1246,9 +1246,9 @@
             "title": "Enable session saving"
         },
         "sharedComputer": {
-            "lcpAutoDeleteExpiredPublications": "Automatically delete unusable LCP publications and local user data",
-            "lcpAutoDeleteExpiredPublicationsDescription": "After LCP/LSD status synchronization, expired, returned, revoked or cancelled LCP publications are removed from the library with their local notes and reading state. In personal mode, newly imported replacements can still replace an unusable previous copy while preserving its notes and reading data when possible.",
-            "title": "Shared computer"
+            "lcpAutoDeleteExpiredPublications": "Automatically remove expired publications and associated user data",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Ensures that expired loans are automatically deleted (including personal annotations, reading bookmarks, etc.). This is useful in 'shared computers' environments such as library or university rooms.",
+            "title": "Shared computer mode"
         },
         "storage": {
             "actions": {
