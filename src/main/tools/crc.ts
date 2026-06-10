@@ -18,7 +18,7 @@ export async function computeFileHash(filePath: string) {
         const readStream = fs.createReadStream(filePath); // autoClose === true, readStream.isPaused() === true
 
         readStream.on("error", reject);
-        readStream.on("end", resolve);
+        readStream.on("end", () => resolve(hasher.digest("hex")));
 
         // piping API
         readStream.pipe(hasher);
@@ -42,7 +42,7 @@ export async function computeFileHash(filePath: string) {
         //                 console.log(err);
         //             }
         //         });
-        //         resolve();
+        //         resolve(hasher.digest("hex"));
         //     }
         // });
     });
