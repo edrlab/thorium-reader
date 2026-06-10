@@ -40,9 +40,6 @@ const debug = debug_("readium-desktop:main#saga/downloader");
 
 type TDownloaderChannel = () => IDownloadProgression;
 
-const getDownloadErrorMessage = (key: TTranslatorKeyParameter, options?: Record<string, unknown>): string =>
-    getTranslator().translate(key, options) as string;
-
 const getErrorMessage = (err: unknown): string => {
     if (err instanceof Error) {
         return err.message;
@@ -329,12 +326,12 @@ function* downloadLinkRequest(linkHref: string, controller: AbortController): Sa
 
 function* downloadCreatePathFilename(pathDir: string, filename: string, rc = 0): SagaGenerator<string> {
 
-    ok(typeof pathDir === "string", getDownloadErrorMessage("message.download.errors.invalidTempDirectory"));
-    ok(typeof filename === "string", getDownloadErrorMessage("message.download.errors.invalidFilename"));
+    ok(typeof pathDir === "string", getTranslator().translate("message.download.errors.invalidTempDirectory"));
+    ok(typeof filename === "string", getTranslator().translate("message.download.errors.invalidFilename"));
     const pathFile = path.resolve(pathDir, filename);
     debug("PathFile", pathFile);
 
-    ok(rc < 10, getDownloadErrorMessage("message.download.errors.tooManyFilenameAttempts", { path: pathFile }));
+    ok(rc < 10, getTranslator().translate("message.download.errors.tooManyFilenameAttempts", { path: pathFile }));
 
     const pathFileExists = yield* callTyped(async () => {
         try {
@@ -605,7 +602,7 @@ type TReturnDownloadLinkStream = [
 function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number, type?: string)
     : SagaGenerator<TReturnDownloadLinkStream> {
 
-    ok(data?.isSuccess, getDownloadErrorMessage("message.download.errors.httpGet", {
+    ok(data?.isSuccess, getTranslator().translate("message.download.errors.httpGet", {
         statusMessage: data?.statusMessage,
         statusCode: data?.statusCode,
         url: data?.url,
@@ -625,7 +622,7 @@ function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number, type?:
     const pathFile = yield* callTyped(downloadCreatePathFilename, pathDir, filename);
     debug("PathFile", pathFile);
 
-    ok(readStream, getDownloadErrorMessage("message.download.errors.readStreamMissing"));
+    ok(readStream, getTranslator().translate("message.download.errors.readStreamMissing"));
 
     const channel = downloadReadStreamProgression(readStream, contentLength, filename, typeof data.url === "string" ? data.url : data.url.toString());
 
@@ -647,7 +644,7 @@ async function checkDownloadedFileIntegrity(pathFile: string, expectedLength?: n
 
     const stat = await fs.promises.stat(pathFile);
     if (shouldCheckLength && stat.size !== expectedLength) {
-        throw new Error(getDownloadErrorMessage("message.download.errors.lengthMismatch", {
+        throw new Error(getTranslator().translate("message.download.errors.lengthMismatch", {
             expected: expectedLength,
             actual: stat.size,
         }));
@@ -693,13 +690,13 @@ async function checkDownloadedFileIntegrity(pathFile: string, expectedLength?: n
         const actualBase64 = digest.toString("base64");
         const actualHex = digest.toString("hex");
         if (expectedHashNormalized.toLowerCase() !== actualHex) {
-            throw new Error(getDownloadErrorMessage("message.download.errors.hashMismatch", {
+            throw new Error(getTranslator().translate("message.download.errors.hashMismatch", {
                 expected: expectedHashNormalized,
                 actual: actualHex,
             }));
         }
         if (expectedHashNormalized !== actualBase64) {
-            throw new Error(getDownloadErrorMessage("message.download.errors.hashMismatch", {
+            throw new Error(getTranslator().translate("message.download.errors.hashMismatch", {
                 expected: expectedHashNormalized,
                 actual: actualBase64,
             }));
@@ -710,7 +707,7 @@ async function checkDownloadedFileIntegrity(pathFile: string, expectedLength?: n
 type TReturnDownloadLinkProcess = TReturnDownloadLinkStream | undefined;
 function* downloadLinkProcess(linkHref: IDownloaderLink, id: number): SagaGenerator<TReturnDownloadLinkProcess> {
 
-    ok(linkHref, getDownloadErrorMessage("message.download.errors.invalidLink"));
+    ok(linkHref, getTranslator().translate("message.download.errors.invalidLink"));
 
     const controller = new AbortController();
 
