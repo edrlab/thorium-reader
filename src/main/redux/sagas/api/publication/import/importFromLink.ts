@@ -324,8 +324,8 @@ export function* importFromLinkService(
             const [downloadPath] = yield* callTyped(downloader, [{
                 href: link.url,
                 type: link.type,
-                length: link.length,
-                hash: link.hash,
+                // length: link.length,
+                // hash: link.hash,
             }], title);
             return downloadPath;
         }
