@@ -655,7 +655,7 @@ async function checkDownloadedFileIntegrity(pathFile: string, expectedLength?: n
 
     if (shouldCheckHash) {
         const expectedHashNormalized = expectedHash.trim();
-        const sha256 = crypto.createHash("sha256");
+        const hasher = crypto.createHash("sha256");
         await new Promise<void>((resolve, reject) => {
             const readStream = fs.createReadStream(pathFile); // autoClose === true, readStream.isPaused() === true
 
@@ -663,18 +663,18 @@ async function checkDownloadedFileIntegrity(pathFile: string, expectedLength?: n
             readStream.on("end", resolve);
 
             // piping API
-            readStream.pipe(sha256);
+            readStream.pipe(hasher);
 
             // flowing mode
             // readStream.on("data", (chunk: Buffer | string) => {
-            //     sha256.update(chunk);
+            //     hasher.update(chunk);
             // });
 
             // paused mode
             // readStream.on("readable", () => {
             //     const chunk = readStream.read();
             //     if (chunk) {
-            //         sha256.update(chunk);
+            //         hasher.update(chunk);
             //     } else {
             //         process.nextTick(() => {
             //             try {
@@ -689,7 +689,7 @@ async function checkDownloadedFileIntegrity(pathFile: string, expectedLength?: n
             // });
         });
 
-        const digest = sha256.digest();
+        const digest = hasher.digest();
         const actualBase64 = digest.toString("base64");
         const actualHex = digest.toString("hex");
         if (expectedHashNormalized.toLowerCase() !== actualHex) {

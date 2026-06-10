@@ -13,27 +13,38 @@ import * as yauzl from "yauzl";
 const debug = debug_("readium-desktop:main/crc");
 
 export async function computeFileHash(filePath: string) {
-    return new Promise<string>((resolve, _reject) => {
-        const algo = crypto.createHash("sha1");
-        const stream = fs.createReadStream(filePath);
-        stream.on("readable", () => {
-            const data = stream.read();
-            if (data) {
-                algo.update(data);
-            } else {
-                process.nextTick(() => {
-                    try {
-                        stream.destroy();
-                    } catch (err) {
-                        console.log(`ERROR CLOSING STREAM: ${filePath}`);
-                        console.log(err);
-                    }
-                });
+    return new Promise<string>((resolve, reject) => {
+        const hasher = crypto.createHash("sha1");
+        const readStream = fs.createReadStream(filePath); // autoClose === true, readStream.isPaused() === true
 
-                const hash = algo.digest("hex");
-                resolve(hash);
-            }
-        });
+        readStream.on("error", reject);
+        readStream.on("end", resolve);
+
+        // piping API
+        readStream.pipe(hasher);
+
+        // flowing mode
+        // readStream.on("data", (chunk: Buffer | string) => {
+        //     hasher.update(chunk);
+        // });
+
+        // paused mode
+        // readStream.on("readable", () => {
+        //     const chunk = readStream.read();
+        //     if (chunk) {
+        //         hasher.update(chunk);
+        //     } else {
+        //         process.nextTick(() => {
+        //             try {
+        //                 readStream.destroy();
+        //             } catch (err) {
+        //                 console.log(`ERROR CLOSING STREAM: ${pathFile}`);
+        //                 console.log(err);
+        //             }
+        //         });
+        //         resolve();
+        //     }
+        // });
     });
 }
 
