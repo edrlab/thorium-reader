@@ -371,6 +371,7 @@ export function commandLineMainEntry(
             debug("arg", arg);
             if (arg === "-r" ||
                 arg.includes("--require") ||
+                // arg.includes("--no") // DO NOT UNCOMMENT THIS, see "shared-computer" (`--shared-computer` and `--no-shared-computer`)
                 // https://www.electronjs.org/docs/latest/api/command-line-switches
                 arg.includes("--debug") ||
                 arg.includes("--log") ||
