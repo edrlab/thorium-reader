@@ -33,7 +33,6 @@ import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import isURL from "validator/lib/isURL";
 import { sanitizeForFilename } from "readium-desktop/common/safe-filename";
-import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-keys";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/downloader");
