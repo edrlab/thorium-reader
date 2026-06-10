@@ -658,17 +658,46 @@ async function checkDownloadedFileIntegrity(pathFile: string, expectedLength?: n
         const sha256 = crypto.createHash("sha256");
         await new Promise<void>((resolve, reject) => {
             const readStream = fs.createReadStream(pathFile);
-            readStream.on("data", (chunk: Buffer | string) => {
-                sha256.update(chunk);
-            });
+            //
+            // TODO? pipe() ?
+            // readStream.close()?
+            // readStream.destroy()?
+            //
+            // readStream.on("error", reject);
+            // readStream.on("end", resolve);
+            // readStream.on("data", (chunk: Buffer | string) => {
+            //     sha256.update(chunk);
+            // });
+            //
             readStream.on("error", reject);
-            readStream.on("end", resolve);
+            readStream.on("readable", () => {
+                const chunk = readStream.read();
+                if (chunk) {
+                    sha256.update(chunk);
+                } else {
+                    process.nextTick(() => {
+                        try {
+                            readStream.destroy();
+                        } catch (err) {
+                            console.log(`ERROR CLOSING STREAM: ${pathFile}`);
+                            console.log(err);
+                        }
+                    });
+                    resolve();
+                }
+            });
         });
 
         const digest = sha256.digest();
         const actualBase64 = digest.toString("base64");
         const actualHex = digest.toString("hex");
-        if (expectedHashNormalized !== actualBase64 && expectedHashNormalized.toLowerCase() !== actualHex) {
+        if (expectedHashNormalized.toLowerCase() !== actualHex) {
+            throw new Error(getDownloadErrorMessage("message.download.errors.hashMismatch", {
+                expected: expectedHashNormalized,
+                actual: actualHex,
+            }));
+        }
+        if (expectedHashNormalized !== actualBase64) {
             throw new Error(getDownloadErrorMessage("message.download.errors.hashMismatch", {
                 expected: expectedHashNormalized,
                 actual: actualBase64,
