@@ -30,6 +30,10 @@ Existing shared/support areas:
 - `src/r2-xxx-js/**` and `src/third_party/**` are vendored/support dependency code. Do not add Thorium runtime glue there just to bypass runtime boundaries.
 - `src/resources/**`, `src/typings/**`, and asset/style imports may be shared where the relevant Webpack config allows them.
 
+## Code Style
+
+- Prefer `undefined` over `null` for absent optional values when the existing type or runtime contract allows it.
+
 ## Import Rules
 
 - `src/main.ts` and `src/main/**` may import `src/common/**`, `src/utils/**`, and vendored/support dependencies. They must not import `src/renderer/**`.

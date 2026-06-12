@@ -21,9 +21,9 @@ import { nanoid } from "nanoid";
 import * as path from "path";
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
-import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { extractCrc32OnZip } from "readium-desktop/main/tools/crc";
+import { buildPublicationFilesDocumentPatch } from "readium-desktop/main/tools/publicationDocument";
 import {
     PublicationDocument, PublicationDocumentWithoutTimestampable,
 } from "readium-desktop/main/db/document/publication";
@@ -226,11 +226,8 @@ export async function importPublicationFromFS(
 
         tags: [],
         files: [],
-        coverFile: null,
-        customCover: null,
         hash: hash ? hash : await extractCrc32OnZip(filePath),
 
-        lcp: null, // updated below via lcpManager.updateDocumentLcp()
         lcpRightsCopies: 0,
         lcpRightsPrints: [],
     };
@@ -252,25 +249,10 @@ export async function importPublicationFromFS(
         );
     debug("[END] Store publication on filesystem - END", filePath);
 
-    // Add extracted files to document
-
-    for (const file of files) {
-        if (file.contentType.startsWith("image")) {
-            pubDocument.coverFile = file;
-        } else {
-            pubDocument.files.push(file);
-        }
-    }
-
-    if (pubDocument.coverFile === null) {
-        debug("No cover found, generate custom one", filePath);
-        // No cover file found
-        // Generate a random custom cover
-        pubDocument.customCover = RandomCustomCovers[
-            Math.floor(Math.random() * RandomCustomCovers.length)
-        ];
-    }
-
+    const filesPatch = buildPublicationFilesDocumentPatch(files);
+    pubDocument.files = filesPatch.files;
+    pubDocument.coverFile = filesPatch.coverFile;
+    pubDocument.customCover = filesPatch.customCover;
     // MUST BE AFTER storePublication() and pubDocument.files.push(file) so that the filesystem cache can be set
     await publicationViewConverter.updatePublicationCache(pubDocument, r2Publication);
 

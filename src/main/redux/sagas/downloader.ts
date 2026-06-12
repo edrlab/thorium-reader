@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import * as crypto from "crypto";
 import * as fs from "fs";
 import * as path from "path";
 import { acceptedExtension, acceptedExtensionObject } from "readium-desktop/common/extension";
@@ -33,6 +32,7 @@ import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import isURL from "validator/lib/isURL";
 import { sanitizeForFilename } from "readium-desktop/common/safe-filename";
+import { computeFileSha256, fileSha256MatchesExpectedHash } from "readium-desktop/main/tools/fileIntegrity";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/downloader");
@@ -650,54 +650,11 @@ async function checkDownloadedFileIntegrity(pathFile: string, expectedLength?: n
     }
 
     if (shouldCheckHash) {
-        const expectedHashNormalized = expectedHash.trim();
-        const hasher = crypto.createHash("sha256");
-        await new Promise<void>((resolve, reject) => {
-            const readStream = fs.createReadStream(pathFile); // autoClose === true, readStream.isPaused() === true
-
-            readStream.on("error", reject);
-            readStream.on("end", resolve);
-
-            // piping API
-            readStream.pipe(hasher);
-
-            // flowing mode
-            // readStream.on("data", (chunk: Buffer | string) => {
-            //     hasher.update(chunk);
-            // });
-
-            // paused mode
-            // readStream.on("readable", () => {
-            //     const chunk = readStream.read();
-            //     if (chunk) {
-            //         hasher.update(chunk);
-            //     } else {
-            //         process.nextTick(() => {
-            //             try {
-            //                 readStream.destroy();
-            //             } catch (err) {
-            //                 console.log(`ERROR CLOSING STREAM: ${pathFile}`);
-            //                 console.log(err);
-            //             }
-            //         });
-            //         resolve();
-            //     }
-            // });
-        });
-
-        const digest = hasher.digest();
-        const actualBase64 = digest.toString("base64");
-        const actualHex = digest.toString("hex");
-        if (expectedHashNormalized.toLowerCase() !== actualHex) {
+        const actualHash = await computeFileSha256(pathFile);
+        if (!fileSha256MatchesExpectedHash(expectedHash, actualHash)) {
             throw new Error(getTranslator().translate("message.download.errors.hashMismatch", {
-                expected: expectedHashNormalized,
-                actual: actualHex,
-            }));
-        }
-        if (expectedHashNormalized !== actualBase64) {
-            throw new Error(getTranslator().translate("message.download.errors.hashMismatch", {
-                expected: expectedHashNormalized,
-                actual: actualBase64,
+                expected: expectedHash.trim(),
+                actual: `${actualHash.hex} / ${actualHash.base64}`,
             }));
         }
     }

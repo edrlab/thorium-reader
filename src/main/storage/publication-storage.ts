@@ -83,6 +83,29 @@ export interface IPublicationStorageRecoverablePublication {
     filePath: string;
 }
 
+export interface IPublicationFilesReplacement {
+    files: File[];
+    finalize: () => Promise<void>;
+    rollback: () => Promise<void>;
+}
+
+interface IStagedPublicationFile {
+    file: File;
+    finalPath: string;
+    stagedPath: string;
+}
+
+interface IBackupPublicationFile {
+    backupPath: string;
+    finalPath: string;
+}
+
+interface IPublicationCoverData {
+    buffer: Buffer;
+    contentType: string;
+    ext: string;
+}
+
 const toFilePathArray = (filePath: string | undefined): string[] | undefined => filePath ? [filePath] : undefined;
 
 const jsonStringify = (d: any) => (__TH__IS_DEV__ || __TH__IS_CI__) ? JSON.stringify(d, null, 4) : JSON.stringify(d);
@@ -458,6 +481,109 @@ export class PublicationStorage {
         }
 
         return files;
+    }
+
+    public async replacePublicationFiles(
+        identifier: string,
+        srcPath: string,
+    ): Promise<IPublicationFilesReplacement> {
+
+        assertUUIDv4(identifier);
+
+        this.invalidatePublicationLocationCache(identifier);
+
+        const publicationDirectoryPath = await this.getPublicationPath(identifier);
+        const previousFiles = await fs.promises.readdir(publicationDirectoryPath, { withFileTypes: true });
+
+        const replacementId = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+        const stagedFiles: IStagedPublicationFile[] = [];
+        const backups: IBackupPublicationFile[] = [];
+
+        const extension = path.extname(srcPath);
+        const bookExt = getExtensionWithoutDot(this.getStorablePublicationExtension(extension));
+        const bookFilename = `book.${bookExt}`;
+        const bookStagedPath = path.join(publicationDirectoryPath, `__thorium-replace-${replacementId}-${bookFilename}.next`);
+        await fs.promises.copyFile(srcPath, bookStagedPath);
+        stagedFiles.push({
+            file: this.buildStoredPublicationFile(
+                identifier,
+                bookFilename,
+                bookExt,
+                getStoredPublicationFileMimeTypeFromExtension(bookExt),
+                bookStagedPath,
+            ),
+            finalPath: path.join(publicationDirectoryPath, bookFilename),
+            stagedPath: bookStagedPath,
+        });
+
+        try {
+            const coverData = await this.extractPublicationCoverData(srcPath);
+            if (coverData) {
+                const coverFilename = `cover.${coverData.ext}`;
+                const coverStagedPath = path.join(publicationDirectoryPath, `__thorium-replace-${replacementId}-${coverFilename}.next`);
+                await fs.promises.writeFile(coverStagedPath, coverData.buffer);
+                stagedFiles.push({
+                    file: this.buildStoredPublicationFile(
+                        identifier,
+                        coverFilename,
+                        coverData.ext,
+                        coverData.contentType,
+                        coverStagedPath,
+                    ),
+                    finalPath: path.join(publicationDirectoryPath, coverFilename),
+                    stagedPath: coverStagedPath,
+                });
+            }
+        } catch (e) {
+            debug(e);
+        }
+
+        try {
+            for (const file of previousFiles) {
+                if (!file.isFile() || !this.isManagedPublicationReplacementFile(file.name)) {
+                    continue;
+                }
+
+                const finalPath = path.join(publicationDirectoryPath, file.name);
+                const backupPath = path.join(publicationDirectoryPath, `__thorium-backup-${replacementId}-${file.name}.bak`);
+                await fs.promises.rename(finalPath, backupPath);
+                backups.push({
+                    backupPath,
+                    finalPath,
+                });
+            }
+
+            for (const stagedFile of stagedFiles) {
+                await fs.promises.rename(stagedFile.stagedPath, stagedFile.finalPath);
+            }
+        } catch (e) {
+            await this.rollbackPublicationFilesReplacement(stagedFiles, backups, publicationDirectoryPath, identifier);
+            throw e;
+        }
+
+        this.setPublicationLocationCache(identifier, {
+            directoryPath: publicationDirectoryPath,
+            epubPath: path.join(publicationDirectoryPath, bookFilename),
+        });
+
+        let finished = false;
+        return {
+            files: stagedFiles.map(({ file }) => file),
+            finalize: async () => {
+                if (finished) {
+                    return;
+                }
+                finished = true;
+                await this.removePublicationFilesReplacementBackups(backups);
+            },
+            rollback: async () => {
+                if (finished) {
+                    return;
+                }
+                finished = true;
+                await this.rollbackPublicationFilesReplacement(stagedFiles, backups, publicationDirectoryPath, identifier);
+            },
+        };
     }
 
     public async removePublication(identifier: string /*, preservePublicationOnFileSystem?: string*/) {
@@ -1046,6 +1172,69 @@ export class PublicationStorage {
 
     // Publication import helpers
 
+    private buildStoredPublicationFile(
+        identifier: string,
+        filename: string,
+        ext: string,
+        contentType: string,
+        filePath: string,
+    ): File {
+
+        return {
+            url: `${URL_PROTOCOL_STORE}://${identifier}/${filename}`,
+            ext,
+            contentType,
+            size: getFileSize(filePath),
+        };
+    }
+
+    private isManagedPublicationReplacementFile(fileName: string): boolean {
+
+        const lowerFileName = fileName.toLowerCase();
+        if (lowerFileName === "manifest.json" || lowerFileName === "license.lcpl") {
+            return true;
+        }
+
+        const extWithDot = normalizeExtension(path.extname(fileName));
+        return this.isStorablePublicationExtension(extWithDot) ||
+            lowerFileName.startsWith("cover.");
+    }
+
+    private async removePublicationFilesReplacementBackups(
+        backups: IBackupPublicationFile[],
+    ): Promise<void> {
+
+        for (const backup of backups) {
+            await rmrf(backup.backupPath);
+        }
+    }
+
+    private async rollbackPublicationFilesReplacement(
+        stagedFiles: IStagedPublicationFile[],
+        backups: IBackupPublicationFile[],
+        publicationDirectoryPath: string,
+        identifier: string,
+    ): Promise<void> {
+
+        this.invalidatePublicationLocationCache(identifier);
+
+        for (const stagedFile of stagedFiles) {
+            await rmrf(stagedFile.finalPath);
+            await rmrf(stagedFile.stagedPath);
+        }
+        await rmrf(path.join(publicationDirectoryPath, "manifest.json"));
+        await rmrf(path.join(publicationDirectoryPath, "license.lcpl"));
+
+        for (const backup of backups.slice().reverse()) {
+            await rmrf(backup.finalPath);
+            try {
+                await fs.promises.rename(backup.backupPath, backup.finalPath);
+            } catch (e) {
+                debug("rollbackPublicationFilesReplacement restore failed", publicationDirectoryPath, e);
+            }
+        }
+    }
+
     private async storePublicationBook(
         identifier: string,
         srcPath: string,
@@ -1062,12 +1251,13 @@ export class PublicationStorage {
         );
 
         await fs.promises.copyFile(srcPath, bookDstPath);
-        const file: File = {
-            url: `${URL_PROTOCOL_STORE}://${identifier}/${filename}`,
+        const file = this.buildStoredPublicationFile(
+            identifier,
+            filename,
             ext,
-            contentType: getStoredPublicationFileMimeTypeFromExtension(ext),
-            size: getFileSize(bookDstPath),
-        };
+            getStoredPublicationFileMimeTypeFromExtension(ext),
+            bookDstPath,
+        );
         this.setPublicationLocationCache(identifier, {
             directoryPath: dstPath,
             epubPath: bookDstPath,
@@ -1076,64 +1266,86 @@ export class PublicationStorage {
         return file;
     }
 
+    private async extractPublicationCoverData(srcPath: string): Promise<IPublicationCoverData | undefined> {
+
+        let r2Publication: Awaited<ReturnType<typeof PublicationParsePromise>> | undefined;
+        try {
+            r2Publication = await PublicationParsePromise(srcPath);
+        } catch (err) {
+            console.log(err);
+            return undefined;
+        }
+
+        try {
+            // private Internal is very hacky! :(
+            const zipInternal = (r2Publication as any).Internal.find((i: any) => {
+                if (i.Name === "zip") {
+                    return true;
+                }
+                return false;
+            });
+            if (!zipInternal?.Value) {
+                return undefined;
+            }
+            const zip = zipInternal.Value as IZip;
+
+            const coverLink = r2Publication.GetCover();
+            if (!coverLink) {
+                return undefined;
+            }
+
+            const coverTypeExt = findExtWithMimeType(coverLink.TypeLink);
+            const coverType = findMimeTypeWithExtension(coverTypeExt);
+            const zipStream = await zip.entryStreamPromise(coverLink.Href);
+            const zipBuffer = await streamToBufferPromise(zipStream.stream);
+
+            // Remove start dot in extensoion
+            const coverExt = getExtensionWithoutDot(path.extname(coverLink.Href));
+            const ext = coverTypeExt || coverExt;
+            const contentType = coverType || findMimeTypeWithExtension(coverExt);
+            if (!ext || !contentType) {
+                return undefined;
+            }
+
+            return {
+                buffer: zipBuffer,
+                contentType,
+                ext,
+            };
+        } finally {
+            // after PublicationParsePromise, cleanup zip handler
+            r2Publication?.freeDestroy();
+        }
+    }
+
     // Extract the image cover buffer then create a file on the publication folder
     private async storePublicationCover(
         identifier: string,
         srcPath: string,
         dstPath: string,
-    ): Promise<File> {
+    ): Promise<File | undefined> {
 
-        let r2Publication;
-        try {
-            r2Publication = await PublicationParsePromise(srcPath);
-        } catch (err) {
-            console.log(err);
-            return null;
+        const coverData = await this.extractPublicationCoverData(srcPath);
+        if (!coverData) {
+            return undefined;
         }
 
-        // private Internal is very hacky! :(
-        const zipInternal = (r2Publication as any).Internal.find((i: any) => {
-            if (i.Name === "zip") {
-                return true;
-            }
-            return false;
-        });
-        const zip = zipInternal.Value as IZip;
-
-        const coverLink = r2Publication.GetCover();
-        if (!coverLink) {
-            // after PublicationParsePromise, cleanup zip handler
-            r2Publication.freeDestroy();
-            return null;
-        }
-
-        const coverTypeExt = findExtWithMimeType(coverLink.TypeLink);
-        const coverType = findMimeTypeWithExtension(coverTypeExt);
-        const zipStream = await zip.entryStreamPromise(coverLink.Href);
-        const zipBuffer = await streamToBufferPromise(zipStream.stream);
-
-        // after PublicationParsePromise, cleanup zip handler
-        r2Publication.freeDestroy();
-
-        // Remove start dot in extensoion
-        const coverExt = getExtensionWithoutDot(path.extname(coverLink.Href));
-        const ext = coverTypeExt || coverExt;
-        const contentType = coverType || findMimeTypeWithExtension(coverExt);
-        const coverFilename = `cover.${ext}`;
+        const coverFilename = `cover.${coverData.ext}`;
         const coverDstPath = path.join(
             dstPath,
             coverFilename,
         );
 
         // Write cover to fs
-        await fs.promises.writeFile(coverDstPath, zipBuffer);
+        await fs.promises.writeFile(coverDstPath, coverData.buffer);
 
         // Return cover file information
-        return {
-            url: `${URL_PROTOCOL_STORE}://${identifier}/${coverFilename}`,
-            ext,
-            contentType,
-            size: getFileSize(coverDstPath),
-        };
+        return this.buildStoredPublicationFile(
+            identifier,
+            coverFilename,
+            coverData.ext,
+            coverData.contentType,
+            coverDstPath,
+        );
     }
 }
