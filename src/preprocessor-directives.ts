@@ -44,6 +44,9 @@ export const _PACK_NAME = __TH__PACK_NAME__;
 declare const __TH__APP_NAME__: string;
 export const _APP_NAME = __TH__APP_NAME__;
 
+declare const __TH__ISURL_REQUIRE_TLD_FALSE__: boolean;
+export const _ISURL_REQUIRE_TLD_FALSE = __TH__ISURL_REQUIRE_TLD_FALSE__;
+
 // declare const __USE_HTTP_STREAMER__: boolean;
 // export const _USE_HTTP_STREAMER = __USE_HTTP_STREAMER__;
 

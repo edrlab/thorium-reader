@@ -30,7 +30,7 @@ import { contentTypeisOpdsAuth, parseContentType } from "readium-desktop/utils/c
 import { getOpdsAuthenticationChannel } from "readium-desktop/main/event";
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
-import isURL from "validator/lib/isURL";
+import isURL from "readium-desktop/common/utils/isURL";
 import { sanitizeForFilename } from "readium-desktop/common/safe-filename";
 import { computeFileSha256, fileSha256MatchesExpectedHash } from "readium-desktop/main/tools/fileIntegrity";
 
@@ -281,7 +281,7 @@ function* downloadLinkRequest(linkHref: string, controller: AbortController): Sa
     options.abortController = controller;
     options.signal = controller.signal;
 
-    // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+    // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
     if (!linkHref || !isURL(linkHref)) {
         debug("isURL() NOK", linkHref);
         return undefined;

@@ -29,7 +29,7 @@ import { Headers } from "node-fetch";
 import { createHmac } from "crypto";
 import * as crypto from "crypto";
 
-import isURL from "validator/lib/isURL";
+import isURL from "readium-desktop/common/utils/isURL";
 import { USER_DATA_FOLDER } from "readium-desktop/common/constant";
 
 interface ITelemetryInfo {
@@ -145,7 +145,7 @@ const sendTelemetry = async (queue: ITelemetryInfo[]) => {
 
     debug("TELEMETRY: ", href, JSON.stringify({timestamp, data}, null, 4));
 
-    // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+    // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
     if (!href || !isURL(href)) {
         debug("isURL() NOK", href);
         return false;

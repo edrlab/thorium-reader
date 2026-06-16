@@ -50,6 +50,8 @@ const telemetryUrl = isPackaged
     : "";
 const telemetrySecret = process.env.THORIUM_TELEMETRY_SECRET || "";
 const telemetrySecretData = process.env.THORIUM_TELEMETRY_SECRET_DATA || "";
+const isURLRequireTldFalse =
+    !["0", "false"].includes((process.env.THORIUM_ISURL_REQUIRE_TLD_FALSE || "0").toLowerCase());
 
 // const USE_HTTP_STREAMER = false;
 
@@ -68,6 +70,7 @@ const data = {
     __TH__APP_VERSION__: JSON.stringify(version),
     __TH__PACK_NAME__: JSON.stringify(name), // EDRLab.ThoriumReader
     __TH__APP_NAME__: JSON.stringify(build.productName), // Thorium
+    __TH__ISURL_REQUIRE_TLD_FALSE__: JSON.stringify(isURLRequireTldFalse),
     __TH__NODE_MODULE_RELATIVE_URL__: JSON.stringify(nodeModuleRelativeUrl),
     __TH__DIST_RELATIVE_URL__: JSON.stringify(distRelativeUrl),
     __TH__RENDERER_LIBRARY_BASE_URL__: JSON.stringify(rendererLibraryBaseUrl),

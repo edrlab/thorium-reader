@@ -182,7 +182,7 @@
 //                 {
 //                     a11y_conformsTo.map((value, i) => {
 //                         if (!value) return <></>;
-//                         // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+//                         // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
 //                         if (isURL(value)) {
 //                             const label = value === "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-a"
 //                                 ? "EPUB Accessibility 1.0 - WCAG 2.0 Level A"
@@ -206,7 +206,7 @@
 //                 {
 //                     a11y_certifierReport.map((value, i) => {
 //                         if (!value) return <></>;
-//                         // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+//                         // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
 //                         if (isURL(value)) {
 //                             // onClick (which includes ENTER key) is not strictly necessary but it allows us to prevent SHIFT for new window, OPT/ALT for download hyperlink target
 //                             return <li key={i}><a

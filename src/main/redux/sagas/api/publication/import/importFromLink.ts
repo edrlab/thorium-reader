@@ -28,7 +28,7 @@ import { delay as delayTyped, call as callTyped, race as raceTyped } from "typed
 import { downloader } from "../../../downloader";
 import { packageFromLink } from "../packager/packageLink";
 import { importFromFsService } from "./importFromFs";
-import isURL from "validator/lib/isURL";
+import isURL from "readium-desktop/common/utils/isURL";
 import path from "path";
 import { app } from "electron";
 import { findExtWithMimeType } from "readium-desktop/utils/mimeTypes";
@@ -159,7 +159,7 @@ export function* importFromLinkService(
     if (!link.type) {
         const hrefUrl = url.toString();
         try {
-            // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+            // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
             if (!hrefUrl || !isURL(hrefUrl)) {
                 debug("isURL() NOK", hrefUrl);
                 link.type = "";

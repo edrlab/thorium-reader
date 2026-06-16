@@ -40,7 +40,7 @@ import * as lcpSharedWorkstationCleanup from "./publication/lcpSharedWorkstation
 
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { sagaCustomizationProfileProvisioning } from "./customization";
-import isURL from "validator/lib/isURL";
+import isURL from "readium-desktop/common/utils/isURL";
 import { publicationIntegrityChecker } from "./publication/checker";
 import { error } from "readium-desktop/main/tools/error";
 
@@ -218,7 +218,7 @@ function* checkAppVersionUpdate() {
             // headers.append("user-agent", "thorium-desktop");
             // headers.append("accept-language", `${locale},en-US;q=0.7,en;q=0.5`);
 
-            // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+            // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
             if (!url || !isURL(url)) {
                 debug("isURL() NOK", url);
                 return undefined;
