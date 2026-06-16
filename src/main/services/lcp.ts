@@ -443,7 +443,8 @@ export class LcpManager {
     //     return r2Publication;
     // }
 
-    // DOES NOT MUTATE publicationDocument (returns a modified copy)
+    // Leaves the passed publicationDocument unchanged. Saves and returns an
+    // updated document object, unless another LCP update is locked.
     public async checkPublicationLicenseUpdate(
         publicationDocument: PublicationDocument,
         skipNetworkLSD: boolean,
@@ -459,7 +460,7 @@ export class LcpManager {
             const r2Publication = await this.publicationViewConverter.unmarshallR2Publication(publicationDocument); // , true
 
             const { publicationDocument: newPubDocument } =
-                // DOES NOT MUTATE publicationDocument (returns a modified copy)
+                // Keep publicationDocument as the pre-refresh snapshot.
                 await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication, skipNetworkLSD);
             return newPubDocument;
         } finally {
@@ -467,7 +468,9 @@ export class LcpManager {
         }
     }
 
-    // DOES NOT MUTATE publicationDocument (returns a modified copy)
+    // Builds a new publication document object before applying LCP/cache-derived
+    // changes. The source publicationDocument remains the pre-refresh snapshot.
+    // Side effects can include LCPL/cache/file updates and saving the copy.
     private async checkPublicationLicenseUpdate_(
         publicationDocument: PublicationDocument,
         r2Publication_: R2Publication,
@@ -511,7 +514,7 @@ export class LcpManager {
             hash: redoHash ? await extractCrc32OnZip(epubPath) : publicationDocument.hash,
         };
 
-        // MUTATES newPublicationDocument
+        // updateDocumentLcp writes LCP info onto this freshly-created document object.
         try {
             await this.updateDocumentLcp(newPublicationDocument, r2Publication.LCP);
 
@@ -539,7 +542,7 @@ export class LcpManager {
         try {
             let r2Publication = await this.publicationViewConverter.unmarshallR2Publication(publicationDocument); // , true
 
-            // DOES NOT MUTATE publicationDocument (returns a modified copy)
+            // Refresh first and continue with the returned saved document.
             const checked = await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication, false);
             let newPubDocument = checked.publicationDocument;
             r2Publication = checked.r2Publication;
@@ -632,7 +635,7 @@ export class LcpManager {
                         hash: redoHash ? await extractCrc32OnZip(epubPath) : newPubDocument.hash,
                     };
 
-                    // MUTATES newPublicationDocument
+                    // updateDocumentLcp writes LCP info onto this freshly-created document object.
                     try {
                         await this.updateDocumentLcp(newPublicationDocument, r2Publication.LCP);
 
@@ -667,7 +670,7 @@ export class LcpManager {
         try {
             let r2Publication = await this.publicationViewConverter.unmarshallR2Publication(publicationDocument); // , true
 
-            // DOES NOT MUTATE publicationDocument (returns a modified copy)
+            // Refresh first and continue with the returned saved document.
             const checked = await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication, false);
             let newPubDocument = checked.publicationDocument;
             r2Publication = checked.r2Publication;
@@ -751,7 +754,7 @@ export class LcpManager {
                         hash: redoHash ? await extractCrc32OnZip(epubPath) : newPubDocument.hash,
                     };
 
-                    // MUTATES newPublicationDocument
+                    // updateDocumentLcp writes LCP info onto this freshly-created document object.
                     try {
                         await this.updateDocumentLcp(newPublicationDocument, r2Publication.LCP);
 
