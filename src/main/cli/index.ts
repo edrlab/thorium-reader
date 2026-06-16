@@ -95,6 +95,9 @@ const createStoreFromDiWithCliSettings = async (argv: ISharedComputerCliArgv): P
     return store;
 };
 
+const isElectronRunnerArg = (arg: string | undefined) =>
+    !!arg && path.basename(arg).toLowerCase().replace(/\.exe$/, "") === "electron";
+
 // yargs configuration
 const yargsInit = () =>
     yargs() // hideBin(process.argv)
@@ -425,7 +428,7 @@ export function commandLineMainEntry(
 
     const argFormated = processArgv
         .filter((arg) => knownOption(arg) || !arg.startsWith("-"))
-        .slice(!__TH__IS_PACKAGED__ && processArgv[0].endsWith("Electron") ? 2 : 1);
+        .slice(!__TH__IS_PACKAGED__ && isElectronRunnerArg(processArgv[0]) ? 2 : 1);
 
     debug("processArgv", processArgv, "arg", argFormated);
 
