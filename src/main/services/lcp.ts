@@ -271,11 +271,16 @@ export class LcpManager {
     ): Promise<void> {
 
         if (!publicationFilesReplacement) {
+            debug("rollbackPublicationFilesReplacement skipped, no staged publication files replacement");
             return;
         }
 
         try {
+            debug("rollbackPublicationFilesReplacement start", {
+                fileCount: publicationFilesReplacement.files.length,
+            });
             await publicationFilesReplacement.rollback();
+            debug("rollbackPublicationFilesReplacement done");
         } catch (e) {
             debug("rollbackPublicationFilesReplacement failed", e);
         }
@@ -1102,30 +1107,30 @@ export class LcpManager {
             undefined;
     }
 
-    private normalizeLcpPublicationLinkHref(link: LcpLink | undefined): string | undefined {
+    // private normalizeLcpPublicationLinkHref(link: LcpLink | undefined): string | undefined {
 
-        if (typeof link?.Href !== "string") {
-            return undefined;
-        }
+    //     if (typeof link?.Href !== "string") {
+    //         return undefined;
+    //     }
 
-        const href = link.Href.trim();
-        if (!href) {
-            return undefined;
-        }
+    //     const href = link.Href.trim();
+    //     if (!href) {
+    //         return undefined;
+    //     }
 
-        try {
-            return new URL(href).toString();
-        } catch {
-            return href;
-        }
-    }
+    //     try {
+    //         return new URL(href).toString();
+    //     } catch {
+    //         return href;
+    //     }
+    // }
 
     /**
      * Decide whether two LCP publication links point to different archive content.
      *
-     * Hash and length are preferred because they identify the resource payload. The
-     * href is also compared so a license update that changes only the publication
-     * download URL still triggers a replacement download.
+     * Hash and length identify the archive payload. Href comparison is
+     * intentionally disabled so a license update that changes only the download
+     * URL does not trigger an unnecessary replacement.
      *
      * @param previousLink Publication link from the currently stored LCP license.
      * @param nextLink Publication link from the refreshed LCP license.
@@ -1158,12 +1163,14 @@ export class LcpManager {
             return true;
         }
 
-        const previousHref = this.normalizeLcpPublicationLinkHref(previousLink);
-        const nextHref = this.normalizeLcpPublicationLinkHref(nextLink);
-        if (previousHref && nextHref && previousHref !== nextHref) {
-            debug("LCP publication link URL changed", previousHref, nextHref);
-            return true;
-        }
+        // Do not compare href here; hash and length are the resource signals
+        // that should drive archive replacement.
+        // const previousHref = this.normalizeLcpPublicationLinkHref(previousLink);
+        // const nextHref = this.normalizeLcpPublicationLinkHref(nextLink);
+        // if (previousHref && nextHref && previousHref !== nextHref) {
+        //     debug("LCP publication link URL changed", previousHref, nextHref);
+        //     return true;
+        // }
 
         return false;
     }
@@ -1189,6 +1196,11 @@ export class LcpManager {
             return fallbackExtension.replace(/^\./, "");
         }
 
+        // Last-resort compatibility fallback: without link type, href extension,
+        // or the current archive extension, the archive format is unknown. The LCPL
+        // injector's generic path is EPUB-style, so keep the temp filename aligned
+        // with that default.
+        // see: injectLcplIntoZip_ src/main/services/lcp.ts:222
         return acceptedExtensionObject.epub.replace(/^\./, "");
     }
 
@@ -1213,6 +1225,17 @@ export class LcpManager {
         }
     }
 
+    /**
+     * Downloads the publication archive referenced by an LCP "publication" link
+     * into a temporary directory and verifies the link metadata before returning.
+     *
+     * The returned path remains owned by the caller, which must remove the temp
+     * directory after copying or staging the archive.
+     *
+     * TODO: Extract the shared non-saga download primitive used here and in
+     * downloader.ts: HTTP request setup, temp file creation, stream pipeline, and
+     * length/hash integrity checks. Keep UI progress/cancel handling in the saga.
+     */
     private async downloadPublicationArchiveFromLcpLink(
         publicationIdentifier: string,
         link: LcpLink,
@@ -1224,7 +1247,22 @@ export class LcpManager {
         }
 
         const locale = this.store.getState().i18n.locale;
-        const httpDataReceived = await httpGet(link.Href, { timeout: 30000 }, undefined, locale);
+        const abortController = new AbortController();
+        // Let httpGet apply its default HTTP timeout instead of the shorter LSD
+        // status timeout: this request fetches a full replacement publication
+        // archive, not just a small status JSON document. The local
+        // AbortController is not for user cancellation; it keeps this aligned
+        // with downloader.ts by using httpGet's clearable timeout branch for the
+        // initial HTTP response, then lets pipeline() consume the archive stream.
+        const httpDataReceived = await httpGet(
+            link.Href,
+            {
+                abortController,
+                signal: abortController.signal,
+            },
+            undefined,
+            locale,
+        );
         const contentType = parseContentType(httpDataReceived.contentType);
         if (contentTypeisApiProblem(contentType)) {
             const { title, type } = await parseProblemDetails(httpDataReceived.response);
@@ -1240,6 +1278,9 @@ export class LcpManager {
             const ext = this.getPublicationLinkExtension(link, fallbackExtension);
             tempDir = await createTempDir(`${Date.now()}-${publicationIdentifier}`, "lcp-publication-update");
             const downloadedPublicationPath = path.join(tempDir, `book.${ext}`);
+            // pipeline() handles stream backpressure and rejects on either HTTP
+            // body or filesystem write errors. The HTTP timeout above guards the
+            // initial response; the archive body is allowed to stream to disk.
             await pipeline(httpDataReceived.body, fs.createWriteStream(downloadedPublicationPath));
             await this.checkDownloadedPublicationLinkIntegrity(downloadedPublicationPath, link);
 
@@ -1306,14 +1347,22 @@ export class LcpManager {
         // stored book when the publication link URL or resource metadata changed.
         const previousPublicationLink = this.findLcpPublicationLink(previousLcp);
         const nextPublicationLink = this.findLcpPublicationLink(nextLcp);
+        debug("replacePublicationArchiveIfLinkChanged check", {
+            hasNextPublicationLink: !!nextPublicationLink,
+            hasPreviousPublicationLink: !!previousPublicationLink,
+            identifier: publicationDocument.identifier,
+            nextLength: this.getFiniteLcpLinkLength(nextPublicationLink),
+            previousLength: this.getFiniteLcpLinkLength(previousPublicationLink),
+        });
         if (
             !nextPublicationLink ||
             !this.lcpPublicationLinkResourceChanged(previousPublicationLink, nextPublicationLink)
         ) {
+            debug("replacePublicationArchiveIfLinkChanged no archive replacement needed", publicationDocument.identifier);
             return undefined;
         }
 
-        debug("LCP publication archive changed, downloading updated publication", publicationDocument.identifier);
+        debug("replacePublicationArchiveIfLinkChanged archive changed, downloading updated publication", publicationDocument.identifier);
 
         let downloadedPublicationPath: string | undefined;
         let publicationFilesReplacement: IPublicationFilesReplacement | undefined;
@@ -1321,19 +1370,23 @@ export class LcpManager {
             const currentPublicationPath = await this.publicationStorage.getPublicationEpubPath(
                 publicationDocument.identifier,
             );
+            debug("replacePublicationArchiveIfLinkChanged current publication path", publicationDocument.identifier, currentPublicationPath);
             downloadedPublicationPath = await this.downloadPublicationArchiveFromLcpLink(
                 publicationDocument.identifier,
                 nextPublicationLink,
                 path.extname(currentPublicationPath),
             );
+            debug("replacePublicationArchiveIfLinkChanged downloaded replacement archive", publicationDocument.identifier, downloadedPublicationPath);
 
             // Persist the refreshed license inside the downloaded archive before parsing
             // and storing it, so the replacement archive is immediately self-contained.
             await this.injectLcplIntoZip_(downloadedPublicationPath, nextLcpStr);
+            debug("replacePublicationArchiveIfLinkChanged injected refreshed LCPL", publicationDocument.identifier, downloadedPublicationPath);
 
             const updatedR2Publication = await PublicationParsePromise(downloadedPublicationPath);
             updatedR2Publication.freeDestroy();
             updatedR2Publication.LCP = nextLcp;
+            debug("replacePublicationArchiveIfLinkChanged parsed replacement archive", publicationDocument.identifier);
 
             // The replacement is staged so the caller can save the updated publication
             // document first, then finalize or roll back the file swap as one operation.
@@ -1341,11 +1394,21 @@ export class LcpManager {
                 publicationDocument.identifier,
                 downloadedPublicationPath,
             );
+            debug("replacePublicationArchiveIfLinkChanged staged publication files replacement", {
+                fileCount: publicationFilesReplacement.files.length,
+                identifier: publicationDocument.identifier,
+            });
             const documentPatch = this.buildPublicationArchiveDocumentPatch(
                 publicationDocument,
                 updatedR2Publication,
                 publicationFilesReplacement.files,
             );
+            debug("replacePublicationArchiveIfLinkChanged built publication document patch", {
+                hasCoverFile: !!documentPatch.coverFile,
+                hasCustomCover: !!documentPatch.customCover,
+                identifier: publicationDocument.identifier,
+                title: documentPatch.title,
+            });
 
             await this.publicationViewConverter.updatePublicationCache(
                 {
@@ -1354,6 +1417,7 @@ export class LcpManager {
                 },
                 updatedR2Publication,
             );
+            debug("replacePublicationArchiveIfLinkChanged updated publication cache", publicationDocument.identifier);
 
             return {
                 documentPatch,
@@ -1361,6 +1425,7 @@ export class LcpManager {
                 r2Publication: updatedR2Publication,
             };
         } catch (err) {
+            debug("replacePublicationArchiveIfLinkChanged failed, rolling back replacement", publicationDocument.identifier, err);
             // If parsing, cache refresh, or any later step fails, restore the previous
             // stored files before propagating the error to the caller.
             await this.rollbackPublicationFilesReplacement(publicationFilesReplacement);
@@ -1369,6 +1434,7 @@ export class LcpManager {
             if (downloadedPublicationPath) {
                 // downloadPublicationArchiveFromLcpLink creates a temp directory whose
                 // only durable output is copied into publication storage above.
+                debug("replacePublicationArchiveIfLinkChanged cleanup temp archive", publicationDocument.identifier, downloadedPublicationPath);
                 await rmrf(path.dirname(downloadedPublicationPath))
                     .catch((e) => debug("replacePublicationArchiveIfLinkChanged cleanup failed", e));
             }

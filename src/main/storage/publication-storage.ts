@@ -541,6 +541,12 @@ export class PublicationStorage {
         const replacementId = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
         const stagedFiles: IStagedPublicationFile[] = [];
         const backups: IBackupPublicationFile[] = [];
+        debug("replacePublicationFiles start", {
+            identifier,
+            publicationDirectoryPath,
+            replacementId,
+            srcPath,
+        });
 
         // Step 2: Stage the incoming archive under a temporary name, so the current
         // stored book is still intact if staging fails.
@@ -549,6 +555,7 @@ export class PublicationStorage {
         const bookFilename = `book.${bookExt}`;
         const bookStagedPath = path.join(publicationDirectoryPath, `__thorium-replace-${replacementId}-${bookFilename}.next`);
         await fs.promises.copyFile(srcPath, bookStagedPath);
+        debug("replacePublicationFiles staged archive", identifier, bookStagedPath);
         stagedFiles.push({
             file: this.buildStoredPublicationFile(
                 identifier,
@@ -564,12 +571,14 @@ export class PublicationStorage {
 
         try {
             // Step 3: Stage the derived cover when one can be extracted. This is
-            // best-effort, so cover failures do not block the archive replacement.
+            // best-effort: the archive replacement is the durable change, while
+            // the cover is derived cache data and can be regenerated later.
             const coverData = await this.extractPublicationCoverData(srcPath);
             if (coverData) {
                 const coverFilename = `cover.${coverData.ext}`;
                 const coverStagedPath = path.join(publicationDirectoryPath, `__thorium-replace-${replacementId}-${coverFilename}.next`);
                 await fs.promises.writeFile(coverStagedPath, coverData.buffer);
+                debug("replacePublicationFiles staged cover", identifier, coverStagedPath);
                 stagedFiles.push({
                     file: this.buildStoredPublicationFile(
                         identifier,
@@ -584,7 +593,7 @@ export class PublicationStorage {
                 });
             }
         } catch (e) {
-            debug(e);
+            debug("replacePublicationFiles cover extraction failed, continuing", identifier, srcPath, e);
         }
 
         try {
@@ -598,6 +607,7 @@ export class PublicationStorage {
                 const finalPath = path.join(publicationDirectoryPath, file.name);
                 const backupPath = path.join(publicationDirectoryPath, `__thorium-backup-${replacementId}-${file.name}.bak`);
                 await fs.promises.rename(finalPath, backupPath);
+                debug("replacePublicationFiles backed up managed file", identifier, finalPath, backupPath);
                 backups.push({
                     backupPath,
                     finalPath,
@@ -610,8 +620,10 @@ export class PublicationStorage {
             for (const stagedFile of stagedFiles) {
                 await fs.promises.rename(stagedFile.stagedPath, stagedFile.finalPath);
                 stagedFile.promoted = true;
+                debug("replacePublicationFiles promoted staged file", identifier, stagedFile.finalPath);
             }
         } catch (e) {
+            debug("replacePublicationFiles failed, rolling back staged changes", identifier, publicationDirectoryPath, e);
             await this.rollbackPublicationFilesReplacement(stagedFiles, backups, publicationDirectoryPath, identifier, false)
                 .catch((err) => debug("replacePublicationFiles rollback failed", publicationDirectoryPath, err));
             throw e;
@@ -623,27 +635,39 @@ export class PublicationStorage {
             directoryPath: publicationDirectoryPath,
             epubPath: path.join(publicationDirectoryPath, bookFilename),
         });
+        debug("replacePublicationFiles pending replacement ready", {
+            backupCount: backups.length,
+            fileCount: stagedFiles.length,
+            identifier,
+            publicationDirectoryPath,
+        });
 
         let finished = false;
         return {
             files: stagedFiles.map(({ file }) => file),
             finalize: async () => {
                 if (finished) {
+                    debug("replacePublicationFiles finalize skipped, already finished", identifier);
                     return;
                 }
                 // Step 7a: Finalize after related database/cache updates succeed. The
                 // old files are no longer needed as rollback backups.
+                debug("replacePublicationFiles finalize", identifier, publicationDirectoryPath);
                 await this.removePublicationFilesReplacementBackups(backups);
                 finished = true;
+                debug("replacePublicationFiles finalized", identifier, publicationDirectoryPath);
             },
             rollback: async () => {
                 if (finished) {
+                    debug("replacePublicationFiles rollback skipped, already finished", identifier);
                     return;
                 }
                 // Step 7b: Roll back after a later failure by restoring the backed-up
                 // managed files and removing replacement files where possible.
+                debug("replacePublicationFiles rollback", identifier, publicationDirectoryPath);
                 await this.rollbackPublicationFilesReplacement(stagedFiles, backups, publicationDirectoryPath, identifier, true);
                 finished = true;
+                debug("replacePublicationFiles rolled back", identifier, publicationDirectoryPath);
             },
         };
     }
@@ -1267,6 +1291,7 @@ export class PublicationStorage {
     ): Promise<void> {
 
         for (const backup of backups) {
+            debug("removePublicationFilesReplacementBackups", backup.backupPath);
             await rmrf(backup.backupPath);
         }
     }
@@ -1296,15 +1321,24 @@ export class PublicationStorage {
         removeUnbackedCacheFiles: boolean,
     ): Promise<void> {
 
+        debug("rollbackPublicationFilesReplacement start", {
+            backupCount: backups.length,
+            identifier,
+            publicationDirectoryPath,
+            removeUnbackedCacheFiles,
+            stagedFileCount: stagedFiles.length,
+        });
         this.invalidatePublicationLocationCache(identifier);
 
         // First remove replacement outputs. Only promoted files are deleted from
         // finalPath, because an unpromoted finalPath may still be the original file.
         for (const stagedFile of stagedFiles) {
             if (stagedFile.promoted) {
+                debug("rollbackPublicationFilesReplacement remove promoted file", stagedFile.finalPath);
                 await rmrf(stagedFile.finalPath);
                 stagedFile.promoted = false;
             }
+            debug("rollbackPublicationFilesReplacement remove staged file", stagedFile.stagedPath);
             await rmrf(stagedFile.stagedPath);
         }
 
@@ -1315,6 +1349,7 @@ export class PublicationStorage {
             for (const fileName of ["manifest.json", "license.lcpl"]) {
                 const finalPath = path.join(publicationDirectoryPath, fileName);
                 if (!backedFinalPaths.has(finalPath)) {
+                    debug("rollbackPublicationFilesReplacement remove unbacked cache file", finalPath);
                     await rmrf(finalPath);
                 }
             }
@@ -1331,6 +1366,7 @@ export class PublicationStorage {
             try {
                 await fs.promises.rename(backup.backupPath, backup.finalPath);
                 backup.restored = true;
+                debug("rollbackPublicationFilesReplacement restored backup", backup.finalPath);
             } catch (e) {
                 debug("rollbackPublicationFilesReplacement restore failed", publicationDirectoryPath, e);
                 restoreErrors.push(e);
@@ -1340,6 +1376,7 @@ export class PublicationStorage {
         if (restoreErrors.length) {
             throw new Error(`rollbackPublicationFilesReplacement failed to restore ${restoreErrors.length} backup(s)`);
         }
+        debug("rollbackPublicationFilesReplacement done", identifier, publicationDirectoryPath);
     }
 
     private async storePublicationBook(
