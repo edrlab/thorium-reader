@@ -40,7 +40,7 @@ import { toSha256Hex } from "readium-desktop/utils/lcp";
 import { findExtWithMimeType } from "readium-desktop/utils/mimeTypes";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 import { type Store } from "redux";
-import isURL from "validator/lib/isURL";
+import isURL from "readium-desktop/common/utils/isURL";
 
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 import { Link as LcpLink } from "@r2-lcp-js/parser/epub/lcp-link";
