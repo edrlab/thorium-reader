@@ -63,6 +63,23 @@ type TLcpPublicationLink = TPublicationLink & {
     HasRel: (rel: string) => boolean;
 };
 
+type TLcpManagerForPublicationArchiveReplacement = {
+    replacePublicationArchiveIfLinkChanged: (
+        publicationDocument: { customCover?: unknown; identifier: string; title?: string },
+        previousLcp: { Links: TLcpPublicationLink[] },
+        nextLcp: { Links: TLcpPublicationLink[] },
+        nextLcpStr: string,
+    ) => Promise<unknown>;
+    rollbackPublicationFilesReplacement: (publicationFilesReplacement: unknown) => Promise<void>;
+    publicationStorage: {
+        getPublicationEpubPath: (identifier: string) => Promise<string>;
+        replacePublicationFiles: ReturnType<typeof jest.fn>;
+    };
+    store: {
+        getState: () => { i18n: { locale: string } };
+    };
+};
+
 const link = (partial: TPublicationLink): TPublicationLink => ({
     Href: "https://example.org/book.epub",
     ...partial,
@@ -144,22 +161,7 @@ describe("LcpManager.replacePublicationArchiveIfLinkChanged", () => {
         });
 
         const replacePublicationFiles = jest.fn();
-        const manager = Object.create(LcpManager.prototype) as LcpManager & {
-            replacePublicationArchiveIfLinkChanged: (
-                publicationDocument: { customCover?: unknown; identifier: string; title?: string },
-                previousLcp: { Links: TLcpPublicationLink[] },
-                nextLcp: { Links: TLcpPublicationLink[] },
-                nextLcpStr: string,
-            ) => Promise<unknown>;
-            rollbackPublicationFilesReplacement: (publicationFilesReplacement: unknown) => Promise<void>;
-            publicationStorage: {
-                getPublicationEpubPath: (identifier: string) => Promise<string>;
-                replacePublicationFiles: typeof replacePublicationFiles;
-            };
-            store: {
-                getState: () => { i18n: { locale: string } };
-            };
-        };
+        const manager = Object.create(LcpManager.prototype) as TLcpManagerForPublicationArchiveReplacement;
         manager.publicationStorage = {
             getPublicationEpubPath: jest.fn(async () => "C:\\books\\current.epub"),
             replacePublicationFiles,
