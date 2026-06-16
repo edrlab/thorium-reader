@@ -1374,7 +1374,8 @@ export class LcpManager {
 
     public async processStatusDocument(
         publicationDocument: PublicationDocument,
-        r2Publication: R2Publication): Promise<IProcessStatusDocumentResult> {
+        r2Publication: R2Publication,
+    ): Promise<IProcessStatusDocumentResult> {
 
         (r2Publication as any).__LCP_LSD_UPDATE_COUNT = 0;
 
