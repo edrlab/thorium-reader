@@ -83,21 +83,41 @@ export interface IPublicationStorageRecoverablePublication {
     filePath: string;
 }
 
+/**
+ * Handle returned by replacePublicationFiles() while a replacement is pending.
+ * The caller owns finalizing the swap after related state is saved, or rolling it
+ * back if a later step fails.
+ */
 export interface IPublicationFilesReplacement {
+    // Stored-file metadata for the replacement archive and optional extracted cover.
     files: File[];
+    // Commit the replacement by deleting the old backup files.
     finalize: () => Promise<void>;
+    // Undo the replacement by removing promoted replacement files and restoring backups.
     rollback: () => Promise<void>;
 }
 
+// Tracks one replacement file from its temporary staged path to its final store path.
 interface IStagedPublicationFile {
+    // File metadata reported to the publication document once replacement succeeds.
     file: File;
+    // Destination path used by Thorium once the staged file is promoted.
     finalPath: string;
+    // True only after stagedPath has been renamed to finalPath; rollback uses this
+    // to avoid deleting an original file when promotion failed before rename.
+    promoted: boolean;
+    // Temporary path created before existing managed files are backed up.
     stagedPath: string;
 }
 
+// Tracks one original managed file while it is moved aside as a rollback backup.
 interface IBackupPublicationFile {
+    // Temporary backup path containing the original file during the pending swap.
     backupPath: string;
+    // Original storage path that should be restored if rollback is needed.
     finalPath: string;
+    // True once backupPath has been moved back to finalPath; rollback retries skip it.
+    restored: boolean;
 }
 
 interface IPublicationCoverData {
@@ -483,6 +503,27 @@ export class PublicationStorage {
         return files;
     }
 
+    /**
+     * Publication Files Replacement Process
+     *
+     * Replace the stored archive and derived cover files for an existing publication.
+     *
+     * The replacement is intentionally split into two phases so filesystem changes can
+     * be coordinated with database/cache updates owned by the caller:
+     *
+     * 1. Stage the incoming archive and optional extracted cover under temporary names.
+     * 2. Move current Thorium-managed files to backup paths.
+     * 3. Promote the staged replacement files to their final storage paths.
+     * 4. Return the new file metadata plus finalize()/rollback() callbacks.
+     *
+     * The caller must call finalize() after related publication document updates are
+     * saved. If a later step fails, the caller must call rollback() to remove promoted
+     * replacement files and restore the backed-up originals.
+     *
+     * @param identifier Publication identifier whose stored files are being replaced.
+     * @param srcPath Replacement archive path already prepared by the caller.
+     * @returns New stored file metadata plus callbacks to commit or undo the swap.
+     */
     public async replacePublicationFiles(
         identifier: string,
         srcPath: string,
@@ -490,6 +531,8 @@ export class PublicationStorage {
 
         assertUUIDv4(identifier);
 
+        // Step 1: Resolve the current storage location and prepare unique names for
+        // this replacement attempt.
         this.invalidatePublicationLocationCache(identifier);
 
         const publicationDirectoryPath = await this.getPublicationPath(identifier);
@@ -499,6 +542,8 @@ export class PublicationStorage {
         const stagedFiles: IStagedPublicationFile[] = [];
         const backups: IBackupPublicationFile[] = [];
 
+        // Step 2: Stage the incoming archive under a temporary name, so the current
+        // stored book is still intact if staging fails.
         const extension = path.extname(srcPath);
         const bookExt = getExtensionWithoutDot(this.getStorablePublicationExtension(extension));
         const bookFilename = `book.${bookExt}`;
@@ -513,10 +558,13 @@ export class PublicationStorage {
                 bookStagedPath,
             ),
             finalPath: path.join(publicationDirectoryPath, bookFilename),
+            promoted: false,
             stagedPath: bookStagedPath,
         });
 
         try {
+            // Step 3: Stage the derived cover when one can be extracted. This is
+            // best-effort, so cover failures do not block the archive replacement.
             const coverData = await this.extractPublicationCoverData(srcPath);
             if (coverData) {
                 const coverFilename = `cover.${coverData.ext}`;
@@ -531,6 +579,7 @@ export class PublicationStorage {
                         coverStagedPath,
                     ),
                     finalPath: path.join(publicationDirectoryPath, coverFilename),
+                    promoted: false,
                     stagedPath: coverStagedPath,
                 });
             }
@@ -539,6 +588,8 @@ export class PublicationStorage {
         }
 
         try {
+            // Step 4: Back up only Thorium-managed publication files. User-created or
+            // unknown files in the publication directory are left untouched.
             for (const file of previousFiles) {
                 if (!file.isFile() || !this.isManagedPublicationReplacementFile(file.name)) {
                     continue;
@@ -550,17 +601,24 @@ export class PublicationStorage {
                 backups.push({
                     backupPath,
                     finalPath,
+                    restored: false,
                 });
             }
 
+            // Step 5: Promote the staged files to their final names. The backups stay
+            // on disk until the caller finalizes the broader update.
             for (const stagedFile of stagedFiles) {
                 await fs.promises.rename(stagedFile.stagedPath, stagedFile.finalPath);
+                stagedFile.promoted = true;
             }
         } catch (e) {
-            await this.rollbackPublicationFilesReplacement(stagedFiles, backups, publicationDirectoryPath, identifier);
+            await this.rollbackPublicationFilesReplacement(stagedFiles, backups, publicationDirectoryPath, identifier, false)
+                .catch((err) => debug("replacePublicationFiles rollback failed", publicationDirectoryPath, err));
             throw e;
         }
 
+        // Step 6: Refresh the in-memory location cache now that the filesystem points
+        // at the replacement book, even though the caller may still roll back later.
         this.setPublicationLocationCache(identifier, {
             directoryPath: publicationDirectoryPath,
             epubPath: path.join(publicationDirectoryPath, bookFilename),
@@ -573,15 +631,19 @@ export class PublicationStorage {
                 if (finished) {
                     return;
                 }
-                finished = true;
+                // Step 7a: Finalize after related database/cache updates succeed. The
+                // old files are no longer needed as rollback backups.
                 await this.removePublicationFilesReplacementBackups(backups);
+                finished = true;
             },
             rollback: async () => {
                 if (finished) {
                     return;
                 }
+                // Step 7b: Roll back after a later failure by restoring the backed-up
+                // managed files and removing replacement files where possible.
+                await this.rollbackPublicationFilesReplacement(stagedFiles, backups, publicationDirectoryPath, identifier, true);
                 finished = true;
-                await this.rollbackPublicationFilesReplacement(stagedFiles, backups, publicationDirectoryPath, identifier);
             },
         };
     }
@@ -1209,29 +1271,74 @@ export class PublicationStorage {
         }
     }
 
+    /**
+     * Rollback Publication Files Replacement
+     *
+     * Undo a staged publication replacement.
+     *
+     * This removes replacement files that were promoted, cleans leftover staged
+     * temp files, optionally removes cache files created after promotion, and then
+     * restores the backed-up managed files.
+     *
+     * @param stagedFiles Replacement files created for this swap.
+     * @param backups Original managed files moved aside before promotion.
+     * @param publicationDirectoryPath Publication storage directory being repaired.
+     * @param identifier Publication identifier used to refresh storage caches.
+     * @param removeUnbackedCacheFiles Whether to remove regenerated cache files
+     * that were not part of the backed-up originals.
+     * @throws When one or more backup files cannot be restored.
+     */
     private async rollbackPublicationFilesReplacement(
         stagedFiles: IStagedPublicationFile[],
         backups: IBackupPublicationFile[],
         publicationDirectoryPath: string,
         identifier: string,
+        removeUnbackedCacheFiles: boolean,
     ): Promise<void> {
 
         this.invalidatePublicationLocationCache(identifier);
 
+        // First remove replacement outputs. Only promoted files are deleted from
+        // finalPath, because an unpromoted finalPath may still be the original file.
         for (const stagedFile of stagedFiles) {
-            await rmrf(stagedFile.finalPath);
+            if (stagedFile.promoted) {
+                await rmrf(stagedFile.finalPath);
+                stagedFile.promoted = false;
+            }
             await rmrf(stagedFile.stagedPath);
         }
-        await rmrf(path.join(publicationDirectoryPath, "manifest.json"));
-        await rmrf(path.join(publicationDirectoryPath, "license.lcpl"));
 
+        // A later rollback can happen after publication cache files were regenerated.
+        // Remove those files only when they were not part of the backed-up originals.
+        if (removeUnbackedCacheFiles) {
+            const backedFinalPaths = new Set(backups.map((backup) => backup.finalPath));
+            for (const fileName of ["manifest.json", "license.lcpl"]) {
+                const finalPath = path.join(publicationDirectoryPath, fileName);
+                if (!backedFinalPaths.has(finalPath)) {
+                    await rmrf(finalPath);
+                }
+            }
+        }
+
+        // Restore backups in reverse order. Track successful restores so a caller can
+        // retry rollback after a partial failure without reprocessing completed files.
+        const restoreErrors: unknown[] = [];
         for (const backup of backups.slice().reverse()) {
+            if (backup.restored) {
+                continue;
+            }
             await rmrf(backup.finalPath);
             try {
                 await fs.promises.rename(backup.backupPath, backup.finalPath);
+                backup.restored = true;
             } catch (e) {
                 debug("rollbackPublicationFilesReplacement restore failed", publicationDirectoryPath, e);
+                restoreErrors.push(e);
             }
+        }
+
+        if (restoreErrors.length) {
+            throw new Error(`rollbackPublicationFilesReplacement failed to restore ${restoreErrors.length} backup(s)`);
         }
     }
 

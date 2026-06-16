@@ -1099,6 +1099,35 @@ export class LcpManager {
             undefined;
     }
 
+    private normalizeLcpPublicationLinkHref(link: LcpLink | undefined): string | undefined {
+
+        if (typeof link?.Href !== "string") {
+            return undefined;
+        }
+
+        const href = link.Href.trim();
+        if (!href) {
+            return undefined;
+        }
+
+        try {
+            return new URL(href).toString();
+        } catch {
+            return href;
+        }
+    }
+
+    /**
+     * Decide whether two LCP publication links point to different archive content.
+     *
+     * Hash and length are preferred because they identify the resource payload. The
+     * href is also compared so a license update that changes only the publication
+     * download URL still triggers a replacement download.
+     *
+     * @param previousLink Publication link from the currently stored LCP license.
+     * @param nextLink Publication link from the refreshed LCP license.
+     * @returns True when the stored publication archive should be replaced.
+     */
     private lcpPublicationLinkResourceChanged(
         previousLink: LcpLink | undefined,
         nextLink: LcpLink | undefined,
@@ -1123,6 +1152,13 @@ export class LcpManager {
             previousLength !== nextLength
         ) {
             debug("LCP publication link length changed", previousLength, nextLength);
+            return true;
+        }
+
+        const previousHref = this.normalizeLcpPublicationLinkHref(previousLink);
+        const nextHref = this.normalizeLcpPublicationLinkHref(nextLink);
+        if (previousHref && nextHref && previousHref !== nextHref) {
+            debug("LCP publication link URL changed", previousHref, nextHref);
             return true;
         }
 
@@ -1220,12 +1256,16 @@ export class LcpManager {
     ): Partial<PublicationDocumentWithoutTimestampable> {
 
         const locale = this.store.getState().i18n.locale;
+        // Recompute only the stored-file fields affected by the archive swap:
+        // the main book file, any extracted cover, and the custom-cover fallback.
         const filesPatch = buildPublicationFilesDocumentPatch(
             publicationFiles,
             publicationDocument.customCover,
         );
 
         return {
+            // Prefer the replacement archive's localized metadata title, but keep
+            // the previous document title if the new archive does not expose one.
             title: convertMultiLangStringToString(r2Publication.Metadata.Title, locale) ||
                 publicationDocument.title ||
                 "-",
@@ -1233,6 +1273,25 @@ export class LcpManager {
         };
     }
 
+    /**
+     * Replace Publication Archive If Link Changed
+     *
+     * During an LCP license refresh, the new license may point to an updated
+     * publication archive. This method detects that case, downloads the replacement
+     * archive, embeds the refreshed LCPL into it, parses it, stages the stored-file
+     * replacement, and updates the publication cache.
+     *
+     * The returned file replacement is still pending: the caller must finalize it
+     * only after the related publication document has been saved, or roll it back if
+     * a later step fails.
+     *
+     * @param publicationDocument Existing publication document being refreshed.
+     * @param previousLcp LCP license currently associated with the stored archive.
+     * @param nextLcp Refreshed LCP license received from the status document flow.
+     * @param nextLcpStr Raw refreshed LCPL JSON to inject into the replacement archive.
+     * @returns Archive update data when replacement was staged, or undefined when
+     * the refreshed LCP does not require an archive replacement.
+     */
     private async replacePublicationArchiveIfLinkChanged(
         publicationDocument: PublicationDocument,
         previousLcp: LCP,
@@ -1240,6 +1299,8 @@ export class LcpManager {
         nextLcpStr: string,
     ): Promise<IPublicationArchiveUpdateResult | undefined> {
 
+        // The refreshed LCP may point to a newer publication archive. Replace the
+        // stored book when the publication link URL or resource metadata changed.
         const previousPublicationLink = this.findLcpPublicationLink(previousLcp);
         const nextPublicationLink = this.findLcpPublicationLink(nextLcp);
         if (
@@ -1263,12 +1324,16 @@ export class LcpManager {
                 path.extname(currentPublicationPath),
             );
 
+            // Persist the refreshed license inside the downloaded archive before parsing
+            // and storing it, so the replacement archive is immediately self-contained.
             await this.injectLcplIntoZip_(downloadedPublicationPath, nextLcpStr);
 
             const updatedR2Publication = await PublicationParsePromise(downloadedPublicationPath);
             updatedR2Publication.freeDestroy();
             updatedR2Publication.LCP = nextLcp;
 
+            // The replacement is staged so the caller can save the updated publication
+            // document first, then finalize or roll back the file swap as one operation.
             publicationFilesReplacement = await this.publicationStorage.replacePublicationFiles(
                 publicationDocument.identifier,
                 downloadedPublicationPath,
@@ -1293,10 +1358,14 @@ export class LcpManager {
                 r2Publication: updatedR2Publication,
             };
         } catch (err) {
+            // If parsing, cache refresh, or any later step fails, restore the previous
+            // stored files before propagating the error to the caller.
             await this.rollbackPublicationFilesReplacement(publicationFilesReplacement);
             throw err;
         } finally {
             if (downloadedPublicationPath) {
+                // downloadPublicationArchiveFromLcpLink creates a temp directory whose
+                // only durable output is copied into publication storage above.
                 await rmrf(path.dirname(downloadedPublicationPath))
                     .catch((e) => debug("replacePublicationArchiveIfLinkChanged cleanup failed", e));
             }
