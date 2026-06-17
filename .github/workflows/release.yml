@@ -166,8 +166,9 @@ jobs:
 # windows-latest is currently windows-2022, but becomes windows-2025 in September 2025 (windows-2022 remains supported for 3 years)
 #       https://github.com/actions/runner-images/blob/main/images/windows/Windows2022-Readme.md
 # windows-2025 is beta / public preview
-#       https://github.com/actions/runner-images/blob/main/images/windows/Windows2025-Readme.md
 #       https://github.com/actions/runner-images/issues/11228
+# ah, windows-2025 / windows-2025-vs2026 now on Visual Studio 2026 (was 2022)
+#       https://github.com/actions/runner-images/blob/main/images/windows/Windows2025-Readme.md
 # windows-11-preview_aarch64 ?
 #       https://github.com/actions/partner-runner-images/issues/19#issuecomment-2569992032
 # macos-latest is currently macos-14-arm64
@@ -184,7 +185,7 @@ jobs:
             packname: win
             release_tag: latest-windows-intel
           - osarch: windows-arm
-            runson: windows-2025
+            runson: windows-11-vs2026-arm # win11-vs2026-arm64 # https://github.com/actions/runner-images/blob/main/images/windows/Windows11-VS2026-Arm64-Readme.md
             packname: win
             release_tag: latest-windows-arm
           - osarch: macos-intel
@@ -200,7 +201,7 @@ jobs:
             packname: linux
             release_tag: latest-linux-intel
           - osarch: linux-arm
-            runson: ubuntu-22.04 #ubuntu-latest is ubuntu-24.04
+            runson: ubuntu-22.04-arm #ubuntu-latest is ubuntu-24.04
             packname: linux
             release_tag: latest-linux-arm
 #    env:
@@ -213,26 +214,49 @@ jobs:
       shell: cmd
       continue-on-error: true
 ###########################
-    - name: Microsoft Windows dumpbin to PATH
+    - name: Microsoft Windows Visual Studio lookup
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        $VS_ROOT = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC"; Get-ChildItem -Path $VS_ROOT -Force; $VS_VERSION = (Get-ChildItem -Path $VS_ROOT | Sort-Object Name -Descending | Select-Object -First 1).Name; $VS_BIN = "$VS_ROOT\$VS_VERSION\bin\Hostx64\x64"; echo $VS_BIN >> $env:GITHUB_PATH; echo $VS_BIN
+        dir /A "C:\Program Files\Microsoft Visual Studio" && dir /A "C:\Program Files\Microsoft Visual Studio\18" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\Hostx64" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\Hostx64\x64" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\HostArm64" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\HostArm64\arm64"
+      shell: cmd
+###########################
+    - name: Microsoft Windows dumpbin to PATH (ARM)
+      #if: startsWith(matrix.osarch, 'windows-')
+      if: ${{ matrix.osarch == 'windows-arm' }}
+      run: >
+        $VS_ROOT = "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC"; Get-ChildItem -Path $VS_ROOT -Force; $VS_VERSION = (Get-ChildItem -Path $VS_ROOT | Sort-Object Name -Descending | Select-Object -First 1).Name; $VS_BIN = "$VS_ROOT\$VS_VERSION\bin\HostArm64\arm64"; echo $VS_BIN >> $env:GITHUB_PATH; echo $VS_BIN
       shell: powershell
 ###########################
-    - name: Microsoft Windows dumpbin check
-      if: startsWith(matrix.osarch, 'windows-')
+    - name: Microsoft Windows dumpbin to PATH (INTEL)
+      #if: startsWith(matrix.osarch, 'windows-')
+      if: ${{ matrix.osarch == 'windows-intel' }}
       run: >
-        dir /A "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC" && dumpbin /headers "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\dumpbin.exe" | findstr /i machine
+        $VS_ROOT = "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC"; Get-ChildItem -Path $VS_ROOT -Force; $VS_VERSION = (Get-ChildItem -Path $VS_ROOT | Sort-Object Name -Descending | Select-Object -First 1).Name; $VS_BIN = "$VS_ROOT\$VS_VERSION\bin\Hostx64\x64"; echo $VS_BIN >> $env:GITHUB_PATH; echo $VS_BIN
+      shell: powershell
+###########################
+    - name: Microsoft Windows dumpbin check (ARM)
+      #if: startsWith(matrix.osarch, 'windows-')
+      if: ${{ matrix.osarch == 'windows-arm' }}
+      run: >
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC" && dumpbin /headers "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\HostArm64\arm64\dumpbin.exe" | findstr /i machine
+      shell: cmd
+###########################
+    - name: Microsoft Windows dumpbin check (INTEL)
+      #if: startsWith(matrix.osarch, 'windows-')
+      if: ${{ matrix.osarch == 'windows-intel' }}
+      run: >
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC" && dumpbin /headers "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\Hostx64\x64\dumpbin.exe" | findstr /i machine
       shell: cmd
 ###########################
 # - name: Microsoft Windows msbuild to PATH
 #   if: startsWith(matrix.osarch, 'windows-')
 #   uses: microsoft/setup-msbuild@v2
-# "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin"
-# "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools"
-# "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\bin\amd64"
-# "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x64"
-# "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64"
+# "C:\Program Files\Microsoft Visual Studio\18\Enterprise\MSBuild\Current\Bin"
+# "C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\Tools"
+# "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\bin\amd64"
+# "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x64"
+# "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64"
+# "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\Hostx64\x64"
     #- run: exit 1
 #    - run: echo 'RELEASE_TAG:' ${{ env.RELEASE_TAG }}
 #    - run: 'echo "GITHUB_RUN_NUMBER: ${{ github.run_number }}"'
@@ -334,13 +358,13 @@ jobs:
     - name: NPM install (arm64)
       #if: ${{ matrix.osarch == 'linux-arm' || matrix.osarch == 'windows-arm' || matrix.osarch == 'macos-arm' }}
       if: endsWith(matrix.osarch, '-arm')
-      run: npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root --arch=arm64 --cpu=arm64 && cd node_modules/electron && npm run postinstall --arch=arm64 --cpu=arm64 && cd -
+      run: npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root --arch=arm64 --cpu=arm64 && cd node_modules/electron && npm_config_arch=arm64 ELECTRON_INSTALL_ARCH=arm64 node install.js --arch=arm64 --cpu=arm64 && cd -
       #export npm_config_arch=arm64 && export npm_config_cpu=arm64 &&
 ###########################
     - name: NPM install (x64)
       #if: ${{ matrix.osarch == 'linux-intel' || matrix.osarch == 'windows-intel' || matrix.osarch == 'macos-intel' }}
       if: endsWith(matrix.osarch, '-intel')
-      run: npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root --arch=x64 --cpu=x64 && cd node_modules/electron && npm run postinstall --arch=x64 --cpu=x64 && cd -
+      run: npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root --arch=x64 --cpu=x64 && cd node_modules/electron && npm_config_arch=x64 ELECTRON_INSTALL_ARCH=x64 node install.js --arch=x64 --cpu=x64 && cd -
       #export npm_config_arch=x64 && export npm_config_cpu=x64 &&
 ###########################
     - name: Electron version + arch (Windows)
