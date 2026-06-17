@@ -895,8 +895,8 @@
                     "300pct": "300 %",
                     "500pct": "500 %",
                     "50pct": "50 %",
-                    "fit": "sidstorlek",
-                    "width": "sidbredd"
+                    "fit": "Visa hela sidan",
+                    "width": "Fyll fönstret"
                 },
                 "title": "Zoom"
             },
@@ -915,7 +915,7 @@
             "reduceMotion": "Minska rörelse",
             "scrolled": "Rullningsbar",
             "spacing": "Avstånd",
-            "spreadModeEven": "\"Jämna\" siduppslag (standard är \"udda\")",
+            "spreadModeEven": "Uppslag börjar på jämna sidor (standard är udda)",
             "text": "Text",
             "theme": {
                 "name": {
