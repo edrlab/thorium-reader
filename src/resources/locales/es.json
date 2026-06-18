@@ -88,8 +88,8 @@
         "lastRead": "Último leído",
         "login": "Iniciar sesión",
         "logout": "Cerrar sesión",
-        "missing": "",
-        "missingUnavailableDescription": "",
+        "missing": "Faltan archivos",
+        "missingUnavailableDescription": "Esta publicación no se puede abrir porque sus archivos no se encuentran disponibles en el almacenamiento. Vuelve a importarla, o ve a Opciones, Almacenamiento, para añadir o cambiar el almacenamiento adicional.",
         "moreInfo": "Detalles del libro",
         "myBooks": "Mis libros",
         "noPublicationHelpL1": "Desliza una publicación aquí",
@@ -106,8 +106,8 @@
                 "password": "Contraseña",
                 "register": "Registrar",
                 "retry": "Inténtalo de nuevo",
-                "unauthorized": "",
-                "unauthorizedUnsupportedType": "",
+                "unauthorized": "Sin autorización",
+                "unauthorizedUnsupportedType": "Sin autorización (tipo WWWAuthenticate '{{- type}}' no admitido)",
                 "username": "Nombre de usuario/dirección de correo electrónico"
             },
             "info": {
@@ -129,7 +129,7 @@
                 "state": "Estado"
             }
         },
-        "openFolder": "",
+        "openFolder": "Abrir carpeta",
         "publisher": "Editor",
         "readBook": "Leer",
         "released": "Publicado en",
@@ -246,17 +246,17 @@
             "success": "¡Correcto!"
         },
         "download": {
-            "cancelled": "",
+            "cancelled": "Descarga cancelada.",
             "error": "La descarga de {{- title}} ha fallado: [{{- err}}]",
             "errors": {
-                "hashMismatch": "",
-                "httpGet": "",
-                "invalidFilename": "",
-                "invalidLink": "",
-                "invalidTempDirectory": "",
-                "lengthMismatch": "",
-                "readStreamMissing": "",
-                "tooManyFilenameAttempts": ""
+                "hashMismatch": "Falló la comprobación de integridad para el archivo descargado: hash SHA-256 esperado {{- expected}}, obtenido {{- actual}}.",
+                "httpGet": "\"Falló la descarga HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "invalidFilename": "El nombre del archivo temporal de descarga no es válido.",
+                "invalidLink": "El enlace de descarga no es válido.",
+                "invalidTempDirectory": "El directorio temporal de descarga no es válido.",
+                "lengthMismatch": "Valló la comprobación de integridad para el archivo descargado: esperado {{- expected}} bytes, obtenido {{- actual}} bytes.",
+                "readStreamMissing": "La transmisión para la descarga no está disponible.",
+                "tooManyFilenameAttempts": "No se puede crear un único nombre para el archivo temporal de descarga: {{- path}}"
             }
         },
         "import": {
@@ -266,12 +266,12 @@
         },
         "open": {
             "error": "No se puede abrir la publicación: {{- err}}",
-            "folderNotFound": ""
+            "folderNotFound": "No se encuentra el directorio de esta publicación. Vuelve a importarla, o configura el almacenamiento adicional en Opciones > Almacenamiento."
         },
         "storage": {
-            "removed": "",
-            "updateFailed": "",
-            "updated": ""
+            "removed": "Directorio de la publicación eliminado.",
+            "updateFailed": "Fallo al actualizar el directorio de la publicación: {{- message}}",
+            "updated": "Directorio de la publicación actualizado."
         },
         "wipeData": "Se han borrado los datos de inicio de sesión"
     },
