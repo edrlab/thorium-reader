@@ -983,6 +983,14 @@ export async function initStore()
         preloadedState.creator.urn = `urn:uuid:${preloadedState.creator.id}`;
     }
 
+    if (preloadedState?.settings?.lcpAutoDeleteExpiredPublicationsForced) {
+        // The shared-computer command-line override is process-local and must not be restored from disk.
+        preloadedState.settings = {
+            ...preloadedState.settings,
+            lcpAutoDeleteExpiredPublicationsForced: false,
+        };
+    }
+
     if ((preloadedState as any)?.annotationImportQueue) {
         // How to deal with the annotationImportQueue migration ?
         // A wise decision will be to merge INotePreState to InoteState readerState.note

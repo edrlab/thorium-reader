@@ -24,6 +24,7 @@ export interface IPublicationApi {
     delete: (
         identifier: string,
         preservePublicationOnFileSystem?: string,
+        publicationFileLockAlreadyHeld?: boolean,
     ) => SagaGenerator<void>;
     findAll: (
     ) => SagaGenerator<PublicationView[]>;

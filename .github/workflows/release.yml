@@ -1,0 +1,692 @@
+#GIT_COMMITTER_DATE="$(git show develop --format=%aD | head -1)" git tag -a "v3.5.0-beta.1" develop -m "release tag v3.5.0-beta.1" && git push --tags origin develop && git --no-pager tag --list --format='%(refname)   %(taggerdate)'
+
+#git tag -d v3.5.0-beta.1 && git push origin :refs/tags/v3.5.0-beta.1
+
+name: GitHub Release
+
+#on:
+#  release:
+#    types: [published]
+
+on:
+  push:
+    #branches: [develop]
+    tags:
+      # https://github.com/edrlab/thorium-reader/settings/rules
+      - "v*" # excludes slash /
+
+# https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token
+# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#permissions
+permissions:
+    actions: none
+    artifact-metadata: none
+    attestations: none
+    checks: none
+    contents: none # <==========
+    deployments: none
+    discussions: none
+    id-token: none
+    issues: none
+    models: none
+    packages: none
+    pages: none
+    pull-requests: none
+    repository-projects: none
+    security-events: none
+    statuses: none
+jobs:
+###########################
+    #
+    #
+    #
+    #
+    #
+    #
+    #
+    #
+    #
+    #
+###########################
+  test_job:
+    runs-on: ubuntu-latest
+    if: false
+    environment:
+      name: "Thorium Desktop Release"
+      deployment: false
+    env:
+      PASSPHRASE: ${{ secrets.S11 }}
+      APPLEIDKEYCHAIN: ${{ secrets.S6 }}
+    steps:
+############################################
+      - name: Checkout
+# https://github.com/actions/checkout/commits/v6.0.2
+# https://github.com/actions/checkout/commits/de0fac2e4500dabe0009e67214ff5f5447ce83dd
+# https://github.com/actions/checkout/compare/v6.0.2...de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
+############################################
+      - name: Set ENV
+        run: |
+          SECRET_THING="$(cat ./.github_release/.DATA1 | openssl enc -d -aes-256-cbc -salt -pbkdf2 -a -A -pass pass:"$PASSPHRASE")"
+          echo "NOT MASKED:"
+          echo "$SECRET_THING"
+          echo "::add-mask::$SECRET_THING"
+          echo "$SECRET_THING"
+          echo "SECRET_THING=$SECRET_THING" >> $GITHUB_ENV
+          echo "$SECRET_THING"
+          OTHER_SECRET_THING="$SECRET_THING$APPLEIDKEYCHAIN"
+          echo "::add-mask::$OTHER_SECRET_THING"
+          echo "$OTHER_SECRET_THING"
+          echo "OTHER_SECRET_THING=$OTHER_SECRET_THING" >> $GITHUB_ENV
+          echo "$OTHER_SECRET_THING"
+#### ${{ secrets.SECRET_THING }}
+#echo "::add-mask::$SECRET_THING"
+#echo "SECRET_THING=$SECRET_THING" >> $GITHUB_ENV
+# ENCRYPT:
+# echo -n "PLAIN_TEXT" | openssl enc -aes-256-cbc -salt -pbkdf2 -a -A -pass pass:"PASSPHRASE"
+# DECRYPT:
+# echo "PLAIN_TEXT=$(...)" >> $GITHUB_ENV
+# {
+#   echo 'PLAIN_TEXT<<EOF'
+#   ...
+#   echo EOF
+# } >> "$GITHUB_ENV"
+#
+# echo "$GITHUB_ENV" ====> e.g. /home/runner/work/_temp/_runner_file_commands/set_env_2d3b5d21-744e-4723-b86b-45aab0fd9632
+# cat "$GITHUB_ENV" ====> NO-OP
+############################################
+      - name: Use ENV
+        run: |
+          echo "MASKED SECRETS:"
+          echo "$PASSPHRASE"
+          echo "$APPLEIDKEYCHAIN"
+          echo "$SECRET_THING"
+          echo "$SECRET_THING$APPLEIDKEYCHAIN"
+          echo "$OTHER_SECRET_THING"
+############################################
+      - name: forced EXIT
+        run: |-
+          exit 1 && false
+        shell: bash
+        continue-on-error: false
+###########################
+    #
+    #
+    #
+    #
+    #
+    #
+    #
+    #
+    #
+    #
+###########################
+  build_job:
+    environment:
+      name: "Thorium Desktop Release"
+      deployment: false
+    timeout-minutes: 20
+    permissions:
+      actions: none
+      artifact-metadata: none
+      attestations: none
+      checks: none
+      contents: read # <==========
+      deployments: none
+      discussions: none
+      id-token: none
+      issues: none
+      models: none
+      packages: none
+      pages: none
+      pull-requests: none
+      repository-projects: none
+      security-events: none
+      statuses: none
+#   if: "!contains(toJSON(github.event.commits.*.message), '[skip-ci]')"
+#   if: ${{ github.ref == 'refs/heads/develop' }}
+#   if: "github.event_name != 'pull_request'"
+    if: "!contains(github.event.head_commit.message, 'skip ci') && github.repository_owner == 'edrlab' && github.repository == 'edrlab/thorium-reader'"
+    runs-on: ${{ matrix.runson }}
+    strategy:
+      fail-fast: false
+      matrix:
+        osarch: [windows-intel, windows-arm, macos-intel, macos-arm, linux-intel, linux-arm]
+        # osarch: [windows-intel, windows-arm]
+# Thorium for MacOS x64 and arm64 is built on GitHub Actions arm64 runners
+# Thorium for Linux x64 and arm64 is built on GitHub Actions x64 runners
+# Thorium for Windows x64 and arm64 is built on GitHub Actions x64 runners
+# To ensure arm64, the trick is:
+#       npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root --arch=arm64 --cpu=arm64
+#       Replace "x64" with "arm64" in `package.json` (and optionally the electron-builder `src/package.json`, if needed)
+# To ensure x64, the trick is:
+#       npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root --arch=x64 --cpu=x64
+#       `package.json` already specifies "x64"
+# windows-latest is currently windows-2022, but becomes windows-2025 in September 2025 (windows-2022 remains supported for 3 years)
+#       https://github.com/actions/runner-images/blob/main/images/windows/Windows2022-Readme.md
+# windows-2025 is beta / public preview
+#       https://github.com/actions/runner-images/issues/11228
+# ah, windows-2025 / windows-2025-vs2026 now on Visual Studio 2026 (was 2022)
+#       https://github.com/actions/runner-images/blob/main/images/windows/Windows2025-Readme.md
+# windows-11-preview_aarch64 ?
+#       https://github.com/actions/partner-runner-images/issues/19#issuecomment-2569992032
+# macos-latest is currently macos-14-arm64
+#       https://github.com/actions/runner-images/blob/main/images/macos/macos-14-arm64-Readme.md
+# macos-15-arm64 is beta / public preview
+#       https://github.com/actions/runner-images/blob/main/images/macos/macos-15-arm64-Readme.md
+# ubuntu-latest is ubuntu-24.04
+#       https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md
+# ubuntu-20.04 is the oldest available (good for glibc compat) ... but GitHub says "The Ubuntu 20.04 runner image will be fully unsupported by April 1, 2025"
+#       https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2004-Readme.md
+        include:
+          - osarch: windows-intel
+            runson: windows-2025
+            packname: win
+            release_tag: latest-windows-intel
+          - osarch: windows-arm
+            runson: windows-11-vs2026-arm # win11-vs2026-arm64 # https://github.com/actions/runner-images/blob/main/images/windows/Windows11-VS2026-Arm64-Readme.md
+            packname: win
+            release_tag: latest-windows-arm
+          - osarch: macos-intel
+            runson: macos-latest #macos-14-arm64
+            packname: 'mac'
+            release_tag: latest-macos-intel
+          - osarch: macos-arm
+            runson: macos-latest #macos-14-arm64
+            packname: 'mac'
+            release_tag: latest-macos-arm
+          - osarch: linux-intel
+            runson: ubuntu-22.04 #ubuntu-latest is ubuntu-24.04
+            packname: linux
+            release_tag: latest-linux-intel
+          - osarch: linux-arm
+            runson: ubuntu-22.04-arm #ubuntu-latest is ubuntu-24.04
+            packname: linux
+            release_tag: latest-linux-arm
+#    env:
+#      RELEASE_TAG: ${{ matrix.release_tag }} # MUST keep for WebPack config, detection of CI build
+    steps:
+###########################
+    - name: Checking graceful shell command failure
+      run: |-
+        pwdx || echo OK || true
+      shell: cmd
+      continue-on-error: true
+###########################
+    - name: Microsoft Windows Visual Studio lookup
+      if: startsWith(matrix.osarch, 'windows-')
+      run: >
+        dir /A "C:\Program Files\Microsoft Visual Studio" && dir /A "C:\Program Files\Microsoft Visual Studio\18" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\Hostx64" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\Hostx64\x64" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\HostArm64" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\HostArm64\arm64"
+      shell: cmd
+###########################
+    - name: Microsoft Windows dumpbin to PATH (ARM)
+      #if: startsWith(matrix.osarch, 'windows-')
+      if: ${{ matrix.osarch == 'windows-arm' }}
+      run: >
+        $VS_ROOT = "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC"; Get-ChildItem -Path $VS_ROOT -Force; $VS_VERSION = (Get-ChildItem -Path $VS_ROOT | Sort-Object Name -Descending | Select-Object -First 1).Name; $VS_BIN = "$VS_ROOT\$VS_VERSION\bin\HostArm64\arm64"; echo $VS_BIN >> $env:GITHUB_PATH; echo $VS_BIN
+      shell: powershell
+###########################
+    - name: Microsoft Windows dumpbin to PATH (INTEL)
+      #if: startsWith(matrix.osarch, 'windows-')
+      if: ${{ matrix.osarch == 'windows-intel' }}
+      run: >
+        $VS_ROOT = "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC"; Get-ChildItem -Path $VS_ROOT -Force; $VS_VERSION = (Get-ChildItem -Path $VS_ROOT | Sort-Object Name -Descending | Select-Object -First 1).Name; $VS_BIN = "$VS_ROOT\$VS_VERSION\bin\Hostx64\x64"; echo $VS_BIN >> $env:GITHUB_PATH; echo $VS_BIN
+      shell: powershell
+###########################
+    - name: Microsoft Windows dumpbin check (ARM)
+      #if: startsWith(matrix.osarch, 'windows-')
+      if: ${{ matrix.osarch == 'windows-arm' }}
+      run: >
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC" && dumpbin /headers "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\HostArm64\arm64\dumpbin.exe" | findstr /i machine
+      shell: cmd
+###########################
+    - name: Microsoft Windows dumpbin check (INTEL)
+      #if: startsWith(matrix.osarch, 'windows-')
+      if: ${{ matrix.osarch == 'windows-intel' }}
+      run: >
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC" && dumpbin /headers "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\Hostx64\x64\dumpbin.exe" | findstr /i machine
+      shell: cmd
+###########################
+# - name: Microsoft Windows msbuild to PATH
+#   if: startsWith(matrix.osarch, 'windows-')
+#   uses: microsoft/setup-msbuild@v2
+# "C:\Program Files\Microsoft Visual Studio\18\Enterprise\MSBuild\Current\Bin"
+# "C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\Tools"
+# "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\bin\amd64"
+# "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x64"
+# "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64"
+# "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\Hostx64\x64"
+    #- run: exit 1
+#    - run: echo 'RELEASE_TAG:' ${{ env.RELEASE_TAG }}
+#    - run: 'echo "GITHUB_RUN_NUMBER: ${{ github.run_number }}"'
+#    - run: 'echo "GITHUB_RUN_ID: ${{ github.run_id }}"'
+#    - run: 'echo "GITHUB_SHA: ${{ github.sha }}"'
+###########################
+    - run: echo "${{ matrix.osarch }} // ${{ runner.arch }}"
+###########################
+    - name: System arch (non Windows)
+      #if: ${{ matrix.osarch != 'windows-intel' && matrix.osarch != 'windows-arm' }}
+      if: ${{ !startsWith(matrix.osarch, 'windows-') }}
+      run: uname -m && arch
+###########################
+    - name: Checkout
+# https://github.com/actions/checkout/commits/v6.0.2
+# https://github.com/actions/checkout/commits/de0fac2e4500dabe0009e67214ff5f5447ce83dd
+# https://github.com/actions/checkout/compare/v6.0.2...de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      with:
+        persist-credentials: false
+    # - name: Git config global dump (pre)
+    #   run: 'git config --global --list || echo NO_GIT_GLOBAL_CONFIG || true'
+    #   shell: bash
+    # - name: Git config local dump (pre)
+    #   run: 'git config --list || echo NO_GIT_GLOBAL_CONFIG || true'
+    #   shell: bash
+    # - name: git HTTP authentication instead SSH (NPM >=7) 1
+    #   run: >
+    #     git config --global url."https://github.com/".insteadOf ssh://git@github.com/
+    #   shell: bash
+    # - name: git HTTP authentication instead SSH (NPM >=7) 2
+    #   run: >
+    #     git config --global url."https://github.com".insteadOf ssh://git@github.com
+    #   shell: bash
+    # - name: git HTTP authentication instead SSH (NPM >=7) 3
+    #   run: >
+    #     git config --global url."http://github.com/".insteadOf git@github.com:
+    #   shell: bash
+    # - name: git HTTP authentication instead SSH (NPM >=7) 4
+    #   run: >
+    #     git config --global url."http://".insteadOf git://
+    #   shell: bash
+#    - name: Git config global dump (post)
+#      run: 'git config --global --list || echo NO_GIT_GLOBAL_CONFIG || true'
+#      shell: bash
+#    - name: Git config local dump (post)
+#      run: 'git config --list || echo NO_GIT_GLOBAL_CONFIG || true'
+#      shell: bash
+###########################
+# https://github.com/actions/setup-node/commits/v6.4.0
+# https://github.com/actions/setup-node/commits/48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+# https://github.com/actions/setup-node/compare/v6.4.0...48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+    - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+      with:
+        node-version: '24'
+        cache: ''
+        package-manager-cache: false
+        #check-latest: true
+###########################
+    - run: node --version && npm --version
+# https://github.com/npm/cli/issues/9133
+###########################
+    - run: npm --global install npm
+###########################
+    - run: npm --version
+###########################
+    - run: python --version || echo ok || true
+###########################
+    - run: python3 --version || echo ok || true
+###########################
+    - run: pip --version || echo ok || true
+###########################
+    # PYTHON 3.12 distutils deprecation remediation:
+    #- run: python3 -m pip install packaging || python -m pip install packaging
+    - run: python3 -m pip install setuptools || python -m pip install setuptools
+###########################
+    # - run: npm --global install asar
+###########################
+#    - name: package patch 1
+#      run: node scripts/package-ci-patch.js package.json ${{ github.run_id }} && cat package.json | grep -i VERSION && cat package.json
+#      shell: bash
+###########################
+#    - name: package patch 2
+#      run: node scripts/package-ci-patch.js src/package.json ${{ github.run_id }} && cat src/package.json | grep -i VERSION && cat src/package.json
+#      shell: bash
+###########################
+# - name: package lock patch
+#   run: node scripts/package-lock-patch.js && cat package-lock.json | grep -i divina-player-js
+#   shell: bash
+###########################
+    - run: git --no-pager diff
+###########################
+    - run: npm cache clean --force
+###########################
+    - run: npm cache verify
+###########################
+# - run: cat package-lock.json | grep -i divina-player-js
+###########################
+    - name: NPM install (arm64)
+      #if: ${{ matrix.osarch == 'linux-arm' || matrix.osarch == 'windows-arm' || matrix.osarch == 'macos-arm' }}
+      if: endsWith(matrix.osarch, '-arm')
+      run: npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root --arch=arm64 --cpu=arm64 && cd node_modules/electron && npm_config_arch=arm64 ELECTRON_INSTALL_ARCH=arm64 node install.js --arch=arm64 --cpu=arm64 && cd -
+      #export npm_config_arch=arm64 && export npm_config_cpu=arm64 &&
+###########################
+    - name: NPM install (x64)
+      #if: ${{ matrix.osarch == 'linux-intel' || matrix.osarch == 'windows-intel' || matrix.osarch == 'macos-intel' }}
+      if: endsWith(matrix.osarch, '-intel')
+      run: npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root --arch=x64 --cpu=x64 && cd node_modules/electron && npm_config_arch=x64 ELECTRON_INSTALL_ARCH=x64 node install.js --arch=x64 --cpu=x64 && cd -
+      #export npm_config_arch=x64 && export npm_config_cpu=x64 &&
+###########################
+    - name: Electron version + arch (Windows)
+      #if: ${{ matrix.osarch == 'windows-intel' || matrix.osarch == 'windows-arm' }}
+      if: startsWith(matrix.osarch, 'windows-')
+      run: >
+        (dumpbin /headers "node_modules\electron\dist\electron.exe" | findstr /i machine) && (node_modules\\electron\\dist\\electron.exe --no-sandbox --version || echo INVALID_ARCH || true) && (node_modules\\electron\\dist\\electron.exe --no-sandbox --abi || echo INVALID_ARCH || true)
+      shell: cmd
+      continue-on-error: true
+###########################
+    - name: Electron version + arch (Linux)
+      #if: ${{ matrix.osarch == 'linux-intel' || matrix.osarch == 'linux-arm' }}
+      if: startsWith(matrix.osarch, 'linux-')
+      run: >
+        (file node_modules/electron/dist/electron) && (node_modules/electron/dist/electron --no-sandbox --version || echo INVALID_ARCH || true) && (node_modules/electron/dist/electron --no-sandbox --abi || echo INVALID_ARCH || true)
+###########################
+    - name: Electron version + arch (MacOS)
+      #if: ${{ matrix.osarch == 'macos-intel' || matrix.osarch == 'macos-arm' }}
+      if: startsWith(matrix.osarch, 'macos-')
+      run: >
+        (file node_modules/electron/dist/Electron.app/Contents/MacOS/Electron) && (node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --version || echo INVALID_ARCH || true) && (node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --abi || echo INVALID_ARCH || true)
+###########################
+    - run: npm list -g node-gyp || echo ok || true
+###########################
+    - run: npm list node-gyp || echo ok || true
+###########################
+#    - run: >
+#        node -e 'const path = require("path"); const fs = require("fs"); const filePath = path.join(process.cwd(), "package.json"); let fileStr = fs.readFileSync(filePath, { encoding: "utf8" }); fileStr = fileStr.replace(/"sign": true,/g, `"sign": false,`); fileStr = fileStr.replace(/"hardenedRuntime": true,/g, `"hardenedRuntime": false, "identity": null,`); fs.writeFileSync(filePath, fileStr, { encoding: "utf8" });'
+#      continue-on-error: true
+###########################
+    - name: non-PR action (build) ARM
+      #if: ${{ matrix.osarch == 'linux-arm' || matrix.osarch == 'windows-arm' || matrix.osarch == 'macos-arm' }}
+      if: ${{ endsWith(matrix.osarch, '-arm') }}
+      env:
+        THORIUM_TELEMETRY_SECRET: ${{ secrets.S9 }}
+        THORIUM_TELEMETRY_SECRET_DATA: ${{ secrets.S10 }}
+        PROD_THORIUM_HASH_MOD: ${{ secrets.S13 }}
+      #run: sed 's/--x64/--arm64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json && npm run package:${{ matrix.packname }} && sed 's/--arm64/--x64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json
+      run: >
+        node -e 'const path = require("path"); const fs = require("fs"); const filePath = path.join(process.cwd(), "package.json"); let fileStr = fs.readFileSync(filePath, { encoding: "utf8" }); fileStr = fileStr.replace(/--x64/g, "--arm64"); fs.writeFileSync(filePath, fileStr, { encoding: "utf8" });' && npm run pre-package:${{ matrix.packname }}
+###########################
+    - name: non-PR action (build) INTEL
+      #if: ${{ matrix.osarch == 'linux-intel' || matrix.osarch == 'windows-intel' || matrix.osarch == 'macos-intel' }}
+      if: ${{ endsWith(matrix.osarch, '-intel') }}
+      env:
+        THORIUM_TELEMETRY_SECRET: ${{ secrets.S9 }}
+        THORIUM_TELEMETRY_SECRET_DATA: ${{ secrets.S10 }}
+        PROD_THORIUM_HASH_MOD: ${{ secrets.S13 }}
+      run: >
+        node -e 'const path = require("path"); const fs = require("fs"); const filePath = path.join(process.cwd(), "package.json"); let fileStr = fs.readFileSync(filePath, { encoding: "utf8" }); fileStr = fileStr.replace(/--arm64/g, "--x64"); fs.writeFileSync(filePath, fileStr, { encoding: "utf8" });' && npm run pre-package:${{ matrix.packname }}
+#- run: ls -alsR release
+###########################
+    - name: MacOS KeyChain init
+      if: startsWith(matrix.osarch, 'macos-') #runner.os == 'macOS'
+      run: |
+        CODESIGN_P12_B64_B="$(cat ./.github_release/.DATA2 | openssl enc -d -aes-256-cbc -salt -pbkdf2 -a -A -pass pass:"$CODESIGN_P12_B64_X")"
+        echo "::add-mask::$CODESIGN_P12_B64_B"
+        CODESIGN_P12_B64="$CODESIGN_P12_B64_A$CODESIGN_P12_B64_B"
+        echo "::add-mask::$CODESIGN_P12_B64"
+        CODESIGN_P12_PASS_B="$(cat ./.github_release/.DATA3 | openssl enc -d -aes-256-cbc -salt -pbkdf2 -a -A -pass pass:"$CODESIGN_P12_PASS_X")"
+        echo "::add-mask::$CODESIGN_P12_PASS_B"
+        CODESIGN_P12_PASS="$CODESIGN_P12_PASS_A$CODESIGN_P12_PASS_B"
+        echo "::add-mask::$CODESIGN_P12_PASS"
+        APPLE_ID_PASS_B="$(cat ./.github_release/.DATA4 | openssl enc -d -aes-256-cbc -salt -pbkdf2 -a -A -pass pass:"$APPLE_ID_PASS_X")"
+        echo "::add-mask::$APPLE_ID_PASS_B"
+        APPLE_ID_PASS="$APPLE_ID_PASS_A$APPLE_ID_PASS_B"
+        echo "::add-mask::$APPLE_ID_PASS"
+        CODESIGN_KEYCHAIN_PATH=$RUNNER_TEMP/codesign.keychain-db
+        echo KEYCHAIN_CREATE
+        security create-keychain -p "${{ github.run_id }}" "$CODESIGN_KEYCHAIN_PATH"
+        echo KEYCHAIN_DEFAULT
+        security default-keychain -s "$CODESIGN_KEYCHAIN_PATH"
+        echo KEYCHAIN_SETTINGS
+        security set-keychain-settings -lut 21600 "$CODESIGN_KEYCHAIN_PATH"
+        echo KEYCHAIN_UNLOCK
+        security unlock-keychain -p "${{ github.run_id }}" "$CODESIGN_KEYCHAIN_PATH"
+        echo KEYCHAIN_LIST1
+        security list-keychain || echo OK || true
+        echo KEYCHAIN_LIST2
+        security list-keychain -d user -s "$CODESIGN_KEYCHAIN_PATH" || echo OK || true
+        echo KEYCHAIN_FIND1
+        security find-identity -v -p codesigning -s "$CODESIGN_KEYCHAIN_PATH" || echo OK || true
+        echo KEYCHAIN_FIND2
+        security find-identity -v -p codesigning || echo OK || true
+        CODESIGN_P12_PATH=$RUNNER_TEMP/code-sign.p12
+        echo KEYCHAIN_P12_B64
+        echo -n "$CODESIGN_P12_B64" | base64 --decode -o "$CODESIGN_P12_PATH"
+        echo KEYCHAIN_P12_IMPORT
+        security import "$CODESIGN_P12_PATH" -P "$CODESIGN_P12_PASS" -A -t cert -f pkcs12 -k "$CODESIGN_KEYCHAIN_PATH" -T /usr/bin/codesign -T /usr/bin/pkgbuild
+        echo KEYCHAIN_P12_PARTITION
+        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "${{ github.run_id }}" "$CODESIGN_KEYCHAIN_PATH"
+        echo KEYCHAIN_P12_DELETE
+        rm -f "$CODESIGN_P12_PATH" || echo OK || true
+        echo KEYCHAIN_LIST1
+        security list-keychain || echo OK || true
+        echo KEYCHAIN_LIST2
+        security list-keychain -d user -s "$CODESIGN_KEYCHAIN_PATH" || echo OK || true
+        echo KEYCHAIN_FIND1
+        security find-identity -v -p codesigning -s "$CODESIGN_KEYCHAIN_PATH" || echo OK || true
+        echo KEYCHAIN_FIND2
+        security find-identity -v -p codesigning || echo OK || true
+        echo KEYCHAIN_NOTARY_STORE_CREDS
+        xcrun notarytool store-credentials "$APPLEIDKEYCHAIN" --apple-id "$APPLE_ID" --team-id "$APPLE_ID_TEAM" --password "$APPLE_ID_PASS" --keychain "$CODESIGN_KEYCHAIN_PATH"
+        echo KEYCHAIN_LIST1
+        security list-keychain || echo OK || true
+        echo KEYCHAIN_LIST2
+        security list-keychain -d user -s "$CODESIGN_KEYCHAIN_PATH" || echo OK || true
+      env:
+        CODESIGN_P12_B64_X: ${{ secrets.S7 }}
+        CODESIGN_P12_PASS_X: ${{ secrets.S8 }}
+        APPLE_ID_PASS_X: ${{ secrets.S12 }}
+        CODESIGN_P12_B64_A: ${{ secrets.S1 }}
+        CODESIGN_P12_PASS_A: ${{ secrets.S3 }}
+        APPLE_ID: ${{ secrets.S2 }}
+        APPLE_ID_PASS_A: ${{ secrets.S5 }}
+        APPLE_ID_TEAM: ${{ secrets.S4 }}
+        APPLEIDKEYCHAIN: ${{ secrets.S6 }}
+    # https://www.electron.build/code-signing.html
+###########################
+    - name: non-PR action (package)
+      env:
+        USE_HARD_LINKS: 'false' # Electron Builder workaround
+        # APPLEIDKEYCHAIN: ${{ secrets.S6 }}
+        # APPLEIDKEYCHAIN: ${{ case(startsWith(matrix.osarch, 'macos-'), secrets.S6, '*x*x*x*') }}
+        APPLEIDKEYCHAIN: ${{ case(runner.os == 'macOS', secrets.S6, '*x*x*x*') }}
+#        SKIP_NOTARIZE: "1"
+        # CSC_KEYCHAIN: ${{ secrets.CSC_KEYCHAIN }}
+        # CSC_NAME: ${{ secrets.CSC_NAME }}
+        # CSC_LINK: ${{ secrets.CSC_LINK }}
+        # CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+      run: >
+        npm run electron-builder:${{ matrix.packname }} && npm run post-package:${{ matrix.packname }}
+#- run: ls -alsR release
+    - name: MacOS KeyChain teardown
+      if: runner.os == 'macOS' && always()
+      run: |
+          CODESIGN_KEYCHAIN_PATH=$RUNNER_TEMP/codesign.keychain-db
+          echo KEYCHAIN_LIST1
+          security list-keychain || echo OK || true
+          echo KEYCHAIN_LIST2
+          security list-keychain -d user -s "$CODESIGN_KEYCHAIN_PATH" || echo OK || true
+          echo KEYCHAIN_DELETE
+          security delete-keychain "$CODESIGN_KEYCHAIN_PATH" || echo OK || true
+          echo KEYCHAIN_LIST1
+          security list-keychain || echo OK || true
+          echo KEYCHAIN_LIST2
+          security list-keychain -d user -s "$CODESIGN_KEYCHAIN_PATH" || echo OK || true
+###########################
+    - name: Upload Artifact (Linux)
+      #if: ${{ matrix.osarch == 'linux-intel' || matrix.osarch == 'linux-arm' }}
+      if: startsWith(matrix.osarch, 'linux-')
+# https://github.com/actions/upload-artifact/commits/v7.0.1
+# https://github.com/actions/upload-artifact/commits/043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+# https://github.com/actions/upload-artifact/compare/v7.0.1...043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+      with:
+        name: artifact-${{ matrix.release_tag }}-${{ github.run_id }}
+        retention-days: 1
+        compression-level: 0
+        overwrite: false
+        include-hidden-files: false
+        archive: true
+        path: |
+          release/*.deb
+          release/*.AppImage
+        if-no-files-found: error
+###########################
+    - name: Upload Artifact (MacOS)
+      #if: ${{ matrix.osarch == 'macos-intel' || matrix.osarch == 'macos-arm' }}
+      if: startsWith(matrix.osarch, 'macos-')
+# https://github.com/actions/upload-artifact/commits/v7.0.1
+# https://github.com/actions/upload-artifact/commits/043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+# https://github.com/actions/upload-artifact/compare/v7.0.1...043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+      with:
+        name: artifact-${{ matrix.release_tag }}-${{ github.run_id }}
+        retention-days: 1
+        compression-level: 0
+        overwrite: false
+        include-hidden-files: false
+        archive: true
+        path: |
+          release/*.dmg
+          !release/*.app
+        if-no-files-found: error
+###########################
+    - name: Rename Windows ARM64 .exe
+      # if: startsWith(matrix.osarch, 'windows-') && endsWith(matrix.osarch, '-arm') # runner.os == 'Windows'
+      if: ${{ matrix.osarch == 'windows-arm' }}
+      run: >
+        cd release && ls -als && (for filename in *.exe ; do mv "$filename" "${filename%.*}-arm64.${filename##*.}" ; done) && ls -als && cd -
+      shell: bash
+###########################
+    - name: Upload Artifact (Windows)
+      #if: ${{ matrix.osarch == 'windows-intel' || matrix.osarch == 'windows-arm' }}
+      if: startsWith(matrix.osarch, 'windows-')
+# https://github.com/actions/upload-artifact/commits/v7.0.1
+# https://github.com/actions/upload-artifact/commits/043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+# https://github.com/actions/upload-artifact/compare/v7.0.1...043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+      with:
+        name: artifact-${{ matrix.release_tag }}-${{ github.run_id }}
+        retention-days: 1
+        compression-level: 0
+        overwrite: false
+        include-hidden-files: false
+        archive: true
+        path: |
+          release/*.exe
+          release/*.appx
+        if-no-files-found: error
+###########################
+    #
+    #
+    #
+    #
+    #
+    #
+    #
+    #
+    #
+    #
+###########################
+  release_job:
+    needs: build_job
+    permissions:
+      actions: none
+      artifact-metadata: none
+      attestations: none
+      checks: none
+      contents: write # <==========
+      deployments: none
+      discussions: none
+      id-token: none
+      issues: none
+      models: none
+      packages: none
+      pages: none
+      pull-requests: none
+      repository-projects: none
+      security-events: none
+      statuses: none
+#   if: "!contains(toJSON(github.event.commits.*.message), '[skip-ci]')"
+#   if: ${{ github.ref == 'refs/heads/develop' }}
+#   if: "github.event_name != 'pull_request'"
+    if: "!contains(github.event.head_commit.message, 'skip ci') && github.repository_owner == 'edrlab' && github.repository == 'edrlab/thorium-reader'"
+    runs-on: ${{ matrix.runson }}
+    strategy:
+      fail-fast: false
+      matrix:
+        osarch: [windows-intel, windows-arm, macos-intel, macos-arm, linux-intel, linux-arm]
+        include:
+          - osarch: windows-intel
+            runson: ubuntu-latest # windows-2025
+            packname: win
+            release_tag: latest-windows-intel
+          - osarch: windows-arm
+            runson: ubuntu-latest # windows-2025
+            packname: win
+            release_tag: latest-windows-arm
+          - osarch: macos-intel
+            runson: ubuntu-latest # macos-latest #macos-14-arm64
+            packname: 'mac'
+            release_tag: latest-macos-intel
+          - osarch: macos-arm
+            runson: ubuntu-latest # macos-latest #macos-14-arm64
+            packname: 'mac'
+            release_tag: latest-macos-arm
+          - osarch: linux-intel
+            runson: ubuntu-latest # ubuntu-22.04 #ubuntu-latest is ubuntu-24.04
+            packname: linux
+            release_tag: latest-linux-intel
+          - osarch: linux-arm
+            runson: ubuntu-latest # ubuntu-22.04 #ubuntu-latest is ubuntu-24.04
+            packname: linux
+            release_tag: latest-linux-arm
+#    env:
+#      RELEASE_TAG: ${{ matrix.release_tag }} # ONLY NEEDED in scripts/release-github.mjs
+    steps:
+###########################
+    - name: Checkout
+# https://github.com/actions/checkout/commits/v6.0.2
+# https://github.com/actions/checkout/commits/de0fac2e4500dabe0009e67214ff5f5447ce83dd
+# https://github.com/actions/checkout/compare/v6.0.2...de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      with:
+        persist-credentials: false
+###########################
+    - name: Download Artifact
+# https://github.com/actions/download-artifact/commits/v8.0.1
+# https://github.com/actions/download-artifact/commits/3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+# https://github.com/actions/download-artifact/compare/v8.0.1...3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+      uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+      with:
+        name: artifact-${{ matrix.release_tag }}-${{ github.run_id }}
+#        artifact-ids: artifact-latest-linux-arm-${{ github.run_id }},artifact-latest-windows-arm-${{ github.run_id }},artifact-latest-macos-arm-${{ github.run_id }},artifact-latest-linux-intel-${{ github.run_id }},artifact-latest-windows-intel-${{ github.run_id }},artifact-latest-macos-intel-${{ github.run_id }}
+#        merge-multiple: true
+        path: release
+###########################
+# https://github.com/actions/setup-node/commits/v6.4.0
+# https://github.com/actions/setup-node/commits/48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+# https://github.com/actions/setup-node/compare/v6.4.0...48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+#    - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+#      with:
+#        node-version: '24'
+#        cache: ''
+#        package-manager-cache: false
+#        #check-latest: true
+###########################
+#    - run: node --version && npm --version
+###########################
+#    - run: npm --global install npm
+###########################
+#    - run: npm --version
+###########################
+#    - run: npm --global install @octokit/rest
+###########################
+    - name: GitHub Tagged Release Create and Upload Build Artefacts
+      env:
+#GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#run: ls -alsR release ; node scripts/release-github.mjs
+# GH_TOKEN: ${{ github.token }}
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: >
+        ls -alsR release ; (gh release create ${{ github.ref_name }} --target=develop --latest=false --prerelease --draft --title="Thorium Desktop reader ${{ github.ref_name }}" --notes="Expand the 'Assets' below to reveal the download links (build job: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" || echo OK || true) ; gh release upload ${{ github.ref_name }} "./release/*.*" --clobber

@@ -43,6 +43,14 @@ const debug = debug_(filename_);
 debug("_");
 
 export const convertDiffableReduxState = (nextState: Partial<PersistRootState>): PersistRootState => {
+    const settings = nextState.settings ?
+        {
+            ...nextState.settings,
+            // Command-line forced shared-computer mode must remain scoped to the current process.
+            lcpAutoDeleteExpiredPublicationsForced: false,
+        }
+        : nextState.settings;
+
     return {
         theme: nextState.theme,
         win: {
@@ -67,7 +75,7 @@ export const convertDiffableReduxState = (nextState: Partial<PersistRootState>):
         opds: nextState.opds,
         version: nextState.version,
         wizard: nextState.wizard,
-        settings: nextState.settings,
+        settings,
         creator: nextState.creator,
         noteExport: nextState.noteExport,
         customization: {

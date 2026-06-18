@@ -24,7 +24,7 @@ import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authenticati
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { diMainGet } from "readium-desktop/main/di";
 import { net } from "electron";
-import isURL from "validator/lib/isURL";
+import isURL from "readium-desktop/common/utils/isURL";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { contentTypeisOpdsAuth, parseContentType } from "readium-desktop/utils/contentType";
 import { EXT_THORIUM } from "readium-desktop/common/extension";
@@ -284,7 +284,7 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
         return ;
     }
 
-    // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+    // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
     if (/*isURL(httpUrlOrFilePath) && */ /^https?:\/\//.test(httpUrlOrFilePath)) {
 
         fileName = `${nanoid(10)}_downloaded_profile.thorium`;
@@ -602,7 +602,7 @@ function* triggerCatalogOpdsAuthentication(action: customizationActions.triggerO
         // authenticated
         debug("let's try to verify the authentication access token validity");
 
-        // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+        // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
         if (!catalogHref || !isURL(catalogHref)) {
             debug("isURL() NOK", catalogHref);
             return;
@@ -624,7 +624,7 @@ function* triggerCatalogOpdsAuthentication(action: customizationActions.triggerO
         if (opdsAuthenticationHref) {
             debug("There is an opds authentication document link");
 
-            // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+            // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
             if (!opdsAuthenticationHref || !isURL(opdsAuthenticationHref)) {
                 debug("isURL() NOK", opdsAuthenticationHref);
                 return;

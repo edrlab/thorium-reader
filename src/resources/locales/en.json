@@ -88,7 +88,7 @@
         "lastRead": "Last Read",
         "login": "Login",
         "logout": "Logout",
-        "missing": "",
+        "missing": "Missing files",
         "missingUnavailableDescription": "This publication cannot be opened because its stored files are unavailable. Re-import it, or go to Settings and then Storage to add or change the additional storage.",
         "moreInfo": "Publication Details",
         "myBooks": "My publications",
@@ -241,7 +241,18 @@
             "success": "Import completed successfully."
         },
         "download": {
-            "error": "Downloading [{{- title}}] failed: [{{- err}}]"
+            "cancelled": "Download cancelled.",
+            "error": "Downloading [{{- title}}] failed: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "Downloaded file integrity check failed: expected SHA-256 hash {{- expected}}, got {{- actual}}.",
+                "httpGet": "HTTP download failed: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "invalidFilename": "The temporary download filename is invalid.",
+                "invalidLink": "The download link is invalid.",
+                "invalidTempDirectory": "The temporary download directory is invalid.",
+                "lengthMismatch": "Downloaded file integrity check failed: expected {{- expected}} bytes, got {{- actual}} bytes.",
+                "readStreamMissing": "Download stream is unavailable.",
+                "tooManyFilenameAttempts": "Unable to create a unique temporary download filename: {{- path}}"
+            }
         },
         "import": {
             "alreadyImport": "[{{- title}}] was already imported.",
@@ -1233,6 +1244,11 @@
         },
         "session": {
             "title": "Enable session saving"
+        },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "Automatically remove expired publications and associated user data",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Ensures that expired loans are automatically deleted (including personal annotations, reading bookmarks, etc.). This is useful in 'shared computers' environments such as library or university rooms.",
+            "title": "Shared computer mode"
         },
         "storage": {
             "actions": {

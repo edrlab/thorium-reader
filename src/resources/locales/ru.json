@@ -26,7 +26,7 @@
             "undo": "Отменить"
         },
         "hide": "Скрыть {{- appName}}",
-        "quit": "Выйти {{- appName}}",
+        "quit": "Выйти из {{- appName}}",
         "session": {
             "exit": {
                 "askBox": {
@@ -80,16 +80,16 @@
             "continueReading": "Продолжить чтение",
             "lastAdditions": "Недавно добавленные"
         },
-        "export": "Экспорт",
-        "exportAnnotation": "Экспортировать заметки",
+        "export": "Экспорт книги",
+        "exportAnnotation": "Экспорт заметок",
         "format": "Формат",
-        "importAnnotation": "Импортировать заметки",
+        "importAnnotation": "Импорт заметок",
         "lang": "Язык",
         "lastRead": "Последнее чтение",
         "login": "Войти",
         "logout": "Выйти",
-        "missing": "",
-        "missingUnavailableDescription": "",
+        "missing": "Файлы отсутствуют",
+        "missingUnavailableDescription": "Эту публикацию невозможно открыть, поскольку сохранённые в ней файлы недоступны. Повторно импортируйте её или перейдите в Настройки, а затем в Хранилище, чтобы добавить или изменить дополнительное хранилище.",
         "moreInfo": "Дополнительные сведения",
         "myBooks": "Мои книги",
         "noPublicationHelpL1": "Перетащите сюда файлы",
@@ -106,8 +106,8 @@
                 "password": "Пароль",
                 "register": "Регистрация",
                 "retry": "Попробовать ещё раз",
-                "unauthorized": "",
-                "unauthorizedUnsupportedType": "",
+                "unauthorized": "Не авторизовано",
+                "unauthorizedUnsupportedType": "Не авторизовано (неподдерживаемый тип WWWAuthenticate '{{- type}}')",
                 "username": "Имя пользователя / Адрес электронной почты"
             },
             "info": {
@@ -129,7 +129,7 @@
                 "state": "Cостояние"
             }
         },
-        "openFolder": "",
+        "openFolder": "Открыть каталог",
         "publisher": "Издатель",
         "readBook": "Читать",
         "released": "Дата издания",
@@ -144,17 +144,17 @@
         "annotations": {
             "descAuthor": "автор '{{- author}}'",
             "descCreator": "создано",
-            "descList_few": "{{- count}} примечание(я/ий) {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
-            "descList_many": "{{- count}} примечание(я/ий) {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
-            "descList_one": "{{- count}} примечание(я/ий) {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
+            "descList_few": "{{- count}} примечания {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
+            "descList_many": "{{- count}} примечаний {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
+            "descList_one": "{{- count}} примечание {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
             "descList_other": "",
-            "descNewer_few": "Конфликт(ы): более новых заметок - {{- count}}",
-            "descNewer_many": "Конфликт(ы): более новых заметок - {{- count}}",
-            "descNewer_one": "Конфликт(ы): более новых заметок - {{- count}}",
+            "descNewer_few": "Конфликт(ы): {{- count}} новейшие заметки",
+            "descNewer_many": "Конфликт(ы): {{- count}} новейших заметок",
+            "descNewer_one": "Конфликт(ы): {{- count}} новейшая заметка",
             "descNewer_other": "",
-            "descOlder_few": "Конфликт(ы): более старых заметок - {{- count}}",
-            "descOlder_many": "Конфликт(ы): более старых заметок - {{- count}}",
-            "descOlder_one": "Конфликт(ы): более старых заметок - {{- count}}",
+            "descOlder_few": "Конфликт(ы): {{- count}} наиболее старые заметки",
+            "descOlder_many": "Конфликт(ы): {{- count}} наиболее старых заметок",
+            "descOlder_one": "Конфликт(ы): {{- count}} наиболее старая заметка",
             "descOlder_other": "",
             "descTitle": "Название аннотации: ",
             "importAll": "Импортировать все заметки",
@@ -171,14 +171,14 @@
             }
         },
         "deleteAnnotations": "Удалить аннотации?",
-        "deleteAnnotationsText_few": "Вы уверены, что хотите удалить {{- count}} заметку(и/ок)?",
-        "deleteAnnotationsText_many": "Вы уверены, что хотите удалить {{- count}} заметку(и/ок)?",
-        "deleteAnnotationsText_one": "Вы уверены, что хотите удалить {{- count}} заметку(и/ок)?",
+        "deleteAnnotationsText_few": "Вы уверены, что хотите удалить {{- count}} заметки?",
+        "deleteAnnotationsText_many": "Вы уверены, что хотите удалить {{- count}} заметок?",
+        "deleteAnnotationsText_one": "Вы уверены, что хотите удалить {{- count}} заметку?",
         "deleteAnnotationsText_other": "",
         "deleteBookmarks": "Удалить закладки?",
-        "deleteBookmarksText_few": "Вы уверены, что хотите удалить {{- count}} закладку(и/ок)?",
-        "deleteBookmarksText_many": "Вы уверены, что хотите удалить {{- count}} закладку(и/ок)?",
-        "deleteBookmarksText_one": "Вы уверены, что хотите удалить {{- count}} закладку(и/ок)?",
+        "deleteBookmarksText_few": "Вы уверены, что хотите удалить {{- count}} закладки?",
+        "deleteBookmarksText_many": "Вы уверены, что хотите удалить {{- count}} закладок?",
+        "deleteBookmarksText_one": "Вы уверены, что хотите удалить {{- count}} закладку?",
         "deleteBookmarksText_other": "",
         "deleteFeed": "Вы действительно хотите удалить этот каталог ?",
         "deletePublication": "Вы действительно хотите удалить эту книгу ?",
@@ -229,7 +229,7 @@
             "showPassphrase": "Показать парольную фразу",
             "urlHint": "Забыли парольную фразу? Поддержка доступна:",
             "whatIsLcp?": "Что такое LCP?",
-            "whatIsLcpInfoDetails": "LCP означает \"защита лицензионного контента\".",
+            "whatIsLcpInfoDetails": "LCP означает «защита лицензионного контента».",
             "whatIsLcpInfoDetailsLink": "Чтобы узнать больше, перейдите по этой ссылке на сайт EDRLab."
         },
         "sorting": {
@@ -251,7 +251,18 @@
             "success": "Импорт успешно завершён."
         },
         "download": {
-            "error": "Загрузка {{- title}} не удалась: [{{- err}}]"
+            "cancelled": "",
+            "error": "Загрузка {{- title}} не удалась: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "[{{- title}}] уже импортировано.",
@@ -260,14 +271,14 @@
         },
         "open": {
             "error": "Книга не может быть открыта : {{- err}}",
-            "folderNotFound": ""
+            "folderNotFound": "Каталог публикации не найден. Повторно импортируйте его или настройте дополнительное хранилище в разделе Настройки > Хранилище."
         },
         "storage": {
-            "removed": "",
-            "updateFailed": "",
-            "updated": ""
+            "removed": "Каталог публикаций удалён.",
+            "updateFailed": "Не удалось обновить каталог публикаций: {{- message}}",
+            "updated": "Каталог публикаций обновлён."
         },
-        "wipeData": "Регистрационные данные (токены доступа и cookie-файлы) были очищены!"
+        "wipeData": "Регистрационные данные (токены доступа и cookie-файлы) были очищены"
     },
     "opds": {
         "addForm": {
@@ -600,15 +611,15 @@
                 "descriptive": "Информация о возможности изменения внешнего вида отсутствует"
             },
             "ways-of-reading-visual-adjustments-unmodifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Внешний вид не может быть изменён",
+                "descriptive": "Текст и макет страницы изменить невозможно, так как качество визуализации близко к печатной версии, но системы чтения по-прежнему могут предоставлять возможности масштабирования"
             }
         }
     },
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": "Подходит для TTS и программ чтения с экрана"
+                "textual": "Всё содержимое доступно для преобразования в синтезированную речь или динамический Брайляь"
             },
             "accessibilityFeature": {
                 "alternativeText": "Содержит альтернативный текст",
@@ -657,7 +668,7 @@
         "expiredLcp": "Эту книгу нельзя прочитать, потому что срок действия лицензии LCP истек.",
         "incorrectPassphrase": "Ни один из сохранённых паролей не подходит к публикации, или введённый пароль неверен.",
         "lcpEnd": "Конец",
-        "lcpNotSupported": "",
+        "lcpNotSupported": "ПРЕДУПРЕЖДЕНИЕ: это предварительная версия Thorium Desktop, которая не поддерживает лицензии production LCP и поддерживает только расшифровку «базового профиля» LCP без проверки сертификата.",
         "lcpRightsCopy": "Количество символов для копирования",
         "lcpRightsPrint": "Количество страниц, разрешенных для печати",
         "lcpStart": "Начать",
@@ -697,7 +708,7 @@
             "date": "Дата изменения",
             "error": {
                 "pdf": {
-                    "validationSelection": ""
+                    "validationSelection": "Не удается создать аннотацию в формате PDF на основе выделенного фрагмента."
                 }
             },
             "export": "Сохранить заметки как...",
@@ -814,8 +825,8 @@
         "notes": {
             "colors": {
                 "cyan": "Циан",
-                "darkorange": "",
-                "darkyellow": "",
+                "darkorange": "Тёмно-оранжевый",
+                "darkyellow": "Тёмно-жёлтый",
                 "green": "Зелёный",
                 "orange": "Оранжевый",
                 "purple": "Фиолетовый",
@@ -827,7 +838,7 @@
             "search": {
                 "founds_few": "{{- count}} найдено",
                 "founds_many": "{{- count}} найдено",
-                "founds_one": "{{- count}} найдено",
+                "founds_one": "{{- count}} найден",
                 "founds_other": "",
                 "input": "подходящий текст",
                 "next": "Далее",
@@ -865,7 +876,7 @@
             },
             "customFontSelected": "Вы выбрали персональный шрифт",
             "customizeReader": "Настройка форматирования текста",
-            "defaultValue": "",
+            "defaultValue": "значение по умолчанию",
             "disabled": "отключено",
             "display": "Отображение",
             "disposition": {
@@ -881,7 +892,7 @@
             "lineSpacing": "Межстрочный интервал",
             "margin": "Отступ",
             "mathjax": "Включить MathJax",
-            "mathjaxDescription": "",
+            "mathjaxDescription": "MathJax",
             "noFootnotes": "Отключить всплывающие примечания",
             "noRTLFlip": "Отключить интерфейс справа-налево",
             "noRuby": "Скрыть японские Ruby-аннотации",
@@ -1014,19 +1025,19 @@
                     "name": "Предыдущий аудиосегмент (escape)"
                 },
                 "AudioSpeedDecrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Уменьшить скорость воспроизведения аудиоматериала EPUB3 Media Overlay или озвучивания текста по технологии TTS",
+                    "name": "Уменьшить скорость воспроизведения аудиоматериала"
                 },
                 "AudioSpeedIncrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Увеличить скорость воспроизведения аудиоматериала EPUB3 Media Overlay или озвучивания текста по технологии TTS",
+                    "name": "Увеличить скорость воспроизведения аудиоматериала"
                 },
                 "AudioSpeedReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Сбросить к исходным значениям скорость воспроизведения аудиоматериала EPUB3 Media Overlay или озвучивания текста по технологии TTS",
+                    "name": "Сбросить скорость воспроизведения аудиоматериала"
                 },
                 "AudioStop": {
-                    "description": "Остановить воспроизведение текущее аудиоматериала (EPUB3 Media Overlays, озвучивание текста или предварительно записанную аудиокнигу)",
+                    "description": "Остановить текущее воспроизведение аудиоматериала (EPUB3 Media Overlays, озвучивание текста или предварительно записанную аудиокнигу)",
                     "name": "Остановить воспроизведение аодиоматериала"
                 },
                 "CloseReader": {
@@ -1212,7 +1223,7 @@
             },
             "loadUserJson": "Загрузить из пользовательского файла",
             "noShortcutFound": "Горячая клавиша с этой меткой не найдена",
-            "resetDefaults": "Сбросить (загрузка по умолчанию)",
+            "resetDefaults": "Сбросить (до исходных значений)",
             "save": "Сохранить",
             "searchPlaceholder": "Введите текст для поиска горячей клавиши"
         },
@@ -1246,46 +1257,51 @@
         "session": {
             "title": "Сохранение сеанса"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
         "storage": {
             "actions": {
-                "addDirectory": "",
-                "changeDirectory": "",
-                "removeStorageDirectory": ""
+                "addDirectory": "Выбрать дополнительное хранилище",
+                "changeDirectory": "Обновить дополнительное хранилище",
+                "removeStorageDirectory": "Удалить дополнительное хранилище"
             },
             "beta": {
-                "availability": "",
-                "integrity": "",
-                "migration": "",
-                "summary": "",
-                "warning": ""
+                "availability": "Эта функция работает только с последними версиями Thorium; в Thorium 3.4 или более ранних версиях внешние папки с книгами отображаться не будут.",
+                "integrity": "Вы должны обеспечить безопасность и доступность этого каталога. Не удаляйте его, не ограничивайте доступ к нему и не используйте медленные или нестабильные хранилища, такие как сетевые диски.",
+                "migration": "Thorium не перемещает автоматически ваши книги. Если вы обновляете дополнительное хранилище, то должны вручную переместить свои публикации в новое хранилище. Если вы удаляете его, то должны вручную переместить свои публикации в исходное хранилище.",
+                "summary": "Узнайте больше об этой функции, находящейся в стадии бета-тестирования",
+                "warning": "Не изменяйте вручную файлы в этой папке, так как это может вызвать проблемы с открытием ваших книг. Рассматривайте эту папку как защищенную библиотеку, управляемую Thorium."
             },
             "configuration": {
-                "chooseFolderDescription": "",
-                "configuredDescription": "",
-                "notConfiguredDescription": ""
+                "chooseFolderDescription": "Выберите каталог, который Thorium должен использовать в качестве дополнительного хранилища.",
+                "configuredDescription": "Дополнительное хранилище настроено и готово к использованию для новых публикаций.",
+                "notConfiguredDescription": "Публикации, импортированные в Thorium Reader, будут сохранены в выбранном каталоге. Ранее импортированные - останутся в исходном системном хранилище."
             },
             "dialogs": {
                 "add": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Продолжить",
+                    "description": "В настоящее время эта функция находится в стадии бета-тестирования. Хотите продолжить и настроить дополнительное хранилище, выбрав каталог?",
+                    "title": "Выбор дополнительного хранилища"
                 },
                 "edit": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Изменить каталог",
+                    "description": "Обновление дополнительного хранилища требует осторожности. Thorium не будет автоматически перемещать существующие публикации, это придётся сделать вручную. Хотите продолжить?",
+                    "title": "Обновление дополнительного хранилища"
                 },
                 "remove": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Удалить каталог",
+                    "description": "Удаление дополнительного хранилища требует осторожности. Thorium не будет автоматически перемещать существующие публикации, это придётся сделать вручную. Хотите продолжить?",
+                    "title": "Удаление дополнительного хранилища"
                 }
             },
             "locations": {
-                "defaultDescription": "",
-                "defaultInternal": "",
-                "externalStorage": "",
-                "title": ""
+                "defaultDescription": "Публикации, управляемые приложением, по умолчанию хранятся в:",
+                "defaultInternal": "Системное хранилище",
+                "externalStorage": "Внешнее хранилище",
+                "title": "Места расположения"
             }
         },
         "tabs": {
@@ -1293,7 +1309,7 @@
             "general": "Общие",
             "keyboardShortcuts": "Горячие клавиши",
             "profiles": "Профили",
-            "storage": ""
+            "storage": "Хранилище"
         },
         "theme": {
             "auto": "Автоматическая",

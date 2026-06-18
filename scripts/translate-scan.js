@@ -76,8 +76,11 @@ const files = glob.globSync("src/**/*{.ts,.tsx}");
                 if (!jsonRoot[prop]) {
                     jsonRoot[prop] = {};
                 }
-            } else {
-                for (const suffix of ["one", "other"]) {
+            } else { // English baseline
+                // if (!jsonRoot[prop]) {
+                //     jsonRoot[prop] = {};
+                // }
+                for (const suffix of ["one", "other" /* , "few", "many" */]) {
                     const prop_ = `${prop}_${suffix}`;
                     if (!jsonRoot[prop_]) {
                         jsonRoot[prop_] = {};

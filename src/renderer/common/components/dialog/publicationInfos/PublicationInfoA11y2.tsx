@@ -19,7 +19,7 @@ import DOMPurify from "dompurify";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { shell } from "electron";
-import isURL from "validator/lib/isURL";
+import isURL from "readium-desktop/common/utils/isURL";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:publicationA11y");
@@ -450,7 +450,7 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                                     }
                                     {a11y_certifiedBy.length
                                         ? a11y_certifiedBy.map((certifier, i) => <li key={"certifier_" + i}>{
-                                            // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+                                            // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
                                             certifier && isURL(certifier) ? <a title={certifier} onClick={async (e) => { e.preventDefault(); if (certifier && /^https?:\/\//.test(certifier)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */ await shell.openExternal(certifier); } }} href={certifier}>
                                             {__("publ-a11y-display-guide.conformance.conformance-details-certifier-report.compact")}
                                         </a> :
@@ -459,7 +459,7 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                                         : <></>}
                                     {a11y_certifierCredential.length
                                         ? a11y_certifierCredential.map((certifier_credentials, i) => <li key={"certifier_credentials_" + i}>{
-                                            // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+                                            // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
                                             certifier_credentials && isURL(certifier_credentials) ? <a title={certifier_credentials} onClick={async (e) => { e.preventDefault(); if (certifier_credentials && /^https?:\/\//.test(certifier_credentials)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */ await shell.openExternal(certifier_credentials); } }} href={certifier_credentials}>
                                             {__("publ-a11y-display-guide.conformance.conformance-details-certifier-report.compact")}
                                         </a> :
@@ -478,7 +478,7 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                                     </li>)}
                                     {a11y_certifierReport.length
                                         ? a11y_certifierReport.map((certifier_report, i) => <li key={"certifier_report_" + i} title={certifier_report}>{
-                                            // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+                                            // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
                                             certifier_report && isURL(certifier_report) ? <a title={certifier_report} onClick={async (e) => { e.preventDefault(); if (certifier_report && /^https?:\/\//.test(certifier_report)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */ await shell.openExternal(certifier_report); } }} href={certifier_report}>
                                             {__("publ-a11y-display-guide.conformance.conformance-details-certifier-report.compact")}
                                         </a> : __("publ-a11y-display-guide.conformance.conformance-details-certifier-report.compact") + " " + certifier_report}</li>)

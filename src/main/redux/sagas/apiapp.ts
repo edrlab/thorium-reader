@@ -23,7 +23,7 @@ import { Headers } from "node-fetch";
 
 import { IApiappSearchResultView } from "readium-desktop/common/api/interface/apiappApi.interface";
 import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
-import isURL from "validator/lib/isURL";
+import isURL from "readium-desktop/common/utils/isURL";
 
 const filename_ = "readium-desktop:main:saga:apiapp";
 const debug = debug_(filename_);
@@ -76,7 +76,7 @@ const httpDilicomGet = async <T>(url: string, callback?: THttpGetCallback<T>) =>
         headers,
     };
 
-    // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+    // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
     if (!url || !isURL(url)) {
         debug("isURL() NOK", url);
         throw new Error("invalid URL [" + url + "]");
@@ -108,7 +108,7 @@ export const librarySearch = async (query: string): Promise<IApiappSearchResultV
                     const libView: IApiappSearchResultView[] = libs
                     .filter((v) => typeof v === "object")
                     .filter(({libraryGLN, libraryName, libraryWebServiceOperator, libraryWebServiceURL}) => typeof libraryGLN === "string" && typeof libraryName === "string" && libraryWebServiceOperator === "PROVIDER" &&
-                        // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+                        // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
                         libraryWebServiceURL && isURL(libraryWebServiceURL))
                     .map(({libraryGLN, libraryName, libraryAddress, libraryTown, libraryPostalCode, libraryWebServiceURL}) => {
                         return {
@@ -130,7 +130,7 @@ export const librarySearch = async (query: string): Promise<IApiappSearchResultV
 
 export const authenticationRequestFromLibraryWebServiceURL = async (url: string): Promise<IAuthentication | undefined> => {
 
-    // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+    // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
     if(!url || !isURL(url)) {
         debug("isURL() NOK", url);
         throw new Error("not a valid url " + url);
@@ -161,7 +161,7 @@ export const getEndpointFromAuthenticationRequest = (auth: IAuthentication | und
 
     const endpoint = Array.isArray(auth.resources) ? auth.resources[0].endpoint : undefined;
     if (endpoint) {
-        // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+        // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
         if (isURL(endpoint)) {
             return endpoint;
         }
@@ -195,7 +195,7 @@ interface IApiAppLoansPublication { loanhLink: string, beginDate: string; endDat
 
 export const getLoansPublicationFromLibrary = async (url: string): Promise<Array<IApiAppLoansPublication> | undefined> => {
 
-    // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+    // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
     if (!url || !isURL(url)) {
         debug("isURL() NOK", url);
         throw new Error("not a loans URL " + url);
@@ -214,7 +214,7 @@ export const getLoansPublicationFromLibrary = async (url: string): Promise<Array
                 (v) =>
                 typeof v === "object" &&
                 typeof v.loanhLink === "string" &&
-                // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+                // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
                 v.loanhLink && isURL(v.loanhLink) &&
                 // typeof v.beginDate === "string" &&
                 // typeof v.endDate === "string" &&

@@ -246,7 +246,18 @@
             "success": ""
         },
         "download": {
-            "error": "Preuzimanje {{- title}} nije uspjelo: [{{- err}}]"
+            "cancelled": "",
+            "error": "Preuzimanje {{- title}} nije uspjelo: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}} je već uvezen",
@@ -1239,6 +1250,11 @@
         },
         "session": {
             "title": "Spremi sesiju"
+        },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
         },
         "storage": {
             "actions": {

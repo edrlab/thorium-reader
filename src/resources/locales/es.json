@@ -88,7 +88,7 @@
         "lastRead": "Último leído",
         "login": "Iniciar sesión",
         "logout": "Cerrar sesión",
-        "missing": " ",
+        "missing": "",
         "missingUnavailableDescription": "",
         "moreInfo": "Detalles del libro",
         "myBooks": "Mis libros",
@@ -246,7 +246,18 @@
             "success": "¡Correcto!"
         },
         "download": {
-            "error": "La descarga de {{- title}} ha fallado: [{{- err}}]"
+            "cancelled": "",
+            "error": "La descarga de {{- title}} ha fallado: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}} ya estaba importado",
@@ -1239,6 +1250,11 @@
         },
         "session": {
             "title": "Guardar sesión"
+        },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
         },
         "storage": {
             "actions": {

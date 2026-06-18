@@ -88,7 +88,7 @@
         "lastRead": "Viimatiloetud",
         "login": "Logi sisse",
         "logout": "Logi välja",
-        "missing": " ",
+        "missing": "",
         "missingUnavailableDescription": "",
         "moreInfo": "Väljaande üksiksasjad",
         "myBooks": "Minu raamatud",
@@ -241,7 +241,18 @@
             "success": "Importimine õnnestus kenasti."
         },
         "download": {
-            "error": "„{{- title}}“ väljaande allalaadimine ei õnnestunud: {{- err}}"
+            "cancelled": "",
+            "error": "„{{- title}}“ väljaande allalaadimine ei õnnestunud: {{- err}}",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "„{{- title}}“ on juba imporditud.",
@@ -1233,6 +1244,11 @@
         },
         "session": {
             "title": "Lülita sessioonide salvestamine sisse"
+        },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
         },
         "storage": {
             "actions": {
