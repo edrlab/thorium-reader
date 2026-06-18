@@ -241,7 +241,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const TextTrigger =
         <Tabs.Trigger value="tab-text" disabled={!overridePublisherDefault} title={__("reader.settings.text")} key={"tab-text"} data-value={"tab-text"}>
             <SVG ariaHidden svg={TextAreaIcon} />
-            <h3>{__("reader.settings.text")}</h3>
+            <span>{__("reader.settings.text")}</span>
             {overridePublisherDefault ? <></> : <i>{__("reader.settings.disabled")}</i>}
         </Tabs.Trigger>;
     const optionTextItem = { id: 0, value: "tab-text", name: __("reader.settings.text"), disabled: !overridePublisherDefault, svg: TextAreaIcon };
@@ -249,14 +249,14 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const DivinaTrigger =
         <Tabs.Trigger value="tab-divina" disabled={false} title={__("reader.settings.disposition.title")} key={"tab-divina"}>
             <SVG ariaHidden svg={TextAreaIcon} />
-            <h3>{__("reader.settings.disposition.title")}</h3>
+            <span>{__("reader.settings.disposition.title")}</span>
         </Tabs.Trigger>;
     const optionDivinaItem = { id: 1, value: "tab-divina", name: __("reader.settings.disposition.title"), disabled: false, svg: TextAreaIcon };
 
     const SpacingTrigger =
         <Tabs.Trigger value="tab-spacing" disabled={!overridePublisherDefault} key={"tab-spacing"} title={__("reader.settings.spacing")} data-value={"tab-spacing"}>
             <SVG ariaHidden svg={LayoutIcon} />
-            <h3>{__("reader.settings.spacing")}</h3>
+            <span>{__("reader.settings.spacing")}</span>
             {overridePublisherDefault ? <></> : <i>{__("reader.settings.disabled")}</i>}
         </Tabs.Trigger>;
     const optionSpacingItem = { id: 2, value: "tab-spacing", name: __("reader.settings.spacing"), disabled: !overridePublisherDefault, svg: LayoutIcon };
@@ -264,21 +264,21 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const DisplayTrigger =
         <Tabs.Trigger value="tab-display" key={"tab-display"} title={__("reader.settings.display")}>
             <SVG ariaHidden svg={AlignLeftIcon} />
-            <h3>{__("reader.settings.display")}</h3>
+            <span>{__("reader.settings.display")}</span>
         </Tabs.Trigger>;
     const optionDisplayItem = { id: 3, value: "tab-display", name: __("reader.settings.display"), disabled: false, svg: AlignLeftIcon };
 
     // const AudioTrigger =
     //     <Tabs.Trigger value="tab-audio" key={"tab-audio"} title={__("reader.media-overlays.title")}>
     //         <SVG ariaHidden svg={VolumeUpIcon} />
-    //         <h3>{__("reader.media-overlays.title")}</h3>
+    //         <p>{__("reader.media-overlays.title")}</p>
     //     </Tabs.Trigger>;
     // const optionAudioItem = { id: 4, value: "tab-audio", name: __("reader.media-overlays.title"), disabled: false, svg: VolumeUpIcon };
 
     const PdfZoomTrigger =
         <Tabs.Trigger value="tab-pdfzoom" key={"tab-pdfzoom"} title={__("reader.settings.pdfZoom.title")}>
             <SVG ariaHidden svg={VolumeUpIcon} />
-            <h3>{__("reader.settings.pdfZoom.title")}</h3>
+            <span>{__("reader.settings.pdfZoom.title")}</span>
         </Tabs.Trigger>;
     const optionPdfZoomItem = { id: 5, value: "tab-pdfzoom", name: __("reader.settings.pdfZoom.title"), disabled: false, svg: VolumeUpIcon };
 
@@ -287,7 +287,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
             <span style={{ width: "80%", height: "2px", backgroundColor: "var(--color-gray-100)", margin: "10px auto" }}></span>
             <Tabs.Trigger value="tab-preset" disabled={false} title={__("reader.settings.preset.title")} data-value="tab-preset" style={{position: "relative"}}>
                 <SVG ariaHidden svg={GuearIcon} />
-                <h3>{__("reader.settings.preset.title")}</h3>
+                <span>{__("reader.settings.preset.title")}</span>
                 {diffBetweenDefaultConfigAndConfig ? <span className={stylesSettings.notification_preset}></span> : <></>}
             </Tabs.Trigger>
             <p style={{margin: "-5px 20px 0 60px"}}>{__("reader.settings.preset.detail")}</p>
