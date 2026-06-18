@@ -602,7 +602,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                 disabled={tab.disabled}
             >
                 <SVG ariaHidden svg={tab.svg} />
-                <h3>{tab.name}</h3>
+                <span>{tab.name}</span>
             </Tabs.Trigger>
         );
 
