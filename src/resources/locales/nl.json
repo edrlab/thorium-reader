@@ -241,7 +241,18 @@
             "success": "Import succesvol voltooid."
         },
         "download": {
-            "error": "Het downloaden van{{- title}} is mislukt: [{{- err}}]"
+            "cancelled": "",
+            "error": "Het downloaden van{{- title}} is mislukt: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}} is al toegevoegd.",
@@ -647,6 +658,7 @@
         "expiredLcp": "Dit boek kan niet gelezen worden omdat de LCP licentie verlopen is.",
         "incorrectPassphrase": "Geen opgeslagen wachtwoordzin past bij de publicatie of de ingevoerde wachtwoordzin is verkeerd.",
         "lcpEnd": "Einde",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Toegestaan aantal te kopiëren karakters",
         "lcpRightsPrint": "Toegestaan aantal af te drukken pagina's",
         "lcpStart": "Start",
@@ -1232,6 +1244,11 @@
         },
         "session": {
             "title": "Stel sessie bewaring in"
+        },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
         },
         "storage": {
             "actions": {

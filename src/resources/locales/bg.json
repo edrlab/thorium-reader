@@ -241,7 +241,18 @@
             "success": ""
         },
         "download": {
-            "error": "Изтеглянето на {{- title}} е неуспешно: [{{- err}}]"
+            "cancelled": "",
+            "error": "Изтеглянето на {{- title}} е неуспешно: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}} вече е била добавена.",
@@ -647,6 +658,7 @@
         "expiredLcp": "Тази книга не може да бъде прочетена, защото лицензът за LCP е изтекъл.",
         "incorrectPassphrase": "",
         "lcpEnd": "Край",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Копиране на символи",
         "lcpRightsPrint": "Печат на страници",
         "lcpStart": "Начало",
@@ -1232,6 +1244,11 @@
         },
         "session": {
             "title": "Запиши сесията"
+        },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
         },
         "storage": {
             "actions": {

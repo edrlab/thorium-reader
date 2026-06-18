@@ -231,7 +231,18 @@
             "success": ""
         },
         "download": {
-            "error": "{{- title}} 다운로드 실패하였습니다: [{{- err}}]"
+            "cancelled": "",
+            "error": "{{- title}} 다운로드 실패하였습니다: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}}는 이미 추가된 도서입니다",
@@ -637,6 +648,7 @@
         "expiredLcp": "이 책은 LCP 라이선스가 만료되어서 읽을 수 없습니다",
         "incorrectPassphrase": "",
         "lcpEnd": "종료",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "복사된 문자",
         "lcpRightsPrint": "인쇄된 페이지",
         "lcpStart": "시작",
@@ -1221,6 +1233,11 @@
         },
         "session": {
             "title": "세션 저장"
+        },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
         },
         "storage": {
             "actions": {

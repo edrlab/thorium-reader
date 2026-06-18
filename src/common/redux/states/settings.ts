@@ -7,4 +7,11 @@
 
 export interface ISettingsState {
     enableAPIAPP: boolean; // false by default
+    lcpAutoDeleteExpiredPublications: boolean; // false by default
+    // Runtime-only command-line override. It is intentionally excluded from persisted state.
+    lcpAutoDeleteExpiredPublicationsForced: boolean; // false by default
 }
+
+export const settingsLcpAutoDeleteExpiredPublicationsIsEnabled = (settings?: Partial<ISettingsState>) =>
+    settings?.lcpAutoDeleteExpiredPublications === true ||
+    settings?.lcpAutoDeleteExpiredPublicationsForced === true;

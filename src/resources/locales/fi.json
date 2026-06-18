@@ -241,7 +241,18 @@
             "success": "Tuonti onnistui."
         },
         "download": {
-            "error": "Julkaisun {{- title}} lataus epäonnistui: [{{- err}}]"
+            "cancelled": "",
+            "error": "Julkaisun {{- title}} lataus epäonnistui: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "Julkaisu {{- title}} on jo tuotu.",
@@ -647,6 +658,7 @@
         "expiredLcp": "LCP-käyttöoikeus on päättynyt.",
         "incorrectPassphrase": "Yksikään tallennettu salasana ei käy julkaisuun tai annettu salasana on väärä.",
         "lcpEnd": "Loppu",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Kopioidut merkit",
         "lcpRightsPrint": "Tulostetut sivut",
         "lcpStart": "Aloita",
@@ -1232,6 +1244,11 @@
         },
         "session": {
             "title": "Tallenna istunto"
+        },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
         },
         "storage": {
             "actions": {

@@ -56,6 +56,7 @@ button {
   transition: 200ms linear;
   align-items: center;
   justify-content: center;
+  display: flex;
 
   &:focus-within, &:focus {
     outline: var(--color-brand-primary) solid 1px !important;
@@ -165,6 +166,7 @@ button {
   color: var(--color-brand-primary);
   align-items: center;
   justify-content: center;
+  display: flex;
 
   &:hover {
     color: var(--color-brand-primary);

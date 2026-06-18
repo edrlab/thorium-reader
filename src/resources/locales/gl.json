@@ -241,7 +241,18 @@
             "success": ""
         },
         "download": {
-            "error": "A descarga de {{-  title}} fallou: [{{-  err}}]"
+            "cancelled": "",
+            "error": "A descarga de {{-  title}} fallou: [{{-  err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{-  title}} xa estaba importado",
@@ -647,6 +658,7 @@
         "expiredLcp": "Este libro non se pode ler porque a licenza  LCP expirou.",
         "incorrectPassphrase": "",
         "lcpEnd": "Fin",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Copia de personaxes",
         "lcpRightsPrint": "Copia de impresora",
         "lcpStart": "Inicio",
@@ -1232,6 +1244,11 @@
         },
         "session": {
             "title": "Gardar sesión"
+        },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
         },
         "storage": {
             "actions": {

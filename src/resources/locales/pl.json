@@ -251,7 +251,18 @@
             "success": "Import zakończony pomyślnie."
         },
         "download": {
-            "error": "Pobieranie [{{- title}}] nie powiodło się: [{{- err}}]"
+            "cancelled": "",
+            "error": "Pobieranie [{{- title}}] nie powiodło się: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "[{{- title}}] został już zaimportowany.",
@@ -657,6 +668,7 @@
         "expiredLcp": "Licencja LCP tej publikacji wygasła.",
         "incorrectPassphrase": "Żadne zapisane hasło dostępu nie pasuje do publikacji lub wprowadzone hasło jest nieprawidłowe.",
         "lcpEnd": "Koniec",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Skopiowane znaki",
         "lcpRightsPrint": "Wydrukowane strony",
         "lcpStart": "Początek",
@@ -1244,6 +1256,11 @@
         },
         "session": {
             "title": "Włącz zapisywanie sesji"
+        },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
         },
         "storage": {
             "actions": {

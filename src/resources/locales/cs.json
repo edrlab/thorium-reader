@@ -251,7 +251,18 @@
             "success": "Import úspěšně dokončen."
         },
         "download": {
-            "error": "Stahování publikace „{{- title}}“ selhalo: [{{- err}}]"
+            "cancelled": "",
+            "error": "Stahování publikace „{{- title}}“ selhalo: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "Publikace „{{- title}}“ je již nahráná.",
@@ -657,6 +668,7 @@
         "expiredLcp": "Licence LCP této publikace vypršela.",
         "incorrectPassphrase": "",
         "lcpEnd": "Skončit",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Zkopírováno znaků",
         "lcpRightsPrint": "Vytištěné stránky",
         "lcpStart": "Začít",
@@ -1244,6 +1256,11 @@
         },
         "session": {
             "title": "Povolit ukládání relací"
+        },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
         },
         "storage": {
             "actions": {

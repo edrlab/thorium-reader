@@ -246,7 +246,18 @@
             "success": "Importação concluída com sucesso."
         },
         "download": {
-            "error": "O download de {{- title}} falhou: [{{- err}}]"
+            "cancelled": "",
+            "error": "O download de {{- title}} falhou: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}} já foi importado.",
@@ -652,6 +663,7 @@
         "expiredLcp": "A licença LCP desta publicação expirou.",
         "incorrectPassphrase": "Nenhuma senha armazenada funciona na publicação, ou a senha inserida é errada.",
         "lcpEnd": "Fim",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Caracteres copiados",
         "lcpRightsPrint": "Páginas impressas",
         "lcpStart": "Iniciar",
@@ -1238,6 +1250,11 @@
         },
         "session": {
             "title": "Salvar sessão"
+        },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
         },
         "storage": {
             "actions": {

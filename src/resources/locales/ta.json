@@ -241,7 +241,18 @@
             "success": "இறக்குமதி வெற்றிகரமாக முடிந்தது."
         },
         "download": {
-            "error": "பதிவிறக்கம் [{{- title}}] தோல்வியுற்றது: [{{- err}}]"
+            "cancelled": "",
+            "error": "பதிவிறக்கம் [{{- title}}] தோல்வியுற்றது: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "[{{- title}}] ஏற்கனவே இறக்குமதி செய்யப்பட்டது.",
@@ -647,6 +658,7 @@
         "expiredLcp": "இந்த வெளியீட்டின் எல்.சி.பி உரிமம் காலாவதியானது.",
         "incorrectPassphrase": "சேமிக்கப்பட்ட பாச்ஃபிரேச் வெளியீட்டிற்கு பொருந்தவில்லை, அல்லது நுழைந்த பாச்ஃபிரேச் தவறானது.",
         "lcpEnd": "முடிவு",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "நகலெடுக்கப்பட்ட எழுத்துக்கள்",
         "lcpRightsPrint": "அச்சிடப்பட்ட பக்கங்கள்",
         "lcpStart": "தொடங்கு",
@@ -1232,6 +1244,11 @@
         },
         "session": {
             "title": "அமர்வு சேமிப்பை இயக்கவும்"
+        },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
         },
         "storage": {
             "actions": {

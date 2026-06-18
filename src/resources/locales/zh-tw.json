@@ -236,7 +236,18 @@
             "success": "匯入已成功完成。"
         },
         "download": {
-            "error": "下載 [{{- title}}] 失敗：[{{- err}}]"
+            "cancelled": "",
+            "error": "下載 [{{- title}}] 失敗：[{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}} 已被匯入。",
@@ -642,6 +653,7 @@
         "expiredLcp": "此書無法閱讀，因為 LCP 授權已到期。",
         "incorrectPassphrase": "沒有已儲存的密碼適合出版物，或輸入的密碼錯誤。",
         "lcpEnd": "結束",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "複製的文字",
         "lcpRightsPrint": "列印頁數",
         "lcpStart": "開始",
@@ -1226,6 +1238,11 @@
         },
         "session": {
             "title": "保存登入狀態"
+        },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
         },
         "storage": {
             "actions": {

@@ -51,7 +51,7 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { getOpdsRequestCustomProtocolEventChannel, getOpdsRequestMediaCustomProtocolEventChannel, TregisterHttpProtocolHandler} from "./getEventChannel";
 import { initClientSecretToken } from "./apiapp";
 import { digestAuthentication } from "readium-desktop/utils/digest";
-import isURL from "validator/lib/isURL";
+import isURL from "readium-desktop/common/utils/isURL";
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 
 // TypeScript GO:
@@ -284,7 +284,7 @@ function* opdsRequestMediaFlow({request, callback}: TregisterHttpProtocolHandler
         const b64 = decodeURIComponent(request.url.slice(schemePrefix.length));
         const url = Buffer.from(b64, "base64").toString("utf-8");
 
-        // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+        // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
         if (!url || !isURL(url)) {
             debug("isURL() NOK opdsRequestMedia failed not a valid url", url);
             return;
@@ -472,7 +472,7 @@ async function opdsSetAuthCredentials(
 
                         const body = Object.entries(payload).reduce((pv, [k,v]) => `${pv}${pv ? "&" : pv}${k}=${v}`, "");
 
-                        // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+                        // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
                         if (!authenticateUrl || !isURL(authenticateUrl)) {
                             debug("isURL() NOK", authenticateUrl);
                             // throw new Error("invalid authenticateUrl: " + authenticateUrl);

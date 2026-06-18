@@ -246,7 +246,18 @@
             "success": ""
         },
         "download": {
-            "error": "La descàrrega de {{- title}} ha fallat: [{{- err}}]"
+            "cancelled": "",
+            "error": "La descàrrega de {{- title}} ha fallat: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}} ja estava importat",
@@ -652,6 +663,7 @@
         "expiredLcp": "Aquest llibre no es pot llegir perquè la llicència LCP ha expirat.",
         "incorrectPassphrase": "",
         "lcpEnd": "Fi",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Còpia de personatges",
         "lcpRightsPrint": "Còpia d'impressora",
         "lcpStart": "Inici",
@@ -1238,6 +1250,11 @@
         },
         "session": {
             "title": "Guardar sessió"
+        },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
         },
         "storage": {
             "actions": {

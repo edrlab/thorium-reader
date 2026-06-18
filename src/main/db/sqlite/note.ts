@@ -54,6 +54,26 @@ export const sqliteTableNoteInsert = (pubId: string, notes: INoteState[]): boole
     return true;
 };
 
+export const sqliteTableNoteInsertOrReplace = (pubId: string, notes: INoteState[]): boolean => {
+
+    const database = getSqliteDatabaseSync();
+
+    try {
+        const stm = database.prepare("INSERT OR REPLACE INTO notes (pub_id, note_id, note_json) VALUES (?, ?, ?)");
+        debug("SQLITE INSERT OR REPLACE STATEMENT:", stm.sourceSQL);
+        for (const note of notes) {
+            const result = stm.run(pubId, note.uuid, JsonStringifySortedKeys(note));
+            debug(`TRYING TO INSERT OR REPLACE ${note.uuid} from ${pubId} in sqlite notes table, result=`, result);
+        }
+
+    } catch (e) {
+        debug(`SQLITE INSERT OR REPLACE notes (${notes.length}) ERROR !!!`);
+        debug(e);
+        return false;
+    }
+    return true;
+};
+
 export const sqliteTableNoteUpdate = (note: INoteState): boolean => {
 
     const database = getSqliteDatabaseSync();

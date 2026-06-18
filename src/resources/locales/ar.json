@@ -261,7 +261,18 @@
             "success": "اكتمل الاستيراد بنجاح."
         },
         "download": {
-            "error": "فشل تنزيل [{{- title}}]: [{{- err}}]"
+            "cancelled": "",
+            "error": "فشل تنزيل [{{- title}}]: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "تم استيراد [{{- title}}] مسبقًا.",
@@ -667,6 +678,7 @@
         "expiredLcp": "انتهت صلاحية ترخيص LCP الخاص بهذا المنشور.",
         "incorrectPassphrase": "لا يوجد عبارة مرور مخزّنة تتناسب مع المنشور، أو أن عبارة المرور المكتوبة غير صحيحة.",
         "lcpEnd": "النهاية",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "الأحرف المنسوخة",
         "lcpRightsPrint": "الصفحات المطبوعة",
         "lcpStart": "البداية",
@@ -1256,6 +1268,11 @@
         },
         "session": {
             "title": "تفعيل حفظ الجلسة"
+        },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
         },
         "storage": {
             "actions": {

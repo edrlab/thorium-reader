@@ -27,6 +27,7 @@ import { getTranslator } from "readium-desktop/common/services/translator";
 import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { ToastType } from "readium-desktop/common/models/toast";
+import { cleanupLcpPublicationIfNoLongerUsable } from "./lcpSharedWorkstationCleanup";
 
 // import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 
@@ -123,6 +124,19 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string): Sag
         } catch (error) {
             debug("ERROR on call lcpManager.checkPublicationLicenseUpdate", error);
         }
+
+        // The open flow has just performed the LSD check above, so the cleanup helper only
+        // evaluates/removes and deliberately skips a second network synchronization.
+        const cleanedPublicationDocument = yield* callTyped(
+            cleanupLcpPublicationIfNoLongerUsable,
+            publicationDocument,
+            "open-publication",
+            { skipLicenseUpdate: true },
+        );
+        if (!cleanedPublicationDocument) {
+            throw new Error(translator.translate("publication.expiredLcp"));
+        }
+        publicationDocument = cleanedPublicationDocument;
 
         if (
             publicationDocument.lcp && publicationDocument.lcp.lsd && publicationDocument.lcp.lsd.lsdStatus &&

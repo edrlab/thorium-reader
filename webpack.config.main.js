@@ -1,7 +1,14 @@
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const StatoscopeWebpackPlugin = require('@statoscope/webpack-plugin').default;
 
-const TerserPlugin = require("minimizer-webpack-plugin");
+const USE_LEGACY_TERSER = false; // https://github.com/edrlab/thorium-reader/commit/0dacd9a2f1aae18cb73b30529e2fa4f9e47c2896#diff-5912f4b420886d38336d6138b9785ecb2ef47f9edc025d1e409cb5cf2ecadd09
+const TerserPlugin =
+    USE_LEGACY_TERSER ?
+        // https://www.npmjs.com/package/terser-webpack-plugin/v/5.5.0
+        require("terser-webpack-plugin") // <= 5.5.0
+        :
+        // https://www.npmjs.com/package//minimizer-webpack-plugin?activeTab=versions
+        require("minimizer-webpack-plugin"); // >= 5.6.0
 
 const fs = require("fs");
 const path = require("path");
@@ -331,13 +338,26 @@ if (nodeEnv !== "production") {
     config.optimization = {
         ...(config.optimization || {}),
         nodeEnv: false,
+        ...(USE_LEGACY_TERSER ? {
+            usedExports: false, // TRUE ==> TypeError: Impl.implementation is not a constructor --- https://github.com/jsdom/jsdom/blob/v26.1.0/lib/jsdom/living/nodes/XMLDocument-impl.js#L4
+        } : {
+            // -----
+            // TRUE in PROD https://webpack.js.org/configuration/optimization/#optimizationusedexports
+            usedExports: false, // TRUE ==> TypeError: Impl.implementation is not a constructor --- https://github.com/jsdom/jsdom/blob/v26.1.0/lib/jsdom/living/nodes/XMLDocument-impl.js#L4
+            // TRUE is DEFAULT https://webpack.js.org/configuration/optimization/#optimizationprovidedexports
+            providedExports: true,
+            // TRUE in PROD https://webpack.js.org/configuration/optimization/#optimizationconcatenatemodules
+            concatenateModules: true,
+            // -----
+        }),
         minimize: true,
         minimizer: [
+            // https://github.com/webpack/minimizer-webpack-plugin#minimizeroptions
             new TerserPlugin({
                 extractComments: false,
                 exclude: /MathJax/,
                 // parallel: 3,
-                minimizerOptions: {
+                [USE_LEGACY_TERSER ? "terserOptions" : "minimizerOptions"]: {
                     // sourceMap: nodeEnv !== "production" ? true : false,
                     sourceMap: false,
                     compress: {defaults:false, dead_code:true, booleans: true, passes: 1},

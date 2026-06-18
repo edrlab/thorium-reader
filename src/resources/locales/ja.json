@@ -236,7 +236,18 @@
             "success": "取り込みが正常に完了しました。"
         },
         "download": {
-            "error": "『{{- title}}』のダウンロードに失敗しました：{{- err}}"
+            "cancelled": "",
+            "error": "『{{- title}}』のダウンロードに失敗しました：{{- err}}",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "『{{- title}}』はすでに追加されています。",
@@ -642,6 +653,7 @@
         "expiredLcp": "この本のLCPライセンスの有効期限が切れました。",
         "incorrectPassphrase": "保存しているパスフレーズが本に適合しないか、入力したパスフレーズが間違っています。",
         "lcpEnd": "終了",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "文字列のコピー",
         "lcpRightsPrint": "ページを印刷",
         "lcpStart": "開始",
@@ -1226,6 +1238,11 @@
         },
         "session": {
             "title": "セッションを保存"
+        },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
         },
         "storage": {
             "actions": {

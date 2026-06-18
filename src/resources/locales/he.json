@@ -246,7 +246,18 @@
             "success": ""
         },
         "download": {
-            "error": ""
+            "cancelled": "",
+            "error": "",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "",
@@ -652,6 +663,7 @@
         "expiredLcp": "",
         "incorrectPassphrase": "",
         "lcpEnd": "",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "",
         "lcpRightsPrint": "",
         "lcpStart": "",
@@ -1237,6 +1249,11 @@
             "title": ""
         },
         "session": {
+            "title": ""
+        },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
             "title": ""
         },
         "storage": {

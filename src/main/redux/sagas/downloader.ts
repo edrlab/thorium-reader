@@ -30,17 +30,33 @@ import { contentTypeisOpdsAuth, parseContentType } from "readium-desktop/utils/c
 import { getOpdsAuthenticationChannel } from "readium-desktop/main/event";
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
-import isURL from "validator/lib/isURL";
+import isURL from "readium-desktop/common/utils/isURL";
 import { sanitizeForFilename } from "readium-desktop/common/safe-filename";
+import { computeFileSha256, fileSha256MatchesExpectedHash } from "readium-desktop/main/tools/fileIntegrity";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/downloader");
 
 type TDownloaderChannel = () => IDownloadProgression;
 
+const getErrorMessage = (err: unknown): string => {
+    if (err instanceof Error) {
+        return err.message;
+    }
+    return `${err}`;
+};
+
+
+// https://readium.org/lcp-specs/releases/lcp/latest#link-object
 export type IDownloaderLink = string | {
     href: string,
-    type: string,
+    rel?: string, // Link relationship to the document
+    title?: string, // Title of the link
+    type?: string, // Expected MIME media type value for the external resources
+    templated?: string, // Indicates that the href is a URI Template
+    profile?: string, // Expected profile used to identify the external resource
+    length?: number, // Content length in octets
+    hash?: string, // SHA-256 hash of the resource
 };
 
 export function* downloader(linkHrefArray: IDownloaderLink[], downloadLabel?: string): SagaGenerator<string[]> {
@@ -67,13 +83,13 @@ export function* downloader(linkHrefArray: IDownloaderLink[], downloadLabel?: st
 
     } catch (err) {
 
-        debug(err.toString());
+        debug(getErrorMessage(err));
 
         const translate = getTranslator().translate;
 
         yield* putTyped(toastActions.openRequest.build(
             ToastType.Error,
-            translate("message.download.error", { title: downloadLabel, err: `[${err}]` }),
+            translate("message.download.error", { title: downloadLabel, err: getErrorMessage(err) }),
         ));
 
         return [];
@@ -84,7 +100,7 @@ export function* downloader(linkHrefArray: IDownloaderLink[], downloadLabel?: st
 
             yield* putTyped(toastActions.openRequest.build(
                 ToastType.Success,
-                "cancelled", // TODO translate
+                getTranslator().translate("message.download.cancelled"),
             ));
         }
 
@@ -146,6 +162,9 @@ function* downloaderServiceDownloadProcessTask(chan: Channel<TDownloaderChannel>
     });
 
     yield* callTyped(downloaderServiceProcessTaskStreamPipeline, readStream, writeStream);
+    const length = typeof linkHref === "string" ? undefined : linkHref.length;
+    const hash = typeof linkHref === "string" ? undefined : linkHref.hash;
+    yield* callTyped(checkDownloadedFileIntegrity, pathFile, length, hash);
 
     return pathFile;
 }
@@ -262,7 +281,7 @@ function* downloadLinkRequest(linkHref: string, controller: AbortController): Sa
     options.abortController = controller;
     options.signal = controller.signal;
 
-    // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+    // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
     if (!linkHref || !isURL(linkHref)) {
         debug("isURL() NOK", linkHref);
         return undefined;
@@ -306,12 +325,12 @@ function* downloadLinkRequest(linkHref: string, controller: AbortController): Sa
 
 function* downloadCreatePathFilename(pathDir: string, filename: string, rc = 0): SagaGenerator<string> {
 
-    ok(typeof pathDir === "string");
-    ok(typeof filename === "string");
+    ok(typeof pathDir === "string", getTranslator().translate("message.download.errors.invalidTempDirectory"));
+    ok(typeof filename === "string", getTranslator().translate("message.download.errors.invalidFilename"));
     const pathFile = path.resolve(pathDir, filename);
     debug("PathFile", pathFile);
 
-    ok(rc < 10, "Too many tries => " + pathFile);
+    ok(rc < 10, getTranslator().translate("message.download.errors.tooManyFilenameAttempts", { path: pathFile }));
 
     const pathFileExists = yield* callTyped(async () => {
         try {
@@ -582,7 +601,11 @@ type TReturnDownloadLinkStream = [
 function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number, type?: string)
     : SagaGenerator<TReturnDownloadLinkStream> {
 
-    ok(data?.isSuccess, "http GET error: " + data?.statusMessage + " (" + data?.statusCode + ")" + " [" + data.url + "]");
+    ok(data?.isSuccess, getTranslator().translate("message.download.errors.httpGet", {
+        statusMessage: data?.statusMessage,
+        statusCode: data?.statusCode,
+        url: data?.url,
+    }));
 
     // const url = data.responseUrl;
     const contentType = data.contentType;
@@ -598,7 +621,7 @@ function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number, type?:
     const pathFile = yield* callTyped(downloadCreatePathFilename, pathDir, filename);
     debug("PathFile", pathFile);
 
-    ok(readStream, "readStream not defined");
+    ok(readStream, getTranslator().translate("message.download.errors.readStreamMissing"));
 
     const channel = downloadReadStreamProgression(readStream, contentLength, filename, typeof data.url === "string" ? data.url : data.url.toString());
 
@@ -610,10 +633,37 @@ function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number, type?:
     ] as TReturnDownloadLinkStream;
 }
 
+async function checkDownloadedFileIntegrity(pathFile: string, expectedLength?: number, expectedHash?: string): Promise<void> {
+
+    const shouldCheckLength = typeof expectedLength === "number" && Number.isFinite(expectedLength) && expectedLength >= 0;
+    const shouldCheckHash = typeof expectedHash === "string" && expectedHash.trim().length > 0;
+    if (!shouldCheckLength && !shouldCheckHash) {
+        return;
+    }
+
+    const stat = await fs.promises.stat(pathFile);
+    if (shouldCheckLength && stat.size !== expectedLength) {
+        throw new Error(getTranslator().translate("message.download.errors.lengthMismatch", {
+            expected: expectedLength,
+            actual: stat.size,
+        }));
+    }
+
+    if (shouldCheckHash) {
+        const actualHash = await computeFileSha256(pathFile);
+        if (!fileSha256MatchesExpectedHash(expectedHash, actualHash)) {
+            throw new Error(getTranslator().translate("message.download.errors.hashMismatch", {
+                expected: expectedHash.trim(),
+                actual: `${actualHash.hex} / ${actualHash.base64}`,
+            }));
+        }
+    }
+}
+
 type TReturnDownloadLinkProcess = TReturnDownloadLinkStream | undefined;
 function* downloadLinkProcess(linkHref: IDownloaderLink, id: number): SagaGenerator<TReturnDownloadLinkProcess> {
 
-    ok(linkHref);
+    ok(linkHref, getTranslator().translate("message.download.errors.invalidLink"));
 
     const controller = new AbortController();
 
