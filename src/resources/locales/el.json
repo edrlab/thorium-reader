@@ -42,7 +42,7 @@
         },
         "update": {
             "message": "Νέα έκδοση διαθέσιμη, κάνε κλικ για να μάθεις περισσότερα.",
-            "title": "{{- appName}} ενημέρωση λογισμού."
+            "title": "{{- appName}} ενημέρωση λογισμικού."
         },
         "window": {
             "showLibrary": "Εμφάνιση βιβλιοθήκης"
@@ -88,7 +88,7 @@
         "lastRead": "Τελευταία ανάγνωση",
         "login": "Σύνδεση",
         "logout": "Αποσύνδεση",
-        "missing": "",
+        "missing": "Ελλειπόντα αρχεία",
         "missingUnavailableDescription": "",
         "moreInfo": "Λεπτομέρειες βιβλίου",
         "myBooks": "Τα βιβλία μου",
@@ -129,12 +129,12 @@
                 "state": "Κατάσταση"
             }
         },
-        "openFolder": "",
+        "openFolder": "Άνοιγμα καταλόγου",
         "publisher": "Εκδότης",
         "readBook": "Ανάγνωση",
         "released": "Δημοσιεύθηκε στις",
         "removeFromFavorites": "Αφαίρεση από τα αγαπημένα",
-        "selectTableHeaders": "",
+        "selectTableHeaders": "Επιλογή στηλών προς εμφάνιση",
         "sort": "Ταξινόμηση με",
         "tag": "Ετικέτα",
         "tags": "Ετικέτες",
@@ -201,7 +201,7 @@
         "searchPlaceholder": "Αναζήτηση",
         "searchTitle": "Αναζήτηση",
         "settings": "Ρυθμίσεις",
-        "settingsLabel": "",
+        "settingsLabel": "Εφαρμογή ρυθμίσεων",
         "viewMode": "Λειτουργία προβολής"
     },
     "library": {
@@ -226,9 +226,9 @@
             "addSorting": "Προσθήκη ταξινόμησης",
             "author": "Συγγραφέας",
             "language": "Γλώσσα",
-            "readingState": "",
-            "sortBy": "",
-            "title": ""
+            "readingState": "Κατάσταση ανάγνωσης",
+            "sortBy": "Ταξινόμηση με: ",
+            "title": "Τίτλος"
         }
     },
     "message": {
@@ -241,17 +241,17 @@
             "success": "Επιτυχής ολοκλήρωση εισαγωγής."
         },
         "download": {
-            "cancelled": "",
+            "cancelled": "Ακύρωση λήψης.",
             "error": "Η λήψη του {{- title}} απέτυχε: [{{- err}}]",
             "errors": {
-                "hashMismatch": "",
-                "httpGet": "",
-                "invalidFilename": "",
-                "invalidLink": "",
-                "invalidTempDirectory": "",
-                "lengthMismatch": "",
-                "readStreamMissing": "",
-                "tooManyFilenameAttempts": ""
+                "hashMismatch": "Αποτυχία ελέγχου ακεραιότητας του αρχείου που κατεβάστηκε: αναμενόμενος κωδικός SHA-256 {{- expected}}, βρέθηκε {{- actual}}.",
+                "httpGet": "Αποτυχία λήψης μέσω HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "invalidFilename": "Το προσωρινό όνομα του αρχείου λήψης δεν είναι έγκυρο.",
+                "invalidLink": "Ο σύνδεσμος λήψης δεν είναι έγκυρος.",
+                "invalidTempDirectory": "Ο προσωρινός κατάλογος λήψης δεν είναι έγκυρος.",
+                "lengthMismatch": "Αποτυχία ελέγχου ακεραιότητας του αρχείου που κατεβάστηκε: αναμενόμενα {{- expected}} bytes, ληφθήκαν {{- actual}} bytes.",
+                "readStreamMissing": "Η ροή λήψης δεν είναι διαθέσιμη.",
+                "tooManyFilenameAttempts": "Αδυναμία δημιουργίας ενός μοναδικού προσωρινού ονόματος αρχείου λήψης: {{- path}}"
             }
         },
         "import": {
@@ -265,8 +265,8 @@
         },
         "storage": {
             "removed": "",
-            "updateFailed": "",
-            "updated": ""
+            "updateFailed": "Αποτυχία ενημέρωσης του καταλόγου δημοσιεύσεων: {{- message}}",
+            "updated": "Ενημερώθηκε ο κατάλογος δημοσιεύσεων."
         },
         "wipeData": "Τα στοιχεία σύνδεσης διαγράφηκαν (διακριτικά πρόσβασης και cookies)"
     },
@@ -601,7 +601,7 @@
                 "descriptive": "Δεν υπάρχουν διαθέσιμες πληροφορίες σχετικά με τη δυνατότητα τροποποίησης της εμφάνισης"
             },
             "ways-of-reading-visual-adjustments-unmodifiable": {
-                "compact": "",
+                "compact": "Η εμφάνιση δεν μπορεί να τροποποιηθεί",
                 "descriptive": ""
             }
         }
@@ -740,8 +740,8 @@
         },
         "dock": {
             "dockDefault": "",
-            "dockLeft": "",
-            "dockRight": ""
+            "dockLeft": "Αγκύστρωση του panel στα αριστερά",
+            "dockRight": "Αγκύστρωση του panel στα δεξιά"
         },
         "fxl": {
             "fit": "Προσαρμογή"
@@ -782,8 +782,8 @@
             "speed": "Ρυθμός αναπαραγωγής Φωνητικού αναγνώστη",
             "stop": "Σταμάτημα Φωνητικού αναγνώστη",
             "title": "Λειτουργία φωνητικού αναγνώστη (Readaloud)",
-            "useTTSHighlightsForMO": "",
-            "useTTSHighlightsForMODescription": ""
+            "useTTSHighlightsForMO": "Προσαρμοσμένη επισήμανση",
+            "useTTSHighlightsForMODescription": "Απενεργοποίηση προσαρμοσμένων στυλ"
         },
         "navigation": {
             "ZenModeExit": "Έξοδο λειτουργίας Zen",
@@ -810,13 +810,13 @@
             "printDisabled": "Η εκτύπωση απαγορεύεται",
             "screenNext": "Μετάβαση μπροστά",
             "screenPrevious": "Μετάβαση πίσω",
-            "settingsTitle": "Ρυθμίσεις"
+            "settingsTitle": "Προσαρμοσμένες ρυθμίσεις"
         },
         "notes": {
             "colors": {
                 "cyan": "Κυανό",
-                "darkorange": "",
-                "darkyellow": "",
+                "darkorange": "Σκούρο πορτοκαλί",
+                "darkyellow": "Σκούρο κίτρινο",
                 "green": "Πράσινο",
                 "orange": "Πορτοκαλί",
                 "purple": "Μωβ",
@@ -864,7 +864,7 @@
             },
             "customFontSelected": "Έχεις επιλέξει μια προσωπική γραμματοσειρά",
             "customizeReader": "Προσαρμογή μορφοποίησης κειμένου",
-            "defaultValue": "",
+            "defaultValue": "προκαθορισμένη τιμή",
             "disabled": "απενεργοποιημένο",
             "display": "Εμφάνιση",
             "disposition": {
@@ -872,7 +872,7 @@
             },
             "font": "Γραμματοσειρά",
             "fontSize": "Μέγεθος γραμματοσειράς",
-            "increaseFontSize": "",
+            "increaseFontSize": "Αύξηση μεγέθους γραμματοσειράς",
             "infoCustomFont": "Επιλογή γραμματοσειράς από το λειτουργικό σύστημα πληκτρολογώντας το όνομά της",
             "justification": "Στοίχιση",
             "justify": "Πλήρης",
@@ -880,7 +880,7 @@
             "lineSpacing": "Διάστημα μεταξύ γραμμών",
             "margin": "Περιθώριο",
             "mathjax": "Ενεργοποίηση MathJax",
-            "mathjaxDescription": "",
+            "mathjaxDescription": "Βιβλιοθήκη MathJax",
             "noFootnotes": "Απενεργοποίηση αναδυόμενων υποσημειώσεων",
             "noRTLFlip": "Απενεργοποίηση Right-To-Left UI",
             "noRuby": "Κρύψιμο Japanese Ruby",
