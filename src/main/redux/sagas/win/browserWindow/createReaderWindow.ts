@@ -19,7 +19,7 @@ import {
 } from "readium-desktop/preprocessor-directives";
 
 import {
-    contextMenuSetup, trackBrowserWindow,
+    trackBrowserWindow,
 } from "@r2-navigator-js/electron/main/browser-window-tracker";
 
 import { getPublication } from "../../api/publication/getPublication";
@@ -64,11 +64,6 @@ export function* createReaderWindow(publicationIdentifier: string, manifestUrl: 
     readerWindow.on("blur", () => {
         readerWindow.webContents?.send("window-blur");
     });
-
-    if (ENABLE_DEV_TOOLS) {
-        const wc = readerWindow.webContents;
-        contextMenuSetup(wc, wc.id);
-    }
 
     const pathBase64 = manifestUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
     const pathDecoded = Buffer.from(decodeURIComponent(pathBase64), "base64").toString("utf8");

@@ -22,7 +22,6 @@ import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 import { put } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 
-import { contextMenuSetup } from "@r2-navigator-js/electron/main/browser-window-tracker";
 import { WINDOW_MIN_HEIGHT, WINDOW_MIN_WIDTH } from "readium-desktop/common/constant";
 import { URL_PROTOCOL_FILEX, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
 
@@ -62,11 +61,6 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         icon: path.join(__dirname, "assets/icons/icon.png"),
     });
     debug("LibraryWindow new BrowserWindow instancied");
-
-    if (ENABLE_DEV_TOOLS) {
-        const wc = libWindow.webContents;
-        contextMenuSetup(wc, wc.id);
-    }
 
     yield put(winActions.session.registerLibrary.build(libWindow, windowBound));
 
