@@ -89,7 +89,7 @@
         "login": "Σύνδεση",
         "logout": "Αποσύνδεση",
         "missing": "Ελλειπόντα αρχεία",
-        "missingUnavailableDescription": "",
+        "missingUnavailableDescription": "Αυτή η έκδοση δεν μπορεί να ανοιχτεί, καθώς τα αρχεία που περιέχει δεν είναι διαθέσιμα. Εισάγετέ την ξανά ή μεταβείτε στις «Ρυθμίσεις» και στη συνέχεια στην ενότητα «Αποθήκευση» για να προσθέσετε ή να αλλάξετε τον επιπλέον χώρο αποθήκευσης.",
         "moreInfo": "Λεπτομέρειες βιβλίου",
         "myBooks": "Τα βιβλία μου",
         "noPublicationHelpL1": "Εναπόθεση αρχείων εδώ",
@@ -261,10 +261,10 @@
         },
         "open": {
             "error": "Το βιβλίο δεν μπορεί να ανοίξει: {{- err}}",
-            "folderNotFound": ""
+            "folderNotFound": "Δεν εντοπίστηκε ο κατάλογος δημοσιεύσεων. Εισάγετέ τον ξανά ή ρυθμίστε τον επιπλέον χώρο αποθήκευσης από τις Ρυθμίσεις > Αποθήκευση."
         },
         "storage": {
-            "removed": "",
+            "removed": "Ο κατάλογος δημοσιεύσεων έχει αφαιρεθεί.",
             "updateFailed": "Αποτυχία ενημέρωσης του καταλόγου δημοσιεύσεων: {{- message}}",
             "updated": "Ενημερώθηκε ο κατάλογος δημοσιεύσεων."
         },
@@ -698,7 +698,7 @@
             "date": "Ημερομηνία τροποποίησης",
             "error": {
                 "pdf": {
-                    "validationSelection": ""
+                    "validationSelection": "Δεν είναι δυνατή η δημιουργία σχολίου σε PDF από αυτήν την επιλογή."
                 }
             },
             "export": "Αποθήκευση σημειώσεων ως...",
@@ -911,7 +911,7 @@
                 "title": "Προτιμήσεις"
             },
             "preview": "Προεπισκόπηση",
-            "reduceFontSize": "",
+            "reduceFontSize": "Μείωση μεγέθους γραμματοσειράς",
             "reduceMotion": "Μείωση κίνησης",
             "scrolled": "Μετακυλίσιμο",
             "spacing": "Διαστήματα",
@@ -1014,15 +1014,15 @@
                 },
                 "AudioSpeedDecrease": {
                     "description": "",
-                    "name": ""
+                    "name": "Μείωση ταχύτητας ηχητικής αναπαραγωγής"
                 },
                 "AudioSpeedIncrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Αύξηση ταχύτητας ηχητικής αναπαραγωγής EPUB3 Media Overlays ή του ρυθμού ανάγνωσης της λειτουργίας TTS",
+                    "name": "Αύξηση ταχύτητας ηχητικής αναπαραγωγής"
                 },
                 "AudioSpeedReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Επαναφορά ταχύτητας ηχητικής αναπαραγωγής EPUB3 Media Overlays ή του ρυθμού ανάγνωσης της λειτουργίας TTS",
+                    "name": "Επαναφορά ταχύτητας αναπαραγωγής ήχου"
                 },
                 "AudioStop": {
                     "description": "Διακοπή του τρέχοντος ήχου (Επικαλύψεις πολυμέσων EPUB3, εκφώνηση κειμένου ή ηχητικό βιβλίο)",
@@ -1248,13 +1248,13 @@
         "sharedComputer": {
             "lcpAutoDeleteExpiredPublications": "",
             "lcpAutoDeleteExpiredPublicationsDescription": "",
-            "title": ""
+            "title": "Λειτουργία κοινής χρήσης υπολογιστή"
         },
         "storage": {
             "actions": {
-                "addDirectory": "",
-                "changeDirectory": "",
-                "removeStorageDirectory": ""
+                "addDirectory": "Επιλογή επιπλέον χώρου αποθήκευσης",
+                "changeDirectory": "Ενημέρωση επιπλέον χώρου αποθήκευσης",
+                "removeStorageDirectory": "Αφαίρεση επιπλέον χώρου αποθήκευσης"
             },
             "beta": {
                 "availability": "",
@@ -1264,32 +1264,32 @@
                 "warning": ""
             },
             "configuration": {
-                "chooseFolderDescription": "",
-                "configuredDescription": "",
+                "chooseFolderDescription": "Επιλογή κατάλογου για χρήση από το Thorium ως επιπλέον χώρο αποθήκευσης.",
+                "configuredDescription": "Ο επιπλέον χώρος αποθήκευσης έχει ρυθμιστεί και είναι έτοιμος για χρήση για τις νέες δημοσιεύσεις που θα αποθηκευτούν.",
                 "notConfiguredDescription": ""
             },
             "dialogs": {
                 "add": {
                     "confirm": "",
                     "description": "",
-                    "title": ""
+                    "title": "Επιλογή επιπλέον χώρου αποθήκευσης"
                 },
                 "edit": {
-                    "confirm": "",
+                    "confirm": "Επεξεργασία καταλόγου",
                     "description": "",
                     "title": ""
                 },
                 "remove": {
                     "confirm": "",
                     "description": "",
-                    "title": ""
+                    "title": "Αφαίρεση επιπλέον αποθευτικού χώρου"
                 }
             },
             "locations": {
                 "defaultDescription": "",
                 "defaultInternal": "",
-                "externalStorage": "",
-                "title": ""
+                "externalStorage": "Εξωτερική αποθήκευση",
+                "title": "Τοποθεσίες"
             }
         },
         "tabs": {
@@ -1297,7 +1297,7 @@
             "general": "Γενικά",
             "keyboardShortcuts": "Συντομεύσεις πληκτρολογίου",
             "profiles": "Προφίλ",
-            "storage": ""
+            "storage": "Αποθήκευση"
         },
         "theme": {
             "auto": "Αυτόματο",
@@ -1337,7 +1337,7 @@
         },
         "description": {
             "home": "Το Thorium φαίνεται διαφορετικό! Ας ανακαλύψουμε τι νέο υπάρχει...",
-            "resources": ""
+            "resources": "Συνδεθείτε μαζί μας και μάθετε περισσότερα για το Thorium:"
         },
         "dontShow": "Μην το δείξεις ξανά",
         "resources": {
@@ -1346,10 +1346,10 @@
         },
         "tab": {
             "home": "Αρχική",
-            "resources": ""
+            "resources": "Πόροι"
         },
         "title": {
-            "resources": "",
+            "resources": "Πόροι & Κοινότητα",
             "welcome": "Καλώς ήρθατε στο Thorium 3"
         }
     }
