@@ -9,7 +9,8 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import debug_ from "debug";
 import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
 import * as path from "path";
-import { call as callTyped, put as putTyped, race as raceTyped, take as takeTyped, delay as delayTyped, spawn as spawnTyped, fork as forkTyped, SagaGenerator } from "typed-redux-saga/macro";
+import { call as callTyped, put as putTyped, race as raceTyped, take as takeTyped, delay as delayTyped, spawn as spawnTyped, fork as forkTyped } from "typed-redux-saga/macro";
+import { SagaGenerator } from "typed-redux-saga";
 import { buffers, END, eventChannel } from "redux-saga";
 import { diMainGet, saveReaderWindowInDi } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
@@ -38,7 +39,7 @@ const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
 export function* createReaderWindow(publicationIdentifier: string, manifestUrl: string,  windowIdentifier: string /* winBound, reduxState*/) {
     assertUUIDv4(windowIdentifier);
     assertUUIDv4(publicationIdentifier);
-    
+
     const winBound = yield* callTyped(readerNewWindowBound, publicationIdentifier);
     const readerWindow = new BrowserWindow({
         ...winBound,
@@ -182,7 +183,7 @@ export function* createReaderWindow(publicationIdentifier: string, manifestUrl: 
         // readerWindow.webContents.once("did-finish-load", () => {
         //     // if (readerWindow.isDestroyed() || readerWindow.webContents.isDestroyed()) {
         //     //     debug("readerWindow or webcontents is destroyed !!");
-        //     //     return; // Is it really needed to early return here, and block reader openSuccess 
+        //     //     return; // Is it really needed to early return here, and block reader openSuccess
         //     // }
         //     // see app.whenReady() in src/main/redux/sagas/app.ts
         //     // // app.whenReady().then(() => {
@@ -203,7 +204,7 @@ export function* createReaderWindow(publicationIdentifier: string, manifestUrl: 
         //     // the dispatching of 'openSucess' action must be in the 'did-finish-load' event
         //     // because webpack-dev-server automaticaly refresh the window.
         //     const store = diMainGet("store");
-        //     // TODO: handle the error case 
+        //     // TODO: handle the error case
         //     store.dispatch(winActions.reader.openSucess.build(readerWindow, windowIdentifier, publicationIdentifier));
         // });
     }
@@ -271,22 +272,22 @@ export function* createReaderWindow(publicationIdentifier: string, manifestUrl: 
 
         readerWindow.webContents.setWindowOpenHandler((details: HandlerDetails) => {
             debug("BrowserWindow.webContents.setWindowOpenHandler (always DENY): ", readerWindow.webContents.id, " --- ", details.url, " === ", readerWindow.webContents.getURL());
-    
+
             // willNavigate(details.url);
-    
+
             return { action: "deny" };
         });
         readerWindow.webContents.on("will-navigate", (details: ElectronEvent<WebContentsWillNavigateEventParams>, url: string) => {
             debug("BrowserWindow.webContents.on('will-navigate') (always PREVENT): ", readerWindow.webContents.id, " --- ", details.url, " *** ", url, " === ", readerWindow.webContents.getURL());
-        
+
             // if (details.url === readerWindow.webContents.getURL()) {
             //     debug("will-navigate PASS", details.url);
             //     return;
             // }
-        
+
             details.preventDefault();
-        
+
             willNavigate(details.url);
         });
-    }    
+    }
 }

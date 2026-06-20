@@ -21,7 +21,8 @@ import { streamerActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put, take } from "redux-saga/effects";
-import { call as callTyped, select as selectTyped, put as putTyped, SagaGenerator } from "typed-redux-saga/macro";
+import { call as callTyped, select as selectTyped, put as putTyped } from "typed-redux-saga/macro";
+import { SagaGenerator } from "typed-redux-saga";
 import { types } from "util";
 
 import {
@@ -235,7 +236,7 @@ function* readerCLoseRequestFromIdentifier(action: readerActions.closeRequest.TA
 
     assertUUIDv4(winId);
     assertUUIDv4(pubId);
-    
+
     yield call(readerCloseRequest, winId, pubId);
 
     const libWin = yield* callTyped(() => getLibraryWindowFromDi());
@@ -302,7 +303,7 @@ function* readerCloseRequest(windowIdentifier: string, publicationIdentifier: st
 }
 
 // TODO: remove it
-//  reader session is initialized for reader.info properties and then never updated 
+//  reader session is initialized for reader.info properties and then never updated
 // function* readerSetReduxState(action: readerActions.setReduxState.TAction) {
 
 //     const { winId, reduxState } = action.payload;

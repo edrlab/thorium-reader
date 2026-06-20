@@ -217,35 +217,58 @@ jobs:
     - name: Microsoft Windows Visual Studio lookup
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir /A "C:\Program Files\Microsoft Visual Studio" && dir /A "C:\Program Files\Microsoft Visual Studio\18" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\Hostx64" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\Hostx64\x64" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\HostArm64" && dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\HostArm64\arm64"
+        dir /A "C:\Program Files\Microsoft Visual Studio" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\Hostx64" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\Hostx64\x64" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\HostArm64" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\HostArm64\arm64"
       shell: cmd
 ###########################
     - name: Microsoft Windows dumpbin to PATH (ARM)
       #if: startsWith(matrix.osarch, 'windows-')
       if: ${{ matrix.osarch == 'windows-arm' }}
       run: >
-        $VS_ROOT = "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC"; Get-ChildItem -Path $VS_ROOT -Force; $VS_VERSION = (Get-ChildItem -Path $VS_ROOT | Sort-Object Name -Descending | Select-Object -First 1).Name; $VS_BIN = "$VS_ROOT\$VS_VERSION\bin\HostArm64\arm64"; echo $VS_BIN >> $env:GITHUB_PATH; echo $VS_BIN
+        $VS_ROOT = "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC";
+        Get-ChildItem -Path $VS_ROOT -Force;
+        $VS_VERSION = (Get-ChildItem -Path $VS_ROOT | Sort-Object Name -Descending | Select-Object -First 1).Name;
+        $VS_BIN = "$VS_ROOT\$VS_VERSION\bin\HostArm64\arm64";
+        echo $VS_BIN >> $env:GITHUB_PATH;
+        echo $VS_BIN
       shell: powershell
 ###########################
     - name: Microsoft Windows dumpbin to PATH (INTEL)
       #if: startsWith(matrix.osarch, 'windows-')
       if: ${{ matrix.osarch == 'windows-intel' }}
       run: >
-        $VS_ROOT = "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC"; Get-ChildItem -Path $VS_ROOT -Force; $VS_VERSION = (Get-ChildItem -Path $VS_ROOT | Sort-Object Name -Descending | Select-Object -First 1).Name; $VS_BIN = "$VS_ROOT\$VS_VERSION\bin\Hostx64\x64"; echo $VS_BIN >> $env:GITHUB_PATH; echo $VS_BIN
+        $VS_ROOT = "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC";
+        Get-ChildItem -Path $VS_ROOT -Force;
+        $VS_VERSION = (Get-ChildItem -Path $VS_ROOT | Sort-Object Name -Descending | Select-Object -First 1).Name;
+        $VS_BIN = "$VS_ROOT\$VS_VERSION\bin\Hostx64\x64";
+        echo $VS_BIN >> $env:GITHUB_PATH;
+        echo $VS_BIN
       shell: powershell
 ###########################
     - name: Microsoft Windows dumpbin check (ARM)
       #if: startsWith(matrix.osarch, 'windows-')
       if: ${{ matrix.osarch == 'windows-arm' }}
       run: >
-        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC" && dumpbin /headers "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\HostArm64\arm64\dumpbin.exe" | findstr /i machine
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC" &&
+        dumpbin /headers "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\HostArm64\arm64\dumpbin.exe" | findstr /i machine
       shell: cmd
 ###########################
     - name: Microsoft Windows dumpbin check (INTEL)
       #if: startsWith(matrix.osarch, 'windows-')
       if: ${{ matrix.osarch == 'windows-intel' }}
       run: >
-        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC" && dumpbin /headers "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\Hostx64\x64\dumpbin.exe" | findstr /i machine
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC" &&
+        dumpbin /headers "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\Hostx64\x64\dumpbin.exe" | findstr /i machine
       shell: cmd
 ###########################
 # - name: Microsoft Windows msbuild to PATH
@@ -358,20 +381,34 @@ jobs:
     - name: NPM install (arm64)
       #if: ${{ matrix.osarch == 'linux-arm' || matrix.osarch == 'windows-arm' || matrix.osarch == 'macos-arm' }}
       if: endsWith(matrix.osarch, '-arm')
-      run: npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root --arch=arm64 --cpu=arm64 && cd node_modules/electron && npm_config_arch=arm64 ELECTRON_INSTALL_ARCH=arm64 node install.js --arch=arm64 --cpu=arm64 && cd -
+      #(ls -alsR ~/.cache/electron/ || ls -alsR ~/Library/Caches/electron/ || ls -alsR ~/AppData/Local/electron/Cache/ || echo OK)
+      run: >
+        npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root --arch=arm64 --cpu=arm64 &&
+        cd node_modules/electron &&
+        DEBUG=@electron/get* force_no_cache=true npm_config_arch=arm64 ELECTRON_INSTALL_ARCH=arm64 node install.js --arch=arm64 --cpu=arm64 &&
+        cd -
+      shell: bash
       #export npm_config_arch=arm64 && export npm_config_cpu=arm64 &&
 ###########################
     - name: NPM install (x64)
       #if: ${{ matrix.osarch == 'linux-intel' || matrix.osarch == 'windows-intel' || matrix.osarch == 'macos-intel' }}
       if: endsWith(matrix.osarch, '-intel')
-      run: npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root --arch=x64 --cpu=x64 && cd node_modules/electron && npm_config_arch=x64 ELECTRON_INSTALL_ARCH=x64 node install.js --arch=x64 --cpu=x64 && cd -
+      #(ls -alsR ~/.cache/electron/ || ls -alsR ~/Library/Caches/electron/ || ls -alsR ~/AppData/Local/electron/Cache/ || echo OK)
+      run: >
+        npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root --arch=x64 --cpu=x64 &&
+        cd node_modules/electron &&
+        DEBUG=@electron/get* force_no_cache=true npm_config_arch=x64 ELECTRON_INSTALL_ARCH=x64 node install.js --arch=x64 --cpu=x64 &&
+        cd -
+      shell: bash
       #export npm_config_arch=x64 && export npm_config_cpu=x64 &&
 ###########################
     - name: Electron version + arch (Windows)
       #if: ${{ matrix.osarch == 'windows-intel' || matrix.osarch == 'windows-arm' }}
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        (dumpbin /headers "node_modules\electron\dist\electron.exe" | findstr /i machine) && (node_modules\\electron\\dist\\electron.exe --no-sandbox --version || echo INVALID_ARCH || true) && (node_modules\\electron\\dist\\electron.exe --no-sandbox --abi || echo INVALID_ARCH || true)
+        (dumpbin /headers "node_modules\electron\dist\electron.exe" | findstr /i machine) &&
+        (node_modules\\electron\\dist\\electron.exe --no-sandbox --version || echo INVALID_ARCH || true) &&
+        (node_modules\\electron\\dist\\electron.exe --no-sandbox --abi || echo INVALID_ARCH || true)
       shell: cmd
       continue-on-error: true
 ###########################
@@ -379,13 +416,17 @@ jobs:
       #if: ${{ matrix.osarch == 'linux-intel' || matrix.osarch == 'linux-arm' }}
       if: startsWith(matrix.osarch, 'linux-')
       run: >
-        (file node_modules/electron/dist/electron) && (node_modules/electron/dist/electron --no-sandbox --version || echo INVALID_ARCH || true) && (node_modules/electron/dist/electron --no-sandbox --abi || echo INVALID_ARCH || true)
+        (file node_modules/electron/dist/electron) &&
+        (node_modules/electron/dist/electron --no-sandbox --version || echo INVALID_ARCH || true) &&
+        (node_modules/electron/dist/electron --no-sandbox --abi || echo INVALID_ARCH || true)
 ###########################
     - name: Electron version + arch (MacOS)
       #if: ${{ matrix.osarch == 'macos-intel' || matrix.osarch == 'macos-arm' }}
       if: startsWith(matrix.osarch, 'macos-')
       run: >
-        (file node_modules/electron/dist/Electron.app/Contents/MacOS/Electron) && (node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --version || echo INVALID_ARCH || true) && (node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --abi || echo INVALID_ARCH || true)
+        (file node_modules/electron/dist/Electron.app/Contents/MacOS/Electron) &&
+        (node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --version || echo INVALID_ARCH || true) &&
+        (node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --abi || echo INVALID_ARCH || true)
 ###########################
     - run: npm list -g node-gyp || echo ok || true
 ###########################
@@ -404,7 +445,15 @@ jobs:
         PROD_THORIUM_HASH_MOD: ${{ secrets.S13 }}
       #run: sed 's/--x64/--arm64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json && npm run package:${{ matrix.packname }} && sed 's/--arm64/--x64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json
       run: >
-        node -e 'const path = require("path"); const fs = require("fs"); const filePath = path.join(process.cwd(), "package.json"); let fileStr = fs.readFileSync(filePath, { encoding: "utf8" }); fileStr = fileStr.replace(/--x64/g, "--arm64"); fs.writeFileSync(filePath, fileStr, { encoding: "utf8" });' && npm run pre-package:${{ matrix.packname }}
+        node -e '
+        const path = require("path");
+        const fs = require("fs");
+        const filePath = path.join(process.cwd(), "package.json");
+        let fileStr = fs.readFileSync(filePath, { encoding: "utf8" });
+        fileStr = fileStr.replace(/--x64/g, "--arm64");
+        fs.writeFileSync(filePath, fileStr, { encoding: "utf8" });
+        ' &&
+        npm run pre-package:${{ matrix.packname }}
 ###########################
     - name: non-PR action (build) INTEL
       #if: ${{ matrix.osarch == 'linux-intel' || matrix.osarch == 'windows-intel' || matrix.osarch == 'macos-intel' }}
@@ -414,7 +463,15 @@ jobs:
         THORIUM_TELEMETRY_SECRET_DATA: ${{ secrets.S10 }}
         PROD_THORIUM_HASH_MOD: ${{ secrets.S13 }}
       run: >
-        node -e 'const path = require("path"); const fs = require("fs"); const filePath = path.join(process.cwd(), "package.json"); let fileStr = fs.readFileSync(filePath, { encoding: "utf8" }); fileStr = fileStr.replace(/--arm64/g, "--x64"); fs.writeFileSync(filePath, fileStr, { encoding: "utf8" });' && npm run pre-package:${{ matrix.packname }}
+        node -e '
+        const path = require("path");
+        const fs = require("fs");
+        const filePath = path.join(process.cwd(), "package.json");
+        let fileStr = fs.readFileSync(filePath, { encoding: "utf8" });
+        fileStr = fileStr.replace(/--arm64/g, "--x64");
+        fs.writeFileSync(filePath, fileStr, { encoding: "utf8" });
+        ' &&
+        npm run pre-package:${{ matrix.packname }}
 #- run: ls -alsR release
 ###########################
     - name: MacOS KeyChain init
@@ -496,7 +553,8 @@ jobs:
         # CSC_LINK: ${{ secrets.CSC_LINK }}
         # CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
       run: >
-        npm run electron-builder:${{ matrix.packname }} && npm run post-package:${{ matrix.packname }}
+        npm run electron-builder:${{ matrix.packname }} &&
+        npm run post-package:${{ matrix.packname }}
 #- run: ls -alsR release
     - name: MacOS KeyChain teardown
       if: runner.os == 'macOS' && always()
@@ -555,7 +613,11 @@ jobs:
       # if: startsWith(matrix.osarch, 'windows-') && endsWith(matrix.osarch, '-arm') # runner.os == 'Windows'
       if: ${{ matrix.osarch == 'windows-arm' }}
       run: >
-        cd release && ls -als && (for filename in *.exe ; do mv "$filename" "${filename%.*}-arm64.${filename##*.}" ; done) && ls -als && cd -
+        cd release &&
+        ls -als &&
+        (for filename in *.exe ; do mv "$filename" "${filename%.*}-arm64.${filename##*.}" ; done) &&
+        ls -als &&
+        cd -
       shell: bash
 ###########################
     - name: Upload Artifact (Windows)
@@ -689,4 +751,6 @@ jobs:
 # GH_TOKEN: ${{ github.token }}
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: >
-        ls -alsR release ; (gh release create ${{ github.ref_name }} --target=develop --latest=false --prerelease --draft --title="Thorium Desktop reader ${{ github.ref_name }}" --notes="Expand the 'Assets' below to reveal the download links (build job: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" || echo OK || true) ; gh release upload ${{ github.ref_name }} "./release/*.*" --clobber
+        ls -alsR release ;
+        (gh release create ${{ github.ref_name }} --target=develop --latest=false --prerelease --draft --title="Thorium Desktop reader ${{ github.ref_name }}" --notes="Expand the 'Assets' below to reveal the download links (build job: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" || echo OK || true) ;
+        gh release upload ${{ github.ref_name }} "./release/*.*" --clobber

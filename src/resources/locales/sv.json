@@ -895,8 +895,8 @@
                     "300pct": "300 %",
                     "500pct": "500 %",
                     "50pct": "50 %",
-                    "fit": "sidstorlek",
-                    "width": "sidbredd"
+                    "fit": "Visa hela sidan",
+                    "width": "Fyll fönstret"
                 },
                 "title": "Zoom"
             },
@@ -908,14 +908,14 @@
                 "resetDetails": "Återställ dina läsinställningar till standardinställningarna.",
                 "save": "Spara egna läsinställningar",
                 "saveDetails": "Spara dina nuvarande inställningar för visning och textformatering. Du kan använda dem i andra böcker genom att klicka på \"Använd\" i andra läsarfönster.",
-                "title": "Förinställning"
+                "title": "Förinställningar"
             },
             "preview": "Förhandsvisning",
             "reduceFontSize": "Minska textstorlek",
             "reduceMotion": "Minska rörelse",
             "scrolled": "Rullningsbar",
             "spacing": "Avstånd",
-            "spreadModeEven": "\"Jämna\" siduppslag (standard är \"udda\")",
+            "spreadModeEven": "Uppslag börjar på jämna sidor (standard är udda)",
             "text": "Text",
             "theme": {
                 "name": {

@@ -13,7 +13,8 @@ import { PublicationRepository } from "readium-desktop/main/db/repository/public
 import { error } from "readium-desktop/main/tools/error";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all } from "redux-saga/effects";
-import { call as callTyped, put as putTyped, select as selectTyped, debounce as debounceTyped, SagaGenerator } from "typed-redux-saga/macro";
+import { call as callTyped, put as putTyped, select as selectTyped, debounce as debounceTyped } from "typed-redux-saga/macro";
+import { SagaGenerator } from "typed-redux-saga";
 import { RootState } from "../states";
 import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 // import { isPdfFn } from "readium-desktop/common/isManifestType";
