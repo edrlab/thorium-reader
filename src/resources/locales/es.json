@@ -1264,9 +1264,9 @@
             },
             "beta": {
                 "availability": "Esta función solo se admite en versiones recientes de Thorium; los libros de carpetas externas no aparecerán en Thorium 3.4 o anterior.",
-                "integrity": "Debes mantener este directorio seguro y accesible. Evita eliminarlo, restringir el acceso a él, o usar espacios de almacenamiento lentas o inestables tales como las unidades de red.",
+                "integrity": "Debes mantener este directorio seguro y accesible. Evita eliminarlo, restringir el acceso a él, o usar espacios de almacenamiento lentos o inestables tales como las unidades de red.",
                 "migration": "Thorium no transfiere tus libros automáticamente: si actualizas el espacio de almacenamiento adicional, debes trasladar manualmente tus publicaciones a la nueva ubicación. Si lo eliminas, debes trasladar manualmente tus publicaciones al espacio de almacenamiento original.",
-                "summary": "Saber más sobre esta característica, actualmente en beta",
+                "summary": "Saber más sobre esta función, actualmente en beta",
                 "warning": "No modifiques manualmente los ficheros de esta carpeta, ya que esto podría ocasionar problemas con tus libros o con el lector. Piensa en esta carpeta como una biblioteca segura gestionada por Thorium."
             },
             "configuration": {
