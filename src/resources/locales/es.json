@@ -1265,37 +1265,37 @@
             "beta": {
                 "availability": "Esta función solo se admite en versiones recientes de Thorium; los libros de carpetas externas no aparecerán en Thorium 3.4 o anterior.",
                 "integrity": "Debes mantener este directorio seguro y accesible. Evita eliminarlo, restringir el acceso a él, o usar plataformas de almacenamiento lentas o inestables tales como las unidades de red.",
-                "migration": "",
-                "summary": "",
-                "warning": ""
+                "migration": "Thorium no transfiere tus libros automáticamente: si actualizas el espacio de almacenamiento adicional, debes trasladar manualmente tus publicaciones a la nueva ubicación. Si lo eliminas, debes trasladar manualmente tus publicaciones al espacio de almacenamiento original.",
+                "summary": "Saber más sobre esta característica, actualmente en beta",
+                "warning": "No modifiques manualmente los ficheros de esta carpeta, ya que esto podría ocasionar problemas con tus libros o con el lector. Piensa en esta carpeta como una biblioteca segura gestionada por Thorium."
             },
             "configuration": {
-                "chooseFolderDescription": "",
-                "configuredDescription": "",
-                "notConfiguredDescription": ""
+                "chooseFolderDescription": "Elegir el directorio que Thorium debe utilizar como espacio de almacenamiento adicional.",
+                "configuredDescription": "El espacio de almacenamiento adicional está configurado y listo para almacenar las nuevas publicaciones.",
+                "notConfiguredDescription": "Las publicaciones importadas a Thorium Reader se almacenarán en el directorio seleccionado. Las publicaciones importadas previamente permanecerán en el sistema de almacenamiento original."
             },
             "dialogs": {
                 "add": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Continuar",
+                    "description": "Actualmente esta función está en beta. ¿Quieres continuar y configurar un espacio de almacenamiento adicional seleccionando un directorio?",
+                    "title": "Seleccionar un espacio de almacenamiento adicional"
                 },
                 "edit": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Editar directorio",
+                    "description": "Actualizar el espacio de almacenamiento adicional requiere precaución. Thorium no trasladará las publicaciones existentes por ti; tendrás que hacerlo manualmente. ¿Quieres continuar?",
+                    "title": "Actualizar el espacio de almacenamiento adicional"
                 },
                 "remove": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Eliminar directorio",
+                    "description": "Eliminar el espacio de almacenamiento adicional requiere precaución. Thorium no trasladará las publicaciones existentes por ti; tendrás que hacerlo manualmente. ¿Quieres continuar?",
+                    "title": "Eliminar espacio de almacenamiento adicional"
                 }
             },
             "locations": {
-                "defaultDescription": "",
-                "defaultInternal": "",
-                "externalStorage": "",
-                "title": ""
+                "defaultDescription": "Las publicaciones gestionadas por la aplicación, por defecto, se almacenan en ",
+                "defaultInternal": "Espacio de almacenamiento del sistema",
+                "externalStorage": "Espacio de almacenamiento externo",
+                "title": "Ubicaciones"
             }
         },
         "tabs": {
@@ -1303,7 +1303,7 @@
             "general": "General",
             "keyboardShortcuts": "Atajos de teclado",
             "profiles": "Perfiles",
-            "storage": ""
+            "storage": "Espacio de almacenamiento"
         },
         "theme": {
             "auto": "Automático",
