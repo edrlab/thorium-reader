@@ -89,7 +89,7 @@
         "login": "Iniciar sesión",
         "logout": "Cerrar sesión",
         "missing": "Faltan archivos",
-        "missingUnavailableDescription": "Esta publicación no se puede abrir porque sus archivos no se encuentran disponibles en el almacenamiento. Vuelve a importarla, o ve a Opciones, Almacenamiento, para añadir o cambiar el almacenamiento adicional.",
+        "missingUnavailableDescription": "Esta publicación no se puede abrir porque sus archivos no se encuentran disponibles en el espacio de almacenamiento. Vuelve a importarla, o ve a Opciones, Almacenamiento, para añadir o cambiar el espacio de almacenamiento adicional.",
         "moreInfo": "Detalles del libro",
         "myBooks": "Mis libros",
         "noPublicationHelpL1": "Desliza una publicación aquí",
@@ -254,7 +254,7 @@
                 "invalidFilename": "El nombre del archivo temporal de descarga no es válido.",
                 "invalidLink": "El enlace de descarga no es válido.",
                 "invalidTempDirectory": "El directorio temporal de descarga no es válido.",
-                "lengthMismatch": "Valló la comprobación de integridad para el archivo descargado: esperado {{- expected}} bytes, obtenido {{- actual}} bytes.",
+                "lengthMismatch": "Falló la comprobación de integridad para el archivo descargado: esperado {{- expected}} bytes, obtenido {{- actual}} bytes.",
                 "readStreamMissing": "La transmisión para la descarga no está disponible.",
                 "tooManyFilenameAttempts": "No se puede crear un único nombre para el archivo temporal de descarga: {{- path}}"
             }
@@ -663,7 +663,7 @@
         "expiredLcp": "Este libro no se puede leer porque la licencia LCP ha expirado.",
         "incorrectPassphrase": "No hay contraseñas almacenadas para esta publicación o la contraseña es incorrecta",
         "lcpEnd": "Fin",
-        "lcpNotSupported": "Aviso: esta es una versión de desarrollo de Thorium Desktop reader que no admite licencias LCP completas, y solo admite el descifrado de LCP con 'perfil básico' sin validación de certificado.",
+        "lcpNotSupported": "Aviso: esta es una versión de desarrollo de Thorium Desktop reader que no admite licencias LCP completas, y solo admite el descifrado de LCP con «perfil básico» sin validación de certificado.",
         "lcpRightsCopy": "Caracteres copiados",
         "lcpRightsPrint": "Páginas impresas",
         "lcpStart": "Inicio",
@@ -1253,7 +1253,7 @@
         },
         "sharedComputer": {
             "lcpAutoDeleteExpiredPublications": "Eliminar automáticamente publicaciones caducadas y datos de usuario asociados",
-            "lcpAutoDeleteExpiredPublicationsDescription": "Garantiza que los préstamos vencidos se borren automáticamente (incluyendo anotaciones personales, marcadores de lectura, etc.). Esto es útil en entornos con 'ordenadores compartidos', como bibliotecas o espacios universitarios.",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Garantiza que los préstamos vencidos se borren automáticamente (incluyendo anotaciones personales, marcadores de lectura, etc.). Esto es útil en entornos con «ordenadores compartidos», como bibliotecas o espacios universitarios.",
             "title": "Modo de ordenador compartido"
         },
         "storage": {
@@ -1264,7 +1264,7 @@
             },
             "beta": {
                 "availability": "Esta función solo se admite en versiones recientes de Thorium; los libros de carpetas externas no aparecerán en Thorium 3.4 o anterior.",
-                "integrity": "Debes mantener este directorio seguro y accesible. Evita eliminarlo, restringir el acceso a él, o usar plataformas de almacenamiento lentas o inestables tales como las unidades de red.",
+                "integrity": "Debes mantener este directorio seguro y accesible. Evita eliminarlo, restringir el acceso a él, o usar espacios de almacenamiento lentas o inestables tales como las unidades de red.",
                 "migration": "Thorium no transfiere tus libros automáticamente: si actualizas el espacio de almacenamiento adicional, debes trasladar manualmente tus publicaciones a la nueva ubicación. Si lo eliminas, debes trasladar manualmente tus publicaciones al espacio de almacenamiento original.",
                 "summary": "Saber más sobre esta característica, actualmente en beta",
                 "warning": "No modifiques manualmente los ficheros de esta carpeta, ya que esto podría ocasionar problemas con tus libros o con el lector. Piensa en esta carpeta como una biblioteca segura gestionada por Thorium."
