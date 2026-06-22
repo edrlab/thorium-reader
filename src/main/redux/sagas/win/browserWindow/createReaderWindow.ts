@@ -20,15 +20,16 @@ import {
 } from "readium-desktop/preprocessor-directives";
 
 import {
-    contextMenuSetup, trackBrowserWindow,
+    trackBrowserWindow,
 } from "@r2-navigator-js/electron/main/browser-window-tracker";
 
 import { getPublication } from "../../api/publication/getPublication";
 import { TIMEOUT_BROWSER_WINDOW_INITIALISATION, WINDOW_MIN_HEIGHT, WINDOW_MIN_WIDTH } from "readium-desktop/common/constant";
 import { URL_PROTOCOL_FILEX, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
-import { readerNewWindowBound } from "../../reader";
+import { readerNewWindowState } from "../../reader";
 import { winCommonActions } from "readium-desktop/common/redux/actions";
 import { assertUUIDv4 } from "readium-desktop/utils/uuid";
+import { persistableWindowBound } from "../session/browserWindowState";
 
 // Logger
 const debug = debug_("readium-desktop:createReaderWindow");
@@ -39,8 +40,8 @@ const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
 export function* createReaderWindow(publicationIdentifier: string, manifestUrl: string,  windowIdentifier: string /* winBound, reduxState*/) {
     assertUUIDv4(windowIdentifier);
     assertUUIDv4(publicationIdentifier);
-
-    const winBound = yield* callTyped(readerNewWindowBound, publicationIdentifier);
+    
+    const { windowBound: winBound, windowMaximized } = yield* callTyped(readerNewWindowState, publicationIdentifier);
     const readerWindow = new BrowserWindow({
         ...winBound,
         minWidth: WINDOW_MIN_WIDTH,
@@ -66,11 +67,6 @@ export function* createReaderWindow(publicationIdentifier: string, manifestUrl: 
         readerWindow.webContents?.send("window-blur");
     });
 
-    if (ENABLE_DEV_TOOLS) {
-        const wc = readerWindow.webContents;
-        contextMenuSetup(wc, wc.id);
-    }
-
     const pathBase64 = manifestUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
     const pathDecoded = Buffer.from(decodeURIComponent(pathBase64), "base64").toString("utf8");
 
@@ -85,8 +81,13 @@ export function* createReaderWindow(publicationIdentifier: string, manifestUrl: 
         winBound,
         // reduxState,
         windowIdentifier,
+        windowMaximized,
     ));
-    yield* forkTyped(() => diMainGet("publication-data").writeJsonObj(publicationIdentifier, "bound", winBound));
+    yield* forkTyped(() => diMainGet("publication-data").writeJsonObj(publicationIdentifier, "bound", persistableWindowBound(winBound, windowMaximized)));
+
+    if (windowMaximized) {
+        readerWindow.maximize();
+    }
 
     saveReaderWindowInDi(readerWindow, windowIdentifier);
 

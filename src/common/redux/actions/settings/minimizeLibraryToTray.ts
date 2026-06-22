@@ -5,26 +5,18 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Rectangle } from "electron";
 import { Action } from "readium-desktop/common/models/redux";
+import { ISettingsState } from "../../states/settings";
 
-export const ID = "WIN_SESSION_SET_BOUND";
+export const ID = "MINIMIZE_LIBRARY_TO_TRAY";
 
-export interface Payload {
-    windowIdentifier: string;
-    winBound: Rectangle;
-    windowMaximized?: boolean;
-}
-
-export function build(windowIdentifier: string, winBound: Rectangle, windowMaximized?: boolean):
-    Action<typeof ID, Payload> {
+export function build(state: boolean):
+    Action<typeof ID, Pick<ISettingsState, "minimizeLibraryToTray">> {
 
     return {
         type: ID,
         payload: {
-            windowIdentifier,
-            winBound,
-            windowMaximized,
+            minimizeLibraryToTray: state,
         },
     };
 }

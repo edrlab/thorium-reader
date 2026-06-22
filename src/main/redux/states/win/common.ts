@@ -9,4 +9,5 @@ import { Rectangle } from "electron";
 
 export interface IWinWindowBoundState {
     windowBound: Rectangle;
+    windowMaximized?: boolean;
 }

@@ -45,7 +45,9 @@
             "title": "{{- appName}} ενημέρωση λογισμικού."
         },
         "window": {
-            "showLibrary": "Εμφάνιση βιβλιοθήκης"
+            "showLibrary": "Εμφάνιση βιβλιοθήκης",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -1305,6 +1307,11 @@
             "description": "Η εφαρμογή του θέματος είναι συμβατό με το λειτουργικό σύστημα.",
             "light": "Ελαφρύ",
             "title": "Εφαρμογή Θέματος"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

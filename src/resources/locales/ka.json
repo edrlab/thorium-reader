@@ -45,7 +45,9 @@
             "title": ""
         },
         "window": {
-            "showLibrary": "ბიბლიოთეკის ჩვენება / წიგნების კარადა"
+            "showLibrary": "ბიბლიოთეკის ჩვენება / წიგნების კარადა",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -1304,6 +1306,11 @@
             "dark": "",
             "description": "",
             "light": "",
+            "title": ""
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
             "title": ""
         }
     },

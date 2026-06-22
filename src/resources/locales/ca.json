@@ -45,7 +45,9 @@
             "title": "{{- appName}} software actualitzat."
         },
         "window": {
-            "showLibrary": "Mostrar biblioteca"
+            "showLibrary": "Mostrar biblioteca",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -1311,6 +1313,11 @@
             "description": "El tema de l'aplicació coincideix amb el sistema operatiu.",
             "light": "Llum",
             "title": "Tema d'aplicació"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

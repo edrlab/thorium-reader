@@ -27,6 +27,7 @@ export interface Payload {
     filesystemPath: string;
     manifestUrl: string;
     reduxStateReader: IReaderStateReaderSession;
+    windowMaximized?: boolean;
 }
 
 export function build(
@@ -38,6 +39,7 @@ export function build(
     winBound: Rectangle, // window rectangle of the current reader window
     // reduxStateReader: Partial<IReaderStateReaderPersistence>,
     windowIdentifier: string,
+    windowMaximized?: boolean,
     ):
     Action<typeof ID, Payload> {
 
@@ -82,6 +84,7 @@ export function build(
             winBound,
             windowIdentifier,
             reduxStateReader: reduxStateReaderHydrated,
+            windowMaximized,
         },
     };
 }

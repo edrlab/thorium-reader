@@ -45,7 +45,9 @@
             "title": "{{- appName}} programinės įrangos naujinys."
         },
         "window": {
-            "showLibrary": "Rodyti biblioteką / lentyną"
+            "showLibrary": "Rodyti biblioteką / lentyną",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -145,12 +147,15 @@
             "descAuthor": "'{{- author}}'",
             "descCreator": ", kurią(-ias) sukūrė",
             "descList_few": "{{- count}} pastabos{{- creator}}, bus susietos su {{- author}} leidiniu '{{- title}}'",
+            "descList_many": "",
             "descList_one": "{{- count}} pastaba{{- creator}}, bus susieta su {{- author}} leidiniu '{{- title}}'",
             "descList_other": "{{- count}} pastabų{{- creator}}, bus susietos su {{- author}} leidiniu '{{- title}}'",
             "descNewer_few": "Konfliktas(-ai): {{- count}} naujesnės pastabos",
+            "descNewer_many": "",
             "descNewer_one": "Konfliktas(-ai): {{- count}} naujesnė pastaba",
             "descNewer_other": "Konfliktas(-ai): {{- count}} naujesnių pastabų",
             "descOlder_few": "Konfliktas(-ai): {{- count}} senesnės pastabos",
+            "descOlder_many": "",
             "descOlder_one": "Konfliktas(-ai): {{- count}} senesnė pastaba",
             "descOlder_other": "Konfliktas(-ai): {{- count}} senesnių pastabų",
             "descTitle": "Pastabų pavadinimas: ",
@@ -169,10 +174,12 @@
         },
         "deleteAnnotations": "Šalinti pastabas?",
         "deleteAnnotationsText_few": "Ar tikrai norite pašalinti {{- count}} pastabas?",
+        "deleteAnnotationsText_many": "",
         "deleteAnnotationsText_one": "Ar tikrai norite pašalinti {{- count}} pastabą?",
         "deleteAnnotationsText_other": "Ar tikrai norite pašalinti {{- count}} pastabų?",
         "deleteBookmarks": "Šalinti skirtukus?",
         "deleteBookmarksText_few": "Ar tikrai norite pašalinti {{- count}} skirtukus?",
+        "deleteBookmarksText_many": "",
         "deleteBookmarksText_one": "Ar tikrai norite pašalinti {{- count}} skirtuką?",
         "deleteBookmarksText_other": "Ar tikrai norite pašalinti {{- count}} skirtukų?",
         "deleteFeed": "Pašalinti katalogą?",
@@ -832,6 +839,7 @@
         "picker": {
             "search": {
                 "founds_few": "{{- count}} atitikmenys",
+                "founds_many": "",
                 "founds_one": "{{- count}} atitikmuo",
                 "founds_other": "{{- count}} atitikmenų",
                 "input": "ieškomas tekstas",
@@ -1311,6 +1319,11 @@
             "description": "Programos tema atitinka operacinės sistemos temą.",
             "light": "Šviesi",
             "title": "Programos tema"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

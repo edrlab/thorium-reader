@@ -1,7 +1,13 @@
 /.github/ @edrlab/thorium-desktop-lead-devs
 /.github_release/ @edrlab/thorium-desktop-lead-devs
+/package.json @edrlab/thorium-desktop-lead-devs
+/package-lock.json @edrlab/thorium-desktop-lead-devs
 /.gitignore @edrlab/thorium-desktop-lead-devs
 /latest.json @edrlab/thorium-desktop-lead-devs
 /.vscode/ @edrlab/thorium-desktop-lead-devs
+/scripts/package-ci-patch.js @edrlab/thorium-desktop-lead-devs
+/scripts/release-github.mjs @edrlab/thorium-desktop-lead-devs
+/scripts/dist-hash.mjs @edrlab/thorium-desktop-lead-devs
+./scripts/package-customization-profile.sh @edrlab/thorium-desktop-lead-devs
 /.flox/ @danielweck
 /shell.nix @panaC
