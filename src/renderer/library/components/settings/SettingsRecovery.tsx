@@ -158,8 +158,11 @@ const SettingsRecovery = (props: {
                     ) : null}
                     <button
                         className={stylesButtons.button_secondary_blue}
-                        disabled={isRecoveryLoading || isRecovering}
-                        onClick={checkRecoverablePublications}
+                        aria-disabled={isRecoveryLoading || isRecovering}
+                        onClick={() => {
+                                if (isRecoveryLoading || isRecovering) return;
+                                checkRecoverablePublications();
+                            }}
                     >
                         {isRecoveryChecked ? "Check again" : "Check for recoverable publications"}
                     </button>

@@ -45,7 +45,9 @@
             "title": "{{- appName}} software actualiza."
         },
         "window": {
-            "showLibrary": "Mostrar biblioteca"
+            "showLibrary": "Mostrar biblioteca",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -89,6 +91,7 @@
         "login": "",
         "logout": "",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Máis información",
         "myBooks": "Os meus libros",
         "noPublicationHelpL1": "Arrastra unha publicación aquí",
@@ -105,6 +108,8 @@
                 "password": "Password",
                 "register": "Rexistro",
                 "retry": "",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Username / Enderezo de correo electrónico"
             },
             "info": {
@@ -126,6 +131,7 @@
                 "state": "Estado"
             }
         },
+        "openFolder": "",
         "publisher": "Editor",
         "readBook": "Ler",
         "released": "Publicado en",
@@ -237,7 +243,18 @@
             "success": ""
         },
         "download": {
-            "error": "A descarga de {{-  title}} fallou: [{{-  err}}]"
+            "cancelled": "",
+            "error": "A descarga de {{-  title}} fallou: [{{-  err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{-  title}} xa estaba importado",
@@ -245,7 +262,13 @@
             "success": "A importación de {{-  title}} finalizou."
         },
         "open": {
-            "error": "Non se pode abrir a publicación: {{-  err}}"
+            "error": "Non se pode abrir a publicación: {{-  err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": ""
     },
@@ -562,10 +585,6 @@
                 "compact": "",
                 "descriptive": ""
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "",
                 "descriptive": ""
@@ -580,6 +599,10 @@
                 "descriptive": ""
             },
             "ways-of-reading-visual-adjustments-unknown": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
                 "compact": "",
                 "descriptive": ""
             }
@@ -637,6 +660,7 @@
         "expiredLcp": "Este libro non se pode ler porque a licenza  LCP expirou.",
         "incorrectPassphrase": "",
         "lcpEnd": "Fin",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Copia de personaxes",
         "lcpRightsPrint": "Copia de impresora",
         "lcpStart": "Inicio",
@@ -674,6 +698,11 @@
             },
             "annotationsOptions": "Opcións",
             "date": "",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "",
             "filter": {
                 "all": "",
@@ -788,6 +817,8 @@
         "notes": {
             "colors": {
                 "cyan": "",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "",
                 "orange": "",
                 "purple": "",
@@ -835,6 +866,7 @@
             },
             "customFontSelected": "",
             "customizeReader": "Personalizar o estilo do texto",
+            "defaultValue": "",
             "disabled": "desactivado",
             "display": "Visualización",
             "disposition": {
@@ -850,6 +882,7 @@
             "lineSpacing": "Interlineado",
             "margin": "Marxe",
             "mathjax": "",
+            "mathjaxDescription": "",
             "noFootnotes": "Desactivar notas ao pé",
             "noRTLFlip": "Deshabilitar a interface de usuario de dereita a esquerda\n",
             "noRuby": "Ocultar Ruby xaponés",
@@ -978,6 +1011,18 @@
                     "name": ""
                 },
                 "AudioPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
                     "description": "",
                     "name": ""
                 },
@@ -1202,11 +1247,59 @@
         "session": {
             "title": "Gardar sesión"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Aspecto visual",
             "general": "General",
             "keyboardShortcuts": "Atallos de teclado",
-            "profiles": ""
+            "profiles": "",
+            "storage": ""
         },
         "theme": {
             "auto": "Automático\n",
@@ -1214,6 +1307,11 @@
             "description": "O deseño da aplicación coincide co sistema operativo.",
             "light": "Claro",
             "title": "Deseño da aplicación\n"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

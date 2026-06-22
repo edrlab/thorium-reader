@@ -45,7 +45,9 @@
             "title": "Aggiornamento del software {{- appName}}."
         },
         "window": {
-            "showLibrary": "Visualizza la biblioteca"
+            "showLibrary": "Visualizza la biblioteca",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -66,7 +68,7 @@
         "customization": {
             "fallback": {
                 "description": "Nessuna descrizione del profilo",
-                "publications": "Descrizione del profilo",
+                "publications": "Pubblicazioni del profilo",
                 "screen": "Nessun titolo",
                 "title": "Titolo del profilo"
             }
@@ -88,10 +90,11 @@
         "lastRead": "Ultima lettura",
         "login": "Login",
         "logout": "Logout",
-        "missing": "",
+        "missing": "File mancanti",
+        "missingUnavailableDescription": "Questa pubblicazione non può essere aperta perché i file depositati non sono disponibili. Si prega di reimportarli o di cliccare su Impostazioni e poi su Spazio d'archiviazione per aggiungere o modificare lo spazio d'archiviazione.",
         "moreInfo": "Maggiori informazioni",
         "myBooks": "I miei libri",
-        "noPublicationHelpL1": "Aggiungi qui una pubblicazione",
+        "noPublicationHelpL1": "Rilascia qui i file",
         "noPublicationHelpL2": "o utilizza il tasto \"{{- importTitle }}\" in alto a destra.",
         "noPublicationHelpL3": "I file protetti da LCP sono supportati.",
         "noPublicationHelpL4": "Estensioni supportate:",
@@ -105,27 +108,30 @@
                 "password": "Password",
                 "register": "Registrati",
                 "retry": "Riprovare",
+                "unauthorized": "Non autorizzato",
+                "unauthorizedUnsupportedType": "Non autorizzato (WWWAuthenticate type '{{- type}}' non supportato)",
                 "username": "Nome utente / Indirizzo e-mail"
             },
             "info": {
                 "availableSince": "Da",
                 "availableState": {
                     "available": "Disponibile",
-                    "ready": "Pronto",
+                    "ready": "Disponibile",
                     "reserved": "Prenotato",
                     "unavailable": "Non disponibile",
                     "unknown": "Sconosciuto"
                 },
                 "availableUntil": "Fino al",
-                "copyAvalaible": "Numero di copie disponibili",
+                "copyAvalaible": "Disponibile",
                 "copyTotal": "Numero di copie",
-                "holdPosition": "La tua posizione di attesa",
+                "holdPosition": "La tua posizione",
                 "holdTotal": "Prenotato",
                 "numberOfItems": "Numero di risorse",
                 "priveValue": "Prezzo",
                 "state": "Stato"
             }
         },
+        "openFolder": "Apri la cartella",
         "publisher": "Editore",
         "readBook": "Leggi",
         "released": "Pubblicato il",
@@ -143,12 +149,12 @@
             "descList_many": "{{- count}} note di {{- creator}} saranno associate a {{- title}} {{- author}}",
             "descList_one": "{{- count}} nota di {{- creator}} sarà associata a {{- title}} {{- author}}",
             "descList_other": "{{- count}} note di {{- creator}} saranno associate a {{- title}} {{- author}}",
-            "descNewer_many": "{{- count}} nuove versioni di queste note sono già associate alla pubblicazione.",
-            "descNewer_one": "{{- count}} nuova versione di queste note è già associata alla pubblicazione.",
-            "descNewer_other": "{{- count}} nuove versioni di queste note sono già associate alla pubblicazione.",
-            "descOlder_many": "{{- count}} versioni precedenti di queste note sono già associate alla pubblicazione.",
-            "descOlder_one": "{{- count}} versione precedente di queste note è già associata alla pubblicazione.",
-            "descOlder_other": "{{- count}} versioni precedenti di queste note sono già associate alla pubblicazione.",
+            "descNewer_many": "{{- count}} nuove versioni di queste note sono già associate alla pubblicazione",
+            "descNewer_one": "{{- count}} nuova versione di queste note è già associata alla pubblicazione",
+            "descNewer_other": "{{- count}} nuove versioni di queste note sono già associate alla pubblicazione",
+            "descOlder_many": "{{- count}} versioni precedenti di queste note sono già associate alla pubblicazione",
+            "descOlder_one": "{{- count}} versione precedente di queste note è già associata alla pubblicazione",
+            "descOlder_other": "{{- count}} versioni precedenti di queste note sono già associate alla pubblicazione",
             "descTitle": "Titolo delle note: ",
             "importAll": "Importa tutte le note",
             "importWithoutConflict": "Importa solo le note senza conflitti",
@@ -158,7 +164,7 @@
         "cancel": "Annulla",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "Nessuna pagina di benvenuto prevista",
+                "fallbackWelcomeScreen": "Nessuna pagina di benvenuto fornita",
                 "state": "Stato: {{- state}}",
                 "title": "Personalizzazione del profilo fornita e attivata"
             }
@@ -198,9 +204,9 @@
         "importTitle": "Importa una pubblicazione",
         "listTitle": "Vista a lista",
         "myCatalogs": "I miei cataloghi",
-        "refreshTitle": "Aggiorna",
+        "refreshTitle": "Ricarica",
         "searchPlaceholder": "Cerca",
-        "searchTitle": "Titolo, autore, formato o parola chiave",
+        "searchTitle": "Ricerca",
         "settings": "Impostazioni",
         "settingsLabel": "Impostazioni dell'applicazione",
         "viewMode": "Modalità di visualizzazione"
@@ -212,13 +218,13 @@
             "selectOption": "Seleziona un elemento"
         },
         "lcp": {
-            "hidePassphrase": "Nascondi la password",
+            "hidePassphrase": "Nascondi la passphrase",
             "hint": "Suggerimento:",
             "open": "Apri",
             "password": "Passphrase",
-            "sentence": "Questa pubblicazione ha bisogno di una passphrase LCP per essere aperta:",
+            "sentence": "Questa pubblicazione ha bisogno di una passphrase LCP per essere aperta",
             "showPassphrase": "Mostra la passphrase",
-            "urlHint": "Hai dimenticato la tua passphrase? Clicca qui per avere un aiuto",
+            "urlHint": "Hai dimenticato la tua passphrase? Clicca qui per avere un aiuto.",
             "whatIsLcp?": "Cos'è LCP?",
             "whatIsLcpInfoDetails": "LCP è l'acronimo di \"Licensed Content Protection\".",
             "whatIsLcpInfoDetailsLink": "Per saperne di più, clicca su questo link verso il sito web di EDRLab."
@@ -237,20 +243,37 @@
             "alreadyImported": "Tutte le note sono già state importate.",
             "emptyFile": "Nessuna nota disponibile nel file.",
             "errorParsing": "Errore durante l'analisi del file: ",
-            "noBelongTo": "Impossibile importare le note, almeno una nota non appartiene alla pubblicazione",
+            "noBelongTo": "Impossibile importare le note, almeno una nota non appartiene alla pubblicazione.",
             "nothing": "Non c'è nessuna nota pronta per essere importata; l'importazione sarà interrotta",
             "success": "Importazione completata."
         },
         "download": {
-            "error": "Il download di {{- title}} è fallito: [{{- err}}]"
+            "cancelled": "Download annullato.",
+            "error": "Il download di {{- title}} è fallito: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "Verifica di integrità del file scaricato non riuscita: previsto SHA-256 hash {{- expected}}, ottenuto {{- actual}}.",
+                "httpGet": "Download HTTP fallito: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "invalidFilename": "Il nome temporaneo del file di download non è valido.",
+                "invalidLink": "Il link per il download non è valido.",
+                "invalidTempDirectory": "La directory di download temporanea non è valida.",
+                "lengthMismatch": "Verifica di integrità del file scaricato non riuscita: previsti {{- expected}} byte, ottenuti {{- actual}} byte.",
+                "readStreamMissing": "Il download dello streaming non è disponibile.",
+                "tooManyFilenameAttempts": "Impossibile creare un nome univoco per il file di download temporaneo: {{- path}}"
+            }
         },
         "import": {
-            "alreadyImport": "{{- title}} è già stato importato",
+            "alreadyImport": "{{- title}} è già stato importato.",
             "fail": "L'importazione di {{- path}} è fallita. {{- err}}",
             "success": "L'importazione di {{- title}} è terminata."
         },
         "open": {
-            "error": "La pubblicazione non può essere aperta: {{- err}}"
+            "error": "La pubblicazione non può essere aperta: {{- err}}",
+            "folderNotFound": "La cartella della pubblicazione non si trova. Reimportala o configura uno spazio d'archiviazione aggiuntivo in Impostazioni > Spazio d'archiviazione."
+        },
+        "storage": {
+            "removed": "Cartella della pubblicazione eliminata.",
+            "updateFailed": "Aggiornamento della cartella della pubblicazione fallito: {{- message}}",
+            "updated": "Cartella della pubblicazione aggiornata."
         },
         "wipeData": "I dati per il login sono stati cancellati (token d'accesso e cookies)"
     },
@@ -284,10 +307,10 @@
             "error": "Impossibile accedere al feed OPDS",
             "noInternet": "Nessuna connessione internet",
             "noInternetMessage": "Controlla il cavo di connessione, il modem, il router o l connessione wifi",
-            "reject": "Si è verificato un errore inatteso durante l'elaborazione del feed OPDS!",
-            "timeout": "Si è verificato un timeout nella connessione, per favore riprova più tardi."
+            "reject": "Si è verificato un errore inatteso!",
+            "timeout": "Si è verificato un timeout nella connessione, per favore riprova più tardi"
         },
-        "next": "Prossimo",
+        "next": "Successivo",
         "previous": "Precedente",
         "resumeBrowsing": "Riprendi la navigazione",
         "shelf": "Scaffale",
@@ -305,7 +328,7 @@
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "Informazioni aggiuntive per le tecnologie ARIA",
+                "compact": "Informazioni aggiuntive per le tecnologie d'assistenza",
                 "descriptive": "Il contenuto è semanticamente arricchito con ruoli ARIA per ottimizzare l'organizzazione e facilitare la navigazione"
             },
             "additional-accessibility-information-audio-descriptions": {
@@ -346,7 +369,7 @@
             },
             "additional-accessibility-information-tactile-graphics": {
                 "compact": "Grafica tattile inclusa",
-                "descriptive": "La grafica tattile è stata integrata per facilitare l'accesso agli elementi visivi alle persone non vedenti"
+                "descriptive": "La grafica tattile è stata integrata per facilitare l'accesso agli elementi visivi per le persone non vedenti"
             },
             "additional-accessibility-information-tactile-objects": {
                 "compact": "Oggetti 3D tattili",
@@ -479,7 +502,7 @@
         "navigation": {
             "navigation-index": {
                 "compact": "Indice",
-                "descriptive": "L’indice con link diretto a tutte le voci di riferimento"
+                "descriptive": "Indice con link diretto a tutte le voci di riferimento"
             },
             "navigation-no-metadata": {
                 "compact": "Nessuna informazione disponibile",
@@ -567,10 +590,6 @@
                 "compact": "Clip audio preregistrate",
                 "descriptive": "Le clip audio preregistrate sono integrate nel contenuto"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "Nessuna informazione sull'audio preregistrato",
-                "descriptive": "Nessuna informazione sull'audio preregistrato"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "Solo audio preregistrato",
                 "descriptive": "Audiolibro senza testo alternativo"
@@ -587,6 +606,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Nessuna informazione sulla possibilità di formattare il testo",
                 "descriptive": "Nessuna informazione sulla possibilità di formattare il testo"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "L'aspetto non può essere modificato",
+                "descriptive": "La formattazione del testo e della pagina sono simili alla versione a stampa e non possono essere modificate ma il sistema può fornire opzioni di zoom"
             }
         }
     },
@@ -627,8 +650,8 @@
         },
         "author": "Autore",
         "cancelledLcp": "Questo libro non può essere letto perchè la licenza LCP è stata annullata.",
-        "certificateRevoked": "Il certificato è revocato.",
-        "certificateSignatureInvalid": "La firma del certificato non è valida.",
+        "certificateRevoked": "Certificato LCP revocato.",
+        "certificateSignatureInvalid": "La firma del certificato LCP non è valida.",
         "cover": {
             "img": "immagine di copertina"
         },
@@ -642,13 +665,14 @@
         "expiredLcp": "Questa pubblicazione non può essere letta perché la licenza LCP è scaduta.",
         "incorrectPassphrase": "Nessuna passphrase memorizzata è associata alla pubblicazione, oppure la passphrase inserita è errata.",
         "lcpEnd": "Fine",
+        "lcpNotSupported": "ATTENZIONE: questo è un prototipo di Thorium Reader che non supporta la produzione di licenze LCP e supporta unicamente la versione di base di LCP, senza convalida di certificato.",
         "lcpRightsCopy": "Caratteri copiati",
         "lcpRightsPrint": "Pagine stampate",
         "lcpStart": "Inizio",
         "licenceLCP": "Licenza (LCP)",
         "licenseCertificateDateInvalid": "Il certificato LCP è scaduto prima della data di licenza ({{- dateTime}}).",
-        "licenseOutOfDate": "La licenza è scaduta",
-        "licenseSignatureInvalid": "La firma della licenza non è valida",
+        "licenseOutOfDate": "La licenza LCP è scaduta.",
+        "licenseSignatureInvalid": "La firma della licenza LCP non è valida.",
         "licensed": "Concesso in licenza",
         "markAsRead": "Segna come letto",
         "notStarted": "Non iniziato",
@@ -660,8 +684,8 @@
         "remainingTime": "Prestito (tempo rimanente)",
         "renewButton": "Rinnova",
         "returnButton": "Restituisci",
-        "returnedLcp": "Questo libro non può essere letto perchè la licenza LCP è stata restituita",
-        "revokedLcp": "Questo libro non può essere letto perchè la licenza LCP è stata ritirata",
+        "returnedLcp": "Questa pubblicazione protetta da licenza LCP è stata restituita.",
+        "revokedLcp": "La licenza LCP di questa pubblicazione è stata ritirata.",
         "seeLess": "Visualizza di meno",
         "seeMore": "Visualizza di più",
         "timeLeft": "Tempo rimanente",
@@ -674,12 +698,17 @@
             "addNote": "Annotare",
             "advancedMode": "Modalità istantanea (creazione automatica dopo la selezione)",
             "annotationsExport": {
-                "description": "Assegnare un nome a questa lista di annotazioni",
+                "description": "Assegnare un nome a questa lista di annotazioni:",
                 "title": "Titolo"
             },
             "annotationsOptions": "Opzioni",
             "date": "Data di modifica",
-            "export": "Salva le note in",
+            "error": {
+                "pdf": {
+                    "validationSelection": "Impossibile creare un'annotazione PDF da questa selezione."
+                }
+            },
+            "export": "Salva le note in...",
             "filter": {
                 "all": "Tutte",
                 "filterByColor": "Filtra per colore",
@@ -793,6 +822,8 @@
         "notes": {
             "colors": {
                 "cyan": "Ciano",
+                "darkorange": "Arancione scuro",
+                "darkyellow": "Giallo scuro",
                 "green": "Verde",
                 "orange": "Arancione",
                 "purple": "Viola",
@@ -837,10 +868,11 @@
                 "auto": "Auto",
                 "one": "1 col",
                 "title": "Colonne",
-                "two": "2 cols"
+                "two": "2 colonne"
             },
             "customFontSelected": "Hai scelto un font personale",
             "customizeReader": "Personalizza la formattazione del testo",
+            "defaultValue": "valore predefinito",
             "disabled": "Disattivato",
             "display": "Visualizzazione",
             "disposition": {
@@ -856,6 +888,7 @@
             "lineSpacing": "Spaziatura tra le linee",
             "margin": "Margine",
             "mathjax": "Abilita MathJax",
+            "mathjaxDescription": "MathJax",
             "noFootnotes": "Disattiva note a piè di pagina in elementi a comparsa",
             "noRTLFlip": "Disabilita l'interfaccia utente da destra a sinistra",
             "noRuby": "Nascondi Ruby Giapponese",
@@ -890,7 +923,7 @@
             "reduceMotion": "Riduci il movimento",
             "scrolled": "Scrollabile",
             "spacing": "Spaziatura",
-            "spreadModeEven": "",
+            "spreadModeEven": "Pagine affiancate 'pari' (l'impostazione predefinita è 'dispari')",
             "text": "Testo",
             "theme": {
                 "name": {
@@ -986,6 +1019,18 @@
                 "AudioPreviousAlt": {
                     "description": "Torna al segmento audio precedente nella narrazione (EPUB3 con Media Overlays, lettura ad alta voce con sintesi vocale o audiolibro preregistrato). Quest'azione salta qualsiasi struttura intermedia",
                     "name": "Segmento audio precedente (esci)"
+                },
+                "AudioSpeedDecrease": {
+                    "description": "Riduci la velocità della riproduzione dell'audio EPUB3 Media Overlays o della lettura ad alta voce",
+                    "name": "Riduci la velocità dell'audio"
+                },
+                "AudioSpeedIncrease": {
+                    "description": "Aumenta la velocità della riproduzione dell'audio EPUB3 Media Overlays o della lettura ad alta voce",
+                    "name": "Aumenta la velocità dell'audio"
+                },
+                "AudioSpeedReset": {
+                    "description": "Esegui il reset della velocità della riproduzione dell'audio EPUB3 Media Overlays o della lettura ad alta voce",
+                    "name": "Esegui il reset della velocità dell'audio"
                 },
                 "AudioStop": {
                     "description": "Interrompi l'audio in riproduzione (EPUB3 con Media Overlays, lettura ad alta voce con sintesi vocale o audiolibro preregistrato)",
@@ -1193,7 +1238,7 @@
             }
         },
         "profiles": {
-            "info": "",
+            "info": "Cambia il profilo per personalizzare l'app con il marchio e i colori del partner fornitore. Ogni profilo offre un'esperienza personalizzata.",
             "thorium": {
                 "description": "Il profilo originale è Thorium Vanilla, creato da EDRLab.",
                 "title": "Thorium vanilla"
@@ -1201,18 +1246,66 @@
             "version": "Versione: {{- version}}"
         },
         "screenReaderActivate": {
-            "help": "",
+            "help": "Quando l'applicazione rileva la presenza di tecnologia assistiva, l'interfaccia utente funziona meglio con i lettori di schermo",
             "message": "Supporto migliorato per screen reader",
             "title": "Migliora l’esperienza con lo screen reader"
         },
         "session": {
             "title": "Attiva il salvataggio della sessione di lettura"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "Rimozione automatica delle pubblicazioni scadute e dei relativi dati dell'utente",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Garantisce la cancellazione automatica dei prestiti scaduti (incluse le annotazioni personali, i segnalibri, etc.). Questa funzionalità è utile in ambienti con \"computer condivisi\" come biblioteche o aule universitarie.",
+            "title": "Modalità computer condivisi"
+        },
+        "storage": {
+            "actions": {
+                "addDirectory": "Seleziona uno spazio di archiviazione aggiuntivo",
+                "changeDirectory": "Aggiorna lo spazio d'archiviazione",
+                "removeStorageDirectory": "Rimuovi lo spazio d'archiviazione aggiuntivo"
+            },
+            "beta": {
+                "availability": "Questa configurazione funziona solo con le versioni recenti di Thorium; le cartelle esterne non appariranno nella versione Thorium 3.4 o quelle precedenti.",
+                "integrity": "È necessario mantenere questa directory al sicuro e accessibile. Si eviti di eliminarla, di limitarne l'accesso o di utilizzare supporti di archiviazione lenti o instabili, come le unità di rete condivisa.",
+                "migration": "Thorium non trasferisce automaticamente i tuoi libri: se lo spazio d'archiviazione viene aggiornato è necessario trasferire le pubblicazioni nel nuovo spazio. Se viene rimosso, è necessario trasferire le pubblicazioni nello spazio d'archiviazione d'origine.",
+                "summary": "Scopri di più su questa funzionalità, attualmente nella versione beta",
+                "warning": "Non modificare manualmente i file di questa cartella, si potrebbero verificare danni ai file dei libri o al reader. Immagina questa cartella come una biblioteca custodita e gestita da Thorium."
+            },
+            "configuration": {
+                "chooseFolderDescription": "Scegli la directory che Thorium dovrebbe usare come spazio aggiuntivo d'archiviazione.",
+                "configuredDescription": "Lo spazio d'archiviazione aggiuntivo è configurato e pronto all'uso per depositare nuove pubblicazioni.",
+                "notConfiguredDescription": "Le pubblicazioni importate in Thorium Reader verranno depositate nella directory selezionata. Le pubblicazioni importate in precedenza rimarranno nello spazio d'archiviazione originale."
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "Continua",
+                    "description": "Questa funzionalità è attualmente nella versione beta. Desideri continuare e configurare lo spazio d'archiviazione aggiuntivo selezionando una directory?",
+                    "title": "Seleziona uno spazio d'archiviazione aggiuntivo"
+                },
+                "edit": {
+                    "confirm": "Modifica la directory",
+                    "description": "Aggiornare lo spazio d'archiviazione richiede prudenza. Thorium non trasferirà le pubblicazioni in modo automatico, sarà necessario farlo manualmente. Desideri continuare?",
+                    "title": "Aggiorna lo spazio d'archiviazione"
+                },
+                "remove": {
+                    "confirm": "Rimuovi directory",
+                    "description": "Rimuovere lo spazio d'archiviazione richiede prudenza. Thorium non trasferirà le pubblicazioni in modo automatico, sarà necessario farlo manualmente. Desideri continuare?",
+                    "title": "Rimuovi lo spazio d'archiviazione aggiuntivo"
+                }
+            },
+            "locations": {
+                "defaultDescription": "Le pubblicazioni gestite dall'applicazione sono archiviate per impostazione predefinita in:",
+                "defaultInternal": "Archiviazione di sistema",
+                "externalStorage": "Spazio d'archiviazione esterno",
+                "title": "Posizioni"
+            }
+        },
         "tabs": {
             "appearance": "Aspetto",
             "general": "Generale",
             "keyboardShortcuts": "Scorciatoie da tastiera",
-            "profiles": "Profili"
+            "profiles": "Profili",
+            "storage": "Spazio d'archiviazione"
         },
         "theme": {
             "auto": "Automatico",
@@ -1220,12 +1313,17 @@
             "description": "Il tema dell'applicazione corrisponde a quello del sistema operativo.",
             "light": "Chiaro",
             "title": "Tema dell'applicazione"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {
         "highlight": {
             "mainColor": "Colore principale",
-            "maskBlockWordOutline": "Blocco mascherato, parola contornata",
+            "maskBlockWordOutline": "Mask Block, Word Outline",
             "maskBlockWordSolidBackground": "Blocco mascherato, parola con sfondo pieno",
             "maskBlockWordUnderline": "Blocco mascherato, parola sottolineata",
             "maskWordOutline": "Mascherato, parola contornata",

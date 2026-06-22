@@ -5,8 +5,29 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END
 
-import { IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN, IEventPayload_R2_EVENT_WEBVIEW_KEYUP } from "@r2-navigator-js/electron/common/events";
-import { IEventBus } from "./eventBus";
+import type { IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN, IEventPayload_R2_EVENT_WEBVIEW_KEYUP } from "@r2-navigator-js/electron/common/events";
+import type { IEventBus } from "./eventBus";
+import type {
+    TPdfAnnotationCreateSource,
+    TPdfAnnotationDraftTransport,
+    TPdfAnnotationNavigationTarget,
+    TPdfAnnotationSelectionErrorPayload,
+    TPdfAnnotationSelectionTarget,
+    TPdfAnnotationTransport,
+} from "./pdfAnnotation.type";
+
+export type {
+    IColor,
+    TPdfAnnotationCreateSource,
+    TPdfAnnotationDraftTransport,
+    TPdfAnnotationDrawType,
+    TPdfAnnotationNavigationTarget,
+    TPdfAnnotationRectTransport,
+    TPdfAnnotationSelectionErrorPayload,
+    TPdfAnnotationSelectionErrorReason,
+    TPdfAnnotationSelectionTarget,
+    TPdfAnnotationTransport,
+} from "./pdfAnnotation.type";
 
 // export type IPdfPlayerScale = "fit" | "width" | "50" | "100" | "150" | "200" | "300" | "500";
 export type IPdfPlayerScale = "page-fit" | "page-width" | number;
@@ -49,6 +70,24 @@ export interface IPdfPlayerEvent {
     "print": (pageRange: number[]) => any;
     "thumbnailRequest": (pageIndexZeroBased: number) => any;
     "thumbnailRendered": (pageNumber: number, imgSrc: string) => any;
+    "annotations:sync": (payload: {
+        annotations: TPdfAnnotationTransport[];
+    }) => any;
+    "annotations:set-instant-mode": (payload: {
+        enabled: boolean;
+    }) => any;
+    "annotations:set-visibility": (payload: {
+        visible: boolean;
+    }) => any;
+    "highlight:create-from-selection": () => any;
+    "annotations:ready": () => any;
+    "annotation:create-requested": (payload: {
+        draft: TPdfAnnotationDraftTransport;
+        source: TPdfAnnotationCreateSource;
+    }) => any;
+    "viewer:go-to-annotation": (payload: TPdfAnnotationNavigationTarget) => any;
+    "annotation:selected": (payload: TPdfAnnotationSelectionTarget) => any;
+    "annotation:selection-error": (payload: TPdfAnnotationSelectionErrorPayload) => any;
 }
 
 export interface IEventBusPdfPlayer extends IEventBus {

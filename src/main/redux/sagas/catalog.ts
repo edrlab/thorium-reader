@@ -13,7 +13,8 @@ import { PublicationRepository } from "readium-desktop/main/db/repository/public
 import { error } from "readium-desktop/main/tools/error";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all } from "redux-saga/effects";
-import { call as callTyped, put as putTyped, select as selectTyped, debounce as debounceTyped, SagaGenerator } from "typed-redux-saga/macro";
+import { call as callTyped, put as putTyped, select as selectTyped, debounce as debounceTyped } from "typed-redux-saga/macro";
+import { SagaGenerator } from "typed-redux-saga";
 import { RootState } from "../states";
 import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 // import { isPdfFn } from "readium-desktop/common/isManifestType";
@@ -31,6 +32,7 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { EventPayload } from "readium-desktop/common/ipc/sync";
 import { SenderType } from "readium-desktop/common/models/sync";
+import { getTranslator } from "readium-desktop/common/services/translator";
 import { openPublicationFolder } from "./publication/openFolder";
 
 const filename_ = "readium-desktop:main:redux:sagas:catalog";
@@ -377,14 +379,16 @@ export function saga() {
                     }
                     yield* putTyped(toastActions.openRequest.build(
                         ToastType.Success,
-                        nextUserDirectory ? "Publication directory updated." : "Publication directory removed.",
+                        nextUserDirectory
+                            ? getTranslator().translate("message.storage.updated")
+                            : getTranslator().translate("message.storage.removed"),
                     ));
                     yield* callTyped(getCatalogAndDispatchIt);
                 } catch (e) {
                     const message = e instanceof Error ? e.message : `${e}`;
                     yield* putTyped(toastActions.openRequest.build(
                         ToastType.Error,
-                        `Failed to update publication directory: ${message}`,
+                        getTranslator().translate("message.storage.updateFailed", { message }),
                     ));
                 }
             },

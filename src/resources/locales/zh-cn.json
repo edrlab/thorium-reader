@@ -45,7 +45,9 @@
             "title": "{{- appName}} 软件更新。"
         },
         "window": {
-            "showLibrary": "显示 书库/书架"
+            "showLibrary": "显示 书库/书架",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -88,7 +90,8 @@
         "lastRead": "上次阅读",
         "login": "登录",
         "logout": "登出",
-        "missing": "",
+        "missing": "缺失文件",
+        "missingUnavailableDescription": "打不开这个出版物，因为储存文件无法访问。请重新导入出版物，或导航至“设置-储存”，添加或改变附加储存位置。",
         "moreInfo": "更多信息",
         "myBooks": "我的图书",
         "noPublicationHelpL1": "将文件拖放到此处",
@@ -105,6 +108,8 @@
                 "password": "密码",
                 "register": "注册",
                 "retry": "再试一次",
+                "unauthorized": "未授权",
+                "unauthorizedUnsupportedType": "未授权(不支持的WWW认证类型 '{{- type}}')",
                 "username": "用户名/电子邮件地址"
             },
             "info": {
@@ -126,11 +131,12 @@
                 "state": "状态"
             }
         },
+        "openFolder": "打开文件夹",
         "publisher": "出版社",
         "readBook": "阅读",
         "released": "出版日期",
         "removeFromFavorites": "从收藏中移除",
-        "selectTableHeaders": "",
+        "selectTableHeaders": "选择您想显示的列",
         "sort": "排序方式",
         "tag": "标签",
         "tags": "标签",
@@ -192,7 +198,7 @@
         "searchPlaceholder": "搜索",
         "searchTitle": "开始搜索",
         "settings": "设置",
-        "settingsLabel": "",
+        "settingsLabel": "应用设置",
         "viewMode": "查看模式"
     },
     "library": {
@@ -232,7 +238,18 @@
             "success": "导入已成功完成。"
         },
         "download": {
-            "error": "下载{{- title}}失败: [{{- err}}]"
+            "cancelled": "",
+            "error": "下载{{- title}}失败: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "[{{- title}}] 已被导入。",
@@ -240,7 +257,13 @@
             "success": "导入{{- title}}完成。"
         },
         "open": {
-            "error": "无法打开出版物: {{- err}}"
+            "error": "无法打开出版物: {{- err}}",
+            "folderNotFound": "出版物文件路径无法找到。重新导入，或者在“设置>储存”选项中调整附加储存位置。"
+        },
+        "storage": {
+            "removed": "出版物文件路径被移除。",
+            "updateFailed": "更新出版物文件路径失败: {{- message}}",
+            "updated": "出版物文件路径已更新。"
         },
         "wipeData": "登录数据已清空(包括访问令牌及本地身份文件)"
     },
@@ -557,10 +580,6 @@
                 "compact": "预录的音频片段",
                 "descriptive": "内容中嵌入了预录的音频片段"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "关于预录音频的信息不可用",
-                "descriptive": "关于预录音频的信息不可用"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "仅包含预录音频",
                 "descriptive": "有声书，无文本替代"
@@ -577,6 +596,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "关于外观可修改性的信息不可用",
                 "descriptive": "关于外观可修改性的信息不可用"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "外观无法修改",
+                "descriptive": "文本和页面布局无法修改，因阅读体验已接近印刷版本，但阅读系统仍可提供文本缩放选项"
             }
         }
     },
@@ -632,6 +655,7 @@
         "expiredLcp": "此书无法阅读，因为LCP许可证已到期。",
         "incorrectPassphrase": "没有任何已存储的密码与该出版物匹配，或输入的密码错误。",
         "lcpEnd": "结束",
+        "lcpNotSupported": "警告: 此为 Thorium Desktop 阅读器的预发布版本，不支持生产环境下的 LCP 许可证，仅支持无证书验证的 LCP“基础配置”解密。",
         "lcpRightsCopy": "许可证拷贝",
         "lcpRightsPrint": "许可证打印",
         "lcpStart": "开始",
@@ -669,6 +693,11 @@
             },
             "annotationsOptions": "选项",
             "date": "修改日期",
+            "error": {
+                "pdf": {
+                    "validationSelection": "无法在选择文本上创建PDF注释。"
+                }
+            },
             "export": "将笔记另存为...",
             "filter": {
                 "all": "全部",
@@ -783,6 +812,8 @@
         "notes": {
             "colors": {
                 "cyan": "青色",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "绿色",
                 "orange": "橙色",
                 "purple": "紫色",
@@ -829,6 +860,7 @@
             },
             "customFontSelected": "您已选择自定义字体",
             "customizeReader": "自定义文本格式",
+            "defaultValue": "",
             "disabled": "已禁用",
             "display": "显示",
             "disposition": {
@@ -844,6 +876,7 @@
             "lineSpacing": "行间距",
             "margin": "页边距",
             "mathjax": "启用 MathJax",
+            "mathjaxDescription": "",
             "noFootnotes": "禁用脚注",
             "noRTLFlip": "禁用从右到左的界面布局",
             "noRuby": "隐藏日文振假名",
@@ -974,6 +1007,18 @@
                 "AudioPreviousAlt": {
                     "description": "返回到叙述中的上一个音频片段（EPUB3 媒体覆盖、文本转语音朗读或预录有声读物）。此操作将跳过当前任何可跳过的结构",
                     "name": "上一个音频片段（跳过）"
+                },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
+                    "description": "",
+                    "name": ""
                 },
                 "AudioStop": {
                     "description": "停止当前音频（EPUB3 媒体覆盖、文本转语音朗读或预录有声读物）",
@@ -1196,11 +1241,59 @@
         "session": {
             "title": "保存登录状态"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "外观",
             "general": "常规",
             "keyboardShortcuts": "键盘快捷键",
-            "profiles": "配置文件"
+            "profiles": "配置文件",
+            "storage": ""
         },
         "theme": {
             "auto": "自动",
@@ -1208,6 +1301,11 @@
             "description": "跟随操作系统主题。",
             "light": "浅色",
             "title": "应用主题"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

@@ -18,6 +18,8 @@ const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substri
 let _darwinApplicationMenuAlreadySet = false; // application-wide menu, not dependent on individual BrowserWindows
 
 export function setMenu(win: BrowserWindow, isReaderView: boolean) {
+    setEditContextMenu(win);
+
     if (process.platform === "darwin") {
         if (!_darwinApplicationMenuAlreadySet) {
             setMenuDarwin(win, isReaderView);
@@ -137,6 +139,113 @@ function devMenu(win: BrowserWindow, _isReaderView: boolean): Electron.MenuItemC
             },
         ],
     };
+}
+
+function openDevToolsAndInspect(wc: Electron.WebContents, x: number, y: number) {
+    const inspect = () => {
+        wc.inspectElement(x, y);
+
+        setTimeout(() => {
+            if (wc.devToolsWebContents && wc.isDevToolsOpened()) {
+                wc.devToolsWebContents.focus();
+            }
+        }, 500);
+    };
+
+    if (!wc.isDevToolsOpened()) {
+        const devToolsOpened = () => {
+            wc.off("devtools-opened", devToolsOpened);
+            inspect();
+        };
+        wc.on("devtools-opened", devToolsOpened);
+        wc.openDevTools({ activate: true, mode: "detach" });
+    } else if (!wc.isDevToolsFocused()) {
+        wc.closeDevTools();
+
+        setImmediate(() => {
+            const devToolsOpened = () => {
+                wc.off("devtools-opened", devToolsOpened);
+                inspect();
+            };
+            wc.on("devtools-opened", devToolsOpened);
+            wc.openDevTools({ activate: true, mode: "detach" });
+        });
+    } else {
+        inspect();
+    }
+}
+
+function setEditContextMenu(win: BrowserWindow) {
+    const wc = win.webContents;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if ((wc as any).__THORIUM_EDIT_CONTEXT_MENU_SETUP) {
+        return;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (wc as any).__THORIUM_EDIT_CONTEXT_MENU_SETUP = true;
+
+    wc.on("context-menu", (_ev, params) => {
+        const template: Electron.MenuItemConstructorOptions[] = [];
+        const translator = getTranslator();
+
+        if (params.isEditable) {
+            template.push(
+                {
+                    role: "undo",
+                    label: translator.translate("app.edit.undo"),
+                    enabled: params.editFlags.canUndo,
+                },
+                {
+                    role: "redo",
+                    label: translator.translate("app.edit.redo"),
+                    enabled: params.editFlags.canRedo,
+                },
+                {
+                    type: "separator",
+                },
+                {
+                    role: "cut",
+                    label: translator.translate("app.edit.cut"),
+                    enabled: params.editFlags.canCut,
+                },
+                {
+                    role: "copy",
+                    label: translator.translate("app.edit.copy"),
+                    enabled: params.editFlags.canCopy,
+                },
+                {
+                    role: "paste",
+                    label: translator.translate("app.edit.paste"),
+                    enabled: params.editFlags.canPaste,
+                },
+                {
+                    role: "selectAll",
+                    label: translator.translate("app.edit.selectAll"),
+                    enabled: params.editFlags.canSelectAll,
+                },
+            );
+        }
+
+        if (__TH__IS_DEV__ || __TH__IS_CI__) {
+            if (template.length) {
+                template.push({
+                    type: "separator",
+                });
+            }
+
+            template.push({
+                click: () => openDevToolsAndInspect(wc, params.x, params.y),
+                label: "Inspect element",
+            });
+        }
+
+        if (!template.length) {
+            return;
+        }
+
+        Menu.buildFromTemplate(template).popup({ window: BrowserWindow.fromWebContents(wc) || win });
+    });
 }
 
 function setMenuWindowsLinux(win: BrowserWindow, isReaderView: boolean) {

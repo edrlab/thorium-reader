@@ -20,13 +20,14 @@ import { ipcRenderer } from "electron"; // contextBridge
 import { PDFDocumentProxy } from "pdf.js";
 
 import {
-    IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN, IEventPayload_R2_EVENT_WEBVIEW_KEYUP,
+    IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN,
 } from "@r2-navigator-js/electron/common/events";
 
 import { eventBus } from "../common/eventBus";
 import {
     IEventBusPdfPlayer, IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView,
 } from "../common/pdfReader.type";
+import { createPdfAnnotationController } from "./annotations";
 
 // import { EventBus_ } from "./pdfEventBus";
 
@@ -182,6 +183,14 @@ function main() {
         },
     );
 
+    const thoriumPdfAnnotationController = createPdfAnnotationController(
+        bus,
+        () => (window as any).PDFViewerApplication,
+    );
+    (window as any).thoriumPdfAnnotationController = thoriumPdfAnnotationController;
+    thoriumPdfAnnotationController.init();
+    window.addEventListener("beforeunload", () => thoriumPdfAnnotationController.destroy(), { once: true });
+
     // const defaultView: IPdfPlayerView = "scrolled";
     // const defaultScale: IPdfPlayerScale = "page-fit";
     const defaultCol: IPdfPlayerColumn = "1";
@@ -199,8 +208,8 @@ function main() {
                     bus.dispatch("savePreferences", data);
                 }, 200);
                 pdfjsEventBus.on("__savePreferences", async (data: any) => {
-                    await debounceSave(data)
-                })
+                    await debounceSave(data);
+                });
             // }, 100);
 
             const toc = await getToc(pdf);
@@ -228,15 +237,15 @@ function main() {
     {
         bus.subscribe("print", (pageRange: number[]) => {
             pdfjsEventBus.dispatch("print", pageRange);
-        })
+        });
         bus.subscribe("thumbnailRequest", (pageIndexZeroBased) => {
             pdfjsEventBus.dispatch("__thumbnailPageRequest", pageIndexZeroBased);
-        })
+        });
         pdfjsEventBus.on("thumbnailrendered", async ({pageNumber, source}: any) => {
             const src = source?.image?.src || "";
             const portableSrc = await imageSrcToPortableDataUrl(src);
             bus.dispatch("thumbnailRendered", pageNumber, portableSrc);
-        })
+        });
     }
 
     {
@@ -245,7 +254,7 @@ function main() {
         });
         bus.subscribe("lastpage", () => {
             pdfjsEventBus.dispatch("lastpage");
-        })
+        });
     }
 
 
@@ -443,7 +452,7 @@ function main() {
                 key: ev.key,
                 metaKey: ev.metaKey,
                 shiftKey: ev.shiftKey,
-            } as IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN | IEventPayload_R2_EVENT_WEBVIEW_KEYUP;
+            } as IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN;
 
             bus.dispatch(name, payload);
         };

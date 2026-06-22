@@ -10,11 +10,20 @@ import { getAppActivateEventChannel } from "../redux/sagas/getEventChannel";
 
 export const showLibrary = () => {
 
-    const library = getLibraryWindowFromDi();
+    let library: ReturnType<typeof getLibraryWindowFromDi> | undefined;
+    try {
+        library = getLibraryWindowFromDi();
+    } catch {
+        // noop
+    }
+
     if (!library || library.isDestroyed() || library.webContents.isDestroyed()) {
         const appActivateChannel = getAppActivateEventChannel();
         appActivateChannel.put(true);
     } else {
+        if (library.isMinimized()) {
+            library.restore();
+        }
         library.show();
     }
 };

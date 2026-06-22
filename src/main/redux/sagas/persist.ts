@@ -25,6 +25,7 @@ import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { IWinSessionLibraryState } from "../states/win/session/library";
 import { JsonStringifySortedKeys } from "readium-desktop/common/utils/json";
 import crypto from "node:crypto";
+import { extractWindowMaximized } from "./win/session/browserWindowState";
 // import { rmrf } from "readium-desktop/utils/fs";
 
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
@@ -43,6 +44,14 @@ const debug = debug_(filename_);
 debug("_");
 
 export const convertDiffableReduxState = (nextState: Partial<PersistRootState>): PersistRootState => {
+    const settings = nextState.settings ?
+        {
+            ...nextState.settings,
+            // Command-line forced shared-computer mode must remain scoped to the current process.
+            lcpAutoDeleteExpiredPublicationsForced: false,
+        }
+        : nextState.settings;
+
     return {
         theme: nextState.theme,
         win: {
@@ -50,6 +59,7 @@ export const convertDiffableReduxState = (nextState: Partial<PersistRootState>):
             session: {
                 library: {
                     windowBound: nextState?.win?.session?.library?.windowBound,
+                    windowMaximized: nextState?.win?.session?.library?.windowMaximized,
                 } as unknown as IWinSessionLibraryState,
                 reader: undefined,
             },
@@ -67,7 +77,7 @@ export const convertDiffableReduxState = (nextState: Partial<PersistRootState>):
         opds: nextState.opds,
         version: nextState.version,
         wizard: nextState.wizard,
-        settings: nextState.settings,
+        settings,
         creator: nextState.creator,
         noteExport: nextState.noteExport,
         customization: {
@@ -122,6 +132,7 @@ export const convertPublicationToRegistryReaderState = async (pubIds: string[]):
             if (result.status === "fulfilled") {
                 if (key === "bound") {
                     readerState.windowBound = result.value as any; // TODO: object;
+                    readerState.windowMaximized = extractWindowMaximized(result.value);
                 } else {
                     readerState.reduxState[key] = result.value as any; // TODO: object
                 }

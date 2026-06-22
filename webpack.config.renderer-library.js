@@ -312,7 +312,7 @@ let config = Object.assign(
                             loader: "babel-loader",
                             options: {
                                 presets: [],
-                                sourceMaps: "inline",
+                                // sourceMaps: "inline",
                                 plugins: ["macros"],
                             },
                         },

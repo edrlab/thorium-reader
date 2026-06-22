@@ -45,7 +45,9 @@
             "title": "Posodobitev programske opreme za {{- appName}}"
         },
         "window": {
-            "showLibrary": "Prikaži knjižnico / knjižna polica"
+            "showLibrary": "Prikaži knjižnico / knjižna polica",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -89,6 +91,7 @@
         "login": "",
         "logout": "",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Osnovni podatki",
         "myBooks": "Moje knjige",
         "noPublicationHelpL1": "Tukaj spusti datoteke",
@@ -105,6 +108,8 @@
                 "password": "Geslo",
                 "register": "Register",
                 "retry": "",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Uporabniško ime / elektronski naslov"
             },
             "info": {
@@ -126,6 +131,7 @@
                 "state": "Stanje"
             }
         },
+        "openFolder": "",
         "publisher": "Založba",
         "readBook": "Začni brati",
         "released": "Objavljeno na",
@@ -247,7 +253,18 @@
             "success": "Uvoz uspešno zaključen."
         },
         "download": {
-            "error": "Prenos {{- title}} ni uspel: [{{- err}}]"
+            "cancelled": "",
+            "error": "Prenos {{- title}} ni uspel: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}} je že uvožena",
@@ -255,7 +272,13 @@
             "success": "Uvoz {{- title}} je končan."
         },
         "open": {
-            "error": "Publikacije ni mogoče odpreti: {{- err}}"
+            "error": "Publikacije ni mogoče odpreti: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": ""
     },
@@ -572,10 +595,6 @@
                 "compact": "",
                 "descriptive": ""
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "",
                 "descriptive": ""
@@ -590,6 +609,10 @@
                 "descriptive": ""
             },
             "ways-of-reading-visual-adjustments-unknown": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
                 "compact": "",
                 "descriptive": ""
             }
@@ -647,6 +670,7 @@
         "expiredLcp": "Knjige ni mogoče prebrati, ker je licenca LCP potekla.",
         "incorrectPassphrase": "Nobeno shranjeno geslo ne ustreza publikaciji ali pa je vneseno geslo napačno.",
         "lcpEnd": "Konec",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Kopirani znaki",
         "lcpRightsPrint": "Tiskane strani",
         "lcpStart": "Začetek",
@@ -684,6 +708,11 @@
             },
             "annotationsOptions": "Možnosti",
             "date": "Datum spremembe",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "Shrani zapiske kot ...",
             "filter": {
                 "all": "Vse",
@@ -798,6 +827,8 @@
         "notes": {
             "colors": {
                 "cyan": "Cyan",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "Zelena",
                 "orange": "Oranžna",
                 "purple": "Vijolična",
@@ -847,6 +878,7 @@
             },
             "customFontSelected": "Izbrana je pisava po meri",
             "customizeReader": "Prilagodi oblikovanje besedila",
+            "defaultValue": "",
             "disabled": "onemogočeno",
             "display": "Zaslon",
             "disposition": {
@@ -862,6 +894,7 @@
             "lineSpacing": "Razmik med vrsticami",
             "margin": "Obroba",
             "mathjax": "",
+            "mathjaxDescription": "",
             "noFootnotes": "Onemogoči opombe",
             "noRTLFlip": "Onemogoči uporabniški vmesnik od desne proti levi",
             "noRuby": "Skrij japonski Ruby",
@@ -990,6 +1023,18 @@
                     "name": ""
                 },
                 "AudioPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
                     "description": "",
                     "name": ""
                 },
@@ -1214,11 +1259,59 @@
         "session": {
             "title": "Shrani sejo"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Izgled",
             "general": "Splošno",
             "keyboardShortcuts": "Bližnjice tipkovnice",
-            "profiles": ""
+            "profiles": "",
+            "storage": ""
         },
         "theme": {
             "auto": "Samodejno",
@@ -1226,6 +1319,11 @@
             "description": "Tema aplikacije se ujema s temo operacijskega sistema.",
             "light": "Svetlo",
             "title": "Tema aplikacije"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

@@ -51,7 +51,8 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { getOpdsRequestCustomProtocolEventChannel, getOpdsRequestMediaCustomProtocolEventChannel, TregisterHttpProtocolHandler} from "./getEventChannel";
 import { initClientSecretToken } from "./apiapp";
 import { digestAuthentication } from "readium-desktop/utils/digest";
-import isURL from "validator/lib/isURL";
+import isURL from "readium-desktop/common/utils/isURL";
+import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 
 // TypeScript GO:
 // The current file is a CommonJS module whose imports will produce 'require' calls;
@@ -74,6 +75,7 @@ import DOMPurify_ from "dompurify";
 const DOMPurify = DOMPurify_(new JSDOM("").window);
 
 const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
+const OPDS_AUTH_APPLICATION = "org.edrlab.thorium.desktop";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:auth";
@@ -282,7 +284,7 @@ function* opdsRequestMediaFlow({request, callback}: TregisterHttpProtocolHandler
         const b64 = decodeURIComponent(request.url.slice(schemePrefix.length));
         const url = Buffer.from(b64, "base64").toString("utf-8");
 
-        // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+        // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
         if (!url || !isURL(url)) {
             debug("isURL() NOK opdsRequestMedia failed not a valid url", url);
             return;
@@ -470,7 +472,7 @@ async function opdsSetAuthCredentials(
 
                         const body = Object.entries(payload).reduce((pv, [k,v]) => `${pv}${pv ? "&" : pv}${k}=${v}`, "");
 
-                        // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+                        // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
                         if (!authenticateUrl || !isURL(authenticateUrl)) {
                             debug("isURL() NOK", authenticateUrl);
                             // throw new Error("invalid authenticateUrl: " + authenticateUrl);
@@ -601,6 +603,9 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
                 // redirect_uri: Optional, but good to include since it's mandatory if a client has more than one redirect URI configurated
                 // Note: Trailing slash is necessary as it is specified in the OPDS Authentication 1.0 specification
                 browserUrlParsed.searchParams.set("redirect_uri", `${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`);
+
+                browserUrlParsed.searchParams.set("application", OPDS_AUTH_APPLICATION);
+                browserUrlParsed.searchParams.set("application_version", _APP_VERSION);
 
                 browserUrl = browserUrlParsed.toString();
 

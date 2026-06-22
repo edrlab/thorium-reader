@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PDF Annotation Harness</title>
+    <style>
+        :root {
+            color-scheme: light;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f3f5f7;
+            color: #111827;
+        }
+
+        .toolbar {
+            align-items: center;
+            background: #ffffff;
+            border-bottom: 1px solid #cfd6df;
+            box-sizing: border-box;
+            display: flex;
+            gap: 8px;
+            height: 48px;
+            padding: 8px 12px;
+        }
+
+        .toolbar label {
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .toolbar input {
+            border: 1px solid #aeb8c4;
+            border-radius: 4px;
+            box-sizing: border-box;
+            flex: 1 1 auto;
+            font: inherit;
+            min-width: 160px;
+            padding: 6px 8px;
+        }
+
+        .toolbar button {
+            background: #1f6feb;
+            border: 1px solid #1f6feb;
+            border-radius: 4px;
+            color: #ffffff;
+            cursor: pointer;
+            font: inherit;
+            min-height: 32px;
+            padding: 5px 10px;
+            white-space: nowrap;
+        }
+
+        .toolbar button.secondary {
+            background: #ffffff;
+            color: #1f2937;
+            border-color: #aeb8c4;
+        }
+
+        .status {
+            color: #374151;
+            flex: 0 1 280px;
+            font-size: 12px;
+            min-width: 180px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        iframe {
+            border: 0;
+            display: block;
+            height: calc(100vh - 48px);
+            width: 100vw;
+        }
+
+        @media (max-width: 720px) {
+            .toolbar {
+                align-items: stretch;
+                flex-wrap: wrap;
+                height: auto;
+            }
+
+            iframe {
+                height: calc(100vh - 96px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <form class="toolbar" id="pdf-form">
+        <label for="pdf-file">PDF</label>
+        <input id="pdf-file" name="file" spellcheck="false">
+        <button type="submit">Open</button>
+        <button class="secondary" id="inject-harness" type="button">Inject harness</button>
+        <span class="status" id="status">Idle</span>
+    </form>
+    <iframe id="pdfjs-frame" title="PDF.js viewer"></iframe>
+
+    <script type="module">
+        const DEFAULT_PDF_FILE = "/node_modules/pdf.js/build/gh-pages/web/compressed.tracemonkey-pldi-09.pdf";
+        const PDFJS_VIEWER = "/node_modules/pdf.js/build/gh-pages/web/viewer.html";
+        const HARNESS_SCRIPT = new URL("./dist/standaloneAnnotationHarness.js", window.location.href).href;
+
+        const form = document.getElementById("pdf-form");
+        const fileInput = document.getElementById("pdf-file");
+        const frame = document.getElementById("pdfjs-frame");
+        const injectButton = document.getElementById("inject-harness");
+        const status = document.getElementById("status");
+
+        function setStatus(message) {
+            status.textContent = message;
+        }
+
+        function viewerUrl(file) {
+            const url = new URL(PDFJS_VIEWER, window.location.origin);
+            url.searchParams.set("file", file);
+            return url.href;
+        }
+
+        function selectedFile() {
+            return fileInput.value.trim() || DEFAULT_PDF_FILE;
+        }
+
+        function loadViewer() {
+            const file = selectedFile();
+            const url = new URL(window.location.href);
+            url.searchParams.set("file", file);
+            window.history.replaceState({}, "", url);
+            setStatus("Loading PDF.js viewer");
+            frame.src = viewerUrl(file);
+        }
+
+        function injectHarness() {
+            const doc = frame.contentDocument;
+            if (!doc) {
+                setStatus("Cannot access PDF.js iframe");
+                return;
+            }
+
+            const existingScript = doc.getElementById("thorium-pdf-annotation-harness-script");
+            if (existingScript) {
+                setStatus("Harness already injected");
+                return;
+            }
+
+            const script = doc.createElement("script");
+            script.id = "thorium-pdf-annotation-harness-script";
+            script.type = "module";
+            script.src = HARNESS_SCRIPT;
+            script.addEventListener("load", () => setStatus("Harness injected"));
+            script.addEventListener("error", () => setStatus("Harness bundle missing; run build.mjs"));
+            doc.head.append(script);
+            setStatus("Injecting harness");
+        }
+
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            loadViewer();
+        });
+
+        injectButton.addEventListener("click", injectHarness);
+
+        frame.addEventListener("load", () => {
+            setStatus("PDF.js viewer loaded");
+            window.setTimeout(injectHarness, 0);
+        });
+
+        fileInput.value = new URLSearchParams(window.location.search).get("file") || DEFAULT_PDF_FILE;
+        loadViewer();
+    </script>
+</body>
+</html>

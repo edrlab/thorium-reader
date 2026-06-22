@@ -27,6 +27,7 @@ import { readerLocalActionSearch } from "../../redux/actions";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import SearchPicker from "../picker/Search";
 import { createOrGetPdfEventBus } from "../../pdf/driver";
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -35,6 +36,7 @@ interface IBaseProps extends TranslatorProps {
     isPdf: boolean;
     isAudiobook: boolean;
     isDivina: boolean;
+    currentLocation: MiniLocatorExtended;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -140,6 +142,7 @@ class HeaderSearch extends React.Component<IProps> {
                                 <SearchPicker
                                     showSearchResults={this.props.showSearchResults}
                                     isPdf={this.props.isPdf}
+                                    currentLocation={this.props.currentLocation}
                                 />
                             </div>
                         </div>

@@ -114,6 +114,7 @@ button {
   min-width: 100px;
   background-color: var(--color-brand-primary);
   color: var(--color-neutral-base);
+  display: flex;
 
   @include button-svg(14px, var(--color-neutral-base));
 
@@ -145,6 +146,7 @@ button {
   min-width: 100px;
   background-color: var(--color-brand-secondary);
   color: var(--color-brand-primary);
+  display: flex;
 
   @include button-svg(12px, var(--color-brand-primary));
 
@@ -377,8 +379,8 @@ button {
     &:hover svg { transform: rotate(90deg); }
   }
 
-  svg { 
-    transform: rotate(0); transition: 200ms; 
+  svg {
+    transform: rotate(0); transition: 200ms;
   }
 
   input {
@@ -418,20 +420,20 @@ button {
   margin: 10px 0;
   width: fit-content;
 
-  &[open] { 
-    width: calc(100% - 10px); 
+  &[open] {
+    width: calc(100% - 10px);
   }
 
-  summary { 
-    font-size: 14px; 
+  summary {
+    font-size: 14px;
   }
 
-  .catalog_infos_text { 
-    padding-left: 5px; 
+  .catalog_infos_text {
+    padding-left: 5px;
   }
-  
-  svg { 
-    width: 20px; fill: var(--color-brand-primary); 
+
+  svg {
+    width: 20px; fill: var(--color-brand-primary);
   }
 }
 

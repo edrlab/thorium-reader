@@ -19,7 +19,7 @@
             "copy": "コピー",
             "cut": "切り取り",
             "paste": "貼り付け",
-            "print": "",
+            "print": "印刷",
             "redo": "やり直し",
             "selectAll": "すべて選択",
             "title": "編集",
@@ -45,7 +45,9 @@
             "title": "{{- appName}} ソフトウェアの更新。"
         },
         "window": {
-            "showLibrary": "蔵書/本棚を表示"
+            "showLibrary": "蔵書/本棚を表示",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -89,6 +91,7 @@
         "login": "",
         "logout": "",
         "missing": "",
+        "missingUnavailableDescription": "この出版物は、保存先のファイルがすでにないため開くことができません。再登録するか、設定の「保存先」から新しい保存先を加えるか、変更してください。",
         "moreInfo": "詳細情報",
         "myBooks": "わたしの本",
         "noPublicationHelpL1": "ファイルをここにおいてください",
@@ -105,6 +108,8 @@
                 "password": "パスワード",
                 "register": "登録",
                 "retry": "",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "ユーザー名 / メールアドレス"
             },
             "info": {
@@ -126,6 +131,7 @@
                 "state": "状態"
             }
         },
+        "openFolder": "",
         "publisher": "出版社",
         "readBook": "本を読む",
         "released": "出版日",
@@ -192,7 +198,7 @@
         "searchPlaceholder": "検索",
         "searchTitle": "検索する",
         "settings": "設定",
-        "settingsLabel": "",
+        "settingsLabel": "アプリケーションの設定",
         "viewMode": "表示モード"
     },
     "library": {
@@ -232,7 +238,18 @@
             "success": "取り込みが正常に完了しました。"
         },
         "download": {
-            "error": "『{{- title}}』のダウンロードに失敗しました：{{- err}}"
+            "cancelled": "",
+            "error": "『{{- title}}』のダウンロードに失敗しました：{{- err}}",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "『{{- title}}』はすでに追加されています。",
@@ -240,7 +257,13 @@
             "success": "『{{- title}}』の追加が完了しました。"
         },
         "open": {
-            "error": "本を開けません：{{- err}}"
+            "error": "本を開けません：{{- err}}",
+            "folderNotFound": "出版物の保存場所が見つかりません。再登録するか、設定の保存先で追加の保存先を設定してください。"
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": ""
     },
@@ -557,10 +580,6 @@
                 "compact": "録音済みの音声クリップ",
                 "descriptive": "録音済みの音声クリップがコンテンツに埋め込まれています"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "録音済みの音声についての情報はありません",
-                "descriptive": "録音済みの音声についての情報はありません"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "録音済み音声のみ",
                 "descriptive": "代替テキストのないオーディオブック"
@@ -577,6 +596,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "外観の変更可能性についての情報はありません",
                 "descriptive": "外観の変更可能性についての情報はありません"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },
@@ -632,6 +655,7 @@
         "expiredLcp": "この本のLCPライセンスの有効期限が切れました。",
         "incorrectPassphrase": "保存しているパスフレーズが本に適合しないか、入力したパスフレーズが間違っています。",
         "lcpEnd": "終了",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "文字列のコピー",
         "lcpRightsPrint": "ページを印刷",
         "lcpStart": "開始",
@@ -669,6 +693,11 @@
             },
             "annotationsOptions": "メモのオプション",
             "date": "変更日",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "メモとして保存する…",
             "filter": {
                 "all": "すべて",
@@ -778,11 +807,13 @@
             "printDisabled": "",
             "screenNext": "",
             "screenPrevious": "",
-            "settingsTitle": "設定"
+            "settingsTitle": "読書画面の設定"
         },
         "notes": {
             "colors": {
                 "cyan": "青",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "緑",
                 "orange": "橙",
                 "purple": "紫",
@@ -823,12 +854,13 @@
         "settings": {
             "column": {
                 "auto": "自動",
-                "one": "1列",
-                "title": "縦列",
-                "two": "2列"
+                "one": "1ページ",
+                "title": "見開き",
+                "two": "見開き"
             },
             "customFontSelected": "利用するフォントを選択しました",
             "customizeReader": "本文のスタイル",
+            "defaultValue": "",
             "disabled": "無効",
             "display": "画面表示",
             "disposition": {
@@ -844,6 +876,7 @@
             "lineSpacing": "行の間隔",
             "margin": "ページの余白",
             "mathjax": "",
+            "mathjaxDescription": "",
             "noFootnotes": "ポップアップ脚注を表示しない",
             "noRTLFlip": "右から左へ進むUIを無効にする",
             "noRuby": "ルビを表示しない",
@@ -972,6 +1005,18 @@
                     "name": ""
                 },
                 "AudioPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
                     "description": "",
                     "name": ""
                 },
@@ -1196,11 +1241,59 @@
         "session": {
             "title": "セッションを保存"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "外観",
             "general": "一般",
             "keyboardShortcuts": "キーボード ショートカット",
-            "profiles": ""
+            "profiles": "",
+            "storage": ""
         },
         "theme": {
             "auto": "自動",
@@ -1208,6 +1301,11 @@
             "description": "アプリケーションのテーマは、OS（オペレーティングシステム）と一致するようにします。",
             "light": "ライト（明色）",
             "title": "アプリケーション テーマ"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {
@@ -1235,25 +1333,25 @@
     },
     "wizard": {
         "buttons": {
-            "discover": "新しい情報を見る",
+            "discover": "Thorium Desktopについて知る",
             "goToBooks": "わたしの本を一覧する"
         },
         "description": {
-            "home": "Thoriumの見た目が違います！ 何が新しいのか見てみましょう...",
-            "resources": ""
+            "home": "Thorium 3.4では、操作のしやすさを改善したほか、さまざまな不具合を修正しています。もし、古いバージョンのアプリにあとで戻す場合は、電子書籍の注釈（アノテーション）やブックマークを外部ファイルに保存して、事前にバックアップしておくことを強く推奨します。これにより、古いバージョンをインストールしたあとに、そのファイルをインポートして元に戻せます。これはバージョン3.4において、注釈やブックマークの内部の保存形式が一部で変更されたためです。この変更により、パフォーマンスの問題は解決しましたが、注釈の後方互換性（古いバージョンとの互換性）が失われています。",
+            "resources": "Thoriumについて学び、つながろう："
         },
         "dontShow": "次回以降は表示しない",
         "resources": {
             "discord": "",
-            "website": ""
+            "website": "ウェブサイト: {{- url}}"
         },
         "tab": {
             "home": "ホーム",
-            "resources": ""
+            "resources": "関連リンク"
         },
         "title": {
-            "resources": "",
-            "welcome": "Thorium 3へようこそ"
+            "resources": "関連資料とコミュニティ",
+            "welcome": "Thorium 3.4へようこそ"
         }
     }
 }

@@ -22,7 +22,8 @@ permissions:
     security-events: none
     statuses: none
 jobs:
-  ci:
+  pr-build-job:
+    timeout-minutes: 30
     permissions:
       actions: none
       artifact-metadata: none
@@ -50,7 +51,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        osarch: [windows-intel, windows-arm, macos-intel, macos-arm, linux-intel, linux-arm]
+        # osarch: [windows-intel, windows-arm, macos-intel, macos-arm, linux-intel, linux-arm]
+        osarch: [linux-intel]
         # osarch: [windows-intel, windows-arm]
 # Thorium for MacOS x64 and arm64 is built on GitHub Actions arm64 runners
 # Thorium for Linux x64 and arm64 is built on GitHub Actions x64 runners
@@ -64,8 +66,9 @@ jobs:
 # windows-latest is currently windows-2022, but becomes windows-2025 in September 2025 (windows-2022 remains supported for 3 years)
 #       https://github.com/actions/runner-images/blob/main/images/windows/Windows2022-Readme.md
 # windows-2025 is beta / public preview
-#       https://github.com/actions/runner-images/blob/main/images/windows/Windows2025-Readme.md
 #       https://github.com/actions/runner-images/issues/11228
+# ah, windows-2025 / windows-2025-vs2026 now on Visual Studio 2026 (was 2022)
+#       https://github.com/actions/runner-images/blob/main/images/windows/Windows2025-Readme.md
 # windows-11-preview_aarch64 ?
 #       https://github.com/actions/partner-runner-images/issues/19#issuecomment-2569992032
 # macos-latest is currently macos-14-arm64
@@ -77,30 +80,30 @@ jobs:
 # ubuntu-20.04 is the oldest available (good for glibc compat) ... but GitHub says "The Ubuntu 20.04 runner image will be fully unsupported by April 1, 2025"
 #       https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2004-Readme.md
         include:
-          - osarch: windows-intel
-            runson: windows-2025
-            packname: win
-            release_tag: latest-windows-intel
-          - osarch: windows-arm
-            runson: windows-2025
-            packname: win
-            release_tag: latest-windows-arm
-          - osarch: macos-intel
-            runson: macos-latest #macos-14-arm64
-            packname: 'mac:skip-notarize'
-            release_tag: latest-macos-intel
-          - osarch: macos-arm
-            runson: macos-latest #macos-14-arm64
-            packname: 'mac:skip-notarize'
-            release_tag: latest-macos-arm
+          # - osarch: windows-intel
+          #   runson: windows-2025
+          #   packname: win
+          #   release_tag: latest-windows-intel
+          # - osarch: windows-arm
+          #   runson: windows-11-vs2026-arm # win11-vs2026-arm64 # https://github.com/actions/runner-images/blob/main/images/windows/Windows11-VS2026-Arm64-Readme.md
+          #   packname: win
+          #   release_tag: latest-windows-arm
+          # - osarch: macos-intel
+          #   runson: macos-latest #macos-14-arm64
+          #   packname: 'mac:skip-notarize'
+          #   release_tag: latest-macos-intel
+          # - osarch: macos-arm
+          #   runson: macos-latest #macos-14-arm64
+          #   packname: 'mac:skip-notarize'
+          #   release_tag: latest-macos-arm
           - osarch: linux-intel
             runson: ubuntu-22.04 #ubuntu-latest is ubuntu-24.04
             packname: linux
             release_tag: latest-linux-intel
-          - osarch: linux-arm
-            runson: ubuntu-22.04 #ubuntu-latest is ubuntu-24.04
-            packname: linux
-            release_tag: latest-linux-arm
+          # - osarch: linux-arm
+          #   runson: ubuntu-22.04-arm #ubuntu-latest is ubuntu-24.04
+          #   packname: linux
+          #   release_tag: latest-linux-arm
     steps:
 ###########################
     - name: Checking graceful shell command failure
@@ -109,26 +112,72 @@ jobs:
       shell: cmd
       continue-on-error: true
 ###########################
-    - name: Microsoft Windows dumpbin to PATH
+    - name: Microsoft Windows Visual Studio lookup
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        $VS_ROOT = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC"; Get-ChildItem -Path $VS_ROOT -Force; $VS_VERSION = (Get-ChildItem -Path $VS_ROOT | Sort-Object Name -Descending | Select-Object -First 1).Name; $VS_BIN = "$VS_ROOT\$VS_VERSION\bin\Hostx64\x64"; echo $VS_BIN >> $env:GITHUB_PATH; echo $VS_BIN
+        dir /A "C:\Program Files\Microsoft Visual Studio" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\Hostx64" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\Hostx64\x64" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\HostArm64" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\HostArm64\arm64"
+      shell: cmd
+###########################
+    - name: Microsoft Windows dumpbin to PATH (ARM)
+      #if: startsWith(matrix.osarch, 'windows-')
+      if: ${{ matrix.osarch == 'windows-arm' }}
+      run: >
+        $VS_ROOT = "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC";
+        Get-ChildItem -Path $VS_ROOT -Force;
+        $VS_VERSION = (Get-ChildItem -Path $VS_ROOT | Sort-Object Name -Descending | Select-Object -First 1).Name;
+        $VS_BIN = "$VS_ROOT\$VS_VERSION\bin\HostArm64\arm64";
+        echo $VS_BIN >> $env:GITHUB_PATH;
+        echo $VS_BIN
       shell: powershell
 ###########################
-    - name: Microsoft Windows dumpbin check
-      if: startsWith(matrix.osarch, 'windows-')
+    - name: Microsoft Windows dumpbin to PATH (INTEL)
+      #if: startsWith(matrix.osarch, 'windows-')
+      if: ${{ matrix.osarch == 'windows-intel' }}
       run: >
-        dir /A "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC" && dumpbin /headers "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\dumpbin.exe" | findstr /i machine
+        $VS_ROOT = "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC";
+        Get-ChildItem -Path $VS_ROOT -Force;
+        $VS_VERSION = (Get-ChildItem -Path $VS_ROOT | Sort-Object Name -Descending | Select-Object -First 1).Name;
+        $VS_BIN = "$VS_ROOT\$VS_VERSION\bin\Hostx64\x64";
+        echo $VS_BIN >> $env:GITHUB_PATH;
+        echo $VS_BIN
+      shell: powershell
+###########################
+    - name: Microsoft Windows dumpbin check (ARM)
+      #if: startsWith(matrix.osarch, 'windows-')
+      if: ${{ matrix.osarch == 'windows-arm' }}
+      run: >
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC" &&
+        dumpbin /headers "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\HostArm64\arm64\dumpbin.exe" | findstr /i machine
+      shell: cmd
+###########################
+    - name: Microsoft Windows dumpbin check (INTEL)
+      #if: startsWith(matrix.osarch, 'windows-')
+      if: ${{ matrix.osarch == 'windows-intel' }}
+      run: >
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC" &&
+        dumpbin /headers "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\Hostx64\x64\dumpbin.exe" | findstr /i machine
       shell: cmd
 ###########################
 # - name: Microsoft Windows msbuild to PATH
 #   if: startsWith(matrix.osarch, 'windows-')
 #   uses: microsoft/setup-msbuild@v2
-# "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin"
-# "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools"
-# "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\bin\amd64"
-# "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x64"
-# "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64"
+# "C:\Program Files\Microsoft Visual Studio\18\Enterprise\MSBuild\Current\Bin"
+# "C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\Tools"
+# "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\bin\amd64"
+# "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x64"
+# "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64"
+# "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\Hostx64\x64"
     #- run: exit 1
 #    - run: echo 'RELEASE_TAG:' ${{ env.RELEASE_TAG }}
 #    - run: 'echo "GITHUB_RUN_NUMBER: ${{ github.run_number }}"'
@@ -207,11 +256,17 @@ jobs:
     # - run: npm --global install asar
 ###########################
     - name: package patch 1
-      run: node scripts/package-ci-patch.js package.json ${{ github.run_id }} && cat package.json | grep -i VERSION && cat package.json
+      run: >
+        node scripts/package-ci-patch.js package.json ${{ github.run_id }} &&
+        cat package.json | grep -i VERSION &&
+        cat package.json
       shell: bash
 ###########################
     - name: package patch 2
-      run: node scripts/package-ci-patch.js src/package.json ${{ github.run_id }} && cat src/package.json | grep -i VERSION && cat src/package.json
+      run: >
+        node scripts/package-ci-patch.js src/package.json ${{ github.run_id }} &&
+        cat src/package.json | grep -i VERSION &&
+        cat src/package.json
       shell: bash
 ###########################
 # - name: package lock patch
@@ -229,20 +284,34 @@ jobs:
     - name: NPM install (arm64)
       #if: ${{ matrix.osarch == 'linux-arm' || matrix.osarch == 'windows-arm' || matrix.osarch == 'macos-arm' }}
       if: endsWith(matrix.osarch, '-arm')
-      run: npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root --arch=arm64 --cpu=arm64 && cd node_modules/electron && npm run postinstall --arch=arm64 --cpu=arm64 && cd -
+      #(ls -alsR ~/.cache/electron/ || ls -alsR ~/Library/Caches/electron/ || ls -alsR ~/AppData/Local/electron/Cache/ || echo OK)
+      run: >
+        npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root --arch=arm64 --cpu=arm64 &&
+        cd node_modules/electron &&
+        DEBUG=@electron/get* force_no_cache=true npm_config_arch=arm64 ELECTRON_INSTALL_ARCH=arm64 node install.js --arch=arm64 --cpu=arm64 &&
+        cd -
+      shell: bash
       #export npm_config_arch=arm64 && export npm_config_cpu=arm64 &&
 ###########################
     - name: NPM install (x64)
       #if: ${{ matrix.osarch == 'linux-intel' || matrix.osarch == 'windows-intel' || matrix.osarch == 'macos-intel' }}
       if: endsWith(matrix.osarch, '-intel')
-      run: npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root --arch=x64 --cpu=x64 && cd node_modules/electron && npm run postinstall --arch=x64 --cpu=x64 && cd -
+      #(ls -alsR ~/.cache/electron/ || ls -alsR ~/Library/Caches/electron/ || ls -alsR ~/AppData/Local/electron/Cache/ || echo OK)
+      run: >
+        npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root --arch=x64 --cpu=x64 &&
+        cd node_modules/electron &&
+        DEBUG=@electron/get* force_no_cache=true npm_config_arch=x64 ELECTRON_INSTALL_ARCH=x64 node install.js --arch=x64 --cpu=x64 &&
+        cd -
+      shell: bash
       #export npm_config_arch=x64 && export npm_config_cpu=x64 &&
 ###########################
     - name: Electron version + arch (Windows)
       #if: ${{ matrix.osarch == 'windows-intel' || matrix.osarch == 'windows-arm' }}
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        (dumpbin /headers "node_modules\electron\dist\electron.exe" | findstr /i machine) && (node_modules\\electron\\dist\\electron.exe --no-sandbox --version || echo INVALID_ARCH || true) && (node_modules\\electron\\dist\\electron.exe --no-sandbox --abi || echo INVALID_ARCH || true)
+        (dumpbin /headers "node_modules\electron\dist\electron.exe" | findstr /i machine) &&
+        (node_modules\\electron\\dist\\electron.exe --no-sandbox --version || echo INVALID_ARCH || true) &&
+        (node_modules\\electron\\dist\\electron.exe --no-sandbox --abi || echo INVALID_ARCH || true)
       shell: cmd
       continue-on-error: true
 ###########################
@@ -250,20 +319,32 @@ jobs:
       #if: ${{ matrix.osarch == 'linux-intel' || matrix.osarch == 'linux-arm' }}
       if: startsWith(matrix.osarch, 'linux-')
       run: >
-        (file node_modules/electron/dist/electron) && (node_modules/electron/dist/electron --no-sandbox --version || echo INVALID_ARCH || true) && (node_modules/electron/dist/electron --no-sandbox --abi || echo INVALID_ARCH || true)
+        (file node_modules/electron/dist/electron) &&
+        (node_modules/electron/dist/electron --no-sandbox --version || echo INVALID_ARCH || true) &&
+        (node_modules/electron/dist/electron --no-sandbox --abi || echo INVALID_ARCH || true)
 ###########################
     - name: Electron version + arch (MacOS)
       #if: ${{ matrix.osarch == 'macos-intel' || matrix.osarch == 'macos-arm' }}
       if: startsWith(matrix.osarch, 'macos-')
       run: >
-        (file node_modules/electron/dist/Electron.app/Contents/MacOS/Electron) && (node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --version || echo INVALID_ARCH || true) && (node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --abi || echo INVALID_ARCH || true)
+        (file node_modules/electron/dist/Electron.app/Contents/MacOS/Electron) &&
+        (node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --version || echo INVALID_ARCH || true) &&
+        (node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --abi || echo INVALID_ARCH || true)
 ###########################
     - run: npm list -g node-gyp || echo ok || true
 ###########################
     - run: npm list node-gyp || echo ok || true
 ###########################
     - run: >
-        node -e 'const path = require("path"); const fs = require("fs"); const filePath = path.join(process.cwd(), "package.json"); let fileStr = fs.readFileSync(filePath, { encoding: "utf8" }); fileStr = fileStr.replace(/"sign": true,/g, `"sign": false,`); fileStr = fileStr.replace(/"hardenedRuntime": true,/g, `"hardenedRuntime": false, "identity": null,`); fs.writeFileSync(filePath, fileStr, { encoding: "utf8" });'
+        node -e '
+        const path = require("path");
+        const fs = require("fs");
+        const filePath = path.join(process.cwd(), "package.json");
+        let fileStr = fs.readFileSync(filePath, { encoding: "utf8" });
+        fileStr = fileStr.replace(/"sign": true,/g, `"sign": false,`);
+        fileStr = fileStr.replace(/"hardenedRuntime": true,/g, `"hardenedRuntime": false, "identity": null,`);
+        fs.writeFileSync(filePath, fileStr, { encoding: "utf8" });
+        '
       continue-on-error: true
 ###########################
     - name: PR action (just build)

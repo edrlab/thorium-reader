@@ -18,6 +18,7 @@ import { isOpenUrl, setOpenUrl } from "./url";
 import { _APP_NAME, _APP_VERSION, _PACK_NAME } from "readium-desktop/preprocessor-directives";
 import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
 import { appendFileSyncWithRotation } from "readium-desktop/utils/log";
+import { isSharedComputerCliSwitch } from "./options";
 
 // Logger
 const filename = "readium-desktop:main:lock";
@@ -141,7 +142,10 @@ export function lockInstance() {
                 // ignore
             }
 
-            const argvFormated = argv.filter((arg) => !arg.startsWith("--"));
+            const argvFormated = argv.filter((arg) =>
+                !arg.startsWith("--") ||
+                isSharedComputerCliSwitch(arg),
+            );
 
             const msg = "Start Command Line with: " + JSON.stringify(argvFormated, null, 4) + "\n";
             debug(msg);

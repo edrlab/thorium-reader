@@ -45,7 +45,9 @@
             "title": "{{- appName}} - tarkvarauuendus."
         },
         "window": {
-            "showLibrary": "Näita oma kogu / raamaturiiulit"
+            "showLibrary": "Näita oma kogu / raamaturiiulit",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -88,7 +90,8 @@
         "lastRead": "Viimatiloetud",
         "login": "Logi sisse",
         "logout": "Logi välja",
-        "missing": " ",
+        "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Väljaande üksiksasjad",
         "myBooks": "Minu raamatud",
         "noPublicationHelpL1": "Lohista failid siia",
@@ -105,6 +108,8 @@
                 "password": "Salasõna",
                 "register": "Registreeru",
                 "retry": "Proovi uuesti",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Kasutajanimi / e-posti aadress"
             },
             "info": {
@@ -126,6 +131,7 @@
                 "state": "Olek"
             }
         },
+        "openFolder": "",
         "publisher": "Kirjastus",
         "readBook": "Loe",
         "released": "Avaldamise kuupäev",
@@ -237,7 +243,18 @@
             "success": "Importimine õnnestus kenasti."
         },
         "download": {
-            "error": "„{{- title}}“ väljaande allalaadimine ei õnnestunud: {{- err}}"
+            "cancelled": "",
+            "error": "„{{- title}}“ väljaande allalaadimine ei õnnestunud: {{- err}}",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "„{{- title}}“ on juba imporditud.",
@@ -245,7 +262,13 @@
             "success": "„{{- title}}“ väljaande importimine sai kenasti tehtud."
         },
         "open": {
-            "error": "Väljaande/teise laadimine ei õnnestunud: {{- err}}"
+            "error": "Väljaande/teise laadimine ei õnnestunud: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": "Sisselogimisandmed on eemaldatud (tunnusload ja küpsised)"
     },
@@ -562,10 +585,6 @@
                 "compact": "Eelsalvestatud heliklipid",
                 "descriptive": "Sisusse on lõimitud eelsalvestatud heliklipid"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "Puudub teave eelsalvestatud helilise sisu kohta",
-                "descriptive": "Puudub teave eelsalvestatud helilise sisu kohta"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "Sisu koosneb ainult lõimitud eelsalvestatud heliklippidest",
                 "descriptive": "Heliraamat ilma tekstilise alternatiivita"
@@ -582,6 +601,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Puudub teave välimuse muudetavuse kohta",
                 "descriptive": "Puudub teave välimuse muudetavuse kohta"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },
@@ -637,6 +660,7 @@
         "expiredLcp": "Selle väljaande LCP-litsents on aegunud.",
         "incorrectPassphrase": "Mitte ükski salvestatud salasõna/salafraas ei sobi selle väljaandega või on sisestus vigane.",
         "lcpEnd": "Lõpp",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Kopeeritud tähemärke",
         "lcpRightsPrint": "Trükitud lehti",
         "lcpStart": "Algus",
@@ -674,6 +698,11 @@
             },
             "annotationsOptions": "Märkmete valikud",
             "date": "Muutmise kuupäev",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "Salvesta märkmed kui…",
             "filter": {
                 "all": "Kõik",
@@ -788,6 +817,8 @@
         "notes": {
             "colors": {
                 "cyan": "Rohekassinine",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "Roheline",
                 "orange": "Oranž",
                 "purple": "Purpurpunane",
@@ -835,6 +866,7 @@
             },
             "customFontSelected": "sa oled eelistanud kasutada isiklikku kirjatüüpi",
             "customizeReader": "Kohenda teksti vormindust",
+            "defaultValue": "",
             "disabled": "pole kasutusel",
             "display": "Ekraanivaade",
             "disposition": {
@@ -850,6 +882,7 @@
             "lineSpacing": "Reavahed",
             "margin": "Veeris",
             "mathjax": "Võta MathJax kasutusele",
+            "mathjaxDescription": "",
             "noFootnotes": "Keela hüpikaknaid sisaldavad joonealused märkused",
             "noRTLFlip": "Lülita välja paremalt vasakule lugemiseks mõeldud kasutajaliides",
             "noRuby": "Peida jaapani „Ruby“ vormingus märkused",
@@ -979,6 +1012,18 @@
                 },
                 "AudioPreviousAlt": {
                     "description": "Mine tagasi eelmise heliriba lõigu juurde (EPUB3 meediaülekate, kõnesüntees ettelugemise jaoks või eelnevalt salvestatud heliraamat). See jätab vahele kõik struktuurid, millest on hetkel võimalik väljuda",
+                    "name": ""
+                },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
+                    "description": "",
                     "name": ""
                 },
                 "AudioStop": {
@@ -1202,11 +1247,59 @@
         "session": {
             "title": "Lülita sessioonide salvestamine sisse"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Välimus",
             "general": "Üldseadistused",
             "keyboardShortcuts": "Klaviatuuri kiirklahvid",
-            "profiles": "Profiilid"
+            "profiles": "Profiilid",
+            "storage": ""
         },
         "theme": {
             "auto": "Automaatne",
@@ -1214,6 +1307,11 @@
             "description": "Rakenduse kujundus vastab operatsioonisüsteemile.",
             "light": "Hele kujundus",
             "title": "Rakenduse kujundus"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

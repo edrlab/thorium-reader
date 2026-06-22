@@ -45,7 +45,9 @@
             "title": "{{- appName}} 軟體已更新。"
         },
         "window": {
-            "showLibrary": "顯示 書庫/書架"
+            "showLibrary": "顯示 書庫/書架",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -89,6 +91,7 @@
         "login": "登入",
         "logout": "登出",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "更多訊息",
         "myBooks": "我的書籍",
         "noPublicationHelpL1": "將文件拖放到此處",
@@ -105,6 +108,8 @@
                 "password": "密碼",
                 "register": "註冊",
                 "retry": "在試一次",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "使用者名稱/電子郵件地址"
             },
             "info": {
@@ -126,6 +131,7 @@
                 "state": "狀態"
             }
         },
+        "openFolder": "",
         "publisher": "出版社",
         "readBook": "閱讀",
         "released": "出版日期",
@@ -232,7 +238,18 @@
             "success": "匯入已成功完成。"
         },
         "download": {
-            "error": "下載 [{{- title}}] 失敗：[{{- err}}]"
+            "cancelled": "",
+            "error": "下載 [{{- title}}] 失敗：[{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}} 已被匯入。",
@@ -240,7 +257,13 @@
             "success": "匯入 [{{- title}}] 完成。"
         },
         "open": {
-            "error": "無法打開出版物：[{{- err}}]"
+            "error": "無法打開出版物：[{{- err}}]",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": "登入資料已清除（帳號token和 cookies）"
     },
@@ -557,10 +580,6 @@
                 "compact": "",
                 "descriptive": ""
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "",
                 "descriptive": ""
@@ -575,6 +594,10 @@
                 "descriptive": ""
             },
             "ways-of-reading-visual-adjustments-unknown": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
                 "compact": "",
                 "descriptive": ""
             }
@@ -632,6 +655,7 @@
         "expiredLcp": "此書無法閱讀，因為 LCP 授權已到期。",
         "incorrectPassphrase": "沒有已儲存的密碼適合出版物，或輸入的密碼錯誤。",
         "lcpEnd": "結束",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "複製的文字",
         "lcpRightsPrint": "列印頁數",
         "lcpStart": "開始",
@@ -669,6 +693,11 @@
             },
             "annotationsOptions": "選項",
             "date": "修改日期",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "將註解另存為...",
             "filter": {
                 "all": "全部",
@@ -783,6 +812,8 @@
         "notes": {
             "colors": {
                 "cyan": "青色",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "綠色",
                 "orange": "橘色",
                 "purple": "紫色",
@@ -829,6 +860,7 @@
             },
             "customFontSelected": "您已選擇個人字體",
             "customizeReader": "自訂文字格式",
+            "defaultValue": "",
             "disabled": "停用",
             "display": "顯示",
             "disposition": {
@@ -844,6 +876,7 @@
             "lineSpacing": "行間距",
             "margin": "頁邊距",
             "mathjax": "",
+            "mathjaxDescription": "",
             "noFootnotes": "沒有附註",
             "noRTLFlip": "禁用從右到左的 UI",
             "noRuby": "隱藏日文漢字注音",
@@ -972,6 +1005,18 @@
                     "name": ""
                 },
                 "AudioPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
                     "description": "",
                     "name": ""
                 },
@@ -1196,11 +1241,59 @@
         "session": {
             "title": "保存登入狀態"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "外觀",
             "general": "一般",
             "keyboardShortcuts": "鍵盤快捷鍵",
-            "profiles": ""
+            "profiles": "",
+            "storage": ""
         },
         "theme": {
             "auto": "自動的",
@@ -1208,6 +1301,11 @@
             "description": "應用程式主題與作業系統相符。",
             "light": "光亮的",
             "title": "應用程式主題"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

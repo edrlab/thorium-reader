@@ -45,7 +45,9 @@
             "title": "Atualização de software: {{- appName}}."
         },
         "window": {
-            "showLibrary": "Mostrar biblioteca / estante"
+            "showLibrary": "Mostrar biblioteca / estante",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -89,6 +91,7 @@
         "login": "Iniciar sessão",
         "logout": "Terminar sessão",
         "missing": "",
+        "missingUnavailableDescription": "Não foi possível abrir esta publicação porque os ficheiros armazenados não estão disponíveis. Importe-a novamente ou aceda a Definições -> Armazenamento para adicionar ou alterar o espaço de armazenamento adicional.",
         "moreInfo": "Detalhes do documento",
         "myBooks": "Meus documentos",
         "noPublicationHelpL1": "Soltar ficheiros aqui",
@@ -105,6 +108,8 @@
                 "password": "Senha",
                 "register": "Registar",
                 "retry": "Tentar novamente",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Nome de utilizador / Endereço de email"
             },
             "info": {
@@ -126,6 +131,7 @@
                 "state": "Situação"
             }
         },
+        "openFolder": "",
         "publisher": "Editora",
         "readBook": "Ler",
         "released": "Publicado em",
@@ -242,7 +248,18 @@
             "success": "Importação concluída com sucesso."
         },
         "download": {
-            "error": "Falha ao descarregar {{- title}}: [{{- err}}]"
+            "cancelled": "",
+            "error": "Falha ao descarregar {{- title}}: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "Já tinha sido importado: {{- title}}.",
@@ -250,7 +267,13 @@
             "success": "Foi concluída a importação de {{- title}}."
         },
         "open": {
-            "error": "Não foi possível carregar o documento: {{- err}}"
+            "error": "Não foi possível carregar o documento: {{- err}}",
+            "folderNotFound": "A pasta da publicação não foi encontrada. Importe-a novamente ou configure o armazenamento adicional em Definições > Armazenamento."
+        },
+        "storage": {
+            "removed": "Pasta da publicação removida.",
+            "updateFailed": "Falha ao atualizar a pasta da publicação: {{- message}}",
+            "updated": "Pasta da publicação atualizada."
         },
         "wipeData": "Os dados de autenticação foram limpos (tokens de acesso e cookies)"
     },
@@ -567,10 +590,6 @@
                 "compact": "Clipes de áudio pré-gravados",
                 "descriptive": "Clipes de áudio pré-gravados estão integrados no conteúdo"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "Sem informações disponíveis sobre áudio pré-gravado",
-                "descriptive": "Sem informações disponíveis sobre áudio pré-gravado"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "Apenas áudio pré-gravado",
                 "descriptive": "Audiolivro sem alternativa de texto"
@@ -587,6 +606,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Sem informações disponíveis sobre a personalização da aparência",
                 "descriptive": "Sem informações disponíveis sobre personalização da aparência"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },
@@ -642,6 +665,7 @@
         "expiredLcp": "A licença PCL deste documento está expirada.",
         "incorrectPassphrase": "Nenhuma frase-passe armazenada corresponde à publicação ou a frase-passe introduzida está errada.",
         "lcpEnd": "Fim",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Caracteres copiados",
         "lcpRightsPrint": "Páginas impressas",
         "lcpStart": "Início",
@@ -679,6 +703,11 @@
             },
             "annotationsOptions": "Opções de anotações",
             "date": "Data de alteração",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "Guardar anotações como...",
             "filter": {
                 "all": "Tudo",
@@ -793,6 +822,8 @@
         "notes": {
             "colors": {
                 "cyan": "Ciano",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "Verde",
                 "orange": "Laranja",
                 "purple": "Roxo",
@@ -841,6 +872,7 @@
             },
             "customFontSelected": "Escolheu um tipo de letra pessoal",
             "customizeReader": "Personalizar formatação do texto",
+            "defaultValue": "",
             "disabled": "desativado",
             "display": "Visualização",
             "disposition": {
@@ -856,6 +888,7 @@
             "lineSpacing": "Espaçamento de linhas",
             "margin": "Margem",
             "mathjax": "Ativar MathJax",
+            "mathjaxDescription": "",
             "noFootnotes": "Desativar janelas de notas de rodapé",
             "noRTLFlip": "Desativar interface Direita-para-esquerda",
             "noRuby": "Ocultar Ruby Japonês",
@@ -986,6 +1019,18 @@
                 "AudioPreviousAlt": {
                     "description": "",
                     "name": "Segmento áudio anterior (escape)"
+                },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
+                    "description": "",
+                    "name": ""
                 },
                 "AudioStop": {
                     "description": "",
@@ -1196,7 +1241,7 @@
             "info": "Alterne entre perfis para personalizar a aplicação com a marca e cores de um fornecedor parceiro. Cada perfil oferece uma experiência personalizada.",
             "thorium": {
                 "description": "O perfil Thorium Vanilla é o original, criado por EDRLab.",
-                "title": ""
+                "title": "Thorium vanilla"
             },
             "version": "Versão: {{- version}}"
         },
@@ -1208,11 +1253,59 @@
         "session": {
             "title": "Ativar guardar sessão"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
+        "storage": {
+            "actions": {
+                "addDirectory": "Selecionar um armazenamento adicional",
+                "changeDirectory": "Atualizar alojamento adicional",
+                "removeStorageDirectory": "Remover armazenamento adicional"
+            },
+            "beta": {
+                "availability": "Esta funcionalidade funciona apenas em versões recentes do Thorium; as pastas externas de livros não aparecerão no Thorium 3.4 ou versões mais antigas.",
+                "integrity": "Deve manter esta pasta segura e acessível. Evite eliminá-la, restringir o acesso ou utilizar armazenamento lento ou instável (por exemplo unidades de rede).",
+                "migration": "O Thorium não transfere os seus livros automaticamente: se atualizar o armazenamento adicional, tem de mover manualmente as suas publicações para o novo local. Se o remover, terá de mover manualmente as suas publicações de volta para o armazenamento original.",
+                "summary": "Saiba mais sobre esta funcionalidade, atualmente em versão beta",
+                "warning": "Não altere manualmente os ficheiros nesta pasta, pois pode causar problemas com os seus livros ou com o leitor. Considere esta pasta como uma biblioteca segura gerida pelo Thorium."
+            },
+            "configuration": {
+                "chooseFolderDescription": "Escolha a pasta que o Thorium deve utilizar como armazenamento adicional.",
+                "configuredDescription": "O espaço de armazenamento adicional está configurado e pronto a utilizar para as novas publicações armazenadas.",
+                "notConfiguredDescription": "As publicações importadas para o Thorium Reader serão armazenadas na pasta selecionada. As publicações anteriormente importadas permanecerão no armazenamento original do sistema."
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "Continuar",
+                    "description": "Esta funcionalidade está atualmente em versão beta. Pretende continuar e configurar um armazenamento adicional selecionando uma pasta?",
+                    "title": "Selecionar armazenamento adicional"
+                },
+                "edit": {
+                    "confirm": "Editar pasta",
+                    "description": "A atualização do armazenamento adicional implica muito cuidado. O Thorium não migrará automaticamente as publicações existentes; terá de fazer isso manualmente. Deseja continuar?",
+                    "title": "Atualizar o armazenamento adicional"
+                },
+                "remove": {
+                    "confirm": "Remover pasta",
+                    "description": "Remover o armazenamento adicional implica muito cuidado. O Thorium não migrará automaticamente as publicações existentes; terá de fazer isso manualmente. Deseja continuar?",
+                    "title": "Remover armazenamento adicional"
+                }
+            },
+            "locations": {
+                "defaultDescription": "As publicações geridas pela aplicação são armazenadas, por predefinição, em:",
+                "defaultInternal": "Armazenamento do sistema",
+                "externalStorage": "Armazenamento externo",
+                "title": "Locais"
+            }
+        },
         "tabs": {
             "appearance": "Visual",
             "general": "Geral",
             "keyboardShortcuts": "Atalhos de teclado",
-            "profiles": "Perfis"
+            "profiles": "Perfis",
+            "storage": "Armazenamento"
         },
         "theme": {
             "auto": "Automático",
@@ -1220,6 +1313,11 @@
             "description": "O tema da aplicação combina com o do sistema operativo.",
             "light": "Claro",
             "title": "Tema da aplicação"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

@@ -23,6 +23,12 @@ import { PublicationDocument } from "readium-desktop/main/db/document/publicatio
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { publicationApi } from "..";
+import { cleanupLcpPublicationIfNoLongerUsable } from "readium-desktop/main/redux/sagas/publication/lcpSharedWorkstationCleanup";
+import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import { RootState } from "readium-desktop/main/redux/states";
+import { settingsLcpAutoDeleteExpiredPublicationsIsEnabled } from "readium-desktop/common/redux/states/settings";
+import { sqliteTableNoteInsertOrReplace, sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
+import type { TFileTypePubData } from "readium-desktop/main/storage/publication-data";
 
 // import { appActivate } from "readium-desktop/main/redux/sagas/win/library";
 // import { readerActions } from "readium-desktop/common/redux/actions";
@@ -38,6 +44,94 @@ const convertDoc = async (doc: PublicationDocument, publicationViewConverter: Pu
         const pub = await publicationViewConverter.convertUnavailableDocumentToMinimalPublicationView(doc);
         debug("Convert to minimal view", pub);
         return pub;
+    }
+};
+
+const PERSONAL_MODE_REPLACEMENT_READING_DATA_TYPES: TFileTypePubData[] = [
+    "locator",
+    "config",
+    "disableRTLFlip",
+    "divina",
+    "allowCustomConfig",
+    "pdfConfig",
+    "bound",
+];
+
+type TPersonalModeReplacementPublicationData = Partial<Record<TFileTypePubData, object>>;
+
+interface IPersonalModeReplacementUserData {
+    noteTotalCount: number;
+    notes: INoteState[];
+    publicationData: TPersonalModeReplacementPublicationData;
+}
+
+const emptyPersonalModeReplacementUserData = (): IPersonalModeReplacementUserData => ({
+    noteTotalCount: 0,
+    notes: [],
+    publicationData: {},
+});
+
+const getPersonalModeReplacementUserData = async (publicationIdentifier: string): Promise<IPersonalModeReplacementUserData> => {
+    const store = diMainGet("store");
+    const state: RootState = store.getState();
+    if (settingsLcpAutoDeleteExpiredPublicationsIsEnabled(state.settings)) {
+        return emptyPersonalModeReplacementUserData();
+    }
+
+    const notes = sqliteTableSelectAllNotesWherePubId(publicationIdentifier);
+    const publicationData = diMainGet("publication-data");
+    const replacementPublicationData: TPersonalModeReplacementPublicationData = {};
+
+    for (const type of PERSONAL_MODE_REPLACEMENT_READING_DATA_TYPES) {
+        const jsonObj = await publicationData.readJsonObj(publicationIdentifier, type);
+        if (jsonObj) {
+            replacementPublicationData[type] = jsonObj;
+        }
+    }
+
+    const maxNoteIndex = notes.reduce((acc, note) => Math.max(acc, note.index || 0), 0);
+    const noteTotalCountState = await publicationData.readJsonObj(publicationIdentifier, "noteTotalCount") as {
+        state?: unknown;
+    } | undefined;
+    const noteTotalCount = typeof noteTotalCountState?.state === "number"
+        ? Math.max(noteTotalCountState.state, maxNoteIndex)
+        : maxNoteIndex;
+
+    debug(
+        `captured ${notes.length} note(s) and ${Object.keys(replacementPublicationData).length} publication-data file(s) before personal-mode LCP replacement`,
+        publicationIdentifier,
+    );
+    return {
+        noteTotalCount,
+        notes,
+        publicationData: replacementPublicationData,
+    };
+};
+
+const restorePersonalModeReplacementUserData = async (
+    publicationIdentifier: string | undefined,
+    replacementUserData: IPersonalModeReplacementUserData,
+) => {
+    if (!publicationIdentifier) {
+        return;
+    }
+
+    const publicationData = diMainGet("publication-data");
+    for (const [type, jsonObj] of Object.entries(replacementUserData.publicationData) as Array<[TFileTypePubData, object]>) {
+        await publicationData.writeJsonObj(publicationIdentifier, type, jsonObj);
+    }
+
+    // Replacement imports create a new publication identifier. Reassigning the captured
+    // note UUIDs with INSERT OR REPLACE preserves annotations/bookmarks even if the old
+    // publication delete saga has not finished deleting the previous pub_id rows yet.
+    if (replacementUserData.notes.length) {
+        sqliteTableNoteInsertOrReplace(publicationIdentifier, replacementUserData.notes);
+    }
+
+    if (replacementUserData.noteTotalCount > 0) {
+        await publicationData.writeJsonObj(publicationIdentifier, "noteTotalCount", {
+            state: replacementUserData.noteTotalCount,
+        });
     }
 };
 
@@ -64,7 +158,27 @@ export function* importFromLink(
         if (alreadyImported) {
 
             if (deep < 1) {
-                deep = 1;
+                const retryDeep = deep + 1;
+                const replacementUserData = yield* callTyped(
+                    () => getPersonalModeReplacementUserData(publicationDocument.identifier),
+                );
+
+                const cleanedPublicationDocument = yield* callTyped(
+                    cleanupLcpPublicationIfNoLongerUsable,
+                    publicationDocument,
+                    "import-from-link",
+                    // User-initiated replacement import may remove a locally expired old copy
+                    // even when LSD cannot confirm a terminal status.
+                    { force: true, allowLocalRightsEndFallback: true },
+                );
+                if (!cleanedPublicationDocument) {
+                    debug("restart import process after LCP cleanup");
+                    const replacementPublicationView = yield* callTyped(importFromLink, link, willBeImmediatelyFollowedByOpen, pub, retryDeep);
+                    yield* callTyped(
+                        () => restorePersonalModeReplacementUserData(replacementPublicationView?.identifier, replacementUserData),
+                    );
+                    return replacementPublicationView;
+                }
 
                 if (!canOpenPublication(publicationView)) {
 
@@ -78,9 +192,10 @@ export function* importFromLink(
                     }
                     try {
                         debug("restart import process after publication was already imported, missing, but not deleted");
-                        yield* callTyped(importFromLink, link, willBeImmediatelyFollowedByOpen, pub, deep);
+                        return yield* callTyped(importFromLink, link, willBeImmediatelyFollowedByOpen, pub, retryDeep);
                     } catch (e) {
                         debug("Error during the second import of the publication", e);
+                        return undefined;
                     }
                 } else {
 
@@ -92,6 +207,8 @@ export function* importFromLink(
                         ),
                     );
                 }
+            } else if (deep === 1) {
+                debug("importFromLink already imported after retry -> STOP!");
             } else if (deep > 1) {
                 debug("importFromLink too many call stack -> STOP!");
             }
@@ -189,7 +306,28 @@ export function* importFromFs(
                     if (alreadyImported) {
 
                         if (deep < 1) {
-                            deep = 1;
+                            const retryDeep = deep + 1;
+                            const replacementUserData = yield* callTyped(
+                                () => getPersonalModeReplacementUserData(publicationDocument.identifier),
+                            );
+
+                            const cleanedPublicationDocument = yield* callTyped(
+                                cleanupLcpPublicationIfNoLongerUsable,
+                                publicationDocument,
+                                "import-from-fs",
+                                // User-initiated replacement import may remove a locally expired old copy
+                                // even when LSD cannot confirm a terminal status.
+                                { force: true, allowLocalRightsEndFallback: true },
+                            );
+                            if (!cleanedPublicationDocument) {
+                                debug("restart import process after LCP cleanup");
+                                const publicationViews = yield* callTyped(importFromFs, fpath, willBeImmediatelyFollowedByOpen, retryDeep);
+                                const replacementPublicationView = publicationViews?.[0];
+                                yield* callTyped(
+                                    () => restorePersonalModeReplacementUserData(replacementPublicationView?.identifier, replacementUserData),
+                                );
+                                return replacementPublicationView;
+                            }
 
                             if (!canOpenPublication(publicationView)) {
 
@@ -203,9 +341,11 @@ export function* importFromFs(
                                 }
                                 try {
                                     debug("restart import process after publication was already imported, missing, but not deleted");
-                                    yield* callTyped(importFromFs, fpath, willBeImmediatelyFollowedByOpen, deep);
+                                    const publicationViews = yield* callTyped(importFromFs, fpath, willBeImmediatelyFollowedByOpen, retryDeep);
+                                    return publicationViews?.[0];
                                 } catch (e) {
                                     debug("Error during the second import of the publication", e);
+                                    return undefined;
                                 }
                             } else {
 
@@ -217,6 +357,8 @@ export function* importFromFs(
                                     ),
                                 );
                             }
+                        } else if (deep === 1) {
+                            debug("importFromFs already imported after retry -> STOP!");
                         } else if (deep > 1) {
                             debug("importFromFs too many call stack -> STOP!");
                         }
@@ -261,6 +403,15 @@ export function* importFromFs(
     //     yield put(readerActions.openRequest.build(publicationViews[0].identifier));
     //     yield put(readerActions.detachModeRequest.build());
     // }
+
+    // TEST PURPOSE
+    // const identifier = publicationViews[0].identifier;
+    // yield* fork(function*() {
+    //     yield* delay(400);
+    //     debug("DELETE !!", identifier);
+    //     yield* callTyped(() => publicationApi.delete(identifier));
+    //     debug("END DELETE !!", identifier);
+    // });
 
     return publicationViews;
 }

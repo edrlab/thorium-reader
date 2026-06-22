@@ -100,7 +100,7 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
             onClick={debounce(() => {
                 dispatch(publicationActions.openFolder.build(props.publicationView.identifier));
             }, 1000, { immediate: true })}
-        >OPEN Folder</button >
+        >{__("catalog.openFolder")}</button >
     </>;
 
     return (

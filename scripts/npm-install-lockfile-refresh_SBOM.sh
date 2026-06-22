@@ -13,7 +13,7 @@ rm -f package-lock.json && npm install --ignore-scripts --foreground-scripts --m
 
 npm audit
 npm outdated
-(npm exec --no --offline -- taze --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd . && npm exec --no --offline -- taze major --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd .) || echo OK
+(npm exec --no --offline -- taze --maturity-period 3 --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd . && npm exec --no --offline -- taze major --maturity-period 3 --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd .) || echo OK
 
 rm -rf node_modules/
 mv node_modules_ORIGINAL/ node_modules/

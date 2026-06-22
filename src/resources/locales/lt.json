@@ -45,7 +45,9 @@
             "title": "{{- appName}} programinės įrangos naujinys."
         },
         "window": {
-            "showLibrary": "Rodyti biblioteką / lentyną"
+            "showLibrary": "Rodyti biblioteką / lentyną",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -88,7 +90,8 @@
         "lastRead": "Pask. kartą skaityta",
         "login": "Prisijungti",
         "logout": "Atsijungti",
-        "missing": " ",
+        "missing": "Trūkstami failai",
+        "missingUnavailableDescription": "Šio leidinio negalima atverti, nes jo failai nepasiekiami. Importuokite jį iš naujo arba eikite į „Nuostatos“, tada – į „Saugykla“, kad pridėtumėte arba pakeistumėte papildomą saugyklą.",
         "moreInfo": "Daugiau informacijos",
         "myBooks": "Mano leidiniai",
         "noPublicationHelpL1": "Nutempkite leidinį čia",
@@ -105,6 +108,8 @@
                 "password": "Slaptažodis",
                 "register": "Užsiregistruoti",
                 "retry": "Bandyti dar kartą",
+                "unauthorized": "Neleistina",
+                "unauthorizedUnsupportedType": "Neleistina (nepalaikomas WWWAuthenticate tipas „{{- type}}“)",
                 "username": "Naudotojo vardas / El. pašto adresas"
             },
             "info": {
@@ -126,6 +131,7 @@
                 "state": "Būsena"
             }
         },
+        "openFolder": "Atverti aplanką",
         "publisher": "Leidėjas",
         "readBook": "Skaityti",
         "released": "Išleidimo data",
@@ -247,7 +253,18 @@
             "success": "Importavimas sėkmingai užbaigtas."
         },
         "download": {
-            "error": "[{{- title}}] atsiuntimas nepavyko: [{{- err}}]"
+            "cancelled": "Atsiuntimas atšauktas.",
+            "error": "[{{- title}}] atsiuntimas nepavyko: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "Atsisiųsto failo vientisumo patikra nepavyko: tikėtasi {{- expected}} SHA-256 maišos reikšmės , gauta {{- actual}}.",
+                "httpGet": "HTTP atsiuntimas nepavyko: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "invalidFilename": "Laikino atsiuntimo failo pavadinimas netaisyklingas.",
+                "invalidLink": "Atsiuntimo nuoroda netaisyklinga.",
+                "invalidTempDirectory": "Netaisyklingas laikinas atsiuntimo aplankas.",
+                "lengthMismatch": "Atsiųsto failo vientisumo patikra nepavyko: tikėtasi baitų: {{- expected}}, gauta: {{- actual}}.",
+                "readStreamMissing": "Neprieinamas atsiuntimo srautas.",
+                "tooManyFilenameAttempts": "Nepavyko sukurti unikalaus laikino atsiuntimo failo pavadinimo: {{- path}}"
+            }
         },
         "import": {
             "alreadyImport": "[{{- title}}] jau importuotas.",
@@ -255,7 +272,13 @@
             "success": "[{{- title}}] importas baigtas."
         },
         "open": {
-            "error": "Nepavyko atverti leidinio : [{{- err}}]"
+            "error": "Nepavyko atverti leidinio : [{{- err}}]",
+            "folderNotFound": "Nepavyksta rasti leidinio aplanko. Importuokite leidinį iš naujo arba sukonfigūruokite papildomą saugyklą skiltyje „Nuostatos“ > „Saugykla“."
+        },
+        "storage": {
+            "removed": "Leidinio aplankas pašalintas.",
+            "updateFailed": "Nepavyko atnaujinti leidinio aplanko: {{- message}}",
+            "updated": "Leidinio aplankas atnaujintas."
         },
         "wipeData": "Prisijungimo duomenys išvalyti (prieigos žetonai ir slapukai)"
     },
@@ -572,10 +595,6 @@
                 "compact": "Iš anksto įrašyti garso įrašai",
                 "descriptive": "Turinyje įterpti iš anksto įrašyti garso įrašai"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "Informacijos apie iš anksto įrašytus garso įrašus nėra",
-                "descriptive": "Informacijos apie iš anksto įrašytus garso įrašus nėra"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "Tik iš anksto įrašytas garsas",
                 "descriptive": "Garsinė knyga be teksto alternatyvos"
@@ -592,6 +611,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Informacijos apie išvaizdos keitimo galimybes nėra",
                 "descriptive": "Informacijos apie išvaizdos keitimo galimybes nėra"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "Išvaizdos keisti negalima",
+                "descriptive": "Teksto ir puslapio išdėstymo keisti negalima, nes skaitymo patirtis artima spausdintai versijai, tačiau skaitymo sistemos vis tiek gali teikti mastelio parinktis"
             }
         }
     },
@@ -647,6 +670,7 @@
         "expiredLcp": "Šio leidinio LCP licencijos galiojimo laikas baigėsi.",
         "incorrectPassphrase": "Jokia išsaugota slaptafrazė neatitinka leidinio arba įvesta neteisinga slaptafrazė.",
         "lcpEnd": "Pabaiga",
+        "lcpNotSupported": "ĮSPĖJIMAS: tai yra išankstinė Thorium Desktop Reader versija, kuri nepalaiko gamybinių LCP licencijų ir palaiko tik LCP „bazinio profilio“ iššifravimą be sertifikato patikros.",
         "lcpRightsCopy": "Ženklų kopijos",
         "lcpRightsPrint": "Spausdintos kopijos",
         "lcpStart": "Pradžia",
@@ -684,6 +708,11 @@
             },
             "annotationsOptions": "Pastabų parinktys",
             "date": "Keitimo data",
+            "error": {
+                "pdf": {
+                    "validationSelection": "Nepavyko sukurti PDF pastabos iš šios atrankos."
+                }
+            },
             "export": "Išsaugoti pastabas kaip...",
             "filter": {
                 "all": "Visos",
@@ -798,6 +827,8 @@
         "notes": {
             "colors": {
                 "cyan": "Žydra",
+                "darkorange": "Tamsiai oranžinė",
+                "darkyellow": "Tamsiai geltona",
                 "green": "Žalia",
                 "orange": "Oranžinė",
                 "purple": "Purpurinė",
@@ -847,6 +878,7 @@
             },
             "customFontSelected": "Pasirinkote asmeninį šriftą",
             "customizeReader": "Tinkinti teksto formatavimą",
+            "defaultValue": "numatytoji reikšmė",
             "disabled": "išjungta",
             "display": "Atvaizdavimas",
             "disposition": {
@@ -862,6 +894,7 @@
             "lineSpacing": "Eilučių išretinimas",
             "margin": "Paraštė",
             "mathjax": "Įgalinti MathJax",
+            "mathjaxDescription": "MathJax",
             "noFootnotes": "Išjungti iššokančias išnašas",
             "noRTLFlip": "Išjungti iš-dešinės-į-kairę naudotojo sąsają",
             "noRuby": "Slėpti japonų kalbos „ruby“ simbolius",
@@ -992,6 +1025,18 @@
                 "AudioPreviousAlt": {
                     "description": "Grįžti į ankstesnį garso segmentą pasakojime (EPUB3 leidinyje su teksto ir garso sinchronizacija, balso sintezėje arba iš anksto įrašytoje garsinėje knygoje). Bet kokia šiuo metu aktyvi teksto struktūra su išėjimo galimybe praleidžiama",
                     "name": "Ankstesnis garso segmentas (išėjimas)"
+                },
+                "AudioSpeedDecrease": {
+                    "description": "Sumažinti „EPUB3 Media Overlays“ garso atkūrimo arba balso sintezės skaitymo greitį",
+                    "name": "Sumažinti garso greitį"
+                },
+                "AudioSpeedIncrease": {
+                    "description": "Padidinti „EPUB3 Media Overlays“ garso atkūrimo arba balso sintezės skaitymo greitį",
+                    "name": "Padidinti garso greitį"
+                },
+                "AudioSpeedReset": {
+                    "description": "Nustatyti „EPUB3 Media Overlays“ garso atkūrimo arba balso sintezės skaitymo greitį iš naujo",
+                    "name": "Nustatyti garso greitį iš naujo"
                 },
                 "AudioStop": {
                     "description": "Stabdyti dabartinį garso įrašą (EPUB3 leidinyje su teksto ir garso sinchronizacija, balso sintezėje arba iš anksto įrašytoje garsinėje knygoje)",
@@ -1214,11 +1259,59 @@
         "session": {
             "title": "Įgalinti sesijos išsaugojimą"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "Automatiškai pašalinti pasibaigusio galiojimo leidinius ir susijusius naudotojo duomenis",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Užtikrina, kad pasibaigus leidinio skolinimo terminui jie būtų automatiškai ištrinami (įskaitant asmenines pastabas, skirtukus ir kt.). Tai naudinga bendro naudojimo kompiuterių aplinkoje, pavyzdžiui, bibliotekoje ar universiteto auditorijose.",
+            "title": "Bendro naudojimo kompiuterio režimas"
+        },
+        "storage": {
+            "actions": {
+                "addDirectory": "Pasirinkite papildomą saugyklą",
+                "changeDirectory": "Atnaujinti papildomą saugyklą",
+                "removeStorageDirectory": "Pašalinti papildomą saugyklą"
+            },
+            "beta": {
+                "availability": "Šis funkcionalumas veikia tik su naujausiomis Thorium versijomis; Thorium 3.4 ar ankstesnėse versijose išorinių aplankų leidiniai nebus rodomi.",
+                "integrity": "Šį aplanką laikykite saugų ir lengvai pasiekiamą. Nepašalinkite jo, neapribokite prieigos prie jo ir nenaudokite lėtos ar nestabilios saugyklos, pvz., tinklo diskų.",
+                "migration": "Thorium automatiškai neperkelia leidinių: jei atnaujinate papildomą saugyklą, privalote rankiniu būdu perkelti leidinius į naują vietą. Jei ją pašalinate, privalote rankiniu būdu perkelti leidinius į pradinę saugyklą.",
+                "summary": "Sužinoti daugiau apie šią funkciją, šiuo metu ji yra bandymų stadijoje",
+                "warning": "Nekeiskite šiame aplanke esančių failų rankiniu būdu, nes tai gali sukelti leidinių ar skaitytuvės problemų. Įsivaizduokite šį aplanką kaip saugią biblioteką, kurią tvarko Thorium."
+            },
+            "configuration": {
+                "chooseFolderDescription": "Pasirinkite aplanką, kurį Thorium turėtų naudoti kaip papildomą saugyklą.",
+                "configuredDescription": "Papildoma saugykla sukonfigūruota ir paruošta naudoti naujai saugomiems leidiniams.",
+                "notConfiguredDescription": "Į Thorium Reader importuoti leidiniai bus saugomi pasirinktame aplanke. Anksčiau importuoti leidiniai liks originalioje sistemos saugykloje."
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "Tęsti",
+                    "description": "Šis funkcionalumas šiuo metu yra bandymų stadijoje. Ar norite tęsti ir konfigūruoti papildomą saugyklą pasirenkant aplanką?",
+                    "title": "Pasirinkite papildomą saugyklą"
+                },
+                "edit": {
+                    "confirm": "Keisti aplanką",
+                    "description": "Papildomos saugyklos atnaujinimas reikalauja atsargos. Thorium neperkels esamų leidinių; tai turėsite padaryti rankiniu būdu. Ar norite tęsti?",
+                    "title": "Atnaujinti papildomą saugyklą"
+                },
+                "remove": {
+                    "confirm": "Šalinti aplanką",
+                    "description": "Papildomos saugyklos pašalinimas reikalauja atsargos. Thorium neperkels esamų leidinių; tai turėsite padaryti rankiniu būdu. Ar norite tęsti?",
+                    "title": "Pašalinti papildomą saugyklą"
+                }
+            },
+            "locations": {
+                "defaultDescription": "Programos tvarkomi leidiniai pagal numatytuosius nustatymus saugomi:",
+                "defaultInternal": "Sistemos saugykla",
+                "externalStorage": "Išorinė saugykla",
+                "title": "Vietos"
+            }
+        },
         "tabs": {
             "appearance": "Išvaizda",
             "general": "Bendros",
             "keyboardShortcuts": "Spartieji klavišai",
-            "profiles": "Profiliai"
+            "profiles": "Profiliai",
+            "storage": "Saugykla"
         },
         "theme": {
             "auto": "Automatinė",
@@ -1226,6 +1319,11 @@
             "description": "Programos tema atitinka operacinės sistemos temą.",
             "light": "Šviesi",
             "title": "Programos tema"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

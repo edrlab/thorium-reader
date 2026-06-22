@@ -45,7 +45,9 @@
             "title": ""
         },
         "window": {
-            "showLibrary": "라이브러리 / 내서재 보기"
+            "showLibrary": "라이브러리 / 내서재 보기",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -89,6 +91,7 @@
         "login": "",
         "logout": "",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "상세정보",
         "myBooks": "내 도서",
         "noPublicationHelpL1": "출판물을 여기로 가져오십시오.",
@@ -105,6 +108,8 @@
                 "password": "",
                 "register": "",
                 "retry": "",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": ""
             },
             "info": {
@@ -126,6 +131,7 @@
                 "state": "상태"
             }
         },
+        "openFolder": "",
         "publisher": "출판사",
         "readBook": "읽기",
         "released": "발행일",
@@ -227,7 +233,18 @@
             "success": ""
         },
         "download": {
-            "error": "{{- title}} 다운로드 실패하였습니다: [{{- err}}]"
+            "cancelled": "",
+            "error": "{{- title}} 다운로드 실패하였습니다: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}}는 이미 추가된 도서입니다",
@@ -235,7 +252,13 @@
             "success": "{{- title}} 열기를 성공하였습니다."
         },
         "open": {
-            "error": "지원하지 않는 형식의 출판물입니다: {{- err}}"
+            "error": "지원하지 않는 형식의 출판물입니다: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": ""
     },
@@ -552,10 +575,6 @@
                 "compact": "",
                 "descriptive": ""
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "",
                 "descriptive": ""
@@ -570,6 +589,10 @@
                 "descriptive": ""
             },
             "ways-of-reading-visual-adjustments-unknown": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
                 "compact": "",
                 "descriptive": ""
             }
@@ -627,6 +650,7 @@
         "expiredLcp": "이 책은 LCP 라이선스가 만료되어서 읽을 수 없습니다",
         "incorrectPassphrase": "",
         "lcpEnd": "종료",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "복사된 문자",
         "lcpRightsPrint": "인쇄된 페이지",
         "lcpStart": "시작",
@@ -664,6 +688,11 @@
             },
             "annotationsOptions": "",
             "date": "",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "",
             "filter": {
                 "all": "",
@@ -778,6 +807,8 @@
         "notes": {
             "colors": {
                 "cyan": "",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "",
                 "orange": "",
                 "purple": "",
@@ -824,6 +855,7 @@
             },
             "customFontSelected": "",
             "customizeReader": "",
+            "defaultValue": "",
             "disabled": "",
             "display": "디스플레이",
             "disposition": {
@@ -839,6 +871,7 @@
             "lineSpacing": "줄 간격",
             "margin": "여백",
             "mathjax": "",
+            "mathjaxDescription": "",
             "noFootnotes": "각주 비활성화",
             "noRTLFlip": "",
             "noRuby": "",
@@ -967,6 +1000,18 @@
                     "name": ""
                 },
                 "AudioPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
                     "description": "",
                     "name": ""
                 },
@@ -1191,17 +1236,70 @@
         "session": {
             "title": "세션 저장"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "",
             "general": "",
             "keyboardShortcuts": "",
-            "profiles": ""
+            "profiles": "",
+            "storage": ""
         },
         "theme": {
             "auto": "",
             "dark": "",
             "description": "",
             "light": "",
+            "title": ""
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
             "title": ""
         }
     },

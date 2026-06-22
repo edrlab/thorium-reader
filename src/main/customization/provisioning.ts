@@ -23,7 +23,7 @@ import addFormats from "ajv-formats";
 import { diMainGet } from "../di";
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
-import isURL from "validator/lib/isURL";
+import isURL from "readium-desktop/common/utils/isURL";
 import { EXT_THORIUM } from "readium-desktop/common/extension";
 import { customizationManifestJsonSchemaMinimal } from "readium-desktop/common/readium/customization/profile.schema";
 import { USER_DATA_FOLDER } from "readium-desktop/common/constant";

@@ -45,7 +45,9 @@
             "title": "Atualização de software da {{- appName}}."
         },
         "window": {
-            "showLibrary": "Mostrar biblioteca / estante"
+            "showLibrary": "Mostrar biblioteca / estante",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -89,6 +91,7 @@
         "login": "Login",
         "logout": "Logout",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Detalhes da publicação",
         "myBooks": "Meus livros",
         "noPublicationHelpL1": "Solte um arquivo aqui",
@@ -105,6 +108,8 @@
                 "password": "Senha",
                 "register": "Registrar-se",
                 "retry": "Tente novamente",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Usuário / E-mail"
             },
             "info": {
@@ -126,6 +131,7 @@
                 "state": "Estado"
             }
         },
+        "openFolder": "",
         "publisher": "Editora",
         "readBook": "Ler",
         "released": "Publicado em",
@@ -242,7 +248,18 @@
             "success": "Importação concluída com sucesso."
         },
         "download": {
-            "error": "O download de {{- title}} falhou: [{{- err}}]"
+            "cancelled": "",
+            "error": "O download de {{- title}} falhou: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}} já foi importado.",
@@ -250,7 +267,13 @@
             "success": "A importação de {{- title}} terminou."
         },
         "open": {
-            "error": "Erro na abertura da publicação: {{- err}}"
+            "error": "Erro na abertura da publicação: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": "Os dados de login foram limpos (tokens e cookies de acesso)"
     },
@@ -567,10 +590,6 @@
                 "compact": "Clipes de áudio pré-gravados",
                 "descriptive": "Clipes de áudio pré-gravados estão incorporados ao conteúdo"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "Nenhuma informação sobre clipes de áudio pré-gravados está disponível",
-                "descriptive": "Nenhuma informação sobre clipes de áudio pré-gravados está disponível"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "Apenas áudio pré-gravado",
                 "descriptive": "Audiolivro sem alternativa de texto"
@@ -587,6 +606,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Nenhuma informação sobre a capacidade de modificação da aparência está disponível",
                 "descriptive": "Nenhuma informação sobre a capacidade de modificação da aparência está disponível"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },
@@ -642,6 +665,7 @@
         "expiredLcp": "A licença LCP desta publicação expirou.",
         "incorrectPassphrase": "Nenhuma senha armazenada funciona na publicação, ou a senha inserida é errada.",
         "lcpEnd": "Fim",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Caracteres copiados",
         "lcpRightsPrint": "Páginas impressas",
         "lcpStart": "Iniciar",
@@ -679,6 +703,11 @@
             },
             "annotationsOptions": "Opções",
             "date": "Data de modificação",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "Salvar notas como...",
             "filter": {
                 "all": "Todos",
@@ -793,6 +822,8 @@
         "notes": {
             "colors": {
                 "cyan": "Azul-ciano",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "Verde",
                 "orange": "Laranja",
                 "purple": "Roxo",
@@ -841,6 +872,7 @@
             },
             "customFontSelected": "Você escolheu uma fonte personalizada",
             "customizeReader": "Personalize a formatação do texto",
+            "defaultValue": "",
             "disabled": "desabilitado",
             "display": "Exibição",
             "disposition": {
@@ -856,6 +888,7 @@
             "lineSpacing": "Espaçamento de linhas",
             "margin": "Margem",
             "mathjax": "Habilitar MathJax",
+            "mathjaxDescription": "",
             "noFootnotes": "Desativar notas de rodapé popup",
             "noRTLFlip": "Desativar UI da direita para a esquerda",
             "noRuby": "Ocultar Ruby Japonês",
@@ -986,6 +1019,18 @@
                 "AudioPreviousAlt": {
                     "description": "Ir para o segmento anterior de áudio da narração (Media Overlays do EPUB 3, leitura em voz alta por texto-para-fala ou audiolivro pré-gravado). Ignora estruturas marcadas como puláveis",
                     "name": "Segmento anterior de áudio (pular)"
+                },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
+                    "description": "",
+                    "name": ""
                 },
                 "AudioStop": {
                     "description": "Parar o áudio atual (Media Overlays do EPUB 3, leitura em voz alta por texto-para-fala ou audiolivro pré-gravado)",
@@ -1208,11 +1253,59 @@
         "session": {
             "title": "Salvar sessão"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Aparência",
             "general": "Geral",
             "keyboardShortcuts": "Atalhos do teclado",
-            "profiles": "Perfis"
+            "profiles": "Perfis",
+            "storage": ""
         },
         "theme": {
             "auto": "Automático",
@@ -1220,6 +1313,11 @@
             "description": "O tema do aplicativo corresponde ao sistema operacional.",
             "light": "Claro",
             "title": "Tema do aplicativo"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

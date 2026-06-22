@@ -110,7 +110,12 @@ export function* importLcplFromFS(
     if (link?.Href) {
 
         const title = link.Title || path.basename(filePath);
-        const [downloadFilePath] = yield* callTyped(downloader, [{ href: link.Href, type: link.Type }], title);
+        const [downloadFilePath] = yield* callTyped(downloader, [{
+            href: link.Href,
+            type: link.Type,
+            length: link.Length,
+            hash: link.Hash,
+        }], title);
 
         // inject LCP license into temporary downloaded file, so that we can check CRC
         // caveat: processStatusDocument() which is invoked later

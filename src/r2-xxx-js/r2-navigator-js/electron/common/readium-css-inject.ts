@@ -7,6 +7,7 @@
 
 import debug_ from "debug";
 
+import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import { parseDOM, serializeDOM } from "./dom";
 import { IEventPayload_R2_EVENT_READIUMCSS } from "./events";
 import { IwidthHeight } from "./fxl";
@@ -112,12 +113,13 @@ export function isDocRTL(documant: Document): boolean {
             langAttr = documant.documentElement.getAttributeNS("http://www.w3.org/XML/1998/", "lang");
         }
         if (langAttr &&
-            (langAttr === "ar" || langAttr.startsWith("ar-") ||
-            langAttr === "he" || langAttr.startsWith("he-") ||
-            langAttr === "fa" || langAttr.startsWith("fa-"))
+            langStringIsRTL(langAttr)
+            // (langAttr === "ar" || langAttr.startsWith("ar-") ||
+            // langAttr === "he" || langAttr.startsWith("he-") ||
+            // langAttr === "fa" || langAttr.startsWith("fa-"))
 
-            // https://github.com/edrlab/thorium-reader/pull/3027
-            // langAttr === "zh-Hant" || langAttr === "zh-TW"
+            // // https://github.com/edrlab/thorium-reader/pull/3027
+            // // langAttr === "zh-Hant" || langAttr === "zh-TW"
             ) {
             // foundLang = true;
             rtl = true;

@@ -45,6 +45,14 @@ import { ProxyAgent } from "proxy-agent";
 import { availableLanguages } from "readium-desktop/common/services/translator";
 import { opdsActions } from "readium-desktop/common/redux/actions";
 
+// https://github.com/edrlab/thorium-reader/issues/3566#issuecomment-4501072922
+// https://github.com/electron/electron/issues/45674#issuecomment-3474002008
+import * as tls from "tls";
+// import * as undici from "undici";
+const TLS_CERTIFICATES = [...tls.getCACertificates("system"), ...tls.rootCertificates];
+https.globalAgent.options.ca = TLS_CERTIFICATES;
+// undici.setGlobalDispatcher(new undici.Agent({ connect: { ca: TLS_CERTIFICATES } }));
+
 // Logger
 const filename_ = "readium-desktop:main/http";
 const debug = debug_(filename_);

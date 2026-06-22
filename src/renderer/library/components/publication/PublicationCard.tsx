@@ -30,7 +30,8 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import CatalogMenu from "./menu/CatalogMenu";
 import OpdsMenu from "./menu/OpdsMenu";
 
-import { convertMultiLangStringToLangString, langStringIsRTL } from "readium-desktop/common/language-string";
+import { convertMultiLangStringToLangString } from "readium-desktop/common/language-string";
+import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import { PublicationInfoOpdsWithRadix, PublicationInfoOpdsWithRadixContent, PublicationInfoOpdsWithRadixTrigger } from "../dialog/publicationInfos/PublicationInfo";
 import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar2-icon.svg";
 // import * as CalendarExpiredIcon from "readium-desktop/renderer/assets/icons/calendarExpired-icon.svg";
@@ -241,8 +242,7 @@ class PublicationCard extends React.Component<IProps> {
                                         <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
                                             {publicationView.documentTitle}
                                             <br />
-                                            This publication cannot be opened because its stored files are unavailable.
-                                            Re-import it, or go to Settings and then Storage to add or change the external publication folder.
+                                            {__("catalog.missingUnavailableDescription")}
                                         </AlertDialog.Description>
                                         <div className={stylesAlertModals.AlertDialogButtonContainer}>
                                             <AlertDialog.Cancel asChild>
