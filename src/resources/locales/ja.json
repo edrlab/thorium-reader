@@ -19,7 +19,7 @@
             "copy": "コピー",
             "cut": "切り取り",
             "paste": "貼り付け",
-            "print": "",
+            "print": "印刷",
             "redo": "やり直し",
             "selectAll": "すべて選択",
             "title": "編集",
@@ -89,7 +89,7 @@
         "login": "",
         "logout": "",
         "missing": "",
-        "missingUnavailableDescription": "",
+        "missingUnavailableDescription": "この出版物は、保存先のファイルがすでにないため開くことができません。再登録するか、設定の「保存先」から新しい保存先を加えるか、変更してください。",
         "moreInfo": "詳細情報",
         "myBooks": "わたしの本",
         "noPublicationHelpL1": "ファイルをここにおいてください",
@@ -196,7 +196,7 @@
         "searchPlaceholder": "検索",
         "searchTitle": "検索する",
         "settings": "設定",
-        "settingsLabel": "",
+        "settingsLabel": "アプリケーションの設定",
         "viewMode": "表示モード"
     },
     "library": {
@@ -256,7 +256,7 @@
         },
         "open": {
             "error": "本を開けません：{{- err}}",
-            "folderNotFound": ""
+            "folderNotFound": "出版物の保存場所が見つかりません。再登録するか、設定の保存先で追加の保存先を設定してください。"
         },
         "storage": {
             "removed": "",
@@ -805,7 +805,7 @@
             "printDisabled": "",
             "screenNext": "",
             "screenPrevious": "",
-            "settingsTitle": "設定"
+            "settingsTitle": "読書画面の設定"
         },
         "notes": {
             "colors": {
@@ -852,9 +852,9 @@
         "settings": {
             "column": {
                 "auto": "自動",
-                "one": "1列",
-                "title": "縦列",
-                "two": "2列"
+                "one": "1ページ",
+                "title": "見開き",
+                "two": "見開き"
             },
             "customFontSelected": "利用するフォントを選択しました",
             "customizeReader": "本文のスタイル",
@@ -1326,25 +1326,25 @@
     },
     "wizard": {
         "buttons": {
-            "discover": "新しい情報を見る",
+            "discover": "Thorium Desktopについて知る",
             "goToBooks": "わたしの本を一覧する"
         },
         "description": {
-            "home": "Thoriumの見た目が違います！ 何が新しいのか見てみましょう...",
-            "resources": ""
+            "home": "Thorium 3.4では、操作のしやすさを改善したほか、さまざまな不具合を修正しています。もし、古いバージョンのアプリにあとで戻す場合は、電子書籍の注釈（アノテーション）やブックマークを外部ファイルに保存して、事前にバックアップしておくことを強く推奨します。これにより、古いバージョンをインストールしたあとに、そのファイルをインポートして元に戻せます。これはバージョン3.4において、注釈やブックマークの内部の保存形式が一部で変更されたためです。この変更により、パフォーマンスの問題は解決しましたが、注釈の後方互換性（古いバージョンとの互換性）が失われています。",
+            "resources": "Thoriumについて学び、つながろう："
         },
         "dontShow": "次回以降は表示しない",
         "resources": {
             "discord": "",
-            "website": ""
+            "website": "ウェブサイト: {{- url}}"
         },
         "tab": {
             "home": "ホーム",
-            "resources": ""
+            "resources": "関連リンク"
         },
         "title": {
-            "resources": "",
-            "welcome": "Thorium 3へようこそ"
+            "resources": "関連資料とコミュニティ",
+            "welcome": "Thorium 3.4へようこそ"
         }
     }
 }
