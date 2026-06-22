@@ -45,7 +45,9 @@
             "title": "{{- appName}} aktualizacja oprogramowania."
         },
         "window": {
-            "showLibrary": "Pokaż bibliotekę / półkę z książkami"
+            "showLibrary": "Pokaż bibliotekę / półkę z książkami",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -1317,6 +1319,11 @@
             "description": "Motyw aplikacji dopasowuje się do systemu operacyjnego.",
             "light": "Jasny",
             "title": "Motyw aplikacji"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

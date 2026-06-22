@@ -45,7 +45,9 @@
             "title": "Posodobitev programske opreme za {{- appName}}"
         },
         "window": {
-            "showLibrary": "Prikaži knjižnico / knjižna polica"
+            "showLibrary": "Prikaži knjižnico / knjižna polica",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -1317,6 +1319,11 @@
             "description": "Tema aplikacije se ujema s temo operacijskega sistema.",
             "light": "Svetlo",
             "title": "Tema aplikacije"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

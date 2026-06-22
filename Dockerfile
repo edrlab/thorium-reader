@@ -119,7 +119,7 @@ ARG BUST_CACHE
 RUN cd /THORIUM/ &&\
     sfw npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root &&\
     cd node_modules/electron &&\
-    node install.js &&\
+    DEBUG=@electron/get* force_no_cache=true node install.js &&\
     cd ../.. &&\
     (ls -alshFR --color=auto "$NPM_CONFIG_PREFIX/lib/node_modules/sfw/.sfw-cache" || echo OK) &&\
     (npm audit || echo OK) &&\

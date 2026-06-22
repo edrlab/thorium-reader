@@ -45,7 +45,9 @@
             "title": "{{- appName}} 軟體已更新。"
         },
         "window": {
-            "showLibrary": "顯示 書庫/書架"
+            "showLibrary": "顯示 書庫/書架",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -1299,6 +1301,11 @@
             "description": "應用程式主題與作業系統相符。",
             "light": "光亮的",
             "title": "應用程式主題"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

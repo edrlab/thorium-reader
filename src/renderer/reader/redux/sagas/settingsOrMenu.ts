@@ -7,7 +7,8 @@
 
 import debug_ from "debug";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { all, put as putTyped, SagaGenerator, select as selectTyped } from "typed-redux-saga";
+import { all, put as putTyped, select as selectTyped } from "typed-redux-saga/macro";
+import { SagaGenerator } from "typed-redux-saga";
 import { readerLocalActionToggleMenu, readerLocalActionToggleSettings } from "../actions";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";

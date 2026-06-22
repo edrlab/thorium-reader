@@ -14,7 +14,8 @@ import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLe
 import { error } from "readium-desktop/main/tools/error";
 import * as fs from "fs";
 import { nanoid } from "nanoid";
-import { fork as forkTyped, call as callTyped, select as selectTyped, put as putTyped, take as takeTyped, race as raceTyped, delay as delayTyped, SagaGenerator, all as allTyped } from "typed-redux-saga/macro";
+import { fork as forkTyped, call as callTyped, select as selectTyped, put as putTyped, take as takeTyped, race as raceTyped, delay as delayTyped, all as allTyped } from "typed-redux-saga/macro";
+import { SagaGenerator } from "typed-redux-saga";
 import path from "node:path";
 import { ICustomizationLockInfo, ICustomizationProfileError, ICustomizationProfileProvisioned, ICustomizationProfileProvisionedWithError } from "readium-desktop/common/redux/states/customization";
 import { ToastType } from "readium-desktop/common/models/toast";

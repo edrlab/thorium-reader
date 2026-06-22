@@ -45,7 +45,9 @@
             "title": "{{- appName}}-programuppdatering."
         },
         "window": {
-            "showLibrary": "Visa bokhylla"
+            "showLibrary": "Visa bokhylla",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -301,7 +303,7 @@
             "noInternet": "Ingen internetuppkoppling",
             "noInternetMessage": "Kontrollera nätverkssladden, modemet, routern eller det trådlösa nätverket",
             "reject": "Ett oväntat fel uppstod!",
-            "timeout": "Nätverksanslutningen gav inget svar, försök igen senare"
+            "timeout": "Inget svar från nätverket, försök igen senare"
         },
         "next": "Nästa",
         "previous": "Föregående",
@@ -895,8 +897,8 @@
                     "300pct": "300 %",
                     "500pct": "500 %",
                     "50pct": "50 %",
-                    "fit": "sidstorlek",
-                    "width": "sidbredd"
+                    "fit": "Visa hela sidan",
+                    "width": "Fyll fönstret"
                 },
                 "title": "Zoom"
             },
@@ -908,14 +910,14 @@
                 "resetDetails": "Återställ dina läsinställningar till standardinställningarna.",
                 "save": "Spara egna läsinställningar",
                 "saveDetails": "Spara dina nuvarande inställningar för visning och textformatering. Du kan använda dem i andra böcker genom att klicka på \"Använd\" i andra läsarfönster.",
-                "title": "Förinställning"
+                "title": "Förinställningar"
             },
             "preview": "Förhandsvisning",
             "reduceFontSize": "Minska textstorlek",
             "reduceMotion": "Minska rörelse",
             "scrolled": "Rullningsbar",
             "spacing": "Avstånd",
-            "spreadModeEven": "\"Jämna\" siduppslag (standard är \"udda\")",
+            "spreadModeEven": "Uppslag börjar på jämna sidor (standard är udda)",
             "text": "Text",
             "theme": {
                 "name": {
@@ -1305,6 +1307,11 @@
             "description": "Applikationens tema följer operativsystemet.",
             "light": "Ljust",
             "title": "Tema"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

@@ -45,7 +45,9 @@
             "title": "{{- appName}} software update."
         },
         "window": {
-            "showLibrary": "Show library / bookshelf"
+            "showLibrary": "Show library / bookshelf",
+            "trayHint": "{{- appName}} is still running in the notification area. Click the tray icon to show the library.",
+            "trayTooltip": "{{- appName}} - click to show or hide the library"
         }
     },
     "catalog": {
@@ -1305,6 +1307,11 @@
             "description": "Application theme matches operating system.",
             "light": "Light",
             "title": "Application Theme"
+        },
+        "window": {
+            "minimizeLibraryToTray": "Minimize the library to the system tray",
+            "minimizeLibraryToTrayDescription": "When enabled, minimizing the library window keeps Thorium running in the Windows notification area.",
+            "title": "Window behavior"
         }
     },
     "tts": {

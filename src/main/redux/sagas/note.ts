@@ -30,6 +30,7 @@ import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLe
 import { sqliteTableNoteDelete, sqliteTableNoteDeleteWherePubId, sqliteTableNoteInsert, sqliteTableNoteUpdate, sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
 import { publicationActions as publicationActionsFromMainAction } from "../actions";
 import { EXT_ANNOTATIONS } from "readium-desktop/common/extension";
+import { resolveReadiumAnnotationSourceHref } from "readium-desktop/common/readium/annotation/sourceHref";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:annotationsImporter";
@@ -144,7 +145,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         debug("filePath pass the typeChecker (ReadiumAnnotationModelSet)");
 
         const data = readiumAnnotationFormat;
-        const annotationsIncommingArray = data.items;
+        let annotationsIncommingArray = data.items;
 
         if (!annotationsIncommingArray.length) {
             debug("there are no annotations in the file, exit");
@@ -165,12 +166,34 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
             debug("Current Publcation (", publicationIdentifier, ") SpineItems(hrefs):", hrefFromSpineItem);
             const annotationsIncommingArraySourceHrefs = annotationsIncommingArray.map(({ target: { source } }) => source);
             debug("Incomming Annotations target.source(hrefs):", annotationsIncommingArraySourceHrefs);
-            const annotationsIncommingMatchPublicationSpineItem = annotationsIncommingArraySourceHrefs.reduce((acc, source) => {
-                return acc && hrefFromSpineItem.includes(source);
-            }, true);
-            
-            if (!annotationsIncommingMatchPublicationSpineItem) {
-    
+            const rejectedAnnotationSourceHrefs: string[] = [];
+            annotationsIncommingArray = annotationsIncommingArray.map((annotation) => {
+                const sourceHref = annotation.target.source;
+                // The reader resource cache looks up documents by the exact spine href.
+                // Normalize imported annotation sources before storing them in notes.
+                const spineHref = resolveReadiumAnnotationSourceHref(sourceHref, hrefFromSpineItem);
+
+                if (!spineHref) {
+                    rejectedAnnotationSourceHrefs.push(sourceHref);
+                    return annotation;
+                }
+
+                if (sourceHref !== spineHref) {
+                    debug(`Normalize incomming annotation target.source href: "${sourceHref}" => "${spineHref}"`);
+                }
+
+                return {
+                    ...annotation,
+                    target: {
+                        ...annotation.target,
+                        source: spineHref,
+                    },
+                };
+            });
+
+            if (rejectedAnnotationSourceHrefs.length) {
+
+                debug("Rejected incomming Annotations target.source(hrefs):", rejectedAnnotationSourceHrefs);
                 debug("ERROR: At least one annotation is rejected and not match with the current publication SpineItem, see above");
                 yield* putTyped(toastActions.openRequest.build(ToastType.Error, __("message.annotations.noBelongTo"), readerPublicationIdentifier));
                 return;

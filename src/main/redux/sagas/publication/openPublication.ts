@@ -18,7 +18,8 @@ import {
 } from "readium-desktop/main/streamer/streamerNoHttp";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { put, take } from "redux-saga/effects";
-import { call as callTyped, select as selectTyped, put as putTyped, SagaGenerator } from "typed-redux-saga/macro";
+import { call as callTyped, select as selectTyped, put as putTyped } from "typed-redux-saga/macro";
+import { SagaGenerator } from "typed-redux-saga";
 
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";

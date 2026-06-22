@@ -45,7 +45,9 @@
             "title": "Aktualizace softwaru {{- appName}}."
         },
         "window": {
-            "showLibrary": "Zobrazit knihovnu / knihovničku"
+            "showLibrary": "Zobrazit knihovnu / knihovničku",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -1317,6 +1319,11 @@
             "description": "Motiv aplikace bude odpovídat operačnímu systému.",
             "light": "Světlý",
             "title": "Motiv aplikace"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {
