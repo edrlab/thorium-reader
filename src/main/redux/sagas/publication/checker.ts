@@ -6,7 +6,8 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { SagaGenerator, call as callTyped, delay as delayTyped, put as putTyped, take as takeTyped } from "typed-redux-saga/macro";
+import { call as callTyped, delay as delayTyped, put as putTyped, take as takeTyped } from "typed-redux-saga/macro";
+import { SagaGenerator } from "typed-redux-saga";
 import { diMainGet } from "readium-desktop/main/di";
 import * as fs from "node:fs";
 import * as path from "node:path";
@@ -49,14 +50,14 @@ export function* publicationIntegrityChecker(): SagaGenerator<void> {
     // const pubs = yield* selectTyped((state: RootState) => state.publication.db);
     const publicationDocuments = yield* callTyped(() => diMainGet("publication-repository").findAll());
     const publicationIdentifierDataBase = publicationDocuments.map(({ identifier }) => identifier);
- 
+
     const {
         good: approvedPublicationIdentifierDisk,
         bad: rejectedPublicationIdentifierDisk,
         issues,
     } = yield* callTyped(() => diMainGet("publication-storage").checkPublicationsIntegrity(publicationDocuments));
     const publicationIdentifierDisk = [...approvedPublicationIdentifierDisk, ...rejectedPublicationIdentifierDisk];
-    
+
     yield* delayTyped(1);
     const publicationIdentifierNotFoundOnDiskButFoundOnDataBase: string[] = publicationIdentifierDataBase.filter((id) => !publicationIdentifierDisk.includes(id));
     const publicationIdentifierNotFoundOnDataBaseButFoundOnDisk: string[] = publicationIdentifierDisk.filter((id) => !publicationIdentifierDataBase.includes(id));

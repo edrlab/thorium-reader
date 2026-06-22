@@ -246,17 +246,17 @@
             "success": "Importazione completata."
         },
         "download": {
-            "cancelled": "",
+            "cancelled": "Download annullato.",
             "error": "Il download di {{- title}} è fallito: [{{- err}}]",
             "errors": {
-                "hashMismatch": "",
-                "httpGet": "",
-                "invalidFilename": "",
-                "invalidLink": "",
-                "invalidTempDirectory": "",
-                "lengthMismatch": "",
-                "readStreamMissing": "",
-                "tooManyFilenameAttempts": ""
+                "hashMismatch": "Verifica di integrità del file scaricato non riuscita: previsto SHA-256 hash {{- expected}}, ottenuto {{- actual}}.",
+                "httpGet": "Download HTTP fallito: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "invalidFilename": "Il nome temporaneo del file di download non è valido.",
+                "invalidLink": "Il link per il download non è valido.",
+                "invalidTempDirectory": "La directory di download temporanea non è valida.",
+                "lengthMismatch": "Verifica di integrità del file scaricato non riuscita: previsti {{- expected}} byte, ottenuti {{- actual}} byte.",
+                "readStreamMissing": "Il download dello streaming non è disponibile.",
+                "tooManyFilenameAttempts": "Impossibile creare un nome univoco per il file di download temporaneo: {{- path}}"
             }
         },
         "import": {
@@ -1252,9 +1252,9 @@
             "title": "Attiva il salvataggio della sessione di lettura"
         },
         "sharedComputer": {
-            "lcpAutoDeleteExpiredPublications": "",
-            "lcpAutoDeleteExpiredPublicationsDescription": "",
-            "title": ""
+            "lcpAutoDeleteExpiredPublications": "Rimozione automatica delle pubblicazioni scadute e dei relativi dati dell'utente",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Garantisce la cancellazione automatica dei prestiti scaduti (incluse le annotazioni personali, i segnalibri, etc.). Questa funzionalità è utile in ambienti con \"computer condivisi\" come biblioteche o aule universitarie.",
+            "title": "Modalità computer condivisi"
         },
         "storage": {
             "actions": {

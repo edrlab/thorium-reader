@@ -88,7 +88,7 @@
         "lastRead": "Senest læst",
         "login": "Log ind",
         "logout": "Log ud",
-        "missing": "",
+        "missing": "Manglende filer",
         "missingUnavailableDescription": "Denne bog kan ikke åbnes, da dens filer ikke er tilgængelige. Re-importér eller gå til Indstillinger og Lagerplads for at ændre eller tilføje mere lagerplads.",
         "moreInfo": "Bogdetaljer",
         "myBooks": "Mine bøger",
@@ -241,17 +241,17 @@
             "success": "Import færdig."
         },
         "download": {
-            "cancelled": "",
+            "cancelled": "Download annulleret.",
             "error": "Download af {{- title}} er stødt på en fejl: [{{- err}}]",
             "errors": {
-                "hashMismatch": "",
-                "httpGet": "",
-                "invalidFilename": "",
-                "invalidLink": "",
-                "invalidTempDirectory": "",
-                "lengthMismatch": "",
-                "readStreamMissing": "",
-                "tooManyFilenameAttempts": ""
+                "hashMismatch": "Den downloadede fil kunne ikke valideres: Forventet SHA-256 hash: {{- expected}}, fik i stedet {{- actual}}.",
+                "httpGet": "HTTP download mislykkedes: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "invalidFilename": "Det midlertidige filnavn til downloaden er ugyldigt.",
+                "invalidLink": "Download linket er ugyldigt.",
+                "invalidTempDirectory": "Den midlertidige mappe til downloads er ugyldig.",
+                "lengthMismatch": "Integritetstjek af den downloadede fil fejlede: forventede {{- expected}} bytes, fik {{- actual}} bytes.",
+                "readStreamMissing": "Download var ikke muligt.",
+                "tooManyFilenameAttempts": "Var ikke i stand til at lave en unik midlertidig fil til download: {{- path}}"
             }
         },
         "import": {
@@ -1246,9 +1246,9 @@
             "title": "Gem session"
         },
         "sharedComputer": {
-            "lcpAutoDeleteExpiredPublications": "",
-            "lcpAutoDeleteExpiredPublicationsDescription": "",
-            "title": ""
+            "lcpAutoDeleteExpiredPublications": "Fjern automatisk udløbne bøger og deres tilhørende brugerdata",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Sikrer, at udløbne lån automatisk slettes (inklusive personlige noter, bogmærker osv.). Dette er nyttigt i miljøer med 'delte computere', såsom biblioteks- eller universitetslokaler.",
+            "title": "Delt computer tilstand"
         },
         "storage": {
             "actions": {

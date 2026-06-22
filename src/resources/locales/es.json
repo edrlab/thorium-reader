@@ -88,8 +88,8 @@
         "lastRead": "Último leído",
         "login": "Iniciar sesión",
         "logout": "Cerrar sesión",
-        "missing": "",
-        "missingUnavailableDescription": "",
+        "missing": "Faltan archivos",
+        "missingUnavailableDescription": "Esta publicación no se puede abrir porque sus archivos no se encuentran disponibles en el espacio de almacenamiento. Vuelve a importarla, o ve a Opciones, Almacenamiento, para añadir o cambiar el espacio de almacenamiento adicional.",
         "moreInfo": "Detalles del libro",
         "myBooks": "Mis libros",
         "noPublicationHelpL1": "Desliza una publicación aquí",
@@ -106,8 +106,8 @@
                 "password": "Contraseña",
                 "register": "Registrar",
                 "retry": "Inténtalo de nuevo",
-                "unauthorized": "",
-                "unauthorizedUnsupportedType": "",
+                "unauthorized": "Sin autorización",
+                "unauthorizedUnsupportedType": "Sin autorización (tipo WWWAuthenticate '{{- type}}' no admitido)",
                 "username": "Nombre de usuario/dirección de correo electrónico"
             },
             "info": {
@@ -129,7 +129,7 @@
                 "state": "Estado"
             }
         },
-        "openFolder": "",
+        "openFolder": "Abrir carpeta",
         "publisher": "Editor",
         "readBook": "Leer",
         "released": "Publicado en",
@@ -246,17 +246,17 @@
             "success": "¡Correcto!"
         },
         "download": {
-            "cancelled": "",
+            "cancelled": "Descarga cancelada.",
             "error": "La descarga de {{- title}} ha fallado: [{{- err}}]",
             "errors": {
-                "hashMismatch": "",
-                "httpGet": "",
-                "invalidFilename": "",
-                "invalidLink": "",
-                "invalidTempDirectory": "",
-                "lengthMismatch": "",
-                "readStreamMissing": "",
-                "tooManyFilenameAttempts": ""
+                "hashMismatch": "Falló la comprobación de integridad para el archivo descargado: hash SHA-256 esperado {{- expected}}, obtenido {{- actual}}.",
+                "httpGet": "\"Falló la descarga HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "invalidFilename": "El nombre del archivo temporal de descarga no es válido.",
+                "invalidLink": "El enlace de descarga no es válido.",
+                "invalidTempDirectory": "El directorio temporal de descarga no es válido.",
+                "lengthMismatch": "Falló la comprobación de integridad para el archivo descargado: esperado {{- expected}} bytes, obtenido {{- actual}} bytes.",
+                "readStreamMissing": "La transmisión para la descarga no está disponible.",
+                "tooManyFilenameAttempts": "No se puede crear un único nombre para el archivo temporal de descarga: {{- path}}"
             }
         },
         "import": {
@@ -266,12 +266,12 @@
         },
         "open": {
             "error": "No se puede abrir la publicación: {{- err}}",
-            "folderNotFound": ""
+            "folderNotFound": "No se encuentra el directorio de esta publicación. Vuelve a importarla, o configura el almacenamiento adicional en Opciones > Almacenamiento."
         },
         "storage": {
-            "removed": "",
-            "updateFailed": "",
-            "updated": ""
+            "removed": "Directorio de la publicación eliminado.",
+            "updateFailed": "Fallo al actualizar el directorio de la publicación: {{- message}}",
+            "updated": "Directorio de la publicación actualizado."
         },
         "wipeData": "Se han borrado los datos de inicio de sesión"
     },
@@ -663,7 +663,7 @@
         "expiredLcp": "Este libro no se puede leer porque la licencia LCP ha expirado.",
         "incorrectPassphrase": "No hay contraseñas almacenadas para esta publicación o la contraseña es incorrecta",
         "lcpEnd": "Fin",
-        "lcpNotSupported": "",
+        "lcpNotSupported": "Aviso: esta es una versión de desarrollo de Thorium Desktop reader que no admite licencias LCP completas, y solo admite el descifrado de LCP con «perfil básico» sin validación de certificado.",
         "lcpRightsCopy": "Caracteres copiados",
         "lcpRightsPrint": "Páginas impresas",
         "lcpStart": "Inicio",
@@ -703,7 +703,7 @@
             "date": "Fecha de modificación",
             "error": {
                 "pdf": {
-                    "validationSelection": ""
+                    "validationSelection": "No se puede crear la anotación PDF desde esta selección."
                 }
             },
             "export": "Exportar notas",
@@ -820,8 +820,8 @@
         "notes": {
             "colors": {
                 "cyan": "Cian",
-                "darkorange": "",
-                "darkyellow": "",
+                "darkorange": "Naranja oscuro",
+                "darkyellow": "Amarillo oscuro",
                 "green": "Verde",
                 "orange": "Naranja",
                 "purple": "Púrpura",
@@ -870,7 +870,7 @@
             },
             "customFontSelected": "Has elegido una fuente personalizada",
             "customizeReader": "Personalizar el estilo del texto",
-            "defaultValue": "",
+            "defaultValue": "Valor predeterminado",
             "disabled": "desactivado",
             "display": "Visualización",
             "disposition": {
@@ -886,7 +886,7 @@
             "lineSpacing": "Interlineado",
             "margin": "Margen",
             "mathjax": "Habilitar MathJax",
-            "mathjaxDescription": "",
+            "mathjaxDescription": "MathJax",
             "noFootnotes": "Desactivar notas al pie emergentes",
             "noRTLFlip": "Deshabilitar la interfaz de usuario de derecha a izquierda",
             "noRuby": "Ocultar Ruby japonés",
@@ -1019,16 +1019,16 @@
                     "name": "Segmento de audio anterior (alternativo)"
                 },
                 "AudioSpeedDecrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Disminuir velocidad de reproducción de medios integrados en EPUB3 o de lectura en voz alta",
+                    "name": "Disminuir velocidad de audio"
                 },
                 "AudioSpeedIncrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Aumentar velocidad de reproducción de medios integrados en EPUB3 o de lectura en voz alta",
+                    "name": "Aumentar velocidad de audio"
                 },
                 "AudioSpeedReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Restablecer velocidad de reproducción de medios integrados en EPUB3 o de lectura en voz alta",
+                    "name": "Restablecer velocidad de audio"
                 },
                 "AudioStop": {
                     "description": "Detener audio (superposiciones multimedia EPUB3, lectura en voz alta con la función «Texto a voz» o audiolibro pregrabado)",
@@ -1252,50 +1252,50 @@
             "title": "Guardar sesión"
         },
         "sharedComputer": {
-            "lcpAutoDeleteExpiredPublications": "",
-            "lcpAutoDeleteExpiredPublicationsDescription": "",
-            "title": ""
+            "lcpAutoDeleteExpiredPublications": "Eliminar automáticamente publicaciones caducadas y datos de usuario asociados",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Garantiza que los préstamos vencidos se borren automáticamente (incluyendo anotaciones personales, marcadores de lectura, etc.). Esto es útil en entornos con «ordenadores compartidos», como bibliotecas o espacios universitarios.",
+            "title": "Modo de ordenador compartido"
         },
         "storage": {
             "actions": {
-                "addDirectory": "",
-                "changeDirectory": "",
-                "removeStorageDirectory": ""
+                "addDirectory": "Seleccionar directorio de almacenamiento adicional",
+                "changeDirectory": "Actualizar directorio de almacenamiento adicional",
+                "removeStorageDirectory": "Eliminar directorio de almacenamiento adicional"
             },
             "beta": {
-                "availability": "",
-                "integrity": "",
-                "migration": "",
-                "summary": "",
-                "warning": ""
+                "availability": "Esta función solo se admite en versiones recientes de Thorium; los libros de carpetas externas no aparecerán en Thorium 3.4 o anterior.",
+                "integrity": "Debes mantener este directorio seguro y accesible. Evita eliminarlo, restringir el acceso a él, o usar espacios de almacenamiento lentos o inestables tales como las unidades de red.",
+                "migration": "Thorium no transfiere tus libros automáticamente: si actualizas el espacio de almacenamiento adicional, debes trasladar manualmente tus publicaciones a la nueva ubicación. Si lo eliminas, debes trasladar manualmente tus publicaciones al espacio de almacenamiento original.",
+                "summary": "Saber más sobre esta función, actualmente en beta",
+                "warning": "No modifiques manualmente los ficheros de esta carpeta, ya que esto podría ocasionar problemas con tus libros o con el lector. Piensa en esta carpeta como una biblioteca segura gestionada por Thorium."
             },
             "configuration": {
-                "chooseFolderDescription": "",
-                "configuredDescription": "",
-                "notConfiguredDescription": ""
+                "chooseFolderDescription": "Elegir el directorio que Thorium debe utilizar como espacio de almacenamiento adicional.",
+                "configuredDescription": "El espacio de almacenamiento adicional está configurado y listo para almacenar las nuevas publicaciones.",
+                "notConfiguredDescription": "Las publicaciones importadas a Thorium Reader se almacenarán en el directorio seleccionado. Las publicaciones importadas previamente permanecerán en el sistema de almacenamiento original."
             },
             "dialogs": {
                 "add": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Continuar",
+                    "description": "Actualmente esta función está en beta. ¿Quieres continuar y configurar un espacio de almacenamiento adicional seleccionando un directorio?",
+                    "title": "Seleccionar un espacio de almacenamiento adicional"
                 },
                 "edit": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Editar directorio",
+                    "description": "Actualizar el espacio de almacenamiento adicional requiere precaución. Thorium no trasladará las publicaciones existentes por ti; tendrás que hacerlo manualmente. ¿Quieres continuar?",
+                    "title": "Actualizar el espacio de almacenamiento adicional"
                 },
                 "remove": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Eliminar directorio",
+                    "description": "Eliminar el espacio de almacenamiento adicional requiere precaución. Thorium no trasladará las publicaciones existentes por ti; tendrás que hacerlo manualmente. ¿Quieres continuar?",
+                    "title": "Eliminar espacio de almacenamiento adicional"
                 }
             },
             "locations": {
-                "defaultDescription": "",
-                "defaultInternal": "",
-                "externalStorage": "",
-                "title": ""
+                "defaultDescription": "Las publicaciones gestionadas por la aplicación, por defecto, se almacenan en ",
+                "defaultInternal": "Espacio de almacenamiento del sistema",
+                "externalStorage": "Espacio de almacenamiento externo",
+                "title": "Ubicaciones"
             }
         },
         "tabs": {
@@ -1303,7 +1303,7 @@
             "general": "General",
             "keyboardShortcuts": "Atajos de teclado",
             "profiles": "Perfiles",
-            "storage": ""
+            "storage": "Espacio de almacenamiento"
         },
         "theme": {
             "auto": "Automático",
