@@ -14,7 +14,7 @@ import * as stylesInput from "readium-desktop/renderer/assets/styles/components/
 import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
-
+import { langStringIsRTL } from "readium-desktop/common/language-string";
 // import { DirectionProvider } from "@radix-ui/react-direction";
 // import {I18nProvider} from 'react-aria';
 
@@ -117,7 +117,7 @@ const StorageConfirmDialog = (props: {
 const TabTitle = (props: React.PropsWithChildren<{title: string}>) => {
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
     return (
         <div dir={isRTL ? "rtl" : "ltr"} className={stylesSettings.settings_tab_title}>
             <h2 dir={isRTL ? "rtl" : "ltr"}>{props.title}</h2>
@@ -130,7 +130,7 @@ const LanguageSettings: React.FC<{}> = () => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    // const isRTL = locale === "ar";
+    // const isRTL = langStringIsRTL(locale);
 
     const currentLanguageISO = locale as keyof typeof availableLanguages;
     const currentLanguageString = availableLanguages[currentLanguageISO];
@@ -158,7 +158,7 @@ export const Auth = () => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
     const dispatch = useDispatch();
 
     return (
@@ -175,7 +175,7 @@ const ConnectionSettings: React.FC<{}> = () => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
     return (
         <section className={stylesSettings.section} style={{ position: "relative" }}>
             <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.auth.title")}</h3>
@@ -192,7 +192,7 @@ const ConnectionSettings: React.FC<{}> = () => {
 //     const [__] = useTranslator();
 //     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
 //     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-//     const isRTL = locale === "ar";
+//     const isRTL = langStringIsRTL(locale);
 //     const dispatch = useDispatch();
 //     const sessionSaveState = useSelector((state: ICommonRootState) => state.session.save);
 //     const onChange = () => {
@@ -247,7 +247,7 @@ const ScreenReaderSettings: React.FC<{}> = () => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
     const dispatch = useDispatch();
     const screenReaderActivate = useSelector((state: ICommonRootState) => state.screenReader.activate);
     const onChange = () => {
@@ -302,7 +302,7 @@ const MinimizeLibraryToTraySettings: React.FC<{}> = () => {
 
     const [__] = useTranslator();
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
     const dispatch = useDispatch();
     const minimizeLibraryToTray = useSelector((state: ILibraryRootState) =>
         state.settings.minimizeLibraryToTray === true);
@@ -363,7 +363,7 @@ interface IRadioGroupItemProps {
 const RadioGroupItem = (props: IRadioGroupItemProps) => {
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
     return (
         <RadioGroup.Item
             dir={isRTL ? "rtl" : "ltr"}
@@ -379,7 +379,7 @@ const SaveCreatorSettings: React.FC<{}> = () => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
     const dispatch = useDispatch();
     const creator = useSelector((state: ICommonRootState) => state.creator);
 
@@ -429,7 +429,7 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
     const dispatch = useDispatch();
     const enableCheckbox = useSelector((state: ILibraryRootState) => state.noteExport.overrideHTMLTemplate);
     const htmlContent = useSelector((state: ILibraryRootState) => state.noteExport.htmlContent);
@@ -508,7 +508,7 @@ const ManageAccessToCatalogSettings = () => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
     const dispatch = useDispatch();
     const enableAPIAPP = useSelector((state: ILibraryRootState) => state.settings.enableAPIAPP);
 
@@ -562,7 +562,7 @@ const SharedComputerSettings = () => {
 
     const [__] = useTranslator();
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
     const dispatch = useDispatch();
     const lcpAutoDeleteExpiredPublications = useSelector((state: ILibraryRootState) =>
         settingsLcpAutoDeleteExpiredPublicationsIsEnabled(state.settings));
@@ -626,7 +626,7 @@ const Themes = () => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
     const dispatch = useDispatch();
     const theme = useSelector((s: ICommonRootState) => s.theme);
     const options: Array<{id: number, value: TTheme, name: string}> = [
@@ -669,7 +669,7 @@ const Profiles = () => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
 
     return (
         <>
@@ -813,7 +813,7 @@ const Profiles = () => {
 
 const StorageSettings: React.FC<{}> = () => {
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
     const dispatch = useDispatch();
     const [__] = useTranslator();
     const directoryState = useSelector((state: ILibraryRootState) => state.publication.directory);
@@ -891,7 +891,7 @@ const StorageSettings: React.FC<{}> = () => {
                         <p>{__("settings.storage.beta.availability")}</p>
                     </div>
                 </details>
-                
+
                 <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }}>
                         <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                             <h3>{__("settings.storage.locations.title")}</h3>
@@ -983,7 +983,7 @@ const ModalControlButton = () => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
     return (
         <div key="modal-header" className={stylesSettings.close_button_div} style={{justifyContent: isRTL ? "end" : undefined}}>
             <Dialog.Close asChild>
@@ -1000,7 +1000,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
 
     const [tabTitle, setTabTitle] = React.useState(__("settings.tabs.general"));
 
