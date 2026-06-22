@@ -45,7 +45,9 @@
             "title": "تحديث برنامج {{- appName}}."
         },
         "window": {
-            "showLibrary": "إظهار المكتبة / رف الكتب"
+            "showLibrary": "إظهار المكتبة / رف الكتب",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -1329,6 +1331,11 @@
             "description": "نسق البرنامج يطابق نظام التشغيل.",
             "light": "فاتح",
             "title": "نسق البرنامج"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

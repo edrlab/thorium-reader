@@ -32,6 +32,11 @@ import { PublicationDocument } from "readium-desktop/main/db/document/publicatio
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { createReaderWindow } from "./win/browserWindow/createReaderWindow";
 import { assertUUIDv4, uuidv4 } from "readium-desktop/utils/uuid";
+import {
+    extractWindowMaximized,
+    IBrowserWindowStateSnapshot,
+    restoreBrowserWindowState,
+} from "./win/session/browserWindowState";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:reader";
@@ -94,7 +99,7 @@ function* readerDetachRequest(action: readerActions.detachModeRequest.TAction) {
     yield put(readerActions.detachModeSuccess.build());
 }
 
-export function* readerNewWindowBound(publicationIdentifier: string | undefined): SagaGenerator<Electron.Rectangle> {
+export function* readerNewWindowState(publicationIdentifier: string | undefined): SagaGenerator<IBrowserWindowStateSnapshot> {
 
     const libraryBrowserWindows = getLibraryWindowFromDi();
     const existingWindowBounds: Electron.Rectangle[] = [];
@@ -104,6 +109,7 @@ export function* readerNewWindowBound(publicationIdentifier: string | undefined)
 
     const savedWindowBound = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(publicationIdentifier, "bound"))) as any; // TODO: type object
     const windowBound = normalizeWinBoundRectangle(savedWindowBound || existingWindowBounds[0]);
+    const windowMaximized = extractWindowMaximized(savedWindowBound);
     if (savedWindowBound) {
 
         const readerBrowserWindows = getAllReaderWindowFromDi();
@@ -119,7 +125,16 @@ export function* readerNewWindowBound(publicationIdentifier: string | undefined)
         windowBound.y += 30;
     }
 
-    debug(`pubId=${publicationIdentifier} winBound=${JSON.stringify(windowBound, null, 4)}`);
+    debug(`pubId=${publicationIdentifier} winBound=${JSON.stringify(windowBound, null, 4)}, maximized=${windowMaximized}`);
+    return {
+        windowBound,
+        windowMaximized,
+    };
+}
+
+export function* readerNewWindowBound(publicationIdentifier: string | undefined): SagaGenerator<Electron.Rectangle> {
+
+    const { windowBound } = yield* callTyped(readerNewWindowState, publicationIdentifier);
     return windowBound;
 }
 
@@ -242,18 +257,14 @@ function* readerCLoseRequestFromIdentifier(action: readerActions.closeRequest.TA
     const libWin = yield* callTyped(() => getLibraryWindowFromDi());
     if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed()) {
 
-        const winBound = yield* selectTyped(
-            (state: RootState) => state.win.session.library.windowBound,
+        const libraryWindowState = yield* selectTyped(
+            (state: RootState) => state.win.session.library,
         );
-        debug("state.win.session.library.windowBound", winBound);
+        debug("state.win.session.library", libraryWindowState);
         try {
-            libWin.setBounds(winBound);
+            restoreBrowserWindowState(libWin, libraryWindowState);
         } catch (e) {
-            debug("error libWin.setBounds(winBound)", e);
-        }
-
-        if (libWin.isMinimized()) {
-            libWin.restore();
+            debug("error restoreBrowserWindowState(libWin, libraryWindowState)", e);
         }
 
         libWin.show(); // focuses as well

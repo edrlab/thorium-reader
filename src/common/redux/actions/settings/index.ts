@@ -8,9 +8,11 @@
 import * as enableAPIAPP from "./enableAPIAPP";
 import * as lcpAutoDeleteExpiredPublications from "./lcpAutoDeleteExpiredPublications";
 import * as lcpAutoDeleteExpiredPublicationsForced from "./lcpAutoDeleteExpiredPublicationsForced";
+import * as minimizeLibraryToTray from "./minimizeLibraryToTray";
 
 export {
     enableAPIAPP,
     lcpAutoDeleteExpiredPublications,
     lcpAutoDeleteExpiredPublicationsForced,
+    minimizeLibraryToTray,
 };

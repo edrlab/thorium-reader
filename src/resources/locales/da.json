@@ -45,7 +45,9 @@
             "title": "{{- appName}} programopdatering."
         },
         "window": {
-            "showLibrary": "Vis bibliotek / boghylde"
+            "showLibrary": "Vis bibliotek / boghylde",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -1305,6 +1307,11 @@
             "description": "Tilpasser sig operativsystemets farvetilstand.",
             "light": "Lys",
             "title": "Programmets farvetema"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

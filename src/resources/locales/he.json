@@ -45,7 +45,9 @@
             "title": ""
         },
         "window": {
-            "showLibrary": ""
+            "showLibrary": "",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -1310,6 +1312,11 @@
             "dark": "",
             "description": "",
             "light": "",
+            "title": ""
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
             "title": ""
         }
     },

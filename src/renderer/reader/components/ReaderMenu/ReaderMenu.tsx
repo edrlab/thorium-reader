@@ -13,7 +13,7 @@ import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/compo
 import * as stylesBookmarks from "readium-desktop/renderer/assets/styles/components/bookmarks.scss";
 import classNames from "classnames";
 import * as React from "react";
-
+import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
 import * as BookmarkIcon from "readium-desktop/renderer/assets/icons/bookmarkMultiple-icon.svg";
@@ -89,17 +89,17 @@ const isRTL = (r2Publication: R2Publication) => (_link: ILink) => {
             [] as string[];
         isRTL = lang.reduce<boolean>((pv, cv) => {
             const rtlExcludingJapanese = typeof cv === "string" ?
-                // we test for Arabic and Hebrew,
+                // we test for Arabic and Hebrew and Farsi,
                 // in order to exclude Japanese Vertical Writing Mode which is also RTL!
-                // see langStringIsRTL()
-                (
-                    cv === "ar" || cv.startsWith("ar-") ||
-                    cv === "he" || cv.startsWith("he-") ||
-                    cv === "fa" || cv.startsWith("fa-")
+                // (
+                //     cv === "ar" || cv.startsWith("ar-") ||
+                //     cv === "he" || cv.startsWith("he-") ||
+                //     cv === "fa" || cv.startsWith("fa-")
 
-                    // https://github.com/edrlab/thorium-reader/pull/3027
-                    // cv === "zh-Hant" || cv === "zh-TW"
-                ) :
+                //     // https://github.com/edrlab/thorium-reader/pull/3027
+                //     // cv === "zh-Hant" || cv === "zh-TW"
+                // )
+                langStringIsRTL(cv) :
                 false;
             return pv || rtlExcludingJapanese;
         }, false);

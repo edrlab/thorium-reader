@@ -45,7 +45,9 @@
             "title": "{{- appName}} மென்பொருள் புதுப்பிப்பு."
         },
         "window": {
-            "showLibrary": "நூலகம் / புத்தக அலமாரி காட்டு"
+            "showLibrary": "நூலகம் / புத்தக அலமாரி காட்டு",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -1305,6 +1307,11 @@
             "description": "பயன்பாட்டு கருப்பொருள் இயக்க முறைமையுடன் பொருந்துகிறது.",
             "light": "ஒளி",
             "title": "பயன்பாட்டு கருப்பொருள்"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

@@ -45,7 +45,9 @@
             "title": "{{- appName}} -ohjelmiston päivitys."
         },
         "window": {
-            "showLibrary": "Näytä kirjasto / kirjahylly"
+            "showLibrary": "Näytä kirjasto / kirjahylly",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -1305,6 +1307,11 @@
             "description": "Sovelluksen teema vastaa käyttöjärjestelmän asetuksia.",
             "light": "Vaalea",
             "title": "Sovelluksen teema"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {
