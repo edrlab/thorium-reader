@@ -145,15 +145,12 @@
             "descAuthor": "'{{- author}}'",
             "descCreator": ", kurią(-ias) sukūrė",
             "descList_few": "{{- count}} pastabos{{- creator}}, bus susietos su {{- author}} leidiniu '{{- title}}'",
-            "descList_many": "",
             "descList_one": "{{- count}} pastaba{{- creator}}, bus susieta su {{- author}} leidiniu '{{- title}}'",
             "descList_other": "{{- count}} pastabų{{- creator}}, bus susietos su {{- author}} leidiniu '{{- title}}'",
             "descNewer_few": "Konfliktas(-ai): {{- count}} naujesnės pastabos",
-            "descNewer_many": "",
             "descNewer_one": "Konfliktas(-ai): {{- count}} naujesnė pastaba",
             "descNewer_other": "Konfliktas(-ai): {{- count}} naujesnių pastabų",
             "descOlder_few": "Konfliktas(-ai): {{- count}} senesnės pastabos",
-            "descOlder_many": "",
             "descOlder_one": "Konfliktas(-ai): {{- count}} senesnė pastaba",
             "descOlder_other": "Konfliktas(-ai): {{- count}} senesnių pastabų",
             "descTitle": "Pastabų pavadinimas: ",
@@ -172,12 +169,10 @@
         },
         "deleteAnnotations": "Šalinti pastabas?",
         "deleteAnnotationsText_few": "Ar tikrai norite pašalinti {{- count}} pastabas?",
-        "deleteAnnotationsText_many": "",
         "deleteAnnotationsText_one": "Ar tikrai norite pašalinti {{- count}} pastabą?",
         "deleteAnnotationsText_other": "Ar tikrai norite pašalinti {{- count}} pastabų?",
         "deleteBookmarks": "Šalinti skirtukus?",
         "deleteBookmarksText_few": "Ar tikrai norite pašalinti {{- count}} skirtukus?",
-        "deleteBookmarksText_many": "",
         "deleteBookmarksText_one": "Ar tikrai norite pašalinti {{- count}} skirtuką?",
         "deleteBookmarksText_other": "Ar tikrai norite pašalinti {{- count}} skirtukų?",
         "deleteFeed": "Pašalinti katalogą?",
@@ -251,17 +246,17 @@
             "success": "Importavimas sėkmingai užbaigtas."
         },
         "download": {
-            "cancelled": "",
+            "cancelled": "Atsiuntimas atšauktas.",
             "error": "[{{- title}}] atsiuntimas nepavyko: [{{- err}}]",
             "errors": {
-                "hashMismatch": "",
-                "httpGet": "",
-                "invalidFilename": "",
-                "invalidLink": "",
-                "invalidTempDirectory": "",
-                "lengthMismatch": "",
-                "readStreamMissing": "",
-                "tooManyFilenameAttempts": ""
+                "hashMismatch": "Atsisiųsto failo vientisumo patikra nepavyko: tikėtasi {{- expected}} SHA-256 maišos reikšmės , gauta {{- actual}}.",
+                "httpGet": "HTTP atsiuntimas nepavyko: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "invalidFilename": "Laikino atsiuntimo failo pavadinimas netaisyklingas.",
+                "invalidLink": "Atsiuntimo nuoroda netaisyklinga.",
+                "invalidTempDirectory": "Netaisyklingas laikinas atsiuntimo aplankas.",
+                "lengthMismatch": "Atsiųsto failo vientisumo patikra nepavyko: tikėtasi baitų: {{- expected}}, gauta: {{- actual}}.",
+                "readStreamMissing": "Neprieinamas atsiuntimo srautas.",
+                "tooManyFilenameAttempts": "Nepavyko sukurti unikalaus laikino atsiuntimo failo pavadinimo: {{- path}}"
             }
         },
         "import": {
@@ -837,7 +832,6 @@
         "picker": {
             "search": {
                 "founds_few": "{{- count}} atitikmenys",
-                "founds_many": "",
                 "founds_one": "{{- count}} atitikmuo",
                 "founds_other": "{{- count}} atitikmenų",
                 "input": "ieškomas tekstas",
@@ -1258,9 +1252,9 @@
             "title": "Įgalinti sesijos išsaugojimą"
         },
         "sharedComputer": {
-            "lcpAutoDeleteExpiredPublications": "",
-            "lcpAutoDeleteExpiredPublicationsDescription": "",
-            "title": ""
+            "lcpAutoDeleteExpiredPublications": "Automatiškai pašalinti pasibaigusio galiojimo leidinius ir susijusius naudotojo duomenis",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Užtikrina, kad pasibaigus leidinio skolinimo terminui jie būtų automatiškai ištrinami (įskaitant asmenines pastabas, skirtukus ir kt.). Tai naudinga bendro naudojimo kompiuterių aplinkoje, pavyzdžiui, bibliotekoje ar universiteto auditorijose.",
+            "title": "Bendro naudojimo kompiuterio režimas"
         },
         "storage": {
             "actions": {

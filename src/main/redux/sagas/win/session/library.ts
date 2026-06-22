@@ -13,6 +13,7 @@ import { eventChannel, Task, buffers } from "redux-saga";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { cancel, debounce, fork, put, take } from "redux-saga/effects";
 import { closeProcessLock } from "readium-desktop/main/di";
+import { getBrowserWindowStateSnapshot } from "./browserWindowState";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:win:session:library";
@@ -46,9 +47,28 @@ function* libraryClosureManagement(action: winActions.session.registerLibrary.TA
     // cancel moveAndResizeObserver
     yield cancel(moveOrResizeTask);
 
+    yield* persistLibraryWindowState(library, action.payload.identifier);
+
     // dispatch closure action
     yield put(winActions.session.unregisterLibrary.build());
     yield put(winActions.library.closed.build());
+}
+
+function* persistLibraryWindowState(library: Electron.BrowserWindow, id: string) {
+
+    if (closeProcessLock.isLock) {
+        debug("CLOSE process library state not persisted");
+        return ;
+    }
+
+    try {
+        const { windowBound, windowMaximized } = getBrowserWindowStateSnapshot(library);
+        debug("_______2 library.getNormalBounds()/getBounds()", windowBound, "maximized:", windowMaximized);
+        // winBound = normalizeWinBoundRectangle(winBound);
+        yield put(winActions.session.setBound.build(id, windowBound, windowMaximized));
+    } catch (e) {
+        debug("set library bound error", e);
+    }
 }
 
 function* libraryMoveOrResizeObserver(action: winActions.session.registerLibrary.TAction) {
@@ -64,30 +84,21 @@ function* libraryMoveOrResizeObserver(action: winActions.session.registerLibrary
 
             library.on("move", handler);
             library.on("resize", handler);
+            library.on("maximize", handler);
+            library.on("unmaximize", handler);
 
             return () => {
                 library.removeListener("move", handler);
                 library.removeListener("resize", handler);
+                library.removeListener("maximize", handler);
+                library.removeListener("unmaximize", handler);
             };
         },
         buffers.none(), // sliding(0) ?
     );
 
     yield debounce(DEBOUNCE_TIME, channel, function*() {
-
-        if (closeProcessLock.isLock) {
-            debug("CLOSE process library bound not persisted");
-            return ;
-        }
-
-        try {
-            const winBound = library.getBounds(); // current bounds of the window maximized/fullscreen/minimized (not on windows11, specific events)
-            debug("_______2 library.getBounds()", winBound);
-            // winBound = normalizeWinBoundRectangle(winBound);
-            yield put(winActions.session.setBound.build(id, winBound));
-        } catch (e) {
-            debug("set library bound error", e);
-        }
+        yield* persistLibraryWindowState(library, id);
     });
 }
 

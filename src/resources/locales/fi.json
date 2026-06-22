@@ -88,8 +88,8 @@
         "lastRead": "Luettu viimeksi",
         "login": "Kirjaudu sisään",
         "logout": "Kirjaudu ulos",
-        "missing": "",
-        "missingUnavailableDescription": "",
+        "missing": "Puuttuvat tiedostot",
+        "missingUnavailableDescription": "Julkaisua ei voi avata, koska sen tallennettuja tiedostoja ei ole käytettävissä. Tuo julkaisu uudelleen tai siirry kohtaan asetukset, sitten tallennustila, jotta voit lisätä tai muuttaa tallennustilaa.",
         "moreInfo": "Tietoa julkaisusta",
         "myBooks": "Omat kirjat",
         "noPublicationHelpL1": "Pudota julkaisu tähän",
@@ -106,7 +106,7 @@
                 "password": "Salasana",
                 "register": "Rekisteröidy",
                 "retry": "Yritä uudelleen",
-                "unauthorized": "",
+                "unauthorized": "Luvaton",
                 "unauthorizedUnsupportedType": "",
                 "username": "Käyttäjätunnus / Sähköpostiosoite"
             },
@@ -241,11 +241,11 @@
             "success": "Tuonti onnistui."
         },
         "download": {
-            "cancelled": "",
+            "cancelled": "Lataus peruttu.",
             "error": "Julkaisun {{- title}} lataus epäonnistui: [{{- err}}]",
             "errors": {
-                "hashMismatch": "",
-                "httpGet": "",
+                "hashMismatch": "Ladatun tiedoston eheystarkistus epäonnistui: odotettu SHA-256-hash-arvo {{- expected}}, todellinen {{- actual}}.",
+                "httpGet": "HTTP-lataus epäonnistui: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",

@@ -31,6 +31,7 @@ function winSessionReaderReducer_(
                     [id]: {
                         ...{
                             windowBound: {...action.payload.winBound},
+                            windowMaximized: action.payload.windowMaximized,
                             reduxState: action.payload.reduxStateReader,
                         },
                         ...state[id],
@@ -72,6 +73,9 @@ function winSessionReaderReducer_(
                             ...state[id],
                             ...{
                                 windowBound: {...action.payload.winBound},
+                                ...(action.payload.windowMaximized === undefined ? {} : {
+                                    windowMaximized: action.payload.windowMaximized,
+                                }),
                             },
                         },
                     },

@@ -10,7 +10,8 @@ import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { diMainGet } from "readium-desktop/main/di";
-import { SagaGenerator, call as callTyped, put as putTyped } from "typed-redux-saga";
+import { call as callTyped, put as putTyped } from "typed-redux-saga/macro";
+import { SagaGenerator } from "typed-redux-saga";
 
 export function* openPublicationFolder(identifier?: string): SagaGenerator<void> {
 

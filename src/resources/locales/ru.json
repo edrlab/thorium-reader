@@ -147,15 +147,12 @@
             "descList_few": "{{- count}} примечания {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
             "descList_many": "{{- count}} примечаний {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
             "descList_one": "{{- count}} примечание {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
-            "descList_other": "",
             "descNewer_few": "Конфликт(ы): {{- count}} новейшие заметки",
             "descNewer_many": "Конфликт(ы): {{- count}} новейших заметок",
             "descNewer_one": "Конфликт(ы): {{- count}} новейшая заметка",
-            "descNewer_other": "",
             "descOlder_few": "Конфликт(ы): {{- count}} наиболее старые заметки",
             "descOlder_many": "Конфликт(ы): {{- count}} наиболее старых заметок",
             "descOlder_one": "Конфликт(ы): {{- count}} наиболее старая заметка",
-            "descOlder_other": "",
             "descTitle": "Название аннотации: ",
             "importAll": "Импортировать все заметки",
             "importWithoutConflict": "Импортировать только заметки без конфликтов",
@@ -174,12 +171,10 @@
         "deleteAnnotationsText_few": "Вы уверены, что хотите удалить {{- count}} заметки?",
         "deleteAnnotationsText_many": "Вы уверены, что хотите удалить {{- count}} заметок?",
         "deleteAnnotationsText_one": "Вы уверены, что хотите удалить {{- count}} заметку?",
-        "deleteAnnotationsText_other": "",
         "deleteBookmarks": "Удалить закладки?",
         "deleteBookmarksText_few": "Вы уверены, что хотите удалить {{- count}} закладки?",
         "deleteBookmarksText_many": "Вы уверены, что хотите удалить {{- count}} закладок?",
         "deleteBookmarksText_one": "Вы уверены, что хотите удалить {{- count}} закладку?",
-        "deleteBookmarksText_other": "",
         "deleteFeed": "Вы действительно хотите удалить этот каталог ?",
         "deletePublication": "Вы действительно хотите удалить эту книгу ?",
         "deletePublicationWithNotes": "Внимание: эта книга содержит аннотации и/или закладки, они также будут удалены! (Если вы хотите их сохранить, обязательно экспортируйте заметки перед удалением книги)",
@@ -251,17 +246,17 @@
             "success": "Импорт успешно завершён."
         },
         "download": {
-            "cancelled": "",
+            "cancelled": "Загрузка отменена.",
             "error": "Загрузка {{- title}} не удалась: [{{- err}}]",
             "errors": {
-                "hashMismatch": "",
-                "httpGet": "",
-                "invalidFilename": "",
-                "invalidLink": "",
-                "invalidTempDirectory": "",
-                "lengthMismatch": "",
-                "readStreamMissing": "",
-                "tooManyFilenameAttempts": ""
+                "hashMismatch": "Ошибка проверки целостности загруженного файла: ожидаемый хэш SHA-256 {{- expected}}, полученный {{- actual}}.",
+                "httpGet": "Ошибка загрузки по протоколу HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "invalidFilename": "Неверное имя временного загружаемого файла.",
+                "invalidLink": "Ссылка для скачивания недействительна.",
+                "invalidTempDirectory": "Временный каталог загрузки недействителен.",
+                "lengthMismatch": "Ошибка проверки целостности загруженного файла: ожидалось {{- expected}} байт, получено {{- actual}} байт.",
+                "readStreamMissing": "Поток загрузки недоступен.",
+                "tooManyFilenameAttempts": "Не удалось создать уникальное имя временного файла для загрузки: {{- path}}"
             }
         },
         "import": {
@@ -839,7 +834,6 @@
                 "founds_few": "{{- count}} найдено",
                 "founds_many": "{{- count}} найдено",
                 "founds_one": "{{- count}} найден",
-                "founds_other": "",
                 "input": "подходящий текст",
                 "next": "Далее",
                 "notFound": "нет совпадений",
@@ -1258,9 +1252,9 @@
             "title": "Сохранение сеанса"
         },
         "sharedComputer": {
-            "lcpAutoDeleteExpiredPublications": "",
-            "lcpAutoDeleteExpiredPublicationsDescription": "",
-            "title": ""
+            "lcpAutoDeleteExpiredPublications": "Автоматическое удаление просроченных публикаций и связанных с ними пользовательских данных",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Обеспечивать автоматическое удаление просроченных абонементов (включая личные заметки, закладки и т.д.). Это полезно в инфраструктуре с общим доступом к компьютерам, как, например, библиотеки или университетские аудитории.",
+            "title": "Режим общего компьютера"
         },
         "storage": {
             "actions": {
