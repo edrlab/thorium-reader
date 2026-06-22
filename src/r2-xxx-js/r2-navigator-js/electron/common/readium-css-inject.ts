@@ -7,7 +7,7 @@
 
 import debug_ from "debug";
 
-import { langStringIsRTL } from "readium-desktop/common/language-string";
+import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import { parseDOM, serializeDOM } from "./dom";
 import { IEventPayload_R2_EVENT_READIUMCSS } from "./events";
 import { IwidthHeight } from "./fxl";

@@ -8,7 +8,7 @@
 import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
-import { langStringIsRTL } from "readium-desktop/common/language-string";
+import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import * as React from "react";
 import { Button, ComboBox as ComboBoxReactAria, Input, Label, ListBox, ListBoxItem, Popover, ValidationResult, Group } from "react-aria-components";
 import { FieldError, Text } from "react-aria-components";

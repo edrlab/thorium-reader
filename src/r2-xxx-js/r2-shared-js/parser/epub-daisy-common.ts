@@ -10,7 +10,7 @@ import * as mime from "mime-types";
 import moment from "moment";
 import * as path from "path";
 import * as xmldom from "@xmldom/xmldom";
-import { langStringIsRTL } from "readium-desktop/common/language-string";
+import { langStringIsRTL } from "../_utils/language-string";
 
 import { MediaOverlayNode, timeStrToSeconds } from "@r2-shared-js/models/media-overlay";
 import { DirectionEnum, MetadataSupportedKeys } from "@r2-shared-js/models/metadata";

@@ -14,7 +14,7 @@ import * as stylesInput from "readium-desktop/renderer/assets/styles/components/
 import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
-import { langStringIsRTL } from "readium-desktop/common/language-string";
+import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 // import { DirectionProvider } from "@radix-ui/react-direction";
 // import {I18nProvider} from 'react-aria';
 
