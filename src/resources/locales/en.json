@@ -45,7 +45,9 @@
             "title": "{{- appName}} software update."
         },
         "window": {
-            "showLibrary": "Show library / bookshelf"
+            "showLibrary": "Show library / bookshelf",
+            "trayHint": "{{- appName}} is still running in the notification area. Click the tray icon to show the library.",
+            "trayTooltip": "{{- appName}} - click to show or hide the library"
         }
     },
     "catalog": {
@@ -1249,6 +1251,11 @@
             "lcpAutoDeleteExpiredPublications": "Automatically remove expired publications and associated user data",
             "lcpAutoDeleteExpiredPublicationsDescription": "Ensures that expired loans are automatically deleted (including personal annotations, reading bookmarks, etc.). This is useful in 'shared computers' environments such as library or university rooms.",
             "title": "Shared computer mode"
+        },
+        "window": {
+            "minimizeLibraryToTray": "Minimize the library to the system tray",
+            "minimizeLibraryToTrayDescription": "When enabled, minimizing the library window keeps Thorium running in the Windows notification area.",
+            "title": "Window behavior"
         },
         "storage": {
             "actions": {

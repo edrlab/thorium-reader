@@ -45,7 +45,9 @@
             "title": "Mise à jour du logiciel {{- appName}}."
         },
         "window": {
-            "showLibrary": "Afficher la bibliothèque"
+            "showLibrary": "Afficher la bibliothèque",
+            "trayHint": "{{- appName}} reste ouvert dans la zone de notification. Cliquez sur l'icône {{- appName}} pour afficher la bibliothèque.",
+            "trayTooltip": "{{- appName}} - cliquer pour afficher ou masquer la bibliothèque"
         }
     },
     "catalog": {
@@ -1255,6 +1257,11 @@
             "lcpAutoDeleteExpiredPublications": "Supprimer automatiquement les publications LCP inutilisables et les données locales",
             "lcpAutoDeleteExpiredPublicationsDescription": "Après synchronisation du statut LCP/LSD, les publications LCP expirées, rendues, révoquées ou annulées sont retirées de la bibliothèque avec leurs notes et leur état de lecture locaux. En mode personnel, l'import d'un nouvel exemplaire peut tout de même remplacer une copie précédente inutilisable en préservant ses notes et ses données de lecture lorsque c'est possible.",
             "title": "Poste partagé"
+        },
+        "window": {
+            "minimizeLibraryToTray": "Réduire la bibliothèque dans la zone de notification",
+            "minimizeLibraryToTrayDescription": "Lorsque cette option est activée, réduire la fenêtre Bibliothèque garde Thorium ouvert dans la zone de notification Windows.",
+            "title": "Comportement des fenêtres"
         },
         "storage": {
             "actions": {

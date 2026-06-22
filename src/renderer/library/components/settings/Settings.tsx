@@ -64,10 +64,13 @@ import { convertMultiLangStringToString } from "readium-desktop/common/language-
 // import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import moment from "moment";
+import os from "node:os";
 
 // import { TagGroup, TagList, Tag, Label } from "react-aria-components";
 
 interface ISettingsProps {};
+
+const IS_WINDOWS = os.platform() === "win32";
 
 const StorageConfirmDialog = (props: {
     open: boolean;
@@ -288,6 +291,59 @@ const ScreenReaderSettings: React.FC<{}> = () => {
                     </div>
                     <div aria-hidden>
                         <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.title")}</h3>
+                    </div>
+                </label>
+            </div>
+        </section>
+    );
+};
+
+const MinimizeLibraryToTraySettings: React.FC<{}> = () => {
+
+    const [__] = useTranslator();
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const isRTL = locale === "ar";
+    const dispatch = useDispatch();
+    const minimizeLibraryToTray = useSelector((state: ILibraryRootState) =>
+        state.settings.minimizeLibraryToTray === true);
+
+    const toggleMinimizeLibraryToTray = () => {
+        dispatch(settingsActions.minimizeLibraryToTray.build(!minimizeLibraryToTray));
+    };
+
+    return (
+        <section className={stylesSettings.section} style={{ gap: "10px" }}>
+            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.title")}</h3>
+            <div dir={isRTL ? "rtl" : "ltr"} className={stylesAnnotations.annotations_checkbox}>
+                <input type="checkbox" id="minimizeLibraryToTray" className={stylesGlobal.checkbox_custom_input} name="minimizeLibraryToTray" checked={minimizeLibraryToTray} onChange={toggleMinimizeLibraryToTray} />
+                <label htmlFor="minimizeLibraryToTray" className={stylesGlobal.checkbox_custom_label}>
+                    <div
+                        tabIndex={0}
+                        role="checkbox"
+                        aria-checked={minimizeLibraryToTray}
+                        aria-label={__("settings.window.minimizeLibraryToTray")}
+                        onKeyDown={(e) => {
+                            if (e.key === " ") {
+                                e.preventDefault();
+                            }
+                        }}
+                        onKeyUp={(e) => {
+                            if (e.key === " ") {
+                                e.preventDefault();
+                                toggleMinimizeLibraryToTray();
+                            }
+                        }}
+                        className={stylesGlobal.checkbox_custom}
+                        style={{ border: minimizeLibraryToTray ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: minimizeLibraryToTray ? "var(--color-brand-primary)" : "transparent" }}>
+                        {minimizeLibraryToTray ?
+                            <SVG ariaHidden svg={CheckIcon} />
+                            :
+                            <></>
+                        }
+                    </div>
+                    <div aria-hidden>
+                        <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.minimizeLibraryToTray")}</h3>
+                        <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.minimizeLibraryToTrayDescription")}</p>
                     </div>
                 </label>
             </div>
@@ -1002,6 +1058,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             <div className={stylesSettings.settings_tab}>
                                 <LanguageSettings />
                                 <ScreenReaderSettings />
+                                {IS_WINDOWS ? <MinimizeLibraryToTraySettings /> : <></>}
                                 <ConnectionSettings />
                                 <SharedComputerSettings />
                                 {/* <SaveSessionSettings /> */}
