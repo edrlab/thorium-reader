@@ -45,7 +45,9 @@
             "title": "{{- appName}} - tarkvarauuendus."
         },
         "window": {
-            "showLibrary": "Näita oma kogu / raamaturiiulit"
+            "showLibrary": "Näita oma kogu / raamaturiiulit",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -1305,6 +1307,11 @@
             "description": "Rakenduse kujundus vastab operatsioonisüsteemile.",
             "light": "Hele kujundus",
             "title": "Rakenduse kujundus"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

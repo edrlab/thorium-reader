@@ -45,7 +45,9 @@
             "title": "Mise à jour du logiciel {{- appName}}."
         },
         "window": {
-            "showLibrary": "Afficher la bibliothèque"
+            "showLibrary": "Afficher la bibliothèque",
+            "trayHint": "{{- appName}} reste ouvert dans la zone de notification. Cliquez sur l'icône {{- appName}} pour afficher la bibliothèque.",
+            "trayTooltip": "{{- appName}} - cliquer pour afficher ou masquer la bibliothèque"
         }
     },
     "catalog": {
@@ -1311,6 +1313,11 @@
             "description": "Le thème de l'application correspond au thème de votre système.",
             "light": "Clair",
             "title": "Thème de l'application"
+        },
+        "window": {
+            "minimizeLibraryToTray": "Réduire la bibliothèque dans la zone de notification",
+            "minimizeLibraryToTrayDescription": "Lorsque cette option est activée, réduire la fenêtre Bibliothèque garde Thorium ouvert dans la zone de notification Windows.",
+            "title": "Comportement des fenêtres"
         }
     },
     "tts": {

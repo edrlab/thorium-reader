@@ -58,7 +58,7 @@ import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locator
 import { IPdfPlayerScale, TPdfAnnotationDraftTransport } from "../pdf/common/pdfReader.type";
 import HeaderSearch from "./header/HeaderSearch";
 import { IReaderMenuProps, IReaderSettingsProps } from "./options-values";
-import { ReaderMenu } from "./ReaderMenu";
+import { ReaderMenu } from "./ReaderMenu/ReaderMenu";
 // import {
 //     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 // } from "readium-desktop/renderer/common/keyboard";
@@ -67,7 +67,8 @@ import { connect } from "react-redux";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { PublicationInfoReaderWithRadix, PublicationInfoReaderWithRadixContent, PublicationInfoReaderWithRadixTrigger } from "./dialog/publicationInfos/PublicationInfo";
-import { ReaderSettings, ReadingAudio } from "./ReaderSettings";
+import {ReaderSettings}  from "readium-desktop/renderer/reader/components/ReaderSettings/ReaderSettings";
+import {ReadingAudio} from "readium-desktop/renderer/reader/components/ReadingAudio";
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 import { triggerPdfAnnotation } from "readium-desktop/renderer/reader/pdf/pdfAnnotationHost";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
@@ -1158,9 +1159,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     </button>
                                 </Dialog.Trigger>
                                 <Dialog.Portal container={appOverlayElement}>
-                                            <VisuallyHidden.Root>
-                                                <Dialog.Title asChild><h1>{__("reader.navigation.settingsTitle")}</h1></Dialog.Title>
-                                            </VisuallyHidden.Root>
+                                            {/* <VisuallyHidden.Root> */}
+                                                <Dialog.Title asChild style={{width: "0", height: "0", "margin": "0"}}><h1>{__("reader.navigation.settingsTitle")}</h1></Dialog.Title>
+                                            {/* </VisuallyHidden.Root> */}
                                     {isDockedMode ?
                                         <div
                                             className={containerClassName}

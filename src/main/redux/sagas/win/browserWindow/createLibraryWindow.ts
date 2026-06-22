@@ -14,6 +14,7 @@ import { diMainGet } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
+import { registerWindowsLibraryTray } from "readium-desktop/main/tools/libraryTray";
 import {
     _RENDERER_LIBRARY_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
@@ -38,9 +39,11 @@ let libWindow: BrowserWindow = null;
 export function* createLibraryWindow(_action: winActions.library.openRequest.TAction) {
 
     // initial state apply in reducers
-    let windowBound = yield* selectTyped(
-        (state: RootState) => state.win.session.library.windowBound);
+    const libraryWindowState = yield* selectTyped(
+        (state: RootState) => state.win.session.library);
+    let windowBound = libraryWindowState.windowBound;
     windowBound = normalizeWinBoundRectangle(windowBound);
+    const windowMaximized = libraryWindowState.windowMaximized;
 
     libWindow = new BrowserWindow({
         ...windowBound,
@@ -61,8 +64,13 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         icon: path.join(__dirname, "assets/icons/icon.png"),
     });
     debug("LibraryWindow new BrowserWindow instancied");
+    registerWindowsLibraryTray(libWindow);
 
-    yield put(winActions.session.registerLibrary.build(libWindow, windowBound));
+    yield put(winActions.session.registerLibrary.build(libWindow, windowBound, windowMaximized));
+
+    if (windowMaximized) {
+        libWindow.maximize();
+    }
 
     const readers = yield* selectTyped(
         (state: RootState) => state.win.session.reader,

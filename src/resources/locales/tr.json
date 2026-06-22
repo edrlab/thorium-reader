@@ -45,7 +45,9 @@
             "title": "{{- appName}} yazılım güncellemesi."
         },
         "window": {
-            "showLibrary": "Kütüphaneyi / kitaplığı göster"
+            "showLibrary": "Kütüphaneyi / kitaplığı göster",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -1305,6 +1307,11 @@
             "description": "Uygulama teması işletim sistemiyle eşleşir.",
             "light": "Aydınlık",
             "title": "Uygulama Teması"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

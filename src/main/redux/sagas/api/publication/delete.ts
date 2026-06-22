@@ -9,7 +9,8 @@ import { diMainGet } from "readium-desktop/main/di";
 import { lcpActions } from "readium-desktop/common/redux/actions";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call, delay } from "redux-saga/effects";
-import { SagaGenerator, call as callTyped } from "typed-redux-saga";
+import { call as callTyped } from "typed-redux-saga/macro";
+import { SagaGenerator } from "typed-redux-saga";
 import debug_ from "debug";
 import { RequesetToCloseAllReadersWithTheSamePubId } from "../../reader";
 

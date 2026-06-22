@@ -1,5 +1,7 @@
 /.github/ @edrlab/thorium-desktop-lead-devs
 /.github_release/ @edrlab/thorium-desktop-lead-devs
+/.gitignore @edrlab/thorium-desktop-lead-devs
+/latest.json @edrlab/thorium-desktop-lead-devs
 /.vscode/ @edrlab/thorium-desktop-lead-devs
 /.flox/ @danielweck
 /shell.nix @panaC

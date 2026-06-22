@@ -6,7 +6,8 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { call as callTyped, select as selectTyped, put as putTyped, /*take as takeTyped, race as raceTyped, delay,*/ SagaGenerator, all as allTyped } from "typed-redux-saga/macro";
+import { call as callTyped, select as selectTyped, put as putTyped, all as allTyped } from "typed-redux-saga/macro";
+import { SagaGenerator } from "typed-redux-saga";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { customizationActions } from "readium-desktop/common/redux/actions";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";

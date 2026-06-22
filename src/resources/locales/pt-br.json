@@ -45,7 +45,9 @@
             "title": "Atualização de software da {{- appName}}."
         },
         "window": {
-            "showLibrary": "Mostrar biblioteca / estante"
+            "showLibrary": "Mostrar biblioteca / estante",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -1311,6 +1313,11 @@
             "description": "O tema do aplicativo corresponde ao sistema operacional.",
             "light": "Claro",
             "title": "Tema do aplicativo"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

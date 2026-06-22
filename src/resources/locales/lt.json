@@ -45,7 +45,9 @@
             "title": "{{- appName}} programinės įrangos naujinys."
         },
         "window": {
-            "showLibrary": "Rodyti biblioteką / lentyną"
+            "showLibrary": "Rodyti biblioteką / lentyną",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -251,17 +253,17 @@
             "success": "Importavimas sėkmingai užbaigtas."
         },
         "download": {
-            "cancelled": "",
+            "cancelled": "Atsiuntimas atšauktas.",
             "error": "[{{- title}}] atsiuntimas nepavyko: [{{- err}}]",
             "errors": {
-                "hashMismatch": "",
-                "httpGet": "",
-                "invalidFilename": "",
-                "invalidLink": "",
-                "invalidTempDirectory": "",
-                "lengthMismatch": "",
-                "readStreamMissing": "",
-                "tooManyFilenameAttempts": ""
+                "hashMismatch": "Atsisiųsto failo vientisumo patikra nepavyko: tikėtasi {{- expected}} SHA-256 maišos reikšmės , gauta {{- actual}}.",
+                "httpGet": "HTTP atsiuntimas nepavyko: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "invalidFilename": "Laikino atsiuntimo failo pavadinimas netaisyklingas.",
+                "invalidLink": "Atsiuntimo nuoroda netaisyklinga.",
+                "invalidTempDirectory": "Netaisyklingas laikinas atsiuntimo aplankas.",
+                "lengthMismatch": "Atsiųsto failo vientisumo patikra nepavyko: tikėtasi baitų: {{- expected}}, gauta: {{- actual}}.",
+                "readStreamMissing": "Neprieinamas atsiuntimo srautas.",
+                "tooManyFilenameAttempts": "Nepavyko sukurti unikalaus laikino atsiuntimo failo pavadinimo: {{- path}}"
             }
         },
         "import": {
@@ -1258,9 +1260,9 @@
             "title": "Įgalinti sesijos išsaugojimą"
         },
         "sharedComputer": {
-            "lcpAutoDeleteExpiredPublications": "",
-            "lcpAutoDeleteExpiredPublicationsDescription": "",
-            "title": ""
+            "lcpAutoDeleteExpiredPublications": "Automatiškai pašalinti pasibaigusio galiojimo leidinius ir susijusius naudotojo duomenis",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Užtikrina, kad pasibaigus leidinio skolinimo terminui jie būtų automatiškai ištrinami (įskaitant asmenines pastabas, skirtukus ir kt.). Tai naudinga bendro naudojimo kompiuterių aplinkoje, pavyzdžiui, bibliotekoje ar universiteto auditorijose.",
+            "title": "Bendro naudojimo kompiuterio režimas"
         },
         "storage": {
             "actions": {
@@ -1317,6 +1319,11 @@
             "description": "Programos tema atitinka operacinės sistemos temą.",
             "light": "Šviesi",
             "title": "Programos tema"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

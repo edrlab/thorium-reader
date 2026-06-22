@@ -12,7 +12,8 @@ import { uniqueCssSelector } from "@r2-navigator-js/electron/renderer/common/css
 import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import {  describeTextPosition, describeTextQuote } from "readium-desktop/third_party/apache-annotator/dom";
 import { convertRangeInfo } from "@r2-navigator-js/electron/renderer/webview/selection";
-import { /*select as selectTyped, take as takeTyped, all as allTyped,*/ call as callTyped, SagaGenerator /*put as putTyped, delay as delayTyped*/ } from "typed-redux-saga/macro";
+import { call as callTyped } from "typed-redux-saga/macro";
+import { SagaGenerator } from "typed-redux-saga";
 
 import { EpubCfiUtils } from "@r2-navigator-js/electron/common/colibrio-cfi/EpubCfiUtils";
 import { EpubCfiBuilderHelper } from "@r2-navigator-js/electron/common/colibrio-cfi/builder/EpubCfiBuilderHelper";

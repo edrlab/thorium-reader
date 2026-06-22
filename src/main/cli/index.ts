@@ -372,8 +372,10 @@ export function commandLineMainEntry(
         // https://github.com/electron/fuses/issues/2
         for (const arg of process.argv) {
             debug("arg", arg);
-            if (arg === "-r" ||
+            if ( // https://github.com/electron/electron/blob/main/shell/common/node_bindings.cc#L427
+                arg === "-r" ||
                 arg.includes("--require") ||
+                arg.includes("--import") ||
                 // arg.includes("--no") // DO NOT UNCOMMENT THIS, see "shared-computer" (`--shared-computer` and `--no-shared-computer`)
                 // https://www.electronjs.org/docs/latest/api/command-line-switches
                 arg.includes("--debug") ||

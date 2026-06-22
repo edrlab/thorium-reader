@@ -45,7 +45,9 @@
             "title": "Обновление программного обеспечения {{- appName}}."
         },
         "window": {
-            "showLibrary": "Показать библиотеку / книжную полку"
+            "showLibrary": "Показать библиотеку / книжную полку",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -251,17 +253,17 @@
             "success": "Импорт успешно завершён."
         },
         "download": {
-            "cancelled": "",
+            "cancelled": "Загрузка отменена.",
             "error": "Загрузка {{- title}} не удалась: [{{- err}}]",
             "errors": {
-                "hashMismatch": "",
-                "httpGet": "",
-                "invalidFilename": "",
-                "invalidLink": "",
-                "invalidTempDirectory": "",
-                "lengthMismatch": "",
-                "readStreamMissing": "",
-                "tooManyFilenameAttempts": ""
+                "hashMismatch": "Ошибка проверки целостности загруженного файла: ожидаемый хэш SHA-256 {{- expected}}, полученный {{- actual}}.",
+                "httpGet": "Ошибка загрузки по протоколу HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "invalidFilename": "Неверное имя временного загружаемого файла.",
+                "invalidLink": "Ссылка для скачивания недействительна.",
+                "invalidTempDirectory": "Временный каталог загрузки недействителен.",
+                "lengthMismatch": "Ошибка проверки целостности загруженного файла: ожидалось {{- expected}} байт, получено {{- actual}} байт.",
+                "readStreamMissing": "Поток загрузки недоступен.",
+                "tooManyFilenameAttempts": "Не удалось создать уникальное имя временного файла для загрузки: {{- path}}"
             }
         },
         "import": {
@@ -1258,9 +1260,9 @@
             "title": "Сохранение сеанса"
         },
         "sharedComputer": {
-            "lcpAutoDeleteExpiredPublications": "",
-            "lcpAutoDeleteExpiredPublicationsDescription": "",
-            "title": ""
+            "lcpAutoDeleteExpiredPublications": "Автоматическое удаление просроченных публикаций и связанных с ними пользовательских данных",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Обеспечивать автоматическое удаление просроченных абонементов (включая личные заметки, закладки и т.д.). Это полезно в инфраструктуре с общим доступом к компьютерам, как, например, библиотеки или университетские аудитории.",
+            "title": "Режим общего компьютера"
         },
         "storage": {
             "actions": {
@@ -1317,6 +1319,11 @@
             "description": "Тема приложения соответствует системной теме.",
             "light": "Светлая",
             "title": "Тема приложения"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {
