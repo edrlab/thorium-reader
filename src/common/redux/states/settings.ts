@@ -11,6 +11,20 @@ export interface ISettingsState {
     lcpAutoDeleteExpiredPublications: boolean; // false by default
     // Runtime-only command-line override. It is intentionally excluded from persisted state.
     lcpAutoDeleteExpiredPublicationsForced: boolean; // false by default
+    libraryView?: ILibraryViewSettingsState;
+}
+
+export type TLibraryViewDisplayType = "grid" | "list";
+
+export interface ILibraryViewSortBy {
+    id: string;
+    desc?: boolean;
+}
+
+export interface ILibraryViewSettingsState {
+    displayType?: TLibraryViewDisplayType;
+    sortBy?: ILibraryViewSortBy[];
+    hiddenColumns?: string[];
 }
 
 export const settingsMinimizeLibraryToTrayIsEnabled = (settings?: Partial<ISettingsState>) =>

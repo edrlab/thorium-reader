@@ -22,6 +22,7 @@ function settingsReducer_(
     action:
         settingsActions.enableAPIAPP.TAction |
         settingsActions.minimizeLibraryToTray.TAction |
+        settingsActions.libraryView.TAction |
         settingsActions.lcpAutoDeleteExpiredPublications.TAction |
         settingsActions.lcpAutoDeleteExpiredPublicationsForced.TAction,
 ):  ISettingsState {
@@ -37,6 +38,15 @@ function settingsReducer_(
                 ...initialState,
                 ...state,
                 minimizeLibraryToTray: action.payload.minimizeLibraryToTray,
+            }
+        case settingsActions.libraryView.ID:
+            return {
+                ...initialState,
+                ...state,
+                libraryView: {
+                    ...(state.libraryView || {}),
+                    ...action.payload.libraryView,
+                },
             };
         case settingsActions.lcpAutoDeleteExpiredPublications.ID:
             return {

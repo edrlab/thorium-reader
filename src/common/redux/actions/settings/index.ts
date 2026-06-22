@@ -6,12 +6,14 @@
 // ==LICENSE-END==
 
 import * as enableAPIAPP from "./enableAPIAPP";
+import * as libraryView from "./libraryView";
 import * as lcpAutoDeleteExpiredPublications from "./lcpAutoDeleteExpiredPublications";
 import * as lcpAutoDeleteExpiredPublicationsForced from "./lcpAutoDeleteExpiredPublicationsForced";
 import * as minimizeLibraryToTray from "./minimizeLibraryToTray";
 
 export {
     enableAPIAPP,
+    libraryView,
     lcpAutoDeleteExpiredPublications,
     lcpAutoDeleteExpiredPublicationsForced,
     minimizeLibraryToTray,

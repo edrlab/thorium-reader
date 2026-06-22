@@ -45,6 +45,9 @@ export interface NavigationHeader {
     svg: any;
 }
 
+const normalizeDisplayType = (displayType: string | undefined) =>
+    displayType === DisplayType.List ? DisplayType.List : DisplayType.Grid;
+
 const Header = () => {
 
 
@@ -52,6 +55,8 @@ const Header = () => {
     const history = useSelector((state: ILibraryRootState) => state.history);
     const locale = useSelector((state: ILibraryRootState) => state.i18n.locale);
     const customizationManifest = useSelector((state: ILibraryRootState) => state.customization.manifest);
+    const savedDisplayTypeSetting = useSelector((state: ILibraryRootState) => state.settings.libraryView?.displayType);
+    const savedDisplayType = normalizeDisplayType(savedDisplayTypeSetting);
     const [__] = useTranslator();
 
     const buildNavItem = React.useCallback((item: NavigationHeader, index: number, active: boolean) => {
@@ -85,7 +90,7 @@ const Header = () => {
             <li className={classNames(...styleClasses, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} key={index} style={{ height: "inherit" }}>
                 <Link
                     to={nextLocation}
-                    state={{ displayType: (nextLocation.state && (nextLocation.state as IRouterLocationState).displayType) ? (nextLocation.state as IRouterLocationState).displayType : DisplayType.Grid }}
+                    state={{ displayType: (nextLocation.state && (nextLocation.state as IRouterLocationState).displayType) ? (nextLocation.state as IRouterLocationState).displayType : savedDisplayType }}
                     replace={true}
                     aria-pressed={active}
                     role={"button"}
@@ -120,7 +125,7 @@ const Header = () => {
                 </Link>
             </li>
         );
-    }, [history, location]);
+    }, [history, location, savedDisplayType]);
 
     const headerNav: NavigationHeader[] = [
         {

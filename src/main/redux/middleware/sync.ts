@@ -84,6 +84,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     creatorActions.set.ID,
 
     settingsActions.minimizeLibraryToTray.ID,
+    settingsActions.libraryView.ID,
     settingsActions.lcpAutoDeleteExpiredPublications.ID,
     settingsActions.lcpAutoDeleteExpiredPublicationsForced.ID,
 
