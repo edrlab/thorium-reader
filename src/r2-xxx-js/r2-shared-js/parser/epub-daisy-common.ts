@@ -10,6 +10,7 @@ import * as mime from "mime-types";
 import moment from "moment";
 import * as path from "path";
 import * as xmldom from "@xmldom/xmldom";
+import { langStringIsRTL } from "../_utils/language-string";
 
 import { MediaOverlayNode, timeStrToSeconds } from "@r2-shared-js/models/media-overlay";
 import { DirectionEnum, MetadataSupportedKeys } from "@r2-shared-js/models/metadata";
@@ -774,14 +775,14 @@ export const setPublicationDirection = (publication: Publication, opf: OPF) => {
     }
 };
 
-export const langStringIsRTL = (lang: string): boolean => {
-    return lang === "ar" || lang.startsWith("ar-") ||
-        lang === "he" || lang.startsWith("he-") ||
-        lang === "fa" || lang.startsWith("fa-");
+// export const langStringIsRTL = (lang: string): boolean => {
+//     return lang === "ar" || lang.startsWith("ar-") ||
+//         lang === "he" || lang.startsWith("he-") ||
+//         lang === "fa" || lang.startsWith("fa-");
 
-        // https://github.com/edrlab/thorium-reader/pull/3027
-        // lang === "zh-Hant" || lang === "zh-TW"
-};
+//         // https://github.com/edrlab/thorium-reader/pull/3027
+//         // lang === "zh-Hant" || lang === "zh-TW"
+// };
 
 export const getNcx = async (ncxManItem: Manifest, opf: OPF, zip: IZip): Promise<NCX> => {
 

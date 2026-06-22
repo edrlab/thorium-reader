@@ -45,7 +45,9 @@
             "title": ""
         },
         "window": {
-            "showLibrary": ""
+            "showLibrary": "",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -246,7 +248,18 @@
             "success": ""
         },
         "download": {
-            "error": ""
+            "cancelled": "",
+            "error": "",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "",
@@ -1240,6 +1253,11 @@
         "session": {
             "title": ""
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
         "storage": {
             "actions": {
                 "addDirectory": "",
@@ -1294,6 +1312,11 @@
             "dark": "",
             "description": "",
             "light": "",
+            "title": ""
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
             "title": ""
         }
     },

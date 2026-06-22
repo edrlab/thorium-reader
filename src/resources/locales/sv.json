@@ -45,7 +45,9 @@
             "title": "{{- appName}}-programuppdatering."
         },
         "window": {
-            "showLibrary": "Visa bokhylla"
+            "showLibrary": "Visa bokhylla",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -164,15 +166,15 @@
                 "title": "Tilldelar och aktiverar anpassningsprofil"
             }
         },
-        "deleteAnnotations": "Radera anteckningar?",
-        "deleteAnnotationsText_one": "Vill du radera {{- count}} anteckning?",
-        "deleteAnnotationsText_other": "Vill du radera {{- count}} anteckningar?",
+        "deleteAnnotations": "Ta bort anteckningar?",
+        "deleteAnnotationsText_one": "Vill du ta bort {{- count}} anteckning?",
+        "deleteAnnotationsText_other": "Vill du ta bort {{- count}} anteckningar?",
         "deleteBookmarks": "Radera bokmärken?",
-        "deleteBookmarksText_one": "Vill du radera {{- count}} bokmärke?",
-        "deleteBookmarksText_other": "Vill du radera {{- count}} bokmärken?",
+        "deleteBookmarksText_one": "Vill du ta bort {{- count}} bokmärke?",
+        "deleteBookmarksText_other": "Vill du ta bort {{- count}} bokmärken?",
         "deleteFeed": "Vill du ta bort den här katalogen?",
         "deletePublication": "Vill du ta bort den här boken?",
-        "deletePublicationWithNotes": "Varning: Det finns anteckningar och/eller bokmärken som också kommer att raderas! (Om du vill behålla dem så måste du exportera anteckningar och bokmärken innan du tar bort boken)",
+        "deletePublicationWithNotes": "Varning: Det finns anteckningar och/eller bokmärken som också kommer att tas bort! (Om du vill behålla dem så måste du exportera anteckningar och bokmärken innan du tar bort boken)",
         "import": "Vill du importera följande filer:",
         "importError": "Det uppstod ett fel, kontrollera filformatet ({{acceptedExtension}})",
         "renew": "Vill du förnya lånet?",
@@ -241,7 +243,18 @@
             "success": "Importen lyckades."
         },
         "download": {
-            "error": "Nedladdningen av {{- title}} misslyckades: [{{- err}}]"
+            "cancelled": "",
+            "error": "Nedladdningen av {{- title}} misslyckades: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}} var redan importerad.",
@@ -290,7 +303,7 @@
             "noInternet": "Ingen internetuppkoppling",
             "noInternetMessage": "Kontrollera nätverkssladden, modemet, routern eller det trådlösa nätverket",
             "reject": "Ett oväntat fel uppstod!",
-            "timeout": "Nätverksanslutningen gav inget svar, försök igen senare"
+            "timeout": "Inget svar från nätverket, försök igen senare"
         },
         "next": "Nästa",
         "previous": "Föregående",
@@ -605,7 +618,7 @@
                 "displayTransformability": "Utseende på text och layout kan anpassas",
                 "longDescription": "Fullständiga bildbeskrivningar",
                 "printPageNumbers": "Innehåller sidnumrering från den tryckta förlagan",
-                "readingOrder": "Läsordning definierad",
+                "readingOrder": "Innehåller en läsordning",
                 "synchronizedAudioText": "Synkroniserat text och ljud",
                 "tableOfContents": "Innehåller innehållsförteckning"
             },
@@ -660,7 +673,7 @@
         "notStarted": "Ej påbörjad",
         "onGoing": "Pågående",
         "progression": {
-            "title": "Läsförlopp"
+            "title": "Läsposition"
         },
         "read": "Läst",
         "remainingTime": "Lån (återstående tid)",
@@ -670,7 +683,7 @@
         "revokedLcp": "Den här bokens LCP-licens har återkallats.",
         "seeLess": "Visa mindre",
         "seeMore": "Visa mer",
-        "timeLeft": "Tid kvar",
+        "timeLeft": "Återstående tid",
         "title": "Titel",
         "userKeyCheckInvalid": "Fel lösenord."
     },
@@ -714,7 +727,7 @@
             },
             "toggleMarginMarks": "Visa i marginalen",
             "type": {
-                "outline": "Kontur",
+                "outline": "Ram",
                 "solid": "Färgöverstrykning",
                 "strikethrough": "Genomstrykning",
                 "underline": "Understrykning"
@@ -884,8 +897,8 @@
                     "300pct": "300 %",
                     "500pct": "500 %",
                     "50pct": "50 %",
-                    "fit": "sidstorlek",
-                    "width": "sidbredd"
+                    "fit": "Visa hela sidan",
+                    "width": "Fyll fönstret"
                 },
                 "title": "Zoom"
             },
@@ -897,14 +910,14 @@
                 "resetDetails": "Återställ dina läsinställningar till standardinställningarna.",
                 "save": "Spara egna läsinställningar",
                 "saveDetails": "Spara dina nuvarande inställningar för visning och textformatering. Du kan använda dem i andra böcker genom att klicka på \"Använd\" i andra läsarfönster.",
-                "title": "Förinställning"
+                "title": "Förinställningar"
             },
             "preview": "Förhandsvisning",
             "reduceFontSize": "Minska textstorlek",
             "reduceMotion": "Minska rörelse",
             "scrolled": "Rullningsbar",
             "spacing": "Avstånd",
-            "spreadModeEven": "\"Jämna\" siduppslag (standard är \"udda\")",
+            "spreadModeEven": "Uppslag börjar på jämna sidor (standard är udda)",
             "text": "Text",
             "theme": {
                 "name": {
@@ -1234,6 +1247,11 @@
         "session": {
             "title": "Spara sessioner"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
         "storage": {
             "actions": {
                 "addDirectory": "Välj extra lagring",
@@ -1289,6 +1307,11 @@
             "description": "Applikationens tema följer operativsystemet.",
             "light": "Ljust",
             "title": "Tema"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

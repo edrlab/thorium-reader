@@ -11,7 +11,7 @@ import { ISettingsState } from "../../states/settings";
 export const ID = "ENABLE_APIAPP";
 
 export function build(state: boolean):
-    Action<typeof ID, ISettingsState> {
+    Action<typeof ID, Pick<ISettingsState, "enableAPIAPP">> {
 
     return {
         type: ID,

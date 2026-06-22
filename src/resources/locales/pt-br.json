@@ -45,7 +45,9 @@
             "title": "Atualização de software da {{- appName}}."
         },
         "window": {
-            "showLibrary": "Mostrar biblioteca / estante"
+            "showLibrary": "Mostrar biblioteca / estante",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -246,7 +248,18 @@
             "success": "Importação concluída com sucesso."
         },
         "download": {
-            "error": "O download de {{- title}} falhou: [{{- err}}]"
+            "cancelled": "",
+            "error": "O download de {{- title}} falhou: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}} já foi importado.",
@@ -1240,6 +1253,11 @@
         "session": {
             "title": "Salvar sessão"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
         "storage": {
             "actions": {
                 "addDirectory": "",
@@ -1295,6 +1313,11 @@
             "description": "O tema do aplicativo corresponde ao sistema operacional.",
             "light": "Claro",
             "title": "Tema do aplicativo"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

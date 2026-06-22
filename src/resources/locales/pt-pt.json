@@ -45,7 +45,9 @@
             "title": "Atualização de software: {{- appName}}."
         },
         "window": {
-            "showLibrary": "Mostrar biblioteca / estante"
+            "showLibrary": "Mostrar biblioteca / estante",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -246,7 +248,18 @@
             "success": "Importação concluída com sucesso."
         },
         "download": {
-            "error": "Falha ao descarregar {{- title}}: [{{- err}}]"
+            "cancelled": "",
+            "error": "Falha ao descarregar {{- title}}: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "Já tinha sido importado: {{- title}}.",
@@ -1240,6 +1253,11 @@
         "session": {
             "title": "Ativar guardar sessão"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
         "storage": {
             "actions": {
                 "addDirectory": "Selecionar um armazenamento adicional",
@@ -1295,6 +1313,11 @@
             "description": "O tema da aplicação combina com o do sistema operativo.",
             "light": "Claro",
             "title": "Tema da aplicação"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

@@ -45,7 +45,9 @@
             "title": "{{- appName}} software actualitzat."
         },
         "window": {
-            "showLibrary": "Mostrar biblioteca"
+            "showLibrary": "Mostrar biblioteca",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -246,7 +248,18 @@
             "success": ""
         },
         "download": {
-            "error": "La descàrrega de {{- title}} ha fallat: [{{- err}}]"
+            "cancelled": "",
+            "error": "La descàrrega de {{- title}} ha fallat: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}} ja estava importat",
@@ -1240,6 +1253,11 @@
         "session": {
             "title": "Guardar sessió"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
         "storage": {
             "actions": {
                 "addDirectory": "",
@@ -1295,6 +1313,11 @@
             "description": "El tema de l'aplicació coincideix amb el sistema operatiu.",
             "light": "Llum",
             "title": "Tema d'aplicació"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

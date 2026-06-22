@@ -9,7 +9,7 @@ import * as stylesModals from "readium-desktop/renderer/assets/styles/components
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
-
+import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as Tabs from "@radix-ui/react-tabs";
@@ -67,7 +67,7 @@ export const WizardModal = () => {
     const dispatch = useDispatch();
     const opened = useSelector((state: ILibraryRootState) => state.wizard.opened_v340);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-        const isRTL = locale === "ar";
+        const isRTL = langStringIsRTL(locale);
 
     const [checked, setChecked] = React.useState(false);
 

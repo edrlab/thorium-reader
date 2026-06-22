@@ -21,7 +21,7 @@ import { type Store } from "redux";
 import { RootState } from "readium-desktop/main/redux/states";
 import { ok } from "readium-desktop/common/utils/assert";
 import { parseProblemDetails } from "readium-desktop/common/utils/http";
-import isURL from "validator/lib/isURL";
+import isURL from "readium-desktop/common/utils/isURL";
 
 const debug = debug_("readium-desktop:main#services/lsd");
 
@@ -52,7 +52,7 @@ export class LSDManager {
 
         const locale = this.store.getState().i18n.locale;
 
-        // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+        // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
         if (!linkStatus.Href || !isURL(linkStatus.Href)) {
             debug("isURL() NOK", linkStatus.Href);
             return undefined;
@@ -173,7 +173,7 @@ export class LSDManager {
 
             const locale = this.store.getState().i18n.locale;
 
-            // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+            // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
             if (!licenseLink.Href || !isURL(licenseLink.Href)) {
                 debug("isURL() NOK", licenseLink.Href);
                 return undefined;
@@ -273,7 +273,7 @@ export class LSDManager {
 
         const locale = this.store.getState().i18n.locale;
 
-        // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+        // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
         if (!registerURL || !isURL(registerURL)) {
             debug("isURL() NOK", registerURL);
             throw new Error("invalid register URL: " + registerURL);
@@ -356,7 +356,7 @@ export class LSDManager {
 
         const locale = this.store.getState().i18n.locale;
 
-        // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+        // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
         if (!renewURL || !isURL(renewURL)) {
             debug("isURL() NOK", renewURL);
             throw new Error("invalid renew URL: " + renewURL);
@@ -419,7 +419,7 @@ export class LSDManager {
 
         const locale = this.store.getState().i18n.locale;
 
-        // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+        // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
         if (!returnURL || !isURL(returnURL)) {
             debug("isURL() NOK", returnURL);
             throw new Error("invalid return URL: " + returnURL);

@@ -159,6 +159,8 @@ export interface IOpdsLinkView {
     url: string;
     title?: string | undefined;
     type?: string | undefined;
+    // length?: number | undefined;
+    // hash?: string | undefined;
     properties?: IOPDSPropertiesView;
     rel?: string;
 

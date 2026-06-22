@@ -5,6 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
+import { LcpInfo, LsdStatus } from "readium-desktop/common/models/lcp";
+
 // Safeguard / sanity check to prevent native LCP lib crash (uncaught exception in NodeJS)
 // https://readium.org/lcp-specs/releases/lcp/latest.html#33-core-license-information
 // TOOD: moving this to LCP.init() wouldn't help
@@ -19,4 +22,32 @@ export function lcpLicenseIsNotWellFormed(lcpJson: any): boolean {
         !lcpJson.encryption ||
         !lcpJson.links ||
         !lcpJson.signature;
+}
+
+export function lcpLsdStatusIsNoLongerUsable(lsdStatus: Pick<LsdStatus, "status"> | undefined): boolean {
+    return lsdStatus?.status === StatusEnum.Expired ||
+        lsdStatus?.status === StatusEnum.Revoked ||
+        lsdStatus?.status === StatusEnum.Returned ||
+        lsdStatus?.status === StatusEnum.Cancelled;
+}
+
+export function lcpInfoHasConfirmedNoLongerUsableStatus(lcp: Pick<LcpInfo, "lsd"> | undefined): boolean {
+    return lcpLsdStatusIsNoLongerUsable(lcp?.lsd?.lsdStatus);
+}
+
+export function lcpRightsEndIsExpired(rightsEndIso: string | undefined, nowMs = Date.now()): boolean {
+    if (!rightsEndIso) {
+        return false;
+    }
+
+    const rightsEndMs = Date.parse(rightsEndIso);
+    return !Number.isNaN(rightsEndMs) && rightsEndMs <= nowMs;
+}
+
+export function lcpInfoIsNoLongerUsable(lcp: Pick<LcpInfo, "lsd" | "rights"> | undefined, nowMs = Date.now()): boolean {
+    // Broad local usability check. Automatic shared-computer deletion should prefer
+    // lcpInfoHasConfirmedNoLongerUsableStatus() unless a user-initiated flow explicitly accepts
+    // the local rights.end fallback.
+    return lcpLsdStatusIsNoLongerUsable(lcp?.lsd?.lsdStatus) ||
+        lcpRightsEndIsExpired(lcp?.rights?.end, nowMs);
 }

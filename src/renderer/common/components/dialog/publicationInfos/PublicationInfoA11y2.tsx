@@ -13,13 +13,14 @@ import * as stylePublication from "readium-desktop/renderer/assets/styles/public
 
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import { convertMultiLangStringToLangString, langStringIsRTL } from "readium-desktop/common/language-string";
+import { convertMultiLangStringToLangString } from "readium-desktop/common/language-string";
+import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 
 import DOMPurify from "dompurify";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { shell } from "electron";
-import isURL from "validator/lib/isURL";
+import isURL from "readium-desktop/common/utils/isURL";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:publicationA11y");
@@ -69,8 +70,8 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
         a11y_certifiedBy: a11y_certifiedBy_,
         a11y_certifierCredential: a11y_certifierCredential_,
     } = publicationViewMaybeOpds;
-    
-    // (@property="schema:accessModeSufficient" and contains(normalize-space(), "textual"))]. 
+
+    // (@property="schema:accessModeSufficient" and contains(normalize-space(), "textual"))].
     // parsed as [["textual", "visual"], ["auditory", "visual"]] and mapped to ["textual,visual", "auditory,visual"]
     const a11y_accessModeSufficient = (Array.isArray(a11y_accessModeSufficient_array_array) ? a11y_accessModeSufficient_array_array : [])
         .map((value) => Array.isArray(value) ? value.join(",") : value);
@@ -97,20 +98,20 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
 
     // https://www.w3.org/community/reports/publishingcg/CG-FINAL-epub-techniques-20250422/#variables-setup-0
 
-    // LET all_necessary_content_textual be the result of calling check for node on package_document, /package/metadata/meta[(@property="schema:accessMode" and normalize-space() = "textual" and count(//meta[@property="schema:accessMode"]) = 1) or (@property="schema:accessModeSufficient" and normalize-space()="textual")]. 
+    // LET all_necessary_content_textual be the result of calling check for node on package_document, /package/metadata/meta[(@property="schema:accessMode" and normalize-space() = "textual" and count(//meta[@property="schema:accessMode"]) = 1) or (@property="schema:accessModeSufficient" and normalize-space()="textual")].
     const all_necessary_content_textual = (hasMatchingString(a11y_accessMode, "textual") && a11y_accessMode.length === 1)
         || hasMatchingString(a11y_accessModeSufficient, "textual");
 
-    // LET audio_only_content be the result of calling check for node on package_document, /package/metadata/meta[@property="schema:accessMode" and normalize-space() = "auditory" and count(//meta[@property="schema:accessMode"]) = 1]. 
+    // LET audio_only_content be the result of calling check for node on package_document, /package/metadata/meta[@property="schema:accessMode" and normalize-space() = "auditory" and count(//meta[@property="schema:accessMode"]) = 1].
     const audio_only_content = hasMatchingString(a11y_accessMode, "auditory") && a11y_accessMode.length === 1;
-    
-    // LET some_sufficient_text be the result of calling check for node on package_document, /package/metadata/meta[(@property="schema:accessMode" and contains(normalize-space(), "textual")) or (@property="schema:accessModeSufficient" and contains(normalize-space(), "textual"))]. 
+
+    // LET some_sufficient_text be the result of calling check for node on package_document, /package/metadata/meta[(@property="schema:accessMode" and contains(normalize-space(), "textual")) or (@property="schema:accessModeSufficient" and contains(normalize-space(), "textual"))].
     const some_sufficient_text = hasContainingString(a11y_accessMode, "textual") || hasContainingString(a11y_accessModeSufficient, "textual");
 
-    // LET textual_alternatives be the result of calling check for node on package_document, /package/metadata/meta[@property="schema:accessibilityFeature" and (normalize-space() = "longDescription" or normalize-space() = "alternativeText" or normalize-space() = "describedMath" or normalize-space() = "transcript")]. 
+    // LET textual_alternatives be the result of calling check for node on package_document, /package/metadata/meta[@property="schema:accessibilityFeature" and (normalize-space() = "longDescription" or normalize-space() = "alternativeText" or normalize-space() = "describedMath" or normalize-space() = "transcript")].
     const textual_alternatives = hasMatchingString(a11y_accessibilityFeature, ["longDescription", "alternativeText", "describedMath", "transcript"]);
 
-    // LET visual_only_content be the result of calling check for node on package_document, /package/metadata/meta[(@property="schema:accessMode" and normalize-space() = "visual" and count(//meta[@property="schema:accessMode"]) = 1) and not(//meta[@property="schema:accessModeSufficient" and contains(normalize-space(), "textual")])]. 
+    // LET visual_only_content be the result of calling check for node on package_document, /package/metadata/meta[(@property="schema:accessMode" and normalize-space() = "visual" and count(//meta[@property="schema:accessMode"]) = 1) and not(//meta[@property="schema:accessModeSufficient" and contains(normalize-space(), "textual")])].
     const visual_only_content = (hasMatchingString(a11y_accessMode, "visual") && a11y_accessMode.length === 1)
         && !hasContainingString(a11y_accessModeSufficient, "textual");
 
@@ -450,7 +451,7 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                                     }
                                     {a11y_certifiedBy.length
                                         ? a11y_certifiedBy.map((certifier, i) => <li key={"certifier_" + i}>{
-                                            // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+                                            // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
                                             certifier && isURL(certifier) ? <a title={certifier} onClick={async (e) => { e.preventDefault(); if (certifier && /^https?:\/\//.test(certifier)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */ await shell.openExternal(certifier); } }} href={certifier}>
                                             {__("publ-a11y-display-guide.conformance.conformance-details-certifier-report.compact")}
                                         </a> :
@@ -459,7 +460,7 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                                         : <></>}
                                     {a11y_certifierCredential.length
                                         ? a11y_certifierCredential.map((certifier_credentials, i) => <li key={"certifier_credentials_" + i}>{
-                                            // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+                                            // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
                                             certifier_credentials && isURL(certifier_credentials) ? <a title={certifier_credentials} onClick={async (e) => { e.preventDefault(); if (certifier_credentials && /^https?:\/\//.test(certifier_credentials)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */ await shell.openExternal(certifier_credentials); } }} href={certifier_credentials}>
                                             {__("publ-a11y-display-guide.conformance.conformance-details-certifier-report.compact")}
                                         </a> :
@@ -478,7 +479,7 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                                     </li>)}
                                     {a11y_certifierReport.length
                                         ? a11y_certifierReport.map((certifier_report, i) => <li key={"certifier_report_" + i} title={certifier_report}>{
-                                            // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+                                            // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
                                             certifier_report && isURL(certifier_report) ? <a title={certifier_report} onClick={async (e) => { e.preventDefault(); if (certifier_report && /^https?:\/\//.test(certifier_report)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */ await shell.openExternal(certifier_report); } }} href={certifier_report}>
                                             {__("publ-a11y-display-guide.conformance.conformance-details-certifier-report.compact")}
                                         </a> : __("publ-a11y-display-guide.conformance.conformance-details-certifier-report.compact") + " " + certifier_report}</li>)

@@ -45,7 +45,9 @@
             "title": ""
         },
         "window": {
-            "showLibrary": "ბიბლიოთეკის ჩვენება / წიგნების კარადა"
+            "showLibrary": "ბიბლიოთეკის ჩვენება / წიგნების კარადა",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -241,7 +243,18 @@
             "success": ""
         },
         "download": {
-            "error": "{{- title}} გადმოტვირთვა უშედეგოდ დასრულდა: [{{- err}}]"
+            "cancelled": "",
+            "error": "{{- title}} გადმოტვირთვა უშედეგოდ დასრულდა: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}} უკვე შემოტანილია.",
@@ -1234,6 +1247,11 @@
         "session": {
             "title": "სესიის შენახვა"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
         "storage": {
             "actions": {
                 "addDirectory": "",
@@ -1288,6 +1306,11 @@
             "dark": "",
             "description": "",
             "light": "",
+            "title": ""
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
             "title": ""
         }
     },

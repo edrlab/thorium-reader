@@ -92,7 +92,7 @@ $setting_color: var(--color-brand-primary);
         }
     }
 
-    h3,
+    p,
     h4 {
         margin: 0;
         font-weight: 600;
@@ -133,7 +133,7 @@ $setting_color: var(--color-brand-primary);
         font-weight: normal;
         border: 1px solid transparent;
 
-        h3 {
+        p {
             font-size: 14px;
             text-overflow: ellipsis;
             overflow: hidden;
@@ -420,7 +420,7 @@ $setting_color: var(--color-brand-primary);
                         font-size: 14px;
                     }
 
-                    h3,
+                    span,
                     h4 {
                         margin: 0;
                         max-width: 120px;
@@ -439,7 +439,7 @@ $setting_color: var(--color-brand-primary);
                     border-radius: 5px;
                     margin: 10px 0;
 
-                    h3,
+                    span,
                     h4 {
                         margin: 0;
                         max-width: 120px;

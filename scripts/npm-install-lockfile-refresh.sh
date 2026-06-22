@@ -13,5 +13,5 @@ npm outdated
 # npm install --foreground-scripts
 # TODO: preinstall, install and postinstall NPM lifecycle hooks for Electron, fsevents, ParcelWatcher, etc.?
 
-cd node_modules/electron && npm run postinstall && cd -
-#cd node_modules/fsevents && npm run postinstall && cd -
+cd node_modules/electron && DEBUG=@electron/get* force_no_cache=true node install.js && cd -
+#cd node_modules/fsevents && DEBUG=@electron/get* force_no_cache=true node install.js && cd -

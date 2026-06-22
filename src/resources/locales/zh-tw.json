@@ -45,7 +45,9 @@
             "title": "{{- appName}} 軟體已更新。"
         },
         "window": {
-            "showLibrary": "顯示 書庫/書架"
+            "showLibrary": "顯示 書庫/書架",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -236,7 +238,18 @@
             "success": "匯入已成功完成。"
         },
         "download": {
-            "error": "下載 [{{- title}}] 失敗：[{{- err}}]"
+            "cancelled": "",
+            "error": "下載 [{{- title}}] 失敗：[{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}} 已被匯入。",
@@ -1228,6 +1241,11 @@
         "session": {
             "title": "保存登入狀態"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
         "storage": {
             "actions": {
                 "addDirectory": "",
@@ -1283,6 +1301,11 @@
             "description": "應用程式主題與作業系統相符。",
             "light": "光亮的",
             "title": "應用程式主題"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

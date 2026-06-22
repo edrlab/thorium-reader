@@ -45,7 +45,9 @@
             "title": "{{- appName}} aktualizacja oprogramowania."
         },
         "window": {
-            "showLibrary": "Pokaż bibliotekę / półkę z książkami"
+            "showLibrary": "Pokaż bibliotekę / półkę z książkami",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -251,7 +253,18 @@
             "success": "Import zakończony pomyślnie."
         },
         "download": {
-            "error": "Pobieranie [{{- title}}] nie powiodło się: [{{- err}}]"
+            "cancelled": "",
+            "error": "Pobieranie [{{- title}}] nie powiodło się: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "[{{- title}}] został już zaimportowany.",
@@ -1246,6 +1259,11 @@
         "session": {
             "title": "Włącz zapisywanie sesji"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
         "storage": {
             "actions": {
                 "addDirectory": "",
@@ -1301,6 +1319,11 @@
             "description": "Motyw aplikacji dopasowuje się do systemu operacyjnego.",
             "light": "Jasny",
             "title": "Motyw aplikacji"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

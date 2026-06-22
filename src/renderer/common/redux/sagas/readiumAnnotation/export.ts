@@ -6,7 +6,8 @@
 // ==LICENSE-END=
 
 import debug_ from "debug";
-import { select as selectTyped, call as callTyped, SagaGenerator} from "typed-redux-saga/macro";
+import { select as selectTyped, call as callTyped } from "typed-redux-saga/macro";
+import { SagaGenerator } from "typed-redux-saga";
 import { convertAnnotationStateArrayToReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/converter";
 import { IReadiumAnnotation, IReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
 

@@ -45,7 +45,9 @@
             "title": "{{- appName}} yazılım güncellemesi."
         },
         "window": {
-            "showLibrary": "Kütüphaneyi / kitaplığı göster"
+            "showLibrary": "Kütüphaneyi / kitaplığı göster",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -241,7 +243,18 @@
             "success": "İçe aktarma başarıyla tamamlandı."
         },
         "download": {
-            "error": "[{{- title}}] İndirmesi başarısız: [{{- err}}]"
+            "cancelled": "",
+            "error": "[{{- title}}] İndirmesi başarısız: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "[{{- title}}] zaten içe aktarılmış.",
@@ -1234,6 +1247,11 @@
         "session": {
             "title": "Oturum kaydetmeyi etkinleştir"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
         "storage": {
             "actions": {
                 "addDirectory": "",
@@ -1289,6 +1307,11 @@
             "description": "Uygulama teması işletim sistemiyle eşleşir.",
             "light": "Aydınlık",
             "title": "Uygulama Teması"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

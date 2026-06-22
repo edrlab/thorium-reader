@@ -13,11 +13,15 @@ import * as fs from "fs";
 import { inject, injectable } from "inversify";
 import moment from "moment";
 import * as path from "path";
+import { pipeline } from "stream/promises";
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
+import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
+import { File } from "readium-desktop/common/models/file";
 import { LcpInfo, LsdStatus } from "readium-desktop/common/models/lcp";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { lcpActions, toastActions } from "readium-desktop/common/redux/actions/";
+import { parseProblemDetails } from "readium-desktop/common/utils/http";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import {
     PublicationDocument, PublicationDocumentWithoutTimestampable,
@@ -25,23 +29,32 @@ import {
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { decryptPersist, encryptPersist } from "readium-desktop/main/fs/persistCrypto";
+import { createTempDir } from "readium-desktop/main/fs/path";
+import { httpGet } from "readium-desktop/main/network/http";
 import { RootState } from "readium-desktop/main/redux/states";
-import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
+import { IPublicationFilesReplacement, PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { streamerCachedPublication } from "readium-desktop/main/streamer/streamerNoHttp";
-import { ContentType } from "readium-desktop/utils/contentType";
+import { ContentType, contentTypeisApiProblem, parseContentType } from "readium-desktop/utils/contentType";
+import { rmrf } from "readium-desktop/utils/fs";
 import { toSha256Hex } from "readium-desktop/utils/lcp";
+import { findExtWithMimeType } from "readium-desktop/utils/mimeTypes";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 import { type Store } from "redux";
+import isURL from "readium-desktop/common/utils/isURL";
 
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
+import { Link as LcpLink } from "@r2-lcp-js/parser/epub/lcp-link";
 import { LSD } from "@r2-lcp-js/parser/epub/lsd";
 import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+import { PublicationParsePromise } from "@r2-shared-js/parser/publication-parser";
 
 // import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
 import { injectBufferInZip } from "../tools/zipInjector";
 
 import { diMainGet, lcpHashesFilePath } from "../di";
+import { computeFileSha256, fileSha256MatchesExpectedHash, normalizeSha256HashForComparison } from "../tools/fileIntegrity";
+import { buildPublicationFilesDocumentPatch } from "../tools/publicationDocument";
 import { extractCrc32OnZip } from "../tools/crc";
 import { LSDManager } from "./lsd";
 import { getTranslator } from "readium-desktop/common/services/translator";
@@ -62,6 +75,23 @@ const CONFIGREPOSITORY_LCP_SECRETS = "CONFIGREPOSITORY_LCP_SECRETS";
 // or alternatively query all passphrases known for a given LCP provider
 // (as in practice passphrases are sometimes shared between different publications from the same provider)
 type TLCPSecrets = Record<string, { passphrase?: string, provider?: string }>;
+
+interface ICheckPublicationLicenseUpdateResult {
+    publicationDocument: PublicationDocument;
+    r2Publication: R2Publication;
+}
+
+interface IProcessStatusDocumentResult {
+    documentPatch?: Partial<PublicationDocumentWithoutTimestampable>;
+    publicationFilesReplacement?: IPublicationFilesReplacement;
+    r2Publication: R2Publication;
+}
+
+interface IPublicationArchiveUpdateResult {
+    documentPatch: Partial<PublicationDocumentWithoutTimestampable>;
+    publicationFilesReplacement: IPublicationFilesReplacement;
+    r2Publication: R2Publication;
+}
 
 @injectable()
 export class LcpManager {
@@ -221,6 +251,41 @@ export class LcpManager {
         await this.injectLcplIntoZip_(epubPath, jsonSource);
     }
 
+    private async finalizePublicationFilesReplacement(
+        publicationFilesReplacement: IPublicationFilesReplacement | undefined,
+    ): Promise<void> {
+
+        if (!publicationFilesReplacement) {
+            return;
+        }
+
+        try {
+            await publicationFilesReplacement.finalize();
+        } catch (e) {
+            debug("finalizePublicationFilesReplacement failed", e);
+        }
+    }
+
+    private async rollbackPublicationFilesReplacement(
+        publicationFilesReplacement: IPublicationFilesReplacement | undefined,
+    ): Promise<void> {
+
+        if (!publicationFilesReplacement) {
+            debug("rollbackPublicationFilesReplacement skipped, no staged publication files replacement");
+            return;
+        }
+
+        try {
+            debug("rollbackPublicationFilesReplacement start", {
+                fileCount: publicationFilesReplacement.files.length,
+            });
+            await publicationFilesReplacement.rollback();
+            debug("rollbackPublicationFilesReplacement done");
+        } catch (e) {
+            debug("rollbackPublicationFilesReplacement failed", e);
+        }
+    }
+
     // public async injectLcpl(
     //     publicationDocument: PublicationDocument,
     //     lcp: LCP,
@@ -252,13 +317,10 @@ export class LcpManager {
     //         debug("processStatusDocument LCP updated.");
     //     }
 
-    //     const newPublicationDocument: PublicationDocumentWithoutTimestampable = Object.assign(
-    //         {},
-    //         publicationDocument,
-    //         {
-    //             hash: await extractCrc32OnZip(epubPath),
-    //         },
-    //     );
+    //     const newPublicationDocument: PublicationDocumentWithoutTimestampable = {
+    //         ...publicationDocument,
+    //         hash: await extractCrc32OnZip(epubPath),
+    //     };
     //     this.updateDocumentLcp(newPublicationDocument, r2Publication.LCP);
 
     //     return this.publicationRepository.save(newPublicationDocument);
@@ -386,7 +448,8 @@ export class LcpManager {
     //     return r2Publication;
     // }
 
-    // DOES NOT MUTATE publicationDocument (returns a modified copy)
+    // Leaves the passed publicationDocument unchanged. Saves and returns an
+    // updated document object, unless another LCP update is locked.
     public async checkPublicationLicenseUpdate(
         publicationDocument: PublicationDocument,
         skipNetworkLSD: boolean,
@@ -401,27 +464,37 @@ export class LcpManager {
         try {
             const r2Publication = await this.publicationViewConverter.unmarshallR2Publication(publicationDocument); // , true
 
-            // DOES NOT MUTATE publicationDocument (returns a modified copy)
-            return await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication, skipNetworkLSD);
+            const { publicationDocument: newPubDocument } =
+                // Keep publicationDocument as the pre-refresh snapshot.
+                await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication, skipNetworkLSD);
+            return newPubDocument;
         } finally {
             this.store.dispatch(lcpActions.publicationFileLock.build({ [publicationDocument.identifier]: false }));
         }
     }
 
-    // DOES NOT MUTATE publicationDocument (returns a modified copy)
+    // Builds a new publication document object before applying LCP/cache-derived
+    // changes. The source publicationDocument remains the pre-refresh snapshot.
+    // Side effects can include LCPL/cache/file updates and saving the copy.
     private async checkPublicationLicenseUpdate_(
         publicationDocument: PublicationDocument,
-        r2Publication: R2Publication,
+        r2Publication_: R2Publication,
         skipNetworkLSD: boolean,
-    ): Promise<PublicationDocument> {
+    ): Promise<ICheckPublicationLicenseUpdateResult> {
 
+        let r2Publication = r2Publication_;
         let redoHash = false;
+        let documentPatch: Partial<PublicationDocumentWithoutTimestampable> | undefined;
+        let publicationFilesReplacement: IPublicationFilesReplacement | undefined;
         if (!skipNetworkLSD && r2Publication.LCP) {
             try {
-                await this.processStatusDocument(
-                    publicationDocument.identifier,
+                const result = await this.processStatusDocument(
+                    publicationDocument,
                     r2Publication,
                 );
+                r2Publication = result.r2Publication;
+                documentPatch = result.documentPatch;
+                publicationFilesReplacement = result.publicationFilesReplacement;
 
                 debug(r2Publication.LCP);
                 debug(r2Publication.LCP.LSD);
@@ -440,19 +513,26 @@ export class LcpManager {
             publicationDocument.identifier,
         );
 
-        const newPublicationDocument: PublicationDocumentWithoutTimestampable = Object.assign(
-            {},
-            publicationDocument,
-            {
-                hash: redoHash ? await extractCrc32OnZip(epubPath) : publicationDocument.hash,
-            },
-        );
+        const newPublicationDocument: PublicationDocumentWithoutTimestampable = {
+            ...publicationDocument,
+            ...(documentPatch || {}),
+            hash: redoHash ? await extractCrc32OnZip(epubPath) : publicationDocument.hash,
+        };
 
-        // MUTATES newPublicationDocument
-        await this.updateDocumentLcp(newPublicationDocument, r2Publication.LCP);
+        // updateDocumentLcp writes LCP info onto this freshly-created document object.
+        try {
+            await this.updateDocumentLcp(newPublicationDocument, r2Publication.LCP);
 
-        const newPubDocument = await this.publicationRepository.save(newPublicationDocument);
-        return Promise.resolve(newPubDocument);
+            const newPubDocument = await this.publicationRepository.save(newPublicationDocument);
+            await this.finalizePublicationFilesReplacement(publicationFilesReplacement);
+            return Promise.resolve({
+                publicationDocument: newPubDocument,
+                r2Publication,
+            });
+        } catch (err) {
+            await this.rollbackPublicationFilesReplacement(publicationFilesReplacement);
+            throw err;
+        }
     }
 
     public async renewPublicationLicense(
@@ -465,10 +545,12 @@ export class LcpManager {
         }
         this.store.dispatch(lcpActions.publicationFileLock.build({ [publicationDocument.identifier]: true }));
         try {
-            const r2Publication = await this.publicationViewConverter.unmarshallR2Publication(publicationDocument); // , true
+            let r2Publication = await this.publicationViewConverter.unmarshallR2Publication(publicationDocument); // , true
 
-            // DOES NOT MUTATE publicationDocument (returns a modified copy)
-            let newPubDocument = await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication, false);
+            // Refresh first and continue with the returned saved document.
+            const checked = await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication, false);
+            let newPubDocument = checked.publicationDocument;
+            r2Publication = checked.r2Publication;
 
             let redoHash = false;
             if (r2Publication.LCP?.LSD?.Links) {
@@ -520,11 +602,16 @@ export class LcpManager {
                     r2Publication.LCP.LSD = renewResponseLsd;
 
                     redoHash = false;
+                    let documentPatch: Partial<PublicationDocumentWithoutTimestampable> | undefined;
+                    let publicationFilesReplacement: IPublicationFilesReplacement | undefined;
                     try {
-                        await this.processStatusDocument(
-                            publicationDocument.identifier,
+                        const result = await this.processStatusDocument(
+                            newPubDocument,
                             r2Publication,
                         );
+                        r2Publication = result.r2Publication;
+                        documentPatch = result.documentPatch;
+                        publicationFilesReplacement = result.publicationFilesReplacement;
 
                         debug(r2Publication.LCP);
                         debug(r2Publication.LCP.LSD);
@@ -547,18 +634,22 @@ export class LcpManager {
                     const epubPath = await this.publicationStorage.getPublicationEpubPath(
                         publicationDocument.identifier,
                     );
-                    const newPublicationDocument: PublicationDocumentWithoutTimestampable = Object.assign(
-                        {},
-                        publicationDocument,
-                        {
-                            hash: redoHash ? await extractCrc32OnZip(epubPath) : publicationDocument.hash,
-                        },
-                    );
+                    const newPublicationDocument: PublicationDocumentWithoutTimestampable = {
+                        ...newPubDocument,
+                        ...(documentPatch || {}),
+                        hash: redoHash ? await extractCrc32OnZip(epubPath) : newPubDocument.hash,
+                    };
 
-                    // MUTATES newPublicationDocument
-                    await this.updateDocumentLcp(newPublicationDocument, r2Publication.LCP);
+                    // updateDocumentLcp writes LCP info onto this freshly-created document object.
+                    try {
+                        await this.updateDocumentLcp(newPublicationDocument, r2Publication.LCP);
 
-                    newPubDocument = await this.publicationRepository.save(newPublicationDocument);
+                        newPubDocument = await this.publicationRepository.save(newPublicationDocument);
+                        await this.finalizePublicationFilesReplacement(publicationFilesReplacement);
+                    } catch (err) {
+                        await this.rollbackPublicationFilesReplacement(publicationFilesReplacement);
+                        throw err;
+                    }
                 } else {
                     this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
                         `LCP [${this.translator.translate("publication.renewButton")}] 👎`,
@@ -582,10 +673,12 @@ export class LcpManager {
         }
         this.store.dispatch(lcpActions.publicationFileLock.build({ [publicationDocument.identifier]: true }));
         try {
-            const r2Publication = await this.publicationViewConverter.unmarshallR2Publication(publicationDocument); // , true
+            let r2Publication = await this.publicationViewConverter.unmarshallR2Publication(publicationDocument); // , true
 
-            // DOES NOT MUTATE publicationDocument (returns a modified copy)
-            let newPubDocument = await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication, false);
+            // Refresh first and continue with the returned saved document.
+            const checked = await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication, false);
+            let newPubDocument = checked.publicationDocument;
+            r2Publication = checked.r2Publication;
 
             let redoHash = false;
             if (r2Publication.LCP?.LSD?.Links) {
@@ -628,11 +721,16 @@ export class LcpManager {
                     r2Publication.LCP.LSD = returnResponseLsd;
 
                     redoHash = false;
+                    let documentPatch: Partial<PublicationDocumentWithoutTimestampable> | undefined;
+                    let publicationFilesReplacement: IPublicationFilesReplacement | undefined;
                     try {
-                        await this.processStatusDocument(
-                            publicationDocument.identifier,
+                        const result = await this.processStatusDocument(
+                            newPubDocument,
                             r2Publication,
                         );
+                        r2Publication = result.r2Publication;
+                        documentPatch = result.documentPatch;
+                        publicationFilesReplacement = result.publicationFilesReplacement;
 
                         debug(r2Publication.LCP);
                         debug(r2Publication.LCP.LSD);
@@ -655,18 +753,22 @@ export class LcpManager {
                     const epubPath = await this.publicationStorage.getPublicationEpubPath(
                         publicationDocument.identifier,
                     );
-                    const newPublicationDocument: PublicationDocumentWithoutTimestampable = Object.assign(
-                        {},
-                        publicationDocument,
-                        {
-                            hash: redoHash ? await extractCrc32OnZip(epubPath) : publicationDocument.hash,
-                        },
-                    );
+                    const newPublicationDocument: PublicationDocumentWithoutTimestampable = {
+                        ...newPubDocument,
+                        ...(documentPatch || {}),
+                        hash: redoHash ? await extractCrc32OnZip(epubPath) : newPubDocument.hash,
+                    };
 
-                    // MUTATES newPublicationDocument
-                    await this.updateDocumentLcp(newPublicationDocument, r2Publication.LCP);
+                    // updateDocumentLcp writes LCP info onto this freshly-created document object.
+                    try {
+                        await this.updateDocumentLcp(newPublicationDocument, r2Publication.LCP);
 
-                    newPubDocument = await this.publicationRepository.save(newPublicationDocument);
+                        newPubDocument = await this.publicationRepository.save(newPublicationDocument);
+                        await this.finalizePublicationFilesReplacement(publicationFilesReplacement);
+                    } catch (err) {
+                        await this.rollbackPublicationFilesReplacement(publicationFilesReplacement);
+                        throw err;
+                    }
                 } else {
                     this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
                         `LCP [${this.translator.translate("publication.returnButton")}] 👎`,
@@ -995,9 +1097,354 @@ export class LcpManager {
         return lcpInfo;
     }
 
-    public async processStatusDocument(
+    private findLcpPublicationLink(lcp: LCP | undefined): LcpLink | undefined {
+        return lcp?.Links?.find((link) => link.HasRel("publication"));
+    }
+
+    private getFiniteLcpLinkLength(link: LcpLink | undefined): number | undefined {
+        return typeof link?.Length === "number" && Number.isFinite(link.Length) ?
+            link.Length :
+            undefined;
+    }
+
+    // private normalizeLcpPublicationLinkHref(link: LcpLink | undefined): string | undefined {
+
+    //     if (typeof link?.Href !== "string") {
+    //         return undefined;
+    //     }
+
+    //     const href = link.Href.trim();
+    //     if (!href) {
+    //         return undefined;
+    //     }
+
+    //     try {
+    //         return new URL(href).toString();
+    //     } catch {
+    //         return href;
+    //     }
+    // }
+
+    /**
+     * Decide whether two LCP publication links point to different archive content.
+     *
+     * Hash and length identify the archive payload. Href comparison is
+     * intentionally disabled so a license update that changes only the download
+     * URL does not trigger an unnecessary replacement.
+     *
+     * @param previousLink Publication link from the currently stored LCP license.
+     * @param nextLink Publication link from the refreshed LCP license.
+     * @returns True when the stored publication archive should be replaced.
+     */
+    private lcpPublicationLinkResourceChanged(
+        previousLink: LcpLink | undefined,
+        nextLink: LcpLink | undefined,
+    ): boolean {
+
+        if (!previousLink || !nextLink?.Href) {
+            return false;
+        }
+
+        const previousHash = normalizeSha256HashForComparison(previousLink.Hash);
+        const nextHash = normalizeSha256HashForComparison(nextLink.Hash);
+        if (previousHash && nextHash && previousHash !== nextHash) {
+            debug("LCP publication link hash changed", previousHash, nextHash);
+            return true;
+        }
+
+        const previousLength = this.getFiniteLcpLinkLength(previousLink);
+        const nextLength = this.getFiniteLcpLinkLength(nextLink);
+        if (
+            typeof previousLength === "number" &&
+            typeof nextLength === "number" &&
+            previousLength !== nextLength
+        ) {
+            debug("LCP publication link length changed", previousLength, nextLength);
+            return true;
+        }
+
+        // Do not compare href here; hash and length are the resource signals
+        // that should drive archive replacement.
+        // const previousHref = this.normalizeLcpPublicationLinkHref(previousLink);
+        // const nextHref = this.normalizeLcpPublicationLinkHref(nextLink);
+        // if (previousHref && nextHref && previousHref !== nextHref) {
+        //     debug("LCP publication link URL changed", previousHref, nextHref);
+        //     return true;
+        // }
+
+        return false;
+    }
+
+    private getPublicationLinkExtension(link: LcpLink, fallbackExtension: string): string {
+
+        const contentType = parseContentType(link.Type);
+        const extWithType = findExtWithMimeType(contentType || link.Type);
+        if (extWithType) {
+            return extWithType;
+        }
+
+        try {
+            const extWithDot = path.extname(new URL(link.Href).pathname);
+            if (extWithDot) {
+                return extWithDot.replace(/^\./, "");
+            }
+        } catch (err) {
+            debug("LCP publication link URL cannot provide extension", link.Href, err);
+        }
+
+        if (fallbackExtension) {
+            return fallbackExtension.replace(/^\./, "");
+        }
+
+        // Last-resort compatibility fallback: without link type, href extension,
+        // or the current archive extension, the archive format is unknown. The LCPL
+        // injector's generic path is EPUB-style, so keep the temp filename aligned
+        // with that default.
+        // see: injectLcplIntoZip_ src/main/services/lcp.ts:222
+        return acceptedExtensionObject.epub.replace(/^\./, "");
+    }
+
+    private async checkDownloadedPublicationLinkIntegrity(
+        filePath: string,
+        link: LcpLink,
+    ): Promise<void> {
+
+        const expectedLength = this.getFiniteLcpLinkLength(link);
+        if (typeof expectedLength === "number") {
+            const stat = await fs.promises.stat(filePath);
+            if (stat.size !== expectedLength) {
+                throw new Error(`Downloaded publication length mismatch: expected ${expectedLength}, got ${stat.size}`);
+            }
+        }
+
+        if (typeof link.Hash === "string" && link.Hash.trim()) {
+            const actualHash = await computeFileSha256(filePath);
+            if (!fileSha256MatchesExpectedHash(link.Hash, actualHash)) {
+                throw new Error(`Downloaded publication SHA-256 mismatch: expected ${link.Hash}, got ${actualHash.hex} / ${actualHash.base64}`);
+            }
+        }
+    }
+
+    /**
+     * Downloads the publication archive referenced by an LCP "publication" link
+     * into a temporary directory and verifies the link metadata before returning.
+     *
+     * The returned path remains owned by the caller, which must remove the temp
+     * directory after copying or staging the archive.
+     *
+     * TODO: Extract the shared non-saga download primitive used here and in
+     * downloader.ts: HTTP request setup, temp file creation, stream pipeline, and
+     * length/hash integrity checks. Keep UI progress/cancel handling in the saga.
+     */
+    private async downloadPublicationArchiveFromLcpLink(
         publicationIdentifier: string,
-        r2Publication: R2Publication): Promise<void> {
+        link: LcpLink,
+        fallbackExtension: string,
+    ): Promise<string> {
+
+        if (!link.Href || !isURL(link.Href)) {
+            throw new Error("invalid LCP publication URL: " + link.Href);
+        }
+
+        const locale = this.store.getState().i18n.locale;
+        const abortController = new AbortController();
+        // Let httpGet apply its default HTTP timeout instead of the shorter LSD
+        // status timeout: this request fetches a full replacement publication
+        // archive, not just a small status JSON document. The local
+        // AbortController is not for user cancellation; it keeps this aligned
+        // with downloader.ts by using httpGet's clearable timeout branch for the
+        // initial HTTP response, then lets pipeline() consume the archive stream.
+        const httpDataReceived = await httpGet(
+            link.Href,
+            {
+                abortController,
+                signal: abortController.signal,
+            },
+            undefined,
+            locale,
+        );
+        const contentType = parseContentType(httpDataReceived.contentType);
+        if (contentTypeisApiProblem(contentType)) {
+            const { title, type } = await parseProblemDetails(httpDataReceived.response);
+            throw new Error(`${title} (${type})`);
+        }
+
+        if (!httpDataReceived.isSuccess || !httpDataReceived.body) {
+            throw new Error(`LCP publication download failed: ${httpDataReceived.statusMessage || ""} (${httpDataReceived.statusCode || ""})`);
+        }
+
+        let tempDir: string | undefined;
+        try {
+            const ext = this.getPublicationLinkExtension(link, fallbackExtension);
+            tempDir = await createTempDir(`${Date.now()}-${publicationIdentifier}`, "lcp-publication-update");
+            const downloadedPublicationPath = path.join(tempDir, `book.${ext}`);
+            // pipeline() handles stream backpressure and rejects on either HTTP
+            // body or filesystem write errors. The HTTP timeout above guards the
+            // initial response; the archive body is allowed to stream to disk.
+            await pipeline(httpDataReceived.body, fs.createWriteStream(downloadedPublicationPath));
+            await this.checkDownloadedPublicationLinkIntegrity(downloadedPublicationPath, link);
+
+            return downloadedPublicationPath;
+        } catch (err) {
+            if (tempDir) {
+                await rmrf(tempDir).catch((e) => debug("downloadPublicationArchiveFromLcpLink cleanup failed", e));
+            }
+            throw err;
+        }
+    }
+
+    private buildPublicationArchiveDocumentPatch(
+        publicationDocument: PublicationDocument,
+        r2Publication: R2Publication,
+        publicationFiles: File[],
+    ): Partial<PublicationDocumentWithoutTimestampable> {
+
+        const locale = this.store.getState().i18n.locale;
+        // Recompute only the stored-file fields affected by the archive swap:
+        // the main book file, any extracted cover, and the custom-cover fallback.
+        const filesPatch = buildPublicationFilesDocumentPatch(
+            publicationFiles,
+            publicationDocument.customCover,
+        );
+
+        return {
+            // Prefer the replacement archive's localized metadata title, but keep
+            // the previous document title if the new archive does not expose one.
+            title: convertMultiLangStringToString(r2Publication.Metadata.Title, locale) ||
+                publicationDocument.title ||
+                "-",
+            ...filesPatch,
+        };
+    }
+
+    /**
+     * Replace Publication Archive If Link Changed
+     *
+     * During an LCP license refresh, the new license may point to an updated
+     * publication archive. This method detects that case, downloads the replacement
+     * archive, embeds the refreshed LCPL into it, parses it, stages the stored-file
+     * replacement, and updates the publication cache.
+     *
+     * The returned file replacement is still pending: the caller must finalize it
+     * only after the related publication document has been saved, or roll it back if
+     * a later step fails.
+     *
+     * @param publicationDocument Existing publication document being refreshed.
+     * @param previousLcp LCP license currently associated with the stored archive.
+     * @param nextLcp Refreshed LCP license received from the status document flow.
+     * @param nextLcpStr Raw refreshed LCPL JSON to inject into the replacement archive.
+     * @returns Archive update data when replacement was staged, or undefined when
+     * the refreshed LCP does not require an archive replacement.
+     */
+    private async replacePublicationArchiveIfLinkChanged(
+        publicationDocument: PublicationDocument,
+        previousLcp: LCP,
+        nextLcp: LCP,
+        nextLcpStr: string,
+    ): Promise<IPublicationArchiveUpdateResult | undefined> {
+
+        // The refreshed LCP may point to a newer publication archive. Replace the
+        // stored book when the publication link URL or resource metadata changed.
+        const previousPublicationLink = this.findLcpPublicationLink(previousLcp);
+        const nextPublicationLink = this.findLcpPublicationLink(nextLcp);
+        debug("replacePublicationArchiveIfLinkChanged check", {
+            hasNextPublicationLink: !!nextPublicationLink,
+            hasPreviousPublicationLink: !!previousPublicationLink,
+            identifier: publicationDocument.identifier,
+            nextLength: this.getFiniteLcpLinkLength(nextPublicationLink),
+            previousLength: this.getFiniteLcpLinkLength(previousPublicationLink),
+        });
+        if (
+            !nextPublicationLink ||
+            !this.lcpPublicationLinkResourceChanged(previousPublicationLink, nextPublicationLink)
+        ) {
+            debug("replacePublicationArchiveIfLinkChanged no archive replacement needed", publicationDocument.identifier);
+            return undefined;
+        }
+
+        debug("replacePublicationArchiveIfLinkChanged archive changed, downloading updated publication", publicationDocument.identifier);
+
+        let downloadedPublicationPath: string | undefined;
+        let publicationFilesReplacement: IPublicationFilesReplacement | undefined;
+        try {
+            const currentPublicationPath = await this.publicationStorage.getPublicationEpubPath(
+                publicationDocument.identifier,
+            );
+            debug("replacePublicationArchiveIfLinkChanged current publication path", publicationDocument.identifier, currentPublicationPath);
+            downloadedPublicationPath = await this.downloadPublicationArchiveFromLcpLink(
+                publicationDocument.identifier,
+                nextPublicationLink,
+                path.extname(currentPublicationPath),
+            );
+            debug("replacePublicationArchiveIfLinkChanged downloaded replacement archive", publicationDocument.identifier, downloadedPublicationPath);
+
+            // Persist the refreshed license inside the downloaded archive before parsing
+            // and storing it, so the replacement archive is immediately self-contained.
+            await this.injectLcplIntoZip_(downloadedPublicationPath, nextLcpStr);
+            debug("replacePublicationArchiveIfLinkChanged injected refreshed LCPL", publicationDocument.identifier, downloadedPublicationPath);
+
+            const updatedR2Publication = await PublicationParsePromise(downloadedPublicationPath);
+            updatedR2Publication.freeDestroy();
+            updatedR2Publication.LCP = nextLcp;
+            debug("replacePublicationArchiveIfLinkChanged parsed replacement archive", publicationDocument.identifier);
+
+            // The replacement is staged so the caller can save the updated publication
+            // document first, then finalize or roll back the file swap as one operation.
+            publicationFilesReplacement = await this.publicationStorage.replacePublicationFiles(
+                publicationDocument.identifier,
+                downloadedPublicationPath,
+            );
+            debug("replacePublicationArchiveIfLinkChanged staged publication files replacement", {
+                fileCount: publicationFilesReplacement.files.length,
+                identifier: publicationDocument.identifier,
+            });
+            const documentPatch = this.buildPublicationArchiveDocumentPatch(
+                publicationDocument,
+                updatedR2Publication,
+                publicationFilesReplacement.files,
+            );
+            debug("replacePublicationArchiveIfLinkChanged built publication document patch", {
+                hasCoverFile: !!documentPatch.coverFile,
+                hasCustomCover: !!documentPatch.customCover,
+                identifier: publicationDocument.identifier,
+                title: documentPatch.title,
+            });
+
+            await this.publicationViewConverter.updatePublicationCache(
+                {
+                    ...publicationDocument,
+                    ...documentPatch,
+                },
+                updatedR2Publication,
+            );
+            debug("replacePublicationArchiveIfLinkChanged updated publication cache", publicationDocument.identifier);
+
+            return {
+                documentPatch,
+                publicationFilesReplacement,
+                r2Publication: updatedR2Publication,
+            };
+        } catch (err) {
+            debug("replacePublicationArchiveIfLinkChanged failed, rolling back replacement", publicationDocument.identifier, err);
+            // If parsing, cache refresh, or any later step fails, restore the previous
+            // stored files before propagating the error to the caller.
+            await this.rollbackPublicationFilesReplacement(publicationFilesReplacement);
+            throw err;
+        } finally {
+            if (downloadedPublicationPath) {
+                // downloadPublicationArchiveFromLcpLink creates a temp directory whose
+                // only durable output is copied into publication storage above.
+                debug("replacePublicationArchiveIfLinkChanged cleanup temp archive", publicationDocument.identifier, downloadedPublicationPath);
+                await rmrf(path.dirname(downloadedPublicationPath))
+                    .catch((e) => debug("replacePublicationArchiveIfLinkChanged cleanup failed", e));
+            }
+        }
+    }
+
+    public async processStatusDocument(
+        publicationDocument: PublicationDocument,
+        r2Publication: R2Publication,
+    ): Promise<IProcessStatusDocumentResult> {
 
         (r2Publication as any).__LCP_LSD_UPDATE_COUNT = 0;
 
@@ -1024,7 +1471,7 @@ export class LcpManager {
 
                 if (r2LCPStr) {
 
-                    const atLeastOneReaderIsOpen = await diMainGet("saga-middleware").run(RequesetToCloseAllReadersWithTheSamePubId, publicationIdentifier).toPromise<boolean>() // NOTE: no type inference with Task .toPromise
+                    const atLeastOneReaderIsOpen = await diMainGet("saga-middleware").run(RequesetToCloseAllReadersWithTheSamePubId, publicationDocument.identifier).toPromise<boolean>() // NOTE: no type inference with Task .toPromise
                         .catch((e) => { debug("RequesetToCloseAllReadersWithTheSamePubId", e); });
                     debug("RequesetToCloseAllReadersWithTheSamePubId fulfilled");
                     // let atLeastOneReaderIsOpen = false;
@@ -1052,7 +1499,8 @@ export class LcpManager {
                     try {
                         // --------- This LSD was set in launchStatusDocumentProcessing() so it is up to date in the context of r2Publication.LCP,
                         // but we are receiving a new LCP license so need to reassign later...
-                        const prevLSD = r2Publication.LCP.LSD;
+                        const prevLCP = r2Publication.LCP;
+                        const prevLSD = prevLCP.LSD;
 
                         // const epubPath_ = await lsdLcpUpdateInject(
                         //     licenseUpdateJson,
@@ -1078,13 +1526,33 @@ export class LcpManager {
                             return;
                         }
                         r2LCP.JsonSource = r2LCPStr;
+
+                        const archiveUpdate = await this.replacePublicationArchiveIfLinkChanged(
+                            publicationDocument,
+                            prevLCP,
+                            r2LCP,
+                            r2LCPStr,
+                        );
+                        if (archiveUpdate) {
+                            r2Publication = archiveUpdate.r2Publication;
+                            r2Publication.LCP = r2LCP;
+                            r2Publication.LCP.LSD = prevLSD;
+                            (r2Publication as any).__LCP_LSD_UPDATE_COUNT = 1; // TODO: this is used elsewhere to trigger the recalculation of the pub hash, should really be a proper typed flag, not "any"
+                            resolve({
+                                documentPatch: archiveUpdate.documentPatch,
+                                publicationFilesReplacement: archiveUpdate.publicationFilesReplacement,
+                                r2Publication,
+                            });
+                            return;
+                        }
+
                         r2Publication.LCP = r2LCP;
 
                         // --------- will be updated below via another round of processStatusDocument_() UPDATE: no, see below ...
                         r2Publication.LCP.LSD = prevLSD;
 
                         const epubPath = await this.publicationStorage.getPublicationEpubPath(
-                            publicationIdentifier,
+                            publicationDocument.identifier,
                         );
                         await this.injectLcplIntoZip_(epubPath, r2LCPStr);
 
@@ -1093,7 +1561,9 @@ export class LcpManager {
                         if (!(r2Publication as any).__LCP_LSD_UPDATE_COUNT) {
                             (r2Publication as any).__LCP_LSD_UPDATE_COUNT = 1; // TODO: this is used elsewhere to trigger the recalculation of the pub hash, should really be a proper typed flag, not "any"
                         }
-                        resolve();
+                        resolve({
+                            r2Publication,
+                        });
                         // --------- below is the commented code that used to create the second LSD network request:
                         // // Protect against infinite loop due to incorrect LCP / LSD server dates
                         // if (!(r2Publication as any).__LCP_LSD_UPDATE_COUNT) {
@@ -1126,7 +1596,9 @@ export class LcpManager {
                         reject(err);
                     }
                 } else {
-                    resolve();
+                    resolve({
+                        r2Publication,
+                    });
                 }
             };
 

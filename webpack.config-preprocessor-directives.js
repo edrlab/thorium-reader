@@ -28,7 +28,19 @@ const nodeModuleRelativeUrl = isPackaged ? "node_modules" : "../node_modules";
 
 const distRelativeUrl = isPackaged ? "dist" : "../dist";
 
-const { privateKey, pubKey } = require("./customization-profile-public-key-pair");
+const customizationProfileIsProduction =
+    !!process.env.THORIUM_TELEMETRY_SECRET && !!process.env.THORIUM_TELEMETRY_SECRET_DATA; // Environment variable set in GitHub Actions CI via Secrets ==> production build
+
+const { privateKey, pubKey: pubKey_ } = require("./customization-profile-public-key-pair");
+const pubKey = customizationProfileIsProduction
+    ? `-----BEGIN PUBLIC KEY-----
+MIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQBAJsqefp34Eph4jKQivj05YhhTJ1a
+N+oNxGhhxNhrBg52wNbluJCUqz1cPn3tkz+5sZllYW2Eq+uqzbU4DNe1eZIBwlYV
+eJmvw+BkaOWrxOmxT+65ymJTDcrsCGf6eCptEQeO0BUeFn2R3XgkO7A0fszLnZV9
+Dho5CFpdtPPt4smIX2M=
+-----END PUBLIC KEY-----
+`
+    : pubKey_;
 
 // "http://localhost:8080/";
 // MUST END WITH FORWARD SLASH!
@@ -37,6 +49,9 @@ const telemetryUrl = isPackaged
       (isContinuousIntegrationDeploy ? "https://telemetry-staging.edrlab.org/" : "https://telemetry.edrlab.org/")
     : "";
 const telemetrySecret = process.env.THORIUM_TELEMETRY_SECRET || "";
+const telemetrySecretData = process.env.THORIUM_TELEMETRY_SECRET_DATA || "";
+const isURLRequireTldFalse =
+    !["0", "false"].includes((process.env.THORIUM_ISURL_REQUIRE_TLD_FALSE || "0").toLowerCase());
 
 // const USE_HTTP_STREAMER = false;
 
@@ -55,6 +70,7 @@ const data = {
     __TH__APP_VERSION__: JSON.stringify(version),
     __TH__PACK_NAME__: JSON.stringify(name), // EDRLab.ThoriumReader
     __TH__APP_NAME__: JSON.stringify(build.productName), // Thorium
+    __TH__ISURL_REQUIRE_TLD_FALSE__: JSON.stringify(isURLRequireTldFalse),
     __TH__NODE_MODULE_RELATIVE_URL__: JSON.stringify(nodeModuleRelativeUrl),
     __TH__DIST_RELATIVE_URL__: JSON.stringify(distRelativeUrl),
     __TH__RENDERER_LIBRARY_BASE_URL__: JSON.stringify(rendererLibraryBaseUrl),
@@ -62,6 +78,7 @@ const data = {
     __TH__RENDERER_PDF_WEBVIEW_BASE_URL__: JSON.stringify(rendererPdfWebviewBaseUrl),
     __TH__TELEMETRY_URL__: JSON.stringify(telemetryUrl),
     __TH__TELEMETRY_SECRET__: JSON.stringify(telemetrySecret),
+    __TH__TELEMETRY_SECRETDATA__: JSON.stringify(telemetrySecretData),
     __TH__CUSTOMIZATION_PROFILE_PUB_KEY__: JSON.stringify(pubKey),
     __TH__CUSTOMIZATION_PROFILE_PRIVATE_KEY__: JSON.stringify(privateKey),
 

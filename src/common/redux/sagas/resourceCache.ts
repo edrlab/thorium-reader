@@ -10,8 +10,9 @@ import { ContentType } from "readium-desktop/utils/contentType";
 import {
     select as selectTyped,
     call as callTyped,
-    SagaGenerator, delay as delayTyped,
+    delay as delayTyped,
 } from "typed-redux-saga/macro";
+import { SagaGenerator } from "typed-redux-saga";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
 

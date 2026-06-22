@@ -45,7 +45,9 @@
             "title": "تحديث برنامج {{- appName}}."
         },
         "window": {
-            "showLibrary": "إظهار المكتبة / رف الكتب"
+            "showLibrary": "إظهار المكتبة / رف الكتب",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -261,7 +263,18 @@
             "success": "اكتمل الاستيراد بنجاح."
         },
         "download": {
-            "error": "فشل تنزيل [{{- title}}]: [{{- err}}]"
+            "cancelled": "",
+            "error": "فشل تنزيل [{{- title}}]: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "تم استيراد [{{- title}}] مسبقًا.",
@@ -1258,6 +1271,11 @@
         "session": {
             "title": "تفعيل حفظ الجلسة"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
         "storage": {
             "actions": {
                 "addDirectory": "",
@@ -1313,6 +1331,11 @@
             "description": "نسق البرنامج يطابق نظام التشغيل.",
             "light": "فاتح",
             "title": "نسق البرنامج"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

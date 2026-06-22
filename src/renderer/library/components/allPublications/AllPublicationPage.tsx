@@ -14,7 +14,8 @@ import * as stylesDropDown from "readium-desktop/renderer/assets/styles/componen
 import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
 import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 
-import { convertMultiLangStringToLangString, langStringIsRTL } from "readium-desktop/common/language-string";
+import { convertMultiLangStringToLangString } from "readium-desktop/common/language-string";
+import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { Location } from "history";
 import SVG from "readium-desktop/renderer/common/components/SVG";

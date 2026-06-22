@@ -12,7 +12,7 @@ import * as stylesInputs from "readium-desktop/renderer/assets/styles/components
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import * as stylesKeys from "readium-desktop/renderer/assets/styles/components/keyboardsShortcuts.scss";
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
-
+import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import { keyboardShortcutsMatch, keyboardShortcutMatches, defaultKeyboardShortcuts, TKeyboardShortcutScopeZone } from "readium-desktop/common/keyboard";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
@@ -97,7 +97,7 @@ export const AdvancedTrigger = () => {
     const [ __ ]= useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
     const dispatch = useDispatch();
 
     const onClickKeyboardShortcutsShow = () => {
@@ -250,7 +250,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
     public render(): React.ReactElement<{}> {
         const { __, locale } = this.props;
 
-        const isRTL = locale === "ar";
+        const isRTL = langStringIsRTL(locale);
 
         const isSearchEmpty = !this.state.searchItem || this.state.searchItem.trim() === "";
         const searchItem = isSearchEmpty ? undefined : trimNormaliseWhitespaceAndCollapse(this.state.searchItem).toLowerCase();

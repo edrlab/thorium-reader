@@ -45,7 +45,9 @@
             "title": "Aktualizace softwaru {{- appName}}."
         },
         "window": {
-            "showLibrary": "Zobrazit knihovnu / knihovničku"
+            "showLibrary": "Zobrazit knihovnu / knihovničku",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -251,7 +253,18 @@
             "success": "Import úspěšně dokončen."
         },
         "download": {
-            "error": "Stahování publikace „{{- title}}“ selhalo: [{{- err}}]"
+            "cancelled": "",
+            "error": "Stahování publikace „{{- title}}“ selhalo: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "Publikace „{{- title}}“ je již nahráná.",
@@ -1246,6 +1259,11 @@
         "session": {
             "title": "Povolit ukládání relací"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
         "storage": {
             "actions": {
                 "addDirectory": "",
@@ -1301,6 +1319,11 @@
             "description": "Motiv aplikace bude odpovídat operačnímu systému.",
             "light": "Světlý",
             "title": "Motiv aplikace"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

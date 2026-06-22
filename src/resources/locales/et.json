@@ -45,7 +45,9 @@
             "title": "{{- appName}} - tarkvarauuendus."
         },
         "window": {
-            "showLibrary": "Näita oma kogu / raamaturiiulit"
+            "showLibrary": "Näita oma kogu / raamaturiiulit",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -241,7 +243,18 @@
             "success": "Importimine õnnestus kenasti."
         },
         "download": {
-            "error": "„{{- title}}“ väljaande allalaadimine ei õnnestunud: {{- err}}"
+            "cancelled": "",
+            "error": "„{{- title}}“ väljaande allalaadimine ei õnnestunud: {{- err}}",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "„{{- title}}“ on juba imporditud.",
@@ -1234,6 +1247,11 @@
         "session": {
             "title": "Lülita sessioonide salvestamine sisse"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
         "storage": {
             "actions": {
                 "addDirectory": "",
@@ -1289,6 +1307,11 @@
             "description": "Rakenduse kujundus vastab operatsioonisüsteemile.",
             "light": "Hele kujundus",
             "title": "Rakenduse kujundus"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

@@ -50,7 +50,11 @@ declare namespace typed_i18n {
     }
   },
   readonly "update": { readonly "message": string, readonly "title": string },
-  readonly "window": { readonly "showLibrary": string }
+  readonly "window": {
+    readonly "showLibrary": string,
+    readonly "trayHint": string,
+    readonly "trayTooltip": string
+  }
 };
   (_: "app.edit", __?: {}): {
   readonly "copy": string,
@@ -104,8 +108,14 @@ declare namespace typed_i18n {
   (_: "app.update", __?: {}): { readonly "message": string, readonly "title": string };
   (_: "app.update.message", __?: {}): string;
   (_: "app.update.title", __?: {}): string;
-  (_: "app.window", __?: {}): { readonly "showLibrary": string };
+  (_: "app.window", __?: {}): {
+  readonly "showLibrary": string,
+  readonly "trayHint": string,
+  readonly "trayTooltip": string
+};
   (_: "app.window.showLibrary", __?: {}): string;
+  (_: "app.window.trayHint", __?: {}): string;
+  (_: "app.window.trayTooltip", __?: {}): string;
   (_: "catalog", __?: {}): {
   readonly "AddToFavorites": string,
   readonly "about": { readonly "title": string },
@@ -569,7 +579,20 @@ declare namespace typed_i18n {
     readonly "nothing": string,
     readonly "success": string
   },
-  readonly "download": { readonly "error": string },
+  readonly "download": {
+    readonly "cancelled": string,
+    readonly "error": string,
+    readonly "errors": {
+      readonly "hashMismatch": string,
+      readonly "httpGet": string,
+      readonly "invalidFilename": string,
+      readonly "invalidLink": string,
+      readonly "invalidTempDirectory": string,
+      readonly "lengthMismatch": string,
+      readonly "readStreamMissing": string,
+      readonly "tooManyFilenameAttempts": string
+    }
+  },
   readonly "import": {
     readonly "alreadyImport": string,
     readonly "fail": string,
@@ -600,8 +623,40 @@ declare namespace typed_i18n {
   (_: "message.annotations.noBelongTo", __?: {}): string;
   (_: "message.annotations.nothing", __?: {}): string;
   (_: "message.annotations.success", __?: {}): string;
-  (_: "message.download", __?: {}): { readonly "error": string };
+  (_: "message.download", __?: {}): {
+  readonly "cancelled": string,
+  readonly "error": string,
+  readonly "errors": {
+    readonly "hashMismatch": string,
+    readonly "httpGet": string,
+    readonly "invalidFilename": string,
+    readonly "invalidLink": string,
+    readonly "invalidTempDirectory": string,
+    readonly "lengthMismatch": string,
+    readonly "readStreamMissing": string,
+    readonly "tooManyFilenameAttempts": string
+  }
+};
+  (_: "message.download.cancelled", __?: {}): string;
   (_: "message.download.error", __?: {}): string;
+  (_: "message.download.errors", __?: {}): {
+  readonly "hashMismatch": string,
+  readonly "httpGet": string,
+  readonly "invalidFilename": string,
+  readonly "invalidLink": string,
+  readonly "invalidTempDirectory": string,
+  readonly "lengthMismatch": string,
+  readonly "readStreamMissing": string,
+  readonly "tooManyFilenameAttempts": string
+};
+  (_: "message.download.errors.hashMismatch", __?: {}): string;
+  (_: "message.download.errors.httpGet", __?: {}): string;
+  (_: "message.download.errors.invalidFilename", __?: {}): string;
+  (_: "message.download.errors.invalidLink", __?: {}): string;
+  (_: "message.download.errors.invalidTempDirectory", __?: {}): string;
+  (_: "message.download.errors.lengthMismatch", __?: {}): string;
+  (_: "message.download.errors.readStreamMissing", __?: {}): string;
+  (_: "message.download.errors.tooManyFilenameAttempts", __?: {}): string;
   (_: "message.import", __?: {}): {
   readonly "alreadyImport": string,
   readonly "fail": string,
@@ -2783,6 +2838,11 @@ declare namespace typed_i18n {
     readonly "title": string
   },
   readonly "session": { readonly "title": string },
+  readonly "sharedComputer": {
+    readonly "lcpAutoDeleteExpiredPublications": string,
+    readonly "lcpAutoDeleteExpiredPublicationsDescription": string,
+    readonly "title": string
+  },
   readonly "storage": {
     readonly "actions": {
       readonly "addDirectory": string,
@@ -2837,6 +2897,11 @@ declare namespace typed_i18n {
     readonly "dark": string,
     readonly "description": string,
     readonly "light": string,
+    readonly "title": string
+  },
+  readonly "window": {
+    readonly "minimizeLibraryToTray": string,
+    readonly "minimizeLibraryToTrayDescription": string,
     readonly "title": string
   }
 };
@@ -3571,6 +3636,14 @@ declare namespace typed_i18n {
   (_: "settings.screenReaderActivate.title", __?: {}): string;
   (_: "settings.session", __?: {}): { readonly "title": string };
   (_: "settings.session.title", __?: {}): string;
+  (_: "settings.sharedComputer", __?: {}): {
+  readonly "lcpAutoDeleteExpiredPublications": string,
+  readonly "lcpAutoDeleteExpiredPublicationsDescription": string,
+  readonly "title": string
+};
+  (_: "settings.sharedComputer.lcpAutoDeleteExpiredPublications", __?: {}): string;
+  (_: "settings.sharedComputer.lcpAutoDeleteExpiredPublicationsDescription", __?: {}): string;
+  (_: "settings.sharedComputer.title", __?: {}): string;
   (_: "settings.storage", __?: {}): {
   readonly "actions": {
     readonly "addDirectory": string,
@@ -3716,6 +3789,14 @@ declare namespace typed_i18n {
   (_: "settings.theme.description", __?: {}): string;
   (_: "settings.theme.light", __?: {}): string;
   (_: "settings.theme.title", __?: {}): string;
+  (_: "settings.window", __?: {}): {
+  readonly "minimizeLibraryToTray": string,
+  readonly "minimizeLibraryToTrayDescription": string,
+  readonly "title": string
+};
+  (_: "settings.window.minimizeLibraryToTray", __?: {}): string;
+  (_: "settings.window.minimizeLibraryToTrayDescription", __?: {}): string;
+  (_: "settings.window.title", __?: {}): string;
   (_: "tts", __?: {}): {
   readonly "highlight": {
     readonly "mainColor": string,
