@@ -15,6 +15,10 @@ import { cancel, debounce, fork, put, take, call  } from "redux-saga/effects";
 import { diMainGet } from "readium-desktop/main/di";
 import { winClose } from "../reader";
 import { closeProcessLock } from "readium-desktop/main/di";
+import {
+    getBrowserWindowStateSnapshot,
+    persistableWindowBound,
+} from "./browserWindowState";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:win:session:reader";
@@ -45,10 +49,30 @@ function* readerClosureManagement(action: winActions.session.registerReader.TAct
     // cancel moveAndResizeObserver
     yield cancel(moveOrResizeTask);
 
+    yield* persistReaderWindowState(readerWindow, windowIdentifier, publicationIdentifier);
+
     debug("event close requested -> emit unregisterReader and closed");
     // yield put(winActions.reader.closed.build(windowIdentifier, publicationIdentifier));
     yield call(winClose, windowIdentifier, publicationIdentifier);
 
+}
+
+function* persistReaderWindowState(reader: Electron.BrowserWindow, id: string, pubId: string) {
+
+    if (closeProcessLock.isLock) {
+        debug("CLOSE process reader state not persisted");
+        return ;
+    }
+
+    try {
+        const { windowBound, windowMaximized } = getBrowserWindowStateSnapshot(reader);
+        debug("_______1 reader.getNormalBounds()/getBounds()", windowBound, "maximized:", windowMaximized);
+        // winBound = normalizeWinBoundRectangle(winBound);
+        yield put(winActions.session.setBound.build(id, windowBound, windowMaximized));
+        yield call(() => diMainGet("publication-data").writeJsonObj(pubId, "bound", persistableWindowBound(windowBound, windowMaximized)));
+    } catch (e) {
+        debug("set reader bound error", id, e);
+    }
 }
 
 function* readerMoveOrResizeObserver(action: winActions.session.registerReader.TAction) {
@@ -65,31 +89,21 @@ function* readerMoveOrResizeObserver(action: winActions.session.registerReader.T
 
             reader.on("move", handler);
             reader.on("resize", handler);
+            reader.on("maximize", handler);
+            reader.on("unmaximize", handler);
 
             return () => {
                 reader.removeListener("move", handler);
                 reader.removeListener("resize", handler);
+                reader.removeListener("maximize", handler);
+                reader.removeListener("unmaximize", handler);
             };
         },
         buffers.none(), // sliding(0) ?
     );
 
     yield debounce(DEBOUNCE_TIME, channel, function*() {
-
-        if (closeProcessLock.isLock) {
-            debug("CLOSE process reader bound not persisted");
-            return ;
-        }
-
-        try {
-            const winBound = reader.getBounds();
-            debug("_______1 reader.getBounds()", winBound);
-            // winBound = normalizeWinBoundRectangle(winBound);
-            yield put(winActions.session.setBound.build(id, winBound));
-            yield call(() => diMainGet("publication-data").writeJsonObj(pubId, "bound", winBound));
-        } catch (e) {
-            debug("set reader bound error", id, e);
-        }
+        yield* persistReaderWindowState(reader, id, pubId);
     }); 
 }
 

@@ -39,9 +39,11 @@ let libWindow: BrowserWindow = null;
 export function* createLibraryWindow(_action: winActions.library.openRequest.TAction) {
 
     // initial state apply in reducers
-    let windowBound = yield* selectTyped(
-        (state: RootState) => state.win.session.library.windowBound);
+    const libraryWindowState = yield* selectTyped(
+        (state: RootState) => state.win.session.library);
+    let windowBound = libraryWindowState.windowBound;
     windowBound = normalizeWinBoundRectangle(windowBound);
+    const windowMaximized = libraryWindowState.windowMaximized;
 
     libWindow = new BrowserWindow({
         ...windowBound,
@@ -68,7 +70,11 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         contextMenuSetup(wc, wc.id);
     }
 
-    yield put(winActions.session.registerLibrary.build(libWindow, windowBound));
+    yield put(winActions.session.registerLibrary.build(libWindow, windowBound, windowMaximized));
+
+    if (windowMaximized) {
+        libWindow.maximize();
+    }
 
     const readers = yield* selectTyped(
         (state: RootState) => state.win.session.reader,
