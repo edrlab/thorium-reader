@@ -34,3 +34,24 @@ export const persistableWindowBound = (winBound: Rectangle, windowMaximized?: bo
     ...winBound,
     ...(windowMaximized === undefined ? {} : { windowMaximized }),
 });
+
+export const restoreBrowserWindowState = (
+    win: BrowserWindow,
+    { windowBound, windowMaximized }: Partial<IBrowserWindowStateSnapshot>,
+): void => {
+    if (win.isMinimized()) {
+        win.restore();
+    }
+
+    if (windowMaximized === false && win.isMaximized()) {
+        win.unmaximize();
+    }
+
+    if (windowBound) {
+        win.setBounds(windowBound);
+    }
+
+    if (windowMaximized) {
+        win.maximize();
+    }
+};

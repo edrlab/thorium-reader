@@ -32,7 +32,11 @@ import { PublicationDocument } from "readium-desktop/main/db/document/publicatio
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { createReaderWindow } from "./win/browserWindow/createReaderWindow";
 import { assertUUIDv4, uuidv4 } from "readium-desktop/utils/uuid";
-import { extractWindowMaximized, IBrowserWindowStateSnapshot } from "./win/session/browserWindowState";
+import {
+    extractWindowMaximized,
+    IBrowserWindowStateSnapshot,
+    restoreBrowserWindowState,
+} from "./win/session/browserWindowState";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:reader";
@@ -253,18 +257,14 @@ function* readerCLoseRequestFromIdentifier(action: readerActions.closeRequest.TA
     const libWin = yield* callTyped(() => getLibraryWindowFromDi());
     if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed()) {
 
-        const winBound = yield* selectTyped(
-            (state: RootState) => state.win.session.library.windowBound,
+        const libraryWindowState = yield* selectTyped(
+            (state: RootState) => state.win.session.library,
         );
-        debug("state.win.session.library.windowBound", winBound);
+        debug("state.win.session.library", libraryWindowState);
         try {
-            libWin.setBounds(winBound);
+            restoreBrowserWindowState(libWin, libraryWindowState);
         } catch (e) {
-            debug("error libWin.setBounds(winBound)", e);
-        }
-
-        if (libWin.isMinimized()) {
-            libWin.restore();
+            debug("error restoreBrowserWindowState(libWin, libraryWindowState)", e);
         }
 
         libWin.show(); // focuses as well
