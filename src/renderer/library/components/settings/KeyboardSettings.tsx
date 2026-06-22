@@ -12,7 +12,7 @@ import * as stylesInputs from "readium-desktop/renderer/assets/styles/components
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import * as stylesKeys from "readium-desktop/renderer/assets/styles/components/keyboardsShortcuts.scss";
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
-
+import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import { keyboardShortcutsMatch, keyboardShortcutMatches, defaultKeyboardShortcuts, TKeyboardShortcutScopeZone } from "readium-desktop/common/keyboard";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
@@ -97,7 +97,7 @@ export const AdvancedTrigger = () => {
     const [ __ ]= useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
     const dispatch = useDispatch();
 
     const onClickKeyboardShortcutsShow = () => {
@@ -250,7 +250,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
     public render(): React.ReactElement<{}> {
         const { __, locale } = this.props;
 
-        const isRTL = locale === "ar";
+        const isRTL = langStringIsRTL(locale);
 
         const isSearchEmpty = !this.state.searchItem || this.state.searchItem.trim() === "";
         const searchItem = isSearchEmpty ? undefined : trimNormaliseWhitespaceAndCollapse(this.state.searchItem).toLowerCase();
@@ -300,6 +300,18 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             CloseReader: {
                 name: `${__("settings.keyboard.list.CloseReader.name")}`,
                 description: `${__("settings.keyboard.list.CloseReader.description")}`,
+            },
+            AudioSpeedReset: {
+                name: `${__("settings.keyboard.list.AudioSpeedReset.name")}`,
+                description: `${__("settings.keyboard.list.AudioSpeedReset.description")}`,
+            },
+            AudioSpeedDecrease: {
+                name: `${__("settings.keyboard.list.AudioSpeedDecrease.name")}`,
+                description: `${__("settings.keyboard.list.AudioSpeedDecrease.description")}`,
+            },
+            AudioSpeedIncrease: {
+                name: `${__("settings.keyboard.list.AudioSpeedIncrease.name")}`,
+                description: `${__("settings.keyboard.list.AudioSpeedIncrease.description")}`,
             },
             FXLZoomIn: {
                 name: `${__("settings.keyboard.list.FXLZoomIn.name")}`,
@@ -592,7 +604,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                             <p>{__("settings.keyboard.disclaimer")}</p>
                         </div> */}
                     </div>
-                    
+
                         <div>
 
                         <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -625,7 +637,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                         <h3 className={stylesKeys.keyshortElement_title}>{cname}</h3>
                                     {    cleanNames[id].description.length ?
                                         <TooltipTrigger>
-                                            <Button style={{ width: "15px" }} aria-label={cdesc}><SVG ariaHidden svg={InfoIcon} /></Button>
+                                            <Button style={{ width: "15px", height:"15px", marginLeft: "3px" }} aria-label={cdesc}><SVG ariaHidden svg={InfoIcon} /></Button>
                                             <Tooltip dir={isRTL ? "rtl" : "ltr"} style={{border: "1px solid var(--color-text-primary)", maxWidth: "300px", width: "fit-content", zIndex: "1000", backgroundColor: "var(--color-neutral-base)", borderRadius: "6px", padding: "5px", color: "var(--color-text-primary)"}}>
                                                 <OverlayArrow>
                                                 <svg width={8} height={8} viewBox="0 0 8 8">

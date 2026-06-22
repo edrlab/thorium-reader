@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Menú",
         "closeDialog": "Cerrar",
-        "importFile": "Importar publicación",
         "leftSlideButton": "Desplazar lista a la izquierda",
         "mainContent": "Contenido principal",
         "rightSlideButton": "Desplazar lista a la derecha",
@@ -13,14 +12,14 @@
         "documentation": "Documentación de Thorium",
         "howItWorks": "¿Cómo funciona?",
         "informations": "En Francia, muchas bibliotecas públicas ofrecen un catálogo legible por máquina (similar a OPDS pero no idéntico), que permite a los usuarios descargar publicaciones digitales desde su biblioteca personal. La integración de esta tecnología en Thorium Reader te permite descargar un libro electrónico o audiolibro directamente en Thorium Reader para leerlo al instante.\n¿Cómo conectas tu cuenta de la biblioteca pública francesa a Thorium Reader? Es sencillo. Introduce una ciudad francesa (\"París\") o parte del nombre de la biblioteca en el campo de búsqueda y pulsa el botón Buscar. Aparecerá una lista de bibliotecas públicas correspondientes a tu búsqueda. Selecciona una biblioteca y pulsa Añadir. En la lista actualizada de catálogos, selecciona esta biblioteca: se mostrará un formulario de autenticación. Introduce tu nombre de usuario/dirección de correo electrónico y contraseña, y pulsa Iniciar sesión. Ahora podrás ver el contenido de tu biblioteca personal, desde la cual puedes descargar y leer los libros electrónicos y audiolibros que pediste prestados anteriormente.",
-        "noLibraryFound": "Biblioteca no encontrada ({{- name}})"
+        "noLibraryFound": "Biblioteca ({{- name}}) no encontrada"
     },
     "app": {
         "edit": {
             "copy": "Copiar",
             "cut": "Cortar",
             "paste": "Pegar",
-            "print": "",
+            "print": "Imprimir",
             "redo": "Rehacer",
             "selectAll": "Seleccionar todo",
             "title": "Editar",
@@ -46,11 +45,13 @@
             "title": "Actualización de software {{- appName}}."
         },
         "window": {
-            "showLibrary": "Mostrar biblioteca"
+            "showLibrary": "Mostrar biblioteca",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
-        "AddToFavorites": "",
+        "AddToFavorites": "Añadir a favoritos",
         "about": {
             "title": "Acerca de {{appName}}"
         },
@@ -66,10 +67,10 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
-                "publications": "",
-                "screen": "",
-                "title": ""
+                "description": "No hay descripción del perfil",
+                "publications": "Publicaciones de perfil",
+                "screen": "Sin título",
+                "title": "Título del perfil"
             }
         },
         "delete": "Eliminar",
@@ -82,14 +83,15 @@
             "lastAdditions": "Añadidos recientemente"
         },
         "export": "Exportar",
-        "exportAnnotation": "Exportar anotación",
+        "exportAnnotation": "Exportar anotaciones",
         "format": "Formato",
         "importAnnotation": "Importar anotación",
         "lang": "Idioma",
         "lastRead": "Último leído",
-        "login": "",
-        "logout": "",
-        "missing": "",
+        "login": "Iniciar sesión",
+        "logout": "Cerrar sesión",
+        "missing": "Faltan archivos",
+        "missingUnavailableDescription": "Esta publicación no se puede abrir porque sus archivos no se encuentran disponibles en el espacio de almacenamiento. Vuelve a importarla, o ve a Opciones, Almacenamiento, para añadir o cambiar el espacio de almacenamiento adicional.",
         "moreInfo": "Detalles del libro",
         "myBooks": "Mis libros",
         "noPublicationHelpL1": "Desliza una publicación aquí",
@@ -100,12 +102,14 @@
         "opds": {
             "auth": {
                 "cancel": "Cancelar",
-                "external": "",
-                "fallback": "",
+                "external": "Se abrirá la página de inicio de sesión en su navegador web; siga las instrucciones. Una vez que haya iniciado sesión, el navegador web volverá a la aplicación.",
+                "fallback": "Nota: si tienes problemas para iniciar sesión con el navegador web predeterminado, vuelve a intentarlo con el método alternativo integrado en la aplicación.",
                 "login": "Iniciar sesión",
                 "password": "Contraseña",
                 "register": "Registrar",
-                "retry": "",
+                "retry": "Inténtalo de nuevo",
+                "unauthorized": "Sin autorización",
+                "unauthorizedUnsupportedType": "Sin autorización (tipo WWWAuthenticate '{{- type}}' no admitido)",
                 "username": "Nombre de usuario/dirección de correo electrónico"
             },
             "info": {
@@ -127,10 +131,12 @@
                 "state": "Estado"
             }
         },
+        "openFolder": "Abrir carpeta",
         "publisher": "Editor",
         "readBook": "Leer",
         "released": "Publicado en",
-        "removeFromFavorites": "",
+        "removeFromFavorites": "Eliminar de favoritos",
+        "selectTableHeaders": "Seleccione las columnas que desea mostrar",
         "sort": "Ordenar por",
         "tag": "Etiqueta",
         "tags": "Etiquetas",
@@ -140,16 +146,16 @@
         "annotations": {
             "descAuthor": "de {{- author}}",
             "descCreator": "creado por",
-            "descList_many": "{{- count}} la nota o notas de {{- creator}} se asociarán a {{- title}} {{- author}}",
+            "descList_many": "{{- count}} nota(s) de {{- creator}} se asociará(n) a {{- title}} {{- author}}",
             "descList_one": "{{- count}} la nota o notas de {{- creator}} se asociarán a {{- title}} {{- author}}",
-            "descList_other": "{{- count}} la nota o notas de {{- creator}} se asociarán a {{- title}} {{- author}}",
-            "descNewer_many": "{{- count}} las versiones más recientes de estas notas ya están asociadas a la publicación.",
-            "descNewer_one": "{{- count}} las versiones más recientes de estas notas ya están asociadas a la publicación.",
-            "descNewer_other": "{{- count}} las versiones más recientes de estas notas ya están asociadas a la publicación.",
-            "descOlder_many": "{{- count}} las versiones más antiguas de estas notas ya están asociadas a la publicación.",
-            "descOlder_one": "{{- count}} las versiones más antiguas de estas notas ya están asociadas a la publicación.",
-            "descOlder_other": "{{- count}} las versiones más antiguas de estas notas ya están asociadas a la publicación.",
-            "descTitle": "Establecer título de anotación",
+            "descList_other": "{{- count}} notas de {{- creator}} se asociarán a {{- title}} {{- author}}",
+            "descNewer_many": "{{- count}} en conflictos: ciertas notas asociadas a la publicación son más recientes",
+            "descNewer_one": "{{- count}} en conflicto: una nota asociada a la publicación es más reciente",
+            "descNewer_other": "{{- count}} en conflictos: ciertas notas asociadas a la publicación son más recientes",
+            "descOlder_many": "{{- count}} en conflicto(s): las versiones más antiguas de esta(s) nota(s) ya están asociadas a la publicación",
+            "descOlder_one": "{{- count}} en conflicto: las versiones más antiguas de estas notas ya están asociadas a la publicación",
+            "descOlder_other": "{{- count}} en conflictos: las versiones más antiguas de estas notas ya están asociadas a la publicación",
+            "descTitle": "Establecer título de anotación: ",
             "importAll": "Importar todas las notas",
             "importWithoutConflict": "Importar notas sin conflictos",
             "origin": "Publicación de origen: '{{- title}}' {{- author}}",
@@ -158,31 +164,31 @@
         "cancel": "Cancelar",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
-                "state": "",
-                "title": ""
+                "fallbackWelcomeScreen": "No se muestra ninguna pantalla de bienvenida",
+                "state": "Estado: {{- state}}",
+                "title": "Perfil de personalización de aprovisionamiento y activación"
             }
         },
         "deleteAnnotations": "¿Eliminar anotaciones?",
         "deleteAnnotationsText_many": "¿Quieres eliminar {{- count}} anotación/es?",
-        "deleteAnnotationsText_one": "¿Quieres eliminar {{- count}} anotación/es?",
-        "deleteAnnotationsText_other": "¿Quieres eliminar {{- count}} anotación/es?",
-        "deleteBookmarks": "Borrar marcadores",
+        "deleteAnnotationsText_one": "¿Quieres eliminar {{- count}} anotación?",
+        "deleteAnnotationsText_other": "¿Quieres eliminar {{- count}} anotaciones?",
+        "deleteBookmarks": "¿Eliminar marcadores?",
         "deleteBookmarksText_many": "¿Seguro que quieres borrar {{- count}} marcador/es?",
-        "deleteBookmarksText_one": "¿Seguro que quieres borrar {{- count}} marcador/es?",
-        "deleteBookmarksText_other": "¿Seguro que quieres borrar {{- count}} marcador/es?",
+        "deleteBookmarksText_one": "¿Seguro que quieres borrar {{- count}} marcador?",
+        "deleteBookmarksText_other": "¿Seguro que quieres borrar {{- count}} marcadores?",
         "deleteFeed": "¿Seguro que quieres eliminar este catálogo?",
         "deletePublication": "¿Seguro que quieres eliminar esta publicación?",
-        "deletePublicationWithNotes": "",
-        "import": "¿Seguro que quieres importar estos ficheros?",
-        "importError": "Se ha producido un error, comprueba la extensión de tu fichero ({{acceptedExtension}})",
+        "deletePublicationWithNotes": "Atención: esta publicación contiene anotaciones y/o marcadores; ¡estos también se eliminarán! (Si quieres conservarlos, asegúrate de haber guardado las notas antes de eliminar la publicación)",
+        "import": "Confirmar adición :",
+        "importError": "Se ha producido un error, comprueba la extensión de tu archivo ({{acceptedExtension}})",
         "renew": "¿Seguro que quieres renovar la licencia para esta publicación?",
         "return": "¿Seguro que quieres devolver la licencia para esta publicación?",
         "yes": "Sí"
     },
     "error": {
         "errorBox": {
-            "error": "Mensaje de error",
+            "error": "Mensaje de error:",
             "message": "Se ha producido un error en {{- filename}}",
             "title": "Error interno de {{- appName}}"
         }
@@ -202,33 +208,34 @@
         "searchPlaceholder": "Buscar",
         "searchTitle": "Iniciar búsqueda",
         "settings": "Opciones de configuración",
+        "settingsLabel": "Ajustes de la aplicación",
         "viewMode": "Modo de vista"
     },
     "library": {
         "filter": {
-            "addFilters": "",
-            "filterBy": "",
-            "selectOption": ""
+            "addFilters": "Añadir filtros",
+            "filterBy": "Filtrar por",
+            "selectOption": "Seleccionar un elemento"
         },
         "lcp": {
-            "hidePassphrase": "",
-            "hint": "Pista: ",
+            "hidePassphrase": "Ocultar contraseña",
+            "hint": "Pista :",
             "open": "Abrir",
-            "password": "Contraseña",
+            "password": "Santo y seña",
             "sentence": "Esta publicación requiere una contraseña LCP para abrirse: ",
-            "showPassphrase": "",
+            "showPassphrase": "Muestra la contraseña",
             "urlHint": "¿Olvidaste tu contraseña? Encuentra ayuda aquí",
             "whatIsLcp?": "¿Qué es LCP?",
             "whatIsLcpInfoDetails": "LCP significa 'Licensed Content Protection' (\"protección de contenido con licencia\").",
             "whatIsLcpInfoDetailsLink": "Para más información, haz clic en este enlace al sitio web de EDRLab."
         },
         "sorting": {
-            "addSorting": "",
-            "author": "",
-            "language": "",
-            "readingState": "",
-            "sortBy": "",
-            "title": ""
+            "addSorting": "Añadir ordenación",
+            "author": "Autor",
+            "language": "Idioma",
+            "readingState": "Estado de lectura",
+            "sortBy": "Ordenar por: ",
+            "title": "Título"
         }
     },
     "message": {
@@ -241,7 +248,18 @@
             "success": "¡Correcto!"
         },
         "download": {
-            "error": "La descarga de {{- title}} ha fallado: [{{- err}}]"
+            "cancelled": "Descarga cancelada.",
+            "error": "La descarga de {{- title}} ha fallado: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "Falló la comprobación de integridad para el archivo descargado: hash SHA-256 esperado {{- expected}}, obtenido {{- actual}}.",
+                "httpGet": "\"Falló la descarga HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "invalidFilename": "El nombre del archivo temporal de descarga no es válido.",
+                "invalidLink": "El enlace de descarga no es válido.",
+                "invalidTempDirectory": "El directorio temporal de descarga no es válido.",
+                "lengthMismatch": "Falló la comprobación de integridad para el archivo descargado: esperado {{- expected}} bytes, obtenido {{- actual}} bytes.",
+                "readStreamMissing": "La transmisión para la descarga no está disponible.",
+                "tooManyFilenameAttempts": "No se puede crear un único nombre para el archivo temporal de descarga: {{- path}}"
+            }
         },
         "import": {
             "alreadyImport": "{{- title}} ya estaba importado",
@@ -249,9 +267,15 @@
             "success": "La importación de {{- title}} ha finalizado."
         },
         "open": {
-            "error": "No se puede abrir la publicación: {{- err}}"
+            "error": "No se puede abrir la publicación: {{- err}}",
+            "folderNotFound": "No se encuentra el directorio de esta publicación. Vuelve a importarla, o configura el almacenamiento adicional en Opciones > Almacenamiento."
         },
-        "wipeData": ""
+        "storage": {
+            "removed": "Directorio de la publicación eliminado.",
+            "updateFailed": "Fallo al actualizar el directorio de la publicación: {{- message}}",
+            "updated": "Directorio de la publicación actualizado."
+        },
+        "wipeData": "Se han borrado los datos de inicio de sesión"
     },
     "opds": {
         "addForm": {
@@ -280,15 +304,15 @@
             "goSubBook": "Suscribirse"
         },
         "network": {
-            "error": "No se puede acceder al catálogo OPDS",
+            "error": "Se ha producido un error",
             "noInternet": "No hay internet",
             "noInternetMessage": "Intenta comprobar el cable de red, módem, router o wifi",
-            "reject": "Lo sentimos, se ha producido un error inesperado al intentar procesar el catálogo OPDS",
+            "reject": "Lo sentimos, se produjo un error al intentar procesar el flujo OPDS.",
             "timeout": "Finalizó el tiempo de espera de la red; por favor, vuelve a intentarlo más tarde"
         },
         "next": "Siguiente",
         "previous": "Anterior",
-        "resumeBrowsing": "",
+        "resumeBrowsing": "Retomar el recorrido",
         "shelf": "Estante",
         "updateForm": {
             "name": "Nombre:",
@@ -408,11 +432,11 @@
             },
             "conformance-details-wcag-2-1": {
                 "compact": "WCAG 2.1",
-                "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.1"
+                "descriptive": "Pautas de Accesibilidad al Contenido Web (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
                 "compact": "WCAG 2.2",
-                "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.2"
+                "descriptive": "Pautas de Accesibilidad al Contenido Web (WCAG) 2.2"
             },
             "conformance-no": {
                 "compact": "No hay información disponible",
@@ -566,10 +590,6 @@
                 "compact": "Clips de audio pregrabados",
                 "descriptive": "En el contenido se integran clips de audio pregrabados"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "No hay información disponible sobre audio pregrabado",
-                "descriptive": "No hay información disponible sobre audio pregrabado"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "Solo audio pregrabado",
                 "descriptive": "Audiolibro sin texto alternativo"
@@ -586,13 +606,17 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "No hay información disponible sobre la posibilidad de modificar el aspecto visual",
                 "descriptive": "No hay información disponible sobre la posibilidad de modificar el aspecto visual"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "La apariencia no se puede modificar",
+                "descriptive": "El diseño del texto y de la página no se pueden modificar ya que la experiencia de lectura es similar a la de una versión impresa, pero los sistemas de lectura aún pueden ofrecer opciones de zoom"
             }
         }
     },
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": "TTS y lector de pantalla amigables"
+                "textual": "Texto e imágenes disponibles en voz sintetizada y braille."
             },
             "accessibilityFeature": {
                 "alternativeText": "Contiene texto alternativo",
@@ -641,6 +665,7 @@
         "expiredLcp": "Este libro no se puede leer porque la licencia LCP ha expirado.",
         "incorrectPassphrase": "No hay contraseñas almacenadas para esta publicación o la contraseña es incorrecta",
         "lcpEnd": "Fin",
+        "lcpNotSupported": "Aviso: esta es una versión de desarrollo de Thorium Desktop reader que no admite licencias LCP completas, y solo admite el descifrado de LCP con «perfil básico» sin validación de certificado.",
         "lcpRightsCopy": "Caracteres copiados",
         "lcpRightsPrint": "Páginas impresas",
         "lcpStart": "Inicio",
@@ -678,6 +703,11 @@
             },
             "annotationsOptions": "Opciones",
             "date": "Fecha de modificación",
+            "error": {
+                "pdf": {
+                    "validationSelection": "No se puede crear la anotación PDF desde esta selección."
+                }
+            },
             "export": "Exportar notas",
             "filter": {
                 "all": "Todas",
@@ -716,19 +746,19 @@
             "unmute": "dejar de silenciar"
         },
         "dock": {
-            "dockDefault": "",
-            "dockLeft": "",
-            "dockRight": ""
+            "dockDefault": "Mostrar el panel como una ventana emergente",
+            "dockLeft": "Fijar el panel a la izquierda",
+            "dockRight": "Fijar el panel a la derecha"
         },
         "fxl": {
             "fit": "Ajustar"
         },
         "goToContent": "Ir al contenido",
         "imgViewer": {
-            "title": "",
-            "zoomIn": "",
-            "zoomOut": "",
-            "zoomReset": ""
+            "title": "Visor de imágenes",
+            "zoomIn": "Acercar",
+            "zoomOut": "Alejar",
+            "zoomReset": "Restablecer la visualización original"
         },
         "marks": {
             "annotations": "Anotaciones",
@@ -737,7 +767,7 @@
             "edit": "Editar",
             "goTo": "ir a página",
             "landmarks": "Puntos de referencia",
-            "saveMark": "Guardar marcador",
+            "saveMark": "Guardar",
             "search": "Buscar",
             "searchResult": "Buscar [{{- searchText}}]",
             "toc": "Tabla de contenido"
@@ -758,38 +788,42 @@
             "skipDescription": "Saltar/ignorar contenido auxiliar como saltos de página, notas al pie/notas finales, etc.",
             "speed": "Velocidad de reproducción para lectura en voz alta",
             "stop": "Detener lectura en voz alta",
-            "title": "Lectura en voz alta"
+            "title": "Lectura en voz alta",
+            "useTTSHighlightsForMO": "Resaltado personalizado",
+            "useTTSHighlightsForMODescription": "Deshabilitar estilos de editor"
         },
         "navigation": {
             "ZenModeExit": "Salir de modo Zen",
             "ZenModeTitle": "Modo Zen",
-            "annotationTitle": "anotación",
+            "annotationTitle": "Anotación",
             "backHomeTitle": "Volver a la biblioteca",
             "bookmarkTitle": "Marcador",
             "currentPage": "Página actual: {{- current}}",
             "currentPageTotal": "Página actual: {{- current}}/{{- total}}",
-            "detachWindowTitle": "mostrar ventana de biblioteca",
+            "detachWindowTitle": "Mostrar ventana de biblioteca",
             "goTo": "Ir a",
             "goToError": "Este salto de página no existe",
             "goToPlaceHolder": "Introduce un número de página",
             "goToTitle": "Ir a página",
-            "history": "",
-            "historyNext": "Avanzar",
-            "historyPrevious": "Retroceder",
-            "infoTitle": "Información",
-            "magnifyingGlassButton": "buscar en la publicación",
-            "openTableOfContentsTitle": "navegación",
+            "history": "Historial",
+            "historyNext": "Avanzar en el historial",
+            "historyPrevious": "Retroceder en el historial",
+            "infoTitle": "Informaciones",
+            "magnifyingGlassButton": "Buscar en la publicación",
+            "openTableOfContentsTitle": "Navegación",
             "page": "Página",
             "pdfscalemode": "Ajuste o ancho de página",
-            "print": "",
-            "printDisabled": "",
-            "screenNext": "",
-            "screenPrevious": "",
-            "settingsTitle": "Opciones de configuración"
+            "print": "Imprimir",
+            "printDisabled": "No se permite imprimir",
+            "screenNext": "Adelante",
+            "screenPrevious": "Atrás",
+            "settingsTitle": "Ajustes de lectura"
         },
         "notes": {
             "colors": {
                 "cyan": "Cian",
+                "darkorange": "Naranja oscuro",
+                "darkyellow": "Amarillo oscuro",
                 "green": "Verde",
                 "orange": "Naranja",
                 "purple": "Púrpura",
@@ -799,9 +833,9 @@
         },
         "picker": {
             "search": {
-                "founds_many": "{{- count}} encontrado/s",
-                "founds_one": "{{- count}} encontrado/s",
-                "founds_other": "{{- count}} encontrado/s",
+                "founds_many": "{{- count}} encontrado(s)",
+                "founds_one": "{{- count}} encontrado",
+                "founds_other": "{{- count}} encontrados",
                 "input": "texto de búsqueda",
                 "next": "Siguiente",
                 "notFound": "no hay coincidencias",
@@ -812,22 +846,22 @@
             "searchTitle": "Buscar:"
         },
         "print": {
-            "descriptionLcpCount": "",
-            "descriptionLcpPrintable": "",
-            "howTo": "",
-            "lcpInfo": "",
-            "noPagesLcpLimitReached": "",
-            "noPrintablePages": "",
-            "pageHelpInfo": "",
-            "pageHelpInfo1": "",
-            "pageHelpInfo2": "",
-            "pageHelpInfo3": "",
-            "pageHelpInfo4": "",
-            "pages": "",
-            "preview": "",
-            "print": "",
-            "printablePages": "",
-            "title": ""
+            "descriptionLcpCount": "Número de páginas restantes: {{- count}}",
+            "descriptionLcpPrintable": "Páginas impresas: {{- printable}} ({{- count}})",
+            "howTo": "Cómo seleccionar un intervalo de páginas para imprimir",
+            "lcpInfo": "El número de páginas que puede imprimir de esta publicación está limitado a {{- count}}. Seleccione aquí las páginas que desee.",
+            "noPagesLcpLimitReached": "Ha alcanzado el límite permitido por la licencia LCP",
+            "noPrintablePages": "No hay páginas imprimibles",
+            "pageHelpInfo": "Selector de página:",
+            "pageHelpInfo1": "Introduce un número de página para hacer referencia a una página concreta (por ejemplo, «6»)",
+            "pageHelpInfo2": "Introduzca dos números de página separados por un guión para hacer referencia a un intervalo de páginas contiguas (por ejemplo, «6-13»)",
+            "pageHelpInfo3": "Utilice el punto y coma para separar varias páginas o rangos de páginas (por ejemplo, «5;14-20;37»)",
+            "pageHelpInfo4": "Omita la primera o la última página de un intervalo para hacer referencia a la primera o la última página de la publicación (por ejemplo, «-16» equivale a «1-16», y «34-» equivale a «34-100», suponiendo que el libro tenga un total de 100 páginas).",
+            "pages": "Páginas",
+            "preview": "Vista previa",
+            "print": "Imprimir",
+            "printablePages": "Páginas imprimibles (total):",
+            "title": "Selección de páginas imprimibles"
         },
         "settings": {
             "column": {
@@ -838,6 +872,7 @@
             },
             "customFontSelected": "Has elegido una fuente personalizada",
             "customizeReader": "Personalizar el estilo del texto",
+            "defaultValue": "Valor predeterminado",
             "disabled": "desactivado",
             "display": "Visualización",
             "disposition": {
@@ -845,14 +880,16 @@
             },
             "font": "Fuente",
             "fontSize": "Tamaño de fuente",
+            "increaseFontSize": "Aumentar el tamaño del texto",
             "infoCustomFont": "Selecciona una fuente personalizada del sistema operativo escribiendo su nombre",
             "justification": "Alineación",
             "justify": "Justificar",
             "letterSpacing": "Espaciado de letras",
             "lineSpacing": "Interlineado",
             "margin": "Margen",
-            "mathjax": "",
-            "noFootnotes": "Desactivar notas al pie",
+            "mathjax": "Habilitar MathJax",
+            "mathjaxDescription": "MathJax",
+            "noFootnotes": "Desactivar notas al pie emergentes",
             "noRTLFlip": "Deshabilitar la interfaz de usuario de derecha a izquierda",
             "noRuby": "Ocultar Ruby japonés",
             "noTemporaryNavTargetOutline": "Desactivar los indicadores visuales de navegación",
@@ -882,10 +919,11 @@
                 "title": "Establecer opciones predeterminadas"
             },
             "preview": "Previsualizar",
+            "reduceFontSize": "Reducir el tamaño del texto",
             "reduceMotion": "Disminuir movimiento",
             "scrolled": "Desplazable",
             "spacing": "Espaciado",
-            "spreadModeEven": "",
+            "spreadModeEven": "Las páginas se distribuyen «pares» (el valor predeterminado es «impares»)",
             "text": "Texto",
             "theme": {
                 "name": {
@@ -911,7 +949,7 @@
         },
         "tts": {
             "activate": "Activar texto a voz (TTS)",
-            "language": "Idioma",
+            "language": "Idioma de la voz sintética",
             "next": "Siguiente (Texto a voz)",
             "options": "Opciones de texto a voz (TTS)",
             "pause": "Pausar texto a voz",
@@ -941,237 +979,249 @@
         "keyboard": {
             "advancedMenu": "Menú",
             "cancel": "Cancelar",
-            "disclaimer": "Los atajos se definieron a partir de la distribución del teclado QWERTY.",
+            "disclaimer": "Los predeterminados de la aplicación se diseñó en función de la ubicación física de las teclas en un teclado QWERTY.",
             "editUserJson": "Editar archivo de usuario...",
-            "exportToHTML": "",
+            "exportToHTML": "Exportar a HTML",
             "keyboardShortcuts": "Atajos de teclado",
             "list": {
                 "AddBookmarkWithLabel": {
-                    "description": "",
-                    "name": ""
+                    "description": "Abre el cuadro de diálogo de creación de marcadores y edita el texto (nota), el color y la etiqueta",
+                    "name": "Crear marcador con etiqueta"
                 },
                 "AnnotationsCreate": {
-                    "description": "",
-                    "name": ""
+                    "description": "Cuando se seleccione un texto, se marcará como anotación y se abrirá el cuadro de diálogo de anotación para permitir añadir texto adicional y seleccionar un color y un tipo de trazo",
+                    "name": "Crear resaltado"
                 },
                 "AnnotationsCreateQuick": {
-                    "description": "",
-                    "name": ""
+                    "description": "Crea rápidamente un resaltado para el texto seleccionado, utilizando el último color y tipo de resaltado utilizados (la nota y la etiqueta quedarán vacías)",
+                    "name": "Crear resaltado rápido"
                 },
                 "AnnotationsToggleMargin": {
-                    "description": "",
-                    "name": ""
+                    "description": "Alternar los indicadores visuales de texto resaltado y marcadores, ya sea en el margen del documento o en el texto",
+                    "name": "Alternar entre los indicadores visuales"
                 },
                 "AudioNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "Pasa al siguiente fragmento de audio de la narración (superposiciones multimedia EPUB3, síntesis de voz o audiolibro pregrabado)",
+                    "name": "Siguiente fragmento de audio"
                 },
                 "AudioNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Pasa al siguiente fragmento de audio de la narración (superposiciones multimedia EPUB3, lectura en voz alta con la función «Texto a voz» o audiolibro pregrabado). Esto omite cualquier estructura de la que se pueda salir en ese momento",
+                    "name": "Siguiente fragmento de audio (alternativo)"
                 },
                 "AudioPlayPause": {
-                    "description": "",
-                    "name": ""
+                    "description": "Activar/desactivar la reproducción o pausa de la narración actual (superposiciones multimedia EPUB3, lectura en voz alta con la función «Texto a voz» o audiolibro pregrabado)",
+                    "name": "Reproducir/Pausar audio"
                 },
                 "AudioPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "Volver al segmento de audio anterior de la narración (superposiciones multimedia EPUB3, lectura en voz alta con la función «Texto a voz» o audiolibro pregrabado)",
+                    "name": "Segmento de audio anterior"
                 },
                 "AudioPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Volver al segmento de audio anterior de la narración (superposiciones multimedia EPUB3, lectura en voz alta con la función «Texto a voz» o audiolibro pregrabado). Esto omite cualquier estructura de la que se pueda salir en ese momento",
+                    "name": "Segmento de audio anterior (alternativo)"
+                },
+                "AudioSpeedDecrease": {
+                    "description": "Disminuir velocidad de reproducción de medios integrados en EPUB3 o de lectura en voz alta",
+                    "name": "Disminuir velocidad de audio"
+                },
+                "AudioSpeedIncrease": {
+                    "description": "Aumentar velocidad de reproducción de medios integrados en EPUB3 o de lectura en voz alta",
+                    "name": "Aumentar velocidad de audio"
+                },
+                "AudioSpeedReset": {
+                    "description": "Restablecer velocidad de reproducción de medios integrados en EPUB3 o de lectura en voz alta",
+                    "name": "Restablecer velocidad de audio"
                 },
                 "AudioStop": {
-                    "description": "",
-                    "name": ""
+                    "description": "Detener audio (superposiciones multimedia EPUB3, lectura en voz alta con la función «Texto a voz» o audiolibro pregrabado)",
+                    "name": "Detener el audio"
                 },
                 "CloseReader": {
-                    "description": "",
-                    "name": ""
+                    "description": "Cierra la ventana de lectura y vuelve a la biblioteca",
+                    "name": "Cierra la ventana"
                 },
                 "FXLZoomIn": {
-                    "description": "",
-                    "name": ""
+                    "description": "Amplía una página individual o una doble página con diseño fijo.",
+                    "name": "Acercar"
                 },
                 "FXLZoomOut": {
-                    "description": "",
-                    "name": ""
+                    "description": "Alejar",
+                    "name": "Alejar"
                 },
                 "FXLZoomReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Restablecer la visualización original",
+                    "name": "Restablecer la visualización original"
                 },
                 "FocusMain": {
-                    "description": "",
-                    "name": ""
+                    "description": "Desplaza el foco del teclado al elemento de referencia «principal» de la interfaz gráfica de usuario. En la ventana del lector, esto te lleva al contenido de la publicación",
+                    "name": "Mover a contenido principal"
                 },
                 "FocusMainDeep": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, esto desplaza el foco del teclado al contenido de la publicación utilizando una técnica más fiable para los lectores de pantalla",
+                    "name": "Mover a contenido principal"
                 },
                 "FocusReaderGotoPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Desplaza el foco del teclado a la sección «Ir a la página» del panel de navegación de la ventana del lector",
+                    "name": "Mover a «Ir a la página»"
                 },
                 "FocusReaderNavigation": {
-                    "description": "",
-                    "name": ""
+                    "description": "Desplaza el foco del teclado al panel de navegación de la ventana del lector",
+                    "name": "Mover al panel de navegación"
                 },
                 "FocusReaderNavigationAnnotations": {
-                    "description": "",
-                    "name": ""
+                    "description": "Desplaza el foco del teclado a la sección «anotaciones» del panel de navegación de la ventana del lector",
+                    "name": "Mover a « resaltados»"
                 },
                 "FocusReaderNavigationBookmarks": {
-                    "description": "",
-                    "name": ""
+                    "description": "Desplaza el foco del teclado a la sección «Marcadores» del panel de navegación de la ventana del lector",
+                    "name": "Mover a «Marcadores»"
                 },
                 "FocusReaderNavigationSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "Desplaza el foco del teclado a la sección «Buscar» del panel de navegación de la ventana del lector",
+                    "name": "Mover a «Buscar»"
                 },
                 "FocusReaderNavigationTOC": {
-                    "description": "",
-                    "name": ""
+                    "description": "Desplaza el foco del teclado a la sección «Índice» del panel de navegación de la ventana del lector",
+                    "name": "Mover a «tabla de contenidos»"
                 },
                 "FocusReaderSettings": {
-                    "description": "",
-                    "name": ""
+                    "description": "Desplaza el foco del teclado al panel de configuración de la ventana del lector (preferencias de visualización, etc.)",
+                    "name": "Mover a Configuración de lectura"
                 },
                 "FocusSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "Mueve el cursor del teclado al campo de búsqueda de texto de la ventana del reproductor; en la ventana de la biblioteca, esto realiza una búsqueda en la biblioteca o en el catálogo activo",
+                    "name": "Búsqueda"
                 },
                 "FocusToolbar": {
-                    "description": "",
-                    "name": ""
+                    "description": "Desplaza el foco del teclado al área de referencia de la interfaz gráfica de usuario situada justo antes del «enlace de salto» (que, a su vez, desplaza el foco al área de contenido principal de la biblioteca o la ventana del lector)",
+                    "name": "Mover a la barra de herramientas"
                 },
                 "NavigateNextChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, pasa al siguiente documento según el orden de lectura de la publicación (por ejemplo, el capítulo que aparece en el lomo del libro). Ten en cuenta que existe un atajo de teclado alternativo a este predeterminado",
+                    "name": "Ir al siguiente capítulo"
                 },
                 "NavigateNextChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, pasa al siguiente documento según el orden de lectura de la publicación (por ejemplo, el siguiente capítulo del libro). Este es un atajo de teclado alternativo al predeterminado",
+                    "name": "Ir al siguiente capítulo (alternativa)"
                 },
                 "NavigateNextHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, avanza un paso en el historial de navegación",
+                    "name": "Ir a la siguiente entrada del historial"
                 },
                 "NavigateNextLibraryPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana de la biblioteca, muestra la página siguiente de una lista paginada de publicaciones. Ten en cuenta que existe un atajo de teclado alternativo al predeterminado",
+                    "name": "Ve a la siguiente estantería de la biblioteca"
                 },
                 "NavigateNextLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana de la biblioteca, muestra la página siguiente de una lista paginada de publicaciones. Este es un atajo de teclado alternativo al predeterminado",
+                    "name": "Ve a la siguiente estantería de la biblioteca (alternativa)"
                 },
                 "NavigateNextOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana de la biblioteca correspondiente a los catálogos, haz clic en el enlace de la página siguiente. Ten en cuenta que existe un atajo de teclado alternativo al predeterminado",
+                    "name": "Ir a la página siguiente del catálogo"
                 },
                 "NavigateNextOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana de la biblioteca correspondiente a catálogos/fuentes OPDS, haz clic en el siguiente enlace de paginación. Este es un atajo de teclado alternativo al predeterminado",
+                    "name": "Ir a la página siguiente del catálogo (Alternativa)"
                 },
                 "NavigateNextPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, pasa a la siguiente «página» de la publicación. Ten en cuenta que existe un atajo de teclado alternativo al predeterminado",
+                    "name": "Ir a la página siguiente"
                 },
                 "NavigateNextPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, pasa a la siguiente «página» de la publicación. Este es un atajo de teclado alternativo al predeterminado",
+                    "name": "Ir a la página siguiente (alternativa)"
                 },
                 "NavigatePreviousChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, ve al documento anterior según el orden de lectura de la publicación (por ejemplo, el capítulo siguiente en el índice del libro). Ten en cuenta que existe un atajo de teclado alternativo a este predeterminado",
+                    "name": "Ir al capítulo anterior"
                 },
                 "NavigatePreviousChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, ve al documento anterior según el orden de lectura de la publicación (por ejemplo, el capítulo siguiente en el índice del libro). Este es un atajo de teclado alternativo al predeterminado",
+                    "name": "Ir al capítulo anterior (Alternativa)"
                 },
                 "NavigatePreviousHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, retrocede un paso en el historial de navegación",
+                    "name": "Ir al historial anterior"
                 },
                 "NavigatePreviousLibraryPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana de la biblioteca, muestra la página anterior de una lista paginada de publicaciones. Ten en cuenta que existe un atajo de teclado alternativo al predeterminado",
+                    "name": "Ve a la estantería anterior de la biblioteca"
                 },
                 "NavigatePreviousLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana de la biblioteca, muestra la página anterior de una lista paginada de publicaciones. Este es un atajo de teclado alternativo al predeterminado",
+                    "name": "Ve a la estantería anterior de la biblioteca (Alternativa)"
                 },
                 "NavigatePreviousOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana de la biblioteca correspondiente a catálogos y fuentes OPDS, sigue el enlace de paginación anterior. Ten en cuenta que existe un atajo de teclado alternativo al predeterminado",
+                    "name": "Ir a la página anterior del catálogo"
                 },
                 "NavigatePreviousOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana de la biblioteca correspondiente a los catálogos y fuentes OPDS, sigue el enlace de paginación anterior. Este es un atajo de teclado alternativo al predeterminado",
+                    "name": "Ir a la página anterior del catálogo (Alternativa)"
                 },
                 "NavigatePreviousPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, pasa a la «página» anterior de la publicación. Ten en cuenta que existe un atajo de teclado alternativo a este predeterminado",
+                    "name": "Ir a la página anterior"
                 },
                 "NavigatePreviousPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, pasa a la «página» anterior de la publicación. Este es un atajo de teclado alternativo al predeterminado",
+                    "name": "Ir a la página anterior (Alternativa)"
                 },
                 "NavigateToBegin": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, ve al principio de la publicación",
+                    "name": "Ir al inicio"
                 },
                 "NavigateToEnd": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana de lectura, ve al final de la publicación",
+                    "name": "Ir al final"
                 },
                 "OpenReaderInfo": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana de lectura abre el cuadro de diálogo de información de la publicación",
+                    "name": "Información de la publicación"
                 },
                 "OpenReaderInfoWhereAmI": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, abre el cuadro de diálogo emergente que muestra información sobre la publicación y desplaza el cursor del teclado hasta la sección que indica el contexto de la posición de lectura actual",
+                    "name": "Ubicación de lectura (Información de la publicación)"
                 },
                 "Print": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, abre el cuadro de diálogo de impresión",
+                    "name": "Imprimir"
                 },
                 "SearchNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la herramienta de búsqueda de la ventana del lector, pasa al siguiente resultado de búsqueda. Ten en cuenta que existe un atajo de teclado alternativo a este predeterminado",
+                    "name": "Siguiente resultado de la búsqueda"
                 },
                 "SearchNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la herramienta de búsqueda de la ventana de lectura, pasa al siguiente resultado de búsqueda. Este es un atajo de teclado alternativo al predeterminado",
+                    "name": "Siguiente resultado de la búsqueda (alternativa)"
                 },
                 "SearchPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la herramienta de búsqueda de la ventana del lector, ve al resultado de búsqueda anterior. Ten en cuenta que existe un atajo de teclado alternativo a este predeterminado",
+                    "name": "Anterior resultado de la búsqueda"
                 },
                 "SearchPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la herramienta de búsqueda de la ventana del lector, ve al resultado anterior. Este es un atajo de teclado alternativo al predeterminado",
+                    "name": "Anterior resultado de la búsqueda (aletrnativa)"
                 },
                 "SpeakReaderInfoWhereAmI": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, describe el contexto de la posición actual de lectura utilizando texto de voz compatible con los lectores de pantalla",
+                    "name": "Ubicación de lectura"
                 },
                 "ToggleBookmark": {
-                    "description": "",
-                    "name": ""
+                    "description": "Añade un nuevo marcador o elimina uno ya existente si está seleccionado actualmente",
+                    "name": "Mostrar/ocultar marcadores"
                 },
                 "ToggleReaderFullscreen": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, activa el modo de pantalla completa del sistema o vuelve al modo de ventana normal. Ten en cuenta que esto es diferente del «modo zen», que simplifica la interfaz de usuario",
+                    "name": "Pantalla completa"
                 }
             },
             "loadUserJson": "Cargar desde archivo de usuario",
-            "noShortcutFound": "",
+            "noShortcutFound": "No se ha encontrado ningún acceso directo con esta etiqueta",
             "resetDefaults": "Restablecer valores predeterminados",
             "save": "Guardar",
-            "searchPlaceholder": ""
+            "searchPlaceholder": "Escribe para buscar un atajo"
         },
         "language": {
             "languageChoice": "Selección de idioma"
@@ -1182,32 +1232,80 @@
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "Aplicar plantilla predeterminada",
-                "enableCheckbox": "Habilitar/deshabilitar anulación de plantilla mustache cuando se exporten notas HTML",
-                "overrideHTMLTemplate": "Anular la plantilla mustache cuando se exporte la nota a HTML"
+                "applyDefaultTemplate": "Cargar la plantilla predeterminada",
+                "enableCheckbox": "Personalizar las plantillas HTML",
+                "overrideHTMLTemplate": "Exportación de notas (anotaciones y marcadores)"
             }
         },
         "profiles": {
-            "info": "",
+            "info": "Cambia de perfil para personalizar la aplicación con la imagen de marca y los colores de un proveedor asociado. Cada perfil ofrece una experiencia a medida.",
             "thorium": {
-                "description": "",
-                "title": ""
+                "description": "El perfil Thorium Vanilla es el original, diseñado por EDRLab.",
+                "title": "Thorium vanilla"
             },
-            "version": ""
+            "version": "Versión: {{- version}}"
         },
         "screenReaderActivate": {
-            "help": "",
-            "message": "",
-            "title": ""
+            "help": "Cuando la aplicación detecta la presencia de tecnología de apoyo, la interfaz de usuario funciona mejor con los lectores de pantalla",
+            "message": "Mejora de la compatibilidad con lectores de pantalla",
+            "title": "Mejorar la experiencia con los lectores de pantalla"
         },
         "session": {
             "title": "Guardar sesión"
+        },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "Eliminar automáticamente publicaciones caducadas y datos de usuario asociados",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Garantiza que los préstamos vencidos se borren automáticamente (incluyendo anotaciones personales, marcadores de lectura, etc.). Esto es útil en entornos con «ordenadores compartidos», como bibliotecas o espacios universitarios.",
+            "title": "Modo de ordenador compartido"
+        },
+        "storage": {
+            "actions": {
+                "addDirectory": "Seleccionar directorio de almacenamiento adicional",
+                "changeDirectory": "Actualizar directorio de almacenamiento adicional",
+                "removeStorageDirectory": "Eliminar directorio de almacenamiento adicional"
+            },
+            "beta": {
+                "availability": "Esta función solo se admite en versiones recientes de Thorium; los libros de carpetas externas no aparecerán en Thorium 3.4 o anterior.",
+                "integrity": "Debes mantener este directorio seguro y accesible. Evita eliminarlo, restringir el acceso a él, o usar espacios de almacenamiento lentos o inestables tales como las unidades de red.",
+                "migration": "Thorium no transfiere tus libros automáticamente: si actualizas el espacio de almacenamiento adicional, debes trasladar manualmente tus publicaciones a la nueva ubicación. Si lo eliminas, debes trasladar manualmente tus publicaciones al espacio de almacenamiento original.",
+                "summary": "Saber más sobre esta función, actualmente en beta",
+                "warning": "No modifiques manualmente los ficheros de esta carpeta, ya que esto podría ocasionar problemas con tus libros o con el lector. Piensa en esta carpeta como una biblioteca segura gestionada por Thorium."
+            },
+            "configuration": {
+                "chooseFolderDescription": "Elegir el directorio que Thorium debe utilizar como espacio de almacenamiento adicional.",
+                "configuredDescription": "El espacio de almacenamiento adicional está configurado y listo para almacenar las nuevas publicaciones.",
+                "notConfiguredDescription": "Las publicaciones importadas a Thorium Reader se almacenarán en el directorio seleccionado. Las publicaciones importadas previamente permanecerán en el sistema de almacenamiento original."
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "Continuar",
+                    "description": "Actualmente esta función está en beta. ¿Quieres continuar y configurar un espacio de almacenamiento adicional seleccionando un directorio?",
+                    "title": "Seleccionar un espacio de almacenamiento adicional"
+                },
+                "edit": {
+                    "confirm": "Editar directorio",
+                    "description": "Actualizar el espacio de almacenamiento adicional requiere precaución. Thorium no trasladará las publicaciones existentes por ti; tendrás que hacerlo manualmente. ¿Quieres continuar?",
+                    "title": "Actualizar el espacio de almacenamiento adicional"
+                },
+                "remove": {
+                    "confirm": "Eliminar directorio",
+                    "description": "Eliminar el espacio de almacenamiento adicional requiere precaución. Thorium no trasladará las publicaciones existentes por ti; tendrás que hacerlo manualmente. ¿Quieres continuar?",
+                    "title": "Eliminar espacio de almacenamiento adicional"
+                }
+            },
+            "locations": {
+                "defaultDescription": "Las publicaciones gestionadas por la aplicación, por defecto, se almacenan en ",
+                "defaultInternal": "Espacio de almacenamiento del sistema",
+                "externalStorage": "Espacio de almacenamiento externo",
+                "title": "Ubicaciones"
+            }
         },
         "tabs": {
             "appearance": "Aspecto visual",
             "general": "General",
             "keyboardShortcuts": "Atajos de teclado",
-            "profiles": ""
+            "profiles": "Perfiles",
+            "storage": "Espacio de almacenamiento"
         },
         "theme": {
             "auto": "Automático",
@@ -1215,6 +1313,11 @@
             "description": "El diseño de la aplicación coincide con el sistema operativo.",
             "light": "Claro",
             "title": "Diseño de la aplicación"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {
@@ -1242,26 +1345,25 @@
     },
     "wizard": {
         "buttons": {
-            "discover": "Descubre las novedades",
-            "goToBooks": "Ir a mis libros",
-            "next": "Siguiente"
+            "discover": "Descubre Thorium Desktop",
+            "goToBooks": "Ir a mis libros"
         },
         "description": {
-            "home": "¡Thorium se ve diferente! Descubramos las novedades...",
-            "resources": ""
+            "home": "Thorium 3.4 aporta una serie de mejoras a la experiencia del usuario y corrige una serie de problemas. Si más adelante decides volver a una versión anterior de la aplicación, te recomendamos encarecidamente que hagas una copia de seguridad de tus anotaciones y marcadores del libro electrónico exportándolos a un archivo externo. Así podrás importarlos de nuevo a la versión anterior una vez que la hayas instalado. Esto se debe a que, en la versión 3.4, la aplicación almacena las anotaciones y los marcadores en un formato interno ligeramente diferente. Esto resuelve un problema de rendimiento, pero rompe la compatibilidad con versiones anteriores en lo que respecta a las anotaciones.",
+            "resources": "Ponte en contacto con nosotros y descubre más sobre Thorium:"
         },
         "dontShow": "No volver a mostrar",
         "resources": {
-            "discord": "",
-            "website": ""
+            "discord": "Discord: {{- url}}",
+            "website": "Sitio web: {{- url}}"
         },
         "tab": {
             "home": "Inicio",
-            "resources": ""
+            "resources": "Recursos"
         },
         "title": {
-            "resources": "",
-            "welcome": "Bienvenido a Thorium 3"
+            "resources": "Recursos y comunidad",
+            "welcome": "Bienvenido a Thorium 3.4"
         }
     }
 }

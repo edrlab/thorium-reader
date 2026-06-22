@@ -9,6 +9,7 @@ import debug_ from "debug";
 import * as request from "request";
 // import * as requestPromise from "request-promise-native";
 import { PassThrough } from "stream";
+import { Readable } from "stream";
 import * as yauzl from "yauzl";
 
 import { bufferToStream, streamToBufferPromise } from "../stream/BufferUtils";
@@ -41,7 +42,7 @@ export class HttpZipReader extends yauzl.RandomAccessReader {
         // yauzl.RandomAccessReader.call(this);
     }
 
-    public _readStreamForRange(start: number, end: number) {
+    public _readStreamForRange(start: number, end: number): Readable {
         // const length = end - start;
         // debug(`_readStreamForRange (new HttpReadableStream) ${this.url}` +
         //     ` content-length=${this.byteLength} start=${start} end+1=${end} (length=${length})`);

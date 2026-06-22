@@ -7,14 +7,12 @@
 
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
-import { webUtils } from "electron";
 import * as React from "react";
 import { connect } from "react-redux";
-import { acceptedExtensionArray, acceptedExtensionObject } from "readium-desktop/common/extension";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/baseline-add-24px.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
-import { TChangeEventOnInput } from "readium-desktop/typings/react";
+import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { Dispatch } from "redux";
 
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -42,45 +40,23 @@ export class PublicationAddButton extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 
-        // not necessary as input is located suitably for mouse hit testing
-        // htmlFor="epubInput"
         return (
-            <label
+            <button
+                type="button"
                 className={stylesButtons.button_nav_primary}
+                onClick={this.importFile}
             >
                 <SVG ariaHidden={true} svg={PlusIcon} title={__("header.importTitle")} />
                 <span>{__("header.importTitle")}</span>
-                <input
-                    id="epubInput"
-                    type="file"
-                    aria-label={__("accessibility.importFile")}
-                    onChange={this.importFile}
-                    multiple
-                    accept={acceptedExtensionArray.map((ext) => {
-                        if (ext === acceptedExtensionObject.nccHtml) { // !ext.startsWith(".")
-                            return ".html";
-                        }
-                        return ext;
-                    }).join(", ")}
-                />
-            </label>
+            </button>
         );
     }
 
-    private importFile(event: TChangeEventOnInput) {
-        const files = event.target.files;
-        const paths: string[] = [];
-
-        for (const file of files) {
-            // with drag-and-drop (unlike input@type=file) the File `path` property is equal to `name`!
-            // const absolutePath = file.path ? file.path : webUtils.getPathForFile(file);
-            const absolutePath = webUtils.getPathForFile(file);
-            // console.log("absolutePath xx: " + absolutePath);
-            paths.push(absolutePath);
+    private async importFile() {
+        const paths = await apiAction("publication/selectFiles");
+        if (!paths.length) {
+            return;
         }
-
-        event.target.value = "";
-        event.target.files = null;
 
         this.props.import(paths, false /* willBeImmediatelyFollowedByOpen */);
     }

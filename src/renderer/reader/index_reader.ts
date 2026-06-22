@@ -9,7 +9,7 @@ import { ipcRenderer } from "electron";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { readerIpc } from "readium-desktop/common/ipc";
-import { winActions } from "readium-desktop/renderer/common/redux/actions";
+import { winCommonActions } from "readium-desktop/common/redux/actions";
 import { createStoreFromDi } from "readium-desktop/renderer/reader/createStore";
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
@@ -23,13 +23,14 @@ import { getTranslator } from "readium-desktop/common/services/translator";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import moment from "moment";
 
-// let devTron: any;
 let axe: any;
 if (__TH__IS_DEV__) {
-    // requires electron.remote!
-    // enableRemoteModule: false
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    // devTron = require("devtron");
+    // const { devtron } = require("@electron/devtron");
+    // devtron.install().then(() => console.log("DEVTRON OK")).catch((error) => {
+    //     console.error("DEVTRON ERROR");
+    //     console.error(error);
+    // });
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
     axe = require("@axe-core/react");
@@ -96,7 +97,7 @@ ipcRenderer.on(readerIpc.CHANNEL,
                 /*const localeUsedByMoment = */moment.locale([locale, "en"]);
                 // console.log("MOMENT SET LOCALE START", localeUsedByMoment);
 
-                store.dispatch(winActions.initRequest.build(data.payload.win.identifier));
+                store.dispatch(winCommonActions.initRequest.build(data.payload.win.identifier));
 
                 break;
         }

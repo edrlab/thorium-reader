@@ -9,7 +9,9 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import debug_ from "debug";
 import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
 import * as path from "path";
-import { call as callTyped, put as putTyped } from "typed-redux-saga/macro";
+import { call as callTyped, put as putTyped, race as raceTyped, take as takeTyped, delay as delayTyped, spawn as spawnTyped, fork as forkTyped } from "typed-redux-saga/macro";
+import { SagaGenerator } from "typed-redux-saga";
+import { buffers, END, eventChannel } from "redux-saga";
 import { diMainGet, saveReaderWindowInDi } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import { winActions } from "readium-desktop/main/redux/actions";
@@ -18,12 +20,16 @@ import {
 } from "readium-desktop/preprocessor-directives";
 
 import {
-    contextMenuSetup, trackBrowserWindow,
+    trackBrowserWindow,
 } from "@r2-navigator-js/electron/main/browser-window-tracker";
 
 import { getPublication } from "../../api/publication/getPublication";
-import { WINDOW_MIN_HEIGHT, WINDOW_MIN_WIDTH } from "readium-desktop/common/constant";
+import { TIMEOUT_BROWSER_WINDOW_INITIALISATION, WINDOW_MIN_HEIGHT, WINDOW_MIN_WIDTH } from "readium-desktop/common/constant";
 import { URL_PROTOCOL_FILEX, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
+import { readerNewWindowState } from "../../reader";
+import { winCommonActions } from "readium-desktop/common/redux/actions";
+import { assertUUIDv4 } from "readium-desktop/utils/uuid";
+import { persistableWindowBound } from "../session/browserWindowState";
 
 // Logger
 const debug = debug_("readium-desktop:createReaderWindow");
@@ -31,10 +37,11 @@ debug("_");
 
 const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
 
-export function* createReaderWindow(action: winActions.reader.openRequest.TAction) {
-
-    const { winBound, publicationIdentifier, manifestUrl, identifier, reduxState } = action.payload;
-
+export function* createReaderWindow(publicationIdentifier: string, manifestUrl: string,  windowIdentifier: string /* winBound, reduxState*/) {
+    assertUUIDv4(windowIdentifier);
+    assertUUIDv4(publicationIdentifier);
+    
+    const { windowBound: winBound, windowMaximized } = yield* callTyped(readerNewWindowState, publicationIdentifier);
     const readerWindow = new BrowserWindow({
         ...winBound,
         minWidth: WINDOW_MIN_WIDTH,
@@ -60,28 +67,29 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
         readerWindow.webContents?.send("window-blur");
     });
 
-    if (ENABLE_DEV_TOOLS) {
-        const wc = readerWindow.webContents;
-        contextMenuSetup(wc, wc.id);
-    }
-
     const pathBase64 = manifestUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
     const pathDecoded = Buffer.from(decodeURIComponent(pathBase64), "base64").toString("utf8");
 
     const publicationView = yield* getPublication(publicationIdentifier, false);
 
-    const registerReaderAction = yield* putTyped(winActions.session.registerReader.build(
+    yield* putTyped(winActions.session.registerReader.build(
         readerWindow,
         publicationIdentifier,
         publicationView,
         manifestUrl,
         pathDecoded,
         winBound,
-        reduxState,
-        identifier,
+        // reduxState,
+        windowIdentifier,
+        windowMaximized,
     ));
+    yield* forkTyped(() => diMainGet("publication-data").writeJsonObj(publicationIdentifier, "bound", persistableWindowBound(winBound, windowMaximized)));
 
-    yield* callTyped(() => saveReaderWindowInDi(readerWindow, registerReaderAction.payload.identifier));
+    if (windowMaximized) {
+        readerWindow.maximize();
+    }
+
+    saveReaderWindowInDi(readerWindow, windowIdentifier);
 
     // Track it
     trackBrowserWindow(readerWindow);
@@ -99,36 +107,107 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
 
     if (!readerWindow.isDestroyed() && !readerWindow.webContents.isDestroyed()) { // __TH__IS_DEV__
 
-        readerWindow.webContents.on("did-finish-load", () => {
+        const didFinishLoadEventChannel = eventChannel<true>(
+            (emit) => {
 
-            // if (readerWindow.isDestroyed() || readerWindow.webContents.isDestroyed()) {
-            //     debug("readerWindow or webcontents is destroyed !!");
-            //     return; // Is it really needed to early return here, and block reader openSuccess 
-            // }
-            // see app.whenReady() in src/main/redux/sagas/app.ts
-            // // app.whenReady().then(() => {
-            // // });
-            // setTimeout(() => {
-            //     const {
-            //         default: installExtension,
-            //         REACT_DEVELOPER_TOOLS,
-            //         REDUX_DEVTOOLS,
-            //     // eslint-disable-next-line @typescript-eslint/no-var-requires
-            //     } = require("electron-devtools-installer");
+                const handler = () => {
+                    emit(true);
+                    emit(END);
+                };
+                readerWindow.webContents.once("did-finish-load", handler);
 
-            //     [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
-            //         installExtension(extension)
-            //         .then((name: string) => debug("electron-devtools-installer OK (reader window): ", name))
-            //         .catch((err: Error) => debug("electron-devtools-installer ERROR (reader window): ", err));
-            //     });
-            // }, 1000);
+                return () => {
+                };
+            },
+            buffers.none(),
+        );
+        const didFailLoadEventChannel = eventChannel<true>(
+            (emit) => {
 
-            // the dispatching of 'openSucess' action must be in the 'did-finish-load' event
-            // because webpack-dev-server automaticaly refresh the window.
-            const store = diMainGet("store");
+                const handler = () => {
+                    emit(true);
+                    emit(END);
+                };
 
-            store.dispatch(winActions.reader.openSucess.build(readerWindow, registerReaderAction.payload.identifier));
+                readerWindow.webContents.once("did-fail-load", handler);
+
+                return () => {
+                };
+            },
+            buffers.none(),
+        );
+
+        // detached background execution
+        yield* spawnTyped(function*() {
+            const { success, error, timeout, closeReader } = yield* raceTyped({
+                success: callTyped(function* (): SagaGenerator<true> {
+                    yield* takeTyped(didFinishLoadEventChannel);
+                    yield* putTyped(winActions.reader.openSucess.build(readerWindow, windowIdentifier, publicationIdentifier));
+                    yield* callTyped(function* () {
+                            while (true) {
+                                const action = yield* takeTyped(winCommonActions.initSuccess.build);
+                                const winIdReceived = action.sender?.identifier;
+                                if (winIdReceived === windowIdentifier) {
+                                    return true;
+                                }
+                            }
+                    });
+                    return true;
+                }),
+                error: takeTyped(didFailLoadEventChannel),
+                timeout: delayTyped(TIMEOUT_BROWSER_WINDOW_INITIALISATION),
+                closeReader: callTyped(function*(): SagaGenerator<true> {
+                    while (true) {
+                        const action = yield* takeTyped(winActions.session.unregisterReader.build);
+                        const winIdReceived = action.payload.windowIdentifier;
+                        if (winIdReceived === windowIdentifier) {
+                            return true;
+                        }
+                    }
+                }),
+            });
+
+            if (success) {
+                debug(`Reader Window Initialized and Ready - winId=${windowIdentifier} pubId=${publicationIdentifier}`);
+            } else if (error) {
+                debug(`Reader Window Failed 'did-fail-load' event received - winId=${windowIdentifier} pubId=${publicationIdentifier}`);
+                yield* putTyped(winActions.reader.openError.build(readerWindow, windowIdentifier, publicationIdentifier, "did-fail-load"));
+            } else if (timeout) {
+                debug("ERROR!!! CreateReaderWindow TIMEOUT!!!");
+                yield* putTyped(winActions.reader.openError.build(readerWindow, windowIdentifier, publicationIdentifier, "timeout"));
+            } else if (closeReader) {
+                debug(`Closing Reader Window Requested before the end of the initialization - winId=${windowIdentifier} pubId=${publicationIdentifier}`);
+            } else {
+                debug("ASSERT ERROR UNREACHABLE");
+            }
         });
+        // readerWindow.webContents.once("did-finish-load", () => {
+        //     // if (readerWindow.isDestroyed() || readerWindow.webContents.isDestroyed()) {
+        //     //     debug("readerWindow or webcontents is destroyed !!");
+        //     //     return; // Is it really needed to early return here, and block reader openSuccess
+        //     // }
+        //     // see app.whenReady() in src/main/redux/sagas/app.ts
+        //     // // app.whenReady().then(() => {
+        //     // // });
+        //     // setTimeout(() => {
+        //     //     const {
+        //     //         default: installExtension,
+        //     //         REACT_DEVELOPER_TOOLS,
+        //     //         REDUX_DEVTOOLS,
+        //     //     // eslint-disable-next-line @typescript-eslint/no-var-requires
+        //     //     } = require("electron-devtools-installer");
+        //     //     [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
+        //     //         installExtension(extension)
+        //     //         .then((name: string) => debug("electron-devtools-installer OK (reader window): ", name))
+        //     //         .catch((err: Error) => debug("electron-devtools-installer ERROR (reader window): ", err));
+        //     //     });
+        //     // }, 1000);
+        //     // the dispatching of 'openSucess' action must be in the 'did-finish-load' event
+        //     // because webpack-dev-server automaticaly refresh the window.
+        //     const store = diMainGet("store");
+        //     // TODO: handle the error case
+        //     store.dispatch(winActions.reader.openSucess.build(readerWindow, windowIdentifier, publicationIdentifier));
+        // });
     }
 
     if (!readerWindow.isDestroyed() && !readerWindow.webContents.isDestroyed()) { // __TH__IS_DEV__
@@ -194,22 +273,22 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
 
         readerWindow.webContents.setWindowOpenHandler((details: HandlerDetails) => {
             debug("BrowserWindow.webContents.setWindowOpenHandler (always DENY): ", readerWindow.webContents.id, " --- ", details.url, " === ", readerWindow.webContents.getURL());
-    
+
             // willNavigate(details.url);
-    
+
             return { action: "deny" };
         });
         readerWindow.webContents.on("will-navigate", (details: ElectronEvent<WebContentsWillNavigateEventParams>, url: string) => {
             debug("BrowserWindow.webContents.on('will-navigate') (always PREVENT): ", readerWindow.webContents.id, " --- ", details.url, " *** ", url, " === ", readerWindow.webContents.getURL());
-        
+
             // if (details.url === readerWindow.webContents.getURL()) {
             //     debug("will-navigate PASS", details.url);
             //     return;
             // }
-        
+
             details.preventDefault();
-        
+
             willNavigate(details.url);
         });
-    }    
+    }
 }

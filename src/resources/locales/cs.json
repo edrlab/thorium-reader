@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Menu",
         "closeDialog": "Zavřít",
-        "importFile": "Nahrát publikaci",
         "leftSlideButton": "Posunout doleva",
         "mainContent": "hlavní obsah",
         "rightSlideButton": "Posunout doprava",
@@ -46,7 +45,9 @@
             "title": "Aktualizace softwaru {{- appName}}."
         },
         "window": {
-            "showLibrary": "Zobrazit knihovnu / knihovničku"
+            "showLibrary": "Zobrazit knihovnu / knihovničku",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -90,6 +91,7 @@
         "login": "Přihlásit se",
         "logout": "Odhlásit se",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Podropnosti o publikaci",
         "myBooks": "Mé publikace",
         "noPublicationHelpL1": "Sem přetáhněte soubory",
@@ -106,6 +108,8 @@
                 "password": "Heslo",
                 "register": "Registrovat",
                 "retry": "Zkusit znovu",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Uživatelské jméno / e-mailová adresa"
             },
             "info": {
@@ -127,10 +131,12 @@
                 "state": "Stav"
             }
         },
+        "openFolder": "",
         "publisher": "Vydavatel",
         "readBook": "Číst",
         "released": "Publikováno",
         "removeFromFavorites": "",
+        "selectTableHeaders": "",
         "sort": "Třídit",
         "tag": "Štítek",
         "tags": "Štítky",
@@ -141,12 +147,15 @@
             "descAuthor": "autor: {{- author}}",
             "descCreator": "vytvořil(a)",
             "descList_few": "{{- count}} poznámek od {{- creator}} bude importováno do „{{- title}}“, {{- author}}",
+            "descList_many": "",
             "descList_one": "{{- count}} poznámek od {{- creator}} bude importováno do „{{- title}}“, {{- author}}",
             "descList_other": "{{- count}} poznámek od {{- creator}} bude importováno do „{{- title}}“, {{- author}}",
             "descNewer_few": "Konflikt(y): {{- count}} novější poznámka (novější poznámky)",
+            "descNewer_many": "",
             "descNewer_one": "Konflikt(y): {{- count}} novější poznámka (novější poznámky)",
             "descNewer_other": "Konflikt(y): {{- count}} novější poznámka (novější poznámky)",
             "descOlder_few": "Konflikt(y): {{- count}} starší poznámka (starší poznámky)",
+            "descOlder_many": "",
             "descOlder_one": "Konflikt(y): {{- count}} starší poznámka (starší poznámky)",
             "descOlder_other": "Konflikt(y): {{- count}} starší poznámka (starší poznámky)",
             "descTitle": "Anotace titulu: ",
@@ -165,10 +174,12 @@
         },
         "deleteAnnotations": "Odstranit anotace?",
         "deleteAnnotationsText_few": "Opravdu chcete odstranit {{- count}} poznámek?",
+        "deleteAnnotationsText_many": "",
         "deleteAnnotationsText_one": "Opravdu chcete odstranit {{- count}} poznámek?",
         "deleteAnnotationsText_other": "Opravdu chcete odstranit {{- count}} poznámek?",
         "deleteBookmarks": "Odstranit záložky?",
         "deleteBookmarksText_few": "Jste si jisti, že chcete odstranit {{- count}} záložek?",
+        "deleteBookmarksText_many": "",
         "deleteBookmarksText_one": "Jste si jisti, že chcete odstranit {{- count}} záložek?",
         "deleteBookmarksText_other": "Jste si jisti, že chcete odstranit {{- count}} záložek?",
         "deleteFeed": "Odstranit katalog?",
@@ -202,6 +213,7 @@
         "searchPlaceholder": "Hledat",
         "searchTitle": "Hledat",
         "settings": "Nastavení",
+        "settingsLabel": "",
         "viewMode": "Mód zobrazení"
     },
     "library": {
@@ -241,7 +253,18 @@
             "success": "Import úspěšně dokončen."
         },
         "download": {
-            "error": "Stahování publikace „{{- title}}“ selhalo: [{{- err}}]"
+            "cancelled": "",
+            "error": "Stahování publikace „{{- title}}“ selhalo: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "Publikace „{{- title}}“ je již nahráná.",
@@ -249,7 +272,13 @@
             "success": "Import publikace „{{- title}}“ dokončen."
         },
         "open": {
-            "error": "Načítání publikace sehlalo: [{{- err}}]"
+            "error": "Načítání publikace sehlalo: [{{- err}}]",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": "Přihlašovací údaje byly vymazány (přístupové tokeny a cookies)"
     },
@@ -566,10 +595,6 @@
                 "compact": "",
                 "descriptive": ""
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "",
                 "descriptive": ""
@@ -584,6 +609,10 @@
                 "descriptive": ""
             },
             "ways-of-reading-visual-adjustments-unknown": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
                 "compact": "",
                 "descriptive": ""
             }
@@ -641,6 +670,7 @@
         "expiredLcp": "Licence LCP této publikace vypršela.",
         "incorrectPassphrase": "",
         "lcpEnd": "Skončit",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Zkopírováno znaků",
         "lcpRightsPrint": "Vytištěné stránky",
         "lcpStart": "Začít",
@@ -678,6 +708,11 @@
             },
             "annotationsOptions": "Možnosti anotace",
             "date": "Datum úpravy",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "Uložit poznámky jako...",
             "filter": {
                 "all": "Vše",
@@ -758,7 +793,9 @@
             "skipDescription": "",
             "speed": "",
             "stop": "",
-            "title": ""
+            "title": "",
+            "useTTSHighlightsForMO": "",
+            "useTTSHighlightsForMODescription": ""
         },
         "navigation": {
             "ZenModeExit": "Opustit zenový mód",
@@ -790,6 +827,8 @@
         "notes": {
             "colors": {
                 "cyan": "Azurová",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "Zelená",
                 "orange": "Oranžová",
                 "purple": "Fialová",
@@ -800,6 +839,7 @@
         "picker": {
             "search": {
                 "founds_few": "{{- count}} shod",
+                "founds_many": "",
                 "founds_one": "{{- count}} shod",
                 "founds_other": "{{- count}} shod",
                 "input": "přesná shoda",
@@ -838,6 +878,7 @@
             },
             "customFontSelected": "Zvolili jste osobní písmo",
             "customizeReader": "Přizpůsobit formátování textu",
+            "defaultValue": "",
             "disabled": "vypnuto",
             "display": "Zobrazení",
             "disposition": {
@@ -845,6 +886,7 @@
             },
             "font": "Písmo",
             "fontSize": "Velikost písma",
+            "increaseFontSize": "",
             "infoCustomFont": "Vyberte vlastní písmo z operačního systému zadáním jeho názvu",
             "justification": "Zarovnání",
             "justify": "Do bloku",
@@ -852,6 +894,7 @@
             "lineSpacing": "Řádkování",
             "margin": "Okraj",
             "mathjax": "",
+            "mathjaxDescription": "",
             "noFootnotes": "Vypnout poznámky pod čarou",
             "noRTLFlip": "",
             "noRuby": "Skrýt japonské znaky rubi",
@@ -882,6 +925,7 @@
                 "title": "Preference"
             },
             "preview": "Náhled",
+            "reduceFontSize": "",
             "reduceMotion": "",
             "scrolled": "",
             "spacing": "",
@@ -979,6 +1023,18 @@
                     "name": ""
                 },
                 "AudioPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
                     "description": "",
                     "name": ""
                 },
@@ -1203,11 +1259,59 @@
         "session": {
             "title": "Povolit ukládání relací"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Vzhled",
             "general": "Obecné",
             "keyboardShortcuts": "Klávesové zkratky",
-            "profiles": ""
+            "profiles": "",
+            "storage": ""
         },
         "theme": {
             "auto": "Automatický",
@@ -1215,6 +1319,11 @@
             "description": "Motiv aplikace bude odpovídat operačnímu systému.",
             "light": "Světlý",
             "title": "Motiv aplikace"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {
@@ -1243,8 +1352,7 @@
     "wizard": {
         "buttons": {
             "discover": "Objevte, co je nového",
-            "goToBooks": "Přejít na mé publikace",
-            "next": "Další"
+            "goToBooks": "Přejít na mé publikace"
         },
         "description": {
             "home": "Thorium vypadá jinak! Objevte, co je nového...",

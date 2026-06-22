@@ -1,0 +1,38 @@
+name: GitHub Actions Security Analysis with zizmor
+# https://docs.zizmor.sh/integrations/#github-actions
+
+on:
+  push:
+    branches: ["develop"]
+  pull_request:
+    branches: ["**"]
+
+permissions: {}
+
+jobs:
+  zizmor:
+    name: Zizmor
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write # see "advanced-security: true" in zizmor-action (upload-sarif will transfer SARIF files)
+      contents: read # see actions/checkout
+      actions: read # to access the workflow info
+    steps:
+###########################
+      - name: Checkout repository
+# https://github.com/actions/checkout/commits/v6.0.2
+# https://github.com/actions/checkout/commits/de0fac2e4500dabe0009e67214ff5f5447ce83dd
+# https://github.com/actions/checkout/compare/v6.0.2...de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
+###########################
+      - name: Run zizmor
+# https://github.com/zizmorcore/zizmor-action/commits/v0.5.6
+# https://github.com/zizmorcore/zizmor-action/commits/5f14fd08f7cf1cb1609c1e344975f152c7ee938d
+# https://github.com/zizmorcore/zizmor-action/compare/v0.5.6...5f14fd08f7cf1cb1609c1e344975f152c7ee938d
+        uses: zizmorcore/zizmor-action@5f14fd08f7cf1cb1609c1e344975f152c7ee938d
+        with:
+          advanced-security: true
+          token: ${{ github.token }} # default
+###########################

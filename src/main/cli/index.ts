@@ -20,12 +20,19 @@ import { createStoreFromDi } from "../di";
 import { needToPersistFinalState } from "../redux/sagas/persist";
 import { appActions } from "../redux/actions";
 import { getOpenFileFromCliChannel, getOpenTitleFromCliChannel } from "../event";
-import { flushSession } from "../tools/flushSession";
 import { isOpenUrl, setOpenUrl } from "./url";
 import { globSync } from "glob";
+import { type Store } from "redux";
+import { settingsActions } from "readium-desktop/common/redux/actions";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { isAcceptedExtension } from "readium-desktop/common/extension";
 import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
+import { PersistRootState, RootState } from "../redux/states";
+import { appendFileSyncWithRotation } from "readium-desktop/utils/log";
+import {
+    isSharedComputerCliSwitch,
+    SHARED_COMPUTER_CLI_OPTION,
+} from "./options";
 
 // Logger
 const debug = debug_("readium-desktop:cli:process");
@@ -70,12 +77,37 @@ let __appStarted = false;
 let __returnCode = 0;
 let __pendingCmd = 0;
 
+interface ISharedComputerCliArgv {
+    sharedComputer?: unknown;
+    [SHARED_COMPUTER_CLI_OPTION]?: unknown;
+}
+
+const sharedComputerCliOptionIsEnabled = (argv: ISharedComputerCliArgv) =>
+    argv.sharedComputer === true || argv[SHARED_COMPUTER_CLI_OPTION] === true;
+
+const createStoreFromDiWithCliSettings = async (argv: ISharedComputerCliArgv): Promise<Store<RootState>> => {
+    const store = await createStoreFromDi();
+    if (sharedComputerCliOptionIsEnabled(argv)) {
+        // The command-line flag is a runtime override: it forces the mode without persisting the lock itself.
+        debug("CLI shared computer mode forced");
+        store.dispatch(settingsActions.lcpAutoDeleteExpiredPublicationsForced.build(true));
+    }
+    return store;
+};
+
+const isElectronRunnerArg = (arg: string | undefined) =>
+    !!arg && path.basename(arg).toLowerCase().replace(/\.exe$/, "") === "electron";
+
 // yargs configuration
 const yargsInit = () =>
     yargs() // hideBin(process.argv)
         .scriptName(_APP_NAME)
         .version(_APP_VERSION)
         .usage("$0 <cmd> [args]")
+        .option(SHARED_COMPUTER_CLI_OPTION, {
+            describe: "force shared computer mode for this session",
+            type: "boolean",
+        })
         .command("opds <title> <url>",
             "import opds feed",
             (y) =>
@@ -94,7 +126,7 @@ const yargsInit = () =>
 
                 debug("CLI opds import", argv);
 
-                await createStoreFromDi();
+                const store = await createStoreFromDiWithCliSettings(argv);
                 const sagaMiddleware = diMainGet("saga-middleware");
                 __pendingCmd++;
 
@@ -123,7 +155,7 @@ const yargsInit = () =>
 
                 if (!__appStarted && __pendingCmd <= 0 && !closeProcessLock.isLock) {
 
-                    await sagaMiddleware.run(needToPersistFinalState).toPromise();
+                    await sagaMiddleware.run(needToPersistFinalState, store.getState() as Partial<PersistRootState>).toPromise();
                     app.exit(__returnCode);
                     return ;
                 }
@@ -145,7 +177,7 @@ const yargsInit = () =>
 
                 debug("CLI import publication", argv);
 
-                await createStoreFromDi();
+                const store = await createStoreFromDiWithCliSettings(argv);
                 const sagaMiddleware = diMainGet("saga-middleware");
                 __pendingCmd++;
 
@@ -195,7 +227,7 @@ const yargsInit = () =>
 
                 if (!__appStarted && __pendingCmd <= 0 && !closeProcessLock.isLock) {
 
-                    await sagaMiddleware.run(needToPersistFinalState).toPromise();
+                    await sagaMiddleware.run(needToPersistFinalState, store.getState() as Partial<PersistRootState>).toPromise();
                     app.exit(__returnCode);
                     return ;
                 }
@@ -214,11 +246,9 @@ const yargsInit = () =>
                 debug("CLI read", argv);
                 __appStarted = true;
                 await Promise.all([
-                    createStoreFromDi().then((store) => store.dispatch(appActions.initRequest.build())),
+                    createStoreFromDiWithCliSettings(argv).then((store) => store.dispatch(appActions.initRequest.build())),
                     app.whenReady(),
                 ]);
-
-                await flushSession();
 
                 if (argv.title) {
                     const openTitleFromCliChannel = getOpenTitleFromCliChannel();
@@ -251,7 +281,7 @@ const yargsInit = () =>
 
                 __appStarted = true;
                 await Promise.all([
-                    createStoreFromDi().then((store) => store.dispatch(appActions.initRequest.build())),
+                    createStoreFromDiWithCliSettings(argv).then((store) => store.dispatch(appActions.initRequest.build())),
                     app.whenReady(),
                 ]);
 
@@ -263,9 +293,6 @@ const yargsInit = () =>
 
                     debug("open arg requested", pathArgv);
                     dump += `pathArgv found: ${JSON.stringify(pathArgv)}\n`;
-
-                    // flush session because user ask to read a publication
-                    flushSession();
 
                     // pathArgv can be an url with deepLinkInvocation in windows
                     // https://github.com/oikonomopo/electron-deep-linking-mac-win
@@ -300,7 +327,7 @@ const yargsInit = () =>
                     dump += "pathArgv not defined\n";
                 }
                 dump += "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$44\n";
-                fs.appendFileSync(appLogs, dump);
+                appendFileSyncWithRotation(appLogs, dump);
             },
         )
         .help()
@@ -320,24 +347,63 @@ const yargsInit = () =>
 export function commandLineMainEntry(
     processArgv = process.argv,
 ) {
-
     debug("process.argv", process.argv);
+    debug("process.env", process.env);
+
     if (!__TH__IS_DEV__ && __TH__IS_PACKAGED__) {
         // https://nodejs.org/fr/docs/guides/debugging-getting-started/#enable-inspector
         // SIGUSR1
 
+        // https://www.electronjs.org/docs/latest/api/environment-variables
+        for (const env of Object.keys(process.env)) {
+            debug("env", env);
+            if (env === "NODE_OPTIONS" ||
+                env === "NODE_EXTRA_CA_CERTS" ||
+                // env.startsWith("NODE_")
+                // && env !== "NODE_PATH"
+                // && env !== "NODE_ENV"
+                env.startsWith("ELECTRON_")) {
+                // process.exit(0);
+                app.exit(0);
+                return;
+            }
+        }
+
         // https://github.com/electron/fuses/issues/2
         for (const arg of process.argv) {
             debug("arg", arg);
-            if (arg.includes("--debug") ||
+            if ( // https://github.com/electron/electron/blob/main/shell/common/node_bindings.cc#L427
+                arg === "-r" ||
+                arg.includes("--require") ||
+                arg.includes("--import") ||
+                // arg.includes("--no") // DO NOT UNCOMMENT THIS, see "shared-computer" (`--shared-computer` and `--no-shared-computer`)
+                // https://www.electronjs.org/docs/latest/api/command-line-switches
+                arg.includes("--debug") ||
+                arg.includes("--log") ||
+                arg.includes("--dns") ||
+                arg.includes("--disk") ||
+                arg.includes("--flag") ||
+                arg.includes("--ignore") ||
+                arg.includes("--enable") ||
+                arg.includes("--disable") ||
+                arg.includes("--force") ||
+                arg.includes("--host") ||
+                arg.includes("--auth") ||
+                arg.includes("--proxy") ||
                 arg.includes("--remote") ||
+                arg.includes("--throw") ||
+                arg.includes("--trace") ||
+                arg.includes("--js") ||
+                arg.includes("--experimental") ||
+                // arg.includes("logging") ||
                 // https://www.electronjs.org/docs/api/command-line-switches#--remote-debugging-portport
                 // arg.includes("--remote-debugging-port") ||
                 // https://github.com/electron/electron/blob/73a017577e6d8cf67c76acb8f6a199c2b64ccb5d/shell/browser/electron_browser_main_parts.cc#L457
                 // arg.includes("--remote-debugging-pipe") ||
                 // arg.includes("--remote-allow-origins") ||
                 // https://www.electronjs.org/docs/api/command-line-switches#--inspecthostport
-                arg.includes("--inspect") ||
+                arg.includes("--inspect")
+                // ||
                 // https://www.electronjs.org/docs/api/command-line-switches#--inspect-brkhostport
                 // arg.includes("--inspect-brk") ||
                 // https://github.com/nodejs/node/blob/fef180c8a20f680d246d5b109589e6a0370e7e77/src/node_options.cc#L314-L360
@@ -347,11 +413,11 @@ export function commandLineMainEntry(
                 // https://www.electronjs.org/docs/api/command-line-switches#--inspect-publish-uidstderrhttp
                 // arg.includes("--inspect-publish-uid") ||
                 // https://www.electronjs.org/docs/api/command-line-switches#--js-flagsflags
-                arg.includes("--js-flags") ||
-                arg.includes("--experimental-network-inspector")
+                // arg.includes("--js-flags") ||
+                // arg.includes("--experimental-network-inspector")
             ) {
-                // process.exit1);
-                app.exit(1);
+                // process.exit(0);
+                app.exit(0);
                 return;
             }
         }
@@ -364,7 +430,7 @@ export function commandLineMainEntry(
 
     const argFormated = processArgv
         .filter((arg) => knownOption(arg) || !arg.startsWith("-"))
-        .slice(!__TH__IS_PACKAGED__ && processArgv[0].endsWith("Electron") ? 2 : 1);
+        .slice(!__TH__IS_PACKAGED__ && isElectronRunnerArg(processArgv[0]) ? 2 : 1);
 
     debug("processArgv", processArgv, "arg", argFormated);
 
@@ -377,14 +443,14 @@ export function commandLineMainEntry(
     }
 
     dump += "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$44\n";
-    fs.appendFileSync(appLogs, dump);
+    appendFileSyncWithRotation(appLogs, dump);
 }
 
 // arrow function to filter declared option in yargs
 const knownOption = (str: string) => [
     "--help",
     "--version",
-].includes(str);
+].includes(str) || isSharedComputerCliSwitch(str);
 
 
 // Catch all unhandled rejection promise from CLI command

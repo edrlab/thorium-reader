@@ -26,6 +26,7 @@ import { PublicationParsePromise } from "@r2-shared-js/parser/publication-parser
 import { diMainGet } from "../di";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 // import { type Store } from "redux";
 // import { RootState } from "../redux/states";
 
@@ -40,6 +41,23 @@ interface ICache {
     r2LCPStr?: string;
 }
 const _pubCache: Record<string, ICache> = {};
+
+const getPublicationStorageState = async (identifier: string): Promise<{
+    publicationDirectory: string;
+    isOpenable: boolean;
+}> => {
+    let publicationDirectory = "";
+    try {
+        publicationDirectory = await diMainGet("publication-storage").getPublicationPath(identifier);
+    } catch {
+        debug("publication not found on disk");
+    }
+
+    return {
+        publicationDirectory,
+        isOpenable: Boolean(publicationDirectory),
+    };
+};
 
 @injectable()
 export class PublicationViewConverter {
@@ -58,7 +76,7 @@ export class PublicationViewConverter {
 
     public async updateLcpCache(publicationDocument: PublicationDocumentWithoutTimestampable, r2LCP: LCP) {
 
-        const pubFolder = await this.publicationStorage.findPublicationPath(
+        const pubFolder = await this.publicationStorage.getPublicationPath(
             publicationDocument.identifier,
         );
 
@@ -77,7 +95,7 @@ export class PublicationViewConverter {
     public async updatePublicationCache(publicationDocument: PublicationDocumentWithoutTimestampable, r2Publication: R2Publication) {
         _pubCache[publicationDocument.identifier] = {};
 
-        const pubFolder = await this.publicationStorage.findPublicationPath(
+        const pubFolder = await this.publicationStorage.getPublicationPath(
             publicationDocument.identifier,
         );
 
@@ -99,7 +117,7 @@ export class PublicationViewConverter {
         publicationDocument: PublicationDocument,
     ): Promise<R2Publication> {
 
-        const pubFolder = await this.publicationStorage.findPublicationPath(
+        const pubFolder = await this.publicationStorage.getPublicationPath(
             publicationDocument.identifier,
         );
 
@@ -186,12 +204,12 @@ export class PublicationViewConverter {
         }
     }
 
-    public async convertDocumentMissingOrDeletedToMinimalPublicationView(document: PublicationDocument): Promise<PublicationView> {
+    public async convertUnavailableDocumentToMinimalPublicationView(document: PublicationDocument): Promise<PublicationView> {
 
         const store = diMainGet("store");
         const state = store.getState();
         const readingFinished = tryCatchSync(() => state.publication.readingFinishedQueue.findIndex(([, pubIndentifier]) => pubIndentifier === document.identifier) > -1, "") || false;
-        const readerStateLocator = tryCatchSync(() => state.win.registry.reader[document.identifier]?.reduxState.locator, "");
+        const readerStateLocator = await diMainGet("publication-data").readJsonObj(document.identifier, "locator") as MiniLocatorExtended | undefined; // TODO: type object
 
         const title = document.title || "-"; // default title;
         
@@ -203,9 +221,14 @@ export class PublicationViewConverter {
             };
         }
 
+        const {
+            // publicationDirectory,
+            isOpenable,
+        } = await getPublicationStorageState(document.identifier);
+
         return {
 
-            type: "missingOrDeleted",
+            isOpenable,
             identifier: document.identifier, // preserve Identifiable identifier
 
             readingFinished,
@@ -262,15 +285,28 @@ export class PublicationViewConverter {
         // could be refactored when the publications documents will be in the state
         const store = diMainGet("store");
         const state = store.getState();
-        const readerStateLocator = tryCatchSync(() => state.win.registry.reader[document.identifier]?.reduxState.locator, "");
+
+
+        // Reads locators from disk.
+        // When batching `convertDocumentToView` across the full publication DB list:
+        //
+        // - Worst case: a spinning disk handles ~128 open/read ops per second (~1KB chunks).
+        // - A library with ~1000 publications may take ~8 seconds to load via `getPublicationView`
+        //   when initializing the catalog in the library window.
+        // - This introduces a startup penalty (blocking delay) before the UI becomes responsive.
+        //   This delay blocks sending the Redux state hydration to libraryWindow.
+        const readerStateLocator = await diMainGet("publication-data").readJsonObj(document.identifier, "locator") as MiniLocatorExtended | undefined; // TODO: type object
 
         const duration = typeof r2Publication.Metadata.Duration === "number" ? r2Publication.Metadata.Duration : undefined;
         const nbOfTracks = typeof r2Publication.Metadata.AdditionalJSON?.tracks === "number" ? r2Publication.Metadata.AdditionalJSON?.tracks : undefined;
 
-        const isAudio = r2Publication.Metadata.RDFType?.toLowerCase().includes("audio") || isAudiobookFn(r2Publication.Metadata) || (
-            readerStateLocator?.audioPlaybackInfo
+        let isAudio = false;
+        try {
+            isAudio = r2Publication.Metadata.RDFType?.toLowerCase().includes("audio") || isAudiobookFn(r2Publication.Metadata) || (
+                readerStateLocator?.audioPlaybackInfo
                 && readerStateLocator?.audioPlaybackInfo.globalDuration
                 && typeof readerStateLocator?.locator.locations.position === "number");
+        } catch (e) { debug(e); }
 
         const isDivina = isDivinaFn(r2Publication);
         const isPDF = isPdfFn(r2Publication);
@@ -301,11 +337,14 @@ export class PublicationViewConverter {
 
         const trimStrings = (texts: string | string[]): string[] => Array.isArray(texts) ? texts.filter((item) => item && typeof item === "string").map((item) => item.trim()) : texts && typeof texts === "string" ? [texts.trim()] : [];
 
+        const {
+            // publicationDirectory,
+            isOpenable,
+        } = await getPublicationStorageState(document.identifier);
+
         return {
 
-            // When a publication is found on disk but cannot be found in the database, we should mitigate the risk by setting a missingOrDeleted error.
-            type: document.doNotPresentInReduxStoreDataBaseButFoundOnDisk_dummyDocument ? "missingOrDeleted" : undefined,
-            
+            isOpenable,
             isAudio,
             isDivina,
             isPDF,

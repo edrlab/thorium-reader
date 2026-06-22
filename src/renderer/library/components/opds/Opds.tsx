@@ -15,6 +15,7 @@ import FeedList from "./FeedList";
 import OpdsAddForm from "./OpdsAddForm";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { connect } from "react-redux";
+import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -27,20 +28,31 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps {
 }
 
-class Opds extends React.Component<IProps, undefined> {
+interface IState {
+    feedsResult: IOpdsFeedView[] | undefined;
+}
+
+class Opds extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
+        this.state = {
+            feedsResult: undefined,
+        };
     }
+
+    setFeedsResult = (feedsResult: IOpdsFeedView[] | undefined) => {
+        this.setState({ feedsResult });
+    };
 
     public render(): React.ReactElement<{}>  {
         const { __ } = this.props;
         return (
             <LibraryLayout
                 title={__("opds.breadcrumbRoot")}
-                secondaryHeader={<OpdsAddForm />}
+                secondaryHeader={<OpdsAddForm feedsResult={this.state.feedsResult} />}
             >
-                <FeedList />
+               <FeedList setFeedsResult={this.setFeedsResult} />
             </LibraryLayout>
         );
     }

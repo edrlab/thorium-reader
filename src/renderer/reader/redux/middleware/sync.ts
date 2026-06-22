@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import {
-    annotationActions,
+    annotationActions, winCommonActions,
     apiActions, creatorActions, customizationActions, i18nActions, keyboardActions, lcpActions, noteExport, publicationActions, readerActions, themeActions,
 } from "readium-desktop/common/redux/actions";
 import { syncFactory } from "readium-desktop/renderer/common/redux/middleware/syncFactory";
@@ -20,7 +20,6 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     readerActions.openRequest.ID,
     readerActions.closeRequest.ID,
     readerActions.detachModeRequest.ID,
-    readerActions.setReduxState.ID,
     readerActions.configSetDefault.ID,  // readerConfig
     // readerActions.saveBookmarkRequest.ID,
     readerActions.fullScreenRequest.ID,
@@ -78,6 +77,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     readerActions.allowCustom.ID,
     readerActions.bookmarkTotalCount.ID,
     readerActions.pdfConfig.ID,
+
+    winCommonActions.initSuccess.ID,
 ];
 
 export const reduxSyncMiddleware = syncFactory(SYNCHRONIZABLE_ACTIONS);

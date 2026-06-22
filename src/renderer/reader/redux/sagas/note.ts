@@ -15,7 +15,7 @@ import { select as selectTyped, take as takeTyped, race as raceTyped, put as put
 import { readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalActionLocatorHrefChanged } from "../actions";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { winActions } from "readium-desktop/renderer/common/redux/actions";
+import { winCommonActions } from "readium-desktop/common/redux/actions";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ToastType } from "readium-desktop/common/models/toast";
 
@@ -404,7 +404,7 @@ function* readerStart() {
 
     yield* allTyped([
         takeTyped(readerActions.setLocator.ID),
-        takeTyped(winActions.initSuccess.ID),
+        takeTyped(winCommonActions.initSuccess.ID),
     ]);
 
     // divina,

@@ -11,7 +11,7 @@ import * as ReactDOM from "react-dom";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { type ActionWithSender } from "readium-desktop/common/models/sync";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
-import { winActions } from "readium-desktop/renderer/common/redux/actions";
+import { winCommonActions } from "readium-desktop/common/redux/actions";
 
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {
@@ -38,13 +38,14 @@ if (__TH__IS_DEV__) {
 // //     console.log("#".repeat(2000), normalizeUrl("//www.sindresorhus.com:80/../baz?b=bar&a=foo"));
 // // });
 
-// let devTron: any;
 let axe: any;
 if (__TH__IS_DEV__) {
-    // requires electron.remote!
-    // enableRemoteModule: false
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    // devTron = require("devtron");
+    // const { devtron } = require("@electron/devtron");
+    // devtron.install().then(() => console.log("DEVTRON OK")).catch((error) => {
+    //     console.error("DEVTRON ERROR");
+    //     console.error(error);
+    // });
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
     axe = require("@axe-core/react");
@@ -91,7 +92,7 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
             /*const localeUsedByMoment = */moment.locale([locale, "en"]);
             // console.log("MOMENT SET LOCALE START", localeUsedByMoment);
 
-            store.dispatch(winActions.initRequest.build(data.payload.win.identifier));
+            store.dispatch(winCommonActions.initRequest.build(data.payload.win.identifier));
 
             break;
     }

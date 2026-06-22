@@ -9,7 +9,7 @@ import debug_ from "debug";
 import * as fs from "fs";
 import { injectable } from "inversify";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
-import { v4 as uuidv4 } from "uuid";
+import { uuidv4 } from "readium-desktop/utils/uuid";
 
 import { IDeviceIDManager } from "@r2-lcp-js/lsd/deviceid-manager";
 

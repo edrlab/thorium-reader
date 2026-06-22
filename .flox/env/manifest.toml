@@ -1,3 +1,5 @@
+schema-version = "1.10.0"
+
 # flox config --set-bool set_prompt false
 # ==> .zshrc
 # Warp-ify Flox subshell prompt:
@@ -29,11 +31,11 @@
 # PROMPT="${PROMPT}"$'\n'
 # printf '\eP$f{"hook": "SourcedRcFileForWarp", "value": { "shell": "zsh" }}\x9c'
 
-version = 1
-
 [install]
 nodejs_24.pkg-path = "nodejs_24"
+nodejs_24.outputs = "all"
 jq.pkg-path = "jq"
+jq.outputs = "all"
 
 [vars]
 FLOX_DISABLE_METRICS="true"
@@ -101,7 +103,7 @@ fi
 #export NPM_CONFIG_PREFIX="/tmp/${envName}-npm";
 
 export NPM_CONFIG_PREFIX="${FLOX_CACHE_DIR}/NPM_PREFIX";
-#### rm -rf "$NPM_CONFIG_PREFIX";
+rm -rf "$NPM_CONFIG_PREFIX";
 mkdir -p "$NPM_CONFIG_PREFIX";
 if [[ ! -z "${FLX_VERBOSE}" ]]; then
 echo "-----> NPM CONFIG PREFIX: $(npm config get prefix)";
@@ -113,7 +115,8 @@ lss "$NPM_CONFIG_PREFIX/lib/node_modules";
 fi
 
 export NPM_CONFIG_CACHE="${FLOX_CACHE_DIR}/NPM_CACHE";
-#### rm -rf "$NPM_CONFIG_CACHE";
+rm -rf "$NPM_CONFIG_CACHE";
+#### rm -rf "$NPM_CONFIG_CACHE/_cacache/"
 mkdir -p "$NPM_CONFIG_CACHE";
 if [[ ! -z "${FLX_VERBOSE}" ]]; then
 echo "-----> NPM CONFIG CACHE: $(npm config get cache)"
@@ -129,36 +132,41 @@ export NODE_PATH="$NPM_CONFIG_PREFIX/lib/node_modules${NODE_PATH:+:$NODE_PATH}";
 
 #if [[ ! -v FLX_VERBOSE ]]; then
 ## unset
-#npm install -g sfw --foreground-scripts
+#npm install -g sfw --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root
 #elif [[ -z "${FLX_VERBOSE}" ]]; then
 ## empty
-#npm install -g sfw --foreground-scripts
+#npm install -g sfw --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root
 #else
-#npm install -g sfw --foreground-scripts 1>/dev/null
+#npm install -g sfw --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root 1>/dev/null
 #fi
-npm install --ignore-scripts --foreground-scripts -g sfw
+npm install --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root -g sfw
 
 export PATH="$NPM_CONFIG_PREFIX/bin:$PATH";
 [[ ! -z "${FLX_VERBOSE}" ]] && ls -alshFR --color=auto "$NPM_CONFIG_PREFIX/lib/node_modules/sfw/.sfw-cache"
 
 #if [[ ! -v FLX_VERBOSE ]]; then
 ## unset
-#sfw npm install -g npm --foreground-scripts
-#sfw npm install -g npm-check-updates --foreground-scripts
-## sfw npm install -g @electron/asar --foreground-scripts
+#sfw npm install -g npm --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root
+#sfw npm install -g npm-check-updates --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root
+## sfw npm install -g @electron/asar --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root
 #elif [[ -z "${FLX_VERBOSE}" ]]; then
 ## empty
-#sfw npm install -g npm --foreground-scripts
-#sfw npm install -g npm-check-updates --foreground-scripts
-## sfw npm install -g @electron/asar --foreground-scripts
+#sfw npm install -g npm --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root
+#sfw npm install -g npm-check-updates --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root
+## sfw npm install -g @electron/asar --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root
 #else
-#sfw npm install -g npm --foreground-scripts 1>/dev/null
-#sfw npm install -g npm-check-updates --foreground-scripts 1>/dev/null
-## sfw npm install -g @electron/asar --foreground-scripts 1>/dev/null
+#sfw npm install -g npm --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root 1>/dev/null
+#sfw npm install -g npm-check-updates --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root 1>/dev/null
+## sfw npm install -g @electron/asar --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root 1>/dev/null
 #fi
-sfw npm install --ignore-scripts --foreground-scripts -g npm
-sfw npm install --ignore-scripts --foreground-scripts -g npm-check-updates
-# sfw npm install --ignore-scripts --foreground-scripts -g @electron/asar
+
+# https://github.com/npm/cli/issues/9133
+sfw npm install --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root -g npm
+
+#sfw npm install --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root -g npm-check-updates
+#sfw npm install --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root -g @electron/asar
+
+[[ ! -z "${FLX_VERBOSE}" ]] && ls -alshFR --color=auto "$NPM_CONFIG_PREFIX/lib/node_modules/sfw/.sfw-cache"
 
 '''
 
@@ -247,7 +255,7 @@ echo "-----> USE_LEGACY_TYPESCRIPT_LOADER: ${USE_LEGACY_TYPESCRIPT_LOADER}";
 echo "-----> THORIUM_TELEMETRY_SECRET: ${THORIUM_TELEMETRY_SECRET}";
 echo "-----> THORIUM_TELEMETRY_URL: ${THORIUM_TELEMETRY_URL}";
 echo "-----> PACKAGING: ${PACKAGING}";
-echo "-----> GITHUB_TOKEN_RELEASE_PUBLISH: ${GITHUB_TOKEN_RELEASE_PUBLISH}";
+echo "-----> RELEASE_TAG: ${RELEASE_TAG}";
 echo "-----> VSCODE_LAUNCH: ${VSCODE_LAUNCH}";
 echo "-----> PORT_APP: ${PORT_APP}";
 echo "-----> PORT_READER: ${PORT_READER}";

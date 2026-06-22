@@ -14,6 +14,7 @@ import {
     customizationActions,
     screenReaderActions,
     opdsActions,
+    winCommonActions,
 } from "readium-desktop/common/redux/actions";
 import { syncFactory } from "readium-desktop/renderer/common/redux/middleware/syncFactory";
 
@@ -27,7 +28,6 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     readerActions.openRequest.ID,
     readerActions.closeRequest.ID,
     readerActions.detachModeRequest.ID,
-    readerActions.setReduxState.ID,
     // readerActions.saveBookmarkRequest.ID,
     // readerActions.fullScreenRequest.ID,
 
@@ -52,6 +52,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     readerActions.configSetDefault.ID, // readerConfig
 
     publicationActions.readingFinished.ID,
+    publicationActions.openFolder.ID,
     themeActions.setTheme.ID,
 
     // readerActions.bookmark.pop.ID,
@@ -69,6 +70,9 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     creatorActions.set.ID,
 
     settingsActions.enableAPIAPP.ID,
+    settingsActions.minimizeLibraryToTray.ID,
+    settingsActions.lcpAutoDeleteExpiredPublications.ID,
+    settingsActions.lcpAutoDeleteExpiredPublicationsForced.ID,
 
     noteExport.overrideHTMLTemplate.ID,
 
@@ -82,6 +86,12 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     authActions.logout.ID,
 
     opdsActions.refresh.ID,
+
+    winCommonActions.initSuccess.ID,
+    
+    catalogActions.setUserDirectory.ID,
+    catalogActions.openDefaultDirectory.ID,
+    catalogActions.openUserDirectory.ID,
 ];
 
 export const reduxSyncMiddleware = syncFactory(SYNCHRONIZABLE_ACTIONS);

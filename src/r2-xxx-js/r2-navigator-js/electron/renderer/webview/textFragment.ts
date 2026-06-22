@@ -10,11 +10,11 @@ import { TextFragment } from "../../common/selection";
 // https://github.com/Treora/text-fragments-ts
 
 // TypeScript port of:
-// https://github.com/GoogleChromeLabs/text-fragments-polyfill/tree/9aa1db5d7ca1d965a7565edc074335be39fdb887
+// https://github.com/GoogleChromeLabs/text-fragments-polyfill/tree/abc6ed408b3f20e91d9cbda9977748459f5e3877
 // (functionalities removed: timeout  and word-boundary forced alignment)
 
-// https://github.com/GoogleChromeLabs/text-fragments-polyfill/compare/def94c50993b155fa831038ebd74ba6f4ab299e3...main
-// https://github.com/GoogleChromeLabs/text-fragments-polyfill/blob/9aa1db5d7ca1d965a7565edc074335be39fdb887/src/fragment-generation-utils.js#L177
+// https://github.com/GoogleChromeLabs/text-fragments-polyfill/compare/abc6ed408b3f20e91d9cbda9977748459f5e3877...main
+// https://github.com/GoogleChromeLabs/text-fragments-polyfill/blob/abc6ed408b3f20e91d9cbda9977748459f5e3877/src/fragment-generation-utils.js#L177
 // doGenerateFragmentFromRange() ... but without expandRangeStart/EndToWordBound() etc.
 // ... and bug fixes:
 // https://github.com/GoogleChromeLabs/text-fragments-polyfill/issues/161
@@ -26,6 +26,17 @@ import { TextFragment } from "../../common/selection";
 
 const FORCE_WORD_ALIGNMENT = false;
 const USE_SEGMENTER = true;
+
+const TEXT_FRAGMENT_REGEXP = /^(?:(.+?)-,)?(?:(.+?))(?:,([^-]+?))?(?:,-(.+?))?$/;
+// :~:text=
+export const parseTextFragmentDirective = (textFragment: string) => {
+    return {
+        prefix: decodeURIComponent(textFragment.replace(TEXT_FRAGMENT_REGEXP, "$1")),
+        textStart: decodeURIComponent(textFragment.replace(TEXT_FRAGMENT_REGEXP, "$2")),
+        textEnd: decodeURIComponent(textFragment.replace(TEXT_FRAGMENT_REGEXP, "$3")),
+        suffix: decodeURIComponent(textFragment.replace(TEXT_FRAGMENT_REGEXP, "$4")),
+    };
+};
 
 // type ElementWithoutTextContent = Omit<Element, "textContent">;
 // type NodeWithoutTextContent = Omit<Element, "textContent">;
@@ -68,7 +79,7 @@ const BLOCK_ELEMENTS = [
 ];
 
 const makeNewSegmenter = (): Intl.Segmenter => {
-    const lang = window.document.documentElement.lang || navigator.languages;
+    const lang = window.document.documentElement.lang || navigator.language;
     return new Intl.Segmenter(lang, { granularity: "word" });
 };
 
@@ -118,9 +129,9 @@ const isNodeVisible = (node: Node): boolean => {
         const nodeStyle = window.getComputedStyle(elt as Element);
         if (nodeStyle.visibility === "hidden"
             || nodeStyle.display === "none" ||
-            parseInt(nodeStyle.height, 10) === 0 ||
-            parseInt(nodeStyle.width) === 0 ||
-            parseInt(nodeStyle.opacity) === 0) {
+            parseInt(nodeStyle.height, 10) === 0 && nodeStyle.overflowY !== "visible" ||
+            parseInt(nodeStyle.width, 10) === 0 && nodeStyle.overflowX !== "visible" ||
+            parseInt(nodeStyle.opacity, 10) === 0) {
             return false;
         }
     }
@@ -239,9 +250,11 @@ export const convertTextFragmentToRanges = (textFragment: TextFragment, documant
                 return undefined;
             }
 
-            const data = normalizeString(getTextContent(textNodes, 0, undefined));
+            const startOffset = textNodes[0] === range.startContainer ? range.startOffset : 0;
+            const data = normalizeString(getTextContent(textNodes, startOffset, undefined));
             const normalizedQuery = normalizeString(query);
-            let searchStart = textNodes[0] === range.startContainer ? range.startOffset : 0;
+            let searchStart = 0;
+
             let start: ReturnType<typeof getBoundaryPointAtIndex> | undefined;
             let end: ReturnType<typeof getBoundaryPointAtIndex> | undefined;
             while (searchStart < data.length) {
@@ -254,8 +267,10 @@ export const convertTextFragmentToRanges = (textFragment: TextFragment, documant
                 //     start = getBoundaryPointAtIndex(matchIndex, textNodes, false);
                 //     end = getBoundaryPointAtIndex(matchIndex + normalizedQuery.length, textNodes, true);
                 // }
-                start = getBoundaryPointAtIndex(matchIndex, textNodes, false);
-                end = getBoundaryPointAtIndex(matchIndex + normalizedQuery.length, textNodes, true);
+                const normalizedStartOffset = normalizeString(textNodes[0].data.slice(0, startOffset)).length;
+                start = getBoundaryPointAtIndex(normalizedStartOffset + matchIndex, textNodes, false);
+
+                end = getBoundaryPointAtIndex(normalizedStartOffset + matchIndex + normalizedQuery.length, textNodes, true);
 
                 if (start && end) {
                     const documant = start.node.ownerDocument || window.document;

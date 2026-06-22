@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import * as publicationInfoReaderAndLib from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfoReaderAndLib";
 import * as publicationInfoSyncTag from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfosSyncTags";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
@@ -28,7 +27,7 @@ import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysListen, ttsListen } 
 import { eventChannel, buffers } from "redux-saga";
 import { put as putTyped, take as takeTyped, select as selectTyped, call as callTyped, delay as delayTyped, spawn as spawnTyped } from "typed-redux-saga/macro";
 import { readerLocalActionReader } from "../actions";
-import { readerActions } from "readium-desktop/common/redux/actions";
+import { readerActions, winCommonActions } from "readium-desktop/common/redux/actions";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 import { resourceCacheTimer } from "readium-desktop/common/redux/sagas/resourceCache";
@@ -85,7 +84,7 @@ export function getTTSStateChannel() {
 
 export function* rootSaga() {
 
-    yield take(winActions.initRequest.ID);
+    yield take(winCommonActions.initRequest.ID);
 
     yield call(winInit.render);
 

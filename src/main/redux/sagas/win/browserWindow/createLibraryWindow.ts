@@ -9,11 +9,12 @@ import debug_ from "debug";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
 import * as path from "path";
-import { defaultRectangle, normalizeRectangle } from "readium-desktop/common/rectangle/window";
+import { normalizeWinBoundRectangle } from "readium-desktop/common/rectangle/window";
 import { diMainGet } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
+import { registerWindowsLibraryTray } from "readium-desktop/main/tools/libraryTray";
 import {
     _RENDERER_LIBRARY_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
@@ -22,7 +23,6 @@ import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 import { put } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 
-import { contextMenuSetup } from "@r2-navigator-js/electron/main/browser-window-tracker";
 import { WINDOW_MIN_HEIGHT, WINDOW_MIN_WIDTH } from "readium-desktop/common/constant";
 import { URL_PROTOCOL_FILEX, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
 
@@ -39,12 +39,11 @@ let libWindow: BrowserWindow = null;
 export function* createLibraryWindow(_action: winActions.library.openRequest.TAction) {
 
     // initial state apply in reducers
-    let windowBound = yield* selectTyped(
-        (state: RootState) => state.win.session.library.windowBound);
-    windowBound = normalizeRectangle(windowBound);
-    if (!windowBound) {
-        windowBound = defaultRectangle();
-    }
+    const libraryWindowState = yield* selectTyped(
+        (state: RootState) => state.win.session.library);
+    let windowBound = libraryWindowState.windowBound;
+    windowBound = normalizeWinBoundRectangle(windowBound);
+    const windowMaximized = libraryWindowState.windowMaximized;
 
     libWindow = new BrowserWindow({
         ...windowBound,
@@ -64,13 +63,14 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         },
         icon: path.join(__dirname, "assets/icons/icon.png"),
     });
+    debug("LibraryWindow new BrowserWindow instancied");
+    registerWindowsLibraryTray(libWindow);
 
-    if (ENABLE_DEV_TOOLS) {
-        const wc = libWindow.webContents;
-        contextMenuSetup(wc, wc.id);
+    yield put(winActions.session.registerLibrary.build(libWindow, windowBound, windowMaximized));
+
+    if (windowMaximized) {
+        libWindow.maximize();
     }
-
-    yield put(winActions.session.registerLibrary.build(libWindow, windowBound));
 
     const readers = yield* selectTyped(
         (state: RootState) => state.win.session.reader,
@@ -145,6 +145,8 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
 
             if (!libWindow.isDestroyed()) {
                 try {
+
+                    debug("LibraryWindow load url to the webview");
                     await libWindow.loadURL(rendererBaseUrl /*, {baseURLForDataURL, httpReferrer} */);
                 } catch (e) {
                     debug("Load url rejected", e);

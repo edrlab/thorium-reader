@@ -1,6 +1,10 @@
 // const crypto = require("crypto");
+const path = require("path");
 const tsJest = require("ts-jest");
-const tsJestTransformer = tsJest.default.createTransformer();
+const tsJestTransformer = tsJest.default.createTransformer({
+    babelConfig: false,
+    tsconfig: path.join(__dirname, "../tsconfig.jest.json"),
+});
 
 const webpackConfig = require("../webpack.config-preprocessor-directives");
 // console.log(webpackConfig.definePlugin.definitions);

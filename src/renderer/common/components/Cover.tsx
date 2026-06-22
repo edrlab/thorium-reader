@@ -21,7 +21,8 @@ import {
 } from "readium-desktop/renderer/common/logics/formatContributor";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { convertMultiLangStringToLangString, langStringIsRTL } from "readium-desktop/common/language-string";
+import { convertMultiLangStringToLangString } from "readium-desktop/common/language-string";
+import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import { useTranslator } from "../hooks/useTranslator";
 import { connect } from "react-redux";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
@@ -39,7 +40,7 @@ interface IBaseProps {
     onKeyUp?: (e: React.KeyboardEvent<HTMLImageElement>) => void;
     forwardedRef?:  React.ForwardedRef<HTMLImageElement>;
     imgRadixProp?: any;
-    hasEnded?: boolean;
+    isPublicationUnavailable?: boolean;
 }
 
 // IProps may typically extend:
@@ -51,7 +52,7 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, Transla
 }
 
 interface IState {
-    imgUrl: string,
+    imgUrl?: string | undefined,
     imgErroredOnce: boolean,
 }
 
@@ -64,7 +65,7 @@ class Cover extends React.Component<IProps, IState> {
 
         const { cover } = this.props.publicationViewMaybeOpds;
 
-        let imgUrl = "";
+        let imgUrl: string | undefined;
         if (cover) {
             const coverUrl = cover.coverUrl || cover.coverLinks[0]?.url;
             const thumbnailUrl = cover.coverUrl || cover.thumbnailLinks[0]?.url;
@@ -115,7 +116,7 @@ class Cover extends React.Component<IProps, IState> {
             needsSpinner = true;
         }
 
-        const isPublicationMissingOrDeleted = publicationViewMaybeOpds.type === "missingOrDeleted";
+        const isPublicationUnavailable = this.props.isPublicationUnavailable;
 
         // let tagString = "";
         // for (const tag of publicationViewMaybeOpds.tags) {
@@ -128,8 +129,8 @@ class Cover extends React.Component<IProps, IState> {
 
         if (this.state.imgUrl) {
             return (
-                <div className={isPublicationMissingOrDeleted ? stylesPublications.publication_missing_wrapper : ""}>
-                    {isPublicationMissingOrDeleted ?
+                <div className={isPublicationUnavailable ? stylesPublications.publication_missing_wrapper : ""}>
+                    {isPublicationUnavailable ?
                     <div className={stylesPublications.publication_missing_container}>
                         <SVG ariaHidden svg={FileBroken} className={stylesPublications.publication_missing_icon} />
                     </div>
@@ -177,8 +178,8 @@ class Cover extends React.Component<IProps, IState> {
         const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
 
         return (
-            <div className={isPublicationMissingOrDeleted ? stylesPublications.publication_missing_wrapper : ""} style={{width: "100%"}}>
-                {isPublicationMissingOrDeleted ?
+            <div className={isPublicationUnavailable ? stylesPublications.publication_missing_wrapper : ""} style={{width: "100%"}}>
+                {isPublicationUnavailable ?
                     <div className={stylesPublications.publication_missing_container}>
                         <SVG ariaHidden svg={FileBroken} className={stylesPublications.publication_missing_icon} />
                     </div>
@@ -196,14 +197,6 @@ class Cover extends React.Component<IProps, IState> {
             {/* {!this.props.publicationViewMaybeOpds.lastReadTimeStamp ?
             <div className={stylesPublications.corner}></div>
             : <></>} */}
-            {
-                    publicationViewMaybeOpds.type === "missingOrDeleted"
-                        ? <div aria-label={this.props.__("catalog.missing")} style={{ position: "absolute", width: "inherit", height: "inherit", display: "flex", alignItems: "center", justifyContent: "center", opacity: 0.7 }}>
-                            <div aria-hidden style={{ height: "70px", width: "70px", borderRadius: "50%", background: "var(--color-error-text)", padding: "10px" }}>
-                                <SVG ariaHidden svg={FileBroken} className={stylesPublications.publication_missing_icon} />
-                            </div>
-                        </div> : <></>
-            }
             {
             needsSpinner
             ?
@@ -231,11 +224,16 @@ const mapStateToProps = (state: IRendererCommonRootState) => ({
     lcp: state.lcp,
 });
 
- 
+
 const CoverWithTranslator = connect(mapStateToProps)(withTranslator(Cover));
 export default CoverWithTranslator;
 
-export const CoverWithForwardedRef = React.forwardRef<HTMLImageElement, IBaseProps>(({publicationViewMaybeOpds, coverType, ...props}, forwardedRef) => {
+export const CoverWithForwardedRef = React.forwardRef<HTMLImageElement, IBaseProps>(({
+    publicationViewMaybeOpds,
+    coverType,
+    isPublicationUnavailable,
+    ...props
+}, forwardedRef) => {
     const [__] = useTranslator();
 
     return (
@@ -245,7 +243,7 @@ export const CoverWithForwardedRef = React.forwardRef<HTMLImageElement, IBasePro
             coverType={coverType}
             forwardedRef={forwardedRef}
             imgRadixProp={props}
-            hasEnded={props.hasEnded}
+            isPublicationUnavailable={isPublicationUnavailable}
         />
     );
 });

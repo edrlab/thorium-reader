@@ -36,10 +36,9 @@ import { Link } from "@r2-shared-js/models/publication-link";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import * as ValidatedIcon from "readium-desktop/renderer/assets/icons/validated-icon.svg";
 import { TDispatch } from "readium-desktop/typings/redux";
-import { publicationActions, readerActions } from "readium-desktop/common/redux/actions";
+import { publicationActions } from "readium-desktop/common/redux/actions";
 import { connect } from "react-redux";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
 const isFixedLayout = (link: Link, publication: R2Publication): boolean => {
@@ -729,14 +728,14 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     };
 };
 
+const finishReadingDebounce = debounce((dispatch: TDispatch, pubId: string) => {
+    dispatch(publicationActions.readingFinished.build(pubId));
+}, 500);
+
 const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
         finishReading: (pubId: string) => {
-            dispatch(publicationActions.readingFinished.build(pubId));
-            dispatch(readerActions.closeRequest.build());
-
-            // just to refresh allPublicationPage.tsx
-            apiDispatch(dispatch)()("publication/readingFinishedRefresh")();
+            finishReadingDebounce(dispatch, pubId);
         },
     };
 };

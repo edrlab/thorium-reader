@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Menu",
         "closeDialog": "Fermer",
-        "importFile": "Ajouter un livre",
         "leftSlideButton": "Faire défiler vers la gauche",
         "mainContent": "Contenu principal",
         "rightSlideButton": "Faire défiler vers la droite",
@@ -46,7 +45,9 @@
             "title": "Mise à jour du logiciel {{- appName}}."
         },
         "window": {
-            "showLibrary": "Afficher la bibliothèque"
+            "showLibrary": "Afficher la bibliothèque",
+            "trayHint": "{{- appName}} reste ouvert dans la zone de notification. Cliquez sur l'icône {{- appName}} pour afficher la bibliothèque.",
+            "trayTooltip": "{{- appName}} - cliquer pour afficher ou masquer la bibliothèque"
         }
     },
     "catalog": {
@@ -89,7 +90,8 @@
         "lastRead": "Dernière lecture",
         "login": "",
         "logout": "",
-        "missing": "",
+        "missing": "Fichiers manquants",
+        "missingUnavailableDescription": "Cette publication ne peut pas être chargée car ses fichiers ne sont pas disponibles. Il faut la réimporter, ou aller dans les préférences puis dans Stockage pour ajouter ou changer le stockage additionel.",
         "moreInfo": "Plus d'informations",
         "myBooks": "Mes livres",
         "noPublicationHelpL1": "Déposez les fichiers ici",
@@ -106,6 +108,8 @@
                 "password": "Mot de passe",
                 "register": "Créer un compte",
                 "retry": "Réessayer",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Nom d'utilisateur / Adresse courriel"
             },
             "info": {
@@ -127,10 +131,12 @@
                 "state": "État"
             }
         },
+        "openFolder": "",
         "publisher": "Éditeur",
         "readBook": "Lire",
         "released": "Publié le",
         "removeFromFavorites": "Supprimer des favoris",
+        "selectTableHeaders": "Sélectionner les colonnes à afficher",
         "sort": "Trier par",
         "tag": "Mot-clé",
         "tags": "Mots-clés",
@@ -202,6 +208,7 @@
         "searchPlaceholder": "Rechercher",
         "searchTitle": "Titre, auteur, format ou mot-clé",
         "settings": "Préférences",
+        "settingsLabel": "Préférences de l'application",
         "viewMode": "Mode d'affichage"
     },
     "library": {
@@ -241,7 +248,18 @@
             "success": "Importation réussie"
         },
         "download": {
-            "error": "Le téléchargement de {{- title}} a échoué: [{{- err}}]"
+            "cancelled": "",
+            "error": "Le téléchargement de {{- title}} a échoué: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}} a déjà été ajouté.",
@@ -249,7 +267,13 @@
             "success": "L'ajout de {{- title}} est achevé."
         },
         "open": {
-            "error": "Le livre ne peut pas être ouvert : {{- err}}"
+            "error": "Le livre ne peut pas être ouvert : {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": "Données d'authentification supprimées avec succès !"
     },
@@ -566,10 +590,6 @@
                 "compact": "Clips audio préenregistrés",
                 "descriptive": "Des clips audio préenregistrés sont intégrés au contenu"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "Aucune information sur les enregistrements audio",
-                "descriptive": "Il n'est pas possible de savoir si le livre contient des  enregistrements audio"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "Audio préenregistré uniquement",
                 "descriptive": "Livre audio sans texte alternatif"
@@ -586,6 +606,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Aucune information sur les possibilités d'adaptation de l'affichage",
                 "descriptive": "Il n'est pas possible de savoir si l'apparence du texte et la mise en page peuvent être modifiées"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "Mise en page fixe",
+                "descriptive": "L'aspect du texte et la mise en page ne peuvent pas être modifiés, l'expérience de lecture est proche d'une version imprimée, mais les systèmes de lecture peuvent toujours offrir des options de zoom"
             }
         }
     },
@@ -641,6 +665,7 @@
         "expiredLcp": "Ce livre ne peut être lu car la licence LCP a expiré.",
         "incorrectPassphrase": "Aucune clé LCP enregistrée ne correspond à la publication ou la clé saisie est incorrecte.",
         "lcpEnd": "Fin",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Caractères copiés",
         "lcpRightsPrint": "Pages imprimées",
         "lcpStart": "Début",
@@ -678,6 +703,11 @@
             },
             "annotationsOptions": "Notes Options",
             "date": "Date de modification",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "Sauvegarder sous",
             "filter": {
                 "all": "Tous",
@@ -692,7 +722,7 @@
             "highlight": "Surligner",
             "noSelectionToast": "Aucun texte sélectionné",
             "note": "Note {{- color}}",
-            "quickAnnotations": "Annotation rapide (sans édition)",
+            "quickAnnotations": "Création rapide (sans édition)",
             "saveNote": "Sauvegarder",
             "sorting": {
                 "lastcreated": "Dernier créé",
@@ -758,7 +788,9 @@
             "skipDescription": "Omettre les sauts de pages, notes de de bas de page etc.",
             "speed": "Vitesse de lecture",
             "stop": "Arrêt",
-            "title": "Lire à haute voix"
+            "title": "Lire à haute voix",
+            "useTTSHighlightsForMO": "Surlignage personalisé",
+            "useTTSHighlightsForMODescription": "Désactiver les styles de l'éditeur"
         },
         "navigation": {
             "ZenModeExit": "Sortir du mode Zen",
@@ -785,11 +817,13 @@
             "printDisabled": "Impression non autorisée",
             "screenNext": "Avancer",
             "screenPrevious": "Reculer",
-            "settingsTitle": "Préférences"
+            "settingsTitle": "Préférences du lecteur"
         },
         "notes": {
             "colors": {
                 "cyan": "Cyan",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "Vert",
                 "orange": "Orange",
                 "purple": "Violet",
@@ -838,6 +872,7 @@
             },
             "customFontSelected": "Vous avez sélectionné une police personnelle",
             "customizeReader": "Personnaliser la mise en forme",
+            "defaultValue": "",
             "disabled": "Désactivé",
             "display": "Affichage",
             "disposition": {
@@ -845,6 +880,7 @@
             },
             "font": "Police de caractères",
             "fontSize": "Taille du texte",
+            "increaseFontSize": "Augmenter la taille du texte",
             "infoCustomFont": "Vous pouvez sélectionner une police système ou personnelle en entrant son nom.",
             "justification": "Alignement",
             "justify": "Justifié",
@@ -852,6 +888,7 @@
             "lineSpacing": "Espacement des lignes",
             "margin": "Marge",
             "mathjax": "Activer MathJax",
+            "mathjaxDescription": "",
             "noFootnotes": "Désactiver la fenêtre pop-up des notes de bas de page",
             "noRTLFlip": "Désactiver l'interface droite-à-gauche",
             "noRuby": "Cacher les caractères Ruby Japonais",
@@ -882,6 +919,7 @@
                 "title": "Préférences"
             },
             "preview": "Aperçu",
+            "reduceFontSize": "Réduire la taille du texte",
             "reduceMotion": "Réduire les animations visuelles",
             "scrolled": "Défilement vertical",
             "spacing": "Espacement",
@@ -981,6 +1019,18 @@
                 "AudioPreviousAlt": {
                     "description": "Dans la fenêtre du lecteur, appelle la commande « précédent » pour l'audio (synthèse vocale, lecture à voix haute des superpositions multimédias EPUB3, ou « rembobiner » pour les livres audio). Raccourci clavier alternatif.",
                     "name": "Segment audio précédent (alternatif)"
+                },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
+                    "description": "",
+                    "name": ""
                 },
                 "AudioStop": {
                     "description": "Dans la fenêtre du lecteur, appelle la commande \"arrêter\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3, ou \"pause\" pour les livres audio).",
@@ -1203,11 +1253,59 @@
         "session": {
             "title": "Sauvegarder la session"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "Supprimer automatiquement les publications LCP inutilisables et les données locales",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Après synchronisation du statut LCP/LSD, les publications LCP expirées, rendues, révoquées ou annulées sont retirées de la bibliothèque avec leurs notes et leur état de lecture locaux. En mode personnel, l'import d'un nouvel exemplaire peut tout de même remplacer une copie précédente inutilisable en préservant ses notes et ses données de lecture lorsque c'est possible.",
+            "title": "Poste partagé"
+        },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Apparence",
             "general": "Géneral",
             "keyboardShortcuts": "Raccourcis clavier",
-            "profiles": "Profils"
+            "profiles": "Profils",
+            "storage": ""
         },
         "theme": {
             "auto": "Automatique",
@@ -1215,6 +1313,11 @@
             "description": "Le thème de l'application correspond au thème de votre système.",
             "light": "Clair",
             "title": "Thème de l'application"
+        },
+        "window": {
+            "minimizeLibraryToTray": "Réduire la bibliothèque dans la zone de notification",
+            "minimizeLibraryToTrayDescription": "Lorsque cette option est activée, réduire la fenêtre Bibliothèque garde Thorium ouvert dans la zone de notification Windows.",
+            "title": "Comportement des fenêtres"
         }
     },
     "tts": {
@@ -1243,8 +1346,7 @@
     "wizard": {
         "buttons": {
             "discover": "Découvrir Thorium Desktop",
-            "goToBooks": "Accéder à mes livres",
-            "next": "Suivant"
+            "goToBooks": "Accéder à mes livres"
         },
         "description": {
             "home": "Thorium 3.4 apporte une série d'améliorations à l'expérience utilisateur et corrige un ensemble de problèmes. Si vous décidez ultérieurement de revenir à une version antérieure de l'application, il est fortement recommandé de sauvegarder vos annotations et signets dans vos livres électroniques en les exportant vers un fichier externe. Vous pourrez ensuite les réimporter dans la version antérieure après l'avoir installée. En effet, l'application stocke les annotations et les signets dans un format interne légèrement différent dans la version 3.4. Cela résout un problème de performances, mais rompt la compatibilité ascendante pour les annotations.",
@@ -1252,8 +1354,8 @@
         },
         "dontShow": "Ne plus afficher",
         "resources": {
-            "discord": "Discord: https://discord.gg/2GnubQbE",
-            "website": "Website: https://www.thoriumreader.com"
+            "discord": "Discord: {{- url}}",
+            "website": "Website: {{- url}}"
         },
         "tab": {
             "home": "Accueil",

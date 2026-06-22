@@ -1,0 +1,6 @@
+{
+    "extends": "./tsconfig",
+    "compilerOptions": {
+        "lib": ["ES2023", "dom"]
+    }
+}

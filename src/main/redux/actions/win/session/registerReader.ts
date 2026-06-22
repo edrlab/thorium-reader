@@ -8,10 +8,9 @@
 import { BrowserWindow, Rectangle } from "electron";
 import { Action } from "readium-desktop/common/models/redux";
 import { locatorInitialState } from "readium-desktop/common/redux/states/locatorInitialState";
-import { IReaderStateReaderSession, IReaderStateReaderPersistence } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { IReaderStateReaderSession } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet } from "readium-desktop/main/di";
-import { v4 as uuidv4 } from "uuid";
 
 import {
     convertHttpUrlToCustomScheme, READIUM2_ELECTRON_HTTP_PROTOCOL,
@@ -21,24 +20,27 @@ import { readerConfigInitialState } from "readium-desktop/common/redux/states/re
 export const ID = "WIN_SESSION_REGISTER_READER";
 
 export interface Payload {
-    win: BrowserWindow;
+    readerWindow: BrowserWindow;
     publicationIdentifier: string;
-    identifier: string;
+    windowIdentifier: string;
     winBound: Rectangle;
     filesystemPath: string;
     manifestUrl: string;
     reduxStateReader: IReaderStateReaderSession;
+    windowMaximized?: boolean;
 }
 
 export function build(
-    win: BrowserWindow,
+    readerWindow: BrowserWindow,
     publicationIdentifier: string,
     publicationView: PublicationView,
     manifestUrl: string,
     filesystemPath: string,
-    winBound: Rectangle,
-    reduxStateReader: Partial<IReaderStateReaderPersistence>,
-    identifier: string = uuidv4()):
+    winBound: Rectangle, // window rectangle of the current reader window
+    // reduxStateReader: Partial<IReaderStateReaderPersistence>,
+    windowIdentifier: string,
+    windowMaximized?: boolean,
+    ):
     Action<typeof ID, Payload> {
 
     // we lose purity !!
@@ -56,7 +58,7 @@ export function build(
             disableRTLFlip,
             locator: locatorInitialState,
         },
-        ...reduxStateReader,
+        // ...reduxStateReader,
         ...{
             info: {
                 filesystemPath,
@@ -75,13 +77,14 @@ export function build(
     return {
         type: ID,
         payload: {
-            win,
+            readerWindow,
             publicationIdentifier,
             manifestUrl,
             filesystemPath,
             winBound,
-            identifier,
+            windowIdentifier,
             reduxStateReader: reduxStateReaderHydrated,
+            windowMaximized,
         },
     };
 }

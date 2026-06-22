@@ -46,6 +46,7 @@ import { arrayReducer } from "readium-desktop/utils/redux-reducers/array.reducer
 import { ICustomizationProfileHistory } from "readium-desktop/common/redux/states/customization";
 import { customizationPackageWelcomeScreenReducer } from "readium-desktop/common/redux/reducers/customization/welcomeScreen";
 import { customizationPackageManifestReducer } from "readium-desktop/common/redux/reducers/customization/manifest";
+import { directoryReducer } from "readium-desktop/common/redux/reducers/directory";
 
 export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reducer<Partial<ILibraryRootState>>
     return combineReducers({ // ILibraryRootState
@@ -98,6 +99,7 @@ export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reduc
         publication: combineReducers({
             catalog: catalogViewReducer,
             tag: tagReducer,
+            directory: directoryReducer,
         }),
         wizard: wizardReducer,
         creator: creatorReducer,

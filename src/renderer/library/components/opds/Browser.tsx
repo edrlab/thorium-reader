@@ -43,7 +43,7 @@ class Browser extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<IProps>  {
         // const secondaryHeader = <Header/>;
         // const breadCrumb = <BreadCrumb />;
-        const search = <SearchForm />;
+        const search = this.props.search ? <SearchForm /> : null;
         const catalogTitle = this.props.breadrumb[1]?.name;
         const lastBreadCrumb = this.props.breadrumb[this.props.breadrumb.length - 1];
         const previousLocation = this.props.breadrumb[this.props.breadrumb.length - 2];
@@ -72,6 +72,7 @@ class Browser extends React.Component<IProps, undefined> {
 
 const mapStateToProps = (state: ILibraryRootState) => ({
     breadrumb: state.opds.browser.breadcrumb,
+    search: state.opds.browser.search,
     location: state.router.location,
     locale: state.i18n.locale, // refresh
 });

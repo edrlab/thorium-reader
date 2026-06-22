@@ -19,7 +19,7 @@ import { error } from "readium-desktop/main/tools/error";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, race, spawn, take } from "redux-saga/effects";
-import { delay as delayTyped, put as putTyped, race as raceTyped } from "typed-redux-saga/macro";
+import { delay as delayTyped, put as putTyped, race as raceTyped, select as selectTyped } from "typed-redux-saga/macro";
 
 // import { clearSessions } from "@r2-navigator-js/electron/main/sessions";
 import { clearSessions } from "readium-desktop/main/sessions";
@@ -32,6 +32,7 @@ import {
 import { availableLanguages } from "readium-desktop/common/services/translator";
 import { i18nActions } from "readium-desktop/common/redux/actions";
 import { URL_PROTOCOL_APP_HANDLER_OPDS, URL_PROTOCOL_APP_HANDLER_THORIUM } from "readium-desktop/common/streamerProtocol";
+import { PersistRootState, RootState } from "../states";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
@@ -229,6 +230,9 @@ export function* init() {
 function* closeProcess() {
 
     closeProcessLock.lock();
+
+    const reduxState = yield* selectTyped((store: RootState) => store);
+
     try {
         const [done] = yield* raceTyped([
             all([
@@ -251,7 +255,7 @@ function* closeProcess() {
                     }
 
                     try {
-                        yield call(needToPersistFinalState);
+                        yield call(needToPersistFinalState, reduxState as Partial<PersistRootState>);
                         debug("Success to persistState");
                     } catch (e) {
                         debug("ERROR to persistState", e);
@@ -279,7 +283,7 @@ function* closeProcess() {
                     }
                 }),
             ]),
-            delayTyped(30000), // 30 seconds timeout to force quit
+            delayTyped(60000), // 60 seconds timeout to force quit
         ]);
 
         if (!done) {

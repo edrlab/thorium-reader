@@ -11,7 +11,7 @@ import { keyboardActions, versionUpdateActions } from "readium-desktop/common/re
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put, take } from "redux-saga/effects";
-import { select as selectTyped, call as callTyped, spawn as spawnTyped} from "typed-redux-saga/macro";
+import { select as selectTyped, call as callTyped, spawn as spawnTyped, delay as delayTyped} from "typed-redux-saga/macro";
 import { RootState } from "../states";
 import { _APP_VERSION, _APP_NAME, _PACK_NAME } from "readium-desktop/preprocessor-directives";
 // import { THttpGetCallback } from "readium-desktop/common/utils/http";
@@ -36,10 +36,11 @@ import * as lcp from "./lcp";
 import * as catalog from "./catalog";
 import * as annotation from "./note";
 import * as customization from "./customization";
+import * as lcpSharedWorkstationCleanup from "./publication/lcpSharedWorkstationCleanup";
 
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { sagaCustomizationProfileProvisioning } from "./customization";
-import isURL from "validator/lib/isURL";
+import isURL from "readium-desktop/common/utils/isURL";
 import { publicationIntegrityChecker } from "./publication/checker";
 import { error } from "readium-desktop/main/tools/error";
 
@@ -83,6 +84,7 @@ export function* rootSaga() {
     // Integrity checker for publications between FS and DB
     yield* spawnTyped(function* () {
         try {
+            yield* delayTyped(1000 * 10); // wait 10 seconds before starting the checker
             yield* callTyped(publicationIntegrityChecker);
         } catch (e) {
             error(filename_, e);
@@ -132,6 +134,9 @@ export function* rootSaga() {
     // LCP saga
     yield lcp.saga();
 
+    // Shared workstation LCP cleanup saga
+    yield lcpSharedWorkstationCleanup.saga();
+
     // Annotation saga
     yield annotation.saga();
 
@@ -164,9 +169,9 @@ export function* rootSaga() {
     // enjoy the app !
     yield put(winActions.library.openRequest.build());
 
-    // call telemetry before app init state
-    // need to track the previous state version before update in initSuccess.build
-    yield call(telemetry.collectSaveAndSend);
+    // spawn telemetry after library window ready and initialized
+    // but with the hydrated reduxState version before his update from the appActions.initSuccess action with _APP_VERSION
+    const versionFromHydratedGlobalState = yield* selectTyped((state: RootState) => state.version);
 
     // app initialized
     yield put(appActions.initSuccess.build());
@@ -174,12 +179,16 @@ export function* rootSaga() {
     // wait library window fully opened before to throw events
     yield take(winActions.library.openSucess.ID);
 
-    if (!process.windowsStore && _APP_NAME === "Thorium" && _PACK_NAME === "EDRLab.ThoriumReader") {
-        yield call(checkAppVersionUpdate);
-    }
-
     // open reader from CLI or open-file event on MACOS
     yield events.saga();
+
+    // spawn appVersion update checker in background
+    if (!process.windowsStore && _APP_NAME === "Thorium" && _PACK_NAME === "EDRLab.ThoriumReader") {
+        yield* spawnTyped(checkAppVersionUpdate);
+    }
+
+    // spawn telemetry in background
+    yield* spawnTyped(telemetry.collectSaveAndSend, versionFromHydratedGlobalState);
 }
 
 function* checkAppVersionUpdate() {
@@ -209,7 +218,7 @@ function* checkAppVersionUpdate() {
             // headers.append("user-agent", "thorium-desktop");
             // headers.append("accept-language", `${locale},en-US;q=0.7,en;q=0.5`);
 
-            // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+            // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
             if (!url || !isURL(url)) {
                 debug("isURL() NOK", url);
                 return undefined;

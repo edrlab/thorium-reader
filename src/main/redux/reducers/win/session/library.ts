@@ -13,6 +13,7 @@ import { IWinSessionLibraryState } from "readium-desktop/main/redux/states/win/s
 const initialState: IWinSessionLibraryState = {
     browserWindowId: undefined,
     windowBound: undefined,
+    windowMaximized: undefined,
     identifier: undefined,
 };
 
@@ -30,7 +31,8 @@ function winSessionLibraryReducer_(
                 ...{
                     browserWindowId: action.payload.win.id,
                     identifier: action.payload.identifier,
-                    windowBound: action.payload.winBound,
+                    windowBound: {...action.payload.winBound},
+                    windowMaximized: action.payload.windowMaximized,
                 },
             };
 
@@ -44,11 +46,14 @@ function winSessionLibraryReducer_(
             };
 
         case winActions.session.setBound.ID:
-            if (state.identifier === action.payload.identifier) {
+            if (state.identifier === action.payload.windowIdentifier) {
                 return {
                     ...state,
                     ...{
-                        windowBound: action.payload.bound,
+                        windowBound: {...action.payload.winBound},
+                        ...(action.payload.windowMaximized === undefined ? {} : {
+                            windowMaximized: action.payload.windowMaximized,
+                        }),
                     },
                 };
             }

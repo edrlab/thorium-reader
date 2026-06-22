@@ -11,7 +11,7 @@ import { extname } from "path";
 import { JsonMap } from "readium-desktop/typings/json";
 import { iso8601DurationsToSeconds } from "readium-desktop/utils/iso8601";
 import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
-import { v4 as uuidV4 } from "uuid";
+import { uuidv4 as uuidV4 } from "readium-desktop/utils/uuid";
 
 import { Metadata } from "@r2-shared-js/models/metadata";
 import { Contributor } from "@r2-shared-js/models/metadata-contributor";

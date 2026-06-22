@@ -53,6 +53,7 @@ export interface IReadiumElectronWebviewWindowState {
     ttsHighlightColor: IColor | undefined;
     ttsHighlightStyle_WORD: number | undefined;
     ttsHighlightColor_WORD: IColor | undefined;
+    // HighlightDrawTypeNONE
     // HighlightDrawTypeBackground
     // HighlightDrawTypeUnderline
     // HighlightDrawTypeStrikethrough
@@ -60,6 +61,8 @@ export interface IReadiumElectronWebviewWindowState {
     // HighlightDrawTypeOpacityMask
     // HighlightDrawTypeOpacityMaskRuler
     // HighlightDrawTypeMarginBookmark
+
+    // mediaOverlaysUseTTSHighlights: boolean;
 
     ttsSkippabilityEnabled: boolean;
     ttsSentenceDetectionEnabled: boolean;
@@ -111,6 +114,7 @@ export interface IReadiumElectronBrowserWindow {
 
     ttsHighlightStyle_WORD: number | undefined;
     ttsHighlightColor_WORD: IColor | undefined;
+    // HighlightDrawTypeNONE
     // HighlightDrawTypeBackground
     // HighlightDrawTypeUnderline
     // HighlightDrawTypeStrikethrough
@@ -118,6 +122,8 @@ export interface IReadiumElectronBrowserWindow {
     // HighlightDrawTypeOpacityMask
     // HighlightDrawTypeOpacityMaskRuler
     // HighlightDrawTypeMarginBookmark
+
+    mediaOverlaysUseTTSHighlights: boolean;
 
     ttsSkippabilityEnabled: boolean;
     ttsSentenceDetectionEnabled: boolean;

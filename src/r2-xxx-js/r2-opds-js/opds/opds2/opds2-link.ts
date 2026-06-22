@@ -41,5 +41,5 @@ export class OPDSLink extends Link {
     // tslint:disable-next-line:max-line-length
     // https://github.com/opds-community/drafts/blob/aa414dc7150588dbb422be2c643a7a74fec6e64d/schema/properties.schema.json
     @JsonProperty(PROPERTIES_JSON_PROP)
-    public Properties!: OPDSProperties;
+    public declare Properties: OPDSProperties;
 }

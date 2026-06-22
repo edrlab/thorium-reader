@@ -223,7 +223,7 @@ export const initProtocols = () => {
     // debug(urlPathDecoded);
     const pubStorage = diMainGet("publication-storage");
     const [pubId, fileName] = urlPath.trim().split("/");
-    const pubPath = await pubStorage.findPublicationPath(pubId);
+    const pubPath = await pubStorage.getPublicationPath(pubId);
     const filePath = path.join(pubPath, fileName);
     debug(filePath);
     const filePathUrl = pathToFileURL(filePath).toString();

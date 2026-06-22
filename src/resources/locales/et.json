@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Menüü",
         "closeDialog": "Sulge",
-        "importFile": "Impordi teos",
         "leftSlideButton": "Viipa vasakule",
         "mainContent": "põhiline sisu",
         "rightSlideButton": "Viipa paremale",
@@ -12,7 +11,7 @@
     "apiapp": {
         "documentation": "Thoriumi juhend",
         "howItWorks": "Kuidas see toimib?",
-        "informations": "",
+        "informations": "Prantsusmaal pakuvad paljud avalikud raamatukogud masinloetavat kataloogi (sarnane OPDS-iga, kuid mitte identne), mis võimaldab lugejatel alla laadida digitaalseid väljaandeid oma isiklikust raamaturiiulist. Selle tehnoloogia lõimimine Thorium Readerisse võimaldab sul e-raamatu või heliraamatu otse Thorium Readerisse alla laadida ja kohe lugema/kuulama hakata.\nKuidas ühendada oma prantsuse avaliku raamatukogu konto Thorium Readeriga? See on lihtne. Sisesta otsinguväljale Prantsuse linn („Paris“) või osa raamatukogu nimest ja vajuta nuppu „Otsi“. Ilmub sinu otsingule vastavate avalike raamatukogude loend. Vali raamatukogu ja vajuta nuppu „Lisa“. Uuendatud kataloogide nimekirjas vali see raamatukogu: kuvatakse autentimisvorm. Sisesta oma kasutajanimi/e-posti aadress ja salasõna ning vajuta nuppu „Logi sisse“. Nüüd näed oma isikliku raamaturiiuli sisu, kust saad alla laadida ja lugeda varem laenatud e-raamatuid ja heliraamatuid.",
         "noLibraryFound": "Raamatukogu ei leidu ({{- name}})"
     },
     "app": {
@@ -35,24 +34,26 @@
                         "no": "Ei",
                         "yes": "Jah"
                     },
-                    "help": "",
-                    "message": "",
-                    "title": ""
+                    "help": "Selle eelistusega saad määrata, et rakenduse sulgemisel avatud lugemisaknad avataks järgmisel käivitamisel automaatselt uuesti.",
+                    "message": "Lugemisessiooni salvestamine ja taastamine",
+                    "title": "Kas salvestad sessiooni?"
                 }
             }
         },
         "update": {
-            "message": "",
-            "title": ""
+            "message": "Uus versioon on saadaval, klõpsa lisateabe lugemiseks.",
+            "title": "{{- appName}} - tarkvarauuendus."
         },
         "window": {
-            "showLibrary": ""
+            "showLibrary": "Näita oma kogu / raamaturiiulit",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
-        "AddToFavorites": "",
+        "AddToFavorites": "Lisa lemmikuks",
         "about": {
-            "title": ""
+            "title": "Rakenduse teave võrgus: {{- appName}}"
         },
         "addBookToLib": "Impordi",
         "addTags": "Lisa silt",
@@ -67,518 +68,541 @@
         "customization": {
             "fallback": {
                 "description": "Profiili kirjeldus puudub",
-                "publications": "",
-                "screen": "",
-                "title": ""
+                "publications": "Profiili väljaanded/teosed",
+                "screen": "Pealkirja pole",
+                "title": "Profiili pealkiri"
             }
         },
-        "delete": "",
-        "deleteBook": "",
-        "deleteTag": "",
-        "description": "",
-        "emptyTagList": "",
+        "delete": "Kustuta",
+        "deleteBook": "Kustuta",
+        "deleteTag": "Kustuta silt",
+        "description": "Kirjeldus",
+        "emptyTagList": "Siltidega väljaandeid/teoseid ei leidu.",
         "entry": {
-            "continueReading": "",
-            "lastAdditions": ""
+            "continueReading": "Jätka lugemist",
+            "lastAdditions": "Hiljuti lisatud"
         },
-        "export": "",
-        "exportAnnotation": "",
-        "format": "",
-        "importAnnotation": "",
-        "lang": "",
-        "lastRead": "",
-        "login": "",
-        "logout": "",
+        "export": "Salvesta kui",
+        "exportAnnotation": "Ekspordi märkmed",
+        "format": "Vorming",
+        "importAnnotation": "Impordi märkmed",
+        "lang": "Keel",
+        "lastRead": "Viimatiloetud",
+        "login": "Logi sisse",
+        "logout": "Logi välja",
         "missing": "",
-        "moreInfo": "",
-        "myBooks": "",
-        "noPublicationHelpL1": "",
-        "noPublicationHelpL2": "",
-        "noPublicationHelpL3": "",
-        "noPublicationHelpL4": "",
-        "numberOfPages": "",
+        "missingUnavailableDescription": "",
+        "moreInfo": "Väljaande üksiksasjad",
+        "myBooks": "Minu raamatud",
+        "noPublicationHelpL1": "Lohista failid siia",
+        "noPublicationHelpL2": "Või kasuta „{{- importTitle }}“ nuppu ülalt.",
+        "noPublicationHelpL3": "LCP-kaitsega väljaanded on toetatud.",
+        "noPublicationHelpL4": "Toetatud laiendused:",
+        "numberOfPages": "Lehtede arv",
         "opds": {
             "auth": {
-                "cancel": "",
-                "external": "",
-                "fallback": "",
-                "login": "",
-                "password": "",
-                "register": "",
-                "retry": "",
-                "username": ""
+                "cancel": "Katkesta",
+                "external": "Sisselogimisleht avaneb sinu veebibrauseris, palun järgi sealseid juhiseid. Pärast sisselogimist suunab veebibrauser sind tagasi sellesse rakendusse.",
+                "fallback": "Märkus: kui sisselogimisel tekib probleeme vaikimisi meetodiga veebibrauseri kaudu, proovi uuesti rakenduse siseselt.",
+                "login": "Logi sisse",
+                "password": "Salasõna",
+                "register": "Registreeru",
+                "retry": "Proovi uuesti",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
+                "username": "Kasutajanimi / e-posti aadress"
             },
             "info": {
-                "availableSince": "",
+                "availableSince": "Alates",
                 "availableState": {
-                    "available": "",
-                    "ready": "",
-                    "reserved": "",
-                    "unavailable": "",
-                    "unknown": ""
+                    "available": "Saadaval",
+                    "ready": "Valmis",
+                    "reserved": "Reserveeritud",
+                    "unavailable": "Pole saadaval",
+                    "unknown": "Tundmatu"
                 },
-                "availableUntil": "",
-                "copyAvalaible": "",
-                "copyTotal": "",
-                "holdPosition": "",
-                "holdTotal": "",
-                "numberOfItems": "",
-                "priveValue": "",
-                "state": ""
+                "availableUntil": "Kuni",
+                "copyAvalaible": "Saadaval",
+                "copyTotal": "Koopiaid",
+                "holdPosition": "Broneeringu olek",
+                "holdTotal": "Broneeritud",
+                "numberOfItems": "Kirjete arv",
+                "priveValue": "Hind",
+                "state": "Olek"
             }
         },
-        "publisher": "",
-        "readBook": "",
-        "released": "",
-        "removeFromFavorites": "",
-        "sort": "",
-        "tag": "",
-        "tags": "",
-        "update": ""
+        "openFolder": "",
+        "publisher": "Kirjastus",
+        "readBook": "Loe",
+        "released": "Avaldamise kuupäev",
+        "removeFromFavorites": "Eemalda lemmikute seast",
+        "selectTableHeaders": "Vali kuvatavad veerud",
+        "sort": "Järjestus",
+        "tag": "Silt",
+        "tags": "Sildid",
+        "update": "Muuda"
     },
     "dialog": {
         "annotations": {
-            "descAuthor": "",
-            "descCreator": "",
+            "descAuthor": "autorilt {{- author}}",
+            "descCreator": "loojalt",
             "descList_one": "{{- count}} märge kasutajalt „{{- creator}}“ imporditakse teosesse „{{- title}}“, mille autor on „{{- author}}“",
             "descList_other": "{{- count}} märget kasutajalt „{{- creator}}“ imporditakse teosesse „{{- title}}“, mille autor on „{{- author}}“",
             "descNewer_one": "Vastuolu: {{- count}} uuem märge",
             "descNewer_other": "Vastuolu: {{- count}} uuemat märget",
             "descOlder_one": "Vastuolu: {{- count}} vanem märge",
             "descOlder_other": "Vastuolu: {{- count}} vanemat märget",
-            "descTitle": "",
-            "importAll": "",
-            "importWithoutConflict": "",
-            "origin": "",
-            "title": ""
+            "descTitle": "Märkmete pealkiri: ",
+            "importAll": "Impordi kõik märkmed",
+            "importWithoutConflict": "Impordi vaid konfliktideta märkmed",
+            "origin": "Algne väljaanne: '{{- title}}' {{- author}}",
+            "title": "Kas impordid märkmed?"
         },
-        "cancel": "",
+        "cancel": "Katkesta",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
-                "state": "",
-                "title": ""
+                "fallbackWelcomeScreen": "Tervitusvaade pole lisatud",
+                "state": "Olek: {{- state}}",
+                "title": "Kohandatud profiili ettevalmistamine ja aktiveerimine"
             }
         },
-        "deleteAnnotations": "",
+        "deleteAnnotations": "Kas kustutad märlmed?",
         "deleteAnnotationsText_one": "Kas oled kindel, et soovid {{- count}} märke kustutada?",
         "deleteAnnotationsText_other": "Kas oled kindel, et soovid {{- count}} märget kustutada?",
-        "deleteBookmarks": "",
+        "deleteBookmarks": "Kas kustutad järjehoidjad?",
         "deleteBookmarksText_one": "Kas oled kindel, et soovid {{- count}} järjehoidja kustutada?",
         "deleteBookmarksText_other": "Kas oled kindel, et soovid {{- count}} järjehoidjat kustutada?",
-        "deleteFeed": "",
-        "deletePublication": "",
-        "deletePublicationWithNotes": "",
-        "import": "",
-        "importError": "",
-        "renew": "",
-        "return": "",
-        "yes": ""
+        "deleteFeed": "Kas kustutad kataloogi?",
+        "deletePublication": "Kas kustutad raamatu?",
+        "deletePublicationWithNotes": "Hoiatus: sellel väljaandel leidub märkmeid ja/või järjehoidjaid ning need kustutatakse samuti! (kui soovid neid säilitada, ekspordi märkmed enne väljaande eemaldamist)",
+        "import": "Kinnita importimine:",
+        "importError": "Tekkis viga, kontrolli {{acceptedExtension}} laiendust",
+        "renew": "Kas pikendad laenutust?",
+        "return": "Kas tagastad raamatu?",
+        "yes": "Jah"
     },
     "error": {
         "errorBox": {
-            "error": "",
-            "message": "",
-            "title": ""
+            "error": "Veateade:",
+            "message": "Viga failis: {{- filename}}",
+            "title": "{{- appName}} - sisemine viga"
         }
     },
     "header": {
-        "allBooks": "",
-        "catalogs": "",
-        "downloads": "",
-        "fitlerTagTitle": "",
-        "gridTitle": "",
-        "home": "",
-        "homeTitle": "",
-        "importTitle": "",
-        "listTitle": "",
-        "myCatalogs": "",
-        "refreshTitle": "",
-        "searchPlaceholder": "",
-        "searchTitle": "",
-        "settings": "",
-        "viewMode": ""
+        "allBooks": "Kõik väljaanded",
+        "catalogs": "Kataloogid",
+        "downloads": "Allalaadimised",
+        "fitlerTagTitle": "Filtreeri sildi alusel",
+        "gridTitle": "Ruudustik",
+        "home": "Raamaturiiuli menüü",
+        "homeTitle": "Avaleht",
+        "importTitle": "Impordi väljaanne/teos",
+        "listTitle": "Tabel",
+        "myCatalogs": "Minu kataloogid",
+        "refreshTitle": "laadi uuesti",
+        "searchPlaceholder": "Otsi",
+        "searchTitle": "Otsi",
+        "settings": "Seadistused",
+        "settingsLabel": "Rakenduse seadistused",
+        "viewMode": "Vaaterežiim"
     },
     "library": {
         "filter": {
-            "addFilters": "",
-            "filterBy": "",
-            "selectOption": ""
+            "addFilters": "Lisa filtreid",
+            "filterBy": "Filtreeri",
+            "selectOption": "Vali objekt"
         },
         "lcp": {
-            "hidePassphrase": "",
-            "hint": "",
-            "open": "",
-            "password": "",
-            "sentence": "",
-            "showPassphrase": "",
-            "urlHint": "",
-            "whatIsLcp?": "",
-            "whatIsLcpInfoDetails": "",
-            "whatIsLcpInfoDetailsLink": ""
+            "hidePassphrase": "Peida salafraas",
+            "hint": "Vihje:",
+            "open": "Ava",
+            "password": "Salasõna",
+            "sentence": "See väljaanne vaja avamiseks LCP salafraasi/salasõna",
+            "showPassphrase": "Näita salafraasi",
+            "urlHint": "Kas unustasid salafraasi/salasõna? Kasutatajatugi on siin.",
+            "whatIsLcp?": "Mis on LCP?",
+            "whatIsLcpInfoDetails": "LCP tähendab „Licensed Content Protection“ (litsentseeritud sisu kaitse). Tegemist on digitaalse sisu piraatkopeerimise vastu kaitsva tehnoloogiaga, mida nimetatakse sageli DRM-iks. LCP-ga kaitstud raamatu avamiseks on vaja LCP-võtit, st ühte või mitut tühikutega eraldatud sõna. LCP on avatud standard, mis loob tasakaalu kasutusmugavuse ja kirjastajate nõudmiste vahel.",
+            "whatIsLcpInfoDetailsLink": "Lisateavet leiad siit EDRLabi veebisaidi lingist."
         },
         "sorting": {
-            "addSorting": "",
-            "author": "",
-            "language": "",
-            "readingState": "",
-            "sortBy": "",
-            "title": ""
+            "addSorting": "Lisa järjestus",
+            "author": "Autor",
+            "language": "Keel",
+            "readingState": "Lugemise olek",
+            "sortBy": "Järjestus: ",
+            "title": "Pealkiri"
         }
     },
     "message": {
         "annotations": {
-            "alreadyImported": "",
-            "emptyFile": "",
-            "errorParsing": "",
-            "noBelongTo": "",
-            "nothing": "",
-            "success": ""
+            "alreadyImported": "Kõik märkmed on juba imporditud.",
+            "emptyFile": "Failis pole märkmeid.",
+            "errorParsing": "Viga faili töötlemisel: ",
+            "noBelongTo": "Märkmete importimine ei õnnestu - vähemalt üks märge pole väljaandega seotud.",
+            "nothing": "Pole ühtegi imporditavat märget, katkestan impordi",
+            "success": "Importimine õnnestus kenasti."
         },
         "download": {
-            "error": ""
+            "cancelled": "",
+            "error": "„{{- title}}“ väljaande allalaadimine ei õnnestunud: {{- err}}",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
-            "alreadyImport": "",
-            "fail": "",
-            "success": ""
+            "alreadyImport": "„{{- title}}“ on juba imporditud.",
+            "fail": "„{{- path}}“ objekti importimine ei õnnestunud: {{- err}}",
+            "success": "„{{- title}}“ väljaande importimine sai kenasti tehtud."
         },
         "open": {
-            "error": ""
+            "error": "Väljaande/teise laadimine ei õnnestunud: {{- err}}",
+            "folderNotFound": ""
         },
-        "wipeData": ""
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
+        },
+        "wipeData": "Sisselogimisandmed on eemaldatud (tunnusload ja küpsised)"
     },
     "opds": {
         "addForm": {
-            "addButton": "",
-            "name": "",
-            "namePlaceholder": "",
-            "url": "",
-            "urlPlaceholder": ""
+            "addButton": "Lisa",
+            "name": "Nimi:",
+            "namePlaceholder": "Nimi",
+            "url": "Link:",
+            "urlPlaceholder": "Link"
         },
         "addFormApiapp": {
-            "title": ""
+            "title": "Lisa raamatukogu kasutajakonto"
         },
-        "addMenu": "",
-        "breadcrumbRoot": "",
-        "documentation": "",
-        "empty": "",
-        "firstPage": "",
-        "informations": "",
-        "lastPage": "",
+        "addMenu": "Lisa OPDS-voog",
+        "breadcrumbRoot": "Minu kataloogid",
+        "documentation": "OPDS-i ametlik veebisait",
+        "empty": "Väljaannet/teost/raamatut ei leidu",
+        "firstPage": "Esimene",
+        "informations": "Kujuta ette maailma, kus saad vaid paari klõpsuga avalikest raamatukogudest ja digitaalsetest raamatupoodidest avastada ja alla laadida digitaalseid väljaandeid. Just seda pakubki kataloogivorming Open Publication Distribution System (OPDS). OPDS-i abil saad sirvida erinevate e-raamatute pakkujate katalooge, registreeruda, laenata või osta väljaandeid või külastada oma isiklikku raamaturiiulit. Võid isegi laadida e-raamatu või heliraamatu otse Thorium Readerisse, et seda kohe lugeda või kuulata.\nKuidas leida OPDS-kataloogi? See on lihtne. Otsi teenusepakkuja saidist kataloogile viivat hüperlinki (võrguaadressi). Kopeeri see aadress ülalolevale lingiväljale. Pea meeles, et kõiki aktiivseid OPDS-katalooge ei ole ühte kohta koondatud. Pead võtma ühendust oma eelistatud raamatukogu või raamatumüüjaga ja küsima nende OPDS-kataloogi võrguaadresso. Kui sa ei tea, kust alustada, on Vikipedias mõned OPDS-kataloogide registrid erinevates keeltes, mis võivad abiks olla.\nVälji „Nimi“ on lisatud vaid mugavuse pärast ja võib jääda tühjaks; see lihtsalt võimaldab Thorium Readeris andmevoogu hõlpsasti tuvastada.",
+        "lastPage": "Viimane",
         "menu": {
-            "aboutBook": "",
-            "addExtract": "",
-            "goBuyBook": "",
-            "goLoanBook": "",
-            "goRevokeLoanBook": "",
-            "goSubBook": ""
+            "aboutBook": "Väljaande teave",
+            "addExtract": "Impordi näide",
+            "goBuyBook": "Osta väljaanne",
+            "goLoanBook": "Laenuta väljaanne",
+            "goRevokeLoanBook": "Tühista laenutus",
+            "goSubBook": "Telli"
         },
         "network": {
-            "error": "",
-            "noInternet": "",
-            "noInternetMessage": "",
-            "reject": "",
-            "timeout": ""
+            "error": "Viga ligipääsul andmevoole",
+            "noInternet": "Internetiühendust pole",
+            "noInternetMessage": "Proovi kontrollida võrgukaabli olekut, modemi, ruuteri ja WiFi toimimist",
+            "reject": "Vabandame, OPDS-andmevoo töötlemisel tekkis viga!",
+            "timeout": "Võrguühenduse aegumine, palun proovi hiljem uuesti"
         },
-        "next": "",
-        "previous": "",
-        "resumeBrowsing": "",
-        "shelf": "",
+        "next": "Järgmine",
+        "previous": "Eelmine",
+        "resumeBrowsing": "Jätka sirvimist",
+        "shelf": "Raamaturiiul",
         "updateForm": {
-            "name": "",
-            "title": "",
-            "updateButton": "",
-            "url": ""
+            "name": "Nimi:",
+            "title": "Muuda OPDS-andmevoogu",
+            "updateButton": "Muuda",
+            "url": "Link:"
         },
-        "whatIsOpds": ""
+        "whatIsOpds": "Mis on OPDS-andmevoog?"
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-title": ""
+            "accessibility-summary-title": "Kokkuvõte hõlbustusest ja ligipääsetavusest"
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "ARIA-rollid on kaasatud",
+                "descriptive": "Sisu on täiendatud ARIA-rollidega, et optimeerida selle ülesehitust ja hõlbustada selles liikumist"
             },
             "additional-accessibility-information-audio-descriptions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Häälkirjeldused",
+                "descriptive": "Häälkirjeldused"
             },
             "additional-accessibility-information-braille": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Punktkiri (Braille'i kiri)",
+                "descriptive": "Punktkiri (Braille'i kiri)"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Täismahus märkused Ruby-vormingus (Aasia keeled)",
+                "descriptive": "Täismahus märkused Ruby-vormingus (Aasia keeled)"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Suur kontrast esiplaanil oleva ja taustahelide vahel",
+                "descriptive": "Suur kontrast esiplaanil oleva ja taustahelide vahel"
             },
             "additional-accessibility-information-high-contrast-between-text-and-background": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Suur kontrast esiplaanil oleva ja taustateksti vahel",
+                "descriptive": "Suur kontrast esiplaanil oleva ja taustateksti vahel"
             },
             "additional-accessibility-information-large-print": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Suur kirjatüüp",
+                "descriptive": "Suur kirjatüüp"
             },
             "additional-accessibility-information-page-breaks": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Leheküljevahetuse on olemas",
+                "descriptive": "Lehevahetused on üle võetud originaaltrükisest"
             },
             "additional-accessibility-information-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Mõned märkused Ruby-vormingus (Aasia keeled)",
+                "descriptive": "Mõned märkused Ruby-vormingus (Aasia keeled)"
             },
             "additional-accessibility-information-sign-language": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Viipekeel",
+                "descriptive": "Viipekeel"
             },
             "additional-accessibility-information-tactile-graphics": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Puutegraafika on olemas",
+                "descriptive": "Pimedatele inimestele visuaalsete elementide kättesaadavuse hõlbustamiseks on lisatud reljeefgraafika (puutegraafika)"
             },
             "additional-accessibility-information-tactile-objects": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Puudutustundlikud kolmemõõtmelised objektid",
+                "descriptive": "Puudutustundlikud kolmemõõtmelised objektid"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Kõnesünteesi vihjed on lisatud",
+                "descriptive": "Kõnesünteesi vihjed on lisatud"
             },
-            "additional-accessibility-information-title": ""
+            "additional-accessibility-information-title": "Lisateave hõlbustuse kohta"
         },
         "conformance": {
             "conformance-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Käesolev väljaanne vastab hõlbustuse ja juurdepääsetavuse miinimumnõuetele",
+                "descriptive": "Väljaanne sisaldab vastavusdeklaratsiooni, mille kohaselt vastab see EPUB-i hõlbustuse ja juurdepääsetavuse standardile ning WCAG 2. taseme A-nõuetele"
             },
             "conformance-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Käesolev väljaanne vastab kehtivatele hõlbustuse ja ligipääsetavuse standarditele",
+                "descriptive": "Väljaanne sisaldab vastavusdeklaratsiooni, mille kohaselt vastab see EPUB-i hõlbustusstandardile ja WCAG 2. taseme AA-nõuetele"
             },
             "conformance-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Käesolev väljaanne ületab kehtivaid hõlbustuse ja ligipääsetavuse standardeid",
+                "descriptive": "Väljaanne sisaldab vastavusdeklaratsiooni, mille kohaselt vastab see EPUB-i hõlbustusstandardile ja WCAG 2. taseme AAA-nõuetele"
             },
             "conformance-certifier": {
-                "compact": ""
+                "compact": "Selle väljaande on sertifitseerinud "
             },
             "conformance-certifier-credentials": {
-                "compact": ""
+                "compact": "Sertifitseerija tunnus on "
             },
             "conformance-details-certifier-report": {
-                "compact": ""
+                "compact": "Lisateavet leiad sertifitseerija aruandest"
             },
             "conformance-details-claim": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Käesolev väljaanne väidab, et olemas on vastavus standardiga",
+                "descriptive": "Käesolev väljaanne väidab, et olemas on vastavus standardiga"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB-i hõlbustusstandardi versioon 1.0",
+                "descriptive": "EPUB-i hõlbustusstandardi versioon 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB-i hõlbustusstandardi versioon 1.1",
+                "descriptive": "EPUB-i hõlbustusstandardi versioon 1.1"
             },
             "conformance-details-level-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "A-tase",
+                "descriptive": "A-tase"
             },
             "conformance-details-level-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "AA-tase",
+                "descriptive": "AA-tase"
             },
             "conformance-details-level-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "AAA-tase",
+                "descriptive": "AAA-tase"
             },
             "conformance-details-wcag-2-0": {
-                "compact": ""
+                "compact": "WCAG 2.0"
             },
             "conformance-details-wcag-2-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.1",
+                "descriptive": "Veebisisu hõlbustuse juhised (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.2",
+                "descriptive": "Veebisisu hõlbustuse juhised (WCAG) 2.2"
             },
             "conformance-no": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Teave pole saadaval",
+                "descriptive": "Teave pole saadaval"
             },
-            "conformance-title": "",
+            "conformance-title": "Hõlbustusreeglite täitmine",
             "conformance-unknown-standard": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Selle väljaande vastavust kehtivatele hõlbustuse ja juurdepääsetavuse standarditele ei ole võimalik kindlaks teha",
+                "descriptive": "Selle väljaande vastavust kehtivatele hõlbustuse ja juurdepääsetavuse standarditele pole võimalik kindlaks teha"
             }
         },
         "hazards": {
             "hazards-flashing": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Vilkuv sisu",
+                "descriptive": "See väljaanne sisaldab vilkuvat sisu, mis võib põhjustada valgustundlikusest johtuvaid krampe"
             },
             "hazards-flashing-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Vilkuvat sisu pole",
+                "descriptive": "Selles väljaandes pole vilkuvat sisu"
             },
             "hazards-flashing-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Vilkuva sisu olek pole teada",
+                "descriptive": "Vilkuva sisu olek selles väljaandes pole teada"
             },
             "hazards-motion": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Simuleeritud liikumine",
+                "descriptive": "Väljaanne sisaldab liikumissimulatsioone, mis võivad põhjustada liikumistõbe"
             },
             "hazards-motion-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Simuleeritud liikumist pole",
+                "descriptive": "Selles väljaandes pole simuleeritud liikumist"
             },
             "hazards-motion-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Pole teada, kas väljaandes leidub simuleeritud liikumist",
+                "descriptive": "Pole teada, kas selles väljaandes leidub simuleeritud liikumist"
             },
             "hazards-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Teave pole saadaval",
+                "descriptive": "Teave pole saadaval"
             },
             "hazards-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ohte pole",
+                "descriptive": "Selles väljaandes ei leidu ohte"
             },
             "hazards-sound": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Helid",
+                "descriptive": "Väljaanne sisaldab helisid, mis võivad olla ebamugavad"
             },
             "hazards-sound-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Helisid pole",
+                "descriptive": "Selles väljaandes ei leidu helisid"
             },
             "hazards-sound-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Helide olemasolu pole teada",
+                "descriptive": "Helide olemasolu pole teada"
             },
-            "hazards-title": "",
+            "hazards-title": "Ohud",
             "hazards-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ohtude olemasolu pole teada",
+                "descriptive": "Ohtude olemasolu pole teada"
             }
         },
         "navigation": {
             "navigation-index": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Indeks",
+                "descriptive": "Indeks linkidega, mis viitab konkreetsele sisule"
             },
             "navigation-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Teave pole saadaval",
+                "descriptive": "Teave pole saadaval"
             },
             "navigation-page-navigation": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Võimalus avada lehti",
+                "descriptive": "Lehekülgede loend, mille kaudu saab minna trükiversiooni lehekülgedele"
             },
             "navigation-structural": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Pealkirjad",
+                "descriptive": "Struktureersed elemendid, nagu pealkirjad, tabelid jne"
             },
-            "navigation-title": "",
+            "navigation-title": "Liikumine rakenduses või väljaandes",
             "navigation-toc": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sisukord",
+                "descriptive": "Sisukord kõigi peatükkide juurde linkide kaudu"
             }
         },
         "rich-content": {
             "rich-content-accessible-chemistry-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Keemiavalemid LaTeX-is",
+                "descriptive": "Keemiavalemid loetavas ja hõlbustatud vormingus (LaTeX)"
             },
             "rich-content-accessible-chemistry-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Keemiavalemid MathML-is",
+                "descriptive": "Keemiavalemid loetavas ja hõlbustatud vormingus (MathML)"
             },
             "rich-content-accessible-math-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Matemaatika LaTeX-is",
+                "descriptive": "Matemaatika valemid loetavas ja hõlbustatud vormingus (LaTeX)"
             },
             "rich-content-accessible-math-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Matemaatika MathML-ina",
+                "descriptive": "Matemaatilised valemid hõlbustusele ja ligipääsetavusele vastavas vormingus (MathML)"
             },
             "rich-content-accessible-math-described": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Matemaatiliste valemite kohta on olemas tekstilised kirjeldused",
+                "descriptive": "Matemaatiliste valemite kohta on väljaandesse lisatud tekstilised kirjeldused"
             },
             "rich-content-closed-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Videotel on olemas väljalülitatavad subtiitrid",
+                "descriptive": "Väljaandes leiduvatel videotel on olemas väljalülitatavad subtiitrid"
             },
             "rich-content-extended": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Inforikastel piltidel on täiendavad kirjeldused",
+                "descriptive": "Inforikastel piltidel on täiendavad kirjeldused"
             },
             "rich-content-open-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Videotel on olemas pidevalt nähtavad subtiitrid",
+                "descriptive": "Väljaandes leiduvatel videotel on olemas pidevalt nähtavad subtiitrid"
             },
-            "rich-content-title": "",
+            "rich-content-title": "Mitmekülgses vormis sisu",
             "rich-content-transcript": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Heli- ja videosisul on olemas tekstiline vaste",
+                "descriptive": "Heli- ja videosisul on olemas tekstiline vaste"
             },
             "rich-content-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Teave pole saadaval",
+                "descriptive": "Teave pole saadaval"
             }
         },
         "ways-of-reading": {
             "ways-of-reading-nonvisual-reading-alt-text": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Selgitustekstid on olemas",
+                "descriptive": "Piltidel on olemas selgitustekst (alt-tekst)"
             },
             "ways-of-reading-nonvisual-reading-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Puudub teave mittevisuaalsete lugemisvõimaluste kohta",
+                "descriptive": "Puudub teave mittevisuaalsete lugemisvõimaluste kohta"
             },
             "ways-of-reading-nonvisual-reading-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ei ole loetav ettelugemise või dünaamilise punktkirja abil",
+                "descriptive": "Sisu ei ole loetav etteloetavana ega dünaamilise punktkirjana"
             },
             "ways-of-reading-nonvisual-reading-not-fully": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ei ole täies mahus loetav ettelugemise või dünaamilise punktkirja abil",
+                "descriptive": "Kogu sisu ei ole loetav ettelugemise või dünaamilise punktkirja abil"
             },
             "ways-of-reading-nonvisual-reading-readable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "On loetav ettelugemise või dünaamilise punktkirja abil",
+                "descriptive": "Kogu sisu on loetav ettelugemise või dünaamilise punktkirja abil"
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "",
-                "descriptive": ""
-            },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Eelsalvestatud heliklipid",
+                "descriptive": "Sisusse on lõimitud eelsalvestatud heliklipid"
             },
             "ways-of-reading-prerecorded-audio-only": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sisu koosneb ainult lõimitud eelsalvestatud heliklippidest",
+                "descriptive": "Heliraamat ilma tekstilise alternatiivita"
             },
             "ways-of-reading-prerecorded-audio-synchronized": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Eelsalvestatud heli, mis on sünkroonis tekstilise sisuga",
+                "descriptive": "Kogu sisu on saadaval eelsalvestatud helifailina, mis on sünkroonis tekstilise sisuga"
             },
-            "ways-of-reading-title": "",
+            "ways-of-reading-title": "Lugemise viisid ja võimalused",
             "ways-of-reading-visual-adjustments-modifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Välimus on muudetav",
+                "descriptive": "Teksti välimust ja lehekülje paigutust saab kohandada vastavalt lugemissüsteemi võimalustele (kirjatüüp ja selle suurus, vahed lõikude, lausete, sõnade ja tähtede vahel ning tausta ja teksti värv)"
             },
             "ways-of-reading-visual-adjustments-unknown": {
+                "compact": "Puudub teave välimuse muudetavuse kohta",
+                "descriptive": "Puudub teave välimuse muudetavuse kohta"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
                 "compact": "",
                 "descriptive": ""
             }
@@ -587,300 +611,314 @@
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": ""
+                "textual": "Kogu sisu on loetav ettelugemise või dünaamilise punktkirja abil"
             },
             "accessibilityFeature": {
-                "alternativeText": "",
-                "displayTransformability": "",
-                "longDescription": "",
-                "printPageNumbers": "",
-                "readingOrder": "",
-                "synchronizedAudioText": "",
-                "tableOfContents": ""
+                "alternativeText": "Piltidel on olemas selgitustekst (alt-tekst)",
+                "displayTransformability": "Teksti ja paigutuse välimus on muudetav",
+                "longDescription": "Graafilisel sisul on täismahus kirjeldused",
+                "printPageNumbers": "Sisaldab lehekülgede loendit, mille abil saab minna trükiversiooni lehekülgedele",
+                "readingOrder": "Lugemise järjekord on olemas",
+                "synchronizedAudioText": "Tekst ja heli on sünkroonis",
+                "tableOfContents": "Sisukord on olemas"
             },
             "accessibilityHazard": {
-                "flashing": "",
-                "motionSimulation": "",
-                "name": "",
-                "noFlashing": "",
-                "noMotionSimulation": "",
-                "noSound": "",
-                "none": "",
-                "sound": "",
-                "unknown": ""
+                "flashing": "Vilkumine",
+                "motionSimulation": "Simuleeritud liikumine",
+                "name": "Oht:",
+                "noFlashing": "Vilkumist pole",
+                "noMotionSimulation": "Simuleeritud liikumist pole",
+                "noSound": "Heli puudub",
+                "none": "Puudub",
+                "sound": "Heli",
+                "unknown": "Pole teada"
             },
-            "certifierReport": "",
-            "conformsTo": "",
-            "moreInformation": "",
-            "name": "",
-            "noA11y": ""
+            "certifierReport": "Sertifitseerija aruanne:",
+            "conformsTo": "Vastavus:",
+            "moreInformation": "Lisateave",
+            "name": "Hõlbustus",
+            "noA11y": "Hõlbustuse ja ligipääsetavuse teavet pole saadaval"
         },
-        "actions": "",
+        "actions": "Tegevused",
         "audio": {
-            "tracks": ""
+            "tracks": "Heliribad"
         },
-        "author": "",
-        "cancelledLcp": "",
-        "certificateRevoked": "",
-        "certificateSignatureInvalid": "",
+        "author": "Autor",
+        "cancelledLcp": "Selle väljaande LCP-litsents on tühistatud.",
+        "certificateRevoked": "LCP-litsentsi sertifikaat on tühistatud.",
+        "certificateSignatureInvalid": "Vigane LCP-litsentsi sertifikaadi allkiri.",
         "cover": {
-            "img": ""
+            "img": "kaanepilt"
         },
-        "day": "",
-        "days": "",
+        "day": "päev",
+        "days": "päeva",
         "duration": {
-            "title": ""
+            "title": "Kestus"
         },
-        "encryptedNoLicense": "",
-        "expired": "",
-        "expiredLcp": "",
-        "incorrectPassphrase": "",
-        "lcpEnd": "",
-        "lcpRightsCopy": "",
-        "lcpRightsPrint": "",
-        "lcpStart": "",
-        "licenceLCP": "",
-        "licenseCertificateDateInvalid": "",
-        "licenseOutOfDate": "",
-        "licenseSignatureInvalid": "",
-        "licensed": "",
-        "markAsRead": "",
-        "notStarted": "",
-        "onGoing": "",
+        "encryptedNoLicense": "Väljaanne on krüptitud, kuid LCP-litsents on puudu!",
+        "expired": "Laenutus on aegunud",
+        "expiredLcp": "Selle väljaande LCP-litsents on aegunud.",
+        "incorrectPassphrase": "Mitte ükski salvestatud salasõna/salafraas ei sobi selle väljaandega või on sisestus vigane.",
+        "lcpEnd": "Lõpp",
+        "lcpNotSupported": "",
+        "lcpRightsCopy": "Kopeeritud tähemärke",
+        "lcpRightsPrint": "Trükitud lehti",
+        "lcpStart": "Algus",
+        "licenceLCP": "LCP-litsents",
+        "licenseCertificateDateInvalid": "LCP-teenusepakkuja sertifikaat aegus enne LCP-litsentsi väljaandmise kuupäeva ({{- dateTime}}).",
+        "licenseOutOfDate": "Aegunud LCP-litsents.",
+        "licenseSignatureInvalid": "LCP-litsentsi vigane allkiri.",
+        "licensed": "Litsentseeritud",
+        "markAsRead": "Märgi loetuks",
+        "notStarted": "Pole alustatud",
+        "onGoing": "Pooleli",
         "progression": {
-            "title": ""
+            "title": "Edenemine"
         },
-        "read": "",
-        "remainingTime": "",
-        "renewButton": "",
-        "returnButton": "",
-        "returnedLcp": "",
-        "revokedLcp": "",
-        "seeLess": "",
-        "seeMore": "",
-        "timeLeft": "",
-        "title": "",
-        "userKeyCheckInvalid": ""
+        "read": "Lõpetatud",
+        "remainingTime": "Laenutus (jäänud aeg)",
+        "renewButton": "Pikenda laenutust",
+        "returnButton": "Tagasta",
+        "returnedLcp": "See LCP-litsentsiga kaitsutud väljaanne on tagastatud.",
+        "revokedLcp": "Selle väljaande LCP-litsents on tühistatud.",
+        "seeLess": "Kuva vähem",
+        "seeMore": "Kuva rohkem",
+        "timeLeft": "Allesjäänud aeg",
+        "title": "Pealkiri",
+        "userKeyCheckInvalid": "Vigane salasfraas/saalsõna."
     },
     "reader": {
         "annotations": {
-            "Color": "",
-            "addNote": "",
-            "advancedMode": "",
+            "Color": "Värv",
+            "addNote": "Lisa märge",
+            "advancedMode": "Kiirlisamine (automaatne lisamine peale valimist)",
             "annotationsExport": {
-                "description": "",
-                "title": ""
+                "description": "Eksporditud märkmete nimi:",
+                "title": "Pealkiri"
             },
-            "annotationsOptions": "",
-            "date": "",
-            "export": "",
+            "annotationsOptions": "Märkmete valikud",
+            "date": "Muutmise kuupäev",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
+            "export": "Salvesta märkmed kui…",
             "filter": {
-                "all": "",
-                "filterByColor": "",
-                "filterByCreator": "",
-                "filterByDrawtype": "",
-                "filterByTag": "",
-                "filterOptions": "",
-                "none": ""
+                "all": "Kõik",
+                "filterByColor": "Filtreeri värvi alusel",
+                "filterByCreator": "Filtreeri looja alusel",
+                "filterByDrawtype": "Filtreeri tüübi alusel",
+                "filterByTag": "Filtreeri sildi alusel",
+                "filterOptions": "Filtri valikud",
+                "none": "Puudub"
             },
-            "hide": "",
-            "highlight": "",
-            "noSelectionToast": "",
-            "note": "",
-            "quickAnnotations": "",
-            "saveNote": "",
+            "hide": "Ära kuva",
+            "highlight": "Tõsta esile",
+            "noSelectionToast": "Valikut pole",
+            "note": "{{- color}} märge",
+            "quickAnnotations": "Kiirlisamine (muutmisvaateta)",
+            "saveNote": "Salvesta",
             "sorting": {
-                "lastcreated": "",
-                "lastmodified": "",
-                "progression": "",
-                "sortingOptions": ""
+                "lastcreated": "Viimati loodud",
+                "lastmodified": "Viimati muudetud",
+                "progression": "Edenemine",
+                "sortingOptions": "Järjestuse valikud"
             },
-            "toggleMarginMarks": "",
+            "toggleMarginMarks": "Näita veeristel",
             "type": {
-                "outline": "",
-                "solid": "",
-                "strikethrough": "",
-                "underline": ""
+                "outline": "Äärejoon",
+                "solid": "Ühevärviline taust",
+                "strikethrough": "Läbukriipsutus",
+                "underline": "Allajoonimine"
             }
         },
         "bookmarks": {
-            "index": ""
+            "index": "Järjehoidja {{- index}}"
         },
         "divina": {
-            "mute": "",
-            "unmute": ""
+            "mute": "summuta heli",
+            "unmute": "lõpeta heli summutamine"
         },
         "dock": {
-            "dockDefault": "",
-            "dockLeft": "",
-            "dockRight": ""
+            "dockDefault": "Näita riba modaalse hüpikaknana",
+            "dockLeft": "Kinnita riba vasakule",
+            "dockRight": "Kinnita riba paremal"
         },
         "fxl": {
-            "fit": ""
+            "fit": "Sobita"
         },
-        "goToContent": "",
+        "goToContent": "Suundu sisu juurde",
         "imgViewer": {
-            "title": "",
-            "zoomIn": "",
-            "zoomOut": "",
-            "zoomReset": ""
+            "title": "Pildivaataja (suum)",
+            "zoomIn": "Suumi sisse/suurenda",
+            "zoomOut": "Suumi välja/vähenda",
+            "zoomReset": "Lähtesta suum"
         },
         "marks": {
-            "annotations": "",
-            "bookmarks": "",
-            "delete": "",
-            "edit": "",
-            "goTo": "",
-            "landmarks": "",
-            "saveMark": "",
-            "search": "",
-            "searchResult": "",
-            "toc": ""
+            "annotations": "Märkmed",
+            "bookmarks": "Järjehoidjad",
+            "delete": "Kustuta",
+            "edit": "Muuda",
+            "goTo": "Ava leht",
+            "landmarks": "Tähised",
+            "saveMark": "Salvesta",
+            "search": "Otsi",
+            "searchResult": "Otsi: {{- searchText}}",
+            "toc": "Sisukord"
         },
         "media-overlays": {
-            "activate": "",
+            "activate": "Käivita ettelugemine",
             "captions": "",
             "captionsDescription": "",
             "disableContinuousPlay": "",
             "disableContinuousPlayDescription": "",
             "ignoreAndUseTTS": "",
             "ignoreAndUseTTSDescription": "",
-            "next": "",
-            "pause": "",
-            "play": "",
-            "previous": "",
-            "skip": "",
-            "skipDescription": "",
-            "speed": "",
-            "stop": "",
-            "title": ""
+            "next": "Järgmine ettelugemine",
+            "pause": "Peata ettelugemine",
+            "play": "Alusta ettelugemist",
+            "previous": "Eelmine ettelugemine",
+            "skip": "Vahelejätmise võimalus",
+            "skipDescription": "Saad vahele jätta lisasisu, nagu lehevahetused, joonealused märkused, lõpumärkused jne.",
+            "speed": "Valjult ettelugemise kiirus",
+            "stop": "Lõpeta ettelugemine",
+            "title": "Valjult ettelugemine",
+            "useTTSHighlightsForMO": "",
+            "useTTSHighlightsForMODescription": "Eemalda kirjastaja loodud stiilid kasutusest"
         },
         "navigation": {
-            "ZenModeExit": "",
-            "ZenModeTitle": "",
-            "annotationTitle": "",
-            "backHomeTitle": "",
-            "bookmarkTitle": "",
-            "currentPage": "",
-            "currentPageTotal": "",
-            "detachWindowTitle": "",
-            "goTo": "",
-            "goToError": "",
-            "goToPlaceHolder": "",
-            "goToTitle": "",
-            "history": "",
-            "historyNext": "",
-            "historyPrevious": "",
-            "infoTitle": "",
-            "magnifyingGlassButton": "",
-            "openTableOfContentsTitle": "",
-            "page": "",
-            "pdfscalemode": "",
-            "print": "",
-            "printDisabled": "",
-            "screenNext": "",
-            "screenPrevious": "",
-            "settingsTitle": ""
+            "ZenModeExit": "Sulge Zen-vaade",
+            "ZenModeTitle": "Zen-vaade",
+            "annotationTitle": "Märge",
+            "backHomeTitle": "Sulge see lugemisvaade (tagasi raamaturiiulisse)",
+            "bookmarkTitle": "Järjehoidja",
+            "currentPage": "Praegune leht: {{- current}}",
+            "currentPageTotal": "Praegune leht: {{- current}}/{{- total}}",
+            "detachWindowTitle": "Näita raamatukogu / raamaturiiuli akent",
+            "goTo": "Mine",
+            "goToError": "Lehevahetust pole olemas",
+            "goToPlaceHolder": "Sisesta lehe number",
+            "goToTitle": "Ava leht",
+            "history": "Dokumendis liikumise ajalugu",
+            "historyNext": "Hüppa dokumendis liikumise ajaloos edasi",
+            "historyPrevious": "Hüppa dokumendis liikumise ajaloos tagasi",
+            "infoTitle": "Teave",
+            "magnifyingGlassButton": "Otsi väljaandest",
+            "openTableOfContentsTitle": "Rakenduses liikumine",
+            "page": "Leht",
+            "pdfscalemode": "Sobita leht laiusele",
+            "print": "Prindi",
+            "printDisabled": "Printimine on keelatud",
+            "screenNext": "Mine edasi",
+            "screenPrevious": "Mine tagasi",
+            "settingsTitle": "Lugemisvaate seadistused"
         },
         "notes": {
             "colors": {
-                "cyan": "",
-                "green": "",
-                "orange": "",
-                "purple": "",
-                "red": "",
-                "yellow": ""
+                "cyan": "Rohekassinine",
+                "darkorange": "",
+                "darkyellow": "",
+                "green": "Roheline",
+                "orange": "Oranž",
+                "purple": "Purpurpunane",
+                "red": "Punane",
+                "yellow": "Kollane"
             }
         },
         "picker": {
             "search": {
                 "founds_one": "{{- count}} vaste",
                 "founds_other": "{{- count}} vastet",
-                "input": "",
-                "next": "",
-                "notFound": "",
-                "previous": "",
-                "results": "",
-                "submit": ""
+                "input": "otsitav tekst",
+                "next": "Järgmine",
+                "notFound": "vasteid ei leidu",
+                "previous": "Eelmine",
+                "results": "Tulemused",
+                "submit": "Otsi"
             },
-            "searchTitle": ""
+            "searchTitle": "Otsi:"
         },
         "print": {
-            "descriptionLcpCount": "",
-            "descriptionLcpPrintable": "",
-            "howTo": "",
-            "lcpInfo": "",
-            "noPagesLcpLimitReached": "",
-            "noPrintablePages": "",
-            "pageHelpInfo": "",
-            "pageHelpInfo1": "",
-            "pageHelpInfo2": "",
-            "pageHelpInfo3": "",
-            "pageHelpInfo4": "",
-            "pages": "",
-            "preview": "",
-            "print": "",
-            "printablePages": "",
-            "title": ""
+            "descriptionLcpCount": "Lubatud lehtede arv: {{- count}}",
+            "descriptionLcpPrintable": "Varemprinditud lehti: {{- printable}} ({{- count}})",
+            "howTo": "Kuidas saan valida prinditavate lehtede vahemikku?",
+            "lcpInfo": "Selles väljaandes saad printida kuni {{- count}} lehekülge. Vali siit soovitud leheküljed.",
+            "noPagesLcpLimitReached": "LCP järgi lubatud ülempiir on käes",
+            "noPrintablePages": "Prinditavaid lehti pole",
+            "pageHelpInfo": "Lehevalija süntaks:",
+            "pageHelpInfo1": "kindla lehe avamiseks sisesta leheküljenumber (nt. „6”)",
+            "pageHelpInfo2": "kindla lehevahemiku avamiseks sisesta kaks leheküljenumbrit, mida eraldab sidekriips (nt. „6-13”)",
+            "pageHelpInfo3": "kindlate lehtede ja lehevahemike valimiseks kasuta semikoolonit ja sidekriipsu (nt. „5;14-20;37”)",
+            "pageHelpInfo4": "jäta vahemiku esimene või viimane lehekülg välja, et viidata väljaande esimesele või viimasele leheküljele (nt. „-16“ vastab „1–16“-le ja „34-“ vastab „34–100“-le, eeldades, et väljaandel on kokku 100 lehekülge)",
+            "pages": "Lehed",
+            "preview": "Eelvaade",
+            "print": "Prindi",
+            "printablePages": "Prinditavaid lehti (kokku)",
+            "title": "Prinditavate lehtede valik"
         },
         "settings": {
             "column": {
-                "auto": "",
-                "one": "",
-                "title": "",
-                "two": ""
+                "auto": "Vaikimisi",
+                "one": "1 veerg",
+                "title": "Veerud",
+                "two": "2 veergu"
             },
-            "customFontSelected": "",
-            "customizeReader": "",
-            "disabled": "",
-            "display": "",
+            "customFontSelected": "sa oled eelistanud kasutada isiklikku kirjatüüpi",
+            "customizeReader": "Kohenda teksti vormindust",
+            "defaultValue": "",
+            "disabled": "pole kasutusel",
+            "display": "Ekraanivaade",
             "disposition": {
-                "title": ""
+                "title": "Paigutus"
             },
-            "font": "",
-            "fontSize": "",
-            "infoCustomFont": "",
-            "justification": "",
-            "justify": "",
-            "letterSpacing": "",
-            "lineSpacing": "",
-            "margin": "",
-            "mathjax": "",
-            "noFootnotes": "",
-            "noRTLFlip": "",
-            "noRuby": "",
+            "font": "Kirjatüüp",
+            "fontSize": "Kirjatüübi suurus",
+            "increaseFontSize": "Suurenda teksti suurust",
+            "infoCustomFont": "Vali sulle sobilik operatsioonisüsteemis leiduv kirjatüüp alustades selle nime kirjutamist",
+            "justification": "Joondumine",
+            "justify": "Joonda rööpselt",
+            "letterSpacing": "Tähevahed",
+            "lineSpacing": "Reavahed",
+            "margin": "Veeris",
+            "mathjax": "Võta MathJax kasutusele",
+            "mathjaxDescription": "",
+            "noFootnotes": "Keela hüpikaknaid sisaldavad joonealused märkused",
+            "noRTLFlip": "Lülita välja paremalt vasakule lugemiseks mõeldud kasutajaliides",
+            "noRuby": "Peida jaapani „Ruby“ vormingus märkused",
             "noTemporaryNavTargetOutline": "",
-            "paginated": "",
-            "paraSpacing": "",
+            "paginated": "Jagatud lehtedeks",
+            "paraSpacing": "Lõikude vahed",
             "pdfZoom": {
                 "name": {
-                    "100pct": "",
-                    "150pct": "",
-                    "200pct": "",
-                    "300pct": "",
-                    "500pct": "",
-                    "50pct": "",
-                    "fit": "",
-                    "width": ""
+                    "100pct": "100%",
+                    "150pct": "150%",
+                    "200pct": "200%",
+                    "300pct": "300%",
+                    "500pct": "500%",
+                    "50pct": "50%",
+                    "fit": "sobita lehele",
+                    "width": "lehe laius"
                 },
-                "title": ""
+                "title": "Suumimine"
             },
             "preset": {
-                "apply": "",
-                "applyDetails": "",
-                "detail": "",
-                "reset": "",
+                "apply": "Rakenda",
+                "applyDetails": "Kasuta oma eelistatud seadistust kogu väljaandes.",
+                "detail": "Salvesta, kasuta või lähtesta oma eelistatud seadistust.",
+                "reset": "Lähtesta",
                 "resetDetails": "",
-                "save": "",
+                "save": "Salvesta",
                 "saveDetails": "",
-                "title": ""
+                "title": "Eelistused"
             },
-            "preview": "",
+            "preview": "Eelvaade",
+            "reduceFontSize": "Vähenda teksti suurust",
             "reduceMotion": "",
-            "scrolled": "",
-            "spacing": "",
+            "scrolled": "Keritav",
+            "spacing": "Vahed",
             "spreadModeEven": "",
-            "text": "",
+            "text": "Tekst",
             "theme": {
                 "name": {
                     "Contrast1": "Kontrastne 1",
@@ -904,45 +942,45 @@
             "publicationNoToc": "Sisukord puudub"
         },
         "tts": {
-            "activate": "",
-            "language": "",
-            "next": "",
-            "options": "",
-            "pause": "",
-            "play": "",
-            "previous": "",
-            "sentenceDetect": "",
-            "sentenceDetectDescription": "",
-            "speed": "",
-            "stop": "",
-            "voice": ""
+            "activate": "Võta kõnesüntees (TTS) kasutusele",
+            "language": "Kõnesünteesi keel",
+            "next": "Järgmine kõnesünteesivalik",
+            "options": "Kõnesünteesi valikud",
+            "pause": "Peata kõnesüntees",
+            "play": "Kuula sisu kõnesünteesi abil",
+            "previous": "Eelmine kõnesünteesi valik",
+            "sentenceDetect": "Tükelda kõnesünteesitud sisu",
+            "sentenceDetectDescription": "Tükelda pikad lõigud lauseteks.",
+            "speed": "Kõnesünteesitud sisu ettelugemise kiirus",
+            "stop": "Lõpeta kõnesüntees",
+            "voice": "Kõnesünteesi hääl"
         }
     },
     "settings": {
         "annotationCreator": {
             "creator": "",
             "help": "",
-            "name": "",
-            "organization": "",
-            "person": "",
-            "type": ""
+            "name": "Nimi",
+            "organization": "Organisatsioon",
+            "person": "Isik",
+            "type": "Tüüp:"
         },
         "auth": {
-            "help": "",
-            "title": "",
-            "wipeData": ""
+            "help": "Järgnevaga kustutad kõik OPDS-i jaoks kasutatud kontod ja salasõnad.",
+            "title": "Ligipääs avalikele kataloogidele",
+            "wipeData": "Eemalda sisselogimise valikud"
         },
         "keyboard": {
             "advancedMenu": "",
-            "cancel": "",
+            "cancel": "Katkesta",
             "disclaimer": "",
-            "editUserJson": "",
-            "exportToHTML": "",
-            "keyboardShortcuts": "",
+            "editUserJson": "Muuda kasutaja faili…",
+            "exportToHTML": "Eksportdi HTML-failina",
+            "keyboardShortcuts": "Klaviatuuri kiirklahvid",
             "list": {
                 "AddBookmarkWithLabel": {
-                    "description": "",
-                    "name": ""
+                    "description": "Ava järjehoidja loomise vaade ja muuda tekstilist nimetust (märget), värvi ja silti",
+                    "name": "Lisa sildiga järjehoidja"
                 },
                 "AnnotationsCreate": {
                     "description": "",
@@ -961,28 +999,40 @@
                     "name": ""
                 },
                 "AudioNextAlt": {
-                    "description": "",
+                    "description": "Mine edasi järgmise heliriba lõigu juurde (EPUB3 meediaülekate, kõnesüntees ettelugemise jaoks või eelnevalt salvestatud heliraamat). See jätab vahele kõik struktuurid, millest on hetkel võimalik väljuda",
                     "name": ""
                 },
                 "AudioPlayPause": {
-                    "description": "",
+                    "description": "Alusta praeguse heliriba kuulamist või peata see (EPUB3 meediaülekate, kõnesüntees ettelugemise jaoks või eelnevalt salvestatud heliraamat)",
                     "name": ""
                 },
                 "AudioPrevious": {
-                    "description": "",
+                    "description": "Mine tagasi eelmise heliriba lõigu juurde (EPUB3 meediaülekate, kõnesüntees ettelugemise jaoks või eelnevalt salvestatud heliraamat)",
                     "name": ""
                 },
                 "AudioPreviousAlt": {
+                    "description": "Mine tagasi eelmise heliriba lõigu juurde (EPUB3 meediaülekate, kõnesüntees ettelugemise jaoks või eelnevalt salvestatud heliraamat). See jätab vahele kõik struktuurid, millest on hetkel võimalik väljuda",
+                    "name": ""
+                },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
                     "description": "",
                     "name": ""
                 },
                 "AudioStop": {
-                    "description": "",
+                    "description": "Lõpeta praeguse heliriba kuulamine (EPUB3 meediaülekate, kõnesüntees ettelugemise jaoks või eelnevalt salvestatud heliraamat)",
                     "name": ""
                 },
                 "CloseReader": {
                     "description": "",
-                    "name": ""
+                    "name": "Sulge lugemisvaade"
                 },
                 "FXLZoomIn": {
                     "description": "",
@@ -1013,20 +1063,20 @@
                     "name": ""
                 },
                 "FocusReaderNavigationAnnotations": {
-                    "description": "",
-                    "name": ""
+                    "description": "Aseta klahvistiku fookus lugejaakna tegevusribal asuvasse jaotusse „Märkmed“",
+                    "name": "Säti fookus märkmetele"
                 },
                 "FocusReaderNavigationBookmarks": {
-                    "description": "",
-                    "name": ""
+                    "description": "Aseta klahvistiku fookus lugejaakna tegevusribal asuvasse jaotusse „Järjehoidjad“",
+                    "name": "Säti fookus järjehoidjatele"
                 },
                 "FocusReaderNavigationSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "Säti klahvistiku fookus üldotsingule lugemsivaates tegevuste ribal",
+                    "name": "Säti fookus üldotsingule"
                 },
                 "FocusReaderNavigationTOC": {
-                    "description": "",
-                    "name": ""
+                    "description": "Säti klahvistiku fookus sisukorrale lugemisvaates tegevuste ribal",
+                    "name": "Säti fookus sisukorrale"
                 },
                 "FocusReaderSettings": {
                     "description": "",
@@ -1034,7 +1084,7 @@
                 },
                 "FocusSearch": {
                     "description": "",
-                    "name": ""
+                    "name": "Otsingukäsk"
                 },
                 "FocusToolbar": {
                     "description": "",
@@ -1129,24 +1179,24 @@
                     "name": ""
                 },
                 "Print": {
-                    "description": "",
-                    "name": ""
+                    "description": "Ava lugemisvaatest printimisvaade",
+                    "name": "Prindi"
                 },
                 "SearchNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "Lugemisvaate otsingutööriistas saad minna järgmise otsingutulemuse juurde. Pane tähele, et vaikimisi klahvikombinatsiooni asemel on olemas ka alternatiivne klahvikombinatsioon",
+                    "name": "Järgmine otsingutulemus"
                 },
                 "SearchNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Lugemisvaate otsingutööriistas saad minna järgmise otsingutulemuse juurde. Pane tähele, et selle vaikimisi klahvikombinatsiooni asemel on olemas ka alternatiivne klahvikombinatsioon",
+                    "name": "Järgmine otsingutulemus (alternatiivne)"
                 },
                 "SearchPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "Lugemisvaate otsingutööriistas saad minna eelmise otsingutulemuse juurde. Pane tähele, et vaikimisi klahvikombinatsiooni asemel on olemas ka alternatiivne klahvikombinatsioon",
+                    "name": "Eelmine otsingutulemus"
                 },
                 "SearchPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Lugemisvaate otsingutööriistas saad minna eelmise otsingutulemuse juurde. Pane tähele, et selle vaikimisi klahvikombinatsiooni asemel on olemas ka alternatiivne klahvikombinatsioon",
+                    "name": "Eelmine otsingutulemus (alternatiivne)"
                 },
                 "SpeakReaderInfoWhereAmI": {
                     "description": "",
@@ -1158,50 +1208,98 @@
                 },
                 "ToggleReaderFullscreen": {
                     "description": "",
-                    "name": ""
+                    "name": "Lülita täisekraanivaade sisse/välja"
                 }
             },
-            "loadUserJson": "",
-            "noShortcutFound": "",
-            "resetDefaults": "",
-            "save": "",
-            "searchPlaceholder": ""
+            "loadUserJson": "Laadi kasutajafailist",
+            "noShortcutFound": "Selle sildi jaoks ei leidu kiirklahvi",
+            "resetDefaults": "Lähtesta (laadi vaikimisi väärtused)",
+            "save": "Salvesta",
+            "searchPlaceholder": "Kiirklahvi otsimiseks kirjuta midagi"
         },
         "language": {
-            "languageChoice": ""
+            "languageChoice": "Keel"
         },
         "library": {
-            "enableAPIAPP": "",
-            "title": ""
+            "enableAPIAPP": "Võta kasutusele raamatukogude PNB-süsteem",
+            "title": "Ligipääs prantsuse raamatukohude kontodele"
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "",
-                "enableCheckbox": "",
-                "overrideHTMLTemplate": ""
+                "applyDefaultTemplate": "Laadi vaikimisi mall",
+                "enableCheckbox": "Kohenda HTML-malli",
+                "overrideHTMLTemplate": "Märgistuse eksport (märkmed ja järjehoidjad)"
             }
         },
         "profiles": {
-            "info": "",
+            "info": "Vaheta profiile, et kohandada rakendust partnerettevõtte brändi ja värvidega. Iga profiil pakub just teile sobivat kasutuskogemust.",
             "thorium": {
-                "description": "",
-                "title": ""
+                "description": "Thorium Vanilla profiili puhul on tegemist algse, EDRLab-i loodud profiiliga.",
+                "title": "Thorium vanilla"
             },
-            "version": ""
+            "version": "Versioon: {{- version}}"
         },
         "screenReaderActivate": {
-            "help": "",
-            "message": "",
-            "title": ""
+            "help": "Kui rakendus tuvastab abitehnoloogia olemasolu, toimib kasutajaliides ekraanilugejatega paremini",
+            "message": "Ekraanilugejate parem tugi",
+            "title": "Paranda ekraanilugeja kasutuskogemust"
         },
         "session": {
+            "title": "Lülita sessioonide salvestamine sisse"
+        },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
             "title": ""
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
-            "appearance": "",
-            "general": "",
-            "keyboardShortcuts": "",
-            "profiles": ""
+            "appearance": "Välimus",
+            "general": "Üldseadistused",
+            "keyboardShortcuts": "Klaviatuuri kiirklahvid",
+            "profiles": "Profiilid",
+            "storage": ""
         },
         "theme": {
             "auto": "Automaatne",
@@ -1209,53 +1307,57 @@
             "description": "Rakenduse kujundus vastab operatsioonisüsteemile.",
             "light": "Hele kujundus",
             "title": "Rakenduse kujundus"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {
         "highlight": {
-            "mainColor": "",
-            "maskBlockWordOutline": "",
-            "maskBlockWordSolidBackground": "",
-            "maskBlockWordUnderline": "",
-            "maskWordOutline": "",
-            "maskWordSolidBackground": "",
-            "maskWordUnderline": "",
-            "outlineWordOutline": "",
-            "outlineWordSolidBackground": "",
-            "outlineWordUnderline": "",
-            "preview": "",
-            "solidBackgroundWordOutline": "",
-            "solidBackgroundWordSolidBackground": "",
-            "solidBackgroundWordUnderline": "",
-            "style": "",
-            "underlineWordOutline": "",
-            "underlineWordSolidBackground": "",
-            "underlineWordUnderline": "",
-            "wordColor": ""
+            "mainColor": "Põhivärv",
+            "maskBlockWordOutline": "Peidetud plokk, raamitud sõna",
+            "maskBlockWordSolidBackground": "Peidetud plokk, ühtlase taustaga sõna",
+            "maskBlockWordUnderline": "Peidetud plokk, allajoonitud sõna",
+            "maskWordOutline": "Peidetud, raamitud sõna",
+            "maskWordSolidBackground": "Peidetud, ühtlase taustaga sõna",
+            "maskWordUnderline": "Peidetud, allajoonitud sõna",
+            "outlineWordOutline": "Raamitud, raamitud sõna",
+            "outlineWordSolidBackground": "Raamitud, ühtlase taustaga sõna",
+            "outlineWordUnderline": "Raamitud, allajoonitud sõna",
+            "preview": "Kõnesünteesi esiletõstmise stiili eelvaade",
+            "solidBackgroundWordOutline": "Ühtlane taust, raamiga rõhutatud sõna",
+            "solidBackgroundWordSolidBackground": "Ühtlane taust, sõna ühtlane taust",
+            "solidBackgroundWordUnderline": "Ühtlane taust, sõna alljoonitud tekst",
+            "style": "Kõnesünteesi esiletõstmise stiil",
+            "underlineWordOutline": "Alljoonitud tekst, raamiga rõhutatud sõna",
+            "underlineWordSolidBackground": "Alljoonitud tekst, sõna ühtlane taust",
+            "underlineWordUnderline": "Alljoonitud tekst, sõna allakriipsutus",
+            "wordColor": "Sõna värv"
         }
     },
     "wizard": {
         "buttons": {
-            "discover": "",
-            "goToBooks": "",
-            "next": ""
+            "discover": "Tutvu Thoriumi töölauarakendusega",
+            "goToBooks": "Suundu minu väljaannete juurde"
         },
         "description": {
-            "home": "",
-            "resources": ""
+            "home": "Thorium 3.4 toob kaasa mitmeid kasutajakogemuse parandusi ja lahendab rea probleeme. Kui otsustad hiljem minna tagasi rakenduse vanema versiooni juurde, soovitame tungivalt teha oma e-raamatute märkmetest ja järjehoidjatest varukoopia, eksportides need välisesse faili. Pärast vanema versiooni paigaldamist saad need uuesti importida. Seda seetõttu, et versioonis 3.4 salvestab rakendus märkmeid ja järjehoidjaid veidi teistsuguses sisemises vormingus. See lahendab jõudlusprobleemi, kuid rikub märkmete tagasiühilduvust varasemate versioonidega.",
+            "resources": "Võta meiega ühendust ja uuri rohkem Thoriumi kohta:"
         },
-        "dontShow": "",
+        "dontShow": "Ära näita enam uuesti",
         "resources": {
-            "discord": "",
-            "website": ""
+            "discord": "Discordi kanal: {{- url}}",
+            "website": "Veebisait: {{- url}}"
         },
         "tab": {
-            "home": "",
-            "resources": ""
+            "home": "Avaleht",
+            "resources": "Ressursid"
         },
         "title": {
-            "resources": "",
-            "welcome": ""
+            "resources": "Ressursid ja kogukond",
+            "welcome": "Tere tulemast, see on Thorium 3.4"
         }
     }
 }

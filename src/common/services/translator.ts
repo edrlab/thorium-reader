@@ -6,41 +6,49 @@
 // ==LICENSE-END==
 
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
+
+// SEE PACKAGE.JSON:
+// ar bg ca cs da de el en es et eu fi fr gl hr it ja ka ko lt nl pl pt-br pt-pt ru sl sv ta tr zh-cn zh-tw
+// DEV/CI only: et pl
+import arCatalog from "readium-desktop/resources/locales/ar.json";
+import bgCatalog from "readium-desktop/resources/locales/bg.json";
+import caCatalog from "readium-desktop/resources/locales/ca.json";
+import csCatalog from "readium-desktop/resources/locales/cs.json";
+import daCatalog from "readium-desktop/resources/locales/da.json";
 import deCatalog from "readium-desktop/resources/locales/de.json";
+import elCatalog from "readium-desktop/resources/locales/el.json";
 import enCatalog from "readium-desktop/resources/locales/en.json";
 import esCatalog from "readium-desktop/resources/locales/es.json";
+import etCatalog from "readium-desktop/resources/locales/et.json";
+import euCatalog from "readium-desktop/resources/locales/eu.json";
 import fiCatalog from "readium-desktop/resources/locales/fi.json";
 import frCatalog from "readium-desktop/resources/locales/fr.json";
+import glCatalog from "readium-desktop/resources/locales/gl.json";
+import heCatalog from "readium-desktop/resources/locales/he.json";
+import hrCatalog from "readium-desktop/resources/locales/hr.json";
 import itCatalog from "readium-desktop/resources/locales/it.json";
 import jaCatalog from "readium-desktop/resources/locales/ja.json";
 import kaCatalog from "readium-desktop/resources/locales/ka.json";
+import koCatalog from "readium-desktop/resources/locales/ko.json";
 import ltCatalog from "readium-desktop/resources/locales/lt.json";
 import nlCatalog from "readium-desktop/resources/locales/nl.json";
+import plCatalog from "readium-desktop/resources/locales/pl.json";
 import ptBrCatalog from "readium-desktop/resources/locales/pt-br.json";
 import ptPtCatalog from "readium-desktop/resources/locales/pt-pt.json";
 import ruCatalog from "readium-desktop/resources/locales/ru.json";
-import zhCnCatalog from "readium-desktop/resources/locales/zh-cn.json";
-import zhTwCatalog from "readium-desktop/resources/locales/zh-tw.json";
-import koCatalog from "readium-desktop/resources/locales/ko.json";
-import svCatalog from "readium-desktop/resources/locales/sv.json";
-import caCatalog from "readium-desktop/resources/locales/ca.json";
-import glCatalog from "readium-desktop/resources/locales/gl.json";
-import euCatalog from "readium-desktop/resources/locales/eu.json";
-import elCatalog from "readium-desktop/resources/locales/el.json";
-import bgCatalog from "readium-desktop/resources/locales/bg.json";
-import hrCatalog from "readium-desktop/resources/locales/hr.json";
-import daCatalog from "readium-desktop/resources/locales/da.json";
 import slCatalog from "readium-desktop/resources/locales/sl.json";
-import csCatalog from "readium-desktop/resources/locales/cs.json";
-import arCatalog from "readium-desktop/resources/locales/ar.json";
+import svCatalog from "readium-desktop/resources/locales/sv.json";
 import taCatalog from "readium-desktop/resources/locales/ta.json";
 import trCatalog from "readium-desktop/resources/locales/tr.json";
+import zhCnCatalog from "readium-desktop/resources/locales/zh-cn.json";
+import zhTwCatalog from "readium-desktop/resources/locales/zh-tw.json";
+
 
 // import { TFunction } from "readium-desktop/typings/en.translation";
 import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-keys";
 
 
-import i18next, { TOptions } from "i18next";
+import i18next from "i18next";
 
 const i18nextInstance = i18next.createInstance();
 
@@ -66,24 +74,54 @@ i18nextInstance.init({
     // @ts-ignore
     ignoreJSONStructure: false,
     debug: false,
+    // SEE PACKAGE.JSON:
+    // ar bg ca cs da de el en es et eu fi fr gl hr it ja ka ko lt nl pl pt-br pt-pt ru sl sv ta tr zh-cn zh-tw
+    // DEV/CI only: et pl
     resources: {
-        "en": {
-            translation: enCatalog,
+        "ar": {
+            translation: arCatalog,
         },
-        "fr": {
-            translation: frCatalog,
+        "bg": {
+            translation: bgCatalog,
         },
-        "fi": {
-            translation: fiCatalog,
+        "ca": {
+            translation: caCatalog,
+        },
+        "cs": {
+            translation: csCatalog,
+        },
+        "da": {
+            translation: daCatalog,
         },
         "de": {
             translation: deCatalog,
         },
+        "el": {
+            translation: elCatalog,
+        },
+        "en": {
+            translation: enCatalog,
+        },
         "es": {
             translation: esCatalog,
         },
-        "nl": {
-            translation: nlCatalog,
+        "eu": {
+            translation: euCatalog,
+        },
+        "fi": {
+            translation: fiCatalog,
+        },
+        "fr": {
+            translation: frCatalog,
+        },
+        "gl": {
+            translation: glCatalog,
+        },
+        "hr": {
+            translation: hrCatalog,
+        },
+        "it" : {
+            translation: itCatalog,
         },
         "ja": {
             translation: jaCatalog,
@@ -91,8 +129,14 @@ i18nextInstance.init({
         "ka": {
             translation: kaCatalog,
         },
+        "ko": {
+            translation: koCatalog,
+        },
         "lt": {
             translation: ltCatalog,
+        },
+        "nl": {
+            translation: nlCatalog,
         },
         "pt-BR": {
             translation: ptBrCatalog,
@@ -100,53 +144,14 @@ i18nextInstance.init({
         "pt-PT": {
             translation: ptPtCatalog,
         },
-        "zh-CN": {
-            translation: zhCnCatalog,
-        },
-        "zh-TW": {
-            translation: zhTwCatalog,
-        },
-        "it" : {
-            translation: itCatalog,
-        },
         "ru" : {
             translation: ruCatalog,
-        },
-        "ko": {
-            translation: koCatalog,
-        },
-        "sv": {
-            translation: svCatalog,
-        },
-        "ca": {
-            translation: caCatalog,
-        },
-        "gl": {
-            translation: glCatalog,
-        },
-        "eu": {
-            translation: euCatalog,
-        },
-        "el": {
-            translation: elCatalog,
-        },
-        "bg": {
-            translation: bgCatalog,
-        },
-        "hr": {
-            translation: hrCatalog,
-        },
-        "da": {
-            translation: daCatalog,
         },
         "sl": {
             translation: slCatalog,
         },
-        "cs": {
-            translation: csCatalog,
-        },
-        "ar": {
-            translation: arCatalog,
+        "sv": {
+            translation: svCatalog,
         },
         "ta": {
             translation: taCatalog,
@@ -154,6 +159,25 @@ i18nextInstance.init({
         "tr": {
             translation: trCatalog,
         },
+        "zh-CN": {
+            translation: zhCnCatalog,
+        },
+        "zh-TW": {
+            translation: zhTwCatalog,
+        },
+        ...(__TH__IS_DEV__ || __TH__IS_CI__ ?
+        {
+            "et": {
+                translation: etCatalog, // TODO
+            },
+            "he": {
+                translation: heCatalog, // TODO
+            },
+            "pl": {
+                translation: plCatalog, // TODO
+            },
+        }
+        :{}),
     },
     // lng: undefined,
     fallbackLng: "en",
@@ -184,35 +208,45 @@ i18nextInstanceEN.changeLanguage("en").then((_t) => {
 // src/utils/object-keys-values.ts
 // to benefit from compile-type TypeScript typesafe key enum
 export const availableLanguages = {
-    "en": "English",
-    "fr": "Français (French)",
-    "fi": "Suomi (Finnish)",
+    // SEE PACKAGE.JSON:
+    // ar bg ca cs da de el en es et eu fi fr gl hr it ja ka ko lt nl pl pt-br pt-pt ru sl sv ta tr zh-cn zh-tw
+    // DEV/CI only: et pl
+    "ar": "عَرَبِيّ (Arabic)",
+    "bg": "български (Bulgarian)",
+    "ca": "Catalan",
+    "cs": "čeština (Czech)",
+    "da": "Dansk (Danish)",
     "de": "Deutsch (German)",
+    "el": "ελληνικός (Greek)",
+    "en": "English",
     "es": "Español (Spanish)",
-    "nl": "Nederlands (Dutch)",
+    "eu": "Euskadi (Basque)",
+    "fi": "Suomi (Finnish)",
+    "fr": "Français (French)",
+    "gl": "Galician",
+    "hr": "Hrvatski (Croatian)",
+    "it": "Italiano (Italian)",
     "ja": "日本語 (Japanese)",
     "ka": "ქართული (Georgian)",
+    "ko": "한국어 (Korean)",
     "lt": "Lietuvių (Lithuanian)",
+    "nl": "Nederlands (Dutch)",
     "pt-BR": "Português Brasileiro (Portuguese - Brazil)",
     "pt-PT": "Português (Portuguese - Portugal)",
-    "zh-TW": "繁體中文 - 台灣 (Traditional Chinese / Taiwan)",
-    "zh-CN": "简体中文 - 中国 (Simplified Chinese / China)",
-    "it": "Italiano (Italian)",
     "ru": "Русский (Russian)",
-    "ko": "한국어 (Korean)",
-    "sv": "Svenska (Swedish)",
-    "ca": "Catalan",
-    "gl": "Galician",
-    "eu": "Euskadi (Basque)",
-    "el": "ελληνικός (Greek)",
-    "bg": "български (Bulgarian)",
-    "hr": "Hrvatski (Croatian)",
-    "da": "Dansk (Danish)",
     "sl": "Slovenščina (Slovene)",
-    "cs": "čeština (Czech)",
-    "ar": "عَرَبِيّ (Arabic)",
+    "sv": "Svenska (Swedish)",
     "ta": "தமிழ் (Tamil)",
     "tr": "Türkçe (Turkish)",
+    "zh-CN": "简体中文 - 中国 (Simplified Chinese / China)",
+    "zh-TW": "繁體中文 - 台灣 (Traditional Chinese / Taiwan)",
+    ...(__TH__IS_DEV__ || __TH__IS_CI__ ?
+    {
+        "et": "Eesti Keel (Estonian)",
+        "he": "עִבְרִית (Hebrew)",
+        "pl": "Polski (Polish)",
+    }
+    :{}),
 };
 
 export type I18nFunction = (_: TTranslatorKeyParameter, __?: {}) => string;
@@ -228,10 +262,14 @@ export const setLocale = async (newLocale: keyof typeof availableLanguages) => {
     return ;
 };
 
-export const translate = (message: string, options: TOptions = {}): string => {
-    const label = i18nextInstance.t(message, options);
+// type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any ? A : never;
+// type TParams = ArgumentTypes<typeof i18next.t>;
+// type TParams = Parameters<typeof i18next.t>;
+export const translate = (...args: Parameters<typeof i18next.t>): ReturnType<typeof i18next.t> => {
+    const label = i18nextInstance.t(...args);
     if (!label || !label.length) {
-        return i18nextInstanceEN.t(message, options);
+        // fallbackLng: "en" does not take into account empty string (which we output to normalise JSON locales)
+        return i18nextInstanceEN.t(...args);
     }
     return label;
 };

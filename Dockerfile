@@ -36,7 +36,16 @@ RUN echo $CONTAINER_TIMEZONE && arch && uname &&\
     ruby-dev && gem i fpm -f && fpm --version &&\
     curl -fsSL https://deb.nodesource.com/setup_24.x | bash &&\
     apt-get install -y nodejs &&\
-    npm install -g npm@11.x
+    npm install --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root -g sfw &&\
+    npm config get prefix &&\
+    echo "$NPM_CONFIG_PREFIX" &&\
+    export NPM_CONFIG_PREFIX=$(npm config get prefix) &&\
+    echo "$NPM_CONFIG_PREFIX" &&\
+    export PATH="${NPM_CONFIG_PREFIX}/bin:$PATH" &&\
+    (ls -alshFR --color=auto "${NPM_CONFIG_PREFIX}/lib/node_modules/sfw/.sfw-cache" || echo OK) &&\
+    sfw npm install --global --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root npm@11.x &&\
+    (ls -alshFR --color=auto "${NPM_CONFIG_PREFIX}/lib/node_modules/sfw/.sfw-cache" || echo OK)
+# https://github.com/npm/cli/issues/9133
 
 # wget libreadline-dev
 # libc6 xdg-utils libatspi2.0-0 libuuid1 libsecret-1-0 libappindicator3-1
@@ -101,14 +110,20 @@ RUN chown -R notroot:notroot /THORIUM/ &&\
 USER notroot
 
 # use this only for dev/debug builds! (simulates CI)
-# ENV GITHUB_TOKEN_RELEASE_PUBLISH=xyz
+# ENV RELEASE_TAG=xyz
 
 # Electron Builder workaround
 # ENV USE_HARD_LINKS="false"
 
 ARG BUST_CACHE
 RUN cd /THORIUM/ &&\
-    npm i
+    sfw npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root &&\
+    cd node_modules/electron &&\
+    DEBUG=@electron/get* force_no_cache=true node install.js &&\
+    cd ../.. &&\
+    (ls -alshFR --color=auto "$NPM_CONFIG_PREFIX/lib/node_modules/sfw/.sfw-cache" || echo OK) &&\
+    (npm audit || echo OK) &&\
+    ((npm exec --no --offline -- taze --maturity-period 3 --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd . && npm exec --no --offline -- taze major --maturity-period 3 --fail-on-outdated --all --force --include-locked --concurrency 10 --loglevel debug --cwd .) || echo OK)
 
 ARG BUST_CACHE
 RUN cd /THORIUM/ &&\

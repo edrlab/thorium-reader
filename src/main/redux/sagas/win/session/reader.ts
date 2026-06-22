@@ -6,13 +6,19 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { normalizeRectangle } from "readium-desktop/common/rectangle/window";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { error } from "readium-desktop/main/tools/error";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { eventChannel, Task, buffers } from "redux-saga";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { cancel, debounce, fork, put, take } from "redux-saga/effects";
+import { cancel, debounce, fork, put, take, call  } from "redux-saga/effects";
+import { diMainGet } from "readium-desktop/main/di";
+import { winClose } from "../reader";
+import { closeProcessLock } from "readium-desktop/main/di";
+import {
+    getBrowserWindowStateSnapshot,
+    persistableWindowBound,
+} from "./browserWindowState";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:win:session:reader";
@@ -22,8 +28,8 @@ function* readerClosureManagement(action: winActions.session.registerReader.TAct
 
     const moveOrResizeTask: Task = yield fork(readerMoveOrResizeObserver, action);
 
-    const readerWindow = action.payload.win;
-    const identifier = action.payload.identifier;
+    const { readerWindow, windowIdentifier, publicationIdentifier } = action.payload;
+
     const channel = eventChannel<boolean>(
         (emit) => {
 
@@ -43,15 +49,38 @@ function* readerClosureManagement(action: winActions.session.registerReader.TAct
     // cancel moveAndResizeObserver
     yield cancel(moveOrResizeTask);
 
+    yield* persistReaderWindowState(readerWindow, windowIdentifier, publicationIdentifier);
+
     debug("event close requested -> emit unregisterReader and closed");
-    yield put(winActions.reader.closed.build(identifier));
+    // yield put(winActions.reader.closed.build(windowIdentifier, publicationIdentifier));
+    yield call(winClose, windowIdentifier, publicationIdentifier);
+
+}
+
+function* persistReaderWindowState(reader: Electron.BrowserWindow, id: string, pubId: string) {
+
+    if (closeProcessLock.isLock) {
+        debug("CLOSE process reader state not persisted");
+        return ;
+    }
+
+    try {
+        const { windowBound, windowMaximized } = getBrowserWindowStateSnapshot(reader);
+        debug("_______1 reader.getNormalBounds()/getBounds()", windowBound, "maximized:", windowMaximized);
+        // winBound = normalizeWinBoundRectangle(winBound);
+        yield put(winActions.session.setBound.build(id, windowBound, windowMaximized));
+        yield call(() => diMainGet("publication-data").writeJsonObj(pubId, "bound", persistableWindowBound(windowBound, windowMaximized)));
+    } catch (e) {
+        debug("set reader bound error", id, e);
+    }
 }
 
 function* readerMoveOrResizeObserver(action: winActions.session.registerReader.TAction) {
 
-    const reader = action.payload.win;
-    const id = action.payload.identifier;
-    const DEBOUNCE_TIME = 500;
+    const reader = action.payload.readerWindow;
+    const id = action.payload.windowIdentifier;
+    const pubId = action.payload.publicationIdentifier;
+    const DEBOUNCE_TIME = 1000;
 
     const channel = eventChannel<boolean>(
         (emit) => {
@@ -60,26 +89,22 @@ function* readerMoveOrResizeObserver(action: winActions.session.registerReader.T
 
             reader.on("move", handler);
             reader.on("resize", handler);
+            reader.on("maximize", handler);
+            reader.on("unmaximize", handler);
 
             return () => {
                 reader.removeListener("move", handler);
                 reader.removeListener("resize", handler);
+                reader.removeListener("maximize", handler);
+                reader.removeListener("unmaximize", handler);
             };
         },
         buffers.none(), // sliding(0) ?
     );
 
     yield debounce(DEBOUNCE_TIME, channel, function*() {
-
-        try {
-            const winBound = reader.getBounds();
-            debug("_______1 reader.getBounds()", winBound);
-            normalizeRectangle(winBound);
-            yield put(winActions.session.setBound.build(id, winBound));
-        } catch (e) {
-            debug("set reader bound error", id, e);
-        }
-    });
+        yield* persistReaderWindowState(reader, id, pubId);
+    }); 
 }
 
 export function saga() {

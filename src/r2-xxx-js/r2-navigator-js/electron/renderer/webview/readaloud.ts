@@ -13,7 +13,7 @@ import {
 } from "../../common/events";
 import {
     HighlightDrawTypeBackground, HighlightDrawTypeOpacityMask, HighlightDrawTypeOpacityMaskRuler, HighlightDrawTypeUnderline, IColor, IHighlight,
-    IHighlightDefinition,
+    IHighlightDefinition, HighlightDrawTypeNONE,
 } from "../../common/highlight";
 import {
     CSS_CLASS_NO_FOCUS_OUTLINE, POPUP_DIALOG_CLASS, POPUP_DIALOG_CLASS_COLLAPSE, ROOT_CLASS_REDUCE_MOTION,
@@ -781,38 +781,40 @@ function wrapHighlightWord(
         // const textInfo = tuple[1];
 
         const ttsHighlightStyle_WORD = typeof win.READIUM2?.ttsHighlightStyle_WORD !== "undefined" ? win.READIUM2.ttsHighlightStyle_WORD : HighlightDrawTypeUnderline;
-        const ttsColor_WORD: IColor = win.READIUM2?.ttsHighlightColor_WORD || {
-            blue: 0,
-            green: 147,
-            red: 255,
-        };
-        const highlightDefinitions = [
-            {
-                // https://htmlcolorcodes.com/
-                color: ttsColor_WORD,
-                drawType: ttsHighlightStyle_WORD,
-                expand: ENABLE_CSS_HIGHLIGHTS ? 0 : 2,
-                selectionInfo: undefined,
-                group: HIGHLIGHT_GROUP_TTS,
-                range,
-                // selectionInfo: {
-                //     rawBefore: textInfo.rawBefore,
-                //     rawText: textInfo.rawText,
-                //     rawAfter: textInfo.rawAfter,
+        if (ttsHighlightStyle_WORD !== HighlightDrawTypeNONE) {
+            const ttsColor_WORD: IColor = win.READIUM2?.ttsHighlightColor_WORD || {
+                blue: 0,
+                green: 147,
+                red: 255,
+            };
+            const highlightDefinitions = [
+                {
+                    // https://htmlcolorcodes.com/
+                    color: ttsColor_WORD,
+                    drawType: ttsHighlightStyle_WORD,
+                    expand: ENABLE_CSS_HIGHLIGHTS ? 0 : 2,
+                    selectionInfo: undefined,
+                    group: HIGHLIGHT_GROUP_TTS,
+                    range,
+                    // selectionInfo: {
+                    //     rawBefore: textInfo.rawBefore,
+                    //     rawText: textInfo.rawText,
+                    //     rawAfter: textInfo.rawAfter,
 
-                //     cleanBefore: textInfo.cleanBefore,
-                //     cleanText: textInfo.cleanText,
-                //     cleanAfter: textInfo.cleanAfter,
+                    //     cleanBefore: textInfo.cleanBefore,
+                    //     cleanText: textInfo.cleanText,
+                    //     cleanAfter: textInfo.cleanAfter,
 
-                //     rangeInfo,
-                // },
-            } as IHighlightDefinition,
-        ];
-        _ttsQueueItemHighlightsWord = createHighlights(
-            win,
-            highlightDefinitions,
-            false, // mouse / pointer interaction
-        );
+                    //     rangeInfo,
+                    // },
+                } as IHighlightDefinition,
+            ];
+            _ttsQueueItemHighlightsWord = createHighlights(
+                win,
+                highlightDefinitions,
+                false, // mouse / pointer interaction
+            );
+        }
     }
 }
 
@@ -995,38 +997,40 @@ function wrapHighlight(
             // const textInfo = tuple[1];
 
             const ttsHighlightStyle = typeof win.READIUM2?.ttsHighlightStyle !== "undefined" ? win.READIUM2.ttsHighlightStyle : HighlightDrawTypeBackground;
-            const ttsColor: IColor = win.READIUM2?.ttsHighlightColor || {
-                blue: 116, // 204,
-                green: 248, // 218,
-                red: 248, // 255,
-            };
-            const highlightDefinitions = [
-                {
-                    // https://htmlcolorcodes.com/
-                    color: ttsColor,
-                    drawType: ttsHighlightStyle,
-                    expand: ttsHighlightStyle === HighlightDrawTypeOpacityMaskRuler || ttsHighlightStyle === HighlightDrawTypeOpacityMask ? 0 : ttsHighlightStyle === HighlightDrawTypeBackground ? 4 : 0,
-                    selectionInfo: undefined,
-                    group: HIGHLIGHT_GROUP_TTS,
-                    range,
-                    // selectionInfo: {
-                    //     rawBefore: textInfo.rawBefore,
-                    //     rawText: textInfo.rawText,
-                    //     rawAfter: textInfo.rawAfter,
+            if (ttsHighlightStyle !== HighlightDrawTypeNONE) {
+                const ttsColor: IColor = win.READIUM2?.ttsHighlightColor || {
+                    blue: 116, // 204,
+                    green: 248, // 218,
+                    red: 248, // 255,
+                };
+                const highlightDefinitions = [
+                    {
+                        // https://htmlcolorcodes.com/
+                        color: ttsColor,
+                        drawType: ttsHighlightStyle,
+                        expand: ttsHighlightStyle === HighlightDrawTypeOpacityMaskRuler || ttsHighlightStyle === HighlightDrawTypeOpacityMask ? 0 : ttsHighlightStyle === HighlightDrawTypeBackground ? 4 : 0,
+                        selectionInfo: undefined,
+                        group: HIGHLIGHT_GROUP_TTS,
+                        range,
+                        // selectionInfo: {
+                        //     rawBefore: textInfo.rawBefore,
+                        //     rawText: textInfo.rawText,
+                        //     rawAfter: textInfo.rawAfter,
 
-                    //     cleanBefore: textInfo.cleanBefore,
-                    //     cleanText: textInfo.cleanText,
-                    //     cleanAfter: textInfo.cleanAfter,
+                        //     cleanBefore: textInfo.cleanBefore,
+                        //     cleanText: textInfo.cleanText,
+                        //     cleanAfter: textInfo.cleanAfter,
 
-                    //     rangeInfo,
-                    // },
-                } as IHighlightDefinition,
-            ];
-            _ttsQueueItemHighlightsSentence = createHighlights(
-                win,
-                highlightDefinitions,
-                false, // mouse / pointer interaction
-            );
+                        //     rangeInfo,
+                        // },
+                    } as IHighlightDefinition,
+                ];
+                _ttsQueueItemHighlightsSentence = createHighlights(
+                    win,
+                    highlightDefinitions,
+                    false, // mouse / pointer interaction
+                );
+            }
         }
     }
 

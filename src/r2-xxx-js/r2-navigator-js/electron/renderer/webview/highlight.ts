@@ -357,7 +357,7 @@ const cleanupPolygon = (polygonAccumulator: Polygon, off: number) => {
                         }
                         hasChanged = true;
                         newEdgeShapes.splice(0, 1);
-                        const seg = new Segment(new Point(newEdgeShapes[0].start.x, newEdgeShapes[0].start.y), new Point(segment.end.x, segment.end.y));;
+                        const seg = new Segment(new Point(newEdgeShapes[0].start.x, newEdgeShapes[0].start.y), new Point(segment.end.x, segment.end.y));
                         newEdgeShapes.push(seg);
                         previousSmallSegment = undefined;
                         previousSegment = seg;
@@ -445,7 +445,7 @@ function arcSE(center: Point, start: Point, end: Point, counterClockwise: boolea
         counterClockwise = !counterClockwise;
     }
 
-    const r = Number((new Vector(center, start).length).toPrecision(12));;
+    const r = Number((new Vector(center, start).length).toPrecision(12));
 
     return new Arc(center, r, startAngle, endAngle, counterClockwise); // default is CCW / true
 }

@@ -13,6 +13,7 @@ export interface IColor {
     blue: number;
 }
 
+export const HighlightDrawTypeNONE = -1;
 export const HighlightDrawTypeBackground = 0;
 export const HighlightDrawTypeUnderline = 1;
 export const HighlightDrawTypeStrikethrough = 2;

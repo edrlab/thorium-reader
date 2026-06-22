@@ -11,18 +11,20 @@ import { Action } from "readium-desktop/common/models/redux";
 export const ID = "WIN_SESSION_SET_BOUND";
 
 export interface Payload {
-    identifier: string;
-    bound: Rectangle;
+    windowIdentifier: string;
+    winBound: Rectangle;
+    windowMaximized?: boolean;
 }
 
-export function build(id: string, bound: Rectangle):
+export function build(windowIdentifier: string, winBound: Rectangle, windowMaximized?: boolean):
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
-            identifier: id,
-            bound,
+            windowIdentifier,
+            winBound,
+            windowMaximized,
         },
     };
 }

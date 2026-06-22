@@ -51,6 +51,8 @@ export class Toast extends React.Component<IProps, IState> {
     private ref: React.RefObject<HTMLDivElement>;
     private timer: number | undefined;
     private ignoreTimer: boolean | undefined;
+    private fallbackTimer: number | undefined;
+    private isRemoving = false;
 
     constructor(props: IProps) {
         super(props);
@@ -72,6 +74,10 @@ export class Toast extends React.Component<IProps, IState> {
             window.clearTimeout(this.timer);
             this.timer = undefined;
         }
+        if (this.fallbackTimer) {
+            window.clearTimeout(this.fallbackTimer);
+            this.fallbackTimer = undefined;
+        }
         if (ignoreTimer) {
             this.ignoreTimer = true;
         }
@@ -91,10 +97,6 @@ export class Toast extends React.Component<IProps, IState> {
     public componentDidMount() {
         this.triggerTimer(false);
 
-        if (this.ref?.current) {
-            this.ref?.current.addEventListener("transitionend", this.handleTransitionEnd, false);
-        }
-
         // https://www.electronjs.org/docs/latest/tutorial/notifications
         if (this.props.displaySystemNotification) {
             new Notification(capitalizedAppName, {
@@ -103,10 +105,8 @@ export class Toast extends React.Component<IProps, IState> {
         }
     }
 
-    public componentWillRemove() {
-        if (this.ref?.current) {
-            this.ref?.current.removeEventListener("transitionend", this.handleTransitionEnd, false);
-        }
+    public componentWillUnmount() {
+        this.cancelTimer(false);
     }
 
     public render(): React.ReactElement<{}> {
@@ -132,6 +132,7 @@ export class Toast extends React.Component<IProps, IState> {
 
         return (
             <div
+                onTransitionEnd={this.handleTransitionEnd}
                 ref={this.ref}
                 onMouseMove={() => {
                     this.cancelTimer(false);
@@ -210,16 +211,29 @@ export class Toast extends React.Component<IProps, IState> {
     }
 
     private handleClose() {
-        this.setState({ willLeave: true });
-        this.setState({ opened : false });
+        this.setState({ willLeave: true, opened: false });
+        this.fallbackTimer = window.setTimeout(() => {
+            if (!this.state.toRemove) {
+                console.log("Fallback: Transitionend missed, forcing removal.");
+                this.handleTransitionEnd();
+            }
+        }, 400);
     }
 
     private handleTransitionEnd() {
-        if (this.state.toRemove) {
-            this.props.close(this.props.id);
-        } else if (this.state.willLeave) {
-            this.setState({toRemove: true});
+        if (this.isRemoving) return;
+        if (this.fallbackTimer) {
+            window.clearTimeout(this.fallbackTimer);
+            this.fallbackTimer = undefined;
         }
+        if (this.state.willLeave) {
+            if (!this.state.toRemove) {
+                this.setState({ toRemove: true }, () => {
+                    this.props.close(this.props.id);
+                });
+            }
+        }
+        this.isRemoving = true;
     }
 }
 

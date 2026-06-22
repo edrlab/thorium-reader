@@ -33,7 +33,11 @@ export interface ILibraryRootState extends IRendererCommonRootState {
     publication: {
         catalog: CatalogView,
         tag: string[],
-    }
+        directory: {
+            defaultDirectory?: string,
+            userDirectory?: string,
+        }
+    };
     wizard: IWizardState;
     settings: ISettingsState;
 }

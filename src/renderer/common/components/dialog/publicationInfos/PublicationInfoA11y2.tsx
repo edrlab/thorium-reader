@@ -13,13 +13,14 @@ import * as stylePublication from "readium-desktop/renderer/assets/styles/public
 
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import { convertMultiLangStringToLangString, langStringIsRTL } from "readium-desktop/common/language-string";
+import { convertMultiLangStringToLangString } from "readium-desktop/common/language-string";
+import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 
 import DOMPurify from "dompurify";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { shell } from "electron";
-import isURL from "validator/lib/isURL";
+import isURL from "readium-desktop/common/utils/isURL";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:publicationA11y");
@@ -29,17 +30,30 @@ export interface IProps {
     publicationViewMaybeOpds: TPublication;
 }
 
-const findStrInArrayArray = (array: (string[])[] | string[] | undefined, str: string): boolean => Array.isArray(array) && array.findIndex((a) => (Array.isArray(a) ? a : [a]).findIndex((b) => b === str) > -1) > -1;
-const findStrInArray = (array: string[] | undefined, str: string | string[]): boolean => Array.isArray(array) && !!array.find((a) => Array.isArray(str) ? str.includes(a) : a === str);
+const hasMatchingString = (
+    array: string[] | undefined,
+    str: string | string[],
+): boolean =>
+    Array.isArray(array) &&
+    array.some(a => Array.isArray(str) ? str.includes(a) : a === str);
 
-
+const hasContainingString = (
+  array: string[] | undefined,
+  value: string | string[],
+): boolean =>
+  Array.isArray(array) &&
+  array.some(a =>
+    Array.isArray(value)
+      ? value.some(v => a.includes(v))
+      : a.includes(value),
+  );
 
 export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds}) => {
 
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
 
     /**
-     * https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/techniques/epub-metadata/index.html#ways-of-reading
+     * https://www.w3.org/community/reports/publishingcg/CG-FINAL-epub-techniques-20250422
      *
      * Display Techniques for EPUB Accessibility Metadata 2.0 Draft Community Group Report 14 April 2025
      */
@@ -47,7 +61,7 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
     const is_fixed_layout = publicationViewMaybeOpds.isFixedLayoutPublication;
     const {
         a11y_accessMode,
-        a11y_accessModeSufficient,
+        a11y_accessModeSufficient: a11y_accessModeSufficient_array_array,
         a11y_accessibilityFeature,
         a11y_accessibilityHazard,
         a11y_accessibilitySummary,
@@ -56,6 +70,11 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
         a11y_certifiedBy: a11y_certifiedBy_,
         a11y_certifierCredential: a11y_certifierCredential_,
     } = publicationViewMaybeOpds;
+
+    // (@property="schema:accessModeSufficient" and contains(normalize-space(), "textual"))].
+    // parsed as [["textual", "visual"], ["auditory", "visual"]] and mapped to ["textual,visual", "auditory,visual"]
+    const a11y_accessModeSufficient = (Array.isArray(a11y_accessModeSufficient_array_array) ? a11y_accessModeSufficient_array_array : [])
+        .map((value) => Array.isArray(value) ? value.join(",") : value);
     const a11y_conformsTo = Array.isArray(a11y_conformsTo_) ? a11y_conformsTo_ : a11y_conformsTo_ ? [a11y_conformsTo_] : [];
     const a11y_certifierReport = Array.isArray(a11y_certifierReport_) ? a11y_certifierReport_ : a11y_certifierReport_ ? [a11y_certifierReport_] : [];
     const a11y_certifiedBy = Array.isArray(a11y_certifiedBy_) ? a11y_certifiedBy_ : a11y_certifiedBy_ ? [a11y_certifiedBy_] : [];
@@ -74,44 +93,54 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
 
     }
 
-    // https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/techniques/epub-metadata/index.html#visual-adjustments
-    const all_textual_content_can_be_modified = findStrInArray(a11y_accessibilityFeature, "displayTransformability");
+    // https://www.w3.org/community/reports/publishingcg/CG-FINAL-epub-techniques-20250422#visual-adjustments
+    const all_textual_content_can_be_modified = hasMatchingString(a11y_accessibilityFeature, "displayTransformability");
 
-    // https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/techniques/epub-metadata/index.html#supports-nonvisual-reading
-    const all_necessary_content_textual = (findStrInArray(a11y_accessMode, "textual") && a11y_accessMode.length === 1)
-        || findStrInArrayArray(a11y_accessModeSufficient, "textual");
-    const audio_only_content = findStrInArray(a11y_accessMode, "auditory") && a11y_accessMode.length === 1;
-    const some_sufficient_text = findStrInArray(a11y_accessMode, "textual") && findStrInArrayArray(a11y_accessModeSufficient, "textual");
-    const textual_alternatives = findStrInArray(a11y_accessibilityFeature, ["longDescription", "alternativeText", "describedMath", "transcript"]);
-    const visual_only_content = (findStrInArray(a11y_accessMode, "visual") && a11y_accessMode.length === 1)
-        && !findStrInArrayArray(a11y_accessModeSufficient, "textual");
+    // https://www.w3.org/community/reports/publishingcg/CG-FINAL-epub-techniques-20250422/#variables-setup-0
 
-    // https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/techniques/epub-metadata/index.html#prerecorded-audio
-    const all_content_audio = findStrInArrayArray(a11y_accessModeSufficient, "auditory");
-    const audio_content = findStrInArray(a11y_accessMode, "auditory");
-    const synchronised_pre_recorded_audio = findStrInArray(a11y_accessibilityFeature, "synchronizedAudioText");
+    // LET all_necessary_content_textual be the result of calling check for node on package_document, /package/metadata/meta[(@property="schema:accessMode" and normalize-space() = "textual" and count(//meta[@property="schema:accessMode"]) = 1) or (@property="schema:accessModeSufficient" and normalize-space()="textual")].
+    const all_necessary_content_textual = (hasMatchingString(a11y_accessMode, "textual") && a11y_accessMode.length === 1)
+        || hasMatchingString(a11y_accessModeSufficient, "textual");
+
+    // LET audio_only_content be the result of calling check for node on package_document, /package/metadata/meta[@property="schema:accessMode" and normalize-space() = "auditory" and count(//meta[@property="schema:accessMode"]) = 1].
+    const audio_only_content = hasMatchingString(a11y_accessMode, "auditory") && a11y_accessMode.length === 1;
+
+    // LET some_sufficient_text be the result of calling check for node on package_document, /package/metadata/meta[(@property="schema:accessMode" and contains(normalize-space(), "textual")) or (@property="schema:accessModeSufficient" and contains(normalize-space(), "textual"))].
+    const some_sufficient_text = hasContainingString(a11y_accessMode, "textual") || hasContainingString(a11y_accessModeSufficient, "textual");
+
+    // LET textual_alternatives be the result of calling check for node on package_document, /package/metadata/meta[@property="schema:accessibilityFeature" and (normalize-space() = "longDescription" or normalize-space() = "alternativeText" or normalize-space() = "describedMath" or normalize-space() = "transcript")].
+    const textual_alternatives = hasMatchingString(a11y_accessibilityFeature, ["longDescription", "alternativeText", "describedMath", "transcript"]);
+
+    // LET visual_only_content be the result of calling check for node on package_document, /package/metadata/meta[(@property="schema:accessMode" and normalize-space() = "visual" and count(//meta[@property="schema:accessMode"]) = 1) and not(//meta[@property="schema:accessModeSufficient" and contains(normalize-space(), "textual")])].
+    const visual_only_content = (hasMatchingString(a11y_accessMode, "visual") && a11y_accessMode.length === 1)
+        && !hasContainingString(a11y_accessModeSufficient, "textual");
+
+    // https://www.w3.org/community/reports/publishingcg/CG-FINAL-epub-techniques-20250422#prerecorded-audio
+    const all_content_audio = hasMatchingString(a11y_accessModeSufficient, "auditory");
+    const audio_content = hasMatchingString(a11y_accessMode, "auditory");
+    const synchronised_pre_recorded_audio = hasMatchingString(a11y_accessibilityFeature, "synchronizedAudioText");
 
     const enableWaysOfReading = (is_fixed_layout || all_textual_content_can_be_modified || all_necessary_content_textual || some_sufficient_text || textual_alternatives || audio_only_content || visual_only_content || synchronised_pre_recorded_audio || all_content_audio || audio_content);
 
-    // https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/techniques/epub-metadata/index.html#navigation
-    const table_of_contents_navigation = findStrInArray(a11y_accessibilityFeature, "tableOfContents");
-    const page_navigation = findStrInArray(a11y_accessibilityFeature, "pageNavigation");
-    const index_navigation = findStrInArray(a11y_accessibilityFeature, "index");
-    const next_previous_structural_navigation = findStrInArray(a11y_accessibilityFeature, "structuralNavigation");
+    // https://www.w3.org/community/reports/publishingcg/CG-FINAL-epub-techniques-20250422#navigation
+    const table_of_contents_navigation = hasMatchingString(a11y_accessibilityFeature, "tableOfContents");
+    const page_navigation = hasMatchingString(a11y_accessibilityFeature, "pageNavigation");
+    const index_navigation = hasMatchingString(a11y_accessibilityFeature, "index");
+    const next_previous_structural_navigation = hasMatchingString(a11y_accessibilityFeature, "structuralNavigation");
 
 
     const enableNavigation = (table_of_contents_navigation || index_navigation || page_navigation || next_previous_structural_navigation);
 
-    // https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/techniques/epub-metadata/index.html#rich-content
-    const chemical_formula_as_latex = findStrInArray(a11y_accessibilityFeature, "latex-chemistry");
-    const chemical_formula_as_mathml = findStrInArray(a11y_accessibilityFeature, "MathML-chemistry");
-    const closed_captions = findStrInArray(a11y_accessibilityFeature, "closedCaptions");
-    const contains_math_formula = findStrInArray(a11y_accessibilityFeature, "describedMath");
-    const full_alternative_textual_descriptions = findStrInArray(a11y_accessibilityFeature, "longDescriptions") || findStrInArray(a11y_accessibilityFeature, "longDescription");
-    const math_formula_as_latex = findStrInArray(a11y_accessibilityFeature, "latex");
-    const math_formula_as_mathml = findStrInArray(a11y_accessibilityFeature, "MathML");
-    const open_captions = findStrInArray(a11y_accessibilityFeature, "openCaptions");
-    const transcript = findStrInArray(a11y_accessibilityFeature, "transcript");
+    // https://www.w3.org/community/reports/publishingcg/CG-FINAL-epub-techniques-20250422#rich-content
+    const chemical_formula_as_latex = hasMatchingString(a11y_accessibilityFeature, "latex-chemistry");
+    const chemical_formula_as_mathml = hasMatchingString(a11y_accessibilityFeature, "MathML-chemistry");
+    const closed_captions = hasMatchingString(a11y_accessibilityFeature, "closedCaptions");
+    const contains_math_formula = hasMatchingString(a11y_accessibilityFeature, "describedMath");
+    const full_alternative_textual_descriptions = hasMatchingString(a11y_accessibilityFeature, "longDescriptions") || hasMatchingString(a11y_accessibilityFeature, "longDescription");
+    const math_formula_as_latex = hasMatchingString(a11y_accessibilityFeature, "latex");
+    const math_formula_as_mathml = hasMatchingString(a11y_accessibilityFeature, "MathML");
+    const open_captions = hasMatchingString(a11y_accessibilityFeature, "openCaptions");
+    const transcript = hasMatchingString(a11y_accessibilityFeature, "transcript");
 
     const enableRichContent = (chemical_formula_as_latex ||
                         chemical_formula_as_mathml ||
@@ -123,30 +152,30 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                         open_captions ||
                         transcript);
 
-    // https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/techniques/epub-metadata/index.html#hazards
-    const flashing_hazard = findStrInArray(a11y_accessibilityHazard, "flashing");
-    const motion_simulation_hazard = findStrInArray(a11y_accessibilityHazard, "motionSimulation");
-    const no_flashing_hazard = findStrInArray(a11y_accessibilityHazard, "noFlashingHazard");
-    const no_hazards_or_warnings_confirmed = findStrInArray(a11y_accessibilityHazard, "none");
-    const no_motion_hazard = findStrInArray(a11y_accessibilityHazard, "noMotionSimulationHazard");
-    const sound_hazard = findStrInArray(a11y_accessibilityHazard, "sound");
-    const no_sound_hazard = findStrInArray(a11y_accessibilityHazard, "noSoundHazard");
-    const unknown_flashing_hazard = findStrInArray(a11y_accessibilityHazard, "unknownFlashingHazard");
-    const unknown_if_contains_hazards = findStrInArray(a11y_accessibilityHazard, "unknown");
-    const unknown_motion_hazard = findStrInArray(a11y_accessibilityHazard, "unknownMotionSimulationHazard");
-    const unknown_sound_hazard = findStrInArray(a11y_accessibilityHazard, "unknownSoundHazard");
+    // https://www.w3.org/community/reports/publishingcg/CG-FINAL-epub-techniques-20250422#hazards
+    const flashing_hazard = hasMatchingString(a11y_accessibilityHazard, "flashing");
+    const motion_simulation_hazard = hasMatchingString(a11y_accessibilityHazard, "motionSimulation");
+    const no_flashing_hazard = hasMatchingString(a11y_accessibilityHazard, "noFlashingHazard");
+    const no_hazards_or_warnings_confirmed = hasMatchingString(a11y_accessibilityHazard, "none");
+    const no_motion_hazard = hasMatchingString(a11y_accessibilityHazard, "noMotionSimulationHazard");
+    const sound_hazard = hasMatchingString(a11y_accessibilityHazard, "sound");
+    const no_sound_hazard = hasMatchingString(a11y_accessibilityHazard, "noSoundHazard");
+    const unknown_flashing_hazard = hasMatchingString(a11y_accessibilityHazard, "unknownFlashingHazard");
+    const unknown_if_contains_hazards = hasMatchingString(a11y_accessibilityHazard, "unknown");
+    const unknown_motion_hazard = hasMatchingString(a11y_accessibilityHazard, "unknownMotionSimulationHazard");
+    const unknown_sound_hazard = hasMatchingString(a11y_accessibilityHazard, "unknownSoundHazard");
 
 
     const enableHazard = (no_hazards_or_warnings_confirmed || no_flashing_hazard || no_motion_hazard || no_sound_hazard || unknown_if_contains_hazards || unknown_flashing_hazard || no_motion_hazard || no_sound_hazard || unknown_if_contains_hazards || unknown_flashing_hazard || unknown_motion_hazard || unknown_sound_hazard || flashing_hazard || motion_simulation_hazard || sound_hazard);
 
 
-    // https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/techniques/epub-metadata/index.html#conformance-group
+    // https://www.w3.org/community/reports/publishingcg/CG-FINAL-epub-techniques-20250422#conformance-group
     const conformanceResult: Array<{epub_version: string, wcag_version: string, wcag_level: string}> = [];
     for (const conformance of a11y_conformsTo) {
         const __conformanceMatch = conformance?.match(/^EPUB Accessibility (\d+\.\d+) - WCAG (\d+\.\d+) Level ([A]+)$/);
-        const epub10_wcag20a = findStrInArray(a11y_conformsTo, "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-a");
-        const epub10_wcag20aa = findStrInArray(a11y_conformsTo, "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aa");
-        const epub10_wcag20aaa = findStrInArray(a11y_conformsTo, "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aaa");
+        const epub10_wcag20a = hasMatchingString(a11y_conformsTo, "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-a");
+        const epub10_wcag20aa = hasMatchingString(a11y_conformsTo, "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aa");
+        const epub10_wcag20aaa = hasMatchingString(a11y_conformsTo, "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aaa");
         let epub_version = undefined;
         let wcag_version = undefined;
         let wcag_level = undefined;
@@ -178,29 +207,29 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
 
     const enableConformance = !!conformanceResult.length;
 
-    // https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/techniques/epub-metadata/index.html#additional-accessibility-information
-    const aria = findStrInArray(a11y_accessibilityFeature, "aria");
-    const audio_descriptions = findStrInArray(a11y_accessibilityFeature, "audioDescription");
-    const braille = findStrInArray(a11y_accessibilityFeature, "braille");
-    const full_ruby_annotations = findStrInArray(a11y_accessibilityFeature, "fullRubyAnnotations");
-    const high_contrast_between_foreground_and_background_audio = findStrInArray(a11y_accessibilityFeature, "highContrastAudio");
-    const high_contrast_between_text_and_background = findStrInArray(a11y_accessibilityFeature, "highContrastDisplay");
-    const large_print = findStrInArray(a11y_accessibilityFeature, "largePrint");
-    const page_break_markers = findStrInArray(a11y_accessibilityFeature, "pageBreakMarkers") || findStrInArray(a11y_accessibilityFeature, "printPageNumbers");
-    const ruby_annotations = findStrInArray(a11y_accessibilityFeature, "rubyAnnotations");
-    const sign_language = findStrInArray(a11y_accessibilityFeature, "signLanguage");
-    const tactile_graphic = findStrInArray(a11y_accessibilityFeature, "tactileGraphic");
-    const tactile_object = findStrInArray(a11y_accessibilityFeature, "tactileObject");
-    const text_to_speech_hinting = findStrInArray(a11y_accessibilityFeature, "ttsMarkup");
+    // https://www.w3.org/community/reports/publishingcg/CG-FINAL-epub-techniques-20250422#additional-accessibility-information
+    const aria = hasMatchingString(a11y_accessibilityFeature, "aria");
+    const audio_descriptions = hasMatchingString(a11y_accessibilityFeature, "audioDescription");
+    const braille = hasMatchingString(a11y_accessibilityFeature, "braille");
+    const full_ruby_annotations = hasMatchingString(a11y_accessibilityFeature, "fullRubyAnnotations");
+    const high_contrast_between_foreground_and_background_audio = hasMatchingString(a11y_accessibilityFeature, "highContrastAudio");
+    const high_contrast_between_text_and_background = hasMatchingString(a11y_accessibilityFeature, "highContrastDisplay");
+    const large_print = hasMatchingString(a11y_accessibilityFeature, "largePrint");
+    const page_break_markers = hasMatchingString(a11y_accessibilityFeature, "pageBreakMarkers") || hasMatchingString(a11y_accessibilityFeature, "printPageNumbers");
+    const ruby_annotations = hasMatchingString(a11y_accessibilityFeature, "rubyAnnotations");
+    const sign_language = hasMatchingString(a11y_accessibilityFeature, "signLanguage");
+    const tactile_graphic = hasMatchingString(a11y_accessibilityFeature, "tactileGraphic");
+    const tactile_object = hasMatchingString(a11y_accessibilityFeature, "tactileObject");
+    const text_to_speech_hinting = hasMatchingString(a11y_accessibilityFeature, "ttsMarkup");
     // const print_page_numbers = findStrInArray(a11y_accessibilityFeature, "printPageNumbers");
     // Replaced by pageBreakMarkers
-    // TODO: already declared in previous a11y implementation but not in https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/techniques/epub-metadata/index.html // declared in readium webpub manifest https://github.com/readium/webpub-manifest/blob/4c73f7323f9241e61bb919ecae2656a491ba15f6/schema/a11y.schema.json#L84
+    // TODO: already declared in previous a11y implementation but not in https://www.w3.org/community/reports/publishingcg/CG-FINAL-epub-techniques-20250422 // declared in readium webpub manifest https://github.com/readium/webpub-manifest/blob/4c73f7323f9241e61bb919ecae2656a491ba15f6/schema/a11y.schema.json#L84
 
     const enableAdditionnals = (page_break_markers || aria || audio_descriptions || braille || full_ruby_annotations || high_contrast_between_foreground_and_background_audio || high_contrast_between_text_and_background || large_print || ruby_annotations || sign_language || tactile_graphic || tactile_object || text_to_speech_hinting);
 
     const enableSummaryDetail = accessibilitySummaryStrSanitized || enableAdditionnals || enableConformance || enableHazard || enableRichContent;
 
-    // https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/techniques/epub-metadata/index.html#legal-considerations
+    // https://www.w3.org/community/reports/publishingcg/CG-FINAL-epub-techniques-20250422#legal-considerations
     // https://github.com/w3c/publ-a11y/issues/350
     // a11y:exemption metadata not implemented on models parsing https://github.com/readium/r2-shared-js/blob/3dbce230c09c00042b38d5dbc9ffba6f2420992e/src/models/metadata.ts#L99 https://github.com/readium/webpub-manifest/blob/4c73f7323f9241e61bb919ecae2656a491ba15f6/schema/a11y.schema.json#L18-L25
 
@@ -237,12 +266,12 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                     <li className="publicationInfoA11y2-icon" title={all_textual_content_can_be_modified
                         ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-visual-adjustments-modifiable.descriptive")
                         : is_fixed_layout
-                            ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-visual-adjustments-modifiable.descriptive")
+                            ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-visual-adjustments-unmodifiable.descriptive")
                             : __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-visual-adjustments-unknown.descriptive")}>
                         {all_textual_content_can_be_modified
                             ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-visual-adjustments-modifiable.compact")
                             : is_fixed_layout
-                                ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-visual-adjustments-modifiable.compact")
+                                ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-visual-adjustments-unmodifiable.compact")
                                 : __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-visual-adjustments-unknown.compact")}
                     </li>
                     <li className="publicationInfoA11y2-icon" title={all_necessary_content_textual
@@ -265,21 +294,19 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                             {__("publ-a11y-display-guide.ways-of-reading.ways-of-reading-nonvisual-reading-alt-text.compact")}
                         </li>
                         : <></>}
-                    <li className="publicationInfoA11y2-icon" title={synchronised_pre_recorded_audio
-                        ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-synchronized.descriptive")
-                        : all_content_audio
-                            ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-only.descriptive")
-                            : audio_content
-                                ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-complementary.descriptive")
-                                : __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-no-metadata.descriptive")}>
-                        {synchronised_pre_recorded_audio
-                            ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-synchronized.compact")
+                    {(synchronised_pre_recorded_audio || all_content_audio || audio_content) ?
+                        <li className="publicationInfoA11y2-icon" title={synchronised_pre_recorded_audio
+                            ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-synchronized.descriptive")
                             : all_content_audio
-                                ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-only.compact")
-                                : audio_content
-                                    ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-complementary.compact")
-                                    : __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-no-metadata.compact")}
-                    </li>
+                                ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-only.descriptive")
+                                : __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-complementary.descriptive")}>
+                            {synchronised_pre_recorded_audio
+                                ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-synchronized.compact")
+                                : all_content_audio
+                                    ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-only.compact")
+                                    : __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-complementary.compact")}
+                        </li>
+                        : <></>}
                 </ul></>
             : <></>}
         {enableNavigation
@@ -424,7 +451,7 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                                     }
                                     {a11y_certifiedBy.length
                                         ? a11y_certifiedBy.map((certifier, i) => <li key={"certifier_" + i}>{
-                                            // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+                                            // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
                                             certifier && isURL(certifier) ? <a title={certifier} onClick={async (e) => { e.preventDefault(); if (certifier && /^https?:\/\//.test(certifier)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */ await shell.openExternal(certifier); } }} href={certifier}>
                                             {__("publ-a11y-display-guide.conformance.conformance-details-certifier-report.compact")}
                                         </a> :
@@ -433,7 +460,7 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                                         : <></>}
                                     {a11y_certifierCredential.length
                                         ? a11y_certifierCredential.map((certifier_credentials, i) => <li key={"certifier_credentials_" + i}>{
-                                            // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+                                            // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
                                             certifier_credentials && isURL(certifier_credentials) ? <a title={certifier_credentials} onClick={async (e) => { e.preventDefault(); if (certifier_credentials && /^https?:\/\//.test(certifier_credentials)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */ await shell.openExternal(certifier_credentials); } }} href={certifier_credentials}>
                                             {__("publ-a11y-display-guide.conformance.conformance-details-certifier-report.compact")}
                                         </a> :
@@ -452,7 +479,7 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                                     </li>)}
                                     {a11y_certifierReport.length
                                         ? a11y_certifierReport.map((certifier_report, i) => <li key={"certifier_report_" + i} title={certifier_report}>{
-                                            // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+                                            // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
                                             certifier_report && isURL(certifier_report) ? <a title={certifier_report} onClick={async (e) => { e.preventDefault(); if (certifier_report && /^https?:\/\//.test(certifier_report)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */ await shell.openExternal(certifier_report); } }} href={certifier_report}>
                                             {__("publ-a11y-display-guide.conformance.conformance-details-certifier-report.compact")}
                                         </a> : __("publ-a11y-display-guide.conformance.conformance-details-certifier-report.compact") + " " + certifier_report}</li>)

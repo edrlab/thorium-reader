@@ -31,6 +31,7 @@ import * as settingsActions from "./settings";
 import * as noteExport from "./noteExport";
 import * as customizationActions from "./customization";
 import * as opdsActions from "./opds";
+import * as winCommonActions from "./win";
 
 export {
     historyActions,
@@ -59,4 +60,5 @@ export {
     noteExport,
     customizationActions,
     opdsActions,
+    winCommonActions,
 };

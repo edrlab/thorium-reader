@@ -10,20 +10,19 @@ import { winIpc } from "readium-desktop/common/ipc";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import {
-    closeProcessLock, getLibraryWindowFromDi, getReaderWindowFromDi,
+    closeProcessLock, diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi,
 } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { ObjectKeys, ObjectValues } from "readium-desktop/utils/object-keys-values";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { all, call, delay, put, spawn, take } from "redux-saga/effects";
-import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
+import { all, call, delay, put, spawn } from "redux-saga/effects";
+import { call as callTyped, select as selectTyped, take as takeTyped, delay as delayTyped, race as raceTyped } from "typed-redux-saga/macro";
 
 import { IWinSessionReaderState } from "../../states/win/session/reader";
 import { getAppActivateEventChannel } from "../getEventChannel";
 import { createLibraryWindow } from "./browserWindow/createLibraryWindow";
-import { checkReaderWindowInSession } from "./session/checkReaderWindowInSession";
 import { getCatalog } from "../catalog";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 
@@ -96,9 +95,12 @@ export function* appActivate() {
         yield put(winActions.library.openRequest.build());
 
         // wait
-        yield take(winActions.library.openSucess.ID);
+        const raceResult = yield* raceTyped([
+            takeTyped(winActions.library.openSucess.ID),
+            delayTyped(5000),
+        ]);
+        debug("AppActivate openSuccess with 5seconds timeout, result:", raceResult);
     }
-
 }
 
 function* winOpen(action: winActions.library.openSucess.TAction) {
@@ -123,6 +125,10 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
                 entries: [],
             },
             tag: [],
+            directory: {
+                defaultDirectory: diMainGet("publication-storage").defaultDirectory,
+                userDirectory: diMainGet("publication-storage").userDirectory,
+            },
         },
         session: {
             // state: state.session.state,
@@ -139,8 +145,10 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
         customization: state.customization,
     };
     try {
+        debug("START REQUEST CATALOG FROM DATABASE");
         const publication = yield* callTyped(getCatalog);
         payload.publication = publication;
+        debug("END REQUEST CATALOG FROM DATABASE; DONE");
     } catch (e) {
         error(filename_, e);
     }
@@ -335,11 +343,11 @@ export function saga() {
             createLibraryWindow,
             (e) => error(filename_ + ":createLibraryWindow", e),
         ),
-        takeSpawnLeading(
-            winActions.library.openRequest.ID,
-            checkReaderWindowInSession,
-            (e) => error(filename_ + ":checkReaderWindowInSession", e),
-        ),
+        // takeSpawnLeading(
+        //     winActions.library.openRequest.ID,
+        //     checkReaderWindowInSession,
+        //     (e) => error(filename_ + ":checkReaderWindowInSession", e),
+        // ),
         takeSpawnLeading(
             winActions.library.openSucess.ID,
             winOpen,

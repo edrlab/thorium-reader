@@ -7,8 +7,8 @@
 
 import debug_ from "debug";
 import { readerIpc } from "readium-desktop/common/ipc";
-import { ReaderMode } from "readium-desktop/common/models/reader";
-import { normalizeRectangle } from "readium-desktop/common/rectangle/window";
+import { ReaderInfo, ReaderMode } from "readium-desktop/common/models/reader";
+import { normalizeWinBoundRectangle } from "readium-desktop/common/rectangle/window";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { deleteReaderWindowInDi, diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
@@ -19,11 +19,13 @@ import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 import { all, put } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 
-import { createReaderWindow } from "./browserWindow/createReaderWindow";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 // import { comparePublisherReaderConfig } from "readium-desktop/common/publisherConfig";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
+import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { dialog } from "electron";
+import { restoreBrowserWindowState } from "./session/browserWindowState";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:win:reader";
@@ -32,22 +34,34 @@ debug("_");
 
 const __readerWithSamePubIdGotTheLockMap = new Map<string, string>(); // K: publicationIdentifier V: windowIdentifier
 
+// event receive when reader window.webcontent send 'did-finish-load'
 function* winOpen(action: winActions.reader.openSucess.TAction) {
 
-    const identifier = action.payload.identifier;
-    debug(`reader ${identifier} -> winOpen`);
+    const { readerWindow, publicationIdentifier: pubId, windowIdentifier: winId } = action.payload;
+    debug(`reader winId=${winId} -> winOpen pubId=${pubId}`);
 
-    const readerWin = action.payload.win;
-    const webContents = readerWin.webContents;
+    if (readerWindow.isDestroyed()) {
+        debug("readerWindow distroyed -> exit on winId=${winId} -> pubId=${pubId}");
+        return ;
+    }
+    const webContents = readerWindow.webContents;
     const screenReaderActivate = yield* selectTyped((_state: RootState) => _state.screenReader.activate);
     const locale = yield* selectTyped((_state: RootState) => _state.i18n.locale);
-    const reader = yield* selectTyped((_state: RootState) => _state.win.session.reader[identifier]);
-    const pubId = reader?.publicationIdentifier; // can be undefined
+    const readerSession = yield* selectTyped((_state: RootState) => _state.win.session.reader[winId]);
+    
+    // registry.reader disabled, reducers disabled
+    // const readerRegistry = yield* selectTyped((_state: RootState) => _state.win.registry.reader[winId])
+
     const readerDefaultConfig = yield* selectTyped((_state: RootState) => _state.reader.defaultConfig);
     const config = { ...readerDefaultConfig, ...(pubId ? yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "config")) : {}) };
+    const locator = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "locator"))) || undefined; // TODO: type object and not locator
+    const disableRTLFlip = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "disableRTLFlip"))) || undefined; // TODO: type object and not disableRTLFlip
+    const divina = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "divina"))) || undefined; // TODO: type object and note IDivinaState
+    const noteTotalCount = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "noteTotalCount"))) || undefined; // TODO: type object
+    const pdfConfig = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "pdfConfig"))) || undefined; // TODO: type object
     
     // not used by default, no need to persist 
-    const allowCustomConfig = pubId ? yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "allowCustomConfig")) : undefined;
+    const allowCustomConfig = pubId ? yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "allowCustomConfig")) : undefined; // TODO: type object
 
     const keyboard = yield* selectTyped((_state: RootState) => _state.keyboard);
     const mode = yield* selectTyped((state: RootState) => state.mode);
@@ -73,17 +87,21 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
         : true;
     if (winIdGotTheLock) {
         gotTheLock = false;
-        debug(`reader ${identifier} did not get the lock`);
+        debug(`reader ${winId} did not get the lock`);
     } else {
-        __readerWithSamePubIdGotTheLockMap.set(pubId, identifier);
+        __readerWithSamePubIdGotTheLockMap.set(pubId, winId);
         gotTheLock = true;
-        debug(`reader ${identifier} got the lock !!!`);
+        debug(`reader ${winId} got the lock !!!`);
     }
 
     const notes = pubId
         ? yield* callTyped(() => sqliteTableSelectAllNotesWherePubId(pubId))
         : [];
 
+    if (readerWindow.isDestroyed() || readerWindow.webContents.isDestroyed()) {
+        debug("readerWindow or webcontents distroyed -> exit on winId=${winId} -> pubId=${pubId}");
+        return ;
+    }
     webContents.send(readerIpc.CHANNEL, {
         type: readerIpc.EventType.request,
         payload: {
@@ -94,10 +112,12 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
                 locale,
             },
             win: {
-                identifier,
+                identifier: winId,
             },
             reader: {
-                ...(reader?.reduxState || {}), // reader.reduxState is normally always defined but for security reason, I prefer to do not change this !!!
+                // hydration from reader session disabled
+                // ...(reader?.reduxState || {}), // reader.reduxState is normally always defined but for security reason, I prefer to do not change this !!!
+                locator,
                 // see issue https://github.com/edrlab/thorium-reader/issues/2532
                 defaultConfig: {
                     ...readerDefaultConfig,
@@ -120,7 +140,23 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
                 config,
                 lock: gotTheLock,
                 note: notes,
-            },
+                disableRTLFlip: disableRTLFlip,
+                info: {
+                    filesystemPath: readerSession.reduxState.info.filesystemPath,
+                    manifestUrlHttp: readerSession.reduxState.info.manifestUrlHttp,
+                    manifestUrlR2Protocol: readerSession.reduxState.info.manifestUrlR2Protocol,
+                    publicationIdentifier: readerSession.publicationIdentifier,
+                    r2Publication: undefined, // see registerReader.ts and index_reader.ts hydration
+                    publicationView: readerSession.reduxState.info.publicationView,
+                    navigator: undefined, // see registerReader.ts and index_reader.ts
+                } as ReaderInfo,
+                highlight: undefined, // reader runtime state 
+                divina: divina,
+                tts: undefined, // reader runtime state
+                mediaOverlay: undefined, // reader runtime state
+                noteTotalCount: noteTotalCount,
+                pdfConfig: pdfConfig,
+            } as IReaderStateReader,
             keyboard,
             mode,
             theme,
@@ -135,50 +171,42 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     } as readerIpc.EventPayload);
 }
 
-function* winClose(action: winActions.reader.closed.TAction) {
+function* winOpenError(action: winActions.reader.openError.TAction) {
+    const { readerWindow, publicationIdentifier: pubId, windowIdentifier: winId, reason } = action.payload;
+    debug(`ERRROR!!! reader winId=${winId} -> pubId=${pubId} failed to open`);
 
-    const winId = action.payload.identifier;
-    let publicationIdentifier = "";
-    debug(`reader ${winId} -> winClose`);
-    deleteReaderWindowInDi(winId);
-
-    {
-        const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
-        const reader = readers[winId];
-
-        if (reader) {
-
-            publicationIdentifier = reader.publicationIdentifier;
-            const winIdGotTheLock = __readerWithSamePubIdGotTheLockMap.get(publicationIdentifier);
-            if (winId === winIdGotTheLock) {
-                __readerWithSamePubIdGotTheLockMap.delete(publicationIdentifier);
-            }
-
-            const reduxState = reader.reduxState;
-
-            // const notes = yield* callTyped(() => sqliteTableSelectAllNotesWherePubId(publicationIdentifier));
-            // reduxState.note = (notes && notes.length) ? notes : [];
-
-            // It takes too mutch time on reader closing now
-            yield put(winActions.session.setReduxState.build(winId, publicationIdentifier, reduxState));
-
-            yield put(winActions.session.unregisterReader.build(winId));
-
-            yield put(winActions.registry.registerReaderPublication.build(
-                publicationIdentifier,
-                reader.windowBound,
-                reduxState),
-                );
-
-            yield put(streamerActions.publicationCloseRequest.build(publicationIdentifier));
+    try {
+        if (!readerWindow.isDestroyed() && !readerWindow.webContents.isDestroyed()) {
+            yield* callTyped(() => dialog.showMessageBox(readerWindow, { type: "error", title: "Failed to initialize the reader", message: `CRITICAL ERRROR!!! winId=${winId}; pubId=${pubId}; Failed to initialize the reader; it will now close. [${reason}]`}));
         }
+    } catch (e) {
+        debug(e);
     }
 
-    {
-        // readers in session updated
-        const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
-        const readersArray = ObjectValues(readers);
+    yield put(readerActions.closeRequest.build(winId, pubId));
+}
 
+export function* winClose(windowIdentifier: string, publicationIdentifier: string) {
+
+    debug(`reader windId=${windowIdentifier} -> winClose pubId=${publicationIdentifier}`);
+    const readersBeforeUnregistered = yield* selectTyped((state: RootState) => state.win.session.reader);
+    if (!readersBeforeUnregistered[windowIdentifier]) {
+        debug("ERROR: reader not found in the session list");
+        // return; // continue to clean this broken state
+    }
+    deleteReaderWindowInDi(windowIdentifier);
+    const winIdGotTheLock = __readerWithSamePubIdGotTheLockMap.get(publicationIdentifier);
+    if (windowIdentifier === winIdGotTheLock) {
+        __readerWithSamePubIdGotTheLockMap.delete(publicationIdentifier);
+    }
+    yield put(winActions.session.unregisterReader.build(windowIdentifier));
+    yield put(streamerActions.publicationCloseRequest.build(publicationIdentifier));
+
+    // readers in session updated
+    const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+
+    {
+        const readersArray = ObjectValues(readers);
         const readersWithSamePubId = readersArray.filter(({publicationIdentifier: pubIdFromOtherReader}) => publicationIdentifier === pubIdFromOtherReader);
         const readerSamePubIdFirstWinId = readersWithSamePubId[0]?.identifier;
         if (readerSamePubIdFirstWinId) {
@@ -201,18 +229,24 @@ function* winClose(action: winActions.reader.closed.TAction) {
                     // yield put(readerActions.attachModeRequest.build());
 
                 } else {
-                    const readerWin = yield* callTyped(() => getReaderWindowFromDi(winId));
+                    const readerWin = yield* callTyped(() => getReaderWindowFromDi(windowIdentifier));
                     if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
                         try {
-                            const winBound = readerWin.getBounds();
-                            debug("_______3 readerWin.getBounds()", winBound);
-                            normalizeRectangle(winBound);
+                            const libraryWindowState = yield* selectTyped((state: RootState) => state.win.session.library);
 
                             if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
-                                libraryWin.setBounds(winBound);
+                                if (libraryWindowState.windowMaximized) {
+                                    debug("restore maximized library window state", libraryWindowState);
+                                    restoreBrowserWindowState(libraryWin, libraryWindowState);
+                                } else {
+                                    let winBound = readerWin.getBounds();
+                                    debug("_______3 readerWin.getBounds()", winBound);
+                                    winBound = normalizeWinBoundRectangle(winBound);
+                                    libraryWin.setBounds(winBound);
+                                }
                             }
                         } catch (e) {
-                            debug("error libraryWindow.setBounds(readerWin.getBounds())", e);
+                            debug("error restore library window state", e);
                         }
                     }
                 }
@@ -233,24 +267,93 @@ function* winClose(action: winActions.reader.closed.TAction) {
         }
     }
 
+    {
+        const readersSamePubId = Object.values(readers).filter((v) => v.publicationIdentifier === publicationIdentifier);
+        if (readersSamePubId.length) {
+            debug(`the reader with pubId=${publicationIdentifier} is not the last, ${readersSamePubId.length} remain(s) with the same publication identifier`);
+            return;
+        }
+
+        // TODO: parallelize with Promise.allSettled
+        // {
+        //     const jsonObj = diMainGet("publication-data").getJsonObj(publicationIdentifier, "locator");
+        //     if (jsonObj) {
+        //         // finally save locator next to publication storage vault
+        //         yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(publicationIdentifier, "locator", jsonObj));
+        //     }
+        // }
+
+        // TODO: enable publication-storage config saving
+        // {
+        //     const jsonObj = diMainGet("publication-data").getJsonObj(pubId, "config");
+        //     if (jsonObj) {
+        //         // finally save config next to publication storage vault
+        //         yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "config", jsonObj));
+        //     }
+        // }
+
+        // {
+        //     const jsonObj = diMainGet("publication-data").getJsonObj(pubId, "disableRTLFlip");
+        //     if (jsonObj) {
+        //         // finally save disableRTLFlip next to publication storage vault
+        //         yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "disableRTLFlip", jsonObj));
+        //     }
+        // }
+
+        // {
+        //     const jsonObj = diMainGet("publication-data").getJsonObj(pubId, "allowCustomConfig");
+        //     if (jsonObj) {
+        //         // finally save allowCustomConfig next to publication storage vault
+        //         yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "allowCustomConfig", jsonObj));
+        //     }
+        // }
+
+        // {
+        //     const jsonObj = diMainGet("publication-data").getJsonObj(pubId, "divina");
+        //     if (jsonObj) {
+        //         // finally save divina next to publication storage vault
+        //         yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "divina", jsonObj));
+        //     }
+        // }
+
+        // {
+        //     const jsonObj = diMainGet("publication-data").getJsonObj(pubId, "noteTotalCount");
+        //     if (jsonObj) {
+        //         // finally save noteTotalCount next to publication storage vault
+        //         yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "noteTotalCount", jsonObj));
+        //     }
+        // }
+
+        // {
+
+        //     const jsonObj = diMainGet("publication-data").getJsonObj(pubId, "pdfConfig");
+        //     if (jsonObj) {
+        //         // finally save pdfConfig next to publication storage vault
+        //         yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "pdfConfig", jsonObj));
+        //     }
+        // }
+
+        // publication data must be closed at the end after publication-storage finish
+        yield* callTyped(() => diMainGet("publication-data").close(publicationIdentifier));
+    }
 }
 
 export function saga() {
     return all([
-        takeSpawnEvery(
-            winActions.reader.openRequest.ID,
-            createReaderWindow,
-            (e) => error(filename_ + ":createReaderWindow", e),
-        ),
         takeSpawnEvery(
             winActions.reader.openSucess.ID,
             winOpen,
             (e) => error(filename_ + ":winOpen", e),
         ),
         takeSpawnEvery(
-            winActions.reader.closed.ID,
-            winClose,
-            (e) => error(filename_ + ":winClose", e),
+            winActions.reader.openError.ID,
+            winOpenError,
+            (e) => error(filename_ + ":winOpen", e),
         ),
+        // takeSpawnEvery(
+        //     winActions.reader.closed.ID,
+        //     winClose,
+        //     (e) => error(filename_ + ":winClose", e),
+        // ),
     ]);
 }

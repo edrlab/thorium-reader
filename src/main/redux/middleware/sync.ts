@@ -18,6 +18,7 @@ import {
     customizationActions,
     screenReaderActions,
     opdsActions,
+    settingsActions,
 } from "readium-desktop/common/redux/actions";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
@@ -38,9 +39,6 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     readerActions.detachModeSuccess.ID,
 
-    // readerActions.configSetDefault.ID, ALREADY AT THE BOTTOM??
-
-    readerActions.setReduxState.ID, // used only to update the catalog when dispatched from reader
 
     readerActions.fullScreenRequest.ID,
 
@@ -85,6 +83,10 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     creatorActions.set.ID,
 
+    settingsActions.minimizeLibraryToTray.ID,
+    settingsActions.lcpAutoDeleteExpiredPublications.ID,
+    settingsActions.lcpAutoDeleteExpiredPublicationsForced.ID,
+
     annotationActions.importTriggerModal.ID,
     // annotationActions.importConfirmOrAbort.ID,
 
@@ -105,6 +107,11 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     opdsActions.refresh.ID,
 
     publicationActions.checker.ID,
+    publicationActions.openFolder.ID,
+
+    catalogActions.setUserDirectory.ID,
+    catalogActions.openDefaultDirectory.ID,
+    catalogActions.openUserDirectory.ID,
 ];
 
 export const reduxSyncMiddleware: Middleware

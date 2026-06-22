@@ -20,8 +20,13 @@ import { NavigationHeader } from "../layout/LibraryHeader";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 
-const OpdsAddForm: React.FC = () => {
+interface IProps {
+    feedsResult: IOpdsFeedView[] | undefined;
+}
+
+const OpdsAddForm: React.FC<IProps> = ({feedsResult}) => {
     const historyState = useSelector((state: ILibraryRootState) => state.history);
     const location = useSelector((state: ILibraryRootState) => state.router.location);
     const [__] = useTranslator();
@@ -35,15 +40,26 @@ const OpdsAddForm: React.FC = () => {
     };
 
     let nextLocation: HistoryLocation | undefined;
-    for (let i = historyState.length - 1; i >= 0;  i--) {
+    if (feedsResult && feedsResult.length > 0) {
+    for (let i = historyState.length - 1; i >= 0; i--) {
         const cv = historyState[i];
+
         if (cv?.pathname.startsWith(item.route) && cv.pathname !== location.pathname) {
-            nextLocation = {
-                ...cv,
-                search: item.searchEnable ? cv.search : "",
-            };
-            break;
+            
+            const isPresentInFeeds = feedsResult.some(feed => 
+                cv.pathname.includes(encodeURIComponent(feed.url)) || 
+                cv.pathname.includes(feed.identifier),
+            );
+
+            if (isPresentInFeeds) {
+                nextLocation = {
+                    ...cv,
+                    search: item.searchEnable ? cv.search : "",
+                };
+                break;
+            }
         }
+    }
     }
 
     // let showResumeBrowsingButton: boolean = false;
