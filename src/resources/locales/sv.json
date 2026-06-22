@@ -301,7 +301,7 @@
             "noInternet": "Ingen internetuppkoppling",
             "noInternetMessage": "Kontrollera nätverkssladden, modemet, routern eller det trådlösa nätverket",
             "reject": "Ett oväntat fel uppstod!",
-            "timeout": "Nätverksanslutningen gav inget svar, försök igen senare"
+            "timeout": "Inget svar från nätverket, försök igen senare"
         },
         "next": "Nästa",
         "previous": "Föregående",
