@@ -455,6 +455,32 @@ const _defaults_ = {
         key: "Digit4",
         scope: ["reader"],
     } satisfies TKeyboardShortcutFull,
+
+    AudioSpeedReset: {
+        meta: false,
+        alt: false,
+        control: true,
+        shift: false,
+        key: "Digit7",
+        scope: ["reader"],
+    } satisfies TKeyboardShortcutFull,
+    AudioSpeedDecrease: {
+        meta: false,
+        alt: false,
+        control: true,
+        shift: false,
+        key: "Digit5",
+        scope: ["reader"],
+    } satisfies TKeyboardShortcutFull,
+    AudioSpeedIncrease: {
+        meta: false,
+        alt: false,
+        control: true,
+        shift: false,
+        key: "Digit6",
+        scope: ["reader"],
+    } satisfies TKeyboardShortcutFull,
+
     FXLZoomReset: {
         meta: false,
         alt: false,

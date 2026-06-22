@@ -6,14 +6,17 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { catalogActions, readerActions } from "readium-desktop/common/redux/actions";
+import { dialog, shell } from "electron";
+import { catalogActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
+import { ToastType } from "readium-desktop/common/models/toast";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { error } from "readium-desktop/main/tools/error";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all } from "redux-saga/effects";
-import { call as callTyped, put as putTyped, select as selectTyped, debounce as debounceTyped, SagaGenerator } from "typed-redux-saga/macro";
+import { call as callTyped, put as putTyped, select as selectTyped, debounce as debounceTyped } from "typed-redux-saga/macro";
+import { SagaGenerator } from "typed-redux-saga";
 import { RootState } from "../states";
-import { diMainGet, getReaderWindowFromDi } from "readium-desktop/main/di";
+import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 // import { isPdfFn } from "readium-desktop/common/isManifestType";
 
 // import { PublicationView } from "readium-desktop/common/views/publication";
@@ -29,6 +32,8 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { EventPayload } from "readium-desktop/common/ipc/sync";
 import { SenderType } from "readium-desktop/common/models/sync";
+import { getTranslator } from "readium-desktop/common/services/translator";
+import { openPublicationFolder } from "./publication/openFolder";
 
 const filename_ = "readium-desktop:main:redux:sagas:catalog";
 const debug = debug_(filename_);
@@ -138,7 +143,7 @@ function* getPublicationView() {
             debug("Error When convert document to view, the publication is not deleted, so let's mitigate the publication error for the next time");
             debug(e);
 
-            const pub = yield* callTyped(() => publicationViewConverter.convertDocumentMissingOrDeletedToMinimalPublicationView(doc));
+                    const pub = yield* callTyped(() => publicationViewConverter.convertUnavailableDocumentToMinimalPublicationView(doc));
             lastAddedPublicationsView.push(pub);
 
             // yield* callTyped(errorDeletePub, doc, e as Error);
@@ -159,7 +164,7 @@ function* getPublicationView() {
             debug("Error When convert document to view, the publication is not deleted, so let's mitigate the publication error for the next time");
             debug(e);
 
-            const pub = yield* callTyped(() => publicationViewConverter.convertDocumentMissingOrDeletedToMinimalPublicationView(doc));
+                    const pub = yield* callTyped(() => publicationViewConverter.convertUnavailableDocumentToMinimalPublicationView(doc));
             lastReadPublicationsView.push(pub);
 
             // yield* callTyped(errorDeletePub, doc, e as Error);
@@ -261,17 +266,27 @@ export function* getCatalog(): SagaGenerator<ILibraryRootState["publication"]> {
         },
     ];
     const publicationRepository = diMainGet("publication-repository");
+    const publicationStorage = diMainGet("publication-storage");
+    yield* callTyped(() => publicationStorage.ready());
     const allTags = yield* callTyped(() => publicationRepository.getAllTags());
 
-    return {catalog: {entries}, tag: allTags};
+    return {
+        catalog: {entries},
+        tag: allTags,
+        directory: {
+            defaultDirectory: publicationStorage.defaultDirectory,
+            userDirectory: publicationStorage.userDirectory,
+        },
+    };
 }
 
 function* getCatalogAndDispatchIt() {
 
-    const {catalog, tag} = yield* callTyped(getCatalog);
+    const { catalog, tag, directory: { userDirectory } } = yield* callTyped(getCatalog);
 
     yield* putTyped(catalogActions.setCatalog.build(catalog));
     yield* putTyped(catalogActions.setTagView.build(tag));
+    yield* putTyped(catalogActions.setUserDirectory.build(userDirectory || ""));
 }
 
 function* updateResumePosition() {
@@ -313,6 +328,97 @@ export function saga() {
         spawnLeading(
             updateResumePosition,
             (e) => error(filename_ + ":updateResumePosition", e),
+        ),
+        takeSpawnLatest(
+            catalogActions.setUserDirectory.ID,
+            function* (action: catalogActions.setUserDirectory.TAction) {
+
+                const publicationStorage = diMainGet("publication-storage");
+                const { userDirectory } = action.payload;
+                const currentUserDirectory = publicationStorage.userDirectory || "";
+                const sender = action.sender as EventPayload["sender"];
+                if (sender?.type !== SenderType.Renderer) {
+                    debug("sender is not renderer !!!");
+                    return;
+                }
+                try {
+                    let nextUserDirectory = userDirectory;
+
+                    // - userDirectory + currentUserDirectory => reopen the picker at userDirectory and store the new selection in nextUserDirectory
+                    // - userDirectory + no currentUserDirectory => open the picker at userDirectory and store the new selection in nextUserDirectory
+                    // - no userDirectory + no currentUserDirectory => force an initial directory choice and store it in nextUserDirectory
+                    // - no userDirectory + currentUserDirectory => keep nextUserDirectory empty to remove the current directory
+                    if (userDirectory || !currentUserDirectory) {
+                        const win = getLibraryWindowFromDi();
+                        if (!win || win.isDestroyed() || win.webContents.isDestroyed()) {
+                            debug("ERROR!! No library Browser window !!! exit");
+                            return;
+                        }
+
+                        const res = yield* callTyped(() => dialog.showOpenDialog(win, {
+                            ...(userDirectory ? { defaultPath: userDirectory } : {}),
+                            properties: ["openDirectory", "createDirectory"],
+                        }));
+
+                        if (res.canceled) {
+                            return;
+                        }
+
+                        nextUserDirectory = res.filePaths[0] || "";
+                        if (!nextUserDirectory) {
+                            return;
+                        }
+                    }
+
+                    yield* callTyped(() => publicationStorage.setUserDirectory(nextUserDirectory));
+
+                    // Open the previous user directory so the user can find and move existing files if needed.
+                    if (currentUserDirectory && nextUserDirectory !== currentUserDirectory) {
+                        yield* callTyped(() => shell.openPath(currentUserDirectory));
+                        // yield* callTyped(() => shell.openPath(nextUserDirectory));
+                    }
+                    yield* putTyped(toastActions.openRequest.build(
+                        ToastType.Success,
+                        nextUserDirectory
+                            ? getTranslator().translate("message.storage.updated")
+                            : getTranslator().translate("message.storage.removed"),
+                    ));
+                    yield* callTyped(getCatalogAndDispatchIt);
+                } catch (e) {
+                    const message = e instanceof Error ? e.message : `${e}`;
+                    yield* putTyped(toastActions.openRequest.build(
+                        ToastType.Error,
+                        getTranslator().translate("message.storage.updateFailed", { message }),
+                    ));
+                }
+            },
+            (e) => error(filename_ + ":setUserDirectory", e),
+        ),
+        takeSpawnLatest(
+            catalogActions.openDefaultDirectory.ID,
+            function* () {
+                const publicationStorage = diMainGet("publication-storage");
+                yield* callTyped(() => shell.openPath(publicationStorage.defaultDirectory));
+            },
+            (e) => error(filename_ + ":openDefaultDirectory", e),
+        ),
+        takeSpawnLatest(
+            catalogActions.openUserDirectory.ID,
+            function* () {
+                const publicationStorage = diMainGet("publication-storage");
+                if (!publicationStorage.userDirectory) {
+                    return;
+                }
+                yield* callTyped(() => shell.openPath(publicationStorage.userDirectory));
+            },
+            (e) => error(filename_ + ":openUserDirectory", e),
+        ),
+        takeSpawnLatest(
+            publicationActionsFromCommonAction.openFolder.ID,
+            function* (action: publicationActionsFromCommonAction.openFolder.TAction) {
+                yield* callTyped(openPublicationFolder, action.payload.identifier);
+            },
+            (e) => error(filename_ + ":openPublicationFolder", e),
         ),
         takeSpawnLatest(
             publicationActionsFromCommonAction.readingFinished.ID,

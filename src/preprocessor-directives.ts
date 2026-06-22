@@ -44,6 +44,9 @@ export const _PACK_NAME = __TH__PACK_NAME__;
 declare const __TH__APP_NAME__: string;
 export const _APP_NAME = __TH__APP_NAME__;
 
+declare const __TH__ISURL_REQUIRE_TLD_FALSE__: boolean;
+export const _ISURL_REQUIRE_TLD_FALSE = __TH__ISURL_REQUIRE_TLD_FALSE__;
+
 // declare const __USE_HTTP_STREAMER__: boolean;
 // export const _USE_HTTP_STREAMER = __USE_HTTP_STREAMER__;
 
@@ -52,6 +55,9 @@ export const _TELEMETRY_URL = __TH__TELEMETRY_URL__;
 
 declare const __TH__TELEMETRY_SECRET__: string;
 export const _TELEMETRY_SECRET = __TH__TELEMETRY_SECRET__;
+
+declare const __TH__TELEMETRY_SECRETDATA__: string;
+export const _TELEMETRY_SECRETDATA = __TH__TELEMETRY_SECRETDATA__;
 
 declare const __TH__CUSTOMIZATION_PROFILE_PUB_KEY__: string;
 export const _CUSTOMIZATION_PROFILE_PUB_KEY = __TH__CUSTOMIZATION_PROFILE_PUB_KEY__;

@@ -26,12 +26,14 @@ import { readerLocalActionSearch } from "../../redux/actions";
 
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 import LoaderSearch from "./LoaderSearch";
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     isPdf: boolean;
     reset: () => void;
     load: boolean;
+    currentLocation: MiniLocatorExtended;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -45,6 +47,7 @@ interface IProps extends IBaseProps,
 
 interface IState {
     inputValue: string;
+    initialValue: string;
 }
 
 class SearchFormPicker extends React.Component<IProps, IState> {
@@ -59,8 +62,11 @@ class SearchFormPicker extends React.Component<IProps, IState> {
         this.search = this.search.bind(this);
         this.focusoutSearch = this.focusoutSearch.bind(this);
 
+        const initialValue = (props.isPdf ? "" : (props.currentLocation?.locator?.text?.highlight || "")).trim().substring(0, 100);
+        // console.log("SEARCH initialValue (constructor): " + initialValue);
         this.state = {
-            inputValue: "",
+            inputValue: initialValue,
+            initialValue,
         };
     }
 
@@ -100,6 +106,7 @@ class SearchFormPicker extends React.Component<IProps, IState> {
                     placeholder={__("reader.picker.search.input")}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.setState({ inputValue: e.target.value })}
                     className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
+                    defaultValue={this.state.initialValue}
                 />
                     <button
                     disabled={!this.state.inputValue}
@@ -144,6 +151,14 @@ class SearchFormPicker extends React.Component<IProps, IState> {
         if (!this.inputRef?.current) {
             return;
         }
+
+        const initialValue = (this.props.isPdf ? "" : (this.props.currentLocation?.locator?.text?.highlight || "")).trim().substring(0, 100);
+        // console.log("SEARCH initialValue (keyboard): " + initialValue);
+        if (!!initialValue) {
+            this.setState({ initialValue, inputValue: initialValue });
+            this.inputRef.current.value = initialValue;
+        }
+
         this.inputRef.current.focus();
         // this.inputRef.current.select();
         this.inputRef.current.setSelectionRange(0, this.inputRef.current.value.length);

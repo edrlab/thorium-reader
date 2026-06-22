@@ -150,7 +150,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         {this.props.catalogHeader ?
                         <div className={stylesCatalogs.catalog_breadcrumbSearch_Wrapper}>
                             { this.props.catalogHeader }
-                            { this.props.search }
+                            { this.props.search? this.props.search : <></> }
                         </div>
                         : <></>}
                         <a

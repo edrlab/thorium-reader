@@ -45,9 +45,9 @@ export const CustomizationProfileDialog: React.FC = () => {
     const getIfWizardIsViewed = React.useCallback(() => profileInHistoryFound && (manifest?.modified || manifest?.created) && profileInHistoryFound.version && (new Date(manifest.modified || manifest.created)).getTime() && profileInHistoryFound.version === (new Date(manifest.modified || manifest.created)).getTime(), [profileInHistoryFound, manifest?.modified, manifest?.created]);
     const [checked, setChecked] = React.useState<boolean>(getIfWizardIsViewed());
 
-    React.useEffect(() => {
-        setChecked(getIfWizardIsViewed());
-    }, [setChecked, getIfWizardIsViewed]);
+    // React.useEffect(() => {
+    //     setChecked(getIfWizardIsViewed());
+    // }, [setChecked, getIfWizardIsViewed]);
 
     const customizationId = customization.manifest?.identifier;
     const customizationBaseUrl = customizationId ? `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_CUSTOMPROFILEZIP}/${encodeURIComponent_RFC3986(Buffer.from(customizationId).toString("base64"))}/` : "";
@@ -150,7 +150,18 @@ export const CustomizationProfileDialog: React.FC = () => {
                             <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
                         </AlertDialog.Cancel>
                         {customization.welcomeScreen.enable && profileInHistoryFound ? <div style={{ display: "flex", alignItems: "center", gap: "10px"}}>
-                            <input type="checkbox" checked={checked} onChange={() => { setChecked(!checked); dispatchProfileInHistoryFromWizard(checked); }} id="wizardCheckbox" name="wizardCheckbox" className={stylesGlobal.checkbox_custom_input} />
+                            <input 
+                            type="checkbox"
+                            checked={checked}
+                            id="wizardCheckbox" 
+                            name="wizardCheckbox" 
+                            className={stylesGlobal.checkbox_custom_input}
+                            onChange={() => {
+                                const newChecked = !checked;
+                                setChecked(newChecked);
+                                dispatchProfileInHistoryFromWizard(newChecked);
+                            }} 
+                            />
                             <label htmlFor="wizardCheckbox" className={stylesGlobal.checkbox_custom_label}>
                                 <div
                                     tabIndex={0}
@@ -170,8 +181,9 @@ export const CustomizationProfileDialog: React.FC = () => {
                                         // if (e.key === "Enter") { WORKS
                                         if (e.key === " ") { // WORKS
                                             e.preventDefault();
-                                            setChecked(!checked);
-                                            dispatchProfileInHistoryFromWizard(checked);
+                                            const newChecked = !checked;
+                                            setChecked(newChecked);
+                                            dispatchProfileInHistoryFromWizard(newChecked);
                                         }
                                     }}
                                     className={stylesGlobal.checkbox_custom}

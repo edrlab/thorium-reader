@@ -8,7 +8,8 @@
         "outputs": "all"
       },
       "nodejs_24": {
-        "pkg-path": "nodejs_24"
+        "pkg-path": "nodejs_24",
+        "outputs": "all"
       }
     },
     "vars": {
@@ -17,10 +18,10 @@
       "FLX_VERBOSE": "${FLOX_VERBOSE:-}"
     },
     "hook": {
-      "on-activate": "[[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"##################################################\";\n[[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"########## FLOX ACTIVATE...\";\n\n#alias lss='ls -alshF --color=auto'\nlss () {\n    command ls -alshF --color=auto \"$@\"\n}\n\n# PWD=$(pwd);\n# [[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"-----> PWD: ${PWD}\";\n# unset PWD\n\n#FLOX_ENV_PROJECT\n#_FLOX_ENV_LOG_DIR\n#FLOX_CACHE_DIR=\"$(dirname ${FLOX_ENV_CACHE})\"\n#FLOX_CACHE_DIR=\"$(realpath ${FLOX_ENV_CACHE})\"\nFLOX_CACHE_DIR=\"${FLOX_ENV_CACHE}\"\n[[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"-----> FLOX_CACHE_DIR: ${FLOX_CACHE_DIR}\";\n\nif [[ ! -z \"${FLX_VERBOSE}\" ]]; then\n\necho \"=====> NODE VERSION: $(node --version)\";\nWHICH_NODE=$(which node);\necho \".....> NODE WHICH: ${WHICH_NODE}\";\nlss \"${WHICH_NODE}\";\nunset WHICH_NODE\n\necho \"=====> NPM VERSION (init): $(npm --version)\";\nWHICH_NPM=$(which npm);\necho \".....> NPM WHICH: ${WHICH_NPM}\";\nlss \"${WHICH_NPM}\";\nunset WHICH_NPM\n\necho \"-----> NPM CONFIG PREFIX (init): $(npm config get prefix)\";\necho \"-----> NPM_CONFIG_PREFIX (init): ${NPM_CONFIG_PREFIX}\";\n\necho \"-----> NPM CONFIG CACHE (init): $(npm config get cache)\"\necho \"-----> NPM_CONFIG_CACHE (init): ${NPM_CONFIG_CACHE}\";\n\nfi\n\n# envName=\"${_FLOX_ACTIVE_ENVIRONMENTS##:*}\";\n#echo \"${envName}\";\n#export NPM_CONFIG_PREFIX=\"/tmp/${envName}-npm\";\n\nexport NPM_CONFIG_PREFIX=\"${FLOX_CACHE_DIR}/NPM_PREFIX\";\n#### rm -rf \"$NPM_CONFIG_PREFIX\";\nmkdir -p \"$NPM_CONFIG_PREFIX\";\nif [[ ! -z \"${FLX_VERBOSE}\" ]]; then\necho \"-----> NPM CONFIG PREFIX: $(npm config get prefix)\";\necho \"-----> NPM_CONFIG_PREFIX: ${NPM_CONFIG_PREFIX}\";\nlss \"$NPM_CONFIG_PREFIX\";\nlss \"$NPM_CONFIG_PREFIX/bin\";\nlss \"$NPM_CONFIG_PREFIX/lib\";\nlss \"$NPM_CONFIG_PREFIX/lib/node_modules\";\nfi\n\nexport NPM_CONFIG_CACHE=\"${FLOX_CACHE_DIR}/NPM_CACHE\";\n#### rm -rf \"$NPM_CONFIG_CACHE\";\nmkdir -p \"$NPM_CONFIG_CACHE\";\nif [[ ! -z \"${FLX_VERBOSE}\" ]]; then\necho \"-----> NPM CONFIG CACHE: $(npm config get cache)\"\necho \"-----> NPM_CONFIG_CACHE: ${NPM_CONFIG_CACHE}\";\nlss \"$NPM_CONFIG_CACHE\";\nfi\n\nunset FLOX_CACHE_DIR\n\n[[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"-----> NODE_PATH (init): ${NODE_PATH}\";\nexport NODE_PATH=\"$NPM_CONFIG_PREFIX/lib/node_modules${NODE_PATH:+:$NODE_PATH}\";\n[[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"-----> NODE_PATH: ${NODE_PATH}\";\n\n#if [[ ! -v FLX_VERBOSE ]]; then\n## unset\n#npm install -g sfw --foreground-scripts\n#elif [[ -z \"${FLX_VERBOSE}\" ]]; then\n## empty\n#npm install -g sfw --foreground-scripts\n#else\n#npm install -g sfw --foreground-scripts 1>/dev/null\n#fi\nnpm install --ignore-scripts --foreground-scripts -g sfw\n\nexport PATH=\"$NPM_CONFIG_PREFIX/bin:$PATH\";\n[[ ! -z \"${FLX_VERBOSE}\" ]] && ls -alshFR --color=auto \"$NPM_CONFIG_PREFIX/lib/node_modules/sfw/.sfw-cache\"\n\n#if [[ ! -v FLX_VERBOSE ]]; then\n## unset\n#sfw npm install -g npm --foreground-scripts\n#sfw npm install -g npm-check-updates --foreground-scripts\n## sfw npm install -g @electron/asar --foreground-scripts\n#elif [[ -z \"${FLX_VERBOSE}\" ]]; then\n## empty\n#sfw npm install -g npm --foreground-scripts\n#sfw npm install -g npm-check-updates --foreground-scripts\n## sfw npm install -g @electron/asar --foreground-scripts\n#else\n#sfw npm install -g npm --foreground-scripts 1>/dev/null\n#sfw npm install -g npm-check-updates --foreground-scripts 1>/dev/null\n## sfw npm install -g @electron/asar --foreground-scripts 1>/dev/null\n#fi\n\n# https://github.com/npm/cli/issues/9133\nsfw npm install --ignore-scripts --foreground-scripts -g npm\n\nsfw npm install --ignore-scripts --foreground-scripts -g npm-check-updates\n# sfw npm install --ignore-scripts --foreground-scripts -g @electron/asar\n\n"
+      "on-activate": "[[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"##################################################\";\n[[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"########## FLOX ACTIVATE...\";\n\n#alias lss='ls -alshF --color=auto'\nlss () {\n    command ls -alshF --color=auto \"$@\"\n}\n\n# PWD=$(pwd);\n# [[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"-----> PWD: ${PWD}\";\n# unset PWD\n\n#FLOX_ENV_PROJECT\n#_FLOX_ENV_LOG_DIR\n#FLOX_CACHE_DIR=\"$(dirname ${FLOX_ENV_CACHE})\"\n#FLOX_CACHE_DIR=\"$(realpath ${FLOX_ENV_CACHE})\"\nFLOX_CACHE_DIR=\"${FLOX_ENV_CACHE}\"\n[[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"-----> FLOX_CACHE_DIR: ${FLOX_CACHE_DIR}\";\n\nif [[ ! -z \"${FLX_VERBOSE}\" ]]; then\n\necho \"=====> NODE VERSION: $(node --version)\";\nWHICH_NODE=$(which node);\necho \".....> NODE WHICH: ${WHICH_NODE}\";\nlss \"${WHICH_NODE}\";\nunset WHICH_NODE\n\necho \"=====> NPM VERSION (init): $(npm --version)\";\nWHICH_NPM=$(which npm);\necho \".....> NPM WHICH: ${WHICH_NPM}\";\nlss \"${WHICH_NPM}\";\nunset WHICH_NPM\n\necho \"-----> NPM CONFIG PREFIX (init): $(npm config get prefix)\";\necho \"-----> NPM_CONFIG_PREFIX (init): ${NPM_CONFIG_PREFIX}\";\n\necho \"-----> NPM CONFIG CACHE (init): $(npm config get cache)\"\necho \"-----> NPM_CONFIG_CACHE (init): ${NPM_CONFIG_CACHE}\";\n\nfi\n\n# envName=\"${_FLOX_ACTIVE_ENVIRONMENTS##:*}\";\n#echo \"${envName}\";\n#export NPM_CONFIG_PREFIX=\"/tmp/${envName}-npm\";\n\nexport NPM_CONFIG_PREFIX=\"${FLOX_CACHE_DIR}/NPM_PREFIX\";\nrm -rf \"$NPM_CONFIG_PREFIX\";\nmkdir -p \"$NPM_CONFIG_PREFIX\";\nif [[ ! -z \"${FLX_VERBOSE}\" ]]; then\necho \"-----> NPM CONFIG PREFIX: $(npm config get prefix)\";\necho \"-----> NPM_CONFIG_PREFIX: ${NPM_CONFIG_PREFIX}\";\nlss \"$NPM_CONFIG_PREFIX\";\nlss \"$NPM_CONFIG_PREFIX/bin\";\nlss \"$NPM_CONFIG_PREFIX/lib\";\nlss \"$NPM_CONFIG_PREFIX/lib/node_modules\";\nfi\n\nexport NPM_CONFIG_CACHE=\"${FLOX_CACHE_DIR}/NPM_CACHE\";\nrm -rf \"$NPM_CONFIG_CACHE\";\n#### rm -rf \"$NPM_CONFIG_CACHE/_cacache/\"\nmkdir -p \"$NPM_CONFIG_CACHE\";\nif [[ ! -z \"${FLX_VERBOSE}\" ]]; then\necho \"-----> NPM CONFIG CACHE: $(npm config get cache)\"\necho \"-----> NPM_CONFIG_CACHE: ${NPM_CONFIG_CACHE}\";\nlss \"$NPM_CONFIG_CACHE\";\nfi\n\nunset FLOX_CACHE_DIR\n\n[[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"-----> NODE_PATH (init): ${NODE_PATH}\";\nexport NODE_PATH=\"$NPM_CONFIG_PREFIX/lib/node_modules${NODE_PATH:+:$NODE_PATH}\";\n[[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"-----> NODE_PATH: ${NODE_PATH}\";\n\n#if [[ ! -v FLX_VERBOSE ]]; then\n## unset\n#npm install -g sfw --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root\n#elif [[ -z \"${FLX_VERBOSE}\" ]]; then\n## empty\n#npm install -g sfw --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root\n#else\n#npm install -g sfw --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root 1>/dev/null\n#fi\nnpm install --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root -g sfw\n\nexport PATH=\"$NPM_CONFIG_PREFIX/bin:$PATH\";\n[[ ! -z \"${FLX_VERBOSE}\" ]] && ls -alshFR --color=auto \"$NPM_CONFIG_PREFIX/lib/node_modules/sfw/.sfw-cache\"\n\n#if [[ ! -v FLX_VERBOSE ]]; then\n## unset\n#sfw npm install -g npm --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root\n#sfw npm install -g npm-check-updates --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root\n## sfw npm install -g @electron/asar --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root\n#elif [[ -z \"${FLX_VERBOSE}\" ]]; then\n## empty\n#sfw npm install -g npm --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root\n#sfw npm install -g npm-check-updates --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root\n## sfw npm install -g @electron/asar --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root\n#else\n#sfw npm install -g npm --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root 1>/dev/null\n#sfw npm install -g npm-check-updates --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root 1>/dev/null\n## sfw npm install -g @electron/asar --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root 1>/dev/null\n#fi\n\n# https://github.com/npm/cli/issues/9133\nsfw npm install --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root -g npm\n\n#sfw npm install --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root -g npm-check-updates\n#sfw npm install --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root -g @electron/asar\n\n[[ ! -z \"${FLX_VERBOSE}\" ]] && ls -alshFR --color=auto \"$NPM_CONFIG_PREFIX/lib/node_modules/sfw/.sfw-cache\"\n\n"
     },
     "profile": {
-      "common": "[[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"##################################################\";\n[[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"########## FLOX PROFILE COMMON (${SHELL})...\";\n\nexport PATH=\"$NPM_CONFIG_PREFIX/bin:$PATH\";\n\n# This seems to help Zed fetch its LSP updates?\n#NIX_SSL_CERT_FILE=/nix/store/yn6p7yzysbx5scq4ap7iq1sf58463b82-nss-cacert-3.108/etc/ssl/certs/ca-bundle.crt\n#SSL_CERT_FILE=/nix/store/yn6p7yzysbx5scq4ap7iq1sf58463b82-nss-cacert-3.108/etc/ssl/certs/ca-bundle.crt\n#NODE_EXTRA_CA_CERTS=\"${SSL_CERT_FILE:-}\"\n\nalias lss='ls -alshF --color=auto'\nalias flx='flox activate'\nalias flxx='FLOX_VERBOSE=1 flox activate'\n\n# PWD=$(pwd);\n# [[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"-----> PWD: ${PWD}\";\n# unset PWD\n\n[[ ! -z \"${FLX_VERBOSE}\" ]] && ls -alshFR --color=auto \"$NPM_CONFIG_PREFIX/lib/node_modules/sfw/.sfw-cache\"\n\nif [[ ! -z \"${FLX_VERBOSE}\" ]]; then\n\necho \"=====> NODE VERSION: $(node --version)\";\nWHICH_NODE=$(which node);\necho \".....> NODE WHICH: ${WHICH_NODE}\";\nlss \"${WHICH_NODE}\";\nunset WHICH_NODE\n\necho \"=====> NPM VERSION: $(npm --version)\";\nWHICH_NPM=$(which npm);\necho \".....> NPM WHICH: ${WHICH_NPM}\";\nlss \"${WHICH_NPM}\";\nunset WHICH_NPM\n\necho \"-----> NPM CONFIG PREFIX: $(npm config get prefix)\";\necho \"-----> NPM_CONFIG_PREFIX: ${NPM_CONFIG_PREFIX}\";\n\necho \"-----> NPM CONFIG CACHE: $(npm config get cache)\"\necho \"-----> NPM_CONFIG_CACHE: ${NPM_CONFIG_CACHE}\";\n\necho \"=====> NCU VERSION: $(ncu --version)\";\nWHICH_NCU=$(which ncu);\necho \".....> NCU WHICH: ${WHICH_NCU}\";\nlss \"${WHICH_NCU}\";\nunset WHICH_NCU\n\necho \"=====> ASAR VERSION: $(asar --version)\";\nWHICH_ASAR=$(which asar);\necho \".....> ASAR WHICH: ${WHICH_ASAR}\";\nlss \"${WHICH_ASAR}\";\nunset WHICH_ASAR\n\necho \"=====> GIT VERSION: $(git --version)\";\nWHICH_GIT=$(which git);\necho \".....> GIT WHICH: ${WHICH_GIT}\";\nlss \"${WHICH_GIT}\";\nunset WHICH_GIT\n\nENV=$(env);\necho \"-----> ENV: ${ENV}\";\necho \"||||||||||||||||||||||||||\";\n\necho \"-----> APPLEID: ${APPLEID}\";\necho \"-----> APPLEIDTEAM: ${APPLEIDTEAM}\";\necho \"-----> APPLEIDPASS: ${APPLEIDPASS}\";\necho \"-----> SKIP_NOTARIZE: ${SKIP_NOTARIZE}\";\necho \"-----> CSC_NAME: ${CSC_NAME}\";\n\necho \"-----> DEBUG: ${DEBUG}\";\n\necho \"-----> USER: ${USER}\";\necho \"-----> USERNAME: ${USERNAME}\";\n\necho \"-----> NODE_ENV: ${NODE_ENV}\";\n\necho \"-----> THORIUM_OPDS_CATALOGS_URL: ${THORIUM_OPDS_CATALOGS_URL}\";\necho \"-----> THORIUM_OPEN_DEVTOOLS: ${THORIUM_OPEN_DEVTOOLS}\";\necho \"-----> LCP_SKIP_LSD: ${LCP_SKIP_LSD}\";\necho \"-----> SKIP_CHECK_TYPESCRIPT: ${SKIP_CHECK_TYPESCRIPT}\";\necho \"-----> USE_LEGACY_TYPESCRIPT_LOADER: ${USE_LEGACY_TYPESCRIPT_LOADER}\";\necho \"-----> THORIUM_TELEMETRY_SECRET: ${THORIUM_TELEMETRY_SECRET}\";\necho \"-----> THORIUM_TELEMETRY_URL: ${THORIUM_TELEMETRY_URL}\";\necho \"-----> PACKAGING: ${PACKAGING}\";\necho \"-----> GITHUB_TOKEN_RELEASE_PUBLISH: ${GITHUB_TOKEN_RELEASE_PUBLISH}\";\necho \"-----> VSCODE_LAUNCH: ${VSCODE_LAUNCH}\";\necho \"-----> PORT_APP: ${PORT_APP}\";\necho \"-----> PORT_READER: ${PORT_READER}\";\necho \"-----> PORT_PDF_WEBVIEW: ${PORT_PDF_WEBVIEW}\";\n\ngit branch\ngit status\n\nfi\n"
+      "common": "[[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"##################################################\";\n[[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"########## FLOX PROFILE COMMON (${SHELL})...\";\n\nexport PATH=\"$NPM_CONFIG_PREFIX/bin:$PATH\";\n\n# This seems to help Zed fetch its LSP updates?\n#NIX_SSL_CERT_FILE=/nix/store/yn6p7yzysbx5scq4ap7iq1sf58463b82-nss-cacert-3.108/etc/ssl/certs/ca-bundle.crt\n#SSL_CERT_FILE=/nix/store/yn6p7yzysbx5scq4ap7iq1sf58463b82-nss-cacert-3.108/etc/ssl/certs/ca-bundle.crt\n#NODE_EXTRA_CA_CERTS=\"${SSL_CERT_FILE:-}\"\n\nalias lss='ls -alshF --color=auto'\nalias flx='flox activate'\nalias flxx='FLOX_VERBOSE=1 flox activate'\n\n# PWD=$(pwd);\n# [[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"-----> PWD: ${PWD}\";\n# unset PWD\n\n[[ ! -z \"${FLX_VERBOSE}\" ]] && ls -alshFR --color=auto \"$NPM_CONFIG_PREFIX/lib/node_modules/sfw/.sfw-cache\"\n\nif [[ ! -z \"${FLX_VERBOSE}\" ]]; then\n\necho \"=====> NODE VERSION: $(node --version)\";\nWHICH_NODE=$(which node);\necho \".....> NODE WHICH: ${WHICH_NODE}\";\nlss \"${WHICH_NODE}\";\nunset WHICH_NODE\n\necho \"=====> NPM VERSION: $(npm --version)\";\nWHICH_NPM=$(which npm);\necho \".....> NPM WHICH: ${WHICH_NPM}\";\nlss \"${WHICH_NPM}\";\nunset WHICH_NPM\n\necho \"-----> NPM CONFIG PREFIX: $(npm config get prefix)\";\necho \"-----> NPM_CONFIG_PREFIX: ${NPM_CONFIG_PREFIX}\";\n\necho \"-----> NPM CONFIG CACHE: $(npm config get cache)\"\necho \"-----> NPM_CONFIG_CACHE: ${NPM_CONFIG_CACHE}\";\n\necho \"=====> NCU VERSION: $(ncu --version)\";\nWHICH_NCU=$(which ncu);\necho \".....> NCU WHICH: ${WHICH_NCU}\";\nlss \"${WHICH_NCU}\";\nunset WHICH_NCU\n\necho \"=====> ASAR VERSION: $(asar --version)\";\nWHICH_ASAR=$(which asar);\necho \".....> ASAR WHICH: ${WHICH_ASAR}\";\nlss \"${WHICH_ASAR}\";\nunset WHICH_ASAR\n\necho \"=====> GIT VERSION: $(git --version)\";\nWHICH_GIT=$(which git);\necho \".....> GIT WHICH: ${WHICH_GIT}\";\nlss \"${WHICH_GIT}\";\nunset WHICH_GIT\n\nENV=$(env);\necho \"-----> ENV: ${ENV}\";\necho \"||||||||||||||||||||||||||\";\n\necho \"-----> APPLEID: ${APPLEID}\";\necho \"-----> APPLEIDTEAM: ${APPLEIDTEAM}\";\necho \"-----> APPLEIDPASS: ${APPLEIDPASS}\";\necho \"-----> SKIP_NOTARIZE: ${SKIP_NOTARIZE}\";\necho \"-----> CSC_NAME: ${CSC_NAME}\";\n\necho \"-----> DEBUG: ${DEBUG}\";\n\necho \"-----> USER: ${USER}\";\necho \"-----> USERNAME: ${USERNAME}\";\n\necho \"-----> NODE_ENV: ${NODE_ENV}\";\n\necho \"-----> THORIUM_OPDS_CATALOGS_URL: ${THORIUM_OPDS_CATALOGS_URL}\";\necho \"-----> THORIUM_OPEN_DEVTOOLS: ${THORIUM_OPEN_DEVTOOLS}\";\necho \"-----> LCP_SKIP_LSD: ${LCP_SKIP_LSD}\";\necho \"-----> SKIP_CHECK_TYPESCRIPT: ${SKIP_CHECK_TYPESCRIPT}\";\necho \"-----> USE_LEGACY_TYPESCRIPT_LOADER: ${USE_LEGACY_TYPESCRIPT_LOADER}\";\necho \"-----> THORIUM_TELEMETRY_SECRET: ${THORIUM_TELEMETRY_SECRET}\";\necho \"-----> THORIUM_TELEMETRY_URL: ${THORIUM_TELEMETRY_URL}\";\necho \"-----> PACKAGING: ${PACKAGING}\";\necho \"-----> RELEASE_TAG: ${RELEASE_TAG}\";\necho \"-----> VSCODE_LAUNCH: ${VSCODE_LAUNCH}\";\necho \"-----> PORT_APP: ${PORT_APP}\";\necho \"-----> PORT_READER: ${PORT_READER}\";\necho \"-----> PORT_PDF_WEBVIEW: ${PORT_PDF_WEBVIEW}\";\n\ngit branch\ngit status\n\nfi\n"
     },
     "options": {
       "systems": [
@@ -35,17 +36,17 @@
     {
       "attr_path": "jq",
       "broken": false,
-      "derivation": "/nix/store/y1glsdj47nwma5cg6gkwxaidlcqdvmv1-jq-1.8.1.drv",
+      "derivation": "/nix/store/bmchk7n1crrqvaw88rk288m1934gwlzq-jq-1.8.1.drv",
       "description": "Lightweight and flexible command-line JSON processor",
       "install_id": "jq",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=6c9a78c09ff4d6c21d0319114873508a6ec01655",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=567a49d1913ce81ac6e9582e3553dd90a955875f",
       "name": "jq-1.8.1",
       "pname": "jq",
-      "rev": "6c9a78c09ff4d6c21d0319114873508a6ec01655",
-      "rev_count": 967235,
-      "rev_date": "2026-03-21T15:16:39Z",
-      "scrape_date": "2026-03-25T15:44:17.705635Z",
+      "rev": "567a49d1913ce81ac6e9582e3553dd90a955875f",
+      "rev_count": 1017464,
+      "rev_date": "2026-06-16T02:33:49Z",
+      "scrape_date": "2026-06-17T03:13:31.265729Z",
       "stabilities": [
         "unstable"
       ],
@@ -56,11 +57,11 @@
         "man"
       ],
       "outputs": {
-        "bin": "/nix/store/bb450vb2gl547zwba8sihcyilsg2rqfa-jq-1.8.1-bin",
-        "dev": "/nix/store/irxgyhi0rq34f2y721a26ii09nynq2ha-jq-1.8.1-dev",
-        "doc": "/nix/store/rnkk37licxmcicz44sm368bk2fsrk52j-jq-1.8.1-doc",
-        "man": "/nix/store/vs96fwfhd5gjycxs5yc58wkrizscww92-jq-1.8.1-man",
-        "out": "/nix/store/y4gq3lbz2nq75cl3v28ixrqrr90pk4lf-jq-1.8.1"
+        "bin": "/nix/store/d551vj6hjc2bqiyg8dim6lv1v1xw7841-jq-1.8.1-bin",
+        "dev": "/nix/store/dy2cgp8adlm5gl3hkpykcgccv4dlhawb-jq-1.8.1-dev",
+        "doc": "/nix/store/afjz34n0jz7a0zjjp6qkvnxqph53ifbw-jq-1.8.1-doc",
+        "man": "/nix/store/cyykpwx7q87ryqyhkz4slm163300rzjh-jq-1.8.1-man",
+        "out": "/nix/store/yj3m8xi9h48mz4i7732zcwbqbb8bl402-jq-1.8.1"
       },
       "system": "aarch64-darwin",
       "group": "toplevel",
@@ -69,17 +70,17 @@
     {
       "attr_path": "jq",
       "broken": false,
-      "derivation": "/nix/store/r7xkf6ii1frn2kcdwb48mbwbvikldhmy-jq-1.8.1.drv",
+      "derivation": "/nix/store/rnq1r4544wynnzab3f9rk862lpdlhgpa-jq-1.8.1.drv",
       "description": "Lightweight and flexible command-line JSON processor",
       "install_id": "jq",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=6c9a78c09ff4d6c21d0319114873508a6ec01655",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=567a49d1913ce81ac6e9582e3553dd90a955875f",
       "name": "jq-1.8.1",
       "pname": "jq",
-      "rev": "6c9a78c09ff4d6c21d0319114873508a6ec01655",
-      "rev_count": 967235,
-      "rev_date": "2026-03-21T15:16:39Z",
-      "scrape_date": "2026-03-25T16:25:06.488593Z",
+      "rev": "567a49d1913ce81ac6e9582e3553dd90a955875f",
+      "rev_count": 1017464,
+      "rev_date": "2026-06-16T02:33:49Z",
+      "scrape_date": "2026-06-17T03:44:31.099705Z",
       "stabilities": [
         "unstable"
       ],
@@ -91,11 +92,11 @@
         "man"
       ],
       "outputs": {
-        "bin": "/nix/store/h68aklwk28xbrg7pqaw078w1hvvvf419-jq-1.8.1-bin",
-        "dev": "/nix/store/kzsszlf69lndqilpgysw1j9b4hrfwjfx-jq-1.8.1-dev",
-        "doc": "/nix/store/rr0a4brsd47393640zn9zgw844rbkrsl-jq-1.8.1-doc",
-        "man": "/nix/store/l4npc0sgk51lz2d6jqnl4r18hmn6qckr-jq-1.8.1-man",
-        "out": "/nix/store/5jf55qkwrnd769ri9wxiy7z9kp5zb4ca-jq-1.8.1"
+        "bin": "/nix/store/d6mx57dmjq61j69ap45f6fm3jb0lslyc-jq-1.8.1-bin",
+        "dev": "/nix/store/qv69wdjr2zd2w6yg5n8lxfn6c8mg4bwf-jq-1.8.1-dev",
+        "doc": "/nix/store/fway55wsvvly58sz7zn7vlq68v0q1ig3-jq-1.8.1-doc",
+        "man": "/nix/store/bnwzc47h7zhc3zwkjmy4br8jd2ki9pyj-jq-1.8.1-man",
+        "out": "/nix/store/6y9n87w9lsk3x0fscm6kfirk3ssc0syr-jq-1.8.1"
       },
       "system": "aarch64-linux",
       "group": "toplevel",
@@ -104,17 +105,17 @@
     {
       "attr_path": "jq",
       "broken": false,
-      "derivation": "/nix/store/j7s0v2z7qngwmszf6cl59d80w2bankzf-jq-1.8.1.drv",
+      "derivation": "/nix/store/0rlalgyahkwxqihahidkwic07lhgrz2v-jq-1.8.1.drv",
       "description": "Lightweight and flexible command-line JSON processor",
       "install_id": "jq",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=6c9a78c09ff4d6c21d0319114873508a6ec01655",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=567a49d1913ce81ac6e9582e3553dd90a955875f",
       "name": "jq-1.8.1",
       "pname": "jq",
-      "rev": "6c9a78c09ff4d6c21d0319114873508a6ec01655",
-      "rev_count": 967235,
-      "rev_date": "2026-03-21T15:16:39Z",
-      "scrape_date": "2026-03-25T17:02:58.968676Z",
+      "rev": "567a49d1913ce81ac6e9582e3553dd90a955875f",
+      "rev_count": 1017464,
+      "rev_date": "2026-06-16T02:33:49Z",
+      "scrape_date": "2026-06-17T04:13:24.080171Z",
       "stabilities": [
         "unstable"
       ],
@@ -125,11 +126,11 @@
         "man"
       ],
       "outputs": {
-        "bin": "/nix/store/y699jyfkqhj7lm51zdxm1df28izg6zgj-jq-1.8.1-bin",
-        "dev": "/nix/store/681w0vijzacwyhcwylkvbppd4kps33fw-jq-1.8.1-dev",
-        "doc": "/nix/store/2bvvha8apma6crzhsnpjrghnjbjj6hpm-jq-1.8.1-doc",
-        "man": "/nix/store/0h261wdn6mlrn564adwhyw52a2dfnbg5-jq-1.8.1-man",
-        "out": "/nix/store/44i56yshwqwgw912idz0m9zx30d1xg8z-jq-1.8.1"
+        "bin": "/nix/store/pnm2frw3jwfrlycf730z5bfgixiyjal4-jq-1.8.1-bin",
+        "dev": "/nix/store/hg1vhcfr1lwv39vn84cijdn187jmcfnj-jq-1.8.1-dev",
+        "doc": "/nix/store/mzarfihn2c84s6qw7zp0rbbj7hb09dv2-jq-1.8.1-doc",
+        "man": "/nix/store/0yyamki3lhy0rp6vn45mn6cdhqb2c64a-jq-1.8.1-man",
+        "out": "/nix/store/8c9m07iqwczlfzx1sk0c5g2a9nnzvhc3-jq-1.8.1"
       },
       "system": "x86_64-darwin",
       "group": "toplevel",
@@ -138,17 +139,17 @@
     {
       "attr_path": "jq",
       "broken": false,
-      "derivation": "/nix/store/0vb08cn5pf24mzjbibpc7n37g62lacfj-jq-1.8.1.drv",
+      "derivation": "/nix/store/pq80zlnpxhzi25ninrrjjl0y1sd90hzk-jq-1.8.1.drv",
       "description": "Lightweight and flexible command-line JSON processor",
       "install_id": "jq",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=6c9a78c09ff4d6c21d0319114873508a6ec01655",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=567a49d1913ce81ac6e9582e3553dd90a955875f",
       "name": "jq-1.8.1",
       "pname": "jq",
-      "rev": "6c9a78c09ff4d6c21d0319114873508a6ec01655",
-      "rev_count": 967235,
-      "rev_date": "2026-03-21T15:16:39Z",
-      "scrape_date": "2026-03-25T17:47:20.249661Z",
+      "rev": "567a49d1913ce81ac6e9582e3553dd90a955875f",
+      "rev_count": 1017464,
+      "rev_date": "2026-06-16T02:33:49Z",
+      "scrape_date": "2026-06-17T04:47:28.480167Z",
       "stabilities": [
         "unstable"
       ],
@@ -157,14 +158,17 @@
       "outputs_to_install": [
         "bin",
         "bin",
+        "bin",
+        "bin",
+        "bin",
         "man"
       ],
       "outputs": {
-        "bin": "/nix/store/fc13hvlj7541i1xmwdka7f61qicdzr5a-jq-1.8.1-bin",
-        "dev": "/nix/store/plinh1rzkh83n4gfpkxl748zgaydpxll-jq-1.8.1-dev",
-        "doc": "/nix/store/ihgrvb9w91mwbhxx3fi3gcwwx3qlsdfv-jq-1.8.1-doc",
-        "man": "/nix/store/crwv17pim6csnfr4jmsd7kf60sp3c5dh-jq-1.8.1-man",
-        "out": "/nix/store/s4w1j16dj8wyriv1ljfypr9s1r39yjwp-jq-1.8.1"
+        "bin": "/nix/store/s04d6wm3kqjdgr7zdhlk214f6a2291ks-jq-1.8.1-bin",
+        "dev": "/nix/store/fmsvbcz2s85pmszdvwp4mhlamiv5lnzg-jq-1.8.1-dev",
+        "doc": "/nix/store/hhh2h4x4rhh6qbqa6620bvhz652cgw4m-jq-1.8.1-doc",
+        "man": "/nix/store/ncw52xsl5hgplh8csybbp9fli64iw1aq-jq-1.8.1-man",
+        "out": "/nix/store/7a1hndk12kz9wwh9sz8hzkkwgxq6rrnk-jq-1.8.1"
       },
       "system": "x86_64-linux",
       "group": "toplevel",
@@ -173,27 +177,27 @@
     {
       "attr_path": "nodejs_24",
       "broken": false,
-      "derivation": "/nix/store/g2yfx00n1lp9i8ka7nbl11fawc0yfm7n-nodejs-24.14.0.drv",
+      "derivation": "/nix/store/vbx35am7lar9zvwhk4nfl3lysmbd0ils-nodejs-24.15.0.drv",
       "description": "Event-driven I/O framework for the V8 JavaScript engine",
       "install_id": "nodejs_24",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=6c9a78c09ff4d6c21d0319114873508a6ec01655",
-      "name": "nodejs-24.14.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=567a49d1913ce81ac6e9582e3553dd90a955875f",
+      "name": "nodejs-24.15.0",
       "pname": "nodejs_24",
-      "rev": "6c9a78c09ff4d6c21d0319114873508a6ec01655",
-      "rev_count": 967235,
-      "rev_date": "2026-03-21T15:16:39Z",
-      "scrape_date": "2026-03-25T15:44:26.151863Z",
+      "rev": "567a49d1913ce81ac6e9582e3553dd90a955875f",
+      "rev_count": 1017464,
+      "rev_date": "2026-06-16T02:33:49Z",
+      "scrape_date": "2026-06-17T03:13:39.230289Z",
       "stabilities": [
         "unstable"
       ],
       "unfree": false,
-      "version": "24.14.0",
+      "version": "24.15.0",
       "outputs_to_install": [
         "out"
       ],
       "outputs": {
-        "out": "/nix/store/d5hw52iialz64hvfzfp9qm1gr2fp43kx-nodejs-24.14.0"
+        "out": "/nix/store/3mvbmkd7lmxi3xlka1avra24flwbgjv9-nodejs-24.15.0"
       },
       "system": "aarch64-darwin",
       "group": "toplevel",
@@ -202,27 +206,27 @@
     {
       "attr_path": "nodejs_24",
       "broken": false,
-      "derivation": "/nix/store/jj8rw2gnisil7dw10xi2qdinad9jqp7s-nodejs-24.14.0.drv",
+      "derivation": "/nix/store/zc41z1042wi0d1gmyc8mlwv5av8fds2q-nodejs-24.15.0.drv",
       "description": "Event-driven I/O framework for the V8 JavaScript engine",
       "install_id": "nodejs_24",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=6c9a78c09ff4d6c21d0319114873508a6ec01655",
-      "name": "nodejs-24.14.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=567a49d1913ce81ac6e9582e3553dd90a955875f",
+      "name": "nodejs-24.15.0",
       "pname": "nodejs_24",
-      "rev": "6c9a78c09ff4d6c21d0319114873508a6ec01655",
-      "rev_count": 967235,
-      "rev_date": "2026-03-21T15:16:39Z",
-      "scrape_date": "2026-03-25T16:25:23.677374Z",
+      "rev": "567a49d1913ce81ac6e9582e3553dd90a955875f",
+      "rev_count": 1017464,
+      "rev_date": "2026-06-16T02:33:49Z",
+      "scrape_date": "2026-06-17T03:44:48.148890Z",
       "stabilities": [
         "unstable"
       ],
       "unfree": false,
-      "version": "24.14.0",
+      "version": "24.15.0",
       "outputs_to_install": [
         "out"
       ],
       "outputs": {
-        "out": "/nix/store/vs8zaq8fvbbjqfg4bzn424kn55sj7s7y-nodejs-24.14.0"
+        "out": "/nix/store/rmdjmd0iy5zlyg0j2i1cd0s7ha1562fs-nodejs-24.15.0"
       },
       "system": "aarch64-linux",
       "group": "toplevel",
@@ -231,27 +235,27 @@
     {
       "attr_path": "nodejs_24",
       "broken": false,
-      "derivation": "/nix/store/l9ksrfa960964gqf23yfr7a66a2n18c1-nodejs-24.14.0.drv",
+      "derivation": "/nix/store/f0ay9hny5gn4c0lfrb95xrakm7yf3s2q-nodejs-24.15.0.drv",
       "description": "Event-driven I/O framework for the V8 JavaScript engine",
       "install_id": "nodejs_24",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=6c9a78c09ff4d6c21d0319114873508a6ec01655",
-      "name": "nodejs-24.14.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=567a49d1913ce81ac6e9582e3553dd90a955875f",
+      "name": "nodejs-24.15.0",
       "pname": "nodejs_24",
-      "rev": "6c9a78c09ff4d6c21d0319114873508a6ec01655",
-      "rev_count": 967235,
-      "rev_date": "2026-03-21T15:16:39Z",
-      "scrape_date": "2026-03-25T17:03:08.027427Z",
+      "rev": "567a49d1913ce81ac6e9582e3553dd90a955875f",
+      "rev_count": 1017464,
+      "rev_date": "2026-06-16T02:33:49Z",
+      "scrape_date": "2026-06-17T04:13:32.479300Z",
       "stabilities": [
         "unstable"
       ],
       "unfree": false,
-      "version": "24.14.0",
+      "version": "24.15.0",
       "outputs_to_install": [
         "out"
       ],
       "outputs": {
-        "out": "/nix/store/70ypbaj273w2kk0nrs4vijizyqgbg48v-nodejs-24.14.0"
+        "out": "/nix/store/rhv8jiklgw2bw4ljh4nm3h3r3bpnkcl3-nodejs-24.15.0"
       },
       "system": "x86_64-darwin",
       "group": "toplevel",
@@ -260,27 +264,27 @@
     {
       "attr_path": "nodejs_24",
       "broken": false,
-      "derivation": "/nix/store/15s1kk2n6vg180wg04wj2wgnl19f03v7-nodejs-24.14.0.drv",
+      "derivation": "/nix/store/f8i8jydaqs0ngxm97c091zna2mnjb43f-nodejs-24.15.0.drv",
       "description": "Event-driven I/O framework for the V8 JavaScript engine",
       "install_id": "nodejs_24",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=6c9a78c09ff4d6c21d0319114873508a6ec01655",
-      "name": "nodejs-24.14.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=567a49d1913ce81ac6e9582e3553dd90a955875f",
+      "name": "nodejs-24.15.0",
       "pname": "nodejs_24",
-      "rev": "6c9a78c09ff4d6c21d0319114873508a6ec01655",
-      "rev_count": 967235,
-      "rev_date": "2026-03-21T15:16:39Z",
-      "scrape_date": "2026-03-25T17:47:40.184775Z",
+      "rev": "567a49d1913ce81ac6e9582e3553dd90a955875f",
+      "rev_count": 1017464,
+      "rev_date": "2026-06-16T02:33:49Z",
+      "scrape_date": "2026-06-17T04:47:47.934763Z",
       "stabilities": [
         "unstable"
       ],
       "unfree": false,
-      "version": "24.14.0",
+      "version": "24.15.0",
       "outputs_to_install": [
         "out"
       ],
       "outputs": {
-        "out": "/nix/store/v2210ar51jddnrcx46m53ivv9palc26m-nodejs-24.14.0"
+        "out": "/nix/store/5a8ysg1jnj8jmzzyfcfw7rvpvnp5rfpa-nodejs-24.15.0"
       },
       "system": "x86_64-linux",
       "group": "toplevel",

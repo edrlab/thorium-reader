@@ -2,11 +2,11 @@
 
 ## Summary
 
-Version `3.4.0` was released on **09 March 2026**.
+Version `3.4.0` was released on **08 April 2026**.
 
 This release includes the following (notable) new features, improvements and bug fixes:
 
-* Upgraded to Electron v40, Chromium v144, NodeJS v24
+* Upgraded to Electron v41, Chromium v146, NodeJS v24
 * Updated translations
 * Fixed accessibility issues with screen reader heading hierarchy and keyboard tab cycling order
 * New feature: filtering and sorting directly in the publication "grid" mode of the library window (complements existing "table" view functionality)
@@ -16,9 +16,13 @@ This release includes the following (notable) new features, improvements and bug
 * Fixed OPDS "breadcrumb" user interface affordance
 * Fixed MathML support, MathJax could not be activated
 * Fixed a zoom issue with "fixed layout" / pre-paginated EPUBs
-* Fix in TTS readaloud and EPUB Media Overlays, the temporary disabling of popup footnotes wasn't being restored properly
+* Fix in TTS readaloud and EPUB Media Overlays, the temporary disabling of popup footnotes wasn't being restored properly, as well as the notes highlights (annotations and bookmarks)
 * Fixed MacOS issue when bringing re-activating the application to bring the reader window into the foreground (over the library window)
 * Fixed "customization profiles" (new feature which was broken on Windows in version 3.3.0). Reminder: this feature offers an alternative to forking the Thorium Desktop codebase, via a plugin mechanism that declaratively expresses modifications to "vanilla" Thorium Desktop reader (color themes, bundled publications and feeds, application logo, etc.)
+* Fixed notification toasts which were sometimes incorrectly terminated
+* Fix: LCP passphrase prompt was incorrectly displayed when imported protected publications (directly as EPUB or via LCPL) were added and non-already existing in the bookshelf (but with an existing cached valid passphrase based on provider mapping)
+* Fix: network requests at application launch (i.e. telemetry ping and version check) could potentially delay the boot process and compromise the application "ready" state
+* Fixed bookshelf table layour, translated column headers.
 * Fix: in version 3.3.0 a more performant filesystem persistence of "notes" (i.e. annotations and bookmarks) was introduced, using a dedicated SQLite database separate from other scopes of application state. Backward compatibility with the JSON format of older versions of the application was preserved but this caused application shutdown to be very slow (sometimes even hanging and ultimately crashing). In version 3.4.0, the backward compatibility is removed and consequently users are advised to manually backup their notes when they wish to revert to an older version of Thorium Desktop reader
 * Fix: under the hood, further changes to filesystem persistence (i.e. preservation of application state) were introduced in order to improve performance and hopefully address rare data loss issues experienced by some Windows users. The user interface indicates missing publications and additional logging is now available for remote troubleshooting (user-accessible text files created in Thorium Desktop's application data folder). This is groundwork for a planned future feature that will allow users to store publications inside an arbitrary folder (this might be useful to address filesystem storage limitations, notably on Windows where a large amount of ebooks / audiobooks could cause the operating system to interfere with application data and potentially corrupt Thorium Desktop's internal database)
 
@@ -29,8 +33,85 @@ This release includes the following (notable) new features, improvements and bug
 Git commit diff since `3.3.0`:
 https://github.com/edrlab/thorium-reader/compare/v3.3.0...v3.4.0
 
-=> **171** GitHub Git commits:
+=> **248** GitHub Git commits:
 
+* [(_)](https://github.com/edrlab/thorium-reader/commit/59b0263644ebdc8f6ef3a0837abb267d70d37071) __fix(GUI):__ bookshelf table column headers translated name regression (Fixes [#3486](https://github.com/edrlab/thorium-reader/issues/3486) follows PR [#3478](https://github.com/edrlab/thorium-reader/pull/3478) )
+* [(_)](https://github.com/edrlab/thorium-reader/commit/26931a63acd384ea91d80efbd7c0eae5d53c3bf9) __fix:__ notes highlights (annotations and bookmarks) were automatically hidden "do not display" when playing EPUB Media Overlays or Text To Speech readaloud, but not restored which caused confusion, giving the impression that notes disappeared / were wiped. (Fixes [#3454](https://github.com/edrlab/thorium-reader/issues/3454) )
+* [(_)](https://github.com/edrlab/thorium-reader/commit/0a3c1e61d907cbb14ed6458690ec4c9f1004ab8a) __chore(NPM):__ package dependency updates
+* [(_)](https://github.com/edrlab/thorium-reader/commit/e9348324523f8aa4a88fa141a2027c21b08c55de) __fix(l10n):__ updated translation via Weblate, Italian (PR [#3485](https://github.com/edrlab/thorium-reader/pull/3485))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/2b62a584e95e62f5f5e63a362c5be3e687513aa1) __fix:__ incorrect import statement [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/1580cb62174057ab90e075e48692efe21b4dbc6e) __fix(l10n):__ updated translations via Weblate - Italian, Swedish (PR [#3483](https://github.com/edrlab/thorium-reader/pull/3483))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/cf38f6cffc36f097178baae3924d7ed58d7717ee) __fix(OPDS):__ the state of the "resume browsing" button was incorrect after catalog removal (PR [#3465](https://github.com/edrlab/thorium-reader/pull/3465) Fixes [#3462](https://github.com/edrlab/thorium-reader/issues/3462))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/4e917e9a393a675affb0b830cd3ac9ce3edb9fb4) __fix(GUI):__ table column header in the bookshelf were not refreshed when locale changed (PR [#3478](https://github.com/edrlab/thorium-reader/pull/3478))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/720e5399c24ea71c10c965b29a19c8353b1f3cbb) __fix(GUI):__ notification toasts were sometimes incorrectly terminated (PR [#3450](https://github.com/edrlab/thorium-reader/pull/3450) Fixes [#3448](https://github.com/edrlab/thorium-reader/issues/3448))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/f6463e74e8b36e7edc5c2a5e021e1146dda2125c) __chore(dev):__ Taze check NPM updates command tweak (fallback to major when no minor found) [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/8724b3325561a129853129e32c2beb6cb159bfd5) __fix(store):__ initialize win.registry.reader to prevent persistence crashes on 330 state migration with no publications
+* [(_)](https://github.com/edrlab/thorium-reader/commit/2dca45b805f3b01017d19d9a31c998ff2055ad53) __fix(publication-data):__ replace incorrect directory fs.access flags and handle directory creation properly
+* [(_)](https://github.com/edrlab/thorium-reader/commit/1f34437eb9ad58bd2f6e5726f91c9b125951c648) __fix:__ reader can be null in persistReaderRegistry()
+* [(_)](https://github.com/edrlab/thorium-reader/commit/9f3e62f671e19c0258443f466b728fca779ab421) __chore(NPM):__ package updates
+* [(_)](https://github.com/edrlab/thorium-reader/commit/2b4f6bcd429b6d6f1852d375a0c0ccfffca0371a) __chore(dev):__ Flox/Nix lockfile [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/b7ede9ad4396bb6087c6b3535556b7bfccbca72b) __chore(dev):__ scripts that install node_modules with or without SFW Socket Security Firewall, npm audit, taze checks [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/97a65a816df14b2adb70923b38ff89950d28d74d) __chore(NPM):__ added taze locally to replace global NCU NPM Check Updates, removed postinstall script now that ts-loader is fixed [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/411e70e884245987aa096cacac99b3fa129fc15a) __chore(CI):__ remove the local NPM postinstall now that ts-loader is fixed [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/6a3264f40c7622fe80bb9578ed0a65c90ba4f791) __chore(dev):__ Apple Container Docker memory bump and shutdown builder to give the runner more resources [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/703868652ed4f0f083b937137d418eb8e67a5db5) __chore(dev):__ Dockerfile SFW Socket Security Firewall [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/7576151843608e5dc230b53fb5867ada8e053895) __chore(dev):__ Flox/Nix globally-installed NCU NPM Check Updates replaced with Taze in local lockfile'd node_modules via NPX --no --offline [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/60884b3e4219523b34640f01cc941d6b9f4a2d5d) __fix(l10n):__ updated translation via Weblate - Italian (PR [#3481](https://github.com/edrlab/thorium-reader/pull/3481))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/4b53a27cf5857bb9f8f0f3ef8af070a5297c2c45) __fix(persistence):__ Enable win registry reader state saving in runtime.state for backward compatibility with 330 during crash/reboot
+* [(_)](https://github.com/edrlab/thorium-reader/commit/dbce3eb63c1902df927915ec208b44a917de022a) __fix(memory):__ fix inverted error check in applyPatch
+* [(_)](https://github.com/edrlab/thorium-reader/commit/cde5cc1baaff05ef804f40116d69894a6cc2369b) __refactor:__ JSON Application State Loading Strategy (PR [#3471](https://github.com/edrlab/thorium-reader/pull/3471))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/76d63280e8f73e1614635baf2fb6e77cbf55519e) __fix:__ persist final global state on application shutdown (PR [#3477](https://github.com/edrlab/thorium-reader/pull/3477) & PR [#3471](https://github.com/edrlab/thorium-reader/pull/3471))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/1b34b21052c30c89cbbf86c916f3189e53b8fe3b) __chore(publication/findAll):__ disable publication-storage disk listing in findAll for 3.4 release
+* [(_)](https://github.com/edrlab/thorium-reader/commit/d678d4742704ca62f38e43d1152c8da87a53fb29) __chore(publication-storage):__ The publication-storage feature for storing a copy of the publication-data locator/config is disabled in version 3.4. It will be introduced in the next release.
+* [(_)](https://github.com/edrlab/thorium-reader/commit/03b738ee151f72eebf0c8d813f46dcc0bccf7bf6) __refactor(publication-data):__ improve file handling, use high-level fs.promises API
+* [(_)](https://github.com/edrlab/thorium-reader/commit/b1e32189813b7faf9acd59dc3cfd62fcc842e376) __fix(l10n):__ updated translations via Weblate - Italian, Finnish, Estonian (PR [#3470](https://github.com/edrlab/thorium-reader/pull/3470))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/9643f6464f0feedd5d4a30833a7d964b21c09b3c) __fix(build):__ Electron Fuses via Electron Builder was failing, now flipFuses() manual call
+* [(_)](https://github.com/edrlab/thorium-reader/commit/821e8741a7bbad8aae8adfeea39e956981a66479) __fix:__ not sure why CI fails...all 9 Electron Fuses are declared exhaustively
+* [(_)](https://github.com/edrlab/thorium-reader/commit/3b3c84d5579f61fa5cff4a4850992cb3bac1a095) __chore(release):__ added missing Electron Fuse (exhaustive requirement, even if default value)
+* [(_)](https://github.com/edrlab/thorium-reader/commit/fcd78b8a97e846c0884385fbf58f4f7e9153cef8) __chore(NPM):__ minor package-lock update [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/4749d2417c02ad0659127c18e5404224904806c7) __chore(build):__ NPM 11.12.0 introduced a regression bug, now fixed
+* [(_)](https://github.com/edrlab/thorium-reader/commit/27e9628ce5f1e9857e98cd15f68f3bb43aee9c43) __chore(NPM):__ Electron v41 [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/30a120a596a4aaa6a2d3079c7e9804d9e3765312) __chore(dev):__ minor TypeScript config update dom.iterable is now included in dom lib [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/c369c7b97e2eeb07f6f94931cabb9c3df9e0eb62) __fix(build):__ CI Windows quote syntax
+* [(_)](https://github.com/edrlab/thorium-reader/commit/8e438603cc7d74928166ec379ebf434808e161e2) __chore(NPM):__ package dependencies updates, notably latest TypeScript with a few breaking changes (moving towards Go implementation which we have been aligning with for several months now, but WebPack's ts-loader needs a temporary patch until fixed upstream)
+* [(_)](https://github.com/edrlab/thorium-reader/commit/ea90383308fc04e398c390b01241d847de92097e) __chore(dev):__ Flox/Nix update lockfile [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/4d5c071439c9f528b67da053ab77337b25e84039) __chore:__ lint
+* [(_)](https://github.com/edrlab/thorium-reader/commit/af555c1a2f5f0b87a844b5711c6568d9de10445e) __fix:__ window bounds rectangle issues (PR [#3467](https://github.com/edrlab/thorium-reader/pull/3467) Fixes [#3466](https://github.com/edrlab/thorium-reader/issues/3466))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/34918c222c416c3e86397869ae798a2733ecfa08) __fix(l10n):__ updated translations via Weblate - Italian (PR [#3463](https://github.com/edrlab/thorium-reader/pull/3463))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/65abfbcd9f379289a9311ee98b705cbcc145c385) __fix:__ reader browser window lifecycle (PR [#3464](https://github.com/edrlab/thorium-reader/pull/3464) Fixes [#3439](https://github.com/edrlab/thorium-reader/issues/3439))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/dc02d5226287aa3ec051657b4f80d59f0e2be0b3) __fix(GUI):__ OPDS catalogs header,  wrapping behavior for long feed names/titles (PR [#3451](https://github.com/edrlab/thorium-reader/pull/3451) Fixes [#3442](https://github.com/edrlab/thorium-reader/issues/3442))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/f803787cfb83bd241e6d7533e50e0ac4a30ea932) __fix(i18n):__ npm run i18n-scan + check + typed (Weblate is locked, as the JSON locales have breaking structural changes) [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/e9eb369943bc5ea207a5f4e1bb7d9e892c5c1d03) __chore(NPM):__ Inversify major breaking changes (no impact in this project) https://inversify.io/docs/guides/migrating-from-v7/
+* [(_)](https://github.com/edrlab/thorium-reader/commit/2cd2e319dea097b1f4ed6aa4e591571cca355f24) __chore(NPM):__ updated package dependencies
+* [(_)](https://github.com/edrlab/thorium-reader/commit/04727e569eb8c9a1e2917e5ca5284e27bc7ea608) __chore(dev):__ Flox/Nix 1.10.0 update [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/de505670b5308a91087185128eebc32d6b6f152f) __fix(l10n):__ updated translation via Weblate - Italian (PR [#3456](https://github.com/edrlab/thorium-reader/pull/3456))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/3917b6a74769c079081fb70896eeafbf552803c8) __chore(dev):__ Dockerfile NPM regression bug workaround (avoid version 11.12.0) [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/6afb50eee9dd7fbdd499b59124d74d9781b9f5e4) __chore(NPM):__ forcing NPM version different than 11.12.0 to work around NPM CLI regression, updated package dependencies
+* [(_)](https://github.com/edrlab/thorium-reader/commit/381075eba8c0e9a77e411aaa1340631d264591be) __chore(CI):__ GitHub Actions NodeJS v22 --> 24 [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/a1d1d387893b7c270e32950b79be1d5583e4187f) __chore(dev):__ Flox/Nix lock manifest update [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/b171b9c68b77c06830b26e2360dfbdade6666abd) __fix(l10n):__ updated translations via Weblate - Portuguese (Portugal), Russian (PR [#3440](https://github.com/edrlab/thorium-reader/pull/3440))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/7f1bdd9abc435b320b01a0456a333f1dbfb131ed) __fix(readingFinished):__ add a debounce on the setReadingFinished readerFooter function (PR [#3446](https://github.com/edrlab/thorium-reader/pull/3446))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/c648a391bb823beb380e4df5db01f78105e90d6e) __fix(pdf):__ pdfConfig peristence and hydration
+* [(_)](https://github.com/edrlab/thorium-reader/commit/48337ff6000fc985591eeb86cd6c98a305884028) __fix:__ network requests at application launch (i.e. telemetry ping and version check) could potentially delay the boot process and compromise the application "ready" state (PR [#3452](https://github.com/edrlab/thorium-reader/pull/3452))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/a9c768132155afe235681d7fd395f88a38fb83ac) __chore(dev):__ Flox/Nix [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/24f8706a65214354690cabf290fdebb95a062ff4) __fix(l10n):__ added in-progress translations in DEV/CI (excluded in PROD) (Fixes [#3438](https://github.com/edrlab/thorium-reader/issues/3438))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/af6386584fb2d67b24e09b3df67cec59df76210b) __fix(publication-delete):__ log catch exception in api/publication-delete
+* [(_)](https://github.com/edrlab/thorium-reader/commit/b96066b5bfeb07383430e2ed74a673154267ad69) __chore(NPM):__ package updates, workaround for proxy-agent incompatible ESM module exports/imports syntax in package.json (for externals from main.js Webpack bundle)
+* [(_)](https://github.com/edrlab/thorium-reader/commit/e3994ffae01d6411f3037bd5a562c1a7ebbcac71) __chore(dev):__ script to list ESM modules in package dependencies [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/98efdc91429da63d90ac11faa545896f9e10b98a) __fix(LCP):__ passphrase prompt was incorrectly displayed when imported LCP-protected publications (directly of via LCPL) were added and non-already existing in the bookshelf (but with an existing cached valid passphrase based on provider mapping) ( Fixes [#3372](https://github.com/edrlab/thorium-reader/issues/3372) )
+* [(_)](https://github.com/edrlab/thorium-reader/commit/c8c8701901c5c876876555fe996f385e63f52d18) __fix(dev):__ TypeScript Go implementation is stricter on thrown exceptions typing [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/c5013c0e2f42324dbad0345915ed150d460a1ace) __fix(dev):__ Typescript esModuleInterop declare module vs. namespace, Slugify.d.ts [skip]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/d5e86eddb7459f043a9697feac801a3f504338bf) __fix:__ apply hydration on reader config (PR [#3436](https://github.com/edrlab/thorium-reader/pull/3436))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/c351ca8c8eb431f518487e743b343af083591fe5) __Revert "chore(release):__ v3.4.0 [skip ci]"
+* [(_)](https://github.com/edrlab/thorium-reader/commit/48ca15d4ee34a01fda09a63965a982931db232ab) __chore(release):__ v3.4.0 [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/2a23685ac531d5f97a5256060caceae4050fa2c9) __fix(l10n):__ updated translations via Weblate - Portuguese (Portugal) (PR [#3435](https://github.com/edrlab/thorium-reader/pull/3435))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/698e3f3fc93addc8cb664a4da7eeb7f06e9e68be) __fix(publication-storage):__ catch any type
+* [(_)](https://github.com/edrlab/thorium-reader/commit/16d6e3453bf4b913b254a821130bb2f9c38a5bfa) __fix(publication-storage):__ fixes undefined userVaultPath in removePublication
+* [(_)](https://github.com/edrlab/thorium-reader/commit/b8d72faca703f73f210e077cbbc066651b0ea7d1) __Revert "chore(release):__ v3.4.0 [skip ci]"
+* [(_)](https://github.com/edrlab/thorium-reader/commit/aaf8f63253cb61c57e3d8646ccc1ebe50900de1f) __chore(dev):__ fixed incorrect imports [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/f57edddbf0e42ce675117ed5d9beb539aad10ac6) __chore(release):__ v3.4.0 [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/c4c77d70f223b2643deba4de8749e88d038f4526) __chore(release):__ Docker Linux NodeJS 24 [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/1c4db8ffd3ba93bcb98b379738b3a4d5508ec825) __chore(release):__ changelog 3.4.0 [skip ci]
 * [(_)](https://github.com/edrlab/thorium-reader/commit/d14bd615cb7900788d9de0ffb823a3697d8c98b1) __fix(l10n):__ updated translation via Weblate - Lithuanian (PR [#3433](https://github.com/edrlab/thorium-reader/pull/3433))
 * [(_)](https://github.com/edrlab/thorium-reader/commit/bc86b06ff205ca0ca8b206ff86d1e6365cf07415) __fix:__ the SQLite database for notes (annotations and bookmarks) was not correctly linked in automated CI builds (not dev, but packaged app with some development menu items enabled)
 * [(_)](https://github.com/edrlab/thorium-reader/commit/224132337814a5096b6dfc45917002f42c63afb3) __chore(NPM):__ package updates

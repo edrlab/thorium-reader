@@ -7,8 +7,10 @@
 
 import * as readingFinished from "./readingFinished";
 import * as checker from "./checker";
+import * as openFolder from "./openFolder";
 
 export {
     readingFinished,
     checker,
+    openFolder,
 };

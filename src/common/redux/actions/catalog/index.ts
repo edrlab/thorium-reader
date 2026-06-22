@@ -6,11 +6,17 @@
 // ==LICENSE-END==
 
 import * as getCatalog from "./getCatalog";
+import * as openDefaultDirectory from "./openDefaultDirectory";
+import * as openUserDirectory from "./openUserDirectory";
 import * as setCatalog from "./setCatalogView";
 import * as setTagView from "./setTagView";
+import * as setUserDirectory from "./setDirectory";
 
 export {
     getCatalog,
+    openDefaultDirectory,
+    openUserDirectory,
     setCatalog,
     setTagView,
+    setUserDirectory,
 };

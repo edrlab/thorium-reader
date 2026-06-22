@@ -8,7 +8,7 @@
 import debug_ from "debug";
 
 import { ICssSelector, IReadiumAnnotation, IReadiumAnnotationSet, isCFIFragmentSelector, isCfiSelector, isCssSelector, isProgressionSelector, isTextPositionSelector, isTextQuoteSelector, ITextPositionSelector, ITextQuoteSelector } from "./annotationModel.type";
-import { v4 as uuidv4 } from "uuid";
+import { uuidv4 } from "readium-desktop/utils/uuid";
 import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { rgbToHex } from "readium-desktop/common/rgb";
@@ -266,11 +266,19 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
 
 // export type INoteStateWithICacheDocument = INoteState & { __cacheDocument?: ICacheDocument | undefined };
 
-export function convertAnnotationStateToReadiumAnnotation(note: INoteState): IReadiumAnnotation {
+export function convertAnnotationStateToReadiumAnnotation(note: INoteState): IReadiumAnnotation | undefined {
 
     const { uuid, color, locatorExtended, tags, drawType, textualValue, creator, created, modified, readiumAnnotation } = note;
     const highlight = (drawType === EDrawType.solid_background ? "solid" : EDrawType[drawType]) as IReadiumAnnotation["body"]["highlight"];
     const isABookmark = drawType === EDrawType.bookmark;
+
+    // PDF annotations currently store their target in `note.pdfAnnotation`.
+    // Do not serialize them as Readium annotations until there is an explicit
+    // PDF page/rectangle target mapping.
+    if (note.pdfAnnotation) {
+        debug("Skip PDF annotation during Readium annotation export", note.uuid);
+        return undefined;
+    }
 
     if (!locatorExtended) {
         debug("Convert A Note without any locator !!!", note.uuid);
@@ -341,6 +349,12 @@ export function convertAnnotationStateArrayToReadiumAnnotationSet(locale: keyof 
                 }) : [],
             "dc:date": publicationView.publishedAt || "",
         },
-        items: notes.map((v) => convertAnnotationStateToReadiumAnnotation(v)),
+        items: notes.reduce<IReadiumAnnotation[]>((items, note) => {
+            const readiumAnnotation = convertAnnotationStateToReadiumAnnotation(note);
+            if (readiumAnnotation) {
+                items.push(readiumAnnotation);
+            }
+            return items;
+        }, []),
     };
 }

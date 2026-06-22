@@ -14,7 +14,7 @@
 #
 #
 # container builder status
-# container builder start --cpus 7 --memory 8g
+# container builder start --cpus 7 --memory 12g
 # container builder stop
 # container builder delete
 #
@@ -29,7 +29,7 @@ container system start
 container system status
 
 container builder stop
-container builder start --cpus 7 --memory 8g
+container builder start --cpus 7 --memory 12g
 container builder status
 
 container list --all
@@ -70,9 +70,9 @@ container list --all
 #--build-arg BUST_CACHE=1
 
 if [[ ${ARCHITECTURE} == 'arm64' ]]; then
-container build --cpus 7 --memory 8g --platform linux/arm64 --progress plain --build-arg BUST_CACHE=$(date +%Y%m%d-%H%M%S) -f ./Dockerfile -t thorium-docker-image .
+container build --cpus 7 --memory 12g --platform linux/arm64 --progress plain --build-arg BUST_CACHE=$(date +%Y%m%d-%H%M%S) -f ./Dockerfile -t thorium-docker-image .
 else
-container build --cpus 7 --memory 8g --platform linux/amd64 --progress plain --build-arg BUST_CACHE=$(date +%Y%m%d-%H%M%S) -f ./Dockerfile -t thorium-docker-image .
+container build --cpus 7 --memory 12g --platform linux/amd64 --progress plain --build-arg BUST_CACHE=$(date +%Y%m%d-%H%M%S) -f ./Dockerfile -t thorium-docker-image .
 fi
 
 container --version
@@ -97,6 +97,10 @@ container list --all
 
 #ARCHITECTURE=arm64
 #echo $ARCHITECTURE
+
+container builder stop
+container builder status
+container list --all
 
 FILENAME1=
 FILENAME2=
@@ -128,9 +132,9 @@ mkdir -p release || echo ok
 # --rm
 #
 if [[ ${ARCHITECTURE} == 'arm64' ]]; then
-container run --cpus 4 --memory 2g --platform linux/arm64 --name thorium-docker-container --volume ${PWD}/release:/MOUNT thorium-docker-image sh -c "ls -als /THORIUM/release/ ; ls -als /MOUNT/ ; cp /THORIUM/release/$FILENAME1 /MOUNT/ ; cp /THORIUM/release/$FILENAME2 /MOUNT/ ; ls -als /MOUNT/"
+container run --cpus 4 --memory 12g --platform linux/arm64 --name thorium-docker-container --volume ${PWD}/release:/MOUNT thorium-docker-image sh -c "ls -als /THORIUM/release/ ; ls -als /MOUNT/ ; cp /THORIUM/release/$FILENAME1 /MOUNT/ ; cp /THORIUM/release/$FILENAME2 /MOUNT/ ; ls -als /MOUNT/"
 else
-container run --cpus 4 --memory 2g --platform linux/amd64 --name thorium-docker-container --volume ${PWD}/release:/MOUNT thorium-docker-image sh -c "ls -als /THORIUM/release/ ; ls -als /MOUNT/ ; cp /THORIUM/release/$FILENAME1 /MOUNT/ ; cp /THORIUM/release/$FILENAME2 /MOUNT/ ; ls -als /MOUNT/"
+container run --cpus 4 --memory 12g --platform linux/amd64 --name thorium-docker-container --volume ${PWD}/release:/MOUNT thorium-docker-image sh -c "ls -als /THORIUM/release/ ; ls -als /MOUNT/ ; cp /THORIUM/release/$FILENAME1 /MOUNT/ ; cp /THORIUM/release/$FILENAME2 /MOUNT/ ; ls -als /MOUNT/"
 fi
 
 

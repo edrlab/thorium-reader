@@ -14,7 +14,8 @@ import * as stylesDropDown from "readium-desktop/renderer/assets/styles/componen
 import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
 import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 
-import { convertMultiLangStringToLangString, langStringIsRTL } from "readium-desktop/common/language-string";
+import { convertMultiLangStringToLangString } from "readium-desktop/common/language-string";
+import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { Location } from "history";
 import SVG from "readium-desktop/renderer/common/components/SVG";
@@ -70,7 +71,7 @@ import moment from "moment";
 import { availableLanguages, I18nFunction } from "readium-desktop/common/services/translator";
 import * as React from "react";
 import { connect } from "react-redux";
-import { PublicationView } from "readium-desktop/common/views/publication";
+import { PublicationView, canOpenPublication } from "readium-desktop/common/views/publication";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -178,7 +179,8 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
             "publication/importFromLink",
             // "catalog/addEntry",
             "publication/updateTags",
-            "publication/readingFinishedRefresh",
+            "publication/findAllRefresh",
+            "publication/recover",
         ], () => {
             apiAction("publication/findAll")
                 .then((publicationViews) => {
@@ -654,7 +656,7 @@ interface IColumnValue_Cover extends IColumnValue_BaseString {
 
     title: string,
     publicationViewIdentifier: string,
-    missingOrDeleted?: boolean;
+    isOpenable?: boolean;
 };
 interface ITableCellProps_Value_Cover {
     value: IColumnValue_Cover;
@@ -662,11 +664,11 @@ interface ITableCellProps_Value_Cover {
 const CellCoverImage: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Cover> = (props) => {
     return (<div className={stylesPublication.cell_coverImg}>
         <a
-            title={`${props.value.title} (${props.__("catalog.bookInfo")})`}
+            title={props.value.title}
             onClick={() => props.openReader(props.value.publicationViewIdentifier)}
         >
             {
-                props.value.missingOrDeleted
+                props.value.isOpenable === false
                     ? <div aria-label={props.__("catalog.missing")} style={{ position: "absolute", width: "78px", height: "100px", display: "flex", alignItems: "center", justifyContent: "center", opacity: 0.7 }}>
                         <div aria-hidden style={{ height: "40px", width: "40px", borderRadius: "50%", background: "var(--color-error-text)", padding: "10px" }}>
                             <SVG aria-hidden svg={FileBroken} className={stylesPublications.publication_missing_icon} />
@@ -1690,7 +1692,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     label: publicationView.cover?.thumbnailUrl ?? publicationView.cover?.coverUrl ?? "",
                     publicationViewIdentifier: publicationView.identifier,
                     title: publicationView.documentTitle,
-                    missingOrDeleted: publicationView.type === "missingOrDeleted",
+                    isOpenable: canOpenPublication(publicationView),
                 },
                 colTitle: { // IColumnValue_Title
                     label: publicationView.documentTitle,
@@ -2058,7 +2060,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 // },
             ];
         return arr;
-    }, [__]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [__, locale]);
 
     const defaultColumn = React.useMemo(
         () => ({
@@ -2452,7 +2455,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     const SelectTableHeaders = (
         <Popover.Root open={selectedFilterHeaderOpen} onOpenChange={setSelectedFilterHeaderOpen}>
             <Popover.Trigger asChild className={stylesPublication.allBooks_header_filter_trigger}
-                title={"Select Table Headers"}>
+                title={__("catalog.selectTableHeaders")}>
                 <button>
                     <SVG ariaHidden={true} svg={EyeOpenIcon} />
                 </button>
@@ -2469,6 +2472,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                             <label htmlFor={col.id} style={{ marginLeft: "8px", cursor: "pointer" }}>
                                 {typeof col.Header === "string"
                                     ? col.Header
+                                    // : typeof col.Header === "function"
+                                    // ? (col.Header as unknown as (() => string))()
                                     : col.id.replace("col", "")}
                             </label>
                         </div>

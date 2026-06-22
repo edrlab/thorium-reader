@@ -46,6 +46,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
+     setFeedsResult: (feedsResult: any) => void;
 }
 
 interface IState {
@@ -59,7 +60,7 @@ class FeedList extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
         this.state = {
-            feedsResult: undefined,
+            feedsResult: [],
         };
 
         this.loadFeeds = this.loadFeeds.bind(this);
@@ -242,11 +243,14 @@ class FeedList extends React.Component<IProps, IState> {
     //     event.preventDefault();
     //     this.props.openDeleteDialog(feed);
     // }
-
     private async loadFeeds() {
         try {
             const feedsResult = await apiAction("opds/findAllFeeds");
+            
             this.setState({ feedsResult });
+            if (this.props.setFeedsResult) {
+                this.props.setFeedsResult(feedsResult);
+            }
         } catch (e) {
             console.error("Error to fetch api opds/findAllFeeds", e);
         }

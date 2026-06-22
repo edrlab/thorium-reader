@@ -403,9 +403,6 @@ function* readerStart() {
     debug("iframe reader viewport waiting to start...");
 
     yield* allTyped([
-        
-
-        // TODO: starting condition, not the setLocator dispatched back by the Reader.tsx
         takeTyped(readerActions.setLocator.ID),
         takeTyped(winCommonActions.initSuccess.ID),
     ]);

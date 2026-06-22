@@ -12,7 +12,7 @@ import { apiActions } from "readium-desktop/common/redux/actions";
 import { ApiResponse, LAST_API_SUCCESS_ID } from "readium-desktop/common/redux/states/api";
 import { TReturnPromiseOrGeneratorType } from "readium-desktop/typings/api";
 import { Dispatch } from "redux";
-import { v4 as uuidv4 } from "uuid";
+import { uuidv4 } from "readium-desktop/utils/uuid";
 
 import { IRendererCommonRootState } from "../../../../common/redux/states/rendererCommonRootState";
 

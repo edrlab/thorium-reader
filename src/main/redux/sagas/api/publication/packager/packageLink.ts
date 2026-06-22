@@ -29,7 +29,7 @@ import { Link } from "@r2-shared-js/models/publication-link";
 import { downloader } from "../../../downloader";
 import { manifestContext } from "./context";
 
-import isURL from "validator/lib/isURL";
+import isURL from "readium-desktop/common/utils/isURL";
 
 // Logger
 const filename_ = "readium-desktop:main#saga/api/publication/packager/packageLink";
@@ -42,7 +42,7 @@ const fetcher = (baseUrl: string) => async (href: string) => {
     // url.resolve(baseUrl, href)
     href = new URL(href, baseUrl).toString();
 
-    // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+    // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
     if (!href || !isURL(href)) {
         debug("isURL() NOK", href);
         return undefined;
@@ -319,7 +319,7 @@ export function* packageGetManifestBuffer(
 
     const fetch = fetcher(href);
 
-    // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+    // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
     if (!href || !isURL(href)) {
         debug("isURL() NOK", href);
         throw new Error("fetch URL error [" + href + "]");

@@ -28,6 +28,7 @@ export async function popupFootNote(
 ): Promise<boolean> {
 
     let documant = element.ownerDocument as Document;
+    const documant_ = documant;
 
     if (!documant.documentElement ||
         documant.documentElement.classList.contains(ROOT_CLASS_NO_FOOTNOTES)) {
@@ -165,7 +166,16 @@ export async function popupFootNote(
     }
 
     htmltxt = htmltxt.replace(/xmlns=["']http:\/\/www.w3.org\/1999\/xhtml["']/g, " ");
-    htmltxt = htmltxt.replace(/xmlns:epub=["']http:\/\/www.idpf.org\/2007\/ops["']/g, " ");
+
+    // NamespaceError: Failed to execute 'insertAdjacentHTML' on 'Element': Namespace prefix epub for attribute type is not declared.
+    // xmlns:epub="http://www.idpf.org/2007/ops"
+    const hasEPUBNS = documant_.body.lookupNamespaceURI("epub");
+    // const hasEPUBNS = !!documant_.documentElement.getAttribute("xmlns:epub") || !!documant_.body.getAttribute("xmlns:epub");
+    // console.log("hasEPUBNS", hasEPUBNS, documant_.documentElement.getAttribute("xmlns:epub"), documant_.body.getAttribute("xmlns:epub"));
+    if (!!hasEPUBNS) {
+        // console.log("documant.documentElement.innerHTML", documant_.documentElement.outerHTML);
+        htmltxt = htmltxt.replace(/xmlns:epub=["']http:\/\/www.idpf.org\/2007\/ops["']/g, " ");
+    }
     // htmltxt = htmltxt.replace(/epub:type=["'][^"']+["']/g, " ");
     htmltxt = htmltxt.replace(/<script>.+<\/script>/g, " ");
 
@@ -214,7 +224,7 @@ export async function popupFootNote(
             pop.dialog.remove();
         }, 50);
     }
-    const pop = new PopupDialog(element.ownerDocument as Document, htmltxt, onDialogClosed);
+    const pop = new PopupDialog(element.ownerDocument as Document /* documant_ */, htmltxt, onDialogClosed);
     pop.show(element);
 
     return true;

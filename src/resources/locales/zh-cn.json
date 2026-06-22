@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "菜单",
         "closeDialog": "关闭",
-        "importFile": "导入出版物",
         "leftSlideButton": "将列表划至左侧",
         "mainContent": "主要内容",
         "rightSlideButton": "将列表划至右侧",
@@ -46,7 +45,9 @@
             "title": "{{- appName}} 软件更新。"
         },
         "window": {
-            "showLibrary": "显示 书库/书架"
+            "showLibrary": "显示 书库/书架",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -69,7 +70,7 @@
                 "description": "无配置文件描述",
                 "publications": "配置文件发行日期",
                 "screen": "无标题",
-                "title": ""
+                "title": "配置文件标题"
             }
         },
         "delete": "删除",
@@ -89,7 +90,8 @@
         "lastRead": "上次阅读",
         "login": "登录",
         "logout": "登出",
-        "missing": "",
+        "missing": "缺失文件",
+        "missingUnavailableDescription": "打不开这个出版物，因为储存文件无法访问。请重新导入出版物，或导航至“设置-储存”，添加或改变附加储存位置。",
         "moreInfo": "更多信息",
         "myBooks": "我的图书",
         "noPublicationHelpL1": "将文件拖放到此处",
@@ -101,11 +103,13 @@
             "auth": {
                 "cancel": "取消",
                 "external": "登录页面将会在您的网络浏览器中打开，请跟随引导操作。完成登录后，网络浏览器会使您回到该应用程序。",
-                "fallback": "",
+                "fallback": "注意：若遇到默认浏览器登录问题，请尝试使用备选的应用内登录方式。",
                 "login": "登录",
                 "password": "密码",
                 "register": "注册",
-                "retry": "",
+                "retry": "再试一次",
+                "unauthorized": "未授权",
+                "unauthorizedUnsupportedType": "未授权(不支持的WWW认证类型 '{{- type}}')",
                 "username": "用户名/电子邮件地址"
             },
             "info": {
@@ -127,10 +131,12 @@
                 "state": "状态"
             }
         },
+        "openFolder": "打开文件夹",
         "publisher": "出版社",
         "readBook": "阅读",
         "released": "出版日期",
-        "removeFromFavorites": "",
+        "removeFromFavorites": "从收藏中移除",
+        "selectTableHeaders": "选择您想显示的列",
         "sort": "排序方式",
         "tag": "标签",
         "tags": "标签",
@@ -152,9 +158,9 @@
         "cancel": "取消",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
-                "state": "",
-                "title": "提供并激活自定义配置文件"
+                "fallbackWelcomeScreen": "未提供欢自定义迎屏幕",
+                "state": "状态: {{- state}}",
+                "title": "准备并激活自定义配置文件"
             }
         },
         "deleteAnnotations": "您要删除笔记吗？",
@@ -192,33 +198,34 @@
         "searchPlaceholder": "搜索",
         "searchTitle": "开始搜索",
         "settings": "设置",
+        "settingsLabel": "应用设置",
         "viewMode": "查看模式"
     },
     "library": {
         "filter": {
-            "addFilters": "",
-            "filterBy": "",
-            "selectOption": ""
+            "addFilters": "添加筛选器",
+            "filterBy": "筛选方式",
+            "selectOption": "请选择一项"
         },
         "lcp": {
-            "hidePassphrase": "",
+            "hidePassphrase": "隐藏密码",
             "hint": "提示：",
             "open": "打开",
             "password": "密码",
             "sentence": "此出版物需要 LCP 密码才能打开：",
-            "showPassphrase": "",
+            "showPassphrase": "显示密码",
             "urlHint": "忘记密码？点击此处获取帮助。",
             "whatIsLcp?": "什么是LCP？",
             "whatIsLcpInfoDetails": "LCP 表示“许可内容保护”。",
             "whatIsLcpInfoDetailsLink": "要了解更多信息，请单击此链接前往 EDRLab 网站。"
         },
         "sorting": {
-            "addSorting": "",
-            "author": "",
-            "language": "",
-            "readingState": "",
-            "sortBy": "",
-            "title": ""
+            "addSorting": "添加分类",
+            "author": "作者",
+            "language": "语言",
+            "readingState": "阅读状态",
+            "sortBy": "分类方式: ",
+            "title": "标题"
         }
     },
     "message": {
@@ -231,7 +238,18 @@
             "success": "导入已成功完成。"
         },
         "download": {
-            "error": "下载{{- title}}失败: [{{- err}}]"
+            "cancelled": "",
+            "error": "下载{{- title}}失败: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "[{{- title}}] 已被导入。",
@@ -239,9 +257,15 @@
             "success": "导入{{- title}}完成。"
         },
         "open": {
-            "error": "无法打开出版物: {{- err}}"
+            "error": "无法打开出版物: {{- err}}",
+            "folderNotFound": "出版物文件路径无法找到。重新导入，或者在“设置>储存”选项中调整附加储存位置。"
         },
-        "wipeData": ""
+        "storage": {
+            "removed": "出版物文件路径被移除。",
+            "updateFailed": "更新出版物文件路径失败: {{- message}}",
+            "updated": "出版物文件路径已更新。"
+        },
+        "wipeData": "登录数据已清空(包括访问令牌及本地身份文件)"
     },
     "opds": {
         "addForm": {
@@ -278,7 +302,7 @@
         },
         "next": "下一个",
         "previous": "上一个",
-        "resumeBrowsing": "",
+        "resumeBrowsing": "继续浏览",
         "shelf": "书架",
         "updateForm": {
             "name": "名称：",
@@ -556,10 +580,6 @@
                 "compact": "预录的音频片段",
                 "descriptive": "内容中嵌入了预录的音频片段"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "关于预录音频的信息不可用",
-                "descriptive": "关于预录音频的信息不可用"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "仅包含预录音频",
                 "descriptive": "有声书，无文本替代"
@@ -576,13 +596,17 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "关于外观可修改性的信息不可用",
                 "descriptive": "关于外观可修改性的信息不可用"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "外观无法修改",
+                "descriptive": "文本和页面布局无法修改，因阅读体验已接近印刷版本，但阅读系统仍可提供文本缩放选项"
             }
         }
     },
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": "兼容 TTS 和屏幕阅读器"
+                "textual": "所有内容均可作为朗读演说或动态布莱叶盲文被读出"
             },
             "accessibilityFeature": {
                 "alternativeText": "包含替代文本",
@@ -631,6 +655,7 @@
         "expiredLcp": "此书无法阅读，因为LCP许可证已到期。",
         "incorrectPassphrase": "没有任何已存储的密码与该出版物匹配，或输入的密码错误。",
         "lcpEnd": "结束",
+        "lcpNotSupported": "警告: 此为 Thorium Desktop 阅读器的预发布版本，不支持生产环境下的 LCP 许可证，仅支持无证书验证的 LCP“基础配置”解密。",
         "lcpRightsCopy": "许可证拷贝",
         "lcpRightsPrint": "许可证打印",
         "lcpStart": "开始",
@@ -668,6 +693,11 @@
             },
             "annotationsOptions": "选项",
             "date": "修改日期",
+            "error": {
+                "pdf": {
+                    "validationSelection": "无法在选择文本上创建PDF注释。"
+                }
+            },
             "export": "将笔记另存为...",
             "filter": {
                 "all": "全部",
@@ -706,9 +736,9 @@
             "unmute": "取消静音"
         },
         "dock": {
-            "dockDefault": "",
-            "dockLeft": "",
-            "dockRight": ""
+            "dockDefault": "将面板显示为模态弹框",
+            "dockLeft": "将面板停靠在左侧",
+            "dockRight": "将面板停靠在右侧"
         },
         "fxl": {
             "fit": "自适应"
@@ -748,7 +778,9 @@
             "skipDescription": "跳过/忽略附加内容，例如分页符、脚注/尾注等。",
             "speed": "语音朗读速度",
             "stop": "停止朗读",
-            "title": "语音朗读"
+            "title": "语音朗读",
+            "useTTSHighlightsForMO": "",
+            "useTTSHighlightsForMODescription": ""
         },
         "navigation": {
             "ZenModeExit": "退出禅模式",
@@ -775,11 +807,13 @@
             "printDisabled": "禁止打印",
             "screenNext": "向前浏览",
             "screenPrevious": "向后浏览",
-            "settingsTitle": "设置"
+            "settingsTitle": "阅读器设置"
         },
         "notes": {
             "colors": {
                 "cyan": "青色",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "绿色",
                 "orange": "橙色",
                 "purple": "紫色",
@@ -826,6 +860,7 @@
             },
             "customFontSelected": "您已选择自定义字体",
             "customizeReader": "自定义文本格式",
+            "defaultValue": "",
             "disabled": "已禁用",
             "display": "显示",
             "disposition": {
@@ -833,6 +868,7 @@
             },
             "font": "字体",
             "fontSize": "字体大小",
+            "increaseFontSize": "",
             "infoCustomFont": "通过输入名称从操作系统中选择自定义字体",
             "justification": "排版",
             "justify": "两端对齐",
@@ -840,6 +876,7 @@
             "lineSpacing": "行间距",
             "margin": "页边距",
             "mathjax": "启用 MathJax",
+            "mathjaxDescription": "",
             "noFootnotes": "禁用脚注",
             "noRTLFlip": "禁用从右到左的界面布局",
             "noRuby": "隐藏日文振假名",
@@ -870,10 +907,11 @@
                 "title": "偏好设置"
             },
             "preview": "预览",
+            "reduceFontSize": "",
             "reduceMotion": "减少动态效果",
             "scrolled": "滚屏",
             "spacing": "间距",
-            "spreadModeEven": "",
+            "spreadModeEven": "展开偶数页(默认为奇数)",
             "text": "文字",
             "theme": {
                 "name": {
@@ -931,7 +969,7 @@
             "cancel": "取消",
             "disclaimer": "应用程序的默认设置是根据 QWERTY 键盘布局上按键的物理位置设计的",
             "editUserJson": "编辑用户文件...",
-            "exportToHTML": "",
+            "exportToHTML": "导出为HTML",
             "keyboardShortcuts": "键盘快捷键",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -969,6 +1007,18 @@
                 "AudioPreviousAlt": {
                     "description": "返回到叙述中的上一个音频片段（EPUB3 媒体覆盖、文本转语音朗读或预录有声读物）。此操作将跳过当前任何可跳过的结构",
                     "name": "上一个音频片段（跳过）"
+                },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
+                    "description": "",
+                    "name": ""
                 },
                 "AudioStop": {
                     "description": "停止当前音频（EPUB3 媒体覆盖、文本转语音朗读或预录有声读物）",
@@ -1075,12 +1125,12 @@
                     "name": "转到上一章"
                 },
                 "NavigatePreviousChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "在阅读器窗口中，导航到书籍阅读顺序中的前一个文档（例如，书脊中的章节）。请注意，还有一个替代的键盘快捷键可以使用",
+                    "name": "转到前一章节（备选）"
                 },
                 "NavigatePreviousHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "在阅读器窗口中，跳转到前一条浏览历史记录",
+                    "name": "转到上一条历史记录"
                 },
                 "NavigatePreviousLibraryPage": {
                     "description": "",
@@ -1159,7 +1209,7 @@
             "noShortcutFound": "",
             "resetDefaults": "重置 (加载初始设置)",
             "save": "保存",
-            "searchPlaceholder": ""
+            "searchPlaceholder": "搜索快捷键"
         },
         "language": {
             "languageChoice": "选择语言"
@@ -1178,7 +1228,7 @@
         "profiles": {
             "info": "",
             "thorium": {
-                "description": "",
+                "description": "Thorium Vanilla 配置文件是原始版本，由 EDRLab 设计。",
                 "title": ""
             },
             "version": ""
@@ -1191,11 +1241,59 @@
         "session": {
             "title": "保存登录状态"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "外观",
             "general": "常规",
             "keyboardShortcuts": "键盘快捷键",
-            "profiles": ""
+            "profiles": "配置文件",
+            "storage": ""
         },
         "theme": {
             "auto": "自动",
@@ -1203,6 +1301,11 @@
             "description": "跟随操作系统主题。",
             "light": "浅色",
             "title": "应用主题"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {
@@ -1230,11 +1333,11 @@
     },
     "wizard": {
         "buttons": {
-            "discover": "探索新变化",
+            "discover": "发掘 Thorium 桌面版",
             "goToBooks": "查看我的出版物"
         },
         "description": {
-            "home": "Thorium 看起来不同了！让我们探索一下有什么新变化。",
+            "home": "Thorium 3.4 带来一系列用户体验改进并修复了一组问题。如果你之后决定回到旧版程序，强烈建议先用旧版程序备份电子书标注和书签，办法是将它们导出到外部文件。然后在装好旧版程序后把它们导回去。这是因为在 3.4 版本以略微不同的内部格式存储标注和书签。这解决了性能问题，但破坏了标注的向后兼容性。",
             "resources": ""
         },
         "dontShow": "不再显示",
@@ -1248,7 +1351,7 @@
         },
         "title": {
             "resources": "",
-            "welcome": "欢迎使用 Thorium 3"
+            "welcome": "欢迎使用 Thorium 3.4"
         }
     }
 }

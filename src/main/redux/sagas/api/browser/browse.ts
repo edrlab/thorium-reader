@@ -18,7 +18,7 @@ import { ContentType, contentTypeisApiProblem, parseContentType } from "readium-
 import { SagaGenerator } from "typed-redux-saga";
 import { call as callTyped } from "typed-redux-saga/macro";
 import { authenticationRequestFromLibraryWebServiceURL, convertLoansPublicationToOpdsPublicationsRawJson, getEndpointFromAuthenticationRequest, getLoansPublicationFromLibrary } from "../../apiapp";
-import isURL from "validator/lib/isURL";
+import isURL from "readium-desktop/common/utils/isURL";
 import { URL_PROTOCOL_APP_HANDLER_OPDS } from "readium-desktop/common/streamerProtocol";
 
 const debug = debug_("readium-desktop:main#redux/saga/api/browser");
@@ -145,7 +145,7 @@ export function* browse(urlRaw: string): SagaGenerator<THttpGetBrowserResultView
     }
 
     const url = checkUrl(urlRaw);
-    // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+    // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
     if (!url || !isURL(url)) {
         debug("isURL() NOK", url);
         return {

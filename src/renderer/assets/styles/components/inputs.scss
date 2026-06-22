@@ -134,6 +134,10 @@ select {
   height: 28px !important;
   background-color: var(--color-neutral-base);
 
+  &:has(input:disabled) {
+    display: none;
+  }
+
   label {
     top: -20px;
     left: 0;

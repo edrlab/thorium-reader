@@ -92,6 +92,7 @@ export interface ReaderConfigBooleans {
     ttsAndMediaOverlaysDisableContinuousPlay: boolean;
     mediaOverlaysEnableSkippability: boolean;
     mediaOverlaysIgnoreAndUseTTS: boolean;
+    mediaOverlaysUseTTSHighlights: boolean;
     ttsEnableSentenceDetection: boolean;
     mediaOverlaysEnableCaptionsMode: boolean;
     ttsEnableOverlayMode: boolean;

@@ -7,7 +7,8 @@
 
 import debug_ from "debug";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { all, put as putTyped, SagaGenerator, select as selectTyped } from "typed-redux-saga";
+import { all, put as putTyped, select as selectTyped } from "typed-redux-saga/macro";
+import { SagaGenerator } from "typed-redux-saga";
 import { readerLocalActionToggleMenu, readerLocalActionToggleSettings } from "../actions";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
@@ -163,7 +164,7 @@ function* toggleSettingsOrMenu(action: readerLocalActionToggleMenu.TAction | rea
             if (currentDialogOpen && currentDialogType === dialogType) {
                 yield* putTyped(dialogActions.updateRequest.build(data));
             } else {
-                yield* putTyped(dialogActions.openRequest.build(dialogType, data));;
+                yield* putTyped(dialogActions.openRequest.build(dialogType, data));
             }
         } else {
             yield* putTyped(dialogActions.closeRequest.build());
@@ -185,7 +186,7 @@ function* toggleSettingsOrMenu(action: readerLocalActionToggleMenu.TAction | rea
             if (currentDockOpen && currentDockType === dockType) {
                 yield* putTyped(dockActions.updateRequest.build(data));
             } else {
-                yield* putTyped(dockActions.openRequest.build(dockType, data));;
+                yield* putTyped(dockActions.openRequest.build(dockType, data));
             }
         } else {
             yield* putTyped(dockActions.closeRequest.build());

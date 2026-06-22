@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Izbornik",
         "closeDialog": "Zatvori",
-        "importFile": "Uvoz građe",
         "leftSlideButton": "Povuci popis ulijevo",
         "mainContent": "glavni sadržaj",
         "rightSlideButton": "Povuci popis udesno",
@@ -46,7 +45,9 @@
             "title": ""
         },
         "window": {
-            "showLibrary": "Prikaži knjižnicu / policu"
+            "showLibrary": "Prikaži knjižnicu / policu",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -90,6 +91,7 @@
         "login": "",
         "logout": "",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Detalji građe",
         "myBooks": "Moje knjige",
         "noPublicationHelpL1": "Ispusti građu ovdje",
@@ -106,6 +108,8 @@
                 "password": "",
                 "register": "",
                 "retry": "",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": ""
             },
             "info": {
@@ -127,10 +131,12 @@
                 "state": "Status"
             }
         },
+        "openFolder": "",
         "publisher": "Izdavač",
         "readBook": "Čitaj",
         "released": "Datum izdavanja",
         "removeFromFavorites": "",
+        "selectTableHeaders": "",
         "sort": "Sortiraj po",
         "tag": "",
         "tags": "Oznake",
@@ -202,6 +208,7 @@
         "searchPlaceholder": "Pretraži",
         "searchTitle": "Započni pretraživanje",
         "settings": "Postavke",
+        "settingsLabel": "",
         "viewMode": ""
     },
     "library": {
@@ -241,7 +248,18 @@
             "success": ""
         },
         "download": {
-            "error": "Preuzimanje {{- title}} nije uspjelo: [{{- err}}]"
+            "cancelled": "",
+            "error": "Preuzimanje {{- title}} nije uspjelo: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}} je već uvezen",
@@ -249,7 +267,13 @@
             "success": "Uvoz {{- title}} je završen."
         },
         "open": {
-            "error": "Građa se ne može otvoriti: {{- err}}"
+            "error": "Građa se ne može otvoriti: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": ""
     },
@@ -566,10 +590,6 @@
                 "compact": "",
                 "descriptive": ""
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "",
                 "descriptive": ""
@@ -584,6 +604,10 @@
                 "descriptive": ""
             },
             "ways-of-reading-visual-adjustments-unknown": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
                 "compact": "",
                 "descriptive": ""
             }
@@ -641,6 +665,7 @@
         "expiredLcp": "Ova knjiga se ne može čitati jer je LCP licenca istekla.",
         "incorrectPassphrase": "",
         "lcpEnd": "Kraj",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Kopirano znakova",
         "lcpRightsPrint": "Ispisano stranica",
         "lcpStart": "Početak",
@@ -678,6 +703,11 @@
             },
             "annotationsOptions": "",
             "date": "",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "",
             "filter": {
                 "all": "",
@@ -758,7 +788,9 @@
             "skipDescription": "",
             "speed": "Brzina čitanja naglas",
             "stop": "Prekini čitanje naglas",
-            "title": "Čitanje naglas"
+            "title": "Čitanje naglas",
+            "useTTSHighlightsForMO": "",
+            "useTTSHighlightsForMODescription": ""
         },
         "navigation": {
             "ZenModeExit": "",
@@ -790,6 +822,8 @@
         "notes": {
             "colors": {
                 "cyan": "",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "",
                 "orange": "",
                 "purple": "",
@@ -838,6 +872,7 @@
             },
             "customFontSelected": "",
             "customizeReader": "",
+            "defaultValue": "",
             "disabled": "",
             "display": "Prikaz",
             "disposition": {
@@ -845,6 +880,7 @@
             },
             "font": "Font",
             "fontSize": "Veličina fonta",
+            "increaseFontSize": "",
             "infoCustomFont": "",
             "justification": "Poravnanje",
             "justify": "Obostrano poravnanje",
@@ -852,6 +888,7 @@
             "lineSpacing": "Razmak između redova",
             "margin": "Margina",
             "mathjax": "",
+            "mathjaxDescription": "",
             "noFootnotes": "Isključi fusnote",
             "noRTLFlip": "",
             "noRuby": "",
@@ -882,6 +919,7 @@
                 "title": ""
             },
             "preview": "",
+            "reduceFontSize": "",
             "reduceMotion": "Smanji kretanje",
             "scrolled": "Mogućnost klizanja",
             "spacing": "Razmak",
@@ -979,6 +1017,18 @@
                     "name": ""
                 },
                 "AudioPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
                     "description": "",
                     "name": ""
                 },
@@ -1203,17 +1253,70 @@
         "session": {
             "title": "Spremi sesiju"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "",
             "general": "",
             "keyboardShortcuts": "",
-            "profiles": ""
+            "profiles": "",
+            "storage": ""
         },
         "theme": {
             "auto": "",
             "dark": "",
             "description": "",
             "light": "",
+            "title": ""
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
             "title": ""
         }
     },

@@ -1,4 +1,4 @@
-const { pathsToModuleNameMapper } = require('ts-jest');
+const { pathsToModuleNameMapper } = require("ts-jest");
 
 // const { defaults: tsjPreset } = require('ts-jest/presets');
 // const { jsWithTs: tsjPreset } = require('ts-jest/presets');
@@ -7,11 +7,17 @@ const { pathsToModuleNameMapper } = require('ts-jest');
 
 // const { compilerOptions } = require("./tsconfig");
 const fs = require("fs");
-const txt = fs.readFileSync("./tsconfig.json", { encoding: "utf8" }).replace(/\s*\/\/.*/g, "");
+const jestTsConfig = "<rootDir>/tsconfig.jest.json";
+let txt = fs.readFileSync("./tsconfig.json", { encoding: "utf8" }).replace(/\s*\/\/.*/g, "");
+txt = txt.replace(/^\s+\/\/.+/gm, "");
 // console.log(txt);
 const compilerOptions = JSON.parse(txt).compilerOptions;
 
-const pathMaps = pathsToModuleNameMapper(compilerOptions.paths, { prefix: "<rootDir>/" } );
+const jestPathAliases = Object.fromEntries(
+    Object.entries(compilerOptions.paths)
+        .filter(([key]) => key !== "*"),
+);
+const pathMaps = pathsToModuleNameMapper(jestPathAliases, { prefix: "<rootDir>/" });
 // console.log(pathMaps);
 const moduleNameMapper = {
     "readium-desktop/main/di": "<rootDir>/test/main/di.ts", // see src/common/utils.ts convertMultiLangStringToString()
@@ -32,19 +38,17 @@ module.exports = {
     transform: {
         "\\.ts$": "<rootDir>/scripts/jest_preprocessor.js",
         // ...tsjPreset.transform,
-        "\\.tsx?$": ["ts-jest", {
-            babelConfig: false,
-            tsconfig: "<rootDir>/tsconfig.json",
-        }],
+        "\\.tsx?$": [
+            "ts-jest",
+            {
+                babelConfig: false,
+                tsconfig: jestTsConfig,
+            },
+        ],
     },
     moduleNameMapper,
-    moduleFileExtensions: [
-        "ts",
-        "tsx",
-        "js",
-        "jsx",
-        "json",
-    ],
+    moduleDirectories: ["node_modules", "<rootDir>"],
+    moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
     transformIgnorePatterns: [
         "<rootDir>/node_modules/",
         "<rootDir>/dist/",
@@ -75,8 +79,9 @@ module.exports = {
         "<rootDir>/img/",
         "<rootDir>/release/",
         "<rootDir>/scripts/",
+        "<rootDir>/projects/pdf-annotations/harness/",
         "<rootDir>/src/",
     ],
-    setupFilesAfterEnv: ['<rootDir>/scripts/jest_setup.js'],
+    setupFilesAfterEnv: ["<rootDir>/scripts/jest_setup.js"],
     // runner: '@jest-runner/electron/main', // package.json dev dep: @jest-runner/electron
 };

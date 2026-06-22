@@ -11,7 +11,7 @@ import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { UnknownAction, Dispatch, MiddlewareAPI } from "redux";
-import { IReaderRootState } from "src/common/redux/states/renderer/readerRootState";
+import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
 export function syncFactory(SYNCHRONIZABLE_ACTIONS: string[]) {
 

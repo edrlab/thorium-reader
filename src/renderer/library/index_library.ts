@@ -38,13 +38,14 @@ if (__TH__IS_DEV__) {
 // //     console.log("#".repeat(2000), normalizeUrl("//www.sindresorhus.com:80/../baz?b=bar&a=foo"));
 // // });
 
-// let devTron: any;
 let axe: any;
 if (__TH__IS_DEV__) {
-    // requires electron.remote!
-    // enableRemoteModule: false
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    // devTron = require("devtron");
+    // const { devtron } = require("@electron/devtron");
+    // devtron.install().then(() => console.log("DEVTRON OK")).catch((error) => {
+    //     console.error("DEVTRON ERROR");
+    //     console.error(error);
+    // });
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
     axe = require("@axe-core/react");

@@ -7,9 +7,11 @@
 
 import { BufferReadableStream } from "./BufferReadableStream";
 
+import { Readable } from "stream";
+
 // import { PassThrough } from "stream";
 
-export function bufferToStream(buffer: Buffer): NodeJS.ReadableStream {
+export function bufferToStream(buffer: Buffer): Readable { // NodeJS.ReadableStream
 
     return new BufferReadableStream(buffer);
 

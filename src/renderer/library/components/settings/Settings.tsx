@@ -11,13 +11,15 @@ import * as stylesSettings from "readium-desktop/renderer/assets/styles/componen
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
-
+import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 // import { DirectionProvider } from "@radix-ui/react-direction";
 // import {I18nProvider} from 'react-aria';
 
 import * as React from "react";
+import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as Tabs from "@radix-ui/react-tabs";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
@@ -25,6 +27,7 @@ import * as CogIcon from "readium-desktop/renderer/assets/icons/cog-icon.svg";
 import * as PaletteIcon from "readium-desktop/renderer/assets/icons/palette-icon.svg";
 import * as KeyReturnIcon from "readium-desktop/renderer/assets/icons/keyreturn-icon.svg";
 import * as AvatarIcon from "readium-desktop/renderer/assets/icons/avatar-icon.svg";
+import * as LibraryIcon from "readium-desktop/renderer/assets/icons/library-icon.svg";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
 import classNames from "classnames";
@@ -35,7 +38,7 @@ import { availableLanguages } from "readium-desktop/common/services/translator";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { authActions, creatorActions, customizationActions, i18nActions, noteExport, screenReaderActions, settingsActions, themeActions } from "readium-desktop/common/redux/actions";
+import { authActions, catalogActions, creatorActions, customizationActions, i18nActions, noteExport, screenReaderActions, settingsActions, themeActions } from "readium-desktop/common/redux/actions";
 import * as BinIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { TTheme } from "readium-desktop/common/redux/states/theme";
@@ -49,7 +52,9 @@ import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-ic
 import debounce from "debounce";
 import { INoteCreator } from "readium-desktop/common/redux/states/creator";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+import { settingsLcpAutoDeleteExpiredPublicationsIsEnabled } from "readium-desktop/common/redux/states/settings";
 import { ApiappHowDoesItWorkInfoBox } from "../dialog/ApiappAddForm";
+import SettingsRecovery from "./SettingsRecovery";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import { TextArea } from "react-aria-components";
 import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/annotation/htmlTemplate";
@@ -59,15 +64,60 @@ import { convertMultiLangStringToString } from "readium-desktop/common/language-
 // import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import moment from "moment";
+import os from "node:os";
 
 // import { TagGroup, TagList, Tag, Label } from "react-aria-components";
 
 interface ISettingsProps {};
 
+const IS_WINDOWS = os.platform() === "win32";
+
+const StorageConfirmDialog = (props: {
+    open: boolean;
+    title: string;
+    description: string;
+    confirmLabel: string;
+    onConfirm: () => void;
+    onOpenChange: (open: boolean) => void;
+}) => {
+    const [__] = useTranslator();
+
+    return (
+        <AlertDialog.Root open={props.open} onOpenChange={props.onOpenChange}>
+            <AlertDialog.Portal>
+                <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay} />
+                <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
+                    <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>
+                        {props.title}
+                    </AlertDialog.Title>
+                    <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
+                        {props.description}
+                    </AlertDialog.Description>
+                    <div className={stylesAlertModals.AlertDialogButtonContainer}>
+                        <AlertDialog.Cancel asChild>
+                            <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.abort)}>
+                                {__("dialog.cancel")}
+                            </button>
+                        </AlertDialog.Cancel>
+                        <AlertDialog.Action asChild>
+                            <button
+                                className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.yes)}
+                                onClick={props.onConfirm}
+                            >
+                                {props.confirmLabel}
+                            </button>
+                        </AlertDialog.Action>
+                    </div>
+                </AlertDialog.Content>
+            </AlertDialog.Portal>
+        </AlertDialog.Root>
+    );
+};
+
 const TabTitle = (props: React.PropsWithChildren<{title: string}>) => {
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
     return (
         <div dir={isRTL ? "rtl" : "ltr"} className={stylesSettings.settings_tab_title}>
             <h2 dir={isRTL ? "rtl" : "ltr"}>{props.title}</h2>
@@ -80,7 +130,7 @@ const LanguageSettings: React.FC<{}> = () => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    // const isRTL = locale === "ar";
+    // const isRTL = langStringIsRTL(locale);
 
     const currentLanguageISO = locale as keyof typeof availableLanguages;
     const currentLanguageString = availableLanguages[currentLanguageISO];
@@ -108,7 +158,7 @@ export const Auth = () => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
     const dispatch = useDispatch();
 
     return (
@@ -125,10 +175,10 @@ const ConnectionSettings: React.FC<{}> = () => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
     return (
         <section className={stylesSettings.section} style={{ position: "relative" }}>
-            <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.auth.title")}</h4>
+            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.auth.title")}</h3>
             <div className={stylesSettings.session_text}>
                 <SVG ariaHidden svg={InfoIcon} />
                 <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.auth.help")}</p>
@@ -142,7 +192,7 @@ const ConnectionSettings: React.FC<{}> = () => {
 //     const [__] = useTranslator();
 //     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
 //     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-//     const isRTL = locale === "ar";
+//     const isRTL = langStringIsRTL(locale);
 //     const dispatch = useDispatch();
 //     const sessionSaveState = useSelector((state: ICommonRootState) => state.session.save);
 //     const onChange = () => {
@@ -197,7 +247,7 @@ const ScreenReaderSettings: React.FC<{}> = () => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
     const dispatch = useDispatch();
     const screenReaderActivate = useSelector((state: ICommonRootState) => state.screenReader.activate);
     const onChange = () => {
@@ -205,7 +255,7 @@ const ScreenReaderSettings: React.FC<{}> = () => {
     };
     return (
         <section className={stylesSettings.section} style={{ position: "relative" }}>
-            <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.message")}</h4>
+            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.message")}</h3>
             <div className={stylesSettings.session_text} style={{ margin: "0" }}>
                 <SVG ariaHidden svg={InfoIcon} />
                 <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.help")}</p>
@@ -240,7 +290,60 @@ const ScreenReaderSettings: React.FC<{}> = () => {
                         }
                     </div>
                     <div aria-hidden>
-                        <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.title")}</h4>
+                        <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.title")}</h3>
+                    </div>
+                </label>
+            </div>
+        </section>
+    );
+};
+
+const MinimizeLibraryToTraySettings: React.FC<{}> = () => {
+
+    const [__] = useTranslator();
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const isRTL = langStringIsRTL(locale);
+    const dispatch = useDispatch();
+    const minimizeLibraryToTray = useSelector((state: ILibraryRootState) =>
+        state.settings.minimizeLibraryToTray === true);
+
+    const toggleMinimizeLibraryToTray = () => {
+        dispatch(settingsActions.minimizeLibraryToTray.build(!minimizeLibraryToTray));
+    };
+
+    return (
+        <section className={stylesSettings.section} style={{ gap: "10px" }}>
+            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.title")}</h3>
+            <div dir={isRTL ? "rtl" : "ltr"} className={stylesAnnotations.annotations_checkbox}>
+                <input type="checkbox" id="minimizeLibraryToTray" className={stylesGlobal.checkbox_custom_input} name="minimizeLibraryToTray" checked={minimizeLibraryToTray} onChange={toggleMinimizeLibraryToTray} />
+                <label htmlFor="minimizeLibraryToTray" className={stylesGlobal.checkbox_custom_label}>
+                    <div
+                        tabIndex={0}
+                        role="checkbox"
+                        aria-checked={minimizeLibraryToTray}
+                        aria-label={__("settings.window.minimizeLibraryToTray")}
+                        onKeyDown={(e) => {
+                            if (e.key === " ") {
+                                e.preventDefault();
+                            }
+                        }}
+                        onKeyUp={(e) => {
+                            if (e.key === " ") {
+                                e.preventDefault();
+                                toggleMinimizeLibraryToTray();
+                            }
+                        }}
+                        className={stylesGlobal.checkbox_custom}
+                        style={{ border: minimizeLibraryToTray ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: minimizeLibraryToTray ? "var(--color-brand-primary)" : "transparent" }}>
+                        {minimizeLibraryToTray ?
+                            <SVG ariaHidden svg={CheckIcon} />
+                            :
+                            <></>
+                        }
+                    </div>
+                    <div aria-hidden>
+                        <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.minimizeLibraryToTray")}</h3>
+                        <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.minimizeLibraryToTrayDescription")}</p>
                     </div>
                 </label>
             </div>
@@ -260,7 +363,7 @@ interface IRadioGroupItemProps {
 const RadioGroupItem = (props: IRadioGroupItemProps) => {
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
     return (
         <RadioGroup.Item
             dir={isRTL ? "rtl" : "ltr"}
@@ -276,7 +379,7 @@ const SaveCreatorSettings: React.FC<{}> = () => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
     const dispatch = useDispatch();
     const creator = useSelector((state: ICommonRootState) => state.creator);
 
@@ -296,13 +399,13 @@ const SaveCreatorSettings: React.FC<{}> = () => {
 
     return (
         <section className={stylesSettings.section} style={{ position: "relative" }}>
-            <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.annotationCreator.creator")}</h4>
+            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.annotationCreator.creator")}</h3>
             <div className={stylesSettings.session_text} style={{ margin: "0" }}>
                 <SVG ariaHidden svg={InfoIcon} />
                 <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.annotationCreator.help")}</p>
             </div>
             <div className={stylesInput.form_group} style={{ marginTop: "20px", width: "360px"}}>
-                <input dir={isRTL ? "rtl" : "ltr"} type="text" name="creator-name" style={{ width: "100%", marginLeft: "10px" }} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" title={name} value={name} onChange={(e) => {
+                <input dir={isRTL ? "rtl" : "ltr"} type="text" id='creator-name' aria-label={__("settings.annotationCreator.name")} name="creator-name" style={{ width: "100%", marginLeft: "10px" }} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" title={name} value={name} onChange={(e) => {
                     const v = e.target.value;
                     setName(v);
                 }} />
@@ -326,7 +429,7 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
     const dispatch = useDispatch();
     const enableCheckbox = useSelector((state: ILibraryRootState) => state.noteExport.overrideHTMLTemplate);
     const htmlContent = useSelector((state: ILibraryRootState) => state.noteExport.htmlContent);
@@ -352,7 +455,7 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
 
         <section className={stylesSettings.section} style={{ position: "relative" }}>
 
-            <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.note.export.overrideHTMLTemplate")}</h4>
+            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.note.export.overrideHTMLTemplate")}</h3>
             <input type="checkbox" className={stylesGlobal.checkbox_custom_input} name="enableCheckbox" />
             <div dir={isRTL ? "rtl" : "ltr"} className={stylesAnnotations.annotations_checkbox}>
                 <input type="checkbox" id="enableCheckbox" className={stylesGlobal.checkbox_custom_input} name="enableCheckbox" checked={enableCheckbox} onChange={toggleEnableCheckbox} />
@@ -384,14 +487,14 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
                         }
                     </div>
                     <div aria-hidden>
-                        <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.note.export.enableCheckbox")}</h4>
+                        <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.note.export.enableCheckbox")}</h3>
                     </div>
                 </label>
             </div>
             {
                 enableCheckbox ? <>
                     <TextArea style={{ minWidth: "-webkit-fill-available", maxWidth: "-webkit-fill-available" }} name="htmlContent" wrap="hard" ref={textAreaRef} defaultValue={htmlContent} maxLength={MAX_LEN} onChange={(a) => updateHtmlContentDebounced(a.currentTarget.value)}></TextArea>
-                    <button dir={isRTL ? "rtl" : "ltr"} className={stylesSettings.btn_primary} onClick={resetHtmlContent}>{__("settings.note.export.applyDefaultTemplate")}</button>
+                    <button dir={isRTL ? "rtl" : "ltr"} className={stylesButtons.button_secondary_blue} onClick={resetHtmlContent}>{__("settings.note.export.applyDefaultTemplate")}</button>
                 </>
                     : <></>
             }
@@ -405,7 +508,7 @@ const ManageAccessToCatalogSettings = () => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
     const dispatch = useDispatch();
     const enableAPIAPP = useSelector((state: ILibraryRootState) => state.settings.enableAPIAPP);
 
@@ -415,7 +518,7 @@ const ManageAccessToCatalogSettings = () => {
 
     return (
         <section className={stylesSettings.section} style={{ gap: "10px" }}>
-            <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.library.title")}</h4>
+            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.library.title")}</h3>
             <div dir={isRTL ? "rtl" : "ltr"} className={stylesAnnotations.annotations_checkbox}>
                 <input type="checkbox" id="enableAPIAPP" className={stylesGlobal.checkbox_custom_input} name="enableAPIAPP" checked={enableAPIAPP} onChange={toggleEnableAPIAPP} />
                 <label htmlFor="enableAPIAPP" className={stylesGlobal.checkbox_custom_label}>
@@ -446,7 +549,7 @@ const ManageAccessToCatalogSettings = () => {
                         }
                     </div>
                     <div aria-hidden>
-                        <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.library.enableAPIAPP")}</h4>
+                        <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.library.enableAPIAPP")}</h3>
                     </div>
                 </label>
             </div>
@@ -455,11 +558,75 @@ const ManageAccessToCatalogSettings = () => {
     );
 };
 
+const SharedComputerSettings = () => {
+
+    const [__] = useTranslator();
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const isRTL = langStringIsRTL(locale);
+    const dispatch = useDispatch();
+    const lcpAutoDeleteExpiredPublications = useSelector((state: ILibraryRootState) =>
+        settingsLcpAutoDeleteExpiredPublicationsIsEnabled(state.settings));
+    const lcpAutoDeleteExpiredPublicationsForced = useSelector((state: ILibraryRootState) =>
+        state.settings.lcpAutoDeleteExpiredPublicationsForced === true);
+
+    const toggleLcpAutoDeleteExpiredPublications = () => {
+        if (lcpAutoDeleteExpiredPublicationsForced) {
+            return;
+        }
+        dispatch(settingsActions.lcpAutoDeleteExpiredPublications.build(!lcpAutoDeleteExpiredPublications));
+    };
+
+    return (
+        <section className={stylesSettings.section} style={{ gap: "10px" }}>
+            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.sharedComputer.title")}</h3>
+            <div dir={isRTL ? "rtl" : "ltr"} className={stylesAnnotations.annotations_checkbox}>
+                <input type="checkbox" id="lcpAutoDeleteExpiredPublications" className={stylesGlobal.checkbox_custom_input} name="lcpAutoDeleteExpiredPublications" checked={lcpAutoDeleteExpiredPublications} disabled={lcpAutoDeleteExpiredPublicationsForced} onChange={toggleLcpAutoDeleteExpiredPublications} />
+                <label htmlFor="lcpAutoDeleteExpiredPublications" className={stylesGlobal.checkbox_custom_label}>
+                    <div
+                        tabIndex={lcpAutoDeleteExpiredPublicationsForced ? -1 : 0}
+                        role="checkbox"
+                        aria-checked={lcpAutoDeleteExpiredPublications}
+                        aria-disabled={lcpAutoDeleteExpiredPublicationsForced}
+                        aria-label={__("settings.sharedComputer.lcpAutoDeleteExpiredPublications")}
+                        onKeyDown={(e) => {
+                            if (e.key === " ") {
+                                e.preventDefault();
+                            }
+                        }}
+                        onKeyUp={(e) => {
+                            if (e.key === " ") {
+                                e.preventDefault();
+                                toggleLcpAutoDeleteExpiredPublications();
+                            }
+                        }}
+                        className={stylesGlobal.checkbox_custom}
+                        style={{
+                            border: lcpAutoDeleteExpiredPublications ? "2px solid transparent" : "2px solid var(--color-text-primary)",
+                            backgroundColor: lcpAutoDeleteExpiredPublications ? "var(--color-brand-primary)" : "transparent",
+                            cursor: lcpAutoDeleteExpiredPublicationsForced ? "not-allowed" : undefined,
+                            opacity: lcpAutoDeleteExpiredPublicationsForced ? 0.65 : undefined,
+                        }}>
+                        {lcpAutoDeleteExpiredPublications ?
+                            <SVG ariaHidden svg={CheckIcon} />
+                            :
+                            <></>
+                        }
+                    </div>
+                    <div aria-hidden>
+                        <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.sharedComputer.lcpAutoDeleteExpiredPublications")}</h3>
+                        <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.sharedComputer.lcpAutoDeleteExpiredPublicationsDescription")}</p>
+                    </div>
+                </label>
+            </div>
+        </section>
+    );
+};
+
 const Themes = () => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
     const dispatch = useDispatch();
     const theme = useSelector((s: ICommonRootState) => s.theme);
     const options: Array<{id: number, value: TTheme, name: string}> = [
@@ -502,7 +669,7 @@ const Profiles = () => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
 
     return (
         <>
@@ -644,21 +811,181 @@ const Profiles = () => {
     );
 };
 
-const TabHeader = (props: React.PropsWithChildren<{title: string, advancedTrigger: boolean}>) => {
+const StorageSettings: React.FC<{}> = () => {
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const isRTL = langStringIsRTL(locale);
+    const dispatch = useDispatch();
+    const [__] = useTranslator();
+    const directoryState = useSelector((state: ILibraryRootState) => state.publication.directory);
+    const defaultDirectory = directoryState?.defaultDirectory || "";
+    const userDirectory = directoryState?.userDirectory || "";
+
+    const [isEditing, setIsEditing] = React.useState(false);
+    const [confirmAddOpen, setConfirmAddOpen] = React.useState(false);
+    const [confirmEditOpen, setConfirmEditOpen] = React.useState(false);
+    const [confirmDeleteOpen, setConfirmDeleteOpen] = React.useState(false);
+
+    const removeUserDirectory = React.useCallback(() => {
+        dispatch(catalogActions.setUserDirectory.build(""));
+        setIsEditing(false);
+    }, [dispatch]);
+
+    const openFolderPicker = React.useCallback(() => {
+        // trigger the file picker on the last userDirectory if available
+        dispatch(catalogActions.setUserDirectory.build(userDirectory));
+        setIsEditing(false);
+    }, [dispatch, userDirectory]);
+
+    if (!defaultDirectory) {
+        return <></>;
+    }
+
+    return (
+        <>
+            <StorageConfirmDialog
+                open={confirmAddOpen}
+                onOpenChange={setConfirmAddOpen}
+                title={__("settings.storage.dialogs.add.title")}
+                description={__("settings.storage.dialogs.add.description")}
+                confirmLabel={__("settings.storage.dialogs.add.confirm")}
+                onConfirm={() => {
+                    setConfirmAddOpen(false);
+                    setIsEditing(true);
+                    openFolderPicker();
+                }}
+            />
+            <StorageConfirmDialog
+                open={confirmEditOpen}
+                onOpenChange={setConfirmEditOpen}
+                title={__("settings.storage.dialogs.edit.title")}
+                description={__("settings.storage.dialogs.edit.description")}
+                confirmLabel={__("settings.storage.dialogs.edit.confirm")}
+                onConfirm={() => {
+                    setConfirmEditOpen(false);
+                    setIsEditing(true);
+                    openFolderPicker();
+                }}
+            />
+            <StorageConfirmDialog
+                open={confirmDeleteOpen}
+                onOpenChange={setConfirmDeleteOpen}
+                title={__("settings.storage.dialogs.remove.title")}
+                description={__("settings.storage.dialogs.remove.description")}
+                confirmLabel={__("settings.storage.dialogs.remove.confirm")}
+                onConfirm={() => {
+                    setConfirmDeleteOpen(false);
+                    removeUserDirectory();
+                }}
+            />
+                <details className={stylesSettings.session_text}>
+                    <summary dir={isRTL ? "rtl" : "ltr"}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "10px"}}>
+                            <SVG ariaHidden svg={InfoIcon} />
+                            <p>{__("settings.storage.beta.summary")}</p>
+                        </div>
+                    </summary>
+                    <div dir={isRTL ? "rtl" : "ltr"} style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%" }}>
+                        <p>{__("settings.storage.beta.migration")}</p>
+                        <p>{__("settings.storage.beta.integrity")}</p>
+                        <p>{__("settings.storage.beta.warning")}</p>
+                        <p>{__("settings.storage.beta.availability")}</p>
+                    </div>
+                </details>
+
+                <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }}>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                            <h3>{__("settings.storage.locations.title")}</h3>
+                            <div className={stylesSettings.storage_location} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                                <p style={{ margin: 0 }}><strong>{__("settings.storage.locations.defaultInternal")}</strong></p>
+                                <p style={{ margin: 0 }}>{__("settings.storage.locations.defaultDescription")}</p>
+                                <button
+                                    className={stylesButtons.button_nav_tertiary}
+                                    onClick={() => dispatch(catalogActions.openDefaultDirectory.build())}
+                                >
+                                    {defaultDirectory}
+                                </button>
+                            </div>
+                    </div>
+                    </section>
+
+                    <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }}>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                            <h3>Configuration</h3>
+                            {userDirectory ?
+
+                                <div className={stylesSettings.storage_location} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                                    <p style={{ margin: 0 }}><strong>{__("settings.storage.locations.externalStorage")}</strong></p>
+                                    <button className={stylesButtons.button_nav_tertiary} title={userDirectory}
+                                        onClick={() => dispatch(catalogActions.openUserDirectory.build())}
+                                    >
+                                        {userDirectory}
+                                    </button>
+                                </div> : <></>
+                            }
+                            {!userDirectory && !isEditing ? (
+                                <div className={stylesSettings.session_text} style={{ margin: 0, alignItems: "flex-start" }}>
+                                    <SVG ariaHidden svg={InfoIcon} />
+                                    <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                                        <p style={{ margin: 0 }}>
+                                            {__("settings.storage.configuration.notConfiguredDescription")}
+                                        </p>
+                                    </div>
+                                </div>
+                            ) : null}
+                            {userDirectory && !isEditing ? (
+                                <p style={{ margin: 0 }}>
+                                    {__("settings.storage.configuration.configuredDescription")}
+                                </p>
+                            ) : null}
+                            {isEditing ? (
+                                <p style={{ margin: 0 }}>
+                                    {__("settings.storage.configuration.chooseFolderDescription")}
+                                </p>
+                            ) : null}
+                        </div>
+
+                        {!userDirectory && !isEditing ? (
+                            <button
+                                className={stylesButtons.button_secondary_blue}
+                                onClick={() => setConfirmAddOpen(true)}
+                            >
+                                {__("settings.storage.actions.addDirectory")}
+                            </button>
+                        ) : null}
+
+                        {userDirectory && !isEditing ? (
+                            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                                <button
+                                    className={stylesButtons.button_secondary_blue}
+                                    onClick={() => setConfirmEditOpen(true)}
+                                >
+                                    {__("settings.storage.actions.changeDirectory")}
+                                </button>
+                                <button
+                                    className={stylesButtons.button_secondary_blue}
+                                    onClick={() => setConfirmDeleteOpen(true)}
+                                >
+                                    {__("settings.storage.actions.removeStorageDirectory")}
+                                </button>
+                            </div>
+                        ) : null}
+                    </section>
+
+                    <SettingsRecovery
+                        defaultDirectory={defaultDirectory}
+                        userDirectory={userDirectory}
+                    />
+        </>
+    );
+};
+
+const ModalControlButton = () => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
     return (
         <div key="modal-header" className={stylesSettings.close_button_div} style={{justifyContent: isRTL ? "end" : undefined}}>
-            <TabTitle title={props.title}>
-            {props.children}
-            {
-                props.advancedTrigger ? 
-                <AdvancedTrigger/>
-                : <></>
-            }
-            </TabTitle>
             <Dialog.Close asChild>
                 <button dir={isRTL ? "rtl" : "ltr"} data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
                     <SVG ariaHidden={true} svg={QuitIcon} />
@@ -673,7 +1000,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
 
     const [tabTitle, setTabTitle] = React.useState(__("settings.tabs.general"));
 
@@ -683,7 +1010,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
         <Dialog.Trigger asChild>
             <button title={__("header.settings")} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                 <SVG ariaHidden svg={GearIcon} />
-                <h3 dir={isRTL ? "rtl" : "ltr"}>{__("header.settings")}</h3>
+                <h3 dir={isRTL ? "rtl" : "ltr"} aria-label={__("header.settingsLabel")}>{__("header.settings")}</h3>
             </button>
         </Dialog.Trigger>
         <Dialog.Portal>
@@ -693,11 +1020,10 @@ export const Settings: React.FC<ISettingsProps> = () => {
                     // FALSE this to test sourcemaps:
                     true &&
                     <VisuallyHidden.Root>
-                        <Dialog.Title>{__("header.settings")}</Dialog.Title>
+                        <Dialog.Title asChild><h1>{__("header.settings")}</h1></Dialog.Title>
                     </VisuallyHidden.Root>
                 }
                 <Tabs.Root defaultValue="tab1" data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
-                    <TabHeader title={tabTitle} advancedTrigger={tabTitle === __("settings.tabs.keyboardShortcuts") ? true : false} />
                     <Tabs.List className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
                         <Tabs.Trigger value="tab1" onFocus={() => setTabTitle(__("settings.tabs.general"))}>
                             <SVG ariaHidden svg={CogIcon} />
@@ -715,13 +1041,26 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             <SVG ariaHidden svg={AvatarIcon} />
                             <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.profiles")}</h3>
                         </Tabs.Trigger>
+                        <Tabs.Trigger value="tab6" onFocus={() => setTabTitle(__("settings.tabs.storage"))}>
+                            <SVG ariaHidden svg={LibraryIcon} />
+                            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.storage")}</h3>
+                        </Tabs.Trigger>
                     </Tabs.List>
+                    <TabTitle title={tabTitle}>
+                        {
+                            tabTitle === __("settings.tabs.keyboardShortcuts") ?
+                                <AdvancedTrigger />
+                                : <></>
+                        }
+                    </TabTitle>
                     <div className={stylesSettings.settings_content} style={{ marginTop: "70px" }}>
                         <Tabs.Content value="tab1" tabIndex={-1}>
                             <div className={stylesSettings.settings_tab}>
                                 <LanguageSettings />
                                 <ScreenReaderSettings />
+                                {IS_WINDOWS ? <MinimizeLibraryToTraySettings /> : <></>}
                                 <ConnectionSettings />
+                                <SharedComputerSettings />
                                 {/* <SaveSessionSettings /> */}
                                 <ManageAccessToCatalogSettings />
                                 <SaveCreatorSettings />
@@ -743,7 +1082,13 @@ export const Settings: React.FC<ISettingsProps> = () => {
                                 <Profiles />
                             </div>
                         </Tabs.Content>
+                        <Tabs.Content value="tab6" tabIndex={-1}>
+                            <div className={stylesSettings.settings_tab}>
+                                <StorageSettings />
+                            </div>
+                        </Tabs.Content>
                     </div>
+                    <ModalControlButton />
                 </Tabs.Root>
 
                 {/* <div className={stylesSettings.close_button_div}>

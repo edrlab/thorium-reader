@@ -43,6 +43,7 @@ import crypto from "node:crypto";
 import { JsonStringifySortedKeys } from "readium-desktop/common/utils/json";
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import * as ramda from "ramda";
+import { appendFileSyncWithRotation } from "readium-desktop/utils/log";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
@@ -53,7 +54,7 @@ const debugStdout = debug_(_dbgn);
 const debug = (...a: Parameters<debug_.Debugger>) => {
     debugStdout(...a);
     tryCatchSync(() =>
-        fs.appendFileSync(memoryLoggerFilename, a.map((v) => `${+new Date()} ${JSON.stringify(v)}`).join("\n") + "\n"),
+        appendFileSyncWithRotation(memoryLoggerFilename, a.map((v) => `${+new Date()} ${JSON.stringify(v)}`).join("\n") + "\n"),
         "",
     );
 };
@@ -512,6 +513,18 @@ export async function initStore()
     sqliteInitialisation();
     sqliteInitTableNote();
 
+    // Initialized win.registry.reader as an empty object instead of using the null reducer value.
+    if (!preloadedState.win) {
+        preloadedState.win = {} as any;
+    }
+    if (!preloadedState.win.registry) {
+        preloadedState.win.registry = {} as any;
+    }
+    if (!preloadedState.win.registry.reader) {
+        preloadedState.win.registry.reader = {};
+    }
+
+
     if (version === 330) {
 
         debug("START reader registry migration from the 330 version");
@@ -944,16 +957,6 @@ export async function initStore()
             debug("END reader registry hydration from publication-data, let's create the redux store");
         } // win registry hydration disabled
         else {
-            if (!preloadedState.win) {
-                preloadedState.win = {} as any;
-            }
-            if (!preloadedState.win.registry) {
-                preloadedState.win.registry = {} as any;
-            }
-            if (!preloadedState.win.registry.reader) {
-                preloadedState.win.registry.reader = {};
-            }
-
             // apply to the win registry reader state the previous persisted state for the 330 backward compatibility (from state.json and not state_v340.json)
             preloadedState.win.registry.reader = reduxStateWinRegistryReader || {};
             const readerRegistryPubIds = Object.keys(preloadedState.win.registry.reader);
@@ -978,6 +981,14 @@ export async function initStore()
 
     if (preloadedState?.creator && !preloadedState.creator.urn) {
         preloadedState.creator.urn = `urn:uuid:${preloadedState.creator.id}`;
+    }
+
+    if (preloadedState?.settings?.lcpAutoDeleteExpiredPublicationsForced) {
+        // The shared-computer command-line override is process-local and must not be restored from disk.
+        preloadedState.settings = {
+            ...preloadedState.settings,
+            lcpAutoDeleteExpiredPublicationsForced: false,
+        };
     }
 
     if ((preloadedState as any)?.annotationImportQueue) {

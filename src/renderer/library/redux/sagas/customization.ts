@@ -12,7 +12,8 @@ import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLe
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { ICustomizationLockInfo } from "readium-desktop/common/redux/states/customization";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { call as callTyped, select as selectTyped, put as putTyped, /*take as takeTyped, race as raceTyped, delay as delayTyped,*/ SagaGenerator, all as allTyped } from "typed-redux-saga/macro";
+import { call as callTyped, select as selectTyped, put as putTyped, all as allTyped } from "typed-redux-saga/macro";
+import { SagaGenerator } from "typed-redux-saga";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP } from "readium-desktop/common/streamerProtocol";
 import { ICustomizationManifest, ICustomizationManifestColor } from "readium-desktop/common/readium/customization/manifest";

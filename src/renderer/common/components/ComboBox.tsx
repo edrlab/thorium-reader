@@ -8,7 +8,7 @@
 import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
-
+import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import * as React from "react";
 import { Button, ComboBox as ComboBoxReactAria, Input, Label, ListBox, ListBoxItem, Popover, ValidationResult, Group } from "react-aria-components";
 import { FieldError, Text } from "react-aria-components";
@@ -65,7 +65,7 @@ export function ComboBox<T extends object>(
 
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const isRTL = locale === "ar";
+    const isRTL = langStringIsRTL(locale);
 
     //  dir={isRTL ? "rtl" : "ltr"} BREAKS ReactARIA ComboBox
     return (
@@ -97,7 +97,7 @@ export function ComboBox<T extends object>(
 export function ComboBoxItem<T extends object>(props: Parameters<typeof ListBoxItem<T>>[0]) {
     // // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     // const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    // const isRTL = locale === "ar";
+    // const isRTL = langStringIsRTL(locale);
     // dir={isRTL ? "rtl" : "ltr"}
     return (
         <ListBoxItem

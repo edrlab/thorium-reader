@@ -35,7 +35,6 @@ import { apiappApi } from "./redux/sagas/api";
 import { RootState } from "./redux/states";
 import { OpdsService } from "./services/opds";
 import { LSDManager } from "./services/lsd";
-import { tryCatch } from "readium-desktop/utils/tryCatch";
 import { EOL } from "os";
 import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
 import { PublicationData } from "./storage/publication-data";
@@ -173,10 +172,10 @@ export const memoryLoggerFilename = path.join(
     MEMORY_LOGGGER_FILENAME,
 );
 
-const USER_VAULT_FILENAME = "vault.json";
-export const userVaultConfigPath = path.join(
+const USER_PUBLICATION_DIRECTORY_FILENAME = "user_publication_directory.json";
+export const userPublicationDirectoryConfigPath = path.join(
     configDataFolderPath,
-    USER_VAULT_FILENAME,
+    USER_PUBLICATION_DIRECTORY_FILENAME,
 );
 const PUBLICATION_CONFIG_DIRECTORY_NAME = "publication";
 export const publicationConfigPath = path.join(
@@ -204,9 +203,7 @@ const publicationRepository = new PublicationRepository();
 const opdsFeedRepository = new OpdsFeedRepository();
 
 // Create filesystem storage for publications
-// TODO: let user change the publication folder as vault in runtime
-//      - need to persist this folder in redux-state and check integrity at start
-const publicationRepositoryPath = path.join(
+export const publicationRepositoryPath = path.join(
     USER_DATA_FOLDER,
     !FORCE_PROD_DB_IN_DEV && (__TH__IS_DEV__ || __TH__IS_CI__) ? "publications-dev" : "publications",
 );
@@ -291,9 +288,8 @@ let getStorePromise: ReturnType<typeof getStorePromiseFn>;
 
 const createStoreFromDi = async () => {
 
-    const _store = await tryCatch(() => diMainGet("store"), "Store not init");
-    if (_store) {
-        return _store;
+    if (container.isBound(diSymbolTable.store)) {
+        return diMainGet("store");
     }
 
     // if (createStoreProcessLock.isLock) {
@@ -330,7 +326,7 @@ container.bind<OpdsFeedViewConverter>(diSymbolTable["opds-feed-view-converter"])
     .to(OpdsFeedViewConverter).inSingletonScope();
 
 // Storage
-const publicationStorage = new PublicationStorage(publicationRepositoryPath, userVaultConfigPath);
+const publicationStorage = new PublicationStorage(publicationRepositoryPath);
 container.bind<PublicationStorage>(diSymbolTable["publication-storage"]).toConstantValue(
     publicationStorage,
 );

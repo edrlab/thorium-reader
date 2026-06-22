@@ -1,0 +1,13 @@
+{
+    "extends": "./tsconfig",
+    "compilerOptions": {
+        "lib": ["ES2023"]
+    }
+}
+// --------
+// ATTTEMPT TO EXCLUDE LIB.DOM FAILS BECAUSE:
+// node_modules/xpath/xpath.d.ts
+// node_modules/@types/jsdom/base.d.ts
+// and LIB.DOM.ITERABLE:
+// node_modules/@types/jsdom/base.d.ts
+// --------

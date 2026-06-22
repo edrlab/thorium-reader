@@ -25,7 +25,10 @@ import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { IWinSessionLibraryState } from "../states/win/session/library";
 import { JsonStringifySortedKeys } from "readium-desktop/common/utils/json";
 import crypto from "node:crypto";
+import { extractWindowMaximized } from "./win/session/browserWindowState";
 // import { rmrf } from "readium-desktop/utils/fs";
+
+import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 
 // Persist state diffs regularly now that win.registry is disabled.
 // Only publication.db and opds remain unbounded (arrays with N elements).
@@ -41,6 +44,14 @@ const debug = debug_(filename_);
 debug("_");
 
 export const convertDiffableReduxState = (nextState: Partial<PersistRootState>): PersistRootState => {
+    const settings = nextState.settings ?
+        {
+            ...nextState.settings,
+            // Command-line forced shared-computer mode must remain scoped to the current process.
+            lcpAutoDeleteExpiredPublicationsForced: false,
+        }
+        : nextState.settings;
+
     return {
         theme: nextState.theme,
         win: {
@@ -48,6 +59,7 @@ export const convertDiffableReduxState = (nextState: Partial<PersistRootState>):
             session: {
                 library: {
                     windowBound: nextState?.win?.session?.library?.windowBound,
+                    windowMaximized: nextState?.win?.session?.library?.windowMaximized,
                 } as unknown as IWinSessionLibraryState,
                 reader: undefined,
             },
@@ -65,7 +77,7 @@ export const convertDiffableReduxState = (nextState: Partial<PersistRootState>):
         opds: nextState.opds,
         version: nextState.version,
         wizard: nextState.wizard,
-        settings: nextState.settings,
+        settings,
         creator: nextState.creator,
         noteExport: nextState.noteExport,
         customization: {
@@ -120,6 +132,7 @@ export const convertPublicationToRegistryReaderState = async (pubIds: string[]):
             if (result.status === "fulfilled") {
                 if (key === "bound") {
                     readerState.windowBound = result.value as any; // TODO: object;
+                    readerState.windowMaximized = extractWindowMaximized(result.value);
                 } else {
                     readerState.reduxState[key] = result.value as any; // TODO: object
                 }
@@ -165,7 +178,7 @@ const persistReaderRegistry = async (nextState: Partial<PersistRootState>): Prom
 
     // Preserve registry reader state for not-visited publications (backward compatibility)
     for (const pubId of pubIdNotVisitedSet) {
-        if (nextState?.win?.registry?.reader[pubId]) {
+        if (nextState?.win?.registry?.reader?.[pubId]) {
             registryReaderState[pubId] = nextState.win.registry.reader[pubId];
         }
     }
@@ -445,7 +458,7 @@ export function saga() {
                 // const pubId = reader.publicationIdentifier;
 
                 const config: Partial<ReaderConfig> = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "config"))) || {};
-                const configUnion = { ...config, ...configJsonObj };
+                const configUnion = { ...config, ...configJsonObj, ...{ annotation_defaultDrawView: action.payload.annotation_defaultDrawView === "hide" ? readerConfigInitialState.annotation_defaultDrawView : action.payload.annotation_defaultDrawView } };
                 yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "config", configUnion));
             },
             (e) => debug(e),

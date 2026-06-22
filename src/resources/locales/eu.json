@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Menu nagusia",
         "closeDialog": "Itxi",
-        "importFile": "Inportatu argitalpena",
         "leftSlideButton": "Mugitu zerrenda ezkerrera",
         "mainContent": "Eduki nagusia",
         "rightSlideButton": "Mugitu zerrenda eskuinera",
@@ -46,7 +45,9 @@
             "title": "{{- appName}} software-eguneratzea."
         },
         "window": {
-            "showLibrary": "Erakutsi liburutegia"
+            "showLibrary": "Erakutsi liburutegia",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -90,6 +91,7 @@
         "login": "",
         "logout": "",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Informazio gehiago",
         "myBooks": "Nire liburuak",
         "noPublicationHelpL1": "Lerratu argitalpen bat hemen",
@@ -106,6 +108,8 @@
                 "password": "Pasahitza",
                 "register": "Izena eman",
                 "retry": "",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Erabiltzaile izena / Helbide elektronikoa"
             },
             "info": {
@@ -127,10 +131,12 @@
                 "state": "Egoera"
             }
         },
+        "openFolder": "",
         "publisher": "Editorea",
         "readBook": "Irakurri",
         "released": "Hemen argitaratua",
         "removeFromFavorites": "",
+        "selectTableHeaders": "",
         "sort": "Ordenatu honen arabera",
         "tag": "Etiketa",
         "tags": "Etiketak",
@@ -197,6 +203,7 @@
         "searchPlaceholder": "Bilatu",
         "searchTitle": "Hasi bilaketa",
         "settings": "Konfigurazio-aukerak",
+        "settingsLabel": "",
         "viewMode": "Ikusi modua"
     },
     "library": {
@@ -236,7 +243,18 @@
             "success": ""
         },
         "download": {
-            "error": "{- title}}-ren deskargak huts egin du [{- err}]"
+            "cancelled": "",
+            "error": "{- title}}-ren deskargak huts egin du [{- err}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{- title}} inportatuta zegoen",
@@ -244,7 +262,13 @@
             "success": "{- title}}-ren inportazioa amaitu da."
         },
         "open": {
-            "error": "Ezin da argitalpena ireki: {{- err}}"
+            "error": "Ezin da argitalpena ireki: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": ""
     },
@@ -561,10 +585,6 @@
                 "compact": "",
                 "descriptive": ""
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "",
                 "descriptive": ""
@@ -579,6 +599,10 @@
                 "descriptive": ""
             },
             "ways-of-reading-visual-adjustments-unknown": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
                 "compact": "",
                 "descriptive": ""
             }
@@ -636,6 +660,7 @@
         "expiredLcp": "Liburu hau ezin da irakurri LCP lizentzia iraungi delako.",
         "incorrectPassphrase": "",
         "lcpEnd": "Amaiera",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Pertsonaien kopia",
         "lcpRightsPrint": "Inprimagailuaren kopia",
         "lcpStart": "Hasiera",
@@ -673,6 +698,11 @@
             },
             "annotationsOptions": "Aukerak",
             "date": "",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "",
             "filter": {
                 "all": "",
@@ -753,7 +783,9 @@
             "skipDescription": "Saltatu / baztertu eduki laguntzaileak, hala nola orrialde-jauziak, oin-oharrak/amaiera-oharrak, etab.",
             "speed": "Ozen irakurtzeko erreprodukzio-abiadura",
             "stop": "Gelditu ozenki irakurtzea",
-            "title": "Ozenki irakurtzea"
+            "title": "Ozenki irakurtzea",
+            "useTTSHighlightsForMO": "",
+            "useTTSHighlightsForMODescription": ""
         },
         "navigation": {
             "ZenModeExit": "",
@@ -785,6 +817,8 @@
         "notes": {
             "colors": {
                 "cyan": "",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "",
                 "orange": "",
                 "purple": "",
@@ -832,6 +866,7 @@
             },
             "customFontSelected": "",
             "customizeReader": "Pertsonalizatu testuaren formatua",
+            "defaultValue": "",
             "disabled": "desgaituta",
             "display": "Bistaratzea",
             "disposition": {
@@ -839,6 +874,7 @@
             },
             "font": "Iturria",
             "fontSize": "Letra-tamaina",
+            "increaseFontSize": "",
             "infoCustomFont": "Hautatu sistema eragileko letra-tipo pertsonalizatua bere izena idatziz",
             "justification": "Lerrokadura",
             "justify": "Justifikatu",
@@ -846,6 +882,7 @@
             "lineSpacing": "Lerroartea",
             "margin": "Marjina",
             "mathjax": "",
+            "mathjaxDescription": "",
             "noFootnotes": "Oin-oharrak desaktibatu",
             "noRTLFlip": "Desgaitu eskuinetik ezkerrera UI",
             "noRuby": "Ezkutatu Japoniako Ruby",
@@ -876,6 +913,7 @@
                 "title": ""
             },
             "preview": "Aurrebista",
+            "reduceFontSize": "",
             "reduceMotion": "Mugimendua gutxitu",
             "scrolled": "Desplazagarria",
             "spacing": "Tartea",
@@ -973,6 +1011,18 @@
                     "name": ""
                 },
                 "AudioPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
                     "description": "",
                     "name": ""
                 },
@@ -1197,11 +1247,59 @@
         "session": {
             "title": "Gorde saioa"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Itxura",
             "general": "Orokorra",
             "keyboardShortcuts": "Teklatuko lasterbideak",
-            "profiles": ""
+            "profiles": "",
+            "storage": ""
         },
         "theme": {
             "auto": "Automatikoa",
@@ -1209,6 +1307,11 @@
             "description": "Aplikazioaren gaia sistema eragilearekin bat dator.",
             "light": "Argia",
             "title": "Aplikazioaren gaia"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

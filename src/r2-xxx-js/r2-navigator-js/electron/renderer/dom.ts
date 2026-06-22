@@ -39,7 +39,7 @@ import {
     LocatorExtended, getCurrentReadingLocation, handleLinkLocator, locationHandleIpcMessage,
     setWebViewStyle, shiftWebview,
 } from "./location";
-import { mediaOverlaysHandleIpcMessage } from "./media-overlays";
+import { mediaOverlaysHandleIpcMessage, mediaOverlaysUseTTSHighlights } from "./media-overlays";
 import {
     checkTtsState, ttsAndMediaOverlaysManualPlayNext, ttsClickEnable, ttsHandleIpcMessage, ttsHighlightStyle, ttsOverlayEnable, ttsPlaybackRate,
     ttsSentenceDetectionEnable, ttsSkippabilityEnable, ttsVoices,
@@ -353,6 +353,7 @@ function createWebViewInternal(preloadScriptPath: string): IReadiumElectronWebvi
             ttsPlaybackRate(win.READIUM2.ttsPlaybackRate);
             ttsClickEnable(win.READIUM2.ttsClickEnabled);
             ttsSentenceDetectionEnable(win.READIUM2.ttsSentenceDetectionEnabled);
+            mediaOverlaysUseTTSHighlights(win.READIUM2.mediaOverlaysUseTTSHighlights);
             ttsAndMediaOverlaysManualPlayNext(win.READIUM2.ttsAndMediaOverlaysManualPlayNext);
             ttsSkippabilityEnable(win.READIUM2.ttsSkippabilityEnabled);
             ttsOverlayEnable(win.READIUM2.ttsOverlayEnabled);
@@ -673,6 +674,7 @@ export function installNavigatorDOM(
         ttsAndMediaOverlaysManualPlayNext: false,
         ttsSkippabilityEnabled: false,
         ttsSentenceDetectionEnabled: true,
+        mediaOverlaysUseTTSHighlights: false,
         ttsVoices: null,
         highlightsDrawMargin: false,
         // stealFocusDisabled: false,

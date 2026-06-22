@@ -1,7 +1,7 @@
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const StatoscopeWebpackPlugin = require('@statoscope/webpack-plugin').default;
 
-const TerserPlugin = require("terser-webpack-plugin");
+const TerserPlugin = require("minimizer-webpack-plugin");
 
 const path = require("path");
 const webpack = require("webpack");
@@ -144,6 +144,7 @@ let config = Object.assign(
                     test: /\.tsx$/,
                     loader: useLegacyTypeScriptLoader ? "awesome-typescript-loader" : "ts-loader",
                     options: {
+                        configFile: "tsconfig_renderer.json",
                         transpileOnly: true, // checkTypeScriptSkip
                         // compiler: "@typescript/native-preview",
                     },
@@ -162,6 +163,7 @@ let config = Object.assign(
                         {
                             loader: useLegacyTypeScriptLoader ? "awesome-typescript-loader" : "ts-loader",
                             options: {
+                                configFile: "tsconfig_renderer.json",
                                 transpileOnly: true, // checkTypeScriptSkip
                                 // compiler: "@typescript/native-preview",
                             },
@@ -196,6 +198,14 @@ if (checkTypeScriptSkip) {
 } else {
     config.plugins.push(
         new ForkTsCheckerWebpackPlugin({
+            typescript: {
+                configFile: "tsconfig_renderer.json",
+                // typescriptPath: `./node_modules/.bin/tsgo${os.platform() === "win32" ? ".exe" : ""}`,
+                // typescriptPath: "@typescript/native-preview",
+                typescriptPath: require.resolve("typescript"),
+                // typescriptPath: require.resolve("@typescript/native-preview"),
+                // typescriptPath: "./node_modules/@typescript/native-preview",
+            },
             // measureCompilationTime: true,
         }),
     );
@@ -212,7 +222,7 @@ if (nodeEnv !== "production") {
                 extractComments: false,
                 exclude: /MathJax/,
                 // parallel: 3,
-                terserOptions: {
+                minimizerOptions: {
                     // sourceMap: nodeEnv !== "production" ? true : false,
                     sourceMap: false,
                     compress: {defaults:false, dead_code:true, booleans: true, passes: 1},

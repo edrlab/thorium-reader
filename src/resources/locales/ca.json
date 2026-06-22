@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Menú",
         "closeDialog": "Tancar",
-        "importFile": "Importar publicació",
         "leftSlideButton": "Lliscar llista a l'esquerra",
         "mainContent": "Contingut principal",
         "rightSlideButton": "Lliscar llista a la dreta",
@@ -46,7 +45,9 @@
             "title": "{{- appName}} software actualitzat."
         },
         "window": {
-            "showLibrary": "Mostrar biblioteca"
+            "showLibrary": "Mostrar biblioteca",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -90,6 +91,7 @@
         "login": "",
         "logout": "",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Més información",
         "myBooks": "Els meus llibres",
         "noPublicationHelpL1": "Deposita els arxius aquí",
@@ -106,6 +108,8 @@
                 "password": "Contrasenya",
                 "register": "Registre",
                 "retry": "",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Usuari / Direcció de correu eletrònic"
             },
             "info": {
@@ -127,10 +131,12 @@
                 "state": "Estat"
             }
         },
+        "openFolder": "",
         "publisher": "Editor",
         "readBook": "Llegir",
         "released": "Publicat en",
         "removeFromFavorites": "",
+        "selectTableHeaders": "",
         "sort": "Ordenar per",
         "tag": "Etiqueta",
         "tags": "Etiquetes",
@@ -202,6 +208,7 @@
         "searchPlaceholder": "Cercar",
         "searchTitle": "Iniciar cerca",
         "settings": "Opcions de configuració",
+        "settingsLabel": "",
         "viewMode": "Mode de visualització"
     },
     "library": {
@@ -241,7 +248,18 @@
             "success": ""
         },
         "download": {
-            "error": "La descàrrega de {{- title}} ha fallat: [{{- err}}]"
+            "cancelled": "",
+            "error": "La descàrrega de {{- title}} ha fallat: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}} ja estava importat",
@@ -249,7 +267,13 @@
             "success": "La importació de {{- title}} ha acabat."
         },
         "open": {
-            "error": "No es pot obrir la publicació: {{- err}}"
+            "error": "No es pot obrir la publicació: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": ""
     },
@@ -566,10 +590,6 @@
                 "compact": "",
                 "descriptive": ""
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "",
                 "descriptive": ""
@@ -584,6 +604,10 @@
                 "descriptive": ""
             },
             "ways-of-reading-visual-adjustments-unknown": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
                 "compact": "",
                 "descriptive": ""
             }
@@ -641,6 +665,7 @@
         "expiredLcp": "Aquest llibre no es pot llegir perquè la llicència LCP ha expirat.",
         "incorrectPassphrase": "",
         "lcpEnd": "Fi",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "Còpia de personatges",
         "lcpRightsPrint": "Còpia d'impressora",
         "lcpStart": "Inici",
@@ -678,6 +703,11 @@
             },
             "annotationsOptions": "Opcions",
             "date": "",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "",
             "filter": {
                 "all": "",
@@ -758,7 +788,9 @@
             "skipDescription": "Salta sobre / ignora el contingut auxiliar com salts de pàgina, notes al peu/notes finals, etc.",
             "speed": "Velocitat de reproducció per la lectura en veu alta",
             "stop": "Detendre lectura en veu alta",
-            "title": "Lectura en veu alta"
+            "title": "Lectura en veu alta",
+            "useTTSHighlightsForMO": "",
+            "useTTSHighlightsForMODescription": ""
         },
         "navigation": {
             "ZenModeExit": "",
@@ -790,6 +822,8 @@
         "notes": {
             "colors": {
                 "cyan": "",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "",
                 "orange": "",
                 "purple": "",
@@ -838,6 +872,7 @@
             },
             "customFontSelected": "",
             "customizeReader": "Personalitza el format del text",
+            "defaultValue": "",
             "disabled": "desactivat",
             "display": "Visualització",
             "disposition": {
@@ -845,6 +880,7 @@
             },
             "font": "Font",
             "fontSize": "Grandària de font",
+            "increaseFontSize": "",
             "infoCustomFont": "Seleccioneu el tipus de lletra personalitzat del sistema operatiu escrivint el seu nom",
             "justification": "Alineació",
             "justify": "Justificar",
@@ -852,6 +888,7 @@
             "lineSpacing": "Interlineat",
             "margin": "Marge",
             "mathjax": "",
+            "mathjaxDescription": "",
             "noFootnotes": "Desactivar notes al peu",
             "noRTLFlip": "Desactiva la IU de dreta a esquerra",
             "noRuby": "Oculta el Ruby japonès",
@@ -882,6 +919,7 @@
                 "title": ""
             },
             "preview": "Previsualització",
+            "reduceFontSize": "",
             "reduceMotion": "Disminuir moviment",
             "scrolled": "Desplaçable",
             "spacing": "Espaiat",
@@ -979,6 +1017,18 @@
                     "name": ""
                 },
                 "AudioPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
                     "description": "",
                     "name": ""
                 },
@@ -1203,11 +1253,59 @@
         "session": {
             "title": "Guardar sessió"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Aparença",
             "general": "General",
             "keyboardShortcuts": "Dreceres del teclat",
-            "profiles": ""
+            "profiles": "",
+            "storage": ""
         },
         "theme": {
             "auto": "Automàtic",
@@ -1215,6 +1313,11 @@
             "description": "El tema de l'aplicació coincideix amb el sistema operatiu.",
             "light": "Llum",
             "title": "Tema d'aplicació"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

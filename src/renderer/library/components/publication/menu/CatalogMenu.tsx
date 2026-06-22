@@ -7,7 +7,7 @@
 
 
 import * as React from "react";
-import { PublicationView } from "readium-desktop/common/views/publication";
+import { PublicationView, canOpenPublication } from "readium-desktop/common/views/publication";
 import PublicationExportButton from "./PublicationExportButton";
 import DeletePublicationConfirm from "../../dialog/DeletePublicationConfirm";
 import { PublicationInfoLibWithRadix, PublicationInfoLibWithRadixContent, PublicationInfoLibWithRadixTrigger } from "../../dialog/publicationInfos/PublicationInfo";
@@ -29,7 +29,6 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { getSaga } from "readium-desktop/renderer/library/createStore";
-import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
 
 function useShiftKey() {
   const [isShiftPressed, setIsShiftPressed] = React.useState(false);
@@ -62,10 +61,9 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
     const [__] = useTranslator();
     const dispatch = useDispatch();
     const locale = useSelector((state: ILibraryRootState) => state.i18n.locale);
-    const [, openPublicationFolder] = useApi(undefined, "publication/openFolder");
     const isShiftKeyPressed = useShiftKey();
 
-    const isPublicationMissingOrDeleted = props.publicationView.type === "missingOrDeleted";
+    const canOpen = canOpenPublication(props.publicationView);
 
     const noteExport = <button
         className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
@@ -100,14 +98,14 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
         <button
             className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
             onClick={debounce(() => {
-                openPublicationFolder(props.publicationView.identifier);
+                dispatch(publicationActions.openFolder.build(props.publicationView.identifier));
             }, 1000, { immediate: true })}
-        >OPEN Folder</button >
+        >{__("catalog.openFolder")}</button >
     </>;
 
     return (
         <>
-        { isPublicationMissingOrDeleted ? 
+        { !canOpen ?
             <>
                 <DeletePublicationConfirm
                     trigger={(
@@ -153,7 +151,7 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
                         dispatch(publicationActions.readingFinished.build(pubId));
 
                         // just to refresh allPublicationPage.tsx
-                        apiDispatch(dispatch)()("publication/readingFinishedRefresh")();
+                        apiDispatch(dispatch)()("publication/findAllRefresh")();
                     }}>
                     <SVG ariaHidden svg={DoubleCheckIcon} />
                     {__("publication.markAsRead")}

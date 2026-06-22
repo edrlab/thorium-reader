@@ -21,16 +21,16 @@ import { nanoid } from "nanoid";
 import * as path from "path";
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
-import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { extractCrc32OnZip } from "readium-desktop/main/tools/crc";
+import { buildPublicationFilesDocumentPatch } from "readium-desktop/main/tools/publicationDocument";
 import {
     PublicationDocument, PublicationDocumentWithoutTimestampable,
 } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { createTempDir } from "readium-desktop/main/fs/path";
 import { extractFileFromZipToBuffer } from "readium-desktop/main/zip/extract";
-import { v4 as uuidv4 } from "uuid";
+import { uuidv4 } from "readium-desktop/utils/uuid";
 
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
@@ -49,6 +49,7 @@ export async function importPublicationFromFS(
     willBeImmediatelyFollowedByOpen: boolean,
     hash?: string,
     lcpHashedPassphrase?: string,
+    preservedIdentifier?: string,
 ): Promise<PublicationDocument> {
 
     debug("importPublicationFromFS", filePath);
@@ -203,7 +204,7 @@ export async function importPublicationFromFS(
     const locale = store.getState().i18n.locale;
 
     const pubDocument: PublicationDocumentWithoutTimestampable = {
-        identifier: uuidv4(),
+        identifier: preservedIdentifier || uuidv4(),
         // resources: {
         //     // Legacy Base64 data blobs
 
@@ -225,11 +226,8 @@ export async function importPublicationFromFS(
 
         tags: [],
         files: [],
-        coverFile: null,
-        customCover: null,
         hash: hash ? hash : await extractCrc32OnZip(filePath),
 
-        lcp: null, // updated below via lcpManager.updateDocumentLcp()
         lcpRightsCopies: 0,
         lcpRightsPrints: [],
     };
@@ -237,31 +235,24 @@ export async function importPublicationFromFS(
     debug(`publication document ID=${pubDocument.identifier} HASH=${pubDocument.hash}`);
 
     // Store publication on filesystem
-    debug("[START] Store publication on filesystem", filePath);
-    const files = await publicationStorage.storePublication(
-        pubDocument.identifier, filePath,
-    );
+    const sourceExtension = path.extname(filePath);
+    const storableExtension = publicationStorage.getStorablePublicationExtension(sourceExtension);
+    debug("[START] Store publication on filesystem", filePath, {
+        sourceExtension,
+        storableExtension,
+        isStorableExtension: publicationStorage.isStorablePublicationExtension(sourceExtension),
+    });
+    const files = preservedIdentifier ?
+        await publicationStorage.getStoredPublicationFiles(pubDocument.identifier) :
+        await publicationStorage.storePublication(
+            pubDocument.identifier, filePath,
+        );
     debug("[END] Store publication on filesystem - END", filePath);
 
-    // Add extracted files to document
-
-    for (const file of files) {
-        if (file.contentType.startsWith("image")) {
-            pubDocument.coverFile = file;
-        } else {
-            pubDocument.files.push(file);
-        }
-    }
-
-    if (pubDocument.coverFile === null) {
-        debug("No cover found, generate custom one", filePath);
-        // No cover file found
-        // Generate a random custom cover
-        pubDocument.customCover = RandomCustomCovers[
-            Math.floor(Math.random() * RandomCustomCovers.length)
-        ];
-    }
-
+    const filesPatch = buildPublicationFilesDocumentPatch(files);
+    pubDocument.files = filesPatch.files;
+    pubDocument.coverFile = filesPatch.coverFile;
+    pubDocument.customCover = filesPatch.customCover;
     // MUST BE AFTER storePublication() and pubDocument.files.push(file) so that the filesystem cache can be set
     await publicationViewConverter.updatePublicationCache(pubDocument, r2Publication);
 
@@ -317,12 +308,22 @@ export async function importPublicationFromFS(
             // if there are opened readers when there is an LCP update, the LCPL gets injected into EPUB META-INF/ so the readers are force-closed
             setTimeout(async () => {
 
-                debug("deferred lcpManager.checkPublicationLicenseUpdate() after publication import");
-                // DOES NOT MUTATE newPubDocument (returns a modified copy)
-                const updatedDoc = await lcpManager.checkPublicationLicenseUpdate(newPubDocument, false);// DOES NOT SKIP the network LSD checks!
-                // passphrase saved for doc.id with provider, this time (overrides old entry mapped on doc.id)
-                if (updatedDoc && lcpHashedPassphrase) {
-                    await lcpManager.saveSecret(updatedDoc, lcpHashedPassphrase);
+                try {
+                    debug("deferred lcpManager.checkPublicationLicenseUpdate() after publication import");
+                    const publicationDocument = await publicationRepository.get(newPubDocument.identifier);
+                    if (!publicationDocument) {
+                        debug("skip deferred lcpManager.checkPublicationLicenseUpdate(), publication no longer exists", newPubDocument.identifier);
+                        return;
+                    }
+
+                    // DOES NOT MUTATE publicationDocument (returns a modified copy)
+                    const updatedDoc = await lcpManager.checkPublicationLicenseUpdate(publicationDocument, false);// DOES NOT SKIP the network LSD checks!
+                    // passphrase saved for doc.id with provider, this time (overrides old entry mapped on doc.id)
+                    if (updatedDoc && lcpHashedPassphrase) {
+                        await lcpManager.saveSecret(updatedDoc, lcpHashedPassphrase);
+                    }
+                } catch (e) {
+                    debug("deferred lcpManager.checkPublicationLicenseUpdate() failed", newPubDocument.identifier, e);
                 }
 
             }, 300);

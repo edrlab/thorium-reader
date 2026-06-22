@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "მენიუ",
         "closeDialog": "დახურვა",
-        "importFile": "პუბლიკაციის შემოტანა",
         "leftSlideButton": "სიის მარცხნივ ჩაწევა",
         "mainContent": "ძირითადი შიგთავსი",
         "rightSlideButton": "სიის მარჯვნივ ჩაწევა",
@@ -46,7 +45,9 @@
             "title": ""
         },
         "window": {
-            "showLibrary": "ბიბლიოთეკის ჩვენება / წიგნების კარადა"
+            "showLibrary": "ბიბლიოთეკის ჩვენება / წიგნების კარადა",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -90,6 +91,7 @@
         "login": "",
         "logout": "",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "მეტი ინფორმაცია",
         "myBooks": "ჩემი წიგნები",
         "noPublicationHelpL1": "ჩააგდე პუბლიკაცია აქ",
@@ -106,6 +108,8 @@
                 "password": "",
                 "register": "",
                 "retry": "",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": ""
             },
             "info": {
@@ -127,10 +131,12 @@
                 "state": "სტატუსი"
             }
         },
+        "openFolder": "",
         "publisher": "გამომცემელი",
         "readBook": "წაკითხვა",
         "released": "გამოცემის თარიღი",
         "removeFromFavorites": "",
+        "selectTableHeaders": "",
         "sort": "დალაგება",
         "tag": "",
         "tags": "იარლიყები",
@@ -197,6 +203,7 @@
         "searchPlaceholder": "ძიება",
         "searchTitle": "ძიების დაწყება",
         "settings": "პარამეტრები",
+        "settingsLabel": "",
         "viewMode": ""
     },
     "library": {
@@ -236,7 +243,18 @@
             "success": ""
         },
         "download": {
-            "error": "{{- title}} გადმოტვირთვა უშედეგოდ დასრულდა: [{{- err}}]"
+            "cancelled": "",
+            "error": "{{- title}} გადმოტვირთვა უშედეგოდ დასრულდა: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "{{- title}} უკვე შემოტანილია.",
@@ -244,7 +262,13 @@
             "success": "{{- title}} შემოტანა წარმატებით დასრულდა."
         },
         "open": {
-            "error": "პუბლიკაცია ვერ იხსნება: {{- err}}"
+            "error": "პუბლიკაცია ვერ იხსნება: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": ""
     },
@@ -561,10 +585,6 @@
                 "compact": "",
                 "descriptive": ""
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "",
                 "descriptive": ""
@@ -579,6 +599,10 @@
                 "descriptive": ""
             },
             "ways-of-reading-visual-adjustments-unknown": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
                 "compact": "",
                 "descriptive": ""
             }
@@ -636,6 +660,7 @@
         "expiredLcp": "ამ წიგნის წაკითხვა შეუძლებელია რადგან LCP ლიცენზიას ვადა გაუვიდა.",
         "incorrectPassphrase": "",
         "lcpEnd": "დასასრული",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "ასლისთვის სიმბოლოების რაოდენობა",
         "lcpRightsPrint": "ბეჭდისთვის ნებადართული გვერდების რაოდენობა",
         "lcpStart": "დაწყება",
@@ -673,6 +698,11 @@
             },
             "annotationsOptions": "",
             "date": "",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "",
             "filter": {
                 "all": "",
@@ -753,7 +783,9 @@
             "skipDescription": "",
             "speed": "ტექსტის მეტყველების დაკვრის სისწრაფე",
             "stop": "ტექსტის მეტყველების შეჩერება",
-            "title": "ტექსტის მეტყველება"
+            "title": "ტექსტის მეტყველება",
+            "useTTSHighlightsForMO": "",
+            "useTTSHighlightsForMODescription": ""
         },
         "navigation": {
             "ZenModeExit": "",
@@ -785,6 +817,8 @@
         "notes": {
             "colors": {
                 "cyan": "",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "",
                 "orange": "",
                 "purple": "",
@@ -832,6 +866,7 @@
             },
             "customFontSelected": "",
             "customizeReader": "",
+            "defaultValue": "",
             "disabled": "",
             "display": "გამოსახულება",
             "disposition": {
@@ -839,6 +874,7 @@
             },
             "font": "ფონტი",
             "fontSize": "ფონტის ზომა",
+            "increaseFontSize": "",
             "infoCustomFont": "",
             "justification": "გასწორება",
             "justify": "გამართვა",
@@ -846,6 +882,7 @@
             "lineSpacing": "ხაზების დაშორება",
             "margin": "მინდორი",
             "mathjax": "",
+            "mathjaxDescription": "",
             "noFootnotes": "სქოლიოს გათიშვა",
             "noRTLFlip": "",
             "noRuby": "",
@@ -876,6 +913,7 @@
                 "title": ""
             },
             "preview": "",
+            "reduceFontSize": "",
             "reduceMotion": "მოძრაობის შემცირება",
             "scrolled": "ბრუნვადი",
             "spacing": "დაშორება",
@@ -973,6 +1011,18 @@
                     "name": ""
                 },
                 "AudioPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
                     "description": "",
                     "name": ""
                 },
@@ -1197,17 +1247,70 @@
         "session": {
             "title": "სესიის შენახვა"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "",
             "general": "",
             "keyboardShortcuts": "",
-            "profiles": ""
+            "profiles": "",
+            "storage": ""
         },
         "theme": {
             "auto": "",
             "dark": "",
             "description": "",
             "light": "",
+            "title": ""
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
             "title": ""
         }
     },

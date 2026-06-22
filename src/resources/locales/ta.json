@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "பட்டியல்",
         "closeDialog": "மூடு",
-        "importFile": "இறக்குமதி வெளியீடு",
         "leftSlideButton": "இடதுபுறத்தில் ச்லைடு",
         "mainContent": "முக்கிய உள்ளடக்கம்",
         "rightSlideButton": "வலதுபுறம் சரிய",
@@ -46,7 +45,9 @@
             "title": "{{- appName}} மென்பொருள் புதுப்பிப்பு."
         },
         "window": {
-            "showLibrary": "நூலகம் / புத்தக அலமாரி காட்டு"
+            "showLibrary": "நூலகம் / புத்தக அலமாரி காட்டு",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -90,6 +91,7 @@
         "login": "",
         "logout": "",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "வெளியீட்டு விவரங்கள்",
         "myBooks": "எனது வெளியீடுகள்",
         "noPublicationHelpL1": "கோப்புகளை இங்கே விடுங்கள்",
@@ -106,6 +108,8 @@
                 "password": "கடவுச்சொல்",
                 "register": "பதிவு செய்யுங்கள்",
                 "retry": "",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "பயனர்பெயர் / மின்னஞ்சல் முகவரி"
             },
             "info": {
@@ -127,10 +131,12 @@
                 "state": "மாநிலம்"
             }
         },
+        "openFolder": "",
         "publisher": "வெளியீட்டாளர்",
         "readBook": "படிக்க",
         "released": "வெளியிடப்பட்டது",
         "removeFromFavorites": "",
+        "selectTableHeaders": "",
         "sort": "வரிசைப்படுத்தவும்",
         "tag": "குறிச்சொல்",
         "tags": "குறிச்சொற்கள்",
@@ -197,6 +203,7 @@
         "searchPlaceholder": "தேடல்",
         "searchTitle": "தேடல்",
         "settings": "அமைப்புகள்",
+        "settingsLabel": "",
         "viewMode": "பார்வை பயன்முறையை"
     },
     "library": {
@@ -236,7 +243,18 @@
             "success": "இறக்குமதி வெற்றிகரமாக முடிந்தது."
         },
         "download": {
-            "error": "பதிவிறக்கம் [{{- title}}] தோல்வியுற்றது: [{{- err}}]"
+            "cancelled": "",
+            "error": "பதிவிறக்கம் [{{- title}}] தோல்வியுற்றது: [{{- err}}]",
+            "errors": {
+                "hashMismatch": "",
+                "httpGet": "",
+                "invalidFilename": "",
+                "invalidLink": "",
+                "invalidTempDirectory": "",
+                "lengthMismatch": "",
+                "readStreamMissing": "",
+                "tooManyFilenameAttempts": ""
+            }
         },
         "import": {
             "alreadyImport": "[{{- title}}] ஏற்கனவே இறக்குமதி செய்யப்பட்டது.",
@@ -244,7 +262,13 @@
             "success": "இறக்குமதி [{{- title}}] நிறைவு செய்யப்பட்டது."
         },
         "open": {
-            "error": "வெளியீட்டை ஏற்றுவது தோல்வியுற்றது: [{{- err}}]"
+            "error": "வெளியீட்டை ஏற்றுவது தோல்வியுற்றது: [{{- err}}]",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": ""
     },
@@ -561,10 +585,6 @@
                 "compact": "முன்பதிவு செய்யப்பட்ட ஆடியோ கிளிப்புகள்",
                 "descriptive": "முன்பதிவு செய்யப்பட்ட ஆடியோ கிளிப்புகள் உள்ளடக்கத்தில் உட்பொதிக்கப்பட்டுள்ளன"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "முன்கூட்டியே பதிவுசெய்யப்பட்ட ஆடியோ பற்றிய தகவல்கள் எதுவும் கிடைக்கவில்லை",
-                "descriptive": "முன்கூட்டியே பதிவுசெய்யப்பட்ட ஆடியோ பற்றிய தகவல்கள் எதுவும் கிடைக்கவில்லை"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "முன்பதிவு செய்யப்பட்ட ஆடியோ மட்டுமே",
                 "descriptive": "உரை மாற்று இல்லாத ஆடியோபுக்"
@@ -581,6 +601,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "தோற்றம் மாற்றியமைத்தல் பற்றிய எந்த தகவலும் கிடைக்கவில்லை",
                 "descriptive": "தோற்றம் மாற்றியமைத்தல் பற்றிய எந்த தகவலும் கிடைக்கவில்லை"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },
@@ -636,6 +660,7 @@
         "expiredLcp": "இந்த வெளியீட்டின் எல்.சி.பி உரிமம் காலாவதியானது.",
         "incorrectPassphrase": "சேமிக்கப்பட்ட பாச்ஃபிரேச் வெளியீட்டிற்கு பொருந்தவில்லை, அல்லது நுழைந்த பாச்ஃபிரேச் தவறானது.",
         "lcpEnd": "முடிவு",
+        "lcpNotSupported": "",
         "lcpRightsCopy": "நகலெடுக்கப்பட்ட எழுத்துக்கள்",
         "lcpRightsPrint": "அச்சிடப்பட்ட பக்கங்கள்",
         "lcpStart": "தொடங்கு",
@@ -673,6 +698,11 @@
             },
             "annotationsOptions": "சிறுகுறிப்பு விருப்பங்கள்",
             "date": "மாற்றும் தேதி",
+            "error": {
+                "pdf": {
+                    "validationSelection": ""
+                }
+            },
             "export": "குறிப்புகளை சேமிக்கவும் ...",
             "filter": {
                 "all": "அனைத்தும்",
@@ -753,7 +783,9 @@
             "skipDescription": "பேச் பிரேக்குகள், அடிக்குறிப்புகள் / இறுதி குறிப்புகள் போன்ற துணை உள்ளடக்கத்தை மேலே செல்லவும் / புறக்கணிக்கவும்.",
             "speed": "Readoloud பின்னணி வீதம்",
             "stop": "சத்தமாக வாசிப்பதை நிறுத்துங்கள்",
-            "title": "READOWLOUD"
+            "title": "READOWLOUD",
+            "useTTSHighlightsForMO": "",
+            "useTTSHighlightsForMODescription": ""
         },
         "navigation": {
             "ZenModeExit": "சென் பயன்முறையில் வெளியேறவும்",
@@ -785,6 +817,8 @@
         "notes": {
             "colors": {
                 "cyan": "சியான்",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "பச்சை",
                 "orange": "ஆரஞ்சு",
                 "purple": "ஊதா",
@@ -832,6 +866,7 @@
             },
             "customFontSelected": "நீங்கள் ஒரு தனிப்பட்ட எழுத்துருவைத் தேர்ந்தெடுத்துள்ளீர்கள்",
             "customizeReader": "உரை வடிவமைப்பைத் தனிப்பயனாக்குங்கள்",
+            "defaultValue": "",
             "disabled": "முடக்கப்பட்டது",
             "display": "காட்சி",
             "disposition": {
@@ -839,6 +874,7 @@
             },
             "font": "எழுத்துரு",
             "fontSize": "எழுத்துரு அளவு",
+            "increaseFontSize": "",
             "infoCustomFont": "இயக்க முறைமை அதன் பெயரைத் தட்டச்சு செய்வதன் மூலம் தனிப்பயன் எழுத்துருவைத் தேர்ந்தெடுக்கவும்",
             "justification": "இருப்புவழி",
             "justify": "நியாயப்படுத்துங்கள்",
@@ -846,6 +882,7 @@
             "lineSpacing": "வரி இடைவெளி",
             "margin": "விளிம்பு",
             "mathjax": "கணிதத்தை இயக்கவும்",
+            "mathjaxDescription": "",
             "noFootnotes": "பாப்அப் அடிக்குறிப்புகளை முடக்கு",
             "noRTLFlip": "வலது-இடது இடைமுகம் ஐ முடக்கு",
             "noRuby": "சப்பானிய ரூபியை மறைக்கவும்",
@@ -876,6 +913,7 @@
                 "title": "விருப்பத்தேர்வுகள்"
             },
             "preview": "முன்னோட்டம்",
+            "reduceFontSize": "",
             "reduceMotion": "இயக்கத்தைக் குறைக்கவும்",
             "scrolled": "கீறப்பட்டது",
             "spacing": "இடைவெளி",
@@ -975,6 +1013,18 @@
                 "AudioPreviousAlt": {
                     "description": "விவரிப்பில் முந்தைய ஆடியோ பிரிவுக்கு திரும்பிச் செல்லுங்கள் (EPUB3 மீடியா மேலடுக்குகள், பேச்சு வாசிப்பு-சத்தமாக உரை அல்லது முன்பே பதிவு செய்யப்பட்ட ஆடியோபுக்). இது தற்போது தப்பிக்கக்கூடிய எந்தவொரு கட்டமைப்பையும் தவிர்க்கிறது",
                     "name": "முந்தைய ஆடியோ பிரிவு (தப்பித்தல்)"
+                },
+                "AudioSpeedDecrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedIncrease": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioSpeedReset": {
+                    "description": "",
+                    "name": ""
                 },
                 "AudioStop": {
                     "description": "தற்போதைய ஆடியோவை நிறுத்துங்கள் (EPUB3 மீடியா மேலடுக்குகள், பேச்சு வாசிப்பு உரத்த உரை அல்லது முன்பே பதிவு செய்யப்பட்ட ஆடியோபுக்)",
@@ -1197,11 +1247,59 @@
         "session": {
             "title": "அமர்வு சேமிப்பை இயக்கவும்"
         },
+        "sharedComputer": {
+            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "title": ""
+        },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "externalStorage": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "தோற்றம்",
             "general": "பொது",
             "keyboardShortcuts": "விசைப்பலகை குறுக்குவழிகள்",
-            "profiles": ""
+            "profiles": "",
+            "storage": ""
         },
         "theme": {
             "auto": "தானியங்கி",
@@ -1209,6 +1307,11 @@
             "description": "பயன்பாட்டு கருப்பொருள் இயக்க முறைமையுடன் பொருந்துகிறது.",
             "light": "ஒளி",
             "title": "பயன்பாட்டு கருப்பொருள்"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

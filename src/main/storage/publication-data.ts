@@ -11,18 +11,13 @@ import * as path from "node:path";
 import debug_ from "debug";
 import { __ulimit_file } from "../di";
 import { IReaderStateReaderPersistence } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { rmrf } from "readium-desktop/utils/fs";
+import { getCanonicalUUIDv4FileNameFromFs, rmrf } from "readium-desktop/utils/fs";
+import { assertUUIDv4 } from "readium-desktop/utils/uuid";
 
 const debug = debug_("readium-desktop:main/storage/pub-data");
 
 const jsonStringify = (d: any) => (__TH__IS_DEV__ || __TH__IS_CI__) ? JSON.stringify(d, null, 4) : JSON.stringify(d);
 
-const isUUIDv4 = (uuid: string) => /^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/.test(uuid);
-const assertUUIDv4 = (uuid: string) => {
-    if (!isUUIDv4(uuid)) {
-        throw new Error("not an uuidv4 identifier !");
-    }
-};
 const timeout = (ms: number) => new Promise<never>((_, reject) => setTimeout(() => reject("TIMEOUT"), ms));
 
 export type TFileTypePubData = Extract<keyof IReaderStateReaderPersistence, "locator" | "config" | "disableRTLFlip" | "divina" | "allowCustomConfig" | "noteTotalCount" | "pdfConfig"> | "bound";
@@ -33,7 +28,6 @@ type TFileStructPubData = {
     filePath: string,
     jsonObj: object | undefined,
     mutex: Promise<void>,
-    written: boolean,
 };
 
 @injectable()
@@ -85,7 +79,7 @@ export class PublicationData {
 
     // prefer using readJsonObj instead
     // public getJsonObj(pubId: string, type: TFileTypePubData): object | undefined {
-    //     assertUUIDv4(pubId);
+    //     assertCanonicalUUIDv4(pubId);
     //     const file = this.filterFilesByType(type).find((a) => a.pubId === pubId);
     //     return file?.jsonObj;
     // }
@@ -147,7 +141,6 @@ export class PublicationData {
 
         if (this._readWriteFileHandleEnabled) {
             if (file) {
-                file.written = op === "write";
                 return file;
             }
         } else {
@@ -159,22 +152,26 @@ export class PublicationData {
                     filePath,
                     jsonObj: undefined,
                     mutex: Promise.resolve(),
-                    written: false,
                 };
                 this._files.push(file);
             }
-            if (op === "write" && !file.written) {
-                await fs.promises.access(publicationPath, fs.constants.O_DIRECTORY | fs.constants.O_RDWR)
-                    .then(() => {
-                        file.written = true;
-                    })
-                    .catch(async (e) => {
-                        if (e?.code === "ENOENT") {
-                            debug("create directory", publicationPath);
-                            await fs.promises.mkdir(publicationPath /* DEFAULTS: , { recursive: false, mode: 0o777 } */)
-                                .catch((e) => debug(`${e}`));
-                        }
-                    });
+            if (op === "write") {
+                try {
+                    await fs.promises.access(publicationPath, fs.constants.F_OK | fs.constants.W_OK);
+                } catch (e: any) {
+                    if (e?.code === "ENOENT") {
+                        debug("Directory not found:", publicationPath);
+                    } else {
+                        debug(`Unexpected directory access error: ${e}`);
+                    }
+                    try {
+                        debug("Create directory:", publicationPath);
+                        await fs.promises.mkdir(publicationPath /* DEFAULTS: , { recursive: false, mode: 0o777 } */);
+                    } catch (e) {
+                        debug(`Failed to created directory ${e}`);
+                        return undefined;
+                    }
+                }
             }
             return file;
         }
@@ -200,7 +197,6 @@ export class PublicationData {
                     filePath,
                     jsonObj: undefined as TFileStructPubData["jsonObj"],
                     mutex: Promise.resolve(),
-                    written: op === "write",
                 } satisfies TFileStructPubData;
 
                 this._files.push(file);
@@ -251,7 +247,6 @@ export class PublicationData {
 
         const file = await this.open("write", pubId, type);
         if (!file) {
-
             debug("Cannot write data to", type, "on", pubId);
             return;
         }
@@ -384,8 +379,9 @@ export class PublicationData {
         for (const file of files) {
             try {
                 debug(`\t${file.name} isDirectory=${file.isDirectory()} isFile=${file.isFile()}`);
-                if (isUUIDv4(file.name) && file.isDirectory() && !pubIds.includes(file.name)) {
-                    pubIds.push(file.name);
+                const pubId = getCanonicalUUIDv4FileNameFromFs(file.name);
+                if (pubId && file.isDirectory() && !pubIds.includes(pubId)) {
+                    pubIds.push(pubId);
                 }
             } catch {
                 // ignore

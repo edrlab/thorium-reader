@@ -13,6 +13,7 @@ import {
 
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 import { IPdfPlayerScale, TToc } from "../pdf/common/pdfReader.type";
+import type { TPdfAnnotationNavigationTarget } from "../pdf/common/pdfReader.type";
 import { TdivinaReadingMode } from "readium-desktop/common/redux/states/renderer/divina";
 
 export const fontSize: string[] = [
@@ -112,6 +113,7 @@ export interface IReaderMenuProps {
     // doFocus: number;
     handleLinkClick: (event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string, closeNavPanel?: boolean) => void;
     goToLocator: (locator: R2Locator, closeNavPanel?: boolean) => void;
+    goToPdfAnnotation: (target: TPdfAnnotationNavigationTarget, closeNavPanel?: boolean) => void;
     // toggleMenu: () => void;
     focusMainAreaLandmarkAndCloseMenu: (deep: boolean) => void;
     pdfToc: TToc;

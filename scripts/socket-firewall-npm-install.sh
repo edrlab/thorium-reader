@@ -14,7 +14,7 @@ rm -f package-lock.json ;\
 # string-strip-html
 #
 # https://github.com/readium/speech/blob/build/package.json
-node -e 'const path = require("path"); const fs = require("fs"); const filePath = path.join(process.cwd(), "package.json"); let fileStr = fs.readFileSync(filePath, { encoding: "utf8" }); fileStr = fileStr.replace(/^\s+"readium-speech":.+$/gm, ""); fs.writeFileSync(filePath, fileStr, { encoding: "utf8" });' ;\
+# node -e 'const path = require("path"); const fs = require("fs"); const filePath = path.join(process.cwd(), "package.json"); let fileStr = fs.readFileSync(filePath, { encoding: "utf8" }); fileStr = fileStr.replace(/^\s+"readium-speech":.+$/gm, ""); fs.writeFileSync(filePath, fileStr, { encoding: "utf8" });' ;\
 
 # https://github.com/edrlab/divina-player-js/blob/thorium/build/package.json https://github.com/edrlab/divina-player-js/blob/4e1f859afb14b916923ec136af0284a72e22a990/package.json
 node -e 'const path = require("path"); const fs = require("fs"); const filePath = path.join(process.cwd(), "package.json"); let fileStr = fs.readFileSync(filePath, { encoding: "utf8" }); fileStr = fileStr.replace(/^\s+"divina-player-js":.+$/gm, `"hammerjs": "^2.0.8", "pixi.js-legacy": "^5.3.9",`); fs.writeFileSync(filePath, fileStr, { encoding: "utf8" });' ;\
@@ -25,7 +25,7 @@ node -e 'const path = require("path"); const fs = require("fs"); const filePath 
 
 git --no-pager diff package.json ;\
 # SFW_DEBUG=true
-sfw npm install --ignore-scripts --foreground-scripts ;\
+sfw npm install --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root ;\
 cp package-lock-sfw-backup.json package-lock.json ;\
 cp package-sfw-backup.json package.json ;\
 rm -rf node_modules/ ;\

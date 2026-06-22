@@ -61,6 +61,12 @@ export const createStoreFromDi = (preloadedState: Partial<IReaderRootState>): St
         newConfig.annotation_defaultDrawView = defaultConfig.annotation_defaultDrawView;
         flag = true;
     }
+    if (newConfig.annotation_defaultDrawView === "hide") {
+
+        console.log("ANNOTATION MIGRATION !! defaultDrawView set to HIDE, migrate from defaultConfig value=", newConfig.annotation_defaultDrawView);
+        newConfig.annotation_defaultDrawView = defaultConfig.annotation_defaultDrawView;
+        flag = true;
+    }
     if (newConfig.theme === undefined) {
 
         console.log("MIGRATION !! theme not set migrate from defaultConfig value=", newConfig.theme);

@@ -56,7 +56,7 @@ More information on translation process can be found in the dedicated [translati
 2) NPM 11 (check with `npm --version`)
 
 
-**TIP**: the default version of NPM that ships with the NodeJS installer may be slightly old, so make sure to update with `npm i -g npm@latest`, or `nvm install-latest-npm` if you are an NVM user.
+**TIP**: the default version of NPM that ships with the NodeJS installer may be slightly old, so make sure to update with `npm install --global npm@latest`, or `nvm install-latest-npm` if you are an NVM user.
 
 ## Technologies
 
@@ -71,7 +71,7 @@ More information on translation process can be found in the dedicated [translati
 
 ### Install dependencies
 
-* `npm install --foreground-scripts` (or `npm ci --foreground-scripts`): initialize local `node_modules` packages from dependencies declared in `package.json` (this will also automatically call a long-running compilation stage in `npm run postinstall`)
+* `npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root` (or `npm install --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root` if `package-lock.json` needs to be updated): initialize local `node_modules` packages from dependencies declared in `package.json`
 * in case of failure to NPM "install" because of "Divina player" SHA integrity mismatch, please try running the following command in your shell: `node scripts/package-lock-patch.js && cat package-lock.json | grep -i divina-player-js`
 
 ### Start application in development environment

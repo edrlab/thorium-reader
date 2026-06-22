@@ -16,7 +16,8 @@ import { IOpdsContributorView } from "readium-desktop/common/views/opds";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
-import { convertMultiLangStringToLangString, langStringIsRTL } from "readium-desktop/common/language-string";
+import { convertMultiLangStringToLangString } from "readium-desktop/common/language-string";
+import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 
 interface IProps {
     contributors: (string | IStringMap)[] | IOpdsContributorView[] | undefined;

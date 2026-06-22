@@ -9,6 +9,12 @@ import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/view
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { SagaGenerator } from "typed-redux-saga";
 
+export interface IRecoverablePublication {
+    identifier: string;
+    title: string;
+    filePath: string;
+}
+
 export interface IPublicationApi {
     // get: (...a: [string]) => Promise<PublicationView> | void;
     get: (
@@ -18,9 +24,7 @@ export interface IPublicationApi {
     delete: (
         identifier: string,
         preservePublicationOnFileSystem?: string,
-    ) => SagaGenerator<void>;
-    openFolder: (
-        Identifier?: string,
+        publicationFileLockAlreadyHeld?: boolean,
     ) => SagaGenerator<void>;
     findAll: (
     ) => SagaGenerator<PublicationView[]>;
@@ -45,6 +49,8 @@ export interface IPublicationApi {
         filePathArray: string | string[],
         willBeImmediatelyFollowedByOpen: boolean,
     ) => SagaGenerator<PublicationView[]>;
+    selectFiles: (
+    ) => SagaGenerator<string[]>;
     search: (
         title: string,
     ) => SagaGenerator<PublicationView[]>;
@@ -54,22 +60,29 @@ export interface IPublicationApi {
     exportPublication: (
         publicationView: PublicationView,
     ) => SagaGenerator<void>;
-    readingFinishedRefresh: (
+    findAllRefresh: (
     ) => SagaGenerator<void>;
+    findAllRecoverable: (
+    ) => SagaGenerator<IRecoverablePublication[]>;
+    recover: (
+        identifiers?: string[],
+    ) => SagaGenerator<PublicationView[]>;
 }
 
 export interface IPublicationModuleApi {
     "publication/get": IPublicationApi["get"];
     "publication/delete": IPublicationApi["delete"];
-    "publication/openFolder": IPublicationApi["openFolder"];
     "publication/findAll": IPublicationApi["findAll"];
     "publication/findByTag": IPublicationApi["findByTag"];
     "publication/updateTags": IPublicationApi["updateTags"];
     "publication/importFromLink": IPublicationApi["importFromLink"];
     "publication/importFromFs": IPublicationApi["importFromFs"];
+    "publication/selectFiles": IPublicationApi["selectFiles"];
     "publication/importFromString": IPublicationApi["importFromString"];
     "publication/search": IPublicationApi["search"];
     "publication/searchEqTitle": IPublicationApi["searchEqTitle"];
     "publication/exportPublication": IPublicationApi["exportPublication"];
-    "publication/readingFinishedRefresh": IPublicationApi["readingFinishedRefresh"];
+    "publication/findAllRefresh": IPublicationApi["findAllRefresh"];
+    "publication/findAllRecoverable": IPublicationApi["findAllRecoverable"];
+    "publication/recover": IPublicationApi["recover"];
 }

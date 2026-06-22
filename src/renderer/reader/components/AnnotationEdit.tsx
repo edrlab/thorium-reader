@@ -56,11 +56,12 @@ interface IProps {
     comment: string,
     tags: string[],
     locatorExtended?: MiniLocatorExtended,
+    selectionText?: string,
 }
 
 export const AnnotationEdit: React.FC<IProps> = (props) => {
 
-    const { save, cancel, uuid, dockedMode, color, drawType, comment, tags, locatorExtended} = props;
+    const { save, cancel, uuid, dockedMode, color, drawType, comment, tags, locatorExtended, selectionText} = props;
 
     const displayFromReaderMenu = !!uuid;
     const [__] = useTranslator();
@@ -87,6 +88,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
         TextStrikeThroughtIcon,
         TextOutlineIcon,
     ];
+    const selectionPreview = selectionText || locatorExtended?.selectionInfo?.cleanText || "";
 
     React.useEffect(() => {
         const textAreaElement = document.getElementById(`${uuid}_edit`);
@@ -135,10 +137,10 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
         <div
             className={classNames(displayFromReaderMenu ? "" : stylesAnnotations.annotations_line, dockedMode ? stylesAnnotations.docked_annotation_line : "")} style={{ backgroundColor: !displayFromReaderMenu ? "var(--color-gray-50" : "" }}>
             <p>{
-                locatorExtended?.selectionInfo?.cleanText ?
-                    (locatorExtended.selectionInfo.cleanText.length > (200 - 3) ?
-                        `${locatorExtended.selectionInfo.cleanText.slice(0, 200)}...` :
-                        locatorExtended.selectionInfo.cleanText)
+                selectionPreview ?
+                    (selectionPreview.length > (200 - 3) ?
+                        `${selectionPreview.slice(0, 200)}...` :
+                        selectionPreview)
                     : ""}</p>
             <textarea
                 id={`${uuid}_edit`}
