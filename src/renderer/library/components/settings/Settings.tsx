@@ -65,6 +65,7 @@ import { convertMultiLangStringToString } from "readium-desktop/common/language-
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import moment from "moment";
 import os from "node:os";
+import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-keys";
 
 // import { TagGroup, TagList, Tag, Label } from "react-aria-components";
 
@@ -1002,7 +1003,9 @@ export const Settings: React.FC<ISettingsProps> = () => {
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
     const isRTL = langStringIsRTL(locale);
 
-    const [tabTitle, setTabTitle] = React.useState(__("settings.tabs.general"));
+    const [activeTabKey, setActiveTabKey] = React.useState<TTranslatorKeyParameter>("settings.tabs.general");
+
+    const tabTitle = __(activeTabKey);
 
     // https://github.com/edrlab/thorium-reader/discussions/3177#discussioncomment-14752676
     // <DirectionProvider dir={isRTL ? "rtl" : "ltr"}> ... </DirectionProvider>
@@ -1025,23 +1028,23 @@ export const Settings: React.FC<ISettingsProps> = () => {
                 }
                 <Tabs.Root defaultValue="tab1" data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                     <Tabs.List className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
-                        <Tabs.Trigger value="tab1" onFocus={() => setTabTitle(__("settings.tabs.general"))}>
+                        <Tabs.Trigger value="tab1" onFocus={() => setActiveTabKey("settings.tabs.general")}>
                             <SVG ariaHidden svg={CogIcon} />
                             <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.general")}</h3>
                         </Tabs.Trigger>
-                        <Tabs.Trigger value="tab2" onFocus={() => setTabTitle(__("settings.tabs.appearance"))}>
+                        <Tabs.Trigger value="tab2" onFocus={() => setActiveTabKey("settings.tabs.appearance")}>
                             <SVG ariaHidden svg={PaletteIcon} />
                             <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.appearance")}</h3>
                         </Tabs.Trigger>
-                        <Tabs.Trigger value="tab4" onFocus={() => setTabTitle(__("settings.tabs.keyboardShortcuts"))}>
+                        <Tabs.Trigger value="tab4" onFocus={() => setActiveTabKey("settings.tabs.keyboardShortcuts")}>
                             <SVG ariaHidden svg={KeyReturnIcon} />
                             <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.keyboardShortcuts")}</h3>
                         </Tabs.Trigger>
-                        <Tabs.Trigger value="tab5" onFocus={() => setTabTitle(__("settings.tabs.profiles"))}>
+                        <Tabs.Trigger value="tab5" onFocus={() => setActiveTabKey("settings.tabs.profiles")}>
                             <SVG ariaHidden svg={AvatarIcon} />
                             <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.profiles")}</h3>
                         </Tabs.Trigger>
-                        <Tabs.Trigger value="tab6" onFocus={() => setTabTitle(__("settings.tabs.storage"))}>
+                        <Tabs.Trigger value="tab6" onFocus={() => setActiveTabKey("settings.tabs.storage")}>
                             <SVG ariaHidden svg={LibraryIcon} />
                             <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.storage")}</h3>
                         </Tabs.Trigger>
