@@ -1314,7 +1314,7 @@
             "keepLibraryWindowInBackgroundOnReaderOpen": "Minimera biblioteket efter att läsfönster öppnas",
             "keepLibraryWindowInBackgroundOnReaderOpenDescription": "När detta är aktiverat minimeras biblioteksfönstret när ett läsfönster öppnas.",
             "minimizeLibraryToTray": "Minimera biblioteket till meddelandefältet",
-            "minimizeLibraryToTrayDescription": "När detta är aktiverat fortsätter Thorium att köras i Windows meddelandefält när biblioteksfönstret minimeras.",
+            "minimizeLibraryToTrayDescription": "När detta är aktiverat fortsätter Thorium att köras i meddelandefältet i Windows när biblioteksfönstret minimeras.",
             "title": "Fönsterbeteende"
         }
     },

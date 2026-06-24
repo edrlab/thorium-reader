@@ -1310,11 +1310,11 @@
         },
         "window": {
             "keepLibraryWindowInBackgroundOnReaderClose": "Okuma pencereleri kapatıldıktan sonra kitaplığı arka planda tut",
-            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Etkinleştirildiğinde, bir okuma penceresini kapatmak kitaplık penceresini geri yüklemez veya ön plana getirmez.",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Etkinleştirildiğinde, bir okuma penceresi kapatıldığında kitaplık penceresi geri yüklenmez veya ön plana getirilmez.",
             "keepLibraryWindowInBackgroundOnReaderOpen": "Okuma pencereleri açıldıktan sonra kitaplığı simge durumuna küçült",
-            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Etkinleştirildiğinde, bir okuma penceresi açmak kitaplık penceresini simge durumuna küçültür.",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Etkinleştirildiğinde, bir okuma penceresi açıldığında kitaplık penceresi simge durumuna küçültülür.",
             "minimizeLibraryToTray": "Kitaplığı bildirim alanına simge durumuna küçült",
-            "minimizeLibraryToTrayDescription": "Etkinleştirildiğinde, kitaplık penceresini simge durumuna küçültmek Thorium'u Windows bildirim alanında çalışır durumda tutar.",
+            "minimizeLibraryToTrayDescription": "Etkinleştirildiğinde, kitaplık penceresi simge durumuna küçültüldüğünde Thorium Windows bildirim alanında çalışmaya devam eder.",
             "title": "Pencere davranışı"
         }
     },
