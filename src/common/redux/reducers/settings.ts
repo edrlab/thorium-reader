@@ -38,7 +38,7 @@ function settingsReducer_(
                 ...initialState,
                 ...state,
                 minimizeLibraryToTray: action.payload.minimizeLibraryToTray,
-            }
+            };
         case settingsActions.libraryView.ID:
             return {
                 ...initialState,
