@@ -23,7 +23,7 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import SecondaryHeader from "readium-desktop/renderer/library/components/SecondaryHeader";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { settingsActions } from "readium-desktop/common/redux/actions";
-import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
+import { DisplayType, resolveDisplayType } from "readium-desktop/renderer/library/routing";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import PublicationAddButton from "./PublicationAddButton";
@@ -41,9 +41,6 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
-const normalizeDisplayType = (displayType: string | undefined) =>
-    displayType === DisplayType.List ? DisplayType.List : DisplayType.Grid;
-
 class Header extends React.Component<IProps, undefined> {
 
     constructor(props: IProps) {
@@ -53,8 +50,7 @@ class Header extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { __, location } = this.props;
 
-        const locationDisplayType = location?.state && (location.state as IRouterLocationState).displayType;
-        const displayType = normalizeDisplayType(locationDisplayType || this.props.libraryView?.displayType);
+        const displayType = resolveDisplayType(location?.state, this.props.libraryView?.displayType);
 
         return (
             <SecondaryHeader>

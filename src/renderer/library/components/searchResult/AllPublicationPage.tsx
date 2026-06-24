@@ -84,7 +84,7 @@ import { Unsubscribe } from "redux";
 
 import Header from "../catalog/Header";
 
-import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
+import { DisplayType, resolveDisplayType } from "readium-desktop/renderer/library/routing";
 import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
@@ -115,6 +115,7 @@ import { ICommonRootState } from "readium-desktop/common/redux/states/commonRoot
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { HoverEvent } from "@react-types/shared";
 import { settingsActions } from "readium-desktop/common/redux/actions";
+import { equals } from "ramda";
 
 
 // import GridTagButton from "../catalog/GridTagButton";
@@ -147,24 +148,19 @@ interface IState {
 
 const nonEditableColumnIds = ["colCover", "colActions", "colAuthors", "colTitle"];
 
-const normalizeDisplayType = (displayType: string | undefined) =>
-    displayType === DisplayType.List ? DisplayType.List : DisplayType.Grid;
+const stringArrayEquals = (a: string[] | undefined, b: string[] | undefined) =>
+    equals(a || [], b || []);
 
-const stringArrayEquals = (a: string[] | undefined, b: string[] | undefined) => {
-    const aa = a || [];
-    const bb = b || [];
-    return aa.length === bb.length && aa.every((value, index) => value === bb[index]);
-};
+const normalizeSortBy = (sortBy: ILibraryViewSettingsState["sortBy"] | undefined) =>
+    (sortBy || []).map(({ id, desc }) => ({
+        id,
+        desc: desc === true,
+    }));
 
 const sortByEquals = (
     a: ILibraryViewSettingsState["sortBy"] | undefined,
     b: ILibraryViewSettingsState["sortBy"] | undefined,
-) => {
-    const aa = a || [];
-    const bb = b || [];
-    return aa.length === bb.length &&
-        aa.every((value, index) => value.id === bb[index].id && (value.desc === true) === (bb[index].desc === true));
-};
+) => equals(normalizeSortBy(a), normalizeSortBy(b));
 
 export class AllPublicationPage extends React.Component<IProps, IState> {
     private unsubscribe: Unsubscribe;
@@ -248,8 +244,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const locationDisplayType = this.props.location?.state && (this.props.location.state as IRouterLocationState).displayType;
-        const displayType = normalizeDisplayType(locationDisplayType || this.props.libraryView?.displayType);
+        const displayType = resolveDisplayType(this.props.location?.state, this.props.libraryView?.displayType);
 
         const { __, location, tags, openReader, displayPublicationInfo } = this.props;
 
