@@ -141,6 +141,22 @@ export function* readerNewWindowBound(publicationIdentifier: string | undefined)
     return windowBound;
 }
 
+function* minimizeLibraryWindowOnReaderOpenIfEnabled() {
+
+    const keepLibraryWindowInBackgroundOnReaderOpen = yield* selectTyped((state: RootState) =>
+        settingsKeepLibraryWindowInBackgroundOnReaderOpenIsEnabled(state.settings));
+    if (keepLibraryWindowInBackgroundOnReaderOpen) {
+        try {
+            const libWin = yield* callTyped(() => getLibraryWindowFromDi());
+            if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed() && !libWin.isMinimized()) {
+                libWin.minimize();
+            }
+        } catch (_err) {
+            debug("library can't be loaded from di");
+        }
+    }
+}
+
 function* readerOpenRequest(action: readerActions.openRequest.TAction) {
 
     const publicationIdentifier = action.payload.publicationIdentifier;
@@ -158,6 +174,7 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
             try {
                 const readerWin = yield* callTyped(() => getReaderWindowFromDi(readerWithSamePubIdWinId));
                 if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
+                    yield* callTyped(minimizeLibraryWindowOnReaderOpenIfEnabled);
                     if (readerWin.isMinimized()) {
                         readerWin.restore();
                     }
@@ -246,18 +263,7 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
         //     }
         // }
 
-        const keepLibraryWindowInBackgroundOnReaderOpen = yield* selectTyped((state: RootState) =>
-            settingsKeepLibraryWindowInBackgroundOnReaderOpenIsEnabled(state.settings));
-        if (keepLibraryWindowInBackgroundOnReaderOpen) {
-            try {
-                const libWin = yield* callTyped(() => getLibraryWindowFromDi());
-                if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed() && !libWin.isMinimized()) {
-                    libWin.minimize();
-                }
-            } catch (_err) {
-                debug("library can't be loaded from di");
-            }
-        }
+        yield* callTyped(minimizeLibraryWindowOnReaderOpenIfEnabled);
 
         const windowIdentifier = uuidv4();
         yield* callTyped(createReaderWindow,
