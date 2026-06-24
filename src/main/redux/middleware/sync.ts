@@ -86,6 +86,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     settingsActions.keepLibraryWindowInBackgroundOnReaderClose.ID,
     settingsActions.keepLibraryWindowInBackgroundOnReaderOpen.ID,
     settingsActions.minimizeLibraryToTray.ID,
+    settingsActions.oneReaderWindowPerPublication.ID,
     settingsActions.lcpAutoDeleteExpiredPublications.ID,
     settingsActions.lcpAutoDeleteExpiredPublicationsForced.ID,
 

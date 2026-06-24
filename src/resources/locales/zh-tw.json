@@ -1309,6 +1309,8 @@
             "keepLibraryWindowInBackgroundOnReaderOpenDescription": "啟用後，開啟閱讀器視窗會將書庫視窗最小化。",
             "minimizeLibraryToTray": "將書庫最小化到通知區域",
             "minimizeLibraryToTrayDescription": "啟用後，將書庫視窗最小化會讓 Thorium 繼續在 Windows 通知區域中執行。",
+            "oneReaderWindowPerPublication": "每個出版品只使用一個閱讀器視窗",
+            "oneReaderWindowPerPublicationDescription": "啟用後，開啟已開啟的出版品時會聚焦其閱讀器視窗，而不是再開啟另一個視窗。",
             "title": "視窗行為"
         }
     },

@@ -1321,6 +1321,8 @@
             "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Quan s'activa, obrir una finestra de lectura minimitza la finestra de la biblioteca.",
             "minimizeLibraryToTray": "Minimitza la biblioteca a l'àrea de notificacions",
             "minimizeLibraryToTrayDescription": "Quan s'activa, minimitzar la finestra de la biblioteca manté Thorium en execució a l'àrea de notificacions de Windows.",
+            "oneReaderWindowPerPublication": "Utilitza una sola finestra de lectura per publicació",
+            "oneReaderWindowPerPublicationDescription": "Quan s'activa, obrir una publicació que ja està oberta posa el focus a la seva finestra de lectura en lloc d'obrir-ne una altra.",
             "title": "Comportament de les finestres"
         }
     },

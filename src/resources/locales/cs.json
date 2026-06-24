@@ -1327,6 +1327,8 @@
             "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Když je povoleno, otevření okna čtečky minimalizuje okno knihovny.",
             "minimizeLibraryToTray": "Minimalizovat knihovnu do oznamovací oblasti",
             "minimizeLibraryToTrayDescription": "Když je povoleno, minimalizace okna knihovny ponechá Thorium spuštěné v oznamovací oblasti Windows.",
+            "oneReaderWindowPerPublication": "Používat jedno okno čtečky pro každou publikaci",
+            "oneReaderWindowPerPublicationDescription": "Když je povoleno, otevření již otevřené publikace zaměří její okno čtečky místo otevření dalšího.",
             "title": "Chování oken"
         }
     },

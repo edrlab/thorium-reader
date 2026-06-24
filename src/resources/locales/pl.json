@@ -1327,6 +1327,8 @@
             "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Gdy włączone, otwarcie okna czytnika minimalizuje okno biblioteki.",
             "minimizeLibraryToTray": "Minimalizuj bibliotekę do obszaru powiadomień",
             "minimizeLibraryToTrayDescription": "Gdy włączone, zminimalizowanie okna biblioteki pozostawia Thorium uruchomione w obszarze powiadomień systemu Windows.",
+            "oneReaderWindowPerPublication": "Używaj jednego okna czytnika na publikację",
+            "oneReaderWindowPerPublicationDescription": "Gdy włączone, otwarcie publikacji, która jest już otwarta, przenosi fokus na jej okno czytnika zamiast otwierać kolejne.",
             "title": "Zachowanie okien"
         }
     },

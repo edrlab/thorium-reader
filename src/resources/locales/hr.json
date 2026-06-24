@@ -1321,6 +1321,8 @@
             "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Kada je omogućeno, otvaranje prozora za čitanje minimizira prozor knjižnice.",
             "minimizeLibraryToTray": "Minimiziraj knjižnicu u područje obavijesti",
             "minimizeLibraryToTrayDescription": "Kada je omogućeno, minimiziranje prozora knjižnice ostavlja Thorium pokrenutim u području obavijesti sustava Windows.",
+            "oneReaderWindowPerPublication": "Koristi jedan prozor za čitanje po publikaciji",
+            "oneReaderWindowPerPublicationDescription": "Kada je omogućeno, otvaranje već otvorene publikacije fokusira njezin prozor za čitanje umjesto otvaranja novog.",
             "title": "Ponašanje prozora"
         }
     },

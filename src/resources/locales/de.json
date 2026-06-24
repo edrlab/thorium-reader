@@ -1315,6 +1315,8 @@
             "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Wenn aktiviert, wird beim Öffnen eines Lesefensters das Bibliotheksfenster minimiert.",
             "minimizeLibraryToTray": "Bibliothek in den Infobereich minimieren",
             "minimizeLibraryToTrayDescription": "Wenn aktiviert, läuft Thorium nach dem Minimieren des Bibliotheksfensters im Windows-Infobereich weiter.",
+            "oneReaderWindowPerPublication": "Ein Lesefenster pro Publikation verwenden",
+            "oneReaderWindowPerPublicationDescription": "Wenn aktiviert, wird beim Öffnen einer bereits geöffneten Publikation ihr Lesefenster fokussiert, anstatt ein weiteres zu öffnen.",
             "title": "Fensterverhalten"
         }
     },

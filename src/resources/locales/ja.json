@@ -1309,6 +1309,8 @@
             "keepLibraryWindowInBackgroundOnReaderOpenDescription": "有効にすると、リーダーウィンドウを開いたときにライブラリウィンドウが最小化されます。",
             "minimizeLibraryToTray": "ライブラリを通知領域に最小化",
             "minimizeLibraryToTrayDescription": "有効にすると、ライブラリウィンドウを最小化しても Thorium は Windows の通知領域で実行され続けます。",
+            "oneReaderWindowPerPublication": "出版物ごとに 1 つのリーダーウィンドウを使用",
+            "oneReaderWindowPerPublicationDescription": "有効にすると、すでに開いている出版物を開く際に、別のウィンドウを開かずにそのリーダーウィンドウにフォーカスします。",
             "title": "ウィンドウの動作"
         }
     },

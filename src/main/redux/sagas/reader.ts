@@ -14,7 +14,10 @@ import { normalizeWinBoundRectangle } from "readium-desktop/common/rectangle/win
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
-import { settingsKeepLibraryWindowInBackgroundOnReaderOpenIsEnabled } from "readium-desktop/common/redux/states/settings";
+import {
+    settingsKeepLibraryWindowInBackgroundOnReaderOpenIsEnabled,
+    settingsOneReaderWindowPerPublicationIsEnabled,
+} from "readium-desktop/common/redux/states/settings";
 import { diMainGet, getAllReaderWindowFromDi, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
 import { streamerActions } from "readium-desktop/main/redux/actions";
@@ -144,6 +147,30 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
     debug(`START REQUEST to open a reader with pubId=${publicationIdentifier}, action=${JSON.stringify(action)}`);
 
     assertUUIDv4(publicationIdentifier);
+
+    const oneReaderWindowPerPublication = yield* selectTyped((state: RootState) =>
+        settingsOneReaderWindowPerPublicationIsEnabled(state.settings));
+    if (oneReaderWindowPerPublication) {
+        const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+        const readerWithSamePubId = Object.values(readers).find(({publicationIdentifier: pubId}) => pubId === publicationIdentifier);
+        const readerWithSamePubIdWinId = readerWithSamePubId?.identifier;
+        if (readerWithSamePubIdWinId) {
+            try {
+                const readerWin = yield* callTyped(() => getReaderWindowFromDi(readerWithSamePubIdWinId));
+                if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
+                    if (readerWin.isMinimized()) {
+                        readerWin.restore();
+                    }
+                    readerWin.show();
+                    readerWin.focus();
+                    debug(`reader already open for pubId=${publicationIdentifier}, focus winId=${readerWithSamePubIdWinId}`);
+                    return;
+                }
+            } catch (_err) {
+                debug("can't load readerWin from di");
+            }
+        }
+    }
 
     let manifestUrl: string;
     try {

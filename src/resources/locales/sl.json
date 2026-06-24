@@ -1327,6 +1327,8 @@
             "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Ko je omogočeno, odprtje bralnega okna pomanjša okno knjižnice.",
             "minimizeLibraryToTray": "Pomanjšaj knjižnico v območje za obvestila",
             "minimizeLibraryToTrayDescription": "Ko je omogočeno, pomanjšanje okna knjižnice ohrani Thorium zagnan v območju za obvestila sistema Windows.",
+            "oneReaderWindowPerPublication": "Uporabi eno bralno okno na publikacijo",
+            "oneReaderWindowPerPublicationDescription": "Ko je omogočeno, odpiranje že odprte publikacije izostri njeno bralno okno, namesto da bi odprlo novo.",
             "title": "Vedenje oken"
         }
     },

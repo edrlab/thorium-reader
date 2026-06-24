@@ -1315,6 +1315,8 @@
             "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Etkinleştirildiğinde, bir okuma penceresi açıldığında kitaplık penceresi simge durumuna küçültülür.",
             "minimizeLibraryToTray": "Kitaplığı bildirim alanına simge durumuna küçült",
             "minimizeLibraryToTrayDescription": "Etkinleştirildiğinde, kitaplık penceresi simge durumuna küçültüldüğünde Thorium Windows bildirim alanında çalışmaya devam eder.",
+            "oneReaderWindowPerPublication": "Her yayın için tek okuma penceresi kullan",
+            "oneReaderWindowPerPublicationDescription": "Etkinleştirildiğinde, zaten açık olan bir yayın açıldığında yeni bir pencere açmak yerine ilgili okuma penceresine odaklanılır.",
             "title": "Pencere davranışı"
         }
     },

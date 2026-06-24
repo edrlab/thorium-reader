@@ -2906,6 +2906,8 @@ declare namespace typed_i18n {
     readonly "keepLibraryWindowInBackgroundOnReaderOpenDescription": string,
     readonly "minimizeLibraryToTray": string,
     readonly "minimizeLibraryToTrayDescription": string,
+    readonly "oneReaderWindowPerPublication": string,
+    readonly "oneReaderWindowPerPublicationDescription": string,
     readonly "title": string
   }
 };
@@ -3800,6 +3802,8 @@ declare namespace typed_i18n {
   readonly "keepLibraryWindowInBackgroundOnReaderOpenDescription": string,
   readonly "minimizeLibraryToTray": string,
   readonly "minimizeLibraryToTrayDescription": string,
+  readonly "oneReaderWindowPerPublication": string,
+  readonly "oneReaderWindowPerPublicationDescription": string,
   readonly "title": string
 };
   (_: "settings.window.keepLibraryWindowInBackgroundOnReaderClose", __?: {}): string;
@@ -3808,6 +3812,8 @@ declare namespace typed_i18n {
   (_: "settings.window.keepLibraryWindowInBackgroundOnReaderOpenDescription", __?: {}): string;
   (_: "settings.window.minimizeLibraryToTray", __?: {}): string;
   (_: "settings.window.minimizeLibraryToTrayDescription", __?: {}): string;
+  (_: "settings.window.oneReaderWindowPerPublication", __?: {}): string;
+  (_: "settings.window.oneReaderWindowPerPublicationDescription", __?: {}): string;
   (_: "settings.window.title", __?: {}): string;
   (_: "tts", __?: {}): {
   readonly "highlight": {

@@ -1321,6 +1321,8 @@
             "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Cuando está activado, abrir una ventana de lectura minimiza la ventana de la biblioteca.",
             "minimizeLibraryToTray": "Minimizar la biblioteca al área de notificación",
             "minimizeLibraryToTrayDescription": "Cuando está activado, al minimizar la ventana de la biblioteca, Thorium sigue ejecutándose en el área de notificación de Windows.",
+            "oneReaderWindowPerPublication": "Usar una sola ventana de lectura por publicación",
+            "oneReaderWindowPerPublicationDescription": "Cuando está activado, abrir una publicación que ya está abierta enfoca su ventana de lectura en lugar de abrir otra.",
             "title": "Comportamiento de las ventanas"
         }
     },

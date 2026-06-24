@@ -1315,6 +1315,8 @@
             "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Kun asetus on käytössä, lukuikkunan avaaminen pienentää kirjastoikkunan.",
             "minimizeLibraryToTray": "Pienennä kirjasto ilmoitusalueelle",
             "minimizeLibraryToTrayDescription": "Kun asetus on käytössä, kirjastoikkunan pienentäminen pitää Thoriumin käynnissä Windowsin ilmoitusalueella.",
+            "oneReaderWindowPerPublication": "Käytä yhtä lukuikkunaa julkaisua kohti",
+            "oneReaderWindowPerPublicationDescription": "Kun asetus on käytössä, jo avoinna olevan julkaisun avaaminen kohdistaa sen lukuikkunaan uuden avaamisen sijaan.",
             "title": "Ikkunoiden toiminta"
         }
     },

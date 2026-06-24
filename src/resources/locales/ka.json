@@ -1315,6 +1315,8 @@
             "keepLibraryWindowInBackgroundOnReaderOpenDescription": "ჩართვისას, მკითხველის ფანჯრის გახსნა ბიბლიოთეკის ფანჯრის მინიმიზაციას ახდენს.",
             "minimizeLibraryToTray": "ბიბლიოთეკის მინიმიზაცია შეტყობინებების არეში",
             "minimizeLibraryToTrayDescription": "ჩართვისას, ბიბლიოთეკის ფანჯრის მინიმიზაცია Thorium-ს Windows-ის შეტყობინებების არეში გაშვებულს ტოვებს.",
+            "oneReaderWindowPerPublication": "თითოეული პუბლიკაციისთვის ერთი მკითხველის ფანჯრის გამოყენება",
+            "oneReaderWindowPerPublicationDescription": "ჩართვისას, უკვე გახსნილი პუბლიკაციის გახსნა ფოკუსს მის მკითხველის ფანჯარაზე გადაიტანს, ახლის გახსნის ნაცვლად.",
             "title": "ფანჯრების ქცევა"
         }
     },

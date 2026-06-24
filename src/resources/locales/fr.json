@@ -1321,6 +1321,8 @@
             "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Lorsque cette option est activée, ouvrir une fenêtre de lecture réduit la fenêtre Bibliothèque.",
             "minimizeLibraryToTray": "Réduire la bibliothèque dans la zone de notification",
             "minimizeLibraryToTrayDescription": "Lorsque cette option est activée, réduire la fenêtre Bibliothèque garde Thorium ouvert dans la zone de notification Windows.",
+            "oneReaderWindowPerPublication": "Utiliser une seule fenêtre de lecture par publication",
+            "oneReaderWindowPerPublicationDescription": "Lorsque cette option est activée, ouvrir une publication déjà ouverte met au premier plan sa fenêtre de lecture au lieu d'en ouvrir une autre.",
             "title": "Comportement des fenêtres"
         }
     },

@@ -1315,6 +1315,8 @@
             "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Når dette er aktiveret, minimeres biblioteksvinduet, når et læsevindue åbnes.",
             "minimizeLibraryToTray": "Minimer biblioteket til meddelelsesområdet",
             "minimizeLibraryToTrayDescription": "Når dette er aktiveret, holder minimering af biblioteksvinduet Thorium kørende i Windows-meddelelsesområdet.",
+            "oneReaderWindowPerPublication": "Brug ét læsevindue pr. publikation",
+            "oneReaderWindowPerPublicationDescription": "Når dette er aktiveret, fokuseres læsevinduet for en publikation, der allerede er åben, i stedet for at åbne et nyt.",
             "title": "Vinduesadfærd"
         }
     },

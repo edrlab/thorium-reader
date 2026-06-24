@@ -1321,6 +1321,8 @@
             "keepLibraryWindowInBackgroundOnReaderOpenDescription": "כאשר האפשרות מופעלת, פתיחת חלון קריאה ממזערת את חלון הספרייה.",
             "minimizeLibraryToTray": "מזעור הספרייה לאזור ההודעות",
             "minimizeLibraryToTrayDescription": "כאשר האפשרות מופעלת, מזעור חלון הספרייה משאיר את Thorium פועל באזור ההודעות של Windows.",
+            "oneReaderWindowPerPublication": "שימוש בחלון קריאה אחד לכל פרסום",
+            "oneReaderWindowPerPublicationDescription": "כאשר האפשרות מופעלת, פתיחת פרסום שכבר פתוח תמקד את חלון הקריאה שלו במקום לפתוח חלון נוסף.",
             "title": "התנהגות חלונות"
         }
     },

@@ -15,6 +15,7 @@ const initialState: ISettingsState = {
     minimizeLibraryToTray: false,
     keepLibraryWindowInBackgroundOnReaderOpen: false,
     keepLibraryWindowInBackgroundOnReaderClose: false,
+    oneReaderWindowPerPublication: false,
     lcpAutoDeleteExpiredPublications: false,
     lcpAutoDeleteExpiredPublicationsForced: false,
 };
@@ -26,6 +27,7 @@ function settingsReducer_(
         settingsActions.keepLibraryWindowInBackgroundOnReaderClose.TAction |
         settingsActions.keepLibraryWindowInBackgroundOnReaderOpen.TAction |
         settingsActions.minimizeLibraryToTray.TAction |
+        settingsActions.oneReaderWindowPerPublication.TAction |
         settingsActions.lcpAutoDeleteExpiredPublications.TAction |
         settingsActions.lcpAutoDeleteExpiredPublicationsForced.TAction,
 ):  ISettingsState {
@@ -53,6 +55,12 @@ function settingsReducer_(
                 ...initialState,
                 ...state,
                 keepLibraryWindowInBackgroundOnReaderOpen: action.payload.keepLibraryWindowInBackgroundOnReaderOpen,
+            };
+        case settingsActions.oneReaderWindowPerPublication.ID:
+            return {
+                ...initialState,
+                ...state,
+                oneReaderWindowPerPublication: action.payload.oneReaderWindowPerPublication,
             };
         case settingsActions.lcpAutoDeleteExpiredPublications.ID:
             return {

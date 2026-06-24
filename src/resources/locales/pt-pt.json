@@ -1321,6 +1321,8 @@
             "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Quando ativada, a abertura de uma janela de leitura minimiza a janela da biblioteca.",
             "minimizeLibraryToTray": "Minimizar a biblioteca para a área de notificação",
             "minimizeLibraryToTrayDescription": "Quando ativada, a minimização da janela da biblioteca mantém o Thorium em execução na área de notificação do Windows.",
+            "oneReaderWindowPerPublication": "Usar uma única janela de leitura por publicação",
+            "oneReaderWindowPerPublicationDescription": "Quando ativada, abrir uma publicação que já está aberta foca a respetiva janela de leitura em vez de abrir outra.",
             "title": "Comportamento das janelas"
         }
     },

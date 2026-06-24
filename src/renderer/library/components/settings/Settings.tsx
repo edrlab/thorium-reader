@@ -310,6 +310,8 @@ const WindowBehaviorSettings: React.FC<{}> = () => {
         state.settings.keepLibraryWindowInBackgroundOnReaderOpen === true);
     const keepLibraryWindowInBackgroundOnReaderClose = useSelector((state: ILibraryRootState) =>
         state.settings.keepLibraryWindowInBackgroundOnReaderClose === true);
+    const oneReaderWindowPerPublication = useSelector((state: ILibraryRootState) =>
+        state.settings.oneReaderWindowPerPublication === true);
 
     const toggleMinimizeLibraryToTray = () => {
         dispatch(settingsActions.minimizeLibraryToTray.build(!minimizeLibraryToTray));
@@ -319,6 +321,9 @@ const WindowBehaviorSettings: React.FC<{}> = () => {
     };
     const toggleKeepLibraryWindowInBackgroundOnReaderClose = () => {
         dispatch(settingsActions.keepLibraryWindowInBackgroundOnReaderClose.build(!keepLibraryWindowInBackgroundOnReaderClose));
+    };
+    const toggleOneReaderWindowPerPublication = () => {
+        dispatch(settingsActions.oneReaderWindowPerPublication.build(!oneReaderWindowPerPublication));
     };
 
     return (
@@ -420,6 +425,39 @@ const WindowBehaviorSettings: React.FC<{}> = () => {
                     <div aria-hidden>
                         <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.keepLibraryWindowInBackgroundOnReaderClose")}</h3>
                         <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.keepLibraryWindowInBackgroundOnReaderCloseDescription")}</p>
+                    </div>
+                </label>
+            </div>
+            <div dir={isRTL ? "rtl" : "ltr"} className={stylesAnnotations.annotations_checkbox}>
+                <input type="checkbox" id="oneReaderWindowPerPublication" className={stylesGlobal.checkbox_custom_input} name="oneReaderWindowPerPublication" checked={oneReaderWindowPerPublication} onChange={toggleOneReaderWindowPerPublication} />
+                <label htmlFor="oneReaderWindowPerPublication" className={stylesGlobal.checkbox_custom_label}>
+                    <div
+                        tabIndex={0}
+                        role="checkbox"
+                        aria-checked={oneReaderWindowPerPublication}
+                        aria-label={__("settings.window.oneReaderWindowPerPublication")}
+                        onKeyDown={(e) => {
+                            if (e.key === " ") {
+                                e.preventDefault();
+                            }
+                        }}
+                        onKeyUp={(e) => {
+                            if (e.key === " ") {
+                                e.preventDefault();
+                                toggleOneReaderWindowPerPublication();
+                            }
+                        }}
+                        className={stylesGlobal.checkbox_custom}
+                        style={{ border: oneReaderWindowPerPublication ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: oneReaderWindowPerPublication ? "var(--color-brand-primary)" : "transparent" }}>
+                        {oneReaderWindowPerPublication ?
+                            <SVG ariaHidden svg={CheckIcon} />
+                            :
+                            <></>
+                        }
+                    </div>
+                    <div aria-hidden>
+                        <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.oneReaderWindowPerPublication")}</h3>
+                        <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.oneReaderWindowPerPublicationDescription")}</p>
                     </div>
                 </label>
             </div>

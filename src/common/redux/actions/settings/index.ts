@@ -11,6 +11,7 @@ import * as keepLibraryWindowInBackgroundOnReaderOpen from "./keepLibraryWindowI
 import * as lcpAutoDeleteExpiredPublications from "./lcpAutoDeleteExpiredPublications";
 import * as lcpAutoDeleteExpiredPublicationsForced from "./lcpAutoDeleteExpiredPublicationsForced";
 import * as minimizeLibraryToTray from "./minimizeLibraryToTray";
+import * as oneReaderWindowPerPublication from "./oneReaderWindowPerPublication";
 
 export {
     enableAPIAPP,
@@ -19,4 +20,5 @@ export {
     lcpAutoDeleteExpiredPublications,
     lcpAutoDeleteExpiredPublicationsForced,
     minimizeLibraryToTray,
+    oneReaderWindowPerPublication,
 };

@@ -1315,6 +1315,8 @@
             "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Cando está activado, abrir unha xanela de lectura minimiza a xanela da biblioteca.",
             "minimizeLibraryToTray": "Minimizar a biblioteca á área de notificación",
             "minimizeLibraryToTrayDescription": "Cando está activado, minimizar a xanela da biblioteca mantén Thorium en execución na área de notificación de Windows.",
+            "oneReaderWindowPerPublication": "Usar unha soa xanela de lectura por publicación",
+            "oneReaderWindowPerPublicationDescription": "Cando está activado, abrir unha publicación que xa está aberta enfoca a súa xanela de lectura en vez de abrir outra.",
             "title": "Comportamento das xanelas"
         }
     },
