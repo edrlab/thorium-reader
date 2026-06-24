@@ -199,7 +199,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
         }
     };
 
-    private displayTypeState = () => ({
+    private linkState = () => ({
         displayType: resolveDisplayType(this.props.location.state, this.props.libraryView?.displayType),
     });
 
@@ -232,7 +232,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         pathname: route,
                     }}
                     style={{ width: "20px", height: "20px"}}
-                    state={this.displayTypeState()}
+                    state={this.linkState()}
                     className={stylesButtons.button_secondary_blue}
                     onClick={(e) => {
                         if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
@@ -295,7 +295,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         pathname: route,
                     }}
                     style={{ width: "20px", height: "20px" }}
-                    state={this.displayTypeState()}
+                    state={this.linkState()}
                     className={stylesButtons.button_secondary_blue}
                     onClick={(e) => {
                         if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
@@ -361,7 +361,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                             pathname: route,
                         }}
                         style={{ height: "unset" }}
-                        state={this.displayTypeState()}
+                        state={this.linkState()}
                         className={classNames(stylesButtons.button_refresh, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
                         onClick={(e) => {
                             if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
@@ -397,7 +397,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         to={{
                             ...this.props.location,
                         }}
-                        state={this.displayTypeState()}
+                        state={this.linkState()}
                         className={classNames(stylesButtons.button_refresh, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
                         onClick={(e) => {
                             if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
