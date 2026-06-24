@@ -1321,9 +1321,13 @@
             "title": "Motiv aplikace"
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "Ponechat knihovnu na pozadí po zavření oken čtečky",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Když je povoleno, zavření okna čtečky neobnoví okno knihovny ani je nepřenese do popředí.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Minimalizovat knihovnu po otevření oken čtečky",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Když je povoleno, otevření okna čtečky minimalizuje okno knihovny.",
+            "minimizeLibraryToTray": "Minimalizovat knihovnu do oznamovací oblasti",
+            "minimizeLibraryToTrayDescription": "Když je povoleno, minimalizace okna knihovny ponechá Thorium spuštěné v oznamovací oblasti Windows.",
+            "title": "Chování oken"
         }
     },
     "tts": {

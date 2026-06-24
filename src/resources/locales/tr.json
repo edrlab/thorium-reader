@@ -1309,9 +1309,13 @@
             "title": "Uygulama Teması"
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "Okuma pencereleri kapatıldıktan sonra kitaplığı arka planda tut",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Etkinleştirildiğinde, bir okuma penceresini kapatmak kitaplık penceresini geri yüklemez veya ön plana getirmez.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Okuma pencereleri açıldıktan sonra kitaplığı simge durumuna küçült",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Etkinleştirildiğinde, bir okuma penceresi açmak kitaplık penceresini simge durumuna küçültür.",
+            "minimizeLibraryToTray": "Kitaplığı bildirim alanına simge durumuna küçült",
+            "minimizeLibraryToTrayDescription": "Etkinleştirildiğinde, kitaplık penceresini simge durumuna küçültmek Thorium'u Windows bildirim alanında çalışır durumda tutar.",
+            "title": "Pencere davranışı"
         }
     },
     "tts": {

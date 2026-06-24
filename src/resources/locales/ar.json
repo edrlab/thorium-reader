@@ -1333,9 +1333,13 @@
             "title": "نسق البرنامج"
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "إبقاء المكتبة في الخلفية بعد إغلاق نوافذ القراءة",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "عند التفعيل، لا يؤدي إغلاق نافذة قراءة إلى استعادة نافذة المكتبة أو نقلها إلى المقدمة.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "تصغير المكتبة بعد فتح نوافذ القراءة",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "عند التفعيل، يؤدي فتح نافذة قراءة إلى تصغير نافذة المكتبة.",
+            "minimizeLibraryToTray": "تصغير المكتبة إلى منطقة الإشعارات",
+            "minimizeLibraryToTrayDescription": "عند التفعيل، يؤدي تصغير نافذة المكتبة إلى إبقاء Thorium قيد التشغيل في منطقة إشعارات Windows.",
+            "title": "سلوك النوافذ"
         }
     },
     "tts": {

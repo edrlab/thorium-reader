@@ -7,7 +7,6 @@
 
 import debug_ from "debug";
 import { clipboard } from "electron";
-import { ReaderMode } from "readium-desktop/common/models/reader";
 import { Action } from "readium-desktop/common/models/redux";
 import { ActionWithDestination, ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -15,6 +14,7 @@ import { normalizeWinBoundRectangle } from "readium-desktop/common/rectangle/win
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
+import { settingsKeepLibraryWindowInBackgroundOnReaderOpenIsEnabled } from "readium-desktop/common/redux/states/settings";
 import { diMainGet, getAllReaderWindowFromDi, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
 import { streamerActions } from "readium-desktop/main/redux/actions";
@@ -201,12 +201,31 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
         // );
         // const readersArray = ObjectValues(readers);
 
-        const mode = yield* selectTyped((state: RootState) => state.mode);
-        if (mode === ReaderMode.Attached) {
+        // TODO: restore/update this attached-reader behavior if attached mode comes back.
+        // See https://github.com/edrlab/thorium-reader/issues/3675
+        // const mode = yield* selectTyped((state: RootState) => state.mode);
+        // if (mode === ReaderMode.Attached) {
+        //     if (!keepLibraryWindowInBackgroundOnReaderOpen) {
+        //         try {
+        //             const libWin = getLibraryWindowFromDi();
+        //             if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed()) {
+        //                 libWin.hide();
+        //             }
+        //         } catch (_err) {
+        //             debug("library can't be loaded from di");
+        //         }
+        //     } else {
+        //         debug("keep library window in background on reader open");
+        //     }
+        // }
+
+        const keepLibraryWindowInBackgroundOnReaderOpen = yield* selectTyped((state: RootState) =>
+            settingsKeepLibraryWindowInBackgroundOnReaderOpenIsEnabled(state.settings));
+        if (keepLibraryWindowInBackgroundOnReaderOpen) {
             try {
-                const libWin = getLibraryWindowFromDi();
-                if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed()) {
-                    libWin.hide();
+                const libWin = yield* callTyped(() => getLibraryWindowFromDi());
+                if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed() && !libWin.isMinimized()) {
+                    libWin.minimize();
                 }
             } catch (_err) {
                 debug("library can't be loaded from di");

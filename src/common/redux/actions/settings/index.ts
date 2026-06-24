@@ -6,12 +6,16 @@
 // ==LICENSE-END==
 
 import * as enableAPIAPP from "./enableAPIAPP";
+import * as keepLibraryWindowInBackgroundOnReaderClose from "./keepLibraryWindowInBackgroundOnReaderClose";
+import * as keepLibraryWindowInBackgroundOnReaderOpen from "./keepLibraryWindowInBackgroundOnReaderOpen";
 import * as lcpAutoDeleteExpiredPublications from "./lcpAutoDeleteExpiredPublications";
 import * as lcpAutoDeleteExpiredPublicationsForced from "./lcpAutoDeleteExpiredPublicationsForced";
 import * as minimizeLibraryToTray from "./minimizeLibraryToTray";
 
 export {
     enableAPIAPP,
+    keepLibraryWindowInBackgroundOnReaderClose,
+    keepLibraryWindowInBackgroundOnReaderOpen,
     lcpAutoDeleteExpiredPublications,
     lcpAutoDeleteExpiredPublicationsForced,
     minimizeLibraryToTray,

@@ -298,7 +298,7 @@ const ScreenReaderSettings: React.FC<{}> = () => {
     );
 };
 
-const MinimizeLibraryToTraySettings: React.FC<{}> = () => {
+const WindowBehaviorSettings: React.FC<{}> = () => {
 
     const [__] = useTranslator();
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
@@ -306,15 +306,25 @@ const MinimizeLibraryToTraySettings: React.FC<{}> = () => {
     const dispatch = useDispatch();
     const minimizeLibraryToTray = useSelector((state: ILibraryRootState) =>
         state.settings.minimizeLibraryToTray === true);
+    const keepLibraryWindowInBackgroundOnReaderOpen = useSelector((state: ILibraryRootState) =>
+        state.settings.keepLibraryWindowInBackgroundOnReaderOpen === true);
+    const keepLibraryWindowInBackgroundOnReaderClose = useSelector((state: ILibraryRootState) =>
+        state.settings.keepLibraryWindowInBackgroundOnReaderClose === true);
 
     const toggleMinimizeLibraryToTray = () => {
         dispatch(settingsActions.minimizeLibraryToTray.build(!minimizeLibraryToTray));
+    };
+    const toggleKeepLibraryWindowInBackgroundOnReaderOpen = () => {
+        dispatch(settingsActions.keepLibraryWindowInBackgroundOnReaderOpen.build(!keepLibraryWindowInBackgroundOnReaderOpen));
+    };
+    const toggleKeepLibraryWindowInBackgroundOnReaderClose = () => {
+        dispatch(settingsActions.keepLibraryWindowInBackgroundOnReaderClose.build(!keepLibraryWindowInBackgroundOnReaderClose));
     };
 
     return (
         <section className={stylesSettings.section} style={{ gap: "10px" }}>
             <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.title")}</h3>
-            <div dir={isRTL ? "rtl" : "ltr"} className={stylesAnnotations.annotations_checkbox}>
+            {IS_WINDOWS ? <div dir={isRTL ? "rtl" : "ltr"} className={stylesAnnotations.annotations_checkbox}>
                 <input type="checkbox" id="minimizeLibraryToTray" className={stylesGlobal.checkbox_custom_input} name="minimizeLibraryToTray" checked={minimizeLibraryToTray} onChange={toggleMinimizeLibraryToTray} />
                 <label htmlFor="minimizeLibraryToTray" className={stylesGlobal.checkbox_custom_label}>
                     <div
@@ -344,6 +354,72 @@ const MinimizeLibraryToTraySettings: React.FC<{}> = () => {
                     <div aria-hidden>
                         <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.minimizeLibraryToTray")}</h3>
                         <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.minimizeLibraryToTrayDescription")}</p>
+                    </div>
+                </label>
+            </div> : <></>}
+            <div dir={isRTL ? "rtl" : "ltr"} className={stylesAnnotations.annotations_checkbox}>
+                <input type="checkbox" id="keepLibraryWindowInBackgroundOnReaderOpen" className={stylesGlobal.checkbox_custom_input} name="keepLibraryWindowInBackgroundOnReaderOpen" checked={keepLibraryWindowInBackgroundOnReaderOpen} onChange={toggleKeepLibraryWindowInBackgroundOnReaderOpen} />
+                <label htmlFor="keepLibraryWindowInBackgroundOnReaderOpen" className={stylesGlobal.checkbox_custom_label}>
+                    <div
+                        tabIndex={0}
+                        role="checkbox"
+                        aria-checked={keepLibraryWindowInBackgroundOnReaderOpen}
+                        aria-label={__("settings.window.keepLibraryWindowInBackgroundOnReaderOpen")}
+                        onKeyDown={(e) => {
+                            if (e.key === " ") {
+                                e.preventDefault();
+                            }
+                        }}
+                        onKeyUp={(e) => {
+                            if (e.key === " ") {
+                                e.preventDefault();
+                                toggleKeepLibraryWindowInBackgroundOnReaderOpen();
+                            }
+                        }}
+                        className={stylesGlobal.checkbox_custom}
+                        style={{ border: keepLibraryWindowInBackgroundOnReaderOpen ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: keepLibraryWindowInBackgroundOnReaderOpen ? "var(--color-brand-primary)" : "transparent" }}>
+                        {keepLibraryWindowInBackgroundOnReaderOpen ?
+                            <SVG ariaHidden svg={CheckIcon} />
+                            :
+                            <></>
+                        }
+                    </div>
+                    <div aria-hidden>
+                        <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.keepLibraryWindowInBackgroundOnReaderOpen")}</h3>
+                        <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.keepLibraryWindowInBackgroundOnReaderOpenDescription")}</p>
+                    </div>
+                </label>
+            </div>
+            <div dir={isRTL ? "rtl" : "ltr"} className={stylesAnnotations.annotations_checkbox}>
+                <input type="checkbox" id="keepLibraryWindowInBackgroundOnReaderClose" className={stylesGlobal.checkbox_custom_input} name="keepLibraryWindowInBackgroundOnReaderClose" checked={keepLibraryWindowInBackgroundOnReaderClose} onChange={toggleKeepLibraryWindowInBackgroundOnReaderClose} />
+                <label htmlFor="keepLibraryWindowInBackgroundOnReaderClose" className={stylesGlobal.checkbox_custom_label}>
+                    <div
+                        tabIndex={0}
+                        role="checkbox"
+                        aria-checked={keepLibraryWindowInBackgroundOnReaderClose}
+                        aria-label={__("settings.window.keepLibraryWindowInBackgroundOnReaderClose")}
+                        onKeyDown={(e) => {
+                            if (e.key === " ") {
+                                e.preventDefault();
+                            }
+                        }}
+                        onKeyUp={(e) => {
+                            if (e.key === " ") {
+                                e.preventDefault();
+                                toggleKeepLibraryWindowInBackgroundOnReaderClose();
+                            }
+                        }}
+                        className={stylesGlobal.checkbox_custom}
+                        style={{ border: keepLibraryWindowInBackgroundOnReaderClose ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: keepLibraryWindowInBackgroundOnReaderClose ? "var(--color-brand-primary)" : "transparent" }}>
+                        {keepLibraryWindowInBackgroundOnReaderClose ?
+                            <SVG ariaHidden svg={CheckIcon} />
+                            :
+                            <></>
+                        }
+                    </div>
+                    <div aria-hidden>
+                        <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.keepLibraryWindowInBackgroundOnReaderClose")}</h3>
+                        <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.keepLibraryWindowInBackgroundOnReaderCloseDescription")}</p>
                     </div>
                 </label>
             </div>
@@ -1058,7 +1134,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             <div className={stylesSettings.settings_tab}>
                                 <LanguageSettings />
                                 <ScreenReaderSettings />
-                                {IS_WINDOWS ? <MinimizeLibraryToTraySettings /> : <></>}
+                                <WindowBehaviorSettings />
                                 <ConnectionSettings />
                                 <SharedComputerSettings />
                                 {/* <SaveSessionSettings /> */}

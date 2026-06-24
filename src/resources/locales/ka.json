@@ -1309,9 +1309,13 @@
             "title": ""
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "ბიბლიოთეკის ფონურ რეჟიმში დატოვება მკითხველის ფანჯრების დახურვის შემდეგ",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "ჩართვისას, მკითხველის ფანჯრის დახურვა არ აღადგენს ბიბლიოთეკის ფანჯარას და არ გამოიტანს მას წინა პლანზე.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "ბიბლიოთეკის მინიმიზაცია მკითხველის ფანჯრების გახსნის შემდეგ",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "ჩართვისას, მკითხველის ფანჯრის გახსნა ბიბლიოთეკის ფანჯარას ამინიმიზებს.",
+            "minimizeLibraryToTray": "ბიბლიოთეკის მინიმიზაცია შეტყობინებების არეში",
+            "minimizeLibraryToTrayDescription": "ჩართვისას, ბიბლიოთეკის ფანჯრის მინიმიზაცია Thorium-ს Windows-ის შეტყობინებების არეში გაშვებულს ტოვებს.",
+            "title": "ფანჯრების ქცევა"
         }
     },
     "tts": {

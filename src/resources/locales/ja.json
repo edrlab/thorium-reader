@@ -1303,9 +1303,13 @@
             "title": "アプリケーション テーマ"
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "リーダーウィンドウを閉じた後もライブラリを背面に保持",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "有効にすると、リーダーウィンドウを閉じてもライブラリウィンドウは復元されず、前面にも表示されません。",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "リーダーウィンドウを開いた後にライブラリを最小化",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "有効にすると、リーダーウィンドウを開いたときにライブラリウィンドウが最小化されます。",
+            "minimizeLibraryToTray": "ライブラリを通知領域に最小化",
+            "minimizeLibraryToTrayDescription": "有効にすると、ライブラリウィンドウを最小化しても Thorium は Windows の通知領域で実行され続けます。",
+            "title": "ウィンドウの動作"
         }
     },
     "tts": {

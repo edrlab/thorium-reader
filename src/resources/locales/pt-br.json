@@ -1315,9 +1315,13 @@
             "title": "Tema do aplicativo"
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "Manter a biblioteca em segundo plano após fechar janelas de leitura",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Quando ativado, fechar uma janela de leitura não restaura nem traz a janela da biblioteca para frente.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Minimizar a biblioteca após abrir janelas de leitura",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Quando ativado, abrir uma janela de leitura minimiza a janela da biblioteca.",
+            "minimizeLibraryToTray": "Minimizar a biblioteca para a área de notificação",
+            "minimizeLibraryToTrayDescription": "Quando ativado, minimizar a janela da biblioteca mantém o Thorium em execução na área de notificação do Windows.",
+            "title": "Comportamento das janelas"
         }
     },
     "tts": {

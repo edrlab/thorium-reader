@@ -1309,9 +1309,13 @@
             "title": "Rakenduse kujundus"
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "Hoia teek pärast lugemisakende sulgemist taustal",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Kui see on lubatud, ei taasta lugemisakna sulgemine teegi akent ega too seda esiplaanile.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Minimeeri teek pärast lugemisakende avamist",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Kui see on lubatud, minimeerib lugemisakna avamine teegi akna.",
+            "minimizeLibraryToTray": "Minimeeri teek teavitusalale",
+            "minimizeLibraryToTrayDescription": "Kui see on lubatud, jätab teegi akna minimeerimine Thoriumi Windowsi teavitusalal tööle.",
+            "title": "Akende käitumine"
         }
     },
     "tts": {

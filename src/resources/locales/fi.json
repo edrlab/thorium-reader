@@ -1309,9 +1309,13 @@
             "title": "Sovelluksen teema"
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "Pidä kirjasto taustalla lukuikkunoiden sulkemisen jälkeen",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Kun asetus on käytössä, lukuikkunan sulkeminen ei palauta kirjastoikkunaa eikä tuo sitä etualalle.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Pienennä kirjasto lukuikkunoiden avaamisen jälkeen",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Kun asetus on käytössä, lukuikkunan avaaminen pienentää kirjastoikkunan.",
+            "minimizeLibraryToTray": "Pienennä kirjasto ilmoitusalueelle",
+            "minimizeLibraryToTrayDescription": "Kun asetus on käytössä, kirjastoikkunan pienentäminen pitää Thoriumin käynnissä Windowsin ilmoitusalueella.",
+            "title": "Ikkunoiden toiminta"
         }
     },
     "tts": {

@@ -1315,9 +1315,13 @@
             "title": "Tema d'aplicació"
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "Mantén la biblioteca en segon pla després de tancar finestres de lectura",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Quan està activat, tancar una finestra de lectura no restaura ni posa en primer pla la finestra de la biblioteca.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Minimitza la biblioteca després d'obrir finestres de lectura",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Quan està activat, obrir una finestra de lectura minimitza la finestra de la biblioteca.",
+            "minimizeLibraryToTray": "Minimitza la biblioteca a l'àrea de notificació",
+            "minimizeLibraryToTrayDescription": "Quan està activat, minimitzar la finestra de la biblioteca manté Thorium en execució a l'àrea de notificació del Windows.",
+            "title": "Comportament de les finestres"
         }
     },
     "tts": {
