@@ -45,7 +45,9 @@
             "title": "{{- appName}}-programuppdatering."
         },
         "window": {
-            "showLibrary": "Visa bokhylla"
+            "showLibrary": "Visa bokhylla",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -301,7 +303,7 @@
             "noInternet": "Ingen internetuppkoppling",
             "noInternetMessage": "Kontrollera nätverkssladden, modemet, routern eller det trådlösa nätverket",
             "reject": "Ett oväntat fel uppstod!",
-            "timeout": "Nätverksanslutningen gav inget svar, försök igen senare"
+            "timeout": "Inget svar från nätverket, försök igen senare"
         },
         "next": "Nästa",
         "previous": "Föregående",
@@ -1305,6 +1307,11 @@
             "description": "Applikationens tema följer operativsystemet.",
             "light": "Ljust",
             "title": "Tema"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

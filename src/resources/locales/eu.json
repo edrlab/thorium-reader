@@ -45,7 +45,9 @@
             "title": "{{- appName}} software-eguneratzea."
         },
         "window": {
-            "showLibrary": "Erakutsi liburutegia"
+            "showLibrary": "Erakutsi liburutegia",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -1305,6 +1307,11 @@
             "description": "Aplikazioaren gaia sistema eragilearekin bat dator.",
             "light": "Argia",
             "title": "Aplikazioaren gaia"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

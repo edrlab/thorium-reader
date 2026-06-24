@@ -45,7 +45,9 @@
             "title": "Actualización de software {{- appName}}."
         },
         "window": {
-            "showLibrary": "Mostrar biblioteca"
+            "showLibrary": "Mostrar biblioteca",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -1311,6 +1313,11 @@
             "description": "El diseño de la aplicación coincide con el sistema operativo.",
             "light": "Claro",
             "title": "Diseño de la aplicación"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

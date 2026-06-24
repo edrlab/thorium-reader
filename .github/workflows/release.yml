@@ -126,7 +126,7 @@ jobs:
     environment:
       name: "Thorium Desktop Release"
       deployment: false
-    timeout-minutes: 20
+    timeout-minutes: 30
     permissions:
       actions: none
       artifact-metadata: none

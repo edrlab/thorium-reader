@@ -18,9 +18,10 @@ export interface Payload {
     win: BrowserWindow;
     identifier: string;
     winBound: Electron.Rectangle;
+    windowMaximized?: boolean;
 }
 
-export function build(win: BrowserWindow, winBound: Electron.Rectangle):
+export function build(win: BrowserWindow, winBound: Electron.Rectangle, windowMaximized?: boolean):
     Action<typeof ID, Payload> {
 
     ok(win, "lib win not defined");
@@ -49,6 +50,7 @@ export function build(win: BrowserWindow, winBound: Electron.Rectangle):
         payload: {
             win,
             winBound,
+            windowMaximized,
             identifier: uuidv4(),
         },
     };

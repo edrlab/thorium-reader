@@ -45,7 +45,9 @@
             "title": "{{- appName}} 软件更新。"
         },
         "window": {
-            "showLibrary": "显示 书库/书架"
+            "showLibrary": "显示 书库/书架",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -1299,6 +1301,11 @@
             "description": "跟随操作系统主题。",
             "light": "浅色",
             "title": "应用主题"
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
+            "title": ""
         }
     },
     "tts": {

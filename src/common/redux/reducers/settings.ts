@@ -12,6 +12,7 @@ import { settingsActions } from "readium-desktop/common/redux/actions";
 
 const initialState: ISettingsState = {
     enableAPIAPP: false,
+    minimizeLibraryToTray: false,
     lcpAutoDeleteExpiredPublications: false,
     lcpAutoDeleteExpiredPublicationsForced: false,
 };
@@ -20,6 +21,7 @@ function settingsReducer_(
     state: ISettingsState = initialState,
     action:
         settingsActions.enableAPIAPP.TAction |
+        settingsActions.minimizeLibraryToTray.TAction |
         settingsActions.lcpAutoDeleteExpiredPublications.TAction |
         settingsActions.lcpAutoDeleteExpiredPublicationsForced.TAction,
 ):  ISettingsState {
@@ -29,6 +31,12 @@ function settingsReducer_(
                 ...initialState,
                 ...state,
                 enableAPIAPP: action.payload.enableAPIAPP,
+            };
+        case settingsActions.minimizeLibraryToTray.ID:
+            return {
+                ...initialState,
+                ...state,
+                minimizeLibraryToTray: action.payload.minimizeLibraryToTray,
             };
         case settingsActions.lcpAutoDeleteExpiredPublications.ID:
             return {

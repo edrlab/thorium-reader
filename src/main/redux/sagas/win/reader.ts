@@ -25,6 +25,7 @@ import { readerActions } from "readium-desktop/common/redux/actions";
 import { sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
 import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { dialog } from "electron";
+import { restoreBrowserWindowState } from "./session/browserWindowState";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:win:reader";
@@ -231,15 +232,21 @@ export function* winClose(windowIdentifier: string, publicationIdentifier: strin
                     const readerWin = yield* callTyped(() => getReaderWindowFromDi(windowIdentifier));
                     if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
                         try {
-                            let winBound = readerWin.getBounds();
-                            debug("_______3 readerWin.getBounds()", winBound);
-                            winBound = normalizeWinBoundRectangle(winBound);
+                            const libraryWindowState = yield* selectTyped((state: RootState) => state.win.session.library);
 
                             if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
-                                libraryWin.setBounds(winBound);
+                                if (libraryWindowState.windowMaximized) {
+                                    debug("restore maximized library window state", libraryWindowState);
+                                    restoreBrowserWindowState(libraryWin, libraryWindowState);
+                                } else {
+                                    let winBound = readerWin.getBounds();
+                                    debug("_______3 readerWin.getBounds()", winBound);
+                                    winBound = normalizeWinBoundRectangle(winBound);
+                                    libraryWin.setBounds(winBound);
+                                }
                             }
                         } catch (e) {
-                            debug("error libraryWindow.setBounds(readerWin.getBounds())", e);
+                            debug("error restore library window state", e);
                         }
                     }
                 }

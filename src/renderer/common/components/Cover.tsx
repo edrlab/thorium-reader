@@ -21,7 +21,8 @@ import {
 } from "readium-desktop/renderer/common/logics/formatContributor";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { convertMultiLangStringToLangString, langStringIsRTL } from "readium-desktop/common/language-string";
+import { convertMultiLangStringToLangString } from "readium-desktop/common/language-string";
+import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import { useTranslator } from "../hooks/useTranslator";
 import { connect } from "react-redux";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
@@ -223,7 +224,7 @@ const mapStateToProps = (state: IRendererCommonRootState) => ({
     lcp: state.lcp,
 });
 
- 
+
 const CoverWithTranslator = connect(mapStateToProps)(withTranslator(Cover));
 export default CoverWithTranslator;
 

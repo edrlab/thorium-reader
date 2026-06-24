@@ -45,7 +45,9 @@
             "title": ""
         },
         "window": {
-            "showLibrary": "라이브러리 / 내서재 보기"
+            "showLibrary": "라이브러리 / 내서재 보기",
+            "trayHint": "",
+            "trayTooltip": ""
         }
     },
     "catalog": {
@@ -1293,6 +1295,11 @@
             "dark": "",
             "description": "",
             "light": "",
+            "title": ""
+        },
+        "window": {
+            "minimizeLibraryToTray": "",
+            "minimizeLibraryToTrayDescription": "",
             "title": ""
         }
     },
