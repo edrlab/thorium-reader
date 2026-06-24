@@ -1118,6 +1118,11 @@ export const Settings: React.FC<ISettingsProps> = () => {
 
     const [tabTitle, setTabTitle] = React.useState(__("settings.tabs.general"));
 
+    React.useEffect(() => {
+        setTabTitle(__("settings.tabs.general"));
+    }, [__, locale]);
+
+
     // https://github.com/edrlab/thorium-reader/discussions/3177#discussioncomment-14752676
     // <DirectionProvider dir={isRTL ? "rtl" : "ltr"}> ... </DirectionProvider>
     return <Dialog.Root>

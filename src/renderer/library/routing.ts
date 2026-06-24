@@ -41,6 +41,19 @@ export interface IRouterLocationState {
     displayType: DisplayType;
 }
 
+export const normalizeDisplayType = (displayType: unknown): DisplayType =>
+    displayType === DisplayType.List ? DisplayType.List : DisplayType.Grid;
+
+export const resolveDisplayType = (locationState: unknown, savedDisplayType?: unknown): DisplayType => {
+    const locationDisplayType = (locationState as Partial<IRouterLocationState> | undefined)?.displayType;
+
+    if (locationDisplayType === DisplayType.Grid || locationDisplayType === DisplayType.List) {
+        return locationDisplayType;
+    }
+
+    return normalizeDisplayType(savedDisplayType);
+};
+
 const _routes = {
     "/opds": {
         path: "/opds",

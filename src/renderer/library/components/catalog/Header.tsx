@@ -22,7 +22,9 @@ import {
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import SecondaryHeader from "readium-desktop/renderer/library/components/SecondaryHeader";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
+import { settingsActions } from "readium-desktop/common/redux/actions";
+import { DisplayType, resolveDisplayType } from "readium-desktop/renderer/library/routing";
+import { TDispatch } from "readium-desktop/typings/redux";
 
 import PublicationAddButton from "./PublicationAddButton";
 
@@ -36,7 +38,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
 class Header extends React.Component<IProps, undefined> {
@@ -48,7 +50,7 @@ class Header extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { __, location } = this.props;
 
-        const displayType = (location?.state && (location.state as IRouterLocationState).displayType) || DisplayType.Grid;
+        const displayType = resolveDisplayType(location?.state, this.props.libraryView?.displayType);
 
         return (
             <SecondaryHeader>
@@ -67,6 +69,7 @@ class Header extends React.Component<IProps, undefined> {
                             aria-pressed={displayType === DisplayType.Grid}
                             role={"button"}
                             onClick={(e) => {
+                                this.props.setLibraryViewSettings({ displayType: DisplayType.Grid });
                                 if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
                                     e.preventDefault();
                                     e.currentTarget.click();
@@ -107,6 +110,7 @@ class Header extends React.Component<IProps, undefined> {
                             aria-pressed={displayType === DisplayType.List}
                             role={"button"}
                             onClick={(e) => {
+                                this.props.setLibraryViewSettings({ displayType: DisplayType.List });
                                 if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
                                     e.preventDefault();
                                     e.currentTarget.click();
@@ -174,6 +178,13 @@ class Header extends React.Component<IProps, undefined> {
 const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
     locale: state.i18n.locale, // refresh
+    libraryView: state.settings.libraryView,
 });
 
-export default connect(mapStateToProps)(withTranslator(Header));
+const mapDispatchToProps = (dispatch: TDispatch) => ({
+    setLibraryViewSettings: (libraryView: Parameters<typeof settingsActions.libraryView.build>[0]) => {
+        dispatch(settingsActions.libraryView.build(libraryView));
+    },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(Header));

@@ -79,11 +79,12 @@ import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/library/apiSubscribe";
 import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+import { ILibraryViewSettingsState } from "readium-desktop/common/redux/states/settings";
 import { Unsubscribe } from "redux";
 
 import Header from "../catalog/Header";
 
-import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
+import { DisplayType, resolveDisplayType } from "readium-desktop/renderer/library/routing";
 import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
@@ -113,6 +114,8 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { HoverEvent } from "@react-types/shared";
+import { settingsActions } from "readium-desktop/common/redux/actions";
+import { equals } from "ramda";
 
 
 // import GridTagButton from "../catalog/GridTagButton";
@@ -142,6 +145,22 @@ interface IState {
     accessibilitySupportEnabled: boolean;
     tags: string[];
 }
+
+const nonEditableColumnIds = ["colCover", "colActions", "colAuthors", "colTitle"];
+
+const stringArrayEquals = (a: string[] | undefined, b: string[] | undefined) =>
+    equals(a || [], b || []);
+
+const normalizeSortBy = (sortBy: ILibraryViewSettingsState["sortBy"] | undefined) =>
+    (sortBy || []).map(({ id, desc }) => ({
+        id,
+        desc: desc === true,
+    }));
+
+const sortByEquals = (
+    a: ILibraryViewSettingsState["sortBy"] | undefined,
+    b: ILibraryViewSettingsState["sortBy"] | undefined,
+) => equals(normalizeSortBy(a), normalizeSortBy(b));
 
 export class AllPublicationPage extends React.Component<IProps, IState> {
     private unsubscribe: Unsubscribe;
@@ -225,7 +244,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const displayType = (this.props.location?.state && (this.props.location.state as IRouterLocationState).displayType) || DisplayType.Grid;
+        const displayType = resolveDisplayType(this.props.location?.state, this.props.libraryView?.displayType);
 
         const { __, location, tags, openReader, displayPublicationInfo } = this.props;
 
@@ -244,6 +263,8 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
                             accessibilitySupportEnabled={this.state.accessibilitySupportEnabled}
                             location={location}
                             displayType={displayType}
+                            libraryView={this.props.libraryView}
+                            setLibraryViewSettings={this.props.setLibraryViewSettings}
                             __={__}
                             publicationViews={this.state.publicationViews}
                             displayPublicationInfo={displayPublicationInfo}
@@ -339,6 +360,7 @@ const mapStateToProps = (state: ILibraryRootState) => ({
     keyboardShortcuts: state.keyboard.shortcuts,
     tags: state.publication.tag,
     locale: state.i18n.locale, // refresh
+    libraryView: state.settings.libraryView,
 });
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
@@ -352,6 +374,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         },
         openReader: (publicationViewIdentifier: string) => {
             dispatch(readerActions.openRequest.build(publicationViewIdentifier));
+        },
+        setLibraryViewSettings: (libraryView: Partial<ILibraryViewSettingsState>) => {
+            dispatch(settingsActions.libraryView.build(libraryView));
         },
     };
 };
@@ -1516,6 +1541,8 @@ interface ITableCellProps_TableView {
     location: Location;
     accessibilitySupportEnabled: boolean;
     tags: string[];
+    libraryView?: ILibraryViewSettingsState;
+    setLibraryViewSettings: (libraryView: Partial<ILibraryViewSettingsState>) => void;
 }
 
 // 1. Définissez une interface pour vos props
@@ -1539,7 +1566,18 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
     const scrollToViewRef = React.useRef(null);
 
-    const { openReader, displayPublicationInfo, displayType, __, focusInputRef, publicationViews, accessibilitySupportEnabled, tags } = props;
+    const {
+        openReader,
+        displayPublicationInfo,
+        displayType,
+        __,
+        focusInputRef,
+        publicationViews,
+        accessibilitySupportEnabled,
+        tags,
+        libraryView,
+        setLibraryViewSettings,
+    } = props;
 
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
     const [activeFiltersArray, setActiveFiltersArray] = React.useState<IActiveFilter[]>([]);
@@ -2063,6 +2101,30 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [__, locale]);
 
+    const tableColumnIds = React.useMemo(() => {
+        const ids: string[] = [];
+        for (const column of tableColumns) {
+            if (typeof column.accessor === "string") {
+                ids.push(column.accessor);
+            }
+        }
+        return new Set<string>(ids);
+    }, [tableColumns]);
+
+    const initialSortBy = React.useMemo(() =>
+        (libraryView?.sortBy || [])
+            .filter((sort) => tableColumnIds.has(sort.id))
+            .map((sort) => ({
+                id: sort.id,
+                desc: sort.desc === true,
+            })),
+    [libraryView?.sortBy, tableColumnIds]);
+
+    const initialHiddenColumns = React.useMemo(() =>
+        (libraryView?.hiddenColumns || [])
+            .filter((columnId) => tableColumnIds.has(columnId) && !nonEditableColumnIds.includes(columnId)),
+    [libraryView?.hiddenColumns, tableColumnIds]);
+
     const defaultColumn = React.useMemo(
         () => ({
             Cell: TableCell,
@@ -2121,9 +2183,11 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
     const PAGESIZE = 50;
 
-    const initialState: UsePaginationState<IColumns> & TableState<IColumns> = {
+    const initialState: UsePaginationState<IColumns> & UseSortByState<IColumns> & TableState<IColumns> = {
         pageSize: PAGESIZE, // displayType === DisplayType.List ? 20 : 10;
         pageIndex: 0,
+        sortBy: initialSortBy,
+        hiddenColumns: initialHiddenColumns,
         // hiddenColumns: displayType === DisplayType.Grid ? ["colLanguages", "colPublishers", "colPublishedDate", "colLCP", "colDuration", "colDescription", "col_a11y_accessibilitySummary"] : [],
     };
     const opts:
@@ -2144,6 +2208,43 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     };
     const tableInstance =
         useTable<IColumns>(opts, useFilters, useGlobalFilter, useSortBy, usePagination) as MyTableInstance<IColumns>;
+
+    const skipInitialTableStatePersistenceRef = React.useRef(true);
+    React.useEffect(() => {
+        if (skipInitialTableStatePersistenceRef.current) {
+            skipInitialTableStatePersistenceRef.current = false;
+            return;
+        }
+
+        const sortBy = (tableInstance.state.sortBy || [])
+            .filter((sort) => tableColumnIds.has(sort.id))
+            .map((sort) => ({
+                id: sort.id,
+                desc: sort.desc === true,
+            }));
+
+        const hiddenColumns = ((tableInstance.state.hiddenColumns as string[] | undefined) || [])
+            .filter((columnId) => tableColumnIds.has(columnId) && !nonEditableColumnIds.includes(columnId));
+
+        if (
+            sortByEquals(libraryView?.sortBy, sortBy) &&
+            stringArrayEquals(libraryView?.hiddenColumns, hiddenColumns)
+        ) {
+            return;
+        }
+
+        setLibraryViewSettings({
+            sortBy,
+            hiddenColumns,
+        });
+    }, [
+        tableInstance.state.sortBy,
+        tableInstance.state.hiddenColumns,
+        tableColumnIds,
+        libraryView?.sortBy,
+        libraryView?.hiddenColumns,
+        setLibraryViewSettings,
+    ]);
 
     const keyboardShortcuts = useSelector((state: ILibraryRootState) => state.keyboard.shortcuts);
 
@@ -2444,8 +2545,6 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
         "colReadingState": setSelectedReadingState,
         "colTags": setSelectedTag,
     };
-
-    const nonEditableColumnIds = ["colCover", "colActions", "colAuthors", "colTitle"];
 
     const editableColumnsArray = tableInstance.allColumns.filter(
         (col) => !nonEditableColumnIds.includes(col.id),

@@ -31,7 +31,7 @@ import * as RefreshIcon from "readium-desktop/renderer/assets/icons/refresh-icon
 import * as HomeIcon from "readium-desktop/renderer/assets/icons/home-icon.svg";
 import * as AvatarIcon from "readium-desktop/renderer/assets/icons/person-fill.svg";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
-import { DisplayType, IOpdsBrowse, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
+import { IOpdsBrowse, resolveDisplayType, routes } from "readium-desktop/renderer/library/routing";
 import { Link, matchPath } from "react-router-dom";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
@@ -199,6 +199,10 @@ class LibraryLayout extends React.Component<IProps, undefined> {
         }
     };
 
+    private linkState = () => ({
+        displayType: resolveDisplayType(this.props.location.state, this.props.libraryView?.displayType),
+    });
+
     private bookshelf = () => {
         const { bookshelf } = this.props.headerLinks;
 
@@ -228,7 +232,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         pathname: route,
                     }}
                     style={{ width: "20px", height: "20px"}}
-                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                    state={this.linkState()}
                     className={stylesButtons.button_secondary_blue}
                     onClick={(e) => {
                         if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
@@ -291,7 +295,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         pathname: route,
                     }}
                     style={{ width: "20px", height: "20px" }}
-                    state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
+                    state={this.linkState()}
                     className={stylesButtons.button_secondary_blue}
                     onClick={(e) => {
                         if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
@@ -357,7 +361,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                             pathname: route,
                         }}
                         style={{ height: "unset" }}
-                        state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
+                        state={this.linkState()}
                         className={classNames(stylesButtons.button_refresh, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
                         onClick={(e) => {
                             if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
@@ -393,7 +397,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         to={{
                             ...this.props.location,
                         }}
-                        state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
+                        state={this.linkState()}
                         className={classNames(stylesButtons.button_refresh, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
                         onClick={(e) => {
                             if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
@@ -435,6 +439,7 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     headerLinks: state.opds.browser.header,
     breadcrumb: state.opds.browser.breadcrumb,
     locale: state.i18n.locale, // refresh
+    libraryView: state.settings.libraryView,
 });
 
 export default connect(mapStateToProps)(withTranslator(LibraryLayout));

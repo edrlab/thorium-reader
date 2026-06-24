@@ -28,6 +28,7 @@ function settingsReducer_(
         settingsActions.keepLibraryWindowInBackgroundOnReaderOpen.TAction |
         settingsActions.minimizeLibraryToTray.TAction |
         settingsActions.oneReaderWindowPerPublication.TAction |
+        settingsActions.libraryView.TAction |
         settingsActions.lcpAutoDeleteExpiredPublications.TAction |
         settingsActions.lcpAutoDeleteExpiredPublicationsForced.TAction,
 ):  ISettingsState {
@@ -61,6 +62,15 @@ function settingsReducer_(
                 ...initialState,
                 ...state,
                 oneReaderWindowPerPublication: action.payload.oneReaderWindowPerPublication,
+            };
+        case settingsActions.libraryView.ID:
+            return {
+                ...initialState,
+                ...state,
+                libraryView: {
+                    ...(state.libraryView || {}),
+                    ...action.payload.libraryView,
+                },
             };
         case settingsActions.lcpAutoDeleteExpiredPublications.ID:
             return {

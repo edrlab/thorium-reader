@@ -15,7 +15,7 @@ import * as ChevronRight from "readium-desktop/renderer/assets/icons/chevron-rig
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/breadcrumbItem";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import { DisplayType, IRouterLocationState } from "../../routing";
+import { resolveDisplayType } from "../../routing";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import useResizeObserver from "@react-hook/resize-observer";
 import debounce from "debounce";
@@ -50,13 +50,14 @@ function useSize<T extends Element>(target: React.RefObject<T>) {
 const LinkItemBreadcrumb = ({item: {name, path}/*, isTheFirstOne*/}: {item: IBreadCrumbItem, isTheFirstOne?: boolean}) => {
 
     const location = useSelector((state: ILibraryRootState) => state.router.location);
+    const savedDisplayType = useSelector((state: ILibraryRootState) => state.settings.libraryView?.displayType);
 
     return (<Link
         to={{
             ...location,
             pathname: path,
         }}
-        state={{ displayType: (location.state && (location.state as IRouterLocationState).displayType) ? (location.state as IRouterLocationState).displayType : DisplayType.Grid }}
+        state={{ displayType: resolveDisplayType(location.state, savedDisplayType) }}
         title={name}
         className={stylesButtons.button_transparency}
         onClick={(e) => {

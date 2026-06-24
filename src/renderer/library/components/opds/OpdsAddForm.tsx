@@ -12,7 +12,7 @@ import { OpdsFeedAddFormDialog } from "../dialog/OpdsFeedAddForm";
 import { ApiappAddFormDialog } from "../dialog/ApiappAddForm";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import { DisplayType, IRouterLocationState } from "../../routing";
+import { resolveDisplayType } from "../../routing";
 import { Link } from "react-router-dom";
 // import * as CatalogsIcon from "readium-desktop/renderer/assets/icons/catalogs-icon.svg";
 import * as EyeGlassesIcon from "readium-desktop/renderer/assets/icons/eyeglasses-icon.svg";
@@ -29,6 +29,7 @@ interface IProps {
 const OpdsAddForm: React.FC<IProps> = ({feedsResult}) => {
     const historyState = useSelector((state: ILibraryRootState) => state.history);
     const location = useSelector((state: ILibraryRootState) => state.router.location);
+    const savedDisplayType = useSelector((state: ILibraryRootState) => state.settings.libraryView?.displayType);
     const [__] = useTranslator();
 
     const item: NavigationHeader =   {
@@ -93,7 +94,7 @@ const OpdsAddForm: React.FC<IProps> = ({feedsResult}) => {
             nextLocation ?
             <Link
                 to={nextLocation}
-                state={{ displayType: (nextLocation.state && (nextLocation.state as IRouterLocationState).displayType) ? (nextLocation.state as IRouterLocationState).displayType : DisplayType.Grid }}
+                state={{ displayType: resolveDisplayType(nextLocation.state, savedDisplayType) }}
                 replace={true}
                 role={"button"}
                 className={stylesButtons.button_nav_primary}

@@ -30,7 +30,7 @@ import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/rou
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { Unsubscribe } from "redux";
-import { DisplayType, IRouterLocationState } from "../../routing";
+import { resolveDisplayType } from "../../routing";
 import DeleteOpdsFeedConfirm from "../dialog/DeleteOpdsFeedConfirm";
 import OpdsFeedUpdateForm from "../dialog/OpdsFeedUpdateForm";
 import * as Popover from "@radix-ui/react-popover";
@@ -111,7 +111,7 @@ class FeedList extends React.Component<IProps, IState> {
                                             item.url,
                                         ),
                                     }}
-                                    state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
+                                    state={{ displayType: resolveDisplayType(this.props.location.state, this.props.libraryView?.displayType) }}
                                     className={stylesCatalogs.catalog_content}
                                     onClick={(e) => {
                                         if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
@@ -285,6 +285,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
 const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
     locale: state.i18n.locale, // refresh
+    libraryView: state.settings.libraryView,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(FeedList));
