@@ -33,6 +33,7 @@ import * as EdrlabLogo from "readium-desktop/renderer/assets/icons/logo_edrlab.s
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
+import { wizardActions } from "readium-desktop/common/redux/actions";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -59,6 +60,7 @@ interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, Retu
 
 interface IState {
     versionInfo: boolean;
+    displayWhatsNew?: boolean;
 }
 
 class AboutThoriumButton extends React.Component<IProps, IState> {
@@ -77,6 +79,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
     public render() {
         const { __ } = this.props;
         const displayVersionToast = !!(this.state.versionInfo && this.props.newVersionURL && this.props.newVersion);
+        const displayWhatsNew = !this.props.displayWhatsNew;
         const locale = encodeURIComponent_RFC3986(this.props.locale);
         const app_version = encodeURIComponent_RFC3986(_APP_VERSION);
         const source = encodeURIComponent_RFC3986("thorium-desktop");
@@ -84,7 +87,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
         // const customizationProfileProvisionedAndActivated = this.props.customizationProvision.find(({id}) => this.props.customizationProfileId === id);
 
         return (
-            <section className={stylesFooter.footer_wrapper} style={{justifyContent: displayVersionToast ? "space-between" : "end"}}>
+            <section className={stylesFooter.footer_wrapper} style={{justifyContent: (displayVersionToast || displayWhatsNew) ? "space-between" : "end"}}>
                                 {
                     displayVersionToast ?
                     <div className={stylesGlobal.new_version}
@@ -113,6 +116,32 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                         }}>
                             {this.props.__("app.session.exit.askBox.button.no")}
                         </button> */}
+                    </div>
+                    : displayWhatsNew ?
+                    <div className={stylesGlobal.new_version}
+                    aria-live="polite"
+                    role="alert">
+                        <div>
+                            <SVG ariaHidden svg={InfoIcon} />
+                            <p
+                            ><a href=""
+                            onClick={async (ev) => {
+                                ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
+                                this.props.whatsNewOpened();
+                                const os = encodeURIComponent_RFC3986(
+                                    await getOsName().catch(() => navigator.platform || "unknown"),
+                                );
+                                const href = `https://thorium.edrlab.org/?lang=${locale}&v=${app_version}&source=${source}&os=${os}`;
+                                if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
+                                    await shell.openExternal(href);
+                                }
+                            }}>
+                                {/* TODO: add a translation for this string */}
+                                {/* {`${this.props.__("app.whatsnew.message", { version: _APP_VERSION })}`} */}
+                                See what is new in Thorium {`v${_APP_VERSION}`}
+                                </a>
+                                </p>
+                        </div>
                     </div>
                     : <></>
                 }
@@ -246,6 +275,7 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
         locale: state.i18n.locale, // refresh
         newVersionURL: state.versionUpdate.newVersionURL,
         newVersion: state.versionUpdate.newVersion,
+        displayWhatsNew: state.wizard.opened_v340,
 
         customizationProvision: state.customization.provision,
         customizationProfileId: state.customization.activate.id,
@@ -257,6 +287,9 @@ const mapDispatchToProps = (__dispatch: TDispatch, _props: IBaseProps) => {
         // openReader: (publicationView: PublicationView) => {
         //     dispatch(readerActions.openRequest.build(publicationView.identifier));
         // },
+        whatsNewOpened: () => {
+            __dispatch(wizardActions.setWizard.build(true));
+        },
     };
 };
 
