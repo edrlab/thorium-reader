@@ -203,7 +203,7 @@ export function saga() {
                     ) {
                         const u = new URL(url);
                         theUrl = u.searchParams.get("publication");
-                        // const title = u.searchParams.get("title");
+                        // const title = u.searchParams.get("title") || theUrl;
                         // const author = u.searchParams.get("author");
                         // const cover = u.searchParams.get("cover");
                         // const passphrase = u.searchParams.get("passphrase");
@@ -295,7 +295,7 @@ export function saga() {
                         ) {
                             const u = new URL(url);
                             theUrl = u.searchParams.get("main");
-                            title = u.searchParams.get("title");
+                            title = u.searchParams.get("title") || theUrl;
                             // const bookshelf = u.searchParams.get("bookshelf");
                             // const passphrase = u.searchParams.get("passphrase");
                             // const hashed_passphrase = u.searchParams.get("hashed_passphrase");
