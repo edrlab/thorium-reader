@@ -157,6 +157,20 @@
         "role": "Viewer"
       },
       {
+        "name": "Thorium reader - application link",
+        "schemes": [
+          "com.thoriumreader"
+        ],
+        "role": "Viewer"
+      },
+      {
+        "name": "Thorium Desktop reader - application link",
+        "schemes": [
+          "com.thoriumreader.desktop"
+        ],
+        "role": "Viewer"
+      },
+      {
         "name": "Thorium Reader - catalog link",
         "schemes": [
           "opds"
