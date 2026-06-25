@@ -1260,38 +1260,38 @@
             },
             "beta": {
                 "availability": "Tämä ominaisuus toimii vain Thoriumin uusimmissa versioissa: ulkoisen kansion kirjat eivät näy Thorium 3.4:ssä tai sitä aiemmissa versioissa.",
-                "integrity": "",
-                "migration": "",
-                "summary": "",
-                "warning": ""
+                "integrity": "Tämä hakemisto on pidettävä turvassa ja saatavilla. Älä poista sitä, rajoita pääsyä siihen tai käytä hidasta tai epävakaata tallennusvälinettä, kuten verkkoasemia.",
+                "migration": "Thorium ei siirrä julkaisuja automaattisesti. Jos lisäät tallennustilaa, sinun on siirrettävä julkaisusi itse uuteen sijaintiin. Jos poistat tallennustilan, sinun on siirrettävä julkaisusi itse takaisin alkuperäiseen tallennustilaan.",
+                "summary": "Lue lisää tästä ominaisuudesta, joka on vielä beta-vaiheessa",
+                "warning": "Älä muokkaa tämän kansion tiedostoja itse, sillä se voi aiheuttaa ongelmia kirjojen tai sovelluksen kanssa. Ajattele tätä kansiota Thoriumin hallinnoimana suojattuna kirjastona."
             },
             "configuration": {
-                "chooseFolderDescription": "",
-                "configuredDescription": "",
-                "notConfiguredDescription": ""
+                "chooseFolderDescription": "Valitse hakemisto, jota Thorium voi käyttää lisätallennustilana.",
+                "configuredDescription": "Lisätallennustila on määritetty, ja sitä voi nyt käyttää vasta tallennetuille julkaisuille.",
+                "notConfiguredDescription": "Thorium Reader -sovellukseen tuodut julkaisut tallennetaan valittuun hakemistoon. Aiemmin tuodut julkaisut säilyvät alkuperäisessä järjestelmän tallennustilassa."
             },
             "dialogs": {
                 "add": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Jatka",
+                    "description": "Tämä ominaisuus on tällä hetkellä beta-vaiheessa. Haluatko jatkaa ja määrittää lisätallennustilan valitsemalla hakemiston?",
+                    "title": "Valitse lisätallennustila"
                 },
                 "edit": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Muokkaa hakemistoa",
+                    "description": "Lisätallennustilan päivittäminen vaatii huolellisuutta. Thorium ei siirrä olemassa olevia julkaisuja puolestasi, sinun on tehtävä se itse. Haluatko jatkaa?",
+                    "title": "Päivitä lisätallennustila"
                 },
                 "remove": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Poista hakemisto",
+                    "description": "Lisätallennustilan poistaminen vaatii huolellisuutta. Thorium ei siirrä olemassa olevia julkaisuja puolestasi, sinun on tehtävä se itse. Haluatko jatkaa?",
+                    "title": "Poista lisätallennustila"
                 }
             },
             "locations": {
-                "defaultDescription": "",
-                "defaultInternal": "",
-                "externalStorage": "",
-                "title": ""
+                "defaultDescription": "Sovelluksen hallinnoimat julkaisut tallennetaan oletuksena:",
+                "defaultInternal": "Järjestelmän tallennustila",
+                "externalStorage": "Ulkoinen tallennustila",
+                "title": "Sijainnit"
             }
         },
         "tabs": {
@@ -1299,7 +1299,7 @@
             "general": "Yleiset",
             "keyboardShortcuts": "Pikanäppäimet",
             "profiles": "Profiilit",
-            "storage": ""
+            "storage": "Tallennustila"
         },
         "theme": {
             "auto": "Automaattinen",
