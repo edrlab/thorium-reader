@@ -907,8 +907,14 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
         if (/^https?:\/\//.test(navUrl)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
 
             debug("willNavigate ==> EXTERNAL: ", win.webContents.getURL().substring(0, 500), " *** ", navUrl);
-            setTimeout(async () => {
-                await shell.openExternal(navUrl);
+            setTimeout(() => {
+                void (async () => {
+                    try {
+                        await shell.openExternal(navUrl);
+                    } catch (err) {
+                        debug(err);
+                    }
+                })();
             }, 0);
 
             return;
@@ -1031,8 +1037,14 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
     debug("OPDS AUTH win LOAD 2", urlStr.substring(0, 500));
 
     if (urlExternal) {
-        setTimeout(async () => {
-            await shell.openExternal(urlExternal);
+        setTimeout(() => {
+            void (async () => {
+                try {
+                    await shell.openExternal(urlExternal);
+                } catch (err) {
+                    debug(err);
+                }
+            })();
         }, 500);
     }
 

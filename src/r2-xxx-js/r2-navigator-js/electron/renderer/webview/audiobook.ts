@@ -211,7 +211,7 @@ export function setupAudioBook(_docTitle: string | undefined, audioPlaybackRate:
     //     const p = sliderElement.valueAsNumber / 100;
     //     audioElement.currentTime = audioElement.duration * p;
     //     if (wasPlaying) {
-    //         setTimeout(async () => {
+    //         setTimeout(() => {
     //             await audioElement.play();
     //         }, 200);
     //     }
@@ -241,8 +241,14 @@ export function setupAudioBook(_docTitle: string | undefined, audioPlaybackRate:
                     };
                     ipcRenderer.sendToHost(R2_EVENT_PAGE_TURN_RES, payload);
                 } else {
-                    setTimeout(async () => {
-                        await audioElement.play();
+                    setTimeout(() => {
+                        void (async () => {
+                            try {
+                                await audioElement.play();
+                            } catch (_err) {
+                                // debug(err);
+                            }
+                        })();
                     }, 0);
                 }
             }
@@ -382,16 +388,14 @@ export function setupAudioBook(_docTitle: string | undefined, audioPlaybackRate:
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ipcRenderer.on(R2_EVENT_AUDIO_DO_PLAY, async (_event: any) => {
-        await audioElement.play();
-    });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ipcRenderer.on(R2_EVENT_AUDIO_DO_PAUSE, (_event: any) => {
         audioElement.pause();
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ipcRenderer.on(R2_EVENT_AUDIO_DO_PLAY, async (_event: any) => {
-        await audioElement.play();
+    ipcRenderer.on(R2_EVENT_AUDIO_DO_PLAY, (_event: any) => {
+        void (async () => {
+            await audioElement.play();
+        })();
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ipcRenderer.on(R2_EVENT_AUDIO_TOGGLE_PLAY_PAUSE, (_event: any) => {

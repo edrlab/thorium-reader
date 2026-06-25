@@ -67,26 +67,28 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
 
     const noteExport = <button
         className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
-        onClick={debounce(async () => {
-            try {
-                const notes = await (await fetch(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PUBNOTES}/${props.publicationView.identifier}`)).json();
+        onClick={debounce(() => {
+            void (async () => {
+                try {
+                    const notes = await (await fetch(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PUBNOTES}/${props.publicationView.identifier}`)).json();
 
-                const annoSetTitle = convertMultiLangStringToString(props.publicationView.publicationTitle, locale) || "thorium-notes";
+                    const annoSetTitle = convertMultiLangStringToString(props.publicationView.publicationTitle, locale) || "thorium-notes";
 
-                // let label = title.slice(0, 200);
-                // label = label.trim();
-                // label = label.replace(/[^a-z0-9_-]/gi, "_");
-                // label = label.replace(/^_+|_+$/g, ""); // leading and trailing underscore
-                // label = label.replace(/^\./, ""); // remove dot start
-                // label = label.toLowerCase();
+                    // let label = title.slice(0, 200);
+                    // label = label.trim();
+                    // label = label.replace(/[^a-z0-9_-]/gi, "_");
+                    // label = label.replace(/^_+|_+$/g, ""); // leading and trailing underscore
+                    // label = label.replace(/^\./, ""); // remove dot start
+                    // label = label.toLowerCase();
 
-                // Be careful Selector can be not settled on th3.0 / th3.1 publication, you need to open it first to generate selectors for each notes
-                // TODO: add a dialog to warm user on incorrect notes
+                    // Be careful Selector can be not settled on th3.0 / th3.1 publication, you need to open it first to generate selectors for each notes
+                    // TODO: add a dialog to warm user on incorrect notes
 
-                await getSaga().run(exportAnnotationSet, notes, props.publicationView, annoSetTitle, "annotation").toPromise();
-            } catch (e) {
-                console.error("EXPORT NOTES:", e);
-            }
+                    await getSaga().run(exportAnnotationSet, notes, props.publicationView, annoSetTitle, "annotation").toPromise();
+                } catch (e) {
+                    console.error("EXPORT NOTES:", e);
+                }
+            })();
         }, 1000, { immediate: true })}
     >
         <SVG ariaHidden svg={SaveIcon} />

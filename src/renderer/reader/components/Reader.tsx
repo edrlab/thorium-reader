@@ -482,7 +482,7 @@ class Reader extends React.Component<IProps, IState> {
         // this.blackoutDebounced();
     }
 
-    public async componentDidMount() {
+    public componentDidMount() {
         // navigatorTTSVoicesSetter(this.props.ttsVoices);
 
         ipcRenderer.on("accessibility-support-changed", this.accessibilitySupportChanged);
@@ -745,7 +745,7 @@ class Reader extends React.Component<IProps, IState> {
         this.props.dispatchReaderTSXMountedAndPublicationIntoViewportLoaded();
     }
 
-    public async componentDidUpdate(oldProps: IProps, _oldState: IState) {
+    public componentDidUpdate(oldProps: IProps, _oldState: IState) {
 
         if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
             console.log("READER RELOAD KEYBOARD SHORTCUTS");

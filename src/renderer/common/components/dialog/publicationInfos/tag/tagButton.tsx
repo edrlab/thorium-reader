@@ -108,7 +108,7 @@ export const TagButton: React.FC<React.PropsWithChildren<IProps>> = (props) => {
     } else if (typeof tag === "object" && tag?.link?.length && onClickLinkCb) {
         button = (<>
             <a onClick={
-                // () => this.props.link(tag.link[0], this.props.location, tag.name)
+                // () => void this.props.link(tag.link[0], this.props.location, tag.name)
                 onClickLinkCb(tag)}
                 tabIndex={0}
                 onKeyUp={(e) => {
@@ -155,7 +155,7 @@ export const TagReaderButton: React.FC<React.PropsWithChildren<IBaseProps>> = (p
         button = (
             <>
                 <a onClick={
-                    // () => this.props.link(tag.link[0], this.props.location, tag.name)
+                    // () => void this.props.link(tag.link[0], this.props.location, tag.name)
                     onClickLinkCb(tag)}
                     tabIndex={0}
                     onKeyUp={(e) => {

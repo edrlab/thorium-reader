@@ -167,22 +167,34 @@ export const WizardModal = () => {
                                             <a dir={isRTL ? "rtl" : "ltr"}
                                                 style={{ color: "var(--color-brand-primary)", textDecoration: "none", fontSize: "16px", fontWeight: "500" }}
                                                 href=""
-                                                onClick={async (ev) => {
+                                                onClick={(ev) => {
                                                     ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                                                     const href = "https://www.thoriumreader.com";
                                                     if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                                        await shell.openExternal(href);
+                                                        void (async () => {
+                                                            try {
+                                                                await shell.openExternal(href);
+                                                            } catch (_err) {
+                                                                // console.log(err);
+                                                            }
+                                                        })();
                                                     }
                                                 }}>
                                                 🌐 {__("wizard.resources.website", { url: "https://www.thoriumreader.com" })}
                                             </a>
                                             <a dir={isRTL ? "rtl" : "ltr"} href=""
                                                 style={{ color: "var(--color-brand-primary)", textDecoration: "none", fontSize: "16px", fontWeight: "500" }}
-                                                onClick={async (ev) => {
+                                                onClick={(ev) => {
                                                     ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                                                     const href = "https://discord.com/invite/84wgWhFKDY";
                                                     if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                                        await shell.openExternal(href);
+                                                        void (async () => {
+                                                            try {
+                                                                await shell.openExternal(href);
+                                                            } catch (_err) {
+                                                                // console.log(err);
+                                                            }
+                                                        })();
                                                     }
                                                 }}>
                                                 💬 {__("wizard.resources.discord", { url: "https://discord.gg/84wgWhFKDY" })}

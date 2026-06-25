@@ -76,8 +76,14 @@ const userFilePath_OLD = path.join(
 );
 
 function showFolder() {
-    setTimeout(async () => {
-        await shell.openPath(folderPath);
+    setTimeout(() => {
+        void (async () => {
+            try {
+                await shell.openPath(folderPath);
+            } catch (err) {
+                debug(err);
+            }
+        })();
     }, 0);
 }
 function showDefaultFile() {

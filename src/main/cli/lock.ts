@@ -76,7 +76,7 @@ export function lockInstance() {
                 }
             });
 
-            app.on("open-file", async (event, filePath) => {
+            app.on("open-file", (event, filePath) => {
                 event.preventDefault();
 
                 debug("#####");
@@ -102,9 +102,9 @@ export function lockInstance() {
             debug("#####");
 
             let dump = "#############################################\n";
-            dump += "SECOND-INSTANCE:\n"; 
+            dump += "SECOND-INSTANCE:\n";
             dump += `Date: ${(new Date()).toISOString()}\n`;
-            // dump += 
+            // dump +=
 
             dump += `Process: ${JSON.stringify({
                 node_version: process.version,

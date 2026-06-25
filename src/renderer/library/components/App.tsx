@@ -46,7 +46,7 @@ import { CustomizationProfileDialog } from "readium-desktop/renderer/common/comp
 
 import { shell } from "electron";
 
-(window as any).__shell_openExternal = (url: string) => url && /^https?:\/\//.test(url) ? shell.openExternal(url) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
+(window as any).__shell_openExternal = (url: string) => url && /^https?:\/\//.test(url) ? shell.openExternal(url).then(() => { /* noop */}).catch((_err) => { /* debug(err); */ }) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
 
 export default class App extends React.Component<{}, undefined> {
 
@@ -140,7 +140,7 @@ export default class App extends React.Component<{}, undefined> {
             ));
     }
 
-    public async componentDidMount() {
+    public componentDidMount() {
         ensureKeyboardListenerIsInstalled();
 
         const store = getStore();

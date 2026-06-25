@@ -16,7 +16,7 @@ import { uuidv4 } from "readium-desktop/utils/uuid";
 export function apiActionFactory(storeCb: () => Store<any>) {
     return async <T extends TApiMethodName>(apiPath: T, ...requestData: Parameters<TApiMethod[T]>) => {
         return new Promise<TReturnPromiseOrGeneratorType<TApiMethod[T]>>(
-            async (resolve, reject) => {
+            (resolve, reject) => {
                 const store = storeCb();
                 const requestId = uuidv4();
                 const splitPath = apiPath.split("/");
@@ -57,19 +57,21 @@ export function apiActionFactory(storeCb: () => Store<any>) {
                     });
                 });
 
-                try {
-                    const result = await promise;
-                    resolve(result);
-                } catch (error) {
-                    reject(error);
-                } finally {
-                    if (storeUnsubscribe) {
-                        storeUnsubscribe();
+                void (async () => {
+                    try {
+                        const result = await promise;
+                        resolve(result);
+                    } catch (error) {
+                        reject(error);
+                    } finally {
+                        if (storeUnsubscribe) {
+                            storeUnsubscribe();
+                        }
+                        if (timeoutId) {
+                            clearTimeout(timeoutId);
+                        }
                     }
-                    if (timeoutId) {
-                        clearTimeout(timeoutId);
-                    }
-                }
+                })();
             });
     };
 }

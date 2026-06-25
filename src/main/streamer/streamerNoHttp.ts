@@ -318,8 +318,8 @@ const streamProtocolHandlerTunnel_NEW = async (req: GlobalRequest): Promise<Glob
         headers[entry[0]] = entry[1];
     }
 
-    return new Promise<GlobalResponse>(async (resolve) => {
-        await streamProtocolHandlerTunnel({
+    return new Promise<GlobalResponse>((resolve) => {
+        streamProtocolHandlerTunnel({
             headers,
             method: req.method,
             referrer: req.referrer,
@@ -351,15 +351,16 @@ const streamProtocolHandlerTunnel_NEW = async (req: GlobalRequest): Promise<Glob
     });
 };
 
-const streamProtocolHandlerTunnel = async (
+const streamProtocolHandlerTunnel = (
     req: ProtocolRequest,
     // callback: (stream: (NodeJS.ReadableStream) | (ProtocolResponse)) => void,
     callback: (res: ProtocolResponse) => void,
 ) => {
-
-    debug("............... streamProtocolHandlerTunnel req.url", req.url);
-    req.url = convertCustomSchemeToHttpUrl(req.url);
-    await streamProtocolHandler(req, callback);
+    void (async () => {
+        debug("............... streamProtocolHandlerTunnel req.url", req.url);
+        req.url = convertCustomSchemeToHttpUrl(req.url);
+        await streamProtocolHandler(req, callback);
+    })();
 };
 
 // super hacky!! :(
@@ -374,36 +375,48 @@ const streamProtocolHandler_NEW = async (req: GlobalRequest): Promise<GlobalResp
         headers[entry[0]] = entry[1];
     }
 
-    return new Promise<GlobalResponse>(async (resolve) => {
-        await streamProtocolHandler({
-            headers,
-            method: req.method,
-            referrer: req.referrer,
-            url: req.url,
-        },
-        // (res: (NodeJS.ReadableStream) | (ProtocolResponse)) => {
-        (res: ProtocolResponse) => {
-            const arr: Array<[string, string]> = [];
-            const keys = Object.keys(res.headers as Record<string, string>);
-            for (const key of keys) {
-                const value = (res.headers as Record<string, string>)[key];
-                arr.push([key, value]);
-            }
-            const resHeaders = new Headers(arr);
-            if (__TH__IS_DEV__) {
-                debug("BEFORE NEW RESPONSE...", req.method, req.url, req.referrer, headers, typeof Response, res.statusCode, res.headers, typeof res.data, res.data instanceof ReadableStream, (res.data as any).readable, (res.data as any).writable, arr);
-            }
-            // as import("undici-types").Response
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ ts-expect-error TS 2345
-            // resolve(new Response(res.data as NodeJS.ReadableStream, {
-            resolve(new Response(nodeStreamToWeb(res.data as NodeJS.ReadStream) as BodyInit, {
-                status: res.statusCode,
-                headers: resHeaders,
-            }));
-        },
-        );
+    return new Promise<GlobalResponse>((resolve) => {
+        void (async () => {
+            await streamProtocolHandler({
+                headers,
+                method: req.method,
+                referrer: req.referrer,
+                url: req.url,
+            },
+            // (res: (NodeJS.ReadableStream) | (ProtocolResponse)) => {
+            (res: ProtocolResponse) => {
+                const arr: Array<[string, string]> = [];
+                const keys = Object.keys(res.headers as Record<string, string>);
+                for (const key of keys) {
+                    const value = (res.headers as Record<string, string>)[key];
+                    arr.push([key, value]);
+                }
+                const resHeaders = new Headers(arr);
+                if (__TH__IS_DEV__) {
+                    debug("BEFORE NEW RESPONSE...", req.method, req.url, req.referrer, headers, typeof Response, res.statusCode, res.headers, typeof res.data, res.data instanceof ReadableStream, (res.data as any).readable, (res.data as any).writable, arr);
+                }
+                // as import("undici-types").Response
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ ts-expect-error TS 2345
+                // resolve(new Response(res.data as NodeJS.ReadableStream, {
+                resolve(new Response(nodeStreamToWeb(res.data as NodeJS.ReadStream) as BodyInit, {
+                    status: res.statusCode,
+                    headers: resHeaders,
+                }));
+            },
+            );
+        })();
     });
+};
+
+const streamProtocolHandler__ = (
+    req: ProtocolRequest,
+    // callback: (stream: (NodeJS.ReadableStream) | (ProtocolResponse)) => void,
+    callback: (res: ProtocolResponse) => void,
+) => {
+    void (async () => {
+        await streamProtocolHandler(req, callback);
+    })();
 };
 
 const streamProtocolHandler = async (
@@ -591,7 +604,8 @@ const streamProtocolHandler = async (
             return;
         }
 
-        if (!zipHasEntry(zip, pathInZip, undefined)) {
+        const hasEnt = await zipHasEntry(zip, pathInZip, undefined);
+        if (!hasEnt) {
             const err = "Asset not in zip! " + pathInZip;
             debug(err);
             const buff = Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
@@ -1184,7 +1198,8 @@ const streamProtocolHandler = async (
         }
         const zip = zipInternal.Value as IZip;
 
-        if (!zipHasEntry(zip, pathInZip, undefined)) {
+        const hasEntry = await zipHasEntry(zip, pathInZip, undefined);
+        if (!hasEntry) {
             const err = "Asset not in zip! " + pathInZip;
             debug(err);
             const buff = Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
@@ -1906,18 +1921,12 @@ export function initSessions() {
     //     }
     // };
 
-    app.on("ready", async () => {
+    app.on("ready", () => {
         debug("app ready");
 
         initProtocols();
 
         initPermissions();
-
-        try {
-            await clearSessions();
-        } catch (err) {
-            debug(err);
-        }
 
         if (session.defaultSession) {
             // session.defaultSession.webRequest.onHeadersReceived(filter, onHeadersReceivedCB);
@@ -1930,7 +1939,7 @@ export function initSessions() {
             } else {
                 session.defaultSession.protocol.registerStreamProtocol(
                     URL_PROTOCOL_THORIUMHTTPS,
-                    streamProtocolHandler);
+                    streamProtocolHandler__);
                 session.defaultSession.protocol.registerStreamProtocol(
                     READIUM2_ELECTRON_HTTP_PROTOCOL,
                     streamProtocolHandlerTunnel);
@@ -1949,7 +1958,7 @@ export function initSessions() {
             } else {
                 webViewSession.protocol.registerStreamProtocol(
                     URL_PROTOCOL_THORIUMHTTPS,
-                    streamProtocolHandler);
+                    streamProtocolHandler__);
                 webViewSession.protocol.registerStreamProtocol(
                     READIUM2_ELECTRON_HTTP_PROTOCOL,
                     streamProtocolHandlerTunnel);
@@ -1968,7 +1977,7 @@ export function initSessions() {
             } else {
                 pdfSession.protocol.registerStreamProtocol(
                     URL_PROTOCOL_THORIUMHTTPS,
-                    streamProtocolHandler);
+                    streamProtocolHandler__);
                 // pdfSession.protocol.registerStreamProtocol(
                 //     READIUM2_ELECTRON_HTTP_PROTOCOL,
                 //     streamProtocolHandlerTunnel);
@@ -1987,12 +1996,20 @@ export function initSessions() {
             } else {
                 pdfExtractSession.protocol.registerStreamProtocol(
                     URL_PROTOCOL_THORIUMHTTPS,
-                    streamProtocolHandler);
+                    streamProtocolHandler__);
                 // pdfExtractSession.protocol.registerStreamProtocol(
                 //     READIUM2_ELECTRON_HTTP_PROTOCOL,
                 //     streamProtocolHandlerTunnel);
             }
         }
+
+        void (async () => {
+            try {
+                await clearSessions();
+            } catch (err) {
+                debug(err);
+            }
+        })();
     });
 }
 

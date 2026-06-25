@@ -81,7 +81,7 @@ export class ZipExploded extends Zip {
 
     public async getEntries(): Promise<string[]> {
 
-        return new Promise<string[]>(async (resolve, _reject) => {
+        return new Promise<string[]>((resolve, _reject) => {
 
             const deepFiles = scanDir(this.dirPath, this.dirPath);
             // debug(deepFiles);

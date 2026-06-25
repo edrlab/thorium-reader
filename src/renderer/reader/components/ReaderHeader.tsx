@@ -1575,24 +1575,25 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             this.props.handleTTSPause();
         }
 
-        setTimeout(async () => {
-            const manager = await this.getWebSpeechVoiceManager();
-            const allVoices = this.state.voices;
-            const defaultVoices = this.findStoredDefaultVoices(allVoices);
-            const newDefaultVoices = this.updateDefaultVoices(manager, allVoices, selectedVoice);
-            debug("TTS_SELECTED_VOICE_UPDATED: DefaultVoices=", defaultVoices, defaultVoices.length);
-            debug("TTS_SELECTED_VOICE_UPDATED: NewDefaultVoices=", newDefaultVoices, newDefaultVoices.length);
+        setTimeout(() => {
+            void (async () => {
+                const manager = await this.getWebSpeechVoiceManager();
+                const allVoices = this.state.voices;
+                const defaultVoices = this.findStoredDefaultVoices(allVoices);
+                const newDefaultVoices = this.updateDefaultVoices(manager, allVoices, selectedVoice);
+                debug("TTS_SELECTED_VOICE_UPDATED: DefaultVoices=", defaultVoices, defaultVoices.length);
+                debug("TTS_SELECTED_VOICE_UPDATED: NewDefaultVoices=", newDefaultVoices, newDefaultVoices.length);
 
-            this.setState({
-                selectedVoice: selectedVoice,
-            });
+                this.setState({
+                    selectedVoice: selectedVoice,
+                });
 
-            if (wasPlaying) {
-                setTimeout(() => {
-                    this.props.handleTTSResume();
-                }, 200);
-            }
-
+                if (wasPlaying) {
+                    setTimeout(() => {
+                        this.props.handleTTSResume();
+                    }, 200);
+                }
+            })();
         }, wasPlaying ? 200 : 0);
     };
 

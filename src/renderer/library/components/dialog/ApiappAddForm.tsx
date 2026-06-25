@@ -113,11 +113,17 @@ export const ApiappHowDoesItWorkInfoBox = () => {
                         {__("apiapp.informations")}
                     </p>
                     <a dir={isRTL ? "rtl" : "ltr"} href=""
-                        onClick={async (ev) => {
+                        onClick={(ev) => {
                             ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                             const href = "https://thorium.edrlab.org/";
                             if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                await shell.openExternal(href);
+                                void (async () => {
+                                    try {
+                                        await shell.openExternal(href);
+                                    } catch (_err) {
+                                        // console.log(err);
+                                    }
+                                })();
                             }
                         }}>
                         {__("apiapp.documentation")}

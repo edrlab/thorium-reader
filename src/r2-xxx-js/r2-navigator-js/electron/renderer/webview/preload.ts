@@ -2382,7 +2382,7 @@ function checkSoundtrack(documant: Document) {
     // (works-ish, because broken playback flow when "turning pages" in the book,
     // and possibility of concurrent multiple playback streams with two-page spreads)
     // audio.setAttribute("loop", "loop");
-    // setTimeout(async () => {
+    // setTimeout(() => {
     //     await audio.play();
     // }, 500);
 
@@ -2641,34 +2641,35 @@ function loaded(forced: boolean) {
         // tslint:disable-next-line:no-string-literal
         const b64Highlights = win.READIUM2.urlQueryParams[URL_PARAM_HIGHLIGHTS];
         if (b64Highlights) {
-            setTimeout(async () => {
+            setTimeout(() => {
+                void (async () => {
+                    let jsonStr: string | undefined;
+                    try {
+                        const buff = Buffer.from(b64Highlights, "base64");
 
-                let jsonStr: string | undefined;
-                try {
-                    const buff = Buffer.from(b64Highlights, "base64");
+                        const cs = new DecompressionStream("gzip");
+                        const csWriter = cs.writable.getWriter();
+                        await csWriter.write(buff); // .buffer
+                        await csWriter.close();
 
-                    const cs = new DecompressionStream("gzip");
-                    const csWriter = cs.writable.getWriter();
-                    await csWriter.write(buff); // .buffer
-                    await csWriter.close();
+                        const buffer = Buffer.from(await new Response(cs.readable).arrayBuffer());
+                        // const buffer = await streamToBufferPromise(cs.readable as ReadableStream<any>);
 
-                    const buffer = Buffer.from(await new Response(cs.readable).arrayBuffer());
-                    // const buffer = await streamToBufferPromise(cs.readable as ReadableStream<any>);
+                        const jsonStr = new TextDecoder().decode(buffer); // buffer.toString("utf8");
 
-                    const jsonStr = new TextDecoder().decode(buffer); // buffer.toString("utf8");
+                        // console.log("--HIGH LOAD PARAM OUT--");
+                        // console.log(jsonStr);
+                        const highlights = JSON.parse(jsonStr);
 
-                    // console.log("--HIGH LOAD PARAM OUT--");
-                    // console.log(jsonStr);
-                    const highlights = JSON.parse(jsonStr);
-
-                    setDrawMargin(win, highlights.margin);
-                    recreateAllHighlightsRaw(win, highlights.list);
-                } catch (err) {
-                    debug("################## HIGHLIGHTS PARSE ERROR?!");
-                    debug(b64Highlights);
-                    debug(err);
-                    debug(jsonStr);
-                }
+                        setDrawMargin(win, highlights.margin);
+                        recreateAllHighlightsRaw(win, highlights.list);
+                    } catch (err) {
+                        debug("################## HIGHLIGHTS PARSE ERROR?!");
+                        debug(b64Highlights);
+                        debug(err);
+                        debug(jsonStr);
+                    }
+                })();
             }, 10);
         }
     }
@@ -2993,14 +2994,14 @@ function loaded(forced: boolean) {
         }, 1000);
     });
 
-    win.document.addEventListener("auxclick", async (ev: MouseEvent) => {
+    win.document.addEventListener("auxclick", (ev: MouseEvent) => {
         debug(`AUX __CLICK: ${ev.button} (SKIP middle)`);
         if (ev.button === 1) {
             ev.preventDefault();
             ev.stopPropagation();
         }
     }, true);
-    win.document.addEventListener("click", async (ev: MouseEvent) => {
+    win.document.addEventListener("click", (ev: MouseEvent) => {
         debug(`!AUX __CLICK: ${ev.button} ...`);
         if (win.document.documentElement.classList.contains(R2_MO_CLASS_PAUSED) || win.document.documentElement.classList.contains(R2_MO_CLASS_PLAYING)) {
             debug("!AUX __CLICK skip because MO playing/paused");
@@ -3381,39 +3382,41 @@ function loaded(forced: boolean) {
             ipcRenderer.sendToHost(R2_EVENT_LINK, payload); // this will result in the app registering the element in the navigation history, but is skipped in location.ts ipcRenderer.on(R2_EVENT_LINK)
         }
 
-        const done = await popupFootNote(
-            linkElement as HTMLElement,
-            focusScrollRaw,
-            hrefStr,
-            ensureTwoPageSpreadWithOddColumnsIsOffsetTempDisable,
-            ensureTwoPageSpreadWithOddColumnsIsOffsetReEnable);
-        if (done) {
-            if (!skipHistory) {
-                // double-insert the hyperlink to trigger the popup programmatically on history.back()/forward()
-                const payload: IEventPayload_R2_EVENT_LINK = {
-                    url: "#" + FRAG_ID_CSS_SELECTOR_ACTIVATE_LINK + encCssSel,
-                };
-                ipcRenderer.sendToHost(R2_EVENT_LINK, payload);
-            }
-        } else {
-            focusScrollDebounced.clear();
-            // processXYDebounced.clear();
-            processXYDebouncedImmediate.clear();
-            notifyReadingLocationDebounced.clear();
-            notifyReadingLocationDebouncedImmediate.clear();
-            scrollToHashDebounced.clear();
-            onScrollDebounced.clear();
-            onResizeDebounced.clear();
-            handleFocusInDebounced.clear();
-            // mediaOverlaysClickDebounced.clear();
+        void (async () => {
+            const done = await popupFootNote(
+                linkElement as HTMLElement,
+                focusScrollRaw,
+                hrefStr,
+                ensureTwoPageSpreadWithOddColumnsIsOffsetTempDisable,
+                ensureTwoPageSpreadWithOddColumnsIsOffsetReEnable);
+            if (done) {
+                if (!skipHistory) {
+                    // double-insert the hyperlink to trigger the popup programmatically on history.back()/forward()
+                    const payload: IEventPayload_R2_EVENT_LINK = {
+                        url: "#" + FRAG_ID_CSS_SELECTOR_ACTIVATE_LINK + encCssSel,
+                    };
+                    ipcRenderer.sendToHost(R2_EVENT_LINK, payload);
+                }
+            } else {
+                focusScrollDebounced.clear();
+                // processXYDebounced.clear();
+                processXYDebouncedImmediate.clear();
+                notifyReadingLocationDebounced.clear();
+                notifyReadingLocationDebouncedImmediate.clear();
+                scrollToHashDebounced.clear();
+                onScrollDebounced.clear();
+                onResizeDebounced.clear();
+                handleFocusInDebounced.clear();
+                // mediaOverlaysClickDebounced.clear();
 
-            if (!skipHistory) {
-                const payload: IEventPayload_R2_EVENT_LINK = {
-                    url: hrefStr,
-                };
-                ipcRenderer.sendToHost(R2_EVENT_LINK, payload);
+                if (!skipHistory) {
+                    const payload: IEventPayload_R2_EVENT_LINK = {
+                        url: hrefStr,
+                    };
+                    ipcRenderer.sendToHost(R2_EVENT_LINK, payload);
+                }
             }
-        }
+        })();
     }, true);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

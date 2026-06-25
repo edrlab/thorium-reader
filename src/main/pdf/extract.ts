@@ -86,8 +86,14 @@ export const extractPDFData =
                 if (/^https?:\/\//.test(navUrl)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
 
                     debug("willNavigate ==> EXTERNAL: ", win.webContents.getURL(), " *** ", navUrl);
-                    setTimeout(async () => {
-                        await shell.openExternal(navUrl);
+                    setTimeout(() => {
+                        void (async () => {
+                            try {
+                                await shell.openExternal(navUrl);
+                            } catch (err) {
+                                debug(err);
+                            }
+                        })();
                     }, 0);
 
                     return;

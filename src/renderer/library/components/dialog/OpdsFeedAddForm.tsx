@@ -46,11 +46,17 @@ export const OpdsFeedHowDoesItWorksInfoBox = () => {
                     {__("opds.informations")}
                 </p>
                 <a href=""
-                    onClick={async (ev) => {
+                    onClick={(ev) => {
                         ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                         const href = "https://opds.io/";
                         if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                            await shell.openExternal(href);
+                            void (async () => {
+                                try {
+                                    await shell.openExternal(href);
+                                } catch (_err) {
+                                    // console.log(err);
+                                }
+                            })();
                         }
                     }}>
                     {__("opds.documentation")}

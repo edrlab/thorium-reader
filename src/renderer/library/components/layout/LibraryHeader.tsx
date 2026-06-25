@@ -209,7 +209,7 @@ const Header = () => {
                             }
 
                             return `href="" alt="${url}" onclick="return ((e) => {
-                                        window.__shell_openExternal('${url}').catch(() => {});
+                                        window.__shell_openExternal('${url}');
                                         return false;
                                      })()"`;
                         });

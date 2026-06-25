@@ -25,9 +25,12 @@ export function getAndStartCustomizationWellKnownFileWatchingEventChannel(wellKn
 
             const watcher = customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder, handler);
 
-            return async () => {
+            return () => {
                 if (watcher) {
-                    await watcher.close();
+                    void watcher.close();
+                    // void (async () => {
+                    //     await watcher.close();
+                    // })();
                 }
             };
         },

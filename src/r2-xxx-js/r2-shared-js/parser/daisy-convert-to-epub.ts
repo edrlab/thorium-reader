@@ -46,7 +46,8 @@ export const convertDaisyToReadiumWebPub = async (
 
     // debug("DEBUG: ", global.JSON.stringify(publication, null, 4));
 
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
+        void (async () => {
 
         // TODO: textPartAudio / audioPartText?? audioOnly??
         // https://www.daisy.org/z3986/specifications/Z39-86-2002.html#Type
@@ -1431,6 +1432,7 @@ ${cssHrefs.reduce((pv, cv) => {
                 (zipfile as ZipFile).end();
             }
         }
+    })();
     });
 };
 

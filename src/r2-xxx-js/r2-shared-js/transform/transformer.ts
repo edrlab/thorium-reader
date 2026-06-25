@@ -140,7 +140,7 @@ export class Transformers {
         for (const t of this.transformers) {
             if (t.supports(publication, link)) {
                 atLeastOne = true;
-                if (transformedData) { // need to consume the promise
+                if (typeof transformedData !== "undefined") { // need to consume the promise
                     try {
                         s = await transformedData;
                     } catch (_err) {
@@ -160,7 +160,7 @@ export class Transformers {
                 );
             }
         }
-        if (transformedData) {
+        if (typeof transformedData !== "undefined") {
             return transformedData;
         }
         // ----

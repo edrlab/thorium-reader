@@ -66,7 +66,7 @@ class FeedList extends React.Component<IProps, IState> {
         this.loadFeeds = this.loadFeeds.bind(this);
     }
 
-    public async componentDidMount() {
+    public componentDidMount() {
         this.unsubscribe = apiSubscribe([
             "opds/addFeed",
             "opds/deleteFeed",
@@ -175,7 +175,11 @@ class FeedList extends React.Component<IProps, IState> {
                                             <Popover.Close
                                                 onClick={() => {
                                                     this.props.logout(item.url);
-                                                    setTimeout(() => this.loadFeeds(), 100);
+                                                    setTimeout(() => {
+                                                        void (async () => {
+                                                            await this.loadFeeds();
+                                                        })();
+                                                    }, 100);
                                                 }}
                                                 title={__("catalog.logout")}
                                             >
