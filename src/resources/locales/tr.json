@@ -46,8 +46,8 @@
         },
         "window": {
             "showLibrary": "Kütüphaneyi / kitaplığı göster",
-            "trayHint": "",
-            "trayTooltip": ""
+            "trayHint": "{{- appName}} hala bildirim alanında çalışıyor. Kütüphaneyi göstermek için tepsi simgesine tıklayın.",
+            "trayTooltip": "{{- appName}} - Kütüphaneyi göstermek veya gizlemek için tıklayın"
         }
     },
     "catalog": {
@@ -90,7 +90,7 @@
         "lastRead": "Son Okunan",
         "login": "Giriş yap",
         "logout": "Oturumu Kapat",
-        "missing": "",
+        "missing": "Eksik dosyalar",
         "missingUnavailableDescription": "Bu eser, depolanan dosyaları mevcut olmadığından açılamıyor. Eseri yeniden içe aktarın veya Ayarlar'a ve ardından Depolama'ya gidip ilave depolama ekleyin veya değiştirin.",
         "moreInfo": "Eser Ayrıntıları",
         "myBooks": "Eserlerim",
@@ -136,7 +136,7 @@
         "readBook": "Oku",
         "released": "Yayın tarihi:",
         "removeFromFavorites": "Favorilerden kaldır",
-        "selectTableHeaders": "",
+        "selectTableHeaders": "Görüntülenecek sütunları seçin",
         "sort": "Şuna göre sırala:",
         "tag": "Etiket",
         "tags": "Etiketler",
@@ -243,11 +243,11 @@
             "success": "İçe aktarma başarıyla tamamlandı."
         },
         "download": {
-            "cancelled": "",
+            "cancelled": "İndirme iptal edildi.",
             "error": "[{{- title}}] İndirmesi başarısız: [{{- err}}]",
             "errors": {
-                "hashMismatch": "",
-                "httpGet": "",
+                "hashMismatch": "İndirilen dosyanın bütünlük denetimi başarısız: Beklenen SHA-256 değeri {{- expected}}, alınan {{- actual}}.",
+                "httpGet": "HTTP indirme hatası: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
@@ -1316,7 +1316,7 @@
             "minimizeLibraryToTray": "Kitaplığı bildirim alanına simge durumuna küçült",
             "minimizeLibraryToTrayDescription": "Etkinleştirildiğinde, kitaplık penceresi simge durumuna küçültüldüğünde Thorium Windows bildirim alanında çalışmaya devam eder.",
             "oneReaderWindowPerPublication": "Her yayın için tek okuma penceresi kullan",
-            "oneReaderWindowPerPublicationDescription": "Etkinleştirildiğinde, zaten açık olan bir yayın açıldığında yeni bir pencere açmak yerine ilgili okuma penceresine odaklanılır.",
+            "oneReaderWindowPerPublicationDescription": "Etkinleştirildiğinde, zaten açık olan bir eser açıldığında yeni bir pencere açmak yerine eserin okuma penceresine odaklanılır.",
             "title": "Pencere davranışı"
         }
     },
@@ -1345,11 +1345,11 @@
     },
     "wizard": {
         "buttons": {
-            "discover": "Yenilikleri keşfet",
+            "discover": "Thorium Masaüstü Uygulamasını Keşfet",
             "goToBooks": "Eserlerime git"
         },
         "description": {
-            "home": "Toryum artık farklı görünüyor! Haydi yenilikleri keşfedelim...",
+            "home": "Thorium 3.4, kullanıcı deneyiminde bir dizi iyileştirme getirir ve bir dizi sorunu düzeltir. Daha sonra uygulamanın eski bir sürümüne geri dönmeye karar verirseniz, e-kitap açıklayıcı notlarınızı ve yer imlerinizi harici bir dosyaya dışa aktararak yedeklemeniz şiddetle tavsiye edilir. Daha sonra, eski sürüm yüklendiğinde bunları tekrar içe aktarmalısınız. Bunun nedeni, uygulamanın 3.4 sürümünde, açıklayıcı notları ve yer imlerini biraz farklı bir dahili biçimde saklamasıdır. Bu, bir performans sorununu çözer, ancak açıklayıcı notlar için geriye dönük uyumluluğu bozar.",
             "resources": "Bizimle iletişime geçin ve Thorium hakkında daha fazla bilgi edinin:"
         },
         "dontShow": "Bir daha gösterme",
