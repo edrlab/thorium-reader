@@ -662,7 +662,7 @@
         "lcpEnd": "Slut",
         "lcpNotSupported": "VARNING: detta är en förhandsversion av Thorium Desktop som inte stödjer produktionsversioner av LCP-licenser, utan stödjer bara dekryptering av LCP \"basic profile\" utan certifikatvalidering.",
         "lcpRightsCopy": "Kopierade tecken",
-        "lcpRightsPrint": "Kopiera utskrift",
+        "lcpRightsPrint": "Utskrivna sidor",
         "lcpStart": "Start",
         "licenceLCP": "Licens (LCP)",
         "licenseCertificateDateInvalid": "Slutdatumet för LCP-licensen är tidigare än licensens startdatum ({{- dateTime}}).",
@@ -1248,9 +1248,9 @@
             "title": "Spara sessioner"
         },
         "sharedComputer": {
-            "lcpAutoDeleteExpiredPublications": "",
-            "lcpAutoDeleteExpiredPublicationsDescription": "",
-            "title": ""
+            "lcpAutoDeleteExpiredPublications": "Ta automatiskt bort lån som gått ut och deras användardata",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Tar automatiskt bort lån som gått ut, inklusive anteckningar, bokmärken, osv. Detta är praktiskt i miljöer där många personer använder datorn, som på bibliotek eller universitet.",
+            "title": "Delad dator-läge"
         },
         "storage": {
             "actions": {
@@ -1278,12 +1278,12 @@
                 },
                 "edit": {
                     "confirm": "Redigera mapp",
-                    "description": "",
+                    "description": "Du måste vara försiktig när du uppdaterar den extra lagringen. Thorium kommer inte flytta filer du har sparat där, utan du behöver göra det själv. Vill du fortsätta?",
                     "title": "Uppdatera den extra lagringen"
                 },
                 "remove": {
                     "confirm": "Ta bort mapp",
-                    "description": "",
+                    "description": "Du måste vara försiktig när du tar bort den extra lagringen. Thorium kommer inte flytta filer du har sparat där, utan du behöver göra det själv. Vill du fortsätta?",
                     "title": "Ta bort extra lagring"
                 }
             },
