@@ -33,7 +33,7 @@ import * as EdrlabLogo from "readium-desktop/renderer/assets/icons/logo_edrlab.s
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
-import { wizardActions } from "readium-desktop/common/redux/actions";
+import { whatsNewActions } from "readium-desktop/common/redux/actions";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -275,7 +275,7 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
         locale: state.i18n.locale, // refresh
         newVersionURL: state.versionUpdate.newVersionURL,
         newVersion: state.versionUpdate.newVersion,
-        displayWhatsNew: state.wizard.opened_v340,
+        displayWhatsNew: state.whatsNew.opened_v350,
 
         customizationProvision: state.customization.provision,
         customizationProfileId: state.customization.activate.id,
@@ -288,7 +288,7 @@ const mapDispatchToProps = (__dispatch: TDispatch, _props: IBaseProps) => {
         //     dispatch(readerActions.openRequest.build(publicationView.identifier));
         // },
         whatsNewOpened: () => {
-            __dispatch(wizardActions.setWizard.build(true));
+            __dispatch(whatsNewActions.setWhatsNew.build(true));
         },
     };
 };

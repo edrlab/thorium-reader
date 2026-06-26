@@ -10,7 +10,7 @@ import { Action } from "readium-desktop/common/models/redux";
 export const ID = "SET_WIZARD_OPENED";
 
 export interface Payload {
-    opened_v340: boolean;
+    opened_v350: boolean;
 }
 
 export function build(opened: boolean): Action<typeof ID, Payload> {
@@ -18,7 +18,7 @@ export function build(opened: boolean): Action<typeof ID, Payload> {
     return {
         type: ID,
         payload: {
-            opened_v340: opened,
+            opened_v350: opened,
         },
     };
 }
