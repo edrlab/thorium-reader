@@ -1315,9 +1315,15 @@
             "title": ""
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "שמירת הספרייה ברקע לאחר סגירת חלונות קריאה",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "כאשר האפשרות מופעלת, סגירת חלון קריאה אינה משחזרת את חלון הספרייה ואינה מביאה אותו לחזית.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "מזעור הספרייה לאחר פתיחת חלונות קריאה",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "כאשר האפשרות מופעלת, פתיחת חלון קריאה ממזערת את חלון הספרייה.",
+            "minimizeLibraryToTray": "מזעור הספרייה לאזור ההודעות",
+            "minimizeLibraryToTrayDescription": "כאשר האפשרות מופעלת, מזעור חלון הספרייה משאיר את Thorium פועל באזור ההודעות של Windows.",
+            "oneReaderWindowPerPublication": "שימוש בחלון קריאה אחד לכל פרסום",
+            "oneReaderWindowPerPublicationDescription": "כאשר האפשרות מופעלת, פתיחת פרסום שכבר פתוח תמקד את חלון הקריאה שלו במקום לפתוח חלון נוסף.",
+            "title": "התנהגות חלונות"
         }
     },
     "tts": {

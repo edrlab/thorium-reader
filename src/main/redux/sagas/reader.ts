@@ -7,7 +7,6 @@
 
 import debug_ from "debug";
 import { clipboard } from "electron";
-import { ReaderMode } from "readium-desktop/common/models/reader";
 import { Action } from "readium-desktop/common/models/redux";
 import { ActionWithDestination, ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -15,6 +14,10 @@ import { normalizeWinBoundRectangle } from "readium-desktop/common/rectangle/win
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
+import {
+    settingsKeepLibraryWindowInBackgroundOnReaderOpenIsEnabled,
+    settingsOneReaderWindowPerPublicationIsEnabled,
+} from "readium-desktop/common/redux/states/settings";
 import { diMainGet, getAllReaderWindowFromDi, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
 import { streamerActions } from "readium-desktop/main/redux/actions";
@@ -138,12 +141,53 @@ export function* readerNewWindowBound(publicationIdentifier: string | undefined)
     return windowBound;
 }
 
+function* minimizeLibraryWindowOnReaderOpenIfEnabled() {
+
+    const keepLibraryWindowInBackgroundOnReaderOpen = yield* selectTyped((state: RootState) =>
+        settingsKeepLibraryWindowInBackgroundOnReaderOpenIsEnabled(state.settings));
+    if (keepLibraryWindowInBackgroundOnReaderOpen) {
+        try {
+            const libWin = yield* callTyped(() => getLibraryWindowFromDi());
+            if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed() && !libWin.isMinimized()) {
+                libWin.minimize();
+            }
+        } catch (_err) {
+            debug("library can't be loaded from di");
+        }
+    }
+}
+
 function* readerOpenRequest(action: readerActions.openRequest.TAction) {
 
     const publicationIdentifier = action.payload.publicationIdentifier;
     debug(`START REQUEST to open a reader with pubId=${publicationIdentifier}, action=${JSON.stringify(action)}`);
 
     assertUUIDv4(publicationIdentifier);
+
+    const oneReaderWindowPerPublication = yield* selectTyped((state: RootState) =>
+        settingsOneReaderWindowPerPublicationIsEnabled(state.settings));
+    if (oneReaderWindowPerPublication) {
+        const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+        const readerWithSamePubId = Object.values(readers).find(({publicationIdentifier: pubId}) => pubId === publicationIdentifier);
+        const readerWithSamePubIdWinId = readerWithSamePubId?.identifier;
+        if (readerWithSamePubIdWinId) {
+            try {
+                const readerWin = yield* callTyped(() => getReaderWindowFromDi(readerWithSamePubIdWinId));
+                if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
+                    yield* callTyped(minimizeLibraryWindowOnReaderOpenIfEnabled);
+                    if (readerWin.isMinimized()) {
+                        readerWin.restore();
+                    }
+                    readerWin.show();
+                    readerWin.focus();
+                    debug(`reader already open for pubId=${publicationIdentifier}, focus winId=${readerWithSamePubIdWinId}`);
+                    return;
+                }
+            } catch (_err) {
+                debug("can't load readerWin from di");
+            }
+        }
+    }
 
     let manifestUrl: string;
     try {
@@ -201,17 +245,25 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
         // );
         // const readersArray = ObjectValues(readers);
 
-        const mode = yield* selectTyped((state: RootState) => state.mode);
-        if (mode === ReaderMode.Attached) {
-            try {
-                const libWin = getLibraryWindowFromDi();
-                if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed()) {
-                    libWin.hide();
-                }
-            } catch (_err) {
-                debug("library can't be loaded from di");
-            }
-        }
+        // TODO: restore/update this attached-reader behavior if attached mode comes back.
+        // See https://github.com/edrlab/thorium-reader/issues/3675
+        // const mode = yield* selectTyped((state: RootState) => state.mode);
+        // if (mode === ReaderMode.Attached) {
+        //     if (!keepLibraryWindowInBackgroundOnReaderOpen) {
+        //         try {
+        //             const libWin = getLibraryWindowFromDi();
+        //             if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed()) {
+        //                 libWin.hide();
+        //             }
+        //         } catch (_err) {
+        //             debug("library can't be loaded from di");
+        //         }
+        //     } else {
+        //         debug("keep library window in background on reader open");
+        //     }
+        // }
+
+        yield* callTyped(minimizeLibraryWindowOnReaderOpenIfEnabled);
 
         const windowIdentifier = uuidv4();
         yield* callTyped(createReaderWindow,

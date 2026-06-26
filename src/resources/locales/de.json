@@ -1309,9 +1309,15 @@
             "title": "Erscheinungsbild"
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "Bibliothek nach dem Schließen von Lesefenstern im Hintergrund halten",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Wenn aktiviert, wird das Bibliotheksfenster beim Schließen eines Lesefensters nicht wiederhergestellt oder in den Vordergrund geholt.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Bibliothek nach dem Öffnen von Lesefenstern minimieren",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Wenn aktiviert, wird beim Öffnen eines Lesefensters das Bibliotheksfenster minimiert.",
+            "minimizeLibraryToTray": "Bibliothek in den Infobereich minimieren",
+            "minimizeLibraryToTrayDescription": "Wenn aktiviert, läuft Thorium nach dem Minimieren des Bibliotheksfensters im Windows-Infobereich weiter.",
+            "oneReaderWindowPerPublication": "Ein Lesefenster pro Publikation verwenden",
+            "oneReaderWindowPerPublicationDescription": "Wenn aktiviert, wird beim Öffnen einer bereits geöffneten Publikation ihr Lesefenster fokussiert, anstatt ein weiteres zu öffnen.",
+            "title": "Fensterverhalten"
         }
     },
     "tts": {

@@ -1309,9 +1309,15 @@
             "title": "Tema"
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "Behåll biblioteket i bakgrunden efter att läsfönster stängs",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "När detta är aktiverat återställs inte biblioteksfönstret och förs inte fram när ett läsfönster stängs.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Minimera biblioteket efter att läsfönster öppnas",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "När detta är aktiverat minimeras biblioteksfönstret när ett läsfönster öppnas.",
+            "minimizeLibraryToTray": "Minimera biblioteket till meddelandefältet",
+            "minimizeLibraryToTrayDescription": "När detta är aktiverat fortsätter Thorium att köras i meddelandefältet i Windows när biblioteksfönstret minimeras.",
+            "oneReaderWindowPerPublication": "Använd ett läsfönster per publikation",
+            "oneReaderWindowPerPublicationDescription": "När detta är aktiverat fokuseras läsfönstret för en publikation som redan är öppen i stället för att ett nytt öppnas.",
+            "title": "Fönsterbeteende"
         }
     },
     "tts": {

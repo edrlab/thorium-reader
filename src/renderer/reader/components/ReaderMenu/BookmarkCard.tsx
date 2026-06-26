@@ -58,7 +58,7 @@ export const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, t
     const [textParsed, setTextParsed] = React.useState<string>();
     React.useEffect(() => {
 
-        const fc = async () => {
+        void (async () => {
             if (bookmark.textualValue) {
                 const parsed = DOMPurify.sanitize(await marked.parse(bookmark.textualValue.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, ""), { gfm: true }), { FORBID_TAGS: ["style"], FORBID_ATTR: ["style"] });
                 const regex = new RegExp(/href=\"(.*?)\"/, "gm");
@@ -77,8 +77,7 @@ export const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, t
                 setTextParsed(hrefSanitized);
                 console.log(parsed, hrefSanitized);
             }
-        };
-        fc();
+        })();
     }, [bookmark.textualValue]);
 
     const dispatch = useDispatch();

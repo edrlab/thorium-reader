@@ -437,7 +437,15 @@ export function commandLineMainEntry(
     dump += `argvFormated: ${JSON.stringify(argFormated)}\n`;
 
     try {
-        y.parse(argFormated);
+        // https://github.com/yargs/yargs/blob/main/docs/typescript.md#typescript-usage-examples
+        // parseSync() only when no command is async/Promise-returning
+        //
+        void y.parse(argFormated);
+        //
+        // (async () => {
+        //     // const res =
+        //     await y.parse(argFormated);
+        // })();
     } catch (e) {
         debug("YARGS ERROR !!!!!", e);
     }

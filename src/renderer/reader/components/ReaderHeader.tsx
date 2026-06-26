@@ -851,7 +851,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                             languages={this.state.languages}
                                                                             selectedLanguage={this.state.selectedLanguage}
                                                                             setSelectedLanguage={(newLanguageSelected) => {
-                                                                                this.setNewVoiceLanguage(newLanguageSelected);
+                                                                                // void the Promise as we don't need the async/await guarantee
+                                                                                void this.setNewVoiceLanguage(newLanguageSelected);
                                                                             }}
 
                                                                             voicesGroupByRegion={this.state.voicesGroupByRegion}

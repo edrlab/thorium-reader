@@ -1321,9 +1321,15 @@
             "title": "Programos tema"
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "Laikyti biblioteką fone uždarius skaitymo langus",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Kai įjungta, uždarius skaitymo langą bibliotekos langas neatkuriamas ir neiškeliamas į priekį.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Sumažinti biblioteką atidarius skaitymo langus",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Kai įjungta, atidarius skaitymo langą bibliotekos langas sumažinamas.",
+            "minimizeLibraryToTray": "Sumažinti biblioteką į pranešimų sritį",
+            "minimizeLibraryToTrayDescription": "Kai įjungta, sumažinus bibliotekos langą Thorium lieka veikti Windows pranešimų srityje.",
+            "oneReaderWindowPerPublication": "Naudoti vieną skaitymo langą kiekvienam leidiniui",
+            "oneReaderWindowPerPublicationDescription": "Kai įjungta, atidarant jau atidarytą leidinį sufokusuojamas jo skaitymo langas, o ne atidaromas naujas.",
+            "title": "Langų elgsena"
         }
     },
     "tts": {

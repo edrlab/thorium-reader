@@ -32,7 +32,7 @@ const DeletePublicationConfirm = (props: { publicationView: PublicationView, tri
 
     React.useEffect(() => {
 
-        (async () => {
+        void (async () => {
 
             try {
                 const notes: INoteState[] = await(await fetch(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PUBNOTES}/${props.publicationView.identifier}`)).json();

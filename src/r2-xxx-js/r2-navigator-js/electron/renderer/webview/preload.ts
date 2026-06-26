@@ -2649,8 +2649,8 @@ function loaded(forced: boolean) {
 
                     const cs = new DecompressionStream("gzip");
                     const csWriter = cs.writable.getWriter();
-                    csWriter.write(buff); // .buffer
-                    csWriter.close();
+                    await csWriter.write(buff); // .buffer
+                    await csWriter.close();
 
                     const buffer = Buffer.from(await new Response(cs.readable).arrayBuffer());
                     // const buffer = await streamToBufferPromise(cs.readable as ReadableStream<any>);

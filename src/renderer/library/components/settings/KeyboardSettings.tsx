@@ -185,7 +185,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                 KEY_CODES.push(def.key);
             }
         });
-        (async () => {
+        void (async () => {
             await this.loadKeyboardLayoutMap(/* KEY_CODES , "selectLayoutMap" */);
         })();
     }
@@ -200,7 +200,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                 }
             });
             if (needsUpdating) {
-                (async () => {
+                void (async () => {
                     await this.loadKeyboardLayoutMap(/* KEY_CODES, "selectLayoutMap" */);
                 })();
             }
@@ -970,7 +970,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
 
         if (!KEY_CODES.includes(def.key)) {
             KEY_CODES.push(def.key);
-            (async () => {
+            void (async () => {
                 await this.loadKeyboardLayoutMap(/* KEY_CODES, "selectLayoutMap" */);
             })();
         }

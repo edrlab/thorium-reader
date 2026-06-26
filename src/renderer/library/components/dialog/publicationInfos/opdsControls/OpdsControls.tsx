@@ -97,7 +97,8 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 onClick={() => {
 
                                     if (ln.type === ContentType.Html || ln.type === ContentType.Xhtml) {
-                                        this.props.link(
+                                        // void the Promise as we don't need the async/await guarantee
+                                        void this.props.link(
                                             ln,
                                             this.props.location,
                                         );
@@ -115,7 +116,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                             >
                                 {`${__("catalog.addBookToLib")}${typeStr(ln)}`}
                             </button>
-                            {ln.localBookshelfPublicationId ? <button className={stylesButtons.button_secondary} onClick={() => this.props.read(ln.localBookshelfPublicationId)}>{__("catalog.readBook")}</button> : <></>} 
+                            {ln.localBookshelfPublicationId ? <button className={stylesButtons.button_secondary} onClick={() => this.props.read(ln.localBookshelfPublicationId)}>{__("catalog.readBook")}</button> : <></>}
                             <OpdsLinkProperties
                                 properties={ln.properties}
                             />
@@ -132,7 +133,8 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 onClick={() => {
 
                                     if (ln.type === ContentType.Html || ln.type === ContentType.Xhtml) {
-                                        this.props.link(
+                                        // void the Promise as we don't need the async/await guarantee
+                                        void this.props.link(
                                             ln,
                                             this.props.location,
                                         );
@@ -151,7 +153,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 <SVG ariaHidden={true} svg={ImportIcon} />
                                 {`${__("opds.menu.addExtract")}${typeStr(ln)}`}
                             </button>
-                            {ln.localBookshelfPublicationId ? <button className={stylesButtons.button_secondary} onClick={() => this.props.read(ln.localBookshelfPublicationId)}>{__("catalog.readBook")}</button> : <></>} 
+                            {ln.localBookshelfPublicationId ? <button className={stylesButtons.button_secondary} onClick={() => this.props.read(ln.localBookshelfPublicationId)}>{__("catalog.readBook")}</button> : <></>}
                             <OpdsLinkProperties
                                 properties={ln.properties}
                             />
@@ -180,7 +182,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                     <SVG ariaHidden={true} svg={CartFillIcon} />
                                     {__("opds.menu.goBuyBook")}
                                 </button>
-                                {ln.localBookshelfPublicationId ? <button className={stylesButtons.button_secondary} onClick={() => this.props.read(ln.localBookshelfPublicationId)}>{__("catalog.readBook")}</button> : <></>} 
+                                {ln.localBookshelfPublicationId ? <button className={stylesButtons.button_secondary} onClick={() => this.props.read(ln.localBookshelfPublicationId)}>{__("catalog.readBook")}</button> : <></>}
                                 <OpdsLinkProperties properties={ln.properties} />
                             </div>,
                     )
@@ -202,7 +204,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                     <SVG ariaHidden svg={BorrowIcon} />
                                     {__("opds.menu.goLoanBook")}
                                 </button>
-                                {ln.localBookshelfPublicationId ? <button className={stylesButtons.button_secondary} onClick={() => this.props.read(ln.localBookshelfPublicationId)}>{__("catalog.readBook")}</button> : <></>} 
+                                {ln.localBookshelfPublicationId ? <button className={stylesButtons.button_secondary} onClick={() => this.props.read(ln.localBookshelfPublicationId)}>{__("catalog.readBook")}</button> : <></>}
                                 <OpdsLinkProperties properties={ln.properties} />
                             </div>,
                     )

@@ -1309,9 +1309,15 @@
             "title": "Programmets farvetema"
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "Hold biblioteket i baggrunden efter lukning af læsevinduer",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Når dette er aktiveret, gendannes biblioteksvinduet ikke og bringes ikke i fokus, når et læsevindue lukkes.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Minimer biblioteket efter åbning af læsevinduer",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Når dette er aktiveret, minimeres biblioteksvinduet, når et læsevindue åbnes.",
+            "minimizeLibraryToTray": "Minimer biblioteket til meddelelsesområdet",
+            "minimizeLibraryToTrayDescription": "Når dette er aktiveret, holder minimering af biblioteksvinduet Thorium kørende i Windows-meddelelsesområdet.",
+            "oneReaderWindowPerPublication": "Brug ét læsevindue pr. publikation",
+            "oneReaderWindowPerPublicationDescription": "Når dette er aktiveret, fokuseres læsevinduet for en publikation, der allerede er åben, i stedet for at åbne et nyt.",
+            "title": "Vinduesadfærd"
         }
     },
     "tts": {

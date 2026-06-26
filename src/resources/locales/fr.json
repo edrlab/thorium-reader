@@ -1315,8 +1315,14 @@
             "title": "Thème de l'application"
         },
         "window": {
+            "keepLibraryWindowInBackgroundOnReaderClose": "Garder la bibliothèque en arrière-plan après la fermeture des fenêtres de lecture",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Lorsque cette option est activée, fermer une fenêtre de lecture ne restaure pas la fenêtre Bibliothèque et ne la met pas au premier plan.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Réduire la bibliothèque après l'ouverture des fenêtres de lecture",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Lorsque cette option est activée, ouvrir une fenêtre de lecture réduit la fenêtre Bibliothèque.",
             "minimizeLibraryToTray": "Réduire la bibliothèque dans la zone de notification",
             "minimizeLibraryToTrayDescription": "Lorsque cette option est activée, réduire la fenêtre Bibliothèque garde Thorium ouvert dans la zone de notification Windows.",
+            "oneReaderWindowPerPublication": "Utiliser une seule fenêtre de lecture par publication",
+            "oneReaderWindowPerPublicationDescription": "Lorsque cette option est activée, ouvrir une publication déjà ouverte met au premier plan sa fenêtre de lecture au lieu d'en ouvrir une autre.",
             "title": "Comportement des fenêtres"
         }
     },

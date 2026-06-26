@@ -81,7 +81,7 @@ const deepDiff = (obj1: any, obj2: any) => {
 };
 
 const test = (stateRaw: any): stateRaw is PersistRootState => {
-    if (typeof stateRaw === "object" && 
+    if (typeof stateRaw === "object" &&
 
     // Only check the `publication` key to avoid exceptions
     // when legitimate publication database arrays are missing `win` or `reader` keys.
@@ -318,7 +318,7 @@ const loadReduxState = async (): Promise<TReduxStateParsed> => {
 
 const loadResolvedReduxState = async (): Promise<TReduxStateParsed> => {
 
-    // TODO: Load the runtime state in parallel. 
+    // TODO: Load the runtime state in parallel.
     // Note: In the normal working mode, this runtime state is not used,
     // but it can provide useful debugging/logging information.
     const reduxStateParsed = await loadReduxState();
@@ -395,42 +395,42 @@ export async function initStore()
     // https://github.com/edrlab/thorium-reader/pull/3423
     // AND
     // https://github.com/edrlab/thorium-reader/pull/3471
-    
+
     This logic implements a safe and resilient Redux state loading strategy
     designed to protect user data against corruption and unexpected shutdowns.
-    
+
     At startup, the application attempts to load the persisted state from disk (`state.json`).
     If the state is in the modern format (v340), its integrity is verified using a checksum.
     If the checksum is valid, the state is considered reliable. Otherwise, it is treated as corrupted.
-    
+
     In parallel, the application also checks the runtime file (`state.runtime.json`), which represents the state at startup.
     This runtime state is combined with a JSON diff patch (the list of changes applied during the application lifetime)
     to reconstruct the runtime+patch state, i.e. the most up-to-date in-memory state prior to shutdown.
-    
+
     If this runtime+patch state is valid and more recent than the main state, or if the main state is corrupted, it is used instead.
     A recovery process is applied to ensure the reconstructed state is consistent.
-    
+
     The final state is selected using the following priority:
     * Valid main state (state.json)
     * Valid recovered runtime+patch state
     * Valid runtime state
     * Legacy state (v330, without checksum)
     * Empty state (fallback in case of failure)
-    
+
     Once the application is initialized, the resolved state is immediately persisted back to disk:
     * First written to the runtime file
     * Then copied to the main state file
-    
+
     The state is also persisted again on application shutdown.
-    
+
     This ensures that:
     * The application can recover from crashes or incomplete writes
     * Corrupted states are automatically detected and bypassed
     * The most recent valid state is always preferred
-    
+
     Note: In recovery scenarios, the system intentionally favors availability over strict consistency.
     A recovered state may override the previous one even if differences are detected.
-    
+
     */
 
     const { reduxState, version, reduxStateWinRegistryReader, filePath }: TReduxStateParsed = await loadResolvedReduxState();
@@ -467,12 +467,13 @@ export async function initStore()
         }
         if (version === 330 && showErrorElectronDialog) {
             app.whenReady().then(() => {
-                dialog.showMessageBox({
+                // void to ignore returned Promise
+                void dialog.showMessageBox({
                     type: "info",
                     title: "Update complete",
                     message: "Your data has been successfully updated to the latest version. " + _APP_VERSION,
                 });
-            });
+            }).catch((err) => { debug(err); });
         }
         debug("State successfully loaded from filesystem");
         debug("Initialization complete");
@@ -756,7 +757,7 @@ export async function initStore()
                 // For test purpose only
                 // await new Promise((resolve) => setTimeout(resolve, 10000));
 
-                
+
                 // publicationStorage is not used for the 340 for the moment, wait 350 to add this evolution
                 // const publicationStorage = diMainGet("publication-storage");
 
@@ -899,7 +900,7 @@ export async function initStore()
             if (!preloadedState.win.registry.reader) {
                 preloadedState.win.registry.reader = {};
             }
-    
+
             // list publication db
             // read publication-data files and hydrate redux state
             const publicationData = diMainGet("publication-data");
@@ -907,30 +908,30 @@ export async function initStore()
             for (const pubId of pubIds) {
                 debug("PubID", pubId);
                 preloadedState.win.registry.reader[pubId] = {} as IWinRegistryReaderState;
-    
+
                 // "config" | "locator" | "divina" | "disableRTLFlip" | "allowCustomConfig" | "noteTotalCount" | "pdfConfig"
-    
+
                 // can be undefined!
                 const locator = await tryCatch(async () => await publicationData.readJsonObj(pubId, "locator"), _dbgn) as unknown as MiniLocatorExtended;
-    
+
                 // can be undefined!
                 const config = await tryCatch(async () => await publicationData.readJsonObj(pubId, "config"), _dbgn) as unknown as ReaderConfig;
-    
+
                 // can be undefined!
                 const disableRTLFlip = await tryCatch(async () => await publicationData.readJsonObj(pubId, "disableRTLFlip"), _dbgn) as unknown as IRTLFlipState;
-    
+
                 // can be undefined!
                 const allowCustomConfig = await tryCatch(async () => await publicationData.readJsonObj(pubId, "allowCustomConfig"), _dbgn) as unknown as IAllowCustomConfigState;
-    
+
                 // can be undefined!
                 const noteTotalCount = await tryCatch(async () => await publicationData.readJsonObj(pubId, "noteTotalCount"), _dbgn) as unknown as IBookmarkTotalCountState;
-    
+
                 // can be undefined!
                 const divina = await tryCatch(async () => await publicationData.readJsonObj(pubId, "divina"), _dbgn) as unknown as IDivinaState;
-    
+
                 // can be undefined!
                 const pdfConfig = await tryCatch(async () => await publicationData.readJsonObj(pubId, "pdfConfig"), _dbgn) as unknown as IReaderPdfConfig;
-    
+
                 preloadedState.win.registry.reader[pubId].reduxState = {
                     locator,
                     config,
@@ -940,12 +941,12 @@ export async function initStore()
                     divina,
                     pdfConfig,
                 };
-    
+
                 // can be undefined!
                 const bound = await tryCatch(async () => await publicationData.readJsonObj(pubId, "bound"), _dbgn);
-    
+
                 preloadedState.win.registry.reader[pubId].windowBound = bound as unknown as Electron.Rectangle;
-    
+
                 debug(`\t => reduxState loaded with ${!!locator}, ${!!config}, ${!disableRTLFlip}, ${!!bound}`);
                 try {
                     await publicationData.close(pubId);
@@ -953,7 +954,7 @@ export async function initStore()
                     debug(e);
                 }
             }
-    
+
             debug("END reader registry hydration from publication-data, let's create the redux store");
         } // win registry hydration disabled
         else {

@@ -16,7 +16,7 @@ import classNames from "classnames";
 import * as React from "react";
 import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import { DisplayType, IRouterLocationState } from "../../routing";
+import { resolveDisplayType } from "../../routing";
 import * as HomeIcon from "readium-desktop/renderer/assets/icons/home-icon.svg";
 import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon.svg";
 import * as CatalogsIcon from "readium-desktop/renderer/assets/icons/catalogs-icon.svg";
@@ -52,6 +52,7 @@ const Header = () => {
     const history = useSelector((state: ILibraryRootState) => state.history);
     const locale = useSelector((state: ILibraryRootState) => state.i18n.locale);
     const customizationManifest = useSelector((state: ILibraryRootState) => state.customization.manifest);
+    const savedDisplayTypeSetting = useSelector((state: ILibraryRootState) => state.settings.libraryView?.displayType);
     const [__] = useTranslator();
 
     const buildNavItem = React.useCallback((item: NavigationHeader, index: number, active: boolean) => {
@@ -85,7 +86,7 @@ const Header = () => {
             <li className={classNames(...styleClasses, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} key={index} style={{ height: "inherit" }}>
                 <Link
                     to={nextLocation}
-                    state={{ displayType: (nextLocation.state && (nextLocation.state as IRouterLocationState).displayType) ? (nextLocation.state as IRouterLocationState).displayType : DisplayType.Grid }}
+                    state={{ displayType: resolveDisplayType(nextLocation.state, savedDisplayTypeSetting) }}
                     replace={true}
                     aria-pressed={active}
                     role={"button"}
@@ -120,7 +121,7 @@ const Header = () => {
                 </Link>
             </li>
         );
-    }, [history, location]);
+    }, [history, location, savedDisplayTypeSetting]);
 
     const headerNav: NavigationHeader[] = [
         {

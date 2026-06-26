@@ -1315,9 +1315,15 @@
             "title": "Diseño de la aplicación"
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "Mantener la biblioteca en segundo plano después de cerrar ventanas de lectura",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Cuando está activado, cerrar una ventana de lectura no restaura ni trae al primer plano la ventana de la biblioteca.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Minimizar la biblioteca después de abrir ventanas de lectura",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Cuando está activado, abrir una ventana de lectura minimiza la ventana de la biblioteca.",
+            "minimizeLibraryToTray": "Minimizar la biblioteca al área de notificación",
+            "minimizeLibraryToTrayDescription": "Cuando está activado, al minimizar la ventana de la biblioteca, Thorium sigue ejecutándose en el área de notificación de Windows.",
+            "oneReaderWindowPerPublication": "Usar una sola ventana de lectura por publicación",
+            "oneReaderWindowPerPublicationDescription": "Cuando está activado, abrir una publicación que ya está abierta enfoca su ventana de lectura en lugar de abrir otra.",
+            "title": "Comportamiento de las ventanas"
         }
     },
     "tts": {

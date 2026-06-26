@@ -31,7 +31,7 @@ import {
 } from "./getEventChannel";
 import { availableLanguages } from "readium-desktop/common/services/translator";
 import { i18nActions } from "readium-desktop/common/redux/actions";
-import { URL_PROTOCOL_APP_HANDLER_OPDS, URL_PROTOCOL_APP_HANDLER_THORIUM } from "readium-desktop/common/streamerProtocol";
+import { URL_PROTOCOL_APP_HANDLER_OPDS, URL_PROTOCOL_APP_HANDLER_THORIUM, URL_PROTOCOL_APP_HANDLER_THORIUM_READER, URL_PROTOCOL_APP_HANDLER_THORIUM_READER_DESKTOP } from "readium-desktop/common/streamerProtocol";
 import { PersistRootState, RootState } from "../states";
 
 // Logger
@@ -58,6 +58,12 @@ export function* init() {
         if (!app.isDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM, electronPath, [appPath])) {
             app.setAsDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM, electronPath, [appPath]);
         }
+        if (!app.isDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM_READER, electronPath, [appPath])) {
+            app.setAsDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM_READER, electronPath, [appPath]);
+        }
+        if (!app.isDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM_READER_DESKTOP, electronPath, [appPath])) {
+            app.setAsDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM_READER_DESKTOP, electronPath, [appPath]);
+        }
     } else {
         if (!app.isDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_OPDS)) {
             app.setAsDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_OPDS);
@@ -65,6 +71,12 @@ export function* init() {
 
         if (!app.isDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM)) {
             app.setAsDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM);
+        }
+        if (!app.isDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM_READER)) {
+            app.setAsDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM_READER);
+        }
+        if (!app.isDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM_READER_DESKTOP)) {
+            app.setAsDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM_READER_DESKTOP);
         }
     }
 

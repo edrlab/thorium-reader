@@ -62,6 +62,23 @@ export function lockInstance() {
             //     debug("====================== open url", url);
             // }, 10000);
 
+            // https://www.electronjs.org/docs/latest/api/app#event-continue-activity-macos
+            // https://github.com/edrlab/thorium-reader/pull/3685
+            // https://github.com/edrlab/thorium-reader-website/issues/37
+            app.on("continue-activity", (event, type, userInfo, details) => {
+                event.preventDefault();
+
+                debug("#####");
+                debug("continue-activity", { type, userInfo, details });
+                debug("#####");
+
+                if (!!details?.webpageURL && isOpenUrl(details.webpageURL)) {
+                    setOpenUrl(details.webpageURL);
+                } else {
+                    debug("Not an open url the scheme doesn't match and/or is not a valid url");
+                }
+            });
+
             app.on("open-url", (event, url) => {
                 event.preventDefault();
 
@@ -102,9 +119,9 @@ export function lockInstance() {
             debug("#####");
 
             let dump = "#############################################\n";
-            dump += "SECOND-INSTANCE:\n"; 
+            dump += "SECOND-INSTANCE:\n";
             dump += `Date: ${(new Date()).toISOString()}\n`;
-            // dump += 
+            // dump +=
 
             dump += `Process: ${JSON.stringify({
                 node_version: process.version,

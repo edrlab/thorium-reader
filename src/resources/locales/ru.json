@@ -1321,9 +1321,15 @@
             "title": "Тема приложения"
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "Оставлять библиотеку на заднем плане после закрытия окон чтения",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Если включено, закрытие окна чтения не восстанавливает окно библиотеки и не выводит его на передний план.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Сворачивать библиотеку после открытия окон чтения",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Если включено, при открытии окна чтения окно библиотеки сворачивается.",
+            "minimizeLibraryToTray": "Сворачивать библиотеку в область уведомлений",
+            "minimizeLibraryToTrayDescription": "Если включено, при сворачивании окна библиотеки Thorium продолжает работать в области уведомлений Windows.",
+            "oneReaderWindowPerPublication": "Использовать одно окно чтения для каждой публикации",
+            "oneReaderWindowPerPublicationDescription": "Если включено, при открытии уже открытой публикации фокус переносится на ее окно чтения вместо открытия нового.",
+            "title": "Поведение окон"
         }
     },
     "tts": {

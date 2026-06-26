@@ -1309,8 +1309,14 @@
             "title": "Application Theme"
         },
         "window": {
+            "keepLibraryWindowInBackgroundOnReaderClose": "Keep the library in the background after closing reader windows",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "When enabled, closing a reader window does not restore or focus the library window.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Minimize the library after opening reader windows",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "When enabled, opening a reader window minimizes the library window.",
             "minimizeLibraryToTray": "Minimize the library to the system tray",
             "minimizeLibraryToTrayDescription": "When enabled, minimizing the library window keeps Thorium running in the Windows notification area.",
+            "oneReaderWindowPerPublication": "Use one reader window per publication",
+            "oneReaderWindowPerPublicationDescription": "When enabled, opening a publication that is already open focuses its reader window instead of opening another one.",
             "title": "Window behavior"
         }
     },

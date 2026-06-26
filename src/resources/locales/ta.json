@@ -1309,9 +1309,15 @@
             "title": "பயன்பாட்டு கருப்பொருள்"
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "வாசிப்பு சாளரங்களை மூடிய பிறகு நூலகத்தை பின்னணியில் வைத்திரு",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "இது இயக்கப்பட்டால், வாசிப்பு சாளரத்தை மூடுவது நூலகச் சாளரத்தை மீட்டமைக்காது அல்லது முன்புறத்துக்கு கொண்டு வராது.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "வாசிப்பு சாளரங்களைத் திறந்த பிறகு நூலகத்தை சிறிதாக்கு",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "இது இயக்கப்பட்டால், வாசிப்பு சாளரத்தைத் திறப்பது நூலகச் சாளரத்தைச் சிறிதாக்கும்.",
+            "minimizeLibraryToTray": "நூலகத்தை அறிவிப்பு பகுதிக்கு சிறிதாக்கு",
+            "minimizeLibraryToTrayDescription": "இது இயக்கப்பட்டால், நூலகச் சாளரத்தை சிறிதாக்கும்போது Thorium Windows அறிவிப்பு பகுதியில் தொடர்ந்து இயங்கும்.",
+            "oneReaderWindowPerPublication": "ஒவ்வொரு வெளியீட்டுக்கும் ஒரு வாசிப்பு சாளரத்தைப் பயன்படுத்து",
+            "oneReaderWindowPerPublicationDescription": "இது இயக்கப்பட்டால், ஏற்கனவே திறந்திருக்கும் வெளியீட்டைத் திறப்பது புதிய சாளரத்தைத் திறப்பதற்கு பதிலாக அதன் வாசிப்பு சாளரத்தில் கவனம் செலுத்தும்.",
+            "title": "சாளர நடத்தை"
         }
     },
     "tts": {

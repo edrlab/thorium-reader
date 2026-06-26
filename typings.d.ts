@@ -64,7 +64,7 @@ declare module "css.escape";
 // declare module "node-stream-zip";
 // declare module "unzipper";
 
-declare module "@flatten-js/polygon-offset" {
-    import { type Polygon } from "@flatten-js/core";
-    export default function offset(poly: Polygon, offset: number): Polygon;
-}
+// declare module "@flatten-js/polygon-offset" {
+//     import { type Polygon } from "@flatten-js/core";
+//     export default function offset(poly: Polygon, offset: number): Polygon;
+// }

@@ -1309,9 +1309,15 @@
             "title": ""
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "Запазване на библиотеката на заден план след затваряне на прозорци за четене",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Когато е включено, затварянето на прозорец за четене не възстановява и не извежда прозореца на библиотеката на преден план.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Минимизиране на библиотеката след отваряне на прозорци за четене",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Когато е включено, отварянето на прозорец за четене минимизира прозореца на библиотеката.",
+            "minimizeLibraryToTray": "Минимизиране на библиотеката в системната област",
+            "minimizeLibraryToTrayDescription": "Когато е включено, минимизирането на прозореца на библиотеката оставя Thorium да работи в областта за уведомления на Windows.",
+            "oneReaderWindowPerPublication": "Използване на един прозорец за четене за всяка публикация",
+            "oneReaderWindowPerPublicationDescription": "Когато е включено, отварянето на публикация, която вече е отворена, фокусира нейния прозорец за четене, вместо да отваря нов.",
+            "title": "Поведение на прозорците"
         }
     },
     "tts": {

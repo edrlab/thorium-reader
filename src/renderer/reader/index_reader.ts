@@ -93,7 +93,7 @@ ipcRenderer.on(readerIpc.CHANNEL,
 
                 const store = createStoreFromDi({ ...data.payload, noteTagsIndex } as Partial<IReaderRootState>);
                 const locale = store.getState().i18n.locale;
-                getTranslator().setLocale(locale);
+                getTranslator().setLocale(locale).then(() => { /* noop */ }).catch((err) => { console.log(err); });
                 /*const localeUsedByMoment = */moment.locale([locale, "en"]);
                 // console.log("MOMENT SET LOCALE START", localeUsedByMoment);
 

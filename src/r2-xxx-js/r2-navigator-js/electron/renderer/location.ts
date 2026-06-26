@@ -577,7 +577,7 @@ export function handleLink(
                 debug(`External link: ${href}`);
 
                 // tslint:disable-next-line:no-floating-promises
-                (async () => {
+                void (async () => {
                     try {
                         await shell.openExternal(href);
                     } catch (err) {
@@ -1642,8 +1642,8 @@ ${coverLink ? `<img id="${AUDIO_COVER_ID}" src="${coverLink.Href}" alt="" ${cove
 
                     const cs = new CompressionStream("gzip");
                     const csWriter = cs.writable.getWriter();
-                    csWriter.write(new TextEncoder().encode(jsonStr));
-                    csWriter.close();
+                    await csWriter.write(new TextEncoder().encode(jsonStr));
+                    await csWriter.close();
                     const buff = Buffer.from(await new Response(cs.readable).arrayBuffer());
                     // const buff = await streamToBufferPromise(cs.readable as ReadableStream<any>);
                     const b64Highlights = buff.toString("base64");
@@ -1701,8 +1701,8 @@ ${coverLink ? `<img id="${AUDIO_COVER_ID}" src="${coverLink.Href}" alt="" ${cove
 
                     const cs = new CompressionStream("gzip");
                     const csWriter = cs.writable.getWriter();
-                    csWriter.write(new TextEncoder().encode(jsonStr));
-                    csWriter.close();
+                    await csWriter.write(new TextEncoder().encode(jsonStr));
+                    await csWriter.close();
                     const buff = Buffer.from(await new Response(cs.readable).arrayBuffer());
                     // const buff = await streamToBufferPromise(cs.readable as ReadableStream<any>);
                     const b64Highlights = buff.toString("base64");

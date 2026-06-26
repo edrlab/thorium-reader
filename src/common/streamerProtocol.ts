@@ -24,6 +24,9 @@ export const URL_OPDS_AUTH_RETRY = "callback-retry";
 
 export const URL_PROTOCOL_APP_HANDLER_OPDS = "opds";
 export const URL_PROTOCOL_APP_HANDLER_THORIUM = "thorium";
+export const URL_PROTOCOL_APP_HANDLER_THORIUM_READER = "com.thoriumreader"; // e.g. `com.thoriumreader:/add/catalog?...` or `com.thoriumreader:/add/publication?...`
+export const URL_PROTOCOL_APP_HANDLER_THORIUM_READER_DESKTOP = "com.thoriumreader.desktop"; // e.g. `com.thoriumreader.desktop:/add/catalog?...` or `com.thoriumreader.desktop:/add/publication?...`
+export const URL_DOMAIN_APP_HANDLER_THORIUM_READER = "www.thoriumreader.com"; // e.g. `https://www.thoriumreader.com/add/catalog?...` or `https://www.thoriumreader.com/add/publication?...`
 
 export const URL_HOST_CUSTOMPROFILE = "customization-profile";
 

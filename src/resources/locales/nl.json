@@ -1309,9 +1309,15 @@
             "title": "Applicatie Thema"
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "Bibliotheek op de achtergrond houden na het sluiten van leesvensters",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Als dit is ingeschakeld, wordt het bibliotheekvenster niet hersteld of naar voren gehaald wanneer een leesvenster wordt gesloten.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Bibliotheek minimaliseren na het openen van leesvensters",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Als dit is ingeschakeld, wordt het bibliotheekvenster geminimaliseerd wanneer een leesvenster wordt geopend.",
+            "minimizeLibraryToTray": "Bibliotheek naar het systeemvak minimaliseren",
+            "minimizeLibraryToTrayDescription": "Als dit is ingeschakeld, blijft Thorium actief in het Windows-systeemvak wanneer het bibliotheekvenster wordt geminimaliseerd.",
+            "oneReaderWindowPerPublication": "Eén leesvenster per publicatie gebruiken",
+            "oneReaderWindowPerPublicationDescription": "Als dit is ingeschakeld, wordt bij het openen van een publicatie die al geopend is het bijbehorende leesvenster gefocust in plaats van een nieuw venster te openen.",
+            "title": "Venstergedrag"
         }
     },
     "tts": {

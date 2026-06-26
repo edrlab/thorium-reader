@@ -1309,9 +1309,15 @@
             "title": "Εφαρμογή Θέματος"
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "Διατήρηση της βιβλιοθήκης στο παρασκήνιο μετά το κλείσιμο παραθύρων ανάγνωσης",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Όταν είναι ενεργό, το κλείσιμο ενός παραθύρου ανάγνωσης δεν επαναφέρει ούτε φέρνει στο προσκήνιο το παράθυρο της βιβλιοθήκης.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Ελαχιστοποίηση της βιβλιοθήκης μετά το άνοιγμα παραθύρων ανάγνωσης",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Όταν είναι ενεργό, το άνοιγμα ενός παραθύρου ανάγνωσης ελαχιστοποιεί το παράθυρο της βιβλιοθήκης.",
+            "minimizeLibraryToTray": "Ελαχιστοποίηση της βιβλιοθήκης στην περιοχή ειδοποιήσεων",
+            "minimizeLibraryToTrayDescription": "Όταν είναι ενεργό, η ελαχιστοποίηση του παραθύρου της βιβλιοθήκης διατηρεί το Thorium σε λειτουργία στην περιοχή ειδοποιήσεων των Windows.",
+            "oneReaderWindowPerPublication": "Χρήση ενός παραθύρου ανάγνωσης ανά δημοσίευση",
+            "oneReaderWindowPerPublicationDescription": "Όταν είναι ενεργό, το άνοιγμα μιας δημοσίευσης που είναι ήδη ανοιχτή εστιάζει στο παράθυρο ανάγνωσής της αντί να ανοίξει άλλο.",
+            "title": "Συμπεριφορά παραθύρων"
         }
     },
     "tts": {

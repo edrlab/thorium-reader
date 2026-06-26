@@ -1309,9 +1309,15 @@
             "title": "Aplikazioaren gaia"
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "Eduki liburutegia atzeko planoan irakurketa-leihoak itxi ondoren",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Gaituta dagoenean, irakurketa-leiho bat ixteak ez du liburutegiaren leihoa leheneratzen, ezta aurreko planora ekartzen ere.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Minimizatu liburutegia irakurketa-leihoak ireki ondoren",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Gaituta dagoenean, irakurketa-leiho bat irekitzeak liburutegiaren leihoa minimizatzen du.",
+            "minimizeLibraryToTray": "Minimizatu liburutegia jakinarazpen-eremura",
+            "minimizeLibraryToTrayDescription": "Gaituta dagoenean, liburutegiaren leihoa minimizatzeak Thorium Windowsen jakinarazpen-eremuan martxan mantentzen du.",
+            "oneReaderWindowPerPublication": "Erabili irakurketa-leiho bakarra argitalpen bakoitzeko",
+            "oneReaderWindowPerPublicationDescription": "Gaituta dagoenean, dagoeneko irekita dagoen argitalpen bat irekitzeak haren irakurketa-leihoa fokuratzen du, beste bat ireki ordez.",
+            "title": "Leihoen portaera"
         }
     },
     "tts": {

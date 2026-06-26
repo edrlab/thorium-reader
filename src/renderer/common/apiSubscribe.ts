@@ -22,7 +22,14 @@ export function apiSubscribeFactory(storeCb: () => Store<any>) {
         const lastApiSuccess = store.getState().api[LAST_API_SUCCESS_ID];
         let lastSuccessTime = lastApiSuccess?.lastTime || 0;
 
-        cb();
+        void cb();
+        // TODO: we could also:
+        // await cb();
+        // ...which would work safely for both void | Promise<void>
+        // ...but this would affect the call chain.
+        // Alternatively:
+        // cb().then().catch()
+        // ...would handle the floating Promise but we would need to duck-type check then-able
 
         return store.subscribe(() => {
             const state = store.getState();
@@ -34,7 +41,7 @@ export function apiSubscribeFactory(storeCb: () => Store<any>) {
                 if (!data.error) {
                     const path = `${data.moduleId}/${data.methodId}` as TApiMethodName;
                     if (pathArrayToRefresh.includes(path)) {
-                        cb();
+                        void cb(); // see comment above for the other cb() call
                     }
                 }
             }
