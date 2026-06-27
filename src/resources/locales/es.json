@@ -46,8 +46,8 @@
         },
         "window": {
             "showLibrary": "Mostrar biblioteca",
-            "trayHint": "",
-            "trayTooltip": ""
+            "trayHint": "{{- appName}} todavía se está ejecutando en el área de notificaciones. Haz clic en el icono del área de notificaciones para mostrar la biblioteca.",
+            "trayTooltip": "{{- appName}} - clic para mostrar u ocultar la biblioteca"
         }
     },
     "catalog": {
