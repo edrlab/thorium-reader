@@ -222,7 +222,7 @@
             "hint": "Pista :",
             "open": "Abrir",
             "password": "Santo y seña",
-            "sentence": "Esta publicación requiere una contraseña LCP para abrirse: ",
+            "sentence": "Esta publicación requiere una contraseña LCP para abrirse:",
             "showPassphrase": "Muestra la contraseña",
             "urlHint": "¿Olvidaste tu contraseña? Encuentra ayuda aquí",
             "whatIsLcp?": "¿Qué es LCP?",
@@ -242,7 +242,7 @@
         "annotations": {
             "alreadyImported": "Ya están importadas todas las anotaciones, cancelando la importación",
             "emptyFile": "El fichero no tiene anotaciones disponibles",
-            "errorParsing": "Error al validar el formato del fichero:",
+            "errorParsing": "Error al validar el formato del fichero: ",
             "noBelongTo": "No es posible importar las anotaciones establecidas, al menos una anotación no pertenece a la publicación",
             "nothing": "No hay anotaciones listas para importar, cancelando la importación",
             "success": "¡Correcto!"
