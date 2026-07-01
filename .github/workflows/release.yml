@@ -609,16 +609,16 @@ jobs:
           !release/*.app
         if-no-files-found: error
 ###########################
-    - name: Rename Windows ARM64 .exe
-      # if: startsWith(matrix.osarch, 'windows-') && endsWith(matrix.osarch, '-arm') # runner.os == 'Windows'
-      if: ${{ matrix.osarch == 'windows-arm' }}
-      run: >
-        cd release &&
-        ls -als &&
-        (for filename in *.exe ; do mv "$filename" "${filename%.*}-arm64.${filename##*.}" ; done) &&
-        ls -als &&
-        cd -
-      shell: bash
+# - name: Rename Windows ARM64 .exe
+#   # if: startsWith(matrix.osarch, 'windows-') && endsWith(matrix.osarch, '-arm') # runner.os == 'Windows'
+#   if: ${{ matrix.osarch == 'windows-arm' }}
+#   run: >
+#     cd release &&
+#     ls -als &&
+#     (for filename in *.exe ; do mv "$filename" "${filename%.*}-arm64.${filename##*.}" ; done) &&
+#     ls -als &&
+#     cd -
+#   shell: bash
 ###########################
     - name: Upload Artifact (Windows)
       #if: ${{ matrix.osarch == 'windows-intel' || matrix.osarch == 'windows-arm' }}

@@ -46,8 +46,8 @@
         },
         "window": {
             "showLibrary": "Visualizza la biblioteca",
-            "trayHint": "",
-            "trayTooltip": ""
+            "trayHint": "{{- appName}} è ancora in esecuzione nell'area di notifica. Fai clic sull'icona nella barra delle applicazioni per visualizzare la libreria.",
+            "trayTooltip": "{{- appName}} - clicca per visualizzare o nascondere la libreria"
         }
     },
     "catalog": {
@@ -103,7 +103,7 @@
             "auth": {
                 "cancel": "Annulla",
                 "external": "La pagina di connessione si aprirà nel vostro navigatore web, si prega di seguire le istruzioni. Una volta connesso, il navigatore web vi dirigerà all'applicazione.",
-                "fallback": "NB: in caso di problemi di connessione con il vostro navigatore web si prega di riprovare con il metodo alternativo proposto dall'applicazione.",
+                "fallback": "Nota bene: in caso di problemi di connessione con il vostro navigatore web si prega di riprovare con il metodo alternativo proposto dall'applicazione.",
                 "login": "Accedi",
                 "password": "Password",
                 "register": "Registrati",
@@ -244,7 +244,7 @@
             "emptyFile": "Nessuna nota disponibile nel file.",
             "errorParsing": "Errore durante l'analisi del file: ",
             "noBelongTo": "Impossibile importare le note, almeno una nota non appartiene alla pubblicazione.",
-            "nothing": "Non c'è nessuna nota pronta per essere importata; l'importazione sarà interrotta",
+            "nothing": "Non c'è nessuna nota pronta per essere importata, l'importazione sarà interrotta",
             "success": "Importazione completata."
         },
         "download": {
@@ -713,7 +713,7 @@
                 "all": "Tutte",
                 "filterByColor": "Filtra per colore",
                 "filterByCreator": "Filtra per creatore",
-                "filterByDrawtype": "Filtra per tipo di disegno",
+                "filterByDrawtype": "Filtra per stile di annotazione",
                 "filterByTag": "Filtra per tag",
                 "filterOptions": "Opzioni di filtro",
                 "none": "Nessuna"
@@ -730,7 +730,7 @@
                 "progression": "Progressione",
                 "sortingOptions": "Opzioni di ordinamento"
             },
-            "toggleMarginMarks": "Visualizza ai margini",
+            "toggleMarginMarks": "Visualizza i margini",
             "type": {
                 "outline": "Contorno",
                 "solid": "Sfondo pieno",
@@ -777,7 +777,7 @@
             "captions": "Testo sincronizzato",
             "captionsDescription": "Visualizzazione del testo semplificata con uno stile di didascalia minimo.",
             "disableContinuousPlay": "Disattiva la riproduzione continua",
-            "disableContinuousPlayDescription": "Non riprodurre automaticamente l'elemento successivo, ma mettere in pausa subito dopo la fine della riproduzione dell'elemento corrente.",
+            "disableContinuousPlayDescription": "Non riprodurre automaticamente la traccia successiva, ma mettere in pausa subito dopo la fine della riproduzione della traccia corrente.",
             "ignoreAndUseTTS": "Ignora l'audio preregistrato, usa la sintesi vocale",
             "ignoreAndUseTTSDescription": "Ignora gli EPUB Media Overlay, leggi con la sintesi vocale",
             "next": "Prossima lettura ad alta voce",
@@ -889,10 +889,10 @@
             "margin": "Margine",
             "mathjax": "Abilita MathJax",
             "mathjaxDescription": "MathJax",
-            "noFootnotes": "Disattiva note a piè di pagina in elementi a comparsa",
-            "noRTLFlip": "Disabilita l'interfaccia utente da destra a sinistra",
+            "noFootnotes": "Disattiva le note a piè di pagina popup",
+            "noRTLFlip": "Disattiva la lettura da destra a sinistra",
             "noRuby": "Nascondi Ruby Giapponese",
-            "noTemporaryNavTargetOutline": "Disattivare gli indicatori visivi di navigazione",
+            "noTemporaryNavTargetOutline": "Disattiva gli indicatori visivi di navigazione",
             "paginated": "Impaginato",
             "paraSpacing": "Spaziatura dei paragrafi",
             "pdfZoom": {
@@ -955,7 +955,7 @@
             "pause": "Metti in pausa Lettura ad alta voce",
             "play": "Riproduci Lettura ad alta voce",
             "previous": "Traccia precedente",
-            "sentenceDetect": "Separa il testo",
+            "sentenceDetect": "Separa il testo durante la lettura ad alta voce",
             "sentenceDetectDescription": "Suddividi i paragrafi lunghi in frasi.",
             "speed": "Velocità di riproduzione Lettura ad alta voce",
             "stop": "Interrompi Lettura ad alta voce",
@@ -964,7 +964,7 @@
     },
     "settings": {
         "annotationCreator": {
-            "creator": "Creatore",
+            "creator": "Autore delle annotazioni (facoltativo)",
             "help": "Se specificato, questo nome verrà incluso nei metadati delle annotazioni esportate.",
             "name": "Nome",
             "organization": "Organizzazione",
@@ -1316,13 +1316,13 @@
         },
         "window": {
             "keepLibraryWindowInBackgroundOnReaderClose": "Mantieni la biblioteca in background dopo la chiusura delle finestre di lettura",
-            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Quando è attivata, la chiusura di una finestra di lettura non ripristina né porta in primo piano la finestra Biblioteca.",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Quando è attivata, la chiusura di una finestra di lettura non ripristina né porta in primo piano la finestra della biblioteca.",
             "keepLibraryWindowInBackgroundOnReaderOpen": "Riduci la biblioteca dopo l'apertura delle finestre di lettura",
-            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Quando è attivata, l'apertura di una finestra di lettura riduce la finestra Biblioteca.",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Quando è attivata, l'apertura di una finestra di lettura riduce la finestra della biblioteca.",
             "minimizeLibraryToTray": "Riduci la biblioteca nell'area di notifica",
             "minimizeLibraryToTrayDescription": "Quando è attivata, la riduzione della finestra Biblioteca mantiene Thorium in esecuzione nell'area di notifica di Windows.",
             "oneReaderWindowPerPublication": "Usa una sola finestra di lettura per pubblicazione",
-            "oneReaderWindowPerPublicationDescription": "Quando è attivata, l'apertura di una pubblicazione già aperta porta in primo piano la sua finestra di lettura invece di aprirne un'altra.",
+            "oneReaderWindowPerPublicationDescription": "Quando attivata, l'apertura di una pubblicazione già in lettura mette in primo piano la sua finestra di lettura invece di aprirne un'altra.",
             "title": "Comportamento delle finestre"
         }
     },

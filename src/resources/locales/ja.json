@@ -46,12 +46,12 @@
         },
         "window": {
             "showLibrary": "蔵書/本棚を表示",
-            "trayHint": "",
-            "trayTooltip": ""
+            "trayHint": "{{- appName}} はまだ通知領域で実行中です。トレイアイコンをクリックすると、書棚画面が表示されます。",
+            "trayTooltip": "{{- appName}} - 書棚画面を表示／非表示するにはクリック"
         }
     },
     "catalog": {
-        "AddToFavorites": "",
+        "AddToFavorites": "お気に入りに追加",
         "about": {
             "title": "{{- appName}} について（オンライン）"
         },
