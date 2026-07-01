@@ -229,7 +229,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
         }
     }
 
-    public async componentDidUpdate(oldProps: IProps) {
+    public componentDidUpdate(oldProps: IProps) {
 
         // note that "@r2-navigator-js/electron/main/browser-window-tracker"
         // uses "accessibility-support-changed" instead of "accessibility-support-query",

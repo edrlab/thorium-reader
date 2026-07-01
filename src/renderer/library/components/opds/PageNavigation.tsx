@@ -63,7 +63,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
         window.removeEventListener("resize", this.adjustElementPosition);
     }
 
-    public async componentDidUpdate(oldProps: IProps) {
+    public componentDidUpdate(oldProps: IProps) {
         if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
             this.unregisterAllKeyboardListeners();
             this.registerAllKeyboardListeners();
