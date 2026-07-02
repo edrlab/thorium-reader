@@ -114,19 +114,18 @@ export async function importPublicationFromFS(
                 r2Publication.freeDestroy();
 
                 r2Publication = await DaisyParsePromise(filePath);
-
-                // TODO: delete file contents (webpub zip) inside pathFile? shouldn't be necessary as fs.createWriteStream() by default overrides, so does fs.writeFileSync() in the case of generateDaisyAudioManifestOnly
-                packagePath = await new Promise((reso) => {
+                await new Promise<void>((r) => {
                     setTimeout(() => {
-                        void (async () => {
-                            try {
-                                reso(await convertDaisyToReadiumWebPub(outputDirPath, r2Publication, undefined, true));
-                            } catch (err) {
-                                debug(err);
-                            }
-                        })();
+                        r();
                     }, 500);
                 });
+                // TODO: delete file contents (webpub zip) inside pathFile? shouldn't be necessary as fs.createWriteStream() by default overrides, so does fs.writeFileSync() in the case of generateDaisyAudioManifestOnly
+                try {
+                    packagePath = await convertDaisyToReadiumWebPub(outputDirPath, r2Publication, undefined, true);
+                } catch (err) {
+                    packagePath = undefined;
+                    debug(err);
+                }
             }
 
             if (packagePath) {
