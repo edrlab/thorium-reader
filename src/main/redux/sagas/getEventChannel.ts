@@ -27,9 +27,29 @@ export function getAndStartCustomizationWellKnownFileWatchingEventChannel(wellKn
 
             return () => {
                 if (watcher) {
-                    void watcher.close();
+                    // Notes about Promise callback vs. async/await programming:
+                    // The chained then() and catch() blocks can both return a value (by default they already return undefined)
+                    // that would become a settled/resolved Promise which would "replace" the original watcher.close() Promise at the end of the call chain.
+                    // (also note that the returned value in finally() does not chain into an override for the preceding catch())
+                    // if watcher.close() rejected, Promise.all() on watcher.close() would throw
+                    // (which would require explicit handling, for example in top-level NodeJS execution context)
+                    // whereas Promise.allSettled() would safely report all resolved/rejected status.
+                    // But Promise.all() on the chained callback execution after watcher.close() would always settle as resolved (no rejection), even with undefined.
+                    // Illustration:
+                    // const p1 = watcher.close();
+                    // const p2 = p1.then((v) => { debug(v); return "res1"; }).catch((err: unknown) => { debug(err); return "res2"; });
+                    // p2.then((v) => { debug(v); }); // ====> "res2"
+                    watcher.close().then?.(() => { /* noop */ }).catch((err: unknown) => { debug(err); }); // .finally(() => { /* noop */ })
+
+                    // void watcher.close();
+
                     // void (async () => {
+                    // try {
                     //     await watcher.close();
+                    // } catch (err) {
+                    //     // ignore promise rejection
+                    //     debug(err);
+                    // }
                     // })();
                 }
             };
