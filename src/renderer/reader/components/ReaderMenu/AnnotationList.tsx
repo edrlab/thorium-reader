@@ -511,9 +511,7 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
                                     <Popover.Close aria-label={__("reader.annotations.export")} asChild>
                                             <button onClick={() => {
                                                 const fileType = selectFileTypeRef.current?.value || "annotation";
-                                                void (async () => {
-                                                    await getSaga().run(exportAnnotationSet, annotationListFiltered, publicationView, annotationTitleRef?.current?.value || annoSetTitle, fileType).toPromise();
-                                                })();
+                                                getSaga().run(exportAnnotationSet, annotationListFiltered, publicationView, annotationTitleRef?.current?.value || annoSetTitle, fileType).toPromise().then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
                                             }} className={stylesButtons.button_primary_blue}>
                                                 <SVG svg={SaveIcon} />
                                                 {__("reader.annotations.export")}

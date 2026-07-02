@@ -19,17 +19,9 @@ export function audioPlay() {
         return;
     }
 
-    setTimeout(() => {
-        if (activeWebView.READIUM2?.DOMisReady) {
-            void (async () => {
-                try {
-                    await activeWebView.send(R2_EVENT_AUDIO_DO_PLAY);
-                } catch (_err) {
-                    // debug(err);
-                }
-            })();
-        }
-    }, 0);
+    if (activeWebView.READIUM2?.DOMisReady) {
+        activeWebView.send(R2_EVENT_AUDIO_DO_PLAY).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+    }
 }
 
 export function audioPause() {
@@ -38,17 +30,9 @@ export function audioPause() {
         return;
     }
 
-    setTimeout(() => {
-        if (activeWebView.READIUM2?.DOMisReady) {
-            void (async () => {
-                try {
-                    await activeWebView.send(R2_EVENT_AUDIO_DO_PAUSE);
-                } catch (_err) {
-                    // debug(err);
-                }
-            })();
-        }
-    }, 0);
+    if (activeWebView.READIUM2?.DOMisReady) {
+        activeWebView.send(R2_EVENT_AUDIO_DO_PAUSE).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+    }
 }
 
 export function audioTogglePlayPause() {
@@ -57,17 +41,9 @@ export function audioTogglePlayPause() {
         return;
     }
 
-    setTimeout(() => {
-        if (activeWebView.READIUM2?.DOMisReady) {
-            void (async () => {
-                try {
-                    await activeWebView.send(R2_EVENT_AUDIO_TOGGLE_PLAY_PAUSE);
-                } catch (_err) {
-                    // debug(err);
-                }
-            })();
-        }
-    }, 0);
+    if (activeWebView.READIUM2?.DOMisReady) {
+        activeWebView.send(R2_EVENT_AUDIO_TOGGLE_PLAY_PAUSE).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+    }
 }
 
 export function audioRewind() {
@@ -76,17 +52,9 @@ export function audioRewind() {
         return;
     }
 
-    setTimeout(() => {
-        if (activeWebView.READIUM2?.DOMisReady) {
-            void (async () => {
-                try {
-                    await activeWebView.send(R2_EVENT_AUDIO_REWIND);
-                } catch (_err) {
-                    // debug(err);
-                }
-            })();
-        }
-    }, 0);
+    if (activeWebView.READIUM2?.DOMisReady) {
+        activeWebView.send(R2_EVENT_AUDIO_REWIND).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+    }
 }
 
 export function audioForward() {
@@ -95,17 +63,9 @@ export function audioForward() {
         return;
     }
 
-    setTimeout(() => {
-        if (activeWebView.READIUM2?.DOMisReady) {
-            void (async () => {
-                try {
-                    await activeWebView.send(R2_EVENT_AUDIO_FORWARD);
-                } catch (_err) {
-                    // debug(err);
-                }
-            })();
-        }
-    }, 0);
+    if (activeWebView.READIUM2?.DOMisReady) {
+        activeWebView.send(R2_EVENT_AUDIO_FORWARD).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+    }
 }
 
 // export function audioPlaybackRate(speed: number) {

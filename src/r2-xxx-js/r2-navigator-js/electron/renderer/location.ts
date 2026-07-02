@@ -188,17 +188,9 @@ export function keyboardFocusRequest(deep: boolean, webview?: IReadiumElectronWe
     }
 
     if (deep) {
-        setTimeout(() => {
-            if (webview.READIUM2?.DOMisReady) {
-                void (async () => {
-                    try {
-                        await webview.send(R2_EVENT_FOCUS_READING_LOC);
-                    } catch (_err) {
-                        // debug(err);
-                    }
-                })();
-            }
-        }, 0);
+        if (webview.READIUM2?.DOMisReady) {
+            webview.send(R2_EVENT_FOCUS_READING_LOC).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+        }
     }
 
     // win.blur();
@@ -519,17 +511,9 @@ export function navPreviousOrNext(
         };
         const activeWebView = win.READIUM2.getFirstOrSecondWebView();
         if (activeWebView) {
-            setTimeout(() => {
-                if (activeWebView.READIUM2?.DOMisReady) {
-                    void (async () => {
-                        try {
-                            await activeWebView.send(R2_EVENT_PAGE_TURN, payload); // .getWebContents()
-                        } catch (_err) {
-                            // debug(err);
-                        }
-                    })();
-                }
-            }, 0);
+            if (activeWebView.READIUM2?.DOMisReady) {
+                activeWebView.send(R2_EVENT_PAGE_TURN, payload).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ }); // .getWebContents()
+            }
         }
     }
 
@@ -1249,17 +1233,9 @@ function loadLink(
                     }
                 }, 10);
             } else {
-                setTimeout(() => {
-                    if (activeWebView.READIUM2?.DOMisReady) {
-                        void (async () => {
-                            try {
-                                await activeWebView.send(R2_EVENT_SCROLLTO, payload);
-                            } catch (_err) {
-                                // debug(err);
-                            }
-                        })();
-                    }
-                }, 0);
+                if (activeWebView.READIUM2?.DOMisReady) {
+                    activeWebView.send(R2_EVENT_SCROLLTO, payload).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+                }
             }
         }
 
@@ -1957,17 +1933,9 @@ export async function isLocatorVisible(locator: Locator): Promise<boolean> {
             activeWebView.addEventListener("ipc-message", cb);
 
             const payloadPing: IEventPayload_R2_EVENT_LOCATOR_VISIBLE = { location: locator.locations, visible: false };
-            setTimeout(() => {
-                if (activeWebView.READIUM2?.DOMisReady) {
-                    void (async () => {
-                        try {
-                            await activeWebView.send(R2_EVENT_LOCATOR_VISIBLE, payloadPing, eventID);
-                        } catch (_err) {
-                            // debug(err);
-                        }
-                    })();
-                }
-            }, 0);
+            if (activeWebView.READIUM2?.DOMisReady) {
+                activeWebView.send(R2_EVENT_LOCATOR_VISIBLE, payloadPing, eventID).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+            }
 
             return;
         }

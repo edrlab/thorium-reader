@@ -482,9 +482,7 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
                                     <Popover.Close aria-label={__("reader.annotations.export")} asChild>
                                         <button onClick={() => {
                                             const fileType = selectFileTypeRef.current?.value || "annotation";
-                                            void (async () => {
-                                                await getSaga().run(exportAnnotationSet, bookmarkListFiltered, publicationView, bookmarkTitleRef?.current?.value || annoSetTitle, fileType).toPromise();
-                                            })();
+                                            getSaga().run(exportAnnotationSet, bookmarkListFiltered, publicationView, bookmarkTitleRef?.current?.value || annoSetTitle, fileType).toPromise().then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
                                         }} className={stylesButtons.button_primary_blue}>
                                             <SVG svg={SaveIcon} />
                                             {__("reader.annotations.export")}

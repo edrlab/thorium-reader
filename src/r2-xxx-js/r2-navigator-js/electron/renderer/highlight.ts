@@ -52,30 +52,22 @@ export function highlightsRemoveAll(href: string, groups: string[] | undefined) 
             continue;
         }
 
-        setTimeout(() => {
-            if (activeWebView.READIUM2?.DOMisReady) {
+        if (activeWebView.READIUM2?.DOMisReady) {
 
-                const payload: IEventPayload_R2_EVENT_HIGHLIGHT_REMOVE_ALL = {
-                    groups,
-                };
-                if (groups) {
-                    if (activeWebView.READIUM2.highlights) {
-                        activeWebView.READIUM2.highlights =  activeWebView.READIUM2.highlights.filter((h) => {
-                            return !h.group || !groups.includes(h.group);
-                        });
-                    }
-                } else {
-                    activeWebView.READIUM2.highlights = undefined;
+            const payload: IEventPayload_R2_EVENT_HIGHLIGHT_REMOVE_ALL = {
+                groups,
+            };
+            if (groups) {
+                if (activeWebView.READIUM2.highlights) {
+                    activeWebView.READIUM2.highlights =  activeWebView.READIUM2.highlights.filter((h) => {
+                        return !h.group || !groups.includes(h.group);
+                    });
                 }
-                void (async () => {
-                    try {
-                        await activeWebView.send(R2_EVENT_HIGHLIGHT_REMOVE_ALL, payload);
-                    } catch (_err) {
-                        // debug(err);
-                    }
-                })();
+            } else {
+                activeWebView.READIUM2.highlights = undefined;
             }
-        }, 0);
+            activeWebView.send(R2_EVENT_HIGHLIGHT_REMOVE_ALL, payload).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+        }
     }
 }
 export function highlightsRemove(href: string, highlightIDs: string[]) {
@@ -89,22 +81,14 @@ export function highlightsRemove(href: string, highlightIDs: string[]) {
         const payload: IEventPayload_R2_EVENT_HIGHLIGHT_REMOVE = {
             highlightIDs,
         };
-        setTimeout(() => {
-            if (activeWebView.READIUM2?.DOMisReady) {
-                if (activeWebView.READIUM2.highlights) {
-                    activeWebView.READIUM2.highlights = activeWebView.READIUM2.highlights.filter((h) => {
-                        return !highlightIDs.includes(h.id);
-                    });
-                }
-                void (async () => {
-                    try {
-                        await activeWebView.send(R2_EVENT_HIGHLIGHT_REMOVE, payload);
-                    } catch (_err) {
-                        // debug(err);
-                    }
-                })();
+        if (activeWebView.READIUM2?.DOMisReady) {
+            if (activeWebView.READIUM2.highlights) {
+                activeWebView.READIUM2.highlights = activeWebView.READIUM2.highlights.filter((h) => {
+                    return !highlightIDs.includes(h.id);
+                });
             }
-        }, 0);
+            activeWebView.send(R2_EVENT_HIGHLIGHT_REMOVE, payload).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+        }
     }
 }
 
@@ -157,17 +141,9 @@ export async function highlightsCreate(
                 highlights: undefined,
             };
 
-            setTimeout(() => {
-                if (activeWebView.READIUM2?.DOMisReady) {
-                    void (async () => {
-                        try {
-                            await activeWebView.send(R2_EVENT_HIGHLIGHT_CREATE, payloadPing, eventID);
-                        } catch (_err) {
-                            // debug(err);
-                        }
-                    })();
-                }
-            }, 0);
+            if (activeWebView.READIUM2?.DOMisReady) {
+                activeWebView.send(R2_EVENT_HIGHLIGHT_CREATE, payloadPing, eventID).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+            }
 
             return;
         }
@@ -185,16 +161,9 @@ export function highlightsDrawMargin(drawMargin: boolean | string[]) {
         const payload: IEventPayload_R2_EVENT_HIGHLIGHT_DRAW_MARGIN = {
             drawMargin,
         };
-        setTimeout(() => {
-            if (activeWebView.READIUM2?.DOMisReady) {
-                void (async () => {
-                    try {
-                        await activeWebView.send(R2_EVENT_HIGHLIGHT_DRAW_MARGIN, payload);
-                    } catch (_err) {
-                        // debug(err);
-                    }
-                })();
-            }
-        }, 0);
+
+        if (activeWebView.READIUM2?.DOMisReady) {
+            activeWebView.send(R2_EVENT_HIGHLIGHT_DRAW_MARGIN, payload).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+        }
     }
 }

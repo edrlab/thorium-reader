@@ -547,9 +547,7 @@ async function playMediaOverlaysAudio(
                     ensureOnTimeUpdate(false);
                     if (_currentAudioElement) {
                         _currentAudioElement.playbackRate = _mediaOverlaysPlaybackRate;
-                        void (async () => {
-                            await _currentAudioElement.play();
-                        })();
+                        _currentAudioElement.play().then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
                     }
                     // mediaOverlaysStateSet(MediaOverlaysStateEnum_.PLAYING);
                 };
@@ -802,9 +800,7 @@ async function playMediaOverlaysAudio(
             const currentAudioElement = ev.currentTarget as HTMLAudioElement;
             currentAudioElement.removeEventListener("canplaythrough", oncanplaythrough);
             debug("oncanplaythrough");
-            void (async () => {
-                await playClip(true);
-            })();
+            playClip(true).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
         };
         _currentAudioElement.addEventListener("canplaythrough", oncanplaythrough);
 
@@ -1463,65 +1459,57 @@ function moHighlight(href: string | undefined, id: string | undefined, speech?: 
                 _lastClickedNotification = undefined;
             }
         }
-        setTimeout(() => {
-            if (activeWebView.READIUM2?.DOMisReady) {
+        if (activeWebView.READIUM2?.DOMisReady) {
 
-                if (__eventIDCounter >= Number.MAX_SAFE_INTEGER) {
-                    __eventIDCounter = 0;
-                }
-                const eventID = __eventIDCounter++;
-
-                if (speech) {
-                    const cb = (event: Electron.IpcMessageEvent) => {
-                        if (event.channel === R2_EVENT_MEDIA_OVERLAY_HIGHLIGHT) {
-                            const webview = event.currentTarget as IReadiumElectronWebview;
-                            if (webview !== activeWebView) {
-                                console.log("Wrong webview for _currentTTSSpeech?!");
-                                return;
-                            }
-
-                            const payloadPong = event.args[0] as IEventPayload_R2_EVENT_MEDIA_OVERLAY_HIGHLIGHT;
-                            if ((event.args[1] as number) !== eventID) {
-                                return;
-                            }
-
-                            if (!payloadPong?.speech || payloadPong.speech !== speech) {
-                                // console.log("Incorrect webview _currentTTSSpeech payload?!");
-                                // console.log(speech, JSON.stringify(payloadBack, null, 4));
-                                return;
-                            }
-
-                            try {
-                                activeWebView.removeEventListener("ipc-message", cb);
-                            } catch (_err) {
-                                // noop
-                            }
-
-                            if (!payloadPong.id) {
-                                // console.log("Cancelled webview _currentTTSSpeech payload.");
-                                // console.log(JSON.stringify(payloadBack, null, 4));
-                                return;
-                            }
-
-                            if (win.READIUM2.ttsAndMediaOverlaysManualPlayNext) {
-                                mediaOverlaysPause();
-                            } else {
-                                mediaOverlaysNext();
-                            }
-                        }
-                    };
-                    activeWebView.addEventListener("ipc-message", cb);
-                }
-
-                void (async () => {
-                    try {
-                        await activeWebView.send(R2_EVENT_MEDIA_OVERLAY_HIGHLIGHT, payloadPing, eventID);
-                    } catch (_err) {
-                        // debug(err);
-                    }
-                })();
+            if (__eventIDCounter >= Number.MAX_SAFE_INTEGER) {
+                __eventIDCounter = 0;
             }
-        }, 0);
+            const eventID = __eventIDCounter++;
+
+            if (speech) {
+                const cb = (event: Electron.IpcMessageEvent) => {
+                    if (event.channel === R2_EVENT_MEDIA_OVERLAY_HIGHLIGHT) {
+                        const webview = event.currentTarget as IReadiumElectronWebview;
+                        if (webview !== activeWebView) {
+                            console.log("Wrong webview for _currentTTSSpeech?!");
+                            return;
+                        }
+
+                        const payloadPong = event.args[0] as IEventPayload_R2_EVENT_MEDIA_OVERLAY_HIGHLIGHT;
+                        if ((event.args[1] as number) !== eventID) {
+                            return;
+                        }
+
+                        if (!payloadPong?.speech || payloadPong.speech !== speech) {
+                            // console.log("Incorrect webview _currentTTSSpeech payload?!");
+                            // console.log(speech, JSON.stringify(payloadBack, null, 4));
+                            return;
+                        }
+
+                        try {
+                            activeWebView.removeEventListener("ipc-message", cb);
+                        } catch (_err) {
+                            // noop
+                        }
+
+                        if (!payloadPong.id) {
+                            // console.log("Cancelled webview _currentTTSSpeech payload.");
+                            // console.log(JSON.stringify(payloadBack, null, 4));
+                            return;
+                        }
+
+                        if (win.READIUM2.ttsAndMediaOverlaysManualPlayNext) {
+                            mediaOverlaysPause();
+                        } else {
+                            mediaOverlaysNext();
+                        }
+                    }
+                };
+                activeWebView.addEventListener("ipc-message", cb);
+            }
+
+            activeWebView.send(R2_EVENT_MEDIA_OVERLAY_HIGHLIGHT, payloadPing, eventID).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+        }
     }
 }
 
@@ -1535,17 +1523,9 @@ const mediaOverlaysStateSet = (mediaOverlaysState: MediaOverlaysStateEnum_) => {
     };
     const activeWebViews = win.READIUM2.getActiveWebViews();
     for (const activeWebView of activeWebViews) {
-        setTimeout(() => {
-            if (activeWebView.READIUM2?.DOMisReady) {
-                void (async () => {
-                    try {
-                        await activeWebView.send(R2_EVENT_MEDIA_OVERLAY_STATE, payload);
-                    } catch (_err) {
-                        // debug(err);
-                    }
-                })();
-            }
-        }, 0);
+        if (activeWebView.READIUM2?.DOMisReady) {
+            activeWebView.send(R2_EVENT_MEDIA_OVERLAY_STATE, payload).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+        }
     }
 
     if (_mediaOverlaysListener) {
@@ -1708,18 +1688,10 @@ export function mediaOverlaysResume() {
                 return;
             }
 
-            setTimeout(() => {
-                if (_currentAudioElement) {
-                    _currentAudioElement.playbackRate = _mediaOverlaysPlaybackRate;
-                    void (async () => {
-                        try {
-                            await _currentAudioElement.play();
-                        } catch (_err) {
-                            // debug(err);
-                        }
-                    })();
-                }
-            }, 0);
+            if (_currentAudioElement) {
+                _currentAudioElement.playbackRate = _mediaOverlaysPlaybackRate;
+                _currentAudioElement.play().then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+            }
         }
         mediaOverlaysStateSet(MediaOverlaysStateEnum_.PLAYING);
         moHighlight_(_mediaOverlayTextAudioPair);

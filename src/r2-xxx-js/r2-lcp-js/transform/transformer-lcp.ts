@@ -820,27 +820,23 @@ export async function getDecryptedSizeStream(
             resolve(res);
         };
 
-        void (async () => {
-            try {
-                const buf = await readStream(cypherRangeStream, TWO_AES_BLOCK_SIZE);
-                if (!buf) {
-                    // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
-                    reject("!buf (end?)");
-                    return;
-                }
-                if (buf.length !== TWO_AES_BLOCK_SIZE) {
-                    // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
-                    reject("buf.length !== TWO_AES_BLOCK_SIZE");
-                    return;
-                }
-                handle(buf.slice(0, AES_BLOCK_SIZE), buf.slice(AES_BLOCK_SIZE));
-            } catch (err) {
-                debug(err);
+        readStream(cypherRangeStream, TWO_AES_BLOCK_SIZE).then((buf) => {
+            if (!buf) {
                 // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
-                reject(err);
+                reject("!buf (end?)");
                 return;
             }
-        })();
+            if (buf.length !== TWO_AES_BLOCK_SIZE) {
+                // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
+                reject("buf.length !== TWO_AES_BLOCK_SIZE");
+                return;
+            }
+            handle(buf.slice(0, AES_BLOCK_SIZE), buf.slice(AES_BLOCK_SIZE));
+        }).catch((err) => {
+            debug(err);
+            // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
+            reject(err);
+        });
 
         // const cleanup = () => {
         //     cypherRangeStream.removeListener("readable", handleReadable);

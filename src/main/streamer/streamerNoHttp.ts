@@ -356,11 +356,9 @@ const streamProtocolHandlerTunnel = (
     // callback: (stream: (NodeJS.ReadableStream) | (ProtocolResponse)) => void,
     callback: (res: ProtocolResponse) => void,
 ) => {
-    void (async () => {
-        debug("............... streamProtocolHandlerTunnel req.url", req.url);
-        req.url = convertCustomSchemeToHttpUrl(req.url);
-        await streamProtocolHandler(req, callback);
-    })();
+    debug("............... streamProtocolHandlerTunnel req.url", req.url);
+    req.url = convertCustomSchemeToHttpUrl(req.url);
+    streamProtocolHandler(req, callback).then((_v) => { /* noop */ }).catch((err) => { debug(err); });
 };
 
 // super hacky!! :(
@@ -414,9 +412,7 @@ const streamProtocolHandler__ = (
     // callback: (stream: (NodeJS.ReadableStream) | (ProtocolResponse)) => void,
     callback: (res: ProtocolResponse) => void,
 ) => {
-    void (async () => {
-        await streamProtocolHandler(req, callback);
-    })();
+    streamProtocolHandler(req, callback).then((_v) => { /* noop */ }).catch((err) => { debug(err); });
 };
 
 const streamProtocolHandler = async (
@@ -2003,13 +1999,7 @@ export function initSessions() {
             }
         }
 
-        void (async () => {
-            try {
-                await clearSessions();
-            } catch (err) {
-                debug(err);
-            }
-        })();
+        clearSessions().then((_v) => { /* noop */ }).catch((err) => { debug(err); });
     });
 }
 
