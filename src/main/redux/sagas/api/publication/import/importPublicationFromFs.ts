@@ -330,7 +330,7 @@ export async function importPublicationFromFS(
                     } catch (e) {
                         debug("deferred lcpManager.checkPublicationLicenseUpdate() failed", newPubDocument.identifier, e);
                     }
-                })();
+                })(); // ALTERNATIVELY to remove the "void": IIFE.then((_v) => { /* noop */ }).catch((_err) => { /* noop */ })
             }, 300);
         }
     }
