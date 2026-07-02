@@ -117,13 +117,7 @@ export const ApiappHowDoesItWorkInfoBox = () => {
                             ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                             const href = "https://thorium.edrlab.org/";
                             if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                void (async () => {
-                                    try {
-                                        await shell.openExternal(href);
-                                    } catch (_err) {
-                                        // console.log(err);
-                                    }
-                                })();
+                                shell.openExternal(href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ })
                             }
                         }}>
                         {__("apiapp.documentation")}

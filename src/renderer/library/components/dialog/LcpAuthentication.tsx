@@ -147,13 +147,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                                     onClick={(ev) => {
                                         ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                                         if (this.props.urlHint.href && /^https?:\/\//.test(this.props.urlHint.href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                            void (async () => {
-                                                try {
-                                                    await shell.openExternal(this.props.urlHint.href);
-                                                } catch (_err) {
-                                                    // console.log(err);
-                                                }
-                                            })();
+                                            shell.openExternal(this.props.urlHint.href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ })
                                         }
                                     }} className={stylesModals.urlHint}>
                                     {this.props.urlHint.title || __("library.lcp.urlHint")}
@@ -175,13 +169,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                                         ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                                         const href = "https://www.edrlab.org/readium-lcp/";
                                         if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                            void (async () => {
-                                                try {
-                                                    await shell.openExternal(href);
-                                                } catch (_err) {
-                                                    // console.log(err);
-                                                }
-                                            })();
+                                            shell.openExternal(href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ })
                                         }
                                     }}>
                                     {__("library.lcp.whatIsLcpInfoDetailsLink")}

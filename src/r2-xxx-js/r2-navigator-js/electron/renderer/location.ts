@@ -587,15 +587,7 @@ export function handleLink(
                 debug(`Internal link, fails to match publication document: ${href}`);
             } else if (href && /^https?:\/\//.test(href)) { // ignores mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
                 debug(`External link: ${href}`);
-
-                // tslint:disable-next-line:no-floating-promises
-                void (async () => {
-                    try {
-                        await shell.openExternal(href);
-                    } catch (err) {
-                        debug(err);
-                    }
-                })();
+                shell.openExternal(href).then(() => { /* noop */ }).catch((err: unknown) => { debug(err); }); // .finally(() => { /* noop */ })
             }
         }
     }

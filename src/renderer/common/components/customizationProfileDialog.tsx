@@ -87,7 +87,7 @@ export const CustomizationProfileDialog: React.FC = () => {
                         }
 
                         return `href="" alt="${url}" onclick="return ((e) => {
-                                    window.__shell_openExternal('${url}');
+                                    window.__shell_openExternal('${url}').then((_v) => undefined).catch((_err) => undefined);
                                     return false;
                                  })()"`;
                     });

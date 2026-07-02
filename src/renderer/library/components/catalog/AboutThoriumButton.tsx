@@ -98,19 +98,13 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                                 ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                                 this.setState({ versionInfo : false });
                                 if (this.props.newVersionURL && /^https?:\/\//.test(this.props.newVersionURL)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                    void (async () => {
-                                        try {
-                                            await shell.openExternal(this.props.newVersionURL);
-                                        } catch (_err) {
-                                            // console.log(err);
-                                        }
-                                    })();
+                                    shell.openExternal(this.props.newVersionURL).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ })
                                 }
                             }}>{`${this.props.__("app.update.message")}`}</a> <span>(v{this.props.newVersion})</span></p>
                         </div>
                         {/* <button onClick={() => {
                             this.setState({ versionInfo : false });
-                            await shell.openExternal(this.props.newVersionURL);
+                            shell.openExternal(this.props.newVersionURL).then(() => {}).catch((err: unknown) => { console.log(err); }); // .finally(() => {})
                         }}>
                             {this.props.__("app.session.exit.askBox.button.yes")}
                         </button>
@@ -138,19 +132,14 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                     <p>{`v${_APP_VERSION}`}</p>
                     <a href="" onClick={(ev) => {
                             ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
-                            void (async () => {
-                                const os = encodeURIComponent_RFC3986(
-                                    await getOsName().catch(() => navigator.platform || "unknown"),
-                                );
+
+                            getOsName().then((v) => v).catch(() => navigator.platform || "unknown").then((osName) => {
+                                const os = encodeURIComponent_RFC3986(osName);
                                 const href = `https://thorium.edrlab.org/?lang=${locale}&v=${app_version}&source=${source}&os=${os}`;
                                 if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                    try {
-                                        await shell.openExternal(href);
-                                    } catch (_err) {
-                                        // console.log(err);
-                                    }
+                                    shell.openExternal(href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ });
                                 }
-                            })();
+                            }).catch((err: unknown) => { console.log(err); });
                         }}
                         tabIndex={0}>{__("catalog.about.title", { appName: capitalizedAppName })}</a>
                     </div>

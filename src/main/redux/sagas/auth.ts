@@ -907,16 +907,7 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
         if (/^https?:\/\//.test(navUrl)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
 
             debug("willNavigate ==> EXTERNAL: ", win.webContents.getURL().substring(0, 500), " *** ", navUrl);
-            setTimeout(() => {
-                void (async () => {
-                    try {
-                        await shell.openExternal(navUrl);
-                    } catch (err) {
-                        debug(err);
-                    }
-                })();
-            }, 0);
-
+            shell.openExternal(navUrl).then(() => { /* noop */ }).catch((err: unknown) => { debug(err); }); // .finally(() => { /* noop */ })
             return;
         }
 
@@ -1038,13 +1029,7 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
 
     if (urlExternal) {
         setTimeout(() => {
-            void (async () => {
-                try {
-                    await shell.openExternal(urlExternal);
-                } catch (err) {
-                    debug(err);
-                }
-            })();
+            shell.openExternal(urlExternal).then(() => { /* noop */ }).catch((err: unknown) => { debug(err); }); // .finally(() => { /* noop */ })
         }, 500);
     }
 

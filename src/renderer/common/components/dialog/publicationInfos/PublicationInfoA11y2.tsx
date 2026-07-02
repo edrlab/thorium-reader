@@ -456,13 +456,7 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                                                 onClick={(e) => {
                                                     e.preventDefault();
                                                     if (certifier && /^https?:\/\//.test(certifier)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                                        void (async () => {
-                                                            try {
-                                                                await shell.openExternal(certifier);
-                                                            } catch (err) {
-                                                                debug(err);
-                                                            }
-                                                        })();
+                                                        shell.openExternal(certifier).then(() => { /* noop */ }).catch((err: unknown) => { debug(err); }); // .finally(() => { /* noop */ })
                                                     }
                                                 }} href={certifier}>
                                             {__("publ-a11y-display-guide.conformance.conformance-details-certifier-report.compact")}
@@ -477,13 +471,7 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                                                 onClick={(e) => {
                                                     e.preventDefault();
                                                     if (certifier_credentials && /^https?:\/\//.test(certifier_credentials)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                                        void (async () => {
-                                                            try {
-                                                                await shell.openExternal(certifier_credentials);
-                                                            } catch (err) {
-                                                                debug(err);
-                                                            }
-                                                        })();
+                                                        shell.openExternal(certifier_credentials).then(() => { /* noop */ }).catch((err: unknown) => { debug(err); }); // .finally(() => { /* noop */ })
                                                     }
                                                 }} href={certifier_credentials}>
                                             {__("publ-a11y-display-guide.conformance.conformance-details-certifier-report.compact")}
@@ -508,13 +496,7 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                                                 onClick={(e) => {
                                                     e.preventDefault();
                                                     if (certifier_report && /^https?:\/\//.test(certifier_report)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                                        void (async () => {
-                                                            try {
-                                                                await shell.openExternal(certifier_report);
-                                                            } catch (err) {
-                                                                debug(err);
-                                                            }
-                                                        })();
+                                                        shell.openExternal(certifier_report).then(() => { /* noop */ }).catch((err: unknown) => { debug(err); }); // .finally(() => { /* noop */ })
                                                     }
                                                 }} href={certifier_report}>
                                             {__("publ-a11y-display-guide.conformance.conformance-details-certifier-report.compact")}

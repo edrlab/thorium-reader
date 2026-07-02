@@ -213,7 +213,7 @@
 //                             onClick={(ev) => {
 //                                 ev.preventDefault(); // necessary because href, see comment above
 //                                 if (value && /^https?:\/\//.test(value)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-//                                     await shell.openExternal(value);
+//                                     shell.openExternal(value).then(() => { /* noop */ }).catch((err: unknown) => { debug(err); }); // .finally(() => { /* noop */ })
 //                                 }
 //                             }}
 //                             href={value} title={value} aria-label={__("publication.accessibility.certifierReport")}>{__("publication.accessibility.certifierReport")}</a></li>;

@@ -84,7 +84,7 @@ class TagManager extends React.Component<IProps> {
                                     onClickDeleteCb={updateTagsCb}
                                     onClickLinkCb={
                                         (_tag) => () => {
-                                            void this.props.link(_tag.link[0], this.props.location, _tag.name);
+                                            this.props.link(_tag.link[0], this.props.location, _tag.name);
                                         }
                                     }
                                     location={this.props.location}

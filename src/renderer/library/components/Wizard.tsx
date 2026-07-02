@@ -171,13 +171,7 @@ export const WizardModal = () => {
                                                     ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                                                     const href = "https://www.thoriumreader.com";
                                                     if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                                        void (async () => {
-                                                            try {
-                                                                await shell.openExternal(href);
-                                                            } catch (_err) {
-                                                                // console.log(err);
-                                                            }
-                                                        })();
+                                                        shell.openExternal(href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ })
                                                     }
                                                 }}>
                                                 🌐 {__("wizard.resources.website", { url: "https://www.thoriumreader.com" })}
@@ -188,13 +182,7 @@ export const WizardModal = () => {
                                                     ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                                                     const href = "https://discord.com/invite/84wgWhFKDY";
                                                     if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                                        void (async () => {
-                                                            try {
-                                                                await shell.openExternal(href);
-                                                            } catch (_err) {
-                                                                // console.log(err);
-                                                            }
-                                                        })();
+                                                        shell.openExternal(href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ })
                                                     }
                                                 }}>
                                                 💬 {__("wizard.resources.discord", { url: "https://discord.gg/84wgWhFKDY" })}

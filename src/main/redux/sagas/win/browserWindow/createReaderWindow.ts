@@ -259,16 +259,7 @@ export function* createReaderWindow(publicationIdentifier: string, manifestUrl: 
             && !navUrl.startsWith("http://localhost") && !navUrl.startsWith("http://127.0.0.1")) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
 
             debug("willNavigate ==> EXTERNAL: ", readerWindow.webContents.getURL(), " *** ", navUrl);
-            setTimeout(() => {
-                void (async () => {
-                    try {
-                        await shell.openExternal(navUrl);
-                    } catch (err) {
-                        debug(err);
-                    }
-                })();
-            }, 0);
-
+            shell.openExternal(navUrl).then(() => { /* noop */ }).catch((err: unknown) => { debug(err); }); // .finally(() => { /* noop */ })
             return;
         }
 

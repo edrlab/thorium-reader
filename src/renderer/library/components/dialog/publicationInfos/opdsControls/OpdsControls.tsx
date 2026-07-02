@@ -97,8 +97,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 onClick={() => {
 
                                     if (ln.type === ContentType.Html || ln.type === ContentType.Xhtml) {
-                                        // void the Promise as we don't need the async/await guarantee
-                                        void this.props.link(
+                                        this.props.link(
                                             ln,
                                             this.props.location,
                                         );
@@ -133,8 +132,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 onClick={() => {
 
                                     if (ln.type === ContentType.Html || ln.type === ContentType.Xhtml) {
-                                        // void the Promise as we don't need the async/await guarantee
-                                        void this.props.link(
+                                        this.props.link(
                                             ln,
                                             this.props.location,
                                         );
@@ -171,7 +169,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 <button
                                     className={classNames(stylesButtons.button_primary, stylesGlobal.mb_20)}
                                     onClick={() => {
-                                        void this.props.link(
+                                        this.props.link(
                                                 ln,
                                                 this.props.location,
                                                 `${__("opds.menu.goBuyBook")} (${opdsPublicationView.documentTitle}))`,
@@ -196,7 +194,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 <button
                                     className={buyList.length > 0 ? stylesButtons.button_secondary : stylesButtons.button_primary}
                                     onClick={() => {
-                                        void this.props.link(
+                                        this.props.link(
                                                 ln,
                                                 this.props.location,
                                                 `${__("opds.menu.goLoanBook")} (${opdsPublicationView.documentTitle})`,
@@ -221,7 +219,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 <button
                                     className={stylesButtons.button_secondary}
                                     onClick={() => {
-                                        void this.props.link(
+                                        this.props.link(
                                                 ln,
                                                 this.props.location,
                                                 `${__("opds.menu.goSubBook")} (${opdsPublicationView.documentTitle})`,
@@ -242,7 +240,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                             <button
                                 className={stylesButtons.button_secondary}
                                 onClick={() => {
-                                    void this.props.link(
+                                    this.props.link(
                                             ln,
                                             this.props.location,
                                             `${__("opds.menu.goRevokeLoanBook")} (${opdsPublicationView.documentTitle})`,
