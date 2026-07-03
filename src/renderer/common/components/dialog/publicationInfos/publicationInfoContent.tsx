@@ -441,7 +441,7 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                 <div className={stylePublication.publicationInfo_rightSide}>
                     <section>
                         <h2 className={classNames(stylesBookDetailsDialog.allowUserSelect, stylesGlobal.my_10, stylePublication.book_title)}
-                            dir={pubTitleIsRTL ? "rtl" : undefined}>
+                            dir={pubTitleIsRTL ? "rtl" : undefined} lang={publicationViewMaybeOpds.languages ? publicationViewMaybeOpds.languages?.[0] : undefined}>
                             {pubTitleStr}
                         </h2>
                         <FormatContributorWithLink
