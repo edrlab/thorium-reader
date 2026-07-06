@@ -337,12 +337,12 @@ $setting_color: var(--color-brand-primary);
     }
 }
 
-.popover_dialog_reader .settings_tab {
-    margin: 30px 20px 0 !important;
+.docked_settings_tab {
+    margin: 30px 20px 0;
 }
 
 .settings_tab {
-    margin: 30px 25px 0 !important;
+    margin: 30px 25px 0;
 
     &_container {
         margin: 35px;

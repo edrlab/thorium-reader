@@ -144,7 +144,7 @@ export const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, t
         } : undefined}
     >
         {/* <SVG ariaHidden={true} svg={BookmarkIcon} /> */}
-        <div className={stylesAnnotations.annnotation_container}>
+        <div className={stylesAnnotations.annotation_container}>
             {isEdited ?
                 <></>
                 : <div>
