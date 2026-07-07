@@ -46,8 +46,8 @@
         },
         "window": {
             "showLibrary": "Vis bibliotek / boghylde",
-            "trayHint": "",
-            "trayTooltip": ""
+            "trayHint": "{{- appName}} kører stadig i meddelelsesområdet. Klik på proceslinjeikonet for at vise biblioteket.",
+            "trayTooltip": "{{- appName}} - klik for at vise eller skjule biblioteket"
         }
     },
     "catalog": {
