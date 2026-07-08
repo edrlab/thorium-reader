@@ -125,16 +125,17 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                             <SVG ariaHidden svg={InfoIcon} />
                             <p
                             ><a href=""
-                            onClick={async (ev) => {
+                            onClick={(ev) => {
                                 ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                                 this.props.whatsNewOpened();
-                                const os = encodeURIComponent_RFC3986(
-                                    await getOsName().catch(() => navigator.platform || "unknown"),
-                                );
-                                const href = `https://thorium.edrlab.org/?lang=${locale}&v=${app_version}&source=${source}&os=${os}`;
-                                if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                    await shell.openExternal(href);
-                                }
+
+                                getOsName().then((v) => v).catch(() => navigator.platform || "unknown").then((osName) => {
+                                    const os = encodeURIComponent_RFC3986(osName);
+                                    const href = `https://thorium.edrlab.org/?lang=${locale}&v=${app_version}&source=${source}&os=${os}`;
+                                    if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
+                                        shell.openExternal(href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ });
+                                    }
+                                }).catch((err: unknown) => { console.log(err); });
                             }}>
                                 {/* TODO: add a translation for this string */}
                                 {/* {`${this.props.__("app.whatsnew.message", { version: _APP_VERSION })}`} */}
