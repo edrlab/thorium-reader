@@ -84,7 +84,7 @@ class SearchFormPicker extends React.Component<IProps, IState> {
         this.inputRef?.current?.removeEventListener("focusout", this.focusoutSearch);
     }
 
-    public async componentDidUpdate(oldProps: IProps) {
+    public componentDidUpdate(oldProps: IProps) {
         if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
             this.unregisterAllKeyboardListeners();
             this.registerAllKeyboardListeners();

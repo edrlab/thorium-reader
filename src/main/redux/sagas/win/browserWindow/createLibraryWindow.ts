@@ -101,7 +101,7 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
 
             // if (libWindow.isDestroyed() || libWindow.webContents.isDestroyed()) {
             //     debug("readerWindow or webcontents is destroyed !!");
-            //     return; // Is it really needed to early return here, and block library openSuccess 
+            //     return; // Is it really needed to early return here, and block library openSuccess
             // }
             // see app.whenReady() in src/main/redux/sagas/app.ts
             // // app.whenReady().then(() => {
@@ -187,10 +187,7 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
             && !navUrl.startsWith("http://localhost") && !navUrl.startsWith("http://127.0.0.1")) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
 
             debug("willNavigate ==> EXTERNAL: ", libWindow.webContents.getURL(), " *** ", navUrl);
-            setTimeout(async () => {
-                await shell.openExternal(navUrl);
-            }, 0);
-
+            shell.openExternal(navUrl).then(() => { /* noop */ }).catch((err: unknown) => { debug(err); }); // .finally(() => { /* noop */ })
             return;
         }
 

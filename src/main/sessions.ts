@@ -251,12 +251,11 @@ export const initProtocols = () => {
   // protocol.unhandle(URL_PROTOCOL_PDFJSEXTRACT);
 
   // FAIL because of unsupported scheme protocol, even if exposed globally in the default session:
-  // fetch(URL_PROTOCOL_PDFJSEXTRACT + "://"+URL_HOST_COMMON+"/%2Fpath%2Fto%2Ffile").then((r)=>r.statusCode).then((t)=>console.log(t)).catch((e)=>{console.log(e)});
+  // fetch("pdfjs-extract://0.0.0.0/%2Fpath%2Fto%2Ffile").then((r)=>r.statusCode).then((t)=>console.log(t)).catch((e)=>{console.log(e)});
 
   // WORKS with non-partitioned BrowserWindow or WebView (CORS):
   // const x = new XMLHttpRequest();
-  // x.open("GET", URL_PROTOCOL_PDFJSEXTRACT + "://"+URL_HOST_COMMON+"/%2Fpath%2Fto%2Ffile");
-  // //x.responseType = "arraybuffer";
+  // x.open("GET", "pdfjs-extract://0.0.0.0/%2Fpath%2Fto%2Ffile");
   // x.responseType = "text";
   // x.onerror = () => {
   //     console.log("X ERROR", x.readyState, x.status, typeof x.response);
