@@ -381,7 +381,7 @@ const streamProtocolHandler_NEW = async (req: GlobalRequest): Promise<GlobalResp
         headers[entry[0]] = entry[1];
     }
 
-    return new Promise<GlobalResponse>((resolve, reject) => {
+    return new Promise<GlobalResponse>((resolve, _reject) => {
         streamProtocolHandler({
             headers,
             method: req.method,
@@ -2036,8 +2036,8 @@ export function initSessions() {
                     responseHeaders: {
                         ...details.responseHeaders,
                         "Content-Security-Policy": ["default-src 'self' data: http: https: httpsr2: thoriumhttps: pdfjs-extract: 'unsafe-inline'"],
-                    }
-                })
+                    },
+                });
             });
 
             if (USE_NEW_PROTOCOL_HANDLER) {
