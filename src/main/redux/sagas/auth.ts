@@ -290,7 +290,7 @@ function* opdsRequestMediaFlow({request, callback}: TregisterHttpProtocolHandler
             return;
         }
         // Promise<response> in function callback argument
-        void httpGet(url, {
+        httpGet(url, {
             ...request,
         }, (response) => {
 
@@ -305,7 +305,7 @@ function* opdsRequestMediaFlow({request, callback}: TregisterHttpProtocolHandler
                 data: response.body || undefined,
             });
             return response;
-        });
+        }).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
 
     } else {
         debug("opdsRequestMedia error ?!!", request);

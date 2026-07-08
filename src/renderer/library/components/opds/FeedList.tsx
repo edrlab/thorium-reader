@@ -76,8 +76,7 @@ class FeedList extends React.Component<IProps, IState> {
         this.unsubscribeAction = subscribeToAction(opdsActions.refresh.ID, (_action) => {
             // console.log("Refresh opds feed list requested by the action ID=", opdsActions.refresh.ID);
 
-            // void the Promise as we don't need the async/await guarantee
-            void this.loadFeeds();
+            this.loadFeeds().then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
         });
     }
 
@@ -176,9 +175,7 @@ class FeedList extends React.Component<IProps, IState> {
                                                 onClick={() => {
                                                     this.props.logout(item.url);
                                                     setTimeout(() => {
-                                                        void (async () => {
-                                                            await this.loadFeeds();
-                                                        })();
+                                                        this.loadFeeds().then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
                                                     }, 100);
                                                 }}
                                                 title={__("catalog.logout")}

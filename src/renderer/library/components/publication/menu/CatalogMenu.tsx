@@ -29,6 +29,7 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { getSaga } from "readium-desktop/renderer/library/createStore";
+import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 
 function useShiftKey() {
   const [isShiftPressed, setIsShiftPressed] = React.useState(false);
@@ -68,9 +69,10 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
     const noteExport = <button
         className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
         onClick={debounce(() => {
-            void (async () => {
-                try {
-                    const notes = await (await fetch(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PUBNOTES}/${props.publicationView.identifier}`)).json();
+
+            fetch(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PUBNOTES}/${props.publicationView.identifier}`).then((res) => {
+                res.json().then((json) => {
+                    const notes: INoteState[] = json;
 
                     const annoSetTitle = convertMultiLangStringToString(props.publicationView.publicationTitle, locale) || "thorium-notes";
 
@@ -84,11 +86,10 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
                     // Be careful Selector can be not settled on th3.0 / th3.1 publication, you need to open it first to generate selectors for each notes
                     // TODO: add a dialog to warm user on incorrect notes
 
-                    await getSaga().run(exportAnnotationSet, notes, props.publicationView, annoSetTitle, "annotation").toPromise();
-                } catch (e) {
-                    console.error("EXPORT NOTES:", e);
-                }
-            })();
+                    getSaga().run(exportAnnotationSet, notes, props.publicationView, annoSetTitle, "annotation").toPromise().then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });;
+                }).catch((err) => { console.error("EXPORT NOTES (json):", err); });
+            }).catch((err) => { console.error("EXPORT NOTES (fetch):", err); });
+
         }, 1000, { immediate: true })}
     >
         <SVG ariaHidden svg={SaveIcon} />

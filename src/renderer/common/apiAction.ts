@@ -34,7 +34,7 @@ export function apiActionFactory(storeCb: () => Store<any>) {
                     ),
                 );
 
-                const promise = new Promise<TReturnPromiseOrGeneratorType<TApiMethod[T]>>(
+                new Promise<TReturnPromiseOrGeneratorType<TApiMethod[T]>>(
                     (resolveSubscribe, rejectSubscribe) => {
                     storeUnsubscribe = store.subscribe(() => {
                         const state = store.getState();
@@ -55,23 +55,18 @@ export function apiActionFactory(storeCb: () => Store<any>) {
                             rejectSubscribe("API Timeout");
                         }, 5000);
                     });
-                });
-
-                void (async () => {
-                    try {
-                        const result = await promise;
-                        resolve(result);
-                    } catch (error) {
-                        reject(error);
-                    } finally {
-                        if (storeUnsubscribe) {
-                            storeUnsubscribe();
-                        }
-                        if (timeoutId) {
-                            clearTimeout(timeoutId);
-                        }
+                }).then((result) => {
+                    resolve(result);
+                }).catch((err) => {
+                    reject(err);
+                }).finally(() => {
+                    if (storeUnsubscribe) {
+                        storeUnsubscribe();
                     }
-                })();
+                    if (timeoutId) {
+                        clearTimeout(timeoutId);
+                    }
+                });
             });
     };
 }

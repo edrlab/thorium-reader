@@ -45,9 +45,7 @@ export class PublicationAddButton extends React.Component<IProps, undefined> {
                 type="button"
                 className={stylesButtons.button_nav_primary}
                 onClick={() => {
-                    void (async () => {
-                        await this.importFile();
-                    })();
+                    this.importFile().then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
                 }}
             >
                 <SVG ariaHidden={true} svg={PlusIcon} title={__("header.importTitle")} />

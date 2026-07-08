@@ -851,8 +851,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                             languages={this.state.languages}
                                                                             selectedLanguage={this.state.selectedLanguage}
                                                                             setSelectedLanguage={(newLanguageSelected) => {
-                                                                                // void the Promise as we don't need the async/await guarantee
-                                                                                void this.setNewVoiceLanguage(newLanguageSelected);
+
+                                                                                this.setNewVoiceLanguage(newLanguageSelected).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
                                                                             }}
 
                                                                             voicesGroupByRegion={this.state.voicesGroupByRegion}
@@ -1576,8 +1576,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         }
 
         setTimeout(() => {
-            void (async () => {
-                const manager = await this.getWebSpeechVoiceManager();
+            this.getWebSpeechVoiceManager().then((manager) => {
                 const allVoices = this.state.voices;
                 const defaultVoices = this.findStoredDefaultVoices(allVoices);
                 const newDefaultVoices = this.updateDefaultVoices(manager, allVoices, selectedVoice);
@@ -1593,7 +1592,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         this.props.handleTTSResume();
                     }, 200);
                 }
-            })();
+            }).catch((_err) => { /* debug(err); */ });
         }, wasPlaying ? 200 : 0);
     };
 

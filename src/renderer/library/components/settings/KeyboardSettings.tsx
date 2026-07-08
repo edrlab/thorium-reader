@@ -966,9 +966,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
 
         if (!KEY_CODES.includes(def.key)) {
             KEY_CODES.push(def.key);
-            void (async () => {
-                await this.loadKeyboardLayoutMap(/* KEY_CODES, "selectLayoutMap" */);
-            })();
+            this.loadKeyboardLayoutMap(/* KEY_CODES, "selectLayoutMap" */).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
         }
 
         const keySelect =

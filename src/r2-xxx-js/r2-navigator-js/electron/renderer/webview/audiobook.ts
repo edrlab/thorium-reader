@@ -241,15 +241,7 @@ export function setupAudioBook(_docTitle: string | undefined, audioPlaybackRate:
                     };
                     ipcRenderer.sendToHost(R2_EVENT_PAGE_TURN_RES, payload);
                 } else {
-                    setTimeout(() => {
-                        void (async () => {
-                            try {
-                                await audioElement.play();
-                            } catch (_err) {
-                                // debug(err);
-                            }
-                        })();
-                    }, 0);
+                    audioElement.play().then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
                 }
             }
         }
@@ -393,9 +385,7 @@ export function setupAudioBook(_docTitle: string | undefined, audioPlaybackRate:
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ipcRenderer.on(R2_EVENT_AUDIO_DO_PLAY, (_event: any) => {
-        void (async () => {
-            await audioElement.play();
-        })();
+        audioElement.play().then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ipcRenderer.on(R2_EVENT_AUDIO_TOGGLE_PLAY_PAUSE, (_event: any) => {

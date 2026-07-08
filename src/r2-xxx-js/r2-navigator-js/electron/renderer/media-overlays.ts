@@ -350,17 +350,11 @@ function ensureVideoFrameDraggable() {
 
             // CLICK
             if (Math.abs(_mouseDownX - e.clientX) <= 4 && Math.abs(_mouseDownY - e.clientY) <= 4) {
-                void (async () => {
-                    try {
-                        if (_currentAudioElement !== document.pictureInPictureElement) {
-                            await (_currentAudioElement as HTMLVideoElement).requestPictureInPicture();
-                        } else {
-                            await document.exitPictureInPicture();
-                        }
-                    } catch (err) {
-                        console.log("VIDEO PiP Error:", err);
-                    }
-                })();
+                if (_currentAudioElement !== document.pictureInPictureElement) {
+                    (_currentAudioElement as HTMLVideoElement).requestPictureInPicture().then((_v) => { /* noop */ }).catch((err) => { console.log("VIDEO PiP Error:", err); });
+                } else {
+                    document.exitPictureInPicture().then((_v) => { /* noop */ }).catch((err) => { console.log("VIDEO PiP Error:", err); });
+                }
             }
     };
 
@@ -1346,23 +1340,17 @@ export function mediaOverlaysHandleIpcMessage(
                 if (IS_DEV) {
                     debug("playMediaOverlaysForLink");
                 }
-                setTimeout(() => {
-                    if (activeWebView.READIUM2.link) {
-                        void (async () => {
-                            try {
-                                await playMediaOverlaysForLink(activeWebView.READIUM2.link, payload.textFragmentIDChain, payload.userInteract);
-                                if (_mediaOverlaysState !== MediaOverlaysStateEnum_.PLAYING) {
-                                    _lastClickedNotification = lastClickedNotification;
-                                    if (wasPlaying) {
-                                        mediaOverlaysResume();
-                                    }
-                                }
-                            } catch (_err) {
-                                // debug(err);
+
+                if (activeWebView.READIUM2.link) {
+                    playMediaOverlaysForLink(activeWebView.READIUM2.link, payload.textFragmentIDChain, payload.userInteract).then((_v) => {
+                        if (_mediaOverlaysState !== MediaOverlaysStateEnum_.PLAYING) {
+                            _lastClickedNotification = lastClickedNotification;
+                            if (wasPlaying) {
+                                mediaOverlaysResume();
                             }
-                        })();
-                    }
-                }, 0);
+                        }
+                    }).catch((_err) => { /* debug(err); */ });
+                }
             } else {
                 _lastClickedNotification = lastClickedNotification;
             }
@@ -1562,17 +1550,9 @@ export function mediaOverlaysPlay(speed: number) {
         } else {
             activeWebView = win.READIUM2.getFirstWebView();
         }
-        setTimeout(() => {
-            if (activeWebView && activeWebView.READIUM2.link) {
-                void (async () => {
-                    try {
-                        await playMediaOverlaysForLink(activeWebView.READIUM2.link, textFragmentIDChain, false);
-                    } catch (_err) {
-                        // debug(err);
-                    }
-                })();
-            }
-        }, 0);
+        if (activeWebView && activeWebView.READIUM2.link) {
+            playMediaOverlaysForLink(activeWebView.READIUM2.link, textFragmentIDChain, false).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+        }
     } else {
         if (IS_DEV) {
             debug("mediaOverlaysPlay() - mediaOverlaysResume()");
@@ -1641,13 +1621,7 @@ export function mediaOverlaysStop(stayActive?: boolean) {
             if (document.pictureInPictureEnabled) {
                 if (_currentAudioElement === document.pictureInPictureElement) {
                     setTimeout(() => {
-                        void (async () => {
-                            try {
-                                await document.exitPictureInPicture();
-                            } catch (err) {
-                                console.log("VIDEO PiP Error:", err);
-                            }
-                        })();
+                        document.exitPictureInPicture().then((_v) => { /* noop */ }).catch((err) => { console.log("VIDEO PiP Error:", err); });
                     }, 100);
                 }
             }
@@ -1760,15 +1734,7 @@ export function mediaOverlaysPrevious() {
                 if (IS_DEV) {
                     debug("mediaOverlaysPrevious() - playMediaOverlaysAudio()");
                 }
-                setTimeout(() => {
-                    void (async () => {
-                        try {
-                            await playMediaOverlaysAudio(previousTextAudioPair, undefined, undefined);
-                        } catch (_err) {
-                            // debug(err);
-                        }
-                    })();
-                }, 0);
+                playMediaOverlaysAudio(previousTextAudioPair, undefined, undefined).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
 
                 mediaOverlaysStateSet(MediaOverlaysStateEnum_.PLAYING);
             }
@@ -1847,15 +1813,7 @@ export function mediaOverlaysNext(escape?: boolean) {
                 if (IS_DEV) {
                     debug("mediaOverlaysNext() - playMediaOverlaysAudio()");
                 }
-                setTimeout(() => {
-                    void (async () => {
-                        try {
-                            await playMediaOverlaysAudio(nextTextAudioPair, undefined, undefined);
-                        } catch (_err) {
-                            // debug(err);
-                        }
-                    })();
-                }, 0);
+                playMediaOverlaysAudio(nextTextAudioPair, undefined, undefined).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
 
                 mediaOverlaysStateSet(MediaOverlaysStateEnum_.PLAYING);
             }
