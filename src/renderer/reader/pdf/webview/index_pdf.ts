@@ -204,7 +204,7 @@ function main() {
             console.log("PDFDOC LOADED");
 
             // setTimeout(() => {
-                const debounceSave = debounce(async (data: any) => {
+                const debounceSave = debounce((data: any) => {
                     bus.dispatch("savePreferences", data);
                 }, 200);
                 pdfjsEventBus.on("__savePreferences", async (data: any) => {
@@ -215,7 +215,7 @@ function main() {
             const toc = await getToc(pdf);
 
             console.log("TOC");
-            console.log(toc);
+            // console.log(JSON.stringify(toc, null, 4));
 
             bus.dispatch("toc", toc);
             bus.dispatch("numberofpages", pdf.numPages);
@@ -349,7 +349,7 @@ function main() {
 
             });
         });
-        // const debounceUpdateviewarea = debounce(async (evt: any) => {
+        // const debounceUpdateviewarea = debounce((evt: any) => {
         //     try {
         //         const { location: { pageNumber } } = evt;
         //         console.log("pageNumber", pageNumber);
@@ -358,8 +358,8 @@ function main() {
         //         console.log("updateviewarea ERROR", e);
         //     }
         // }, 500);
-        // pdfjsEventBus.on("updateviewarea", async (evt: any) => {
-        //     await debounceUpdateviewarea(evt);
+        // pdfjsEventBus.on("updateviewarea", (evt: any) => {
+        //     debounceUpdateviewarea(evt).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
         // });
 
         bus.subscribe("page-next", () => {

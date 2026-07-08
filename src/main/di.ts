@@ -284,7 +284,7 @@ const getStorePromiseFn = async () => {
         throw new Error(message);
     }
 };
-let getStorePromise: ReturnType<typeof getStorePromiseFn>;
+let getStorePromise: undefined | ReturnType<typeof getStorePromiseFn>;
 
 const createStoreFromDi = async () => {
 
@@ -299,11 +299,11 @@ const createStoreFromDi = async () => {
     //     return getStorePromise;
     // }
 
-    if (!getStorePromise) {
+    if (typeof getStorePromise === "undefined") {
         getStorePromise = getStorePromiseFn();
     }
 
-    return getStorePromise;
+    return getStorePromise!;
 };
 
 // Create window registry

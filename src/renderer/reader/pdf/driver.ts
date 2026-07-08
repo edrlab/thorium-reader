@@ -105,13 +105,13 @@ export function pdfMount(
     const webview = document.createElement("webview");
 
     // // Redirect link to an external browser ALREADY HANDLED in navigator by child created webviews! See "@r2-navigator-js/electron/main/browser-window-tracker"
-    // const handleRedirect = async (event: WillNavigateEvent) => {
+    // const handleRedirect = (event: WillNavigateEvent) => {
     //     event.preventDefault(); // no effect
     //     event.stopPropagation();
 
     //     console.log("will-navigate event:", event.type, event.url);
     //     if (event.url && /^https?:\/\//.test(event.url)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-    //         await shell.openExternal(event.url);
+    //         shell.openExternal(event.url).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ })
     //     }
     // };
     // webview.addEventListener("will-navigate", handleRedirect);
