@@ -45,16 +45,14 @@ export const FeedCard: React.FC<IFeedCardProps> = (props) => {
         dispatch(authActions.logout.build(feedUrl));
     };
 
-    const loadFeeds = React.useCallback(async () => {
-        try {
-            const feedsResult = await apiAction("opds/findAllFeeds");
-
+    const loadFeeds = React.useCallback(() => {
+        apiAction("opds/findAllFeeds").then((feedsResult) => {
             if (setFeedsResult) {
                 setFeedsResult(feedsResult);
             }
-        } catch (e) {
-            console.error("Error to fetch api opds/findAllFeeds", e);
-        }
+        }).catch((err) => {
+            console.error("Error to fetch api opds/findAllFeeds", err);
+        });
     }, [setFeedsResult]);
 
     const triggerAuth: (feedUrl: string, authenticationUrl: string) => void = (feedUrl, authenticationUrl) => {

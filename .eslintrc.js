@@ -77,7 +77,7 @@ module.exports = {
         "@typescript-eslint/restrict-template-expressions": 0,
         "@typescript-eslint/no-redundant-type-constituents": 0,
         "@typescript-eslint/no-base-to-string": 0,
-        "@typescript-eslint/no-misused-promises": 0,
+        "@typescript-eslint/no-misused-promises": "error",
         "@typescript-eslint/require-await": 0,
         "@typescript-eslint/no-floating-promises": "error",
         "@typescript-eslint/unbound-method": 0,

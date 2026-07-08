@@ -567,7 +567,11 @@ export class LcpManager {
                 if (renewLink.Type !== ContentType.Lsd) {
                     if (renewLink.Type === ContentType.Html) {
                         if (renewLink.Href && /^https?:\/\//.test(renewLink.Href)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
-                            await shell.openExternal(renewLink.Href);
+                            try {
+                                await shell.openExternal(renewLink.Href);
+                            } catch (err) {
+                                debug(err);
+                            }
                         }
                         return newPubDocument;
                     }
@@ -695,7 +699,11 @@ export class LcpManager {
                 if (returnLink.Type !== ContentType.Lsd) {
                     if (returnLink.Type === ContentType.Html || returnLink.Type === ContentType.Xhtml) {
                         if (returnLink.Href && /^https?:\/\//.test(returnLink.Href)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
-                            await shell.openExternal(returnLink.Href);
+                            try {
+                                await shell.openExternal(returnLink.Href);
+                            } catch (err) {
+                                debug(err);
+                            }
                         }
                         return newPubDocument;
                     }
@@ -1441,6 +1449,155 @@ export class LcpManager {
         }
     }
 
+    private async processStatusDocument_(
+        r2LCPStr: string | undefined,
+        publicationDocument: PublicationDocument,
+        r2Publication: R2Publication,
+    ): Promise<IProcessStatusDocumentResult> {
+
+        debug("launchStatusDocumentProcessing DONE.");
+        debug(r2LCPStr);
+
+        // r2Publication.LCP.LSD.Status !== StatusEnum.Active && r2Publication.LCP.LSD.Status !== StatusEnum.Ready
+        if (r2Publication.LCP.LSD &&
+            (r2Publication.LCP.LSD.Status === StatusEnum.Revoked
+            || r2Publication.LCP.LSD.Status === StatusEnum.Returned
+            || r2Publication.LCP.LSD.Status === StatusEnum.Cancelled
+            || r2Publication.LCP.LSD.Status === StatusEnum.Expired)) {
+            // TODO anything here just in case the LCP license end date is still "open" in the future? We assume it is now closed (subsequent attempts to load book will fail).
+            // The license is supposed to be the source of truth, so it should have been correspondingly updated by server...maybe too optimistic assumption?
+        }
+
+        if (r2LCPStr) {
+
+            const atLeastOneReaderIsOpen = await diMainGet("saga-middleware").run(RequesetToCloseAllReadersWithTheSamePubId, publicationDocument.identifier).toPromise<boolean>() // NOTE: no type inference with Task .toPromise
+                .catch((e) => { debug("RequesetToCloseAllReadersWithTheSamePubId", e); });
+            debug("RequesetToCloseAllReadersWithTheSamePubId fulfilled");
+            // let atLeastOneReaderIsOpen = false;
+            // const readers = this.store.getState().win.session.reader;
+            // if (readers) {
+            //     for (const reader of Object.values(readers)) {
+            //         if (reader.publicationIdentifier === publicationIdentifier) {
+            //             atLeastOneReaderIsOpen = true;
+            //             break;
+            //         }
+            //     }
+            // }
+            // if (atLeastOneReaderIsOpen) {
+            //     // this.store.dispatch(readerActions.closeRequestFromPublication.build(
+            //     //     publicationDocumentIdentifier));
+            // }
+            if (atLeastOneReaderIsOpen) {
+                await new Promise<void>((res, _rej) => {
+                    setTimeout(() => {
+                        res();
+                    }, 500); // allow extra completion time to ensure the filesystem ZIP streams are closed
+                });
+            }
+
+            try {
+                // --------- This LSD was set in launchStatusDocumentProcessing() so it is up to date in the context of r2Publication.LCP,
+                // but we are receiving a new LCP license so need to reassign later...
+                const prevLCP = r2Publication.LCP;
+                const prevLSD = prevLCP.LSD;
+
+                // const epubPath_ = await lsdLcpUpdateInject(
+                //     licenseUpdateJson,
+                //     r2Publication,
+                //     epubPath);
+
+                const r2LCPJson = global.JSON.parse(r2LCPStr);
+                debug(r2LCPJson);
+
+                if (lcpLicenseIsNotWellFormed(r2LCPJson)) {
+                    const rej = `LCP license malformed: ${JSON.stringify(r2LCPJson)}`;
+                    debug(rej);
+                    throw new Error(rej);
+                }
+
+                let r2LCP: LCP;
+                try {
+                    r2LCP = TaJsonDeserialize(r2LCPJson, LCP);
+                } catch (erorz) {
+                    debug(erorz);
+                    throw erorz;
+                }
+                r2LCP.JsonSource = r2LCPStr;
+
+                const archiveUpdate = await this.replacePublicationArchiveIfLinkChanged(
+                    publicationDocument,
+                    prevLCP,
+                    r2LCP,
+                    r2LCPStr,
+                );
+                if (archiveUpdate) {
+                    r2Publication = archiveUpdate.r2Publication;
+                    r2Publication.LCP = r2LCP;
+                    r2Publication.LCP.LSD = prevLSD;
+                    (r2Publication as any).__LCP_LSD_UPDATE_COUNT = 1; // TODO: this is used elsewhere to trigger the recalculation of the pub hash, should really be a proper typed flag, not "any"
+                    return {
+                        documentPatch: archiveUpdate.documentPatch,
+                        publicationFilesReplacement: archiveUpdate.publicationFilesReplacement,
+                        r2Publication,
+                    };
+                }
+
+                r2Publication.LCP = r2LCP;
+
+                // --------- will be updated below via another round of processStatusDocument_() UPDATE: no, see below ...
+                r2Publication.LCP.LSD = prevLSD;
+
+                const epubPath = await this.publicationStorage.getPublicationEpubPath(
+                    publicationDocument.identifier,
+                );
+                await this.injectLcplIntoZip_(epubPath, r2LCPStr);
+
+                // --------- see the prevLSD assignment above, and the processStatusDocument_() call below
+                // ... we avoid the second LSD network request which is deemed unnecessary in the real world
+                if (!(r2Publication as any).__LCP_LSD_UPDATE_COUNT) {
+                    (r2Publication as any).__LCP_LSD_UPDATE_COUNT = 1; // TODO: this is used elsewhere to trigger the recalculation of the pub hash, should really be a proper typed flag, not "any"
+                }
+                return {
+                    r2Publication,
+                };
+                // --------- below is the commented code that used to create the second LSD network request:
+                // // Protect against infinite loop due to incorrect LCP / LSD server dates
+                // if (!(r2Publication as any).__LCP_LSD_UPDATE_COUNT) {
+                //     (r2Publication as any).__LCP_LSD_UPDATE_COUNT = 1;
+                // } else {
+                //     (r2Publication as any).__LCP_LSD_UPDATE_COUNT++;
+                // }
+                // if ((r2Publication as any).__LCP_LSD_UPDATE_COUNT > 2) {
+                //     debug("__LCP_LSD_UPDATE_COUNT!?");
+                //     resolve();
+                // } else {
+                //     try {
+                //         // loop to re-init LSD in updated LCP
+                //         await this.processStatusDocument_(
+                //             publicationDocumentIdentifier,
+                //             r2Publication);
+
+                //         // TODO: publicationFileLock by checkPublicationLicenseUpdate(), so does not work
+                //         if (atLeastOneReaderIsOpen) {
+                //             this.store.dispatch(readerActions.openRequest.build(publicationDocumentIdentifier));
+                //         }
+                //         resolve();
+                //     } catch (err) {
+                //         debug(err);
+                //         reject(err);
+                //     }
+                // }
+            } catch (err) {
+                debug(err);
+                throw err;
+            }
+        } else {
+            return {
+                r2Publication,
+            };
+        }
+    }
+
     public async processStatusDocument(
         publicationDocument: PublicationDocument,
         r2Publication: R2Publication,
@@ -1452,173 +1609,26 @@ export class LcpManager {
             return Promise.reject("processStatusDocument NO LCP data!");
         }
 
+        // use this to temporarily bypass LSD checks during dev
+        if (__TH__SKIP_LCP_LSD__) {
+            // undefined ==> does not throw / reject
+            return await this.processStatusDocument_(undefined, publicationDocument, r2Publication);
+        }
 
+        try {
+            const r2LCPStr = await this.lsdManager.launchStatusDocumentProcessing(r2Publication.LCP);
+            // r2LCPStr (not undefined) ==> may throw / reject
+            return await this.processStatusDocument_(r2LCPStr, publicationDocument, r2Publication);
+        } catch (err) {
+            debug(err);
 
-        return new Promise(async (resolve, reject) => {
-            const callback = async (r2LCPStr: string | undefined) => {
-                debug("launchStatusDocumentProcessing DONE.");
-                debug(r2LCPStr);
+            // ignore uncaught promise rejections
+            // (other possible errors in LSD protocol, network issues, etc.)
+            // throw err;
+        }
 
-                // r2Publication.LCP.LSD.Status !== StatusEnum.Active && r2Publication.LCP.LSD.Status !== StatusEnum.Ready
-                if (r2Publication.LCP.LSD &&
-                    (r2Publication.LCP.LSD.Status === StatusEnum.Revoked
-                    || r2Publication.LCP.LSD.Status === StatusEnum.Returned
-                    || r2Publication.LCP.LSD.Status === StatusEnum.Cancelled
-                    || r2Publication.LCP.LSD.Status === StatusEnum.Expired)) {
-                    // TODO anything here just in case the LCP license end date is still "open" in the future? We assume it is now closed (subsequent attempts to load book will fail).
-                    // The license is supposed to be the source of truth, so it should have been correspondingly updated by server...maybe too optimistic assumption?
-                }
-
-                if (r2LCPStr) {
-
-                    const atLeastOneReaderIsOpen = await diMainGet("saga-middleware").run(RequesetToCloseAllReadersWithTheSamePubId, publicationDocument.identifier).toPromise<boolean>() // NOTE: no type inference with Task .toPromise
-                        .catch((e) => { debug("RequesetToCloseAllReadersWithTheSamePubId", e); });
-                    debug("RequesetToCloseAllReadersWithTheSamePubId fulfilled");
-                    // let atLeastOneReaderIsOpen = false;
-                    // const readers = this.store.getState().win.session.reader;
-                    // if (readers) {
-                    //     for (const reader of Object.values(readers)) {
-                    //         if (reader.publicationIdentifier === publicationIdentifier) {
-                    //             atLeastOneReaderIsOpen = true;
-                    //             break;
-                    //         }
-                    //     }
-                    // }
-                    // if (atLeastOneReaderIsOpen) {
-                    //     // this.store.dispatch(readerActions.closeRequestFromPublication.build(
-                    //     //     publicationDocumentIdentifier));
-                    // }
-                    if (atLeastOneReaderIsOpen) {
-                        await new Promise<void>((res, _rej) => {
-                            setTimeout(() => {
-                                res();
-                            }, 500); // allow extra completion time to ensure the filesystem ZIP streams are closed
-                        });
-                    }
-
-                    try {
-                        // --------- This LSD was set in launchStatusDocumentProcessing() so it is up to date in the context of r2Publication.LCP,
-                        // but we are receiving a new LCP license so need to reassign later...
-                        const prevLCP = r2Publication.LCP;
-                        const prevLSD = prevLCP.LSD;
-
-                        // const epubPath_ = await lsdLcpUpdateInject(
-                        //     licenseUpdateJson,
-                        //     r2Publication,
-                        //     epubPath);
-
-                        const r2LCPJson = global.JSON.parse(r2LCPStr);
-                        debug(r2LCPJson);
-
-                        if (lcpLicenseIsNotWellFormed(r2LCPJson)) {
-                            const rej = `LCP license malformed: ${JSON.stringify(r2LCPJson)}`;
-                            debug(rej);
-                            reject(rej);
-                            return;
-                        }
-
-                        let r2LCP: LCP;
-                        try {
-                            r2LCP = TaJsonDeserialize(r2LCPJson, LCP);
-                        } catch (erorz) {
-                            debug(erorz);
-                            reject(erorz);
-                            return;
-                        }
-                        r2LCP.JsonSource = r2LCPStr;
-
-                        const archiveUpdate = await this.replacePublicationArchiveIfLinkChanged(
-                            publicationDocument,
-                            prevLCP,
-                            r2LCP,
-                            r2LCPStr,
-                        );
-                        if (archiveUpdate) {
-                            r2Publication = archiveUpdate.r2Publication;
-                            r2Publication.LCP = r2LCP;
-                            r2Publication.LCP.LSD = prevLSD;
-                            (r2Publication as any).__LCP_LSD_UPDATE_COUNT = 1; // TODO: this is used elsewhere to trigger the recalculation of the pub hash, should really be a proper typed flag, not "any"
-                            resolve({
-                                documentPatch: archiveUpdate.documentPatch,
-                                publicationFilesReplacement: archiveUpdate.publicationFilesReplacement,
-                                r2Publication,
-                            });
-                            return;
-                        }
-
-                        r2Publication.LCP = r2LCP;
-
-                        // --------- will be updated below via another round of processStatusDocument_() UPDATE: no, see below ...
-                        r2Publication.LCP.LSD = prevLSD;
-
-                        const epubPath = await this.publicationStorage.getPublicationEpubPath(
-                            publicationDocument.identifier,
-                        );
-                        await this.injectLcplIntoZip_(epubPath, r2LCPStr);
-
-                        // --------- see the prevLSD assignment above, and the processStatusDocument_() call below
-                        // ... we avoid the second LSD network request which is deemed unnecessary in the real world
-                        if (!(r2Publication as any).__LCP_LSD_UPDATE_COUNT) {
-                            (r2Publication as any).__LCP_LSD_UPDATE_COUNT = 1; // TODO: this is used elsewhere to trigger the recalculation of the pub hash, should really be a proper typed flag, not "any"
-                        }
-                        resolve({
-                            r2Publication,
-                        });
-                        // --------- below is the commented code that used to create the second LSD network request:
-                        // // Protect against infinite loop due to incorrect LCP / LSD server dates
-                        // if (!(r2Publication as any).__LCP_LSD_UPDATE_COUNT) {
-                        //     (r2Publication as any).__LCP_LSD_UPDATE_COUNT = 1;
-                        // } else {
-                        //     (r2Publication as any).__LCP_LSD_UPDATE_COUNT++;
-                        // }
-                        // if ((r2Publication as any).__LCP_LSD_UPDATE_COUNT > 2) {
-                        //     debug("__LCP_LSD_UPDATE_COUNT!?");
-                        //     resolve();
-                        // } else {
-                        //     try {
-                        //         // loop to re-init LSD in updated LCP
-                        //         await this.processStatusDocument_(
-                        //             publicationDocumentIdentifier,
-                        //             r2Publication);
-
-                        //         // TODO: publicationFileLock by checkPublicationLicenseUpdate(), so does not work
-                        //         if (atLeastOneReaderIsOpen) {
-                        //             this.store.dispatch(readerActions.openRequest.build(publicationDocumentIdentifier));
-                        //         }
-                        //         resolve();
-                        //     } catch (err) {
-                        //         debug(err);
-                        //         reject(err);
-                        //     }
-                        // }
-                    } catch (err) {
-                        debug(err);
-                        reject(err);
-                    }
-                } else {
-                    resolve({
-                        r2Publication,
-                    });
-                }
-            };
-
-            // use this to temporarily bypass LSD checks during dev
-            if (__TH__SKIP_LCP_LSD__) {
-                await callback(undefined);
-                return;
-            }
-            try {
-                const r2LCPStr = await this.lsdManager.launchStatusDocumentProcessing(r2Publication.LCP);
-                await callback(r2LCPStr);
-            } catch (err) {
-                debug(err);
-
-                // ignore uncaught promise rejections
-                // (other possible errors in LSD protocol, network issues, etc.)
-                // reject(err);
-                await callback(undefined);
-            }
-        });
+        // undefined ==> does not throw / reject
+        return await this.processStatusDocument_(undefined, publicationDocument, r2Publication);
     }
 
     // HTTP statusCode < 200 || >= 300.

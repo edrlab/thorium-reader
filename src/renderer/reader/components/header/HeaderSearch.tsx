@@ -65,7 +65,7 @@ class HeaderSearch extends React.Component<IProps> {
     //     this.unregisterAllKeyboardListeners();
     // }
 
-    // public async componentDidUpdate(oldProps: IProps) {
+    // public componentDidUpdate(oldProps: IProps) {
     //     if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
     //         this.unregisterAllKeyboardListeners();
     //         this.registerAllKeyboardListeners();
@@ -88,7 +88,7 @@ class HeaderSearch extends React.Component<IProps> {
         }
     }
 
-    public async componentDidUpdate(oldProps: IProps) {
+    public componentDidUpdate(oldProps: IProps) {
         if (oldProps.isOnSearch !== this.props.isOnSearch && this.props.isOnSearch) {
             this.unregisterAllKeyboardListeners();
         } else if (oldProps.isOnSearch !== this.props.isOnSearch && this.props.isOnSearch === false) {

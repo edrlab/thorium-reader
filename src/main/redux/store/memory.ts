@@ -467,12 +467,11 @@ export async function initStore()
         }
         if (version === 330 && showErrorElectronDialog) {
             app.whenReady().then(() => {
-                // void to ignore returned Promise
-                void dialog.showMessageBox({
+                dialog.showMessageBox({
                     type: "info",
                     title: "Update complete",
                     message: "Your data has been successfully updated to the latest version. " + _APP_VERSION,
-                });
+                }).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
             }).catch((err) => { debug(err); });
         }
         debug("State successfully loaded from filesystem");

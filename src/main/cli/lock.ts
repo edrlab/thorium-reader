@@ -93,7 +93,7 @@ export function lockInstance() {
                 }
             });
 
-            app.on("open-file", async (event, filePath) => {
+            app.on("open-file", (event, filePath) => {
                 event.preventDefault();
 
                 debug("#####");

@@ -109,7 +109,7 @@
                 "register": "Rekisteröidy",
                 "retry": "Yritä uudelleen",
                 "unauthorized": "Luvaton",
-                "unauthorizedUnsupportedType": "Ei sallittu (ei tuettu WWWAuthenticate-tyyppi ‘{{- type}}’ )",
+                "unauthorizedUnsupportedType": "Ei sallittu (ei tuettu WWWAuthenticate-tyyppi ‘{{- type}}’)",
                 "username": "Käyttäjätunnus / Sähköpostiosoite"
             },
             "info": {
@@ -250,10 +250,10 @@
                 "httpGet": "HTTP-lataus epäonnistui: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "invalidFilename": "Väliaikaisen lataustiedoston nimi ei kelpaa.",
                 "invalidLink": "Latauslinkki ei kelpaa.",
-                "invalidTempDirectory": "Väliaikainen latauskansio ei kelpaa.",
-                "lengthMismatch": "Ladatun tiedoston eheystarkistus epäonnistui: odotettu {{- expexted}} tavua, todellinen määrä {{- actual}} tavua.",
-                "readStreamMissing": "Suoratoiston lataaminen ei ole saatavilla.",
-                "tooManyFilenameAttempts": "Uniikin väliaikaisen lataustiedostonimen luominen ei onnistu: {{- path}}"
+                "invalidTempDirectory": "Väliaikainen lataushakemisto ei kelpaa.",
+                "lengthMismatch": "Ladatun tiedoston eheystarkistus epäonnistui: odotettu {{- expected}} tavua, todellinen määrä {{- actual}} tavua.",
+                "readStreamMissing": "Suoratoiston lataaminen ei onnistu.",
+                "tooManyFilenameAttempts": "Väliaikaisen lataustiedostonimen luominen ei onnistu: {{- path}}"
             }
         },
         "import": {
@@ -1263,7 +1263,7 @@
                 "integrity": "Tämä hakemisto on pidettävä turvassa ja saatavilla. Älä poista sitä, rajoita pääsyä siihen tai käytä hidasta tai epävakaata tallennusvälinettä, kuten verkkoasemia.",
                 "migration": "Thorium ei siirrä julkaisuja automaattisesti. Jos lisäät tallennustilaa, sinun on siirrettävä julkaisusi itse uuteen sijaintiin. Jos poistat tallennustilan, sinun on siirrettävä julkaisusi itse takaisin alkuperäiseen tallennustilaan.",
                 "summary": "Lue lisää tästä ominaisuudesta, joka on vielä beta-vaiheessa",
-                "warning": "Älä muokkaa tämän kansion tiedostoja itse, sillä se voi aiheuttaa ongelmia kirjojen tai sovelluksen kanssa. Ajattele tätä kansiota Thoriumin hallinnoimana suojattuna kirjastona."
+                "warning": "Älä muokkaa tämän kansion tiedostoja itse, sillä se voi aiheuttaa ongelmia kirjojen tai sovelluksen kanssa. Pidä tätä kansiota Thoriumin hallinnoimana suojattuna kirjastona."
             },
             "configuration": {
                 "chooseFolderDescription": "Valitse hakemisto, jota Thorium voi käyttää lisätallennustilana.",

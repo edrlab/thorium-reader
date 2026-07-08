@@ -243,14 +243,8 @@ async function doRequest(u: string): Promise<AudioBookis> {
                 const loc = res.headers.Location || res.headers.location;
                 if (loc && loc.length) {
                     const l = Array.isArray(loc) ? loc[0] : loc;
-                    process.nextTick(async () => {
-                        try {
-                            const redirectRes = await doRequest(l);
-                            resolve(redirectRes);
-                        } catch (err) {
-                            // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
-                            reject(`HTTP audiobook redirect, then fail ${u} ${err}`);
-                        }
+                    process.nextTick(() => {
+                        doRequest(l).then((redirectRes) => { resolve(redirectRes); }).catch((err) => { reject(`HTTP audiobook redirect, then fail ${u} ${err}`); });
                     });
                 } else {
                     // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
