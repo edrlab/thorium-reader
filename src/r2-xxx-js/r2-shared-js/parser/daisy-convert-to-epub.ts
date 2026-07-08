@@ -46,7 +46,20 @@ export const convertDaisyToReadiumWebPub = async (
 
     // debug("DEBUG: ", global.JSON.stringify(publication, null, 4));
 
-    return new Promise(async (resolve, reject) => {
+    let _resolve: undefined | ((value: undefined | string | PromiseLike<undefined | string>) => void);
+    let _reject: undefined | ((reason?: any) => void);
+    const _promise = new Promise<string | undefined>((resolve, reject) => {
+      _resolve = resolve;
+      _reject = reject;
+    });
+    // const { _promise: promise, _resolve: resolve, _reject: reject } = Promise.withResolvers();
+
+    // ensures _resolve and _reject are initialised at next process tick
+    await new Promise<void>((res, _rej) => {
+        setTimeout(() => {
+            res();
+        }, 30);
+    });
 
         // TODO: textPartAudio / audioPartText?? audioOnly??
         // https://www.daisy.org/z3986/specifications/Z39-86-2002.html#Type
@@ -74,7 +87,13 @@ export const convertDaisyToReadiumWebPub = async (
             if (isTextOnly) {
                 debug("generateDaisyAudioManifestOnly FATAL! text-only publication?? ", publication.Metadata.AdditionalJSON["dtb:multimediaType"], publication.Metadata.AdditionalJSON["ncc:multimediaType"]);
                 // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
-                return reject("generateDaisyAudioManifestOnly cannot process text-only publication");
+                const e = "generateDaisyAudioManifestOnly cannot process text-only publication";
+                if (_reject) {
+                    _reject(e);
+                } else {
+                    setTimeout(() => { _reject?.(e); }, 0);
+                }
+                return _promise;
             }
             if (!isAudioOnly || isFullTextAudio) {
                 debug("generateDaisyAudioManifestOnly WARNING! not audio-only publication?? ", publication.Metadata.AdditionalJSON["dtb:multimediaType"], publication.Metadata.AdditionalJSON["ncc:multimediaType"]);
@@ -85,7 +104,13 @@ export const convertDaisyToReadiumWebPub = async (
         if (!zipInternal) {
             debug("No publication zip!?");
             // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
-            return reject("No publication zip!?");
+            const e = "No publication zip!?";
+            if (_reject) {
+                _reject(e);
+            } else {
+                setTimeout(() => { _reject?.(e); }, 0);
+            }
+            return _promise;
         }
         const zip = zipInternal.Value as IZip;
 
@@ -110,14 +135,22 @@ export const convertDaisyToReadiumWebPub = async (
                         if (timeoutId) {
                             clearTimeout(timeoutId);
                             timeoutId = undefined;
-                            resolve(outputZipPath);
+                            if (_resolve) {
+                                _resolve(outputZipPath);
+                            } else {
+                                setTimeout(() => { _resolve?.(outputZipPath); }, 0);
+                            }
                         }
                     })
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     .on("error", (e: any) => {
                         debug("ZIP error", e);
                         // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
-                        reject(e);
+                        if (_reject) {
+                            _reject(e);
+                        } else {
+                            setTimeout(() => { _reject?.(e); }, 0);
+                        }
                     });
             }
 
@@ -1412,7 +1445,11 @@ ${cssHrefs.reduce((pv, cv) => {
                         ensureDirs(outputManifestPath);
                         fs.writeFileSync(outputManifestPath, jsonStrAudio, "utf8");
                         debug("generateDaisyAudioManifestOnly OK: " + outputManifestPath);
-                        resolve(outputManifestPath);
+                        if (_resolve) {
+                            _resolve(outputManifestPath);
+                        } else {
+                            setTimeout(() => { _resolve?.(outputManifestPath); }, 0);
+                        }
                     }
                 } catch (ero) {
                     debug(ero);
@@ -1426,12 +1463,18 @@ ${cssHrefs.reduce((pv, cv) => {
                 timeoutId = setTimeout(() => {
                     timeoutId = undefined;
                     // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
-                    reject("YAZL zip took too long!? " + outputZipPath);
+                    const e = "YAZL zip took too long!? " + outputZipPath;
+                    if (_reject) {
+                        _reject(e);
+                    } else {
+                        setTimeout(() => { _reject?.(e); }, 0);
+                    }
                 }, 10000);
                 (zipfile as ZipFile).end();
             }
         }
-    });
+
+    return _promise;
 };
 
 // TODO: DTBOOK to XHTML XSLT?

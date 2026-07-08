@@ -28,7 +28,7 @@ import { getAndStartCustomizationWellKnownFileWatchingEventChannel } from "./get
 // import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 // import { customizationPackageProvisioning, customizationPackageProvisioningCheckVersion, customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
 // import { ICustomizationProfileError, ICustomizationProfileProvisioned, ICustomizationProfileProvisionedWithError } from "readium-desktop/common/redux/states/customization";
-import { URL_HOST_CUSTOMPROFILE, URL_HOST_OPDS_AUTH, URL_PROTOCOL_APP_HANDLER_THORIUM, URL_PROTOCOL_OPDS } from "readium-desktop/common/streamerProtocol";
+import { URL_HOST_CUSTOMPROFILE, URL_HOST_OPDS_AUTH, URL_DOMAIN_APP_HANDLER_THORIUM_READER, URL_PROTOCOL_APP_HANDLER_THORIUM, URL_PROTOCOL_APP_HANDLER_THORIUM_READER, URL_PROTOCOL_APP_HANDLER_THORIUM_READER_DESKTOP, URL_PROTOCOL_OPDS } from "readium-desktop/common/streamerProtocol";
 import { EXT_THORIUM } from "readium-desktop/common/extension";
 import { getLibraryWindowFromDi } from "readium-desktop/main/di";
 import { getTranslator } from "readium-desktop/common/services/translator";
@@ -190,7 +190,31 @@ export function saga() {
                         continue ;
                     }
 
-                    const openUrl = url.replace(`${URL_PROTOCOL_APP_HANDLER_THORIUM}://`, "http://"); // HTTP to HTTPS redirect should be handled by the server
+                    let theUrl = url;
+
+                    // https://www.thoriumreader.com/en/badge/publication/
+                    //
+                    // https://www.thoriumreader.com/add/publication/?...
+                    // com.thoriumreader.desktop:/add/publication/?...
+                    if (
+                        url.startsWith(`https://${URL_DOMAIN_APP_HANDLER_THORIUM_READER}/add/publication`) ||
+                        url.startsWith(`${URL_PROTOCOL_APP_HANDLER_THORIUM_READER}:/add/publication`) || // single slash!
+                        url.startsWith(`${URL_PROTOCOL_APP_HANDLER_THORIUM_READER_DESKTOP}:/add/publication`) // single slash!
+                    ) {
+                        const u = new URL(url);
+                        theUrl = u.searchParams.get("publication");
+                        // const title = u.searchParams.get("title") || theUrl;
+                        // const author = u.searchParams.get("author");
+                        // const cover = u.searchParams.get("cover");
+                        // const passphrase = u.searchParams.get("passphrase");
+                        // const hashed_passphrase = u.searchParams.get("hashed_passphrase");
+
+                        if (!/^https?:\/\//.test(theUrl)) {
+                            throw new Error("HTTP!! " + theUrl + " ------- " + url);
+                        }
+                    }
+
+                    const openUrl = theUrl.replace(`${URL_PROTOCOL_APP_HANDLER_THORIUM}://`, "http://"); // HTTP to HTTPS redirect should be handled by the server
 
                     const link: IOpdsLinkView = {
                         url: openUrl,
@@ -256,10 +280,36 @@ export function saga() {
                             debug("No child window on library window");
                             dump += "No child window on library window\n";
                         }
-
                     } else {
+                        let theUrl = url;
+                        let title = url;
 
-                        const feed = yield* callTyped(opdsApi.addFeed, { title: url, url });
+                        // https://www.thoriumreader.com/en/badge/catalog/
+                        //
+                        // https://www.thoriumreader.com/add/catalog/?...
+                        // com.thoriumreader.desktop:/add/catalog/?...
+                        if (
+                            url.startsWith(`https://${URL_DOMAIN_APP_HANDLER_THORIUM_READER}/add/catalog`) ||
+                            url.startsWith(`${URL_PROTOCOL_APP_HANDLER_THORIUM_READER}:/add/catalog`) || // single slash!
+                            url.startsWith(`${URL_PROTOCOL_APP_HANDLER_THORIUM_READER_DESKTOP}:/add/catalog`) // single slash!
+                        ) {
+                            const u = new URL(url);
+                            theUrl = u.searchParams.get("main");
+                            title = u.searchParams.get("title") || theUrl;
+                            // const bookshelf = u.searchParams.get("bookshelf");
+                            // const passphrase = u.searchParams.get("passphrase");
+                            // const hashed_passphrase = u.searchParams.get("hashed_passphrase");
+                            // const icon = u.searchParams.get("icon");
+                            // const banner = u.searchParams.get("banner");
+                            // const open_in = u.searchParams.get("open_in");
+                            // const color = u.searchParams.get("color");
+
+                            if (!/^https?:\/\//.test(theUrl)) {
+                                throw new Error("HTTP!! " + theUrl + " ------- " + url);
+                            }
+                        }
+
+                        const feed = yield* callTyped(opdsApi.addFeed, { title, url: theUrl });
                         if (feed) {
 
                             yield* callTyped(appActivate);
@@ -272,7 +322,7 @@ export function saga() {
                         }
                     }
                     dump += "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$44\n";
-                    
+
                 } catch (e) {
                     debug("OPDS Deep link error");
                     debug(e);

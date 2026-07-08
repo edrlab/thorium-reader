@@ -46,8 +46,8 @@
         },
         "window": {
             "showLibrary": "Показать библиотеку / книжную полку",
-            "trayHint": "",
-            "trayTooltip": ""
+            "trayHint": "{{- appName}} по-прежнему отображается в области уведомлений. Щёлкните значок в трее, чтобы открыть библиотеку.",
+            "trayTooltip": "{{- appName}} - нажмите, чтобы показать или скрыть библиотеку"
         }
     },
     "catalog": {
@@ -149,15 +149,12 @@
             "descList_few": "{{- count}} примечания {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
             "descList_many": "{{- count}} примечаний {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
             "descList_one": "{{- count}} примечание {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
-            "descList_other": "",
             "descNewer_few": "Конфликт(ы): {{- count}} новейшие заметки",
             "descNewer_many": "Конфликт(ы): {{- count}} новейших заметок",
             "descNewer_one": "Конфликт(ы): {{- count}} новейшая заметка",
-            "descNewer_other": "",
             "descOlder_few": "Конфликт(ы): {{- count}} наиболее старые заметки",
             "descOlder_many": "Конфликт(ы): {{- count}} наиболее старых заметок",
             "descOlder_one": "Конфликт(ы): {{- count}} наиболее старая заметка",
-            "descOlder_other": "",
             "descTitle": "Название аннотации: ",
             "importAll": "Импортировать все заметки",
             "importWithoutConflict": "Импортировать только заметки без конфликтов",
@@ -176,12 +173,10 @@
         "deleteAnnotationsText_few": "Вы уверены, что хотите удалить {{- count}} заметки?",
         "deleteAnnotationsText_many": "Вы уверены, что хотите удалить {{- count}} заметок?",
         "deleteAnnotationsText_one": "Вы уверены, что хотите удалить {{- count}} заметку?",
-        "deleteAnnotationsText_other": "",
         "deleteBookmarks": "Удалить закладки?",
         "deleteBookmarksText_few": "Вы уверены, что хотите удалить {{- count}} закладки?",
         "deleteBookmarksText_many": "Вы уверены, что хотите удалить {{- count}} закладок?",
         "deleteBookmarksText_one": "Вы уверены, что хотите удалить {{- count}} закладку?",
-        "deleteBookmarksText_other": "",
         "deleteFeed": "Вы действительно хотите удалить этот каталог ?",
         "deletePublication": "Вы действительно хотите удалить эту книгу ?",
         "deletePublicationWithNotes": "Внимание: эта книга содержит аннотации и/или закладки, они также будут удалены! (Если вы хотите их сохранить, обязательно экспортируйте заметки перед удалением книги)",
@@ -841,7 +836,6 @@
                 "founds_few": "{{- count}} найдено",
                 "founds_many": "{{- count}} найдено",
                 "founds_one": "{{- count}} найден",
-                "founds_other": "",
                 "input": "подходящий текст",
                 "next": "Далее",
                 "notFound": "нет совпадений",

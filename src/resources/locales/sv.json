@@ -46,8 +46,8 @@
         },
         "window": {
             "showLibrary": "Visa bokhylla",
-            "trayHint": "",
-            "trayTooltip": ""
+            "trayHint": "{{- appName}} körs fortfarande i meddelandefältet. Klicka på ikonen för att visa biblioteksfönstret.",
+            "trayTooltip": "{{- appName}} – klicka för att visa eller dölja biblioteksfönstret"
         }
     },
     "catalog": {
@@ -91,7 +91,7 @@
         "login": "Logga in",
         "logout": "Logga ut",
         "missing": "Filer saknas",
-        "missingUnavailableDescription": "Den här publikationen kan inte öppnas eftersom de lagrade filerna inte går att öppna. Importera publikationen igen, eller gå till inställningar och sedan Lagring för att lägga till eller ändra ytterligare lagring.",
+        "missingUnavailableDescription": "Den här boken kan inte öppnas eftersom de lagrade filerna inte går att komma åt. Importera boken igen, eller gå till inställningar och sedan Lagring för att lägga till eller redigera extra lagring.",
         "moreInfo": "Information om boken",
         "myBooks": "Mina böcker",
         "noPublicationHelpL1": "Dra och släpp filer här",
@@ -108,8 +108,8 @@
                 "password": "Lösenord",
                 "register": "Registrera dig",
                 "retry": "Försök igen",
-                "unauthorized": "",
-                "unauthorizedUnsupportedType": "",
+                "unauthorized": "Obehörig",
+                "unauthorizedUnsupportedType": "Obehörig (stöder inte WWWAuthenticate av typen '{{- type}}')",
                 "username": "Användarnamn/e-postadress"
             },
             "info": {
@@ -131,7 +131,7 @@
                 "state": "Status"
             }
         },
-        "openFolder": "",
+        "openFolder": "Öppna mapp",
         "publisher": "Utgivare",
         "readBook": "Läs",
         "released": "Publicerad den",
@@ -243,17 +243,17 @@
             "success": "Importen lyckades."
         },
         "download": {
-            "cancelled": "",
+            "cancelled": "Nedladdning avbruten.",
             "error": "Nedladdningen av {{- title}} misslyckades: [{{- err}}]",
             "errors": {
-                "hashMismatch": "",
-                "httpGet": "",
-                "invalidFilename": "",
-                "invalidLink": "",
-                "invalidTempDirectory": "",
-                "lengthMismatch": "",
-                "readStreamMissing": "",
-                "tooManyFilenameAttempts": ""
+                "hashMismatch": "Integritetskontroll för filen misslyckades. Förväntad SHA-256-hash: {{- expected}}, fick {{- actual}}.",
+                "httpGet": "HTTP-nedladdning misslyckades: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "invalidFilename": "Det tillfälliga filnamnet för den nedladdade filen är ogiltigt.",
+                "invalidLink": "Nedladdningslänken är ogiltig.",
+                "invalidTempDirectory": "Mappen för den tillfälliga nedladdningen är ogiltig.",
+                "lengthMismatch": "Integritetskontroll för den nedladdade filen misslyckades. Förväntade {{- expected}} bytes, fick {{- actual}} bytes.",
+                "readStreamMissing": "Nedladdningsströmmen går inte att nå.",
+                "tooManyFilenameAttempts": "Kunde inte skapa ett unikt filnamn för den nedladdade filen: {{- path}}"
             }
         },
         "import": {
@@ -662,7 +662,7 @@
         "lcpEnd": "Slut",
         "lcpNotSupported": "VARNING: detta är en förhandsversion av Thorium Desktop som inte stödjer produktionsversioner av LCP-licenser, utan stödjer bara dekryptering av LCP \"basic profile\" utan certifikatvalidering.",
         "lcpRightsCopy": "Kopierade tecken",
-        "lcpRightsPrint": "Kopiera utskrift",
+        "lcpRightsPrint": "Utskrivna sidor",
         "lcpStart": "Start",
         "licenceLCP": "Licens (LCP)",
         "licenseCertificateDateInvalid": "Slutdatumet för LCP-licensen är tidigare än licensens startdatum ({{- dateTime}}).",
@@ -842,15 +842,15 @@
         "print": {
             "descriptionLcpCount": "Gräns för återstående sidor: {{- count}}",
             "descriptionLcpPrintable": "Tidigare utskrivna sidor: {{- printable}} ({{- count}})",
-            "howTo": "Så här väljer du ett sidintervall att skriva ut",
-            "lcpInfo": "Du kan skriva ut maximalt {{- count}} sidor. Välj sidorna du vill skriva ut här.",
+            "howTo": "Så här väljer du vilka sidor som ska skrivas ut",
+            "lcpInfo": "Du kan skriva ut maximalt {{- count}} sidor. Välj vilka sidor du vill skriva ut här.",
             "noPagesLcpLimitReached": "Du har nått gränsen för LCP",
             "noPrintablePages": "Inga utskrivbara sidor",
-            "pageHelpInfo": "Format för sidval:",
-            "pageHelpInfo1": "ange ett sidnummer för att välja en enskild sida (t.ex. \"6\")",
-            "pageHelpInfo2": "ange två sidnummer med bindestreck för att välja ett sammanhängande sidintervall (t.ex. \"6-13\")",
+            "pageHelpInfo": "Format för att välja sidor:",
+            "pageHelpInfo1": "välj en enskild sida genom att ange ett sidnummer (t.ex. \"6\")",
+            "pageHelpInfo2": "välj ett intervall genom att ange två sidnummer med bindestreck (t.ex. \"6-13\")",
             "pageHelpInfo3": "använd semikolon för att separera flera sidor eller sidintervall (t.ex. \"5;14-20;37\")",
-            "pageHelpInfo4": "utelämna första eller sista sidan i intervallet för att ange början eller slutet av boken (t.ex. \"-16\" = \"1-16\", \"34-\" = \"34-100\" om boken har 100 sidor)",
+            "pageHelpInfo4": "för att ange början eller slutet av boken i ett intervall, utelämna första eller sista sidan (t.ex. \"-16\" = \"1-16\", \"34-\" = \"34-100\" om boken har 100 sidor)",
             "pages": "Sidor",
             "preview": "Förhandsvisning",
             "print": "Skriv ut",
@@ -1248,9 +1248,9 @@
             "title": "Spara sessioner"
         },
         "sharedComputer": {
-            "lcpAutoDeleteExpiredPublications": "",
-            "lcpAutoDeleteExpiredPublicationsDescription": "",
-            "title": ""
+            "lcpAutoDeleteExpiredPublications": "Ta automatiskt bort lån som gått ut och deras användardata",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Tar automatiskt bort lån som gått ut, inklusive anteckningar, bokmärken, osv. Detta är praktiskt i miljöer där många personer använder datorn, som på bibliotek eller universitet.",
+            "title": "Delad dator-läge"
         },
         "storage": {
             "actions": {
@@ -1260,37 +1260,37 @@
             },
             "beta": {
                 "availability": "Den här funktionen fungerar bara i nyare versioner av Thorium. Böcker i externa mappar kommer inte visas i Thorium 3.4 eller tidigare.",
-                "integrity": "",
-                "migration": "",
+                "integrity": "Den här mappen måste vara tillgänglig. Undvik att radera eller begränsa tillgång till den, och använd inte långsam eller osäker lagring, som nätverksenheter.",
+                "migration": "Dina böcker flyttas inte automatiskt. Om du byter plats för extra lagring så måste du flytta dina böcker till den nya platsen. Om du tar bort den så måste du manuellt flytta dina böcker till den ursprungliga platsen.",
                 "summary": "Läs mer om den här funktionen, som just nu är i beta",
-                "warning": ""
+                "warning": "Redigera inte filerna i den här mappen eftersom detta kan orsaka problem med dina böcker eller i läsaren. Se på den här mappen som ett säkert bibliotek som hanteras av Thorium."
             },
             "configuration": {
-                "chooseFolderDescription": "",
-                "configuredDescription": "",
-                "notConfiguredDescription": ""
+                "chooseFolderDescription": "Välj mapp som Thorium ska använda för extra lagring.",
+                "configuredDescription": "Den extra lagringen har ställts in och kan nu användas för nya böcker.",
+                "notConfiguredDescription": "Böcker som importeras till Thorium Reader kommer lagras i den valda mappen. Böcker som du importerat tidigare kommer finnas kvar i systemets standardmapp."
             },
             "dialogs": {
                 "add": {
                     "confirm": "Fortsätt",
-                    "description": "",
-                    "title": ""
+                    "description": "Den här funktionen är för närvarande i beta. Vill du fortsätta och ställa in extra lagring genom att välja en mapp?",
+                    "title": "Välj extra lagring"
                 },
                 "edit": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Redigera mapp",
+                    "description": "Du måste vara försiktig när du uppdaterar den extra lagringen. Thorium kommer inte flytta filer du har sparat där, utan du behöver göra det själv. Vill du fortsätta?",
+                    "title": "Uppdatera den extra lagringen"
                 },
                 "remove": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Ta bort mapp",
+                    "description": "Du måste vara försiktig när du tar bort den extra lagringen. Thorium kommer inte flytta filer du har sparat där, utan du behöver göra det själv. Vill du fortsätta?",
+                    "title": "Ta bort extra lagring"
                 }
             },
             "locations": {
-                "defaultDescription": "",
-                "defaultInternal": "",
-                "externalStorage": "",
+                "defaultDescription": "Standardplats för böcker som hanteras av programmet:",
+                "defaultInternal": "Systemlagring",
+                "externalStorage": "Extern lagring",
                 "title": "Platser"
             }
         },
@@ -1309,14 +1309,14 @@
             "title": "Tema"
         },
         "window": {
-            "keepLibraryWindowInBackgroundOnReaderClose": "Behåll biblioteket i bakgrunden efter att läsfönster stängs",
-            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "När detta är aktiverat återställs inte biblioteksfönstret och förs inte fram när ett läsfönster stängs.",
-            "keepLibraryWindowInBackgroundOnReaderOpen": "Minimera biblioteket efter att läsfönster öppnas",
+            "keepLibraryWindowInBackgroundOnReaderClose": "Behåll biblioteketsfönstret öppet i bakgrunden när du stänger läsfönster",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "När detta är aktiverat så öppnas inte biblioteksfönstret automatiskt när du stänger ett läsfönster.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Minimera biblioteksfönstret när du öppnar ett läsfönster",
             "keepLibraryWindowInBackgroundOnReaderOpenDescription": "När detta är aktiverat minimeras biblioteksfönstret när ett läsfönster öppnas.",
-            "minimizeLibraryToTray": "Minimera biblioteket till meddelandefältet",
+            "minimizeLibraryToTray": "Minimera biblioteksfönstret till meddelandefältet",
             "minimizeLibraryToTrayDescription": "När detta är aktiverat fortsätter Thorium att köras i meddelandefältet i Windows när biblioteksfönstret minimeras.",
-            "oneReaderWindowPerPublication": "Använd ett läsfönster per publikation",
-            "oneReaderWindowPerPublicationDescription": "När detta är aktiverat fokuseras läsfönstret för en publikation som redan är öppen i stället för att ett nytt öppnas.",
+            "oneReaderWindowPerPublication": "Använd bara ett läsfönster per bok",
+            "oneReaderWindowPerPublicationDescription": "När detta är aktiverat öppnas inte ett nytt läsfönster för böcker som redan är öppna.",
             "title": "Fönsterbeteende"
         }
     },

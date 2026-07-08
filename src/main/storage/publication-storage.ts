@@ -690,7 +690,7 @@ export class PublicationStorage {
         //     //     fs.mkdirSync(parent);
         //     // }
 
-        //     // setTimeout(async () => {
+        //     // setTimeout(() => {
         //     //     await shell.openPath(parent);
         //     // }, 0);
         //     // shell.showItemInFolder(parent);

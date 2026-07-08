@@ -27,6 +27,7 @@
   "scripts": {
     "__postinstall": "node -e \"const path = require('path'); const fs = require('fs'); const filePath = path.join(process.cwd(), 'node_modules/ts-loader/dist/index.js'); let fileStr = fs.readFileSync(filePath, { encoding: 'utf8' }); fileStr = fileStr.replace(/, rootDir: undefined/, ''); fs.writeFileSync(filePath, fileStr, { encoding: 'utf8' });\"",
     "clean": "rimraf dist && rimraf release",
+    "icons:update": "bash ./scripts/update-icons.sh",
     "test": "cross-env JEST_TESTS=1 jest --config=jest.config.js --verbose --runInBand --bail=1 --no-cache \"test\"",
     "testFile": "cross-env JEST_TESTS=1 jest --config=jest.config.js --verbose --runInBand --bail=1 --no-cache ",
     "test:pdf-annotations:harness:install": "playwright install chromium",
@@ -156,6 +157,20 @@
         "role": "Viewer"
       },
       {
+        "name": "Thorium reader - application link",
+        "schemes": [
+          "com.thoriumreader"
+        ],
+        "role": "Viewer"
+      },
+      {
+        "name": "Thorium Desktop reader - application link",
+        "schemes": [
+          "com.thoriumreader.desktop"
+        ],
+        "role": "Viewer"
+      },
+      {
         "name": "Thorium Reader - catalog link",
         "schemes": [
           "opds"
@@ -179,7 +194,8 @@
           "y": 150,
           "type": "file"
         }
-      ]
+      ],
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
     },
     "files": [
       "node_modules/",
@@ -285,7 +301,11 @@
       "allowElevation": true,
       "allowToChangeInstallationDirectory": false,
       "removeDefaultUninstallWelcomePage": false,
-      "runAfterFinish": true
+      "runAfterFinish": true,
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
+    },
+    "appImage": {
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
     },
     "linux": {
       "target": [
@@ -299,7 +319,8 @@
       },
       "executableName": "thorium",
       "category": "Office",
-      "icon": "resources/icons"
+      "icon": "resources/icons",
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
     },
     "mac": {
       "category": "public.app-category.developer-tools",
@@ -308,11 +329,13 @@
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
       "entitlements": "./scripts/entitlements.mac.plist",
-      "entitlementsInherit": "./scripts/entitlements.mac.plist"
+      "entitlementsInherit": "./scripts/entitlements.mac.plist",
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
     },
     "appx": {
       "displayName": "Thorium Reader",
-      "publisher": "CN=C91F86A8-45E6-48E0-8015-8A5BF2B38BD4"
+      "publisher": "CN=C91F86A8-45E6-48E0-8015-8A5BF2B38BD4",
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
     }
   },
   "dependencies": {

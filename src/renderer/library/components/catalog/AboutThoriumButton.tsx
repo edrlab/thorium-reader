@@ -97,17 +97,17 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                             <SVG ariaHidden svg={InfoIcon} />
                             <p
                             ><a href=""
-                            onClick={async (ev) => {
+                            onClick={(ev) => {
                                 ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                                 this.setState({ versionInfo : false });
                                 if (this.props.newVersionURL && /^https?:\/\//.test(this.props.newVersionURL)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                    await shell.openExternal(this.props.newVersionURL);
+                                    shell.openExternal(this.props.newVersionURL).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ })
                                 }
                             }}>{`${this.props.__("app.update.message")}`}</a> <span>(v{this.props.newVersion})</span></p>
                         </div>
-                        {/* <button onClick={async () => {
+                        {/* <button onClick={() => {
                             this.setState({ versionInfo : false });
-                            await shell.openExternal(this.props.newVersionURL);
+                            shell.openExternal(this.props.newVersionURL).then(() => {}).catch((err: unknown) => { console.log(err); }); // .finally(() => {})
                         }}>
                             {this.props.__("app.session.exit.askBox.button.yes")}
                         </button>
@@ -159,16 +159,17 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                 <div className={stylesFooter.footer_about}>
                     <div>
                     <p>{`v${_APP_VERSION}`}</p>
-                    <a href="" onClick={async (ev) => {
-                                ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
-                                const os = encodeURIComponent_RFC3986(
-                                    await getOsName().catch(() => navigator.platform || "unknown"),
-                                );
+                    <a href="" onClick={(ev) => {
+                            ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
+
+                            getOsName().then((v) => v).catch(() => navigator.platform || "unknown").then((osName) => {
+                                const os = encodeURIComponent_RFC3986(osName);
                                 const href = `https://thorium.edrlab.org/?lang=${locale}&v=${app_version}&source=${source}&os=${os}`;
                                 if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                    await shell.openExternal(href);
+                                    shell.openExternal(href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ });
                                 }
-                            }}
+                            }).catch((err: unknown) => { console.log(err); });
+                        }}
                         tabIndex={0}>{__("catalog.about.title", { appName: capitalizedAppName })}</a>
                     </div>
                     <SVG ariaHidden svg={EdrlabLogo} />
