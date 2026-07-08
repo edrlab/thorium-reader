@@ -44,6 +44,32 @@ import { getTranslator } from "readium-desktop/common/services/translator";
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/publication/import/publicationFromFs");
 
+async function importPublicationFromFS_postLCP(
+    newPubDocument: PublicationDocument,
+    lcpHashedPassphrase: string,
+): Promise<void> {
+    const lcpManager = diMainGet("lcp-manager");
+    const publicationRepository = diMainGet("publication-repository");
+
+    try {
+        debug("deferred lcpManager.checkPublicationLicenseUpdate() after publication import");
+        const publicationDocument = await publicationRepository.get(newPubDocument.identifier);
+        if (!publicationDocument) {
+            debug("skip deferred lcpManager.checkPublicationLicenseUpdate(), publication no longer exists", newPubDocument.identifier);
+            return;
+        }
+
+        // DOES NOT MUTATE publicationDocument (returns a modified copy)
+        const updatedDoc = await lcpManager.checkPublicationLicenseUpdate(publicationDocument, false);// DOES NOT SKIP the network LSD checks!
+        // passphrase saved for doc.id with provider, this time (overrides old entry mapped on doc.id)
+        if (updatedDoc && lcpHashedPassphrase) {
+            await lcpManager.saveSecret(updatedDoc, lcpHashedPassphrase);
+        }
+    } catch (e) {
+        debug("deferred lcpManager.checkPublicationLicenseUpdate() failed", newPubDocument.identifier, e);
+    }
+}
+
 export async function importPublicationFromFS(
     filePath: string,
     willBeImmediatelyFollowedByOpen: boolean,
@@ -114,13 +140,18 @@ export async function importPublicationFromFS(
                 r2Publication.freeDestroy();
 
                 r2Publication = await DaisyParsePromise(filePath);
-
-                // TODO: delete file contents (webpub zip) inside pathFile? shouldn't be necessary as fs.createWriteStream() by default overrides, so does fs.writeFileSync() in the case of generateDaisyAudioManifestOnly
-                packagePath = await new Promise((reso) => {
-                    setTimeout(async () => {
-                        reso(await convertDaisyToReadiumWebPub(outputDirPath, r2Publication, undefined, true));
+                await new Promise<void>((r) => {
+                    setTimeout(() => {
+                        r();
                     }, 500);
                 });
+                // TODO: delete file contents (webpub zip) inside pathFile? shouldn't be necessary as fs.createWriteStream() by default overrides, so does fs.writeFileSync() in the case of generateDaisyAudioManifestOnly
+                try {
+                    packagePath = await convertDaisyToReadiumWebPub(outputDirPath, r2Publication, undefined, true);
+                } catch (err) {
+                    packagePath = undefined;
+                    debug(err);
+                }
             }
 
             if (packagePath) {
@@ -306,26 +337,8 @@ export async function importPublicationFromFS(
             // the file lock will ensure that even if the publication is immediately opened (e.g. double-click from filesystem),
             // there will not be concurrent access race (the publication open itself checks LSD updates, so this one will be skipped during the critical section lock)
             // if there are opened readers when there is an LCP update, the LCPL gets injected into EPUB META-INF/ so the readers are force-closed
-            setTimeout(async () => {
-
-                try {
-                    debug("deferred lcpManager.checkPublicationLicenseUpdate() after publication import");
-                    const publicationDocument = await publicationRepository.get(newPubDocument.identifier);
-                    if (!publicationDocument) {
-                        debug("skip deferred lcpManager.checkPublicationLicenseUpdate(), publication no longer exists", newPubDocument.identifier);
-                        return;
-                    }
-
-                    // DOES NOT MUTATE publicationDocument (returns a modified copy)
-                    const updatedDoc = await lcpManager.checkPublicationLicenseUpdate(publicationDocument, false);// DOES NOT SKIP the network LSD checks!
-                    // passphrase saved for doc.id with provider, this time (overrides old entry mapped on doc.id)
-                    if (updatedDoc && lcpHashedPassphrase) {
-                        await lcpManager.saveSecret(updatedDoc, lcpHashedPassphrase);
-                    }
-                } catch (e) {
-                    debug("deferred lcpManager.checkPublicationLicenseUpdate() failed", newPubDocument.identifier, e);
-                }
-
+            setTimeout(() => {
+                importPublicationFromFS_postLCP(newPubDocument, lcpHashedPassphrase).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
             }, 300);
         }
     }

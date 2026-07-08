@@ -40,7 +40,7 @@ const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
 export function* createReaderWindow(publicationIdentifier: string, manifestUrl: string,  windowIdentifier: string /* winBound, reduxState*/) {
     assertUUIDv4(windowIdentifier);
     assertUUIDv4(publicationIdentifier);
-    
+
     const { windowBound: winBound, windowMaximized } = yield* callTyped(readerNewWindowState, publicationIdentifier);
     const readerWindow = new BrowserWindow({
         ...winBound,
@@ -259,10 +259,7 @@ export function* createReaderWindow(publicationIdentifier: string, manifestUrl: 
             && !navUrl.startsWith("http://localhost") && !navUrl.startsWith("http://127.0.0.1")) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
 
             debug("willNavigate ==> EXTERNAL: ", readerWindow.webContents.getURL(), " *** ", navUrl);
-            setTimeout(async () => {
-                await shell.openExternal(navUrl);
-            }, 0);
-
+            shell.openExternal(navUrl).then(() => { /* noop */ }).catch((err: unknown) => { debug(err); }); // .finally(() => { /* noop */ })
             return;
         }
 

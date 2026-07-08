@@ -24,7 +24,7 @@ const REL_NAVIGATION_TYPES: string[] = [
 
 export const dispatchOpdsLink =
     (dispatch: TDispatch) =>
-        async (ln: IOpdsLinkView, location: Location, title?: string) => {
+        (ln: IOpdsLinkView, location: Location, title?: string) => {
 
             dispatch(dialogActions.closeRequest.build());
 
@@ -55,7 +55,7 @@ export const dispatchOpdsLink =
                 }, location.state as IRouterLocationState);
             } else {
                 if (ln.url && /^https?:\/\//.test(ln.url)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                    await shell.openExternal(ln.url);
+                    shell.openExternal(ln.url).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ })
                 }
             }
         };

@@ -290,7 +290,7 @@ function* opdsRequestMediaFlow({request, callback}: TregisterHttpProtocolHandler
             return;
         }
         // Promise<response> in function callback argument
-        void httpGet(url, {
+        httpGet(url, {
             ...request,
         }, (response) => {
 
@@ -305,7 +305,7 @@ function* opdsRequestMediaFlow({request, callback}: TregisterHttpProtocolHandler
                 data: response.body || undefined,
             });
             return response;
-        });
+        }).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
 
     } else {
         debug("opdsRequestMedia error ?!!", request);
@@ -907,10 +907,7 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
         if (/^https?:\/\//.test(navUrl)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
 
             debug("willNavigate ==> EXTERNAL: ", win.webContents.getURL().substring(0, 500), " *** ", navUrl);
-            setTimeout(async () => {
-                await shell.openExternal(navUrl);
-            }, 0);
-
+            shell.openExternal(navUrl).then(() => { /* noop */ }).catch((err: unknown) => { debug(err); }); // .finally(() => { /* noop */ })
             return;
         }
 
@@ -1031,8 +1028,8 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
     debug("OPDS AUTH win LOAD 2", urlStr.substring(0, 500));
 
     if (urlExternal) {
-        setTimeout(async () => {
-            await shell.openExternal(urlExternal);
+        setTimeout(() => {
+            shell.openExternal(urlExternal).then(() => { /* noop */ }).catch((err: unknown) => { debug(err); }); // .finally(() => { /* noop */ })
         }, 500);
     }
 
