@@ -66,7 +66,7 @@ class FeedList extends React.Component<IProps, IState> {
         this.loadFeeds = this.loadFeeds.bind(this);
     }
 
-    public async componentDidMount() {
+    public componentDidMount() {
         this.unsubscribe = apiSubscribe([
             "opds/addFeed",
             "opds/deleteFeed",
@@ -76,8 +76,7 @@ class FeedList extends React.Component<IProps, IState> {
         this.unsubscribeAction = subscribeToAction(opdsActions.refresh.ID, (_action) => {
             // console.log("Refresh opds feed list requested by the action ID=", opdsActions.refresh.ID);
 
-            // void the Promise as we don't need the async/await guarantee
-            void this.loadFeeds();
+            this.loadFeeds().then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
         });
     }
 
@@ -175,7 +174,9 @@ class FeedList extends React.Component<IProps, IState> {
                                             <Popover.Close
                                                 onClick={() => {
                                                     this.props.logout(item.url);
-                                                    setTimeout(() => this.loadFeeds(), 100);
+                                                    setTimeout(() => {
+                                                        this.loadFeeds().then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+                                                    }, 100);
                                                 }}
                                                 title={__("catalog.logout")}
                                             >

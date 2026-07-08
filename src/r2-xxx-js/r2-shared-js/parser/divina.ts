@@ -245,14 +245,8 @@ async function doRequest(u: string): Promise<Divinais | undefined> {
                 const loc = res.headers.Location || res.headers.location;
                 if (loc && loc.length) {
                     const l = Array.isArray(loc) ? loc[0] : loc;
-                    process.nextTick(async () => {
-                        try {
-                            const redirectRes = await doRequest(l);
-                            resolve(redirectRes);
-                        } catch (_err) {
-                            resolve(undefined);
-                            // reject(`HTTP Divina redirect, then fail ${u} ${err}`);
-                        }
+                    process.nextTick(() => {
+                        doRequest(l).then((redirectRes) => { resolve(redirectRes); }).catch((_err) => { resolve(undefined); /* reject(`HTTP Divina redirect, then fail ${u} ${err}`); */ });
                     });
                 } else {
                     resolve(undefined);

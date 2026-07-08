@@ -158,10 +158,10 @@ jobs:
 # Thorium for Linux x64 and arm64 is built on GitHub Actions x64 runners
 # Thorium for Windows x64 and arm64 is built on GitHub Actions x64 runners
 # To ensure arm64, the trick is:
-#       npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root --arch=arm64 --cpu=arm64
+#       npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root --cpu=arm64
 #       Replace "x64" with "arm64" in `package.json` (and optionally the electron-builder `src/package.json`, if needed)
 # To ensure x64, the trick is:
-#       npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root --arch=x64 --cpu=x64
+#       npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root --cpu=x64
 #       `package.json` already specifies "x64"
 # windows-latest is currently windows-2022, but becomes windows-2025 in September 2025 (windows-2022 remains supported for 3 years)
 #       https://github.com/actions/runner-images/blob/main/images/windows/Windows2022-Readme.md
@@ -383,9 +383,9 @@ jobs:
       if: endsWith(matrix.osarch, '-arm')
       #(ls -alsR ~/.cache/electron/ || ls -alsR ~/Library/Caches/electron/ || ls -alsR ~/AppData/Local/electron/Cache/ || echo OK)
       run: >
-        npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root --arch=arm64 --cpu=arm64 &&
+        npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root --cpu=arm64 &&
         cd node_modules/electron &&
-        DEBUG=@electron/get* force_no_cache=true npm_config_arch=arm64 ELECTRON_INSTALL_ARCH=arm64 node install.js --arch=arm64 --cpu=arm64 &&
+        DEBUG=@electron/get* force_no_cache=true npm_config_arch=arm64 ELECTRON_INSTALL_ARCH=arm64 node install.js --cpu=arm64 &&
         cd -
       shell: bash
       #export npm_config_arch=arm64 && export npm_config_cpu=arm64 &&
@@ -395,9 +395,9 @@ jobs:
       if: endsWith(matrix.osarch, '-intel')
       #(ls -alsR ~/.cache/electron/ || ls -alsR ~/Library/Caches/electron/ || ls -alsR ~/AppData/Local/electron/Cache/ || echo OK)
       run: >
-        npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root --arch=x64 --cpu=x64 &&
+        npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root --cpu=x64 &&
         cd node_modules/electron &&
-        DEBUG=@electron/get* force_no_cache=true npm_config_arch=x64 ELECTRON_INSTALL_ARCH=x64 node install.js --arch=x64 --cpu=x64 &&
+        DEBUG=@electron/get* force_no_cache=true npm_config_arch=x64 ELECTRON_INSTALL_ARCH=x64 node install.js --cpu=x64 &&
         cd -
       shell: bash
       #export npm_config_arch=x64 && export npm_config_cpu=x64 &&

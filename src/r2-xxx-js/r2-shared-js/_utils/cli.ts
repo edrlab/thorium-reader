@@ -199,7 +199,7 @@
 //                     }
 //                     // TODO: delete file contents (webpub zip) inside outputDirPath? shouldn't be necessary as fs.createWriteStream() by default overrides, so does fs.writeFileSync() in the case of generateDaisyAudioManifestOnly
 //                     await new Promise((reso) => {
-//                         setTimeout(async () => {
+//                         setTimeout(() => {
 //                             reso(await convertDaisyToReadiumWebPub(
 //                                 outputDirPath!,
 //                                 publication,

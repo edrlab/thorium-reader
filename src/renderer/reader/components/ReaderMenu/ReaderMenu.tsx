@@ -50,7 +50,8 @@ import { createOrGetPdfEventBus } from "../../pdf/driver";
 import { ModalControlButtons } from "readium-desktop/renderer/reader/components/ModalControlButtons";
 import { DockedHeader } from "readium-desktop/renderer/reader/components/DockedHeader";
 
-(window as any).__shell_openExternal = (url: string) => url && /^https?:\/\//.test(url) ? shell.openExternal(url) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
+// always returns a resolved Promise with value undefined (will never reject)
+(window as any).__shell_openExternal = (url: string) => url && /^https?:\/\//.test(url) ? shell.openExternal(url).then((_v: void): undefined => undefined).catch((_err: unknown): undefined => undefined) /* .finally(() => {  }) */ : Promise.resolve(undefined); // needed after markdown marked parsing for sanitizing the external anchor href
 
 // console.log(window);
 
