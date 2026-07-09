@@ -5,77 +5,42 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
-
 import * as React from "react";
-import { connect } from "react-redux";
-import { i18nActions } from "readium-desktop/common/redux/actions/";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { availableLanguages } from "readium-desktop/common/services/translator";
-import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
-import {
-    TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/common/components/hoc/translator";
-import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import { TDispatch } from "readium-desktop/typings/redux";
-import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
+import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
+import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import { i18nActions } from "readium-desktop/common/redux/actions";
+import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
+import * as LanguageIcon from "readium-desktop/renderer/assets/icons/language.svg";
 
-import SVG from "../../../common/components/SVG";
+const LanguageSettings: React.FC<{}> = () => {
+    const [__] = useTranslator();
+    // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    // const isRTL = langStringIsRTL(locale);
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps extends TranslatorProps {
-}
-// IProps may typically extend:
-// RouteComponentProps
-// ReturnType<typeof mapStateToProps>
-// ReturnType<typeof mapDispatchToProps>
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
-}
+    const currentLanguageISO = locale as keyof typeof availableLanguages;
+    const currentLanguageString = availableLanguages[currentLanguageISO];
+    const dispatch = useDispatch();
+    const [options] = React.useState(() => (Object.entries(availableLanguages) as Array<[keyof typeof availableLanguages, string]>)
+        .sort()
+        .map<{ id: number, name: string, iso: keyof typeof availableLanguages }>(
+            ([k, v], i) => ({ id: i, name: v, iso: k }),
+        ));
+    const setLang = (localeSelected: React.Key) => {
 
-class LanguageSettings extends React.Component<IProps, undefined> {
-
-    public render(): React.ReactElement<{}> {
-        const { __ } = this.props;
-        return (
-            <>
-                <section className="settings_language-section">
-                    <div className={stylesGlobal.heading}>
-                        <h2>{__("settings.language.languageChoice")}</h2>
-                    </div>
-                    <form>
-                        { ObjectKeys(availableLanguages).map((lang, i) =>
-                            <div key={i}>
-                                <input
-                                    id={"radio-" + lang}
-                                    type="radio"
-                                    lang={lang}
-                                    name="language"
-                                    onChange={() => this.props.setLocale(lang)}
-                                    checked={this.props.locale === lang}
-                                />
-                                <label htmlFor={"radio-" + lang}>
-                                    { this.props.locale === lang && <SVG svg={DoneIcon} ariaHidden/>}
-                                    { availableLanguages[lang] }
-                                </label>
-                            </div>,
-                        )}
-                    </form>
-                </section>
-            </>
-        );
-    }
-}
-
-const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
-    return {
-        locale: state.i18n.locale, // refresh
+        if (typeof localeSelected !== "number") return;
+        const obj = options.find(({id}) => id === localeSelected);
+        dispatch(i18nActions.setLocale.build(obj.iso));
     };
+    const selectedKey = options.find(({name}) => name === currentLanguageString);
+    return (
+        <ComboBox label={__("settings.language.languageChoice")} defaultItems={options} defaultSelectedKey={selectedKey?.id} onSelectionChange={setLang} svg={LanguageIcon} style={{borderBottom: "2px solid var(--color-gray-50"}}>
+            {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+        </ComboBox>
+    );
 };
 
-const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
-    return {
-        setLocale: (locale: i18nActions.setLocale.Payload["locale"]) => dispatch(i18nActions.setLocale.build(locale)),
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(LanguageSettings));
+export default LanguageSettings;
