@@ -1303,9 +1303,15 @@
             "title": "应用主题"
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "关闭阅读器窗口后让书库保持在后台",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "启用后，关闭阅读器窗口不会还原书库窗口，也不会将其置于前台。",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "打开阅读器窗口后最小化书库",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "启用后，打开阅读器窗口会最小化书库窗口。",
+            "minimizeLibraryToTray": "将书库最小化到通知区域",
+            "minimizeLibraryToTrayDescription": "启用后，最小化书库窗口会让 Thorium 继续在 Windows 通知区域中运行。",
+            "oneReaderWindowPerPublication": "每个出版物只使用一个阅读器窗口",
+            "oneReaderWindowPerPublicationDescription": "启用后，打开已打开的出版物时会聚焦其阅读器窗口，而不是再打开一个窗口。",
+            "title": "窗口行为"
         }
     },
     "tts": {

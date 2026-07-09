@@ -57,10 +57,10 @@ export const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, t
 
     const [textParsed, setTextParsed] = React.useState<string>();
     React.useEffect(() => {
-
-        const fc = async () => {
-            if (bookmark.textualValue) {
-                const parsed = DOMPurify.sanitize(await marked.parse(bookmark.textualValue.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, ""), { gfm: true }), { FORBID_TAGS: ["style"], FORBID_ATTR: ["style"] });
+        if (bookmark.textualValue) {
+            const htmlPromise = Promise.resolve(marked.parse(bookmark.textualValue.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, ""), { gfm: true }));
+            htmlPromise.then((html) => {
+                const parsed = DOMPurify.sanitize(html, { FORBID_TAGS: ["style"], FORBID_ATTR: ["style"] });
                 const regex = new RegExp(/href=\"(.*?)\"/, "gm");
                 const hrefSanitized = parsed.replace(regex, (substring) => {
 
@@ -70,15 +70,14 @@ export const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, t
                     }
 
                     return `href="" alt="${url}" onclick="return ((e) => {
-                                window.__shell_openExternal('${url}').catch(() => {});
+                                window.__shell_openExternal('${url}').then((_v) => undefined).catch((_err) => undefined);
                                 return false;
-                             })()"`;
+                                })()"`;
                 });
                 setTextParsed(hrefSanitized);
                 console.log(parsed, hrefSanitized);
-            }
-        };
-        fc();
+            }).catch((err) => { console.log(err); });
+        }
     }, [bookmark.textualValue]);
 
     const dispatch = useDispatch();

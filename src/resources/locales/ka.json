@@ -1309,9 +1309,15 @@
             "title": ""
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "ბიბლიოთეკის ფონურ რეჟიმში დატოვება მკითხველის ფანჯრების დახურვის შემდეგ",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "ჩართვისას, მკითხველის ფანჯრის დახურვა არ აღადგენს ბიბლიოთეკის ფანჯარას და არ გამოიტანს მას წინა პლანზე.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "ბიბლიოთეკის მინიმიზაცია მკითხველის ფანჯრების გახსნის შემდეგ",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "ჩართვისას, მკითხველის ფანჯრის გახსნა ბიბლიოთეკის ფანჯრის მინიმიზაციას ახდენს.",
+            "minimizeLibraryToTray": "ბიბლიოთეკის მინიმიზაცია შეტყობინებების არეში",
+            "minimizeLibraryToTrayDescription": "ჩართვისას, ბიბლიოთეკის ფანჯრის მინიმიზაცია Thorium-ს Windows-ის შეტყობინებების არეში გაშვებულს ტოვებს.",
+            "oneReaderWindowPerPublication": "თითოეული პუბლიკაციისთვის ერთი მკითხველის ფანჯრის გამოყენება",
+            "oneReaderWindowPerPublicationDescription": "ჩართვისას, უკვე გახსნილი პუბლიკაციის გახსნა ფოკუსს მის მკითხველის ფანჯარაზე გადაიტანს, ახლის გახსნის ნაცვლად.",
+            "title": "ფანჯრების ქცევა"
         }
     },
     "tts": {

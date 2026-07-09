@@ -20,6 +20,7 @@ import { all, put } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
+import { settingsKeepLibraryWindowInBackgroundOnReaderCloseIsEnabled } from "readium-desktop/common/redux/states/settings";
 // import { comparePublisherReaderConfig } from "readium-desktop/common/publisherConfig";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
@@ -215,55 +216,61 @@ export function* winClose(windowIdentifier: string, publicationIdentifier: strin
             debug(`reader ${readerSamePubIdFirstWinId} got the lock !!!`);
         }
 
-        try {
-            const libraryWin = yield* callTyped(() => getLibraryWindowFromDi());
+        const keepLibraryWindowInBackgroundOnReaderClose = yield* selectTyped((state: RootState) =>
+            settingsKeepLibraryWindowInBackgroundOnReaderCloseIsEnabled(state.settings));
+        if (keepLibraryWindowInBackgroundOnReaderClose) {
+            debug("keep library window in background on reader close");
+        } else {
+            try {
+                const libraryWin = yield* callTyped(() => getLibraryWindowFromDi());
 
-            debug("Nb of readers:", readersArray.length);
-            debug("readers: ", readersArray);
-            if (readersArray.length < 1) {
+                debug("Nb of readers:", readersArray.length);
+                debug("readers: ", readersArray);
+                if (readersArray.length < 1) {
 
-                const mode = yield* selectTyped((state: RootState) => state.mode);
-                if (mode === ReaderMode.Detached) {
+                    const mode = yield* selectTyped((state: RootState) => state.mode);
+                    if (mode === ReaderMode.Detached) {
 
-                    // disabled for the new UI refactoring by choice of the designer
-                    // yield put(readerActions.attachModeRequest.build());
+                        // disabled for the new UI refactoring by choice of the designer
+                        // yield put(readerActions.attachModeRequest.build());
 
-                } else {
-                    const readerWin = yield* callTyped(() => getReaderWindowFromDi(windowIdentifier));
-                    if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
-                        try {
-                            const libraryWindowState = yield* selectTyped((state: RootState) => state.win.session.library);
+                    } else {
+                        const readerWin = yield* callTyped(() => getReaderWindowFromDi(windowIdentifier));
+                        if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
+                            try {
+                                const libraryWindowState = yield* selectTyped((state: RootState) => state.win.session.library);
 
-                            if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
-                                if (libraryWindowState.windowMaximized) {
-                                    debug("restore maximized library window state", libraryWindowState);
-                                    restoreBrowserWindowState(libraryWin, libraryWindowState);
-                                } else {
-                                    let winBound = readerWin.getBounds();
-                                    debug("_______3 readerWin.getBounds()", winBound);
-                                    winBound = normalizeWinBoundRectangle(winBound);
-                                    libraryWin.setBounds(winBound);
+                                if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
+                                    if (libraryWindowState.windowMaximized) {
+                                        debug("restore maximized library window state", libraryWindowState);
+                                        restoreBrowserWindowState(libraryWin, libraryWindowState);
+                                    } else {
+                                        let winBound = readerWin.getBounds();
+                                        debug("_______3 readerWin.getBounds()", winBound);
+                                        winBound = normalizeWinBoundRectangle(winBound);
+                                        libraryWin.setBounds(winBound);
+                                    }
                                 }
+                            } catch (e) {
+                                debug("error restore library window state", e);
                             }
-                        } catch (e) {
-                            debug("error restore library window state", e);
                         }
                     }
                 }
-            }
 
-            if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
-                if (libraryWin.isMinimized()) {
-                    libraryWin.restore();
-                } else if (!libraryWin.isVisible()) {
-                    libraryWin.close();
-                    return;
+                if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
+                    if (libraryWin.isMinimized()) {
+                        libraryWin.restore();
+                    } else if (!libraryWin.isVisible()) {
+                        libraryWin.close();
+                        return;
+                    }
+                    libraryWin.show(); // focuses as well
                 }
-                libraryWin.show(); // focuses as well
-            }
 
-        } catch (_err) {
-            debug("can't load libraryWin from di");
+            } catch (_err) {
+                debug("can't load libraryWin from di");
+            }
         }
     }
 

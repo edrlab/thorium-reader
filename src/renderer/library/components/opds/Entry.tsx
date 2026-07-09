@@ -15,7 +15,7 @@ import { IOpdsNavigationLinkView } from "readium-desktop/common/views/opds";
 
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import { DisplayType, IOpdsBrowse, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
+import { IOpdsBrowse, resolveDisplayType, routes } from "readium-desktop/renderer/library/routing";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
@@ -60,7 +60,7 @@ class Entry extends React.Component<IProps, undefined> {
                     ...this.props.location,
                     pathname: route,
                 }}
-                state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
+                state={{ displayType: resolveDisplayType(this.props.location.state, this.props.libraryView?.displayType) }}
                 onClick={(e) => {
                     if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
                         e.preventDefault();
@@ -110,6 +110,7 @@ class Entry extends React.Component<IProps, undefined> {
 
 const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
+    libraryView: state.settings.libraryView,
 });
 
 export default connect(mapStateToProps)(Entry);

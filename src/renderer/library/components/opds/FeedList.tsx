@@ -30,7 +30,7 @@ import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/rou
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { Unsubscribe } from "redux";
-import { DisplayType, IRouterLocationState } from "../../routing";
+import { resolveDisplayType } from "../../routing";
 import DeleteOpdsFeedConfirm from "../dialog/DeleteOpdsFeedConfirm";
 import OpdsFeedUpdateForm from "../dialog/OpdsFeedUpdateForm";
 import * as Popover from "@radix-ui/react-popover";
@@ -66,7 +66,7 @@ class FeedList extends React.Component<IProps, IState> {
         this.loadFeeds = this.loadFeeds.bind(this);
     }
 
-    public async componentDidMount() {
+    public componentDidMount() {
         this.unsubscribe = apiSubscribe([
             "opds/addFeed",
             "opds/deleteFeed",
@@ -75,7 +75,8 @@ class FeedList extends React.Component<IProps, IState> {
 
         this.unsubscribeAction = subscribeToAction(opdsActions.refresh.ID, (_action) => {
             // console.log("Refresh opds feed list requested by the action ID=", opdsActions.refresh.ID);
-            this.loadFeeds();
+
+            this.loadFeeds().then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
         });
     }
 
@@ -111,7 +112,7 @@ class FeedList extends React.Component<IProps, IState> {
                                             item.url,
                                         ),
                                     }}
-                                    state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
+                                    state={{ displayType: resolveDisplayType(this.props.location.state, this.props.libraryView?.displayType) }}
                                     className={stylesCatalogs.catalog_content}
                                     onClick={(e) => {
                                         if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
@@ -145,10 +146,10 @@ class FeedList extends React.Component<IProps, IState> {
                                 </Link>
                                 <button onClick={() => {
                                     apiAction("opds/deleteFeed", item.identifier).then(() => {
-                                        apiAction("opds/addFeed", { 
-                                            title: item.title, 
-                                            url: item.url, 
-                                            favorite: !item.favorite, 
+                                        apiAction("opds/addFeed", {
+                                            title: item.title,
+                                            url: item.url,
+                                            favorite: !item.favorite,
                                         }).catch((err) => {
                                             console.error("Error to fetch api opds/addFeed", err);
                                         });
@@ -173,7 +174,9 @@ class FeedList extends React.Component<IProps, IState> {
                                             <Popover.Close
                                                 onClick={() => {
                                                     this.props.logout(item.url);
-                                                    setTimeout(() => this.loadFeeds(), 100);
+                                                    setTimeout(() => {
+                                                        this.loadFeeds().then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+                                                    }, 100);
                                                 }}
                                                 title={__("catalog.logout")}
                                             >
@@ -246,7 +249,7 @@ class FeedList extends React.Component<IProps, IState> {
     private async loadFeeds() {
         try {
             const feedsResult = await apiAction("opds/findAllFeeds");
-            
+
             this.setState({ feedsResult });
             if (this.props.setFeedsResult) {
                 this.props.setFeedsResult(feedsResult);
@@ -285,6 +288,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
 const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
     locale: state.i18n.locale, // refresh
+    libraryView: state.settings.libraryView,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(FeedList));

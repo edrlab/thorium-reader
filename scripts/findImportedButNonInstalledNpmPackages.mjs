@@ -14,6 +14,11 @@ const ignoreds = [
     /^reflect-metadata$/,
     /^regenerator-runtime$/, // import "regenerator-runtime/runtime" without 'from'
     // BUILD TOOLS not used in source code:
+    /^tsc-alias$/,
+    /^taze$/,
+    /^tslib$/,
+    /^i18next-locales-sync$/,
+    /^@typescript\/native-preview$/,
     /^jest.*/,
     /^stylelint.*/,
     /^@types\/.+$/,
@@ -50,13 +55,17 @@ const ignoreds = [
     /^webpack-cli$/,
     /^npm-scripts-lifecycle$/,
     /^webpack-dev-server$/,
+    /^terser-webpack-plugin$/,
 
     // NODEJS built-in packages:
     /^original-fs$/, // ELECTRON special
     /^process$/,
+    /^tls$/,
+    /^zlib$/,
     /^events$/,
     /^buffer$/,
     /^stream$/,
+    /^stream\/promises$/,
     /^child_process$/,
     /^fs$/,
     /^fs\/promises$/,
@@ -71,7 +80,7 @@ const ignoreds = [
 ];
 
 const regExp_fileExt = /\.(mjs|[jt]sx?)$/i;
-const regExp_imports = /((\s+from\s+)|(require\s*\(\s*))["']([^\.][^"']+)["']/g;
+const regExp_imports = /^(?!\s*\/\/).*((\s+from\s+)|(require\s*\(\s*))["']([^\.][^"']+)["']/gm;
 
 async function processDir(folderPath) {
     if (

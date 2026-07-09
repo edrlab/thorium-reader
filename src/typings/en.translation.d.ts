@@ -2900,8 +2900,14 @@ declare namespace typed_i18n {
     readonly "title": string
   },
   readonly "window": {
+    readonly "keepLibraryWindowInBackgroundOnReaderClose": string,
+    readonly "keepLibraryWindowInBackgroundOnReaderCloseDescription": string,
+    readonly "keepLibraryWindowInBackgroundOnReaderOpen": string,
+    readonly "keepLibraryWindowInBackgroundOnReaderOpenDescription": string,
     readonly "minimizeLibraryToTray": string,
     readonly "minimizeLibraryToTrayDescription": string,
+    readonly "oneReaderWindowPerPublication": string,
+    readonly "oneReaderWindowPerPublicationDescription": string,
     readonly "title": string
   }
 };
@@ -3790,12 +3796,24 @@ declare namespace typed_i18n {
   (_: "settings.theme.light", __?: {}): string;
   (_: "settings.theme.title", __?: {}): string;
   (_: "settings.window", __?: {}): {
+  readonly "keepLibraryWindowInBackgroundOnReaderClose": string,
+  readonly "keepLibraryWindowInBackgroundOnReaderCloseDescription": string,
+  readonly "keepLibraryWindowInBackgroundOnReaderOpen": string,
+  readonly "keepLibraryWindowInBackgroundOnReaderOpenDescription": string,
   readonly "minimizeLibraryToTray": string,
   readonly "minimizeLibraryToTrayDescription": string,
+  readonly "oneReaderWindowPerPublication": string,
+  readonly "oneReaderWindowPerPublicationDescription": string,
   readonly "title": string
 };
+  (_: "settings.window.keepLibraryWindowInBackgroundOnReaderClose", __?: {}): string;
+  (_: "settings.window.keepLibraryWindowInBackgroundOnReaderCloseDescription", __?: {}): string;
+  (_: "settings.window.keepLibraryWindowInBackgroundOnReaderOpen", __?: {}): string;
+  (_: "settings.window.keepLibraryWindowInBackgroundOnReaderOpenDescription", __?: {}): string;
   (_: "settings.window.minimizeLibraryToTray", __?: {}): string;
   (_: "settings.window.minimizeLibraryToTrayDescription", __?: {}): string;
+  (_: "settings.window.oneReaderWindowPerPublication", __?: {}): string;
+  (_: "settings.window.oneReaderWindowPerPublicationDescription", __?: {}): string;
   (_: "settings.window.title", __?: {}): string;
   (_: "tts", __?: {}): {
   readonly "highlight": {

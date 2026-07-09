@@ -851,7 +851,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                             languages={this.state.languages}
                                                                             selectedLanguage={this.state.selectedLanguage}
                                                                             setSelectedLanguage={(newLanguageSelected) => {
-                                                                                this.setNewVoiceLanguage(newLanguageSelected);
+
+                                                                                this.setNewVoiceLanguage(newLanguageSelected).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
                                                                             }}
 
                                                                             voicesGroupByRegion={this.state.voicesGroupByRegion}
@@ -1574,24 +1575,24 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             this.props.handleTTSPause();
         }
 
-        setTimeout(async () => {
-            const manager = await this.getWebSpeechVoiceManager();
-            const allVoices = this.state.voices;
-            const defaultVoices = this.findStoredDefaultVoices(allVoices);
-            const newDefaultVoices = this.updateDefaultVoices(manager, allVoices, selectedVoice);
-            debug("TTS_SELECTED_VOICE_UPDATED: DefaultVoices=", defaultVoices, defaultVoices.length);
-            debug("TTS_SELECTED_VOICE_UPDATED: NewDefaultVoices=", newDefaultVoices, newDefaultVoices.length);
+        setTimeout(() => {
+            this.getWebSpeechVoiceManager().then((manager) => {
+                const allVoices = this.state.voices;
+                const defaultVoices = this.findStoredDefaultVoices(allVoices);
+                const newDefaultVoices = this.updateDefaultVoices(manager, allVoices, selectedVoice);
+                debug("TTS_SELECTED_VOICE_UPDATED: DefaultVoices=", defaultVoices, defaultVoices.length);
+                debug("TTS_SELECTED_VOICE_UPDATED: NewDefaultVoices=", newDefaultVoices, newDefaultVoices.length);
 
-            this.setState({
-                selectedVoice: selectedVoice,
-            });
+                this.setState({
+                    selectedVoice: selectedVoice,
+                });
 
-            if (wasPlaying) {
-                setTimeout(() => {
-                    this.props.handleTTSResume();
-                }, 200);
-            }
-
+                if (wasPlaying) {
+                    setTimeout(() => {
+                        this.props.handleTTSResume();
+                    }, 200);
+                }
+            }).catch((_err) => { /* debug(err); */ });
         }, wasPlaying ? 200 : 0);
     };
 

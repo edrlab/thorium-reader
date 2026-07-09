@@ -46,8 +46,8 @@
         },
         "window": {
             "showLibrary": "Näita oma kogu / raamaturiiulit",
-            "trayHint": "",
-            "trayTooltip": ""
+            "trayHint": "{{- appName}} töötab süsteemisalves edasi. Klõpsa rakenduse ikooni süsteemisalves ja sinu raamatukogu avanebki.",
+            "trayTooltip": "{{- appName}} - klõpsa raamatukogu näitamiseks või peitmiseks"
         }
     },
     "catalog": {
@@ -90,8 +90,8 @@
         "lastRead": "Viimatiloetud",
         "login": "Logi sisse",
         "logout": "Logi välja",
-        "missing": "",
-        "missingUnavailableDescription": "",
+        "missing": "Puuduvad failid",
+        "missingUnavailableDescription": "Kuna salvestatud failid pole saadaval, siis selle väljaande avamine pole võimalik. Võid ta uuesti importida või ava „Seadistused“ → „Andmeruum“ ning lisa või muuda täiendavat andmeruumi.",
         "moreInfo": "Väljaande üksiksasjad",
         "myBooks": "Minu raamatud",
         "noPublicationHelpL1": "Lohista failid siia",
@@ -108,8 +108,8 @@
                 "password": "Salasõna",
                 "register": "Registreeru",
                 "retry": "Proovi uuesti",
-                "unauthorized": "",
-                "unauthorizedUnsupportedType": "",
+                "unauthorized": "Pole lubatud",
+                "unauthorizedUnsupportedType": "Pole lubatud (mittetoetatud „WWWAuthenticate“ tüüp '{{- type}}')",
                 "username": "Kasutajanimi / e-posti aadress"
             },
             "info": {
@@ -131,7 +131,7 @@
                 "state": "Olek"
             }
         },
-        "openFolder": "",
+        "openFolder": "Ava kataloog",
         "publisher": "Kirjastus",
         "readBook": "Loe",
         "released": "Avaldamise kuupäev",
@@ -243,17 +243,17 @@
             "success": "Importimine õnnestus kenasti."
         },
         "download": {
-            "cancelled": "",
+            "cancelled": "Allalaadimine on katkestatud.",
             "error": "„{{- title}}“ väljaande allalaadimine ei õnnestunud: {{- err}}",
             "errors": {
-                "hashMismatch": "",
-                "httpGet": "",
-                "invalidFilename": "",
-                "invalidLink": "",
-                "invalidTempDirectory": "",
-                "lengthMismatch": "",
-                "readStreamMissing": "",
-                "tooManyFilenameAttempts": ""
+                "hashMismatch": "Allalaaditud faili tervikluse kontroll tuvastas vea: faili eeldatud SHA-256 räsi oleks pidanud olema {{- expected}}, kuid tegelikult oli {{- actual}}.",
+                "httpGet": "Allalaadimine ei õnnestunud: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "invalidFilename": "Allalaadimise ajutine failinimi on vale või vigane.",
+                "invalidLink": "Allalaadimislink pole õige.",
+                "invalidTempDirectory": "Allalaaditava sisu ajutine kaust on vale või vigane.",
+                "lengthMismatch": "Allalaaditud faili tervikluse kontroll tuvastas vea: andmemaht oleks pidanud olema {{- expected}} baiti, kuid tegelikult oli {{- actual}} baiti.",
+                "readStreamMissing": "Allalaadimise andmevoog pole saadaval.",
+                "tooManyFilenameAttempts": "Ei suuda luua ajutist failinime allalaaditavale sisule: {{- path}}"
             }
         },
         "import": {
@@ -263,12 +263,12 @@
         },
         "open": {
             "error": "Väljaande/teise laadimine ei õnnestunud: {{- err}}",
-            "folderNotFound": ""
+            "folderNotFound": "Valjaande kausta leidmine ei õnnestu. Impordi ta uuesti või seadista andmeruumi siit „Seadistused“ → „Andmeruum“."
         },
         "storage": {
-            "removed": "",
-            "updateFailed": "",
-            "updated": ""
+            "removed": "Väljaande kaust on eemaldatud.",
+            "updateFailed": "Väljaande kausta uuendamine ei õnnestu: {{- message}}",
+            "updated": "Väljaande kaust on uuendatud."
         },
         "wipeData": "Sisselogimisandmed on eemaldatud (tunnusload ja küpsised)"
     },
@@ -603,8 +603,8 @@
                 "descriptive": "Puudub teave välimuse muudetavuse kohta"
             },
             "ways-of-reading-visual-adjustments-unmodifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Välimuse muutmine ei õnnestu",
+                "descriptive": "Teksti ja lehekülje paigutust ei saa muuta, kuna lugemiskogemus on mõeldud olema sarnane trükiversiooniga. Samas lugemisliidesed võimaldavad siiski suumimist"
             }
         }
     },
@@ -660,7 +660,7 @@
         "expiredLcp": "Selle väljaande LCP-litsents on aegunud.",
         "incorrectPassphrase": "Mitte ükski salvestatud salasõna/salafraas ei sobi selle väljaandega või on sisestus vigane.",
         "lcpEnd": "Lõpp",
-        "lcpNotSupported": "",
+        "lcpNotSupported": "HOIATUS: tegemist on Thoriumi töölauarakenduse (Thorium Desktop Reader) eelversiooniga, mis ei toeta tegelikuks kasutuseks mõeldud LCP-litsentse ning toetab ainult LCP „põhiprofiili“ dekodeerimist ilma sertifikaadi õigsuse kontrollimiseta.",
         "lcpRightsCopy": "Kopeeritud tähemärke",
         "lcpRightsPrint": "Trükitud lehti",
         "lcpStart": "Algus",
@@ -700,7 +700,7 @@
             "date": "Muutmise kuupäev",
             "error": {
                 "pdf": {
-                    "validationSelection": ""
+                    "validationSelection": "Sellest valikust PDF-kommentaari lisamine ei õnnestu."
                 }
             },
             "export": "Salvesta märkmed kui…",
@@ -769,12 +769,12 @@
         },
         "media-overlays": {
             "activate": "Käivita ettelugemine",
-            "captions": "",
-            "captionsDescription": "",
-            "disableContinuousPlay": "",
-            "disableContinuousPlayDescription": "",
-            "ignoreAndUseTTS": "",
-            "ignoreAndUseTTSDescription": "",
+            "captions": "Sünkroonitud tekst või subtiitrid: puhas vaade",
+            "captionsDescription": "Lihtsustatud vaade minimaalse subtiitrite kujundusega.",
+            "disableContinuousPlay": "Keela pidev esitus",
+            "disableContinuousPlayDescription": "Ära esita järgmist multimeediaobjekti automaatselt, peata peale käesolava sisu esituse lõppu.",
+            "ignoreAndUseTTS": "Eira eelsalvestatud heliriba ja kasuta kõnesünteesi",
+            "ignoreAndUseTTSDescription": "Eira EPIB-failis leiduvat eelsalvestatud heliriba ja kasuta selle asemel kõnesünteesipõhist ettelugemist",
             "next": "Järgmine ettelugemine",
             "pause": "Peata ettelugemine",
             "play": "Alusta ettelugemist",
@@ -784,7 +784,7 @@
             "speed": "Valjult ettelugemise kiirus",
             "stop": "Lõpeta ettelugemine",
             "title": "Valjult ettelugemine",
-            "useTTSHighlightsForMO": "",
+            "useTTSHighlightsForMO": "Sinu määratus esiletõstmise viis",
             "useTTSHighlightsForMODescription": "Eemalda kirjastaja loodud stiilid kasutusest"
         },
         "navigation": {
@@ -817,8 +817,8 @@
         "notes": {
             "colors": {
                 "cyan": "Rohekassinine",
-                "darkorange": "",
-                "darkyellow": "",
+                "darkorange": "Tumeoranž",
+                "darkyellow": "Tumekollane",
                 "green": "Roheline",
                 "orange": "Oranž",
                 "purple": "Purpurpunane",
@@ -866,7 +866,7 @@
             },
             "customFontSelected": "sa oled eelistanud kasutada isiklikku kirjatüüpi",
             "customizeReader": "Kohenda teksti vormindust",
-            "defaultValue": "",
+            "defaultValue": "vaikmisi väärtus",
             "disabled": "pole kasutusel",
             "display": "Ekraanivaade",
             "disposition": {
@@ -882,11 +882,11 @@
             "lineSpacing": "Reavahed",
             "margin": "Veeris",
             "mathjax": "Võta MathJax kasutusele",
-            "mathjaxDescription": "",
+            "mathjaxDescription": "MathJax",
             "noFootnotes": "Keela hüpikaknaid sisaldavad joonealused märkused",
             "noRTLFlip": "Lülita välja paremalt vasakule lugemiseks mõeldud kasutajaliides",
             "noRuby": "Peida jaapani „Ruby“ vormingus märkused",
-            "noTemporaryNavTargetOutline": "",
+            "noTemporaryNavTargetOutline": "Lülita visuaalsed juhtnupud välja",
             "paginated": "Jagatud lehtedeks",
             "paraSpacing": "Lõikude vahed",
             "pdfZoom": {
@@ -907,17 +907,17 @@
                 "applyDetails": "Kasuta oma eelistatud seadistust kogu väljaandes.",
                 "detail": "Salvesta, kasuta või lähtesta oma eelistatud seadistust.",
                 "reset": "Lähtesta",
-                "resetDetails": "",
+                "resetDetails": "Lähtesta sinu tehtud seadistused (vaikimisi seadistusteks).",
                 "save": "Salvesta",
-                "saveDetails": "",
+                "saveDetails": "Järgnevaga salvestad praegused seadistused, näiteks ekraanivaate ja teksti kuvamise eelistused. Sellisena salvestatud seadistusi saad kasutada muude väljaannete puhul - pead vaid lugemisvaates klõpsama „Rakenda“ nuppu.",
                 "title": "Eelistused"
             },
             "preview": "Eelvaade",
             "reduceFontSize": "Vähenda teksti suurust",
-            "reduceMotion": "",
+            "reduceMotion": "Vähenda liikumisefekte",
             "scrolled": "Keritav",
             "spacing": "Vahed",
-            "spreadModeEven": "",
+            "spreadModeEven": "Lehtede jagunemine „paaris“ viisil (vaikimisi on „paaritu“)",
             "text": "Tekst",
             "theme": {
                 "name": {
@@ -958,8 +958,8 @@
     },
     "settings": {
         "annotationCreator": {
-            "creator": "",
-            "help": "",
+            "creator": "Märkmete looja nimi (kui tahad kasutada)",
+            "help": "Kui oled siia sisestanud väärtuse, siis lisatakse see märkmete eksportimisel metateabes kaasa.",
             "name": "Nimi",
             "organization": "Organisatsioon",
             "person": "Isik",
@@ -971,9 +971,9 @@
             "wipeData": "Eemalda sisselogimise valikud"
         },
         "keyboard": {
-            "advancedMenu": "",
+            "advancedMenu": "Klaviatuuri kiirklahvid oskuskasutajatele",
             "cancel": "Katkesta",
-            "disclaimer": "",
+            "disclaimer": "Rakenduse vaikimisi seadistused põhinevad klahvide asetusel tüüpilisel QWERTY-klahvistikul",
             "editUserJson": "Muuda kasutaja faili…",
             "exportToHTML": "Eksportdi HTML-failina",
             "keyboardShortcuts": "Klaviatuuri kiirklahvid",
@@ -1309,9 +1309,15 @@
             "title": "Rakenduse kujundus"
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "Hoia raamatukogu pärast lugemisakende sulgemist taustal",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Kui see on lubatud, ei taasta lugemisakna sulgemine raamatukogu akent ega too seda esiplaanile.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Minimeeri raamatukogu pärast lugemisakende avamist",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Kui see on lubatud, minimeerib lugemisakna avamine raamatukogu akna.",
+            "minimizeLibraryToTray": "Minimeeri raamatukogu teavitusalale",
+            "minimizeLibraryToTrayDescription": "Kui see on lubatud, jätab raamatukogu akna minimeerimine Thoriumi Windowsi teavitusalal tööle.",
+            "oneReaderWindowPerPublication": "Kasuta iga väljaande jaoks ühte lugemisakent",
+            "oneReaderWindowPerPublicationDescription": "Kui see on lubatud, viiakse juba avatud väljaande avamisel fookus selle lugemisaknale, selle asemel et avada uus.",
+            "title": "Akende käitumine"
         }
     },
     "tts": {

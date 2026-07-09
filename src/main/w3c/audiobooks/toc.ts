@@ -15,7 +15,7 @@ import { JSDOM } from "jsdom";
 
 import { Link } from "@r2-shared-js/models/publication-link";
 
-import { w3cPublicationManifestToReadiumPublicationManifest } from "./converter";
+// import { w3cPublicationManifestToReadiumPublicationManifest } from "./converter";
 
 export interface TocEntry {
     name: string;
@@ -444,94 +444,94 @@ export async function findHtmlTocInRessources(
 // }
 
 // TEST
-if (require.main === module) {
+// if (require.main === module) {
 
-    const { window } = new JSDOM(`<!DOCTYPE html>
-        <html>
-        <head>
-            <title>Entry point with linked manifest, with a local TOC</title>
-            <link rel="publication" href="link_4.2.02.jsonld" />
-        </head>
-        <body>
-            <p>This is just a fake entry point with a fake TOC.</p>
-            <nav role="doc-toc">
-                <h2>Minimal Table of content</h2>
-                <ol role="doc-toc">
-                    <li>
+//     const { window } = new JSDOM(`<!DOCTYPE html>
+//         <html>
+//         <head>
+//             <title>Entry point with linked manifest, with a local TOC</title>
+//             <link rel="publication" href="link_4.2.02.jsonld" />
+//         </head>
+//         <body>
+//             <p>This is just a fake entry point with a fake TOC.</p>
+//             <nav role="doc-toc">
+//                 <h2>Minimal Table of content</h2>
+//                 <ol role="doc-toc">
+//                     <li>
 
-<a href="http://www.archive.org/download/flatland_rg_librivox/flatland_1_abbott.mp3">
+// <a href="http://www.archive.org/download/flatland_rg_librivox/flatland_1_abbott.mp3">
 
-                    <a href="http://www.archive.org/download/flatland_rg_librivox/flatland_1_abbott.mp3">Flatland 1</li>
-<li><a href="http://www.archive.org/download/flatland_rg_librivox/flatland_1_abbott.mp3">Flatland 2</li>
-<li><a href="http://www.archive.org/download/flatland_rg_librivox/flatland_1_abbott.mp3">Flatland 3</li>
-                </ol>
-              </nav>
-          </body>
-        </html>`);
+//                     <a href="http://www.archive.org/download/flatland_rg_librivox/flatland_1_abbott.mp3">Flatland 1</li>
+// <li><a href="http://www.archive.org/download/flatland_rg_librivox/flatland_1_abbott.mp3">Flatland 2</li>
+// <li><a href="http://www.archive.org/download/flatland_rg_librivox/flatland_1_abbott.mp3">Flatland 3</li>
+//                 </ol>
+//               </nav>
+//           </body>
+//         </html>`);
 
-    const el = window.document.querySelector<HTMLElement>(toc_query_selector);
+//     const el = window.document.querySelector<HTMLElement>(toc_query_selector);
 
-    const w3cManifest = `
-    {
-        "@context": [
-            "https://schema.org",
-            "https://www.w3.org/ns/pub-context"
-        ],
-        "conformsTo": "https://www.w3.org/TR/audiobooks/",
-        "type": "Audiobook",
-        "id": "https://librivox.org/flatland-a-romance-of-many-dimensions-by-edwin-abbott-abbott/",
-        "url": "https://w3c.github.io/pub-manifest/experiments/audiobook/",
-        "name": "Flatland: A Romance of Many Dimensions",
-        "author": "Edwin Abbott Abbott",
-        "readBy": "Ruth Golding",
-        "inLanguage": "en",
-        "dateModified": "2019-11-14",
-        "datePublished": "2008-10-12",
-        "duration": "PT1371S",
-        "abridged": false,
-        "accessMode": "audio",
-        "accessModeSufficient": [{
-            "type": "ItemList",
-            "itemListElement": ["audio"],
-            "description": "Audio"
-        }],
-        "accessibilityFeature": ["readingOrder", "unlocked"],
-        "accessibilityHazard": "noSoundHazard",
-        "accessibilitySummary": "This is just a test summary",
-        "readingProgression": "ltr",
-        "resources": [
-          {
-            "rel": "cover",
-            "url": "http://ia800704.us.archive.org/9/items/LibrivoxCdCoverArt12/Flatland_1109.jpg",
-            "encodingFormat": "image/jpeg",
-            "name": "Cover page with title and author"
-          },
-          "./a4.2.02.html"
-        ],
-        "readingOrder": [
-          {
-            "url": "http://www.archive.org/download/flatland_rg_librivox/flatland_1_abbott.mp3",
-            "encodingFormat": "audio/mpeg",
-            "duration": "PT1371S",
-            "name": "Part 1, Sections 1 - 3"
-          }
-        ]
-      }
-    `;
+//     const w3cManifest = `
+//     {
+//         "@context": [
+//             "https://schema.org",
+//             "https://www.w3.org/ns/pub-context"
+//         ],
+//         "conformsTo": "https://www.w3.org/TR/audiobooks/",
+//         "type": "Audiobook",
+//         "id": "https://librivox.org/flatland-a-romance-of-many-dimensions-by-edwin-abbott-abbott/",
+//         "url": "https://w3c.github.io/pub-manifest/experiments/audiobook/",
+//         "name": "Flatland: A Romance of Many Dimensions",
+//         "author": "Edwin Abbott Abbott",
+//         "readBy": "Ruth Golding",
+//         "inLanguage": "en",
+//         "dateModified": "2019-11-14",
+//         "datePublished": "2008-10-12",
+//         "duration": "PT1371S",
+//         "abridged": false,
+//         "accessMode": "audio",
+//         "accessModeSufficient": [{
+//             "type": "ItemList",
+//             "itemListElement": ["audio"],
+//             "description": "Audio"
+//         }],
+//         "accessibilityFeature": ["readingOrder", "unlocked"],
+//         "accessibilityHazard": "noSoundHazard",
+//         "accessibilitySummary": "This is just a test summary",
+//         "readingProgression": "ltr",
+//         "resources": [
+//           {
+//             "rel": "cover",
+//             "url": "http://ia800704.us.archive.org/9/items/LibrivoxCdCoverArt12/Flatland_1109.jpg",
+//             "encodingFormat": "image/jpeg",
+//             "name": "Cover page with title and author"
+//           },
+//           "./a4.2.02.html"
+//         ],
+//         "readingOrder": [
+//           {
+//             "url": "http://www.archive.org/download/flatland_rg_librivox/flatland_1_abbott.mp3",
+//             "encodingFormat": "audio/mpeg",
+//             "duration": "PT1371S",
+//             "name": "Part 1, Sections 1 - 3"
+//           }
+//         ]
+//       }
+//     `;
 
-    const manifestParsed = JSON.parse(w3cManifest);
-    w3cPublicationManifestToReadiumPublicationManifest(manifestParsed, (uniqueResources) => {
-        const toc = extract_TOC(el, uniqueResources);
+//     const manifestParsed = JSON.parse(w3cManifest);
+//     w3cPublicationManifestToReadiumPublicationManifest(manifestParsed, (uniqueResources) => {
+//         const toc = extract_TOC(el, uniqueResources);
 
-        console.log("TOC");
-        console.log(toc);
+//         console.log("TOC");
+//         console.log(toc);
 
-        const tocLink = tocToTocLink(toc);
-        console.log("TOC In Link");
-        console.log(tocLink);
+//         const tocLink = tocToTocLink(toc);
+//         console.log("TOC In Link");
+//         console.log(tocLink);
 
-        return undefined;
+//         return undefined;
 
-    });
+//     }).then(() => { /* noop */ }).catch((err) => { console.log(err); });
 
-}
+// }

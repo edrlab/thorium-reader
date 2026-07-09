@@ -1298,9 +1298,15 @@
             "title": ""
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "읽기 창을 닫은 후 라이브러리를 배경에 유지",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "활성화하면 읽기 창을 닫아도 라이브러리 창이 복원되거나 앞으로 나오지 않습니다.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "읽기 창을 연 후 라이브러리 최소화",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "활성화하면 읽기 창을 열 때 라이브러리 창이 최소화됩니다.",
+            "minimizeLibraryToTray": "라이브러리를 알림 영역으로 최소화",
+            "minimizeLibraryToTrayDescription": "활성화하면 라이브러리 창을 최소화해도 Thorium이 Windows 알림 영역에서 계속 실행됩니다.",
+            "oneReaderWindowPerPublication": "출판물마다 하나의 읽기 창 사용",
+            "oneReaderWindowPerPublicationDescription": "활성화하면 이미 열려 있는 출판물을 열 때 새 창을 열지 않고 해당 읽기 창에 포커스를 맞춥니다.",
+            "title": "창 동작"
         }
     },
     "tts": {

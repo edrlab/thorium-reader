@@ -63,10 +63,10 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
 
     const [textParsed, setTextParsed] = React.useState<string>();
     React.useEffect(() => {
-
-        const fc = async () => {
-            if (textualValue) {
-                const parsed = DOMPurify.sanitize(await marked.parse(textualValue.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, ""), { gfm: true }), { FORBID_TAGS: ["style"], FORBID_ATTR: ["style"] });
+        if (textualValue) {
+            const htmlPromise = Promise.resolve(marked.parse(textualValue.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, ""), { gfm: true }));
+            htmlPromise.then((html) => {
+                const parsed = DOMPurify.sanitize(html, { FORBID_TAGS: ["style"], FORBID_ATTR: ["style"] });
                 const regex = new RegExp(/href=\"(.*?)\"/, "gm");
                 const hrefSanitized = parsed.replace(regex, (_substring, url) => {
 
@@ -75,15 +75,14 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
                     }
 
                     return `href="" alt="${url}" onclick="return ((e) => {
-                                window.__shell_openExternal('${url}').catch(() => {});
+                                window.__shell_openExternal('${url}').then((_v) => undefined).catch((_err) => undefined);
                                 return false;
-                             })()"`;
+                                })()"`;
                 });
                 setTextParsed(hrefSanitized);
                 console.log(parsed, hrefSanitized);
-            }
-        };
-        fc();
+            }).catch((err) => { console.log(err); });
+        }
     }, [textualValue]);
 
     const dispatch = useDispatch();

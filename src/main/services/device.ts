@@ -65,7 +65,7 @@ export class DeviceIdManager implements IDeviceIDManager {
             const deviceConfig: DeviceConfig = {
                 device_id: deviceId,
             };
-            this.saveDeviceConfigJson(deviceConfig);
+            await this.saveDeviceConfigJson(deviceConfig);
             debug(deviceConfig);
         }
 
@@ -86,7 +86,7 @@ export class DeviceIdManager implements IDeviceIDManager {
             deviceConfig,
         );
         newDeviceConfig[deviceIdKey] = "_"; // deviceId
-        this.saveDeviceConfigJson(newDeviceConfig);
+        await this.saveDeviceConfigJson(newDeviceConfig);
 
         debug("DeviceIdManager recordDeviceID:");
         debug(key);

@@ -289,6 +289,7 @@ function* opdsRequestMediaFlow({request, callback}: TregisterHttpProtocolHandler
             debug("isURL() NOK opdsRequestMedia failed not a valid url", url);
             return;
         }
+        // Promise<response> in function callback argument
         httpGet(url, {
             ...request,
         }, (response) => {
@@ -304,7 +305,7 @@ function* opdsRequestMediaFlow({request, callback}: TregisterHttpProtocolHandler
                 data: response.body || undefined,
             });
             return response;
-        });
+        }).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
 
     } else {
         debug("opdsRequestMedia error ?!!", request);
@@ -876,7 +877,8 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
     win.webContents.addListener("input-event", (_ev, inputEvent) => {
         if ((inputEvent.type === "keyUp" || inputEvent.type === "keyDown") && (inputEvent as KeyboardEvent).key === "Escape") {
             debug("win INPUT", inputEvent.type, (inputEvent as KeyboardEvent).key);
-            win.webContents.loadURL(`${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`);
+            const ur = `${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`;
+            win.webContents.loadURL(ur).then(() => { debug("loadURL() ok " + ur); }).catch((err) => { debug("loadURL() nok " + ur); debug(err); });
         }
     });
 
@@ -905,10 +907,7 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
         if (/^https?:\/\//.test(navUrl)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
 
             debug("willNavigate ==> EXTERNAL: ", win.webContents.getURL().substring(0, 500), " *** ", navUrl);
-            setTimeout(async () => {
-                await shell.openExternal(navUrl);
-            }, 0);
-
+            shell.openExternal(navUrl).then(() => { /* noop */ }).catch((err: unknown) => { debug(err); }); // .finally(() => { /* noop */ })
             return;
         }
 
@@ -1024,13 +1023,13 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
 
     // win.webContents.loadURL
     // await DO NOT AWAIT!! (race condition when urlStr is a HTTP link that immediately redirects to OPDS://AUTHORIZE)
-    win.loadURL(urlStr);
+    win.loadURL(urlStr).then(() => { debug("loadURL() ok " + urlStr); }).catch((err) => { debug("loadURL() nok " + urlStr); debug(err); });
 
     debug("OPDS AUTH win LOAD 2", urlStr.substring(0, 500));
 
     if (urlExternal) {
-        setTimeout(async () => {
-            await shell.openExternal(urlExternal);
+        setTimeout(() => {
+            shell.openExternal(urlExternal).then(() => { /* noop */ }).catch((err: unknown) => { debug(err); }); // .finally(() => { /* noop */ })
         }, 500);
     }
 

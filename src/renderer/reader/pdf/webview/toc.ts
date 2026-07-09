@@ -39,7 +39,7 @@ export function destForPageIndexParse(destRaw: any | any[]): TdestForPageIndex |
     return destForPageIndex;
 }
 
-export async function tocOutlineItemToLink(outline: IOutline, pdf: PDFDocumentProxy, pageLabels: string[]): Promise<ILink> {
+export async function tocOutlineItemToLink(outline: IOutline, pdf: PDFDocumentProxy, pageLabels: string[] | null): Promise<ILink> {
 
     const link: ILink = {};
 
@@ -58,8 +58,9 @@ export async function tocOutlineItemToLink(outline: IOutline, pdf: PDFDocumentPr
         }
 
         if (destForPageIndex) {
-            const page = (await pdf.getPageIndex(destForPageIndex) as unknown as number); // type error should return a number zero based
-            const label = pageLabels[page];
+            const page = await pdf.getPageIndex(destForPageIndex);
+            const label = pageLabels?.[page] || String(page);
+            // console.log("PDF PAGE LABEL LiNK HREF", label, pageLabels, page, destForPageIndex?.num, destForPageIndex?.gen)
             link.Href = label;
         }
 

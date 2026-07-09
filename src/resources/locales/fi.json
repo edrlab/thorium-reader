@@ -46,8 +46,8 @@
         },
         "window": {
             "showLibrary": "Näytä kirjasto / kirjahylly",
-            "trayHint": "",
-            "trayTooltip": ""
+            "trayHint": "{{- appName}} on yhä käynnissä ilmoitusalueella. Napsauta tehtäväpalkin kuvaketta, niin kirjasto avautuu.",
+            "trayTooltip": "{{- appName}} - napsauta näyttääksesi tai piilottaaksesi kirjaston"
         }
     },
     "catalog": {
@@ -109,7 +109,7 @@
                 "register": "Rekisteröidy",
                 "retry": "Yritä uudelleen",
                 "unauthorized": "Luvaton",
-                "unauthorizedUnsupportedType": "",
+                "unauthorizedUnsupportedType": "Ei sallittu (ei tuettu WWWAuthenticate-tyyppi ‘{{- type}}’)",
                 "username": "Käyttäjätunnus / Sähköpostiosoite"
             },
             "info": {
@@ -131,7 +131,7 @@
                 "state": "Tila"
             }
         },
-        "openFolder": "",
+        "openFolder": "Avaa hakemisto",
         "publisher": "Julkaisija",
         "readBook": "Lue",
         "released": "Julkaistu",
@@ -248,12 +248,12 @@
             "errors": {
                 "hashMismatch": "Ladatun tiedoston eheystarkistus epäonnistui: odotettu SHA-256-hash-arvo {{- expected}}, todellinen {{- actual}}.",
                 "httpGet": "HTTP-lataus epäonnistui: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "invalidFilename": "",
-                "invalidLink": "",
-                "invalidTempDirectory": "",
-                "lengthMismatch": "",
-                "readStreamMissing": "",
-                "tooManyFilenameAttempts": ""
+                "invalidFilename": "Väliaikaisen lataustiedoston nimi ei kelpaa.",
+                "invalidLink": "Latauslinkki ei kelpaa.",
+                "invalidTempDirectory": "Väliaikainen lataushakemisto ei kelpaa.",
+                "lengthMismatch": "Ladatun tiedoston eheystarkistus epäonnistui: odotettu {{- expected}} tavua, todellinen määrä {{- actual}} tavua.",
+                "readStreamMissing": "Suoratoiston lataaminen ei onnistu.",
+                "tooManyFilenameAttempts": "Väliaikaisen lataustiedostonimen luominen ei onnistu: {{- path}}"
             }
         },
         "import": {
@@ -263,12 +263,12 @@
         },
         "open": {
             "error": "Julkaisua ei voi avata: {{- err}}",
-            "folderNotFound": ""
+            "folderNotFound": "Julkaisuhakemistoa ei löydy. Tuo se uudelleen tai määritä lisätallennustilaa kohdassa Asetukset > Tallennustila."
         },
         "storage": {
-            "removed": "",
-            "updateFailed": "",
-            "updated": ""
+            "removed": "Julkaisuhakemisto on poistettu.",
+            "updateFailed": "Julkaisuhakemiston päivitys epäonnistui: {{- message}}",
+            "updated": "Julkaisuhakemisto on päivitetty."
         },
         "wipeData": "Kirjautumistiedot tyhjennettiin (pääsytunnukset ja evästeet)"
     },
@@ -660,7 +660,7 @@
         "expiredLcp": "LCP-käyttöoikeus on päättynyt.",
         "incorrectPassphrase": "Yksikään tallennettu salasana ei käy julkaisuun tai annettu salasana on väärä.",
         "lcpEnd": "Loppu",
-        "lcpNotSupported": "",
+        "lcpNotSupported": "VAROITUS: Tämä on Thorium Desktop -ohjelman ennakkoversio, joka ei tue tuotantokäyttöön tarkoitettuja LCP-lisenssejä, vaan ainoastaan LCP ”basic profile” -salauksen purkua ilman varmenteen vahvistusta.",
         "lcpRightsCopy": "Kopioidut merkit",
         "lcpRightsPrint": "Tulostetut sivut",
         "lcpStart": "Aloita",
@@ -700,7 +700,7 @@
             "date": "Muokkauspäivä",
             "error": {
                 "pdf": {
-                    "validationSelection": ""
+                    "validationSelection": "PDF-muistiinpanon luonti valinnasta ei onnistu."
                 }
             },
             "export": "Tallenna nimellä...",
@@ -817,8 +817,8 @@
         "notes": {
             "colors": {
                 "cyan": "Turkoosi",
-                "darkorange": "",
-                "darkyellow": "",
+                "darkorange": "Tumma oranssi",
+                "darkyellow": "Tumma keltainen",
                 "green": "Vihreä",
                 "orange": "Oranssi",
                 "purple": "Violetti",
@@ -866,7 +866,7 @@
             },
             "customFontSelected": "Olet valinnut oman fontin",
             "customizeReader": "Mukauta tekstin ulkoasua",
-            "defaultValue": "",
+            "defaultValue": "oletusarvo",
             "disabled": "ei käytössä",
             "display": "Näyttöasetukset",
             "disposition": {
@@ -882,7 +882,7 @@
             "lineSpacing": "Riviväli",
             "margin": "Marginaali",
             "mathjax": "Ota MathJax käyttöön",
-            "mathjaxDescription": "",
+            "mathjaxDescription": "MathJax",
             "noFootnotes": "Älä näytä alaviitteitä popup-ikkunassa",
             "noRTLFlip": "Estä oikealta vasemmalle -käyttöliittymä",
             "noRuby": "Piilota japanin rubi-merkit",
@@ -1015,16 +1015,16 @@
                     "name": "Edellinen ääniosio (ohita)"
                 },
                 "AudioSpeedDecrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Hidasta EPUB3:n äänitteen toistonopeutta tai tekstistä puheeksi -lukunopeutta",
+                    "name": "Hidasta äänen toistonopeutta"
                 },
                 "AudioSpeedIncrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nopeuta EPUB3:n äänitteen toistonopeutta tai tekstistä puheeksi -lukunopeutta",
+                    "name": "Lisää äänen toistonopeutta"
                 },
                 "AudioSpeedReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nollaa EPUB3:n äänitteiden toistonopeus tai tekstistä puheeksi -lukunopeus",
+                    "name": "Nollaa äänen toistonopeus"
                 },
                 "AudioStop": {
                     "description": "Pysäytä nykyinen ääni (tekstiä ja ääntä yhdistävä kirja, tekstistä puheeksi -toiminto tai äänikirja)",
@@ -1248,50 +1248,50 @@
             "title": "Tallenna istunto"
         },
         "sharedComputer": {
-            "lcpAutoDeleteExpiredPublications": "",
-            "lcpAutoDeleteExpiredPublicationsDescription": "",
-            "title": ""
+            "lcpAutoDeleteExpiredPublications": "Poista vanhentuneet julkaisut ja niihin liittyvät käyttäjätiedot automaattisesti",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Varmistaa, että vanhentuneet lainat poistetaan automaattisesti (myös henkilökohtaiset muistiinpanot, kirjanmerkit jne.). Tämä on hyödyllistä yhteiskäyttöisissä tietokoneissa esimerkiksi kirjastoissa tai yliopistoissa.",
+            "title": "Yhteiskäyttötila"
         },
         "storage": {
             "actions": {
-                "addDirectory": "",
-                "changeDirectory": "",
-                "removeStorageDirectory": ""
+                "addDirectory": "Valitse lisätallennustila",
+                "changeDirectory": "Päivitä lisätallennustila",
+                "removeStorageDirectory": "Poista lisätallennustila"
             },
             "beta": {
-                "availability": "",
-                "integrity": "",
-                "migration": "",
-                "summary": "",
-                "warning": ""
+                "availability": "Tämä ominaisuus toimii vain Thoriumin uusimmissa versioissa: ulkoisen kansion kirjat eivät näy Thorium 3.4:ssä tai sitä aiemmissa versioissa.",
+                "integrity": "Tämä hakemisto on pidettävä turvassa ja saatavilla. Älä poista sitä, rajoita pääsyä siihen tai käytä hidasta tai epävakaata tallennusvälinettä, kuten verkkoasemia.",
+                "migration": "Thorium ei siirrä julkaisuja automaattisesti. Jos lisäät tallennustilaa, sinun on siirrettävä julkaisusi itse uuteen sijaintiin. Jos poistat tallennustilan, sinun on siirrettävä julkaisusi itse takaisin alkuperäiseen tallennustilaan.",
+                "summary": "Lue lisää tästä ominaisuudesta, joka on vielä beta-vaiheessa",
+                "warning": "Älä muokkaa tämän kansion tiedostoja itse, sillä se voi aiheuttaa ongelmia kirjojen tai sovelluksen kanssa. Pidä tätä kansiota Thoriumin hallinnoimana suojattuna kirjastona."
             },
             "configuration": {
-                "chooseFolderDescription": "",
-                "configuredDescription": "",
-                "notConfiguredDescription": ""
+                "chooseFolderDescription": "Valitse hakemisto, jota Thorium voi käyttää lisätallennustilana.",
+                "configuredDescription": "Lisätallennustila on määritetty, ja sitä voi nyt käyttää vasta tallennetuille julkaisuille.",
+                "notConfiguredDescription": "Thorium Reader -sovellukseen tuodut julkaisut tallennetaan valittuun hakemistoon. Aiemmin tuodut julkaisut säilyvät alkuperäisessä järjestelmän tallennustilassa."
             },
             "dialogs": {
                 "add": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Jatka",
+                    "description": "Tämä ominaisuus on tällä hetkellä beta-vaiheessa. Haluatko jatkaa ja määrittää lisätallennustilan valitsemalla hakemiston?",
+                    "title": "Valitse lisätallennustila"
                 },
                 "edit": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Muokkaa hakemistoa",
+                    "description": "Lisätallennustilan päivittäminen vaatii huolellisuutta. Thorium ei siirrä olemassa olevia julkaisuja puolestasi, sinun on tehtävä se itse. Haluatko jatkaa?",
+                    "title": "Päivitä lisätallennustila"
                 },
                 "remove": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Poista hakemisto",
+                    "description": "Lisätallennustilan poistaminen vaatii huolellisuutta. Thorium ei siirrä olemassa olevia julkaisuja puolestasi, sinun on tehtävä se itse. Haluatko jatkaa?",
+                    "title": "Poista lisätallennustila"
                 }
             },
             "locations": {
-                "defaultDescription": "",
-                "defaultInternal": "",
-                "externalStorage": "",
-                "title": ""
+                "defaultDescription": "Sovelluksen hallinnoimat julkaisut tallennetaan oletuksena:",
+                "defaultInternal": "Järjestelmän tallennustila",
+                "externalStorage": "Ulkoinen tallennustila",
+                "title": "Sijainnit"
             }
         },
         "tabs": {
@@ -1299,7 +1299,7 @@
             "general": "Yleiset",
             "keyboardShortcuts": "Pikanäppäimet",
             "profiles": "Profiilit",
-            "storage": ""
+            "storage": "Tallennustila"
         },
         "theme": {
             "auto": "Automaattinen",
@@ -1309,9 +1309,15 @@
             "title": "Sovelluksen teema"
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "Pidä kirjasto taustalla lukuikkunoiden sulkemisen jälkeen",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Kun asetus on käytössä, lukuikkunan sulkeminen ei palauta kirjastoikkunaa eikä tuo sitä etualalle.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Pienennä kirjasto lukuikkunoiden avaamisen jälkeen",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Kun asetus on käytössä, lukuikkunan avaaminen pienentää kirjastoikkunan.",
+            "minimizeLibraryToTray": "Pienennä kirjasto ilmoitusalueelle",
+            "minimizeLibraryToTrayDescription": "Kun asetus on käytössä, kirjastoikkunan pienentäminen pitää Thoriumin käynnissä Windowsin ilmoitusalueella.",
+            "oneReaderWindowPerPublication": "Käytä yhtä lukuikkunaa julkaisua kohti",
+            "oneReaderWindowPerPublicationDescription": "Kun asetus on käytössä, jo avoinna olevan julkaisun avaaminen kohdistaa sen lukuikkunaan uuden avaamisen sijaan.",
+            "title": "Ikkunoiden toiminta"
         }
     },
     "tts": {

@@ -6,31 +6,20 @@
 // ==LICENSE-END==
 
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
-
 import * as React from "react";
-import * as Dialog from "@radix-ui/react-dialog";
 import * as Tabs from "@radix-ui/react-tabs";
 import * as RadioGroup from "@radix-ui/react-radio-group";
-import { ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
-import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 
 import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
 import * as GuearIcon from "readium-desktop/renderer/assets/icons/gear-icon.svg";
-import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import * as TextAreaIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg";
 import * as LayoutIcon from "readium-desktop/renderer/assets/icons/layout-icon.svg";
 import * as AlignLeftIcon from "readium-desktop/renderer/assets/icons/alignleft-icon.svg";
 import * as VolumeUpIcon from "readium-desktop/renderer/assets/icons/volume-icon.svg";
-import * as DockLeftIcon from "readium-desktop/renderer/assets/icons/dockleft-icon.svg";
-import * as DockRightIcon from "readium-desktop/renderer/assets/icons/dockright-icon.svg";
-import * as DockModalIcon from "readium-desktop/renderer/assets/icons/dockmodal-icon.svg";
 
 import classNames from "classnames";
 import { IReaderSettingsProps } from "readium-desktop/renderer/reader/components/options-values";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { useDiffBoolBetweenReaderConfigAndDefaultConfig, useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
@@ -47,6 +36,8 @@ import { DivinaSetReadingMode } from "readium-desktop/renderer/reader/components
 import { PdfZoom } from "readium-desktop/renderer/reader/components/ReaderSettings/pdfZoom";
 import { AllowCustom } from "readium-desktop/renderer/reader/components/ReaderSettings/AllowCustom";
 import { SaveResetApplyPreset } from "readium-desktop/renderer/reader/components/ReaderSettings/SaveResetApplyPreset";
+import { ModalControlButtons } from "readium-desktop/renderer/reader/components/ModalControlButtons";
+import { DockedHeader } from "readium-desktop/renderer/reader/components/DockedHeader";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -123,9 +114,6 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const dockingMode = useReaderConfig("readerDockingMode");
     const dockedMode = dockingMode !== "full";
     const setReaderConfig = useSaveReaderConfig();
-    const setDockingMode = (value: ReaderConfig["readerDockingMode"]) => {
-        setReaderConfig({ readerDockingMode: value });
-    };
     const section = useReaderConfig("readerSettingsSection");
     const setSection = (value: string) => {
         setReaderConfig({ readerSettingsSection: value});
@@ -235,224 +223,131 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
 
     // }, [dockingMode, doFocus]);
 
-    const sections: Array<React.JSX.Element> = [];
-    const options: Array<{ id: number, value: string, name: string, disabled: boolean, svg: {} }> = [];
-
-    const TextTrigger =
-        <Tabs.Trigger value="tab-text" disabled={!overridePublisherDefault} title={__("reader.settings.text")} key={"tab-text"} data-value={"tab-text"}>
-            <SVG ariaHidden svg={TextAreaIcon} />
-            <span>{__("reader.settings.text")}</span>
-            {overridePublisherDefault ? <></> : <i>{__("reader.settings.disabled")}</i>}
-        </Tabs.Trigger>;
-    const optionTextItem = { id: 0, value: "tab-text", name: __("reader.settings.text"), disabled: !overridePublisherDefault, svg: TextAreaIcon };
-
-    const DivinaTrigger =
-        <Tabs.Trigger value="tab-divina" disabled={false} title={__("reader.settings.disposition.title")} key={"tab-divina"}>
-            <SVG ariaHidden svg={TextAreaIcon} />
-            <span>{__("reader.settings.disposition.title")}</span>
-        </Tabs.Trigger>;
-    const optionDivinaItem = { id: 1, value: "tab-divina", name: __("reader.settings.disposition.title"), disabled: false, svg: TextAreaIcon };
-
-    const SpacingTrigger =
-        <Tabs.Trigger value="tab-spacing" disabled={!overridePublisherDefault} key={"tab-spacing"} title={__("reader.settings.spacing")} data-value={"tab-spacing"}>
-            <SVG ariaHidden svg={LayoutIcon} />
-            <span>{__("reader.settings.spacing")}</span>
-            {overridePublisherDefault ? <></> : <i>{__("reader.settings.disabled")}</i>}
-        </Tabs.Trigger>;
-    const optionSpacingItem = { id: 2, value: "tab-spacing", name: __("reader.settings.spacing"), disabled: !overridePublisherDefault, svg: LayoutIcon };
-
-    const DisplayTrigger =
-        <Tabs.Trigger value="tab-display" key={"tab-display"} title={__("reader.settings.display")}>
-            <SVG ariaHidden svg={AlignLeftIcon} />
-            <span>{__("reader.settings.display")}</span>
-        </Tabs.Trigger>;
-    const optionDisplayItem = { id: 3, value: "tab-display", name: __("reader.settings.display"), disabled: false, svg: AlignLeftIcon };
-
-    // const AudioTrigger =
-    //     <Tabs.Trigger value="tab-audio" key={"tab-audio"} title={__("reader.media-overlays.title")}>
-    //         <SVG ariaHidden svg={VolumeUpIcon} />
-    //         <p>{__("reader.media-overlays.title")}</p>
-    //     </Tabs.Trigger>;
-    // const optionAudioItem = { id: 4, value: "tab-audio", name: __("reader.media-overlays.title"), disabled: false, svg: VolumeUpIcon };
-
-    const PdfZoomTrigger =
-        <Tabs.Trigger value="tab-pdfzoom" key={"tab-pdfzoom"} title={__("reader.settings.pdfZoom.title")}>
-            <SVG ariaHidden svg={VolumeUpIcon} />
-            <span>{__("reader.settings.pdfZoom.title")}</span>
-        </Tabs.Trigger>;
-    const optionPdfZoomItem = { id: 5, value: "tab-pdfzoom", name: __("reader.settings.pdfZoom.title"), disabled: false, svg: VolumeUpIcon };
-
-    const PresetTrigger =
-        <React.Fragment key="tab-preset">
-            <span style={{ width: "80%", height: "2px", backgroundColor: "var(--color-gray-100)", margin: "10px auto" }}></span>
-            <Tabs.Trigger value="tab-preset" disabled={false} title={__("reader.settings.preset.title")} data-value="tab-preset" style={{position: "relative"}}>
-                <SVG ariaHidden svg={GuearIcon} />
-                <span>{__("reader.settings.preset.title")}</span>
-                {diffBetweenDefaultConfigAndConfig ? <span className={stylesSettings.notification_preset}></span> : <></>}
-            </Tabs.Trigger>
-            <p style={{margin: "-5px 20px 0 60px"}}>{__("reader.settings.preset.detail")}</p>
-        </ React.Fragment>;
-    const optionPresetItem = { id: 6, value: "tab-preset", name: __("reader.settings.preset.title"), disabled: false, svg: GuearIcon };
-
     const AllowCustomContainer = () =>
         <div className={stylesSettings.allowCustom} key={"allowCustom"}>
             <AllowCustom />
         </div>;
 
+    const TabItem = [
+    {
+        id: 0,
+        value: "tab-divina",
+        name: __("reader.settings.disposition.title"),
+        disabled: false,
+        svg: TextAreaIcon,
+        show: isDivina,
+    },
+    {
+        id: 1,
+        value: "tab-pdfzoom",
+        name: __("reader.settings.pdfZoom.title"),
+        disabled: false,
+        svg: VolumeUpIcon,
+        show: isPdf,
+    },
+    {
+        id: 2,
+        value: "tab-display",
+        name: __("reader.settings.display"),
+        disabled: false,
+        svg: AlignLeftIcon,
+        show: isPdf || isEpub,
+    },
+    {
+        id: 3,
+        value: "tab-text",
+        name: __("reader.settings.text"),
+        disabled: !overridePublisherDefault,
+        svg: TextAreaIcon,
+        show: isEpub,
+        elementBefore: <AllowCustom />,
+        extra: !overridePublisherDefault ? <i>{__("reader.settings.disabled")}</i> : null,
+    },
+    {
+        id: 4,
+        value: "tab-spacing",
+        name: __("reader.settings.spacing"),
+        disabled: !overridePublisherDefault,
+        svg: LayoutIcon,
+        show: isEpub,
+        extra: !overridePublisherDefault ? <i>{__("reader.settings.disabled")}</i> : null,
+    },
+    {
+        id: 5,
+        value: "tab-preset",
+        name: __("reader.settings.preset.title"),
+        disabled: false,
+        svg: GuearIcon,
+        show: isEpub,
+        separatorBefore: true,
+        extra: diffBetweenDefaultConfigAndConfig ? <span className={stylesSettings.notification_preset}></span> : null,
+        subLabel: __("reader.settings.preset.detail"),
+    },
+];
 
-    if (isDivina) {
-        sections.push(DivinaTrigger);
-        options.push(optionDivinaItem);
-    }
-    if (isPdf) {
-        sections.push(PdfZoomTrigger);
-        options.push(optionPdfZoomItem);
-    }
-    if (isPdf || isEpub) {
-        sections.push(DisplayTrigger);
-        options.push(optionDisplayItem);
-    }
-    if (isEpub) {
-        // sections.push(AudioTrigger);
-        // options.push(optionAudioItem);
-        sections.push(AllowCustomContainer());
-        sections.push(TextTrigger);
-        options.push(optionTextItem);
-        sections.push(SpacingTrigger);
-        options.push(optionSpacingItem);
-    }
-    if (isEpub) {
-        sections.push(PresetTrigger);
-        options.push(optionPresetItem);
+const visibleTabs = TabItem.filter(tab => tab.show);
+
+const TabTriggers = visibleTabs.flatMap(tab => {
+    const elements = [];
+
+    if (tab.separatorBefore) {
+        elements.push(
+            <span key={`${tab.value}-separator`} style={{ width: "80%", height: "2px", backgroundColor: "var(--color-gray-100)", margin: "10px auto" }} />,
+        );
     }
 
-
-    const setDockingModeFull = () => setDockingMode("full");
-    const setDockingModeLeftSide = () => setDockingMode("left");
-    const setDockingModeRightSide = () => setDockingMode("right");
-
-    const optionSelected = options.find(({ value }) => value === section)?.id;
-    const optionDisabled = options.map(({ id, disabled }) => disabled ? id : -1).filter((v) => v > -1);
-    const optionSelectedIsOnOptionDisabled = optionDisabled.includes(optionSelected);
-    if (optionSelectedIsOnOptionDisabled) {
-        setSection("tab-display");
+    if (tab.elementBefore) {
+        elements.push(
+            <div className={stylesSettings.allowCustom} key={"allowCustom"}>
+                {tab.elementBefore}
+            </div>,
+        );
     }
 
+    elements.push(
+        <Tabs.Trigger
+            key={tab.value}
+            value={tab.value}
+            data-value={tab.value}
+            title={tab.name}
+            disabled={tab.disabled}
+            style={tab.separatorBefore ? { position: "relative" } : undefined}
+        >
+            <SVG ariaHidden svg={tab.svg} />
+            <span>{tab.name}</span>
+            {tab.extra ?? <></>}
+        </Tabs.Trigger>,
+    );
+
+    if (tab.subLabel) {
+        elements.push(
+            <p key={`${tab.value}-sublabel`} style={{ margin: "-5px 20px 0 60px" }}>{tab.subLabel}</p>,
+        );
+    }
+
+    return elements;
+});
+
+const options = visibleTabs.map(({ id, value, name, disabled, svg }) => ({ id, value, name, disabled, svg }));
+
+const optionSelected = options.find(({ value }) => value === section)?.id;
+const optionDisabled = options.filter(({ disabled }) => disabled).map(({ id }) => id);
+const optionSelectedIsOnOptionDisabled = optionDisabled.includes(optionSelected);
+if (optionSelectedIsOnOptionDisabled) {
+    setSection("tab-display");
+}
 
     // console.log("RENDER");
 
-    const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: string, name: string, disabled: boolean, svg: {} }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
-    SelectRef.displayName = "ComboBox";
-
-    const SelectRefComponent = () => {
-        return (
-             <SelectRef
-                id="reader-settings-nav"
-                items={options}
-                selectedKey={optionSelected}
-                disabledKeys={optionDisabled}
-                svg={options.find(({ value }) => value === section)?.svg}
-                onSelectionChange={(id) => {
-                    // console.log("selectionchange: ", id);
-                    const value = options.find(({ id: _id }) => _id === id)?.value;
-                    if (value) {
-                        setSection(value);
-                        setTimeout(() => {
-                            // TODO: is stealing focus here necessary? Should this vary depending on keyboard or mouse interaction?
-                            const elem = document.getElementById(`readerSettings_tabs-${value}`);
-                            elem?.blur();
-                            elem?.focus();
-                        }, 1);
-                        // console.log("set Tab Value = ", value);
-                    } else {
-                        // console.error("Combobox No value !!!");
-                    }
-                }}
-                // onInputChange={(v) => {
-                //     console.log("inputchange: ", v);
-
-                //     const value = options.find(({ name }) => name === v)?.value;
-                //     if (value) {
-                //         setTabValue(value);
-                //         console.log("set Tab Value = ", value);
-
-                //     } else {
-                //         console.error("Combobox No value !!!");
-                //     }
-                // }}
-                style={{ margin: "0", padding: (dockedMode && isEpub) ? "10px 0" : "0", flexDirection: "row", backgroundColor: "var(--color-header-docked)" }}
-                ref={dockedModeRef}
-            >
-                {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-            </SelectRef>
-        );
-    };
-
-    const DockedHeader = () => {
-        return (
-            <>
-                        <div key="docked-header" className={stylesPopoverDialog.docked_header}>
-                            {
-                                (dockedMode && isEpub) ? <AllowCustomContainer /> : <SelectRefComponent />
-                            }
-                            <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls}>
-                                <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label={__("reader.dock.dockLeft")} onClick={setDockingModeLeftSide}>
-                                    <SVG ariaHidden={true} svg={DockLeftIcon} />
-                                </button>
-                                <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label={__("reader.dock.dockRight")} onClick={setDockingModeRightSide}>
-                                    <SVG ariaHidden={true} svg={DockRightIcon} />
-                                </button>
-                                <button className={stylesButtons.button_transparency_icon} disabled={false} aria-label={__("reader.dock.dockDefault")} onClick={setDockingModeFull}>
-                                    <SVG ariaHidden={true} svg={DockModalIcon} />
-                                </button>
-
-                                <Dialog.Close asChild>
-                                    <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
-                                        <SVG ariaHidden={true} svg={QuitIcon} />
-                                    </button>
-                                </Dialog.Close>
-                            </div>
-                        </div>
-                        {
-                            (dockedMode && isEpub) ? <SelectRefComponent /> : <></>
-                        }
-                    </>
-        );
-    };
-
-    const ModalControlButtons = () => {
-
-        return (
-            dockedMode ? <></> :
-                <div key="modal-header" className={stylesSettings.close_button_div}>
-                    <div>
-                        <button className={stylesButtons.button_transparency_icon} aria-label={__("reader.dock.dockLeft")} onClick={setDockingModeLeftSide}>
-                            <SVG ariaHidden={true} svg={DockLeftIcon} />
-                        </button>
-                        <button className={stylesButtons.button_transparency_icon} aria-label={__("reader.dock.dockRight")} onClick={setDockingModeRightSide}>
-                            <SVG ariaHidden={true} svg={DockRightIcon} />
-                        </button>
-                        <button className={stylesButtons.button_transparency_icon} disabled aria-label={__("reader.dock.dockDefault")} onClick={setDockingModeFull}>
-                            <SVG ariaHidden={true} svg={DockModalIcon} />
-                        </button>
-                        <Dialog.Close asChild>
-                            <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
-                                <SVG ariaHidden={true} svg={QuitIcon} />
-                            </button>
-                        </Dialog.Close>
-                    </div>
-                </div>
-        );
-    };
     return (
         <div style={{minHeight: "inherit"}}>
-            { dockedMode ? <DockedHeader /> : <></>}
+            { dockedMode ? <DockedHeader dockedMode={dockedMode} dockingMode={dockingMode} isEpub={isEpub} setSection={setSection} dockedModeRef={dockedModeRef} options={options} optionSelected={optionSelected} optionDisabled={optionDisabled} section={section} allowCustomContainer={AllowCustomContainer} /> : <></>}
             <Tabs.Root value={section} defaultValue={section} onValueChange={dockedMode ? null : setSection} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                 {
                     dockedMode ? <></> :
                     <>
                         <Tabs.List id="reader-settings-nav" ref={tabModeRef} className={stylesSettings.settings_tabslist} aria-orientation="vertical" data-orientation="vertical">
-                            {sections}
+                            {TabTriggers}
                         </Tabs.List>
                         <TabTitle value={section} />
                     </>
@@ -495,7 +390,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                         </section>
                     </Tabs.Content>
                 </div>
-                <ModalControlButtons />
+                <ModalControlButtons dockedMode={dockedMode} />
             </Tabs.Root>
         </div>
     );
