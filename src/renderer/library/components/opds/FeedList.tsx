@@ -6,36 +6,22 @@
 // ==LICENSE-END==
 
 import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
-import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
-import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
-
 import * as React from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { IOpdsFeedView } from "readium-desktop/common/views/opds";
-import * as DeleteIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
-import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
-import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon.svg";
-import * as AvatarIcon from "readium-desktop/renderer/assets/icons/avatar-icon.svg";
-import * as StarIcon from "readium-desktop/renderer/assets/icons/star-icon.svg";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
-import SVG from "readium-desktop/renderer/common/components/SVG";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/library/apiSubscribe";
-import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { Unsubscribe } from "redux";
-import { resolveDisplayType } from "../../routing";
-import DeleteOpdsFeedConfirm from "../dialog/DeleteOpdsFeedConfirm";
-import OpdsFeedUpdateForm from "../dialog/OpdsFeedUpdateForm";
-import * as Popover from "@radix-ui/react-popover";
 import { authActions, customizationActions, opdsActions } from "readium-desktop/common/redux/actions";
 import { subscribeToAction } from "readium-desktop/renderer/common/redux/middleware/actionSubscriber";
+import { FeedCard } from "./FeedCard";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -102,136 +88,11 @@ class FeedList extends React.Component<IProps, IState> {
                 <ul className={stylesCatalogs.catalog_wrapper}>
                     {this.state.feedsResult.map((item) => {
                         return (
-                            <li key={"feed-" + item.identifier} className={stylesCatalogs.catalog_container}>
-                                <Link
-                                    to={{
-                                        ...this.props.location,
-                                        pathname: buildOpdsBrowserRoute(
-                                            item.identifier,
-                                            item.title,
-                                            item.url,
-                                        ),
-                                    }}
-                                    state={{ displayType: resolveDisplayType(this.props.location.state, this.props.libraryView?.displayType) }}
-                                    className={stylesCatalogs.catalog_content}
-                                    onClick={(e) => {
-                                        if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
-                                            e.preventDefault();
-                                            e.currentTarget.click();
-                                        }
-                                    }}
-                                    onKeyDown={(e) => {
-                                        // if (e.code === "Space") {
-                                        if (e.key === " " || e.altKey || e.ctrlKey) {
-                                            e.preventDefault(); // prevent scroll
-                                        }
-                                    }}
-                                    onKeyUp={(e) => {
-                                        // Includes screen reader tests:
-                                        // if (e.code === "Space") { WORKS
-                                        // if (e.key === "Space") { DOES NOT WORK
-                                        // if (e.key === "Enter") { WORKS
-                                        if (e.key === " ") { // WORKS
-                                            e.preventDefault();
-                                            e.currentTarget.click();
-                                        }
-                                    }}
-                                >
-                                    <div style={{ width: "100%", height: "50px", backgroundColor: "var(--color-gray-50", borderBottom: "1px solid var(--color-gray-300)", position: "absolute", top: "2px"}}>
-                                    </div>
-                                    <div className={stylesCatalogs.catalog_title}>
-                                        <SVG ariaHidden svg={GlobeIcon} />
-                                        <p title={`${item.title} --- ${item.url}`}>{item.title}</p>
-                                    </div>
-                                </Link>
-                                <button onClick={() => {
-                                    apiAction("opds/deleteFeed", item.identifier).then(() => {
-                                        apiAction("opds/addFeed", {
-                                            title: item.title,
-                                            url: item.url,
-                                            favorite: !item.favorite,
-                                        }).catch((err) => {
-                                            console.error("Error to fetch api opds/addFeed", err);
-                                        });
-                                    }).catch((err) => {
-                                        console.error("Error to fetch api opds/deleteFeed", err);
-                                    });
-                                        }}
-                                        className={stylesCatalogs.button_favorites}>
-                                        <SVG svg={StarIcon} ariaHidden  className={item.favorite ? stylesCatalogs.catalog_favorite_icon_true : stylesCatalogs.catalog_favorite_icon_false} />
-                                        </button>
-                                {item.authentified ? <Popover.Root>
-                                    <Popover.Trigger asChild>
-                                        <button
-                                            className={stylesCatalogs.button_login}
-                                            title={__("catalog.logout")}
-                                        >
-                                            <SVG ariaHidden={true} svg={AvatarIcon} />
-                                        </button>
-                                    </Popover.Trigger>
-                                    <Popover.Portal>
-                                        <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesPopoverDialog.delete_item}>
-                                            <Popover.Close
-                                                onClick={() => {
-                                                    this.props.logout(item.url);
-                                                    setTimeout(() => {
-                                                        this.loadFeeds().then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
-                                                    }, 100);
-                                                }}
-                                                title={__("catalog.logout")}
-                                            >
-                                                <SVG ariaHidden={true} svg={AvatarIcon} />
-                                                {__("catalog.logout")}
-                                            </Popover.Close>
-                                            <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
-                                        </Popover.Content>
-                                    </Popover.Portal>
-                                </Popover.Root>
-                                : item.authenticationUrl ? <Popover.Root>
-                                    <Popover.Trigger asChild>
-                                        <button
-                                            className={stylesCatalogs.button_login}
-                                            title={__("catalog.login")}
-                                        >
-                                            <SVG ariaHidden={true} svg={AvatarIcon} />
-                                        </button>
-                                    </Popover.Trigger>
-                                    <Popover.Portal>
-                                        <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesPopoverDialog.delete_item}>
-                                            <Popover.Close
-                                                onClick={() => {
-                                                    this.props.triggerAuth(item.url, item.authenticationUrl);
-                                                    // setTimeout(() => this.loadFeeds(), 100);
-                                                }}
-                                                title={__("catalog.login")}
-                                            >
-                                                <SVG ariaHidden={true} svg={AvatarIcon} />
-                                                {__("catalog.login")}
-                                            </Popover.Close>
-                                            <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
-                                        </Popover.Content>
-                                    </Popover.Portal>
-                                </Popover.Root> : <></>}
-                                <OpdsFeedUpdateForm trigger={(
-                                    <button
-                                        className={stylesCatalogs.button_edit}
-                                        title={__("catalog.update")}
-                                    >
-                                        <SVG ariaHidden={true} svg={EditIcon} />
-                                    </button>
-                                )}
-                                    feed={item}
-                                />
-                                <DeleteOpdsFeedConfirm trigger={(
-                                    <button
-                                        // onClick={(e) => this.deleteFeed(e, item)}
-                                        className={stylesCatalogs.button_delete}
-                                        title={__("catalog.delete")}
-                                    >
-                                        <SVG ariaHidden={true} svg={DeleteIcon} />
-                                    </button>
-                                )} feed={item} />
-                            </li>
+                            <FeedCard
+                                key={"feed-" + item.identifier}
+                                feed={item}
+                                location={this.props.location}
+                            />
                         );
                     })}
                     {[...Array(6).keys()].map((n, _index) => {
