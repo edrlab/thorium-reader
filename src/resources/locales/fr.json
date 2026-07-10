@@ -67,10 +67,10 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
-                "publications": "",
-                "screen": "",
-                "title": ""
+                "description": "Aucune description pour ce profil",
+                "publications": "Publications du profil",
+                "screen": "Aucun titre",
+                "title": "Titre du profil"
             }
         },
         "delete": "Supprimer",
@@ -88,8 +88,8 @@
         "importAnnotation": "Importer les notes",
         "lang": "Langue",
         "lastRead": "Dernière lecture",
-        "login": "",
-        "logout": "",
+        "login": "Connexion",
+        "logout": "Déconnexion",
         "missing": "Fichiers manquants",
         "missingUnavailableDescription": "Cette publication ne peut pas être chargée car ses fichiers ne sont pas disponibles. Il faut la réimporter, ou aller dans les préférences puis dans Stockage pour ajouter ou changer le stockage additionel.",
         "moreInfo": "Plus d'informations",
@@ -108,8 +108,8 @@
                 "password": "Mot de passe",
                 "register": "Créer un compte",
                 "retry": "Réessayer",
-                "unauthorized": "",
-                "unauthorizedUnsupportedType": "",
+                "unauthorized": "Non autorisé",
+                "unauthorizedUnsupportedType": "Non autorisé (type d'authentification non supporté '{{- type}}')",
                 "username": "Nom d'utilisateur / Adresse courriel"
             },
             "info": {
@@ -131,7 +131,7 @@
                 "state": "État"
             }
         },
-        "openFolder": "",
+        "openFolder": "Répertoire ouvert",
         "publisher": "Éditeur",
         "readBook": "Lire",
         "released": "Publié le",
@@ -164,9 +164,9 @@
         "cancel": "Annuler",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
-                "state": "",
-                "title": ""
+                "fallbackWelcomeScreen": "Aucun écran d'accueil",
+                "state": "État : {{- state}}",
+                "title": "Préparation et activation du profil de personnalisation"
             }
         },
         "deleteAnnotations": "Supprimer la note",
@@ -248,17 +248,17 @@
             "success": "Importation réussie"
         },
         "download": {
-            "cancelled": "",
+            "cancelled": "Téléchargement annulé.",
             "error": "Le téléchargement de {{- title}} a échoué: [{{- err}}]",
             "errors": {
-                "hashMismatch": "",
-                "httpGet": "",
-                "invalidFilename": "",
-                "invalidLink": "",
-                "invalidTempDirectory": "",
-                "lengthMismatch": "",
-                "readStreamMissing": "",
-                "tooManyFilenameAttempts": ""
+                "hashMismatch": "Erreur de vérification de l'intégrité du fichier téléchargé  : SHA-256 attendu {{- expected}}, obtenu {{- actual}}.",
+                "httpGet": "Téléchargement HTTP échoué : {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "invalidFilename": "Le nom du fichier temporaire téléchargé est invalide.",
+                "invalidLink": "Le lien de téléchargement est invalide.",
+                "invalidTempDirectory": "Le répertoire de téléchargement temporaire est invalide.",
+                "lengthMismatch": "Erreur de vérification d'intégrité des fichiers téléchargés : attendus {{- expected}}, obtenu {{- actual}} octets.",
+                "readStreamMissing": "Le flux de téléchargement n'est pas disponible.",
+                "tooManyFilenameAttempts": "Impossible de créer un fichier de téléchargement temporaire unique : {{- path}}"
             }
         },
         "import": {
@@ -268,14 +268,14 @@
         },
         "open": {
             "error": "Le livre ne peut pas être ouvert : {{- err}}",
-            "folderNotFound": ""
+            "folderNotFound": "Le répertoire de publication est introuvable. Réimportez-le ou configurez le stockage supplémentaire dans Paramètres > Stockage."
         },
         "storage": {
-            "removed": "",
-            "updateFailed": "",
-            "updated": ""
+            "removed": "Le répertoire des publications a été supprimé.",
+            "updateFailed": "Erreur de mise à jour du répertoire des publications : {{- message}}",
+            "updated": "Le répertoire des publications a été mis à jour."
         },
-        "wipeData": "Données d'authentification supprimées avec succès !"
+        "wipeData": "Données d'authentification supprimées (tokens d'accès et cookies)"
     },
     "opds": {
         "addForm": {
@@ -665,7 +665,7 @@
         "expiredLcp": "Ce livre ne peut être lu car la licence LCP a expiré.",
         "incorrectPassphrase": "Aucune clé LCP enregistrée ne correspond à la publication ou la clé saisie est incorrecte.",
         "lcpEnd": "Fin",
-        "lcpNotSupported": "",
+        "lcpNotSupported": "WARNING : il s'agit d'une version préliminaire de Thorium Desktop, qui ne prend pas en charge les licences de production LCP. Elle ne prend en charge que des licences LCP de test.",
         "lcpRightsCopy": "Caractères copiés",
         "lcpRightsPrint": "Pages imprimées",
         "lcpStart": "Début",
@@ -705,7 +705,7 @@
             "date": "Date de modification",
             "error": {
                 "pdf": {
-                    "validationSelection": ""
+                    "validationSelection": "Impossible de créer une annotation PDF pour cette sélection."
                 }
             },
             "export": "Sauvegarder sous",
@@ -746,9 +746,9 @@
             "unmute": "Activer le son"
         },
         "dock": {
-            "dockDefault": "",
-            "dockLeft": "",
-            "dockRight": ""
+            "dockDefault": "Affichage centré",
+            "dockLeft": "Volet à gauche",
+            "dockRight": "Volet à droite"
         },
         "fxl": {
             "fit": "Remplir"
@@ -822,8 +822,8 @@
         "notes": {
             "colors": {
                 "cyan": "Cyan",
-                "darkorange": "",
-                "darkyellow": "",
+                "darkorange": "Orange foncé",
+                "darkyellow": "Jaune foncé",
                 "green": "Vert",
                 "orange": "Orange",
                 "purple": "Violet",
@@ -872,7 +872,7 @@
             },
             "customFontSelected": "Vous avez sélectionné une police personnelle",
             "customizeReader": "Personnaliser la mise en forme",
-            "defaultValue": "",
+            "defaultValue": "Valeur par défaut",
             "disabled": "Désactivé",
             "display": "Affichage",
             "disposition": {
