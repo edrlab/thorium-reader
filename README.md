@@ -73,6 +73,7 @@ More information on translation process can be found in the dedicated [translati
 
 * `npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root` (or `npm install --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root` if `package-lock.json` needs to be updated): initialize local `node_modules` packages from dependencies declared in `package.json`
 * in case of failure to NPM "install" because of "Divina player" SHA integrity mismatch, please try running the following command in your shell: `node scripts/package-lock-patch.js && cat package-lock.json | grep -i divina-player-js`
+* `cd node_modules/electron && DEBUG=@electron/get* force_no_cache=true node install.js && cd -`: this used to be done automatically via a NPM `postinstall` hook script but it is now a manual step, this sets up the Electron binary for the current platform.
 
 ### Start application in development environment
 
@@ -86,7 +87,7 @@ More information on translation process can be found in the dedicated [translati
 
 ## Build installers
 
-* `npm run package:win` or `npm run package:mac` or `npm run package:linux`
+* `npm run package:win` or `npm run package:mac` or `npm run package:linux` (see the GitHub Actions Workflow YAML scripts for more information on how to handle the build matrix with Intel and ARM target architectures)
 
 Code Signing information: https://github.com/edrlab/thorium-reader/wiki/Code-Signing
 
