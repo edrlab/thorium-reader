@@ -1037,8 +1037,8 @@
                     "name": "Stabdyti garso įrašą"
                 },
                 "CloseReader": {
-                    "description": "Uždaryti skaitytuvės langą ir grįžti į biblioteką",
-                    "name": "Uždaryti skaitytuvę"
+                    "description": "Užverti skaitytuvės langą ir grįžti į biblioteką",
+                    "name": "Užverti skaitytuvę"
                 },
                 "FXLZoomIn": {
                     "description": "Didinti fiksuotame vieno ar dviejų puslapių išdėstyme.",
