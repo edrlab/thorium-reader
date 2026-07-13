@@ -8,8 +8,10 @@
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 
 // SEE PACKAGE.JSON:
-// ar bg ca cs da de el en es et eu fi fr gl hr it ja ka ko lt nl pl pt-br pt-pt ru sl sv ta tr zh-cn zh-tw
-// DEV/CI only: et pl
+// ar bg ca cs da de el en es et eu fi fr gl he hr it ja ka ko lt nl pl pt-br pt-pt ru sl sv ta tr zh-cn zh-tw
+// 32 languages
+// minus 5 incomplete ones (see `__TH__IS_DEV__ || __TH__IS_CI__` in this source file)
+// ==> 27 supported locales in PROD (see `appx` in `package.json`)
 import arCatalog from "readium-desktop/resources/locales/ar.json";
 import bgCatalog from "readium-desktop/resources/locales/bg.json";
 import caCatalog from "readium-desktop/resources/locales/ca.json";
@@ -74,15 +76,9 @@ i18nextInstance.init({
     // @ts-ignore
     ignoreJSONStructure: false,
     debug: false,
-    // SEE PACKAGE.JSON:
-    // ar bg ca cs da de el en es et eu fi fr gl hr it ja ka ko lt nl pl pt-br pt-pt ru sl sv ta tr zh-cn zh-tw
-    // DEV/CI only: et pl
     resources: {
         "ar": {
             translation: arCatalog,
-        },
-        "bg": {
-            translation: bgCatalog,
         },
         "ca": {
             translation: caCatalog,
@@ -105,6 +101,9 @@ i18nextInstance.init({
         "es": {
             translation: esCatalog,
         },
+        "et": {
+            translation: etCatalog,
+        },
         "eu": {
             translation: euCatalog,
         },
@@ -117,26 +116,20 @@ i18nextInstance.init({
         "gl": {
             translation: glCatalog,
         },
-        "hr": {
-            translation: hrCatalog,
-        },
         "it" : {
             translation: itCatalog,
         },
         "ja": {
             translation: jaCatalog,
         },
-        "ka": {
-            translation: kaCatalog,
-        },
-        "ko": {
-            translation: koCatalog,
-        },
         "lt": {
             translation: ltCatalog,
         },
         "nl": {
             translation: nlCatalog,
+        },
+        "pl": {
+            translation: plCatalog,
         },
         "pt-BR": {
             translation: ptBrCatalog,
@@ -167,14 +160,20 @@ i18nextInstance.init({
         },
         ...(__TH__IS_DEV__ || __TH__IS_CI__ ?
         {
-            "et": {
-                translation: etCatalog, // TODO
+            "bg": {
+                translation: bgCatalog,
             },
             "he": {
-                translation: heCatalog, // TODO
+                translation: heCatalog,
             },
-            "pl": {
-                translation: plCatalog, // TODO
+            "hr": {
+                translation: hrCatalog,
+            },
+            "ka": {
+                translation: kaCatalog,
+            },
+            "ko": {
+                translation: koCatalog,
             },
         }
         :{}),
@@ -208,11 +207,7 @@ i18nextInstanceEN.changeLanguage("en").then((_t) => {
 // src/utils/object-keys-values.ts
 // to benefit from compile-type TypeScript typesafe key enum
 export const availableLanguages = {
-    // SEE PACKAGE.JSON:
-    // ar bg ca cs da de el en es et eu fi fr gl hr it ja ka ko lt nl pl pt-br pt-pt ru sl sv ta tr zh-cn zh-tw
-    // DEV/CI only: et pl
     "ar": "عَرَبِيّ (Arabic)",
-    "bg": "български (Bulgarian)",
     "ca": "Catalan",
     "cs": "čeština (Czech)",
     "da": "Dansk (Danish)",
@@ -220,17 +215,16 @@ export const availableLanguages = {
     "el": "ελληνικός (Greek)",
     "en": "English",
     "es": "Español (Spanish)",
+    "et": "Eesti Keel (Estonian)",
     "eu": "Euskadi (Basque)",
     "fi": "Suomi (Finnish)",
     "fr": "Français (French)",
     "gl": "Galician",
-    "hr": "Hrvatski (Croatian)",
     "it": "Italiano (Italian)",
     "ja": "日本語 (Japanese)",
-    "ka": "ქართული (Georgian)",
-    "ko": "한국어 (Korean)",
     "lt": "Lietuvių (Lithuanian)",
     "nl": "Nederlands (Dutch)",
+    "pl": "Polski (Polish)",
     "pt-BR": "Português Brasileiro (Portuguese - Brazil)",
     "pt-PT": "Português (Portuguese - Portugal)",
     "ru": "Русский (Russian)",
@@ -242,9 +236,11 @@ export const availableLanguages = {
     "zh-TW": "繁體中文 - 台灣 (Traditional Chinese / Taiwan)",
     ...(__TH__IS_DEV__ || __TH__IS_CI__ ?
     {
-        "et": "Eesti Keel (Estonian)",
+        "bg": "български (Bulgarian)",
         "he": "עִבְרִית (Hebrew)",
-        "pl": "Polski (Polish)",
+        "hr": "Hrvatski (Croatian)",
+        "ka": "ქართული (Georgian)",
+        "ko": "한국어 (Korean)",
     }
     :{}),
 };
