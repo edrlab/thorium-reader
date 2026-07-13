@@ -1198,6 +1198,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "",
                     "name": ""
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "사용자 파일에서 로드",
@@ -1230,6 +1234,7 @@
         },
         "screenReaderActivate": {
             "help": "",
+            "invite": "",
             "message": "",
             "title": ""
         },

@@ -1209,6 +1209,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "Ota lukunäkymässä käyttöön tai poista käytöstä koko ruudun tila. Huomaa, että toiminto ei ole sama kuin keskittymistila, joka yksinkertaistaa käyttöliittymää",
                     "name": "Muuta koko ruudun tila"
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Lataa käyttäjän tiedostosta",
@@ -1241,6 +1245,7 @@
         },
         "screenReaderActivate": {
             "help": "Kun sovellus havaitsee, että käytössä on avustavaa teknologiaa, käyttöliittymä mukautuu toimimaan paremmin yhteen ruudunlukuohjelmien kanssa.",
+            "invite": "",
             "message": "Parannettu tuki ruudunlukuohjelmille",
             "title": "Paranna ruudunlukukokemusta"
         },

@@ -1221,6 +1221,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "",
                     "name": ""
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Načíst z uživatelského souboru",
@@ -1253,6 +1257,7 @@
         },
         "screenReaderActivate": {
             "help": "",
+            "invite": "",
             "message": "",
             "title": ""
         },

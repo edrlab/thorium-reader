@@ -1203,6 +1203,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "",
                     "name": ""
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "從使用者檔案載入",
@@ -1235,6 +1239,7 @@
         },
         "screenReaderActivate": {
             "help": "",
+            "invite": "",
             "message": "",
             "title": ""
         },

@@ -1215,6 +1215,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "Dans la fenêtre du lecteur, bascule en plein écran. Notez que cela est différent du mode Zen. Le raccourci clavier est le seul moyen de passer en plein écran.",
                     "name": "Basculer en plein écran"
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Charger le fichier",
@@ -1247,6 +1251,7 @@
         },
         "screenReaderActivate": {
             "help": "Lorsque l'application détecte la présence d'une technologie d'assistance, l'interface utilisateur fonctionne mieux avec les lecteurs d'écran",
+            "invite": "",
             "message": "Support amélioré pour les lecteurs d'écran",
             "title": "Améliorer l'expérience d'un utilisateur doté d'un lecteur d'écran"
         },

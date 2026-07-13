@@ -1215,6 +1215,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "",
                     "name": "Alternar ecrã completo"
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Carregar a partir de ficheiro do utilizador",
@@ -1247,6 +1251,7 @@
         },
         "screenReaderActivate": {
             "help": "Quando a aplicação deteta a presença de tecnologia de apoio, a interface do utilizador funciona melhor com leitores de ecrã",
+            "invite": "",
             "message": "Suporte otimizado para leitores de ecrã",
             "title": "Melhorar a experiência do leitor de ecrã"
         },

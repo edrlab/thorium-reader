@@ -1221,6 +1221,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "W oknie czytnika aktywuj pełny ekran lub przywróć normalny tryb okna. To różni się od 'trybu Zen', który upraszcza interfejs",
                     "name": "Przełącz pełny ekran"
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Wczytaj z pliku użytkownika",
@@ -1253,6 +1257,7 @@
         },
         "screenReaderActivate": {
             "help": "Gdy aplikacja wykryje obecność technologii wspomagającej, interfejs użytkownika lepiej współpracuje z czytnikami ekranu",
+            "invite": "",
             "message": "Ulepszona obsługa czytników ekranu",
             "title": "Popraw doświadczenie z czytnikami ekranu"
         },
