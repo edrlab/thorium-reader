@@ -331,7 +331,7 @@ export function convertAnnotationStateArrayToReadiumAnnotationSet(locale: keyof 
             id: "https://github.com/edrlab/thorium-reader/releases/tag/v" + _APP_VERSION,
             type: "Software",
             name: _APP_NAME + " " + _APP_VERSION,
-            homepage: "https://thorium.edrlab.org",
+            homepage: "https://www.thoriumreader.com/",
         },
         generated: dateString,
         title: label || "Annotations set",

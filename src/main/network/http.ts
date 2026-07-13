@@ -296,6 +296,7 @@ async function httpFetchRawResponse(
     //     }
     // };
 
+    proxyAgent.options.ca = TLS_CERTIFICATES;
     options.agent = proxyAgent;
 
     // if (!options.agent && /^https:\/\//.test(url.toString())) {

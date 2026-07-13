@@ -1209,6 +1209,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "Okuma penceresinde, sistem tam ekran modunu etkinleştirir veya normal pencere modunu geri yükler. Bunun, kullanıcı arayüzünü basitleştiren 'zen modu'ndan farklı olduğunu unutmayın",
                     "name": "Tam Ekrana Geç veya Tam Ekrandan Çık"
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Kullanıcı dosyasından yükle",
@@ -1241,6 +1245,7 @@
         },
         "screenReaderActivate": {
             "help": "Uygulama yardımcı teknolojinin mevcudiyetini saptadığında, kullanıcı arayüzü ekran okuyucularla daha iyi çalışır",
+            "invite": "",
             "message": "Ekran okuyucular için geliştirilmiş destek",
             "title": "Ekran okuyucu deneyimini iyileştir"
         },

@@ -210,7 +210,7 @@ if (!window.navigator.epubReadingSystem
                         // console.log("dragstart capture target preventDefault ", n);
                         // e.preventDefault();
                         e.dataTransfer.clearData();
-                        e.dataTransfer.setData("text/plain", "https://www.edrlab.org/software/thorium-reader/");
+                        e.dataTransfer.setData("text/plain", "https://www.thoriumreader.com/");
                     } else if (n === "img" || n === "video" || n === "svg") {
                         // console.log("dragstart capture target preventDefault ", n);
                         // e.preventDefault();

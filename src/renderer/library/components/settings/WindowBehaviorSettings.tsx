@@ -81,7 +81,7 @@ const WindowBehaviorSettings: React.FC<{}> = () => {
                         }
                     </div>
                     <div aria-hidden>
-                        <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.minimizeLibraryToTray")}</h3>
+                        <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.minimizeLibraryToTray")}</h4>
                         <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.minimizeLibraryToTrayDescription")}</p>
                     </div>
                 </label>
@@ -114,7 +114,7 @@ const WindowBehaviorSettings: React.FC<{}> = () => {
                         }
                     </div>
                     <div aria-hidden>
-                        <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.keepLibraryWindowInBackgroundOnReaderOpen")}</h3>
+                        <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.keepLibraryWindowInBackgroundOnReaderOpen")}</h4>
                         <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.keepLibraryWindowInBackgroundOnReaderOpenDescription")}</p>
                     </div>
                 </label>
@@ -147,7 +147,7 @@ const WindowBehaviorSettings: React.FC<{}> = () => {
                         }
                     </div>
                     <div aria-hidden>
-                        <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.keepLibraryWindowInBackgroundOnReaderClose")}</h3>
+                        <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.keepLibraryWindowInBackgroundOnReaderClose")}</h4>
                         <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.keepLibraryWindowInBackgroundOnReaderCloseDescription")}</p>
                     </div>
                 </label>
@@ -180,7 +180,7 @@ const WindowBehaviorSettings: React.FC<{}> = () => {
                         }
                     </div>
                     <div aria-hidden>
-                        <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.oneReaderWindowPerPublication")}</h3>
+                        <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.oneReaderWindowPerPublication")}</h4>
                         <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.window.oneReaderWindowPerPublicationDescription")}</p>
                     </div>
                 </label>

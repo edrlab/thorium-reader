@@ -2804,6 +2804,10 @@ declare namespace typed_i18n {
       readonly "ToggleReaderFullscreen": {
         readonly "description": string,
         readonly "name": string
+      },
+      readonly "ToggleScreenReaderOptimize": {
+        readonly "description": string,
+        readonly "name": string
       }
     },
     readonly "loadUserJson": string,
@@ -2834,6 +2838,7 @@ declare namespace typed_i18n {
   },
   readonly "screenReaderActivate": {
     readonly "help": string,
+    readonly "invite": string,
     readonly "message": string,
     readonly "title": string
   },
@@ -3172,6 +3177,10 @@ declare namespace typed_i18n {
     readonly "ToggleReaderFullscreen": {
       readonly "description": string,
       readonly "name": string
+    },
+    readonly "ToggleScreenReaderOptimize": {
+      readonly "description": string,
+      readonly "name": string
     }
   },
   readonly "loadUserJson": string,
@@ -3418,6 +3427,10 @@ declare namespace typed_i18n {
   readonly "ToggleReaderFullscreen": {
     readonly "description": string,
     readonly "name": string
+  },
+  readonly "ToggleScreenReaderOptimize": {
+    readonly "description": string,
+    readonly "name": string
   }
 };
   (_: "settings.keyboard.list.AddBookmarkWithLabel", __?: {}): { readonly "description": string, readonly "name": string };
@@ -3594,6 +3607,9 @@ declare namespace typed_i18n {
   (_: "settings.keyboard.list.ToggleReaderFullscreen", __?: {}): { readonly "description": string, readonly "name": string };
   (_: "settings.keyboard.list.ToggleReaderFullscreen.description", __?: {}): string;
   (_: "settings.keyboard.list.ToggleReaderFullscreen.name", __?: {}): string;
+  (_: "settings.keyboard.list.ToggleScreenReaderOptimize", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.ToggleScreenReaderOptimize.description", __?: {}): string;
+  (_: "settings.keyboard.list.ToggleScreenReaderOptimize.name", __?: {}): string;
   (_: "settings.keyboard.loadUserJson", __?: {}): string;
   (_: "settings.keyboard.noShortcutFound", __?: {}): string;
   (_: "settings.keyboard.resetDefaults", __?: {}): string;
@@ -3634,10 +3650,12 @@ declare namespace typed_i18n {
   (_: "settings.profiles.version", __?: {}): string;
   (_: "settings.screenReaderActivate", __?: {}): {
   readonly "help": string,
+  readonly "invite": string,
   readonly "message": string,
   readonly "title": string
 };
   (_: "settings.screenReaderActivate.help", __?: {}): string;
+  (_: "settings.screenReaderActivate.invite", __?: {}): string;
   (_: "settings.screenReaderActivate.message", __?: {}): string;
   (_: "settings.screenReaderActivate.title", __?: {}): string;
   (_: "settings.session", __?: {}): { readonly "title": string };
