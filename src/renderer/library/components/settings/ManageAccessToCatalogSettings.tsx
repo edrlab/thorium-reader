@@ -67,7 +67,7 @@ const ManageAccessToCatalogSettings = () => {
                         }
                     </div>
                     <div aria-hidden>
-                        <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.library.enableAPIAPP")}</h3>
+                        <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.library.enableAPIAPP")}</h4>
                     </div>
                 </label>
             </div>
