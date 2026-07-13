@@ -1209,6 +1209,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "",
                     "name": ""
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Зареждане от потребителски файл",
@@ -1241,6 +1245,7 @@
         },
         "screenReaderActivate": {
             "help": "",
+            "invite": "",
             "message": "",
             "title": ""
         },

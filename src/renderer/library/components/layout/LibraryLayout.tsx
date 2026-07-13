@@ -9,6 +9,10 @@ import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scs
 import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 import * as stylesAllBooks from "readium-desktop/renderer/assets/styles/components/allPublicationsPage.scss";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import { TDispatch } from "readium-desktop/typings/redux";
+import { ToastType } from "readium-desktop/common/models/toast";
+import { screenReaderActions, toastActions } from "readium-desktop/common/redux/actions";
+import { I18nFunction } from "readium-desktop/common/services/translator";
 
 import classNames from "classnames";
 import * as React from "react";
@@ -62,7 +66,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
 class LibraryLayout extends React.Component<IProps, undefined> {
@@ -74,6 +78,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
 
         this.onKeyboardFocusMain = this.onKeyboardFocusMain.bind(this);
         this.onKeyboardFocusToolbar = this.onKeyboardFocusToolbar.bind(this);
+        this.onKeyboardToggleScreenReaderOptimize = this.onKeyboardToggleScreenReaderOptimize.bind(this);
 
         this.fastLinkRef = React.createRef<HTMLAnchorElement>();
         this.refToolbar = React.createRef<HTMLAnchorElement>();
@@ -181,11 +186,17 @@ class LibraryLayout extends React.Component<IProps, undefined> {
             true, // listen for key up (not key down)
             this.props.keyboardShortcuts.FocusToolbar,
             this.onKeyboardFocusToolbar);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.ToggleScreenReaderOptimize,
+            this.onKeyboardToggleScreenReaderOptimize);
     }
 
     private unregisterAllKeyboardListeners() {
         unregisterKeyboardListener(this.onKeyboardFocusMain);
         unregisterKeyboardListener(this.onKeyboardFocusToolbar);
+        unregisterKeyboardListener(this.onKeyboardToggleScreenReaderOptimize);
     }
 
     private onKeyboardFocusMain = () => {
@@ -197,6 +208,10 @@ class LibraryLayout extends React.Component<IProps, undefined> {
         if (this.refToolbar?.current) {
             this.refToolbar.current.focus();
         }
+    };
+    private onKeyboardToggleScreenReaderOptimize = () => {
+        const keyboardShortcutScreenReader = `${(this.props.keyboardShortcuts.ToggleScreenReaderOptimize.shift ? "SHIFT " : "") + (this.props.keyboardShortcuts.ToggleScreenReaderOptimize.control ? "CTRL " : "") + (this.props.keyboardShortcuts.ToggleScreenReaderOptimize.alt ? "ALT/OPT " : "") + (this.props.keyboardShortcuts.ToggleScreenReaderOptimize.meta ? "META/CMD " : "") + this.props.keyboardShortcuts.ToggleScreenReaderOptimize.key}`;
+        this.props.toggleScreenReader(this.props.screenReaderActivate, keyboardShortcutScreenReader, this.props.__);
     };
 
     private linkState = () => ({
@@ -440,6 +455,16 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     breadcrumb: state.opds.browser.breadcrumb,
     locale: state.i18n.locale, // refresh
     libraryView: state.settings.libraryView,
+    screenReaderActivate: state.screenReader.activate,
 });
 
-export default connect(mapStateToProps)(withTranslator(LibraryLayout));
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
+    return {
+        toggleScreenReader: (screenReaderActivate: boolean, keyboard: string, __: I18nFunction) => {
+            dispatch(screenReaderActions.save.build(!screenReaderActivate));
+            dispatch(toastActions.openRequest.build(ToastType.Success, __("settings.screenReaderActivate.invite", { keyboard, status: !screenReaderActivate ? __("app.session.exit.askBox.button.yes") : __("app.session.exit.askBox.button.no") })));
+        },
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(LibraryLayout));

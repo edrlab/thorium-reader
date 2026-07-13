@@ -1209,6 +1209,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "I læseren - Aktivér systemets fuldskærmstilstand eller gå tilbage til normalt vindue. Bemærk at dette er anderledes end 'zen mode', hvilket simplificerer brugergrænsefladen",
                     "name": "Slå Fuldskærm Til/Fra"
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Indlæs fra brugerfil",
@@ -1241,6 +1245,7 @@
         },
         "screenReaderActivate": {
             "help": "Når applikationen registrerer at hjælpeteknologier benyttes, fungerer brugergrænsefladen bedre med skærmlæsere",
+            "invite": "",
             "message": "Forbedret understøttelse af skærmlæsere",
             "title": "Forbedret oplevelse med skærmlæser"
         },

@@ -1,7 +1,8 @@
 const util = require('util');
 var fs = require("fs");
 var path = require("path");
-var jsonUtils = require("r2-utils-js/dist/es8-es2017/src/_utils/JsonUtils");
+
+var jsonUtils = require("./json-utils");
 
 const collapsePluralKeys = (obj) => {
     if (typeof obj === "string") {

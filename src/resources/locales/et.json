@@ -1209,6 +1209,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "",
                     "name": "Lülita täisekraanivaade sisse/välja"
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Laadi kasutajafailist",
@@ -1241,6 +1245,7 @@
         },
         "screenReaderActivate": {
             "help": "Kui rakendus tuvastab abitehnoloogia olemasolu, toimib kasutajaliides ekraanilugejatega paremini",
+            "invite": "",
             "message": "Ekraanilugejate parem tugi",
             "title": "Paranda ekraanilugeja kasutuskogemust"
         },

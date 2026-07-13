@@ -124,6 +124,7 @@ export function* init() {
                 console.log("webContents.send - accessibility-support-changed: ", accessibilitySupportEnabled, screenReaderActivated, win.id);
                 try {
                     win.webContents.send("accessibility-support-changed", accessibilitySupportEnabled && screenReaderActivated);
+                    win.webContents.send("accessibility-support-changed-raw", accessibilitySupportEnabled);
                 } catch (e) {
                     debug("webContents.send - accessibility-support-changed ERROR?", e);
                 }
@@ -139,6 +140,11 @@ export function* init() {
         const screenReaderActivated = store.getState().screenReader.activate;
         console.log("ipcMain.on - accessibility-support-query, sender.send - accessibility-support-changed: ", accessibilitySupportEnabled, screenReaderActivated);
         e.sender.send("accessibility-support-changed", accessibilitySupportEnabled && screenReaderActivated);
+    });
+    ipcMain.on("accessibility-support-query-raw", (e) => {
+        const accessibilitySupportEnabled = app.accessibilitySupportEnabled; // .isAccessibilitySupportEnabled()
+        console.log("ipcMain.on - accessibility-support-query-raw, sender.send - accessibility-support-changed: ", accessibilitySupportEnabled);
+        e.sender.send("accessibility-support-changed-raw", accessibilitySupportEnabled);
     });
 
     yield call(() => app.whenReady());
