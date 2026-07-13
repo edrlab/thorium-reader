@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "Neue Version verfügbar. Klicken Sie hier, um mehr zu erfahren.",
-            "title": "{{- appName}} Software-Update."
+            "title": "{{- appName}} Software-Update.",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "Bibliothek / Bücherregal anzeigen",
@@ -1349,26 +1350,6 @@
         }
     },
     "wizard": {
-        "buttons": {
-            "discover": "Entdecken Sie die Neuheiten",
-            "goToBooks": "Zu meinen Publikationen"
-        },
-        "description": {
-            "home": "Thorium sieht anders aus! Entdecken wir, was es Neues gibt…",
-            "resources": ""
-        },
-        "dontShow": "Nicht mehr anzeigen",
-        "resources": {
-            "discord": "",
-            "website": ""
-        },
-        "tab": {
-            "home": "Start",
-            "resources": ""
-        },
-        "title": {
-            "resources": "",
-            "welcome": "Willkommen bei Thorium 3"
-        }
+        "dontShow": "Nicht mehr anzeigen"
     }
 }

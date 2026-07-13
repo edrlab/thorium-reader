@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "Na voljo je nova različica, kliknite za več informacij.",
-            "title": "Posodobitev programske opreme za {{- appName}}"
+            "title": "Posodobitev programske opreme za {{- appName}}",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "Prikaži knjižnico / knjižna polica",
@@ -1361,26 +1362,6 @@
         }
     },
     "wizard": {
-        "buttons": {
-            "discover": "Odkrij novosti",
-            "goToBooks": "Pojdi na moje publikacije"
-        },
-        "description": {
-            "home": "Thorium izgleda drugače! Poglejmo kaj je novega...",
-            "resources": ""
-        },
-        "dontShow": "Ne prikaži več",
-        "resources": {
-            "discord": "",
-            "website": ""
-        },
-        "tab": {
-            "home": "Domov",
-            "resources": ""
-        },
-        "title": {
-            "resources": "",
-            "welcome": "Dobrodošli v Thorium 3"
-        }
+        "dontShow": "Ne prikaži več"
     }
 }

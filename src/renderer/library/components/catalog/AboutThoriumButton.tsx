@@ -38,7 +38,7 @@ import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 import { screenReaderActions, toastActions } from "readium-desktop/common/redux/actions";
 
-import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
+// import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { whatsNewActions } from "readium-desktop/common/redux/actions";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
@@ -129,8 +129,8 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
 
     public render() {
         const { __ } = this.props;
-        const displayVersionToast = this.state.versionInfo && !!this.props.newVersionURL && !!this.props.newVersion;
-        const displayWhatsNew = this.props.displayWhatsNew;
+        const displayVersionToast =  this.state.versionInfo && !!this.props.newVersionURL && !!this.props.newVersion;
+        const displayWhatsNew = !this.props.displayWhatsNew;
         const displayScreenReaderInvite = !this.props.screenReaderActivate && this.state.accessibilitySupportEnabled;
 
         // const locale = encodeURIComponent_RFC3986(this.props.locale);
@@ -143,7 +143,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
         return (
             <section
                 className={stylesFooter.footer_wrapper}
-                style={{ justifyContent: (displayVersionToast || displayScreenReaderInvite) ? "space-between" : "end" }}>
+                style={{ justifyContent: (displayVersionToast || displayScreenReaderInvite || displayWhatsNew) ? "space-between" : "end" }}>
                 {
                     displayVersionToast ?
                     <div className={stylesGlobal.new_version}
@@ -198,9 +198,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                                 shell.openExternal(href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ });
                                 // }
                             }}>
-                                {/* TODO: add a translation for this string */}
-                                {/* {`${this.props.__("app.whatsnew.message", { version: _APP_VERSION })}`} */}
-                                {`${this.props.__("A new version was installed, click to learn more")} (v${_APP_VERSION})`}
+                                {`${this.props.__("app.update.whatsnew")} (v${_APP_VERSION})`}
                                 </a>
                                 </p>
                         </div>

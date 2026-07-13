@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "",
-            "title": ""
+            "title": "",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "라이브러리 / 내서재 보기",
@@ -1338,26 +1339,6 @@
         }
     },
     "wizard": {
-        "buttons": {
-            "discover": "",
-            "goToBooks": ""
-        },
-        "description": {
-            "home": "",
-            "resources": ""
-        },
-        "dontShow": "",
-        "resources": {
-            "discord": "",
-            "website": ""
-        },
-        "tab": {
-            "home": "",
-            "resources": ""
-        },
-        "title": {
-            "resources": "",
-            "welcome": ""
-        }
+        "dontShow": ""
     }
 }

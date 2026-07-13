@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "Nová verze je dostupná. Klikněte sem, abyste se dozvěděli více.",
-            "title": "Aktualizace softwaru {{- appName}}."
+            "title": "Aktualizace softwaru {{- appName}}.",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "Zobrazit knihovnu / knihovničku",
@@ -1361,26 +1362,6 @@
         }
     },
     "wizard": {
-        "buttons": {
-            "discover": "Objevte, co je nového",
-            "goToBooks": "Přejít na mé publikace"
-        },
-        "description": {
-            "home": "Thorium vypadá jinak! Objevte, co je nového...",
-            "resources": ""
-        },
-        "dontShow": "Znovu nezobrazovat",
-        "resources": {
-            "discord": "",
-            "website": ""
-        },
-        "tab": {
-            "home": "Domů",
-            "resources": ""
-        },
-        "title": {
-            "resources": "",
-            "welcome": "Vítejte v aplikaci Thorium 3"
-        }
+        "dontShow": "Znovu nezobrazovat"
     }
 }

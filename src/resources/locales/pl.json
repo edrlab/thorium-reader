@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "Nowa wersja jest dostępna, kliknij aby dowiedzieć się więcej.",
-            "title": "{{- appName}} aktualizacja oprogramowania."
+            "title": "{{- appName}} aktualizacja oprogramowania.",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "Pokaż bibliotekę / półkę z książkami",
@@ -1361,26 +1362,6 @@
         }
     },
     "wizard": {
-        "buttons": {
-            "discover": "Odkryj Thorium Desktop",
-            "goToBooks": "Przejdź do moich publikacji"
-        },
-        "description": {
-            "home": "Thorium 3.4 wprowadza szereg ulepszeń doświadczenia użytkownika i naprawia zestaw problemów. Jeśli zdecydujesz się wrócić do starszej wersji aplikacji, zdecydowanie zaleca się wykonanie kopii zapasowej adnotacji i zakładek przez eksport do zewnętrznego pliku. Następnie zaimportujesz je z powrotem do starszej wersji po jej zainstalowaniu. Wynika to z faktu, że aplikacja przechowuje adnotacje i zakładki w nieco innym formacie wewnętrznym w wersji 3.4. Rozwiązuje to problem z wydajnością, ale narusza wsteczną kompatybilność dla adnotacji.",
-            "resources": "Połącz się z nami i dowiedz się więcej o Thorium:"
-        },
-        "dontShow": "Nie pokazuj ponownie",
-        "resources": {
-            "discord": "Discord: {{- url}}",
-            "website": "Strona internetowa: {{- url}}"
-        },
-        "tab": {
-            "home": "Strona główna",
-            "resources": "Zasoby"
-        },
-        "title": {
-            "resources": "Zasoby i społeczność",
-            "welcome": "Witaj w Thorium 3.4"
-        }
+        "dontShow": "Nie pokazuj ponownie"
     }
 }

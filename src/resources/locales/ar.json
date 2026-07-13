@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "يتوفر إصدار جديد، اضغط لمعرفة المزيد.",
-            "title": "تحديث برنامج {{- appName}}."
+            "title": "تحديث برنامج {{- appName}}.",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "إظهار المكتبة / رف الكتب",
@@ -1373,26 +1374,6 @@
         }
     },
     "wizard": {
-        "buttons": {
-            "discover": "اكتشف ما الجديد",
-            "goToBooks": "الانتقال إلى منشوراتي"
-        },
-        "description": {
-            "home": "يبدو ثوريوم مختلفاً! دعنا نكتشف ما الجديد فيه...",
-            "resources": ""
-        },
-        "dontShow": "عدم الإظهار مرة أخرى",
-        "resources": {
-            "discord": "",
-            "website": ""
-        },
-        "tab": {
-            "home": "الرئيسية",
-            "resources": ""
-        },
-        "title": {
-            "resources": "",
-            "welcome": "مرحباً بك في ثوريوم 3"
-        }
+        "dontShow": "عدم الإظهار مرة أخرى"
     }
 }

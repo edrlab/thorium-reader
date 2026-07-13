@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "En ny version er tilgængelig. Klik her for at læse mere.",
-            "title": "{{- appName}} programopdatering."
+            "title": "{{- appName}} programopdatering.",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "Vis bibliotek / boghylde",
@@ -1349,26 +1350,6 @@
         }
     },
     "wizard": {
-        "buttons": {
-            "discover": "Gå på opdagelse i Thorium Desktop",
-            "goToBooks": "Gå til dine bøger"
-        },
-        "description": {
-            "home": "Thorium 3.4 bringer en række forbedringer af brugeroplevelsen og retter en række problemer. Hvis du senere beslutter dig for at vende tilbage til en ældre version af applikationen, anbefales det kraftigt, at du sikkerhedskopierer dine e-bogsannotationer og bogmærker ved at eksportere dem til en ekstern fil. Du importerer dem derefter tilbage til den ældre version, når den er installeret. Dette skyldes, at applikationen gemmer noter og bogmærker i et lidt anderledes internt format i version 3.4. Dette løser et ydeevneproblem, men afbryder bagudkompatibiliteten for noter.",
-            "resources": "Få kontakt med os og lær mere om Thorium:"
-        },
-        "dontShow": "Vis ikke igen",
-        "resources": {
-            "discord": "Discord: {{- url}}",
-            "website": "Website: {{- url}}"
-        },
-        "tab": {
-            "home": "Hjem",
-            "resources": "Ressourcer"
-        },
-        "title": {
-            "resources": "Ressourcer & Fællesskab",
-            "welcome": "Velkommen til Thorium 3.4"
-        }
+        "dontShow": "Vis ikke igen"
     }
 }

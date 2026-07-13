@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "Nueva versión disponible, haz clic para obtener más información.",
-            "title": "Actualización de software {{- appName}}."
+            "title": "Actualización de software {{- appName}}.",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "Mostrar biblioteca",
@@ -1355,26 +1356,6 @@
         }
     },
     "wizard": {
-        "buttons": {
-            "discover": "Descubre Thorium Desktop",
-            "goToBooks": "Ir a mis libros"
-        },
-        "description": {
-            "home": "Thorium 3.4 aporta una serie de mejoras a la experiencia del usuario y corrige una serie de problemas. Si más adelante decides volver a una versión anterior de la aplicación, te recomendamos encarecidamente que hagas una copia de seguridad de tus anotaciones y marcadores del libro electrónico exportándolos a un archivo externo. Así podrás importarlos de nuevo a la versión anterior una vez que la hayas instalado. Esto se debe a que, en la versión 3.4, la aplicación almacena las anotaciones y los marcadores en un formato interno ligeramente diferente. Esto resuelve un problema de rendimiento, pero rompe la compatibilidad con versiones anteriores en lo que respecta a las anotaciones.",
-            "resources": "Ponte en contacto con nosotros y descubre más sobre Thorium:"
-        },
-        "dontShow": "No volver a mostrar",
-        "resources": {
-            "discord": "Discord: {{- url}}",
-            "website": "Sitio web: {{- url}}"
-        },
-        "tab": {
-            "home": "Inicio",
-            "resources": "Recursos"
-        },
-        "title": {
-            "resources": "Recursos y comunidad",
-            "welcome": "Bienvenido a Thorium 3.4"
-        }
+        "dontShow": "No volver a mostrar"
     }
 }

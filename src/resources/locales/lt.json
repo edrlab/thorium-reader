@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "Prieinama nauja versija, paspauskite, jei norite sužinoti daugiau.",
-            "title": "{{- appName}} programinės įrangos naujinys."
+            "title": "{{- appName}} programinės įrangos naujinys.",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "Rodyti biblioteką / lentyną",
@@ -1361,26 +1362,6 @@
         }
     },
     "wizard": {
-        "buttons": {
-            "discover": "Atraskite „Thorium“",
-            "goToBooks": "Eiti į mano leidinius"
-        },
-        "description": {
-            "home": "„Thorium 3.4“ versijoje patobulinta naudotojo patirtis ir ištaisyta keletas problemų. Jei vėliau nuspręsite grįžti prie senesnės programos versijos, primygtinai rekomenduojame susikurti leidinių pastabų ir skirtukų atsargines kopijas, eksportuojant į išorinį failą. Įdiegus senesnę versiją, galėsite jas importuoti atgal. Taip yra todėl, kad 3.4 versijoje pastabos ir skirtukai saugomi šiek tiek kitokiu vidiniu formatu. Tai išsprendžia našumo problemą, tačiau nutraukia atgalinį pastabų suderinamumą.",
-            "resources": "Susisiekite su mumis ir sužinokite daugiau apie „Thorium“:"
-        },
-        "dontShow": "Daugiau neberodyti",
-        "resources": {
-            "discord": "Discord: {{- url}}",
-            "website": "Svetainė: {{- url}}"
-        },
-        "tab": {
-            "home": "Pradžia",
-            "resources": "Ištekliai"
-        },
-        "title": {
-            "resources": "Ištekliai ir bendruomenė",
-            "welcome": "Su jumis sveikinasi Thorium 3.4"
-        }
+        "dontShow": "Daugiau neberodyti"
     }
 }

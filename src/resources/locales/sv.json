@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "Ny version tillgänglig, klicka för mer information.",
-            "title": "{{- appName}}-programuppdatering."
+            "title": "{{- appName}}-programuppdatering.",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "Visa bokhylla",
@@ -1349,26 +1350,6 @@
         }
     },
     "wizard": {
-        "buttons": {
-            "discover": "Upptäck Thorium Desktop",
-            "goToBooks": "Gå till mina böcker"
-        },
-        "description": {
-            "home": "Thorium 3.4 innehåller förbättringar av användarupplevelsen och löser flera problem. Om du i framtiden bestämmer dig för att återgå till en äldre version av programmet, rekommenderar vi starkt att du säkerhetskopierar dina anteckningar och bokmärken genom att exportera dem till en extern fil. Du importerar dem sedan i den äldre versionen efter att den är installerad. Detta beror på att Thorium lagrar anteckningar och bokmärken i ett något annorlunda internt format i version 3.4. Detta löser ett prestandaproblem, men bryter bakåtkompatibiliteten.",
-            "resources": "Få kontakt med oss och lär dig mer om Thorium:"
-        },
-        "dontShow": "Visa inte igen",
-        "resources": {
-            "discord": "Discord: {{- url}}",
-            "website": "Webbsida: {{- url}}"
-        },
-        "tab": {
-            "home": "Hem",
-            "resources": "Resurser"
-        },
-        "title": {
-            "resources": "Resurser och gemenskap",
-            "welcome": "Välkommen till Thorium 3.4"
-        }
+        "dontShow": "Visa inte igen"
     }
 }
