@@ -1209,6 +1209,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "In het leesvenster, activeer systeem volledig scherm of herstel normaal venster modus. Merk op dat dit anders is van de 'zen modus' wat het gebruikersinterface versimpelt",
                     "name": "Schakelaar Volledig Scherm"
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Laad uit gebruikersbestand",
@@ -1241,6 +1245,7 @@
         },
         "screenReaderActivate": {
             "help": "Wanneer de app de aanwezigheid van hulpsoftware waarneemt, zal het gebruikersinterface beter werken voor schermlezers",
+            "invite": "",
             "message": "Verbeterde ondersteuning voor schermlezers",
             "title": "Verbeterde schermlezer ervaring"
         },

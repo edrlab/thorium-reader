@@ -1215,6 +1215,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "Nella finestra di lettura, attiva la modalità a schermo intero o ripristina la modalità finestra normale. Questa funzione è diversa dalla \"modalità zen\", che semplifica l'interfaccia utente",
                     "name": "Attiva/disattiva schermo intero"
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Carica il file",
@@ -1247,6 +1251,7 @@
         },
         "screenReaderActivate": {
             "help": "Quando l'applicazione rileva la presenza di tecnologia assistiva, l'interfaccia utente funziona meglio con i lettori di schermo",
+            "invite": "",
             "message": "Supporto migliorato per screen reader",
             "title": "Migliora l’esperienza con lo screen reader"
         },

@@ -490,7 +490,7 @@ class Reader extends React.Component<IProps, IState> {
         // note that "@r2-navigator-js/electron/main/browser-window-tracker"
         // uses "accessibility-support-changed" instead of "accessibility-support-query",
         // so there is no duplicate event handler.
-        console.log("componentDidMount() ipcRenderer.send - accessibility-support-query");
+        console.log("READER.tsx componentDidMount() ipcRenderer.send - accessibility-support-query");
         ipcRenderer.send("accessibility-support-query");
 
         // if (this.mainElRef?.current) {

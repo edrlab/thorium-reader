@@ -1215,6 +1215,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "Na janela do leitor, ativar a tela cheia do sistema ou restaurar o modo normal. Note que isso é diferente do 'modo Zen' que simplifica a interface do usuário",
                     "name": "Ativar/desativar Tela Cheia"
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Carregar de arquivo de usuário",
@@ -1247,6 +1251,7 @@
         },
         "screenReaderActivate": {
             "help": "Quando o aplicativo detecta a presença de tecnologia assistiva, a interface do usuário funciona melhor com leitores de tela",
+            "invite": "",
             "message": "Suporte otimizado para leitores de tela",
             "title": "Melhorar a experiência do leitor de tela"
         },

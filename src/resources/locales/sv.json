@@ -1209,6 +1209,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "Starta eller avsluta helskärmsläge i läsfönstret. Detta är inte samma sak som \"zenläge\" som förenklar gränssnittet",
                     "name": "Starta eller avsluta helskärmsläge"
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Läs in från användarfil",
@@ -1241,6 +1245,7 @@
         },
         "screenReaderActivate": {
             "help": "När programmet upptäcker hjälpmedelsteknik så anpassas gränssnittet för att fungera bättre med skärmläsare",
+            "invite": "",
             "message": "Förbättrat stöd för skärmläsare",
             "title": "Förbättra skärmläsarupplevelsen"
         },
