@@ -200,7 +200,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                             }}>
                                 {/* TODO: add a translation for this string */}
                                 {/* {`${this.props.__("app.whatsnew.message", { version: _APP_VERSION })}`} */}
-                                See what is new in Thorium {`v${_APP_VERSION}`}
+                                {`${this.props.__("A new version was installed, click to learn more")} (v${_APP_VERSION})`}
                                 </a>
                                 </p>
                         </div>
