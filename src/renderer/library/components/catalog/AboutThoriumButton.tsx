@@ -130,9 +130,9 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
         const displayVersionToast = this.state.versionInfo && !!this.props.newVersionURL && !!this.props.newVersion;
         const displayScreenReaderInvite = !this.props.screenReaderActivate && this.state.accessibilitySupportEnabled;
 
-        const locale = encodeURIComponent_RFC3986(this.props.locale);
-        const app_version = encodeURIComponent_RFC3986(_APP_VERSION);
-        const source = encodeURIComponent_RFC3986("thorium-desktop");
+        // const locale = encodeURIComponent_RFC3986(this.props.locale);
+        // const app_version = encodeURIComponent_RFC3986(_APP_VERSION);
+        // const source = encodeURIComponent_RFC3986("thorium-desktop");
 
         // const customizationProfileProvisionedAndActivated = this.props.customizationProvision.find(({id}) => this.props.customizationProfileId === id);
         const keyboardShortcutScreenReader = `${(this.props.keyboardShortcuts.ToggleScreenReaderOptimize.shift ? "SHIFT " : "") + (this.props.keyboardShortcuts.ToggleScreenReaderOptimize.control ? "CTRL " : "") + (this.props.keyboardShortcuts.ToggleScreenReaderOptimize.alt ? "ALT/OPT " : "") + (this.props.keyboardShortcuts.ToggleScreenReaderOptimize.meta ? "META/CMD " : "") + this.props.keyboardShortcuts.ToggleScreenReaderOptimize.key}`;
