@@ -186,17 +186,6 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                                 this.props.toggleScreenReader(this.props.screenReaderActivate, keyboardShortcutScreenReader, this.props.__);
                             }}>{`${this.props.__("settings.screenReaderActivate.invite", { keyboard: keyboardShortcutScreenReader, status: this.props.screenReaderActivate ? __("app.session.exit.askBox.button.yes") : __("app.session.exit.askBox.button.no") })}`}</a></p>
                         </div>
-                        {/* <button onClick={() => {
-                            this.setState({ versionInfo : false });
-                            shell.openExternal(this.props.newVersionURL).then(() => {}).catch((err: unknown) => { console.log(err); }); // .finally(() => {})
-                        }}>
-                            {this.props.__("app.session.exit.askBox.button.yes")}
-                        </button>
-                        <button onClick={() => {
-                            this.setState({ versionInfo : false });
-                        }}>
-                            {this.props.__("app.session.exit.askBox.button.no")}
-                        </button> */}
                     </div>
                     : <></>
                 }
