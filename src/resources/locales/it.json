@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "Nuova versione disponibile, clicca per saperne di più.",
-            "title": "Aggiornamento del software {{- appName}}."
+            "title": "Aggiornamento del software {{- appName}}.",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "Visualizza la biblioteca",
@@ -164,6 +165,7 @@
         "cancel": "Annulla",
         "customization": {
             "splashscreen": {
+                "dontShow": "Non mostrare più",
                 "fallbackWelcomeScreen": "Nessuna pagina di benvenuto fornita",
                 "state": "Stato: {{- state}}",
                 "title": "Personalizzazione del profilo fornita e attivata"
@@ -1352,29 +1354,6 @@
             "underlineWordSolidBackground": "Sottolineato, parola con sfondo pieno",
             "underlineWordUnderline": "Sottolineato, parola sottolineata",
             "wordColor": "Colore della parola"
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "Scopri Thorium Desktop",
-            "goToBooks": "Vai alle mie pubblicazioni"
-        },
-        "description": {
-            "home": "Thorium 3.4 apporta una serie di miglioramenti all'esperienza utente e corregge una serie di bug. Se decidi di tornare a utilizzare una versione precedente dell'applicazione ti raccomandiamo di salvare le evidenziature e i segnalibri esportandoli in un file esterno. Li potrai importare in seguito una volta che la versione meno recente sarà installata. La ragione è che questa versione 3.4 salva in un formato leggermente diverso le evidenziature e i segnalibri. Questo risolve alcuni problemi di prestazione ma incide sulla retrocompatibilità di evidenziature e segnalibri.",
-            "resources": "Seguiteci per essere sempre aggiornati su Thorium:"
-        },
-        "dontShow": "Non mostrare più",
-        "resources": {
-            "discord": "Discord: {{- url}}",
-            "website": "Sito Web: {{- url}}"
-        },
-        "tab": {
-            "home": "Home",
-            "resources": "Risorse"
-        },
-        "title": {
-            "resources": "Risorse e Community",
-            "welcome": "Benvenuti in Thorium 3.4"
         }
     }
 }

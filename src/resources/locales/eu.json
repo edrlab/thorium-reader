@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "Bertsio berria eskuragarri, klik egin gehiago jakiteko.",
-            "title": "{{- appName}} software-eguneratzea."
+            "title": "{{- appName}} software-eguneratzea.",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "Erakutsi liburutegia",
@@ -161,6 +162,7 @@
         "cancel": "Ezeztatu",
         "customization": {
             "splashscreen": {
+                "dontShow": "Ez erakutsi berriro",
                 "fallbackWelcomeScreen": "",
                 "state": "",
                 "title": ""
@@ -1346,29 +1348,6 @@
             "underlineWordSolidBackground": "",
             "underlineWordUnderline": "",
             "wordColor": ""
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "Ezagutu zer berri",
-            "goToBooks": "Joan nire argitalpenetara"
-        },
-        "description": {
-            "home": "Thorium itxura ezberdina du! Ezagutu dezagun zer berri...",
-            "resources": ""
-        },
-        "dontShow": "Ez erakutsi berriro",
-        "resources": {
-            "discord": "",
-            "website": ""
-        },
-        "tab": {
-            "home": "Hasiera",
-            "resources": ""
-        },
-        "title": {
-            "resources": "",
-            "welcome": "Ongi etorri Thorium 3ra"
         }
     }
 }

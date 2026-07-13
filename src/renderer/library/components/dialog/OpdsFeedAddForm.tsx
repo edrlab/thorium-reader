@@ -49,9 +49,9 @@ export const OpdsFeedHowDoesItWorksInfoBox = () => {
                     onClick={(ev) => {
                         ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                         const href = "https://opds.io/";
-                        if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                            shell.openExternal(href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ })
-                        }
+                        // if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
+                        shell.openExternal(href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ })
+                        // }
                     }}>
                     {__("opds.documentation")}
                     <SVG ariaHidden svg={FollowLinkIcon} />

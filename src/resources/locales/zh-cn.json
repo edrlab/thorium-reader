@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "有新版本可用，点击了解更多信息。",
-            "title": "{{- appName}} 软件更新。"
+            "title": "{{- appName}} 软件更新。",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "显示 书库/书架",
@@ -158,6 +159,7 @@
         "cancel": "取消",
         "customization": {
             "splashscreen": {
+                "dontShow": "不再显示",
                 "fallbackWelcomeScreen": "未提供欢自定义迎屏幕",
                 "state": "状态: {{- state}}",
                 "title": "准备并激活自定义配置文件"
@@ -1340,29 +1342,6 @@
             "underlineWordSolidBackground": "",
             "underlineWordUnderline": "",
             "wordColor": ""
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "发掘 Thorium 桌面版",
-            "goToBooks": "查看我的出版物"
-        },
-        "description": {
-            "home": "Thorium 3.4 带来一系列用户体验改进并修复了一组问题。如果你之后决定回到旧版程序，强烈建议先用旧版程序备份电子书标注和书签，办法是将它们导出到外部文件。然后在装好旧版程序后把它们导回去。这是因为在 3.4 版本以略微不同的内部格式存储标注和书签。这解决了性能问题，但破坏了标注的向后兼容性。",
-            "resources": ""
-        },
-        "dontShow": "不再显示",
-        "resources": {
-            "discord": "",
-            "website": ""
-        },
-        "tab": {
-            "home": "主页",
-            "resources": ""
-        },
-        "title": {
-            "resources": "",
-            "welcome": "欢迎使用 Thorium 3.4"
         }
     }
 }

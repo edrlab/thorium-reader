@@ -38,7 +38,8 @@ import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 import { screenReaderActions, toastActions } from "readium-desktop/common/redux/actions";
 
-import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
+// import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
+import { whatsNewActions } from "readium-desktop/common/redux/actions";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -65,6 +66,7 @@ interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, Retu
 
 interface IState {
     versionInfo: boolean;
+    displayWhatsNew?: boolean;
 
     accessibilitySupportEnabled: boolean;
 }
@@ -127,7 +129,8 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
 
     public render() {
         const { __ } = this.props;
-        const displayVersionToast = this.state.versionInfo && !!this.props.newVersionURL && !!this.props.newVersion;
+        const displayVersionToast =  this.state.versionInfo && !!this.props.newVersionURL && !!this.props.newVersion;
+        const displayWhatsNew = !this.props.displayWhatsNew;
         const displayScreenReaderInvite = !this.props.screenReaderActivate && this.state.accessibilitySupportEnabled;
 
         // const locale = encodeURIComponent_RFC3986(this.props.locale);
@@ -140,7 +143,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
         return (
             <section
                 className={stylesFooter.footer_wrapper}
-                style={{ justifyContent: (displayVersionToast || displayScreenReaderInvite) ? "space-between" : "end" }}>
+                style={{ justifyContent: (displayVersionToast || displayScreenReaderInvite || displayWhatsNew) ? "space-between" : "end" }}>
                 {
                     displayVersionToast ?
                     <div className={stylesGlobal.new_version}
@@ -168,6 +171,37 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                         }}>
                             {this.props.__("app.session.exit.askBox.button.no")}
                         </button> */}
+                    </div>
+                    : displayWhatsNew ?
+                    <div className={stylesGlobal.new_version}
+                    aria-live="polite"
+                    role="alert">
+                        <div>
+                            <SVG ariaHidden svg={InfoIcon} />
+                            <p
+                            ><a href=""
+                            onClick={(ev) => {
+                                ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
+                                this.props.whatsNewOpened();
+
+                                // getOsName().then((v) => v).catch(() => navigator.platform || "unknown").then((osName) => {
+                                //     const os = encodeURIComponent_RFC3986(osName);
+                                //     const href = `https://thorium.edrlab.org/?lang=${locale}&v=${app_version}&source=${source}&os=${os}`;
+                                //     if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
+                                //         shell.openExternal(href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ });
+                                //     }
+                                // }).catch((err: unknown) => { console.log(err); });
+
+                                // https://www.thoriumreader.com/release-notes/desktop/3-4-0/
+                                const href = "https://www.thoriumreader.com/release-notes/desktop/" + (__TH__IS_DEV__ || __TH__IS_CI__ ? "" : _APP_VERSION.replace(/\./, "-"));
+                                // if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
+                                shell.openExternal(href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ });
+                                // }
+                            }}>
+                                {`${this.props.__("app.update.whatsnew")} (v${_APP_VERSION})`}
+                                </a>
+                                </p>
+                        </div>
                     </div>
                     : <></>
                 }
@@ -325,6 +359,7 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
         locale: state.i18n.locale, // refresh
         newVersionURL: state.versionUpdate.newVersionURL,
         newVersion: state.versionUpdate.newVersion,
+        displayWhatsNew: state.whatsNew.opened_v350,
 
         customizationProvision: state.customization.provision,
         customizationProfileId: state.customization.activate.id,
@@ -340,6 +375,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         // openReader: (publicationView: PublicationView) => {
         //     dispatch(readerActions.openRequest.build(publicationView.identifier));
         // },
+        whatsNewOpened: () => {
+            dispatch(whatsNewActions.setWhatsNew.build(true));
+        },
         toggleScreenReader: (screenReaderActivate: boolean, keyboard: string, __: I18nFunction) => {
             dispatch(screenReaderActions.save.build(!screenReaderActivate));
             dispatch(toastActions.openRequest.build(ToastType.Success, __("settings.screenReaderActivate.invite", { keyboard, status: !screenReaderActivate ? __("app.session.exit.askBox.button.yes") : __("app.session.exit.askBox.button.no") })));

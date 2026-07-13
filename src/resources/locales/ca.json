@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "Hi ha una nova versió disponible, feu clic per obtenir més informació.",
-            "title": "{{- appName}} software actualitzat."
+            "title": "{{- appName}} software actualitzat.",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "Mostrar biblioteca",
@@ -164,6 +165,7 @@
         "cancel": "Cancel·lar",
         "customization": {
             "splashscreen": {
+                "dontShow": "No mostreu de nou",
                 "fallbackWelcomeScreen": "",
                 "state": "",
                 "title": ""
@@ -1352,29 +1354,6 @@
             "underlineWordSolidBackground": "",
             "underlineWordUnderline": "",
             "wordColor": ""
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "Descobreix les novetats",
-            "goToBooks": "Ves a les meves publicacions"
-        },
-        "description": {
-            "home": "Thorium sembla diferent! Anem a descobrir que hi ha nou... ",
-            "resources": ""
-        },
-        "dontShow": "No mostreu de nou",
-        "resources": {
-            "discord": "",
-            "website": ""
-        },
-        "tab": {
-            "home": "Inici",
-            "resources": ""
-        },
-        "title": {
-            "resources": "",
-            "welcome": "Benvinguts a Thorium 3"
         }
     }
 }

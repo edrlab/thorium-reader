@@ -18,7 +18,7 @@ import { IDictWinRegistryReaderState } from "./win/registry/reader";
 import { IWinSessionLibraryState } from "./win/session/library";
 import { IDictWinSessionReaderState } from "./win/session/reader";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
-import { IWizardState } from "readium-desktop/common/redux/states/wizard";
+import { IWhatsNewState } from "readium-desktop/common/redux/states/whatsNew";
 import { ISettingsState } from "readium-desktop/common/redux/states/settings";
 
 export interface RootState extends ICommonRootState {
@@ -47,11 +47,11 @@ export interface RootState extends ICommonRootState {
         catalog: OpdsFeedDocument[];
     },
     version: string;
-    wizard: IWizardState;
+    whatsNew: IWhatsNewState;
     settings: ISettingsState;
 }
 
-export type PersistRootState_ = Pick<RootState, "win" | "publication" | "reader" | "session" | "screenReader" | "i18n" | "opds" | "version" | "theme" | "wizard" | "settings" | "creator" | "noteExport" | "customization">;
+export type PersistRootState_ = Pick<RootState, "win" | "publication" | "reader" | "session" | "screenReader" | "i18n" | "opds" | "version" | "theme" | "whatsNew" | "settings" | "creator" | "noteExport" | "customization">;
 export type PersistRootState = Omit<PersistRootState_, "win"> & {
     win: {
         session: {
@@ -63,7 +63,7 @@ export type PersistRootState = Omit<PersistRootState_, "win"> & {
         },
     };
 }
-// export type PersistRootStatePatch = Pick<RootState, "publication" | "reader" | "session" | "screenReader" | "i18n" | "opds" | "version" | "theme" | "wizard" | "settings" | "creator" | "noteExport" | "customization"> & {
+// export type PersistRootStatePatch = Pick<RootState, "publication" | "reader" | "session" | "screenReader" | "i18n" | "opds" | "version" | "theme" | "whatsNew" | "settings" | "creator" | "noteExport" | "customization"> & {
 //     win: {
 //         session: {
 //             library: IWinSessionLibraryState,

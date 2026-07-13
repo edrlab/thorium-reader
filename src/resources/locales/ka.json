@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "",
-            "title": ""
+            "title": "",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "ბიბლიოთეკის ჩვენება / წიგნების კარადა",
@@ -161,6 +162,7 @@
         "cancel": "გადაფიქრება",
         "customization": {
             "splashscreen": {
+                "dontShow": "",
                 "fallbackWelcomeScreen": "",
                 "state": "",
                 "title": ""
@@ -1346,29 +1348,6 @@
             "underlineWordSolidBackground": "",
             "underlineWordUnderline": "",
             "wordColor": ""
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "",
-            "goToBooks": ""
-        },
-        "description": {
-            "home": "",
-            "resources": ""
-        },
-        "dontShow": "",
-        "resources": {
-            "discord": "",
-            "website": ""
-        },
-        "tab": {
-            "home": "",
-            "resources": ""
-        },
-        "title": {
-            "resources": "",
-            "welcome": ""
         }
     }
 }

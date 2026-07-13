@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "Neue Version verfügbar. Klicken Sie hier, um mehr zu erfahren.",
-            "title": "{{- appName}} Software-Update."
+            "title": "{{- appName}} Software-Update.",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "Bibliothek / Bücherregal anzeigen",
@@ -161,6 +162,7 @@
         "cancel": "Abbrechen",
         "customization": {
             "splashscreen": {
+                "dontShow": "Nicht mehr anzeigen",
                 "fallbackWelcomeScreen": "Kein Begrüßungsbildschirm vorhanden",
                 "state": "Status: {{- state}}",
                 "title": "Bereitstellung und Aktivierung des Anpassungsprofils"
@@ -1346,29 +1348,6 @@
             "underlineWordSolidBackground": "Satz unterstreichen, Wort farblich hervorheben",
             "underlineWordUnderline": "Satz unterstreichen, Wort unterstreichen",
             "wordColor": "Wortfarbe"
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "Entdecken Sie die Neuheiten",
-            "goToBooks": "Zu meinen Publikationen"
-        },
-        "description": {
-            "home": "Thorium sieht anders aus! Entdecken wir, was es Neues gibt…",
-            "resources": ""
-        },
-        "dontShow": "Nicht mehr anzeigen",
-        "resources": {
-            "discord": "",
-            "website": ""
-        },
-        "tab": {
-            "home": "Start",
-            "resources": ""
-        },
-        "title": {
-            "resources": "",
-            "welcome": "Willkommen bei Thorium 3"
         }
     }
 }

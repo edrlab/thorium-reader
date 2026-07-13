@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "Uus versioon on saadaval, klõpsa lisateabe lugemiseks.",
-            "title": "{{- appName}} - tarkvarauuendus."
+            "title": "{{- appName}} - tarkvarauuendus.",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "Näita oma kogu / raamaturiiulit",
@@ -161,6 +162,7 @@
         "cancel": "Katkesta",
         "customization": {
             "splashscreen": {
+                "dontShow": "Ära näita enam uuesti",
                 "fallbackWelcomeScreen": "Tervitusvaade pole lisatud",
                 "state": "Olek: {{- state}}",
                 "title": "Kohandatud profiili ettevalmistamine ja aktiveerimine"
@@ -1346,29 +1348,6 @@
             "underlineWordSolidBackground": "Alljoonitud tekst, sõna ühtlane taust",
             "underlineWordUnderline": "Alljoonitud tekst, sõna allakriipsutus",
             "wordColor": "Sõna värv"
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "Tutvu Thoriumi töölauarakendusega",
-            "goToBooks": "Suundu minu väljaannete juurde"
-        },
-        "description": {
-            "home": "Thorium 3.4 toob kaasa mitmeid kasutajakogemuse parandusi ja lahendab rea probleeme. Kui otsustad hiljem minna tagasi rakenduse vanema versiooni juurde, soovitame tungivalt teha oma e-raamatute märkmetest ja järjehoidjatest varukoopia, eksportides need välisesse faili. Pärast vanema versiooni paigaldamist saad need uuesti importida. Seda seetõttu, et versioonis 3.4 salvestab rakendus märkmeid ja järjehoidjaid veidi teistsuguses sisemises vormingus. See lahendab jõudlusprobleemi, kuid rikub märkmete tagasiühilduvust varasemate versioonidega.",
-            "resources": "Võta meiega ühendust ja uuri rohkem Thoriumi kohta:"
-        },
-        "dontShow": "Ära näita enam uuesti",
-        "resources": {
-            "discord": "Discordi kanal: {{- url}}",
-            "website": "Veebisait: {{- url}}"
-        },
-        "tab": {
-            "home": "Avaleht",
-            "resources": "Ressursid"
-        },
-        "title": {
-            "resources": "Ressursid ja kogukond",
-            "welcome": "Tere tulemast, see on Thorium 3.4"
         }
     }
 }

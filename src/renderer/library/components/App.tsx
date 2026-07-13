@@ -37,7 +37,6 @@ import { acceptedExtensionArray } from "readium-desktop/common/extension";
 import Nunito from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-Regular.ttf";
 import NunitoBold from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-SemiBold.ttf";
 
-import { WizardModal } from "./Wizard";
 import { getReduxHistory, getStore } from "../createStore";
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { CustomizationProfileDialog } from "readium-desktop/renderer/common/components/customizationProfileDialog";
@@ -230,7 +229,6 @@ export default class App extends React.Component<{}, undefined> {
                                     <DialogManager />
                                     <LoaderMainLoad />
                                     <ToastManager />
-                                    <WizardModal />
                                     <CustomizationProfileDialog />
                                 </div>;
                             }}

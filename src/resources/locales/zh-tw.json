@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "有新版本，點選了解更多。",
-            "title": "{{- appName}} 軟體已更新。"
+            "title": "{{- appName}} 軟體已更新。",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "顯示 書庫/書架",
@@ -158,6 +159,7 @@
         "cancel": "取消",
         "customization": {
             "splashscreen": {
+                "dontShow": "不再顯示",
                 "fallbackWelcomeScreen": "",
                 "state": "狀態： {{- state}}",
                 "title": ""
@@ -1340,29 +1342,6 @@
             "underlineWordSolidBackground": "",
             "underlineWordUnderline": "",
             "wordColor": ""
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "查看新動態",
-            "goToBooks": "前往我的出版物"
-        },
-        "description": {
-            "home": "Thorium 看起來不一樣！讓我們來發現什麼新鮮事...",
-            "resources": ""
-        },
-        "dontShow": "不再顯示",
-        "resources": {
-            "discord": "",
-            "website": ""
-        },
-        "tab": {
-            "home": "首頁",
-            "resources": ""
-        },
-        "title": {
-            "resources": "",
-            "welcome": "歡迎來到 Thorium 3"
         }
     }
 }
