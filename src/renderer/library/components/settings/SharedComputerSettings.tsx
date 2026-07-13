@@ -75,7 +75,7 @@ const SharedComputerSettings = () => {
                         }
                     </div>
                     <div aria-hidden>
-                        <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.sharedComputer.lcpAutoDeleteExpiredPublications")}</h3>
+                        <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.sharedComputer.lcpAutoDeleteExpiredPublications")}</h4>
                         <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.sharedComputer.lcpAutoDeleteExpiredPublicationsDescription")}</p>
                     </div>
                 </label>
