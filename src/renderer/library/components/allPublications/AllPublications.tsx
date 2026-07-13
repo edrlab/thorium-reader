@@ -983,9 +983,9 @@ export const AllPublicationsPage = (props: IProps) => {
         const onKeyboardNavigateLast = React.useCallback(() => {
             tableInstance.setPageIndex(tableInstance.getPageCount() - 1);
         }, [tableInstance]);
-        
+
     const registerAllKeyboardListeners = React.useCallback(() => {
-    
+
             registerKeyboardListener(
                 true, // listen for key up (not key down)
                 keyboardShortcuts.NavigatePreviousLibraryPageAlt,
@@ -1019,7 +1019,7 @@ export const AllPublicationsPage = (props: IProps) => {
     React.useEffect(() => {
         // Accessibility
         ipcRenderer.on("accessibility-support-changed", accessibilitySupportChanged);
-        console.log("useEffect mount - ipcRenderer.send accessibility-support-query");
+        console.log("ALLPUBPAGES.tsx componentDidMount() ipcRenderer.send accessibility-support-query");
         ipcRenderer.send("accessibility-support-query");
 
         // Keyboard
@@ -1065,7 +1065,7 @@ export const AllPublicationsPage = (props: IProps) => {
         prevKeyboardShortcutsRef.current = keyboardShortcuts;
 
         // Accessibility query à chaque update (comme componentDidUpdate)
-        console.log("useEffect update - ipcRenderer.send accessibility-support-query");
+        console.log("ALLPUBPAGES.tsx componentDidUpdate() ipcRenderer.send accessibility-support-query");
         ipcRenderer.send("accessibility-support-query");
     }, [keyboardShortcuts, registerAllKeyboardListeners, unregisterAllKeyboardListeners]);
 
