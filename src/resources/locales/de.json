@@ -162,6 +162,7 @@
         "cancel": "Abbrechen",
         "customization": {
             "splashscreen": {
+                "dontShow": "Nicht mehr anzeigen",
                 "fallbackWelcomeScreen": "Kein Begrüßungsbildschirm vorhanden",
                 "state": "Status: {{- state}}",
                 "title": "Bereitstellung und Aktivierung des Anpassungsprofils"
@@ -1348,8 +1349,5 @@
             "underlineWordUnderline": "Satz unterstreichen, Wort unterstreichen",
             "wordColor": "Wortfarbe"
         }
-    },
-    "wizard": {
-        "dontShow": "Nicht mehr anzeigen"
     }
 }

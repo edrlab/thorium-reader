@@ -159,6 +159,7 @@
         "cancel": "取消",
         "customization": {
             "splashscreen": {
+                "dontShow": "不再显示",
                 "fallbackWelcomeScreen": "未提供欢自定义迎屏幕",
                 "state": "状态: {{- state}}",
                 "title": "准备并激活自定义配置文件"
@@ -1342,8 +1343,5 @@
             "underlineWordUnderline": "",
             "wordColor": ""
         }
-    },
-    "wizard": {
-        "dontShow": "不再显示"
     }
 }

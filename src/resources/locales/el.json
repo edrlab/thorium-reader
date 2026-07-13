@@ -162,6 +162,7 @@
         "cancel": "Ακύρωση",
         "customization": {
             "splashscreen": {
+                "dontShow": "Μην το δείξεις ξανά",
                 "fallbackWelcomeScreen": "Χωρίς παράθυρο καλωσορίσματος",
                 "state": "Κατάσταση: {{- state}}",
                 "title": "Προετοιμασία και ενεργοποίηση προφίλ προσαρμογής"
@@ -1348,8 +1349,5 @@
             "underlineWordUnderline": "Υπογράμμιση, Υπογράμμιση Λέξης",
             "wordColor": "Χρώμα λέξης"
         }
-    },
-    "wizard": {
-        "dontShow": "Μην το δείξεις ξανά"
     }
 }

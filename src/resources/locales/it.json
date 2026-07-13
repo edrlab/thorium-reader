@@ -165,6 +165,7 @@
         "cancel": "Annulla",
         "customization": {
             "splashscreen": {
+                "dontShow": "Non mostrare più",
                 "fallbackWelcomeScreen": "Nessuna pagina di benvenuto fornita",
                 "state": "Stato: {{- state}}",
                 "title": "Personalizzazione del profilo fornita e attivata"
@@ -1354,8 +1355,5 @@
             "underlineWordUnderline": "Sottolineato, parola sottolineata",
             "wordColor": "Colore della parola"
         }
-    },
-    "wizard": {
-        "dontShow": "Non mostrare più"
     }
 }

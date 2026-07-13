@@ -392,6 +392,7 @@ declare namespace typed_i18n {
   readonly "cancel": string,
   readonly "customization": {
     readonly "splashscreen": {
+      readonly "dontShow": string,
       readonly "fallbackWelcomeScreen": string,
       readonly "state": string,
       readonly "title": string
@@ -435,16 +436,19 @@ declare namespace typed_i18n {
   (_: "dialog.cancel", __?: {}): string;
   (_: "dialog.customization", __?: {}): {
   readonly "splashscreen": {
+    readonly "dontShow": string,
     readonly "fallbackWelcomeScreen": string,
     readonly "state": string,
     readonly "title": string
   }
 };
   (_: "dialog.customization.splashscreen", __?: {}): {
+  readonly "dontShow": string,
   readonly "fallbackWelcomeScreen": string,
   readonly "state": string,
   readonly "title": string
 };
+  (_: "dialog.customization.splashscreen.dontShow", __?: {}): string;
   (_: "dialog.customization.splashscreen.fallbackWelcomeScreen", __?: {}): string;
   (_: "dialog.customization.splashscreen.state", __?: {}): string;
   (_: "dialog.customization.splashscreen.title", __?: {}): string;
@@ -3904,9 +3908,7 @@ declare namespace typed_i18n {
   (_: "tts.highlight.underlineWordOutline", __?: {}): string;
   (_: "tts.highlight.underlineWordSolidBackground", __?: {}): string;
   (_: "tts.highlight.underlineWordUnderline", __?: {}): string;
-  (_: "tts.highlight.wordColor", __?: {}): string;
-  (_: "wizard", __?: {}): { readonly "dontShow": string };
-  (_: "wizard.dontShow", __?: {}): string
+  (_: "tts.highlight.wordColor", __?: {}): string; (_: "wizard", __?: {}): {}
 }
 }
 export = typed_i18n;

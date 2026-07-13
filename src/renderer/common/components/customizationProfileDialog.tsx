@@ -167,7 +167,7 @@ export const CustomizationProfileDialog: React.FC = () => {
                                     tabIndex={0}
                                     role="checkbox"
                                     aria-checked={checked}
-                                    aria-label={__("wizard.dontShow")}
+                                    aria-label={__("dialog.customization.splashscreen.dontShow")}
                                     onKeyDown={(e) => {
                                         // if (e.code === "Space") {
                                         if (e.key === " ") {
@@ -195,7 +195,7 @@ export const CustomizationProfileDialog: React.FC = () => {
                                     }
                                 </div>
                                 <span aria-hidden>
-                                    {__("wizard.dontShow")}
+                                    {__("dialog.customization.splashscreen.dontShow")}
                                 </span>
                             </label>
                         </div> : <></> }

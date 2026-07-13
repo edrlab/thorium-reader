@@ -162,6 +162,7 @@
         "cancel": "Annuleer",
         "customization": {
             "splashscreen": {
+                "dontShow": "Niet meer laten zien, verberg",
                 "fallbackWelcomeScreen": "Geen welkomstscherm wordt weergeven",
                 "state": "{{- status}}",
                 "title": "Voorzieningen en activatie profiel aanpassingen"
@@ -1348,8 +1349,5 @@
             "underlineWordUnderline": "Onderstreept, Woord Onderstreept",
             "wordColor": "Woord kleur"
         }
-    },
-    "wizard": {
-        "dontShow": "Niet meer laten zien, verberg"
     }
 }

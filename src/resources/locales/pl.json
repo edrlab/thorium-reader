@@ -168,6 +168,7 @@
         "cancel": "Anuluj",
         "customization": {
             "splashscreen": {
+                "dontShow": "Nie pokazuj ponownie",
                 "fallbackWelcomeScreen": "Brak ekranu powitalnego",
                 "state": "Stan: {{- state}}",
                 "title": "Udostępnianie, aktywowanie i dostosowywanie profilu"
@@ -1360,8 +1361,5 @@
             "underlineWordUnderline": "Podkreślenie, podkreślenie słowa",
             "wordColor": "Kolor słowa"
         }
-    },
-    "wizard": {
-        "dontShow": "Nie pokazuj ponownie"
     }
 }

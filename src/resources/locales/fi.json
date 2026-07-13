@@ -162,6 +162,7 @@
         "cancel": "Peru",
         "customization": {
             "splashscreen": {
+                "dontShow": "Älä näytä uudestaan",
                 "fallbackWelcomeScreen": "Aloitusnäyttöä ei ole määritelty",
                 "state": "Tila: {{- state}}",
                 "title": "Mukautetun profiilin käyttöönotto ja aktivointi"
@@ -1348,8 +1349,5 @@
             "underlineWordUnderline": "Alleviivaa virke, alleviivaa sana",
             "wordColor": "Sanan väri"
         }
-    },
-    "wizard": {
-        "dontShow": "Älä näytä uudestaan"
     }
 }

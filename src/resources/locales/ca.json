@@ -165,6 +165,7 @@
         "cancel": "Cancel·lar",
         "customization": {
             "splashscreen": {
+                "dontShow": "No mostreu de nou",
                 "fallbackWelcomeScreen": "",
                 "state": "",
                 "title": ""
@@ -1354,8 +1355,5 @@
             "underlineWordUnderline": "",
             "wordColor": ""
         }
-    },
-    "wizard": {
-        "dontShow": "No mostreu de nou"
     }
 }

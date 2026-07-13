@@ -159,6 +159,7 @@
         "cancel": "取消",
         "customization": {
             "splashscreen": {
+                "dontShow": "不再顯示",
                 "fallbackWelcomeScreen": "",
                 "state": "狀態： {{- state}}",
                 "title": ""
@@ -1342,8 +1343,5 @@
             "underlineWordUnderline": "",
             "wordColor": ""
         }
-    },
-    "wizard": {
-        "dontShow": "不再顯示"
     }
 }

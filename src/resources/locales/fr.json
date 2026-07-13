@@ -165,6 +165,7 @@
         "cancel": "Annuler",
         "customization": {
             "splashscreen": {
+                "dontShow": "Ne plus afficher",
                 "fallbackWelcomeScreen": "Aucun écran d'accueil",
                 "state": "État : {{- state}}",
                 "title": "Préparation et activation du profil de personnalisation"
@@ -1354,8 +1355,5 @@
             "underlineWordUnderline": "Souligné, mot Souligné",
             "wordColor": "Couleur de mot"
         }
-    },
-    "wizard": {
-        "dontShow": "Ne plus afficher"
     }
 }

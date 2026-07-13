@@ -162,6 +162,7 @@
         "cancel": "İptal",
         "customization": {
             "splashscreen": {
+                "dontShow": "Bir daha gösterme",
                 "fallbackWelcomeScreen": "Hoşgeldiniz ekranı sağlanmadı",
                 "state": "Durum: {{- state}}",
                 "title": "Özelleştirme profilinin hazırlanması ve etkinleştirilmesi"
@@ -1348,8 +1349,5 @@
             "underlineWordUnderline": "Altını Çiz, Kelimenin Altını Çiz",
             "wordColor": "Kelime rengi"
         }
-    },
-    "wizard": {
-        "dontShow": "Bir daha gösterme"
     }
 }

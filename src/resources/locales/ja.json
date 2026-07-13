@@ -159,6 +159,7 @@
         "cancel": "キャンセル",
         "customization": {
             "splashscreen": {
+                "dontShow": "次回以降は表示しない",
                 "fallbackWelcomeScreen": "",
                 "state": "",
                 "title": ""
@@ -1342,8 +1343,5 @@
             "underlineWordUnderline": "文：下線、単語：下線",
             "wordColor": "単語の下線・囲み・背景の色"
         }
-    },
-    "wizard": {
-        "dontShow": "次回以降は表示しない"
     }
 }

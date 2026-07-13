@@ -162,6 +162,7 @@
         "cancel": "ரத்துசெய்",
         "customization": {
             "splashscreen": {
+                "dontShow": "மீண்டும் காட்ட வேண்டாம்",
                 "fallbackWelcomeScreen": "",
                 "state": "",
                 "title": ""
@@ -1348,8 +1349,5 @@
             "underlineWordUnderline": "அடிக்கோடிட்டு, சொல் அடிக்கோடிட்டு",
             "wordColor": "சொல் நிறம்"
         }
-    },
-    "wizard": {
-        "dontShow": "மீண்டும் காட்ட வேண்டாம்"
     }
 }

@@ -165,6 +165,7 @@
         "cancel": "Cancelar",
         "customization": {
             "splashscreen": {
+                "dontShow": "Não mostre mais",
                 "fallbackWelcomeScreen": "Nenhuma tela de boas-vindas fornecida",
                 "state": "Estado: {{- state}}",
                 "title": "Provisionar e ativar o perfil de personalização"
@@ -1354,8 +1355,5 @@
             "underlineWordUnderline": "Sublinhar, palavra com contorno",
             "wordColor": "Cor da palavra"
         }
-    },
-    "wizard": {
-        "dontShow": "Não mostre mais"
     }
 }

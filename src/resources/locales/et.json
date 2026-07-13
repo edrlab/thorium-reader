@@ -162,6 +162,7 @@
         "cancel": "Katkesta",
         "customization": {
             "splashscreen": {
+                "dontShow": "Ära näita enam uuesti",
                 "fallbackWelcomeScreen": "Tervitusvaade pole lisatud",
                 "state": "Olek: {{- state}}",
                 "title": "Kohandatud profiili ettevalmistamine ja aktiveerimine"
@@ -1348,8 +1349,5 @@
             "underlineWordUnderline": "Alljoonitud tekst, sõna allakriipsutus",
             "wordColor": "Sõna värv"
         }
-    },
-    "wizard": {
-        "dontShow": "Ära näita enam uuesti"
     }
 }

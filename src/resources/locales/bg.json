@@ -162,6 +162,7 @@
         "cancel": "Отказ",
         "customization": {
             "splashscreen": {
+                "dontShow": "",
                 "fallbackWelcomeScreen": "",
                 "state": "",
                 "title": ""
@@ -1348,8 +1349,5 @@
             "underlineWordUnderline": "",
             "wordColor": ""
         }
-    },
-    "wizard": {
-        "dontShow": ""
     }
 }

@@ -165,6 +165,7 @@
         "cancel": "Cancelar",
         "customization": {
             "splashscreen": {
+                "dontShow": "No volver a mostrar",
                 "fallbackWelcomeScreen": "No se muestra ninguna pantalla de bienvenida",
                 "state": "Estado: {{- state}}",
                 "title": "Perfil de personalización de aprovisionamiento y activación"
@@ -1354,8 +1355,5 @@
             "underlineWordUnderline": "Subrayado, palabras subrayadas",
             "wordColor": "Color para palabras"
         }
-    },
-    "wizard": {
-        "dontShow": "No volver a mostrar"
     }
 }

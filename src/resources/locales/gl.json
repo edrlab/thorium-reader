@@ -162,6 +162,7 @@
         "cancel": "Cancelar",
         "customization": {
             "splashscreen": {
+                "dontShow": "Non volver mostrar",
                 "fallbackWelcomeScreen": "",
                 "state": "",
                 "title": ""
@@ -1348,8 +1349,5 @@
             "underlineWordUnderline": "",
             "wordColor": ""
         }
-    },
-    "wizard": {
-        "dontShow": "Non volver mostrar"
     }
 }

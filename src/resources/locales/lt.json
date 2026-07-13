@@ -168,6 +168,7 @@
         "cancel": "Nutraukti",
         "customization": {
             "splashscreen": {
+                "dontShow": "Daugiau neberodyti",
                 "fallbackWelcomeScreen": "Nėra pasveikinimo ekrano",
                 "state": "Būsena: {{- state}}",
                 "title": "Aktyvuojamas tinkinimo profilis"
@@ -1360,8 +1361,5 @@
             "underlineWordUnderline": "Pabraukimas, žodžio pabraukimas",
             "wordColor": "Žodžio spalva"
         }
-    },
-    "wizard": {
-        "dontShow": "Daugiau neberodyti"
     }
 }

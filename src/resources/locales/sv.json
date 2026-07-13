@@ -162,6 +162,7 @@
         "cancel": "Avbryt",
         "customization": {
             "splashscreen": {
+                "dontShow": "Visa inte igen",
                 "fallbackWelcomeScreen": "Det finns ingen välkomstskärm",
                 "state": "Status: {{- state}}",
                 "title": "Tilldelar och aktiverar anpassningsprofil"
@@ -1348,8 +1349,5 @@
             "underlineWordUnderline": "Understrykning, understruket ord",
             "wordColor": "Ordfärg"
         }
-    },
-    "wizard": {
-        "dontShow": "Visa inte igen"
     }
 }

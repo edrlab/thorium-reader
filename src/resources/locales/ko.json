@@ -156,6 +156,7 @@
         "cancel": "취소",
         "customization": {
             "splashscreen": {
+                "dontShow": "",
                 "fallbackWelcomeScreen": "",
                 "state": "",
                 "title": ""
@@ -1337,8 +1338,5 @@
             "underlineWordUnderline": "",
             "wordColor": ""
         }
-    },
-    "wizard": {
-        "dontShow": ""
     }
 }

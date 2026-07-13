@@ -168,6 +168,7 @@
         "cancel": "Zrušit",
         "customization": {
             "splashscreen": {
+                "dontShow": "Znovu nezobrazovat",
                 "fallbackWelcomeScreen": "Uvítací obrazovka nebyla poskytnuta",
                 "state": "Stav: {{- state}}",
                 "title": ""
@@ -1360,8 +1361,5 @@
             "underlineWordUnderline": "",
             "wordColor": ""
         }
-    },
-    "wizard": {
-        "dontShow": "Znovu nezobrazovat"
     }
 }

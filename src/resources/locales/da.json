@@ -162,6 +162,7 @@
         "cancel": "Annullér",
         "customization": {
             "splashscreen": {
+                "dontShow": "Vis ikke igen",
                 "fallbackWelcomeScreen": "Ingen velkomstskærm angivet",
                 "state": "Tilstand: {{- state}}",
                 "title": "Tilpasningsprofil for klargøring og aktivering"
@@ -1348,8 +1349,5 @@
             "underlineWordUnderline": "Understreg, Understreg ord",
             "wordColor": "Ord farve"
         }
-    },
-    "wizard": {
-        "dontShow": "Vis ikke igen"
     }
 }

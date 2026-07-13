@@ -168,6 +168,7 @@
         "cancel": "Отменить",
         "customization": {
             "splashscreen": {
+                "dontShow": "Больше не показывать",
                 "fallbackWelcomeScreen": "Приветственный экран не предусмотрен",
                 "state": "Статус: {{- state}}",
                 "title": "Создание и активация профиля настройки"
@@ -1360,8 +1361,5 @@
             "underlineWordUnderline": "Подчёркивание, Слово подчёркнуто",
             "wordColor": "Цвет слова"
         }
-    },
-    "wizard": {
-        "dontShow": "Больше не показывать"
     }
 }
