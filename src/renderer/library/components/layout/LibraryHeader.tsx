@@ -184,7 +184,6 @@ const Header = () => {
     const dispatch = useDispatch();
 
     const keyboardShortcutScreenReader = `${(keyboardShortcuts.ToggleScreenReaderOptimize.shift ? "SHIFT " : "") + (keyboardShortcuts.ToggleScreenReaderOptimize.control ? "CTRL " : "") + (keyboardShortcuts.ToggleScreenReaderOptimize.alt ? "ALT/OPT " : "") + (keyboardShortcuts.ToggleScreenReaderOptimize.meta ? "META/CMD " : "") + keyboardShortcuts.ToggleScreenReaderOptimize.key}`;
-    console.log("keyboardShortcuts.ToggleScreenReaderOptimize", JSON.stringify(keyboardShortcuts.ToggleScreenReaderOptimize, null, 4));
 
     const screenReaderToggle = React.useCallback(() => {
         dispatch(screenReaderActions.save.build(!screenReaderActivate));
