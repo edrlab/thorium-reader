@@ -168,9 +168,9 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                                     onClick={(ev) => {
                                         ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                                         const href = "https://www.edrlab.org/readium-lcp/";
-                                        if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                            shell.openExternal(href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ })
-                                        }
+                                        // if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
+                                        shell.openExternal(href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ })
+                                        // }
                                     }}>
                                     {__("library.lcp.whatIsLcpInfoDetailsLink")}
                                     <SVG ariaHidden svg={FollowLinkIcon} />

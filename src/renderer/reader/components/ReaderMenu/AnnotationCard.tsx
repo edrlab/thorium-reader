@@ -165,7 +165,7 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
         } : undefined}
         aria-label={__("reader.annotations.note", {color: __(Object.entries(noteColorCodeToColorTranslatorKeySet).find(([colorHex]) => colorHex === annotationColor)?.[1])})}
     >
-        <div className={stylesAnnotations.annnotation_container}>
+        <div className={stylesAnnotations.annotation_container}>
             {isEditing ?
                 <></>
                 : <button className={classNames(stylesAnnotations.annotation_name, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}

@@ -87,7 +87,7 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
                         }
                     </div>
                     <div aria-hidden>
-                        <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.note.export.enableCheckbox")}</h3>
+                        <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.note.export.enableCheckbox")}</h4>
                     </div>
                 </label>
             </div>

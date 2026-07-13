@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "Na voljo je nova različica, kliknite za več informacij.",
-            "title": "Posodobitev programske opreme za {{- appName}}"
+            "title": "Posodobitev programske opreme za {{- appName}}",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "Prikaži knjižnico / knjižna polica",
@@ -167,6 +168,7 @@
         "cancel": "Prekliči",
         "customization": {
             "splashscreen": {
+                "dontShow": "Ne prikaži več",
                 "fallbackWelcomeScreen": "",
                 "state": "",
                 "title": ""
@@ -1221,6 +1223,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "",
                     "name": ""
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Nalaganje iz datoteke uporabnika",
@@ -1253,6 +1259,7 @@
         },
         "screenReaderActivate": {
             "help": "",
+            "invite": "",
             "message": "",
             "title": ""
         },
@@ -1353,29 +1360,6 @@
             "underlineWordSolidBackground": "",
             "underlineWordUnderline": "",
             "wordColor": ""
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "Odkrij novosti",
-            "goToBooks": "Pojdi na moje publikacije"
-        },
-        "description": {
-            "home": "Thorium izgleda drugače! Poglejmo kaj je novega...",
-            "resources": ""
-        },
-        "dontShow": "Ne prikaži več",
-        "resources": {
-            "discord": "",
-            "website": ""
-        },
-        "tab": {
-            "home": "Domov",
-            "resources": ""
-        },
-        "title": {
-            "resources": "",
-            "welcome": "Dobrodošli v Thorium 3"
         }
     }
 }

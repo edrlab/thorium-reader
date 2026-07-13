@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "A versión nova dispoñíbel, clic para aprender máis.",
-            "title": "{{- appName}} software actualiza."
+            "title": "{{- appName}} software actualiza.",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "Mostrar biblioteca",
@@ -161,6 +162,7 @@
         "cancel": "Cancelar",
         "customization": {
             "splashscreen": {
+                "dontShow": "Non volver mostrar",
                 "fallbackWelcomeScreen": "",
                 "state": "",
                 "title": ""
@@ -1209,6 +1211,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "",
                     "name": ""
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Cargar arquivo de usuario",
@@ -1241,6 +1247,7 @@
         },
         "screenReaderActivate": {
             "help": "",
+            "invite": "",
             "message": "",
             "title": ""
         },
@@ -1341,29 +1348,6 @@
             "underlineWordSolidBackground": "",
             "underlineWordUnderline": "",
             "wordColor": ""
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "Descobre as novidades",
-            "goToBooks": "Ir aos meus libros"
-        },
-        "description": {
-            "home": "Thorium vese diferente! Descubramos as novidades...",
-            "resources": ""
-        },
-        "dontShow": "Non volver mostrar",
-        "resources": {
-            "discord": "",
-            "website": ""
-        },
-        "tab": {
-            "home": "Inicio",
-            "resources": ""
-        },
-        "title": {
-            "resources": "",
-            "welcome": "Bienvenido a Thorium 3"
         }
     }
 }

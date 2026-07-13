@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "Prieinama nauja versija, paspauskite, jei norite sužinoti daugiau.",
-            "title": "{{- appName}} programinės įrangos naujinys."
+            "title": "{{- appName}} programinės įrangos naujinys.",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "Rodyti biblioteką / lentyną",
@@ -147,12 +148,15 @@
             "descAuthor": "'{{- author}}'",
             "descCreator": ", kurią(-ias) sukūrė",
             "descList_few": "{{- count}} pastabos{{- creator}}, bus susietos su {{- author}} leidiniu '{{- title}}'",
+            "descList_many": "",
             "descList_one": "{{- count}} pastaba{{- creator}}, bus susieta su {{- author}} leidiniu '{{- title}}'",
             "descList_other": "{{- count}} pastabų{{- creator}}, bus susietos su {{- author}} leidiniu '{{- title}}'",
             "descNewer_few": "Konfliktas(-ai): {{- count}} naujesnės pastabos",
+            "descNewer_many": "",
             "descNewer_one": "Konfliktas(-ai): {{- count}} naujesnė pastaba",
             "descNewer_other": "Konfliktas(-ai): {{- count}} naujesnių pastabų",
             "descOlder_few": "Konfliktas(-ai): {{- count}} senesnės pastabos",
+            "descOlder_many": "",
             "descOlder_one": "Konfliktas(-ai): {{- count}} senesnė pastaba",
             "descOlder_other": "Konfliktas(-ai): {{- count}} senesnių pastabų",
             "descTitle": "Pastabų pavadinimas: ",
@@ -164,6 +168,7 @@
         "cancel": "Nutraukti",
         "customization": {
             "splashscreen": {
+                "dontShow": "Daugiau neberodyti",
                 "fallbackWelcomeScreen": "Nėra pasveikinimo ekrano",
                 "state": "Būsena: {{- state}}",
                 "title": "Aktyvuojamas tinkinimo profilis"
@@ -171,10 +176,12 @@
         },
         "deleteAnnotations": "Šalinti pastabas?",
         "deleteAnnotationsText_few": "Ar tikrai norite pašalinti {{- count}} pastabas?",
+        "deleteAnnotationsText_many": "",
         "deleteAnnotationsText_one": "Ar tikrai norite pašalinti {{- count}} pastabą?",
         "deleteAnnotationsText_other": "Ar tikrai norite pašalinti {{- count}} pastabų?",
         "deleteBookmarks": "Šalinti skirtukus?",
         "deleteBookmarksText_few": "Ar tikrai norite pašalinti {{- count}} skirtukus?",
+        "deleteBookmarksText_many": "",
         "deleteBookmarksText_one": "Ar tikrai norite pašalinti {{- count}} skirtuką?",
         "deleteBookmarksText_other": "Ar tikrai norite pašalinti {{- count}} skirtukų?",
         "deleteFeed": "Pašalinti katalogą?",
@@ -834,6 +841,7 @@
         "picker": {
             "search": {
                 "founds_few": "{{- count}} atitikmenys",
+                "founds_many": "",
                 "founds_one": "{{- count}} atitikmuo",
                 "founds_other": "{{- count}} atitikmenų",
                 "input": "ieškomas tekstas",
@@ -1037,8 +1045,8 @@
                     "name": "Stabdyti garso įrašą"
                 },
                 "CloseReader": {
-                    "description": "Uždaryti skaitytuvės langą ir grįžti į biblioteką",
-                    "name": "Uždaryti skaitytuvę"
+                    "description": "Užverti skaitytuvės langą ir grįžti į biblioteką",
+                    "name": "Užverti skaitytuvę"
                 },
                 "FXLZoomIn": {
                     "description": "Didinti fiksuotame vieno ar dviejų puslapių išdėstyme.",
@@ -1215,6 +1223,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "Skaitytuvės lange įjungti sistemos viso ekrano režimą arba atkurti įprastą lango režimą. Atkreipkite dėmesį, jog tai skiriasi nuo „zen“ režimo, kuris supaprastina naudotojo sąsają",
                     "name": "Perjungti viso ekrano režimą"
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Įkelti iš naudotojo failo",
@@ -1247,6 +1259,7 @@
         },
         "screenReaderActivate": {
             "help": "Kai programa aptinka naudojamas pagalbines technologijas, vartotojo sąsaja geriau veikia su ekrano skaitytuvais",
+            "invite": "",
             "message": "Patobulintas ekrano skaitytuvų palaikymas",
             "title": "Pagerinkite ekrano skaitytuvo patirtį"
         },
@@ -1347,29 +1360,6 @@
             "underlineWordSolidBackground": "Pabraukimas, žodis vientisame fone",
             "underlineWordUnderline": "Pabraukimas, žodžio pabraukimas",
             "wordColor": "Žodžio spalva"
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "Atraskite „Thorium“",
-            "goToBooks": "Eiti į mano leidinius"
-        },
-        "description": {
-            "home": "„Thorium 3.4“ versijoje patobulinta naudotojo patirtis ir ištaisyta keletas problemų. Jei vėliau nuspręsite grįžti prie senesnės programos versijos, primygtinai rekomenduojame susikurti leidinių pastabų ir skirtukų atsargines kopijas, eksportuojant į išorinį failą. Įdiegus senesnę versiją, galėsite jas importuoti atgal. Taip yra todėl, kad 3.4 versijoje pastabos ir skirtukai saugomi šiek tiek kitokiu vidiniu formatu. Tai išsprendžia našumo problemą, tačiau nutraukia atgalinį pastabų suderinamumą.",
-            "resources": "Susisiekite su mumis ir sužinokite daugiau apie „Thorium“:"
-        },
-        "dontShow": "Daugiau neberodyti",
-        "resources": {
-            "discord": "Discord: {{- url}}",
-            "website": "Svetainė: {{- url}}"
-        },
-        "tab": {
-            "home": "Pradžia",
-            "resources": "Ištekliai"
-        },
-        "title": {
-            "resources": "Ištekliai ir bendruomenė",
-            "welcome": "Su jumis sveikinasi Thorium 3.4"
         }
     }
 }

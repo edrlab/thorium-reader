@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "Uusi versio on saatavilla. Napsauta, jos haluat lisätietoja.",
-            "title": "{{- appName}} -ohjelmiston päivitys."
+            "title": "{{- appName}} -ohjelmiston päivitys.",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "Näytä kirjasto / kirjahylly",
@@ -161,6 +162,7 @@
         "cancel": "Peru",
         "customization": {
             "splashscreen": {
+                "dontShow": "Älä näytä uudestaan",
                 "fallbackWelcomeScreen": "Aloitusnäyttöä ei ole määritelty",
                 "state": "Tila: {{- state}}",
                 "title": "Mukautetun profiilin käyttöönotto ja aktivointi"
@@ -1209,6 +1211,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "Ota lukunäkymässä käyttöön tai poista käytöstä koko ruudun tila. Huomaa, että toiminto ei ole sama kuin keskittymistila, joka yksinkertaistaa käyttöliittymää",
                     "name": "Muuta koko ruudun tila"
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Lataa käyttäjän tiedostosta",
@@ -1241,6 +1247,7 @@
         },
         "screenReaderActivate": {
             "help": "Kun sovellus havaitsee, että käytössä on avustavaa teknologiaa, käyttöliittymä mukautuu toimimaan paremmin yhteen ruudunlukuohjelmien kanssa.",
+            "invite": "",
             "message": "Parannettu tuki ruudunlukuohjelmille",
             "title": "Paranna ruudunlukukokemusta"
         },
@@ -1341,29 +1348,6 @@
             "underlineWordSolidBackground": "Alleviivaa virke, sanalle taustaväri",
             "underlineWordUnderline": "Alleviivaa virke, alleviivaa sana",
             "wordColor": "Sanan väri"
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "Tutustu Thorium Desktopiin",
-            "goToBooks": "Siirry omiin julkaisuihin"
-        },
-        "description": {
-            "home": "Thorium 3.4 tuo joukon parannuksia käyttökokemukseen ja korjaa useita ongelmia. Jos päätät myöhemmin palata vanhempaan versioon sovelluksesta, on erittäin suositeltavaa varmuuskopioida e-kirjan merkintäsi ja kirjanmerkkisi viemällä ne ulkoiseen tiedostoon. Tuo tiedosto sitten takaisin vanhempaan versioon asennuksen jälkeen. Sovellus tallentaa merkinnät ja kirjanmerkit hieman eri sisäisessä muodossa versiossa 3.4; tämä ratkaisee suorituskykyongelman, mutta rikkoo taaksepäin yhteensopivuuden merkintöjen osalta.",
-            "resources": "Ota yhteyttä ja opi lisää Thoriumista:"
-        },
-        "dontShow": "Älä näytä uudestaan",
-        "resources": {
-            "discord": "Discord: {{- url}}",
-            "website": "Verkkosivu: {{- url}}"
-        },
-        "tab": {
-            "home": "Koti",
-            "resources": "Resurssit"
-        },
-        "title": {
-            "resources": "Resurssit ja yhteisö",
-            "welcome": "Tervetuloa Thorium 3.4 -sovellukseen"
         }
     }
 }

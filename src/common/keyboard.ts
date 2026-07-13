@@ -187,6 +187,15 @@ const _defaults_ = {
         scope: ["reader"],
     } satisfies TKeyboardShortcutFull,
 
+    ToggleScreenReaderOptimize: {
+        meta: false,
+        alt: false,
+        control: true,
+        shift: true,
+        key: "F12",
+        scope: ["bookshelf"],
+    } satisfies TKeyboardShortcutFull,
+
     FocusSearch: {
         meta: false,
         alt: false,

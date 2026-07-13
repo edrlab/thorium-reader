@@ -32,7 +32,7 @@ import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
 
 // import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { readerRTLFlipReducer } from "readium-desktop/common/redux/reducers/reader/rtlFlip";
-import { wizardReducer } from "readium-desktop/common/redux/reducers/wizard";
+import { whatsNewReducer } from "readium-desktop/common/redux/reducers/whatsNew";
 import { versionUpdateReducer } from "readium-desktop/common/redux/reducers/version-update";
 import { creatorReducer } from "readium-desktop/common/redux/reducers/creator";
 import { settingsReducer } from "readium-desktop/common/redux/reducers/settings";
@@ -101,7 +101,7 @@ export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reduc
             tag: tagReducer,
             directory: directoryReducer,
         }),
-        wizard: wizardReducer,
+        whatsNew: whatsNewReducer,
         creator: creatorReducer,
         settings: settingsReducer,
         importAnnotations: importAnnotationReducer,

@@ -76,7 +76,7 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
                 i18n: data.payload.i18n,
                 keyboard: data.payload.keyboard,
                 theme: data.payload.theme,
-                wizard: data.payload.wizard,
+                whatsNew: data.payload.whatsNew,
                 settings: data.payload.settings,
                 publication: data.payload.publication,
                 session: data.payload.session,

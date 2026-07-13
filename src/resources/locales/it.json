@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "Nuova versione disponibile, clicca per saperne di più.",
-            "title": "Aggiornamento del software {{- appName}}."
+            "title": "Aggiornamento del software {{- appName}}.",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "Visualizza la biblioteca",
@@ -164,6 +165,7 @@
         "cancel": "Annulla",
         "customization": {
             "splashscreen": {
+                "dontShow": "Non mostrare più",
                 "fallbackWelcomeScreen": "Nessuna pagina di benvenuto fornita",
                 "state": "Stato: {{- state}}",
                 "title": "Personalizzazione del profilo fornita e attivata"
@@ -1215,6 +1217,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "Nella finestra di lettura, attiva la modalità a schermo intero o ripristina la modalità finestra normale. Questa funzione è diversa dalla \"modalità zen\", che semplifica l'interfaccia utente",
                     "name": "Attiva/disattiva schermo intero"
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Carica il file",
@@ -1247,6 +1253,7 @@
         },
         "screenReaderActivate": {
             "help": "Quando l'applicazione rileva la presenza di tecnologia assistiva, l'interfaccia utente funziona meglio con i lettori di schermo",
+            "invite": "",
             "message": "Supporto migliorato per screen reader",
             "title": "Migliora l’esperienza con lo screen reader"
         },
@@ -1347,29 +1354,6 @@
             "underlineWordSolidBackground": "Sottolineato, parola con sfondo pieno",
             "underlineWordUnderline": "Sottolineato, parola sottolineata",
             "wordColor": "Colore della parola"
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "Scopri Thorium Desktop",
-            "goToBooks": "Vai alle mie pubblicazioni"
-        },
-        "description": {
-            "home": "Thorium 3.4 apporta una serie di miglioramenti all'esperienza utente e corregge una serie di bug. Se decidi di tornare a utilizzare una versione precedente dell'applicazione ti raccomandiamo di salvare le evidenziature e i segnalibri esportandoli in un file esterno. Li potrai importare in seguito una volta che la versione meno recente sarà installata. La ragione è che questa versione 3.4 salva in un formato leggermente diverso le evidenziature e i segnalibri. Questo risolve alcuni problemi di prestazione ma incide sulla retrocompatibilità di evidenziature e segnalibri.",
-            "resources": "Seguiteci per essere sempre aggiornati su Thorium:"
-        },
-        "dontShow": "Non mostrare più",
-        "resources": {
-            "discord": "Discord: {{- url}}",
-            "website": "Sito Web: {{- url}}"
-        },
-        "tab": {
-            "home": "Home",
-            "resources": "Risorse"
-        },
-        "title": {
-            "resources": "Risorse e Community",
-            "welcome": "Benvenuti in Thorium 3.4"
         }
     }
 }

@@ -481,6 +481,10 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                 name: `${__("settings.keyboard.list.ToggleReaderFullscreen.name")}`,
                 description: `${__("settings.keyboard.list.ToggleReaderFullscreen.description")}`,
             },
+            ToggleScreenReaderOptimize: {
+                name: `${__("settings.keyboard.list.ToggleScreenReaderOptimize.name")}`,
+                description: `${__("settings.keyboard.list.ToggleScreenReaderOptimize.description")}`,
+            },
             Print: {
                 name: `${__("settings.keyboard.list.Print.name")}`,
                 description: `${__("settings.keyboard.list.Print.description")}`,

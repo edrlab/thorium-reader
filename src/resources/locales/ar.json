@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "يتوفر إصدار جديد، اضغط لمعرفة المزيد.",
-            "title": "تحديث برنامج {{- appName}}."
+            "title": "تحديث برنامج {{- appName}}.",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "إظهار المكتبة / رف الكتب",
@@ -173,6 +174,7 @@
         "cancel": "إلغاء",
         "customization": {
             "splashscreen": {
+                "dontShow": "عدم الإظهار مرة أخرى",
                 "fallbackWelcomeScreen": "لا توجد شاشة ترحيب",
                 "state": "الحالة:{{- state}}",
                 "title": "تهيئة وتفعيل ملف التخصيص"
@@ -1233,6 +1235,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "في نافذة القارئ، تفعيل وضع ملء الشاشة للنظام أو استعد الوضع العادي للنافذة. لاحظ أن هذا يختلف عن \"وضع zen\" الذي يبسط واجهة المستخدم",
                     "name": "تبديل وضع ملء الشاشة"
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "تحميل من ملف المستخدم",
@@ -1265,6 +1271,7 @@
         },
         "screenReaderActivate": {
             "help": "عند اكتشاف التطبيق للتقنيات المساعدة، تعمل واجهة المستخدم بشكل أفضل مع قارئات الشاشة",
+            "invite": "",
             "message": "دعم محسّن لقارئات الشاشة",
             "title": "تحسين تجربة قارئ الشاشة"
         },
@@ -1365,29 +1372,6 @@
             "underlineWordSolidBackground": "تسطير، تلوين خلفية الكلمة",
             "underlineWordUnderline": "تسطير، تسطير الكلمات",
             "wordColor": "لون الكلمات"
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "اكتشف ما الجديد",
-            "goToBooks": "الانتقال إلى منشوراتي"
-        },
-        "description": {
-            "home": "يبدو ثوريوم مختلفاً! دعنا نكتشف ما الجديد فيه...",
-            "resources": ""
-        },
-        "dontShow": "عدم الإظهار مرة أخرى",
-        "resources": {
-            "discord": "",
-            "website": ""
-        },
-        "tab": {
-            "home": "الرئيسية",
-            "resources": ""
-        },
-        "title": {
-            "resources": "",
-            "welcome": "مرحباً بك في ثوريوم 3"
         }
     }
 }
