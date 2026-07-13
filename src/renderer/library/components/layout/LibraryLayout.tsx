@@ -462,7 +462,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         toggleScreenReader: (screenReaderActivate: boolean, keyboard: string, __: I18nFunction) => {
             dispatch(screenReaderActions.save.build(!screenReaderActivate));
-            dispatch(toastActions.openRequest.build(ToastType.Success, __("settings.screenReaderActivate.invite", { keyboard })));
+            dispatch(toastActions.openRequest.build(ToastType.Success, __("settings.screenReaderActivate.invite", { keyboard, status: !screenReaderActivate ? __("app.session.exit.askBox.button.yes") : __("app.session.exit.askBox.button.no") })));
         },
     };
 };

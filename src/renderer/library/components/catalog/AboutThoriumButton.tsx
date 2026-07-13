@@ -184,7 +184,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                                 ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
 
                                 this.props.toggleScreenReader(this.props.screenReaderActivate, keyboardShortcutScreenReader, this.props.__);
-                            }}>{`${this.props.__("settings.screenReaderActivate.invite", { keyboard: keyboardShortcutScreenReader })}`}</a></p>
+                            }}>{`${this.props.__("settings.screenReaderActivate.invite", { keyboard: keyboardShortcutScreenReader, status: this.props.screenReaderActivate ? __("app.session.exit.askBox.button.yes") : __("app.session.exit.askBox.button.no") })}`}</a></p>
                         </div>
                         {/* <button onClick={() => {
                             this.setState({ versionInfo : false });
@@ -348,7 +348,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         // },
         toggleScreenReader: (screenReaderActivate: boolean, keyboard: string, __: I18nFunction) => {
             dispatch(screenReaderActions.save.build(!screenReaderActivate));
-            dispatch(toastActions.openRequest.build(ToastType.Success, __("settings.screenReaderActivate.invite", { keyboard })));
+            dispatch(toastActions.openRequest.build(ToastType.Success, __("settings.screenReaderActivate.invite", { keyboard, status: !screenReaderActivate ? __("app.session.exit.askBox.button.yes") : __("app.session.exit.askBox.button.no") })));
         },
     };
 };
