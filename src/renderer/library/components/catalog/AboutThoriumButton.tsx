@@ -42,15 +42,15 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
-async function getOsName() {
-    if ((navigator as any).userAgentData) {
-        const result = await (navigator as any).userAgentData.getHighEntropyValues(["architecture", "bitness", "platform"]);
-        return `${result.platform}-${result.architecture}_${result.bitness}`;
-    }
+// async function getOsName() {
+//     if ((navigator as any).userAgentData) {
+//         const result = await (navigator as any).userAgentData.getHighEntropyValues(["architecture", "bitness", "platform"]);
+//         return `${result.platform}-${result.architecture}_${result.bitness}`;
+//     }
 
-    // Fallback
-    return navigator.platform || "unknown";
-}
+//     // Fallback
+//     return navigator.platform || "unknown";
+// }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -206,13 +206,18 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                     <a href="" onClick={(ev) => {
                             ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
 
-                            getOsName().then((v) => v).catch(() => navigator.platform || "unknown").then((osName) => {
-                                const os = encodeURIComponent_RFC3986(osName);
-                                const href = `https://thorium.edrlab.org/?lang=${locale}&v=${app_version}&source=${source}&os=${os}`;
-                                if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                    shell.openExternal(href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ });
-                                }
-                            }).catch((err: unknown) => { console.log(err); });
+                            // getOsName().then((v) => v).catch(() => navigator.platform || "unknown").then((_osName) => {
+                            //     const os = encodeURIComponent_RFC3986(osName);
+                            //     const href = `https://www.thoriumreader.com/?lang=${locale}&v=${app_version}&source=${source}&os=${os}`;
+                            //     if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
+                            //         shell.openExternal(href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ });
+                            //     }
+                            // }).catch((err: unknown) => { console.log(err); });
+
+                            const href = "https://www.thoriumreader.com/";
+                            // if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
+                            shell.openExternal(href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ });
+                            // }
                         }}
                         tabIndex={0}>{__("catalog.about.title", { appName: capitalizedAppName })}</a>
                     </div>

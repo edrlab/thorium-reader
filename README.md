@@ -6,7 +6,7 @@ Free application. No ads. No private data flowing anywhere.
 
 This project is in constant evolution, corrections and new features will be added soon and your support is welcome for that. The application is based on the open-source Readium Desktop toolkit.
 
-More information can be found in the [Landing page](https://thorium.edrlab.org/), within the [online support documentation](https://thorium.edrlab.org/en/th3/800_collaborating/802_localizing/). Users can [Add Documentation catalog to Thorium (OPDS link)](opds://edrlab.github.io/publications/feeds/thorium31_documentation.json) or [browse English documentation inline within the Readium web reader](https://thorium.edrlab.org/en/onlinedoc).
+More information can be found in the [Landing page](https://www.thoriumreader.com/).
 
 It is currently localized in following 28 languages:
 
@@ -43,8 +43,6 @@ Since february 2025 we use Weblate project Thorium as the main tool for localisa
 <a href="https://hosted.weblate.org/engage/thorium-reader/">
 <img src="https://hosted.weblate.org/widget/thorium-reader/thorium-reader-translation/horizontal-auto.svg" alt="Translation status" />
 </a>
-
-More information on translation process can be found in the dedicated [translation page of the support website](https://thorium.edrlab.org/en/th3/800_collaborating/802_localizing/).
 
 ![library](img/library.png)
 ![publication info](img/info.png)
