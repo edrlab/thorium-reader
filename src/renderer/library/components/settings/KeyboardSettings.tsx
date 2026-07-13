@@ -185,9 +185,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                 KEY_CODES.push(def.key);
             }
         });
-        (async () => {
-            await this.loadKeyboardLayoutMap(/* KEY_CODES , "selectLayoutMap" */);
-        })();
+        this.loadKeyboardLayoutMap(/* KEY_CODES , "selectLayoutMap" */).then((_v) => { /* noop */ }).catch((_err) => { /* noop */ });
     }
 
     public componentDidUpdate(oldProps: IProps) {
@@ -200,9 +198,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                 }
             });
             if (needsUpdating) {
-                (async () => {
-                    await this.loadKeyboardLayoutMap(/* KEY_CODES, "selectLayoutMap" */);
-                })();
+                this.loadKeyboardLayoutMap(/* KEY_CODES, "selectLayoutMap" */).then((_v) => { /* noop */ }).catch((_err) => { /* noop */ });
             }
         }
     }
@@ -484,6 +480,10 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             ToggleReaderFullscreen: {
                 name: `${__("settings.keyboard.list.ToggleReaderFullscreen.name")}`,
                 description: `${__("settings.keyboard.list.ToggleReaderFullscreen.description")}`,
+            },
+            ToggleScreenReaderOptimize: {
+                name: `${__("settings.keyboard.list.ToggleScreenReaderOptimize.name")}`,
+                description: `${__("settings.keyboard.list.ToggleScreenReaderOptimize.description")}`,
             },
             Print: {
                 name: `${__("settings.keyboard.list.Print.name")}`,
@@ -970,9 +970,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
 
         if (!KEY_CODES.includes(def.key)) {
             KEY_CODES.push(def.key);
-            (async () => {
-                await this.loadKeyboardLayoutMap(/* KEY_CODES, "selectLayoutMap" */);
-            })();
+            this.loadKeyboardLayoutMap(/* KEY_CODES, "selectLayoutMap" */).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
         }
 
         const keySelect =

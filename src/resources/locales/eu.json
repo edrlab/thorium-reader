@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "Bertsio berria eskuragarri, klik egin gehiago jakiteko.",
-            "title": "{{- appName}} software-eguneratzea."
+            "title": "{{- appName}} software-eguneratzea.",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "Erakutsi liburutegia",
@@ -161,6 +162,7 @@
         "cancel": "Ezeztatu",
         "customization": {
             "splashscreen": {
+                "dontShow": "Ez erakutsi berriro",
                 "fallbackWelcomeScreen": "",
                 "state": "",
                 "title": ""
@@ -1209,6 +1211,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "",
                     "name": ""
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Kargatu erabiltzaile-fitxategia",
@@ -1241,6 +1247,7 @@
         },
         "screenReaderActivate": {
             "help": "",
+            "invite": "",
             "message": "",
             "title": ""
         },
@@ -1309,9 +1316,15 @@
             "title": "Aplikazioaren gaia"
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "Eduki liburutegia atzeko planoan irakurketa-leihoak itxi ondoren",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Gaituta dagoenean, irakurketa-leiho bat ixteak ez du liburutegiaren leihoa leheneratzen, ezta aurreko planora ekartzen ere.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Minimizatu liburutegia irakurketa-leihoak ireki ondoren",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Gaituta dagoenean, irakurketa-leiho bat irekitzeak liburutegiaren leihoa minimizatzen du.",
+            "minimizeLibraryToTray": "Minimizatu liburutegia jakinarazpen-eremura",
+            "minimizeLibraryToTrayDescription": "Gaituta dagoenean, liburutegiaren leihoa minimizatzeak Thorium Windowsen jakinarazpen-eremuan martxan mantentzen du.",
+            "oneReaderWindowPerPublication": "Erabili irakurketa-leiho bakarra argitalpen bakoitzeko",
+            "oneReaderWindowPerPublicationDescription": "Gaituta dagoenean, dagoeneko irekita dagoen argitalpen bat irekitzeak haren irakurketa-leihoa fokuratzen du, beste bat ireki ordez.",
+            "title": "Leihoen portaera"
         }
     },
     "tts": {
@@ -1335,29 +1348,6 @@
             "underlineWordSolidBackground": "",
             "underlineWordUnderline": "",
             "wordColor": ""
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "Ezagutu zer berri",
-            "goToBooks": "Joan nire argitalpenetara"
-        },
-        "description": {
-            "home": "Thorium itxura ezberdina du! Ezagutu dezagun zer berri...",
-            "resources": ""
-        },
-        "dontShow": "Ez erakutsi berriro",
-        "resources": {
-            "discord": "",
-            "website": ""
-        },
-        "tab": {
-            "home": "Hasiera",
-            "resources": ""
-        },
-        "title": {
-            "resources": "",
-            "welcome": "Ongi etorri Thorium 3ra"
         }
     }
 }

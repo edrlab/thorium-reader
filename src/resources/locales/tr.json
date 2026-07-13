@@ -42,12 +42,13 @@
         },
         "update": {
             "message": "Yeni sürüm mevcut, daha fazlasını öğrenmek için tıklayın.",
-            "title": "{{- appName}} yazılım güncellemesi."
+            "title": "{{- appName}} yazılım güncellemesi.",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "Kütüphaneyi / kitaplığı göster",
-            "trayHint": "",
-            "trayTooltip": ""
+            "trayHint": "{{- appName}} hala bildirim alanında çalışıyor. Kütüphaneyi göstermek için tepsi simgesine tıklayın.",
+            "trayTooltip": "{{- appName}} - Kütüphaneyi göstermek veya gizlemek için tıklayın"
         }
     },
     "catalog": {
@@ -90,7 +91,7 @@
         "lastRead": "Son Okunan",
         "login": "Giriş yap",
         "logout": "Oturumu Kapat",
-        "missing": "",
+        "missing": "Eksik dosyalar",
         "missingUnavailableDescription": "Bu eser, depolanan dosyaları mevcut olmadığından açılamıyor. Eseri yeniden içe aktarın veya Ayarlar'a ve ardından Depolama'ya gidip ilave depolama ekleyin veya değiştirin.",
         "moreInfo": "Eser Ayrıntıları",
         "myBooks": "Eserlerim",
@@ -136,7 +137,7 @@
         "readBook": "Oku",
         "released": "Yayın tarihi:",
         "removeFromFavorites": "Favorilerden kaldır",
-        "selectTableHeaders": "",
+        "selectTableHeaders": "Görüntülenecek sütunları seçin",
         "sort": "Şuna göre sırala:",
         "tag": "Etiket",
         "tags": "Etiketler",
@@ -161,6 +162,7 @@
         "cancel": "İptal",
         "customization": {
             "splashscreen": {
+                "dontShow": "Bir daha gösterme",
                 "fallbackWelcomeScreen": "Hoşgeldiniz ekranı sağlanmadı",
                 "state": "Durum: {{- state}}",
                 "title": "Özelleştirme profilinin hazırlanması ve etkinleştirilmesi"
@@ -243,11 +245,11 @@
             "success": "İçe aktarma başarıyla tamamlandı."
         },
         "download": {
-            "cancelled": "",
+            "cancelled": "İndirme iptal edildi.",
             "error": "[{{- title}}] İndirmesi başarısız: [{{- err}}]",
             "errors": {
-                "hashMismatch": "",
-                "httpGet": "",
+                "hashMismatch": "İndirilen dosyanın bütünlük denetimi başarısız: Beklenen SHA-256 değeri {{- expected}}, alınan {{- actual}}.",
+                "httpGet": "HTTP indirme hatası: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",
@@ -1209,6 +1211,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "Okuma penceresinde, sistem tam ekran modunu etkinleştirir veya normal pencere modunu geri yükler. Bunun, kullanıcı arayüzünü basitleştiren 'zen modu'ndan farklı olduğunu unutmayın",
                     "name": "Tam Ekrana Geç veya Tam Ekrandan Çık"
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Kullanıcı dosyasından yükle",
@@ -1241,6 +1247,7 @@
         },
         "screenReaderActivate": {
             "help": "Uygulama yardımcı teknolojinin mevcudiyetini saptadığında, kullanıcı arayüzü ekran okuyucularla daha iyi çalışır",
+            "invite": "",
             "message": "Ekran okuyucular için geliştirilmiş destek",
             "title": "Ekran okuyucu deneyimini iyileştir"
         },
@@ -1309,9 +1316,15 @@
             "title": "Uygulama Teması"
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "Okuma pencereleri kapatıldıktan sonra kitaplığı arka planda tut",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Etkinleştirildiğinde, bir okuma penceresi kapatıldığında kitaplık penceresi geri yüklenmez veya ön plana getirilmez.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Okuma pencereleri açıldıktan sonra kitaplığı simge durumuna küçült",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Etkinleştirildiğinde, bir okuma penceresi açıldığında kitaplık penceresi simge durumuna küçültülür.",
+            "minimizeLibraryToTray": "Kitaplığı bildirim alanına simge durumuna küçült",
+            "minimizeLibraryToTrayDescription": "Etkinleştirildiğinde, kitaplık penceresi simge durumuna küçültüldüğünde Thorium Windows bildirim alanında çalışmaya devam eder.",
+            "oneReaderWindowPerPublication": "Her yayın için tek okuma penceresi kullan",
+            "oneReaderWindowPerPublicationDescription": "Etkinleştirildiğinde, zaten açık olan bir eser açıldığında yeni bir pencere açmak yerine eserin okuma penceresine odaklanılır.",
+            "title": "Pencere davranışı"
         }
     },
     "tts": {
@@ -1335,29 +1348,6 @@
             "underlineWordSolidBackground": "Altını Çiz, Kelimeyi Sade Arkaplanda Göster",
             "underlineWordUnderline": "Altını Çiz, Kelimenin Altını Çiz",
             "wordColor": "Kelime rengi"
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "Yenilikleri keşfet",
-            "goToBooks": "Eserlerime git"
-        },
-        "description": {
-            "home": "Toryum artık farklı görünüyor! Haydi yenilikleri keşfedelim...",
-            "resources": "Bizimle iletişime geçin ve Thorium hakkında daha fazla bilgi edinin:"
-        },
-        "dontShow": "Bir daha gösterme",
-        "resources": {
-            "discord": "Discord: {{- url}}",
-            "website": "Web sitesi: {{- url}}"
-        },
-        "tab": {
-            "home": "Anasayfa",
-            "resources": "Kaynaklar"
-        },
-        "title": {
-            "resources": "Kaynaklar & Topluluk",
-            "welcome": "Thorium 3.4 Uygulamasına Hoşgeldiniz"
         }
     }
 }

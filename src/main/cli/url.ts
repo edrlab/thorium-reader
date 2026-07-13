@@ -13,7 +13,7 @@ const debug = debug_(filename);
 
 // import validator from "validator";
 import { getOpenUrlWithOpdsSchemeEventChannel, getOpenUrlWithThoriumSchemeEventChannel } from "../event";
-import { URL_HOST_OPDS_AUTH, URL_PROTOCOL_APP_HANDLER_OPDS, URL_PROTOCOL_APP_HANDLER_THORIUM, URL_PROTOCOL_OPDS } from "readium-desktop/common/streamerProtocol";
+import { URL_HOST_OPDS_AUTH, URL_PROTOCOL_APP_HANDLER_OPDS, URL_DOMAIN_APP_HANDLER_THORIUM_READER, URL_PROTOCOL_APP_HANDLER_THORIUM, URL_PROTOCOL_APP_HANDLER_THORIUM_READER, URL_PROTOCOL_APP_HANDLER_THORIUM_READER_DESKTOP, URL_PROTOCOL_OPDS } from "readium-desktop/common/streamerProtocol";
 
 export const isOpenUrl = (url: string): boolean => {
 
@@ -25,7 +25,7 @@ export const isOpenUrl = (url: string): boolean => {
 
     try {
         const _url = new URL(url);
-        if (["http:", "https:", `${URL_PROTOCOL_APP_HANDLER_OPDS}:`, `${URL_PROTOCOL_APP_HANDLER_THORIUM}:`].some((v) => v === _url.protocol)) {
+        if (["http:", "https:", `${URL_PROTOCOL_APP_HANDLER_OPDS}:`, `${URL_PROTOCOL_APP_HANDLER_THORIUM}:`, `${URL_PROTOCOL_APP_HANDLER_THORIUM_READER}:`, `${URL_PROTOCOL_APP_HANDLER_THORIUM_READER_DESKTOP}:`].some((v) => v === _url.protocol)) {
             urlIsValid = true;
         }
     } catch {
@@ -36,44 +36,48 @@ export const isOpenUrl = (url: string): boolean => {
 
 export const setOpenUrl = (url: string): void => {
 
-    if (url.startsWith(`${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`)) {
+    // single slash!
+    if (url.startsWith(`${URL_PROTOCOL_APP_HANDLER_THORIUM_READER}:/add/publication`) || url.startsWith(`${URL_PROTOCOL_APP_HANDLER_THORIUM_READER_DESKTOP}:/add/publication`)) {
+        debug("OPEN URL WITH com.thoriumreader scheme (add/publication)");
+        const buf = getOpenUrlWithThoriumSchemeEventChannel();
+        debug("OPEN URL =", url);
+        buf.put(url);
+    }
+    // single slash!
+    else if (url.startsWith(`${URL_PROTOCOL_APP_HANDLER_THORIUM_READER}:/add/catalog`) || url.startsWith(`${URL_PROTOCOL_APP_HANDLER_THORIUM_READER_DESKTOP}:/add/catalog`)) {
+        debug("OPEN URL WITH com.thoriumreader scheme (add/catalog)");
+        const buf = getOpenUrlWithOpdsSchemeEventChannel();
+        debug("OPEN URL =", url);
+        buf.put(url);
+    } else if (url.startsWith(`${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`)) {
         debug("OPEN URL WITH OPDS (AUTH) scheme");
         const openUrl = url;
         debug("OPEN URL =", openUrl);
         const buf = getOpenUrlWithOpdsSchemeEventChannel();
         buf.put(openUrl);
     }
-
     // OR: if (new URL(url).protocol === `${URL_PROTOCOL_APP_HANDLER_OPDS}:`)
     else if (url.startsWith(`${URL_PROTOCOL_APP_HANDLER_OPDS}://`)) {
         debug("OPEN URL WITH OPDS scheme");
         const openUrl = url.replace(`${URL_PROTOCOL_APP_HANDLER_OPDS}://`, "http://"); // HTTP to HTTPS redirect should be handled by the server
-
         debug("OPEN URL =", openUrl);
-
         const buf = getOpenUrlWithOpdsSchemeEventChannel();
         buf.put(openUrl);
     }
-
     // OR: if (new URL(url).protocol === `${URL_PROTOCOL_APP_HANDLER_THORIUM}:`)
     else if (url.startsWith(`${URL_PROTOCOL_APP_HANDLER_THORIUM}://`)) {
-
         debug("OPEN URL WITH thorium scheme");
         const buf = getOpenUrlWithThoriumSchemeEventChannel();
-
         debug("OPEN URL =", url);
         buf.put(url);
     }
-
     // only from the CLI we accept http/https protocols
     else if (/^https?:\/\//.test(url)) {
         debug("OPEN URL WITH http(s) scheme");
-
-        const buf = getOpenUrlWithThoriumSchemeEventChannel();
+        const buf = url.startsWith(`https://${URL_DOMAIN_APP_HANDLER_THORIUM_READER}/add/catalog`) ? getOpenUrlWithOpdsSchemeEventChannel() : getOpenUrlWithThoriumSchemeEventChannel();
         debug("OPEN URL =", url);
         buf.put(url);
     }
-
     else {
         process.stderr.write("Cannot open URL with this protocol");
     }

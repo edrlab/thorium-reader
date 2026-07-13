@@ -116,7 +116,7 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
         i18n: state.i18n,
         keyboard: state.keyboard,
         theme: state.theme,
-        wizard: state.wizard,
+        whatsNew: state.whatsNew,
         win: {
             identifier,
         },

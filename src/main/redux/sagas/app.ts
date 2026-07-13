@@ -31,7 +31,7 @@ import {
 } from "./getEventChannel";
 import { availableLanguages } from "readium-desktop/common/services/translator";
 import { i18nActions } from "readium-desktop/common/redux/actions";
-import { URL_PROTOCOL_APP_HANDLER_OPDS, URL_PROTOCOL_APP_HANDLER_THORIUM } from "readium-desktop/common/streamerProtocol";
+import { URL_PROTOCOL_APP_HANDLER_OPDS, URL_PROTOCOL_APP_HANDLER_THORIUM, URL_PROTOCOL_APP_HANDLER_THORIUM_READER, URL_PROTOCOL_APP_HANDLER_THORIUM_READER_DESKTOP } from "readium-desktop/common/streamerProtocol";
 import { PersistRootState, RootState } from "../states";
 
 // Logger
@@ -58,6 +58,12 @@ export function* init() {
         if (!app.isDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM, electronPath, [appPath])) {
             app.setAsDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM, electronPath, [appPath]);
         }
+        if (!app.isDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM_READER, electronPath, [appPath])) {
+            app.setAsDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM_READER, electronPath, [appPath]);
+        }
+        if (!app.isDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM_READER_DESKTOP, electronPath, [appPath])) {
+            app.setAsDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM_READER_DESKTOP, electronPath, [appPath]);
+        }
     } else {
         if (!app.isDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_OPDS)) {
             app.setAsDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_OPDS);
@@ -65,6 +71,12 @@ export function* init() {
 
         if (!app.isDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM)) {
             app.setAsDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM);
+        }
+        if (!app.isDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM_READER)) {
+            app.setAsDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM_READER);
+        }
+        if (!app.isDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM_READER_DESKTOP)) {
+            app.setAsDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM_READER_DESKTOP);
         }
     }
 
@@ -112,6 +124,7 @@ export function* init() {
                 console.log("webContents.send - accessibility-support-changed: ", accessibilitySupportEnabled, screenReaderActivated, win.id);
                 try {
                     win.webContents.send("accessibility-support-changed", accessibilitySupportEnabled && screenReaderActivated);
+                    win.webContents.send("accessibility-support-changed-raw", accessibilitySupportEnabled);
                 } catch (e) {
                     debug("webContents.send - accessibility-support-changed ERROR?", e);
                 }
@@ -127,6 +140,11 @@ export function* init() {
         const screenReaderActivated = store.getState().screenReader.activate;
         console.log("ipcMain.on - accessibility-support-query, sender.send - accessibility-support-changed: ", accessibilitySupportEnabled, screenReaderActivated);
         e.sender.send("accessibility-support-changed", accessibilitySupportEnabled && screenReaderActivated);
+    });
+    ipcMain.on("accessibility-support-query-raw", (e) => {
+        const accessibilitySupportEnabled = app.accessibilitySupportEnabled; // .isAccessibilitySupportEnabled()
+        console.log("ipcMain.on - accessibility-support-query-raw, sender.send - accessibility-support-changed: ", accessibilitySupportEnabled);
+        e.sender.send("accessibility-support-changed-raw", accessibilitySupportEnabled);
     });
 
     yield call(() => app.whenReady());

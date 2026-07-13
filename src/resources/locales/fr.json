@@ -10,7 +10,7 @@
     },
     "apiapp": {
         "documentation": "Documentation Thorium",
-        "howItWorks": "Comment ça marche ?",
+        "howItWorks": "Comment ça marche ?",
         "informations": "En France, de nombreuses bibliothèques publiques proposent un catalogue lisible par machine (similaire à l'OPDS mais pas identique), permettant aux usagers de télécharger des publications numériques à partir de leur bibliothèque personnelle. L'intégration de cette technologie dans Thorium Reader vous permet de télécharger un livre électronique ou un livre audio directement dans Thorium Reader pour une lecture instantanée.\nComment connecter votre compte de bibliothèque publique française à Thorium Reader ? C'est très simple. Entrez une ville française (\"Paris\") ou une partie du nom de la bibliothèque dans le champ de recherche et cliquez sur le bouton Rechercher. Une liste de bibliothèques publiques correspondant à votre recherche apparaîtra. Sélectionnez une bibliothèque et cliquez sur Ajouter. Dans la liste actualisée des catalogues, sélectionnez cette bibliothèque : un formulaire d'authentification s'affiche. Saisissez votre nom d'utilisateur/adresse électronique et votre mot de passe, puis cliquez sur Connexion. Vous pouvez maintenant voir le contenu de votre bibliothèque personnelle, à partir de laquelle vous pouvez télécharger et lire les livres électroniques et les livres audio que vous avez précédemment empruntés.",
         "noLibraryFound": "Aucune bibliothèque trouvée ({{- name}})"
     },
@@ -20,7 +20,7 @@
             "cut": "Couper",
             "paste": "Coller",
             "print": "Imprimer",
-            "redo": "Refaire",
+            "redo": "Répéter",
             "selectAll": "Tout sélectionner",
             "title": "Modifier",
             "undo": "Annuler"
@@ -42,11 +42,12 @@
         },
         "update": {
             "message": "Nouvelle version disponible, cliquez pour en savoir plus.",
-            "title": "Mise à jour du logiciel {{- appName}}."
+            "title": "Mise à jour du logiciel {{- appName}}.",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "Afficher la bibliothèque",
-            "trayHint": "{{- appName}} reste ouvert dans la zone de notification. Cliquez sur l'icône {{- appName}} pour afficher la bibliothèque.",
+            "trayHint": "{{- appName}} reste ouvert dans la zone de notification. Cliquez sur l'icône pour afficher la bibliothèque.",
             "trayTooltip": "{{- appName}} - cliquer pour afficher ou masquer la bibliothèque"
         }
     },
@@ -67,10 +68,10 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
-                "publications": "",
-                "screen": "",
-                "title": ""
+                "description": "Aucune description pour ce profil",
+                "publications": "Publications du profil",
+                "screen": "Aucun titre",
+                "title": "Titre du profil"
             }
         },
         "delete": "Supprimer",
@@ -88,8 +89,8 @@
         "importAnnotation": "Importer les notes",
         "lang": "Langue",
         "lastRead": "Dernière lecture",
-        "login": "",
-        "logout": "",
+        "login": "Connexion",
+        "logout": "Déconnexion",
         "missing": "Fichiers manquants",
         "missingUnavailableDescription": "Cette publication ne peut pas être chargée car ses fichiers ne sont pas disponibles. Il faut la réimporter, ou aller dans les préférences puis dans Stockage pour ajouter ou changer le stockage additionel.",
         "moreInfo": "Plus d'informations",
@@ -103,13 +104,13 @@
             "auth": {
                 "cancel": "Annuler",
                 "external": "La page de connexion va s'ouvrir dans votre navigateur web, veuillez suivre les instructions. Une fois connecté, le navigateur web reviendra dans l'application.",
-                "fallback": "NB: dans le cas d'un problème de connexion avec votre navigateur web, veuillez réessayer avec la méthode alternative directement dans l'application.",
+                "fallback": "Note : dans le cas d'un problème de connexion avec votre navigateur web, veuillez réessayer avec la méthode alternative directement dans l'application.",
                 "login": "Connexion",
                 "password": "Mot de passe",
                 "register": "Créer un compte",
                 "retry": "Réessayer",
-                "unauthorized": "",
-                "unauthorizedUnsupportedType": "",
+                "unauthorized": "Non autorisé",
+                "unauthorizedUnsupportedType": "Non autorisé (type d'authentification non supporté '{{- type}}')",
                 "username": "Nom d'utilisateur / Adresse courriel"
             },
             "info": {
@@ -131,7 +132,7 @@
                 "state": "État"
             }
         },
-        "openFolder": "",
+        "openFolder": "Répertoire ouvert",
         "publisher": "Éditeur",
         "readBook": "Lire",
         "released": "Publié le",
@@ -164,12 +165,13 @@
         "cancel": "Annuler",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
-                "state": "",
-                "title": ""
+                "dontShow": "Ne plus afficher",
+                "fallbackWelcomeScreen": "Aucun écran d'accueil",
+                "state": "État : {{- state}}",
+                "title": "Préparation et activation du profil de personnalisation"
             }
         },
-        "deleteAnnotations": "Supprimer la note",
+        "deleteAnnotations": "Supprimer les notes ?",
         "deleteAnnotationsText_many": "Voulez-vous supprimer {{- count}} note(s) ?",
         "deleteAnnotationsText_one": "Voulez-vous supprimer {{- count}} note ?",
         "deleteAnnotationsText_other": "Voulez-vous supprimer {{- count}} notes ?",
@@ -219,14 +221,14 @@
         },
         "lcp": {
             "hidePassphrase": "Cacher la passphrase",
-            "hint": "Indice : ",
+            "hint": "Indice :",
             "open": "Ouvrir",
             "password": "Mot de passe",
             "sentence": "Entrez la clé LCP associée à cette publication :",
             "showPassphrase": "Montrer la passphrase",
-            "urlHint": "Vous avez oublié votre phrase d'accès ? Trouvez de l'aide avec ce lien",
+            "urlHint": "Vous avez oublié votre phrase d'accès ? Trouvez de l'aide avec ce lien.",
             "whatIsLcp?": "Qu'est-ce que LCP ?",
-            "whatIsLcpInfoDetails": "LCP signifie 'Licensed Content Protection'. Il s'agit d'une technologie de protection des libres numériques contre la copie pirate, souvent appelée DRM. Ouvrir un livre protégé par LCP nécessite une clé LCP, c'est à dire un ou plusieurs mots séparés par des espaces. LCP est un standard ouvert, qui équilibre facilité d'usage et demandes des éditeurs. ",
+            "whatIsLcpInfoDetails": "LCP signifie 'Licensed Content Protection'. Il s'agit d'une technologie de protection des livres numériques contre la copie illicite, souvent appelée DRM. Ouvrir un livre protégé par LCP nécessite une clé LCP, c'est-à-dire un ou plusieurs mots séparés par des espaces. LCP est un standard ouvert, qui équilibre facilité d'usage et demandes des éditeurs.",
             "whatIsLcpInfoDetailsLink": "Pour en savoir plus, cliquez ce lien, qui renvoie vers le site web de EDRLab."
         },
         "sorting": {
@@ -240,25 +242,25 @@
     },
     "message": {
         "annotations": {
-            "alreadyImported": "Toute les notes sont déjà importées, importation annulée",
-            "emptyFile": "Aucune note n'est disponible dans ce fichier",
+            "alreadyImported": "Toutes les notes sont déjà importées, importation annulée.",
+            "emptyFile": "Aucune note n'est disponible dans ce fichier.",
             "errorParsing": "Erreur lors de la lecture du fichier : ",
-            "noBelongTo": "Impossible d'importer les notes, au moins une note n'appartient pas à la publication finale",
+            "noBelongTo": "Impossible d'importer les notes, au moins une note n'appartient pas à la publication finale.",
             "nothing": "Aucune note disponible, importation annulée",
-            "success": "Importation réussie"
+            "success": "Importation réussie."
         },
         "download": {
-            "cancelled": "",
+            "cancelled": "Téléchargement annulé.",
             "error": "Le téléchargement de {{- title}} a échoué: [{{- err}}]",
             "errors": {
-                "hashMismatch": "",
-                "httpGet": "",
-                "invalidFilename": "",
-                "invalidLink": "",
-                "invalidTempDirectory": "",
-                "lengthMismatch": "",
-                "readStreamMissing": "",
-                "tooManyFilenameAttempts": ""
+                "hashMismatch": "Erreur de vérification de l'intégrité du fichier téléchargé  : SHA-256 attendu {{- expected}}, obtenu {{- actual}}.",
+                "httpGet": "Téléchargement HTTP échoué : {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "invalidFilename": "Le nom du fichier temporaire téléchargé est invalide.",
+                "invalidLink": "Le lien de téléchargement est invalide.",
+                "invalidTempDirectory": "Le répertoire de téléchargement temporaire est invalide.",
+                "lengthMismatch": "Erreur de vérification d'intégrité des fichiers téléchargés : attendus {{- expected}}, obtenu {{- actual}} octets.",
+                "readStreamMissing": "Le flux de téléchargement n'est pas disponible.",
+                "tooManyFilenameAttempts": "Impossible de créer un fichier de téléchargement temporaire unique : {{- path}}"
             }
         },
         "import": {
@@ -268,14 +270,14 @@
         },
         "open": {
             "error": "Le livre ne peut pas être ouvert : {{- err}}",
-            "folderNotFound": ""
+            "folderNotFound": "Le répertoire de publication est introuvable. Réimportez-le ou configurez le stockage supplémentaire dans Paramètres > Stockage."
         },
         "storage": {
-            "removed": "",
-            "updateFailed": "",
-            "updated": ""
+            "removed": "Le répertoire des publications a été supprimé.",
+            "updateFailed": "Erreur de mise à jour du répertoire des publications : {{- message}}",
+            "updated": "Le répertoire des publications a été mis à jour."
         },
-        "wipeData": "Données d'authentification supprimées avec succès !"
+        "wipeData": "Données d'authentification supprimées (tokens d'accès et cookies)"
     },
     "opds": {
         "addForm": {
@@ -307,8 +309,8 @@
             "error": "Une erreur est survenue",
             "noInternet": "Pas de connexion Internet",
             "noInternetMessage": "Essayez de vérifier le câble réseau, le modem, le routeur ou votre connexion wifi",
-            "reject": "Désolé, une erreur est survenue lors de la tentative de traitement du flux OPDS.",
-            "timeout": "Le flux OPDS met du temps à répondre, veuillez réessayer plus tard"
+            "reject": "Désolé, une erreur est survenue lors de la tentative de traitement du catalogue !",
+            "timeout": "Le serveur distant met du temps à répondre, veuillez réessayer plus tard"
         },
         "next": "Suivant",
         "previous": "Précédent",
@@ -404,8 +406,8 @@
                 "compact": "Pour plus d'informations, voir le rapport d'évaluation"
             },
             "conformance-details-claim": {
-                "compact": "Respecte ",
-                "descriptive": "Cette publication indique respecter "
+                "compact": "Respecte",
+                "descriptive": "Cette publication indique respecter"
             },
             "conformance-details-epub-accessibility-1-0": {
                 "compact": "EPUB Accessibilité 1.0",
@@ -616,7 +618,7 @@
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": "Texte et images disponibles en voix de synthèse et braille."
+                "textual": "Texte et images disponibles en voix de synthèse et braille"
             },
             "accessibilityFeature": {
                 "alternativeText": "Contient un texte alternatif",
@@ -651,7 +653,7 @@
         "author": "Auteur",
         "cancelledLcp": "Ce livre ne peut être lu car la licence LCP a été annulée.",
         "certificateRevoked": "Certificat LCP révoqué.",
-        "certificateSignatureInvalid": "Signature de certificat LCP invalide",
+        "certificateSignatureInvalid": "Signature de certificat LCP invalide.",
         "cover": {
             "img": "image de couverture"
         },
@@ -665,14 +667,14 @@
         "expiredLcp": "Ce livre ne peut être lu car la licence LCP a expiré.",
         "incorrectPassphrase": "Aucune clé LCP enregistrée ne correspond à la publication ou la clé saisie est incorrecte.",
         "lcpEnd": "Fin",
-        "lcpNotSupported": "",
+        "lcpNotSupported": "WARNING : il s'agit d'une version préliminaire de Thorium Desktop, qui ne prend pas en charge les licences de production LCP. Elle ne prend en charge que des licences LCP de test.",
         "lcpRightsCopy": "Caractères copiés",
         "lcpRightsPrint": "Pages imprimées",
         "lcpStart": "Début",
         "licenceLCP": "Licence (LCP)",
         "licenseCertificateDateInvalid": "Le certificat de provider LCP a expiré avant la date de license ({{- dateTime}}).",
         "licenseOutOfDate": "License LCP inutilisable à cette date.",
-        "licenseSignatureInvalid": "Signature de license LCP invalide",
+        "licenseSignatureInvalid": "Signature de license LCP invalide.",
         "licensed": "Accès protégé",
         "markAsRead": "Marquer comme lu",
         "notStarted": "Non Demarré",
@@ -690,7 +692,7 @@
         "seeMore": "Voir plus",
         "timeLeft": "Temps restant",
         "title": "Titre",
-        "userKeyCheckInvalid": "Mot de passe incorrect"
+        "userKeyCheckInvalid": "Mot de passe incorrect."
     },
     "reader": {
         "annotations": {
@@ -705,10 +707,10 @@
             "date": "Date de modification",
             "error": {
                 "pdf": {
-                    "validationSelection": ""
+                    "validationSelection": "Impossible de créer une annotation PDF pour cette sélection."
                 }
             },
-            "export": "Sauvegarder sous",
+            "export": "Sauvegarder les notes sous...",
             "filter": {
                 "all": "Tous",
                 "filterByColor": "Filtrer par couleur",
@@ -746,9 +748,9 @@
             "unmute": "Activer le son"
         },
         "dock": {
-            "dockDefault": "",
-            "dockLeft": "",
-            "dockRight": ""
+            "dockDefault": "Affichage centré",
+            "dockLeft": "Volet à gauche",
+            "dockRight": "Volet à droite"
         },
         "fxl": {
             "fit": "Remplir"
@@ -785,7 +787,7 @@
             "play": "Lire",
             "previous": "Précédent",
             "skip": "Omettre les informations auxiliaires",
-            "skipDescription": "Omettre les sauts de pages, notes de de bas de page etc.",
+            "skipDescription": "Omettre les sauts de page, les notes de bas de page, etc.",
             "speed": "Vitesse de lecture",
             "stop": "Arrêt",
             "title": "Lire à haute voix",
@@ -822,8 +824,8 @@
         "notes": {
             "colors": {
                 "cyan": "Cyan",
-                "darkorange": "",
-                "darkyellow": "",
+                "darkorange": "Orange foncé",
+                "darkyellow": "Jaune foncé",
                 "green": "Vert",
                 "orange": "Orange",
                 "purple": "Violet",
@@ -847,8 +849,8 @@
         },
         "print": {
             "descriptionLcpCount": "Limite de pages restantes : {{- count}}",
-            "descriptionLcpPrintable": "Pages précédemment imprimées : {{- printable}}",
-            "howTo": "Comment sélectionner une série de pages à imprimer ?",
+            "descriptionLcpPrintable": "Pages précédemment imprimées : {{- printable}} ({{- count}})",
+            "howTo": "Comment sélectionner une série de pages à imprimer",
             "lcpInfo": "Le nombre de pages que vous pouvez imprimer dans cette publication est limité à {{- count}}. Choisissez ici les pages désirées.",
             "noPagesLcpLimitReached": "Vous avez atteint la limite LCP",
             "noPrintablePages": "Aucune page imprimable",
@@ -856,7 +858,7 @@
             "pageHelpInfo1": "Saisir un numéro de page pour faire référence à une seule page (par exemple : \"6\")",
             "pageHelpInfo2": "Saisir deux numéros de page séparés par un tiret pour faire référence à une série de pages contiguës (par exemple, \"6-13\")",
             "pageHelpInfo3": "Utiliser le caractère point-virgule pour séparer plusieurs pages ou plages de pages (par exemple : \"5;14-20;37\")",
-            "pageHelpInfo4": "Omettre la première ou la dernière page d'un intervalle pour faire référence à la première ou à la dernière page de la publication (par exemple, \"-16\" équivaut à \"1-16\", et \"34-\" équivaut à \"34-100\" dans l'hypothèse d'un livre de 100 pages au total).",
+            "pageHelpInfo4": "Omettre la première ou la dernière page d'un intervalle pour faire référence à la première ou à la dernière page de la publication (par exemple, \"-16\" équivaut à \"1-16\", et \"34-\" équivaut à \"34-100\" dans l'hypothèse d'un livre de 100 pages)",
             "pages": "Pages",
             "preview": "Prévisualisation",
             "print": "Imprimer",
@@ -872,7 +874,7 @@
             },
             "customFontSelected": "Vous avez sélectionné une police personnelle",
             "customizeReader": "Personnaliser la mise en forme",
-            "defaultValue": "",
+            "defaultValue": "Valeur par défaut",
             "disabled": "Désactivé",
             "display": "Affichage",
             "disposition": {
@@ -881,14 +883,14 @@
             "font": "Police de caractères",
             "fontSize": "Taille du texte",
             "increaseFontSize": "Augmenter la taille du texte",
-            "infoCustomFont": "Vous pouvez sélectionner une police système ou personnelle en entrant son nom.",
+            "infoCustomFont": "Vous pouvez sélectionner une police système ou personnelle en saisissant son nom",
             "justification": "Alignement",
             "justify": "Justifié",
             "letterSpacing": "Espacement des lettres",
             "lineSpacing": "Espacement des lignes",
             "margin": "Marge",
             "mathjax": "Activer MathJax",
-            "mathjaxDescription": "",
+            "mathjaxDescription": "MathJax",
             "noFootnotes": "Désactiver la fenêtre pop-up des notes de bas de page",
             "noRTLFlip": "Désactiver l'interface droite-à-gauche",
             "noRuby": "Cacher les caractères Ruby Japonais",
@@ -909,10 +911,10 @@
                 "title": "Loupe"
             },
             "preset": {
-                "apply": "Appliquer les paramètres de lecture préférés.",
+                "apply": "Appliquer les paramètres de lecture préférés",
                 "applyDetails": "Appliquer au livre courant les paramètres de lecture précédemment enregistrés.",
                 "detail": "Sauvegarder/Appliquer vos paramètres de lecture favoris.",
-                "reset": "Réinitialiser les paramètres de lecture préférés.",
+                "reset": "Réinitialiser les paramètres de lecture préférés",
                 "resetDetails": "Effacer les paramètres de lecture précédemment appliqués, et revenir à la mise en forme et aux choix d'affichage par défaut.",
                 "save": "Enregistrer les paramètres de lecture préférés.",
                 "saveDetails": "Sauvegarder les modifications appliquées à la mise en forme du livre courant et les choix d'affichage du logiciel. Ces paramètres pourront être appliqués à d'autres livres, une fois ouverts, en cliquant sur le bouton ci-dessous.",
@@ -923,7 +925,7 @@
             "reduceMotion": "Réduire les animations visuelles",
             "scrolled": "Défilement vertical",
             "spacing": "Espacement",
-            "spreadModeEven": "",
+            "spreadModeEven": "Une double page commence par une page paire (impaire par défaut)",
             "text": "Texte",
             "theme": {
                 "name": {
@@ -972,7 +974,7 @@
             "type": "Type"
         },
         "auth": {
-            "help": "Souhaitez-vous supprimer vos identifiants de connexion à l'OPDS ?",
+            "help": "Cette action supprime vos identifiants de connexion aux catalogues.",
             "title": "Gérer l'accès aux catalogues",
             "wipeData": "Effacer les données d'authentification"
         },
@@ -989,7 +991,7 @@
                     "name": "Ajouter un Signet avec Libellé"
                 },
                 "AnnotationsCreate": {
-                    "description": "Lorsqu'un texte est sélectionné, il sera marqué comme annotation et la boîte de dialogue d'annotation s'ouvrira pour permettre d'ajouter du texte supplémentaire et de sélectionner une couleur et un trait.",
+                    "description": "Lorsqu'un texte est sélectionné, il sera marqué comme annotation, et la boîte de dialogue d'annotation s'ouvrira pour ajouter du texte supplémentaire et sélectionner une couleur et un trait",
                     "name": "Créer une Annotation"
                 },
                 "AnnotationsCreateQuick": {
@@ -997,15 +999,15 @@
                     "name": "Créer une annotation rapide"
                 },
                 "AnnotationsToggleMargin": {
-                    "description": "Change les marques d'annotations du texte à la marge ou inversement.",
+                    "description": "Affiche les marques d'annotation du texte à la marge ou inversement",
                     "name": "Basculer la marge d'annotation"
                 },
                 "AudioNext": {
-                    "description": "Dans la fenêtre du lecteur, appelle la commande « suivant » pour l'audio (synthède vocale, lecture à voix haute des superpositions multimédias EPUB3, ou « avance rapide » pour les livres audio).",
+                    "description": "Dans la fenêtre du lecteur, appelle la commande « suivant » pour l'audio (synthèse vocale, lecture à voix haute ou « avance rapide » pour les livres audio)",
                     "name": "Segment audio suivant"
                 },
                 "AudioNextAlt": {
-                    "description": "Dans la fenêtre du lecteur, appelle la commande « suivant » pour l'audio (synthèse vocale, lecture à voix haute des superpositions multimédias EPUB3, ou « avance rapide » pour les livres audio).",
+                    "description": "Dans la fenêtre du lecteur, appelle la commande « suivant » pour l'audio (synthèse vocale, lecture à voix haute ou « avance rapide » pour les livres audio).",
                     "name": "Segment audio suivant (alternatif)"
                 },
                 "AudioPlayPause": {
@@ -1021,16 +1023,16 @@
                     "name": "Segment audio précédent (alternatif)"
                 },
                 "AudioSpeedDecrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Diminuer la vitesse de lecture à haute voix",
+                    "name": "Diminuer la vitesse de lecture audio"
                 },
                 "AudioSpeedIncrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Augmenter la vitesse de lecture à haute voix",
+                    "name": "Augmenter la vitesse de lecture audio"
                 },
                 "AudioSpeedReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Réinitialiser la vitesse de lecture à haute voix",
+                    "name": "Réinitialiser la vitesse de lecture audio"
                 },
                 "AudioStop": {
                     "description": "Dans la fenêtre du lecteur, appelle la commande \"arrêter\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3, ou \"pause\" pour les livres audio).",
@@ -1053,7 +1055,7 @@
                     "name": "Réinitialiser le zoom FXL"
                 },
                 "FocusMain": {
-                    "description": "Dans les fenêtres du lecteur et de la bibliothèque, déplace le focus clavier vers le repère de la zone « principale ». Dans la vue du lecteur, le focus clavier se déplace d'un pas supplémentaire dans le cadre qui affiche le contenu de la publication (les lecteurs d'écran lisent automatiquement l'élément HTML actuellement focalisé à l'intérieur du document affiché).",
+                    "description": "Dans les fenêtres du lecteur et de la bibliothèque, déplace le focus clavier vers le repère de la zone principale. Dans la vue du lecteur, le focus clavier se déplace d'un pas supplémentaire dans le cadre affichant le contenu de la publication (les lecteurs d'écran lisent automatiquement l'élément HTML actuellement focalisé dans le document affiché).",
                     "name": "Focus sur le contenu principal"
                 },
                 "FocusMainDeep": {
@@ -1182,7 +1184,7 @@
                 },
                 "OpenReaderInfoWhereAmI": {
                     "description": "Dans la fenêtre du lecteur, ouvre une boîte de dialogue modale d'informations sur la publication avec un focus clavier direct sur la section qui affiche la hiérarchie des titres et d'autres informations contextuelles pour l'emplacement de lecture actuel, telles que la pause de page précédente la plus proche, ainsi que l'index du document dans l'ordre de lecture (c'est la fonctionnalité \"où suis-je\").",
-                    "name": "Ouvrir les Infos du Lecteur : Où Suis-je ?"
+                    "name": "Afficher les informations sur la publication et la progression"
                 },
                 "Print": {
                     "description": "Dans la fenêtre du lecteur, ouvre une boîte de dialogue d'impression",
@@ -1205,7 +1207,7 @@
                     "name": "Rechercher le résultat précédent (alternatif)"
                 },
                 "SpeakReaderInfoWhereAmI": {
-                    "description": "Dans la fenêtre du lecteur, c'est la fonctionnalité \"où suis-je\", exactement comme ci-dessus, mais uniquement parlée via le lecteur d'écran TTS grâce à une région en direct ARIA avec une parole assertive qui interrompt la narration en cours.",
+                    "description": "Dans la fenêtre de lecture, c'est la fonctionnalité \"où suis-je\", exactement comme ci-dessus, mais uniquement parlée via le lecteur d'écran TTS grâce à une région en direct ARIA avec une parole assertive qui interrompt la narration en cours.",
                     "name": "Décrire le lieu de lecture (Oral)"
                 },
                 "ToggleBookmark": {
@@ -1215,6 +1217,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "Dans la fenêtre du lecteur, bascule en plein écran. Notez que cela est différent du mode Zen. Le raccourci clavier est le seul moyen de passer en plein écran.",
                     "name": "Basculer en plein écran"
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Charger le fichier",
@@ -1238,66 +1244,67 @@
             }
         },
         "profiles": {
-            "info": "",
+            "info": "Changez de profil pour personnaliser l’application avec un thème, des catalogues et des informations spécifiques. Chaque profil offre une expérience sur mesure.",
             "thorium": {
-                "description": "",
-                "title": ""
+                "description": "Le profil Thorium Vanilla est le profil original, développé par EDRLab.",
+                "title": "Thorium Vanilla"
             },
-            "version": ""
+            "version": "Version : {{- version}}"
         },
         "screenReaderActivate": {
-            "help": "",
-            "message": "",
-            "title": ""
+            "help": "Lorsque l'application détecte la présence d'une technologie d'assistance, l'interface utilisateur fonctionne mieux avec les lecteurs d'écran",
+            "invite": "",
+            "message": "Support amélioré pour les lecteurs d'écran",
+            "title": "Améliorer l'expérience d'un utilisateur doté d'un lecteur d'écran"
         },
         "session": {
             "title": "Sauvegarder la session"
         },
         "sharedComputer": {
-            "lcpAutoDeleteExpiredPublications": "Supprimer automatiquement les publications LCP inutilisables et les données locales",
-            "lcpAutoDeleteExpiredPublicationsDescription": "Après synchronisation du statut LCP/LSD, les publications LCP expirées, rendues, révoquées ou annulées sont retirées de la bibliothèque avec leurs notes et leur état de lecture locaux. En mode personnel, l'import d'un nouvel exemplaire peut tout de même remplacer une copie précédente inutilisable en préservant ses notes et ses données de lecture lorsque c'est possible.",
+            "lcpAutoDeleteExpiredPublications": "Supprimer automatiquement les publications dont la licence a expiré et les données locales",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Retire automatiquement de la bibliothèque les publications dont la licence a expiré, ainsi que leurs annotations et leur statut de lecture. Ce mode est utile si l'application est installée sur un site ouvert au public.",
             "title": "Poste partagé"
         },
         "storage": {
             "actions": {
-                "addDirectory": "",
-                "changeDirectory": "",
-                "removeStorageDirectory": ""
+                "addDirectory": "Sélectionner un stockage supplémentaire",
+                "changeDirectory": "Mettre à jour le stockage supplémentaire",
+                "removeStorageDirectory": "Supprimer le stockage supplémentaire"
             },
             "beta": {
-                "availability": "",
-                "integrity": "",
-                "migration": "",
-                "summary": "",
-                "warning": ""
+                "availability": "Cette fonctionnalité ne fonctionne qu'avec les versions récentes de Thorium; les publications du stockage supplémentaire ne seront pas affichées dans Thorium 3.4 ni dans toute version antérieure.",
+                "integrity": "Vous devez maintenir ce répertoire stable et accessible. Évitez de le supprimer, de restreindre son accès ou d'utiliser un stockage lent ou instable, tel qu'un disque réseau.",
+                "migration": "Thorium ne transfère pas automatiquement vos livres : si vous changez de stockage supplémentaire, vous devez déplacer manuellement vos publications vers le nouvel emplacement. Si vous retirez ce stockage, vous devez déplacer manuellement vos publications vers le stockage d'origine.",
+                "summary": "En savoir plus sur cette fonctionnalité, actuellement en bêta",
+                "warning": "Ne modifiez pas manuellement les fichiers dans ce dossier, car cela peut entraîner des problèmes avec vos livres ou le lecteur. Pensez à ce dossier comme u stockage sécurisé géré par Thorium Reader."
             },
             "configuration": {
-                "chooseFolderDescription": "",
-                "configuredDescription": "",
-                "notConfiguredDescription": ""
+                "chooseFolderDescription": "Choisissez le répertoire que Thorium devrait utiliser comme stockage supplémentaire.",
+                "configuredDescription": "Le stockage supplémentaire est configuré et prêt à être utilisé pour les nouvelles publications importées.",
+                "notConfiguredDescription": "Les publications importées dans Thorium Reader seront stockées dans le répertoire sélectionné. Les publications précédemment importées resteront dans le stockage d'origine."
             },
             "dialogs": {
                 "add": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Continuer",
+                    "description": "Cette fonctionnalité est actuellement en bêta. Voulez-vous continuer et configurer un stockage supplémentaire en sélectionnant un répertoire ?",
+                    "title": "Sélectionner un stockage supplémentaire"
                 },
                 "edit": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Modifier le répertoire",
+                    "description": "La mise à jour du stockage supplémentaire nécessite de l'attention. Thorium ne migrera pas automatiquement les publications existantes ; vous devrez le faire manuellement. Voulez-vous continuer ?",
+                    "title": "Mettre à jour le stockage supplémentaire"
                 },
                 "remove": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Supprimer le répertoire",
+                    "description": "La suppression du stockage supplémentaire nécessite de l'attention. Thorium ne migrera pas automatiquement les publications existantes ; vous devrez le faire manuellement. Voulez-vous continuer ?",
+                    "title": "Supprimer un stockage additionnel"
                 }
             },
             "locations": {
-                "defaultDescription": "",
-                "defaultInternal": "",
-                "externalStorage": "",
-                "title": ""
+                "defaultDescription": "Les publications gérées par l'application sont par défaut stockées dans :",
+                "defaultInternal": "Stockage système",
+                "externalStorage": "Stockage externe",
+                "title": "Emplacements"
             }
         },
         "tabs": {
@@ -1305,7 +1312,7 @@
             "general": "Géneral",
             "keyboardShortcuts": "Raccourcis clavier",
             "profiles": "Profils",
-            "storage": ""
+            "storage": "Stockage"
         },
         "theme": {
             "auto": "Automatique",
@@ -1315,8 +1322,14 @@
             "title": "Thème de l'application"
         },
         "window": {
+            "keepLibraryWindowInBackgroundOnReaderClose": "Garder la bibliothèque en arrière-plan après la fermeture des fenêtres de lecture",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Lorsque cette option est activée, fermer une fenêtre de lecture ne restaure pas la fenêtre Bibliothèque et ne la met pas au premier plan.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Réduire la bibliothèque après l'ouverture des fenêtres de lecture",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Lorsque cette option est activée, ouvrir une fenêtre de lecture réduit la fenêtre Bibliothèque.",
             "minimizeLibraryToTray": "Réduire la bibliothèque dans la zone de notification",
             "minimizeLibraryToTrayDescription": "Lorsque cette option est activée, réduire la fenêtre Bibliothèque garde Thorium ouvert dans la zone de notification Windows.",
+            "oneReaderWindowPerPublication": "Utiliser une seule fenêtre de lecture par publication",
+            "oneReaderWindowPerPublicationDescription": "Lorsque cette option est activée, ouvrir une publication déjà ouverte met au premier plan sa fenêtre de lecture au lieu d'en ouvrir une autre.",
             "title": "Comportement des fenêtres"
         }
     },
@@ -1341,29 +1354,6 @@
             "underlineWordSolidBackground": "Souligné, mot Surligné",
             "underlineWordUnderline": "Souligné, mot Souligné",
             "wordColor": "Couleur de mot"
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "Découvrir Thorium Desktop",
-            "goToBooks": "Accéder à mes livres"
-        },
-        "description": {
-            "home": "Thorium 3.4 apporte une série d'améliorations à l'expérience utilisateur et corrige un ensemble de problèmes. Si vous décidez ultérieurement de revenir à une version antérieure de l'application, il est fortement recommandé de sauvegarder vos annotations et signets dans vos livres électroniques en les exportant vers un fichier externe. Vous pourrez ensuite les réimporter dans la version antérieure après l'avoir installée. En effet, l'application stocke les annotations et les signets dans un format interne légèrement différent dans la version 3.4. Cela résout un problème de performances, mais rompt la compatibilité ascendante pour les annotations.",
-            "resources": "Rejoignez-nous et découvrez-en davantage sur Thorium :"
-        },
-        "dontShow": "Ne plus afficher",
-        "resources": {
-            "discord": "Discord: {{- url}}",
-            "website": "Website: {{- url}}"
-        },
-        "tab": {
-            "home": "Accueil",
-            "resources": "Ressources"
-        },
-        "title": {
-            "resources": "Ressources et Communauté",
-            "welcome": "Bienvenue dans Thorium 3.4"
         }
     }
 }

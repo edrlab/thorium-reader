@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "A versión nova dispoñíbel, clic para aprender máis.",
-            "title": "{{- appName}} software actualiza."
+            "title": "{{- appName}} software actualiza.",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "Mostrar biblioteca",
@@ -161,6 +162,7 @@
         "cancel": "Cancelar",
         "customization": {
             "splashscreen": {
+                "dontShow": "Non volver mostrar",
                 "fallbackWelcomeScreen": "",
                 "state": "",
                 "title": ""
@@ -1209,6 +1211,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "",
                     "name": ""
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Cargar arquivo de usuario",
@@ -1241,6 +1247,7 @@
         },
         "screenReaderActivate": {
             "help": "",
+            "invite": "",
             "message": "",
             "title": ""
         },
@@ -1309,9 +1316,15 @@
             "title": "Deseño da aplicación\n"
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "Manter a biblioteca en segundo plano despois de pechar xanelas de lectura",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Cando está activado, pechar unha xanela de lectura non restaura nin trae ao primeiro plano a xanela da biblioteca.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Minimizar a biblioteca despois de abrir xanelas de lectura",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Cando está activado, abrir unha xanela de lectura minimiza a xanela da biblioteca.",
+            "minimizeLibraryToTray": "Minimizar a biblioteca á área de notificación",
+            "minimizeLibraryToTrayDescription": "Cando está activado, minimizar a xanela da biblioteca mantén Thorium en execución na área de notificación de Windows.",
+            "oneReaderWindowPerPublication": "Usar unha soa xanela de lectura por publicación",
+            "oneReaderWindowPerPublicationDescription": "Cando está activado, abrir unha publicación que xa está aberta enfoca a súa xanela de lectura en vez de abrir outra.",
+            "title": "Comportamento das xanelas"
         }
     },
     "tts": {
@@ -1335,29 +1348,6 @@
             "underlineWordSolidBackground": "",
             "underlineWordUnderline": "",
             "wordColor": ""
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "Descobre as novidades",
-            "goToBooks": "Ir aos meus libros"
-        },
-        "description": {
-            "home": "Thorium vese diferente! Descubramos as novidades...",
-            "resources": ""
-        },
-        "dontShow": "Non volver mostrar",
-        "resources": {
-            "discord": "",
-            "website": ""
-        },
-        "tab": {
-            "home": "Inicio",
-            "resources": ""
-        },
-        "title": {
-            "resources": "",
-            "welcome": "Bienvenido a Thorium 3"
         }
     }
 }

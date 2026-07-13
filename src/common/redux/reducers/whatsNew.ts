@@ -7,23 +7,23 @@
 
 import { type Reducer } from "redux";
 
-import { wizardActions } from "../actions";
-import { IWizardState } from "../states/wizard";
+import { whatsNewActions } from "../actions";
+import { IWhatsNewState } from "../states/whatsNew";
 
-const initialState: IWizardState = {
-    opened_v340: false,
+const initialState: IWhatsNewState = {
+    opened_v350: false,
 };
 
-function wizardReducer_(
+function whatsNewReducer_(
     state = initialState,
-    action: wizardActions.setWizard.TAction,
-): IWizardState {
+    action: whatsNewActions.setWhatsNew.TAction,
+): IWhatsNewState {
     switch (action.type) {
-        case wizardActions.setWizard.ID:
+        case whatsNewActions.setWhatsNew.ID:
             return action.payload;
         default:
             return state;
     }
 }
 
-export const wizardReducer = wizardReducer_ as Reducer<ReturnType<typeof wizardReducer_>>;
+export const whatsNewReducer = whatsNewReducer_ as Reducer<ReturnType<typeof whatsNewReducer_>>;

@@ -37,7 +37,6 @@ import { acceptedExtensionArray } from "readium-desktop/common/extension";
 import Nunito from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-Regular.ttf";
 import NunitoBold from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-SemiBold.ttf";
 
-import { WizardModal } from "./Wizard";
 import { getReduxHistory, getStore } from "../createStore";
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { CustomizationProfileDialog } from "readium-desktop/renderer/common/components/customizationProfileDialog";
@@ -46,7 +45,8 @@ import { CustomizationProfileDialog } from "readium-desktop/renderer/common/comp
 
 import { shell } from "electron";
 
-(window as any).__shell_openExternal = (url: string) => url && /^https?:\/\//.test(url) ? shell.openExternal(url) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
+// always returns a resolved Promise with value undefined
+(window as any).__shell_openExternal = (url: string) => url && /^https?:\/\//.test(url) ? shell.openExternal(url).then((_v: void): undefined => undefined).catch((_err: unknown): undefined => undefined) /* .finally(() => {  }) */ : Promise.resolve(undefined); // needed after markdown marked parsing for sanitizing the external anchor href
 
 export default class App extends React.Component<{}, undefined> {
 
@@ -140,7 +140,7 @@ export default class App extends React.Component<{}, undefined> {
             ));
     }
 
-    public async componentDidMount() {
+    public componentDidMount() {
         ensureKeyboardListenerIsInstalled();
 
         const store = getStore();
@@ -229,7 +229,6 @@ export default class App extends React.Component<{}, undefined> {
                                     <DialogManager />
                                     <LoaderMainLoad />
                                     <ToastManager />
-                                    <WizardModal />
                                     <CustomizationProfileDialog />
                                 </div>;
                             }}

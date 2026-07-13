@@ -9,8 +9,9 @@ import debug_ from "debug";
 import * as path from "path";
 import * as fs from "fs";
 import { commandLineMainEntry } from "readium-desktop/main/cli";
-
-import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
+import { httpGet } from "readium-desktop/main/network/http";
+import { CRL_URL, DUMMY_CRL } from "@r2-lcp-js/parser/epub/lcp-certificate";
+import { setLcpNativePluginPath, setCRLGetter } from "@r2-lcp-js/parser/epub/lcp";
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
@@ -69,6 +70,24 @@ initGlobalConverters_GENERIC();
 const lcpNativePluginPath = path.normalize(path.join(__dirname, "external-assets", "lcp.node"));
 setLcpNativePluginPath(lcpNativePluginPath);
 
+setCRLGetter(async (): Promise<string> => {
+    try {
+        const res = await httpGet(CRL_URL);
+        if (res.isSuccess) {
+            const buf = await res.response.buffer();
+            const lcplStr = "-----BEGIN X509 CRL-----\n" + buf.toString("base64") + "\n-----END X509 CRL-----";
+            debug("LCP CRL HTTP fetch success");
+            debug(lcplStr);
+            return lcplStr;
+        }
+        debug("LCP CRL HTTP fetch fail => DUMMY_CRL");
+    } catch (err) {
+        debug("LCP CRL HTTP fetch error => DUMMY_CRL");
+        debug(err);
+    }
+    return DUMMY_CRL;
+});
+
 app.commandLine.appendSwitch("autoplay-policy", "no-user-gesture-required");
 app.commandLine.appendSwitch("enable-speech-dispatcher");
 
@@ -94,7 +113,7 @@ app.commandLine.appendSwitch("enable-speech-dispatcher");
 initSessionsNoHTTP();
 
 if (__TH__IS_VSCODE_LAUNCH__) {
-    createStoreFromDi().then((store) => store.dispatch(appActions.initRequest.build()));
+    createStoreFromDi().then((store) => store.dispatch(appActions.initRequest.build())).catch((err) => { debug(err); });
 } else {
     commandLineMainEntry(); // call main fct
 }
@@ -133,7 +152,7 @@ if (!fs.existsSync(folderPath)) {
 let dump = "#############################################\n";
 dump += "MAIN-INSTANCE:\n";
 dump += `Date: ${(new Date()).toISOString()}\n`;
-// dump += 
+// dump +=
 
 dump += `Process: ${processInfoStr}\n`;
 dump += "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$44\n";

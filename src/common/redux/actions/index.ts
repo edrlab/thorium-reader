@@ -23,7 +23,7 @@ import * as screenReaderActions from "./screenReader/";
 import * as catalogActions from "./catalog";
 import * as publicationActions from "./publication";
 import * as themeActions from "./theme";
-import * as wizardActions from "./wizard";
+import * as whatsNewActions from "./whatsNew";
 import * as versionUpdateActions from "./version-update";
 import * as annotationActions from "./annotation";
 import * as creatorActions from "./creator";
@@ -52,7 +52,7 @@ export {
     catalogActions,
     publicationActions,
     themeActions,
-    wizardActions,
+    whatsNewActions,
     versionUpdateActions,
     annotationActions,
     creatorActions,

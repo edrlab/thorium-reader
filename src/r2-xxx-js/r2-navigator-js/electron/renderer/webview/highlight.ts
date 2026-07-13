@@ -1323,7 +1323,7 @@ function processMouseEvent(win: ReadiumElectronWebviewWindow, ev: MouseEvent) {
                             if (_highlightsFloatingUI_) { // implies paginated
                                 _highlightsFloatingUI_.remove();
                             }
-                        });
+                        }).catch((err) => { console.log(err); });
                     } else {
                         const xx = (x - xOffset) * scale;
                         const yy = (y - yOffset) * scale;

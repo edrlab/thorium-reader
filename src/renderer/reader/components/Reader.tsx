@@ -482,7 +482,7 @@ class Reader extends React.Component<IProps, IState> {
         // this.blackoutDebounced();
     }
 
-    public async componentDidMount() {
+    public componentDidMount() {
         // navigatorTTSVoicesSetter(this.props.ttsVoices);
 
         ipcRenderer.on("accessibility-support-changed", this.accessibilitySupportChanged);
@@ -490,7 +490,7 @@ class Reader extends React.Component<IProps, IState> {
         // note that "@r2-navigator-js/electron/main/browser-window-tracker"
         // uses "accessibility-support-changed" instead of "accessibility-support-query",
         // so there is no duplicate event handler.
-        console.log("componentDidMount() ipcRenderer.send - accessibility-support-query");
+        console.log("READER.tsx componentDidMount() ipcRenderer.send - accessibility-support-query");
         ipcRenderer.send("accessibility-support-query");
 
         // if (this.mainElRef?.current) {
@@ -745,7 +745,7 @@ class Reader extends React.Component<IProps, IState> {
         this.props.dispatchReaderTSXMountedAndPublicationIntoViewportLoaded();
     }
 
-    public async componentDidUpdate(oldProps: IProps, _oldState: IState) {
+    public componentDidUpdate(oldProps: IProps, _oldState: IState) {
 
         if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
             console.log("READER RELOAD KEYBOARD SHORTCUTS");

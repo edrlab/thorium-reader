@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "Neue Version verfügbar. Klicken Sie hier, um mehr zu erfahren.",
-            "title": "{{- appName}} Software-Update."
+            "title": "{{- appName}} Software-Update.",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "Bibliothek / Bücherregal anzeigen",
@@ -161,6 +162,7 @@
         "cancel": "Abbrechen",
         "customization": {
             "splashscreen": {
+                "dontShow": "Nicht mehr anzeigen",
                 "fallbackWelcomeScreen": "Kein Begrüßungsbildschirm vorhanden",
                 "state": "Status: {{- state}}",
                 "title": "Bereitstellung und Aktivierung des Anpassungsprofils"
@@ -1209,6 +1211,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "",
                     "name": ""
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Aus Benutzerdatei laden",
@@ -1241,6 +1247,7 @@
         },
         "screenReaderActivate": {
             "help": "",
+            "invite": "",
             "message": "",
             "title": ""
         },
@@ -1309,9 +1316,15 @@
             "title": "Erscheinungsbild"
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "Bibliothek nach dem Schließen von Lesefenstern im Hintergrund halten",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Wenn aktiviert, wird das Bibliotheksfenster beim Schließen eines Lesefensters nicht wiederhergestellt oder in den Vordergrund geholt.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Bibliothek nach dem Öffnen von Lesefenstern minimieren",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Wenn aktiviert, wird beim Öffnen eines Lesefensters das Bibliotheksfenster minimiert.",
+            "minimizeLibraryToTray": "Bibliothek in den Infobereich minimieren",
+            "minimizeLibraryToTrayDescription": "Wenn aktiviert, läuft Thorium nach dem Minimieren des Bibliotheksfensters im Windows-Infobereich weiter.",
+            "oneReaderWindowPerPublication": "Ein Lesefenster pro Publikation verwenden",
+            "oneReaderWindowPerPublicationDescription": "Wenn aktiviert, wird beim Öffnen einer bereits geöffneten Publikation ihr Lesefenster fokussiert, anstatt ein weiteres zu öffnen.",
+            "title": "Fensterverhalten"
         }
     },
     "tts": {
@@ -1335,29 +1348,6 @@
             "underlineWordSolidBackground": "Satz unterstreichen, Wort farblich hervorheben",
             "underlineWordUnderline": "Satz unterstreichen, Wort unterstreichen",
             "wordColor": "Wortfarbe"
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "Entdecken Sie die Neuheiten",
-            "goToBooks": "Zu meinen Publikationen"
-        },
-        "description": {
-            "home": "Thorium sieht anders aus! Entdecken wir, was es Neues gibt…",
-            "resources": ""
-        },
-        "dontShow": "Nicht mehr anzeigen",
-        "resources": {
-            "discord": "",
-            "website": ""
-        },
-        "tab": {
-            "home": "Start",
-            "resources": ""
-        },
-        "title": {
-            "resources": "",
-            "welcome": "Willkommen bei Thorium 3"
         }
     }
 }

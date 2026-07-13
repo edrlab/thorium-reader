@@ -90,9 +90,28 @@ $setting_color: var(--color-brand-primary);
                 fill: $setting_color;
             }
         }
+
+        .checkbox_custom_label {
+            align-items: flex-start;
+
+            p {
+                font-size: 12px;
+            }
+        }
     }
 
-    p,
+    p {
+        margin: 0;
+        font-size: 14px;
+    }
+
+    h3 {
+        margin-top: 0;
+        margin-bottom: 10px;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
     h4 {
         margin: 0;
         font-weight: 600;
@@ -133,13 +152,14 @@ $setting_color: var(--color-brand-primary);
         font-weight: normal;
         border: 1px solid transparent;
 
-        p {
+        p, h3 {
             font-size: 14px;
             text-overflow: ellipsis;
             overflow: hidden;
             max-width: 180px;
             white-space: nowrap;
             font-weight: unset;
+            margin: unset;
         }
 
         &:hover {
@@ -337,12 +357,12 @@ $setting_color: var(--color-brand-primary);
     }
 }
 
-.popover_dialog_reader .settings_tab {
-    margin: 30px 20px 0 !important;
+.docked_settings_tab {
+    margin: 30px 20px 0;
 }
 
 .settings_tab {
-    margin: 30px 25px 0 !important;
+    margin: 30px 25px 0;
 
     &_container {
         margin: 35px;

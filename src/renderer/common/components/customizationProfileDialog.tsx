@@ -87,7 +87,7 @@ export const CustomizationProfileDialog: React.FC = () => {
                         }
 
                         return `href="" alt="${url}" onclick="return ((e) => {
-                                    window.__shell_openExternal('${url}').catch(() => {});
+                                    window.__shell_openExternal('${url}').then((_v) => undefined).catch((_err) => undefined);
                                     return false;
                                  })()"`;
                     });
@@ -150,24 +150,24 @@ export const CustomizationProfileDialog: React.FC = () => {
                             <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
                         </AlertDialog.Cancel>
                         {customization.welcomeScreen.enable && profileInHistoryFound ? <div style={{ display: "flex", alignItems: "center", gap: "10px"}}>
-                            <input 
+                            <input
                             type="checkbox"
                             checked={checked}
-                            id="wizardCheckbox" 
-                            name="wizardCheckbox" 
+                            id="wizardCheckbox"
+                            name="wizardCheckbox"
                             className={stylesGlobal.checkbox_custom_input}
                             onChange={() => {
                                 const newChecked = !checked;
                                 setChecked(newChecked);
                                 dispatchProfileInHistoryFromWizard(newChecked);
-                            }} 
+                            }}
                             />
                             <label htmlFor="wizardCheckbox" className={stylesGlobal.checkbox_custom_label}>
                                 <div
                                     tabIndex={0}
                                     role="checkbox"
                                     aria-checked={checked}
-                                    aria-label={__("wizard.dontShow")}
+                                    aria-label={__("dialog.customization.splashscreen.dontShow")}
                                     onKeyDown={(e) => {
                                         // if (e.code === "Space") {
                                         if (e.key === " ") {
@@ -195,7 +195,7 @@ export const CustomizationProfileDialog: React.FC = () => {
                                     }
                                 </div>
                                 <span aria-hidden>
-                                    {__("wizard.dontShow")}
+                                    {__("dialog.customization.splashscreen.dontShow")}
                                 </span>
                             </label>
                         </div> : <></> }

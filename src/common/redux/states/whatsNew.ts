@@ -5,8 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as setWizard from "./setWizard";
-
-export {
-    setWizard,
-};
+export interface IWhatsNewState {
+    opened_v350: boolean;
+}

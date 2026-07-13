@@ -5,10 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { ipcRenderer } from "electron";
+
 import * as stylesHeader from "readium-desktop/renderer/assets/styles/header.scss";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
-
+import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import { screenReaderActions, toastActions } from "readium-desktop/common/redux/actions";
+import { ToastType } from "readium-desktop/common/models/toast";
 import * as Dialog from "@radix-ui/react-dialog";
 
 import { Link } from "react-router-dom";
@@ -16,7 +20,7 @@ import classNames from "classnames";
 import * as React from "react";
 import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import { DisplayType, IRouterLocationState } from "../../routing";
+import { resolveDisplayType } from "../../routing";
 import * as HomeIcon from "readium-desktop/renderer/assets/icons/home-icon.svg";
 import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon.svg";
 import * as CatalogsIcon from "readium-desktop/renderer/assets/icons/catalogs-icon.svg";
@@ -52,6 +56,7 @@ const Header = () => {
     const history = useSelector((state: ILibraryRootState) => state.history);
     const locale = useSelector((state: ILibraryRootState) => state.i18n.locale);
     const customizationManifest = useSelector((state: ILibraryRootState) => state.customization.manifest);
+    const savedDisplayTypeSetting = useSelector((state: ILibraryRootState) => state.settings.libraryView?.displayType);
     const [__] = useTranslator();
 
     const buildNavItem = React.useCallback((item: NavigationHeader, index: number, active: boolean) => {
@@ -85,7 +90,7 @@ const Header = () => {
             <li className={classNames(...styleClasses, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} key={index} style={{ height: "inherit" }}>
                 <Link
                     to={nextLocation}
-                    state={{ displayType: (nextLocation.state && (nextLocation.state as IRouterLocationState).displayType) ? (nextLocation.state as IRouterLocationState).displayType : DisplayType.Grid }}
+                    state={{ displayType: resolveDisplayType(nextLocation.state, savedDisplayTypeSetting) }}
                     replace={true}
                     aria-pressed={active}
                     role={"button"}
@@ -120,7 +125,7 @@ const Header = () => {
                 </Link>
             </li>
         );
-    }, [history, location]);
+    }, [history, location, savedDisplayTypeSetting]);
 
     const headerNav: NavigationHeader[] = [
         {
@@ -171,6 +176,45 @@ const Header = () => {
     const [screenHtmlArray, setScreenHtmlArray] = React.useState<Array<{ html: string, title: string | IStringMap }>>([]);
     const [cancel, setCancel] = React.useState(false);
 
+
+    const screenReaderActivate = useSelector((state: ILibraryRootState) => state.screenReader.activate);
+
+    const keyboardShortcuts = useSelector((state: ILibraryRootState) => state.keyboard.shortcuts);
+
+    const dispatch = useDispatch();
+
+    const keyboardShortcutScreenReader = `${(keyboardShortcuts.ToggleScreenReaderOptimize.shift ? "SHIFT " : "") + (keyboardShortcuts.ToggleScreenReaderOptimize.control ? "CTRL " : "") + (keyboardShortcuts.ToggleScreenReaderOptimize.alt ? "ALT/OPT " : "") + (keyboardShortcuts.ToggleScreenReaderOptimize.meta ? "META/CMD " : "") + keyboardShortcuts.ToggleScreenReaderOptimize.key}`;
+
+    const screenReaderToggle = React.useCallback(() => {
+        dispatch(screenReaderActions.save.build(!screenReaderActivate));
+        dispatch(toastActions.openRequest.build(ToastType.Success, __("settings.screenReaderActivate.invite", { keyboard: keyboardShortcutScreenReader, status: !screenReaderActivate ? __("app.session.exit.askBox.button.yes") : __("app.session.exit.askBox.button.no") })));
+    }, [dispatch, __, screenReaderActivate, keyboardShortcutScreenReader]);
+
+    const [isAccessibilitySupportEnabled, setAccessibilitySupportEnabled] = React.useState(false);
+
+    React.useEffect(() => {
+
+        const accessibilitySupportChanged = (_e: Electron.IpcRendererEvent, accessibilitySupportEnabled: boolean) => {
+            console.log("LIBRARYHEADER.tsx ipcRenderer.on - accessibility-support-changed-raw: ", accessibilitySupportEnabled);
+
+            if (accessibilitySupportEnabled !== isAccessibilitySupportEnabled) {
+                setAccessibilitySupportEnabled(accessibilitySupportEnabled);
+            }
+        };
+
+        ipcRenderer.on("accessibility-support-changed-raw", accessibilitySupportChanged);
+
+        // note that "@r2-navigator-js/electron/main/browser-window-tracker"
+        // uses "accessibility-support-changed" instead of "accessibility-support-query",
+        // so there is no duplicate event handler.
+        console.log("LIBRARYHEADER.tsx componentDidMount() ipcRenderer.send - accessibility-support-query-raw");
+        ipcRenderer.send("accessibility-support-query-raw");
+
+        return () => {
+            ipcRenderer.off("accessibility-support-changed-raw", accessibilitySupportChanged);
+        };
+    }, [isAccessibilitySupportEnabled]);
+
     React.useEffect(() => {
         if (customizationId && screenZipObj?.length) {
 
@@ -208,7 +252,7 @@ const Header = () => {
                             }
 
                             return `href="" alt="${url}" onclick="return ((e) => {
-                                        window.__shell_openExternal('${url}').catch(() => {});
+                                        window.__shell_openExternal('${url}').then((_v) => undefined).catch((_err) => undefined);
                                         return false;
                                      })()"`;
                         });
@@ -252,8 +296,15 @@ const Header = () => {
             });
         }
     }
+    const displayScreenReaderInvite = !screenReaderActivate && isAccessibilitySupportEnabled;
 
     return (<>
+        {displayScreenReaderInvite ? <SkipLink
+            className={stylesHeader.skip_link}
+            anchorId="xxx"
+            label={__("settings.screenReaderActivate.invite", { keyboard: keyboardShortcutScreenReader, status: screenReaderActivate ? __("app.session.exit.askBox.button.yes") : __("app.session.exit.askBox.button.no")})}
+            onClick={screenReaderToggle}
+        /> : <></>}
         <SkipLink
             className={stylesHeader.skip_link}
             anchorId="main-content"

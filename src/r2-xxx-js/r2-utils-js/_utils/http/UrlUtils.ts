@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as path from "path";
-import * as querystring from "querystring";
+// import * as querystring from "querystring";
 
 export function isHTTP(urlOrPath: string): boolean {
     return /^https?:\/\//.test(urlOrPath);
@@ -19,13 +19,13 @@ export function encodeURIComponent_RFC3986(str: string): string {
         });
 }
 
-export function encodeURIComponent_RFC5987(str: string): string {
-    return encodeURIComponent(str).
-        replace(/['()]/g, querystring.escape). // i.e., %27 %28 %29
-        replace(/\*/g, "%2A").
-        // |`^
-        replace(/%(?:7C|60|5E)/g, querystring.unescape);
-}
+// export function encodeURIComponent_RFC5987(str: string): string {
+//     return encodeURIComponent(str).
+//         replace(/['()]/g, querystring.escape). // i.e., %27 %28 %29
+//         replace(/\*/g, "%2A").
+//         // |`^
+//         replace(/%(?:7C|60|5E)/g, querystring.unescape);
+// }
 
 // TODO: use URI/URL lib to do this?
 export function ensureAbsolute(rootUrl: string, linkHref: string) {

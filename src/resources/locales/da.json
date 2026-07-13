@@ -42,12 +42,13 @@
         },
         "update": {
             "message": "En ny version er tilgængelig. Klik her for at læse mere.",
-            "title": "{{- appName}} programopdatering."
+            "title": "{{- appName}} programopdatering.",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "Vis bibliotek / boghylde",
-            "trayHint": "",
-            "trayTooltip": ""
+            "trayHint": "{{- appName}} kører stadig i meddelelsesområdet. Klik på proceslinjeikonet for at vise biblioteket.",
+            "trayTooltip": "{{- appName}} - klik for at vise eller skjule biblioteket"
         }
     },
     "catalog": {
@@ -161,6 +162,7 @@
         "cancel": "Annullér",
         "customization": {
             "splashscreen": {
+                "dontShow": "Vis ikke igen",
                 "fallbackWelcomeScreen": "Ingen velkomstskærm angivet",
                 "state": "Tilstand: {{- state}}",
                 "title": "Tilpasningsprofil for klargøring og aktivering"
@@ -1209,6 +1211,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "I læseren - Aktivér systemets fuldskærmstilstand eller gå tilbage til normalt vindue. Bemærk at dette er anderledes end 'zen mode', hvilket simplificerer brugergrænsefladen",
                     "name": "Slå Fuldskærm Til/Fra"
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Indlæs fra brugerfil",
@@ -1241,6 +1247,7 @@
         },
         "screenReaderActivate": {
             "help": "Når applikationen registrerer at hjælpeteknologier benyttes, fungerer brugergrænsefladen bedre med skærmlæsere",
+            "invite": "",
             "message": "Forbedret understøttelse af skærmlæsere",
             "title": "Forbedret oplevelse med skærmlæser"
         },
@@ -1309,9 +1316,15 @@
             "title": "Programmets farvetema"
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "Hold biblioteket i baggrunden efter lukning af læsevinduer",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Når dette er aktiveret, gendannes biblioteksvinduet ikke og bringes ikke i fokus, når et læsevindue lukkes.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Minimer biblioteket efter åbning af læsevinduer",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Når dette er aktiveret, minimeres biblioteksvinduet, når et læsevindue åbnes.",
+            "minimizeLibraryToTray": "Minimer biblioteket til meddelelsesområdet",
+            "minimizeLibraryToTrayDescription": "Når dette er aktiveret, holder minimering af biblioteksvinduet Thorium kørende i Windows-meddelelsesområdet.",
+            "oneReaderWindowPerPublication": "Brug ét læsevindue pr. publikation",
+            "oneReaderWindowPerPublicationDescription": "Når dette er aktiveret, fokuseres læsevinduet for en publikation, der allerede er åben, i stedet for at åbne et nyt.",
+            "title": "Vinduesadfærd"
         }
     },
     "tts": {
@@ -1335,29 +1348,6 @@
             "underlineWordSolidBackground": "Understreg, Ord med fast baggrund",
             "underlineWordUnderline": "Understreg, Understreg ord",
             "wordColor": "Ord farve"
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "Gå på opdagelse i Thorium Desktop",
-            "goToBooks": "Gå til dine bøger"
-        },
-        "description": {
-            "home": "Thorium 3.4 bringer en række forbedringer af brugeroplevelsen og retter en række problemer. Hvis du senere beslutter dig for at vende tilbage til en ældre version af applikationen, anbefales det kraftigt, at du sikkerhedskopierer dine e-bogsannotationer og bogmærker ved at eksportere dem til en ekstern fil. Du importerer dem derefter tilbage til den ældre version, når den er installeret. Dette skyldes, at applikationen gemmer noter og bogmærker i et lidt anderledes internt format i version 3.4. Dette løser et ydeevneproblem, men afbryder bagudkompatibiliteten for noter.",
-            "resources": "Få kontakt med os og lær mere om Thorium:"
-        },
-        "dontShow": "Vis ikke igen",
-        "resources": {
-            "discord": "Discord: {{- url}}",
-            "website": "Website: {{- url}}"
-        },
-        "tab": {
-            "home": "Hjem",
-            "resources": "Ressourcer"
-        },
-        "title": {
-            "resources": "Ressourcer & Fællesskab",
-            "welcome": "Velkommen til Thorium 3.4"
         }
     }
 }

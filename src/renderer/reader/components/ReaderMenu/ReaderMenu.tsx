@@ -7,7 +7,6 @@
 
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 import * as stylesBookmarks from "readium-desktop/renderer/assets/styles/components/bookmarks.scss";
@@ -22,14 +21,9 @@ import * as LandmarkIcon from "readium-desktop/renderer/assets/icons/landmark-ic
 import * as TargetIcon from "readium-desktop/renderer/assets/icons/target-icon.svg";
 import * as SearchIcon from "readium-desktop/renderer/assets/icons/search-icon.svg";
 import * as AnnotationIcon from "readium-desktop/renderer/assets/icons/annotations-icon.svg";
-import * as DockLeftIcon from "readium-desktop/renderer/assets/icons/dockleft-icon.svg";
-import * as DockRightIcon from "readium-desktop/renderer/assets/icons/dockright-icon.svg";
-import * as DockModalIcon from "readium-desktop/renderer/assets/icons/dockmodal-icon.svg";
-import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 
 import * as Tabs from "@radix-ui/react-tabs";
-import * as Dialog from "@radix-ui/react-dialog";
-import { MySelectProps, Select, SelectItem } from "readium-desktop/renderer/common/components/Select";
+import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import type { Selection } from "react-aria-components";
 
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
@@ -46,7 +40,6 @@ import { Locator } from "@r2-shared-js/models/locator";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { readerLocalActionLocatorHrefChanged } from "../../redux/actions";
 import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
-import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
 import { shell } from "electron";
@@ -54,8 +47,11 @@ import { AnnotationList } from "./AnnotationList";
 import { BookmarkList } from "./BookmarkList";
 import { GoToPageSection } from "./GoToPageSection";
 import { createOrGetPdfEventBus } from "../../pdf/driver";
+import { ModalControlButtons } from "readium-desktop/renderer/reader/components/ModalControlButtons";
+import { DockedHeader } from "readium-desktop/renderer/reader/components/DockedHeader";
 
-(window as any).__shell_openExternal = (url: string) => url && /^https?:\/\//.test(url) ? shell.openExternal(url) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
+// always returns a resolved Promise with value undefined (will never reject)
+(window as any).__shell_openExternal = (url: string) => url && /^https?:\/\//.test(url) ? shell.openExternal(url).then((_v: void): undefined => undefined).catch((_err: unknown): undefined => undefined) /* .finally(() => {  }) */ : Promise.resolve(undefined); // needed after markdown marked parsing for sanitizing the external anchor href
 
 // console.log(window);
 
@@ -451,12 +447,6 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const setReaderConfig = useSaveReaderConfig();
     // memoization not needed here, onCick not passed as child component props (only event re-bind in local HTML element)
     // ... plus, see setDockingModeFull() and setDockingModeLeftSide() and setDockingModeRightSide() below which are the ones used in onClick!
-    const setDockingMode = (value: ReaderConfig["readerDockingMode"]) => {
-        setReaderConfig({ readerDockingMode: value });
-    };
-    const setDockingModeFull = () => setDockingMode("full");
-    const setDockingModeLeftSide = () => setDockingMode("left");
-    const setDockingModeRightSide = () => setDockingMode("right");
     const section = useReaderConfig("readerMenuSection");
     const setSection = (value: string) => {
         setReaderConfig({ readerMenuSection: value });
@@ -621,82 +611,6 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: string, name: string, disabled: boolean, svg: {} }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
     SelectRef.displayName = "Select";
 
-    const ModalControlButtons = () => {
-        return (
-            dockedMode ? <></> :
-                <div key="modal-header" className={stylesSettings.close_button_div}>
-                    <div>
-                        <button className={stylesButtons.button_transparency_icon} aria-label={__("reader.dock.dockLeft")} onClick={setDockingModeLeftSide}>
-                            <SVG ariaHidden={true} svg={DockLeftIcon} />
-                        </button>
-                        <button className={stylesButtons.button_transparency_icon} aria-label={__("reader.dock.dockRight")} onClick={setDockingModeRightSide}>
-                            <SVG ariaHidden={true} svg={DockRightIcon} />
-                        </button>
-                        <button className={stylesButtons.button_transparency_icon} disabled aria-label={__("reader.dock.dockDefault")} onClick={setDockingModeFull}>
-                            <SVG ariaHidden={true} svg={DockModalIcon} />
-                        </button>
-                        <Dialog.Close asChild>
-                            <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
-                                <SVG ariaHidden={true} svg={QuitIcon} />
-                            </button>
-                        </Dialog.Close>
-                    </div>
-                </div>
-        );
-    };
-
-    const DockedHeader = () => (
-        <div key="docked-header" className={stylesPopoverDialog.docked_header}>
-            <SelectRef
-                items={options}
-                selectedKey={optionSelected}
-                svg={options.find(({ value }) => value === section)?.svg}
-                onSelectionChange={(id) => {
-                    const value = options.find(({ id: _id }) => _id === id)?.value;
-                    if (value) {
-                        setSection(value);
-                    } else {
-                        console.error("Combobox: no value for id", id);
-                    }
-                }}
-                disabledKeys={options.filter(o => o.disabled).map(o => o.id)}
-                style={{ padding: "0", flexDirection: "row", flex: "2" }}
-                ref={dockedModeRef}
-                id="reader-menu-docked-trigger"
-            >
-                {item => <SelectItem>{item.name}</SelectItem>}
-            </SelectRef>
-
-            <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls} style={{ justifyContent: "end", width: "100%", flex: "1" }}>
-                <div style={{ display: "flex", gap: "5px" }}>
-                    {(
-                        [
-                            { side: "left", icon: DockLeftIcon, label: __("reader.svg.left"), onClick: setDockingModeLeftSide },
-                            { side: "right", icon: DockRightIcon, label: __("reader.svg.right"), onClick: setDockingModeRightSide },
-                            { side: "full", icon: DockModalIcon, label: __("reader.settings.column.auto"), onClick: setDockingModeFull },
-                        ] as const
-                    ).map(({ side, icon, label, onClick }) => (
-                        <button
-                            key={side}
-                            className={stylesButtons.button_transparency_icon}
-                            disabled={dockingMode === side}
-                            aria-label={label}
-                            onClick={onClick}
-                        >
-                            <SVG ariaHidden svg={icon} />
-                        </button>
-                    ))}
-                </div>
-
-                <Dialog.Close asChild>
-                    <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
-                        <SVG ariaHidden svg={QuitIcon} />
-                    </button>
-                </Dialog.Close>
-            </div>
-        </div>
-    );
-
     const advancedAnnotationsOnChange = () => {
         setSerialAnnotatorMode(!serialAnnotator);
     };
@@ -739,7 +653,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
             }}>
                 {__("reader.navigation.openTableOfContentsTitle")}
             </h1>
-            {dockedMode ? <DockedHeader /> : <></>}
+            {dockedMode ? <DockedHeader dockedMode={dockedMode} dockingMode={dockingMode} isEpub={isEpub} setSection={setSection} dockedModeRef={dockedModeRef} options={options} optionSelected={optionSelected} section={section} /> : <></>}
             <Tabs.Root value={section} onValueChange={(value) => dockedMode ? null : setSection(value)} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                 {
                     dockedMode ? <></> :
@@ -757,7 +671,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     aria-live="polite"
                 >
                     <Tabs.Content value="tab-toc" tabIndex={-1} id={"reader-menu-tab-toc"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <div className={stylesSettings.settings_tab}>
+                        <div className={dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab}>
                             {(isPdf && pdfToc?.length && renderLinkTree_(__("reader.marks.toc"), pdfToc, 1, undefined)) ||
                                 (isPdf && !pdfToc?.length && <p>{__("reader.toc.publicationNoToc")}</p>) ||
                                 (!isPdf && r2Publication.TOC && renderLinkTree_(__("reader.marks.toc"), r2Publication.TOC, 1, undefined)) ||
@@ -766,20 +680,20 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     </Tabs.Content>
 
                     <Tabs.Content value="tab-landmark" tabIndex={-1} id={"reader-menu-tab-landmark"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <div className={stylesSettings.settings_tab}>
+                        <div className={dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab}>
                             {r2Publication.Landmarks &&
                                 renderLinkList_(__("reader.marks.landmarks"), r2Publication.Landmarks)}
                         </div>
                     </Tabs.Content>
 
                     <Tabs.Content value="tab-bookmark" tabIndex={-1} id={"reader-menu-tab-bookmark"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <div className={classNames(stylesSettings.settings_tab, stylesBookmarks.bookmarks_tab)}>
+                        <div className={classNames(dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab, stylesBookmarks.bookmarks_tab)}>
                             <BookmarkList popoverBoundary={popoverBoundary.current} goToLocator={goToLocator} hideBookmarkOnChange={hideAnnotationOnChange} START_PAGE={START_PAGE} selectionIsSet={selectionIsSet} MAX_MATCHES_PER_PAGE={MAX_MATCHES_PER_PAGE} />
                         </div>
                     </Tabs.Content>
 
                     <Tabs.Content value="tab-annotation" tabIndex={-1} id={"reader-menu-tab-annotation"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <div className={classNames(stylesSettings.settings_tab, stylesAnnotations.annotations_tab)}>
+                        <div className={classNames(dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab, dockedMode ? stylesAnnotations.docked_annotations_tab: stylesAnnotations.annotations_tab)}>
                             <AnnotationList
                                 goToLocator={goToLocator}
                                 goToPdfAnnotation={goToPdfAnnotation}
@@ -800,7 +714,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     </Tabs.Content>
 
                     <Tabs.Content value="tab-search" tabIndex={-1} id={"reader-menu-tab-search"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <div className={classNames(stylesSettings.settings_tab, stylesPopoverDialog.search_container)}>
+                        <div className={classNames(dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab, stylesPopoverDialog.search_container)}>
                             {searchEnable
                                 ? <ReaderMenuSearch
                                     focusMainAreaLandmarkAndCloseMenu={focusMainAreaLandmarkAndCloseMenu}
@@ -811,7 +725,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     </Tabs.Content>
 
                     <Tabs.Content value="tab-gotopage" tabIndex={-1} id={"reader-menu-tab-gotopage"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <div className={stylesSettings.settings_tab}>
+                        <div className={dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab}>
                             <GoToPageSection totalPages={
                                 isPdf && pdfNumberOfPages
                                     ? pdfNumberOfPages
@@ -819,7 +733,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         </div>
                     </Tabs.Content>
                 </div>
-                <ModalControlButtons />
+                <ModalControlButtons dockedMode={dockedMode} />
             </Tabs.Root>
         </div>
     );

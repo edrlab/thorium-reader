@@ -10,14 +10,14 @@ import * as crypto from "crypto";
 import debug_ from "debug";
 import * as fs from "fs";
 import * as path from "path";
-import * as request from "request";
+// import * as request from "request";
 // import * as requestPromise from "request-promise-native";
 // https://github.com/edcarroll/ta-json
 import { JsonElementType, JsonObject, JsonProperty } from "ta-json-x";
 
-import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
+// import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 
-import { CRL_URL, DUMMY_CRL } from "./lcp-certificate";
+import { DUMMY_CRL } from "./lcp-certificate";
 import { Encryption } from "./lcp-encryption";
 import { Link } from "./lcp-link";
 import { Rights } from "./lcp-rights";
@@ -30,6 +30,11 @@ const AES_BLOCK_SIZE = 16;
 const debug = debug_("r2:lcp#parser/epub/lcp");
 
 const IS_DEV = (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "dev");
+
+let _getCRLPem: undefined | (() => Promise<string>);
+export const setCRLGetter = (getCRLPem: () => Promise<string>) => {
+    _getCRLPem = getCRLPem;
+};
 
 let LCP_NATIVE_PLUGIN_PATH = path.join(process.cwd(), "LCP", "lcp.node");
 export function setLcpNativePluginPath(filepath: string): boolean {
@@ -217,7 +222,7 @@ export class LCP {
         this.init();
 
         if (this._usesNativeNodePlugin) {
-            const crlPem = await this.getCRLPem();
+            const crlPem = _getCRLPem ? await _getCRLPem() : DUMMY_CRL;
 
             // always generates USER_KEY_CHECK_INVALID = 141
             const sha256DummyPassphrase = "0".repeat(64);
@@ -275,8 +280,7 @@ export class LCP {
         }
 
         if (this._usesNativeNodePlugin) {
-
-            const crlPem = await this.getCRLPem();
+            const crlPem = _getCRLPem ? await _getCRLPem() : DUMMY_CRL;
 
             return new Promise<void>((resolve, reject) => {
 
@@ -364,230 +368,230 @@ export class LCP {
         return Promise.reject(1); // "Passphrase fail."
     }
 
-    private async getCRLPem(): Promise<string> {
+    // private async getCRLPem(): Promise<string> {
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return new Promise<any>(async (resolve, reject) => {
+    //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    //     return new Promise<any>(async (resolve, reject) => {
 
-            const crlURL = CRL_URL;
+    //         const crlURL = CRL_URL;
 
-            // Instead of using the hard-coded URLs,
-            // instead we can discover the CRL distribution points from the certificates:
-            // if (this.Encryption && this.Encryption.Profile && this.Signature && this.Signature.Certificate) {
-                // This gives CRL_URL_ALT (ARL, not CRL)
-                // const certPEM: string | undefined =
-                //     (this.Encryption.Profile === "http://readium.org/lcp/profile-1.0") ?
-                //         LCPCertificateProdProfile :
-                //     (this.Encryption.Profile === "http://readium.org/lcp/basic-profile") ?
-                //         LCPCertificateBasicProfile :
-                //     undefined;
+    //         // Instead of using the hard-coded URLs,
+    //         // instead we can discover the CRL distribution points from the certificates:
+    //         // if (this.Encryption && this.Encryption.Profile && this.Signature && this.Signature.Certificate) {
+    //             // This gives CRL_URL_ALT (ARL, not CRL)
+    //             // const certPEM: string | undefined =
+    //             //     (this.Encryption.Profile === "http://readium.org/lcp/profile-1.0") ?
+    //             //         LCPCertificateProdProfile :
+    //             //     (this.Encryption.Profile === "http://readium.org/lcp/basic-profile") ?
+    //             //         LCPCertificateBasicProfile :
+    //             //     undefined;
 
-                // const certBase64 = this.Signature.Certificate;
-                // debug(certBase64);
-                // const certPEM = "-----BEGIN CERTIFICATE-----\n" +
-                //     (certBase64.match(/.{0,64}/g) as RegExpMatchArray).join("\n") +
-                //     "-----END CERTIFICATE-----";
-                // debug(certPEM);
+    //             // const certBase64 = this.Signature.Certificate;
+    //             // debug(certBase64);
+    //             // const certPEM = "-----BEGIN CERTIFICATE-----\n" +
+    //             //     (certBase64.match(/.{0,64}/g) as RegExpMatchArray).join("\n") +
+    //             //     "-----END CERTIFICATE-----";
+    //             // debug(certPEM);
 
-                // --------------------------------
-                // WITH sshpk (works, although the recursive extraction from the CRL extension is a bit strange)
-                // import { parseCertificate } from "sshpk";
-                // const certDER = Buffer.from(certBase64, "base64");
-                // // debug(certFromBase64.toString("hex"));
-                // const cert = parseCertificate(certDER, "x509");
-                // // const cert = parseCertificate(certPEM, "pem");
-                // debug(cert);
-                // const exts = (cert as any).getExtensions(); // incorrect TypeScript Typings :(
-                // debug(exts);
-                // // CRL Distribution Points === 2.5.29.31 === id_ce_CRLDistributionPoints
-                // const ext = (cert as any).getExtension("2.5.29.31"); // incorrect TypeScript Typings :(
-                // debug(ext);
-                // const buff = forge.util.createBuffer(ext.data, "binary");
-                // // const buff = Buffer.from(ext.data).toString("binary");
-                // const certAsn1 = forge.asn1.fromDer(buff);
-                // // debug(certAsn1);
-                // console.log(util.inspect(certAsn1,
-                // tslint:disable-next-line:max-line-length
-                //     { breakLength: 1000, maxArrayLength: 1000, showHidden: false, depth: 1000, colors: true, customInspect: false }));
-                // function extractCrlUrl(val: any): string | undefined {
-                //     if (!val) {
-                //         return undefined;
-                //     }
-                //     if (typeof val === "string") {
-                //         return val;
-                //     }
-                //     if (val instanceof Array) {
-                //         for (const v of val) {
-                //             const ex = extractCrlUrl(v);
-                //             if (ex) {
-                //                 return ex;
-                //             }
-                //         }
-                //     }
-                //     if (typeof val === "object") {
-                //         return extractCrlUrl(val.value);
-                //     }
-                //     return undefined;
-                // }
-                // const crlURL_ = extractCrlUrl(certAsn1.value);
-                // debug(crlURL_);
+    //             // --------------------------------
+    //             // WITH sshpk (works, although the recursive extraction from the CRL extension is a bit strange)
+    //             // import { parseCertificate } from "sshpk";
+    //             // const certDER = Buffer.from(certBase64, "base64");
+    //             // // debug(certFromBase64.toString("hex"));
+    //             // const cert = parseCertificate(certDER, "x509");
+    //             // // const cert = parseCertificate(certPEM, "pem");
+    //             // debug(cert);
+    //             // const exts = (cert as any).getExtensions(); // incorrect TypeScript Typings :(
+    //             // debug(exts);
+    //             // // CRL Distribution Points === 2.5.29.31 === id_ce_CRLDistributionPoints
+    //             // const ext = (cert as any).getExtension("2.5.29.31"); // incorrect TypeScript Typings :(
+    //             // debug(ext);
+    //             // const buff = forge.util.createBuffer(ext.data, "binary");
+    //             // // const buff = Buffer.from(ext.data).toString("binary");
+    //             // const certAsn1 = forge.asn1.fromDer(buff);
+    //             // // debug(certAsn1);
+    //             // console.log(util.inspect(certAsn1,
+    //             // tslint:disable-next-line:max-line-length
+    //             //     { breakLength: 1000, maxArrayLength: 1000, showHidden: false, depth: 1000, colors: true, customInspect: false }));
+    //             // function extractCrlUrl(val: any): string | undefined {
+    //             //     if (!val) {
+    //             //         return undefined;
+    //             //     }
+    //             //     if (typeof val === "string") {
+    //             //         return val;
+    //             //     }
+    //             //     if (val instanceof Array) {
+    //             //         for (const v of val) {
+    //             //             const ex = extractCrlUrl(v);
+    //             //             if (ex) {
+    //             //                 return ex;
+    //             //             }
+    //             //         }
+    //             //     }
+    //             //     if (typeof val === "object") {
+    //             //         return extractCrlUrl(val.value);
+    //             //     }
+    //             //     return undefined;
+    //             // }
+    //             // const crlURL_ = extractCrlUrl(certAsn1.value);
+    //             // debug(crlURL_);
 
-                // --------------------------------
-                // WITH forge (problem: ECDSA not supported, fails at forge.pki.certificateFromAsn1())
-                // import * as forge from "node-forge";
-                // const certDER = forge.util.decode64(certBase64);
-                // // debug(forge.util.bytesToHex(certDER));
-                // const certAsn1 = forge.asn1.fromDer(certDER);
-                // debug(certAsn1);
-                // if (certAsn1) {
-                //     try {
-                //         // const cert = forge.pki.certificateFromPem(certPEM);
-                //         const cert = forge.pki.certificateFromAsn1(certAsn1); // FAILS WITH ECDSA
-                //         // const certPEM = forge.pki.certificateToPem(cert);
-                //         // debug(certPEM);
-                //         const extDistributionPoints = cert.extensions.find((ext) => {
-                //             if (ext.name === "cRLDistributionPoints") {
-                //                 return true;
-                //             }
-                //             return false;
-                //         });
-                //         debug(extDistributionPoints);
-                //         if (extDistributionPoints && extDistributionPoints.value) {
-                //             const iHTTP = extDistributionPoints.value.indexOf("http");
-                //             const urlStr = extDistributionPoints.value.substr(iHTTP);
-                //             const url = new URL(urlStr);
-                //             const crlURL_ = url.toString();
-                //             debug("crlURL_");
-                //             debug(crlURL_);
-                //         }
-                //     } catch (err) {
-                //         debug(err);
-                //     }
-                // }
+    //             // --------------------------------
+    //             // WITH forge (problem: ECDSA not supported, fails at forge.pki.certificateFromAsn1())
+    //             // import * as forge from "node-forge";
+    //             // const certDER = forge.util.decode64(certBase64);
+    //             // // debug(forge.util.bytesToHex(certDER));
+    //             // const certAsn1 = forge.asn1.fromDer(certDER);
+    //             // debug(certAsn1);
+    //             // if (certAsn1) {
+    //             //     try {
+    //             //         // const cert = forge.pki.certificateFromPem(certPEM);
+    //             //         const cert = forge.pki.certificateFromAsn1(certAsn1); // FAILS WITH ECDSA
+    //             //         // const certPEM = forge.pki.certificateToPem(cert);
+    //             //         // debug(certPEM);
+    //             //         const extDistributionPoints = cert.extensions.find((ext) => {
+    //             //             if (ext.name === "cRLDistributionPoints") {
+    //             //                 return true;
+    //             //             }
+    //             //             return false;
+    //             //         });
+    //             //         debug(extDistributionPoints);
+    //             //         if (extDistributionPoints && extDistributionPoints.value) {
+    //             //             const iHTTP = extDistributionPoints.value.indexOf("http");
+    //             //             const urlStr = extDistributionPoints.value.substr(iHTTP);
+    //             //             const url = new URL(urlStr);
+    //             //             const crlURL_ = url.toString();
+    //             //             debug("crlURL_");
+    //             //             debug(crlURL_);
+    //             //         }
+    //             //     } catch (err) {
+    //             //         debug(err);
+    //             //     }
+    //             // }
 
-                // --------------------------------
-                // WITH pkijs (does pass runtime, hard to integrate in TypeScript with NodeJS imports)
-                // import { fromBER } from "asn1js";
-                // import Certificate from "pkijs/src/Certificate";
-                // const asn1 = fromBER(certDER.buffer);
-                // const certificate = new Certificate({ schema: asn1.result });
-                // debug(certificate);
-            // }
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const failure = (err: any) => {
-                // // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
-                // reject(err);
-                debug(err);
-                resolve(DUMMY_CRL);
-            };
+    //             // --------------------------------
+    //             // WITH pkijs (does pass runtime, hard to integrate in TypeScript with NodeJS imports)
+    //             // import { fromBER } from "asn1js";
+    //             // import Certificate from "pkijs/src/Certificate";
+    //             // const asn1 = fromBER(certDER.buffer);
+    //             // const certificate = new Certificate({ schema: asn1.result });
+    //             // debug(certificate);
+    //         // }
+    //         // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    //         const failure = (err: any) => {
+    //             // // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
+    //             // reject(err);
+    //             debug(err);
+    //             resolve(DUMMY_CRL);
+    //         };
 
-            const success = async (response: request.RequestResponse) => {
+    //         const success = async (response: request.RequestResponse) => {
 
-                if (IS_DEV) {
-                    Object.keys(response.headers).forEach((header: string) => {
-                        debug(header + " => " + response.headers[header]);
-                    });
-                }
+    //             if (IS_DEV) {
+    //                 Object.keys(response.headers).forEach((header: string) => {
+    //                     debug(header + " => " + response.headers[header]);
+    //                 });
+    //             }
 
-                if (response.statusCode && (response.statusCode < 200 || response.statusCode >= 300)) {
-                    let failBuff: Buffer;
-                    try {
-                        failBuff = await streamToBufferPromise(response);
-                    } catch (buffErr) {
-                        if (IS_DEV) {
-                            debug(buffErr);
-                        }
-                        failure(response.statusCode);
-                        return;
-                    }
-                    try {
-                        const failStr = failBuff.toString("utf8");
-                        if (IS_DEV) {
-                            debug(failStr);
-                        }
-                        try {
-                            const failJson = global.JSON.parse(failStr);
-                            if (IS_DEV) {
-                                debug(failJson);
-                            }
-                            failJson.httpStatusCode = response.statusCode;
-                            failure(failJson);
-                        } catch (jsonErr) {
-                            if (IS_DEV) {
-                                debug(jsonErr);
-                            }
-                            failure({ httpStatusCode: response.statusCode, httpResponseBody: failStr });
-                        }
-                    } catch (strErr) {
-                        if (IS_DEV) {
-                            debug(strErr);
-                        }
-                        failure(response.statusCode);
-                    }
-                    return;
-                }
+    //             if (response.statusCode && (response.statusCode < 200 || response.statusCode >= 300)) {
+    //                 let failBuff: Buffer;
+    //                 try {
+    //                     failBuff = await streamToBufferPromise(response);
+    //                 } catch (buffErr) {
+    //                     if (IS_DEV) {
+    //                         debug(buffErr);
+    //                     }
+    //                     failure(response.statusCode);
+    //                     return;
+    //                 }
+    //                 try {
+    //                     const failStr = failBuff.toString("utf8");
+    //                     if (IS_DEV) {
+    //                         debug(failStr);
+    //                     }
+    //                     try {
+    //                         const failJson = global.JSON.parse(failStr);
+    //                         if (IS_DEV) {
+    //                             debug(failJson);
+    //                         }
+    //                         failJson.httpStatusCode = response.statusCode;
+    //                         failure(failJson);
+    //                     } catch (jsonErr) {
+    //                         if (IS_DEV) {
+    //                             debug(jsonErr);
+    //                         }
+    //                         failure({ httpStatusCode: response.statusCode, httpResponseBody: failStr });
+    //                     }
+    //                 } catch (strErr) {
+    //                     if (IS_DEV) {
+    //                         debug(strErr);
+    //                     }
+    //                     failure(response.statusCode);
+    //                 }
+    //                 return;
+    //             }
 
-                let responseData: Buffer;
-                try {
-                    responseData = await streamToBufferPromise(response);
-                } catch (err) {
-                    // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
-                    reject(err);
-                    return;
-                }
+    //             let responseData: Buffer;
+    //             try {
+    //                 responseData = await streamToBufferPromise(response);
+    //             } catch (err) {
+    //                 // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
+    //                 reject(err);
+    //                 return;
+    //             }
 
-                const lcplStr = "-----BEGIN X509 CRL-----\n" +
-                    responseData.toString("base64") + "\n-----END X509 CRL-----";
-                if (IS_DEV) {
-                    debug(lcplStr);
-                }
-                resolve(lcplStr);
-            };
+    //             const lcplStr = "-----BEGIN X509 CRL-----\n" +
+    //                 responseData.toString("base64") + "\n-----END X509 CRL-----";
+    //             if (IS_DEV) {
+    //                 debug(lcplStr);
+    //             }
+    //             resolve(lcplStr);
+    //         };
 
-            const headers = {
-                // "Accept": "application/json,application/xml",
-                // "Accept-Language": "en-UK,en-US;q=0.7,en;q=0.5",
-            };
+    //         const headers = {
+    //             // "Accept": "application/json,application/xml",
+    //             // "Accept-Language": "en-UK,en-US;q=0.7,en;q=0.5",
+    //         };
 
-            // // No response streaming! :(
-            // // https://github.com/request/request-promise/issues/90
-            // const needsStreamingResponse = true;
-            // if (needsStreamingResponse) {
-                request.get({
-                    headers,
-                    method: "GET",
-                    timeout: 2000,
-                    uri: crlURL,
-                })
-                    .on("response", async (res) => {
-                        try {
-                            await success(res);
-                        }
-                        catch (successError) {
-                            failure(successError);
-                            return;
-                        }
-                    })
-                    .on("error", failure);
-            // } else {
-            //     let response: requestPromise.FullResponse;
-            //     try {
-            //         // tslint:disable-next-line:await-promise no-floating-promises
-            //         response = await requestPromise({
-            //             headers,
-            //             method: "GET",
-            //             resolveWithFullResponse: true,
-            //             uri: crlURL,
-            //         });
-            //     } catch (err) {
-            //         failure(err);
-            //         return;
-            //     }
+    //         // // No response streaming! :(
+    //         // // https://github.com/request/request-promise/issues/90
+    //         // const needsStreamingResponse = true;
+    //         // if (needsStreamingResponse) {
+    //             request.get({
+    //                 headers,
+    //                 method: "GET",
+    //                 timeout: 2000,
+    //                 uri: crlURL,
+    //             })
+    //                 .on("response", async (res) => {
+    //                     try {
+    //                         await success(res);
+    //                     }
+    //                     catch (successError) {
+    //                         failure(successError);
+    //                         return;
+    //                     }
+    //                 })
+    //                 .on("error", failure);
+    //         // } else {
+    //         //     let response: requestPromise.FullResponse;
+    //         //     try {
+    //         //         // tslint:disable-next-line:await-promise no-floating-promises
+    //         //         response = await requestPromise({
+    //         //             headers,
+    //         //             method: "GET",
+    //         //             resolveWithFullResponse: true,
+    //         //             uri: crlURL,
+    //         //         });
+    //         //     } catch (err) {
+    //         //         failure(err);
+    //         //         return;
+    //         //     }
 
-            //     await success(response);
-            // }
-        });
-    }
+    //         //     await success(response);
+    //         // }
+    //     });
+    // }
 
     private tryUserKey(lcpUserKey: string): boolean {
 

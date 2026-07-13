@@ -9,6 +9,10 @@ import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scs
 import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 import * as stylesAllBooks from "readium-desktop/renderer/assets/styles/components/allPublicationsPage.scss";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import { TDispatch } from "readium-desktop/typings/redux";
+import { ToastType } from "readium-desktop/common/models/toast";
+import { screenReaderActions, toastActions } from "readium-desktop/common/redux/actions";
+import { I18nFunction } from "readium-desktop/common/services/translator";
 
 import classNames from "classnames";
 import * as React from "react";
@@ -31,7 +35,7 @@ import * as RefreshIcon from "readium-desktop/renderer/assets/icons/refresh-icon
 import * as HomeIcon from "readium-desktop/renderer/assets/icons/home-icon.svg";
 import * as AvatarIcon from "readium-desktop/renderer/assets/icons/person-fill.svg";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
-import { DisplayType, IOpdsBrowse, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
+import { IOpdsBrowse, resolveDisplayType, routes } from "readium-desktop/renderer/library/routing";
 import { Link, matchPath } from "react-router-dom";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
@@ -62,7 +66,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
 class LibraryLayout extends React.Component<IProps, undefined> {
@@ -74,6 +78,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
 
         this.onKeyboardFocusMain = this.onKeyboardFocusMain.bind(this);
         this.onKeyboardFocusToolbar = this.onKeyboardFocusToolbar.bind(this);
+        this.onKeyboardToggleScreenReaderOptimize = this.onKeyboardToggleScreenReaderOptimize.bind(this);
 
         this.fastLinkRef = React.createRef<HTMLAnchorElement>();
         this.refToolbar = React.createRef<HTMLAnchorElement>();
@@ -88,7 +93,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
         this.unregisterAllKeyboardListeners();
     }
 
-    public async componentDidUpdate(oldProps: IProps) {
+    public componentDidUpdate(oldProps: IProps) {
         if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
             this.unregisterAllKeyboardListeners();
             this.registerAllKeyboardListeners();
@@ -181,11 +186,17 @@ class LibraryLayout extends React.Component<IProps, undefined> {
             true, // listen for key up (not key down)
             this.props.keyboardShortcuts.FocusToolbar,
             this.onKeyboardFocusToolbar);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.ToggleScreenReaderOptimize,
+            this.onKeyboardToggleScreenReaderOptimize);
     }
 
     private unregisterAllKeyboardListeners() {
         unregisterKeyboardListener(this.onKeyboardFocusMain);
         unregisterKeyboardListener(this.onKeyboardFocusToolbar);
+        unregisterKeyboardListener(this.onKeyboardToggleScreenReaderOptimize);
     }
 
     private onKeyboardFocusMain = () => {
@@ -198,6 +209,14 @@ class LibraryLayout extends React.Component<IProps, undefined> {
             this.refToolbar.current.focus();
         }
     };
+    private onKeyboardToggleScreenReaderOptimize = () => {
+        const keyboardShortcutScreenReader = `${(this.props.keyboardShortcuts.ToggleScreenReaderOptimize.shift ? "SHIFT " : "") + (this.props.keyboardShortcuts.ToggleScreenReaderOptimize.control ? "CTRL " : "") + (this.props.keyboardShortcuts.ToggleScreenReaderOptimize.alt ? "ALT/OPT " : "") + (this.props.keyboardShortcuts.ToggleScreenReaderOptimize.meta ? "META/CMD " : "") + this.props.keyboardShortcuts.ToggleScreenReaderOptimize.key}`;
+        this.props.toggleScreenReader(this.props.screenReaderActivate, keyboardShortcutScreenReader, this.props.__);
+    };
+
+    private linkState = () => ({
+        displayType: resolveDisplayType(this.props.location.state, this.props.libraryView?.displayType),
+    });
 
     private bookshelf = () => {
         const { bookshelf } = this.props.headerLinks;
@@ -228,7 +247,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         pathname: route,
                     }}
                     style={{ width: "20px", height: "20px"}}
-                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                    state={this.linkState()}
                     className={stylesButtons.button_secondary_blue}
                     onClick={(e) => {
                         if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
@@ -291,7 +310,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         pathname: route,
                     }}
                     style={{ width: "20px", height: "20px" }}
-                    state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
+                    state={this.linkState()}
                     className={stylesButtons.button_secondary_blue}
                     onClick={(e) => {
                         if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
@@ -357,7 +376,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                             pathname: route,
                         }}
                         style={{ height: "unset" }}
-                        state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
+                        state={this.linkState()}
                         className={classNames(stylesButtons.button_refresh, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
                         onClick={(e) => {
                             if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
@@ -393,7 +412,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         to={{
                             ...this.props.location,
                         }}
-                        state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
+                        state={this.linkState()}
                         className={classNames(stylesButtons.button_refresh, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
                         onClick={(e) => {
                             if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
@@ -435,6 +454,17 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     headerLinks: state.opds.browser.header,
     breadcrumb: state.opds.browser.breadcrumb,
     locale: state.i18n.locale, // refresh
+    libraryView: state.settings.libraryView,
+    screenReaderActivate: state.screenReader.activate,
 });
 
-export default connect(mapStateToProps)(withTranslator(LibraryLayout));
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
+    return {
+        toggleScreenReader: (screenReaderActivate: boolean, keyboard: string, __: I18nFunction) => {
+            dispatch(screenReaderActions.save.build(!screenReaderActivate));
+            dispatch(toastActions.openRequest.build(ToastType.Success, __("settings.screenReaderActivate.invite", { keyboard, status: !screenReaderActivate ? __("app.session.exit.askBox.button.yes") : __("app.session.exit.askBox.button.no") })));
+        },
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(LibraryLayout));

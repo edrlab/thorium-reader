@@ -6,23 +6,19 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
+import { ISettingsState } from "../../states/settings";
 
-export const ID = "SET_WIZARD_OPENED";
+export const ID = "KEEP_LIBRARY_WINDOW_IN_BACKGROUND_ON_READER_CLOSE";
 
-export interface Payload {
-    opened_v340: boolean;
-}
-
-export function build(opened: boolean): Action<typeof ID, Payload> {
+export function build(state: boolean):
+    Action<typeof ID, Pick<ISettingsState, "keepLibraryWindowInBackgroundOnReaderClose">> {
 
     return {
         type: ID,
         payload: {
-            opened_v340: opened,
+            keepLibraryWindowInBackgroundOnReaderClose: state,
         },
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator
 export type TAction = ReturnType<typeof build>;
-
-

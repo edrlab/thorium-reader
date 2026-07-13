@@ -109,7 +109,7 @@ export function convertAnnotationStateArrayToReadiumAnnotationSet(locale, notes 
         //     id: "https://github.com/edrlab/thorium-reader/releases/tag/v" + _APP_VERSION,
         //     type: "Software",
         //     name: _APP_NAME + " " + _APP_VERSION,
-        //     homepage: "https://thorium.edrlab.org",
+        //     homepage: "https://www.thoriumreader.com/",
         // },
         generated: dateString,
         title: label || "Annotations set",
@@ -165,11 +165,11 @@ for (const [id, reader] of Object.entries(readers)) {
 
     console.log(id);
     if (Array.isArray(reader?.reduxState?.annotation)) {
-        
+
         // From thorium-reader 3.1.x state version
         const notes = reader?.reduxState?.annotation.map((v) => ({ uuid: v[0], ...(v[1] || {}) }));
         // TODO: reader?.reduxState?.bookmark are not migrated to notes
-        
+
         const title = state?.publication?.db[id]?.title;
 
         const readiumAnnotationSet = convertAnnotationStateArrayToReadiumAnnotationSet("en", notes, id, title || "");

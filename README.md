@@ -6,7 +6,7 @@ Free application. No ads. No private data flowing anywhere.
 
 This project is in constant evolution, corrections and new features will be added soon and your support is welcome for that. The application is based on the open-source Readium Desktop toolkit.
 
-More information can be found in the [Landing page](https://thorium.edrlab.org/), within the [online support documentation](https://thorium.edrlab.org/en/th3/800_collaborating/802_localizing/). Users can [Add Documentation catalog to Thorium (OPDS link)](opds://edrlab.github.io/publications/feeds/thorium31_documentation.json) or [browse English documentation inline within the Readium web reader](https://thorium.edrlab.org/en/onlinedoc).
+More information can be found in the [Landing page](https://www.thoriumreader.com/).
 
 It is currently localized in following 28 languages:
 
@@ -44,8 +44,6 @@ Since february 2025 we use Weblate project Thorium as the main tool for localisa
 <img src="https://hosted.weblate.org/widget/thorium-reader/thorium-reader-translation/horizontal-auto.svg" alt="Translation status" />
 </a>
 
-More information on translation process can be found in the dedicated [translation page of the support website](https://thorium.edrlab.org/en/th3/800_collaborating/802_localizing/).
-
 ![library](img/library.png)
 ![publication info](img/info.png)
 ![reader](img/reader.png)
@@ -73,6 +71,7 @@ More information on translation process can be found in the dedicated [translati
 
 * `npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root` (or `npm install --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root` if `package-lock.json` needs to be updated): initialize local `node_modules` packages from dependencies declared in `package.json`
 * in case of failure to NPM "install" because of "Divina player" SHA integrity mismatch, please try running the following command in your shell: `node scripts/package-lock-patch.js && cat package-lock.json | grep -i divina-player-js`
+* `cd node_modules/electron && DEBUG=@electron/get* force_no_cache=true node install.js && cd -`: this used to be done automatically via a NPM `postinstall` hook script but it is now a manual step, this sets up the Electron binary for the current platform.
 
 ### Start application in development environment
 
@@ -86,7 +85,7 @@ More information on translation process can be found in the dedicated [translati
 
 ## Build installers
 
-* `npm run package:win` or `npm run package:mac` or `npm run package:linux`
+* `npm run package:win` or `npm run package:mac` or `npm run package:linux` (see the GitHub Actions Workflow YAML scripts for more information on how to handle the build matrix with Intel and ARM target architectures)
 
 Code Signing information: https://github.com/edrlab/thorium-reader/wiki/Code-Signing
 

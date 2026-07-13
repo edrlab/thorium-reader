@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "",
-            "title": ""
+            "title": "",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "Покажи библиотека / лавица за книги",
@@ -161,6 +162,7 @@
         "cancel": "Отказ",
         "customization": {
             "splashscreen": {
+                "dontShow": "",
                 "fallbackWelcomeScreen": "",
                 "state": "",
                 "title": ""
@@ -1209,6 +1211,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "",
                     "name": ""
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Зареждане от потребителски файл",
@@ -1241,6 +1247,7 @@
         },
         "screenReaderActivate": {
             "help": "",
+            "invite": "",
             "message": "",
             "title": ""
         },
@@ -1309,9 +1316,15 @@
             "title": ""
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "Запазване на библиотеката на заден план след затваряне на прозорци за четене",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Когато е включено, затварянето на прозорец за четене не възстановява и не извежда прозореца на библиотеката на преден план.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Минимизиране на библиотеката след отваряне на прозорци за четене",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Когато е включено, отварянето на прозорец за четене минимизира прозореца на библиотеката.",
+            "minimizeLibraryToTray": "Минимизиране на библиотеката в системната област",
+            "minimizeLibraryToTrayDescription": "Когато е включено, минимизирането на прозореца на библиотеката оставя Thorium да работи в областта за уведомления на Windows.",
+            "oneReaderWindowPerPublication": "Използване на един прозорец за четене за всяка публикация",
+            "oneReaderWindowPerPublicationDescription": "Когато е включено, отварянето на публикация, която вече е отворена, фокусира нейния прозорец за четене, вместо да отваря нов.",
+            "title": "Поведение на прозорците"
         }
     },
     "tts": {
@@ -1335,29 +1348,6 @@
             "underlineWordSolidBackground": "",
             "underlineWordUnderline": "",
             "wordColor": ""
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "",
-            "goToBooks": ""
-        },
-        "description": {
-            "home": "",
-            "resources": ""
-        },
-        "dontShow": "",
-        "resources": {
-            "discord": "",
-            "website": ""
-        },
-        "tab": {
-            "home": "",
-            "resources": ""
-        },
-        "title": {
-            "resources": "",
-            "welcome": ""
         }
     }
 }

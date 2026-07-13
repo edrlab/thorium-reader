@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "Nova versão disponível, clique para saber mais.",
-            "title": "Atualização de software da {{- appName}}."
+            "title": "Atualização de software da {{- appName}}.",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "Mostrar biblioteca / estante",
@@ -164,6 +165,7 @@
         "cancel": "Cancelar",
         "customization": {
             "splashscreen": {
+                "dontShow": "Não mostre mais",
                 "fallbackWelcomeScreen": "Nenhuma tela de boas-vindas fornecida",
                 "state": "Estado: {{- state}}",
                 "title": "Provisionar e ativar o perfil de personalização"
@@ -1215,6 +1217,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "Na janela do leitor, ativar a tela cheia do sistema ou restaurar o modo normal. Note que isso é diferente do 'modo Zen' que simplifica a interface do usuário",
                     "name": "Ativar/desativar Tela Cheia"
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Carregar de arquivo de usuário",
@@ -1247,6 +1253,7 @@
         },
         "screenReaderActivate": {
             "help": "Quando o aplicativo detecta a presença de tecnologia assistiva, a interface do usuário funciona melhor com leitores de tela",
+            "invite": "",
             "message": "Suporte otimizado para leitores de tela",
             "title": "Melhorar a experiência do leitor de tela"
         },
@@ -1315,9 +1322,15 @@
             "title": "Tema do aplicativo"
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "Manter a biblioteca em segundo plano após fechar janelas de leitura",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Quando ativado, fechar uma janela de leitura não restaura nem traz a janela da biblioteca para frente.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Minimizar a biblioteca após abrir janelas de leitura",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Quando ativado, abrir uma janela de leitura minimiza a janela da biblioteca.",
+            "minimizeLibraryToTray": "Minimizar a biblioteca para a área de notificação",
+            "minimizeLibraryToTrayDescription": "Quando ativado, minimizar a janela da biblioteca mantém o Thorium em execução na área de notificação do Windows.",
+            "oneReaderWindowPerPublication": "Usar uma única janela de leitura por publicação",
+            "oneReaderWindowPerPublicationDescription": "Quando ativado, abrir uma publicação que já está aberta foca a janela de leitura dela em vez de abrir outra.",
+            "title": "Comportamento das janelas"
         }
     },
     "tts": {
@@ -1341,29 +1354,6 @@
             "underlineWordSolidBackground": "Contorno, palavra com fundo sólido",
             "underlineWordUnderline": "Sublinhar, palavra com contorno",
             "wordColor": "Cor da palavra"
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "Descubra o que há de novo",
-            "goToBooks": "Ir para minhas publicações"
-        },
-        "description": {
-            "home": "Thorium parece diferente! Vamos descobrir o que há de novo...",
-            "resources": ""
-        },
-        "dontShow": "Não mostre mais",
-        "resources": {
-            "discord": "",
-            "website": ""
-        },
-        "tab": {
-            "home": "Início",
-            "resources": ""
-        },
-        "title": {
-            "resources": "",
-            "welcome": "Bem-vindo ao Thorium 3"
         }
     }
 }

@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "Na voljo je nova različica, kliknite za več informacij.",
-            "title": "Posodobitev programske opreme za {{- appName}}"
+            "title": "Posodobitev programske opreme za {{- appName}}",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "Prikaži knjižnico / knjižna polica",
@@ -167,6 +168,7 @@
         "cancel": "Prekliči",
         "customization": {
             "splashscreen": {
+                "dontShow": "Ne prikaži več",
                 "fallbackWelcomeScreen": "",
                 "state": "",
                 "title": ""
@@ -1221,6 +1223,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "",
                     "name": ""
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Nalaganje iz datoteke uporabnika",
@@ -1253,6 +1259,7 @@
         },
         "screenReaderActivate": {
             "help": "",
+            "invite": "",
             "message": "",
             "title": ""
         },
@@ -1321,9 +1328,15 @@
             "title": "Tema aplikacije"
         },
         "window": {
-            "minimizeLibraryToTray": "",
-            "minimizeLibraryToTrayDescription": "",
-            "title": ""
+            "keepLibraryWindowInBackgroundOnReaderClose": "Ohrani knjižnico v ozadju po zaprtju bralnih oken",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Ko je omogočeno, zaprtje bralnega okna ne obnovi okna knjižnice in ga ne postavi v ospredje.",
+            "keepLibraryWindowInBackgroundOnReaderOpen": "Pomanjšaj knjižnico po odprtju bralnih oken",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Ko je omogočeno, odprtje bralnega okna pomanjša okno knjižnice.",
+            "minimizeLibraryToTray": "Pomanjšaj knjižnico v območje za obvestila",
+            "minimizeLibraryToTrayDescription": "Ko je omogočeno, pomanjšanje okna knjižnice ohrani Thorium zagnan v območju za obvestila sistema Windows.",
+            "oneReaderWindowPerPublication": "Uporabi eno bralno okno na publikacijo",
+            "oneReaderWindowPerPublicationDescription": "Ko je omogočeno, odpiranje že odprte publikacije izostri njeno bralno okno, namesto da bi odprlo novo.",
+            "title": "Vedenje oken"
         }
     },
     "tts": {
@@ -1347,29 +1360,6 @@
             "underlineWordSolidBackground": "",
             "underlineWordUnderline": "",
             "wordColor": ""
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "Odkrij novosti",
-            "goToBooks": "Pojdi na moje publikacije"
-        },
-        "description": {
-            "home": "Thorium izgleda drugače! Poglejmo kaj je novega...",
-            "resources": ""
-        },
-        "dontShow": "Ne prikaži več",
-        "resources": {
-            "discord": "",
-            "website": ""
-        },
-        "tab": {
-            "home": "Domov",
-            "resources": ""
-        },
-        "title": {
-            "resources": "",
-            "welcome": "Dobrodošli v Thorium 3"
         }
     }
 }

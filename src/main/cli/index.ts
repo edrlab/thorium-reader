@@ -436,11 +436,20 @@ export function commandLineMainEntry(
 
     dump += `argvFormated: ${JSON.stringify(argFormated)}\n`;
 
-    try {
-        y.parse(argFormated);
-    } catch (e) {
-        debug("YARGS ERROR !!!!!", e);
-    }
+    // https://github.com/yargs/yargs/blob/main/docs/typescript.md#typescript-usage-examples
+    // parseSync() only when no command is async/Promise-returning
+    // parse() may return a Promise ... or may not.
+    Promise.resolve(y.parse(argFormated)).then((v) => { debug(v); }).catch((err) => { debug("YARGS ERROR !!!!!", err); });
+    // try {
+    //     void y.parse(argFormated);
+    //     //
+    //     // (async () => {
+    //     //     // const res =
+    //     //     await y.parse(argFormated);
+    //     // })();
+    // } catch (e) {
+    //     debug("YARGS ERROR !!!!!", e);
+    // }
 
     dump += "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$44\n";
     appendFileSyncWithRotation(appLogs, dump);

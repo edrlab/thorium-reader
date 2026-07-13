@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import {
-    apiActions, authActions, catalogActions, downloadActions, i18nActions, keyboardActions, lcpActions, readerActions, sessionActions, themeActions, publicationActions, wizardActions,
+    apiActions, authActions, catalogActions, downloadActions, i18nActions, keyboardActions, lcpActions, readerActions, sessionActions, themeActions, publicationActions, whatsNewActions,
     annotationActions,
     creatorActions,
     settingsActions,
@@ -59,7 +59,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     // readerActions.bookmark.push.ID,
     // readerActions.bookmark.update.ID,
 
-    wizardActions.setWizard.ID,
+    whatsNewActions.setWhatsNew.ID,
 
     sessionActions.save.ID,
     screenReaderActions.save.ID,
@@ -70,7 +70,11 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     creatorActions.set.ID,
 
     settingsActions.enableAPIAPP.ID,
+    settingsActions.keepLibraryWindowInBackgroundOnReaderClose.ID,
+    settingsActions.keepLibraryWindowInBackgroundOnReaderOpen.ID,
     settingsActions.minimizeLibraryToTray.ID,
+    settingsActions.oneReaderWindowPerPublication.ID,
+    settingsActions.libraryView.ID,
     settingsActions.lcpAutoDeleteExpiredPublications.ID,
     settingsActions.lcpAutoDeleteExpiredPublicationsForced.ID,
 
