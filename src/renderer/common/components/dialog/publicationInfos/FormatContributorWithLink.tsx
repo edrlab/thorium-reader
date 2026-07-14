@@ -11,8 +11,8 @@ import * as stylesPublications from "readium-desktop/renderer/assets/styles/publ
 
 import classNames from "classnames";
 import * as React from "react";
-import { translateContentFieldHelper } from "readium-desktop/common/services/translator";
 import { IOpdsContributorView } from "readium-desktop/common/views/opds";
+import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
@@ -58,14 +58,14 @@ export const FormatContributorWithLink: React.FC<IProps> = (props) => {
                         className={classNames(stylesButtons.button_link, className ? stylesPublications.authors : "")}
                         tabIndex={0}
                     >
-                        {translateContentFieldHelper(newContributor.nameLangString, locale)}
+                        {convertMultiLangStringToString(newContributor.nameLangString, locale)}
                     </a>,
                 );
             } else if (typeof newContributor === "object" && newContributor.nameLangString) {
                 retElement.push(
                     <span
                         className={classNames(stylesBookDetailsDialog.allowUserSelect, className  ? stylesPublications.authors : "")}>
-                        {translateContentFieldHelper(newContributor.nameLangString, locale)}
+                        {convertMultiLangStringToString(newContributor.nameLangString, locale)}
                     </span>,
                 );
             } else {
@@ -80,7 +80,7 @@ export const FormatContributorWithLink: React.FC<IProps> = (props) => {
                     <span
                         dir={textIsRTL ? "rtl" : undefined}
                         className={classNames(stylesBookDetailsDialog.allowUserSelect, className  ? stylesPublications.authors : "")}>
-                        {translateContentFieldHelper(textStr, locale)}
+                        {convertMultiLangStringToString(textStr, locale)}
                     </span>,
                 );
             }

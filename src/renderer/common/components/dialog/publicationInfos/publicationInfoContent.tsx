@@ -9,7 +9,7 @@ import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
-
+import DOMPurify from "dompurify";
 import classNames from "classnames";
 import * as React from "react";
 import { isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
@@ -381,10 +381,16 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
     }, [publicationViewMaybeOpds, r2Publication_]);
 
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const pubTitleLangStr = convertMultiLangStringToLangString((publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle, locale);
+    const title = (publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle;
+    const pubLangs = (publicationViewMaybeOpds as PublicationView).languages || publicationViewMaybeOpds.languages;
+    const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+    const titleStringOrObj = pubLang && typeof title === "string" ? { [pubLang]: title } : title;
+    const pubTitleLangStr = convertMultiLangStringToLangString(titleStringOrObj, locale);
     const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
     const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
-    const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
+    // String(pubTitleLang) + " --- " +
+    const pubTitleStr = (pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "");
+    const pubTitleStrSanitized = DOMPurify.sanitize(pubTitleStr).replace(/font-size:/g, "font-sizexx:");
 
     const [openCoverDialog, setOpenCoverDialog] = React.useState(false);
     const [__] = useTranslator();
@@ -441,8 +447,10 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                 <div className={stylePublication.publicationInfo_rightSide}>
                     <section>
                         <h2 className={classNames(stylesBookDetailsDialog.allowUserSelect, stylesGlobal.my_10, stylePublication.book_title)}
-                            dir={pubTitleIsRTL ? "rtl" : undefined} lang={publicationViewMaybeOpds.languages ? publicationViewMaybeOpds.languages?.[0] : undefined}>
-                            {pubTitleStr}
+                            dir={pubTitleIsRTL ? "rtl" : undefined}
+                            lang={pubTitleLang ? pubTitleLang : undefined}
+                        >
+                            {pubTitleStrSanitized}
                         </h2>
                         <FormatContributorWithLink
                             contributors={publicationViewMaybeOpds.authorsLangString}

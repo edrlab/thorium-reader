@@ -7,7 +7,12 @@
 
 import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.scss";
 import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 
+import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
+import { convertMultiLangStringToLangString } from "readium-desktop/common/language-string";
+import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
+import { PublicationView } from "readium-desktop/common/views/publication";
 import classNames from "classnames";
 import debug_ from "debug";
 import DOMPurify from "dompurify";
@@ -46,14 +51,19 @@ const PublicationInfoDescription: React.FC<IProps> = ({ publicationViewMaybeOpds
         return () => clearTimeout(timeout);
     }, [publicationViewMaybeOpds, needSeeMoreButton]);
 
-    React.useEffect(() => {
-        const lang = publicationViewMaybeOpds.languages?.[0];
-        if (!lang || !descriptionRef.current) return;
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const descStr = (publicationViewMaybeOpds as PublicationView).description || publicationViewMaybeOpds.description;
+    const pubLangs = (publicationViewMaybeOpds as PublicationView).languages || publicationViewMaybeOpds.languages;
+    const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+    const descStringOrObj = pubLang && typeof descStr === "string" ? { [pubLang]: descStr } : descStr;
+    const pubDescLangStr = convertMultiLangStringToLangString(descStringOrObj, locale);
+    const pubDescLang = pubDescLangStr && pubDescLangStr[0] ? pubDescLangStr[0].toLowerCase() : "";
+    const pubDescIsRTL = langStringIsRTL(pubDescLang);
+    const pubDescStr = pubDescLangStr && pubDescLangStr[1] ? pubDescLangStr[1] : "";
 
-        descriptionRef.current.setAttribute("lang", lang);
-    }, [publicationViewMaybeOpds]);
-
-    const { description } = publicationViewMaybeOpds;
+    // const { description } = publicationViewMaybeOpds;
+    // String(pubDescLang) + " --- " + descStr + " ====== " +
+    const description = pubDescStr;
     if (!description) return <></>;
 
     const descriptionSanitized = DOMPurify.sanitize(description).replace(/font-size:/g, "font-sizexx:");
@@ -75,6 +85,8 @@ const PublicationInfoDescription: React.FC<IProps> = ({ publicationViewMaybeOpds
                 >
                     <div
                         ref={descriptionRef}
+                        dir={pubDescIsRTL ? "rtl" : undefined}
+                        lang={pubDescLang ? pubDescLang : undefined}
                         className={stylesBookDetailsDialog.allowUserSelect}
                         dangerouslySetInnerHTML={{ __html: descriptionSanitized }}
                     />

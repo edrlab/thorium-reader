@@ -5,8 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { availableLanguages, translateContentFieldHelper } from "readium-desktop/common/services/translator";
+import { availableLanguages } from "readium-desktop/common/services/translator";
 import { IOpdsContributorView } from "readium-desktop/common/views/opds";
+import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 
 export const formatContributorToString = (
@@ -24,11 +25,11 @@ export const formatContributorToString = (
             }
 
             if (typeof newContributor === "string") {
-                retString += translateContentFieldHelper(newContributor, locale);
+                retString += convertMultiLangStringToString(newContributor, locale);
             } else if (newContributor.nameLangString) {
-                retString += translateContentFieldHelper(newContributor.nameLangString, locale);
+                retString += convertMultiLangStringToString(newContributor.nameLangString, locale);
             } else {
-                retString += translateContentFieldHelper(newContributor as IStringMap, locale);
+                retString += convertMultiLangStringToString(newContributor as IStringMap, locale);
                 // const textLangStr = convertMultiLangStringToLangString(stringMap, locale);
                 // const textLang = textLangStr && textLangStr[0] ? textLangStr[0].toLowerCase() : "";
                 // const textIsRTL = langStringIsRTL(textLang);

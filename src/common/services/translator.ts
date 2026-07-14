@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
+// import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 
 // SEE PACKAGE.JSON:
 // ar bg brh ca cs da de el en es et eu fi fr gl he hr it ja ka ko lt nl pl pt-br pt-pt ru sl sv ta tr zh-cn zh-tw
@@ -275,45 +275,50 @@ export const translate = (...args: Parameters<typeof i18next.t>): ReturnType<typ
     return label;
 };
 
-// TODO: convertMultiLangStringToLangString() or convertMultiLangStringToString() ??
-export const translateContentFieldHelper = (field: string | IStringMap, locale: keyof typeof availableLanguages): string => {
-    if (!field) {
-        return "";
-    }
+// SEE: convertMultiLangStringToLangString() or convertMultiLangStringToString()
+// export const translateContentFieldHelper = (stringOrObject: string | IStringMap, locale: keyof typeof availableLanguages): string => {
+//     if (!stringOrObject) {
+//         return "";
+//     }
 
-    if (typeof field === "string") {
-        return field;
-    }
+//     if (typeof stringOrObject === "string") {
+//         return stringOrObject;
+//     }
 
-    if (field[locale]) {
-        return field[locale];
-    }
+//     if (typeof stringOrObject !== "object") {
+//         return "";
+//     }
 
-    // Check if there is no composed locale names matching with the current locale
-    const simplifiedFieldLocales = Object.keys(field).filter(
-        (locale) => locale.split("-")[0] === locale.split("-")[0],
-    );
-    if (simplifiedFieldLocales.length) {
-        return field[simplifiedFieldLocales[0]];
-    }
+//     if (stringOrObject[locale]) {
+//         return stringOrObject[locale];
+//     }
 
-    // If nothing try to take an english locale
-    const englishFieldLocales = Object.keys(field).filter(
-        (locale) => locale.split("-")[0] === "en",
-    );
-    if (englishFieldLocales.length) {
-        return field[englishFieldLocales[0]];
-    }
+//     const keys = Object.keys(stringOrObject);
 
-    // Take the first locale if nothing match with current locale or english
-    const keys = Object.keys(field);
+//     // Check if there is no composed locale names matching with the current locale
+//     const simplifiedFieldLocales = keys.filter(
+//         (locale) => locale.split("-")[0] === locale.split("-")[0],
+//     );
+//     if (simplifiedFieldLocales.length) {
+//         return stringOrObject[simplifiedFieldLocales[0]];
+//     }
 
-    if (keys && keys.length) {
-        return field[keys[0]];
-    }
+//     // If nothing try to take an english locale
+//     const englishFieldLocales = keys.filter(
+//         (locale) => locale.split("-")[0] === "en",
+//     );
+//     if (englishFieldLocales.length) {
+//         return stringOrObject[englishFieldLocales[0]];
+//     }
 
-    return "";
-};
+//     // Take the first locale if nothing match with current locale or english
+
+//     if (keys && keys.length) {
+//         return stringOrObject[keys[0]];
+//     }
+
+//     return "";
+// };
 
 export const translator = {
     __: translate,
