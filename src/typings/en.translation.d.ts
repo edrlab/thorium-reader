@@ -3908,7 +3908,7 @@ declare namespace typed_i18n {
   (_: "tts.highlight.underlineWordOutline", __?: {}): string;
   (_: "tts.highlight.underlineWordSolidBackground", __?: {}): string;
   (_: "tts.highlight.underlineWordUnderline", __?: {}): string;
-  (_: "tts.highlight.wordColor", __?: {}): string; (_: "wizard", __?: {}): {}
+  (_: "tts.highlight.wordColor", __?: {}): string
 }
 }
 export = typed_i18n;

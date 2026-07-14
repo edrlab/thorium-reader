@@ -8,12 +8,13 @@
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 
 // SEE PACKAGE.JSON:
-// ar bg ca cs da de el en es et eu fi fr gl he hr it ja ka ko lt nl pl pt-br pt-pt ru sl sv ta tr zh-cn zh-tw
-// 32 languages
-// minus 5 incomplete ones (see `__TH__IS_DEV__ || __TH__IS_CI__` in this source file)
+// ar bg brh ca cs da de el en es et eu fi fr gl he hr it ja ka ko lt nl pl pt-br pt-pt ru sl sv ta tr zh-cn zh-tw
+// 33 languages
+// minus 6 incomplete ones (see `__TH__IS_DEV__ || __TH__IS_CI__` in this source file)
 // ==> 27 supported locales in PROD (see `appx` in `package.json`)
 import arCatalog from "readium-desktop/resources/locales/ar.json";
 import bgCatalog from "readium-desktop/resources/locales/bg.json";
+import brhCatalog from "readium-desktop/resources/locales/brh.json";
 import caCatalog from "readium-desktop/resources/locales/ca.json";
 import csCatalog from "readium-desktop/resources/locales/cs.json";
 import daCatalog from "readium-desktop/resources/locales/da.json";
@@ -163,6 +164,9 @@ i18nextInstance.init({
             "bg": {
                 translation: bgCatalog,
             },
+            "brh": {
+                translation: brhCatalog,
+            },
             "he": {
                 translation: heCatalog,
             },
@@ -237,6 +241,7 @@ export const availableLanguages = {
     ...(__TH__IS_DEV__ || __TH__IS_CI__ ?
     {
         "bg": "български (Bulgarian)",
+        "brh": "براہوئی (Brahui)",
         "he": "עִבְרִית (Hebrew)",
         "hr": "Hrvatski (Croatian)",
         "ka": "ქართული (Georgian)",
