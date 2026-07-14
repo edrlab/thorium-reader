@@ -853,6 +853,7 @@ const CellPublishers: React.FC<ITableCellProps_Column & ITableCellProps_GenericC
 
         return <a
             dir={textIsRTL ? "rtl" : undefined}
+            lang={textLang ? textLang : undefined}
             title={`${textStr} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
             onKeyUp={(e) => {
@@ -919,6 +920,7 @@ const CellAuthors: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell
 
         return <a
             dir={textIsRTL ? "rtl" : undefined}
+            lang={textLang ? textLang : undefined}
             title={`${textStr} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
             onKeyUp={(e) => {
@@ -1342,6 +1344,7 @@ const CellTitle: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
         // width: props.displayType === DisplayType.Grid ? "250px" : undefined,
     }}
         dir={pubTitleIsRTL ? "rtl" : undefined}
+        lang={pubTitleLang ? pubTitleLang : undefined}
     >
                 <a
                     tabIndex={0}

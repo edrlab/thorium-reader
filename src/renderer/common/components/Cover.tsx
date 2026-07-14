@@ -192,8 +192,11 @@ class Cover extends React.Component<IProps, IState> {
                 }
             <div style={backgroundStyle} className={stylesPublications.no_img_wrapper}>
                 <div className={stylesPublications.no_img}>
-                    <p aria-hidden
-                        dir={pubTitleIsRTL ? "rtl" : undefined}>
+                    <p
+                        aria-hidden
+                        dir={pubTitleIsRTL ? "rtl" : undefined}
+                        lang={pubTitleLang ? pubTitleLang : undefined}
+                    >
                         {pubTitleStr}
                     </p>
                     <p aria-hidden>{authors}</p>

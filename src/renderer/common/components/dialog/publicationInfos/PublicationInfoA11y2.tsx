@@ -83,6 +83,7 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
     // taken from previous a11y implementation src/renderer/common/components/dialog/publicationInfos/publicationInfoA11y.tsx:ln108
     let accessibilitySummaryStrSanitized = undefined;
     let accessibilitySummaryIsRTL = undefined;
+    let accessibilitySummaryLang = undefined;
     if (a11y_accessibilitySummary) {
 
         const textObj = a11y_accessibilitySummary;
@@ -90,7 +91,7 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
         const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
         const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
         const accessibilitySummaryLangStr = convertMultiLangStringToLangString(textObj_, locale);
-        const accessibilitySummaryLang = accessibilitySummaryLangStr && accessibilitySummaryLangStr[0] ? accessibilitySummaryLangStr[0].toLowerCase() : "";
+        accessibilitySummaryLang = accessibilitySummaryLangStr && accessibilitySummaryLangStr[0] ? accessibilitySummaryLangStr[0].toLowerCase() : "";
         accessibilitySummaryIsRTL = langStringIsRTL(accessibilitySummaryLang);
         const accessibilitySummaryStr = accessibilitySummaryLangStr && accessibilitySummaryLangStr[1] ? accessibilitySummaryLangStr[1] : "";
         accessibilitySummaryStrSanitized = accessibilitySummaryStr ? DOMPurify.sanitize(accessibilitySummaryStr, { FORBID_TAGS: ["style"], FORBID_ATTR: ["style"] }).replace(/font-size:/g, "font-sizexx:") : "";
@@ -563,6 +564,7 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                 {accessibilitySummaryStrSanitized ?
                     <><h5 className="publicationInfoA11y2-title">{__("publ-a11y-display-guide.accessibility-summary.accessibility-summary-title")}</h5><div
                         dir={accessibilitySummaryIsRTL ? "rtl" : undefined}
+                        lang={accessibilitySummaryLang ? accessibilitySummaryLang : undefined}
                         dangerouslySetInnerHTML={{ __html: accessibilitySummaryStrSanitized }}
                     ></div></>
                     : <></>

@@ -159,7 +159,9 @@ class PublicationCard extends React.Component<IProps> {
                                     <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} />
                                     <div className={stylesPublications.publication_title_wrapper}>
                                         <p aria-hidden className={stylesPublications.publication_title}
-                                            dir={pubTitleIsRTL ? "rtl" : undefined}>
+                                            dir={pubTitleIsRTL ? "rtl" : undefined}
+                                            lang={pubTitleLang ? pubTitleLang : undefined}
+                                        >
                                             {pubTitleStr}
                                         </p>
                                         <p aria-hidden className={stylesPublications.publication_authors}>
@@ -191,7 +193,9 @@ class PublicationCard extends React.Component<IProps> {
                                 />
                                 <div className={stylesPublications.publication_title_wrapper}>
                                     <p aria-hidden className={stylesPublications.publication_title}
-                                        dir={pubTitleIsRTL ? "rtl" : undefined}>
+                                        dir={pubTitleIsRTL ? "rtl" : undefined}
+                                        lang={pubTitleLang ? pubTitleLang : undefined}
+                                    >
                                         {pubTitleStr}
                                     </p>
                                     <p aria-hidden className={stylesPublications.publication_authors}>
@@ -228,7 +232,9 @@ class PublicationCard extends React.Component<IProps> {
                                         />
                                         <div className={stylesPublications.publication_title_wrapper}>
                                             <p aria-hidden className={stylesPublications.publication_title}
-                                                dir={pubTitleIsRTL ? "rtl" : undefined}>
+                                                dir={pubTitleIsRTL ? "rtl" : undefined}
+                                                lang={pubTitleLang ? pubTitleLang : undefined}
+                                            >
                                                 {pubTitleStr}
                                             </p>
                                             <p aria-hidden className={stylesPublications.publication_authors}>
