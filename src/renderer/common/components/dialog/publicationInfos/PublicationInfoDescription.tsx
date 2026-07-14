@@ -7,7 +7,12 @@
 
 import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.scss";
 import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 
+import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
+import { convertMultiLangStringToLangString } from "readium-desktop/common/language-string";
+import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
+import { PublicationView } from "readium-desktop/common/views/publication";
 import classNames from "classnames";
 import debug_ from "debug";
 import DOMPurify from "dompurify";
@@ -28,93 +33,73 @@ interface IProps {
     __: I18nFunction;
 }
 
-interface IState {
-    seeMore: boolean;
-    needSeeMore: boolean;
-}
+const PublicationInfoDescription: React.FC<IProps> = ({ publicationViewMaybeOpds, __ }) => {
+    const descriptionWrapperRef = React.useRef<HTMLDivElement>(null);
+    const descriptionRef = React.useRef<HTMLDivElement>(null);
 
-export default class PublicationInfoDescription extends React.Component<IProps, IState> {
+    const [seeMore, setSeeMore] = React.useState(false);
+    const [needSeeMore, setNeedSeeMore] = React.useState(false);
 
-    private descriptionWrapperRef: React.RefObject<HTMLDivElement>;
-    private descriptionRef: React.RefObject<HTMLParagraphElement>;
+    const needSeeMoreButton = React.useCallback(() => {
+        if (!descriptionWrapperRef.current || !descriptionRef.current) return;
+        const need = descriptionWrapperRef.current.offsetHeight < descriptionRef.current.offsetHeight;
+        setNeedSeeMore(need);
+    }, []);
 
-    constructor(props: IProps) {
-        super(props);
+    React.useEffect(() => {
+        const timeout = setTimeout(needSeeMoreButton, 500);
+        return () => clearTimeout(timeout);
+    }, [publicationViewMaybeOpds, needSeeMoreButton]);
 
-        this.descriptionWrapperRef = React.createRef<HTMLDivElement>();
-        this.descriptionRef = React.createRef<HTMLParagraphElement>();
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const textObj = (publicationViewMaybeOpds as PublicationView).description || publicationViewMaybeOpds.description;
+    const pubLangs = (publicationViewMaybeOpds as PublicationView).languages || publicationViewMaybeOpds.languages;
+    const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+    const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+    const pubDescLangStr = convertMultiLangStringToLangString(textObj_, locale);
+    const pubDescLang = pubDescLangStr && pubDescLangStr[0] ? pubDescLangStr[0].toLowerCase() : "";
+    const pubDescIsRTL = langStringIsRTL(pubDescLang);
+    const pubDescStr = pubDescLangStr && pubDescLangStr[1] ? pubDescLangStr[1] : "";
 
-        this.state = {
-            seeMore: false,
-            needSeeMore: false,
-        };
-    }
+    // const { description } = publicationViewMaybeOpds;
+    // String(pubDescLang) + " --- " + descStr + " ====== " +
+    const description = pubDescStr;
+    if (!description) return <></>;
 
-    public componentDidMount() {
-        setTimeout(this.needSeeMoreButton, 500);
-    }
+    const descriptionSanitized = DOMPurify.sanitize(description).replace(/font-size:/g, "font-sizexx:");
+    if (!descriptionSanitized) return <></>;
 
-    public componentDidUpdate(prevProps: IProps) {
-
-        if (this.props.publicationViewMaybeOpds !== prevProps.publicationViewMaybeOpds) {
-            setTimeout(this.needSeeMoreButton, 500);
-        }
-    }
-
-    public render() {
-        const { publicationViewMaybeOpds: { description }, __ } = this.props;
-
-        if (!description) return <></>;
-        const descriptionSanitized = DOMPurify.sanitize(description).replace(/font-size:/g, "font-sizexx:");
-        if (!descriptionSanitized) return <></>;
-        return (
-            <>
-                <div className={stylePublication.publicationInfo_heading}>
-                    <h3>{__("catalog.description")}</h3>
-                </div>
-                <div className={stylePublication.publicationInfo_description_bloc}>
+    return (
+        <>
+            <div className={stylePublication.publicationInfo_heading}>
+                <h3>{__("catalog.description")}</h3>
+            </div>
+            <div className={stylePublication.publicationInfo_description_bloc}>
+                <div
+                    ref={descriptionWrapperRef}
+                    className={classNames(
+                        stylesBookDetailsDialog.descriptionWrapper,
+                        needSeeMore && stylesBookDetailsDialog.hideEnd,
+                        seeMore && stylesBookDetailsDialog.seeMore,
+                    )}
+                >
                     <div
-                        ref={this.descriptionWrapperRef}
-                        className={classNames(
-                            stylesBookDetailsDialog.descriptionWrapper,
-                            this.state.needSeeMore && stylesBookDetailsDialog.hideEnd,
-                            this.state.seeMore && stylesBookDetailsDialog.seeMore,
-                        )}
-                    >
-                        <div
-                            ref={this.descriptionRef}
-                            className={stylesBookDetailsDialog.allowUserSelect}
-                            dangerouslySetInnerHTML={{ __html: descriptionSanitized }}
-                        >
-                        </div>
-                    </div>
-                    {
-                        this.state.needSeeMore &&
-                        <button aria-hidden className={stylePublication.publicationInfo_description_bloc_seeMore} onClick={this.toggleSeeMore}>
-                            <SVG ariaHidden svg={this.state.seeMore ? ChevronUp : ChevronDown} />
-                            {
-                                this.state.seeMore
-                                    ? __("publication.seeLess")
-                                    : __("publication.seeMore")
-                            }
-                        </button>
-                    }
+                        ref={descriptionRef}
+                        dir={pubDescIsRTL ? "rtl" : undefined}
+                        lang={pubDescLang ? pubDescLang : undefined}
+                        className={stylesBookDetailsDialog.allowUserSelect}
+                        dangerouslySetInnerHTML={{ __html: descriptionSanitized }}
+                    />
                 </div>
-            </>
-        );
-    }
+                {needSeeMore &&
+                    <button aria-hidden className={stylePublication.publicationInfo_description_bloc_seeMore} onClick={() => setSeeMore(v => !v)}>
+                        <SVG ariaHidden svg={seeMore ? ChevronUp : ChevronDown} />
+                        {seeMore ? __("publication.seeLess") : __("publication.seeMore")}
+                    </button>
+                }
+            </div>
+        </>
+    );
+};
 
-    private needSeeMoreButton = () => {
-        if (!this.descriptionWrapperRef?.current || !this.descriptionRef?.current) {
-            return;
-        }
-        const need = this.descriptionWrapperRef.current.offsetHeight < this.descriptionRef.current.offsetHeight;
-        this.setState({ needSeeMore: need });
-    };
-
-    private toggleSeeMore = () =>
-        this.setState({
-            seeMore: !this.state.seeMore,
-        });
-
-}
+export default PublicationInfoDescription;

@@ -41,18 +41,42 @@ import { availableLanguages } from "readium-desktop/common/services/translator";
 //
 // https://github.com/readium/webpub-manifest/blob/ff5c1e9e76ccc184d4d670179cfb70ced691fcec/schema/contributor-object.schema.json#L7-L24
 // https://github.com/readium/webpub-manifest/blob/ff5c1e9e76ccc184d4d670179cfb70ced691fcec/schema/metadata.schema.json#L15-L32
-export function convertMultiLangStringToString(items: string | IStringMap | undefined, locale: keyof typeof availableLanguages): string | undefined {
-    if (typeof items === "object") {
-        // see translator.translateContentField() ?
-        const langs = Object.keys(items);
-        const lang = langs.filter((l) =>
-            l.toLowerCase().includes(locale.toLowerCase()));
-        const localeLang = lang[0];
-        return items[localeLang] ||
-            items._ || items[BCP47_UNKNOWN_LANG] ||
-            items[langs[0]];
+
+// see translateContentFieldHelper()
+export function convertMultiLangStringToString(stringOrObject: string | IStringMap | undefined, locale: keyof typeof availableLanguages): string | undefined {
+    if (typeof stringOrObject === "object") {
+        const objectLangKeys = Object.keys(stringOrObject);
+
+        const localeLow = locale.toLowerCase();
+        const localeLowI = localeLow.indexOf("-");
+        const localeLowBase = localeLowI > 0 ? localeLow.substring(0, localeLowI) : localeLow;
+
+        const langsWithLocaleMatch = objectLangKeys.filter((objectLangKey) => {
+
+            const objectLangKeyLow = objectLangKey.toLowerCase();
+            const objectLangKeyLowI = objectLangKeyLow.indexOf("-");
+            const objectLangKeyLowBase = objectLangKeyLowI > 0 ? objectLangKeyLow.substring(0, objectLangKeyLowI) : objectLangKeyLow;
+
+            return objectLangKeyLow === localeLow || objectLangKeyLowBase === localeLowBase;
+        });
+
+        const firstMatchedLocale = langsWithLocaleMatch[0]; // can be undefined for empty array
+        const english = objectLangKeys.reduce((prev, cur) => {
+            if (!!prev) {
+                return prev;
+            }
+            if (cur.toLowerCase().split("-")[0] === "en") {
+                return stringOrObject[cur];
+            }
+            return "";
+        }, "");
+        return stringOrObject[firstMatchedLocale] || // if undefined, cascade to unknown, English, and eventually first lang key
+            stringOrObject._ ||
+            stringOrObject[BCP47_UNKNOWN_LANG] ||
+            english ||
+            stringOrObject[objectLangKeys[0]];
     }
-    return items;
+    return stringOrObject; // assume typeof stringOrObject === "string"
 }
 
 // Note that the contributor JSON Schema applies to the serialized format:
@@ -79,24 +103,54 @@ export function convertMultiLangStringToString(items: string | IStringMap | unde
 //     });
 // }
 
-export function convertMultiLangStringToLangString(items: string | IStringMap | undefined, locale: keyof typeof availableLanguages): [lang: string, str: string | undefined] {
-    if (typeof items === "object") {
-        // see translator.translateContentField() ?
-        const langs = Object.keys(items);
-        const lang = langs.filter((l) =>
-            l.toLowerCase().includes(locale.toLowerCase()));
-        const localeLang = lang[0];
+// see translateContentFieldHelper()
+export function convertMultiLangStringToLangString(stringOrObject: string | IStringMap | undefined, locale: keyof typeof availableLanguages): [lang: string, str: string | undefined] {
+    if (typeof stringOrObject === "object") {
+        const objectLangKeys = Object.keys(stringOrObject);
 
-        if (items[localeLang]) {
-            return [localeLang, items[localeLang]];
+        const localeLow = locale.toLowerCase();
+        const localeLowI = localeLow.indexOf("-");
+        const localeLowBase = localeLowI > 0 ? localeLow.substring(0, localeLowI) : localeLow;
+
+        const langsWithLocaleMatch = objectLangKeys.filter((objectLangKey) => {
+
+            const objectLangKeyLow = objectLangKey.toLowerCase();
+            const objectLangKeyLowI = objectLangKeyLow.indexOf("-");
+            const objectLangKeyLowBase = objectLangKeyLowI > 0 ? objectLangKeyLow.substring(0, objectLangKeyLowI) : objectLangKeyLow;
+
+            return objectLangKeyLow === localeLow || objectLangKeyLowBase === localeLowBase;
+        });
+
+        const firstMatchedLocale = langsWithLocaleMatch[0]; // can be undefined for empty array
+
+         // if undefined, cascade to unknown, English, and eventually first lang key
+
+        if (stringOrObject[firstMatchedLocale]) {
+            return [firstMatchedLocale, stringOrObject[firstMatchedLocale]];
         }
-        if (items._) {
-            return [BCP47_UNKNOWN_LANG, items._];
+
+        if (stringOrObject._) {
+            return [BCP47_UNKNOWN_LANG, stringOrObject._];
         }
-        if (items[BCP47_UNKNOWN_LANG]) {
-            return [BCP47_UNKNOWN_LANG, items[BCP47_UNKNOWN_LANG]];
+
+        if (stringOrObject[BCP47_UNKNOWN_LANG]) {
+            return [BCP47_UNKNOWN_LANG, stringOrObject[BCP47_UNKNOWN_LANG]];
         }
-        return [langs[0], items[langs[0]]];
+
+        const english = objectLangKeys.reduce((prev, cur) => {
+            if (!!prev[0] && !!prev[1]) {
+                return prev;
+            }
+            if (cur.toLowerCase().split("-")[0] === "en") {
+                return [cur, stringOrObject[cur]] as [lang: string, str: string];
+            }
+            return ["", ""] as [lang: string, str: string];
+        }, ["", ""] as [lang: string, str: string]);
+        if (english[0] && english[1]) {
+            return english;
+        }
+
+        return [objectLangKeys[0], stringOrObject[objectLangKeys[0]]];
     }
-    return [BCP47_UNKNOWN_LANG, items];
+    return [BCP47_UNKNOWN_LANG, stringOrObject]; // assume typeof stringOrObject === "string"
 }

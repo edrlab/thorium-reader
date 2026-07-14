@@ -74,7 +74,11 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
                 res.json().then((json) => {
                     const notes: INoteState[] = json;
 
-                    const annoSetTitle = convertMultiLangStringToString(props.publicationView.publicationTitle, locale) || "thorium-notes";
+                    const textObj = props.publicationView.publicationTitle;
+                    const pubLangs = props.publicationView.languages;
+                    const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+                    const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+                    const annoSetTitle = convertMultiLangStringToString(textObj_, locale) || "thorium-notes";
 
                     // let label = title.slice(0, 200);
                     // label = label.trim();

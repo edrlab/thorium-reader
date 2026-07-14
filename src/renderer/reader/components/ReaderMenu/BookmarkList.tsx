@@ -216,8 +216,12 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
     const bookmarkTitleRef = React.useRef<HTMLInputElement>();
     const selectFileTypeRef = React.useRef<HTMLSelectElement & { value: "html" | "annotation" }>();
 
+    const textObj = publicationView.publicationTitle;
+    const pubLangs = publicationView.languages;
+    const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+    const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
     // r2Publication.Metadata.Title
-    const annoSetTitle = convertMultiLangStringToString(publicationView.publicationTitle,  locale) || "thorium-notes_bookmarks";
+    const annoSetTitle = convertMultiLangStringToString(textObj_,  locale) || "thorium-notes_bookmarks";
 
     return (
         <>

@@ -43,7 +43,7 @@
         "update": {
             "message": "Yeni sürüm mevcut, daha fazlasını öğrenmek için tıklayın.",
             "title": "{{- appName}} yazılım güncellemesi.",
-            "whatsnew": ""
+            "whatsnew": "Yeni bir sürüm yüklendi, daha fazla bilgi için tıklayın"
         },
         "window": {
             "showLibrary": "Kütüphaneyi / kitaplığı göster",
@@ -1213,8 +1213,8 @@
                     "name": "Tam Ekrana Geç veya Tam Ekrandan Çık"
                 },
                 "ToggleScreenReaderOptimize": {
-                    "description": "",
-                    "name": ""
+                    "description": "Kütüphane penceresinde, ekran okuyucular için iyileştirilmiş desteği açar veya kapatır",
+                    "name": "Ekran Okuyucu İyileştirmelerini Aç/Kapat"
                 }
             },
             "loadUserJson": "Kullanıcı dosyasından yükle",
@@ -1247,7 +1247,7 @@
         },
         "screenReaderActivate": {
             "help": "Uygulama yardımcı teknolojinin mevcudiyetini saptadığında, kullanıcı arayüzü ekran okuyucularla daha iyi çalışır",
-            "invite": "",
+            "invite": "Ekran okuyucu için iyileştir ({{- status}}) [{{- keyboard}}]",
             "message": "Ekran okuyucular için geliştirilmiş destek",
             "title": "Ekran okuyucu deneyimini iyileştir"
         },

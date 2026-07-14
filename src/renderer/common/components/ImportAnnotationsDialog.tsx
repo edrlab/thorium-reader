@@ -49,6 +49,18 @@ export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{ winId: 
     const originTitle = about?.["dc:title"] || "";
     const originCreator = (Array.isArray(about?.["dc:creator"]) ? about["dc:creator"] : []).join(", ") || "";
 
+    const textObj = publicationTitle;
+    const pubLangs = publicationView.languages;
+    const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+    const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+    const publicationTitle_ = convertMultiLangStringToString(textObj_, locale);
+
+    const textObj2 = authorsLangString[0];
+    // const pubLangs = publicationView.languages;
+    // const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+    const textObj2_ = pubLang && typeof textObj2 === "string" ? { [pubLang]: textObj2 } : textObj2;
+    const author_ = textObj2_ ? convertMultiLangStringToString(textObj2_, locale) : "";
+
     return (
         <AlertDialog.Root open={props.winId === winId && open} onOpenChange={(requestOpen) => {
             if (requestOpen) {
@@ -75,8 +87,8 @@ export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{ winId: 
                         <span>{annotationsList.length ? __("dialog.annotations.descList", {
                             count: annotationsList.length,
                             creator: creatorNameList.length ? `${__("dialog.annotations.descCreator")} '${creatorNameList.join(", ")}'` : "", // TODO i18n
-                            title: convertMultiLangStringToString(publicationTitle, locale),
-                            author: authorsLangString[0] ? __("dialog.annotations.descAuthor", { author: convertMultiLangStringToString(authorsLangString[0], locale) }) : "",
+                            title: publicationTitle_,
+                            author: author_ ? __("dialog.annotations.descAuthor", { author: author_ }) : "",
                         }) : <></>}</span>
                         <span>{annotationsConflictListNewer.length ? __("dialog.annotations.descNewer", { count: annotationsConflictListNewer.length }) : <></>}</span>
                         <span>{annotationsConflictListOlder.length ? __("dialog.annotations.descOlder", { count: annotationsConflictListOlder.length }) : <></>}</span>

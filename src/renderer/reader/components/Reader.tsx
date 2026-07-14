@@ -130,7 +130,8 @@ import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driv
 import { winCommonActions } from "readium-desktop/common/redux/actions";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { MiniLocatorExtended, minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
-import { getTranslator, translateContentFieldHelper } from "readium-desktop/common/services/translator";
+import { getTranslator } from "readium-desktop/common/services/translator";
+import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { getStore } from "../createStore";
 import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_PUB } from "readium-desktop/common/streamerProtocol";
 import { DockTypeName } from "readium-desktop/common/models/dock";
@@ -2517,7 +2518,12 @@ class Reader extends React.Component<IProps, IState> {
     private loadPublicationIntoViewport() {
 
         if (this.props.r2Publication?.Metadata?.Title) {
-            const title = translateContentFieldHelper(this.props.r2Publication.Metadata.Title, this.props.locale);
+
+            const textObj = this.props.r2Publication.Metadata.Title;
+            const pubLangs = this.props.r2Publication.Metadata.Language;
+            const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+            const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+            const title = convertMultiLangStringToString(textObj_, this.props.locale);
 
             window.document.title = capitalizedAppName;
             if (title) {
