@@ -240,8 +240,11 @@ export class PublicationRepository {
                     title: v.documentTitle,
                     author:
                         // v.authors.join(" ")
-                        v.authorsLangString.reduce<string>((prev, text) => {
-                            const textLangStr = convertMultiLangStringToLangString(text, state.i18n.locale);
+                        v.authorsLangString.reduce<string>((prev, textObj) => {
+                            const pubLangs = v.languages;
+                            const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+                            const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+                            const textLangStr = convertMultiLangStringToLangString(textObj_, state.i18n.locale);
                             // const textLang = textLangStr && textLangStr[0] ? textLangStr[0].toLowerCase() : "";
                             // const textIsRTL = langStringIsRTL(textLang);
                             const textStr = textLangStr && textLangStr[1] ? textLangStr[1] : "";

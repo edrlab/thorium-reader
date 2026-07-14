@@ -277,10 +277,15 @@ export class OpdsFeedViewConverter {
         return undefined;
     }
 
-    public convertOpdsTagToView(subject: Subject, baseUrl: string): IOpdsTagView | undefined {
+    public convertOpdsTagToView(subject: Subject, baseUrl: string, publicationLanguages: Array<string> | undefined): IOpdsTagView | undefined {
+
+        const textObj = subject.Name || subject.Code;
+        const pubLangs = publicationLanguages;
+        const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+        const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
 
         return (subject.Name || subject.Code) ? {
-            name: convertMultiLangStringToString(subject.Name || subject.Code, this.store.getState().i18n.locale),
+            name: convertMultiLangStringToString(textObj_, this.store.getState().i18n.locale),
             link: this.convertFilterLinksToView(baseUrl, subject.Links || [], {
                 type: [
                     ContentType.AtomXml,
@@ -393,7 +398,12 @@ export class OpdsFeedViewConverter {
         const description = metadata.Description;
         const languages = metadata.Language;
 
-        const title = convertMultiLangStringToString(metadata.Title, this.store.getState().i18n.locale);
+        const textObj = metadata.Title;
+        const pubLangs = r2OpdsPublication.Metadata.Language;
+        const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+        const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+
+        const title = convertMultiLangStringToString(textObj_, this.store.getState().i18n.locale);
         // console.log(`=-=-==-=-${JSON.stringify(metadata.Title)}---${title}`);
 
         const publishedAt = metadata.PublicationDate &&
@@ -409,7 +419,7 @@ export class OpdsFeedViewConverter {
 
         const tags = metadata.Subject?.map(
             (subject) =>
-                this.convertOpdsTagToView(subject, baseUrl)).filter((v) => v);
+                this.convertOpdsTagToView(subject, baseUrl, pubLangs)).filter((v) => v);
 
         // CoverView object
         const coverLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Images, {
@@ -650,8 +660,13 @@ export class OpdsFeedViewConverter {
             rel: "self",
         });
 
+        const textObj = r2OpdsGroup.Metadata.Title;
+        const pubLangs = r2OpdsGroup.Metadata.Language;
+        const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+        const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+
         const title = r2OpdsGroup.Metadata?.Title
-            ? convertMultiLangStringToString(r2OpdsGroup.Metadata.Title, this.store.getState().i18n.locale)
+            ? convertMultiLangStringToString(textObj_, this.store.getState().i18n.locale)
             : "";
 
         const nb = r2OpdsGroup.Metadata?.NumberOfItems;
@@ -672,8 +687,14 @@ export class OpdsFeedViewConverter {
     }
 
     public convertOpdsFacetsToView(r2OpdsFacet: OPDSFacet, baseUrl: string): IOpdsFacetView {
+
+        const textObj = r2OpdsFacet.Metadata.Title;
+        const pubLangs = r2OpdsFacet.Metadata.Language;
+        const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+        const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+
         const title = r2OpdsFacet.Metadata?.Title
-            ? convertMultiLangStringToString(r2OpdsFacet.Metadata.Title, this.store.getState().i18n.locale)
+            ? convertMultiLangStringToString(textObj_, this.store.getState().i18n.locale)
             : "";
 
         const links = r2OpdsFacet.Links?.map(
@@ -689,7 +710,12 @@ export class OpdsFeedViewConverter {
 
     public convertOpdsFeedToView(r2OpdsFeed: OPDSFeed, baseUrl: string): IOpdsResultView {
 
-        const title = convertMultiLangStringToString(r2OpdsFeed.Metadata?.Title, this.store.getState().i18n.locale);
+        const textObj = r2OpdsFeed.Metadata?.Title;
+        const pubLangs = r2OpdsFeed.Metadata?.Language;
+        const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+        const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+
+        const title = convertMultiLangStringToString(textObj_, this.store.getState().i18n.locale);
         const publications = r2OpdsFeed.Publications?.map(
             (item) =>
                 // warning: modifies item, makes relative URLs absolute with baseUrl!

@@ -41,7 +41,13 @@ const getRecoverablePublicationTitle = async (
     let r2Publication;
     try {
         r2Publication = await PublicationParsePromise(publication.filePath);
-        return convertMultiLangStringToString(r2Publication.Metadata?.Title, locale) || publication.identifier;
+
+        const textObj = r2Publication.Metadata?.Title;
+        const pubLangs = r2Publication.Metadata?.Language;
+        const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+        const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+
+        return convertMultiLangStringToString(textObj_, locale) || publication.identifier;
     } catch (e) {
         debug("Recoverable publication parse failed", publication.identifier, publication.filePath, e);
         return undefined;

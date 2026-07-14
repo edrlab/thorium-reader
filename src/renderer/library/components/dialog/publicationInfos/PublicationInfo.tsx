@@ -233,7 +233,13 @@ const PublicationInfoWithRadixContent = (props: {publicationViewMaybeOpds: TPubl
             TagManagerComponent={TagManager}
             // coverZoom={coverZoom}
             onClickLinkCb={
-                (_link) => () => link(_link.link[0], location, convertMultiLangStringToString(_link.nameLangString, locale))
+                (_link) => () => {
+                    const textObj = _link.nameLangString;
+                    const pubLangs = props.publicationViewMaybeOpds.languages;
+                    const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+                    const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+                    return link(_link.link[0], location, convertMultiLangStringToString(textObj_, locale));
+                }
             }
             focusWhereAmI={false}
             pdfPlayerNumberOfPages={undefined}

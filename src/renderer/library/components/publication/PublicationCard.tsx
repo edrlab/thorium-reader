@@ -68,9 +68,13 @@ class PublicationCard extends React.Component<IProps> {
     public render(): React.ReactElement<{}> {
         const { __, locale, publicationViewMaybeOpds, isOpds } = this.props;
 
-        const authors = formatContributorToString(publicationViewMaybeOpds.authorsLangString, locale);
+        const authors = formatContributorToString(publicationViewMaybeOpds.languages, publicationViewMaybeOpds.authorsLangString, locale);
 
-        const pubTitleLangStr = convertMultiLangStringToLangString((publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle, locale);
+        const textObj = (publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle;
+        const pubLangs = (publicationViewMaybeOpds as PublicationView).languages || publicationViewMaybeOpds.languages;
+        const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+        const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+        const pubTitleLangStr = convertMultiLangStringToLangString(textObj_, locale);
         const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
         const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
         const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
@@ -155,7 +159,9 @@ class PublicationCard extends React.Component<IProps> {
                                     <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} />
                                     <div className={stylesPublications.publication_title_wrapper}>
                                         <p aria-hidden className={stylesPublications.publication_title}
-                                            dir={pubTitleIsRTL ? "rtl" : undefined}>
+                                            dir={pubTitleIsRTL ? "rtl" : undefined}
+                                            lang={pubTitleLang ? pubTitleLang : undefined}
+                                        >
                                             {pubTitleStr}
                                         </p>
                                         <p aria-hidden className={stylesPublications.publication_authors}>
@@ -187,7 +193,9 @@ class PublicationCard extends React.Component<IProps> {
                                 />
                                 <div className={stylesPublications.publication_title_wrapper}>
                                     <p aria-hidden className={stylesPublications.publication_title}
-                                        dir={pubTitleIsRTL ? "rtl" : undefined}>
+                                        dir={pubTitleIsRTL ? "rtl" : undefined}
+                                        lang={pubTitleLang ? pubTitleLang : undefined}
+                                    >
                                         {pubTitleStr}
                                     </p>
                                     <p aria-hidden className={stylesPublications.publication_authors}>
@@ -224,7 +232,9 @@ class PublicationCard extends React.Component<IProps> {
                                         />
                                         <div className={stylesPublications.publication_title_wrapper}>
                                             <p aria-hidden className={stylesPublications.publication_title}
-                                                dir={pubTitleIsRTL ? "rtl" : undefined}>
+                                                dir={pubTitleIsRTL ? "rtl" : undefined}
+                                                lang={pubTitleLang ? pubTitleLang : undefined}
+                                            >
                                                 {pubTitleStr}
                                             </p>
                                             <p aria-hidden className={stylesPublications.publication_authors}>

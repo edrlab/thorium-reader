@@ -72,18 +72,19 @@ interface IBaseProps extends IReaderMenuProps {
 // LANDMARKS is a list of the same link objects, etc.)
 // For example, there is a test Arabic EPUB that has non-RTL French labels in the TOC,
 // which are incorrectly displayed as RTL because of this isRTL() logic:
-const isRTL = (r2Publication: R2Publication) => (_link: ILink) => {
+const isRTLFunction = (r2Publication: R2Publication) => (_link: ILink | undefined): [rtl: boolean, lang: string] => {
     // link.Dir??
     // link.Lang??
     // RWPM does not indicate this, so we fallback to publication-wide dir/lang metadata
-    let isRTL = false;
+
+    const lang = r2Publication?.Metadata?.Language ?
+        (Array.isArray(r2Publication.Metadata.Language) ?
+            r2Publication.Metadata.Language :
+            [r2Publication.Metadata.Language]) :
+        [] as string[];
+    let isRTL = [false, lang[0] || ""] as [rtl: boolean, lang: string];
     if (r2Publication?.Metadata?.Direction === "rtl") {
-        const lang = r2Publication?.Metadata?.Language ?
-            (Array.isArray(r2Publication.Metadata.Language) ?
-                r2Publication.Metadata.Language :
-                [r2Publication.Metadata.Language]) :
-            [] as string[];
-        isRTL = lang.reduce<boolean>((pv, cv) => {
+        isRTL = lang.reduce<[rtl: boolean, lang: string]>((pv, cv) => {
             const rtlExcludingJapanese = typeof cv === "string" ?
                 // we test for Arabic and Hebrew and Farsi,
                 // in order to exclude Japanese Vertical Writing Mode which is also RTL!
@@ -95,25 +96,36 @@ const isRTL = (r2Publication: R2Publication) => (_link: ILink) => {
                 //     // https://github.com/edrlab/thorium-reader/pull/3027
                 //     // cv === "zh-Hant" || cv === "zh-TW"
                 // )
-                langStringIsRTL(cv) :
-                false;
-            return pv || rtlExcludingJapanese;
-        }, false);
+                [langStringIsRTL(cv), cv] as [rtl: boolean, lang: string] :
+                [false, ""] as [rtl: boolean, lang: string];
+            if (pv[0]) {
+                return pv;
+            }
+            if (rtlExcludingJapanese[0]) {
+                return rtlExcludingJapanese;
+            }
+            return [false, ""] as [rtl: boolean, lang: string];
+        }, [false, ""] as [rtl: boolean, lang: string]);
     }
     return isRTL;
 };
 
-const renderLinkList = (isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBaseProps["handleLinkClick"], dockedMode: boolean) => {
+const renderLinkList = (isRTLfn: (_link: ILink) => [rtl: boolean, lang: string], handleLinkClick: IBaseProps["handleLinkClick"], dockedMode: boolean) => {
     const T = (label: string, links: Link[]) => {
 
+        const isRightToLeftTop = isRTLfn(undefined);
+
         return <ul
+            dir={isRightToLeftTop[0] ? "rtl" : "ltr"}
+            lang={isRightToLeftTop[1] ? isRightToLeftTop[1] : undefined}
+
             aria-label={label}
             className={stylesPopoverDialog.chapters_content}
             role={"list"}
         >
             {links.map((link, i: number) => {
 
-                const isRTL = isRTLfn(link);
+                const isRightToLeft = isRTLfn(link);
 
                 return (
                     <li
@@ -126,7 +138,7 @@ const renderLinkList = (isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBa
                                 classNames(stylesReader.line,
                                     stylesReader.active,
                                     link.Href ? " " : stylesReader.inert,
-                                    isRTL ? stylesReader.rtlDir : " ")
+                                    isRightToLeft[0] ? stylesReader.rtlDir : " ")
                             }
                             onClick=
                             {link.Href ? (e) => {
@@ -148,7 +160,10 @@ const renderLinkList = (isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBa
                             }
                             data-href={link.Href}
                         >
-                            <span dir={isRTL ? "rtl" : "ltr"}>{link.Title ? link.Title : `#${i} ${link.Href}`}</span>
+                            <span
+                                dir={isRightToLeft[0] ? "rtl" : "ltr"}
+                                lang={isRightToLeft[1] ? isRightToLeft[1] : undefined}
+                            >{link.Title ? link.Title : `#${i} ${link.Href}`}</span>
                         </a>
                     </li>
                 );
@@ -159,7 +174,7 @@ const renderLinkList = (isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBa
     return T;
 };
 
-const renderLinkTree = (currentLocation: MiniLocatorExtended, isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBaseProps["handleLinkClick"], dockedMode: boolean) => {
+const renderLinkTree = (currentLocation: MiniLocatorExtended, isRTLfn: (_link: ILink) => [rtl: boolean, lang: string], handleLinkClick: IBaseProps["handleLinkClick"], dockedMode: boolean) => {
     const RenderLinkTree = (label: string | undefined, links: TToc, level: number, headingTrailLink: ILink | undefined): JSX.Element => {
         // VoiceOver support breaks when using the propoer tree[item] ARIA role :(
         const useTree = false;
@@ -250,14 +265,20 @@ const renderLinkTree = (currentLocation: MiniLocatorExtended, isRTLfn: (_link: I
                 }
             }
         }
+
+        const isRightToLeftTop = isRTLfn(undefined);
+
         return <ul
+            dir={isRightToLeftTop[0] ? "rtl" : "ltr"}
+            lang={isRightToLeftTop[1] ? isRightToLeftTop[1] : undefined}
+
             role={useTree ? (level <= 1 ? "tree" : "group") : undefined}
             aria-label={label}
             className={classNames(stylesPopoverDialog.chapters_content, stylesPopoverDialog.toc_container)}
         >
             {links.map((link, i: number) => {
 
-                const isRTL = isRTLfn(link);
+                const isRightToLeft = isRTLfn(link);
 
                 let emphasis = undefined;
                 if (link === headingTrailLink) {
@@ -282,7 +303,7 @@ const renderLinkTree = (currentLocation: MiniLocatorExtended, isRTLfn: (_link: I
                                         className={
                                             classNames(stylesReader.subheading,
                                                 link.Href ? " " : stylesReader.inert,
-                                                isRTL ? stylesReader.rtlDir : " ")
+                                                isRightToLeft[0] ? stylesReader.rtlDir : " ")
                                         }
                                         onClick=
                                         {link.Href ? (e) => {
@@ -304,7 +325,10 @@ const renderLinkTree = (currentLocation: MiniLocatorExtended, isRTLfn: (_link: I
                                         }
                                         data-href={link.Href}
                                     >
-                                        <span dir={isRTL ? "rtl" : "ltr"}>{label}</span>
+                                        <span
+                                            dir={isRightToLeft[0] ? "rtl" : "ltr"}
+                                            lang={isRightToLeft[1] ? isRightToLeft[1] : undefined}
+                                        >{label}</span>
                                     </a>
                                 </div>
 
@@ -321,7 +345,7 @@ const renderLinkTree = (currentLocation: MiniLocatorExtended, isRTLfn: (_link: I
                                         classNames(stylesReader.line,
                                             stylesReader.active,
                                             link.Href ? " " : stylesReader.inert,
-                                            isRTL ? stylesReader.rtlDir : " ")
+                                            isRightToLeft[0] ? stylesReader.rtlDir : " ")
                                     }
                                     onClick=
                                     {link.Href ? (e) => {
@@ -344,7 +368,10 @@ const renderLinkTree = (currentLocation: MiniLocatorExtended, isRTLfn: (_link: I
                                     }
                                     data-href={link.Href}
                                 >
-                                    <span dir={isRTL ? "rtl" : "ltr"}>{label}</span>
+                                        <span
+                                            dir={isRightToLeft[0] ? "rtl" : "ltr"}
+                                            lang={isRightToLeft[1] ? isRightToLeft[1] : undefined}
+                                        >{label}</span>
                                 </a>
                             </div>
                         )}
@@ -604,9 +631,9 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const options = visibleTabs.map(({ id, value, name, svg, disabled }) => ({ id, value, name, svg, disabled }));
     const optionSelected = options.find(({ value }) => value === section)?.id ?? 0;
 
-    const isRTL_ = isRTL(r2Publication);
-    const renderLinkTree_ = renderLinkTree(currentLocation, isRTL_, handleLinkClick, dockedMode);
-    const renderLinkList_ = renderLinkList(isRTL_, handleLinkClick, dockedMode);
+    const isRTLFunction_ = isRTLFunction(r2Publication);
+    const renderLinkTree_ = renderLinkTree(currentLocation, isRTLFunction_, handleLinkClick, dockedMode);
+    const renderLinkList_ = renderLinkList(isRTLFunction_, handleLinkClick, dockedMode);
 
     const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: string, name: string, disabled: boolean, svg: {} }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
     SelectRef.displayName = "Select";

@@ -234,6 +234,11 @@ export async function importPublicationFromFS(
     const store = diMainGet("store");
     const locale = store.getState().i18n.locale;
 
+    const textObj = r2Publication.Metadata.Title;
+    const pubLangs = r2Publication.Metadata.Language;
+    const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+    const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+
     const pubDocument: PublicationDocumentWithoutTimestampable = {
         identifier: preservedIdentifier || uuidv4(),
         // resources: {
@@ -253,7 +258,7 @@ export async function importPublicationFromFS(
 
         // see documentTitle vs. publicationTitle (and publicationSubTitle) in PublicationView
         // (and IOpdsPublicationView too, due to polymorphic NormalOrOpdsPublicationView / publicationViewMaybeOpds)
-        title: convertMultiLangStringToString(r2Publication.Metadata.Title, locale) || "-", // some publications do not have a title :( ... we patch here, but in previous versions of Thorium this was not done so we must still check for possible empty title edge-cases in previously-created database entries (we do not change the DB on load+save, we just normalise erroneous values at consumption time)
+        title: convertMultiLangStringToString(textObj_, locale) || "-", // some publications do not have a title :( ... we patch here, but in previous versions of Thorium this was not done so we must still check for possible empty title edge-cases in previously-created database entries (we do not change the DB on load+save, we just normalise erroneous values at consumption time)
 
         tags: [],
         files: [],

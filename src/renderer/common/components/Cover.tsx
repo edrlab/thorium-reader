@@ -164,7 +164,7 @@ class Cover extends React.Component<IProps, IState> {
             );
         }
 
-        const authors = formatContributorToString(publicationViewMaybeOpds.authorsLangString, this.props.locale);
+        const authors = formatContributorToString(publicationViewMaybeOpds.languages, publicationViewMaybeOpds.authorsLangString, this.props.locale);
         let colors = publicationViewMaybeOpds.customCover;
         if (!colors) {
             colors = RandomCustomCovers[0];
@@ -172,7 +172,12 @@ class Cover extends React.Component<IProps, IState> {
         const backgroundStyle: React.CSSProperties = {
             backgroundImage: `linear-gradient(${colors.topColor}, ${colors.bottomColor})`,
         };
-        const pubTitleLangStr = convertMultiLangStringToLangString((publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle, this.props.locale);
+
+        const textObj = (publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle;
+        const pubLangs = (publicationViewMaybeOpds as PublicationView).languages || publicationViewMaybeOpds.languages;
+        const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+        const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+        const pubTitleLangStr = convertMultiLangStringToLangString(textObj_, this.props.locale);
         const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
         const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
         const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
@@ -187,8 +192,11 @@ class Cover extends React.Component<IProps, IState> {
                 }
             <div style={backgroundStyle} className={stylesPublications.no_img_wrapper}>
                 <div className={stylesPublications.no_img}>
-                    <p aria-hidden
-                        dir={pubTitleIsRTL ? "rtl" : undefined}>
+                    <p
+                        aria-hidden
+                        dir={pubTitleIsRTL ? "rtl" : undefined}
+                        lang={pubTitleLang ? pubTitleLang : undefined}
+                    >
                         {pubTitleStr}
                     </p>
                     <p aria-hidden>{authors}</p>

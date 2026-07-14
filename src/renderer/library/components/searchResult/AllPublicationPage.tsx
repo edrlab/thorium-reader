@@ -831,6 +831,7 @@ const CellLangs: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
 
 interface IColumnValue_Publishers extends IColumnValue_BaseString {
     publishersLangString: (string | IStringMap)[];
+    publicationViewLangs: Array<string> | undefined;
 };
 interface ITableCellProps_Value_Publishers {
     value: IColumnValue_Publishers;
@@ -839,15 +840,20 @@ const CellPublishers: React.FC<ITableCellProps_Column & ITableCellProps_GenericC
 
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
 
-    const link = (text: string | IStringMap) => {
+    const link = (text: string | IStringMap, publicationViewLangs: Array<string> | undefined) => {
 
-        const textLangStr = convertMultiLangStringToLangString(text, locale);
+        const textObj = text;
+        const pubLangs = publicationViewLangs;
+        const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+        const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+        const textLangStr = convertMultiLangStringToLangString(textObj_, locale);
         const textLang = textLangStr && textLangStr[0] ? textLangStr[0].toLowerCase() : "";
         const textIsRTL = langStringIsRTL(textLang);
         const textStr = textLangStr && textLangStr[1] ? textLangStr[1] : "";
 
         return <a
             dir={textIsRTL ? "rtl" : undefined}
+            lang={textLang ? textLang : undefined}
             title={`${textStr} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
             onKeyUp={(e) => {
@@ -873,7 +879,7 @@ const CellPublishers: React.FC<ITableCellProps_Column & ITableCellProps_GenericC
             props.value.publishersLangString.length === 1 ? (
                 <div className={stylesPublication.cell_wrapper}>
                     {
-                        link(props.value.publishersLangString[0])
+                        link(props.value.publishersLangString[0], props.value.publicationViewLangs)
                     }
                 </div>
             ) : (
@@ -882,7 +888,7 @@ const CellPublishers: React.FC<ITableCellProps_Column & ITableCellProps_GenericC
                         props.value.publishersLangString.map((langString, i) => {
                             return <li
                                 key={`k${i}`}
-                            >{link(langString)}</li>;
+                            >{link(langString, props.value.publicationViewLangs)}</li>;
                         })
                     }
                 </ul>
@@ -892,6 +898,7 @@ const CellPublishers: React.FC<ITableCellProps_Column & ITableCellProps_GenericC
 
 interface IColumnValue_Authors extends IColumnValue_BaseString {
     authorsLangString: (string | IStringMap)[];
+    publicationViewLangs: Array<string> | undefined;
 };
 interface ITableCellProps_Value_Authors {
     value: IColumnValue_Authors;
@@ -900,15 +907,20 @@ const CellAuthors: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell
 
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
 
-    const link = (text: string | IStringMap) => {
+    const link = (text: string | IStringMap, publicationViewLangs: Array<string> | undefined) => {
 
-        const textLangStr = convertMultiLangStringToLangString(text, locale);
+        const textObj = text;
+        const pubLangs = publicationViewLangs;
+        const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+        const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+        const textLangStr = convertMultiLangStringToLangString(textObj_, locale);
         const textLang = textLangStr && textLangStr[0] ? textLangStr[0].toLowerCase() : "";
         const textIsRTL = langStringIsRTL(textLang);
         const textStr = textLangStr && textLangStr[1] ? textLangStr[1] : "";
 
         return <a
             dir={textIsRTL ? "rtl" : undefined}
+            lang={textLang ? textLang : undefined}
             title={`${textStr} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
             onKeyUp={(e) => {
@@ -941,7 +953,7 @@ const CellAuthors: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell
                     props.value.authorsLangString.length === 1 ? (
                         <div className={stylesPublication.cell_wrapper}>
                             {
-                                link(props.value.authorsLangString[0])
+                                link(props.value.authorsLangString[0], props.value.publicationViewLangs)
                             }
                         </div>
                     ) : (
@@ -950,7 +962,7 @@ const CellAuthors: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell
                                 props.value.authorsLangString.map((langString, i) => {
                                     return <li
                                         key={`k${i}`}
-                                    >{link(langString)}</li>;
+                                    >{link(langString, props.value.publicationViewLangs)}</li>;
                                 })
                             }
                         </ul>
@@ -1294,8 +1306,9 @@ const CellDate: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & 
 
 interface IColumnValue_Title extends IColumnValue_BaseString {
 
-    pubTitle: string | IStringMap,
-    publicationViewIdentifier: string,
+    pubTitle: string | IStringMap;
+    publicationViewIdentifier: string;
+    publicationViewLangs: Array<string> | undefined;
 };
 interface ITableCellProps_Value_Title {
     value: IColumnValue_Title;
@@ -1314,7 +1327,12 @@ const CellTitle: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
 
     // props.value.label
-    const pubTitleLangStr = convertMultiLangStringToLangString(props.value.pubTitle, locale);
+
+    const textObj = props.value.pubTitle;
+    const pubLangs = props.value.publicationViewLangs;
+    const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+    const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+    const pubTitleLangStr = convertMultiLangStringToLangString(textObj_, locale);
     const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
     const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
     const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
@@ -1326,6 +1344,7 @@ const CellTitle: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
         // width: props.displayType === DisplayType.Grid ? "250px" : undefined,
     }}
         dir={pubTitleIsRTL ? "rtl" : undefined}
+        lang={pubTitleLang ? pubTitleLang : undefined}
     >
                 <a
                     tabIndex={0}
@@ -1716,7 +1735,11 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             let strA11Summary = "";
             if (publicationView.a11y_accessibilitySummary) {
 
-                const langStr = convertMultiLangStringToLangString(publicationView.a11y_accessibilitySummary, locale);
+                const textObj = publicationView.a11y_accessibilitySummary;
+                const pubLangs = publicationView.languages;
+                const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+                const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+                const langStr = convertMultiLangStringToLangString(textObj_, locale);
 
                 if (langStr && langStr[1]) {
                     strA11Summary = DOMPurify.sanitize(langStr[1]).replace(/font-size:/g, "font-sizexx:");
@@ -1736,12 +1759,18 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     label: publicationView.documentTitle,
                     publicationViewIdentifier: publicationView.identifier,
                     pubTitle: publicationView.publicationTitle,
+                    publicationViewLangs: publicationView.languages,
                 },
                 colAuthors: { // IColumnValue_Authors
                     label: publicationView.authorsLangString ?
                         // publicationView.authors.join(", ")
                         publicationView.authorsLangString.reduce<string>((prev, text) => {
-                            const textLangStr = convertMultiLangStringToLangString(text, locale);
+
+                            const textObj = text;
+                            const pubLangs = publicationView.languages;
+                            const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+                            const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+                            const textLangStr = convertMultiLangStringToLangString(textObj_, locale);
                             // const textLang = textLangStr && textLangStr[0] ? textLangStr[0].toLowerCase() : "";
                             // const textIsRTL = langStringIsRTL(textLang);
                             const textStr = textLangStr && textLangStr[1] ? textLangStr[1] : "";
@@ -1750,6 +1779,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                         }, "")
                         : "",
                     authorsLangString: publicationView.authorsLangString,
+                    publicationViewLangs: publicationView.languages,
                 },
                 colReadingState: { // IColumnValue_Authors
                     label: publicationView.readingFinished ? `${__("publication.read")}` : publicationView.lastReadingLocation ? `${__("publication.onGoing")}` : `${__("publication.notStarted")}`,
@@ -1763,7 +1793,12 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     label: publicationView.publishersLangString ?
                         // publicationView.publishers.join(", ")
                         publicationView.publishersLangString.reduce<string>((prev, text) => {
-                            const textLangStr = convertMultiLangStringToLangString(text, locale);
+
+                            const textObj = text;
+                            const pubLangs = publicationView.languages;
+                            const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+                            const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+                            const textLangStr = convertMultiLangStringToLangString(textObj_, locale);
                             // const textLang = textLangStr && textLangStr[0] ? textLangStr[0].toLowerCase() : "";
                             // const textIsRTL = langStringIsRTL(textLang);
                             const textStr = textLangStr && textLangStr[1] ? textLangStr[1] : "";
@@ -1772,6 +1807,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                         }, "")
                         : "",
                     publishersLangString: publicationView.publishersLangString,
+                    publicationViewLangs: publicationView.languages,
                 },
                 colLanguages: { // IColumnValue_Tags
                     label: langsArray ? langsArray.join(", ") : "",
