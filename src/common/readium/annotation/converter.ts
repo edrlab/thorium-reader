@@ -341,11 +341,23 @@ export function convertAnnotationStateArrayToReadiumAnnotationSet(locale: keyof 
             "dc:title": publicationView.documentTitle || "",
             "dc:publisher": publicationView.publishersLangString ?
                 publicationView.publishersLangString.map((item) => {
-                    return convertMultiLangStringToString(item, locale);
+
+                    const textObj = item;
+                    const pubLangs = publicationView.languages;
+                    const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+                    const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+
+                    return convertMultiLangStringToString(textObj_, locale);
                 }) : [],
             "dc:creator": publicationView.authorsLangString ?
                 publicationView.authorsLangString.map((item) => {
-                    return convertMultiLangStringToString(item, locale);
+
+                    const textObj = item;
+                    const pubLangs = publicationView.languages;
+                    const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+                    const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+
+                    return convertMultiLangStringToString(textObj_, locale);
                 }) : [],
             "dc:date": publicationView.publishedAt || "",
         },

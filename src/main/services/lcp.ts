@@ -1315,10 +1315,15 @@ export class LcpManager {
             publicationDocument.customCover,
         );
 
+        const textObj = r2Publication.Metadata.Title;
+        const pubLangs = r2Publication.Metadata.Language;
+        const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+        const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+
         return {
             // Prefer the replacement archive's localized metadata title, but keep
             // the previous document title if the new archive does not expose one.
-            title: convertMultiLangStringToString(r2Publication.Metadata.Title, locale) ||
+            title: convertMultiLangStringToString(textObj_, locale) ||
                 publicationDocument.title ||
                 "-",
             ...filesPatch,

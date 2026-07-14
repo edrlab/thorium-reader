@@ -7,11 +7,11 @@
 
 import "reflect-metadata";
 
-import { injectable} from "inversify";
+// import { injectable} from "inversify";
 import { CodeError } from "readium-desktop/common/codeError.class";
 import { Action } from "../models/redux";
 
-@injectable()
+// @injectable() // https://github.com/inversify/monorepo/issues/1994
 export class ActionSerializer {
     public static serialize(action: Action<string, any>): Action<string, any> {
         if (action.error && action.payload instanceof CodeError) {
