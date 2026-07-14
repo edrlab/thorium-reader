@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "Nueva versión disponible, haz clic para obtener más información.",
-            "title": "Actualización de software {{- appName}}."
+            "title": "Actualización de software {{- appName}}.",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "Mostrar biblioteca",
@@ -164,6 +165,7 @@
         "cancel": "Cancelar",
         "customization": {
             "splashscreen": {
+                "dontShow": "No volver a mostrar",
                 "fallbackWelcomeScreen": "No se muestra ninguna pantalla de bienvenida",
                 "state": "Estado: {{- state}}",
                 "title": "Perfil de personalización de aprovisionamiento y activación"
@@ -1215,6 +1217,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "En la ventana del lector, activa el modo de pantalla completa del sistema o vuelve al modo de ventana normal. Ten en cuenta que esto es diferente del «modo zen», que simplifica la interfaz de usuario",
                     "name": "Pantalla completa"
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "Cargar desde archivo de usuario",
@@ -1247,6 +1253,7 @@
         },
         "screenReaderActivate": {
             "help": "Cuando la aplicación detecta la presencia de tecnología de apoyo, la interfaz de usuario funciona mejor con los lectores de pantalla",
+            "invite": "",
             "message": "Mejora de la compatibilidad con lectores de pantalla",
             "title": "Mejorar la experiencia con los lectores de pantalla"
         },
@@ -1347,29 +1354,6 @@
             "underlineWordSolidBackground": "Subrayado, palabras con fondo sólido",
             "underlineWordUnderline": "Subrayado, palabras subrayadas",
             "wordColor": "Color para palabras"
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "Descubre Thorium Desktop",
-            "goToBooks": "Ir a mis libros"
-        },
-        "description": {
-            "home": "Thorium 3.4 aporta una serie de mejoras a la experiencia del usuario y corrige una serie de problemas. Si más adelante decides volver a una versión anterior de la aplicación, te recomendamos encarecidamente que hagas una copia de seguridad de tus anotaciones y marcadores del libro electrónico exportándolos a un archivo externo. Así podrás importarlos de nuevo a la versión anterior una vez que la hayas instalado. Esto se debe a que, en la versión 3.4, la aplicación almacena las anotaciones y los marcadores en un formato interno ligeramente diferente. Esto resuelve un problema de rendimiento, pero rompe la compatibilidad con versiones anteriores en lo que respecta a las anotaciones.",
-            "resources": "Ponte en contacto con nosotros y descubre más sobre Thorium:"
-        },
-        "dontShow": "No volver a mostrar",
-        "resources": {
-            "discord": "Discord: {{- url}}",
-            "website": "Sitio web: {{- url}}"
-        },
-        "tab": {
-            "home": "Inicio",
-            "resources": "Recursos"
-        },
-        "title": {
-            "resources": "Recursos y comunidad",
-            "welcome": "Bienvenido a Thorium 3.4"
         }
     }
 }

@@ -671,7 +671,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     aria-live="polite"
                 >
                     <Tabs.Content value="tab-toc" tabIndex={-1} id={"reader-menu-tab-toc"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <div className={stylesSettings.settings_tab}>
+                        <div className={dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab}>
                             {(isPdf && pdfToc?.length && renderLinkTree_(__("reader.marks.toc"), pdfToc, 1, undefined)) ||
                                 (isPdf && !pdfToc?.length && <p>{__("reader.toc.publicationNoToc")}</p>) ||
                                 (!isPdf && r2Publication.TOC && renderLinkTree_(__("reader.marks.toc"), r2Publication.TOC, 1, undefined)) ||
@@ -680,20 +680,20 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     </Tabs.Content>
 
                     <Tabs.Content value="tab-landmark" tabIndex={-1} id={"reader-menu-tab-landmark"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <div className={stylesSettings.settings_tab}>
+                        <div className={dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab}>
                             {r2Publication.Landmarks &&
                                 renderLinkList_(__("reader.marks.landmarks"), r2Publication.Landmarks)}
                         </div>
                     </Tabs.Content>
 
                     <Tabs.Content value="tab-bookmark" tabIndex={-1} id={"reader-menu-tab-bookmark"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <div className={classNames(stylesSettings.settings_tab, stylesBookmarks.bookmarks_tab)}>
+                        <div className={classNames(dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab, stylesBookmarks.bookmarks_tab)}>
                             <BookmarkList popoverBoundary={popoverBoundary.current} goToLocator={goToLocator} hideBookmarkOnChange={hideAnnotationOnChange} START_PAGE={START_PAGE} selectionIsSet={selectionIsSet} MAX_MATCHES_PER_PAGE={MAX_MATCHES_PER_PAGE} />
                         </div>
                     </Tabs.Content>
 
                     <Tabs.Content value="tab-annotation" tabIndex={-1} id={"reader-menu-tab-annotation"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <div className={classNames(stylesSettings.settings_tab, stylesAnnotations.annotations_tab)}>
+                        <div className={classNames(dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab, dockedMode ? stylesAnnotations.docked_annotations_tab: stylesAnnotations.annotations_tab)}>
                             <AnnotationList
                                 goToLocator={goToLocator}
                                 goToPdfAnnotation={goToPdfAnnotation}
@@ -714,7 +714,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     </Tabs.Content>
 
                     <Tabs.Content value="tab-search" tabIndex={-1} id={"reader-menu-tab-search"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <div className={classNames(stylesSettings.settings_tab, stylesPopoverDialog.search_container)}>
+                        <div className={classNames(dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab, stylesPopoverDialog.search_container)}>
                             {searchEnable
                                 ? <ReaderMenuSearch
                                     focusMainAreaLandmarkAndCloseMenu={focusMainAreaLandmarkAndCloseMenu}
@@ -725,7 +725,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     </Tabs.Content>
 
                     <Tabs.Content value="tab-gotopage" tabIndex={-1} id={"reader-menu-tab-gotopage"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <div className={stylesSettings.settings_tab}>
+                        <div className={dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab}>
                             <GoToPageSection totalPages={
                                 isPdf && pdfNumberOfPages
                                     ? pdfNumberOfPages

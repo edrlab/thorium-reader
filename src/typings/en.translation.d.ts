@@ -49,7 +49,11 @@ declare namespace typed_i18n {
       }
     }
   },
-  readonly "update": { readonly "message": string, readonly "title": string },
+  readonly "update": {
+    readonly "message": string,
+    readonly "title": string,
+    readonly "whatsnew": string
+  },
   readonly "window": {
     readonly "showLibrary": string,
     readonly "trayHint": string,
@@ -105,9 +109,14 @@ declare namespace typed_i18n {
   (_: "app.session.exit.askBox.help", __?: {}): string;
   (_: "app.session.exit.askBox.message", __?: {}): string;
   (_: "app.session.exit.askBox.title", __?: {}): string;
-  (_: "app.update", __?: {}): { readonly "message": string, readonly "title": string };
+  (_: "app.update", __?: {}): {
+  readonly "message": string,
+  readonly "title": string,
+  readonly "whatsnew": string
+};
   (_: "app.update.message", __?: {}): string;
   (_: "app.update.title", __?: {}): string;
+  (_: "app.update.whatsnew", __?: {}): string;
   (_: "app.window", __?: {}): {
   readonly "showLibrary": string,
   readonly "trayHint": string,
@@ -383,6 +392,7 @@ declare namespace typed_i18n {
   readonly "cancel": string,
   readonly "customization": {
     readonly "splashscreen": {
+      readonly "dontShow": string,
       readonly "fallbackWelcomeScreen": string,
       readonly "state": string,
       readonly "title": string
@@ -426,16 +436,19 @@ declare namespace typed_i18n {
   (_: "dialog.cancel", __?: {}): string;
   (_: "dialog.customization", __?: {}): {
   readonly "splashscreen": {
+    readonly "dontShow": string,
     readonly "fallbackWelcomeScreen": string,
     readonly "state": string,
     readonly "title": string
   }
 };
   (_: "dialog.customization.splashscreen", __?: {}): {
+  readonly "dontShow": string,
   readonly "fallbackWelcomeScreen": string,
   readonly "state": string,
   readonly "title": string
 };
+  (_: "dialog.customization.splashscreen.dontShow", __?: {}): string;
   (_: "dialog.customization.splashscreen.fallbackWelcomeScreen", __?: {}): string;
   (_: "dialog.customization.splashscreen.state", __?: {}): string;
   (_: "dialog.customization.splashscreen.title", __?: {}): string;
@@ -2804,6 +2817,10 @@ declare namespace typed_i18n {
       readonly "ToggleReaderFullscreen": {
         readonly "description": string,
         readonly "name": string
+      },
+      readonly "ToggleScreenReaderOptimize": {
+        readonly "description": string,
+        readonly "name": string
       }
     },
     readonly "loadUserJson": string,
@@ -2834,6 +2851,7 @@ declare namespace typed_i18n {
   },
   readonly "screenReaderActivate": {
     readonly "help": string,
+    readonly "invite": string,
     readonly "message": string,
     readonly "title": string
   },
@@ -3172,6 +3190,10 @@ declare namespace typed_i18n {
     readonly "ToggleReaderFullscreen": {
       readonly "description": string,
       readonly "name": string
+    },
+    readonly "ToggleScreenReaderOptimize": {
+      readonly "description": string,
+      readonly "name": string
     }
   },
   readonly "loadUserJson": string,
@@ -3418,6 +3440,10 @@ declare namespace typed_i18n {
   readonly "ToggleReaderFullscreen": {
     readonly "description": string,
     readonly "name": string
+  },
+  readonly "ToggleScreenReaderOptimize": {
+    readonly "description": string,
+    readonly "name": string
   }
 };
   (_: "settings.keyboard.list.AddBookmarkWithLabel", __?: {}): { readonly "description": string, readonly "name": string };
@@ -3594,6 +3620,9 @@ declare namespace typed_i18n {
   (_: "settings.keyboard.list.ToggleReaderFullscreen", __?: {}): { readonly "description": string, readonly "name": string };
   (_: "settings.keyboard.list.ToggleReaderFullscreen.description", __?: {}): string;
   (_: "settings.keyboard.list.ToggleReaderFullscreen.name", __?: {}): string;
+  (_: "settings.keyboard.list.ToggleScreenReaderOptimize", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.ToggleScreenReaderOptimize.description", __?: {}): string;
+  (_: "settings.keyboard.list.ToggleScreenReaderOptimize.name", __?: {}): string;
   (_: "settings.keyboard.loadUserJson", __?: {}): string;
   (_: "settings.keyboard.noShortcutFound", __?: {}): string;
   (_: "settings.keyboard.resetDefaults", __?: {}): string;
@@ -3634,10 +3663,12 @@ declare namespace typed_i18n {
   (_: "settings.profiles.version", __?: {}): string;
   (_: "settings.screenReaderActivate", __?: {}): {
   readonly "help": string,
+  readonly "invite": string,
   readonly "message": string,
   readonly "title": string
 };
   (_: "settings.screenReaderActivate.help", __?: {}): string;
+  (_: "settings.screenReaderActivate.invite", __?: {}): string;
   (_: "settings.screenReaderActivate.message", __?: {}): string;
   (_: "settings.screenReaderActivate.title", __?: {}): string;
   (_: "settings.session", __?: {}): { readonly "title": string };
@@ -3877,43 +3908,7 @@ declare namespace typed_i18n {
   (_: "tts.highlight.underlineWordOutline", __?: {}): string;
   (_: "tts.highlight.underlineWordSolidBackground", __?: {}): string;
   (_: "tts.highlight.underlineWordUnderline", __?: {}): string;
-  (_: "tts.highlight.wordColor", __?: {}): string;
-  (_: "wizard", __?: {}): {
-  readonly "buttons": {
-    readonly "discover": string,
-    readonly "goToBooks": string
-  },
-  readonly "description": {
-    readonly "home": string,
-    readonly "resources": string
-  },
-  readonly "dontShow": string,
-  readonly "resources": {
-    readonly "discord": string,
-    readonly "website": string
-  },
-  readonly "tab": { readonly "home": string, readonly "resources": string },
-  readonly "title": {
-    readonly "resources": string,
-    readonly "welcome": string
-  }
-};
-  (_: "wizard.buttons", __?: {}): { readonly "discover": string, readonly "goToBooks": string };
-  (_: "wizard.buttons.discover", __?: {}): string;
-  (_: "wizard.buttons.goToBooks", __?: {}): string;
-  (_: "wizard.description", __?: {}): { readonly "home": string, readonly "resources": string };
-  (_: "wizard.description.home", __?: {}): string;
-  (_: "wizard.description.resources", __?: {}): string;
-  (_: "wizard.dontShow", __?: {}): string;
-  (_: "wizard.resources", __?: {}): { readonly "discord": string, readonly "website": string };
-  (_: "wizard.resources.discord", __?: {}): string;
-  (_: "wizard.resources.website", __?: {}): string;
-  (_: "wizard.tab", __?: {}): { readonly "home": string, readonly "resources": string };
-  (_: "wizard.tab.home", __?: {}): string;
-  (_: "wizard.tab.resources", __?: {}): string;
-  (_: "wizard.title", __?: {}): { readonly "resources": string, readonly "welcome": string };
-  (_: "wizard.title.resources", __?: {}): string;
-  (_: "wizard.title.welcome", __?: {}): string
+  (_: "tts.highlight.wordColor", __?: {}): string
 }
 }
 export = typed_i18n;

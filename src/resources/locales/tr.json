@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "Yeni sürüm mevcut, daha fazlasını öğrenmek için tıklayın.",
-            "title": "{{- appName}} yazılım güncellemesi."
+            "title": "{{- appName}} yazılım güncellemesi.",
+            "whatsnew": "Yeni bir sürüm yüklendi, daha fazla bilgi için tıklayın"
         },
         "window": {
             "showLibrary": "Kütüphaneyi / kitaplığı göster",
@@ -161,6 +162,7 @@
         "cancel": "İptal",
         "customization": {
             "splashscreen": {
+                "dontShow": "Bir daha gösterme",
                 "fallbackWelcomeScreen": "Hoşgeldiniz ekranı sağlanmadı",
                 "state": "Durum: {{- state}}",
                 "title": "Özelleştirme profilinin hazırlanması ve etkinleştirilmesi"
@@ -1209,6 +1211,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "Okuma penceresinde, sistem tam ekran modunu etkinleştirir veya normal pencere modunu geri yükler. Bunun, kullanıcı arayüzünü basitleştiren 'zen modu'ndan farklı olduğunu unutmayın",
                     "name": "Tam Ekrana Geç veya Tam Ekrandan Çık"
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "Kütüphane penceresinde, ekran okuyucular için iyileştirilmiş desteği açar veya kapatır",
+                    "name": "Ekran Okuyucu İyileştirmelerini Aç/Kapat"
                 }
             },
             "loadUserJson": "Kullanıcı dosyasından yükle",
@@ -1241,6 +1247,7 @@
         },
         "screenReaderActivate": {
             "help": "Uygulama yardımcı teknolojinin mevcudiyetini saptadığında, kullanıcı arayüzü ekran okuyucularla daha iyi çalışır",
+            "invite": "Ekran okuyucu için iyileştir ({{- status}}) [{{- keyboard}}]",
             "message": "Ekran okuyucular için geliştirilmiş destek",
             "title": "Ekran okuyucu deneyimini iyileştir"
         },
@@ -1341,29 +1348,6 @@
             "underlineWordSolidBackground": "Altını Çiz, Kelimeyi Sade Arkaplanda Göster",
             "underlineWordUnderline": "Altını Çiz, Kelimenin Altını Çiz",
             "wordColor": "Kelime rengi"
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "Thorium Masaüstü Uygulamasını Keşfet",
-            "goToBooks": "Eserlerime git"
-        },
-        "description": {
-            "home": "Thorium 3.4, kullanıcı deneyiminde bir dizi iyileştirme getirir ve bir dizi sorunu düzeltir. Daha sonra uygulamanın eski bir sürümüne geri dönmeye karar verirseniz, e-kitap açıklayıcı notlarınızı ve yer imlerinizi harici bir dosyaya dışa aktararak yedeklemeniz şiddetle tavsiye edilir. Daha sonra, eski sürüm yüklendiğinde bunları tekrar içe aktarmalısınız. Bunun nedeni, uygulamanın 3.4 sürümünde, açıklayıcı notları ve yer imlerini biraz farklı bir dahili biçimde saklamasıdır. Bu, bir performans sorununu çözer, ancak açıklayıcı notlar için geriye dönük uyumluluğu bozar.",
-            "resources": "Bizimle iletişime geçin ve Thorium hakkında daha fazla bilgi edinin:"
-        },
-        "dontShow": "Bir daha gösterme",
-        "resources": {
-            "discord": "Discord: {{- url}}",
-            "website": "Web sitesi: {{- url}}"
-        },
-        "tab": {
-            "home": "Anasayfa",
-            "resources": "Kaynaklar"
-        },
-        "title": {
-            "resources": "Kaynaklar & Topluluk",
-            "welcome": "Thorium 3.4 Uygulamasına Hoşgeldiniz"
         }
     }
 }

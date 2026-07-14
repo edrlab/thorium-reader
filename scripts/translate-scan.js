@@ -3,7 +3,7 @@ var fs = require("fs");
 var path = require("path");
 var glob = require("glob");
 
-var jsonUtils = require("r2-utils-js/dist/es8-es2017/src/_utils/JsonUtils");
+var jsonUtils = require("./json-utils");
 
 const args = process.argv.slice(2);
 const jsonFilePath = args[0];

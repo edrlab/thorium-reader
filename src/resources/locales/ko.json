@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "",
-            "title": ""
+            "title": "",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "라이브러리 / 내서재 보기",
@@ -155,6 +156,7 @@
         "cancel": "취소",
         "customization": {
             "splashscreen": {
+                "dontShow": "",
                 "fallbackWelcomeScreen": "",
                 "state": "",
                 "title": ""
@@ -1198,6 +1200,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "",
                     "name": ""
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "사용자 파일에서 로드",
@@ -1230,6 +1236,7 @@
         },
         "screenReaderActivate": {
             "help": "",
+            "invite": "",
             "message": "",
             "title": ""
         },
@@ -1330,29 +1337,6 @@
             "underlineWordSolidBackground": "",
             "underlineWordUnderline": "",
             "wordColor": ""
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "",
-            "goToBooks": ""
-        },
-        "description": {
-            "home": "",
-            "resources": ""
-        },
-        "dontShow": "",
-        "resources": {
-            "discord": "",
-            "website": ""
-        },
-        "tab": {
-            "home": "",
-            "resources": ""
-        },
-        "title": {
-            "resources": "",
-            "welcome": ""
         }
     }
 }

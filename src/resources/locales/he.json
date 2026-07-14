@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "",
-            "title": ""
+            "title": "",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "",
@@ -164,6 +165,7 @@
         "cancel": "",
         "customization": {
             "splashscreen": {
+                "dontShow": "",
                 "fallbackWelcomeScreen": "",
                 "state": "",
                 "title": ""
@@ -1215,6 +1217,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "",
                     "name": ""
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "",
@@ -1247,6 +1253,7 @@
         },
         "screenReaderActivate": {
             "help": "",
+            "invite": "",
             "message": "",
             "title": ""
         },
@@ -1347,29 +1354,6 @@
             "underlineWordSolidBackground": "",
             "underlineWordUnderline": "",
             "wordColor": ""
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "",
-            "goToBooks": ""
-        },
-        "description": {
-            "home": "",
-            "resources": ""
-        },
-        "dontShow": "",
-        "resources": {
-            "discord": "",
-            "website": ""
-        },
-        "tab": {
-            "home": "",
-            "resources": ""
-        },
-        "title": {
-            "resources": "",
-            "welcome": ""
         }
     }
 }

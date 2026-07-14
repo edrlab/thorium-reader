@@ -76,7 +76,7 @@ export const convertDiffableReduxState = (nextState: Partial<PersistRootState>):
         i18n: nextState.i18n,
         opds: nextState.opds,
         version: nextState.version,
-        wizard: nextState.wizard,
+        whatsNew: nextState.whatsNew,
         settings,
         creator: nextState.creator,
         noteExport: nextState.noteExport,

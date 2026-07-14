@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "New version available, click to learn more.",
-            "title": "{{- appName}} software update."
+            "title": "{{- appName}} software update.",
+            "whatsnew": "A new version was installed, click to learn more"
         },
         "window": {
             "showLibrary": "Show library / bookshelf",
@@ -161,6 +162,7 @@
         "cancel": "Cancel",
         "customization": {
             "splashscreen": {
+                "dontShow": "Don't show again",
                 "fallbackWelcomeScreen": "No welcome-screen provided",
                 "state": "State: {{- state}}",
                 "title": "Provisionning and activating customization profile"
@@ -1209,6 +1211,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "In the reader window, activate system fullscreen or restore normal window mode. Note that this is different from 'zen mode' which simplifies the user interface",
                     "name": "Toggle Fullscreen"
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "In the library window, toggle optimized support for screen readers",
+                    "name": "Toggle Screen Reader Optimizations"
                 }
             },
             "loadUserJson": "Load from user file",
@@ -1241,6 +1247,7 @@
         },
         "screenReaderActivate": {
             "help": "When the application detects the presence of assistive technology, the user interface works better with screen readers",
+            "invite": "Optimize for screen reader ({{- status}}) [{{- keyboard}}]",
             "message": "Improved support for screen readers",
             "title": "Enhance screen reader experience"
         },
@@ -1341,29 +1348,6 @@
             "underlineWordSolidBackground": "Underline, Word Solid Background",
             "underlineWordUnderline": "Underline, Word Underline",
             "wordColor": "Word colour"
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "Discover Thorium Desktop",
-            "goToBooks": "Go to my publications"
-        },
-        "description": {
-            "home": "Thorium 3.4 brings a series of improvements to the user experience and fixes a set of issues. If you decide later to move back to an older version of the application, it is strongly recommended that you back up your ebook annotations and bookmarks by exporting them to an external file. You'll then import them back into the older version after it is installed. This is because the application stores annotations and bookmarks in a slightly different internal format in version 3.4. This resolves a performance issue, but breaks backward compatibility for annotations.",
-            "resources": "Connect with us and learn more about Thorium:"
-        },
-        "dontShow": "Don't show again",
-        "resources": {
-            "discord": "Discord: {{- url}}",
-            "website": "Website: {{- url}}"
-        },
-        "tab": {
-            "home": "Home",
-            "resources": "Resources"
-        },
-        "title": {
-            "resources": "Resources & Community",
-            "welcome": "Welcome to Thorium 3.4"
         }
     }
 }

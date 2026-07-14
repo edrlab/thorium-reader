@@ -15,7 +15,7 @@ import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reduce
 import { THistoryState } from "./history";
 import { IOpdsHeaderState, IOpdsSearchState } from "./opds";
 import { CatalogView } from "readium-desktop/common/views/catalog";
-import { IWizardState } from "../wizard";
+import { IWhatsNewState } from "../whatsNew";
 import { ISettingsState } from "../settings";
 
 export interface ILibraryRootState extends IRendererCommonRootState {
@@ -38,6 +38,6 @@ export interface ILibraryRootState extends IRendererCommonRootState {
             userDirectory?: string,
         }
     };
-    wizard: IWizardState;
+    whatsNew: IWhatsNewState;
     settings: ISettingsState;
 }

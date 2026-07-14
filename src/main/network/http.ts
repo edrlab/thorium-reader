@@ -41,7 +41,7 @@ import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { diMainGet, opdsAuthFilePath } from "../di";
 import { fetchWithCookie } from "./fetch";
 import { digestAuthentication, parseDigestString} from "readium-desktop/utils/digest";
-import { ProxyAgent } from "proxy-agent";
+import { ProxyAgent } from "./proxy-agent";
 import { availableLanguages } from "readium-desktop/common/services/translator";
 import { opdsActions } from "readium-desktop/common/redux/actions";
 
@@ -296,6 +296,7 @@ async function httpFetchRawResponse(
     //     }
     // };
 
+    proxyAgent.options.ca = TLS_CERTIFICATES;
     options.agent = proxyAgent;
 
     // if (!options.agent && /^https:\/\//.test(url.toString())) {

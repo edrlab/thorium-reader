@@ -42,7 +42,8 @@
         },
         "update": {
             "message": "புதிய பதிப்பு கிடைக்கிறது, மேலும் அறிய சொடுக்கு செய்க.",
-            "title": "{{- appName}} மென்பொருள் புதுப்பிப்பு."
+            "title": "{{- appName}} மென்பொருள் புதுப்பிப்பு.",
+            "whatsnew": ""
         },
         "window": {
             "showLibrary": "நூலகம் / புத்தக அலமாரி காட்டு",
@@ -161,6 +162,7 @@
         "cancel": "ரத்துசெய்",
         "customization": {
             "splashscreen": {
+                "dontShow": "மீண்டும் காட்ட வேண்டாம்",
                 "fallbackWelcomeScreen": "",
                 "state": "",
                 "title": ""
@@ -1209,6 +1211,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "ரீடர் சாளரத்தில், கணினி முழுத் திரையை செயல்படுத்தவும் அல்லது சாதாரண சாளர பயன்முறையை மீட்டெடுக்கவும். இது பயனர் இடைமுகத்தை எளிதாக்கும் 'சென் பயன்முறை' இலிருந்து வேறுபட்டது என்பதை நினைவில் கொள்க",
                     "name": "மாற்று முழுத்திரை"
+                },
+                "ToggleScreenReaderOptimize": {
+                    "description": "",
+                    "name": ""
                 }
             },
             "loadUserJson": "பயனர் கோப்பிலிருந்து ஏற்றவும்",
@@ -1241,6 +1247,7 @@
         },
         "screenReaderActivate": {
             "help": "",
+            "invite": "",
             "message": "",
             "title": ""
         },
@@ -1341,29 +1348,6 @@
             "underlineWordSolidBackground": "அடிக்கோடிட்டு, சொல் திட பின்னணி",
             "underlineWordUnderline": "அடிக்கோடிட்டு, சொல் அடிக்கோடிட்டு",
             "wordColor": "சொல் நிறம்"
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "புதியதைக் கண்டறியவும்",
-            "goToBooks": "எனது வெளியீடுகளுக்குச் செல்லுங்கள்"
-        },
-        "description": {
-            "home": "தோரியம் வித்தியாசமாகத் தெரிகிறது! புதியது என்ன என்பதைக் கண்டுபிடிப்போம் ...",
-            "resources": ""
-        },
-        "dontShow": "மீண்டும் காட்ட வேண்டாம்",
-        "resources": {
-            "discord": "",
-            "website": ""
-        },
-        "tab": {
-            "home": "வீடு",
-            "resources": ""
-        },
-        "title": {
-            "resources": "",
-            "welcome": "தோரியம் 3 க்கு வருக"
         }
     }
 }

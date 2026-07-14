@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import {
-    apiActions, authActions, catalogActions, downloadActions, i18nActions, keyboardActions, lcpActions, readerActions, sessionActions, themeActions, publicationActions, wizardActions,
+    apiActions, authActions, catalogActions, downloadActions, i18nActions, keyboardActions, lcpActions, readerActions, sessionActions, themeActions, publicationActions, whatsNewActions,
     annotationActions,
     creatorActions,
     settingsActions,
@@ -59,7 +59,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     // readerActions.bookmark.push.ID,
     // readerActions.bookmark.update.ID,
 
-    wizardActions.setWizard.ID,
+    whatsNewActions.setWhatsNew.ID,
 
     sessionActions.save.ID,
     screenReaderActions.save.ID,
