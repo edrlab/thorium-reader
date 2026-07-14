@@ -68,7 +68,7 @@ class PublicationCard extends React.Component<IProps> {
     public render(): React.ReactElement<{}> {
         const { __, locale, publicationViewMaybeOpds, isOpds } = this.props;
 
-        const authors = formatContributorToString(publicationViewMaybeOpds.authorsLangString, locale);
+        const authors = formatContributorToString(publicationViewMaybeOpds.languages, publicationViewMaybeOpds.authorsLangString, locale);
 
         const textObj = (publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle;
         const pubLangs = (publicationViewMaybeOpds as PublicationView).languages || publicationViewMaybeOpds.languages;

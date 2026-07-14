@@ -2518,7 +2518,12 @@ class Reader extends React.Component<IProps, IState> {
     private loadPublicationIntoViewport() {
 
         if (this.props.r2Publication?.Metadata?.Title) {
-            const title = convertMultiLangStringToString(this.props.r2Publication.Metadata.Title, this.props.locale);
+
+            const textObj = this.props.r2Publication.Metadata.Title;
+            const pubLangs = this.props.r2Publication.Metadata.Language;
+            const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+            const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+            const title = convertMultiLangStringToString(textObj_, this.props.locale);
 
             window.document.title = capitalizedAppName;
             if (title) {

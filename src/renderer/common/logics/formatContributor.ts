@@ -11,6 +11,7 @@ import { convertMultiLangStringToString } from "readium-desktop/common/language-
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 
 export const formatContributorToString = (
+    publicationLanguages: Array<string> | undefined,
     contributors: (string | IStringMap)[] | IOpdsContributorView[] | undefined,
     locale: keyof typeof availableLanguages): string => {
 
@@ -25,11 +26,26 @@ export const formatContributorToString = (
             }
 
             if (typeof newContributor === "string") {
-                retString += convertMultiLangStringToString(newContributor, locale);
+
+                const textObj = newContributor;
+                const pubLangs = publicationLanguages;
+                const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+                const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+                retString += convertMultiLangStringToString(textObj_, locale);
             } else if (newContributor.nameLangString) {
-                retString += convertMultiLangStringToString(newContributor.nameLangString, locale);
+
+                const textObj = newContributor.nameLangString;
+                const pubLangs = publicationLanguages;
+                const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+                const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+                retString += convertMultiLangStringToString(textObj_, locale);
             } else {
-                retString += convertMultiLangStringToString(newContributor as IStringMap, locale);
+
+                const textObj = newContributor as IStringMap;
+                const pubLangs = publicationLanguages;
+                const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+                const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+                retString += convertMultiLangStringToString(textObj_, locale);
                 // const textLangStr = convertMultiLangStringToLangString(stringMap, locale);
                 // const textLang = textLangStr && textLangStr[0] ? textLangStr[0].toLowerCase() : "";
                 // const textIsRTL = langStringIsRTL(textLang);

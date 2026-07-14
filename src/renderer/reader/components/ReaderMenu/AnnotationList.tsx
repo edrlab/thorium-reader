@@ -109,8 +109,12 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
     const [drawTypeArrayFilter, setDrawTypeArrayFilter] = React.useState<Selection>(new Set([]));
     const [creatorArrayFilter, setCreatorArrayFilter] = React.useState<Selection>(new Set([]));
 
+    const textObj = publicationView.publicationTitle;
+    const pubLangs = publicationView.languages;
+    const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+    const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
     // r2Publication.Metadata.Title
-    const annoSetTitle = convertMultiLangStringToString(publicationView.publicationTitle,  locale) || "thorium-notes_annotations";
+    const annoSetTitle = convertMultiLangStringToString(textObj_,  locale) || "thorium-notes_annotations";
 
     const [pageNumber, setPageNumber] = React.useState(START_PAGE);
     const changePageNumber = React.useCallback((cb: (n: number) => number) => {

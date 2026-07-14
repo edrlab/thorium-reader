@@ -164,7 +164,7 @@ class Cover extends React.Component<IProps, IState> {
             );
         }
 
-        const authors = formatContributorToString(publicationViewMaybeOpds.authorsLangString, this.props.locale);
+        const authors = formatContributorToString(publicationViewMaybeOpds.languages, publicationViewMaybeOpds.authorsLangString, this.props.locale);
         let colors = publicationViewMaybeOpds.customCover;
         if (!colors) {
             colors = RandomCustomCovers[0];
