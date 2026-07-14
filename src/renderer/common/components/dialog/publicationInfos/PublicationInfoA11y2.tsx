@@ -10,7 +10,7 @@ import debug_ from "debug";
 import * as React from "react";
 
 import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
-
+import { PublicationView } from "readium-desktop/common/views/publication";
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { convertMultiLangStringToLangString } from "readium-desktop/common/language-string";
@@ -85,7 +85,11 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
     let accessibilitySummaryIsRTL = undefined;
     if (a11y_accessibilitySummary) {
 
-        const accessibilitySummaryLangStr = convertMultiLangStringToLangString(a11y_accessibilitySummary, locale);
+        const textObj = a11y_accessibilitySummary;
+        const pubLangs = (publicationViewMaybeOpds as PublicationView).languages || publicationViewMaybeOpds.languages;
+        const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+        const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+        const accessibilitySummaryLangStr = convertMultiLangStringToLangString(textObj_, locale);
         const accessibilitySummaryLang = accessibilitySummaryLangStr && accessibilitySummaryLangStr[0] ? accessibilitySummaryLangStr[0].toLowerCase() : "";
         accessibilitySummaryIsRTL = langStringIsRTL(accessibilitySummaryLang);
         const accessibilitySummaryStr = accessibilitySummaryLangStr && accessibilitySummaryLangStr[1] ? accessibilitySummaryLangStr[1] : "";

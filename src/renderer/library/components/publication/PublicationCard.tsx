@@ -70,7 +70,11 @@ class PublicationCard extends React.Component<IProps> {
 
         const authors = formatContributorToString(publicationViewMaybeOpds.authorsLangString, locale);
 
-        const pubTitleLangStr = convertMultiLangStringToLangString((publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle, locale);
+        const textObj = (publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle;
+        const pubLangs = (publicationViewMaybeOpds as PublicationView).languages || publicationViewMaybeOpds.languages;
+        const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+        const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+        const pubTitleLangStr = convertMultiLangStringToLangString(textObj_, locale);
         const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
         const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
         const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";

@@ -12,7 +12,6 @@ import * as stylesPublications from "readium-desktop/renderer/assets/styles/publ
 import classNames from "classnames";
 import * as React from "react";
 import { IOpdsContributorView } from "readium-desktop/common/views/opds";
-import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
@@ -20,6 +19,7 @@ import { convertMultiLangStringToLangString } from "readium-desktop/common/langu
 import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 
 interface IProps {
+    pubLanguages: Array<string> | undefined;
     contributors: (string | IStringMap)[] | IOpdsContributorView[] | undefined;
     onClickLinkCb?: (newContributor: IOpdsContributorView) => () => void;
     className?: string;
@@ -27,7 +27,7 @@ interface IProps {
 
 export const FormatContributorWithLink: React.FC<IProps> = (props) => {
 
-    const { contributors, onClickLinkCb, className } = props;
+    const { contributors, onClickLinkCb, className, pubLanguages } = props;
 
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
 
@@ -44,10 +44,20 @@ export const FormatContributorWithLink: React.FC<IProps> = (props) => {
                 && newContributor.link?.length
                 && onClickLinkCb
             ) {
+                const textObj = newContributor.nameLangString;
+                const pubLangs = pubLanguages;
+                const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+                const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+                const textLangStr = convertMultiLangStringToLangString(textObj_, locale);
+                const textLang = textLangStr && textLangStr[0] ? textLangStr[0].toLowerCase() : "";
+                const textIsRTL = langStringIsRTL(textLang);
+                const textStr = textLangStr && textLangStr[1] ? textLangStr[1] : "";
 
                 // FIXME : add pointer hover on 'a' links
                 retElement.push(
                     <a
+                        dir={textIsRTL ? "rtl" : undefined}
+                        lang={textLang ? textLang : undefined}
                         onClick={onClickLinkCb(newContributor as IOpdsContributorView)}
                         onKeyUp={(e) => { // necessary because no href (with href, preventDefault() inside onClick would be necessary to avoid SHIFT, OPT/ALT, META key mods on the hyperlink, and CSS visited styles would need to be added)
                             if (e.key === "Enter") {
@@ -58,20 +68,16 @@ export const FormatContributorWithLink: React.FC<IProps> = (props) => {
                         className={classNames(stylesButtons.button_link, className ? stylesPublications.authors : "")}
                         tabIndex={0}
                     >
-                        {convertMultiLangStringToString(newContributor.nameLangString, locale)}
+                        {textStr}
                     </a>,
                 );
             } else if (typeof newContributor === "object" && newContributor.nameLangString) {
-                retElement.push(
-                    <span
-                        className={classNames(stylesBookDetailsDialog.allowUserSelect, className  ? stylesPublications.authors : "")}>
-                        {convertMultiLangStringToString(newContributor.nameLangString, locale)}
-                    </span>,
-                );
-            } else {
-                const strMap = newContributor as string | IStringMap;
 
-                const textLangStr = convertMultiLangStringToLangString(strMap, locale);
+                const textObj = newContributor.nameLangString;
+                const pubLangs = pubLanguages;
+                const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+                const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+                const textLangStr = convertMultiLangStringToLangString(textObj_, locale);
                 const textLang = textLangStr && textLangStr[0] ? textLangStr[0].toLowerCase() : "";
                 const textIsRTL = langStringIsRTL(textLang);
                 const textStr = textLangStr && textLangStr[1] ? textLangStr[1] : "";
@@ -79,8 +85,28 @@ export const FormatContributorWithLink: React.FC<IProps> = (props) => {
                 retElement.push(
                     <span
                         dir={textIsRTL ? "rtl" : undefined}
+                        lang={textLang ? textLang : undefined}
                         className={classNames(stylesBookDetailsDialog.allowUserSelect, className  ? stylesPublications.authors : "")}>
-                        {convertMultiLangStringToString(textStr, locale)}
+                        {textStr}
+                    </span>,
+                );
+            } else {
+
+                const textObj = newContributor as string | IStringMap;
+                const pubLangs = pubLanguages;
+                const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+                const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+                const textLangStr = convertMultiLangStringToLangString(textObj_, locale);
+                const textLang = textLangStr && textLangStr[0] ? textLangStr[0].toLowerCase() : "";
+                const textIsRTL = langStringIsRTL(textLang);
+                const textStr = textLangStr && textLangStr[1] ? textLangStr[1] : "";
+
+                retElement.push(
+                    <span
+                        dir={textIsRTL ? "rtl" : undefined}
+                        lang={textLang ? textLang : undefined}
+                        className={classNames(stylesBookDetailsDialog.allowUserSelect, className  ? stylesPublications.authors : "")}>
+                        {textStr}
                     </span>,
                 );
             }

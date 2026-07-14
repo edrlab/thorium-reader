@@ -381,11 +381,11 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
     }, [publicationViewMaybeOpds, r2Publication_]);
 
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const title = (publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle;
+    const textObj = (publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle;
     const pubLangs = (publicationViewMaybeOpds as PublicationView).languages || publicationViewMaybeOpds.languages;
     const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
-    const titleStringOrObj = pubLang && typeof title === "string" ? { [pubLang]: title } : title;
-    const pubTitleLangStr = convertMultiLangStringToLangString(titleStringOrObj, locale);
+    const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+    const pubTitleLangStr = convertMultiLangStringToLangString(textObj_, locale);
     const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
     const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
     // String(pubTitleLang) + " --- " +
@@ -453,6 +453,7 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                             {pubTitleStrSanitized}
                         </h2>
                         <FormatContributorWithLink
+                            pubLanguages={(publicationViewMaybeOpds as PublicationView).languages || publicationViewMaybeOpds.languages}
                             contributors={publicationViewMaybeOpds.authorsLangString}
                             onClickLinkCb={onClickLinkCb}
                             className={"authors"}
@@ -474,6 +475,7 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                                         <strong>{`${__("catalog.publisher")}: `}</strong>
                                         <span className={stylesBookDetailsDialog.allowUserSelect}>
                                             <FormatContributorWithLink
+                                                pubLanguages={(publicationViewMaybeOpds as PublicationView).languages || publicationViewMaybeOpds.languages}
                                                 contributors={publicationViewMaybeOpds.publishersLangString}
                                                 onClickLinkCb={onClickLinkCb}
                                             />

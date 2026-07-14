@@ -52,11 +52,11 @@ const PublicationInfoDescription: React.FC<IProps> = ({ publicationViewMaybeOpds
     }, [publicationViewMaybeOpds, needSeeMoreButton]);
 
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const descStr = (publicationViewMaybeOpds as PublicationView).description || publicationViewMaybeOpds.description;
+    const textObj = (publicationViewMaybeOpds as PublicationView).description || publicationViewMaybeOpds.description;
     const pubLangs = (publicationViewMaybeOpds as PublicationView).languages || publicationViewMaybeOpds.languages;
     const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
-    const descStringOrObj = pubLang && typeof descStr === "string" ? { [pubLang]: descStr } : descStr;
-    const pubDescLangStr = convertMultiLangStringToLangString(descStringOrObj, locale);
+    const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+    const pubDescLangStr = convertMultiLangStringToLangString(textObj_, locale);
     const pubDescLang = pubDescLangStr && pubDescLangStr[0] ? pubDescLangStr[0].toLowerCase() : "";
     const pubDescIsRTL = langStringIsRTL(pubDescLang);
     const pubDescStr = pubDescLangStr && pubDescLangStr[1] ? pubDescLangStr[1] : "";
