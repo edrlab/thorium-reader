@@ -59,7 +59,10 @@ export async function tocOutlineItemToLink(outline: IOutline, pdf: PDFDocumentPr
 
         if (destForPageIndex) {
             const page = await pdf.getPageIndex(destForPageIndex);
-            const label = pageLabels?.[page] || String(page);
+            // getPageIndex() is zero-based, whereas Href is consumed by PDFLinkService.goToPage(),
+            // which falls back to interpreting the string as a one-based page number
+            // when it does not match any page label.
+            const label = pageLabels?.[page] || String(page + 1);
             // console.log("PDF PAGE LABEL LiNK HREF", label, pageLabels, page, destForPageIndex?.num, destForPageIndex?.gen)
             link.Href = label;
         }
