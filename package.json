@@ -39,7 +39,7 @@
     "_NOT_NEEDED_electron-build_": "npm rebuild --runtime=electron --target=41.7.1 --disturl=https://electronjs.org/headers --build-from-source",
     "_NOT_NEEDED_electron-build": "electron-rebuild --version=41.7.1 --disturl=https://electronjs.org/headers",
     "_NOT_NEEDED_rmDupeReactReduxTypes": "rimraf \"./node_modules/@types/react-redux/node_modules/@types/react\"",
-    "build": "cross-env NODE_ENV=production webpack --config webpack.config.js && node ./scripts/dist-hash.mjs && ncp src/package.json dist/package.json && ncp src/package-lock.json dist/package-lock.json && cd dist && rimraf node_modules && npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root && cd ..",
+    "build": "cross-env NODE_ENV=production webpack --config webpack.config.js && ncp src/package.json dist/package.json && ncp src/package-lock.json dist/package-lock.json && cd dist && rimraf node_modules && npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root && cd ..",
     "build:prod": "npm run lint && npm run build",
     "build:dev:main": "webpack --config webpack.config.main.js",
     "_NOT_NEEDED_build:dev:renderer:library": "webpack --config webpack.config.renderer-library.js",

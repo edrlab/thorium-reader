@@ -2,6 +2,8 @@ const path = require("path");
 const builder = require("electron-builder");
 const { flipFuses, FuseVersion, FuseV1Options } = require("@electron/fuses");
 
+const asarChecksum = require('./asarChecksum');
+
 // https://github.com/mattermost/desktop/blob/master/scripts/afterpack.js
 // const { spawnSync } = require("child_process");
 // const SETUID_PERMISSIONS = '4755';
@@ -21,6 +23,11 @@ const { flipFuses, FuseVersion, FuseV1Options } = require("@electron/fuses");
 // https://github.com/electron-userland/electron-builder/issues/6365
 
 module.exports = async function afterPack(context) {
+
+    // https://www.electron.build/docs/configuration/#afterpack
+    // context: AfterPackContext
+    // { outDir, appOutDir, packager, electronPlatformName, arch, targets }
+
     console.log("=-=-=-=-=- AFTER PACK ...");
 
     console.log("context.electronPlatformName: " + context.electronPlatformName);
@@ -28,12 +35,15 @@ module.exports = async function afterPack(context) {
     console.log("builder.Platform.LINUX: " + builder.Platform.LINUX); // 'linux'
     console.log("builder.Platform.WINDOWS: " + builder.Platform.WINDOWS); // 'win32'
 
+    // TypeError: Converting circular structure to JSON
+    // console.log("context.targets: " + JSON.stringify(context.targets, null, 4));
     console.log("context.arch: " + context.arch);
     console.log("builder.Arch.universal: " + builder.Arch.universal);
     console.log("builder.Arch.arm64: " + builder.Arch.arm64);
     console.log("builder.Arch.x64: " + builder.Arch.x64);
 
     console.log("context.packager.appInfo.productFilename: " + context.packager.appInfo.productFilename);
+    console.log("context.outDir: " + context.outDir);
     console.log("context.appOutDir: " + context.appOutDir);
 
     console.log("context.packager instanceof builder.LinuxPackager: " + (context.packager instanceof builder.LinuxPackager));
@@ -131,6 +141,26 @@ module.exports = async function afterPack(context) {
     // if (context.electronPlatformName === 'linux') {
     //     context.targets.forEach(fixSetuid(context));
     // }
+
+    console.log("=-=-=-=-=- AFTER PACK ASAR ...");
+
+    if (context.electronPlatformName === "darwin") {
+        // if (context.arch === 3) { // arm64 (builder.Arch.arm64)
+        //     // release/mac-arm64/Thorium.app/Contents/Resources/app.asar
+        // } else {
+        //     // release/mac/Thorium.app/Contents/Resources/app.asar
+        // }
+        asarChecksum.generateSHA256(path.join(context.appOutDir, "Thorium.app", "Contents", "Resources", "app.asar"));
+    } else if (context.electronPlatformName === "win32") {
+        // release/win-unpacked/resources/app.asar/app.asar
+        asarChecksum.generateSHA256(path.join(context.appOutDir, "resources", "app.asar"));
+    } else if (context.electronPlatformName === "linux") {
+        // release/linux-unpacked/resources/app.asar
+        asarChecksum.generateSHA256(path.join(context.appOutDir, "resources", "app.asar"));
+    } else {
+        console.log("context.electronPlatformName ??!", context.electronPlatformName);
+        process.exit(1);
+    }
 
     console.log("=-=-=-=-=- AFTER PACK :)");
 };
