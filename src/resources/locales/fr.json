@@ -1220,7 +1220,7 @@
                 },
                 "ToggleScreenReaderOptimize": {
                     "description": "Dans la vue bibliothèque, bascule vers le support optimisé des lecteurs d'écran",
-                    "name": "Bascule vers le support optimisé des lecteurs d'écran"
+                    "name": "Basculer vers le support optimisé des lecteurs d'écran"
                 }
             },
             "loadUserJson": "Charger le fichier",
