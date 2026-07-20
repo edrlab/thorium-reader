@@ -43,7 +43,7 @@
         "update": {
             "message": "En ny version er tilgængelig. Klik her for at læse mere.",
             "title": "{{- appName}} programopdatering.",
-            "whatsnew": ""
+            "whatsnew": "En ny version er blevet installeret, klik for at lære mere"
         },
         "window": {
             "showLibrary": "Vis bibliotek / boghylde",
@@ -1213,8 +1213,8 @@
                     "name": "Slå Fuldskærm Til/Fra"
                 },
                 "ToggleScreenReaderOptimize": {
-                    "description": "",
-                    "name": ""
+                    "description": "Slå forbedret oplevelse med skærmlæser til eller fra i biblioteksvinduet",
+                    "name": "Slå forbedret oplevelse med skærmoplæser til/fra"
                 }
             },
             "loadUserJson": "Indlæs fra brugerfil",
@@ -1247,7 +1247,7 @@
         },
         "screenReaderActivate": {
             "help": "Når applikationen registrerer at hjælpeteknologier benyttes, fungerer brugergrænsefladen bedre med skærmlæsere",
-            "invite": "",
+            "invite": "Optimer til skærmoplæser",
             "message": "Forbedret understøttelse af skærmlæsere",
             "title": "Forbedret oplevelse med skærmlæser"
         },
