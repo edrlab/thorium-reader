@@ -105,6 +105,7 @@
       padding: 4px;
       color: var(--color-brand-primary);
       border: 2px solid transparent;
+      width: 100%!important;
 
       &:focus {
         background-color: var(--color-brand-primary);
@@ -134,15 +135,11 @@
 }
 
 .popover_open {
-  border-color: var(--color-brand-primary);
-  background-color: var(--color-brand-primary);
+  border-color: var(--color-brand-primary)!important;
+  background-color: var(--color-brand-primary)!important;
 
   svg {
     color: var(--color-neutral-base)!important;
-  }
-
-  &:hover svg {
-    color: var(--color-brand-primary)!important;
   }
 }
 

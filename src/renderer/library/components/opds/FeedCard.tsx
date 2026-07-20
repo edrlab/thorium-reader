@@ -157,7 +157,7 @@ const FeedAuthentified = ({ feed, logout, loadFeeds, __ }: { feed: IOpdsFeedView
                 </button>
             </Popover.Trigger>
             <Popover.Portal>
-                <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesPopoverDialog.delete_item}>
+                <Popover.Content /*collisionPadding={{ top: 180, bottom: 100 }}*/ avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesPopoverDialog.delete_item}>
                     <Popover.Close
                         onClick={() => {
                             logout(feed.url);
@@ -187,7 +187,7 @@ const FeedAuthentification = ({ feed, triggerAuth, __ }: { feed: IOpdsFeedView, 
                 </button>
             </Popover.Trigger>
             <Popover.Portal>
-                <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesPopoverDialog.delete_item}>
+                <Popover.Content /*collisionPadding={{ top: 180, bottom: 100 }}*/ avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesPopoverDialog.delete_item}>
                     <Popover.Close
                         onClick={() => {
                             triggerAuth(feed.url, feed.authenticationUrl);

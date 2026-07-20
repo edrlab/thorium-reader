@@ -496,10 +496,10 @@ $setting_color: var(--color-brand-primary);
             margin-top: 0;
         }
 
-        button[data-state="open"] .advanced_trigger {
-            background-color: var(--color-brand-secondary);
-            border-color: var(--color-brand-primary);
-        }
+        // button[data-state="open"] .advanced_trigger {
+        //     background-color: var(--color-brand-secondary);
+        //     border-color: var(--color-brand-primary);
+        // }
     }
 
     .session_text {

@@ -336,7 +336,7 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
                         </button>
                     </Popover.Trigger>
                     <Popover.Portal>
-                        <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesPopoverDialog.delete_item}>
+                        <Popover.Content /*collisionPadding={{ top: 180, bottom: 100 }}*/ avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesPopoverDialog.delete_item}>
                             <Popover.Close
                                 onClick={() => {
                                     triggerEdition(false);

@@ -156,19 +156,7 @@
 }
 
 .advanced_trigger {
-    min-width: 20px!important;
-    height: 20px;
-    width: fit-content!important;
-    border: 1px solid;
-    border-color: transparent;
-    background-color: transparent;
-    transition: 200ms linear;
-    padding: 3px;
-
-    &:hover{
-        background-color: var(--color-brand-secondary);
-        border-color: var(--color-brand-primary);
-    }
+    color: var(--color-brand-primary);
 }
 
 .CSS_END_components_keyboardsShortcuts {

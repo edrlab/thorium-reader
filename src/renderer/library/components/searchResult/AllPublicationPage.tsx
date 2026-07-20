@@ -1078,7 +1078,7 @@ const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_Generic
                     }
                 </Popover.Trigger>
                 <Popover.Portal>
-                    <Popover.Content collisionPadding={{top : 280}} avoidCollisions sideOffset={5} align="end" alignOffset={-10} hideWhenDetached>
+                    <Popover.Content /*collisionPadding={{top : 280}}*/ avoidCollisions sideOffset={5} align="end" alignOffset={-10} hideWhenDetached>
                         <p className={stylesDropDown.dropdown_description}
                             dangerouslySetInnerHTML={{ __html: cellTextSanitized }}></p>
                         <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />

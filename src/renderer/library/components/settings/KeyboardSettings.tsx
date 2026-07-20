@@ -11,7 +11,7 @@ import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scs
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import * as stylesKeys from "readium-desktop/renderer/assets/styles/components/keyboardsShortcuts.scss";
-import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
+// import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import { keyboardShortcutsMatch, keyboardShortcutMatches, defaultKeyboardShortcuts, TKeyboardShortcutScopeZone } from "readium-desktop/common/keyboard";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
@@ -19,7 +19,7 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 
 import classNames from "classnames";
 import * as React from "react";
-import * as Popover from "@radix-ui/react-popover";
+// import * as Popover from "@radix-ui/react-popover";
 import {Button, OverlayArrow, Tooltip, TooltipTrigger} from "react-aria-components";
 import FocusLock from "react-focus-lock";
 import { connect } from "react-redux";
@@ -55,6 +55,7 @@ import { useTranslator } from "../../../common/hooks/useTranslator";
 import { useDispatch } from "../../../common/hooks/useDispatch";
 import os from "node:os";
 import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
+import Menu from "readium-desktop/renderer/common/components/menu/Menu";
 
 const _isMac = os.platform() === "darwin";
 const _isWindows = os.platform() === "win32";
@@ -109,21 +110,17 @@ export const AdvancedTrigger = () => {
     };
 
     return (
-        <Popover.Root>
-            <Popover.Trigger asChild>
-                <button>
+        <Menu button={(
                     <SVG
                         title={
                             `${__("settings.keyboard.advancedMenu")}`
                         }
-                        className={classNames(stylesButtons.button_secondary_blue, stylesKeys.advanced_trigger)}
                         svg={MenuIcon}
+                        className={classNames(stylesKeys.advanced_trigger)}
                     />
-                </button>
-            </Popover.Trigger>
-            <Popover.Portal>
-                <Popover.Content sideOffset={5} className={stylesDropDown.PopoverContent}>
-                    <div className={stylesDropDown.dropdown_menu}>
+    )}
+    advancedTrigger={true}
+    >
                         <button dir={isRTL ? "rtl" : "ltr"} onClick={() => onClickKeyboardShortcutsReload(true)}>
                             {__("settings.keyboard.resetDefaults")}
                         </button>
@@ -133,11 +130,7 @@ export const AdvancedTrigger = () => {
                         <button dir={isRTL ? "rtl" : "ltr"} onClick={() => onClickKeyboardShortcutsReload(false)}>
                             {__("settings.keyboard.loadUserJson")}
                         </button>
-                    </div>
-                    <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
-                </Popover.Content>
-            </Popover.Portal>
-        </Popover.Root>
+        </Menu>
     );
 };
 
