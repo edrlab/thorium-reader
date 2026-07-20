@@ -987,7 +987,7 @@
             "keyboardShortcuts": "Raccourcis clavier",
             "list": {
                 "AddBookmarkWithLabel": {
-                    "description": "Ouvrir la modal de creation de marque-pages et éditer les labels (notes)",
+                    "description": "Dans la vue lecture, ouvre la modale de création de signet et permet d'éditer son libellé",
                     "name": "Ajouter un Signet avec Libellé"
                 },
                 "AnnotationsCreate": {
@@ -1123,8 +1123,8 @@
                     "name": "Aller à la Page OPDS Suivante"
                 },
                 "NavigateNextOPDSPageAlt": {
-                    "description": "Dans la fenêtre de la bibliothèque pour les flux de Catalogues (OPD), active les liens de pagination suivants (raccourci clavier alternatif).",
-                    "name": "Aller à la Page OPDS Suivante (Alternatif)"
+                    "description": "Dans vue bibliothèque d'un catalogue, saute à la page suivante (raccourci clavier alternatif)",
+                    "name": "Aller à la Page Suivante d'un Catalogue (Alternatif)"
                 },
                 "NavigateNextPage": {
                     "description": "dans la fenêtre du lecteur, se déplace vers la \"page\" précédente ou suivante (ou unité de défilement, si la pagination est désactivée).",
