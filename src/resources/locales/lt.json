@@ -701,6 +701,7 @@
             "advancedMode": "Momentinis režimas (pažymėjus sukurti automatiškai)",
             "annotationsExport": {
                 "description": "Pavadinkite eksportuojamas pastabas:",
+                "format": "Formatas",
                 "title": "Pavadinimas"
             },
             "annotationsOptions": "Pastabų parinktys",
