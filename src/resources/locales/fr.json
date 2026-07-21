@@ -701,6 +701,7 @@
             "advancedMode": "Mode instantané (création automatique après sélection)",
             "annotationsExport": {
                 "description": "Nommez cette liste de notes :",
+                "format": "Format",
                 "title": "Titre"
             },
             "annotationsOptions": "Notes Options",
