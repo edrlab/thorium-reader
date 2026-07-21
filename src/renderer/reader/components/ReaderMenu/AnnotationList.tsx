@@ -598,9 +598,9 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
                                                 <></>
                                             }
                                         </div>
-                                        <div aria-hidden>
-                                            <h3>{__("reader.annotations.advancedMode")}</h3>
-                                        </div>
+                                        <span aria-hidden>
+                                            {__("reader.annotations.advancedMode")}
+                                        </span>
                                     </label>
                                 </div>
                                 {/* : <></>} */}
@@ -634,7 +634,10 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
                                                 :
                                                 <></>
                                             } </div>
-                                        <h3 aria-hidden>{__("reader.annotations.quickAnnotations")}</h3></label>
+                                            <span aria-hidden>
+                                            {__("reader.annotations.quickAnnotations")}
+                                        </span>
+                                    </label>
                                 </div>
                                 {!isPdf ?
                                     <div className={stylesAnnotations.annotations_checkbox}>
@@ -666,7 +669,10 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
                                                     <></>
                                                 }
                                             </div>
-                                            <h3 aria-hidden>{__("reader.annotations.toggleMarginMarks")}</h3></label>
+                                            <span aria-hidden>
+                                                {__("reader.annotations.toggleMarginMarks")}
+                                            </span>
+                                        </label>
                                     </div> : <></>}
                                 <div className={stylesAnnotations.annotations_checkbox}>
                                     <input type="checkbox" id="hideAnnotation" name="hideAnnotation" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "hide"} onChange={hideAnnotationOnChange} />
@@ -697,7 +703,10 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
                                                 <></>
                                             }
                                         </div>
-                                        <h3 aria-hidden>{__("reader.annotations.hide")}</h3></label>
+                                        <span aria-hidden>
+                                            {__("reader.annotations.hide")}
+                                        </span>
+                                    </label>
                                 </div>
                                 <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-gray-50" }} />
                             </Popover.Content>
