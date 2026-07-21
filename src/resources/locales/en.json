@@ -696,6 +696,7 @@
             "advancedMode": "Instant mode (auto create after select)",
             "annotationsExport": {
                 "description": "Name the exported notes:",
+                "format": "Format",
                 "title": "Title"
             },
             "annotationsOptions": "Annotation Options",
