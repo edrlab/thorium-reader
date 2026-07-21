@@ -1214,7 +1214,7 @@
                 },
                 "ToggleScreenReaderOptimize": {
                     "description": "Kütüphane penceresinde, ekran okuyucular için iyileştirilmiş desteği açar veya kapatır",
-                    "name": "Ekran Okuyucu İyileştirmelerini Aç/Kapat"
+                    "name": "Ekran okuyucu iyileştirmelerini aç/kapat"
                 }
             },
             "loadUserJson": "Kullanıcı dosyasından yükle",
