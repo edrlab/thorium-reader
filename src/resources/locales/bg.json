@@ -35,8 +35,8 @@
                         "yes": "Да"
                     },
                     "help": "",
-                    "message": "Искате ли да запазите сесията ?",
-                    "title": "Запази сесията"
+                    "message": "Запазване и възстановяване на сесията за четене",
+                    "title": "Запазване на сесията?"
                 }
             }
         },
@@ -219,7 +219,7 @@
             "hint": "Подсказка:",
             "open": "Отвори",
             "password": "Парола",
-            "sentence": "Тази публикация се нуждае от LCP парола, за да бъде отворена: ",
+            "sentence": "Необходима е LCP парола за отваряне на публикацията",
             "showPassphrase": "",
             "urlHint": "Забравили сте паролата си? Намерете помощ тук.",
             "whatIsLcp?": "",
@@ -304,7 +304,7 @@
             "error": "Грешка при достъпа до канала",
             "noInternet": "Няма интернет",
             "noInternetMessage": "Проверете мрежовия кабел, модема, рутера или wifi",
-            "reject": "За съжаление възникна неочаквана грешка при опит за обработка на канала",
+            "reject": "Извинете, възникна неочаквана грешка!",
             "timeout": "Времето за изчакване на мрежата изтече, моля, опитайте отново по-късно"
         },
         "next": "Следващ",
@@ -471,7 +471,7 @@
                 "descriptive": ""
             },
             "hazards-no-metadata": {
-                "compact": "",
+                "compact": "Няма информация",
                 "descriptive": ""
             },
             "hazards-none": {
@@ -613,7 +613,7 @@
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": "Удобен за TTS и екранен четец"
+                "textual": "Съдържанието е подходящо за TTS и динамичен Брайл"
             },
             "accessibilityFeature": {
                 "alternativeText": "Съдържа алтернативен текст",
@@ -627,7 +627,7 @@
             "accessibilityHazard": {
                 "flashing": "Мигаща",
                 "motionSimulation": "Симулация на движение",
-                "name": "Hazard:",
+                "name": "Опасност:",
                 "noFlashing": "Без мигане",
                 "noMotionSimulation": "Без симулация на движение",
                 "noSound": "Без звук",
@@ -635,7 +635,7 @@
                 "sound": "Звук",
                 "unknown": "Неизвестно"
             },
-            "certifierReport": "Доклад на удостоверителя",
+            "certifierReport": "Доклад на удостоверителя:",
             "conformsTo": "Съответства на:",
             "moreInformation": "Още информация",
             "name": "Достъпност",
@@ -667,7 +667,7 @@
         "lcpRightsPrint": "Печат на страници",
         "lcpStart": "Начало",
         "licenceLCP": "",
-        "licenseCertificateDateInvalid": "Датата на ключа за лиценза е невалидна. ({{- dateTime}})",
+        "licenseCertificateDateInvalid": "Сертификатът на доставчика на LCP е изтекъл преди датата на издаване на лиценза ({{- dateTime}}).",
         "licenseOutOfDate": "Изтекъл срок на лиценза.",
         "licenseSignatureInvalid": "Ключа за лиценза е невалиден.",
         "licensed": "",
@@ -686,7 +686,7 @@
         "seeLess": "Виж по-малко",
         "seeMore": "Виж повече",
         "timeLeft": "",
-        "title": "Title",
+        "title": "Заглавие",
         "userKeyCheckInvalid": "Паролата е невалидна."
     },
     "reader": {
@@ -761,9 +761,9 @@
             "annotations": "Анотации",
             "bookmarks": "Отметки",
             "delete": "Изтрий",
-            "edit": "Edit",
+            "edit": "Редактиране",
             "goTo": "",
-            "landmarks": "Landmarks",
+            "landmarks": "Ориентири",
             "saveMark": "",
             "search": "Търси",
             "searchResult": "",
@@ -794,10 +794,10 @@
             "ZenModeTitle": "",
             "annotationTitle": "",
             "backHomeTitle": "обратно към лавицата с книги",
-            "bookmarkTitle": "отметка",
+            "bookmarkTitle": "Отметка",
             "currentPage": "Текуща страница: {{- current}}",
             "currentPageTotal": "Текуща страница: {{- current}}/{{- total}}",
-            "detachWindowTitle": "показване на прозореца на библиотеката/лавицата с книги",
+            "detachWindowTitle": "Показване на библиотеката / рафта с книги",
             "goTo": "Иди на",
             "goToError": "Това местоположение не съществува",
             "goToPlaceHolder": "Въведи номер на страница",
@@ -830,8 +830,8 @@
         },
         "picker": {
             "search": {
-                "founds_one": "{{- count}} съвпадение(ия)",
-                "founds_other": "{{- count}} съвпадение(ия)",
+                "founds_one": "{{- count}} съвпадение",
+                "founds_other": "{{- count}} съвпадения",
                 "input": "текст за търсене",
                 "next": "Следващ",
                 "notFound": "няма съвпадения",
@@ -862,9 +862,9 @@
         "settings": {
             "column": {
                 "auto": "Автоматично",
-                "one": "1 кол.",
+                "one": "1 колона",
                 "title": "Колони",
-                "two": "2 кол."
+                "two": "2 колони"
             },
             "customFontSelected": "",
             "customizeReader": "",
