@@ -576,7 +576,10 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
                                                 <></>
                                             }
                                         </div>
-                                        <h3 aria-hidden>{__("reader.annotations.hide")}</h3></label>
+                                        <span aria-hidden>
+                                            {__("reader.annotations.hide")}
+                                        </span>
+                                    </label>
                                 </div>
                                 <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-gray-50" }} />
                             </Popover.Content>
