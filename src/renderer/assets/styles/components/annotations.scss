@@ -467,6 +467,17 @@
   margin: 0 15px;
   color: var(--color-text-primary);
 
+  select {
+    appearance: auto;
+    font-size: 14px;
+    color: var(--color-text-primary);
+    height: 24px;
+    padding: 0 5px 0 20px;
+    vertical-align: middle;
+    width: 100%;
+    border: none;
+  }
+
   .form_group {
     width: unset;
     border-radius: 6px;

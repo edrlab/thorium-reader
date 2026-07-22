@@ -506,9 +506,15 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
                                                 ref={annotationTitleRef}
                                                 className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                                             />
-                                            <select defaultValue="annotation" style={{ height: "inherit", border: "none", marginLeft: "5px" }} ref={selectFileTypeRef} name="file_type">
-                                                <option value="annotation">.annotation</option>
-                                                <option value="html">.html</option>
+                                        </div>
+                                        <div className={stylesInputs.form_group}>
+                                        <label htmlFor="file_type">
+                                            {/* {__("reader.annotations.annotationsExport.format")} */}
+                                            Format
+                                            </label>
+                                        <select defaultValue="annotation" ref={selectFileTypeRef} name="file_type">
+                                                <option value="annotation">Annotations (Readium)</option>
+                                                <option value="html">HTML</option>
                                             </select>
                                         </div>
 
