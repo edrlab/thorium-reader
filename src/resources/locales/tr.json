@@ -696,6 +696,7 @@
             "advancedMode": "Anlık mod (seçimden sonra otomatik oluştur)",
             "annotationsExport": {
                 "description": "Dışa aktarılan notları adlandır:",
+                "format": "Biçim",
                 "title": "Başlık"
             },
             "annotationsOptions": "Açıklayıcı Not Seçenekleri",
