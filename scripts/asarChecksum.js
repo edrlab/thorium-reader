@@ -3,6 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
 const pickle = require('chromium-pickle-js');
+const electronAsar = require('@electron/asar');
 
 const readArchiveHeaderSync = function (archive) {
     const fd = fs.openSync(archive, 'r');
@@ -43,8 +44,20 @@ function generateSHA256(asarFile) {
     console.log(asarFile);
 
     const asarHeader = readArchiveHeaderSync(asarFile);
-    console.log(asarHeader.headerSize);
+    console.log("ASAR HEADER SIZE:", asarHeader.headerSize);
     // console.log(JSON.stringify(JSON.parse(asarHeader.header), null, 2));
+
+    // https://github.com/electron/asar/blob/0959a13120775a8c3544e698e971074e0f496988/src/disk.ts#L314-L345
+    // https://github.com/electron/asar/blob/0959a13120775a8c3544e698e971074e0f496988/src/pickle.ts#L2-L240
+    const asarHeaderCheck = electronAsar.getRawHeader(asarFile);
+    console.log("ASAR HEADER SIZE (check):", asarHeaderCheck.headerSize);
+
+    if (asarHeader.headerSize !== asarHeaderCheck.headerSize || asarHeader.header !== asarHeaderCheck.headerString) {
+        console.log("ASAR HEADER:", asarHeader.header);
+        console.log("ASAR HEADER (check):", asarHeader.headerString);
+        console.log("!!!!!ERROR ASAR HEADER CHECKS!!!!");
+        process.exit(1);
+    }
 
     const checkSum = crypto.createHash("sha256");
     checkSum.update(asarHeader.header);

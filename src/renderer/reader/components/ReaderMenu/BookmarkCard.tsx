@@ -55,27 +55,17 @@ export const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, t
     const tag = Array.isArray(tags) ? tags[0] || "" : "";
     const dockedEditBookmark = isEdited && dockedMode;
 
-    const [textParsed, setTextParsed] = React.useState<string>();
+    const [dangerousInnerHTML_BookmarkTextSanitized, setDangerousInnerHTML_BookmarkTextSanitized] = React.useState<string>();
     React.useEffect(() => {
         if (bookmark.textualValue) {
             const htmlPromise = Promise.resolve(marked.parse(bookmark.textualValue.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, ""), { gfm: true }));
             htmlPromise.then((html) => {
-                const parsed = DOMPurify.sanitize(html, { FORBID_TAGS: ["style"], FORBID_ATTR: ["style"] });
-                const regex = new RegExp(/href=\"(.*?)\"/, "gm");
-                const hrefSanitized = parsed.replace(regex, (substring) => {
-
-                    let url = /href=\"(.*?)\"/.exec(substring)[1];
-                    if (url && !/^https?:\/\//.test(url)) {
-                        url = "http://" + url;
-                    }
-
-                    return `href="" alt="${url}" onclick="return ((e) => {
-                                window.__shell_openExternal('${url}').then((_v) => undefined).catch((_err) => undefined);
-                                return false;
-                                })()"`;
-                });
-                setTextParsed(hrefSanitized);
-                console.log(parsed, hrefSanitized);
+                // https://github.com/cure53/DOMPurify/wiki/Default-TAGs-ATTRIBUTEs-allow-list-&-blocklist
+                const htmlSanitized = DOMPurify.sanitize(html, { FORBID_TAGS: ["style"], FORBID_ATTR: ["style"] });
+                // console.log(html, htmlSanitized);
+                // NOTE that <a href="yyy">xxx</a> is fine, caught by webContents.on("will-navigate", ...) with event.preventDefault() and shell.openExternal(...) on normalized/escaped URL and filtered on HTTP(S)://
+                // NOTE that the attribute target="_blank" (etc) is automatically removed by DOMPurify but would be caught by webContents.setWindowOpenHandler(...) with { action: "deny" }, although no shell.openExternal(...) in this case
+                setDangerousInnerHTML_BookmarkTextSanitized(htmlSanitized);
             }).catch((err) => { console.log(err); });
         }
     }, [bookmark.textualValue]);
@@ -206,7 +196,7 @@ export const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, t
                     :
                     <>
                         {/* <HardWrapComment comment={bookmark.textualValue} /> */}
-                        <div className={(stylesMarkdown as any)["markdown-body"]} dangerouslySetInnerHTML={{ __html: textParsed }} />
+                        <div className={(stylesMarkdown as any)["markdown-body"]} dangerouslySetInnerHTML={{ __html: dangerousInnerHTML_BookmarkTextSanitized }} />
                         {tag ? <div className={stylesTags.tags_wrapper} aria-label={__("catalog.tags")}>
                             <div className={stylesTags.tag}>
                                 <a onClick={() => setTagFilter(tag)}

@@ -65,9 +65,7 @@ const ScreenReaderSettings: React.FC<{}> = () => {
                             <></>
                         }
                     </div>
-                    <div aria-hidden>
-                        <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.title")}</h3>
-                    </div>
+                    <span aria-hidden dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.title")}</span>
                 </label>
             </div>
         </section>
