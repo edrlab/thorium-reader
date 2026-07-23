@@ -696,6 +696,7 @@
             "advancedMode": "Instant mode (auto create after select)",
             "annotationsExport": {
                 "description": "Name the exported notes:",
+                "format": "Format",
                 "title": "Title"
             },
             "annotationsOptions": "Annotation Options",
@@ -1214,7 +1215,7 @@
                 },
                 "ToggleScreenReaderOptimize": {
                     "description": "In the library window, toggle optimized support for screen readers",
-                    "name": "Toggle Screen Reader Optimizations"
+                    "name": "Toggle screen reader optimizations"
                 }
             },
             "loadUserJson": "Load from user file",

@@ -696,6 +696,7 @@
             "advancedMode": "Anlık mod (seçimden sonra otomatik oluştur)",
             "annotationsExport": {
                 "description": "Dışa aktarılan notları adlandır:",
+                "format": "Biçim",
                 "title": "Başlık"
             },
             "annotationsOptions": "Açıklayıcı Not Seçenekleri",
@@ -1214,7 +1215,7 @@
                 },
                 "ToggleScreenReaderOptimize": {
                     "description": "Kütüphane penceresinde, ekran okuyucular için iyileştirilmiş desteği açar veya kapatır",
-                    "name": "Ekran Okuyucu İyileştirmelerini Aç/Kapat"
+                    "name": "Ekran okuyucu iyileştirmelerini aç/kapat"
                 }
             },
             "loadUserJson": "Kullanıcı dosyasından yükle",
