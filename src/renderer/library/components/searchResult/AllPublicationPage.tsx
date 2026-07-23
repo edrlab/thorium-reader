@@ -1048,7 +1048,7 @@ const CellTags: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & 
 const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_StringValue> = (props) => {
 
     const textNeedToBeSanitized = props.value || "";
-    const cellTextSanitized = DOMPurify.sanitize(textNeedToBeSanitized).replace(/font-size:/g, "font-sizexx:");
+    const dangerousInnerHTML_DescriptionSanitized = DOMPurify.sanitize(textNeedToBeSanitized).replace(/font-size:/g, "font-sizexx:");
     const [isOpen, setIsOpen] = React.useState(false);
 
     return (<div
@@ -1067,7 +1067,7 @@ const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_Generic
             // textAlign: props.displayType === DisplayType.Grid ? "justify" : "start",
             textAlign: "start",
         }}>
-        <p dangerouslySetInnerHTML={{ __html: cellTextSanitized }}></p>
+        <p dangerouslySetInnerHTML={{ __html: dangerousInnerHTML_DescriptionSanitized }}></p>
         {props.value ?
             <Popover.Root onOpenChange={() => setIsOpen(!isOpen)}>
                 <Popover.Trigger style={{maxWidth: "15px"}}>
@@ -1080,7 +1080,7 @@ const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_Generic
                 <Popover.Portal>
                     <Popover.Content collisionPadding={{top : 280}} avoidCollisions sideOffset={5} align="end" alignOffset={-10} hideWhenDetached>
                         <p className={stylesDropDown.dropdown_description}
-                            dangerouslySetInnerHTML={{ __html: cellTextSanitized }}></p>
+                            dangerouslySetInnerHTML={{ __html: dangerousInnerHTML_DescriptionSanitized }}></p>
                         <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
                     </Popover.Content>
                 </Popover.Portal>
