@@ -81,7 +81,7 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
     const a11y_certifierCredential = Array.isArray(a11y_certifierCredential_) ? a11y_certifierCredential_ : a11y_certifierCredential_ ? [a11y_certifierCredential_] : [];
 
     // taken from previous a11y implementation src/renderer/common/components/dialog/publicationInfos/publicationInfoA11y.tsx:ln108
-    let accessibilitySummaryStrSanitized = undefined;
+    let dangerousInnerHTML_AccessibilitySummarySanitized = undefined;
     let accessibilitySummaryIsRTL = undefined;
     let accessibilitySummaryLang = undefined;
     if (a11y_accessibilitySummary) {
@@ -94,7 +94,7 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
         accessibilitySummaryLang = accessibilitySummaryLangStr && accessibilitySummaryLangStr[0] ? accessibilitySummaryLangStr[0].toLowerCase() : "";
         accessibilitySummaryIsRTL = langStringIsRTL(accessibilitySummaryLang);
         const accessibilitySummaryStr = accessibilitySummaryLangStr && accessibilitySummaryLangStr[1] ? accessibilitySummaryLangStr[1] : "";
-        accessibilitySummaryStrSanitized = accessibilitySummaryStr ? DOMPurify.sanitize(accessibilitySummaryStr, { FORBID_TAGS: ["style"], FORBID_ATTR: ["style"] }).replace(/font-size:/g, "font-sizexx:") : "";
+        dangerousInnerHTML_AccessibilitySummarySanitized = accessibilitySummaryStr ? DOMPurify.sanitize(accessibilitySummaryStr, { FORBID_TAGS: ["style"], FORBID_ATTR: ["style"] }).replace(/font-size:/g, "font-sizexx:") : "";
 
     }
 
@@ -232,7 +232,7 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
 
     const enableAdditionnals = (page_break_markers || aria || audio_descriptions || braille || full_ruby_annotations || high_contrast_between_foreground_and_background_audio || high_contrast_between_text_and_background || large_print || ruby_annotations || sign_language || tactile_graphic || tactile_object || text_to_speech_hinting);
 
-    const enableSummaryDetail = accessibilitySummaryStrSanitized || enableAdditionnals || enableConformance || enableHazard || enableRichContent;
+    const enableSummaryDetail = dangerousInnerHTML_AccessibilitySummarySanitized || enableAdditionnals || enableConformance || enableHazard || enableRichContent;
 
     // https://www.w3.org/community/reports/publishingcg/CG-FINAL-epub-techniques-20250422#legal-considerations
     // https://github.com/w3c/publ-a11y/issues/350
@@ -561,11 +561,11 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                     </>
                     : <></>
                 }
-                {accessibilitySummaryStrSanitized ?
+                {dangerousInnerHTML_AccessibilitySummarySanitized ?
                     <><h5 className="publicationInfoA11y2-title">{__("publ-a11y-display-guide.accessibility-summary.accessibility-summary-title")}</h5><div
                         dir={accessibilitySummaryIsRTL ? "rtl" : undefined}
                         lang={accessibilitySummaryLang ? accessibilitySummaryLang : undefined}
-                        dangerouslySetInnerHTML={{ __html: accessibilitySummaryStrSanitized }}
+                        dangerouslySetInnerHTML={{ __html: dangerousInnerHTML_AccessibilitySummarySanitized }}
                     ></div></>
                     : <></>
                 }

@@ -173,7 +173,7 @@ const Header = () => {
     }, [customizationManifest, locale]);
     const screenZipObj = React.useMemo(() => screenZipLinks?.map(({ href, title }) => href && customizationBaseUrl ? {url: customizationBaseUrl + encodeURIComponent_RFC3986(Buffer.from(href).toString("base64")), title } : undefined), [screenZipLinks, customizationBaseUrl]);
 
-    const [screenHtmlArray, setScreenHtmlArray] = React.useState<Array<{ html: string, title: string | IStringMap }>>([]);
+    const [screenHtmlArray, setScreenHtmlArray] = React.useState<Array<{ dangerousInnerHTML_CustomProfileScreenSanitized: string, title: string | IStringMap }>>([]);
     const [cancel, setCancel] = React.useState(false);
 
 
@@ -242,22 +242,11 @@ const Header = () => {
                             return ;
                         }
 
-                        const regex = new RegExp(/href=\"(.*?)\"/, "gm");
-                        const parsed = DOMPurify.sanitize(rawHtmlContent, { FORBID_TAGS: [/*"style"*/], FORBID_ATTR: [/*"style"*/] /* TODO: handle external https links */ });
-                        const hrefSanitized = parsed.replace(regex, (substring) => {
-
-                            let url = /href=\"(.*?)\"/.exec(substring)[1];
-                            if (!/^https?:\/\//.test(url)) {
-                                url = "http://" + url;
-                            }
-
-                            return `href="" alt="${url}" onclick="return ((e) => {
-                                        window.__shell_openExternal('${url}').then((_v) => undefined).catch((_err) => undefined);
-                                        return false;
-                                     })()"`;
-                        });
-
-                        setScreenHtmlArray((screenHtmlArray) => [...screenHtmlArray, { html: hrefSanitized, title: screenHref.title }]);
+                        const htmlSanitized = DOMPurify.sanitize(rawHtmlContent, { FORBID_TAGS: [/*"style"*/], FORBID_ATTR: [/*"style"*/] /* TODO: handle external https links */ });
+                        // console.log(rawHtmlContent, htmlSanitized);
+                        // NOTE that <a href="yyy">xxx</a> is fine, caught by webContents.on("will-navigate", ...) with event.preventDefault() and shell.openExternal(...) on normalized/escaped URL and filtered on HTTP(S)://
+                        // NOTE that the attribute target="_blank" (etc) is automatically removed by DOMPurify but would be caught by webContents.setWindowOpenHandler(...) with { action: "deny" }, although no shell.openExternal(...) in this case
+                        setScreenHtmlArray((screenHtmlArray) => [...screenHtmlArray, { dangerousInnerHTML_CustomProfileScreenSanitized: htmlSanitized, title: screenHref.title }]);
                     })
                     .catch((e) => {
                         console.error("Error fetching data:", e);
@@ -359,7 +348,7 @@ const Header = () => {
                         )
                     }
                 {
-                    screenHtmlArray.length ? screenHtmlArray.map(({html: htmlSanitized, title: titleStringOrObject}, index) => {
+                    screenHtmlArray.length ? screenHtmlArray.map(({dangerousInnerHTML_CustomProfileScreenSanitized, title: titleStringOrObject}, index) => {
 
                         const title = convertMultiLangStringToString(titleStringOrObject, locale);
 
@@ -384,8 +373,8 @@ const Header = () => {
                                             }
 
                                             {
-                                                htmlSanitized ?
-                                                    <div className={stylesModals.modal_dialog_body} dangerouslySetInnerHTML={{ __html: htmlSanitized }} /> : <></>
+                                                dangerousInnerHTML_CustomProfileScreenSanitized ?
+                                                    <div className={stylesModals.modal_dialog_body} dangerouslySetInnerHTML={{ __html: dangerousInnerHTML_CustomProfileScreenSanitized }} /> : <></>
                                             }
 
                                         </Dialog.Content>

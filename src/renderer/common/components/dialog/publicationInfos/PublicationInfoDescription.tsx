@@ -66,8 +66,8 @@ const PublicationInfoDescription: React.FC<IProps> = ({ publicationViewMaybeOpds
     const description = pubDescStr;
     if (!description) return <></>;
 
-    const descriptionSanitized = DOMPurify.sanitize(description).replace(/font-size:/g, "font-sizexx:");
-    if (!descriptionSanitized) return <></>;
+    const dangerousInnerHTML_DescriptionSanitized = DOMPurify.sanitize(description).replace(/font-size:/g, "font-sizexx:");
+    if (!dangerousInnerHTML_DescriptionSanitized) return <></>;
 
     return (
         <>
@@ -88,7 +88,7 @@ const PublicationInfoDescription: React.FC<IProps> = ({ publicationViewMaybeOpds
                         dir={pubDescIsRTL ? "rtl" : undefined}
                         lang={pubDescLang ? pubDescLang : undefined}
                         className={stylesBookDetailsDialog.allowUserSelect}
-                        dangerouslySetInnerHTML={{ __html: descriptionSanitized }}
+                        dangerouslySetInnerHTML={{ __html: dangerousInnerHTML_DescriptionSanitized }}
                     />
                 </div>
                 {needSeeMore &&
