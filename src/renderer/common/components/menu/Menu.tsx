@@ -14,6 +14,7 @@ import classNames from "classnames";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
     button: React.ReactElement;
+    noCollisionPadding?: boolean;
 }
 
 const Menu = (props: React.PropsWithChildren<IBaseProps>) => {
@@ -21,7 +22,7 @@ const Menu = (props: React.PropsWithChildren<IBaseProps>) => {
     const [triggerOpen, setTriggerOpen] = React.useState(false);
 
     const collisionValue = location.hash === "#/home" ? 10 : 280;
-    const collision: Partial<Record<"top", number>> = {top : collisionValue};
+    const collision: Partial<Record<"top", number>> = props.noCollisionPadding ? undefined : {top : collisionValue};
 
     return (
         <Popover.Root modal onOpenChange={() => setTriggerOpen(!triggerOpen)}>
