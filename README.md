@@ -69,7 +69,7 @@ Since february 2025 we use Weblate project Thorium as the main tool for localisa
 
 ### Install dependencies
 
-* `npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root` (or `npm install --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root` if `package-lock.json` needs to be updated): initialize local `node_modules` packages from dependencies declared in `package.json`
+* `npm ci --ignore-scripts --foreground-scripts --allow-git=root` (or `npm install --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root` if `package-lock.json` needs to be updated): initialize local `node_modules` packages from dependencies declared in `package.json`
 * in case of failure to NPM "install" because of "Divina player" SHA integrity mismatch, please try running the following command in your shell: `node scripts/package-lock-patch.js && cat package-lock.json | grep -i divina-player-js`
 * `cd node_modules/electron && DEBUG=@electron/get* force_no_cache=true node install.js && cd -`: this used to be done automatically via a NPM `postinstall` hook script but it is now a manual step, this sets up the Electron binary for the current platform.
 
