@@ -51,10 +51,13 @@ export default class App extends React.Component<{}, undefined> {
         this.onDrop = this.onDrop.bind(this);
     }
 
-    getFiles = async (event: DropEvent): Promise<Array<File>> => {
+    // type DropEvent = React.DragEvent<HTMLElement> | React.ChangeEvent<HTMLInputElement> | DragEvent | Event;
+    getFiles = async (event: DropEvent | Array<FileSystemFileHandle>): Promise<Array<File | DataTransferItem>> => {
+
         if (!(event as React.DragEvent<HTMLElement>).dataTransfer?.files) {
             return [];
         }
+
         const files = Array.from((event as React.DragEvent<HTMLElement>).dataTransfer.files);
         // console.log("getFiles: " + files.length);
         // console.log("getFile: " + files[0]);
