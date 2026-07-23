@@ -318,7 +318,7 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
                     <SVG ariaHidden={true} svg={DeleteIcon} />
                     { !dockedMode ? __("reader.marks.delete") : undefined}
                 </button> :
-                canDeleteAnnotation ? <Popover.Root>
+                canDeleteAnnotation ? <Popover.Root modal>
                     <Popover.Trigger asChild>
                         <button
                         title={__("reader.marks.delete")}

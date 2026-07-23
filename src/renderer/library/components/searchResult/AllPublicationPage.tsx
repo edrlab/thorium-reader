@@ -1069,7 +1069,7 @@ const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_Generic
         }}>
         <p dangerouslySetInnerHTML={{ __html: dangerousInnerHTML_DescriptionSanitized }}></p>
         {props.value ?
-            <Popover.Root onOpenChange={() => setIsOpen(!isOpen)}>
+            <Popover.Root modal onOpenChange={() => setIsOpen(!isOpen)}>
                 <Popover.Trigger style={{maxWidth: "15px"}}>
                     {isOpen ?
                     <SVG ariaHidden svg={CloseIcon} />
@@ -2479,7 +2479,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     };
 
     const FilterPopover = (
-        <Popover.Root>
+        <Popover.Root modal>
             <Popover.Trigger asChild className={stylesPublication.allBooks_header_filter_trigger}
                 title={__("library.filter.addFilters")}>
                 <button onClick={() => setFilterPopoverOpen(!filterPopoverOpen)}>
@@ -2499,7 +2499,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     );
 
     const SortingPopover = (
-        <Popover.Root>
+        <Popover.Root modal>
             <Popover.Trigger asChild className={stylesPublication.allBooks_header_filter_trigger}
                 title={__("library.sorting.addSorting")}>
                 <button onClick={() => setFilterPopoverOpen(!filterPopoverOpen)}>
@@ -2588,7 +2588,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
 
     const SelectTableHeaders = (
-        <Popover.Root open={selectedFilterHeaderOpen} onOpenChange={setSelectedFilterHeaderOpen}>
+        <Popover.Root modal open={selectedFilterHeaderOpen} onOpenChange={setSelectedFilterHeaderOpen}>
             <Popover.Trigger asChild className={stylesPublication.allBooks_header_filter_trigger}
                 title={__("catalog.selectTableHeaders")}>
                 <button>

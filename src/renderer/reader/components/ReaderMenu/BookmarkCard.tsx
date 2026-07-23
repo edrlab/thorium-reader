@@ -312,7 +312,7 @@ export const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, t
                     <SVG ariaHidden={true} svg={DeleteIcon} />
                     { !dockedMode ? __("reader.marks.delete") : undefined}
                 </button> :
-                <Popover.Root>
+                <Popover.Root modal>
                     <Popover.Trigger asChild>
                         <button
                         title={__("reader.marks.delete")}

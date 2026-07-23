@@ -79,7 +79,7 @@ export const TagButton: React.FC<React.PropsWithChildren<IProps>> = (props) => {
                 >
                     {tag as string}
                 </Link>
-                <Popover.Root>
+                <Popover.Root modal>
                     <Popover.Trigger asChild>
                         <button>
                             <SVG ariaHidden={true} svg={EditIcon} />
