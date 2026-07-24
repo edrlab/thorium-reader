@@ -382,7 +382,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
 
     return <>
 
-        <Popover.Root open={isBookmarkNeedEditing} onOpenChange={(open) => {
+        <Popover.Root modal open={isBookmarkNeedEditing} onOpenChange={(open) => {
             if (isBookmarkNeedEditing) {
                 setIsBookmarkNeedEditing(open);
             }

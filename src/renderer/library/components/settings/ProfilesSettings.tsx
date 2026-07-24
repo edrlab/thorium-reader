@@ -97,7 +97,7 @@ const Profiles = () => {
                                     </div>
                                 </label>
                                 <div className={stylesSettings.delete_profile_button} style={{ display: "flex", flexDirection: "row-reverse", width: "100%", margin: "-5px", zIndex: "10" }}>
-                                    <Popover.Root>
+                                    <Popover.Root modal>
                                         <Popover.Trigger asChild>
                                             <button
                                                 style={{ width: "16px", height: "16px" }}

@@ -242,10 +242,16 @@ const closeProcessLock = (() => {
 //
 // Depedency Injection
 //
-// Create container used for dependency injection
-const container = new Container();
-// https://inversify.io/docs/guides/migrating-from-v6/
 
+// https://github.com/inversify/monorepo/issues/2020#issuecomment-5061168619
+// { jitless: false }
+// ===>
+// inversify v8.2.1 crash (SyntaxError: Unexpected token ',' at new Function)
+// TODO: NPM install/update inversify v8.2.2
+// jitless = false ==> more performant JIT optimization, works by default in NodeJS main process
+// (in web context, requires Content Security Policy `unsafe-eval` to allow Function constructor)
+// jitless = true ==> less performant but CSP-safe
+const container = new Container(); /* { jitless: false } */
 
 const getStorePromiseFn = async () => {
     // createStoreProcessLock.lock();

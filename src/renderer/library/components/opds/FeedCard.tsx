@@ -147,7 +147,7 @@ export const FeedCard: React.FC<IFeedCardProps> = (props) => {
 
 const FeedAuthentified = ({ feed, logout, loadFeeds, __ }: { feed: IOpdsFeedView, logout: (url: string) => void, loadFeeds: () => void, __: I18nFunction }) => {
     return (
-        <Popover.Root>
+        <Popover.Root modal>
             <Popover.Trigger asChild>
                 <button
                     className={stylesCatalogs.button_login}
@@ -177,7 +177,7 @@ const FeedAuthentified = ({ feed, logout, loadFeeds, __ }: { feed: IOpdsFeedView
 
 const FeedAuthentification = ({ feed, triggerAuth, __ }: { feed: IOpdsFeedView, triggerAuth: (feedUrl: string, authenticationUrl: string) => void, __: I18nFunction }) => {
     return (
-        <Popover.Root>
+        <Popover.Root modal>
             <Popover.Trigger asChild>
                 <button
                     className={stylesCatalogs.button_login}

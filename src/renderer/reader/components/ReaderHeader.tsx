@@ -805,7 +805,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
                                             }
                                             <li>
-                                                <Popover.Root open={this.state.ttsPopoverOpen} onOpenChange={(open) => this.setState({ ttsPopoverOpen: open })}>
+                                                <Popover.Root modal open={this.state.ttsPopoverOpen} onOpenChange={(open) => this.setState({ ttsPopoverOpen: open })}>
                                                     <Popover.Trigger asChild>
                                                         <button className={stylesReader.menu_button} style={{ backgroundColor: this.state.ttsPopoverOpen ? "var(--color-brand-primary)" : "" }} aria-label={__("reader.tts.options")} title={__("reader.tts.options")}>
                                                             <SVG ariaHidden svg={HeadphoneIcon} className={this.state.ttsPopoverOpen ? stylesReaderHeader.active_svg : ""} />
@@ -923,7 +923,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
                         <BookmarkButton shortcutEnable={this.props.shortcutEnable} isOnSearch={this.props.isOnSearch} />
 
-                        <Popover.Root open={annotationPopoverOpen} onOpenChange={(open) => {
+                        <Popover.Root modal open={annotationPopoverOpen} onOpenChange={(open) => {
                             if (!open) {
                                 setTimeout(closeAnnotationPopover, 1); // trigger input onChange before the popover trigger
                             }

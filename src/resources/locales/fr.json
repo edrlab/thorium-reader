@@ -5,7 +5,7 @@
         "leftSlideButton": "Faire défiler vers la gauche",
         "mainContent": "Contenu principal",
         "rightSlideButton": "Faire défiler vers la droite",
-        "skipLink": "Aller au contenu",
+        "skipLink": "Aller directement au contenu",
         "toolbar": "Barre d'outils"
     },
     "apiapp": {
@@ -34,7 +34,7 @@
                         "no": "Non",
                         "yes": "Oui"
                     },
-                    "help": "Si cette case est cochée, les livres actuellement ouverts seront automatiquement ouverts au prochain démarrage de l'application.",
+                    "help": "Si cette case est cochée, les livres actuellement ouverts seront automatiquement rouverts au prochain démarrage de l'application.",
                     "message": "Sauvegarde et restauration de session",
                     "title": "Sauvegarder la session ?"
                 }
@@ -43,7 +43,7 @@
         "update": {
             "message": "Nouvelle version disponible, cliquez pour en savoir plus.",
             "title": "Mise à jour du logiciel {{- appName}}.",
-            "whatsnew": ""
+            "whatsnew": "Une nouvelle version a été installée ; cliquez pour en savoir plus"
         },
         "window": {
             "showLibrary": "Afficher la bibliothèque",
@@ -78,7 +78,7 @@
         "deleteBook": "Supprimer",
         "deleteTag": "Supprimer le mot-clé",
         "description": "Description",
-        "emptyTagList": "Aucune publication contenant des mots-clés.",
+        "emptyTagList": "Aucune publication dotée de mots-clés.",
         "entry": {
             "continueReading": "Reprendre la lecture",
             "lastAdditions": "Récemment ajouté"
@@ -92,18 +92,18 @@
         "login": "Connexion",
         "logout": "Déconnexion",
         "missing": "Fichiers manquants",
-        "missingUnavailableDescription": "Cette publication ne peut pas être chargée car ses fichiers ne sont pas disponibles. Il faut la réimporter, ou aller dans les préférences puis dans Stockage pour ajouter ou changer le stockage additionel.",
+        "missingUnavailableDescription": "Cette publication ne peut pas être chargée car ses fichiers ne sont pas disponibles. Il faut la réimporter ou aller dans Préférences > Stockage pour ajouter ou modifier le stockage additionnel.",
         "moreInfo": "Plus d'informations",
         "myBooks": "Mes livres",
         "noPublicationHelpL1": "Déposez les fichiers ici",
         "noPublicationHelpL2": "Ou bien utilisez le bouton \"{{- importTitle }}\" ci-dessus.",
         "noPublicationHelpL3": "Les fichiers protégés par LCP sont pris en charge.",
-        "noPublicationHelpL4": "Extensions prises en charge :",
+        "noPublicationHelpL4": "Extensions prises en charge :",
         "numberOfPages": "Nombre de pages",
         "opds": {
             "auth": {
                 "cancel": "Annuler",
-                "external": "La page de connexion va s'ouvrir dans votre navigateur web, veuillez suivre les instructions. Une fois connecté, le navigateur web reviendra dans l'application.",
+                "external": "La page de connexion s'ouvrira dans votre navigateur ; veuillez suivre les instructions. Une fois connecté, vous serez redirigé vers l'application.",
                 "fallback": "Note : dans le cas d'un problème de connexion avec votre navigateur web, veuillez réessayer avec la méthode alternative directement dans l'application.",
                 "login": "Connexion",
                 "password": "Mot de passe",
@@ -150,17 +150,17 @@
             "descList_many": "{{- count}} note(s) {{- creator}} seront importées vers {{- title}} {{- author}}",
             "descList_one": "{{- count}} note {{- creator}} sera importée vers {{- title}} {{- author}}",
             "descList_other": "{{- count}} notes {{- creator}} seront importées vers {{- title}} {{- author}}",
-            "descNewer_many": "{{- count}} conflits: certaines notes associées à la publication sont plus récentes",
-            "descNewer_one": "{{- count}} conflit: une note associée à la publication est plus récente",
-            "descNewer_other": "{{- count}} conflits: certaines notes associées à la publication sont plus récentes",
-            "descOlder_many": "{{- count}} conflits: certaines notes associées à la publication sont plus anciennes",
-            "descOlder_one": "{{- count}} conflit: une note associée à la publication est plus ancienne",
-            "descOlder_other": "{{- count}} conflits: certaines notes associées à la publication sont plus anciennes",
-            "descTitle": "Titre de la liste de notes : ",
+            "descNewer_many": "{{- count}} conflits : certaines notes associées à la publication sont plus récentes",
+            "descNewer_one": "{{- count}} conflit : une note associée à la publication est plus récente",
+            "descNewer_other": "{{- count}} conflits : certaines notes associées à la publication sont plus récentes",
+            "descOlder_many": "{{- count}} conflits : certaines notes associées à la publication sont plus anciennes",
+            "descOlder_one": "{{- count}} conflit : une note associée à la publication est plus ancienne",
+            "descOlder_other": "{{- count}} conflits : certaines notes associées à la publication sont plus anciennes",
+            "descTitle": "Titre de la liste de notes : ",
             "importAll": "Importer toutes les notes",
             "importWithoutConflict": "Importer les notes sans conflits",
-            "origin": "Source : {{- title}} {{- author}}",
-            "title": "Voulez-vous importer toutes ces notes ?"
+            "origin": "Source : {{- title}} {{- author}}",
+            "title": "Voulez-vous importer toutes ces notes ?"
         },
         "cancel": "Annuler",
         "customization": {
@@ -172,25 +172,25 @@
             }
         },
         "deleteAnnotations": "Supprimer les notes ?",
-        "deleteAnnotationsText_many": "Voulez-vous supprimer {{- count}} note(s) ?",
+        "deleteAnnotationsText_many": "Voulez-vous supprimer {{- count}} notes ?",
         "deleteAnnotationsText_one": "Voulez-vous supprimer {{- count}} note ?",
         "deleteAnnotationsText_other": "Voulez-vous supprimer {{- count}} notes ?",
-        "deleteBookmarks": "Supprimer les marque-pages ?",
-        "deleteBookmarksText_many": "Êtes-vous certain de vouloir supprimer {{- count}} marque-page(s) ?",
+        "deleteBookmarks": "Supprimer les marque-pages ?",
+        "deleteBookmarksText_many": "Êtes-vous certain de vouloir supprimer {{- count}} marque-pages ?",
         "deleteBookmarksText_one": "Êtes-vous certain de vouloir supprimer {{- count}} marque-page ?",
         "deleteBookmarksText_other": "Êtes-vous certain de vouloir supprimer {{- count}} marque-pages ?",
-        "deleteFeed": "Supprimer ce catalogue ?",
-        "deletePublication": "Supprimer ce livre ?",
-        "deletePublicationWithNotes": "Attention: cette publication contient des annotations et/ou des marque-pages, ils seront eux aussi supprimés ! (si vous voulez les conserver, assurez-vous d'avoir sauvegardé les notes avant de supprimer la publication)",
-        "import": "Confirmer l'ajout :",
+        "deleteFeed": "Supprimer ce catalogue ?",
+        "deletePublication": "Supprimer ce livre ?",
+        "deletePublicationWithNotes": "Attention : cette publication contient des annotations et/ou des marque-pages, qui seront eux aussi supprimés ! Si vous voulez les conserver, assurez-vous d'avoir sauvegardé les notes avant de supprimer la publication.",
+        "import": "Confirmer l'ajout :",
         "importError": "Une erreur est survenue, vérifiez l'extension du fichier ({{acceptedExtension}})",
-        "renew": "Voulez-vous étendre la durée de l'emprunt ?",
-        "return": "Voulez-vous retourner ce livre ?",
+        "renew": "Voulez-vous prolonger la durée de l'emprunt ?",
+        "return": "Voulez-vous retourner ce livre ?",
         "yes": "Oui"
     },
     "error": {
         "errorBox": {
-            "error": "Message d'erreur:",
+            "error": "Message d'erreur :",
             "message": "Une erreur est survenue dans le fichier {{- filename}}",
             "title": "Erreur interne {{- appName}}"
         }
@@ -217,26 +217,26 @@
         "filter": {
             "addFilters": "Ajouter des filtres",
             "filterBy": "Filtrer par",
-            "selectOption": "Selectionner un élement"
+            "selectOption": "Sélectionner un élément"
         },
         "lcp": {
-            "hidePassphrase": "Cacher la passphrase",
+            "hidePassphrase": "Cacher le mot de passe",
             "hint": "Indice :",
             "open": "Ouvrir",
             "password": "Mot de passe",
-            "sentence": "Entrez la clé LCP associée à cette publication :",
-            "showPassphrase": "Montrer la passphrase",
+            "sentence": "Entrez la clé LCP associée à cette publication",
+            "showPassphrase": "Montrer le mot de passe",
             "urlHint": "Vous avez oublié votre phrase d'accès ? Trouvez de l'aide avec ce lien.",
-            "whatIsLcp?": "Qu'est-ce que LCP ?",
+            "whatIsLcp?": "Qu'est-ce que LCP ?",
             "whatIsLcpInfoDetails": "LCP signifie 'Licensed Content Protection'. Il s'agit d'une technologie de protection des livres numériques contre la copie illicite, souvent appelée DRM. Ouvrir un livre protégé par LCP nécessite une clé LCP, c'est-à-dire un ou plusieurs mots séparés par des espaces. LCP est un standard ouvert, qui équilibre facilité d'usage et demandes des éditeurs.",
-            "whatIsLcpInfoDetailsLink": "Pour en savoir plus, cliquez ce lien, qui renvoie vers le site web de EDRLab."
+            "whatIsLcpInfoDetailsLink": "Pour en savoir plus, cliquez sur ce lien, qui renvoie vers le site web d’EDRLab."
         },
         "sorting": {
             "addSorting": "Ajouter un tri",
             "author": "Auteur",
             "language": "Langue",
             "readingState": "État de lecture",
-            "sortBy": "Trier par : ",
+            "sortBy": "Trier par : ",
             "title": "Titre"
         }
     },
@@ -244,33 +244,33 @@
         "annotations": {
             "alreadyImported": "Toutes les notes sont déjà importées, importation annulée.",
             "emptyFile": "Aucune note n'est disponible dans ce fichier.",
-            "errorParsing": "Erreur lors de la lecture du fichier : ",
+            "errorParsing": "Erreur lors de la lecture du fichier : ",
             "noBelongTo": "Impossible d'importer les notes, au moins une note n'appartient pas à la publication finale.",
-            "nothing": "Aucune note disponible, importation annulée",
+            "nothing": "Aucune note disponible, ajout annulé",
             "success": "Importation réussie."
         },
         "download": {
             "cancelled": "Téléchargement annulé.",
-            "error": "Le téléchargement de {{- title}} a échoué: [{{- err}}]",
+            "error": "Le téléchargement de {{- title}} a échoué : [{{- err}}]",
             "errors": {
                 "hashMismatch": "Erreur de vérification de l'intégrité du fichier téléchargé  : SHA-256 attendu {{- expected}}, obtenu {{- actual}}.",
                 "httpGet": "Téléchargement HTTP échoué : {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "invalidFilename": "Le nom du fichier temporaire téléchargé est invalide.",
                 "invalidLink": "Le lien de téléchargement est invalide.",
                 "invalidTempDirectory": "Le répertoire de téléchargement temporaire est invalide.",
-                "lengthMismatch": "Erreur de vérification d'intégrité des fichiers téléchargés : attendus {{- expected}}, obtenu {{- actual}} octets.",
+                "lengthMismatch": "Erreur de vérification de l'intégrité des fichiers téléchargés : attendus {{- expected}}, obtenu {{- actual}} octets.",
                 "readStreamMissing": "Le flux de téléchargement n'est pas disponible.",
                 "tooManyFilenameAttempts": "Impossible de créer un fichier de téléchargement temporaire unique : {{- path}}"
             }
         },
         "import": {
             "alreadyImport": "{{- title}} a déjà été ajouté.",
-            "fail": "L'ajout de {{- path}} a échoué. {{- err}}",
+            "fail": "L'ajout de {{- path}} a échoué : {{- err}}",
             "success": "L'ajout de {{- title}} est achevé."
         },
         "open": {
-            "error": "Le livre ne peut pas être ouvert : {{- err}}",
-            "folderNotFound": "Le répertoire de publication est introuvable. Réimportez-le ou configurez le stockage supplémentaire dans Paramètres > Stockage."
+            "error": "Le livre ne peut pas être ouvert : {{- err}}",
+            "folderNotFound": "Le répertoire des publications est introuvable. Réimportez-le ou configurez le stockage additionnel dans Paramètres > Stockage."
         },
         "storage": {
             "removed": "Le répertoire des publications a été supprimé.",
@@ -282,33 +282,33 @@
     "opds": {
         "addForm": {
             "addButton": "Ajouter",
-            "name": "Nom :",
+            "name": "Nom :",
             "namePlaceholder": "Nom",
-            "url": "Adresse :",
-            "urlPlaceholder": "Adresse"
+            "url": "Adresse :",
+            "urlPlaceholder": "Lien"
         },
         "addFormApiapp": {
             "title": "Ajouter une bibliothèque"
         },
         "addMenu": "Ajouter un catalogue OPDS",
         "breadcrumbRoot": "Mes catalogues",
-        "documentation": "Site web officiel d'OPDS",
+        "documentation": "Site web officiel du standard OPDS",
         "empty": "Aucune publication trouvée",
         "firstPage": "Première",
-        "informations": "Imaginez un monde dans lequel vous pouvez explorer et télécharger en quelques clics les publications numériques des bibliothèques publiques et des librairies numériques. C'est exactement ce qu'offre le format de catalogue OPDS (Open Publication Distribution System). Avec OPDS, vous pouvez naviguer dans les catalogues de différents fournisseurs de livres électroniques, vous connecter, emprunter, acheter une publication ou visiter votre bibliothèque personnelle. Vous pouvez aussi télécharger un livre électronique ou un livre audio directement dans Thorium Reader pour une lecture instantanée.\nComment trouver un catalogue OPDS ? C'est très simple. Recherchez un lien hypertexte (URL) menant au catalogue. Copiez cette URL dans le champ \"Lien\" ci-dessus. N'oubliez pas qu'il n'existe pas de registre universel de tous les catalogues OPDS actifs. Vous devrez contacter la bibliothèque ou le libraire de votre choix et lui demander l'URL de son catalogue OPDS. Si vous ne savez pas par où commencer, Wikipedia propose quelques registres de catalogues OPDS dans différentes langues qui pourraient vous être utiles.\nLe champ Nom est laissé à votre convenance ; il permet d'identifier facilement le catalogue dans Thorium Reader.",
+        "informations": "Imaginez un monde dans lequel vous pouvez explorer et télécharger en quelques clics les publications numériques des bibliothèques publiques et des librairies numériques. C'est exactement ce qu'offre le format de catalogue OPDS (Open Publication Distribution System). Avec OPDS, vous pouvez naviguer dans les catalogues de différents fournisseurs de livres électroniques, vous connecter, emprunter, acheter une publication ou visiter votre bibliothèque personnelle. Vous pouvez aussi télécharger un livre électronique ou un livre audio directement dans Thorium Reader pour une lecture instantanée.\nComment trouver un catalogue OPDS ? C'est très simple. Recherchez un lien hypertexte (URL) menant au catalogue. Copiez cette URL dans le champ \"Lien\" ci-dessus. N'oubliez pas qu'il n'existe pas de registre universel de tous les catalogues OPDS actifs. Vous devrez contacter la bibliothèque ou le libraire de votre choix et lui demander l'URL de son catalogue OPDS. Si vous ne savez pas par où commencer, Wikipedia propose quelques registres de catalogues OPDS dans différentes langues qui pourraient vous être utiles.\nLe champ Nom est laissé à votre convenance ; il permet d'identifier facilement le catalogue dans Thorium Reader.",
         "lastPage": "Dernière",
         "menu": {
             "aboutBook": "À propos",
             "addExtract": "Ajouter l'extrait",
-            "goBuyBook": "Aller sur la page d'achat",
-            "goLoanBook": "Aller sur la page d'emprunt",
-            "goRevokeLoanBook": "Mettre fin au prêt",
+            "goBuyBook": "Acheter le livre",
+            "goLoanBook": "Emprunter le livre",
+            "goRevokeLoanBook": "Mettre fin à l'emprunt",
             "goSubBook": "Aller sur la page d'abonnement"
         },
         "network": {
             "error": "Une erreur est survenue",
             "noInternet": "Pas de connexion Internet",
-            "noInternetMessage": "Essayez de vérifier le câble réseau, le modem, le routeur ou votre connexion wifi",
+            "noInternetMessage": "Essayez de vérifier le câble réseau, le modem, le routeur ou votre connexion Wi-Fi",
             "reject": "Désolé, une erreur est survenue lors de la tentative de traitement du catalogue !",
             "timeout": "Le serveur distant met du temps à répondre, veuillez réessayer plus tard"
         },
@@ -317,12 +317,12 @@
         "resumeBrowsing": "Reprendre le parcours",
         "shelf": "Étagère",
         "updateForm": {
-            "name": "Nom :",
+            "name": "Nom :",
             "title": "Éditer un flux OPDS",
             "updateButton": "Éditer",
-            "url": "Adresse :"
+            "url": "Lien :"
         },
-        "whatIsOpds": "Qu'est-ce que OPDS?"
+        "whatIsOpds": "Qu'est-ce que OPDS ?"
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
@@ -330,8 +330,8 @@
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "Information enrichie pour les technologies d'assistances",
-                "descriptive": "La structure est enrichi de rôles ARIA afin d'optimiser l'organisation et de faciliter la navigation via les technologies d'assistances"
+                "compact": "Information enrichie pour les technologies d'assistance",
+                "descriptive": "La structure est enrichie de rôles ARIA afin d'optimiser l'organisation et de faciliter la navigation via les technologies d'assistance"
             },
             "additional-accessibility-information-audio-descriptions": {
                 "compact": "Description audio",
@@ -342,8 +342,8 @@
                 "descriptive": "Braille"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "Annotations complètes au format ruby (langues asiatiques)",
-                "descriptive": "Annotations complètes au format ruby (langues asiatiques)"
+                "compact": "Annotations complètes au format Ruby (langues asiatiques)",
+                "descriptive": "Annotations complètes au format Ruby (langues asiatiques)"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
                 "compact": "Contraste sonore amélioré",
@@ -362,8 +362,8 @@
                 "descriptive": "Contient une pagination identique à la version imprimée"
             },
             "additional-accessibility-information-ruby-annotations": {
-                "compact": "Annotations partielles au format ruby (langues asiatiques)",
-                "descriptive": "Annotations partielles au format ruby (langues asiatiques)"
+                "compact": "Annotations partielles au format Ruby (langues asiatiques)",
+                "descriptive": "Annotations partielles au format Ruby (langues asiatiques)"
             },
             "additional-accessibility-information-sign-language": {
                 "compact": "Langue des signes",
@@ -640,7 +640,7 @@
                 "sound": "Son",
                 "unknown": "Inconnu"
             },
-            "certifierReport": "Rapport de conformité",
+            "certifierReport": "Rapport de conformité :",
             "conformsTo": "Conforme à :",
             "moreInformation": "Plus d'informations",
             "name": "Accessibilité",
@@ -700,7 +700,8 @@
             "addNote": "Annoter",
             "advancedMode": "Mode instantané (création automatique après sélection)",
             "annotationsExport": {
-                "description": "Nommez cette liste de notes",
+                "description": "Nommez cette liste de notes :",
+                "format": "Format",
                 "title": "Titre"
             },
             "annotationsOptions": "Notes Options",
@@ -784,10 +785,10 @@
             "ignoreAndUseTTSDescription": "Ignorer EPUB Media Overlays, lire avec la synthèse vocale",
             "next": "Suivant",
             "pause": "Mettre en pause",
-            "play": "Lire",
+            "play": "Lire à voix haute",
             "previous": "Précédent",
             "skip": "Omettre les informations auxiliaires",
-            "skipDescription": "Omettre les sauts de page, les notes de bas de page, etc.",
+            "skipDescription": "Omettre les sauts de page, notes de bas de page, etc.",
             "speed": "Vitesse de lecture",
             "stop": "Arrêt",
             "title": "Lire à haute voix",
@@ -800,8 +801,8 @@
             "annotationTitle": "Annotation",
             "backHomeTitle": "Retour à la bibliothèque",
             "bookmarkTitle": "Marque-page",
-            "currentPage": "Page courante: {{- current}}",
-            "currentPageTotal": "Page courante: {{- current}}/{{- total}}",
+            "currentPage": "Page courante : {{- current}}",
+            "currentPageTotal": "Page courante : {{- current}}/{{- total}}",
             "detachWindowTitle": "Afficher la bibliothèque",
             "goTo": "Aller à",
             "goToError": "Cette page n'existe pas",
@@ -845,7 +846,7 @@
                 "results": "Résultats",
                 "submit": "Trouver"
             },
-            "searchTitle": "Recherche"
+            "searchTitle": "Recherche :"
         },
         "print": {
             "descriptionLcpCount": "Limite de pages restantes : {{- count}}",
@@ -862,7 +863,7 @@
             "pages": "Pages",
             "preview": "Prévisualisation",
             "print": "Imprimer",
-            "printablePages": "Pages imprimables (total) :",
+            "printablePages": "Pages imprimables (total)",
             "title": "Sélection des pages à imprimer"
         },
         "settings": {
@@ -971,7 +972,7 @@
             "name": "Nom",
             "organization": "Organisation",
             "person": "Personne",
-            "type": "Type"
+            "type": "Type :"
         },
         "auth": {
             "help": "Cette action supprime vos identifiants de connexion aux catalogues.",
@@ -987,7 +988,7 @@
             "keyboardShortcuts": "Raccourcis clavier",
             "list": {
                 "AddBookmarkWithLabel": {
-                    "description": "Ouvrir la modal de creation de marque-pages et éditer les labels (notes)",
+                    "description": "Dans la vue lecture, ouvre la modale de création de signet et permet d'éditer son libellé",
                     "name": "Ajouter un Signet avec Libellé"
                 },
                 "AnnotationsCreate": {
@@ -1059,7 +1060,7 @@
                     "name": "Focus sur le contenu principal"
                 },
                 "FocusMainDeep": {
-                    "description": "Tout comme \"Contenu principal\" / FocusMainDeep dans la vue du lecteur (voir ci-dessus), mais le focus clavier est forcé plus profondément dans le cadre qui affiche le contenu de la publication (cela peut aider dans les cas où les lecteurs d'écran ne lisent pas automatiquement l'élément HTML actuellement focalisé à l'intérieur du document affiché).",
+                    "description": "Le focus clavier est forcé plus profondément dans le cadre qui affiche le contenu de la publication (ce qui peut aider dans les cas où les lecteurs d'écran ne lisent pas automatiquement l'élément HTML actuellement focalisé à l'intérieur du document affiché).",
                     "name": "Focus profond sur le contenu principal"
                 },
                 "FocusReaderGotoPage": {
@@ -1123,8 +1124,8 @@
                     "name": "Aller à la Page OPDS Suivante"
                 },
                 "NavigateNextOPDSPageAlt": {
-                    "description": "Dans la fenêtre de la bibliothèque pour les flux de Catalogues (OPD), active les liens de pagination suivants (raccourci clavier alternatif).",
-                    "name": "Aller à la Page OPDS Suivante (Alternatif)"
+                    "description": "Dans vue bibliothèque d'un catalogue, saute à la page suivante (raccourci clavier alternatif)",
+                    "name": "Aller à la Page Suivante d'un Catalogue (Alternatif)"
                 },
                 "NavigateNextPage": {
                     "description": "dans la fenêtre du lecteur, se déplace vers la \"page\" précédente ou suivante (ou unité de défilement, si la pagination est désactivée).",
@@ -1207,7 +1208,7 @@
                     "name": "Rechercher le résultat précédent (alternatif)"
                 },
                 "SpeakReaderInfoWhereAmI": {
-                    "description": "Dans la fenêtre de lecture, c'est la fonctionnalité \"où suis-je\", exactement comme ci-dessus, mais uniquement parlée via le lecteur d'écran TTS grâce à une région en direct ARIA avec une parole assertive qui interrompt la narration en cours.",
+                    "description": "Dans la fenêtre de lecture, décrit le contexte de la position de lecture en utilisant le lecteur d'écran et une parole assertive qui interrompt la narration en cours.",
                     "name": "Décrire le lieu de lecture (Oral)"
                 },
                 "ToggleBookmark": {
@@ -1219,8 +1220,8 @@
                     "name": "Basculer en plein écran"
                 },
                 "ToggleScreenReaderOptimize": {
-                    "description": "",
-                    "name": ""
+                    "description": "Dans la vue bibliothèque, bascule vers le support optimisé des lecteurs d'écran",
+                    "name": "Basculer vers le support optimisé des lecteurs d'écran"
                 }
             },
             "loadUserJson": "Charger le fichier",
@@ -1253,7 +1254,7 @@
         },
         "screenReaderActivate": {
             "help": "Lorsque l'application détecte la présence d'une technologie d'assistance, l'interface utilisateur fonctionne mieux avec les lecteurs d'écran",
-            "invite": "",
+            "invite": "Support optimisé des lecteurs d'écran ({{- status}}) [{{- keyboard}}]",
             "message": "Support amélioré pour les lecteurs d'écran",
             "title": "Améliorer l'expérience d'un utilisateur doté d'un lecteur d'écran"
         },
@@ -1272,7 +1273,7 @@
                 "removeStorageDirectory": "Supprimer le stockage supplémentaire"
             },
             "beta": {
-                "availability": "Cette fonctionnalité ne fonctionne qu'avec les versions récentes de Thorium; les publications du stockage supplémentaire ne seront pas affichées dans Thorium 3.4 ni dans toute version antérieure.",
+                "availability": "Cette fonctionnalité ne fonctionne qu'avec les versions récentes de Thorium ; les publications du stockage additionnel ne seront pas affichées dans Thorium 3.4 ni dans une version antérieure.",
                 "integrity": "Vous devez maintenir ce répertoire stable et accessible. Évitez de le supprimer, de restreindre son accès ou d'utiliser un stockage lent ou instable, tel qu'un disque réseau.",
                 "migration": "Thorium ne transfère pas automatiquement vos livres : si vous changez de stockage supplémentaire, vous devez déplacer manuellement vos publications vers le nouvel emplacement. Si vous retirez ce stockage, vous devez déplacer manuellement vos publications vers le stockage d'origine.",
                 "summary": "En savoir plus sur cette fonctionnalité, actuellement en bêta",

@@ -109,7 +109,7 @@ export const AdvancedTrigger = () => {
     };
 
     return (
-        <Popover.Root>
+        <Popover.Root modal>
             <Popover.Trigger asChild>
                 <button>
                     <SVG

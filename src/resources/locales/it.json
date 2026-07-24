@@ -43,7 +43,7 @@
         "update": {
             "message": "Nuova versione disponibile, clicca per saperne di più.",
             "title": "Aggiornamento del software {{- appName}}.",
-            "whatsnew": ""
+            "whatsnew": "È stata installata una nuova versione dell'app, clicca per saperne di più"
         },
         "window": {
             "showLibrary": "Visualizza la biblioteca",
@@ -1219,8 +1219,8 @@
                     "name": "Attiva/disattiva schermo intero"
                 },
                 "ToggleScreenReaderOptimize": {
-                    "description": "",
-                    "name": ""
+                    "description": "Attiva/disattiva il supporto ottimizzato per i lettori di schermo nella finestra della biblioteca",
+                    "name": "Attiva/disattiva le ottimizzazioni per la lettura dello schermo"
                 }
             },
             "loadUserJson": "Carica il file",
@@ -1253,7 +1253,7 @@
         },
         "screenReaderActivate": {
             "help": "Quando l'applicazione rileva la presenza di tecnologia assistiva, l'interfaccia utente funziona meglio con i lettori di schermo",
-            "invite": "",
+            "invite": "Ottimizza per il lettore di schermo ({{- status}}) [{{- keyboard}}]",
             "message": "Supporto migliorato per screen reader",
             "title": "Migliora l’esperienza con lo screen reader"
         },

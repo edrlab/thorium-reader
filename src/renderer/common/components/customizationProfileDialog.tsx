@@ -56,7 +56,7 @@ export const CustomizationProfileDialog: React.FC = () => {
     const welcomeScreenHtmlZipPath = customization.manifest?.links?.find((ln) => ln.rel === "welcome-screen" && (!ln.type || ln.type === "text/html") && ln.language === locale)?.href || customization.manifest?.links?.find((ln) => ln.rel === "welcome-screen" && (!ln.type || ln.type === "text/html") && (ln.language === "en" || !ln.language))?.href;
     const welcomeScreenHtmlHref = customizationBaseUrl && welcomeScreenHtmlZipPath ? customizationBaseUrl + encodeURIComponent_RFC3986(Buffer.from(welcomeScreenHtmlZipPath).toString("base64")) : "";
 
-    const [welcomeScreenHtmlSanitized, setWelcomeScreenHtmlSanitized] = React.useState("");
+    const [dangerousInnerHTML_WelcomeScreenSanitized, setDangerousInnerHTML_WelcomeScreenSanitized] = React.useState("");
 
     // console.log("welcomeScreen HTML zipPath: ", welcomeScreenHtmlZipPath);
     // console.log("welcomeScreen HTML URL: ", welcomeScreenHtmlHref);
@@ -77,30 +77,20 @@ export const CustomizationProfileDialog: React.FC = () => {
                         return;
                     }
 
-                    const regex = new RegExp(/href=\"(.*?)\"/, "gm");
-                    const parsed = DOMPurify.sanitize(rawHtmlContent, { FORBID_TAGS: [/*"style"*/], FORBID_ATTR: [/*"style"*/] /* TODO: handle external https links */ });
-                    const hrefSanitized = parsed.replace(regex, (substring) => {
-
-                        let url = /href=\"(.*?)\"/.exec(substring)[1];
-                        if (!/^https?:\/\//.test(url)) {
-                            url = "http://" + url;
-                        }
-
-                        return `href="" alt="${url}" onclick="return ((e) => {
-                                    window.__shell_openExternal('${url}').then((_v) => undefined).catch((_err) => undefined);
-                                    return false;
-                                 })()"`;
-                    });
-
-                    setWelcomeScreenHtmlSanitized(hrefSanitized);
+                    const htmlSanitized = DOMPurify.sanitize(rawHtmlContent, { FORBID_TAGS: [/*"style"*/], FORBID_ATTR: [/*"style"*/] /* TODO: handle external https links */ });
+                    // console.log(rawHtmlContent, htmlSanitized);
+                    // NOTE that <a href="yyy">xxx</a> is fine, caught by webContents.on("will-navigate", ...) with event.preventDefault() and shell.openExternal(...) on normalized/escaped URL and filtered on HTTP(S)://
+                    // NOTE that the attribute target="_blank" (etc) is automatically removed by DOMPurify but would be caught by webContents.setWindowOpenHandler(...) with { action: "deny" }, although no shell.openExternal(...) in this case
+                    setDangerousInnerHTML_WelcomeScreenSanitized(htmlSanitized);
                 })
                 .catch((e) => {
                     console.error("Error fetching data:", e);
+                    setDangerousInnerHTML_WelcomeScreenSanitized("");
                 });
         } else {
-            setWelcomeScreenHtmlSanitized("");
+            setDangerousInnerHTML_WelcomeScreenSanitized("");
         }
-    }, [welcomeScreenHtmlHref, customizationId, open, setWelcomeScreenHtmlSanitized]);
+    }, [welcomeScreenHtmlHref, customizationId, open, setDangerousInnerHTML_WelcomeScreenSanitized]);
 
 
     return (
@@ -121,16 +111,16 @@ export const CustomizationProfileDialog: React.FC = () => {
                         </AlertDialog.Action>
                         </AlertDialog.Title>
                     <AlertDialog.Description className={stylesModals.modal_dialog_body} style={{ display: "flex", gap: "20px", flexDirection: "row", justifyContent: "normal"}}>
-                        {customization.welcomeScreen.enable && welcomeScreenHtmlSanitized ? <img style={{ maxWidth: "250px", maxHeight: "500px", objectFit: "contain" }} src={welcomeScreenImgHref} /> : <></>}
+                        {customization.welcomeScreen.enable && dangerousInnerHTML_WelcomeScreenSanitized ? <img style={{ maxWidth: "250px", maxHeight: "500px", objectFit: "contain" }} src={welcomeScreenImgHref} /> : <></>}
                         <div style={{position: "relative", width: "100%", height: "100%"}}>
                             {
-                                customization.welcomeScreen.enable && welcomeScreenHtmlSanitized ?
-                                    <div dangerouslySetInnerHTML={{ __html: welcomeScreenHtmlSanitized }} />
+                                customization.welcomeScreen.enable && dangerousInnerHTML_WelcomeScreenSanitized ?
+                                    <div dangerouslySetInnerHTML={{ __html: dangerousInnerHTML_WelcomeScreenSanitized }} />
                                     : customization.welcomeScreen.enable ?
                                         <p>{__("dialog.customization.splashscreen.fallbackWelcomeScreen")}</p> : <></>
                             }
                             {
-                                !(customization.lock.state === "IDLE" || welcomeScreenHtmlSanitized) ?
+                                !(customization.lock.state === "IDLE" || dangerousInnerHTML_WelcomeScreenSanitized) ?
                                 <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", flexDirection: "column", justifyContent: "space-between"}}>
                                     <Loader></Loader>
                                     <span>{__("dialog.customization.splashscreen.state", {state: customization.lock.state, id: customization.lock.lockInfo?.id === "" && customization.lock.state === "ACTIVATING" ? "THorium Default Profile" : customization.lock.lockInfo?.id || "undefined"})}</span>

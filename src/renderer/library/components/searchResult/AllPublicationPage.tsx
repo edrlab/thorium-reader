@@ -1048,7 +1048,7 @@ const CellTags: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & 
 const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_StringValue> = (props) => {
 
     const textNeedToBeSanitized = props.value || "";
-    const cellTextSanitized = DOMPurify.sanitize(textNeedToBeSanitized).replace(/font-size:/g, "font-sizexx:");
+    const dangerousInnerHTML_DescriptionSanitized = DOMPurify.sanitize(textNeedToBeSanitized).replace(/font-size:/g, "font-sizexx:");
     const [isOpen, setIsOpen] = React.useState(false);
 
     return (<div
@@ -1067,9 +1067,9 @@ const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_Generic
             // textAlign: props.displayType === DisplayType.Grid ? "justify" : "start",
             textAlign: "start",
         }}>
-        <p dangerouslySetInnerHTML={{ __html: cellTextSanitized }}></p>
+        <p dangerouslySetInnerHTML={{ __html: dangerousInnerHTML_DescriptionSanitized }}></p>
         {props.value ?
-            <Popover.Root onOpenChange={() => setIsOpen(!isOpen)}>
+            <Popover.Root modal onOpenChange={() => setIsOpen(!isOpen)}>
                 <Popover.Trigger style={{maxWidth: "15px"}}>
                     {isOpen ?
                     <SVG ariaHidden svg={CloseIcon} />
@@ -1078,9 +1078,9 @@ const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_Generic
                     }
                 </Popover.Trigger>
                 <Popover.Portal>
-                    <Popover.Content collisionPadding={{top : 280}} avoidCollisions sideOffset={5} align="end" alignOffset={-10} hideWhenDetached>
+                    <Popover.Content /* collisionPadding={{top : 280}} */ avoidCollisions sideOffset={5} align="end" alignOffset={-10} hideWhenDetached>
                         <p className={stylesDropDown.dropdown_description}
-                            dangerouslySetInnerHTML={{ __html: cellTextSanitized }}></p>
+                            dangerouslySetInnerHTML={{ __html: dangerousInnerHTML_DescriptionSanitized }}></p>
                         <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
                     </Popover.Content>
                 </Popover.Portal>
@@ -1460,7 +1460,7 @@ const CellActions: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell
     return (
         <div className={stylesPublication.cell_wrapper}
         >
-            <Menu
+            <Menu noCollisionPadding={true}
                 button={(
                     <SVG title={`${props.__("publication.actions")} (${label})`} svg={MenuIcon} />
                 )}
@@ -2479,7 +2479,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     };
 
     const FilterPopover = (
-        <Popover.Root>
+        <Popover.Root modal>
             <Popover.Trigger asChild className={stylesPublication.allBooks_header_filter_trigger}
                 title={__("library.filter.addFilters")}>
                 <button onClick={() => setFilterPopoverOpen(!filterPopoverOpen)}>
@@ -2499,7 +2499,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     );
 
     const SortingPopover = (
-        <Popover.Root>
+        <Popover.Root modal>
             <Popover.Trigger asChild className={stylesPublication.allBooks_header_filter_trigger}
                 title={__("library.sorting.addSorting")}>
                 <button onClick={() => setFilterPopoverOpen(!filterPopoverOpen)}>
@@ -2588,7 +2588,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
 
     const SelectTableHeaders = (
-        <Popover.Root open={selectedFilterHeaderOpen} onOpenChange={setSelectedFilterHeaderOpen}>
+        <Popover.Root modal open={selectedFilterHeaderOpen} onOpenChange={setSelectedFilterHeaderOpen}>
             <Popover.Trigger asChild className={stylesPublication.allBooks_header_filter_trigger}
                 title={__("catalog.selectTableHeaders")}>
                 <button>

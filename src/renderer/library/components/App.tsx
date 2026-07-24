@@ -43,11 +43,6 @@ import { CustomizationProfileDialog } from "readium-desktop/renderer/common/comp
 // eslintxx-disable-next-line @typescript-eslint/no-unused-expressions
 // globalScssStyle.__LOAD_FILE_SELECTOR_NOT_USED_JUST_TO_TRIGGER_WEBPACK_SCSS_FILE__;
 
-import { shell } from "electron";
-
-// always returns a resolved Promise with value undefined
-(window as any).__shell_openExternal = (url: string) => url && /^https?:\/\//.test(url) ? shell.openExternal(url).then((_v: void): undefined => undefined).catch((_err: unknown): undefined => undefined) /* .finally(() => {  }) */ : Promise.resolve(undefined); // needed after markdown marked parsing for sanitizing the external anchor href
-
 export default class App extends React.Component<{}, undefined> {
 
     constructor(props: {}) {
@@ -56,10 +51,13 @@ export default class App extends React.Component<{}, undefined> {
         this.onDrop = this.onDrop.bind(this);
     }
 
-    getFiles = async (event: DropEvent): Promise<Array<File>> => {
+    // type DropEvent = React.DragEvent<HTMLElement> | React.ChangeEvent<HTMLInputElement> | DragEvent | Event;
+    getFiles = async (event: DropEvent | Array<FileSystemFileHandle>): Promise<Array<File | DataTransferItem>> => {
+
         if (!(event as React.DragEvent<HTMLElement>).dataTransfer?.files) {
             return [];
         }
+
         const files = Array.from((event as React.DragEvent<HTMLElement>).dataTransfer.files);
         // console.log("getFiles: " + files.length);
         // console.log("getFile: " + files[0]);

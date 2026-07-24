@@ -18,9 +18,6 @@ import { isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
 import { SagaMiddleware } from "redux-saga";
 import { readerActions } from "readium-desktop/common/redux/actions";
 
-// Create container used for dependency injection
-// const container = new Container();
-
 let __store: Store<IReaderRootState> | undefined;
 let __sagaMiddleware: SagaMiddleware | undefined;
 

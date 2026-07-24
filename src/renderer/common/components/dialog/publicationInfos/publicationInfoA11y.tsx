@@ -113,7 +113,7 @@
 //             const accessibilitySummaryLang = accessibilitySummaryLangStr && accessibilitySummaryLangStr[0] ? accessibilitySummaryLangStr[0].toLowerCase() : "";
 //             const accessibilitySummaryIsRTL = langStringIsRTL(accessibilitySummaryLang);
 //             const accessibilitySummaryStr = accessibilitySummaryLangStr && accessibilitySummaryLangStr[1] ? accessibilitySummaryLangStr[1] : "";
-//             const accessibilitySummaryStrSanitized = accessibilitySummaryStr ? DOMPurify.sanitize(accessibilitySummaryStr).replace(/font-size:/g, "font-sizexx:") : "";
+//             const dangerousInnerHTML_AccessibilitySummarySanitized = accessibilitySummaryStr ? DOMPurify.sanitize(accessibilitySummaryStr).replace(/font-size:/g, "font-sizexx:") : "";
 
 //             return accessibilitySummaryStr ?
 //                 <div className={classNames(stylesBlocks.description_see_more)}>
@@ -128,7 +128,7 @@
 //                             ref={this.descriptionRef_a11y}
 //                             className={stylesBookDetailsDialog.allowUserSelect}
 //                             dir={accessibilitySummaryIsRTL ? "rtl" : undefined}
-//                             dangerouslySetInnerHTML={{ __html: accessibilitySummaryStrSanitized }}
+//                             dangerouslySetInnerHTML={{ __html: dangerousInnerHTML_AccessibilitySummarySanitized }}
 //                         >
 //                         </div>
 //                     </div>

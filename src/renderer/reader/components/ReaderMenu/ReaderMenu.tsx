@@ -42,16 +42,12 @@ import { readerLocalActionLocatorHrefChanged } from "../../redux/actions";
 import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
-import { shell } from "electron";
 import { AnnotationList } from "./AnnotationList";
 import { BookmarkList } from "./BookmarkList";
 import { GoToPageSection } from "./GoToPageSection";
 import { createOrGetPdfEventBus } from "../../pdf/driver";
 import { ModalControlButtons } from "readium-desktop/renderer/reader/components/ModalControlButtons";
 import { DockedHeader } from "readium-desktop/renderer/reader/components/DockedHeader";
-
-// always returns a resolved Promise with value undefined (will never reject)
-(window as any).__shell_openExternal = (url: string) => url && /^https?:\/\//.test(url) ? shell.openExternal(url).then((_v: void): undefined => undefined).catch((_err: unknown): undefined => undefined) /* .finally(() => {  }) */ : Promise.resolve(undefined); // needed after markdown marked parsing for sanitizing the external anchor href
 
 // console.log(window);
 
