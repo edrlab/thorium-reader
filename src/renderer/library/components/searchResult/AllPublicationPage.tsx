@@ -1460,7 +1460,7 @@ const CellActions: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell
     return (
         <div className={stylesPublication.cell_wrapper}
         >
-            <Menu noCollisionPadding={true}
+            <Menu
                 button={(
                     <SVG title={`${props.__("publication.actions")} (${label})`} svg={MenuIcon} />
                 )}
