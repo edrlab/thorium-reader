@@ -1760,6 +1760,7 @@ declare namespace typed_i18n {
     readonly "advancedMode": string,
     readonly "annotationsExport": {
       readonly "description": string,
+      readonly "format": string,
       readonly "title": string
     },
     readonly "annotationsOptions": string,
@@ -2011,6 +2012,7 @@ declare namespace typed_i18n {
   readonly "advancedMode": string,
   readonly "annotationsExport": {
     readonly "description": string,
+    readonly "format": string,
     readonly "title": string
   },
   readonly "annotationsOptions": string,
@@ -2051,8 +2053,13 @@ declare namespace typed_i18n {
   (_: "reader.annotations.Color", __?: {}): string;
   (_: "reader.annotations.addNote", __?: {}): string;
   (_: "reader.annotations.advancedMode", __?: {}): string;
-  (_: "reader.annotations.annotationsExport", __?: {}): { readonly "description": string, readonly "title": string };
+  (_: "reader.annotations.annotationsExport", __?: {}): {
+  readonly "description": string,
+  readonly "format": string,
+  readonly "title": string
+};
   (_: "reader.annotations.annotationsExport.description", __?: {}): string;
+  (_: "reader.annotations.annotationsExport.format", __?: {}): string;
   (_: "reader.annotations.annotationsExport.title", __?: {}): string;
   (_: "reader.annotations.annotationsOptions", __?: {}): string;
   (_: "reader.annotations.date", __?: {}): string;

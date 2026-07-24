@@ -480,8 +480,7 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
                                     </div>
                                     <div className={stylesInputs.form_group}>
                                         <label htmlFor="file_type">
-                                            {/* {__("reader.annotations.annotationsExport.format")} */}
-                                            Format
+                                            {__("reader.annotations.annotationsExport.format")}
                                         </label>
                                         <select defaultValue="annotation" ref={selectFileTypeRef} name="file_type">
                                             <option value="annotation">Annotations (Readium)</option>
