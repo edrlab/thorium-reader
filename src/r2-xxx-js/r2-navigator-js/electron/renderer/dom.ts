@@ -43,7 +43,7 @@ import {
 import { mediaOverlaysHandleIpcMessage, mediaOverlaysUseTTSHighlights } from "./media-overlays";
 import {
     checkTtsState, ttsAndMediaOverlaysManualPlayNext, ttsClickEnable, ttsHandleIpcMessage, ttsHighlightStyle, ttsOverlayEnable, ttsPlaybackRate,
-    ttsSentenceDetectionEnable, ttsSkippabilityEnable, ttsVoices,
+    ttsSentenceDetectionEnable, ttsSkippabilityEnable, ttsSubSupEnable, ttsVoices,
 } from "./readaloud";
 import { adjustReadiumCssJsonMessageForFixedLayout, isFixedLayout, obtainReadiumCss } from "./readium-css";
 import { soundtrackHandleIpcMessage } from "./soundtrack";
@@ -368,6 +368,7 @@ function createWebViewInternal(READIUM2: IReadiumElectronWebviewState, preloadSc
             mediaOverlaysUseTTSHighlights(win.READIUM2.mediaOverlaysUseTTSHighlights);
             ttsAndMediaOverlaysManualPlayNext(win.READIUM2.ttsAndMediaOverlaysManualPlayNext);
             ttsSkippabilityEnable(win.READIUM2.ttsSkippabilityEnabled);
+            ttsSubSupEnable(win.READIUM2.ttsSubSupEnabled);
             ttsOverlayEnable(win.READIUM2.ttsOverlayEnabled);
             // fixedLayoutZoomPercent(win.READIUM2.fixedLayoutZoomPercent);
         }
@@ -691,6 +692,7 @@ export function installNavigatorDOM(
         ttsPlaybackRate: 1,
         ttsAndMediaOverlaysManualPlayNext: false,
         ttsSkippabilityEnabled: false,
+        ttsSubSupEnabled: true,
         ttsSentenceDetectionEnabled: true,
         mediaOverlaysUseTTSHighlights: false,
         ttsVoices: null,

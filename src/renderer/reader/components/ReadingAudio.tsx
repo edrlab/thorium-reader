@@ -42,7 +42,7 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
 
     // : Pick<ReaderConfig, "ttsEnableOverlayMode" | "mediaOverlaysEnableCaptionsMode" | "ttsAndMediaOverlaysDisableContinuousPlay" | "mediaOverlaysEnableSkippability" | "ttsEnableSentenceDetection">
     const config = useReaderConfigAll();
-    const { ttsHighlightStyle, ttsHighlightStyle_WORD, ttsHighlightColor, ttsHighlightColor_WORD, mediaOverlaysEnableCaptionsMode: moCaptions, ttsEnableOverlayMode: ttsCaptions, ttsAndMediaOverlaysDisableContinuousPlay: disableContinuousPlay, mediaOverlaysEnableSkippability: skippability, mediaOverlaysIgnoreAndUseTTS, mediaOverlaysUseTTSHighlights, ttsEnableSentenceDetection: splitTTStext } = config;
+    const { ttsHighlightStyle, ttsHighlightStyle_WORD, ttsHighlightColor, ttsHighlightColor_WORD, mediaOverlaysEnableCaptionsMode: moCaptions, ttsEnableOverlayMode: ttsCaptions, ttsAndMediaOverlaysDisableContinuousPlay: disableContinuousPlay, mediaOverlaysEnableSkippability: skippability, mediaOverlaysIgnoreAndUseTTS, mediaOverlaysUseTTSHighlights, ttsEnableSentenceDetection: splitTTStext, ttsEnableSubSup: subSup } = config;
     const set = useSaveReaderConfigDebounced();
 
     const ttsTogglePlayResume = (func: () => void) => {
@@ -123,6 +123,17 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
                 //     set({ ttsEnableSentenceDetection: !splitTTStext });
                 // });
                 set({ ttsEnableSentenceDetection: !splitTTStext });
+            },
+        });
+        options.push({
+            id: "ttsSubSup",
+            name: "ttsSubSup",
+            label: `${__("reader.tts.subSup")}`,
+            description: `${__("reader.tts.subSupDescription")}`,
+            checked: subSup,
+            onChange: () => {
+                // see readerConfig.ts Redux Saga readerConfigChanged (TTS STOP)
+                set({ ttsEnableSubSup: !subSup });
             },
         });
     } else {

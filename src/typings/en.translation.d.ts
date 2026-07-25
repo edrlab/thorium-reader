@@ -2002,6 +2002,8 @@ declare namespace typed_i18n {
     readonly "sentenceDetectDescription": string,
     readonly "speed": string,
     readonly "stop": string,
+    readonly "subSup": string,
+    readonly "subSupDescription": string,
     readonly "voice": string
   }
 };
@@ -2550,6 +2552,8 @@ declare namespace typed_i18n {
   readonly "sentenceDetectDescription": string,
   readonly "speed": string,
   readonly "stop": string,
+  readonly "subSup": string,
+  readonly "subSupDescription": string,
   readonly "voice": string
 };
   (_: "reader.tts.activate", __?: {}): string;
@@ -2563,6 +2567,8 @@ declare namespace typed_i18n {
   (_: "reader.tts.sentenceDetectDescription", __?: {}): string;
   (_: "reader.tts.speed", __?: {}): string;
   (_: "reader.tts.stop", __?: {}): string;
+  (_: "reader.tts.subSup", __?: {}): string;
+  (_: "reader.tts.subSupDescription", __?: {}): string;
   (_: "reader.tts.voice", __?: {}): string;
   (_: "settings", __?: {}): {
   readonly "annotationCreator": {

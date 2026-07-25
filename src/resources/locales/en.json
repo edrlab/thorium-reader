@@ -953,6 +953,8 @@
             "previous": "Previous TTS",
             "sentenceDetect": "Split TTS text",
             "sentenceDetectDescription": "Break long paragraphs into sentences.",
+            "subSup": "Read subscripts and superscripts",
+            "subSupDescription": "Speak the contents of subscripts and superscripts, such as exponents and indices. Turn off for books that use raw superscripts as footnote markers.",
             "speed": "TTS playback rate",
             "stop": "Stop TTS",
             "voice": "TTS voice"

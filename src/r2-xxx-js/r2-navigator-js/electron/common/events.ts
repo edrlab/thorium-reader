@@ -302,6 +302,14 @@ export interface IEventPayload_R2_EVENT_TTS_SKIP_ENABLE {
 
 // in RENDERER: webview.send()
 // in WEBVIEW: ipcRenderer.on()
+export const R2_EVENT_TTS_SUBSUP_ENABLE = "R2_EVENT_TTS_SUBSUP_ENABLE";
+// tslint:disable-next-line:class-name
+export interface IEventPayload_R2_EVENT_TTS_SUBSUP_ENABLE {
+    doEnable: boolean;
+}
+
+// in RENDERER: webview.send()
+// in WEBVIEW: ipcRenderer.on()
 export const R2_EVENT_TTS_SENTENCE_DETECT_ENABLE = "R2_EVENT_TTS_SENTENCE_DETECT_ENABLE";
 // tslint:disable-next-line:class-name
 export interface IEventPayload_R2_EVENT_TTS_SENTENCE_DETECT_ENABLE {

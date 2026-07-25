@@ -36,6 +36,7 @@ import {
     IEventPayload_R2_EVENT_TTS_OVERLAY_ENABLE, IEventPayload_R2_EVENT_TTS_PLAYBACK_RATE,
     IEventPayload_R2_EVENT_TTS_SENTENCE_DETECT_ENABLE, IEventPayload_R2_EVENT_TTS_VOICE,
     IEventPayload_R2_EVENT_TTS_SKIP_ENABLE, R2_EVENT_TTS_SKIP_ENABLE,
+    IEventPayload_R2_EVENT_TTS_SUBSUP_ENABLE, R2_EVENT_TTS_SUBSUP_ENABLE,
     IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN, MediaOverlaysStateEnum, R2_EVENT_AUDIO_SOUNDTRACK, R2_EVENT_CAPTIONS,
     R2_EVENT_CLIPBOARD_COPY, R2_EVENT_DEBUG_VISUALS, R2_EVENT_FXL_CONFIGURE,
     R2_EVENT_HIGHLIGHT_CREATE, R2_EVENT_HIGHLIGHT_REMOVE, R2_EVENT_HIGHLIGHT_REMOVE_ALL,
@@ -195,6 +196,7 @@ win.READIUM2 = {
     ttsPlaybackRate: 1,
     ttsAndMediaOverlaysManualPlayNext: false,
     ttsSkippabilityEnabled: false,
+    ttsSubSupEnabled: true,
     ttsSentenceDetectionEnabled: true,
     // mediaOverlaysUseTTSHighlights: false,
     ttsVoices: null,
@@ -2199,6 +2201,7 @@ win.addEventListener("DOMContentLoaded", () => {
     win.READIUM2.ttsClickEnabled = false;
     win.READIUM2.ttsAndMediaOverlaysManualPlayNext = false;
     win.READIUM2.ttsSkippabilityEnabled = false;
+    win.READIUM2.ttsSubSupEnabled = true;
     win.READIUM2.ttsSentenceDetectionEnabled = true;
     win.READIUM2.ttsOverlayEnabled = false;
 
@@ -5438,6 +5441,11 @@ if (!win.READIUM2.isAudio) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (_event: any, payload: IEventPayload_R2_EVENT_TTS_SKIP_ENABLE) => {
         win.READIUM2.ttsSkippabilityEnabled = payload.doEnable;
+    });
+    ipcRenderer.on(R2_EVENT_TTS_SUBSUP_ENABLE,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (_event: any, payload: IEventPayload_R2_EVENT_TTS_SUBSUP_ENABLE) => {
+        win.READIUM2.ttsSubSupEnabled = payload.doEnable;
     });
     ipcRenderer.on(R2_EVENT_TTS_HIGHLIGHT_STYLE,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

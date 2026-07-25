@@ -707,8 +707,15 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
                     // v<sub>1</sub>, SO<sub>4</sub><sup>2-</sup>), so their text is spoken.
                     // An aria-label/title on the element overrides it, which lets authors
                     // supply better phrasing ("squared" rather than "2").
+                    // isSubSup is the tag test only - it must stay independent of the
+                    // preference, because when the preference is OFF we still need to
+                    // recognise the element in order to *skip* it (it is no longer in
+                    // _doNotProcessDeepChildTagNames). ttsSubSupEnabled === false thus
+                    // restores the historical behaviour of discarding sup/sub entirely,
+                    // for books that mark footnote references as a bare <sup> with no
+                    // epub:type / role for skippability to match.
                     const isSubSup = childTagNameLow === "sup" || childTagNameLow === "sub";
-                    let subSupNeedsDeepDive = isSubSup && !hidden;
+                    let subSupNeedsDeepDive = isSubSup && win.READIUM2.ttsSubSupEnabled && !hidden;
                     if (subSupNeedsDeepDive) {
                         let altAttr = childElement.getAttribute("aria-label");
                         if (!altAttr) {

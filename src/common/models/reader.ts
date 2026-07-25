@@ -89,6 +89,7 @@ export interface ReaderConfigBooleans {
     mediaOverlaysIgnoreAndUseTTS: boolean;
     mediaOverlaysUseTTSHighlights: boolean;
     ttsEnableSentenceDetection: boolean;
+    ttsEnableSubSup: boolean;
     mediaOverlaysEnableCaptionsMode: boolean;
     ttsEnableOverlayMode: boolean;
 }
