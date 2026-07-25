@@ -312,7 +312,11 @@ export function findTtsQueueItemIndex(
 // tslint:disable-next-line:max-line-length
 const _putInElementStackTagNames = ["h1", "h2", "h3", "h4", "h5", "h6", "p", "th", "td", "caption", "li", "blockquote", "q", "dt", "dd", "figcaption", "div", "pre"];
 // tslint:disable-next-line:max-line-length
-const _doNotProcessDeepChildTagNames = ["svg", "img", "sup", "sub", "audio", "video", "source", "button", "canvas", "del", "dialog", "embed", "form", "head", "iframe", "meter", "noscript", "object", "s", "script", "select", "style", "textarea"]; // "code", "nav", "dl", "figure", "table", "ul", "ol"
+const _doNotProcessDeepChildTagNames = ["svg", "img", "audio", "video", "source", "button", "canvas", "del", "dialog", "embed", "form", "head", "iframe", "meter", "noscript", "object", "s", "script", "select", "style", "textarea"]; // "code", "nav", "dl", "figure", "table", "ul", "ol"
+// note: "sup" and "sub" used to be listed above, which silently discarded their text
+// content (exponents, indices, ion charges, isotopes ... ). They are now processed like
+// any other inline element, with an aria-label/title override - see isSubSup below.
+// Note *references* are handled by the skippability mechanism instead (see _skippables).
 
 // https://www.w3.org/TR/epub-33/#sec-behaviors-skip-escape
 // https://www.w3.org/TR/epub-ssv-11/
@@ -321,6 +325,7 @@ const _skippables = [
     "endnote",
     "pagebreak",
     //
+    "noteref", // the reference marker itself, not just the note body
     "note",
     "rearnote",
     "sidebar",
@@ -660,19 +665,53 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
                         }
                     }
 
+                    // sup/sub carry meaning in scientific and mathematical prose (x<sup>2</sup>,
+                    // v<sub>1</sub>, SO<sub>4</sub><sup>2-</sup>), so their text is spoken.
+                    // An aria-label/title on the element overrides it, which lets authors
+                    // supply better phrasing ("squared" rather than "2").
+                    const isSubSup = childTagNameLow === "sup" || childTagNameLow === "sub";
+                    let subSupNeedsDeepDive = isSubSup && !hidden;
+                    if (subSupNeedsDeepDive) {
+                        let altAttr = childElement.getAttribute("aria-label");
+                        if (!altAttr) {
+                            altAttr = childElement.getAttribute("title");
+                        }
+                        if (altAttr) {
+                            const txt = altAttr.trim();
+                            if (txt) {
+                                subSupNeedsDeepDive = false;
+                                const lang = getLanguage(childElement);
+                                const dir: string | undefined = undefined;
+                                ttsQueue.push({
+                                    combinedText: txt,
+                                    combinedTextSentences: undefined,
+                                    combinedTextSentencesRangeBegin: undefined,
+                                    combinedTextSentencesRangeEnd: undefined,
+                                    dir,
+                                    lang,
+                                    parentElement: childElement,
+                                    textNodes: [],
+                                    // isSkippable,
+                                });
+                            }
+                        }
+                    }
+
                     const isMathJax = childTagNameLow && childTagNameLow.startsWith("mjx-");
                     const isMathML = childTagNameLow === "math";
                     const processDeepChild =
                         pageBreakNeedsDeepDive ||
                         linkNeedsDeepDive ||
+                        subSupNeedsDeepDive ||
                         (
                         !isPageBreak &&
                         !isLink &&
+                        !isSubSup &&
                         !isMathJax &&
                         !isMathML &&
                         childTagNameLow && !_doNotProcessDeepChildTagNames.includes(childTagNameLow)
                         // tslint:disable-next-line:max-line-length
-                        // !childElement.matches("svg, img, sup, sub, audio, video, source, button, canvas, del, dialog, embed, form, head, iframe, meter, noscript, object, s, script, select, style, textarea")
+                        // !childElement.matches("svg, img, audio, video, source, button, canvas, del, dialog, embed, form, head, iframe, meter, noscript, object, s, script, select, style, textarea")
                         // code, nav, dl, figure, table, ul, ol
                         )
                     ;
@@ -680,7 +719,7 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
                     if (processDeepChild) {
                         processElement(childElement);
                     } else if (!hidden) {
-                        if (isPageBreak || isLink) {
+                        if (isPageBreak || isLink || isSubSup) {
                             // do nothing, already dealt with above (either shallow or deep)
                         } else if (isMathML) {
                             const altAttr = childElement.getAttribute("alttext");
