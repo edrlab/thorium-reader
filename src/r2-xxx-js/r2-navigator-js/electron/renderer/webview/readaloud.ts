@@ -736,19 +736,29 @@ function wrapHighlightWord(
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const isRUBY = (txtNode as any).__RUBY;
+        // combineTextNodes() fences sup/sub text with SUBSUP_SEPARATOR on both sides.
+        // Those two chars have no DOM counterpart, so they are added to the contributed
+        // length here, and the leading one is subtracted back out (with the result
+        // clamped into the node) when converting an utterance offset to a DOM offset.
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const isSUBSUP = !isRUBY && (txtNode as any).__SUBSUP && !isOnlyWhiteSpace(txtNode.nodeValue);
+        const sep = isSUBSUP ? 1 : 0;
+        const nodeLen = txtNode.nodeValue.length;
 
-        const l = isRUBY ? 0 : isOnlyWhiteSpace(txtNode.nodeValue) ? 1 : txtNode.nodeValue.length;
+        const l = isRUBY ? 0 : isOnlyWhiteSpace(txtNode.nodeValue) ? 1 : (sep * 2) + nodeLen;
         acc += l;
         if (!rangeStartNode) {
             if (isRUBY && charIndexAdjusted <= acc
                 || charIndexAdjusted < acc) {
                 rangeStartNode = txtNode;
-                rangeStartOffset = isRUBY ? 0 : l - (acc - charIndexAdjusted);
+                rangeStartOffset = isRUBY ? 0 :
+                    Math.min(Math.max(l - (acc - charIndexAdjusted) - sep, 0), nodeLen);
             }
         }
         if (rangeStartNode && charIndexEnd <= acc) {
             rangeEndNode = txtNode;
-            rangeEndOffset = isRUBY ? (txtNode.nodeValue.length - 1) : l - (acc - charIndexEnd);
+            rangeEndOffset = isRUBY ? (nodeLen - 1) :
+                Math.min(Math.max(l - (acc - charIndexEnd) - sep, 0), nodeLen);
             break;
         }
     }
@@ -912,19 +922,26 @@ function wrapHighlight(
 
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const isRUBY = (txtNode as any).__RUBY;
+                // see the equivalent adjustment in updateTTSInfo() above
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const isSUBSUP = !isRUBY && (txtNode as any).__SUBSUP && !isOnlyWhiteSpace(txtNode.nodeValue);
+                const sep = isSUBSUP ? 1 : 0;
+                const nodeLen = txtNode.nodeValue.length;
 
-                const l = isRUBY ? 0 : isOnlyWhiteSpace(txtNode.nodeValue) ? 1 : txtNode.nodeValue.length;
+                const l = isRUBY ? 0 : isOnlyWhiteSpace(txtNode.nodeValue) ? 1 : (sep * 2) + nodeLen;
                 acc += l;
                 if (!rangeStartNode) {
                     if (isRUBY && sentBegin <= acc
                         || sentBegin < acc) {
                         rangeStartNode = txtNode;
-                        rangeStartOffset = isRUBY ? 0 : l - (acc - sentBegin);
+                        rangeStartOffset = isRUBY ? 0 :
+                            Math.min(Math.max(l - (acc - sentBegin) - sep, 0), nodeLen);
                     }
                 }
                 if (rangeStartNode && sentEnd <= acc) {
                     rangeEndNode = txtNode;
-                    rangeEndOffset = isRUBY ? (txtNode.nodeValue.length - 1) : l - (acc - sentEnd);
+                    rangeEndOffset = isRUBY ? (nodeLen - 1) :
+                        Math.min(Math.max(l - (acc - sentEnd) - sep, 0), nodeLen);
                     break;
                 }
             }
