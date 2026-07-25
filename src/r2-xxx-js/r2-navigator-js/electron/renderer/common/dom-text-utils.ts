@@ -16,6 +16,12 @@ import { ReadiumElectronWebviewWindow } from "../webview/state";
 
 const win = global.window as ReadiumElectronWebviewWindow;
 
+// Virtual separator fencing the text of a sup/sub element on both sides when building
+// the utterance. One character, and it must stay one character: readaloud.ts maps
+// utterance offsets back to DOM ranges by accumulating contributed lengths, and assumes
+// a tagged node contributes exactly SUBSUP_SEPARATOR.length * 2 beyond its nodeValue.
+export const SUBSUP_SEPARATOR = " ";
+
 export function combineTextNodes(textNodes: Node[], skipNormalize?: boolean): string {
     if (textNodes && textNodes.length) {
         let str = "";
@@ -34,7 +40,28 @@ export function combineTextNodes(textNodes: Node[], skipNormalize?: boolean): st
                     txt = " ";
                     str += txt;
                 } else {
+                    // Text inside sup/sub is fenced by a separator on BOTH sides, so it
+                    // fuses with neither what precedes nor what follows it:
+                    //   "10<sup>23</sup>"        must not become "1023"  ("one thousand
+                    //                            twenty-three")
+                    //   "<em>R</em><sub>o</sub>" must not become "Ro"
+                    //   "10<sub>23</sub>45"      must not become "10 2345" ("two thousand
+                    //                            three hundred forty-five")
+                    //   "<sub>theta</sub>x"      must not become "thetax", which speech
+                    //                            engines drop entirely
+                    // The separators exist only in this string, never in the DOM, so they
+                    // cannot affect rendering - but the offset walkers in readaloud.ts
+                    // MUST account for both (see SUBSUP_SEPARATOR there), exactly as they
+                    // already do for __RUBY and for whitespace-only nodes.
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    const isSubSup = (textNode as any).__SUBSUP;
+                    if (isSubSup) {
+                        str += SUBSUP_SEPARATOR;
+                    }
                     str += (skipNormalize ? txt : normalizeText(txt));
+                    if (isSubSup) {
+                        str += SUBSUP_SEPARATOR;
+                    }
                 }
             }
         }
@@ -365,6 +392,10 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
     let ttsQueue: ITtsQueueItem[] = [];
     const elementStack: Element[] = [];
 
+    // set just before descending into a sup/sub, consumed by the first text node found
+    // inside it, which then contributes SUBSUP_SEPARATOR ahead of its text
+    let pendingSubSupSeparator = false;
+
     function processTextNode(textNode: Node) {
 
         if (textNode.nodeType !== Node.TEXT_NODE) {
@@ -441,6 +472,16 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
                 // isSkippable: undefined,
             };
             ttsQueue.push(current);
+        }
+
+        if (pendingSubSupSeparator) {
+            pendingSubSupSeparator = false;
+            // whitespace-only nodes already contribute a single space, so tagging one
+            // would double-count against the offset walkers
+            if (textNode.nodeValue.trim().length) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (textNode as any).__SUBSUP = true;
+            }
         }
 
         current.textNodes.push(textNode);
@@ -717,7 +758,12 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
                     ;
 
                     if (processDeepChild) {
+                        if (isSubSup) {
+                            // the first text node inside contributes SUBSUP_SEPARATOR
+                            pendingSubSupSeparator = true;
+                        }
                         processElement(childElement);
+                        pendingSubSupSeparator = false;
                     } else if (!hidden) {
                         if (isPageBreak || isLink || isSubSup) {
                             // do nothing, already dealt with above (either shallow or deep)
