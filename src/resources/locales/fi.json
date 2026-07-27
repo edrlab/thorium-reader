@@ -43,7 +43,7 @@
         "update": {
             "message": "Uusi versio on saatavilla. Napsauta, jos haluat lisätietoja.",
             "title": "{{- appName}} -ohjelmiston päivitys.",
-            "whatsnew": ""
+            "whatsnew": "Uusi versio asennettiin. Napsauta, jos haluat lisätietoja."
         },
         "window": {
             "showLibrary": "Näytä kirjasto / kirjahylly",
@@ -696,6 +696,7 @@
             "advancedMode": "Välitön tila (luo suoraan valinnasta)",
             "annotationsExport": {
                 "description": "Nimeä muistiinpanot:",
+                "format": "Formaatti",
                 "title": "Otsikko"
             },
             "annotationsOptions": "Muistiinpanojen asetukset",
@@ -1213,8 +1214,8 @@
                     "name": "Muuta koko ruudun tila"
                 },
                 "ToggleScreenReaderOptimize": {
-                    "description": "",
-                    "name": ""
+                    "description": "Ota käyttöön tai poista käytöstä optimoitu tuki ruudunlukuohjelmille kirjastoikkunassa",
+                    "name": "Ota käyttöön tai poista käytöstä ruudunlukijan optimoinnit"
                 }
             },
             "loadUserJson": "Lataa käyttäjän tiedostosta",
@@ -1247,7 +1248,7 @@
         },
         "screenReaderActivate": {
             "help": "Kun sovellus havaitsee, että käytössä on avustavaa teknologiaa, käyttöliittymä mukautuu toimimaan paremmin yhteen ruudunlukuohjelmien kanssa.",
-            "invite": "",
+            "invite": "Optimoi ruudunlukuohjelmaa ({{- status}}) [{{- keyboard}}]",
             "message": "Parannettu tuki ruudunlukuohjelmille",
             "title": "Paranna ruudunlukukokemusta"
         },
