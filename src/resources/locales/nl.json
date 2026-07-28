@@ -696,6 +696,7 @@
             "advancedMode": "Instantmodus (automatisch maken na selectie)",
             "annotationsExport": {
                 "description": "Geef de geëxporteerde aantekeningen een naam:",
+                "format": "",
                 "title": "Titel"
             },
             "annotationsOptions": "Opties",

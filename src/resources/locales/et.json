@@ -696,6 +696,7 @@
             "advancedMode": "Kiirlisamine (automaatne lisamine peale valimist)",
             "annotationsExport": {
                 "description": "Eksporditud märkmete nimi:",
+                "format": "",
                 "title": "Pealkiri"
             },
             "annotationsOptions": "Märkmete valikud",
