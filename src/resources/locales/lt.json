@@ -1259,7 +1259,7 @@
             "version": "Versija: {{- version}}"
         },
         "screenReaderActivate": {
-            "help": "Kai programa aptinka naudojamas pagalbines technologijas, vartotojo sąsaja geriau veikia su ekrano skaitytuvais",
+            "help": "Kai programa aptinka naudojamas pagalbines technologijas, naudotojo sąsaja geriau veikia su ekrano skaitytuvais",
             "invite": "Optimizuoti ekrano skaitytuvams ({{- status}}) [{{- keyboard}}]",
             "message": "Patobulintas ekrano skaitytuvų palaikymas",
             "title": "Pagerinkite ekrano skaitytuvo patirtį"
