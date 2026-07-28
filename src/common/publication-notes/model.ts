@@ -40,6 +40,11 @@ export type PublicationNotesViewSelection = "all" | string[];
 
 export type PublicationNotesViewSort = "progression" | "lastCreated" | "lastModified";
 
+export interface PublicationNotesViewPagination {
+    page?: number | undefined;
+    pageSize?: number | undefined;
+}
+
 export interface PublicationNotesViewFilter {
     group?: PublicationNoteGroup | undefined;
     tags?: PublicationNotesViewSelection | undefined;
@@ -47,11 +52,24 @@ export interface PublicationNotesViewFilter {
     drawTypes?: PublicationNotesViewSelection | undefined;
     creators?: PublicationNotesViewSelection | undefined;
     sort?: PublicationNotesViewSort | undefined;
+    pagination?: PublicationNotesViewPagination | undefined;
 }
 
 export interface PublicationNotesViewFacets {
     tagIndex: Record<string, number>;
     creators: string[];
+}
+
+export interface PublicationNotesHydratedPagination<TNote extends PublicationNoteEntity> {
+    notes: TNote[];
+    byId: Record<string, TNote>;
+    ids: string[];
+    page: number;
+    pageSize: number;
+    pageTotal: number;
+    begin: number;
+    end: number;
+    totalCount: number;
 }
 
 export interface PublicationNotesHydratedView<TNote extends PublicationNoteEntity> {
@@ -61,6 +79,7 @@ export interface PublicationNotesHydratedView<TNote extends PublicationNoteEntit
     ids: string[];
     tagIndex: Record<string, number>;
     totalCount: number;
+    pagination: PublicationNotesHydratedPagination<TNote>;
     facets: PublicationNotesViewFacets;
 }
 

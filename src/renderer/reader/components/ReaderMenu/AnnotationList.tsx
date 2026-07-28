@@ -108,20 +108,27 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
     const [drawTypeArrayFilter, setDrawTypeArrayFilter] = React.useState<Selection>(new Set([]));
     const [creatorArrayFilter, setCreatorArrayFilter] = React.useState<Selection>(new Set([]));
     const [sortType, setSortType] = React.useState<Selection>(new Set(["lastCreated"]));
+    const publicationNotesViewFilter = React.useMemo(() => ({
+        group: "annotation" as const,
+        tags: selectionToPublicationNotesViewSelection(tagArrayFilter),
+        colors: selectionToPublicationNotesViewSelection(colorArrayFilter),
+        drawTypes: selectionToPublicationNotesViewSelection(drawTypeArrayFilter),
+        creators: selectionToPublicationNotesViewSelection(creatorArrayFilter),
+        sort: selectionToPublicationNotesViewSort(sortType),
+    }), [colorArrayFilter, creatorArrayFilter, drawTypeArrayFilter, sortType, tagArrayFilter]);
 
     React.useEffect(() => {
         if (!pubId) {
             return;
         }
         dispatch(readerActions.publicationNotes.filter.build(pubId, {
-            group: "annotation",
-            tags: selectionToPublicationNotesViewSelection(tagArrayFilter),
-            colors: selectionToPublicationNotesViewSelection(colorArrayFilter),
-            drawTypes: selectionToPublicationNotesViewSelection(drawTypeArrayFilter),
-            creators: selectionToPublicationNotesViewSelection(creatorArrayFilter),
-            sort: selectionToPublicationNotesViewSort(sortType),
+            ...publicationNotesViewFilter,
+            pagination: {
+                page: START_PAGE,
+                pageSize: MAX_MATCHES_PER_PAGE,
+            },
         }));
-    }, [colorArrayFilter, creatorArrayFilter, dispatch, drawTypeArrayFilter, pubId, sortType, tagArrayFilter]);
+    }, [MAX_MATCHES_PER_PAGE, START_PAGE, dispatch, pubId, publicationNotesViewFilter]);
 
     const textObj = publicationView.publicationTitle;
     const pubLangs = publicationView.languages;
@@ -130,12 +137,37 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
     // r2Publication.Metadata.Title
     const annoSetTitle = convertMultiLangStringToString(textObj_,  locale) || "thorium-notes_annotations";
 
-    const [pageNumber, setPageNumber] = React.useState(START_PAGE);
+    const annotationsPagination = publicationNotesView.pagination;
+    const annotationsPagedArray = annotationsViewReady ? annotationsPagination.notes : [];
+    const pageNumber = annotationsViewReady ? annotationsPagination.page : START_PAGE;
+    const pageTotal = annotationsViewReady ? annotationsPagination.pageTotal : 1;
+    const totalCount = annotationsViewReady ? annotationsPagination.totalCount : 0;
+
+    const isLastPage = pageTotal === pageNumber;
+    const isFirstPage = pageNumber === 1;
+    const isPaginated = pageTotal > 1;
+    const pageOptions = Array.from({ length: pageTotal }, (_k, v) => (v += 1, ({ id: v, name: `${v} / ${pageTotal}` })));
+    const begin = annotationsViewReady ? annotationsPagination.begin : 0;
+    const end = annotationsViewReady ? annotationsPagination.end : 0;
+
+    const requestPublicationNotesPage = React.useCallback((page: number) => {
+        if (!pubId) {
+            return;
+        }
+        dispatch(readerActions.publicationNotes.filter.build(pubId, {
+            ...publicationNotesViewFilter,
+            pagination: {
+                page,
+                pageSize: MAX_MATCHES_PER_PAGE,
+            },
+        }));
+    }, [MAX_MATCHES_PER_PAGE, dispatch, pubId, publicationNotesViewFilter]);
+
     const changePageNumber = React.useCallback((cb: (n: number) => number) => {
         setTimeout(() => paginatorAnnotationsRef.current?.focus(), 100);
         updateDialogOrDockDataInfo({id: "", edit: false});
-        setPageNumber(cb);
-    }, [setPageNumber, updateDialogOrDockDataInfo]);
+        requestPublicationNotesPage(Math.max(cb(pageNumber), START_PAGE));
+    }, [START_PAGE, pageNumber, requestPublicationNotesPage, updateDialogOrDockDataInfo]);
 
     const tagsIndexListAll = useSelector(selectPublicationNoteViewTagsIndex);
     const tagsIndexList = React.useMemo(() => annotationsViewReady ? tagsIndexListAll : [], [annotationsViewReady, tagsIndexListAll]);
@@ -157,28 +189,16 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
     React.useEffect(() => {
         if (annotationUUID) {
             setAnnotationUUID("");
-            const annotationFocusItemPageNumber = Math.ceil((annotationFocusFoundIndex + 1 /* 0 based */) / MAX_MATCHES_PER_PAGE);
-            setPageNumber((pageNumber) => annotationFocusItemPageNumber !== pageNumber ? annotationFocusItemPageNumber : pageNumber);
+            const annotationFocusItemPageNumber = Math.max(
+                Math.ceil((annotationFocusFoundIndex + 1 /* 0 based */) / MAX_MATCHES_PER_PAGE),
+                START_PAGE,
+            );
+            if (annotationFocusItemPageNumber !== pageNumber) {
+                requestPublicationNotesPage(annotationFocusItemPageNumber);
+            }
 
         }
-    }, [annotationUUID, annotationFocusFoundIndex, MAX_MATCHES_PER_PAGE]);
-
-    const pageTotal = Math.ceil(annotationList.length / MAX_MATCHES_PER_PAGE) || 1;
-    if (pageNumber <= 0) {
-        setPageNumber(START_PAGE);
-    } else if (pageNumber > pageTotal) {
-        setPageNumber(pageTotal);
-    }
-
-    const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
-    const annotationsPagedArray = annotationList.slice(startIndex, startIndex + MAX_MATCHES_PER_PAGE);
-
-    const isLastPage = pageTotal === pageNumber;
-    const isFirstPage = pageNumber === 1;
-    const isPaginated = pageTotal > 1;
-    const pageOptions = Array.from({ length: pageTotal }, (_k, v) => (v += 1, ({ id: v, name: `${v} / ${pageTotal}` })));
-    const begin = startIndex + 1;
-    const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, annotationList.length);
+    }, [annotationUUID, annotationFocusFoundIndex, MAX_MATCHES_PER_PAGE, pageNumber, requestPublicationNotesPage, START_PAGE]);
 
     const triggerEdition = (annotationItem: PublicationNote) =>
         (value: boolean) => value ? updateDialogOrDockDataInfo({id: annotationItem.uuid, edit: true}) : updateDialogOrDockDataInfo({id: "", edit: false});
@@ -592,7 +612,7 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
                         </button>
                     </div>
                     {
-                        annotationList.length &&
+                        totalCount &&
                         <p
                             style={{
                                 textAlign: "center",
@@ -600,7 +620,7 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
                                 margin: 0,
                                 marginTop: "-16px",
                                 marginBottom: "20px",
-                            }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${annotationList.length}`}</p>
+                            }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${totalCount}`}</p>
                     }
                 </>
                     : <></>

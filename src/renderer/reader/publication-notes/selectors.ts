@@ -25,7 +25,19 @@ export function selectPublicationNotes(state: IReaderRootState): PublicationNote
 }
 
 export function selectPublicationNotesViewState(state: IReaderRootState): PublicationNotesHydratedView<PublicationNote> {
-    return state.reader.publicationNotes?.view || publicationNotesViewInitialState.view;
+    const view = state.reader.publicationNotes?.view;
+    if (!view) {
+        return publicationNotesViewInitialState.view;
+    }
+
+    if (!view.pagination) {
+        return {
+            ...view,
+            pagination: publicationNotesViewInitialState.view.pagination,
+        };
+    }
+
+    return view;
 }
 
 export function selectPublicationNotesView(state: IReaderRootState): PublicationNote[] {
