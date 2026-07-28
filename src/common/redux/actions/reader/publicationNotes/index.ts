@@ -7,8 +7,10 @@
 
 import * as snapshot from "./snapshot";
 import * as commands from "./commands";
+import * as filter from "./filter";
 
 export {
     commands,
+    filter,
     snapshot,
 };

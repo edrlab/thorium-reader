@@ -24,7 +24,6 @@ import * as AnnotationIcon from "readium-desktop/renderer/assets/icons/annotatio
 
 import * as Tabs from "@radix-ui/react-tabs";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
-import type { Selection } from "react-aria-components";
 
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 import { Link } from "@r2-shared-js/models/publication-link";
@@ -422,7 +421,6 @@ export const computeProgression = (spineItemLinks: Link[], locator: Locator) => 
     return percent;
 };
 
-const selectionIsSet = (a: Selection): a is Set<string> => typeof a === "object";
 const MAX_MATCHES_PER_PAGE = 5;
 const START_PAGE = 1;
 
@@ -711,7 +709,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
 
                     <Tabs.Content value="tab-bookmark" tabIndex={-1} id={"reader-menu-tab-bookmark"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={classNames(dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab, stylesBookmarks.bookmarks_tab)}>
-                            <BookmarkList popoverBoundary={popoverBoundary.current} goToLocator={goToLocator} hideBookmarkOnChange={hideAnnotationOnChange} START_PAGE={START_PAGE} selectionIsSet={selectionIsSet} MAX_MATCHES_PER_PAGE={MAX_MATCHES_PER_PAGE} />
+                            <BookmarkList popoverBoundary={popoverBoundary.current} goToLocator={goToLocator} hideBookmarkOnChange={hideAnnotationOnChange} START_PAGE={START_PAGE} MAX_MATCHES_PER_PAGE={MAX_MATCHES_PER_PAGE} />
                         </div>
                     </Tabs.Content>
 
@@ -730,7 +728,6 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 hideAnnotationOnChange={hideAnnotationOnChange}
                                 serialAnnotator={serialAnnotator}
                                 START_PAGE={START_PAGE}
-                                selectionIsSet={selectionIsSet}
                                 MAX_MATCHES_PER_PAGE={MAX_MATCHES_PER_PAGE}
                             />
                         </div>

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "@jest/globals";
 import type { PublicationNote } from "readium-desktop/common/publication-notes";
 import { readerActions } from "readium-desktop/common/redux/actions";
+import { publicationNotesViewInitialState } from "readium-desktop/common/redux/states/renderer/publicationNotes";
 import { EDrawType } from "readium-desktop/common/type/note.type";
 
 function createNote(overrides: Partial<PublicationNote> = {}): PublicationNote {
@@ -19,13 +20,10 @@ describe("reader publication note command actions", () => {
 
     it("builds a snapshot action with a consistent publication destination", () => {
         const action = readerActions.publicationNotes.snapshot.build("pub-a", {
+            ...publicationNotesViewInitialState,
             publicationIdentifier: "stale-pub",
             notes: [],
             revision: 1,
-            byId: {},
-            ids: [],
-            tagIndex: {},
-            totalCount: 0,
         });
 
         expect(action.destination.publicationIdentifier).toBe("pub-a");

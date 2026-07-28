@@ -17,4 +17,16 @@ export const publicationNotesViewInitialState: IPublicationNotesViewState = {
     ids: [],
     tagIndex: {},
     totalCount: 0,
+    view: {
+        filter: {},
+        notes: [],
+        byId: {},
+        ids: [],
+        tagIndex: {},
+        totalCount: 0,
+        facets: {
+            tagIndex: {},
+            creators: [],
+        },
+    },
 };

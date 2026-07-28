@@ -45,7 +45,6 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { dialogActions, dockActions, readerActions } from "readium-desktop/common/redux/actions";
 import { IReaderDialogOrDockSettingsMenuState } from "readium-desktop/common/models/reader";
-import { rgbToHex } from "readium-desktop/common/rgb";
 import { ImportAnnotationsDialog } from "readium-desktop/renderer/common/components/ImportAnnotationsDialog";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
@@ -57,14 +56,14 @@ import { exportAnnotationSet } from "readium-desktop/renderer/common/redux/sagas
 import { getSaga } from "../../createStore";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { BookmarkCard } from "../ReaderMenu/BookmarkCard";
-import { computeProgression } from "./ReaderMenu";
-import { selectPublicationNoteTagsIndex, selectPublicationNotes } from "../../publication-notes/selectors";
+import { selectPublicationNoteViewTagsIndex, selectPublicationNotesViewState } from "../../publication-notes/selectors";
+import { selectionToPublicationNotesViewSelection, selectionToPublicationNotesViewSort } from "../../publication-notes/viewFilters";
 
-export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnChange: () => void, START_PAGE: number, selectionIsSet: (a: Selection) => a is Set<string>, MAX_MATCHES_PER_PAGE: number } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnChange: () => void, START_PAGE: number, MAX_MATCHES_PER_PAGE: number } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
     const readerConfig = useSelector((state: IReaderRootState) => state.reader.config);
 
-    const { goToLocator, popoverBoundary, hideBookmarkOnChange, START_PAGE, selectionIsSet, MAX_MATCHES_PER_PAGE } = props;
+    const { goToLocator, popoverBoundary, hideBookmarkOnChange, START_PAGE, MAX_MATCHES_PER_PAGE } = props;
 
     const dispatch = useDispatch();
     const dockedMode = useSelector((state: IReaderRootState) => state.reader.config.readerDockingMode !== "full");
@@ -96,16 +95,30 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
     const paginatorBookmarksRef = React.useRef<HTMLSelectElement>();
 
     const [__] = useTranslator();
-    const notes = useSelector(selectPublicationNotes);
-    const bookmarkListAll = React.useMemo(() => notes.filter(({ group }) => group === "bookmark"), [notes]);
+    const publicationNotesView = useSelector(selectPublicationNotesViewState);
+    const bookmarksViewReady = publicationNotesView.filter.group === "bookmark";
+    const bookmarkList = bookmarksViewReady ? publicationNotesView.notes : [];
     const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
     const publicationView = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
     const winId = useSelector((state: IReaderRootState) => state.win.identifier);
-    const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const locale = useSelector((state: IReaderRootState) => state.i18n.locale);
     const [colorArrayFilter, setColorArrayFilter] = React.useState<Selection>(new Set([]));
     const [creatorArrayFilter, setCreatorArrayFilter] = React.useState<Selection>(new Set([]));
     const [tagArrayFilter, setTagArrayFilter] = React.useState<Selection>(new Set([]));
+    const [sortType, setSortType] = React.useState<Selection>(new Set(["lastCreated"]));
+
+    React.useEffect(() => {
+        if (!pubId) {
+            return;
+        }
+        dispatch(readerActions.publicationNotes.filter.build(pubId, {
+            group: "bookmark",
+            tags: selectionToPublicationNotesViewSelection(tagArrayFilter),
+            colors: selectionToPublicationNotesViewSelection(colorArrayFilter),
+            creators: selectionToPublicationNotesViewSelection(creatorArrayFilter),
+            sort: selectionToPublicationNotesViewSort(sortType),
+        }));
+    }, [colorArrayFilter, creatorArrayFilter, dispatch, pubId, sortType, tagArrayFilter]);
 
     const [pageNumber, setPageNumber] = React.useState(START_PAGE);
     const changePageNumber = React.useCallback((cb: (n: number) => number) => {
@@ -114,63 +127,16 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
         setPageNumber(cb);
     }, [setPageNumber, updateDialogOrDockDataInfo]);
 
-    const creatorListName = bookmarkListAll.map(({ creator }) => creator?.name).filter(v => v);
-    const selectCreatorOptions = [...(new Set(creatorListName))].map((name, index) => ({ id: `${index}_${name}`, name }));
+    const creatorListName = React.useMemo(() => bookmarksViewReady ? publicationNotesView.facets.creators : [], [bookmarksViewReady, publicationNotesView.facets.creators]);
+    const selectCreatorOptions = React.useMemo(() => [...(new Set(creatorListName))].map((name, index) => ({ id: `${index}_${name}`, name })), [creatorListName]);
 
     const bookmarksColors = React.useMemo(() => Object.entries(noteColorCodeToColorTranslatorKeySet).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
 
-    const tagsIndexList = useSelector(selectPublicationNoteTagsIndex);
+    const tagsIndexListAll = useSelector(selectPublicationNoteViewTagsIndex);
+    const tagsIndexList = React.useMemo(() => bookmarksViewReady ? tagsIndexListAll : [], [bookmarksViewReady, tagsIndexListAll]);
     const selectTagOption = React.useMemo(() => tagsIndexList.map((v, i) => ({ id: i, name: v.tag })), [tagsIndexList]);
-    const selectTagOptionFilteredNameArray = React.useMemo(() => selectTagOption.map((v) => v.name), [selectTagOption]);
 
-    const bookmarkListFiltered = React.useMemo(() => {
-
-        return (
-            (selectionIsSet(tagArrayFilter) && tagArrayFilter.size) ||
-            (tagArrayFilter === "all") ||
-            (selectionIsSet(colorArrayFilter) && colorArrayFilter.size) ||
-            (colorArrayFilter === "all") ||
-            (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size) ||
-            (creatorArrayFilter === "all")
-        )
-            ? bookmarkListAll.filter(({ tags, color, drawType: _drawType, creator }) => {
-
-                const colorHex = rgbToHex(color);
-                const creatorName = creator?.name || "";
-
-                return ((tagArrayFilter === "all" && tags?.some((tagsValueName) => selectTagOptionFilteredNameArray.includes(tagsValueName))) || (selectionIsSet(tagArrayFilter) && tagArrayFilter.size && tags?.some((tagsValueName) => tagArrayFilter.has(tagsValueName)))) ||
-                    ((colorArrayFilter === "all" && bookmarksColors.some(({hex}) => hex === colorHex)) || (selectionIsSet(colorArrayFilter) && colorArrayFilter.size && colorArrayFilter.has(colorHex))) ||
-                    ((creatorArrayFilter === "all" && creatorListName.includes(creatorName)) || (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size && creatorArrayFilter.has(creatorName)));
-
-            })
-            : bookmarkListAll;
-    }, [bookmarkListAll, tagArrayFilter, colorArrayFilter, creatorArrayFilter, bookmarksColors, creatorListName, selectTagOptionFilteredNameArray, selectionIsSet]);
-
-    const [sortType, setSortType] = React.useState<Selection>(new Set(["lastCreated"]));
-    if (sortType !== "all" && sortType.has("progression")) {
-
-        bookmarkListFiltered.sort((a, b) => {
-
-            if (!a.locatorExtended || !b.locatorExtended) {
-                return 0;
-            }
-            const { locatorExtended: la } = a;
-            const { locatorExtended: lb } = b;
-            const pcta = computeProgression(r2Publication.Spine, la.locator);
-            const pctb = computeProgression(r2Publication.Spine, lb.locator);
-            return pcta - pctb;
-        });
-    } else if (sortType !== "all" && sortType.has("lastCreated")) {
-        bookmarkListFiltered.sort(({created: ca}, {created: cb}) => {
-            return cb - ca;
-        });
-    } else if (sortType !== "all" && sortType.has("lastModified")) {
-        bookmarkListFiltered.sort(({ modified: ma }, { modified: mb }) => {
-            return ma && mb ? mb - ma : ma ? -1 : mb ? 1 : 0;
-        });
-    }
-
-    const annotationFocusFoundIndex = bookmarkUUID ? bookmarkListFiltered.findIndex(({uuid}) => bookmarkUUID === uuid) : -1;
+    const annotationFocusFoundIndex = bookmarkUUID ? bookmarkList.findIndex(({uuid}) => bookmarkUUID === uuid) : -1;
     React.useEffect(() => {
         if (bookmarkUUID) {
             setBookmarkUUID("");
@@ -180,7 +146,7 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
         }
     }, [bookmarkUUID, annotationFocusFoundIndex, MAX_MATCHES_PER_PAGE]);
 
-    const pageTotal = Math.ceil(bookmarkListFiltered.length / MAX_MATCHES_PER_PAGE) || 1;
+    const pageTotal = Math.ceil(bookmarkList.length / MAX_MATCHES_PER_PAGE) || 1;
 
     if (pageNumber <= 0) {
         setPageNumber(START_PAGE);
@@ -189,7 +155,7 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
     }
 
     const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
-    const bookmarksPagedArray = bookmarkListFiltered.slice(startIndex, startIndex + MAX_MATCHES_PER_PAGE);
+    const bookmarksPagedArray = bookmarkList.slice(startIndex, startIndex + MAX_MATCHES_PER_PAGE);
 
     const isLastPage = pageTotal === pageNumber;
     const isFirstPage = pageNumber === 1;
@@ -198,19 +164,12 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
 
 
     const begin = startIndex + 1;
-    const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, bookmarkListFiltered.length);
+    const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, bookmarkList.length);
 
     const triggerEdition = (bookmarkItem: PublicationNote) =>
         (value: boolean) => value ? updateDialogOrDockDataInfo({id: bookmarkItem.uuid, edit: true}) : updateDialogOrDockDataInfo({id: "", edit: false});
 
 
-    // if tagArrayFilter value not include in the selectTagOption then take only the intersection between tagArrayFilter and selectTagOption
-    // const selectTagOptionFilteredNameArray = selectTagOption.map((v) => v.name);
-    // const tagArrayFilterArray = selectionIsSet(tagArrayFilter) ? Array(...tagArrayFilter) : [];
-    // if (tagArrayFilterArray.filter((tagValue) => !selectTagOptionFilteredNameArray.includes(tagValue)).length) {
-    //     const tagArrayFilterArrayDifference = tagArrayFilterArray.filter((tagValue) => selectTagOptionFilteredNameArray.includes(tagValue));
-    //     setTagArrayFilter(new Set(tagArrayFilterArrayDifference));
-    // }
     const nbOfFilters = ((tagArrayFilter === "all") ?
         selectTagOption.length : tagArrayFilter.size) + (creatorArrayFilter === "all" ?
             selectCreatorOptions.length : creatorArrayFilter.size) + ((colorArrayFilter === "all") ?
@@ -448,7 +407,7 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
 
                     <Popover.Root modal>
                         <Popover.Trigger asChild>
-                            <button className={stylesBookmarks.bookmarks_filter_trigger_button} disabled={!bookmarkListFiltered.length}
+                            <button className={stylesBookmarks.bookmarks_filter_trigger_button} disabled={!bookmarkList.length}
                                 title={__("catalog.exportAnnotation")}
                                 aria-label={__("catalog.exportAnnotation")}>
                                 <SVG svg={SaveIcon} />
@@ -489,7 +448,7 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
                                     <Popover.Close aria-label={__("reader.annotations.export")} asChild>
                                         <button onClick={() => {
                                             const fileType = selectFileTypeRef.current?.value || "annotation";
-                                            getSaga().run(exportAnnotationSet, bookmarkListFiltered, publicationView, bookmarkTitleRef?.current?.value || annoSetTitle, fileType).toPromise().then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+                                            getSaga().run(exportAnnotationSet, bookmarkList, publicationView, bookmarkTitleRef?.current?.value || annoSetTitle, fileType).toPromise().then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
                                         }} className={stylesButtons.button_primary_blue}>
                                             <SVG svg={SaveIcon} />
                                             {__("reader.annotations.export")}
@@ -500,7 +459,7 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
                         </Popover.Portal>
                     </Popover.Root>
                     <AlertDialog.Root>
-                        <AlertDialog.Trigger className={stylesBookmarks.bookmarks_filter_trigger_button} disabled={!bookmarkListFiltered.length} title={__("dialog.deleteBookmarks")} aria-label={__("dialog.deleteBookmarks")}>
+                        <AlertDialog.Trigger className={stylesBookmarks.bookmarks_filter_trigger_button} disabled={!bookmarkList.length} title={__("dialog.deleteBookmarks")} aria-label={__("dialog.deleteBookmarks")}>
                             <SVG svg={TrashIcon} ariaHidden />
                         </AlertDialog.Trigger>
                         <AlertDialog.Portal>
@@ -508,7 +467,7 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
                             <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
                                 <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("dialog.deleteBookmarks")}</AlertDialog.Title>
                                 <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
-                                    {__("dialog.deleteBookmarksText", { count: bookmarkListFiltered.length })}
+                                    {__("dialog.deleteBookmarksText", { count: bookmarkList.length })}
                                 </AlertDialog.Description>
                                 <div className={stylesAlertModals.AlertDialogButtonContainer}>
                                     <AlertDialog.Cancel asChild>
@@ -517,7 +476,7 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
                                     <AlertDialog.Action asChild>
                                         <button className={stylesButtons.button_primary_blue} onClick={() => {
                                             updateDialogOrDockDataInfo({id: "", edit: false});
-                                            for (const bookmark of bookmarkListFiltered) {
+                                            for (const bookmark of bookmarkList) {
 
                                                 dispatch(readerActions.publicationNotes.commands.remove.build(pubId, bookmark));
                                             }
@@ -678,7 +637,7 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
                         </button>
                     </div>
                     {
-                        bookmarkListFiltered.length &&
+                        bookmarkList.length &&
                         <p
                             style={{
                                 textAlign: "center",
@@ -686,7 +645,7 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
                                 margin: 0,
                                 marginTop: "-16px",
                                 marginBottom: "20px",
-                            }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${bookmarkListFiltered.length}`}</p>
+                            }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${bookmarkList.length}`}</p>
                     }
                 </>
                     : <></>
