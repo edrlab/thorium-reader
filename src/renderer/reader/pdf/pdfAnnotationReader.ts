@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import type { TDrawView } from "readium-desktop/common/redux/states/renderer/note";
+import type { TDrawView } from "readium-desktop/common/type/note.type";
 import type {
     TPdfAnnotationDraftTransport,
 } from "readium-desktop/renderer/reader/pdf/common/pdfAnnotation.type";

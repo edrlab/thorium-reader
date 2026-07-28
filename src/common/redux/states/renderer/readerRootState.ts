@@ -25,7 +25,8 @@ import { IAllowCustomConfigState } from "readium-desktop/common/redux/states/ren
 import { IImageClickState } from "readium-desktop/common/redux/states/renderer/imageClick";
 import { IBookmarkTotalCountState } from "readium-desktop/common/redux/states/renderer/bookmarkTotalCount";
 import { DockState } from "../dock";
-import { INoteState } from "./note";
+import type { PublicationNote } from "readium-desktop/common/publication-notes";
+import { IPublicationNotesViewState } from "./publicationNotes";
 
 export interface IReaderPdfConfig{
         scale: "page-fit" | "page-width" | number;
@@ -37,7 +38,6 @@ export interface IReaderRootState extends IRendererCommonRootState {
     search: ISearchState;
     mode: ReaderMode;
     annotation: IAnnotationModeState;
-    noteTagsIndex: Array<{ tag: string, index: number }>;
     img: IImageClickState; // TODO: replace by dock/dialog state
     dock: DockState;
     // cf dialog state in common
@@ -49,7 +49,7 @@ export interface IReaderStateReader {
     locator: MiniLocatorExtended;
     // bookmark: TBookmarkState;
     // annotation: TAnnotationState;
-    note: INoteState[],
+    publicationNotes: IPublicationNotesViewState;
     highlight: {
         handler: TMapState<string, IHighlightHandlerState>;
         mounter: TMapState<string, IHighlightMounterState>;
@@ -75,5 +75,8 @@ export interface IReaderStateReader {
 }
 
 export type IReaderStateReaderPersistence = Pick<IReaderStateReader, "config" | "locator" | "divina" | "disableRTLFlip" | "allowCustomConfig" | "noteTotalCount" | "pdfConfig">;
-export type IReaderStateReaderSession = Partial<IReaderStateReaderPersistence> & Pick<IReaderStateReader, "lock" | "info" | "note">;
+export type IReaderStateReaderSession =
+    Partial<IReaderStateReaderPersistence>
+    & Pick<IReaderStateReader, "lock" | "info" | "publicationNotes">
+    & { note?: PublicationNote[] };
 export type IReaderStateReaderHydration = IRendererCommonRootStateHydration & { reader: IReaderStateReaderSession };

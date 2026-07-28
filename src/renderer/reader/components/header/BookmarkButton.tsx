@@ -30,8 +30,10 @@ import { ReadiumElectronBrowserWindow } from "@r2-navigator-js/electron/renderer
 import { readerLocalActionHighlights } from "../../redux/actions";
 import { BookmarkEdit } from "../BookmarkEdit";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
-import { EDrawType, INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import type { PublicationNote } from "readium-desktop/common/publication-notes";
+import { EDrawType } from "readium-desktop/common/type/note.type";
 import { clone } from "ramda";
+import { selectPublicationNotes, selectPublicationNotesFromReaderState } from "../../publication-notes/selectors";
 
 export interface IProps {
     shortcutEnable: boolean;
@@ -55,8 +57,8 @@ const equalFn = (prev: IReaderStateReader, current: IReaderStateReader) => {
         return false;
     }
 
-    const previousBookmarks = prev.note.filter(({group}) => group === "bookmark");
-    const currentBookmarks = current.note.filter(({group}) => group === "bookmark");
+    const previousBookmarks = selectPublicationNotesFromReaderState(prev).filter(({group}) => group === "bookmark");
+    const currentBookmarks = selectPublicationNotesFromReaderState(current).filter(({group}) => group === "bookmark");
 
     if (
         (
@@ -83,11 +85,12 @@ let __time = false;
 export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) => {
 
     const [__] = useTranslator();
-    const [visibleBookmarks, setVisibleBookmarks] = React.useState<INoteState[]>([]);
+    const [visibleBookmarks, setVisibleBookmarks] = React.useState<PublicationNote[]>([]);
     const numberOfVisibleBookmarks = visibleBookmarks.length;
 
     // const selectionIsNew = useSelector((state: IReaderRootState) => state.reader.locator.selectionIsNew);
-    const { note: notes, locator: locatorExtended } = useSelector((state: IReaderRootState) => state.reader, equalFn);
+    const { locator: locatorExtended } = useSelector((state: IReaderRootState) => state.reader, equalFn);
+    const notes = useSelector(selectPublicationNotes);
     // const selectionIsNew = locatorExtended.selectionIsNew;
 
     const noteTotalCount = useSelector((state: IReaderRootState) => state.reader.noteTotalCount.state);
@@ -168,20 +171,20 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
     }, [isEpubNavigator]);
 
     const dispatch = useDispatch();
-    const deleteBookmark = React.useCallback((bookmark: INoteState) => {
-        dispatch(readerActions.note.remove.build(bookmark));
+    const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
+    const deleteBookmark = React.useCallback((bookmark: PublicationNote) => {
+        dispatch(readerActions.publicationNotes.commands.remove.build(pubId, bookmark));
         // if (bookmark.locator.locations.rangeInfo)
         dispatch(readerLocalActionHighlights.handler.pop.build([
             {
                 uuid: bookmark.uuid,
             },
         ]));
-    }, [dispatch]);
+    }, [dispatch, pubId]);
 
     const toasty = React.useCallback((msg: string) => dispatch(toastActions.openRequest.build(ToastType.Success, msg)), [dispatch]);
 
-    const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
-    const addBookmark = React.useCallback((bookmark: Omit<INoteState, "uuid">) => {
+    const addBookmark = React.useCallback((bookmark: Omit<PublicationNote, "uuid">) => {
 
         if (ttsState !== TTSStateEnum.STOPPED ||
             mediaOverlaysState !== MediaOverlaysStateEnum.STOPPED
@@ -191,9 +194,8 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
             return;
         }
 
-        dispatch(readerActions.note.addUpdate.build(pubId, bookmark));
-        dispatch(readerActions.bookmarkTotalCount.build(noteTotalCount + 1));
-    }, [dispatch, ttsState, mediaOverlaysState, __, toasty, noteTotalCount, pubId]);
+        dispatch(readerActions.publicationNotes.commands.save.build(pubId, bookmark));
+    }, [dispatch, ttsState, mediaOverlaysState, __, toasty, pubId]);
 
     const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
     const colorDefault = useSelector((state: IReaderRootState) => state.reader.config.annotation_defaultColor);
@@ -344,7 +346,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                     console.log(e); // isLocatorVisible - no webview href match.
                     // setVisibleBookmarks([]);
                     // fallback to sequential checking:
-                    const arr: INoteState[] = [];
+                    const arr: PublicationNote[] = [];
                     for (const bookmark of allBookmarks) {
                         try {
                             if (bookmark.locatorExtended && await isLocatorVisible(bookmark.locatorExtended.locator)) {

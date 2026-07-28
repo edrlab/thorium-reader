@@ -51,9 +51,9 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     // readerActions.annotation.push.ID,
     // readerActions.annotation.update.ID,
 
-    // needed to forward event to other reader windows, already synchronised with persistence readerActions.setReduxState
-    readerActions.note.addUpdate.ID,
-    readerActions.note.remove.ID,
+    // publication note commands are forwarded to main for persistence and to sibling reader windows.
+    readerActions.publicationNotes.commands.save.ID,
+    readerActions.publicationNotes.commands.remove.ID,
 
     annotationActions.importAnnotationSet.ID,
     annotationActions.importConfirmOrAbort.ID,

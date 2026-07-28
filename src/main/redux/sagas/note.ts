@@ -10,7 +10,7 @@ import { dialog } from "electron";
 import * as fs from "fs";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { annotationActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
-import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
+import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
 import { SagaGenerator } from "typed-redux-saga";
 import { call as callTyped, put as putTyped, take as takeTyped, delay as delayTyped, all as allTyped } from "typed-redux-saga/macro";
@@ -25,9 +25,14 @@ import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { uuidv4 } from "readium-desktop/utils/uuid";
 import { takeSpawnLatest } from "readium-desktop/common/redux/sagas/takeSpawnLatest";
 import { getTranslator } from "readium-desktop/common/services/translator";
-import { EDrawType, INoteState, NOTE_DEFAULT_COLOR, noteColorCodeToColorSet, noteColorSetToColorCode } from "readium-desktop/common/redux/states/renderer/note";
+import {
+    NOTE_DEFAULT_COLOR,
+    noteColorCodeToColorSet,
+    noteColorSetToColorCode,
+    type PublicationNote,
+} from "readium-desktop/common/publication-notes";
+import { EDrawType } from "readium-desktop/common/type/note.type";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
-import { sqliteTableNoteDelete, sqliteTableNoteDeleteWherePubId, sqliteTableNoteInsert, sqliteTableNoteUpdate, sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
 import { publicationActions as publicationActionsFromMainAction } from "../actions";
 import { EXT_ANNOTATIONS } from "readium-desktop/common/extension";
 import { resolveReadiumAnnotationSourceHref } from "readium-desktop/common/readium/annotation/sourceHref";
@@ -37,11 +42,10 @@ const filename_ = "readium-desktop:main:saga:annotationsImporter";
 const debug = debug_(filename_);
 debug("_");
 
-export function* getNotesFromMainWinState(publicationIdentifier: string): SagaGenerator<INoteState[]> {
+export function* getNotesFromMainWinState(publicationIdentifier: string): SagaGenerator<PublicationNote[]> {
 
-    let notes: INoteState[] = [];
-
-    notes = yield* callTyped(() => sqliteTableSelectAllNotesWherePubId(publicationIdentifier));
+    const viewState = yield* callTyped(() => diMainGet("publication-notes-controller").list(publicationIdentifier));
+    const notes: PublicationNote[] = viewState.notes;
     // const sessionReader = yield* selectTyped((state: RootState) => state.win.session.reader);
     // const winSessionReaderStateArray = Object.values(sessionReader).filter((v) => v.publicationIdentifier === publicationIdentifier);
     // if (winSessionReaderStateArray.length) {
@@ -65,11 +69,16 @@ export function* getNotesFromMainWinState(publicationIdentifier: string): SagaGe
     return notes;
 }
 
-function* pushNotesFromMainWindow(publicationIdentifier: string, notes: INoteState[]): SagaGenerator<void> {
+function* pushNotesFromMainWindow(
+    publicationIdentifier: string,
+    notes: PublicationNote[],
+    existingNotes: PublicationNote[] = [],
+): SagaGenerator<void> {
 
     for (const note of notes) {
         yield* delayTyped(1);
-        yield* putTyped(readerActions.note.addUpdate.build(publicationIdentifier, note));
+        const previousNote = existingNotes.find(({ uuid }) => uuid === note.uuid);
+        yield* putTyped(readerActions.publicationNotes.commands.save.build(publicationIdentifier, note, previousNote));
     }
 
     // const sessionReader = yield* selectTyped((state: RootState) => state.win.session.reader);
@@ -90,6 +99,58 @@ function* pushNotesFromMainWindow(publicationIdentifier: string, notes: INoteSta
     //         reduxState),
     //     );
     // }
+}
+
+function* savePublicationNote(publicationIdentifier: string, newNote: PublicationNote, previousNote?: PublicationNote | undefined): SagaGenerator<void> {
+
+    const controller = diMainGet("publication-notes-controller");
+    const persistedNote = yield* callTyped(() => controller.get(publicationIdentifier, newNote.uuid));
+
+    if (!persistedNote) {
+        if (previousNote) {
+            debug("No persisted note found to update", newNote.uuid, previousNote.uuid);
+            return;
+        }
+
+        debug("NO persisted note ==> CREATE new note");
+        yield* callTyped(() => controller.create(publicationIdentifier, newNote));
+    } else {
+        debug("Persisted note found ==> UPDATE note", newNote.uuid, previousNote?.uuid);
+        yield* callTyped(() => controller.update(publicationIdentifier, newNote));
+    }
+}
+
+function* deletePublicationNote(publicationIdentifier: string, note: PublicationNote): SagaGenerator<void> {
+
+    const controller = diMainGet("publication-notes-controller");
+    const persistedNote = yield* callTyped(() => controller.get(publicationIdentifier, note.uuid));
+    if (!persistedNote) {
+        debug("No persisted note found to delete", note.uuid);
+        return;
+    }
+
+    yield* callTyped(() => controller.delete(publicationIdentifier, note.uuid));
+}
+
+type PublicationNoteCommandAction =
+    | readerActions.publicationNotes.commands.save.TAction
+    | readerActions.publicationNotes.commands.remove.TAction;
+
+function* persistPublicationNoteCommand(action: PublicationNoteCommandAction): SagaGenerator<void> {
+
+    if (action.type === readerActions.publicationNotes.commands.save.ID) {
+        debug("RECEIVE PUBLICATION NOTES SAVE COMMAND");
+        debug(action);
+
+        const { publicationIdentifier, previousNote, newNote } = action.payload;
+        yield* callTyped(savePublicationNote, publicationIdentifier, newNote, previousNote);
+        return;
+    }
+
+    debug("RECEIVE PUBLICATION NOTES REMOVE COMMAND");
+    debug(action);
+
+    yield* callTyped(deletePublicationNote, action.payload.publicationIdentifier, action.payload.note);
 }
 
 function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAction): SagaGenerator<void> {
@@ -210,10 +271,10 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         // OK publication identified
         const notes = yield* callTyped(getNotesFromMainWinState, publicationIdentifier);
 
-        const annotationsParsedNoConflictArray: INoteState[] = [];
-        const annotationsParsedConflictOlderArray: INoteState[] = [];
-        const annotationsParsedConflictNewerArray: INoteState[] = [];
-        const annotationsParsedAllArray: INoteState[] = [];
+        const annotationsParsedNoConflictArray: PublicationNote[] = [];
+        const annotationsParsedConflictOlderArray: PublicationNote[] = [];
+        const annotationsParsedConflictNewerArray: PublicationNote[] = [];
+        const annotationsParsedAllArray: PublicationNote[] = [];
 
         debug("There are", annotationsIncommingArray.length, "incomming annotations to be imported");
 
@@ -254,7 +315,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 continue;
             }
 
-            const annotationParsed: INoteState = {
+            const annotationParsed: PublicationNote = {
                 uuid,
                 index: -1, // TODO !!!!
                 textualValue: incommingAnnotation.body?.value,
@@ -367,7 +428,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
 
 
         // push notes to the publicationIdentifier redux-state (reader if open or redux-registry-main state instead)
-        yield* callTyped(pushNotesFromMainWindow, publicationIdentifier, annotationsParsedReadyToBeImportedArray);
+        yield* callTyped(pushNotesFromMainWindow, publicationIdentifier, annotationsParsedReadyToBeImportedArray, notes);
 
         // convert range to locator IRangeInfo/selectionInfo
         // ref: https://github.com/readium/r2-navigator-js/blob/a08126622ac87e04200a178cc438fd7e1b256c52/src/electron/renderer/webview/selection.ts#L342
@@ -398,48 +459,16 @@ export function saga() {
             function* (action: publicationActionsFromMainAction.deletePublication.TAction): SagaGenerator<void> {
                 debug("RECEIVE PUBLICATION DELETE ACTION");
                 debug(action);
-                const ok = yield* callTyped(() => sqliteTableNoteDeleteWherePubId(action.payload.publicationIdentifier));
-                debug(ok);
-                // const notes: INoteState[] = yield* callTyped(() => sqliteTableSelectAllNotesWherePubId(action.payload.publicationIdentifier));
-                // if (notes?.length) {
-                //     for (const note of notes) {
-                //         yield* callTyped(() => sqliteTableNoteDelete(note.uuid));
-                //     }
-                // }
+                yield* callTyped(() => diMainGet("publication-notes-controller").deleteByPublication(action.payload.publicationIdentifier));
             },
             (e) => error(filename_, e),
         ),
         takeSpawnLeading(
-            readerActions.note.addUpdate.ID,
-            function* (action: readerActions.note.addUpdate.TAction): SagaGenerator<void> {
-                debug("RECEIVE ADD/UPDATE ACTION");
-                debug(action);
-
-                const payload = action.payload;
-                const pubId = action.destination.publicationIdentifier;
-                const { previousNote, newNote } = payload;
-
-                if (!previousNote) {
-                    debug("NO PreviousNote ==> INSERT new note");
-                    yield* callTyped(() => sqliteTableNoteInsert(pubId, [ newNote ]));
-                } else {
-                    debug("PreviousNote ==> UPDATE new note");
-                    yield* callTyped(() => sqliteTableNoteUpdate(newNote));
-                }
-            },
-            (e) => error(filename_, e),
-        ),
-        takeSpawnLeading(
-            readerActions.note.remove.ID,
-            function* (action: readerActions.note.remove.TAction): SagaGenerator<void> {
-                debug("RECEIVE REMOVE ACTION");
-                debug(action);
-
-                const payload = action.payload;
-                const { note } = payload;
-
-                yield* callTyped(() => sqliteTableNoteDelete(note.uuid));
-            },
+            [
+                readerActions.publicationNotes.commands.save.ID,
+                readerActions.publicationNotes.commands.remove.ID,
+            ],
+            persistPublicationNoteCommand,
             (e) => error(filename_, e),
         ),
     ]);

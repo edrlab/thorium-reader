@@ -1,7 +1,7 @@
 import { expect, test } from "@jest/globals";
 
-import { EDrawType } from "readium-desktop/common/redux/states/renderer/note";
-import type { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import type { PublicationNote } from "readium-desktop/common/publication-notes";
+import { EDrawType } from "readium-desktop/common/type/note.type";
 import {
     filterPdfAnnotationNotes,
     noteToPdfAnnotation,
@@ -15,7 +15,7 @@ const baseColor = {
     blue: 56,
 };
 
-function createPdfAnnotationNote(overrides: Partial<INoteState> = {}): INoteState {
+function createPdfAnnotationNote(overrides: Partial<PublicationNote> = {}): PublicationNote {
     return {
         uuid: "note-1",
         index: 1,

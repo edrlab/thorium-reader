@@ -50,13 +50,15 @@ import { ImportAnnotationsDialog } from "readium-desktop/renderer/common/compone
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { DockTypeName } from "readium-desktop/common/models/dock";
-import { INoteState, noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/renderer/note";
+import type { PublicationNote } from "readium-desktop/common/publication-notes";
+import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/publication-notes/colors";
 
 import { exportAnnotationSet } from "readium-desktop/renderer/common/redux/sagas/readiumAnnotation/export";
 import { getSaga } from "../../createStore";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { BookmarkCard } from "../ReaderMenu/BookmarkCard";
 import { computeProgression } from "./ReaderMenu";
+import { selectPublicationNoteTagsIndex, selectPublicationNotes } from "../../publication-notes/selectors";
 
 export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnChange: () => void, START_PAGE: number, selectionIsSet: (a: Selection) => a is Set<string>, MAX_MATCHES_PER_PAGE: number } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
@@ -94,8 +96,9 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
     const paginatorBookmarksRef = React.useRef<HTMLSelectElement>();
 
     const [__] = useTranslator();
-    const notes = useSelector((state: IReaderRootState) => state.reader.note);
+    const notes = useSelector(selectPublicationNotes);
     const bookmarkListAll = React.useMemo(() => notes.filter(({ group }) => group === "bookmark"), [notes]);
+    const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
     const publicationView = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
     const winId = useSelector((state: IReaderRootState) => state.win.identifier);
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
@@ -116,7 +119,7 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
 
     const bookmarksColors = React.useMemo(() => Object.entries(noteColorCodeToColorTranslatorKeySet).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
 
-    const tagsIndexList = useSelector((state: IReaderRootState) => state.noteTagsIndex);
+    const tagsIndexList = useSelector(selectPublicationNoteTagsIndex);
     const selectTagOption = React.useMemo(() => tagsIndexList.map((v, i) => ({ id: i, name: v.tag })), [tagsIndexList]);
     const selectTagOptionFilteredNameArray = React.useMemo(() => selectTagOption.map((v) => v.name), [selectTagOption]);
 
@@ -197,7 +200,7 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
     const begin = startIndex + 1;
     const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, bookmarkListFiltered.length);
 
-    const triggerEdition = (bookmarkItem: INoteState) =>
+    const triggerEdition = (bookmarkItem: PublicationNote) =>
         (value: boolean) => value ? updateDialogOrDockDataInfo({id: bookmarkItem.uuid, edit: true}) : updateDialogOrDockDataInfo({id: "", edit: false});
 
 
@@ -516,7 +519,7 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
                                             updateDialogOrDockDataInfo({id: "", edit: false});
                                             for (const bookmark of bookmarkListFiltered) {
 
-                                                dispatch(readerActions.note.remove.build(bookmark));
+                                                dispatch(readerActions.publicationNotes.commands.remove.build(pubId, bookmark));
                                             }
 
                                             // reset filters

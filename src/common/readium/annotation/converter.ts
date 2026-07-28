@@ -20,8 +20,13 @@ import { uniqueCssSelector } from "@r2-navigator-js/electron/renderer/common/css
 import { IRangeInfo, ISelectedTextInfo, ISelectionInfo } from "@r2-navigator-js/electron/common/selection";
 
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
+import {
+    NOTE_DEFAULT_COLOR,
+    noteColorCodeToColorSet,
+    type PublicationNote,
+} from "readium-desktop/common/publication-notes";
 import { availableLanguages } from "readium-desktop/common/services/translator";
-import { EDrawType, INoteState, NOTE_DEFAULT_COLOR, noteColorCodeToColorSet } from "readium-desktop/common/redux/states/renderer/note";
+import { EDrawType } from "readium-desktop/common/type/note.type";
 
 import { EpubCfiParser } from "@r2-navigator-js/electron/common/colibrio-cfi/parser/EpubCfiParser";
 import { EpubCfiResolver } from "@r2-navigator-js/electron/common/colibrio-cfi/resolver/EpubCfiResolver";
@@ -264,9 +269,9 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
     return locatorExtended;
 }
 
-// export type INoteStateWithICacheDocument = INoteState & { __cacheDocument?: ICacheDocument | undefined };
+// export type PublicationNoteWithICacheDocument = PublicationNote & { __cacheDocument?: ICacheDocument | undefined };
 
-export function convertAnnotationStateToReadiumAnnotation(note: INoteState): IReadiumAnnotation | undefined {
+export function convertAnnotationStateToReadiumAnnotation(note: PublicationNote): IReadiumAnnotation | undefined {
 
     const { uuid, color, locatorExtended, tags, drawType, textualValue, creator, created, modified, readiumAnnotation } = note;
     const highlight = (drawType === EDrawType.solid_background ? "solid" : EDrawType[drawType]) as IReadiumAnnotation["body"]["highlight"];
@@ -317,7 +322,7 @@ export function convertAnnotationStateToReadiumAnnotation(note: INoteState): IRe
     };
 }
 
-export function convertAnnotationStateArrayToReadiumAnnotationSet(locale: keyof typeof availableLanguages, notes: INoteState[], publicationView: PublicationView, label?: string): IReadiumAnnotationSet {
+export function convertAnnotationStateArrayToReadiumAnnotationSet(locale: keyof typeof availableLanguages, notes: PublicationNote[], publicationView: PublicationView, label?: string): IReadiumAnnotationSet {
 
     const currentDate = new Date();
     const dateString: string = currentDate.toISOString();

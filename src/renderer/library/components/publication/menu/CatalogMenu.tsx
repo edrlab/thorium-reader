@@ -29,7 +29,7 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { getSaga } from "readium-desktop/renderer/library/createStore";
-import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import type { PublicationNote } from "readium-desktop/common/publication-notes";
 
 function useShiftKey() {
   const [isShiftPressed, setIsShiftPressed] = React.useState(false);
@@ -72,7 +72,7 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
 
             fetch(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PUBNOTES}/${props.publicationView.identifier}`).then((res) => {
                 res.json().then((json) => {
-                    const notes: INoteState[] = json;
+                    const notes: PublicationNote[] = json;
 
                     const textObj = props.publicationView.publicationTitle;
                     const pubLangs = props.publicationView.languages;

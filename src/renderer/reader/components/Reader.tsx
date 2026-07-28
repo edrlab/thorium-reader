@@ -133,9 +133,11 @@ import { MiniLocatorExtended, minimizeLocatorExtended } from "readium-desktop/co
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { getStore } from "../createStore";
+import { selectPublicationNotes } from "../publication-notes/selectors";
 import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_PUB } from "readium-desktop/common/streamerProtocol";
 import { DockTypeName } from "readium-desktop/common/models/dock";
-import { EDrawType, INoteState, TDrawType, TDrawView } from "readium-desktop/common/redux/states/renderer/note";
+import type { PublicationNote } from "readium-desktop/common/publication-notes";
+import { EDrawType, type TDrawType, type TDrawView } from "readium-desktop/common/type/note.type";
 import type { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { URL_PROTOCOL_FILEX } from "readium-desktop/common/streamerProtocol";
@@ -945,7 +947,7 @@ class Reader extends React.Component<IProps, IState> {
         this.props.toastError(getTranslator().__("reader.annotations.error.pdf.validationSelection"));
     }
 
-    private syncPdfAnnotations(extraNote?: INoteState) {
+    private syncPdfAnnotations(extraNote?: PublicationNote) {
         createOrGetPdfEventBus().dispatch("annotations:sync", {
             annotations: buildPdfAnnotationTransportList(this.props.notes, extraNote),
         });
@@ -3672,7 +3674,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 
 
         pdfReaderConfig: state.reader.pdfConfig,
-        notes: state.reader.note,
+        notes: selectPublicationNotes(state),
         creator: state.creator,
         noteTotalCount: state.reader.noteTotalCount.state,
 
@@ -3785,8 +3787,8 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         setPdfReaderConfig: (data: IReaderPdfConfig) => {
             dispatch(readerActions.pdfConfig.build(data));
         },
-        addUpdatePdfAnnotationNote: (publicationIdentifier: string, newNote: Omit<INoteState, "uuid">) => {
-            return dispatch(readerActions.note.addUpdate.build(publicationIdentifier, newNote));
+        addUpdatePdfAnnotationNote: (publicationIdentifier: string, newNote: Omit<PublicationNote, "uuid">) => {
+            return dispatch(readerActions.publicationNotes.commands.save.build(publicationIdentifier, newNote));
         },
     };
 };

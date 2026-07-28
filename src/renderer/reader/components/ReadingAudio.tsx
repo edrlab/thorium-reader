@@ -23,7 +23,7 @@ import { HighlightDrawTypeBackground, HighlightDrawTypeUnderline, HighlightDrawT
 import { TTSStateEnum } from "@r2-navigator-js/electron/renderer/readaloud";
 import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
 import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-keys";
-import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/renderer/note";
+import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/publication-notes/colors";
 
 
 // WARNING: Do not remove these references; they are required by the i18n scanner/checker.

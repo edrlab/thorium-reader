@@ -23,8 +23,8 @@ import { readerConfigInitialState } from "readium-desktop/common/redux/states/re
 import { settingsKeepLibraryWindowInBackgroundOnReaderCloseIsEnabled } from "readium-desktop/common/redux/states/settings";
 // import { comparePublisherReaderConfig } from "readium-desktop/common/publisherConfig";
 import { readerActions } from "readium-desktop/common/redux/actions";
-import { sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
 import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { publicationNotesViewInitialState } from "readium-desktop/common/redux/states/renderer/publicationNotes";
 import { dialog } from "electron";
 import { restoreBrowserWindowState } from "./session/browserWindowState";
 
@@ -95,9 +95,9 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
         debug(`reader ${winId} got the lock !!!`);
     }
 
-    const notes = pubId
-        ? yield* callTyped(() => sqliteTableSelectAllNotesWherePubId(pubId))
-        : [];
+    const publicationNotes = pubId
+        ? yield* callTyped(() => diMainGet("publication-notes-controller").list(pubId))
+        : publicationNotesViewInitialState;
 
     if (readerWindow.isDestroyed() || readerWindow.webContents.isDestroyed()) {
         debug("readerWindow or webcontents distroyed -> exit on winId=${winId} -> pubId=${pubId}");
@@ -140,7 +140,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
                 // },
                 config,
                 lock: gotTheLock,
-                note: notes,
+                publicationNotes,
                 disableRTLFlip: disableRTLFlip,
                 info: {
                     filesystemPath: readerSession.reduxState.info.filesystemPath,

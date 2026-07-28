@@ -96,7 +96,7 @@ import { BookmarkButton } from "./header/BookmarkButton";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { DockTypeName } from "readium-desktop/common/models/dock";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
-import { TDrawType } from "readium-desktop/common/redux/states/renderer/note";
+import type { TDrawType } from "readium-desktop/common/type/note.type";
 import { PrintContainer } from "./Print";
 import * as PrinterIcon from "readium-desktop/renderer/assets/icons/printer-icon.svg";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -1609,7 +1609,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     return {
         keyboardShortcuts: state.keyboard.shortcuts,
-        // notes: state.reader.note,
         isAnnotationModeEnabled: state.annotation.enable,
         annotationLocatorExtended: state.annotation.locatorExtended,
         isAnnotationModeEnabledFromKeyboard: state.annotation.fromKeyboard,

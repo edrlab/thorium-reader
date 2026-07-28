@@ -5,7 +5,8 @@ import {
     convertAnnotationStateToReadiumAnnotation,
 } from "readium-desktop/common/readium/annotation/converter";
 import type { ITextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
-import { EDrawType, INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import type { PublicationNote } from "readium-desktop/common/publication-notes";
+import { EDrawType } from "readium-desktop/common/type/note.type";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
 const publicationView = {
@@ -26,7 +27,7 @@ const textQuoteSelector: ITextQuoteSelector = {
     suffix: "",
 };
 
-function createNote(overrides: Partial<INoteState> = {}): INoteState {
+function createNote(overrides: Partial<PublicationNote> = {}): PublicationNote {
     return {
         uuid: "note-1",
         index: 1,
@@ -47,7 +48,7 @@ function createNote(overrides: Partial<INoteState> = {}): INoteState {
             epubPageID: undefined,
             headings: [{ id: undefined, txt: "Chapter", level: 1 }],
             secondWebViewHref: undefined,
-        } as INoteState["locatorExtended"],
+        } as PublicationNote["locatorExtended"],
         textualValue: "note body",
         color: {
             red: 254,

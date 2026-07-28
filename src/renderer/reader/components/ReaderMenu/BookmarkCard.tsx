@@ -36,7 +36,7 @@ import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/r
 import { BookmarkEdit } from "../BookmarkEdit";
 import { BookmarkLocatorInfo } from "../BookmarkLocatorInfo";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
-import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import type { PublicationNote } from "readium-desktop/common/publication-notes";
 
 import DOMPurify from "dompurify";
 
@@ -44,7 +44,7 @@ import { clone } from "ramda";
 import { marked } from "readium-desktop/renderer/common/marked/marked";
 import { computeProgression } from "./ReaderMenu";
 
-export const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void, setCreatorFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+export const BookmarkCard: React.FC<{ bookmark: PublicationNote, isEdited: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void, setCreatorFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
     const { goToLocator, setCreatorFilter, setTagFilter } = props;
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
@@ -74,9 +74,8 @@ export const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, t
     const [__] = useTranslator();
 
     const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
-    // const noteTotalCount = useSelector((state: IReaderRootState) => state.reader.noteTotalCount.state);
     const save = React.useCallback((name: string, color: IColor, tag: string | undefined) => {
-        dispatch(readerActions.note.addUpdate.build(
+        dispatch(readerActions.publicationNotes.commands.save.build(
             pubId,
             {
                 uuid: bookmark.uuid,
@@ -94,7 +93,6 @@ export const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, t
             bookmark,
         ));
         triggerEdition(false);
-        // dispatch(readerActions.bookmarkTotalCount.build(noteTotalCount + 1));
     }, [dispatch, bookmark, triggerEdition, pubId]);
 
     const date = new Date(bookmark.modified || bookmark.created);
@@ -305,7 +303,7 @@ export const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, t
                 className={stylesPopoverDialog.delete_item_edition}
                 onClick={() => {
                     triggerEdition(false);
-                    dispatch(readerActions.note.remove.build(bookmark));
+                    dispatch(readerActions.publicationNotes.commands.remove.build(pubId, bookmark));
                     // alert("deleted");
                 }}
                 >
@@ -325,7 +323,7 @@ export const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, t
                             <Popover.Close
                                 onClick={() => {
                                     triggerEdition(false);
-                                    dispatch(readerActions.note.remove.build(bookmark));
+                                    dispatch(readerActions.publicationNotes.commands.remove.build(pubId, bookmark));
                                 }}
                                 title={__("reader.marks.delete")}
                             >
