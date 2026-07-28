@@ -5,7 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import type { ActionWithReaderPublicationIdentifierDestination } from "readium-desktop/common/models/sync";
+import type { Action } from "readium-desktop/common/models/redux";
+import type { WithDestination, WindowReaderPublicationDestination } from "readium-desktop/common/models/sync";
 import type { IPublicationNotesViewState } from "readium-desktop/common/redux/states/renderer/publicationNotes";
 
 export const ID = "READER_PUBLICATION_NOTES_SNAPSHOT";
@@ -14,8 +15,16 @@ export interface IPayload {
     viewState: IPublicationNotesViewState;
 }
 
-export function build(publicationIdentifier: string, viewState: IPublicationNotesViewState):
-    ActionWithReaderPublicationIdentifierDestination<typeof ID, IPayload> {
+export type TPublicationNotesSnapshotDestination =
+    WindowReaderPublicationDestination &
+    Partial<{ identifier: string }>;
+
+export type TPublicationNotesSnapshotAction =
+    Action<typeof ID, IPayload> &
+    WithDestination<TPublicationNotesSnapshotDestination>;
+
+export function build(publicationIdentifier: string, viewState: IPublicationNotesViewState, windowIdentifier?: string):
+    TPublicationNotesSnapshotAction {
 
     return {
         type: ID,
@@ -27,6 +36,7 @@ export function build(publicationIdentifier: string, viewState: IPublicationNote
         },
         destination: {
             publicationIdentifier,
+            identifier: windowIdentifier,
         },
     };
 }

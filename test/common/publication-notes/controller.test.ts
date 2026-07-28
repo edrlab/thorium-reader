@@ -118,7 +118,9 @@ describe("PublicationNotesController", () => {
             tags: ["review", ""],
         });
 
-        await expect(controller.list("pub-a")).resolves.toEqual({
+        const viewState = await controller.list("pub-a");
+
+        expect(viewState).toMatchObject({
             publicationIdentifier: "pub-a",
             notes: [
                 {
@@ -155,6 +157,66 @@ describe("PublicationNotesController", () => {
                 "chapter-1": 1,
             },
             totalCount: 2,
+        });
+        expect(viewState.view).toEqual({
+            filter: {},
+            notes: viewState.notes,
+            byId: viewState.byId,
+            ids: viewState.ids,
+            tagIndex: viewState.tagIndex,
+            totalCount: 2,
+            facets: {
+                tagIndex: viewState.tagIndex,
+                creators: [],
+            },
+        });
+    });
+
+    it("hydrates a filtered view without filtering the canonical notes", async () => {
+        const repository = new MemoryPublicationNoteRepository();
+        const controller = new PublicationNotesController<TestNote>({
+            repository,
+            clock: { now: () => 100 },
+        });
+
+        await repository.create("pub-a", {
+            uuid: "annotation-1",
+            label: "First annotation",
+            created: 1,
+            group: "annotation",
+            tags: ["review"],
+        });
+        await repository.create("pub-a", {
+            uuid: "bookmark-1",
+            label: "Bookmark",
+            created: 2,
+            group: "bookmark",
+            tags: ["review"],
+        });
+        await repository.create("pub-a", {
+            uuid: "annotation-2",
+            label: "Second annotation",
+            created: 3,
+            group: "annotation",
+            tags: ["review", "chapter-1"],
+        });
+
+        const viewState = await controller.list("pub-a", {
+            group: "annotation",
+            tags: ["review"],
+            sort: "lastCreated",
+        });
+
+        expect(viewState.ids).toEqual(["annotation-1", "bookmark-1", "annotation-2"]);
+        expect(viewState.view.ids).toEqual(["annotation-2", "annotation-1"]);
+        expect(viewState.view.filter).toEqual({
+            group: "annotation",
+            tags: ["review"],
+            sort: "lastCreated",
+        });
+        expect(viewState.view.facets.tagIndex).toEqual({
+            review: 2,
+            "chapter-1": 1,
         });
     });
 

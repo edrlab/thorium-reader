@@ -14,7 +14,7 @@ import { annotationActions, readerActions, toastActions } from "readium-desktop/
 import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
 import { SagaGenerator } from "typed-redux-saga";
-import { call as callTyped, put as putTyped, take as takeTyped, delay as delayTyped, all as allTyped } from "typed-redux-saga/macro";
+import { call as callTyped, put as putTyped, take as takeTyped, delay as delayTyped, all as allTyped, select as selectTyped } from "typed-redux-saga/macro";
 import { hexToRgb } from "readium-desktop/common/rgb";
 import { isNil } from "readium-desktop/utils/nil";
 import { __READIUM_ANNOTATION_AJV_ERRORS, isCFIFragmentSelector, isCssSelector, isEPUBCFISelector, isFragmentSelector, isIReadiumAnnotationSet, isLegacyCfiSelector, isTextPositionSelector, isTextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
@@ -31,6 +31,7 @@ import {
     noteColorCodeToColorSet,
     noteColorSetToColorCode,
     type PublicationNote,
+    type PublicationNotesViewFilter,
 } from "readium-desktop/common/publication-notes";
 import { EDrawType } from "readium-desktop/common/type/note.type";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
@@ -39,11 +40,15 @@ import { EXT_ANNOTATIONS } from "readium-desktop/common/extension";
 import { resolveReadiumAnnotationSourceHref } from "readium-desktop/common/readium/annotation/sourceHref";
 import { spawnPublicationAnalyticsEvent } from "./analyticsPublication";
 import { TAnalyticsEventParams } from "src/common/api/interface/analyticsApi.interface";
+import { RootState } from "../states";
+import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:annotationsImporter";
 const debug = debug_(filename_);
 debug("_");
+
+const publicationNotesViewFilterByWindow = new Map<string, PublicationNotesViewFilter>();
 
 export function* getNotesFromMainWinState(publicationIdentifier: string): SagaGenerator<PublicationNote[]> {
 
@@ -70,6 +75,51 @@ export function* getNotesFromMainWinState(publicationIdentifier: string): SagaGe
     // }
 
     return notes;
+}
+
+function* getPublicationSpineItemHrefs(publicationIdentifier: string): SagaGenerator<string[]> {
+
+    const pubView = yield* callTyped(getPublication, publicationIdentifier);
+    if (!pubView.r2PublicationJson) {
+        return [];
+    }
+
+    const r2Publication = TaJsonDeserialize(pubView.r2PublicationJson, R2Publication);
+    return (r2Publication.Spine || [])
+        .map((link) => link.Href)
+        .filter((href): href is string => !!href);
+}
+
+function* hydratePublicationNotesView(
+    publicationIdentifier: string,
+    windowIdentifier: string,
+    filter?: PublicationNotesViewFilter,
+): SagaGenerator<void> {
+
+    const spineItemHrefs = filter?.sort === "progression"
+        ? yield* callTyped(getPublicationSpineItemHrefs, publicationIdentifier)
+        : [];
+    const viewState = yield* callTyped(() =>
+        diMainGet("publication-notes-controller").list(publicationIdentifier, filter, spineItemHrefs));
+
+    yield* putTyped(readerActions.publicationNotes.snapshot.build(publicationIdentifier, viewState, windowIdentifier));
+}
+
+function* hydratePublicationNotesViews(publicationIdentifier: string): SagaGenerator<void> {
+
+    const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+    for (const reader of Object.values(readers)) {
+        if (!reader || reader.publicationIdentifier !== publicationIdentifier) {
+            continue;
+        }
+
+        const filter = publicationNotesViewFilterByWindow.get(reader.identifier);
+        if (!filter) {
+            continue;
+        }
+
+        yield* callTyped(hydratePublicationNotesView, publicationIdentifier, reader.identifier, filter);
+    }
 }
 
 function* pushNotesFromMainWindow(
@@ -104,7 +154,7 @@ function* pushNotesFromMainWindow(
     // }
 }
 
-function* savePublicationNote(publicationIdentifier: string, newNote: PublicationNote, previousNote?: PublicationNote | undefined): SagaGenerator<void> {
+function* savePublicationNote(publicationIdentifier: string, newNote: PublicationNote, previousNote?: PublicationNote): SagaGenerator<void> {
 
     const controller = diMainGet("publication-notes-controller");
     const persistedNote = yield* callTyped(() => controller.get(publicationIdentifier, newNote.uuid));
@@ -147,6 +197,7 @@ function* persistPublicationNoteCommand(action: PublicationNoteCommandAction): S
 
         const { publicationIdentifier, previousNote, newNote } = action.payload;
         yield* callTyped(savePublicationNote, publicationIdentifier, newNote, previousNote);
+        yield* callTyped(hydratePublicationNotesViews, publicationIdentifier);
         return;
     }
 
@@ -154,6 +205,22 @@ function* persistPublicationNoteCommand(action: PublicationNoteCommandAction): S
     debug(action);
 
     yield* callTyped(deletePublicationNote, action.payload.publicationIdentifier, action.payload.note);
+    yield* callTyped(hydratePublicationNotesViews, action.payload.publicationIdentifier);
+}
+
+function* filterPublicationNotesView(
+    action: readerActions.publicationNotes.filter.TAction,
+): SagaGenerator<void> {
+
+    const { publicationIdentifier, filter } = action.payload;
+    const sender = (action as unknown as ActionWithSender).sender;
+    if (sender?.type !== SenderType.Renderer || !sender.identifier) {
+        debug("RECEIVE PUBLICATION NOTES FILTER COMMAND WITHOUT READER SENDER");
+        return;
+    }
+
+    publicationNotesViewFilterByWindow.set(sender.identifier, filter);
+    yield* callTyped(hydratePublicationNotesView, publicationIdentifier, sender.identifier, filter);
 }
 
 function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAction): SagaGenerator<void> {
@@ -467,6 +534,11 @@ export function saga() {
                 debug(action);
                 yield* callTyped(() => diMainGet("publication-notes-controller").deleteByPublication(action.payload.publicationIdentifier));
             },
+            (e) => error(filename_, e),
+        ),
+        takeSpawnLatest(
+            readerActions.publicationNotes.filter.ID,
+            filterPublicationNotesView,
             (e) => error(filename_, e),
         ),
         takeSpawnLeading(

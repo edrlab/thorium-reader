@@ -34,6 +34,36 @@ export interface PublicationNoteEntity {
     tags?: string[] | undefined;
 }
 
+export type PublicationNoteGroup = NonNullable<PublicationNoteEntity["group"]>;
+
+export type PublicationNotesViewSelection = "all" | string[];
+
+export type PublicationNotesViewSort = "progression" | "lastCreated" | "lastModified";
+
+export interface PublicationNotesViewFilter {
+    group?: PublicationNoteGroup | undefined;
+    tags?: PublicationNotesViewSelection | undefined;
+    colors?: PublicationNotesViewSelection | undefined;
+    drawTypes?: PublicationNotesViewSelection | undefined;
+    creators?: PublicationNotesViewSelection | undefined;
+    sort?: PublicationNotesViewSort | undefined;
+}
+
+export interface PublicationNotesViewFacets {
+    tagIndex: Record<string, number>;
+    creators: string[];
+}
+
+export interface PublicationNotesHydratedView<TNote extends PublicationNoteEntity> {
+    filter: PublicationNotesViewFilter;
+    notes: TNote[];
+    byId: Record<string, TNote>;
+    ids: string[];
+    tagIndex: Record<string, number>;
+    totalCount: number;
+    facets: PublicationNotesViewFacets;
+}
+
 export interface PublicationNote extends PublicationNoteEntity {
     uuid: string;
     index: number;
@@ -73,6 +103,7 @@ export interface PublicationNotesViewState<TNote extends PublicationNoteEntity> 
     ids: string[];
     tagIndex: Record<string, number>;
     totalCount: number;
+    view: PublicationNotesHydratedView<TNote>;
 }
 
 export interface PublicationNoteChange<TNote extends PublicationNoteEntity> {

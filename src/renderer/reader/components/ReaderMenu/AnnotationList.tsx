@@ -44,29 +44,27 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { dialogActions, dockActions, readerActions } from "readium-desktop/common/redux/actions";
 import { IReaderDialogOrDockSettingsMenuState } from "readium-desktop/common/models/reader";
-import { rgbToHex } from "readium-desktop/common/rgb";
 import { ImportAnnotationsDialog } from "readium-desktop/renderer/common/components/ImportAnnotationsDialog";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { DockTypeName } from "readium-desktop/common/models/dock";
 import type { PublicationNote } from "readium-desktop/common/publication-notes";
 import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/publication-notes/colors";
-import { EDrawType } from "readium-desktop/common/type/note.type";
 
 import { exportAnnotationSet } from "readium-desktop/renderer/common/redux/sagas/readiumAnnotation/export";
 import { getSaga } from "../../createStore";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { AnnotationCard } from "../ReaderMenu/AnnotationCard";
-import { computeProgression } from "./ReaderMenu";
-import { canUseReadiumAnnotationImportExport, compareAnnotationPanelProgression, filterDeletableAnnotationPanelNotes } from "../../pdf/pdfAnnotationPanel";
+import { canUseReadiumAnnotationImportExport } from "../../pdf/pdfAnnotationPanel";
 import FilterPopover from "./FilterPopover";
-import { selectPublicationNoteTagsIndex, selectPublicationNotes } from "../../publication-notes/selectors";
+import { selectPublicationNoteViewTagsIndex, selectPublicationNotesViewState } from "../../publication-notes/selectors";
+import { selectionToPublicationNotesViewSelection, selectionToPublicationNotesViewSort } from "../../publication-notes/viewFilters";
 
-export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotationUUID: () => void, doFocus: number,*/ isPdf: boolean, popoverBoundary: HTMLDivElement, advancedAnnotationsOnChange: () => void, quickAnnotationsOnChange: () => void, marginAnnotationsOnChange: () => void, hideAnnotationOnChange: () => void, serialAnnotator: boolean, START_PAGE: number, selectionIsSet: (a: Selection) => a is Set<string>, MAX_MATCHES_PER_PAGE: number } & Pick<IReaderMenuProps, "goToLocator" | "goToPdfAnnotation">> = (props) => {
+export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotationUUID: () => void, doFocus: number,*/ isPdf: boolean, popoverBoundary: HTMLDivElement, advancedAnnotationsOnChange: () => void, quickAnnotationsOnChange: () => void, marginAnnotationsOnChange: () => void, hideAnnotationOnChange: () => void, serialAnnotator: boolean, START_PAGE: number, MAX_MATCHES_PER_PAGE: number } & Pick<IReaderMenuProps, "goToLocator" | "goToPdfAnnotation">> = (props) => {
 
     const readerConfig = useSelector((state: IReaderRootState) => state.reader.config);
 
-    const { goToLocator,  goToPdfAnnotation, isPdf,/*annotationUUIDFocused, resetAnnotationUUID,*/ popoverBoundary, advancedAnnotationsOnChange, quickAnnotationsOnChange, marginAnnotationsOnChange, hideAnnotationOnChange, serialAnnotator, START_PAGE, selectionIsSet, MAX_MATCHES_PER_PAGE } = props;
+    const { goToLocator,  goToPdfAnnotation, isPdf,/*annotationUUIDFocused, resetAnnotationUUID,*/ popoverBoundary, advancedAnnotationsOnChange, quickAnnotationsOnChange, marginAnnotationsOnChange, hideAnnotationOnChange, serialAnnotator, START_PAGE, MAX_MATCHES_PER_PAGE } = props;
 
     const dispatch = useDispatch();
     const dockedMode = useSelector((state: IReaderRootState) => state.reader.config.readerDockingMode !== "full");
@@ -97,18 +95,33 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
     }, [needToFocusOnID]);
 
     const [__] = useTranslator();
-    const notes = useSelector(selectPublicationNotes);
-    const annotationsListAll = React.useMemo(() => notes.filter(({ group }) => group === "annotation"), [notes]);
+    const publicationNotesView = useSelector(selectPublicationNotesViewState);
+    const annotationsViewReady = publicationNotesView.filter.group === "annotation";
+    const annotationList = annotationsViewReady ? publicationNotesView.notes : [];
     const readiumAnnotationImportExportEnabled = canUseReadiumAnnotationImportExport(isPdf);
     const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
     const publicationView = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
     const winId = useSelector((state: IReaderRootState) => state.win.identifier);
-    const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const locale = useSelector((state: IReaderRootState) => state.i18n.locale);
     const [tagArrayFilter, setTagArrayFilter] = React.useState<Selection>(new Set([]));
     const [colorArrayFilter, setColorArrayFilter] = React.useState<Selection>(new Set([]));
     const [drawTypeArrayFilter, setDrawTypeArrayFilter] = React.useState<Selection>(new Set([]));
     const [creatorArrayFilter, setCreatorArrayFilter] = React.useState<Selection>(new Set([]));
+    const [sortType, setSortType] = React.useState<Selection>(new Set(["lastCreated"]));
+
+    React.useEffect(() => {
+        if (!pubId) {
+            return;
+        }
+        dispatch(readerActions.publicationNotes.filter.build(pubId, {
+            group: "annotation",
+            tags: selectionToPublicationNotesViewSelection(tagArrayFilter),
+            colors: selectionToPublicationNotesViewSelection(colorArrayFilter),
+            drawTypes: selectionToPublicationNotesViewSelection(drawTypeArrayFilter),
+            creators: selectionToPublicationNotesViewSelection(creatorArrayFilter),
+            sort: selectionToPublicationNotesViewSort(sortType),
+        }));
+    }, [colorArrayFilter, creatorArrayFilter, dispatch, drawTypeArrayFilter, pubId, sortType, tagArrayFilter]);
 
     const textObj = publicationView.publicationTitle;
     const pubLangs = publicationView.languages;
@@ -124,18 +137,11 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
         setPageNumber(cb);
     }, [setPageNumber, updateDialogOrDockDataInfo]);
 
-    const tagsIndexList = useSelector(selectPublicationNoteTagsIndex);
+    const tagsIndexListAll = useSelector(selectPublicationNoteViewTagsIndex);
+    const tagsIndexList = React.useMemo(() => annotationsViewReady ? tagsIndexListAll : [], [annotationsViewReady, tagsIndexListAll]);
     const selectTagOption = React.useMemo(() => tagsIndexList.map((v, i) => ({ id: i, name: v.tag })), [tagsIndexList]);
 
-    // if tagArrayFilter value not include in the selectTagOption then take only the intersection between tagArrayFilter and selectTagOption
-    const selectTagOptionFilteredNameArray = React.useMemo(() => selectTagOption.map((v) => v.name), [selectTagOption]);
-    // const tagArrayFilterArray = selectionIsSet(tagArrayFilter) ? Array(...tagArrayFilter) : [];
-    // if (tagArrayFilterArray.filter((tagValue) => !selectTagOptionFilteredNameArray.includes(tagValue)).length) {
-    //     const tagArrayFilterArrayDifference = tagArrayFilterArray.filter((tagValue) => selectTagOptionFilteredNameArray.includes(tagValue));
-    //     setTagArrayFilter(new Set(tagArrayFilterArrayDifference));
-    // }
-
-    const creatorListName = React.useMemo(() => annotationsListAll.map(({ creator }) => creator?.name).filter(v => v), [annotationsListAll]);
+    const creatorListName = React.useMemo(() => annotationsViewReady ? publicationNotesView.facets.creators : [], [annotationsViewReady, publicationNotesView.facets.creators]);
     const selectCreatorOptions = React.useMemo(() => [...(new Set(creatorListName))].map((name, index) => ({ id: `${index}_${name}`, name })), [creatorListName]);
     const annotationsColors = React.useMemo(() => Object.entries(noteColorCodeToColorTranslatorKeySet).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
     const selectDrawtypesOptions = React.useMemo(() => [
@@ -145,60 +151,9 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
         { name: "outline", svg: TextOutlineIcon,  textValue: `${__("reader.annotations.type.outline")}` },
     ], [__]);
 
-    const annotationListFiltered = React.useMemo(() => {
+    const deletableAnnotationList = annotationList;
 
-        return (
-            (selectionIsSet(tagArrayFilter) && tagArrayFilter.size) ||
-            (tagArrayFilter === "all") ||
-            (selectionIsSet(colorArrayFilter) && colorArrayFilter.size) ||
-            (colorArrayFilter === "all") ||
-            (selectionIsSet(drawTypeArrayFilter) && drawTypeArrayFilter.size) ||
-            (drawTypeArrayFilter === "all") ||
-            (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size) ||
-            (creatorArrayFilter === "all")
-        )
-            ? annotationsListAll.filter(({ tags, color, drawType: _drawType, creator }) => {
-
-                const colorHex = rgbToHex(color);
-                const drawType = EDrawType[_drawType];
-                const creatorName = creator?.name || "";
-
-                return ((tagArrayFilter === "all" && tags?.some((tagsValueName) => selectTagOptionFilteredNameArray.includes(tagsValueName))) || (selectionIsSet(tagArrayFilter) && tagArrayFilter.size && tags?.some((tagsValueName) => tagArrayFilter.has(tagsValueName)))) ||
-                    ((colorArrayFilter === "all" && annotationsColors.some(({hex}) => hex === colorHex)) || (selectionIsSet(colorArrayFilter) && colorArrayFilter.size && colorArrayFilter.has(colorHex))) ||
-                    ((drawTypeArrayFilter === "all" && selectDrawtypesOptions.some(({name}) => drawType === name)) || (selectionIsSet(drawTypeArrayFilter) && drawTypeArrayFilter.size && drawTypeArrayFilter.has(drawType))) ||
-                    ((creatorArrayFilter === "all" && creatorListName.includes(creatorName)) || (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size && creatorArrayFilter.has(creatorName)));
-
-            })
-            : annotationsListAll;
-    }, [annotationsListAll, tagArrayFilter, colorArrayFilter, drawTypeArrayFilter, creatorArrayFilter, annotationsColors, creatorListName, selectDrawtypesOptions, selectTagOptionFilteredNameArray, selectionIsSet]);
-
-    const [sortType, setSortType] = React.useState<Selection>(new Set(["lastCreated"]));
-
-    if (sortType !== "all" && sortType.has("progression")) {
-
-        annotationListFiltered.sort((a, b) => {
-
-            return compareAnnotationPanelProgression(a, b, (left, right) => {
-                const la = left.locatorExtended!.locator;
-                const lb = right.locatorExtended!.locator;
-                const pcta = computeProgression(r2Publication.Spine, la);
-                const pctb = computeProgression(r2Publication.Spine, lb);
-                return pcta - pctb;
-            });
-        });
-    } else if (sortType !== "all" && sortType.has("lastCreated")) {
-        annotationListFiltered.sort(({ created: ca }, { created: cb }) => {
-            return cb - ca;
-        });
-    } else if (sortType !== "all" && sortType.has("lastModified")) {
-        annotationListFiltered.sort(({ modified: ma }, { modified: mb }) => {
-            return ma && mb ? mb - ma : ma ? -1 : mb ? 1 : 0;
-        });
-    }
-
-    const deletableAnnotationListFiltered = filterDeletableAnnotationPanelNotes(annotationListFiltered);
-
-    const annotationFocusFoundIndex = annotationUUID ? annotationListFiltered.findIndex(({ uuid }) => annotationUUID === uuid) : -1;
+    const annotationFocusFoundIndex = annotationUUID ? annotationList.findIndex(({ uuid }) => annotationUUID === uuid) : -1;
     React.useEffect(() => {
         if (annotationUUID) {
             setAnnotationUUID("");
@@ -208,7 +163,7 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
         }
     }, [annotationUUID, annotationFocusFoundIndex, MAX_MATCHES_PER_PAGE]);
 
-    const pageTotal = Math.ceil(annotationListFiltered.length / MAX_MATCHES_PER_PAGE) || 1;
+    const pageTotal = Math.ceil(annotationList.length / MAX_MATCHES_PER_PAGE) || 1;
     if (pageNumber <= 0) {
         setPageNumber(START_PAGE);
     } else if (pageNumber > pageTotal) {
@@ -216,14 +171,14 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
     }
 
     const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
-    const annotationsPagedArray = annotationListFiltered.slice(startIndex, startIndex + MAX_MATCHES_PER_PAGE);
+    const annotationsPagedArray = annotationList.slice(startIndex, startIndex + MAX_MATCHES_PER_PAGE);
 
     const isLastPage = pageTotal === pageNumber;
     const isFirstPage = pageNumber === 1;
     const isPaginated = pageTotal > 1;
     const pageOptions = Array.from({ length: pageTotal }, (_k, v) => (v += 1, ({ id: v, name: `${v} / ${pageTotal}` })));
     const begin = startIndex + 1;
-    const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, annotationListFiltered.length);
+    const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, annotationList.length);
 
     const triggerEdition = (annotationItem: PublicationNote) =>
         (value: boolean) => value ? updateDialogOrDockDataInfo({id: annotationItem.uuid, edit: true}) : updateDialogOrDockDataInfo({id: "", edit: false});
@@ -311,7 +266,7 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
 
                     <Popover.Root modal>
                             <Popover.Trigger asChild>
-                                <button className={stylesAnnotations.annotations_filter_trigger_button} disabled={!annotationListFiltered.length}
+                                <button className={stylesAnnotations.annotations_filter_trigger_button} disabled={!annotationList.length}
                                     title={__("catalog.exportAnnotation")}
                                     aria-label={__("catalog.exportAnnotation")}>
                                     <SVG svg={SaveIcon} />
@@ -348,7 +303,7 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
                                     <Popover.Close aria-label={__("reader.annotations.export")} asChild>
                                             <button onClick={() => {
                                                 const fileType = selectFileTypeRef.current?.value || "annotation";
-                                                getSaga().run(exportAnnotationSet, annotationListFiltered, publicationView, annotationTitleRef?.current?.value || annoSetTitle, fileType).toPromise().then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+                                                getSaga().run(exportAnnotationSet, annotationList, publicationView, annotationTitleRef?.current?.value || annoSetTitle, fileType).toPromise().then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
                                             }} className={stylesButtons.button_primary_blue}>
                                                 <SVG svg={SaveIcon} />
                                                 {__("reader.annotations.export")}
@@ -360,7 +315,7 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
                         </Popover.Root>
                     </> : <></>}
                     <AlertDialog.Root>
-                        <AlertDialog.Trigger className={stylesAnnotations.annotations_filter_trigger_button} disabled={!deletableAnnotationListFiltered.length} title={__("dialog.deleteAnnotations")} aria-label={__("dialog.deleteAnnotations")}>
+                        <AlertDialog.Trigger className={stylesAnnotations.annotations_filter_trigger_button} disabled={!deletableAnnotationList.length} title={__("dialog.deleteAnnotations")} aria-label={__("dialog.deleteAnnotations")}>
                             <SVG svg={TrashIcon} ariaHidden />
                         </AlertDialog.Trigger>
                         <AlertDialog.Portal>
@@ -368,7 +323,7 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
                             <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
                                 <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("dialog.deleteAnnotations")}</AlertDialog.Title>
                                 <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
-                                    {__("dialog.deleteAnnotationsText", { count: deletableAnnotationListFiltered.length })}
+                                    {__("dialog.deleteAnnotationsText", { count: deletableAnnotationList.length })}
                                 </AlertDialog.Description>
                                 <div className={stylesAlertModals.AlertDialogButtonContainer}>
                                     <AlertDialog.Cancel asChild>
@@ -377,7 +332,7 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
                                     <AlertDialog.Action asChild>
                                         <button className={stylesButtons.button_primary_blue} onClick={() => {
                                             updateDialogOrDockDataInfo({id: "", edit: false});
-                                            for (const annotation of deletableAnnotationListFiltered) {
+                                            for (const annotation of deletableAnnotationList) {
 
                                                 dispatch(readerActions.publicationNotes.commands.remove.build(pubId, annotation));
                                             }
@@ -637,7 +592,7 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
                         </button>
                     </div>
                     {
-                        annotationListFiltered.length &&
+                        annotationList.length &&
                         <p
                             style={{
                                 textAlign: "center",
@@ -645,7 +600,7 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
                                 margin: 0,
                                 marginTop: "-16px",
                                 marginBottom: "20px",
-                            }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${annotationListFiltered.length}`}</p>
+                            }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${annotationList.length}`}</p>
                     }
                 </>
                     : <></>
