@@ -706,6 +706,7 @@
             "advancedMode": "Takojšnji način (samodejno ustvarjanje po izbiri)",
             "annotationsExport": {
                 "description": "Poimenuj izvožene zapiske:",
+                "format": "",
                 "title": "Naslov"
             },
             "annotationsOptions": "Možnosti",

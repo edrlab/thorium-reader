@@ -706,6 +706,7 @@
             "advancedMode": "Tryb natychmiastowy (automatyczne tworzenie po zaznaczeniu)",
             "annotationsExport": {
                 "description": "Nazwij eksportowane notatki:",
+                "format": "",
                 "title": "Tytuł"
             },
             "annotationsOptions": "Opcje adnotacji",

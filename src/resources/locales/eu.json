@@ -696,6 +696,7 @@
             "advancedMode": "Berehalako modua (sortu automatikoki hautatu ondoren)",
             "annotationsExport": {
                 "description": "",
+                "format": "",
                 "title": ""
             },
             "annotationsOptions": "Aukerak",

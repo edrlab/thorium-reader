@@ -691,6 +691,7 @@
             "advancedMode": "即时模式（选择后自动创建）",
             "annotationsExport": {
                 "description": "请为导出的笔记命名：",
+                "format": "",
                 "title": "标题"
             },
             "annotationsOptions": "选项",

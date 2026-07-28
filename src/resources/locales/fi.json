@@ -696,6 +696,7 @@
             "advancedMode": "Välitön tila (luo suoraan valinnasta)",
             "annotationsExport": {
                 "description": "Nimeä muistiinpanot:",
+                "format": "",
                 "title": "Otsikko"
             },
             "annotationsOptions": "Muistiinpanojen asetukset",

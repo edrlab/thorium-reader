@@ -716,6 +716,7 @@
             "advancedMode": "الوضع الفوري (إنشاء تلقائي بعد التحديد)",
             "annotationsExport": {
                 "description": "تسمية الملاحظات المصدَّرة:",
+                "format": "",
                 "title": "العنوان"
             },
             "annotationsOptions": "‪خيارات التعليق",

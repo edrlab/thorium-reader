@@ -701,6 +701,7 @@
             "advancedMode": "Modalità istantanea (creazione automatica dopo la selezione)",
             "annotationsExport": {
                 "description": "Assegnare un nome a questa lista di annotazioni:",
+                "format": "",
                 "title": "Titolo"
             },
             "annotationsOptions": "Opzioni",

@@ -696,6 +696,7 @@
             "advancedMode": "Άμεση λειτουργία (αυτόματη δημιουργία μετά την επιλογή)",
             "annotationsExport": {
                 "description": "Δώσε τίτλο στις εξαγώμενες σημειώσεις:",
+                "format": "",
                 "title": "Τίτλος"
             },
             "annotationsOptions": "Επιλογές Σχολιασμού",
