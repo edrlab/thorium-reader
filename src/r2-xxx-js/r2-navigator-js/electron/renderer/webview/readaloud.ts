@@ -646,6 +646,25 @@ const isOnlyWhiteSpace = (str: string) => {
     return true;
 };
 
+// combineTextNodes() inserts a TTS_SEPARATOR into the utterance string at each offset in
+// a text node's __TTS_SEPS. Those characters do not exist in the DOM, so an offset into
+// the node's slice of the utterance runs ahead of the corresponding DOM offset by the
+// number of separators already emitted for that node.
+//
+// seps holds DOM offsets, so the i-th separator sits at utterance offset seps[i] + i.
+// Subtract every separator at or before ttsOffset, then clamp into the node: an offset
+// landing on a separator itself has no exact DOM counterpart and resolves to the nearest
+// real character.
+function ttsOffsetToDomOffset(ttsOffset: number, seps: number[], nodeLength: number): number {
+    let domOffset = ttsOffset;
+    for (let i = 0; i < seps.length; i++) {
+        if (seps[i] + i <= ttsOffset) {
+            domOffset--;
+        }
+    }
+    return Math.min(Math.max(domOffset, 0), nodeLength);
+}
+
 let _ttsQueueItemHighlightsSentence: Array<IHighlight | null> | undefined;
 let _ttsQueueItemHighlightsWord: Array<IHighlight | null> | undefined;
 
@@ -736,18 +755,20 @@ function wrapHighlightWord(
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const isRUBY = (txtNode as any).__RUBY;
-        // combineTextNodes() fences sup/sub text with SUBSUP_SEPARATOR on both sides, so
-        // such a node contributes two characters that have no DOM counterpart. Converting
-        // an utterance offset back to a DOM offset subtracts the leading one and clamps
-        // into the node.
-        // No need to exclude isRUBY here: a node can carry both flags (<sup><ruby>...),
-        // but isRUBY is tested first in every cascade below, and combineTextNodes() skips
-        // __RUBY nodes outright, so such a node contributes 0 either way.
+        // combineTextNodes() inserts TTS_SEPARATOR at each offset in __TTS_SEPS. Those
+        // characters have no DOM counterpart, so they add to the length contributed here
+        // and are subtracted back out when converting an utterance offset to a DOM offset
+        // -- see ttsOffsetToDomOffset(). This generalises the previous commit's fixed
+        // two-separator case; a node with no separators still takes the same path it
+        // does on develop.
+        // isRUBY is excluded from `seps` because a node can carry both (<sup><ruby>...),
+        // and __RUBY wins: it is tested first in every cascade below, and
+        // combineTextNodes() skips __RUBY nodes outright.
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const isSUBSUP = (txtNode as any).__SUBSUP && !isOnlyWhiteSpace(txtNode.nodeValue);
+        const seps: number[] = (!isRUBY && !isOnlyWhiteSpace(txtNode.nodeValue) && (txtNode as any).__TTS_SEPS) || [];
         const nodeLen = txtNode.nodeValue.length;
 
-        const l = isRUBY ? 0 : isOnlyWhiteSpace(txtNode.nodeValue) ? 1 : isSUBSUP ? (nodeLen + 2) : nodeLen;
+        const l = isRUBY ? 0 : isOnlyWhiteSpace(txtNode.nodeValue) ? 1 : seps.length ? (nodeLen + seps.length) : nodeLen;
         acc += l;
         if (!rangeStartNode) {
             if (isRUBY && charIndexAdjusted <= acc
@@ -756,8 +777,8 @@ function wrapHighlightWord(
                 rangeStartOffset =
                     isRUBY ?
                     0 :
-                    isSUBSUP ?
-                    Math.min(Math.max(l - (acc - charIndexAdjusted) - 1, 0), nodeLen) :
+                    seps.length ?
+                    ttsOffsetToDomOffset(l - (acc - charIndexAdjusted), seps, nodeLen) :
                     (l - (acc - charIndexAdjusted));
             }
         }
@@ -766,8 +787,8 @@ function wrapHighlightWord(
             rangeEndOffset =
                 isRUBY ?
                 (nodeLen - 1) :
-                isSUBSUP ?
-                Math.min(Math.max(l - (acc - charIndexEnd) - 1, 0), nodeLen) :
+                seps.length ?
+                ttsOffsetToDomOffset(l - (acc - charIndexEnd), seps, nodeLen) :
                 (l - (acc - charIndexEnd));
             break;
         }
@@ -934,10 +955,10 @@ function wrapHighlight(
                 const isRUBY = (txtNode as any).__RUBY;
                 // see the equivalent adjustment in updateTTSInfo() above
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const isSUBSUP = (txtNode as any).__SUBSUP && !isOnlyWhiteSpace(txtNode.nodeValue);
+                const seps: number[] = (!isRUBY && !isOnlyWhiteSpace(txtNode.nodeValue) && (txtNode as any).__TTS_SEPS) || [];
                 const nodeLen = txtNode.nodeValue.length;
 
-                const l = isRUBY ? 0 : isOnlyWhiteSpace(txtNode.nodeValue) ? 1 : isSUBSUP ? (nodeLen + 2) : nodeLen;
+                const l = isRUBY ? 0 : isOnlyWhiteSpace(txtNode.nodeValue) ? 1 : seps.length ? (nodeLen + seps.length) : nodeLen;
                 acc += l;
                 if (!rangeStartNode) {
                     if (isRUBY && sentBegin <= acc
@@ -946,8 +967,8 @@ function wrapHighlight(
                         rangeStartOffset =
                             isRUBY ?
                             0 :
-                            isSUBSUP ?
-                            Math.min(Math.max(l - (acc - sentBegin) - 1, 0), nodeLen) :
+                            seps.length ?
+                            ttsOffsetToDomOffset(l - (acc - sentBegin), seps, nodeLen) :
                             (l - (acc - sentBegin));
                     }
                 }
@@ -956,8 +977,8 @@ function wrapHighlight(
                     rangeEndOffset =
                         isRUBY ?
                         (nodeLen - 1) :
-                        isSUBSUP ?
-                        Math.min(Math.max(l - (acc - sentEnd) - 1, 0), nodeLen) :
+                        seps.length ?
+                        ttsOffsetToDomOffset(l - (acc - sentEnd), seps, nodeLen) :
                         (l - (acc - sentEnd));
                     break;
                 }

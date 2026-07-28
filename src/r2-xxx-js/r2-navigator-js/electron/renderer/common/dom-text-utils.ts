@@ -16,11 +16,82 @@ import { ReadiumElectronWebviewWindow } from "../webview/state";
 
 const win = global.window as ReadiumElectronWebviewWindow;
 
-// Virtual separator fencing the text of a sup/sub element on both sides when building
-// the utterance. One character, and it must stay one character: readaloud.ts maps
-// utterance offsets back to DOM ranges by accumulating contributed lengths, and assumes
-// a tagged node contributes exactly SUBSUP_SEPARATOR.length * 2 beyond its nodeValue.
-export const SUBSUP_SEPARATOR = " ";
+// Virtual separator inserted into the utterance string at the offsets recorded in a
+// text node's __TTS_SEPS. One character, and it must stay one character: readaloud.ts
+// maps utterance offsets back to DOM ranges by accumulating contributed lengths, and
+// assumes a node contributes exactly __TTS_SEPS.length beyond its nodeValue.
+export const TTS_SEPARATOR = " ";
+
+// Scripts between which a word boundary is inserted. Speech engines discard a token
+// that mixes two of these outright - "<em>R</em><sub>o</sub>" is merely mispronounced,
+// but a Greek letter fused to a latin one is silently dropped. Verified on macOS with
+// Samantha, Alex and Daniel: Greek+latin and Cyrillic+latin are both dropped, and both
+// are spoken correctly once separated. Any pair in this list is separated, so a
+// Greek/Cyrillic transition is handled the same as a Greek/latin one.
+//
+// Deliberately an explicit list rather than "any script transition", and deliberately
+// without CJK:
+//
+//  - Japanese mixes Han, Hiragana and Katakana inside single words, so a generic rule
+//    would split ordinary vocabulary: "food-eat-ru" -> "food | eat-ru".
+//  - Grouping the CJK scripts and separating only CJK/latin still measures worse. With
+//    a Japanese voice, "watashi-wa iPhone wo tsukaimasu" runs 2.990s fused and 3.358s
+//    separated - the separator inserts a prosodic pause - and the latin word is spoken
+//    correctly either way, so there is no defect to fix. Mixed CJK/latin is everyday
+//    prose, unlike mixed Greek/latin which is always notation.
+//
+// If an engine is found that drops CJK/latin tokens, add the pair here on that evidence.
+const _separableScripts: Array<[string, RegExp]> = [
+    ["Latin", /\p{Script=Latin}/u],
+    ["Greek", /\p{Script=Greek}/u],
+    ["Cyrillic", /\p{Script=Cyrillic}/u],
+];
+
+function separableScript(ch: string): string | undefined {
+    for (const [name, re] of _separableScripts) {
+        if (re.test(ch)) {
+            return name;
+        }
+    }
+    return undefined;
+}
+
+// Zero-width formatting characters an author may have placed between two scripts.
+// Skipped when tracking script runs: by definition they are not meant to participate in
+// text processing, and letting one end a run would hide the boundary behind it.
+//
+// This matters because some of them do not separate the token for the speech engine
+// either. U+2060 WORD JOINER is the awkward case - an author might reasonably use one to
+// stop "delta-x" breaking across lines - and it leaves the token fused, so without this
+// the content would still be dropped and this fix would not reach it. Where the
+// character does already separate (U+FEFF, U+200B), the extra boundary is redundant but
+// harmless. A real space is not default-ignorable, so it correctly ends the run and no
+// boundary is added after it.
+const _defaultIgnorable = /\p{Default_Ignorable_Code_Point}/u;
+
+// Offsets inside txt at which two different separable scripts meet. Iterates by code
+// point (not UTF-16 unit) so that astral characters are not split, but returns offsets
+// in UTF-16 units to match DOM text node offsets. Characters outside the separable set -
+// digits, punctuation, CJK, the Mathematical Alphanumeric Symbols - never form a
+// boundary, so "10<sup>2</sup>", "x2" and "F-bold x" are untouched.
+export function scriptBoundaryOffsets(txt: string): number[] {
+    const offsets: number[] = [];
+    let prevScript: string | undefined;
+    let i = 0;
+    for (const ch of txt) {
+        if (_defaultIgnorable.test(ch)) {
+            i += ch.length;
+            continue;
+        }
+        const script = separableScript(ch);
+        if (i > 0 && prevScript && script && prevScript !== script) {
+            offsets.push(i);
+        }
+        prevScript = script;
+        i += ch.length;
+    }
+    return offsets;
+}
 
 export function combineTextNodes(textNodes: Node[], skipNormalize?: boolean): string {
     if (textNodes && textNodes.length) {
@@ -40,27 +111,34 @@ export function combineTextNodes(textNodes: Node[], skipNormalize?: boolean): st
                     txt = " ";
                     str += txt;
                 } else {
-                    // Text inside sup/sub is fenced by a separator on BOTH sides, so it
-                    // fuses with neither what precedes nor what follows it:
-                    //   "10<sup>23</sup>"        must not become "1023"  ("one thousand
-                    //                            twenty-three")
-                    //   "<em>R</em><sub>o</sub>" must not become "Ro"
-                    //   "10<sub>23</sub>45"      must not become "10 2345" ("two thousand
-                    //                            three hundred forty-five")
-                    //   "<sub>theta</sub>x"      must not become "thetax", which speech
-                    //                            engines drop entirely
+                    // TTS_SEPARATOR is inserted at each offset recorded in __TTS_SEPS:
+                    // the ends of sup/sub text, and any boundary between two separable
+                    // scripts. Without them the speech engine receives a single token and
+                    // either mispronounces it or discards it:
+                    //   "10<sup>23</sup>"        -> "1023"   "one thousand twenty-three"
+                    //   "<em>R</em><sub>o</sub>" -> "Ro"     one syllable
+                    //   "10<sub>23</sub>45"      -> "102345" a wholly invented number
+                    //   "&#x394;x"               -> dropped entirely
                     // The separators exist only in this string, never in the DOM, so they
                     // cannot affect rendering - but the offset walkers in readaloud.ts
-                    // MUST account for both (see SUBSUP_SEPARATOR there), exactly as they
-                    // already do for __RUBY and for whitespace-only nodes.
+                    // MUST account for them, exactly as they already do for __RUBY and
+                    // for whitespace-only nodes.
+                    //
+                    // Only applied on the skipNormalize path, which is the one readaloud
+                    // uses: normalizeText() can change the length, which would invalidate
+                    // offsets recorded against nodeValue.
+                    const t = skipNormalize ? txt : normalizeText(txt);
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    const isSubSup = (textNode as any).__SUBSUP;
-                    if (isSubSup) {
-                        str += SUBSUP_SEPARATOR;
-                    }
-                    str += (skipNormalize ? txt : normalizeText(txt));
-                    if (isSubSup) {
-                        str += SUBSUP_SEPARATOR;
+                    const seps: number[] | undefined = skipNormalize ? (textNode as any).__TTS_SEPS : undefined;
+                    if (seps && seps.length) {
+                        let prev = 0;
+                        for (const s of seps) {
+                            str += t.slice(prev, s) + TTS_SEPARATOR;
+                            prev = s;
+                        }
+                        str += t.slice(prev);
+                    } else {
+                        str += t;
                     }
                 }
             }
@@ -470,15 +548,27 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
             ttsQueue.push(current);
         }
 
-        // Same idea as the __RUBY tagging above, but closest() rather than a direct
-        // parent-tag test, because inline markup inside a sup/sub is common and the text
-        // still needs fencing: <sup><a href="#fn1">1</a></sup> (footnote markers),
-        // <sup><em>n</em></sup>. With a direct parent test those read as fused again.
-        // Whitespace-only nodes already contribute a single space, so tagging one would
-        // double-count against the offset walkers in readaloud.ts.
-        if (textNode.nodeValue.trim().length && textNode.parentElement?.closest("sup, sub")) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (textNode as any).__SUBSUP = true;
+        // Generalises the __SUBSUP flag into a list of offsets at which a separator is
+        // inserted when the utterance string is assembled, so sup/sub fencing and script
+        // boundaries compose: <em>Δ</em><sub>x</sub>y -> "Δ x y".
+        //
+        // sup/sub is detected with closest() rather than a direct parent-tag test because
+        // inline markup inside a sup/sub is common and its text still needs fencing:
+        // <sup><a href="#fn1">1</a></sup> (footnote markers), <sup><em>n</em></sup>.
+        //
+        // Whitespace-only nodes already contribute a single space, so adding separators to
+        // one would double-count against the offset walkers in readaloud.ts.
+        if (textNode.nodeValue.trim().length) {
+            const nodeLen = textNode.nodeValue.length;
+            const isSubSupText = !!textNode.parentElement?.closest("sup, sub");
+            // sup/sub text is fenced at both ends; script changes are separated in place
+            const seps = isSubSupText
+                ? [0, ...scriptBoundaryOffsets(textNode.nodeValue), nodeLen]
+                : scriptBoundaryOffsets(textNode.nodeValue);
+            if (seps.length) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (textNode as any).__TTS_SEPS = seps;
+            }
         }
 
         current.textNodes.push(textNode);
