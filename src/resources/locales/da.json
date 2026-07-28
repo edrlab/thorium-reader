@@ -696,7 +696,6 @@
             "advancedMode": "Øjeblikkelige noter (oprettes automatisk ved markering)",
             "annotationsExport": {
                 "description": "Navngiv denne samling af noter:",
-                "format": "",
                 "title": "Navn"
             },
             "annotationsOptions": "Valgmuligheder",

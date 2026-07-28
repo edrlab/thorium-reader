@@ -691,7 +691,6 @@
             "advancedMode": "即時模式（選擇後自動建立）",
             "annotationsExport": {
                 "description": "命名匯出的註解：",
-                "format": "",
                 "title": "標題"
             },
             "annotationsOptions": "選項",

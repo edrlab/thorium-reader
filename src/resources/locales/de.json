@@ -696,7 +696,6 @@
             "advancedMode": "Sofortmodus (automatisch erstellen nach Auswahl)",
             "annotationsExport": {
                 "description": "Name für die exportierten Notizen:",
-                "format": "",
                 "title": "Titel"
             },
             "annotationsOptions": "Optionen",

@@ -691,7 +691,6 @@
             "advancedMode": "インスタントモード（本文を選択するだけで自動作成）",
             "annotationsExport": {
                 "description": "出力するメモの名前を指定：",
-                "format": "",
                 "title": "名前"
             },
             "annotationsOptions": "メモのオプション",

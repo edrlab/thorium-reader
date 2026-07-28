@@ -696,7 +696,6 @@
             "advancedMode": "Omedelbart-läge (skapa automatiskt efter markering)",
             "annotationsExport": {
                 "description": "Namnge anteckningarna:",
-                "format": "",
                 "title": "Titel"
             },
             "annotationsOptions": "Alternativ",
