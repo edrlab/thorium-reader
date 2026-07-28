@@ -10,7 +10,6 @@ interface TestNote extends PublicationNoteEntity {
 }
 
 class MemoryPublicationNoteRepository implements PublicationNoteRepository<TestNote> {
-
     public readonly notesByPublication = new Map<string, TestNote[]>();
 
     public async list(publicationIdentifier: string): Promise<TestNote[]> {
@@ -28,10 +27,7 @@ class MemoryPublicationNoteRepository implements PublicationNoteRepository<TestN
 
     public async replace(publicationIdentifier: string, note: TestNote): Promise<void> {
         const notes = await this.list(publicationIdentifier);
-        this.notesByPublication.set(
-            publicationIdentifier,
-            [...notes.filter(({ uuid }) => uuid !== note.uuid), note],
-        );
+        this.notesByPublication.set(publicationIdentifier, [...notes.filter(({ uuid }) => uuid !== note.uuid), note]);
     }
 
     public async update(publicationIdentifier: string, note: TestNote): Promise<void> {
@@ -52,7 +48,6 @@ class MemoryPublicationNoteRepository implements PublicationNoteRepository<TestN
 }
 
 describe("PublicationNotesController", () => {
-
     it("creates notes through the injected repository and applies controller defaults", async () => {
         const repository = new MemoryPublicationNoteRepository();
         const controller = new PublicationNotesController<TestNote>({
@@ -92,10 +87,12 @@ describe("PublicationNotesController", () => {
             label: "Existing note",
         });
 
-        await expect(controller.create("pub-a", {
-            uuid: "note-1",
-            label: "Duplicate note",
-        })).rejects.toThrow("already exists");
+        await expect(
+            controller.create("pub-a", {
+                uuid: "note-1",
+                label: "Duplicate note",
+            }),
+        ).rejects.toThrow("already exists");
     });
 
     it("serializes a minimal view state from the model snapshot", async () => {
@@ -165,6 +162,17 @@ describe("PublicationNotesController", () => {
             ids: viewState.ids,
             tagIndex: viewState.tagIndex,
             totalCount: 2,
+            pagination: {
+                notes: viewState.notes,
+                byId: viewState.byId,
+                ids: viewState.ids,
+                page: 1,
+                pageSize: 2,
+                pageTotal: 1,
+                begin: 1,
+                end: 2,
+                totalCount: 2,
+            },
             facets: {
                 tagIndex: viewState.tagIndex,
                 creators: [],
@@ -214,9 +222,80 @@ describe("PublicationNotesController", () => {
             tags: ["review"],
             sort: "lastCreated",
         });
+        expect(viewState.view.pagination).toMatchObject({
+            ids: ["annotation-2", "annotation-1"],
+            page: 1,
+            pageSize: 2,
+            pageTotal: 1,
+            begin: 1,
+            end: 2,
+            totalCount: 2,
+        });
         expect(viewState.view.facets.tagIndex).toEqual({
             review: 2,
             "chapter-1": 1,
+        });
+    });
+
+    it("hydrates pagination in the controller view without slicing the filtered command source", async () => {
+        const repository = new MemoryPublicationNoteRepository();
+        const controller = new PublicationNotesController<TestNote>({
+            repository,
+            clock: { now: () => 100 },
+        });
+
+        await repository.create("pub-a", {
+            uuid: "annotation-1",
+            label: "First annotation",
+            created: 1,
+            group: "annotation",
+        });
+        await repository.create("pub-a", {
+            uuid: "annotation-2",
+            label: "Second annotation",
+            created: 2,
+            group: "annotation",
+        });
+        await repository.create("pub-a", {
+            uuid: "annotation-3",
+            label: "Third annotation",
+            created: 3,
+            group: "annotation",
+        });
+        await repository.create("pub-a", {
+            uuid: "bookmark-1",
+            label: "Bookmark",
+            created: 4,
+            group: "bookmark",
+        });
+
+        const viewState = await controller.list("pub-a", {
+            group: "annotation",
+            sort: "lastCreated",
+            pagination: {
+                page: 2,
+                pageSize: 2,
+            },
+        });
+
+        expect(viewState.ids).toEqual(["annotation-1", "annotation-2", "annotation-3", "bookmark-1"]);
+        expect(viewState.view.ids).toEqual(["annotation-3", "annotation-2", "annotation-1"]);
+        expect(viewState.view.pagination.ids).toEqual(["annotation-1"]);
+        expect(viewState.view.pagination.notes).toEqual([
+            {
+                uuid: "annotation-1",
+                label: "First annotation",
+                created: 1,
+                group: "annotation",
+            },
+        ]);
+        expect(viewState.view.pagination).toMatchObject({
+            page: 2,
+            pageSize: 2,
+            pageTotal: 2,
+            begin: 3,
+            end: 3,
+            totalCount: 3,
         });
     });
 
@@ -276,12 +355,14 @@ describe("PublicationNotesController", () => {
             created: 1,
         });
 
-        await expect(controller.update("pub-a", {
-            uuid: "note-1",
-            label: "After",
-            created: 1,
-            modified: 2,
-        })).resolves.toEqual({
+        await expect(
+            controller.update("pub-a", {
+                uuid: "note-1",
+                label: "After",
+                created: 1,
+                modified: 2,
+            }),
+        ).resolves.toEqual({
             publicationIdentifier: "pub-a",
             previousNote: {
                 uuid: "note-1",
@@ -305,10 +386,12 @@ describe("PublicationNotesController", () => {
             clock: { now: () => 200 },
         });
 
-        await expect(controller.update("pub-a", {
-            uuid: "missing-note",
-            label: "Missing",
-        })).rejects.toThrow("does not exist");
+        await expect(
+            controller.update("pub-a", {
+                uuid: "missing-note",
+                label: "Missing",
+            }),
+        ).rejects.toThrow("does not exist");
     });
 
     it("deletes one note within a publication scope", async () => {
@@ -335,11 +418,13 @@ describe("PublicationNotesController", () => {
             revision: 500,
         });
         await expect(repository.list("pub-a")).resolves.toEqual([]);
-        await expect(repository.list("pub-b")).resolves.toEqual([{
-            uuid: "same-note-id",
-            label: "Kept",
-            created: 2,
-        }]);
+        await expect(repository.list("pub-b")).resolves.toEqual([
+            {
+                uuid: "same-note-id",
+                label: "Kept",
+                created: 2,
+            },
+        ]);
     });
 
     it("rejects deletes for missing notes", async () => {

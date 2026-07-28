@@ -6,10 +6,12 @@
 // ==LICENSE-END==
 
 import type {
+    PublicationNotesHydratedPagination,
     PublicationNoteEntity,
     PublicationNotesHydratedView,
     PublicationNotesSnapshot,
     PublicationNotesViewFilter,
+    PublicationNotesViewPagination,
     PublicationNotesViewSelection,
     PublicationNotesViewState,
 } from "./model";
@@ -103,12 +105,14 @@ function hydratePublicationNotesView<TNote extends PublicationNoteEntity>(
     const filteredNotes = applyFilter(notes, normalizedFilter);
     const sortedNotes = sortPublicationNotes(filteredNotes, normalizedFilter, spineItemHrefs);
     const index = indexPublicationNotes(sortedNotes);
+    const pagination = hydratePublicationNotesPagination(sortedNotes, normalizedFilter.pagination);
 
     return {
         filter: normalizedFilter,
         notes: sortedNotes,
         ...index,
         totalCount: sortedNotes.length,
+        pagination,
         facets: {
             tagIndex: indexPublicationNotes(facetSource).tagIndex,
             creators: getCreatorFacet(facetSource),
@@ -147,7 +151,42 @@ function normalizeFilter(filter: PublicationNotesViewFilter): PublicationNotesVi
         normalizedFilter.sort = filter.sort;
     }
 
+    const pagination = normalizePagination(filter.pagination);
+    if (pagination) {
+        normalizedFilter.pagination = pagination;
+    }
+
     return normalizedFilter;
+}
+
+function normalizePagination(
+    pagination: PublicationNotesViewPagination | undefined,
+): PublicationNotesViewPagination | undefined {
+
+    if (!pagination) {
+        return undefined;
+    }
+
+    const page = normalizePositiveInteger(pagination.page);
+    const pageSize = normalizePositiveInteger(pagination.pageSize);
+    if (!page && !pageSize) {
+        return undefined;
+    }
+
+    return {
+        ...(page ? { page } : {}),
+        ...(pageSize ? { pageSize } : {}),
+    };
+}
+
+function normalizePositiveInteger(value: number | undefined): number | undefined {
+
+    if (typeof value !== "number" || !Number.isFinite(value)) {
+        return undefined;
+    }
+
+    const normalizedValue = Math.floor(value);
+    return normalizedValue > 0 ? normalizedValue : undefined;
 }
 
 function normalizeSelection(
@@ -291,6 +330,47 @@ function sortPublicationNotes<TNote extends PublicationNoteEntity>(
     }
 
     return sortedNotes;
+}
+
+function hydratePublicationNotesPagination<TNote extends PublicationNoteEntity>(
+    notes: TNote[],
+    pagination: PublicationNotesViewPagination | undefined,
+): PublicationNotesHydratedPagination<TNote> {
+
+    const totalCount = notes.length;
+    if (!pagination?.pageSize) {
+        const index = indexPublicationNotes(notes);
+        return {
+            notes,
+            byId: index.byId,
+            ids: index.ids,
+            page: 1,
+            pageSize: totalCount,
+            pageTotal: 1,
+            begin: totalCount ? 1 : 0,
+            end: totalCount,
+            totalCount,
+        };
+    }
+
+    const pageSize = pagination.pageSize;
+    const pageTotal = Math.max(Math.ceil(totalCount / pageSize), 1);
+    const page = Math.min(Math.max(pagination.page || 1, 1), pageTotal);
+    const startIndex = (page - 1) * pageSize;
+    const pagedNotes = notes.slice(startIndex, startIndex + pageSize);
+    const index = indexPublicationNotes(pagedNotes);
+
+    return {
+        notes: pagedNotes,
+        byId: index.byId,
+        ids: index.ids,
+        page,
+        pageSize,
+        pageTotal,
+        begin: pagedNotes.length ? startIndex + 1 : 0,
+        end: Math.min(startIndex + pageSize, totalCount),
+        totalCount,
+    };
 }
 
 function comparePublicationNotesProgression<TNote extends PublicationNoteEntity>(
