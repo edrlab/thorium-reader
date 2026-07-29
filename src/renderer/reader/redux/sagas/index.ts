@@ -153,12 +153,7 @@ export function* rootSaga() {
             yield* delayTyped(1000); // wait for the reader start stabilisation (aka highlight mounting)
 
             const notes = yield* selectTyped(selectPublicationNotes);
-            for (const note of notes) {
-
-                yield* delayTyped(10); // 100 notes equals to 1 + 1 seconds , seems acceptable to not disturb user with a tiny compute machine
-                yield* callTyped(noteSaga.noteUpdateExportSelectorFromLocatorExtended, note);
-                yield* callTyped(noteSaga.noteUpdateLocatorExtendedFromImportSelector, note);
-            }
+            yield* callTyped(noteSaga.noteUpdateReadiumAnnotationSelectors, notes);
         }),
         spawnLeading(resourceCacheTimer), // resourceCache memory cleaning
         takeSpawnEvery(
