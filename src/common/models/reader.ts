@@ -144,4 +144,5 @@ export interface ReaderConfig extends ReaderConfigStrings, ReaderConfigBooleans,
 export interface IReaderDialogOrDockSettingsMenuState {
     id: string,
     edit: boolean,
+    focusRequestId?: string,
 }

@@ -27,6 +27,7 @@ import { IBookmarkTotalCountState } from "readium-desktop/common/redux/states/re
 import { DockState } from "../dock";
 import type { PublicationNote } from "readium-desktop/common/publication-notes";
 import { IPublicationNotesViewState } from "./publicationNotes";
+import type { RouterState } from "redux-first-history";
 
 export interface IReaderPdfConfig{
         scale: "page-fit" | "page-width" | number;
@@ -35,6 +36,7 @@ export interface IReaderPdfConfig{
 
 export interface IReaderRootState extends IRendererCommonRootState {
     reader: IReaderStateReader;
+    router: RouterState;
     search: ISearchState;
     annotation: IAnnotationModeState;
     img: IImageClickState; // TODO: replace by dock/dialog state

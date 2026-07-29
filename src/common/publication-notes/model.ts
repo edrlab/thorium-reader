@@ -43,6 +43,7 @@ export type PublicationNotesViewSort = "progression" | "lastCreated" | "lastModi
 export interface PublicationNotesViewPagination {
     page?: number | undefined;
     pageSize?: number | undefined;
+    anchorUuid?: string | undefined;
 }
 
 export interface PublicationNotesViewFilter {

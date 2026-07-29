@@ -30,7 +30,7 @@ let _timeoutId = 0;
 function* toggleSettingsOrMenu(action: readerLocalActionToggleMenu.TAction | readerLocalActionToggleSettings.TAction): SagaGenerator<void> {
 
     /* eslint-disable prefer-const */
-    let { open, readerDockingMode, section, focus, id, edit} = action.payload;
+    let { open, readerDockingMode, section, focus, id, edit, focusRequestId } = action.payload;
     const newReaderConfig: Partial<ReaderConfig> = {};
 
     if (_isObserving) {
@@ -43,7 +43,14 @@ function* toggleSettingsOrMenu(action: readerLocalActionToggleMenu.TAction | rea
         _timeoutId = 0;
     }
 
-    if (focus) {
+    const isReaderMenuPublicationNoteTarget =
+        action.type === readerLocalActionToggleMenu.ID &&
+        (section === "tab-annotation" || section === "tab-bookmark") &&
+        !!id &&
+        id !== "reader-menu-tab-annotation" &&
+        id !== "reader-menu-tab-bookmark";
+
+    if (focus && !isReaderMenuPublicationNoteTarget) {
         const editId = edit ? "_edit" : "";
         const elementId = id + editId;
         const element = document.getElementById(elementId);
@@ -159,6 +166,7 @@ function* toggleSettingsOrMenu(action: readerLocalActionToggleMenu.TAction | rea
         const data: IReaderDialogOrDockSettingsMenuState = {
             id: id || "",
             edit: edit || false,
+            focusRequestId,
         };
         if (open) {
             if (currentDialogOpen && currentDialogType === dialogType) {
@@ -181,6 +189,7 @@ function* toggleSettingsOrMenu(action: readerLocalActionToggleMenu.TAction | rea
         const data: IReaderDialogOrDockSettingsMenuState = {
             id: id || "",
             edit: edit || false,
+            focusRequestId,
         };
         if (open) {
             if (currentDockOpen && currentDockType === dockType) {

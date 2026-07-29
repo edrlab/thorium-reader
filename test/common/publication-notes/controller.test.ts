@@ -299,6 +299,69 @@ describe("PublicationNotesController", () => {
         });
     });
 
+    it("hydrates pagination around an anchored note after filtering and sorting", async () => {
+        const repository = new MemoryPublicationNoteRepository();
+        const controller = new PublicationNotesController<TestNote>({
+            repository,
+            clock: { now: () => 100 },
+        });
+
+        for (let index = 1; index <= 5; index++) {
+            await repository.create("pub-a", {
+                uuid: `annotation-${index}`,
+                label: `Annotation ${index}`,
+                created: index,
+                group: "annotation",
+            });
+        }
+        await repository.create("pub-a", {
+            uuid: "bookmark-1",
+            label: "Bookmark",
+            created: 6,
+            group: "bookmark",
+        });
+
+        const viewState = await controller.list("pub-a", {
+            group: "annotation",
+            sort: "lastCreated",
+            pagination: {
+                page: 1,
+                pageSize: 2,
+                anchorUuid: "annotation-2",
+            },
+        });
+
+        expect(viewState.ids).toEqual([
+            "annotation-1",
+            "annotation-2",
+            "annotation-3",
+            "annotation-4",
+            "annotation-5",
+            "bookmark-1",
+        ]);
+        expect(viewState.view.ids).toEqual([
+            "annotation-5",
+            "annotation-4",
+            "annotation-3",
+            "annotation-2",
+            "annotation-1",
+        ]);
+        expect(viewState.view.pagination.ids).toEqual(["annotation-3", "annotation-2"]);
+        expect(viewState.view.pagination).toMatchObject({
+            page: 2,
+            pageSize: 2,
+            pageTotal: 3,
+            begin: 3,
+            end: 4,
+            totalCount: 5,
+        });
+        expect(viewState.view.filter.pagination).toEqual({
+            page: 1,
+            pageSize: 2,
+            anchorUuid: "annotation-2",
+        });
+    });
+
     it("repairs existing notes that predate the created timestamp", async () => {
         const repository = new MemoryPublicationNoteRepository();
         const controller = new PublicationNotesController<TestNote>({
