@@ -80,6 +80,10 @@ export async function readiumAnnotationSelectorFromNote(
     }
     const range = convertRangeInfo(xmlDom, rangeInfo);
     debug("Dump range memory found:", range);
+    if (!range) {
+        debug("ERROR!! RangeInfo could not be converted to DOM Range !!!");
+        return selector;
+    }
 
     if (range.collapsed) {
         debug("RANGE COLLAPSED??! skipping...");
@@ -155,5 +159,6 @@ export async function readiumAnnotationSelectorFromNote(
 
 export function checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation(note: PublicationNote) {
 
-    return Array.isArray(note.readiumAnnotation?.export?.selector);
+    const selector = note.readiumAnnotation?.export?.selector;
+    return Array.isArray(selector) && selector.length > 0;
 }
