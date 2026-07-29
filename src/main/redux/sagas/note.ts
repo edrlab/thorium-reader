@@ -23,7 +23,7 @@ import { takeSpawnLatest } from "readium-desktop/common/redux/sagas/takeSpawnLat
 import { getTranslator, type I18nFunction } from "readium-desktop/common/services/translator";
 import {
     getPublicationNoteImportSelectorTypesLabel,
-    getPublicationNoteImportUnresolvedReasonTranslatorKey,
+    getPublicationNoteImportUnresolvedReasonLabel,
     hydratePublicationNotesView,
     publicationNoteImportUnresolvedReasons,
     type PublicationNote,
@@ -314,7 +314,7 @@ function formatUnresolvedCounts(
 
     return publicationNoteImportUnresolvedReasons
         .filter((reason) => counts[reason] > 0)
-        .map((reason) => `${translate(getPublicationNoteImportUnresolvedReasonTranslatorKey(reason))}: ${counts[reason]}`)
+        .map((reason) => `${getPublicationNoteImportUnresolvedReasonLabel(reason, translate)}: ${counts[reason]}`)
         .join("; ");
 }
 

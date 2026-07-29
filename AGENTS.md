@@ -34,6 +34,11 @@ Existing shared/support areas:
 
 - Prefer `undefined` over `null` for absent optional values when the existing type or runtime contract allows it.
 
+## i18n
+
+- Keep translation lookups statically visible: call `translate("literal.key")`, `translator.translate("literal.key")`, or `__("literal.key")` with a string literal. Do not pass mapped, computed, or variable keys into translation functions; `scripts/translate-scan.js` only discovers static keys and `npm run i18n-typed` checks the generated key types.
+- After adding, removing, or renaming translation keys, run the relevant `i18n-*` scripts from `package.json`: `npm run i18n-scan`, `npm run i18n-check`, and `npm run i18n-typed`. `i18n-scan` and `i18n-check` run `i18n-sort` via their post scripts.
+
 ## Import Rules
 
 - `src/main.ts` and `src/main/**` may import `src/common/**`, `src/utils/**`, and vendored/support dependencies. They must not import `src/renderer/**`.
