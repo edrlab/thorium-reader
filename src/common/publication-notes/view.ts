@@ -50,6 +50,13 @@ interface PublicationNotesFilterableNote extends PublicationNoteEntity {
 
 const emptyFilter: PublicationNotesViewFilter = {};
 
+export function withoutPublicationNotesViewPagination(filter: PublicationNotesViewFilter): PublicationNotesViewFilter {
+
+    const filterWithoutPagination = { ...filter };
+    delete filterWithoutPagination.pagination;
+    return filterWithoutPagination;
+}
+
 export function serializePublicationNotesViewState<TNote extends PublicationNoteEntity>(
     snapshot: PublicationNotesSnapshot<TNote>,
     options: PublicationNotesViewOptions = {},

@@ -54,6 +54,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     // publication note commands are forwarded to main for persistence and to sibling reader windows.
     readerActions.publicationNotes.commands.save.ID,
     readerActions.publicationNotes.commands.remove.ID,
+    readerActions.publicationNotes.export.ID,
+    readerActions.publicationNotes.exportHtmlResult.ID,
     readerActions.publicationNotes.filter.ID,
 
     annotationActions.importAnnotationSet.ID,

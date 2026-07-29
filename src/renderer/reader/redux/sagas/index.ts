@@ -18,6 +18,7 @@ import * as ipc from "./ipc";
 import * as search from "./search";
 import * as winInit from "./win";
 import * as noteSaga from "./note";
+import * as publicationNotesExport from "./publicationNotesExport";
 import * as img from "./img";
 import * as settingsOrMenuDialogOrDock from "./settingsOrMenu";
 import * as customization from "./customization";
@@ -103,6 +104,7 @@ export function* rootSaga() {
         search.saga(),
 
         noteSaga.saga(),
+        publicationNotesExport.saga(),
 
         img.saga(),
 

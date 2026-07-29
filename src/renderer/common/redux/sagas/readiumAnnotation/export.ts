@@ -51,7 +51,7 @@ const __htmlMustacheViewConverterFn: (readiumAnnotation: IReadiumAnnotationSet) 
 
     return view;
 };
-const convertReadiumAnnotationSetToHtml = async (
+export const convertReadiumAnnotationSetToHtml = async (
     readiumAnnotation: IReadiumAnnotationSet,
     viewConverterFn: (_: IReadiumAnnotationSet) => Promise<object> = __htmlMustacheViewConverterFn,
     htmlMustacheTemplate: string = noteExportHtmlMustacheTemplate,
