@@ -122,6 +122,9 @@ export class ReadiumAnnotationSelectorController {
             sourceHref,
             cacheDoc?.xmlDom,
         );
+        if (!selector.length) {
+            return undefined;
+        }
 
         return {
             ...note,

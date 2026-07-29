@@ -166,6 +166,85 @@ describe("ReadiumAnnotationSelectorController", () => {
         expect(asMock(dependencies.createExportSelectors)).not.toHaveBeenCalled();
     });
 
+    it("leaves export selectors retryable when the resource cache has no XML DOM", async () => {
+        const dependencies = createDependencies({
+            getResourceCache: jest.fn(async () => undefined),
+            createExportSelectors: jest.fn(async () => []),
+        });
+        const controller = new ReadiumAnnotationSelectorController(dependencies);
+        const note = createNote({ locatorExtended });
+
+        await expect(controller.resolvePublicationNoteUpdates(
+            note,
+            { isReaderLocked: true, isLcp: false },
+        )).resolves.toEqual([]);
+
+        expect(asMock(dependencies.getResourceCache)).toHaveBeenCalledWith("chapter.xhtml");
+        expect(asMock(dependencies.createExportSelectors)).toHaveBeenCalledWith(
+            note,
+            false,
+            "chapter.xhtml",
+            undefined,
+        );
+    });
+
+    it("does not persist empty generated export selectors", async () => {
+        const dependencies = createDependencies({
+            createExportSelectors: jest.fn(async () => []),
+        });
+        const controller = new ReadiumAnnotationSelectorController(dependencies);
+        const note = createNote({ locatorExtended });
+
+        await expect(controller.resolvePublicationNoteUpdates(
+            note,
+            { isReaderLocked: true, isLcp: false },
+        )).resolves.toEqual([]);
+
+        expect(asMock(dependencies.createExportSelectors)).toHaveBeenCalledWith(
+            note,
+            false,
+            "chapter.xhtml",
+            xmlDom,
+        );
+    });
+
+    it("treats an existing empty export selector array as retryable", async () => {
+        const dependencies = createDependencies();
+        const controller = new ReadiumAnnotationSelectorController(dependencies);
+        const note = createNote({
+            locatorExtended,
+            readiumAnnotation: {
+                export: {
+                    selector: [],
+                },
+            },
+        });
+
+        const updates = await controller.resolvePublicationNoteUpdates(
+            note,
+            { isReaderLocked: true, isLcp: false },
+        );
+
+        expect(asMock(dependencies.createExportSelectors)).toHaveBeenCalledWith(
+            note,
+            false,
+            "chapter.xhtml",
+            xmlDom,
+        );
+        expect(updates).toEqual([{
+            kind: "exportSelector",
+            previousNote: note,
+            note: {
+                ...note,
+                readiumAnnotation: {
+                    export: {
+                        selector: [textPositionSelector],
+                    },
+                },
+            },
+        }]);
+    });
+
     it("resolves a locator update for an imported selector-backed note", async () => {
         const dependencies = createDependencies();
         const controller = new ReadiumAnnotationSelectorController(dependencies);
