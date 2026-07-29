@@ -5,8 +5,16 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import type { PublicationNotesViewSelection, PublicationNotesViewSort } from "readium-desktop/common/publication-notes";
+import {
+    defaultPublicationNotesViewSort,
+    getEffectivePublicationNotesViewSort,
+    publicationNotesViewSortValues,
+    type PublicationNotesViewSelection,
+    type PublicationNotesViewSort,
+} from "readium-desktop/common/publication-notes";
 import type { Selection } from "react-aria-components";
+
+export { defaultPublicationNotesViewSort };
 
 export function selectionToPublicationNotesViewSelection(selection: Selection): PublicationNotesViewSelection | undefined {
 
@@ -27,11 +35,21 @@ export function selectionToPublicationNotesViewSort(selection: Selection): Publi
         return undefined;
     }
 
-    for (const sort of ["progression", "lastCreated", "lastModified"] as PublicationNotesViewSort[]) {
+    for (const sort of publicationNotesViewSortValues) {
         if (selection.has(sort)) {
             return sort;
         }
     }
 
     return undefined;
+}
+
+export function publicationNotesViewSortToSelection(sort: PublicationNotesViewSort | undefined): Selection {
+
+    return new Set([getEffectivePublicationNotesViewSort(sort)]);
+}
+
+export function selectionToEffectivePublicationNotesViewSort(selection: Selection): PublicationNotesViewSort {
+
+    return getEffectivePublicationNotesViewSort(selectionToPublicationNotesViewSort(selection));
 }
