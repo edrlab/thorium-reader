@@ -174,16 +174,6 @@
                 "title": ""
             }
         },
-        "deleteAnnotations": "Želiš izbrisati opombe?",
-        "deleteAnnotationsText_few": "Ali si prepričan, da želiš izbrisati {{- count}} opombe?",
-        "deleteAnnotationsText_one": "Ali si prepričan, da želiš izbrisati {{- count}} opombe?",
-        "deleteAnnotationsText_other": "Ali si prepričan, da želiš izbrisati {{- count}} opombe?",
-        "deleteAnnotationsText_two": "Ali si prepričan, da želiš izbrisati {{- count}} opombe?",
-        "deleteBookmarks": "",
-        "deleteBookmarksText_few": "",
-        "deleteBookmarksText_one": "",
-        "deleteBookmarksText_other": "",
-        "deleteBookmarksText_two": "",
         "deleteFeed": "Ali res želiš izbrisati katalog?",
         "deletePublication": "Ali res želiš izbrisati publikacijo?",
         "deletePublicationWithNotes": "",
@@ -250,9 +240,24 @@
             "alreadyImported": "Vse opombe so že uvožene.",
             "emptyFile": "V datoteki ni nobenih opomb.",
             "errorParsing": "Napaka med razčlenjevanjem datoteke: ",
-            "noBelongTo": "Opomb ni mogoče uvoziti, vsaj ena opomba ne pripada publikaciji.",
+            "importReportAlreadyImported": "",
+            "importReportAmbiguousMatch": "",
+            "importReportReasonAmbiguousMatch": "",
+            "importReportReasonSelectorNotFound": "",
+            "importReportReasonSourceMismatch": "",
+            "importReportReasonUnsupportedSelector": "",
+            "importReportSelectorNotFound": "",
+            "importReportSourceMismatch": "",
+            "importReportUnresolvedImportedNotes": "",
             "nothing": "Noben zapisek ni pripravljen za uvoz, kar prekine uvoz",
-            "success": "Uvoz uspešno zaključen."
+            "success": "Uvoz uspešno zaključen.",
+            "unsupportedSelectorItem": "",
+            "unsupportedSelectorNoSelector": "",
+            "unsupportedSelectorSummary": "",
+            "unsupportedSelectorSummary_few": "",
+            "unsupportedSelectorSummary_one": "",
+            "unsupportedSelectorSummary_other": "",
+            "unsupportedSelectorSummary_two": ""
         },
         "download": {
             "cancelled": "",
@@ -706,7 +711,6 @@
             "advancedMode": "Takojšnji način (samodejno ustvarjanje po izbiri)",
             "annotationsExport": {
                 "description": "Poimenuj izvožene zapiske:",
-                "format": "",
                 "title": "Naslov"
             },
             "annotationsOptions": "Možnosti",

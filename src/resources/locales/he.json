@@ -171,14 +171,6 @@
                 "title": ""
             }
         },
-        "deleteAnnotations": "",
-        "deleteAnnotationsText_one": "",
-        "deleteAnnotationsText_other": "",
-        "deleteAnnotationsText_two": "",
-        "deleteBookmarks": "",
-        "deleteBookmarksText_one": "",
-        "deleteBookmarksText_other": "",
-        "deleteBookmarksText_two": "",
         "deleteFeed": "",
         "deletePublication": "",
         "deletePublicationWithNotes": "",
@@ -245,9 +237,23 @@
             "alreadyImported": "",
             "emptyFile": "",
             "errorParsing": "",
-            "noBelongTo": "",
+            "importReportAlreadyImported": "",
+            "importReportAmbiguousMatch": "",
+            "importReportReasonAmbiguousMatch": "",
+            "importReportReasonSelectorNotFound": "",
+            "importReportReasonSourceMismatch": "",
+            "importReportReasonUnsupportedSelector": "",
+            "importReportSelectorNotFound": "",
+            "importReportSourceMismatch": "",
+            "importReportUnresolvedImportedNotes": "",
             "nothing": "",
-            "success": ""
+            "success": "",
+            "unsupportedSelectorItem": "",
+            "unsupportedSelectorNoSelector": "",
+            "unsupportedSelectorSummary": "",
+            "unsupportedSelectorSummary_one": "",
+            "unsupportedSelectorSummary_other": "",
+            "unsupportedSelectorSummary_two": ""
         },
         "download": {
             "cancelled": "",
@@ -701,7 +707,6 @@
             "advancedMode": "",
             "annotationsExport": {
                 "description": "",
-                "format": "",
                 "title": ""
             },
             "annotationsOptions": "",

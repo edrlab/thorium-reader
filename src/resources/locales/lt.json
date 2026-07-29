@@ -174,16 +174,6 @@
                 "title": "Aktyvuojamas tinkinimo profilis"
             }
         },
-        "deleteAnnotations": "Šalinti pastabas?",
-        "deleteAnnotationsText_few": "Ar tikrai norite pašalinti {{- count}} pastabas?",
-        "deleteAnnotationsText_many": "",
-        "deleteAnnotationsText_one": "Ar tikrai norite pašalinti {{- count}} pastabą?",
-        "deleteAnnotationsText_other": "Ar tikrai norite pašalinti {{- count}} pastabų?",
-        "deleteBookmarks": "Šalinti skirtukus?",
-        "deleteBookmarksText_few": "Ar tikrai norite pašalinti {{- count}} skirtukus?",
-        "deleteBookmarksText_many": "",
-        "deleteBookmarksText_one": "Ar tikrai norite pašalinti {{- count}} skirtuką?",
-        "deleteBookmarksText_other": "Ar tikrai norite pašalinti {{- count}} skirtukų?",
         "deleteFeed": "Pašalinti katalogą?",
         "deletePublication": "Pašalinti leidinį?",
         "deletePublicationWithNotes": "Įspėjimas: šiame leidinyje yra pastabų ir (arba) skirtukų, kurios taip pat bus pašalintos! (jei norite jas išsaugoti, prieš pašalindami leidinį eksportuokite pastabas)",
@@ -250,9 +240,24 @@
             "alreadyImported": "Visos pastabos jau importuotos.",
             "emptyFile": "Faile nėra jokių pastabų.",
             "errorParsing": "Klaida analizuojant failą: ",
-            "noBelongTo": "Nepavyko importuoti pastabų rinkinio, nes bent viena iš pastabų nepriklauso leidiniui.",
+            "importReportAlreadyImported": "",
+            "importReportAmbiguousMatch": "",
+            "importReportReasonAmbiguousMatch": "",
+            "importReportReasonSelectorNotFound": "",
+            "importReportReasonSourceMismatch": "",
+            "importReportReasonUnsupportedSelector": "",
+            "importReportSelectorNotFound": "",
+            "importReportSourceMismatch": "",
+            "importReportUnresolvedImportedNotes": "",
             "nothing": "Nėra importui paruoštų pastabų, importas nutraukiamas",
-            "success": "Importavimas sėkmingai užbaigtas."
+            "success": "Importavimas sėkmingai užbaigtas.",
+            "unsupportedSelectorItem": "",
+            "unsupportedSelectorNoSelector": "",
+            "unsupportedSelectorSummary": "",
+            "unsupportedSelectorSummary_few": "",
+            "unsupportedSelectorSummary_many": "",
+            "unsupportedSelectorSummary_one": "",
+            "unsupportedSelectorSummary_other": ""
         },
         "download": {
             "cancelled": "Atsiuntimas atšauktas.",
@@ -706,7 +711,6 @@
             "advancedMode": "Momentinis režimas (pažymėjus sukurti automatiškai)",
             "annotationsExport": {
                 "description": "Pavadinkite eksportuojamas pastabas:",
-                "format": "Formatas",
                 "title": "Pavadinimas"
             },
             "annotationsOptions": "Pastabų parinktys",

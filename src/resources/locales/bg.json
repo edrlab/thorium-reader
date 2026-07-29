@@ -168,12 +168,6 @@
                 "title": ""
             }
         },
-        "deleteAnnotations": "",
-        "deleteAnnotationsText_one": "",
-        "deleteAnnotationsText_other": "",
-        "deleteBookmarks": "",
-        "deleteBookmarksText_one": "",
-        "deleteBookmarksText_other": "",
         "deleteFeed": "Наистина ли искате да изтриете този каталог?",
         "deletePublication": "Наистина ли искате да изтриете тази книга?",
         "deletePublicationWithNotes": "",
@@ -240,9 +234,22 @@
             "alreadyImported": "",
             "emptyFile": "",
             "errorParsing": "",
-            "noBelongTo": "",
+            "importReportAlreadyImported": "",
+            "importReportAmbiguousMatch": "",
+            "importReportReasonAmbiguousMatch": "",
+            "importReportReasonSelectorNotFound": "",
+            "importReportReasonSourceMismatch": "",
+            "importReportReasonUnsupportedSelector": "",
+            "importReportSelectorNotFound": "",
+            "importReportSourceMismatch": "",
+            "importReportUnresolvedImportedNotes": "",
             "nothing": "",
-            "success": ""
+            "success": "",
+            "unsupportedSelectorItem": "",
+            "unsupportedSelectorNoSelector": "",
+            "unsupportedSelectorSummary": "",
+            "unsupportedSelectorSummary_one": "",
+            "unsupportedSelectorSummary_other": ""
         },
         "download": {
             "cancelled": "",
@@ -696,7 +703,6 @@
             "advancedMode": "",
             "annotationsExport": {
                 "description": "",
-                "format": "",
                 "title": ""
             },
             "annotationsOptions": "",

@@ -174,16 +174,6 @@
                 "title": "Создание и активация профиля настройки"
             }
         },
-        "deleteAnnotations": "Удалить аннотации?",
-        "deleteAnnotationsText_few": "Вы уверены, что хотите удалить {{- count}} заметки?",
-        "deleteAnnotationsText_many": "Вы уверены, что хотите удалить {{- count}} заметок?",
-        "deleteAnnotationsText_one": "Вы уверены, что хотите удалить {{- count}} заметку?",
-        "deleteAnnotationsText_other": "",
-        "deleteBookmarks": "Удалить закладки?",
-        "deleteBookmarksText_few": "Вы уверены, что хотите удалить {{- count}} закладки?",
-        "deleteBookmarksText_many": "Вы уверены, что хотите удалить {{- count}} закладок?",
-        "deleteBookmarksText_one": "Вы уверены, что хотите удалить {{- count}} закладку?",
-        "deleteBookmarksText_other": "",
         "deleteFeed": "Вы действительно хотите удалить этот каталог ?",
         "deletePublication": "Вы действительно хотите удалить эту книгу ?",
         "deletePublicationWithNotes": "Внимание: эта книга содержит аннотации и/или закладки, они также будут удалены! (Если вы хотите их сохранить, обязательно экспортируйте заметки перед удалением книги)",
@@ -250,9 +240,24 @@
             "alreadyImported": "Все заметки уже импортированы.",
             "emptyFile": "В этом файле нет заметок.",
             "errorParsing": "Ошибка при анализе файла: ",
-            "noBelongTo": "Невозможно импортировать заметки, по крайней мере одна заметка не принадлежит книге.",
+            "importReportAlreadyImported": "",
+            "importReportAmbiguousMatch": "",
+            "importReportReasonAmbiguousMatch": "",
+            "importReportReasonSelectorNotFound": "",
+            "importReportReasonSourceMismatch": "",
+            "importReportReasonUnsupportedSelector": "",
+            "importReportSelectorNotFound": "",
+            "importReportSourceMismatch": "",
+            "importReportUnresolvedImportedNotes": "",
             "nothing": "Нет ни одной готовой к импорту заметки, импорт прерван",
-            "success": "Импорт успешно завершён."
+            "success": "Импорт успешно завершён.",
+            "unsupportedSelectorItem": "",
+            "unsupportedSelectorNoSelector": "",
+            "unsupportedSelectorSummary": "",
+            "unsupportedSelectorSummary_few": "",
+            "unsupportedSelectorSummary_many": "",
+            "unsupportedSelectorSummary_one": "",
+            "unsupportedSelectorSummary_other": ""
         },
         "download": {
             "cancelled": "Загрузка отменена.",
@@ -706,7 +711,6 @@
             "advancedMode": "Мгновенный режим (автоматическое создание после выделения)",
             "annotationsExport": {
                 "description": "Название экспортируемых заметок:",
-                "format": "",
                 "title": "Название"
             },
             "annotationsOptions": "Параметры аннотации",

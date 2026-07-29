@@ -171,14 +171,6 @@
                 "title": "Perfil de personalización de aprovisionamiento y activación"
             }
         },
-        "deleteAnnotations": "¿Eliminar anotaciones?",
-        "deleteAnnotationsText_many": "¿Quieres eliminar {{- count}} anotación/es?",
-        "deleteAnnotationsText_one": "¿Quieres eliminar {{- count}} anotación?",
-        "deleteAnnotationsText_other": "¿Quieres eliminar {{- count}} anotaciones?",
-        "deleteBookmarks": "¿Eliminar marcadores?",
-        "deleteBookmarksText_many": "¿Seguro que quieres borrar {{- count}} marcador/es?",
-        "deleteBookmarksText_one": "¿Seguro que quieres borrar {{- count}} marcador?",
-        "deleteBookmarksText_other": "¿Seguro que quieres borrar {{- count}} marcadores?",
         "deleteFeed": "¿Seguro que quieres eliminar este catálogo?",
         "deletePublication": "¿Seguro que quieres eliminar esta publicación?",
         "deletePublicationWithNotes": "Atención: esta publicación contiene anotaciones y/o marcadores; ¡estos también se eliminarán! (Si quieres conservarlos, asegúrate de haber guardado las notas antes de eliminar la publicación)",
@@ -245,9 +237,23 @@
             "alreadyImported": "Ya están importadas todas las anotaciones, cancelando la importación",
             "emptyFile": "El fichero no tiene anotaciones disponibles",
             "errorParsing": "Error al validar el formato del fichero: ",
-            "noBelongTo": "No es posible importar las anotaciones establecidas, al menos una anotación no pertenece a la publicación",
+            "importReportAlreadyImported": "",
+            "importReportAmbiguousMatch": "",
+            "importReportReasonAmbiguousMatch": "",
+            "importReportReasonSelectorNotFound": "",
+            "importReportReasonSourceMismatch": "",
+            "importReportReasonUnsupportedSelector": "",
+            "importReportSelectorNotFound": "",
+            "importReportSourceMismatch": "",
+            "importReportUnresolvedImportedNotes": "",
             "nothing": "No hay anotaciones listas para importar, cancelando la importación",
-            "success": "¡Correcto!"
+            "success": "¡Correcto!",
+            "unsupportedSelectorItem": "",
+            "unsupportedSelectorNoSelector": "",
+            "unsupportedSelectorSummary": "",
+            "unsupportedSelectorSummary_many": "",
+            "unsupportedSelectorSummary_one": "",
+            "unsupportedSelectorSummary_other": ""
         },
         "download": {
             "cancelled": "Descarga cancelada.",
@@ -701,7 +707,6 @@
             "advancedMode": "Modo instantáneo (creación automática al seleccionar)",
             "annotationsExport": {
                 "description": "Indicar un nombre para este conjunto de anotaciones",
-                "format": "",
                 "title": "Título"
             },
             "annotationsOptions": "Opciones",

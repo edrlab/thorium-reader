@@ -174,16 +174,6 @@
                 "title": "Udostępnianie, aktywowanie i dostosowywanie profilu"
             }
         },
-        "deleteAnnotations": "Usunąć adnotacje?",
-        "deleteAnnotationsText_few": "Czy na pewno chcesz usunąć {{- count}} notatki?",
-        "deleteAnnotationsText_many": "Czy na pewno chcesz usunąć {{- count}} notatek?",
-        "deleteAnnotationsText_one": "Czy na pewno chcesz usunąć {{- count}} notatkę?",
-        "deleteAnnotationsText_other": "",
-        "deleteBookmarks": "Usunąć zakładki?",
-        "deleteBookmarksText_few": "Czy na pewno chcesz usunąć {{- count}} zakładki?",
-        "deleteBookmarksText_many": "Czy na pewno chcesz usunąć {{- count}} zakładek?",
-        "deleteBookmarksText_one": "Czy na pewno chcesz usunąć {{- count}} zakładkę?",
-        "deleteBookmarksText_other": "",
         "deleteFeed": "Usunąć katalog?",
         "deletePublication": "Usunąć publikację?",
         "deletePublicationWithNotes": "Uwaga: ta publikacja zawiera adnotacje i/lub zakładki, one również zostaną usunięte! (jeśli chcesz je zachować, pamiętaj o wyeksportowaniu notatek przed usunięciem publikacji)",
@@ -250,9 +240,24 @@
             "alreadyImported": "Wszystkie notatki są już zaimportowane.",
             "emptyFile": "Brak notatek w pliku.",
             "errorParsing": "Błąd podczas analizowania pliku: ",
-            "noBelongTo": "Nie można zaimportować notatek, co najmniej jedna notatka nie należy do tej publikacji.",
+            "importReportAlreadyImported": "",
+            "importReportAmbiguousMatch": "",
+            "importReportReasonAmbiguousMatch": "",
+            "importReportReasonSelectorNotFound": "",
+            "importReportReasonSourceMismatch": "",
+            "importReportReasonUnsupportedSelector": "",
+            "importReportSelectorNotFound": "",
+            "importReportSourceMismatch": "",
+            "importReportUnresolvedImportedNotes": "",
             "nothing": "Brak notatek gotowych do zaimportowania, przerywam import",
-            "success": "Import zakończony pomyślnie."
+            "success": "Import zakończony pomyślnie.",
+            "unsupportedSelectorItem": "",
+            "unsupportedSelectorNoSelector": "",
+            "unsupportedSelectorSummary": "",
+            "unsupportedSelectorSummary_few": "",
+            "unsupportedSelectorSummary_many": "",
+            "unsupportedSelectorSummary_one": "",
+            "unsupportedSelectorSummary_other": ""
         },
         "download": {
             "cancelled": "",
@@ -706,7 +711,6 @@
             "advancedMode": "Tryb natychmiastowy (automatyczne tworzenie po zaznaczeniu)",
             "annotationsExport": {
                 "description": "Nazwij eksportowane notatki:",
-                "format": "",
                 "title": "Tytuł"
             },
             "annotationsOptions": "Opcje adnotacji",

@@ -165,10 +165,6 @@
                 "title": ""
             }
         },
-        "deleteAnnotations": "刪除註解？",
-        "deleteAnnotationsText": "您確定要刪除 {{- count}} 條註解嗎？",
-        "deleteBookmarks": "刪除書籤？",
-        "deleteBookmarksText": "您確定要刪除 {{- count}} 個書籤嗎？",
         "deleteFeed": "你真的要刪除此出版目錄嗎？",
         "deletePublication": "你真的要刪除此出版物嗎？",
         "deletePublicationWithNotes": "警告：此出版物包含註釋和/或書籤，它們也將被刪除！ （如果您想保留它們，請確保在刪除出版物之前匯出註釋）",
@@ -235,9 +231,20 @@
             "alreadyImported": "所有註解均已匯入。",
             "emptyFile": "文件中沒有可用的註解。",
             "errorParsing": "文件解析時發生錯誤： ",
-            "noBelongTo": "無法匯入註解，至少有一條註解不屬於該出版品。",
+            "importReportAlreadyImported": "",
+            "importReportAmbiguousMatch": "",
+            "importReportReasonAmbiguousMatch": "",
+            "importReportReasonSelectorNotFound": "",
+            "importReportReasonSourceMismatch": "",
+            "importReportReasonUnsupportedSelector": "",
+            "importReportSelectorNotFound": "",
+            "importReportSourceMismatch": "",
+            "importReportUnresolvedImportedNotes": "",
             "nothing": "沒有可供匯入的註解，正在中止匯入",
-            "success": "匯入已成功完成。"
+            "success": "匯入已成功完成。",
+            "unsupportedSelectorItem": "",
+            "unsupportedSelectorNoSelector": "",
+            "unsupportedSelectorSummary": ""
         },
         "download": {
             "cancelled": "",
@@ -691,7 +698,6 @@
             "advancedMode": "即時模式（選擇後自動建立）",
             "annotationsExport": {
                 "description": "命名匯出的註解：",
-                "format": "",
                 "title": "標題"
             },
             "annotationsOptions": "選項",

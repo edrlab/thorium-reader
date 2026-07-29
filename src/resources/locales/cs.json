@@ -174,16 +174,6 @@
                 "title": ""
             }
         },
-        "deleteAnnotations": "Odstranit anotace?",
-        "deleteAnnotationsText_few": "Opravdu chcete odstranit {{- count}} poznámek?",
-        "deleteAnnotationsText_many": "",
-        "deleteAnnotationsText_one": "Opravdu chcete odstranit {{- count}} poznámek?",
-        "deleteAnnotationsText_other": "Opravdu chcete odstranit {{- count}} poznámek?",
-        "deleteBookmarks": "Odstranit záložky?",
-        "deleteBookmarksText_few": "Jste si jisti, že chcete odstranit {{- count}} záložek?",
-        "deleteBookmarksText_many": "",
-        "deleteBookmarksText_one": "Jste si jisti, že chcete odstranit {{- count}} záložek?",
-        "deleteBookmarksText_other": "Jste si jisti, že chcete odstranit {{- count}} záložek?",
         "deleteFeed": "Odstranit katalog?",
         "deletePublication": "Odstranit publikaci?",
         "deletePublicationWithNotes": "Upozornění: tato publikace obsahuje anotace a/nebo záložky, které budou taktéž smazány! (pokud si je chcete ponechat, před odstraněním publikace poznámky exportujte)",
@@ -250,9 +240,24 @@
             "alreadyImported": "Všechny poznámky byly již importovány.",
             "emptyFile": "V souboru nejsou dostupné žádné poznámky.",
             "errorParsing": "Chyba při analýze souboru: ",
-            "noBelongTo": "Poznámky nebylo možné importovat – alespoň jedna poznámka nepatří k této publikaci.",
+            "importReportAlreadyImported": "",
+            "importReportAmbiguousMatch": "",
+            "importReportReasonAmbiguousMatch": "",
+            "importReportReasonSelectorNotFound": "",
+            "importReportReasonSourceMismatch": "",
+            "importReportReasonUnsupportedSelector": "",
+            "importReportSelectorNotFound": "",
+            "importReportSourceMismatch": "",
+            "importReportUnresolvedImportedNotes": "",
             "nothing": "Žádná poznámka k importu, přerušuji import",
-            "success": "Import úspěšně dokončen."
+            "success": "Import úspěšně dokončen.",
+            "unsupportedSelectorItem": "",
+            "unsupportedSelectorNoSelector": "",
+            "unsupportedSelectorSummary": "",
+            "unsupportedSelectorSummary_few": "",
+            "unsupportedSelectorSummary_many": "",
+            "unsupportedSelectorSummary_one": "",
+            "unsupportedSelectorSummary_other": ""
         },
         "download": {
             "cancelled": "",
@@ -706,7 +711,6 @@
             "advancedMode": "",
             "annotationsExport": {
                 "description": "",
-                "format": "",
                 "title": "Název"
             },
             "annotationsOptions": "Možnosti anotace",

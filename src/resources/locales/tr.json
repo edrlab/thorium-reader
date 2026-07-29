@@ -168,12 +168,6 @@
                 "title": "Özelleştirme profilinin hazırlanması ve etkinleştirilmesi"
             }
         },
-        "deleteAnnotations": "Açıklayıcı notları silmek istiyor musunuz?",
-        "deleteAnnotationsText_one": "{{- count}} Not(lar)ını silmek istediğinize emin misiniz?",
-        "deleteAnnotationsText_other": "{{- count}} Not(lar)ını silmek istediğinize emin misiniz?",
-        "deleteBookmarks": "Yer imlerini silmek istiyor musunuz?",
-        "deleteBookmarksText_one": "{{- count}} yer im(ler)ini silmek istediğinize emin misiniz?",
-        "deleteBookmarksText_other": "{{- count}} yer im(ler)ini silmek istediğinize emin misiniz?",
         "deleteFeed": "Katalogu silmek istiyor musunuz?",
         "deletePublication": "Eseri silmek istiyor musunuz?",
         "deletePublicationWithNotes": "Uyarı: Bu eserde açıklayıcı notlar ve/veya yer imleri bulunuyor, bunlar da silinecek! (Eğer bunları saklamak istiyorsanız, eseri kaldırmadan önce notları dışa aktardığınızdan emin olun)",
@@ -240,9 +234,22 @@
             "alreadyImported": "Tüm notlar zaten içe aktarılmış.",
             "emptyFile": "Dosyada not mevcut değil.",
             "errorParsing": "Dosya işlenirken hata oluştu: ",
-            "noBelongTo": "Notlar içe aktarılamadı: En az bir not, Eser'e ait değil.",
+            "importReportAlreadyImported": "",
+            "importReportAmbiguousMatch": "",
+            "importReportReasonAmbiguousMatch": "",
+            "importReportReasonSelectorNotFound": "",
+            "importReportReasonSourceMismatch": "",
+            "importReportReasonUnsupportedSelector": "",
+            "importReportSelectorNotFound": "",
+            "importReportSourceMismatch": "",
+            "importReportUnresolvedImportedNotes": "",
             "nothing": "İçe aktarmaya hazır hiç not yok, içe aktarım durduruluyor",
-            "success": "İçe aktarma başarıyla tamamlandı."
+            "success": "İçe aktarma başarıyla tamamlandı.",
+            "unsupportedSelectorItem": "",
+            "unsupportedSelectorNoSelector": "",
+            "unsupportedSelectorSummary": "",
+            "unsupportedSelectorSummary_one": "",
+            "unsupportedSelectorSummary_other": ""
         },
         "download": {
             "cancelled": "İndirme iptal edildi.",
@@ -696,7 +703,6 @@
             "advancedMode": "Anlık mod (seçimden sonra otomatik oluştur)",
             "annotationsExport": {
                 "description": "Dışa aktarılan notları adlandır:",
-                "format": "Biçim",
                 "title": "Başlık"
             },
             "annotationsOptions": "Açıklayıcı Not Seçenekleri",
