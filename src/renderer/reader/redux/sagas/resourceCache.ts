@@ -20,7 +20,7 @@ import debug_ from "debug";
 import { ENABLE_SKIP_LINK } from "@r2-navigator-js/electron/common/styles";
 import { removeUTF8BOM } from "readium-desktop/common/utils/bom";
 
-const debug = debug_("readium-desktop:common:redux:saga:resourceCache");
+const debug = debug_("readium-desktop:renderer:reader:redux:saga:resourceCache");
 debug("_");
 
 export interface ICacheDocument {

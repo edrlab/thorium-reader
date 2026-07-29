@@ -27,7 +27,7 @@ import { readerLocalActionHighlights, readerLocalActionSearch } from "../actions
 import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
 
 import debounce from "debounce";
-import { getResourceCacheAll } from "readium-desktop/common/redux/sagas/resourceCache";
+import { getResourceCacheAll } from "./resourceCache";
 import { ISearchResult } from "readium-desktop/common/redux/states/renderer/search";
 
 // TODO: MASSIVE HACK, needs refactoring!

@@ -31,7 +31,7 @@ import { readerLocalActionReader } from "../actions";
 import { readerActions, winCommonActions } from "readium-desktop/common/redux/actions";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
-import { resourceCacheTimer } from "readium-desktop/common/redux/sagas/resourceCache";
+import { resourceCacheTimer } from "./resourceCache";
 import { createOrGetPdfEventBus } from "../../pdf/driver";
 import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import { selectPublicationNotes } from "../../publication-notes/selectors";

@@ -30,7 +30,7 @@ import { EDrawType, type TDrawType } from "readium-desktop/common/type/note.type
 import { checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation, readiumAnnotationSelectorFromNote } from "../../readiumAnnotation/selector";
 import { clone } from "ramda";
 import { convertSelectorTargetToLocatorExtended } from "readium-desktop/common/readium/annotation/converter";
-import { getResourceCacheFromPublication } from "readium-desktop/common/redux/sagas/resourceCache";
+import { getResourceCacheFromPublication } from "./resourceCache";
 import { selectPublicationNotes } from "../../publication-notes/selectors";
 import {
     IReadiumAnnotationSelectorControllerContext,
