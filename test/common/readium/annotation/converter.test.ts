@@ -3,7 +3,11 @@ import { expect, test } from "@jest/globals";
 import {
     convertAnnotationStateArrayToReadiumAnnotationSet,
     convertAnnotationStateToReadiumAnnotation,
+    selectSelectorTargetLocatorCandidate,
+    type ISelectorTargetLocatorCandidate,
+    type TSelectorTargetLocatorCandidateSource,
 } from "readium-desktop/common/readium/annotation/converter";
+import type { IRangeInfo, ISelectedTextInfo } from "@r2-navigator-js/electron/common/selection";
 import type { ITextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import type { PublicationNote } from "readium-desktop/common/publication-notes";
 import { EDrawType } from "readium-desktop/common/type/note.type";
@@ -26,6 +30,41 @@ const textQuoteSelector: ITextQuoteSelector = {
     prefix: "",
     suffix: "",
 };
+
+const rangeInfo: IRangeInfo = {
+    startContainerElementCssSelector: "body > p",
+    startContainerElementXPath: undefined,
+    startContainerChildTextNodeIndex: 0,
+    startOffset: 7,
+    endContainerElementCssSelector: "body > p",
+    endContainerElementXPath: undefined,
+    endContainerChildTextNodeIndex: 0,
+    endOffset: 21,
+    cfi: undefined,
+};
+
+const textInfo: ISelectedTextInfo = {
+    cleanBefore: "",
+    cleanText: "selected text",
+    cleanAfter: "",
+    rawBefore: "",
+    rawText: "selected text",
+    rawAfter: "",
+};
+
+function createCandidate(
+    selectorType: TSelectorTargetLocatorCandidateSource,
+    overrides: Partial<ISelectorTargetLocatorCandidate> = {},
+): ISelectorTargetLocatorCandidate {
+
+    return {
+        selectorType,
+        selectorPriority: selectorType === "CssSelector" ? 40 : 20,
+        rangeInfo,
+        textInfo,
+        ...overrides,
+    };
+}
 
 function createNote(overrides: Partial<PublicationNote> = {}): PublicationNote {
     return {
@@ -114,4 +153,56 @@ test("Readium annotation set export filters PDF annotations and preserves EPUB a
     expect(annotationSet.items).toHaveLength(1);
     expect(annotationSet.items[0].id).toBe("urn:uuid:epub-note");
     expect(annotationSet.items[0].target.source).toBe("chapter.xhtml");
+});
+
+test("Readium annotation import locator candidate selection uses explicit selector priority for agreeing ranges", () => {
+    const selection = selectSelectorTargetLocatorCandidate([
+        createCandidate("TextQuoteSelector"),
+        createCandidate("CssSelector"),
+    ]);
+
+    expect(selection.status).toBe("resolved");
+    if (selection.status === "resolved") {
+        expect(selection.candidate.selectorType).toBe("CssSelector");
+    }
+});
+
+test("Readium annotation import locator candidate selection reports selector disagreement", () => {
+    const selection = selectSelectorTargetLocatorCandidate([
+        createCandidate("CssSelector"),
+        createCandidate("TextQuoteSelector", {
+            rangeInfo: {
+                ...rangeInfo,
+                startOffset: 12,
+                endOffset: 26,
+            },
+        }),
+    ]);
+
+    expect(selection).toEqual({
+        status: "unresolved",
+        reason: "ambiguous-match",
+    });
+});
+
+test("Readium annotation import locator candidate selection reports selector not found without usable candidates", () => {
+    const selection = selectSelectorTargetLocatorCandidate([
+        createCandidate("CssSelector", {
+            rangeInfo: {
+                ...rangeInfo,
+                startContainerElementCssSelector: "",
+            },
+        }),
+        createCandidate("TextQuoteSelector", {
+            textInfo: {
+                ...textInfo,
+                rawText: "",
+            },
+        }),
+    ]);
+
+    expect(selection).toEqual({
+        status: "unresolved",
+        reason: "selector-not-found",
+    });
 });

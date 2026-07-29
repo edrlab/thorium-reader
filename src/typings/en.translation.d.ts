@@ -588,9 +588,24 @@ declare namespace typed_i18n {
     readonly "alreadyImported": string,
     readonly "emptyFile": string,
     readonly "errorParsing": string,
+    readonly "importReportAlreadyImported": string,
+    readonly "importReportAmbiguousMatch": string,
+    readonly "importReportConflictNewer": string,
+    readonly "importReportConflictOlder": string,
+    readonly "importReportPrefix": string,
+    readonly "importReportReasonAmbiguousMatch": string,
+    readonly "importReportReasonSelectorNotFound": string,
+    readonly "importReportReasonSourceMismatch": string,
+    readonly "importReportReasonUnsupportedSelector": string,
+    readonly "importReportSelectorNotFound": string,
+    readonly "importReportSourceMismatch": string,
+    readonly "importReportUnresolvedImportedNotes": string,
     readonly "noBelongTo": string,
     readonly "nothing": string,
-    readonly "success": string
+    readonly "success": string,
+    readonly "unsupportedSelectorItem": string,
+    readonly "unsupportedSelectorNoSelector": string,
+    readonly "unsupportedSelectorSummary": string
   },
   readonly "download": {
     readonly "cancelled": string,
@@ -626,16 +641,46 @@ declare namespace typed_i18n {
   readonly "alreadyImported": string,
   readonly "emptyFile": string,
   readonly "errorParsing": string,
+  readonly "importReportAlreadyImported": string,
+  readonly "importReportAmbiguousMatch": string,
+  readonly "importReportConflictNewer": string,
+  readonly "importReportConflictOlder": string,
+  readonly "importReportPrefix": string,
+  readonly "importReportReasonAmbiguousMatch": string,
+  readonly "importReportReasonSelectorNotFound": string,
+  readonly "importReportReasonSourceMismatch": string,
+  readonly "importReportReasonUnsupportedSelector": string,
+  readonly "importReportSelectorNotFound": string,
+  readonly "importReportSourceMismatch": string,
+  readonly "importReportUnresolvedImportedNotes": string,
   readonly "noBelongTo": string,
   readonly "nothing": string,
-  readonly "success": string
+  readonly "success": string,
+  readonly "unsupportedSelectorItem": string,
+  readonly "unsupportedSelectorNoSelector": string,
+  readonly "unsupportedSelectorSummary": string
 };
   (_: "message.annotations.alreadyImported", __?: {}): string;
   (_: "message.annotations.emptyFile", __?: {}): string;
   (_: "message.annotations.errorParsing", __?: {}): string;
+  (_: "message.annotations.importReportAlreadyImported", __?: {}): string;
+  (_: "message.annotations.importReportAmbiguousMatch", __?: {}): string;
+  (_: "message.annotations.importReportConflictNewer", __?: {}): string;
+  (_: "message.annotations.importReportConflictOlder", __?: {}): string;
+  (_: "message.annotations.importReportPrefix", __?: {}): string;
+  (_: "message.annotations.importReportReasonAmbiguousMatch", __?: {}): string;
+  (_: "message.annotations.importReportReasonSelectorNotFound", __?: {}): string;
+  (_: "message.annotations.importReportReasonSourceMismatch", __?: {}): string;
+  (_: "message.annotations.importReportReasonUnsupportedSelector", __?: {}): string;
+  (_: "message.annotations.importReportSelectorNotFound", __?: {}): string;
+  (_: "message.annotations.importReportSourceMismatch", __?: {}): string;
+  (_: "message.annotations.importReportUnresolvedImportedNotes", __?: {}): string;
   (_: "message.annotations.noBelongTo", __?: {}): string;
   (_: "message.annotations.nothing", __?: {}): string;
   (_: "message.annotations.success", __?: {}): string;
+  (_: "message.annotations.unsupportedSelectorItem", __?: {}): string;
+  (_: "message.annotations.unsupportedSelectorNoSelector", __?: {}): string;
+  (_: "message.annotations.unsupportedSelectorSummary", __?: {}): string;
   (_: "message.download", __?: {}): {
   readonly "cancelled": string,
   readonly "error": string,

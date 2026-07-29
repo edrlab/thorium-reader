@@ -10,6 +10,7 @@ import type { IReadiumAnnotation, ISelector } from "readium-desktop/common/readi
 import type { INoteCreator } from "readium-desktop/common/redux/states/creator";
 import type { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 import type { EDrawType } from "readium-desktop/common/type/note.type";
+import type { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-keys";
 
 export interface IPdfAnnotationRect {
     x1: number;
@@ -39,6 +40,41 @@ export type PublicationNoteGroup = NonNullable<PublicationNoteEntity["group"]>;
 export type PublicationNotesViewSelection = "all" | string[];
 
 export type PublicationNotesViewSort = "progression" | "lastCreated" | "lastModified";
+
+export type PublicationNoteImportUnresolvedReason =
+    "source-mismatch" |
+    "unsupported-selector" |
+    "selector-not-found" |
+    "ambiguous-match";
+
+export const publicationNoteImportUnresolvedReasons: readonly PublicationNoteImportUnresolvedReason[] = [
+    "source-mismatch",
+    "unsupported-selector",
+    "selector-not-found",
+    "ambiguous-match",
+];
+
+export const publicationNoteImportUnresolvedReasonTranslatorKey:
+    Record<PublicationNoteImportUnresolvedReason, TTranslatorKeyParameter> = {
+    "source-mismatch": "message.annotations.importReportReasonSourceMismatch",
+    "unsupported-selector": "message.annotations.importReportReasonUnsupportedSelector",
+    "selector-not-found": "message.annotations.importReportReasonSelectorNotFound",
+    "ambiguous-match": "message.annotations.importReportReasonAmbiguousMatch",
+};
+
+export function getPublicationNoteImportUnresolvedReasonTranslatorKey(
+    reason: PublicationNoteImportUnresolvedReason,
+): TTranslatorKeyParameter {
+
+    return publicationNoteImportUnresolvedReasonTranslatorKey[reason];
+}
+
+export interface PublicationNoteImportUnresolvedState {
+    reason: PublicationNoteImportUnresolvedReason;
+    source?: string | undefined;
+    selectorTypes?: string[] | undefined;
+    message?: string | undefined;
+}
 
 export interface PublicationNotesViewPagination {
     page?: number | undefined;
@@ -104,8 +140,43 @@ export interface PublicationNote extends PublicationNoteEntity {
 
         import?: {
             target: IReadiumAnnotation["target"];
+            originalTarget?: IReadiumAnnotation["target"] | undefined;
+            unresolved?: PublicationNoteImportUnresolvedState | undefined;
         } | undefined;
     } | undefined;
+}
+
+export function getPublicationNoteImportSelectorTypesLabel(
+    note: PublicationNote,
+    fallback: string,
+): string {
+
+    const selectorTypes = note.readiumAnnotation?.import?.unresolved?.selectorTypes || [];
+    return selectorTypes.length
+        ? selectorTypes.join(", ")
+        : fallback;
+}
+
+export interface PublicationNotesImportReport {
+    sourceMismatch: PublicationNote[];
+    unsupportedSelector: PublicationNote[];
+    selectorNotFound: PublicationNote[];
+    ambiguousMatch: PublicationNote[];
+    annotationsConflictListOlder: PublicationNote[];
+    annotationsConflictListNewer: PublicationNote[];
+    annotationsAlreadyImportedList: PublicationNote[];
+}
+
+export function createEmptyPublicationNotesImportReport(): PublicationNotesImportReport {
+    return {
+        sourceMismatch: [],
+        unsupportedSelector: [],
+        selectorNotFound: [],
+        ambiguousMatch: [],
+        annotationsConflictListOlder: [],
+        annotationsConflictListNewer: [],
+        annotationsAlreadyImportedList: [],
+    };
 }
 
 export type PublicationNoteDraft =

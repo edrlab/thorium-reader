@@ -72,7 +72,10 @@ function createDependencies(
     return {
         getResourceCache: jest.fn(async () => ({ xmlDom })),
         createExportSelectors: jest.fn(async () => [textPositionSelector]),
-        convertImportTargetToLocatorExtended: jest.fn(async () => locatorExtended),
+        convertImportTargetToLocatorExtended: jest.fn(async () => ({
+            status: "resolved" as const,
+            locatorExtended,
+        })),
         hasGeneratedExportSelectors: jest.fn(() => false),
         ...overrides,
     };
@@ -275,6 +278,12 @@ describe("ReadiumAnnotationSelectorController", () => {
             note: {
                 ...note,
                 locatorExtended,
+                readiumAnnotation: {
+                    import: {
+                        target: importTarget,
+                        unresolved: undefined,
+                    },
+                },
             },
         }]);
     });
@@ -322,6 +331,12 @@ describe("ReadiumAnnotationSelectorController", () => {
                 note: {
                     ...importNote,
                     locatorExtended,
+                    readiumAnnotation: {
+                        import: {
+                            target: importTarget,
+                            unresolved: undefined,
+                        },
+                    },
                 },
             },
         ]);
@@ -386,6 +401,12 @@ describe("ReadiumAnnotationSelectorController", () => {
             note: {
                 ...importNote,
                 locatorExtended,
+                readiumAnnotation: {
+                    import: {
+                        target: importTarget,
+                        unresolved: undefined,
+                    },
+                },
             },
         }]);
         expect(asMock(dependencies.onError)).toHaveBeenCalledWith(error, failingNote);
@@ -426,6 +447,12 @@ describe("ReadiumAnnotationSelectorController", () => {
             note: {
                 ...importNote,
                 locatorExtended,
+                readiumAnnotation: {
+                    import: {
+                        target: importTarget,
+                        unresolved: undefined,
+                    },
+                },
             },
         }]);
         expect(asMock(dependencies.onError)).toHaveBeenCalledWith(error, failingNote);
@@ -437,9 +464,15 @@ describe("ReadiumAnnotationSelectorController", () => {
         );
     });
 
-    it("skips import selector work when conversion does not return a locator", async () => {
+    it("persists unresolved import selector state when conversion does not return a locator", async () => {
         const dependencies = createDependencies({
-            convertImportTargetToLocatorExtended: jest.fn(async () => undefined),
+            convertImportTargetToLocatorExtended: jest.fn(async () => ({
+                status: "unresolved" as const,
+                reason: "selector-not-found" as const,
+                source: "chapter.xhtml",
+                selectorTypes: ["TextPositionSelector"],
+                message: "The selectors did not match this publication content.",
+            })),
         });
         const controller = new ReadiumAnnotationSelectorController(dependencies);
         const note = createNote({
@@ -453,6 +486,89 @@ describe("ReadiumAnnotationSelectorController", () => {
         await expect(controller.resolvePublicationNoteUpdates(
             note,
             { isReaderLocked: true, isLcp: false },
+        )).resolves.toEqual([{
+            kind: "importUnresolved",
+            previousNote: note,
+            note: {
+                ...note,
+                readiumAnnotation: {
+                    import: {
+                        target: importTarget,
+                        unresolved: {
+                            reason: "selector-not-found",
+                            source: "chapter.xhtml",
+                            selectorTypes: ["TextPositionSelector"],
+                            message: "The selectors did not match this publication content.",
+                        },
+                    },
+                },
+            },
+        }]);
+    });
+
+    it("does not persist the same unresolved import selector state again", async () => {
+        const dependencies = createDependencies({
+            convertImportTargetToLocatorExtended: jest.fn(async () => ({
+                status: "unresolved" as const,
+                reason: "selector-not-found" as const,
+                source: "chapter.xhtml",
+                selectorTypes: ["TextPositionSelector"],
+                message: "The selectors did not match this publication content.",
+            })),
+        });
+        const controller = new ReadiumAnnotationSelectorController(dependencies);
+        const note = createNote({
+            readiumAnnotation: {
+                import: {
+                    target: importTarget,
+                    unresolved: {
+                        reason: "selector-not-found",
+                        source: "chapter.xhtml",
+                        selectorTypes: ["TextPositionSelector"],
+                        message: "The selectors did not match this publication content.",
+                    },
+                },
+            },
+        });
+
+        await expect(controller.resolvePublicationNoteUpdates(
+            note,
+            { isReaderLocked: true, isLcp: false },
         )).resolves.toEqual([]);
+    });
+
+    it("clears unresolved import state when a retry resolves the locator", async () => {
+        const dependencies = createDependencies();
+        const controller = new ReadiumAnnotationSelectorController(dependencies);
+        const note = createNote({
+            readiumAnnotation: {
+                import: {
+                    target: importTarget,
+                    unresolved: {
+                        reason: "selector-not-found",
+                        source: "chapter.xhtml",
+                        selectorTypes: ["TextPositionSelector"],
+                    },
+                },
+            },
+        });
+
+        await expect(controller.resolvePublicationNoteUpdates(
+            note,
+            { isReaderLocked: true, isLcp: false },
+        )).resolves.toEqual([{
+            kind: "importLocator",
+            previousNote: note,
+            note: {
+                ...note,
+                locatorExtended,
+                readiumAnnotation: {
+                    import: {
+                        target: importTarget,
+                        unresolved: undefined,
+                    },
+                },
+            },
+        }]);
     });
 });

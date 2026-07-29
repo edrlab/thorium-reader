@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { IReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
-import type { PublicationNote } from "readium-desktop/common/publication-notes";
+import type { PublicationNote, PublicationNotesImportReport } from "readium-desktop/common/publication-notes";
 
 interface IReadiumAnnotationModelSetView extends Partial<Pick<IReadiumAnnotationSet, "about" | "title" | "generated" | "generator">> {
 
@@ -16,5 +16,6 @@ export interface IImportAnnotationState extends IReadiumAnnotationModelSetView {
     annotationsConflictListOlder: PublicationNote[]
     annotationsConflictListNewer: PublicationNote[]
     annotationsList: PublicationNote[]
+    importReport: PublicationNotesImportReport;
     winId?: string | undefined;
 }
