@@ -168,12 +168,6 @@
                 "title": "Tilldelar och aktiverar anpassningsprofil"
             }
         },
-        "deleteAnnotations": "Ta bort anteckningar?",
-        "deleteAnnotationsText_one": "Vill du ta bort {{- count}} anteckning?",
-        "deleteAnnotationsText_other": "Vill du ta bort {{- count}} anteckningar?",
-        "deleteBookmarks": "Radera bokmärken?",
-        "deleteBookmarksText_one": "Vill du ta bort {{- count}} bokmärke?",
-        "deleteBookmarksText_other": "Vill du ta bort {{- count}} bokmärken?",
         "deleteFeed": "Vill du ta bort den här katalogen?",
         "deletePublication": "Vill du ta bort den här boken?",
         "deletePublicationWithNotes": "Varning: Det finns anteckningar och/eller bokmärken som också kommer att tas bort! (Om du vill behålla dem så måste du exportera anteckningar och bokmärken innan du tar bort boken)",
@@ -240,9 +234,22 @@
             "alreadyImported": "Alla anteckningar har redan importerats.",
             "emptyFile": "Det finns inga anteckningar i filen.",
             "errorParsing": "Fel vid tolkning av fil: ",
-            "noBelongTo": "Det går inte att importera anteckningarna, minst en anteckning tillhör inte publikationen.",
+            "importReportAlreadyImported": "",
+            "importReportAmbiguousMatch": "",
+            "importReportReasonAmbiguousMatch": "",
+            "importReportReasonSelectorNotFound": "",
+            "importReportReasonSourceMismatch": "",
+            "importReportReasonUnsupportedSelector": "",
+            "importReportSelectorNotFound": "",
+            "importReportSourceMismatch": "",
+            "importReportUnresolvedImportedNotes": "",
             "nothing": "Det finns inga anteckningar tillgängliga för import, avbryter importen",
-            "success": "Importen lyckades."
+            "success": "Importen lyckades.",
+            "unsupportedSelectorItem": "",
+            "unsupportedSelectorNoSelector": "",
+            "unsupportedSelectorSummary": "",
+            "unsupportedSelectorSummary_one": "",
+            "unsupportedSelectorSummary_other": ""
         },
         "download": {
             "cancelled": "Nedladdning avbruten.",

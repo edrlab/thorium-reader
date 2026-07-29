@@ -168,12 +168,6 @@
                 "title": "Kohandatud profiili ettevalmistamine ja aktiveerimine"
             }
         },
-        "deleteAnnotations": "Kas kustutad märlmed?",
-        "deleteAnnotationsText_one": "Kas oled kindel, et soovid {{- count}} märke kustutada?",
-        "deleteAnnotationsText_other": "Kas oled kindel, et soovid {{- count}} märget kustutada?",
-        "deleteBookmarks": "Kas kustutad järjehoidjad?",
-        "deleteBookmarksText_one": "Kas oled kindel, et soovid {{- count}} järjehoidja kustutada?",
-        "deleteBookmarksText_other": "Kas oled kindel, et soovid {{- count}} järjehoidjat kustutada?",
         "deleteFeed": "Kas kustutad kataloogi?",
         "deletePublication": "Kas kustutad raamatu?",
         "deletePublicationWithNotes": "Hoiatus: sellel väljaandel leidub märkmeid ja/või järjehoidjaid ning need kustutatakse samuti! (kui soovid neid säilitada, ekspordi märkmed enne väljaande eemaldamist)",
@@ -240,9 +234,22 @@
             "alreadyImported": "Kõik märkmed on juba imporditud.",
             "emptyFile": "Failis pole märkmeid.",
             "errorParsing": "Viga faili töötlemisel: ",
-            "noBelongTo": "Märkmete importimine ei õnnestu - vähemalt üks märge pole väljaandega seotud.",
+            "importReportAlreadyImported": "",
+            "importReportAmbiguousMatch": "",
+            "importReportReasonAmbiguousMatch": "",
+            "importReportReasonSelectorNotFound": "",
+            "importReportReasonSourceMismatch": "",
+            "importReportReasonUnsupportedSelector": "",
+            "importReportSelectorNotFound": "",
+            "importReportSourceMismatch": "",
+            "importReportUnresolvedImportedNotes": "",
             "nothing": "Pole ühtegi imporditavat märget, katkestan impordi",
-            "success": "Importimine õnnestus kenasti."
+            "success": "Importimine õnnestus kenasti.",
+            "unsupportedSelectorItem": "",
+            "unsupportedSelectorNoSelector": "",
+            "unsupportedSelectorSummary": "",
+            "unsupportedSelectorSummary_one": "",
+            "unsupportedSelectorSummary_other": ""
         },
         "download": {
             "cancelled": "Allalaadimine on katkestatud.",

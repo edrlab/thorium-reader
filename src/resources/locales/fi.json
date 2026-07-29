@@ -168,12 +168,6 @@
                 "title": "Mukautetun profiilin käyttöönotto ja aktivointi"
             }
         },
-        "deleteAnnotations": "Poistetaanko muistiinpanot?",
-        "deleteAnnotationsText_one": "Haluatko varmasti poistaa {{- count}} muistiinpanon?",
-        "deleteAnnotationsText_other": "Haluatko varmasti poistaa {{- count}} muistiinpanoa?",
-        "deleteBookmarks": "Poistetaanko kirjanmerkit?",
-        "deleteBookmarksText_one": "Haluatko varmasti poistaa {{- count}} kirjanmerkin?",
-        "deleteBookmarksText_other": "Haluatko varmasti poistaa {{- count}} kirjanmerkkiä?",
         "deleteFeed": "Haluatko poistaa tämän luettelon?",
         "deletePublication": "Haluatko poistaa tämän julkaisun?",
         "deletePublicationWithNotes": "Varoitus: tämä julkaisu sisältää muistiinpanoja ja/tai kirjanmerkkejä, myös ne poistetaan! (Jos haluat säilyttää ne, muista viedä muistiinpanot talteen ennen kuin poistat julkaisun)",
@@ -240,9 +234,22 @@
             "alreadyImported": "Kaikki muistiinpanot on jo tuotu.",
             "emptyFile": "Tiedostossa ei ole muistiinpanoja.",
             "errorParsing": "Virhe tiedoston jäsentämisessä: ",
-            "noBelongTo": "Muistiinpanoja ei voida tuoda, vähintään yksi muistiinpano ei kuulu julkaisuun.",
+            "importReportAlreadyImported": "",
+            "importReportAmbiguousMatch": "",
+            "importReportReasonAmbiguousMatch": "",
+            "importReportReasonSelectorNotFound": "",
+            "importReportReasonSourceMismatch": "",
+            "importReportReasonUnsupportedSelector": "",
+            "importReportSelectorNotFound": "",
+            "importReportSourceMismatch": "",
+            "importReportUnresolvedImportedNotes": "",
             "nothing": "Yhtään muistiinpanoa ei ole valmiina tuontiin, tuonti keskeytetty.",
-            "success": "Tuonti onnistui."
+            "success": "Tuonti onnistui.",
+            "unsupportedSelectorItem": "",
+            "unsupportedSelectorNoSelector": "",
+            "unsupportedSelectorSummary": "",
+            "unsupportedSelectorSummary_one": "",
+            "unsupportedSelectorSummary_other": ""
         },
         "download": {
             "cancelled": "Lataus peruttu.",

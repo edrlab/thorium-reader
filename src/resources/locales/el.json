@@ -168,12 +168,6 @@
                 "title": "Προετοιμασία και ενεργοποίηση προφίλ προσαρμογής"
             }
         },
-        "deleteAnnotations": "Διαγραφή σχολίων;",
-        "deleteAnnotationsText_one": "Είστε σίγουροι για τη διαγραφή σημείωσης {{- count}};",
-        "deleteAnnotationsText_other": "Είστε σίγουροι για τη διαγραφή σημειώσεων {{- count}};",
-        "deleteBookmarks": "Διαγραφή σελιδοδεικτών;",
-        "deleteBookmarksText_one": "Θέλεις σίγουρα να διαγράψεις {{- count}} σελιδοδείκτη;",
-        "deleteBookmarksText_other": "Θέλεις σίγουρα να διαγράψεις {{- count}} σελιδοδείκτες;",
         "deleteFeed": "Διαγραφή καταλόγου;",
         "deletePublication": "Διαγραφή δημοσίευσης;",
         "deletePublicationWithNotes": "Προειδοποίηση: αυτή η δημοσίευση έχει σχολιασμούς ή/και σελιδοδείκτες, θα διαγραφούν και αυτοί! (αν θέλεις να τους κρατήσεις, φρόντισε να τους εξάγεις πριν τη διαγραφή της δημοσίευσης)",
@@ -240,9 +234,22 @@
             "alreadyImported": "Όλες οι σημειώσεις έχουν ήδη εισαχθεί.",
             "emptyFile": "Δεν διατίθενται σημειώσεις μέσα στο αρχείο.",
             "errorParsing": "Σφάλμα κατά την ανάλυση αρχείου: ",
-            "noBelongTo": "Αδυναμία εισαγωγής σημειώσεων, τουλάχιστον μία σημείωση δεν ανήκει στη δημοσίευση.",
+            "importReportAlreadyImported": "",
+            "importReportAmbiguousMatch": "",
+            "importReportReasonAmbiguousMatch": "",
+            "importReportReasonSelectorNotFound": "",
+            "importReportReasonSourceMismatch": "",
+            "importReportReasonUnsupportedSelector": "",
+            "importReportSelectorNotFound": "",
+            "importReportSourceMismatch": "",
+            "importReportUnresolvedImportedNotes": "",
             "nothing": "Δεν υπάρχει καμία σημείωση για εισαγωγή· παράκαμψη εισαγωγής",
-            "success": "Επιτυχής ολοκλήρωση εισαγωγής."
+            "success": "Επιτυχής ολοκλήρωση εισαγωγής.",
+            "unsupportedSelectorItem": "",
+            "unsupportedSelectorNoSelector": "",
+            "unsupportedSelectorSummary": "",
+            "unsupportedSelectorSummary_one": "",
+            "unsupportedSelectorSummary_other": ""
         },
         "download": {
             "cancelled": "Ακύρωση λήψης.",
