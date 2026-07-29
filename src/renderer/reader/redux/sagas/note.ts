@@ -28,12 +28,17 @@ import { IHighlightHandlerState } from "readium-desktop/common/redux/states/rend
 import { getTranslator } from "readium-desktop/common/services/translator";
 import type { PublicationNote } from "readium-desktop/common/publication-notes";
 import { EDrawType, type TDrawType } from "readium-desktop/common/type/note.type";
-import { checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation, readiumAnnotationSelectorFromNote } from "./readiumAnnotation/selector";
-import { clone, equals } from "ramda";
+import { checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation, readiumAnnotationSelectorFromNote } from "../../readiumAnnotation/selector";
+import { clone } from "ramda";
 import { convertSelectorTargetToLocatorExtended } from "readium-desktop/common/readium/annotation/converter";
-import { getResourceCache } from "readium-desktop/common/redux/sagas/resourceCache";
 import { logEvent } from "readium-desktop/renderer/common/analytics";
+import { getResourceCacheFromPublication } from "readium-desktop/common/redux/sagas/resourceCache";
 import { selectPublicationNotes } from "../../publication-notes/selectors";
+import {
+    IReadiumAnnotationSelectorControllerContext,
+    IReadiumAnnotationSelectorControllerUpdate,
+    ReadiumAnnotationSelectorController,
+} from "../../readiumAnnotation/selectorController";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:annotation");
@@ -62,60 +67,112 @@ debug("_");
 //     // yield* putTyped(readerLocalActionAnnotations.focusMode.build({previousFocusUuid: currentFocusUuid || "", currentFocusUuid: uuid, editionEnable: false}));
 // }
 
-export function* noteUpdateExportSelectorFromLocatorExtended(note: PublicationNote) {
-    try {
-        if ((yield* selectTyped((state: IReaderRootState) => state.reader.lock)) &&
-        note.locatorExtended && !checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation(note)) {
+function createReadiumAnnotationSelectorController(
+    r2Publication: IReaderRootState["reader"]["info"]["r2Publication"],
+    manifestUrlR2Protocol: string,
+): ReadiumAnnotationSelectorController {
 
-            const { publicationView, publicationIdentifier } = yield* selectTyped((state: IReaderRootState) => state.reader.info);
-            const isLcp = !!publicationView.lcp;
+    return new ReadiumAnnotationSelectorController({
+        getResourceCache: (href) => getResourceCacheFromPublication(href, r2Publication, manifestUrlR2Protocol),
+        createExportSelectors: (note, isLcp, sourceHref, xmlDom) =>
+            readiumAnnotationSelectorFromNote(note, isLcp, sourceHref, xmlDom, r2Publication),
+        convertImportTargetToLocatorExtended: (target, isBookmark, xmlDom, sourceHref) =>
+            convertSelectorTargetToLocatorExtended(target, undefined, isBookmark, xmlDom, sourceHref),
+        hasGeneratedExportSelectors: checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation,
+        onError: (e, note) =>
+            debug(`ERROR: ${note.uuid} readium annotation selector background batch compute CRASH`, e),
+        yieldBeforeNote: () => new Promise<void>((resolve) => {
+            setTimeout(resolve, 10);
+        }),
+    });
+}
 
-            const sourceHref = note.locatorExtended.locator?.href;
-            const cacheDoc = yield* callTyped(getResourceCache, sourceHref);
-            const xmlDom = cacheDoc?.xmlDom;
+function* selectReadiumAnnotationSelectorControllerContext(
+    isReaderLocked: boolean,
+): SagaGenerator<{
+    context: IReadiumAnnotationSelectorControllerContext;
+    controller: ReadiumAnnotationSelectorController;
+    publicationIdentifier: string;
+}> {
 
-            const selector = yield* callTyped(readiumAnnotationSelectorFromNote, note, isLcp, sourceHref, xmlDom);
+    const { publicationView, publicationIdentifier, r2Publication, manifestUrlR2Protocol } =
+        yield* selectTyped((state: IReaderRootState) => state.reader.info);
 
-            debug(`${note.uuid} does not have any readiumAnnotationSelector so let's update the note with this new selectors: ${JSON.stringify(selector, null, 2)}`);
-            yield* putTyped(readerActions.publicationNotes.commands.save.build(
-                publicationIdentifier,
-                { ...note, readiumAnnotation: { ...note?.readiumAnnotation || {}, export: { selector } } },
-                note,
-            ));
-        }
-    } catch (e) {
-        debug(`ERROR: ${note.uuid} selectors compute CRASH`, e);
+    return {
+        context: {
+            isReaderLocked,
+            isLcp: !!publicationView.lcp,
+        },
+        controller: createReadiumAnnotationSelectorController(r2Publication, manifestUrlR2Protocol),
+        publicationIdentifier,
+    };
+}
+
+function debugReadiumAnnotationSelectorControllerUpdate(
+    update: IReadiumAnnotationSelectorControllerUpdate,
+) {
+
+    if (update.kind === "exportSelector") {
+        debug(`${update.previousNote.uuid} does not have any readiumAnnotationSelector so let's update the note with this new selectors: ${JSON.stringify(update.note.readiumAnnotation?.export?.selector, null, 2)}`);
+    } else {
+        debug(`${update.previousNote.uuid} doesn't have any locator so let's update the note with the new locator generated: ${JSON.stringify(update.note.locatorExtended, null, 2)}`);
     }
 }
 
-export function* noteUpdateLocatorExtendedFromImportSelector(note: PublicationNote) {
+function* putReadiumAnnotationSelectorControllerUpdates(
+    updates: IReadiumAnnotationSelectorControllerUpdate[],
+    publicationIdentifier: string,
+): SagaGenerator<void> {
+
+    for (const update of updates) {
+        debugReadiumAnnotationSelectorControllerUpdate(update);
+        yield* putTyped(readerActions.publicationNotes.commands.save.build(
+            publicationIdentifier,
+            update.note,
+            update.previousNote,
+        ));
+    }
+}
+
+export function* noteUpdateReadiumAnnotationSelector(note: PublicationNote) {
 
     try {
-        if ((yield* selectTyped((state: IReaderRootState) => state.reader.lock)) &&
-            !note.locatorExtended && note.readiumAnnotation?.import?.target?.selector.length && note.readiumAnnotation?.import?.target?.source) {
-
-            const { target } = note.readiumAnnotation.import;
-
-            debug("SelectorTarget from noteParserState", JSON.stringify(target, null, 2));
-
-            const cacheDoc = yield* callTyped(getResourceCache, target.source);
-            const xmlDom = cacheDoc?.xmlDom;
-
-            const isABookmark = note.group === "bookmark"; // TODO: need a better way do distinguish bookmark selector from annotation selector with one character ? See https://github.com/edrlab/thorium-reader/issues/2988
-            const locatorExtended = yield* callTyped(convertSelectorTargetToLocatorExtended, target, undefined, isABookmark, xmlDom, target.source);
-
-            if (equals(locatorExtended, note.locatorExtended)) {
-                debug(`ERROR: ${note.uuid} locatorExtended not updated, same as previous one`);
-                return ;
-            }
-
-            debug(`${note.uuid} doesn't have any locator so let's update the note with the new locator generated: ${JSON.stringify(locatorExtended, null, 2)}`);
-            const { publicationIdentifier } = yield* selectTyped((state: IReaderRootState) => state.reader.info);
-            yield* putTyped(readerActions.publicationNotes.commands.save.build(publicationIdentifier, { ...note, locatorExtended }, note));
+        const isReaderLocked = yield* selectTyped((state: IReaderRootState) => state.reader.lock);
+        if (!isReaderLocked) {
+            return;
         }
 
+        const { context, controller, publicationIdentifier } =
+            yield* selectReadiumAnnotationSelectorControllerContext(isReaderLocked);
+        const updates = yield* callTyped(() =>
+            controller.resolvePublicationNoteUpdates(note, context));
+
+        yield* putReadiumAnnotationSelectorControllerUpdates(updates, publicationIdentifier);
     } catch (e) {
-        debug(`ERROR: ${note.uuid} import selectors compute CRASH`, e);
+        debug(`ERROR: ${note.uuid} readium annotation selector background compute CRASH`, e);
+    }
+}
+
+export function* noteUpdateReadiumAnnotationSelectors(notes: PublicationNote[]): SagaGenerator<void> {
+
+    try {
+        if (!notes.length) {
+            return;
+        }
+
+        const isReaderLocked = yield* selectTyped((state: IReaderRootState) => state.reader.lock);
+        if (!isReaderLocked) {
+            return;
+        }
+
+        const { context, controller, publicationIdentifier } =
+            yield* selectReadiumAnnotationSelectorControllerContext(isReaderLocked);
+        const updates = yield* callTyped(() =>
+            controller.resolvePublicationNotesUpdates(notes, context));
+
+        yield* putReadiumAnnotationSelectorControllerUpdates(updates, publicationIdentifier);
+    } catch (e) {
+        debug("ERROR: readium annotation selector background batch compute CRASH", e);
     }
 }
 
@@ -131,10 +188,7 @@ function* noteAddUpdate(action: readerActions.publicationNotes.commands.save.TAc
     yield* spawnTyped(function* () {
 
         yield* delayTyped(10);
-        // backgroud compute LocatorExtended TO readiumAnnotationSelector
-        yield* callTyped(noteUpdateExportSelectorFromLocatorExtended, note);
-        // backgroud compute readiumAnnotationSelector TO LocatorExtended
-        yield* callTyped(noteUpdateLocatorExtendedFromImportSelector, note);
+        yield* callTyped(noteUpdateReadiumAnnotationSelector, note);
     });
 
     if (!note.locatorExtended) {
