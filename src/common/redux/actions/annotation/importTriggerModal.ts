@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import type { PublicationNote } from "readium-desktop/common/publication-notes";
+import type { PublicationNote, PublicationNotesImportReport } from "readium-desktop/common/publication-notes";
 import { IReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
 
 export const ID = "ANNOTATION_IMPORT_TRIGGER_MODAL";
@@ -18,6 +18,7 @@ export interface Payload extends IReadiumAnnotationModelSetView {
     annotationsList: PublicationNote[]
     annotationsConflictListOlder: PublicationNote[];
     annotationsConflictListNewer: PublicationNote[];
+    importReport: PublicationNotesImportReport;
     winId?: string | undefined;
 }
 export function build(payload: Payload): Action<typeof ID, Payload> {

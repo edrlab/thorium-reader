@@ -18,12 +18,22 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/Plus-bold.svg";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
+import { getPublicationNoteImportSelectorTypesLabel } from "readium-desktop/common/publication-notes/model";
 
 export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{ winId: string | undefined, publicationView: PublicationView }>> = (props) => {
 
     const importAnnotationState = useSelector((state: IRendererCommonRootState) => state.importAnnotations);
     const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
-    const { open, title, annotationsList, annotationsConflictListOlder, annotationsConflictListNewer, winId, about } = importAnnotationState;
+    const {
+        open,
+        title,
+        annotationsList,
+        annotationsConflictListOlder,
+        annotationsConflictListNewer,
+        importReport,
+        winId,
+        about,
+    } = importAnnotationState;
     const { publicationView } = props;
     const { publicationTitle, authorsLangString, identifier } = publicationView;
     const dispatch = useDispatch();
@@ -60,6 +70,13 @@ export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{ winId: 
     // const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
     const textObj2_ = pubLang && typeof textObj2 === "string" ? { [pubLang]: textObj2 } : textObj2;
     const author_ = textObj2_ ? convertMultiLangStringToString(textObj2_, locale) : "";
+    const unsupportedSelectorNotes = importReport.unsupportedSelector;
+    const reportLines = [
+        { label: __("message.annotations.importReportSourceMismatch"), count: importReport.sourceMismatch.length },
+        { label: __("message.annotations.importReportSelectorNotFound"), count: importReport.selectorNotFound.length },
+        { label: __("message.annotations.importReportAmbiguousMatch"), count: importReport.ambiguousMatch.length },
+        { label: __("message.annotations.importReportAlreadyImported"), count: importReport.annotationsAlreadyImportedList.length },
+    ].filter(({ count }) => count > 0);
 
     return (
         <AlertDialog.Root open={props.winId === winId && open} onOpenChange={(requestOpen) => {
@@ -92,6 +109,24 @@ export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{ winId: 
                         }) : <></>}</span>
                         <span>{annotationsConflictListNewer.length ? __("dialog.annotations.descNewer", { count: annotationsConflictListNewer.length }) : <></>}</span>
                         <span>{annotationsConflictListOlder.length ? __("dialog.annotations.descOlder", { count: annotationsConflictListOlder.length }) : <></>}</span>
+                        <span>{unsupportedSelectorNotes.length ? __("message.annotations.unsupportedSelectorSummary", { count: unsupportedSelectorNotes.length }) : <></>}</span>
+                        {unsupportedSelectorNotes.map((note) => (
+                            <span key={note.uuid}>
+                                {__("message.annotations.unsupportedSelectorItem", {
+                                    id: note.uuid,
+                                    source: note.readiumAnnotation?.import?.unresolved?.source || note.readiumAnnotation?.import?.target.source || "",
+                                    selectorTypes: getPublicationNoteImportSelectorTypesLabel(
+                                        note,
+                                        __("message.annotations.unsupportedSelectorNoSelector"),
+                                    ),
+                                })}
+                            </span>
+                        ))}
+                        {reportLines.map(({ label, count }) => (
+                            <span key={label}>
+                                {label}: {count}
+                            </span>
+                        ))}
                     </AlertDialog.Description>
                     <div className={stylesAlertModals.AlertDialogButtonContainer}>
                         <AlertDialog.Cancel asChild onClick={() => dispatch(annotationActions.importConfirmOrAbort.build("abort"))}>

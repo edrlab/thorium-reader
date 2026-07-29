@@ -6,7 +6,11 @@
 // ==LICENSE-END==
 
 import type { ISelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
-import type { PublicationNote } from "readium-desktop/common/publication-notes";
+import type {
+    PublicationNote,
+    PublicationNoteImportUnresolvedReason,
+    PublicationNoteImportUnresolvedState,
+} from "readium-desktop/common/publication-notes";
 import type { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 export interface IReadiumAnnotationSelectorResource {
@@ -20,7 +24,8 @@ export interface IReadiumAnnotationSelectorControllerContext {
 
 export type TReadiumAnnotationSelectorControllerUpdateKind =
     "exportSelector" |
-    "importLocator";
+    "importLocator" |
+    "importUnresolved";
 
 export interface IReadiumAnnotationSelectorControllerUpdate {
     kind: TReadiumAnnotationSelectorControllerUpdateKind;
@@ -30,6 +35,19 @@ export interface IReadiumAnnotationSelectorControllerUpdate {
 
 type TReadiumAnnotationImportTarget =
     NonNullable<NonNullable<PublicationNote["readiumAnnotation"]>["import"]>["target"];
+
+export type TReadiumAnnotationImportLocatorResolution =
+    | {
+        status: "resolved";
+        locatorExtended: MiniLocatorExtended;
+    }
+    | {
+        status: "unresolved";
+        reason: PublicationNoteImportUnresolvedReason;
+        source?: string | undefined;
+        selectorTypes?: string[] | undefined;
+        message?: string | undefined;
+    };
 
 export interface IReadiumAnnotationSelectorControllerDependencies {
     getResourceCache: (href: string) => Promise<IReadiumAnnotationSelectorResource | undefined>;
@@ -44,7 +62,7 @@ export interface IReadiumAnnotationSelectorControllerDependencies {
         isBookmark: boolean,
         xmlDom: Document | undefined,
         sourceHref: string,
-    ) => Promise<MiniLocatorExtended | undefined>;
+    ) => Promise<TReadiumAnnotationImportLocatorResolution>;
     hasGeneratedExportSelectors: (note: PublicationNote) => boolean;
     onError?: (error: unknown, note: PublicationNote) => void;
     yieldBeforeNote?: (note: PublicationNote) => Promise<void>;
@@ -69,12 +87,12 @@ export class ReadiumAnnotationSelectorController {
             }];
         }
 
-        const importUpdatedNote = await this.updateLocatorExtendedFromImportSelector(note, context);
-        if (importUpdatedNote) {
+        const importUpdate = await this.updateLocatorExtendedFromImportSelector(note, context);
+        if (importUpdate) {
             return [{
-                kind: "importLocator",
+                kind: importUpdate.kind,
                 previousNote: note,
-                note: importUpdatedNote,
+                note: importUpdate.note,
             }];
         }
 
@@ -138,7 +156,7 @@ export class ReadiumAnnotationSelectorController {
     private async updateLocatorExtendedFromImportSelector(
         note: PublicationNote,
         context: IReadiumAnnotationSelectorControllerContext,
-    ): Promise<PublicationNote | undefined> {
+    ): Promise<Pick<IReadiumAnnotationSelectorControllerUpdate, "kind" | "note"> | undefined> {
 
         const target = note.readiumAnnotation?.import?.target;
         if (!context.isReaderLocked ||
@@ -149,20 +167,92 @@ export class ReadiumAnnotationSelectorController {
         }
 
         const cacheDoc = await this.dependencies.getResourceCache(target.source);
-        const locatorExtended = await this.dependencies.convertImportTargetToLocatorExtended(
+        if (!cacheDoc?.xmlDom) {
+            const noteWithUnresolvedImport = this.updateImportUnresolvedState(
+                note,
+                target,
+                {
+                    reason: "source-mismatch",
+                    source: target.source,
+                    selectorTypes: target.selector
+                        .map((selector) => selector.type)
+                        .filter((selectorType): selectorType is string => !!selectorType),
+                    message: "The annotation source could not be loaded from the publication.",
+                },
+            );
+
+            return noteWithUnresolvedImport
+                ? { kind: "importUnresolved", note: noteWithUnresolvedImport }
+                : undefined;
+        }
+
+        const resolution = await this.dependencies.convertImportTargetToLocatorExtended(
             target,
             note.group === "bookmark",
-            cacheDoc?.xmlDom,
+            cacheDoc.xmlDom,
             target.source,
         );
 
-        if (!locatorExtended) {
+        if (resolution.status === "unresolved") {
+            const noteWithUnresolvedImport = this.updateImportUnresolvedState(
+                note,
+                target,
+                {
+                    reason: resolution.reason,
+                    source: resolution.source,
+                    selectorTypes: resolution.selectorTypes,
+                    message: resolution.message,
+                },
+            );
+
+            return noteWithUnresolvedImport
+                ? { kind: "importUnresolved", note: noteWithUnresolvedImport }
+                : undefined;
+        }
+
+        return {
+            kind: "importLocator",
+            note: {
+                ...note,
+                locatorExtended: resolution.locatorExtended,
+                readiumAnnotation: {
+                    ...(note.readiumAnnotation || {}),
+                    import: {
+                        ...(note.readiumAnnotation?.import || {}),
+                        target,
+                        unresolved: undefined,
+                    },
+                },
+            },
+        };
+    }
+
+    private updateImportUnresolvedState(
+        note: PublicationNote,
+        target: TReadiumAnnotationImportTarget,
+        unresolved: PublicationNoteImportUnresolvedState,
+    ): PublicationNote | undefined {
+
+        const currentUnresolved = note.readiumAnnotation?.import?.unresolved;
+        if (
+            currentUnresolved?.reason === unresolved.reason &&
+            currentUnresolved?.source === unresolved.source &&
+            currentUnresolved?.message === unresolved.message &&
+            JSON.stringify(currentUnresolved?.selectorTypes || []) === JSON.stringify(unresolved.selectorTypes || [])
+        ) {
             return undefined;
         }
 
         return {
             ...note,
-            locatorExtended,
+            readiumAnnotation: {
+                ...(note.readiumAnnotation || {}),
+                import: {
+                    ...(note.readiumAnnotation?.import || {}),
+                    target,
+                    unresolved,
+                },
+            },
         };
     }
 }
