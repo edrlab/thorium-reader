@@ -8,7 +8,7 @@
 import { clone } from "ramda";
 
 import {
-    getPublicationNoteImportUnresolvedReasonTranslatorKey,
+    getPublicationNoteImportUnresolvedReasonLabel,
     type PublicationNote,
 } from "readium-desktop/common/publication-notes/model";
 import { isTextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
@@ -100,7 +100,7 @@ export function getReadiumAnnotationImportUnresolvedReasonLabel(
         return undefined;
     }
 
-    const reasonLabel = translate(getPublicationNoteImportUnresolvedReasonTranslatorKey(reason));
+    const reasonLabel = getPublicationNoteImportUnresolvedReasonLabel(reason, translate);
     return `${translate("message.annotations.importReportUnresolvedImportedNotes")}: ${reasonLabel}`;
 }
 

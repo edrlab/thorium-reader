@@ -54,19 +54,23 @@ export const publicationNoteImportUnresolvedReasons: readonly PublicationNoteImp
     "ambiguous-match",
 ];
 
-export const publicationNoteImportUnresolvedReasonTranslatorKey:
-    Record<PublicationNoteImportUnresolvedReason, TTranslatorKeyParameter> = {
-    "source-mismatch": "message.annotations.importReportReasonSourceMismatch",
-    "unsupported-selector": "message.annotations.importReportReasonUnsupportedSelector",
-    "selector-not-found": "message.annotations.importReportReasonSelectorNotFound",
-    "ambiguous-match": "message.annotations.importReportReasonAmbiguousMatch",
-};
+type PublicationNoteImportUnresolvedReasonTranslator = (_: TTranslatorKeyParameter, __?: {}) => string;
 
-export function getPublicationNoteImportUnresolvedReasonTranslatorKey(
+export function getPublicationNoteImportUnresolvedReasonLabel(
     reason: PublicationNoteImportUnresolvedReason,
-): TTranslatorKeyParameter {
+    translate: PublicationNoteImportUnresolvedReasonTranslator,
+): string {
 
-    return publicationNoteImportUnresolvedReasonTranslatorKey[reason];
+    switch (reason) {
+        case "source-mismatch":
+            return translate("message.annotations.importReportReasonSourceMismatch");
+        case "unsupported-selector":
+            return translate("message.annotations.importReportReasonUnsupportedSelector");
+        case "selector-not-found":
+            return translate("message.annotations.importReportReasonSelectorNotFound");
+        case "ambiguous-match":
+            return translate("message.annotations.importReportReasonAmbiguousMatch");
+    }
 }
 
 export interface PublicationNoteImportUnresolvedState {
