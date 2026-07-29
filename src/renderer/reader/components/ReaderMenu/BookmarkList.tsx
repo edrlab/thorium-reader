@@ -47,11 +47,9 @@ import { ImportAnnotationsDialog } from "readium-desktop/renderer/common/compone
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { DockTypeName } from "readium-desktop/common/models/dock";
-import type { PublicationNote } from "readium-desktop/common/publication-notes";
+import { withoutPublicationNotesViewPagination, type PublicationNote } from "readium-desktop/common/publication-notes";
 import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/publication-notes/colors";
 
-import { exportAnnotationSet } from "readium-desktop/renderer/common/redux/sagas/readiumAnnotation/export";
-import { getSaga } from "../../createStore";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { BookmarkCard } from "../ReaderMenu/BookmarkCard";
 import FilterPopover from "./FilterPopover";
@@ -320,8 +318,16 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
 
                                     <Popover.Close aria-label={__("reader.annotations.export")} asChild>
                                         <button onClick={() => {
+                                            if (!pubId) {
+                                                return;
+                                            }
                                             const fileType = selectFileTypeRef.current?.value || "annotation";
-                                            getSaga().run(exportAnnotationSet, bookmarkList, publicationView, bookmarkTitleRef?.current?.value || annoSetTitle, fileType).toPromise().then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+                                            dispatch(readerActions.publicationNotes.export.build(
+                                                pubId,
+                                                withoutPublicationNotesViewPagination(publicationNotesView.filter),
+                                                bookmarkTitleRef?.current?.value || annoSetTitle,
+                                                fileType,
+                                            ));
                                         }} className={stylesButtons.button_primary_blue}>
                                             <SVG svg={SaveIcon} />
                                             {__("reader.annotations.export")}
