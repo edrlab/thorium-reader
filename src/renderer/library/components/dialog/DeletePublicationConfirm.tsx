@@ -17,13 +17,11 @@ import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { dialogActions } from "readium-desktop/common/redux/actions";
 import SVG from "../../../common/components/SVG";
 import * as Trash from "readium-desktop/renderer/assets/icons/trash-icon.svg";
-import { uuidv4 } from "readium-desktop/utils/uuid";
 
 const DeletePublicationConfirm = (props: { publicationView: PublicationView, trigger: React.ReactNode } & AlertDialog.AlertDialogProps) => {
     const [__] = useTranslator();
     const [_, remove] = useApi(undefined, "publication/delete");
-    const notesRequestId = React.useMemo(() => uuidv4(), [props.publicationView.identifier]);
-    const [notesResult, listNotes] = useApi(notesRequestId, "publication/listNotes");
+    const [notesResult, listNotes] = useApi(undefined, "publication/listNotes");
     const dispatch = useDispatch();
     const removeAction = React.useCallback(() => {
         dispatch(dialogActions.closeRequest.build());
