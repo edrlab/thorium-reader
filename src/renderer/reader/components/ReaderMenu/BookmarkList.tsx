@@ -79,7 +79,7 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
     const [filterOpen, setFilterOpen] = React.useState(false);
     const [optionsOpen, setOptionsOpen] = React.useState(false);
 
-    const { id: needToFocusOnID, edit: bookmarkEdit } = dialogOrDockDataInfo;
+    const { id: needToFocusOnID, edit: bookmarkEdit, focusRequestId } = dialogOrDockDataInfo;
     const [bookmarkUUID, setBookmarkUUID] = React.useState(needToFocusOnID);
     React.useEffect(() => {
         setBookmarkUUID(needToFocusOnID);
@@ -90,7 +90,7 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
         setFilterOpen(false);
         setOptionsOpen(false);
 
-    }, [needToFocusOnID]);
+    }, [focusRequestId, needToFocusOnID]);
 
     const paginatorBookmarksRef = React.useRef<HTMLSelectElement>();
 
@@ -151,7 +151,7 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
     const begin = bookmarksViewReady ? bookmarksPagination.begin : 0;
     const end = bookmarksViewReady ? bookmarksPagination.end : 0;
 
-    const requestPublicationNotesPage = React.useCallback((page: number) => {
+    const requestPublicationNotesPage = React.useCallback((page: number, anchorUuid?: string) => {
         if (!pubId) {
             return;
         }
@@ -160,6 +160,7 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
             pagination: {
                 page,
                 pageSize: MAX_MATCHES_PER_PAGE,
+                anchorUuid,
             },
         }));
     }, [MAX_MATCHES_PER_PAGE, dispatch, pubId, publicationNotesViewFilter]);
@@ -170,20 +171,13 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
         requestPublicationNotesPage(Math.max(cb(pageNumber), START_PAGE));
     }, [START_PAGE, pageNumber, requestPublicationNotesPage, updateDialogOrDockDataInfo]);
 
-    const annotationFocusFoundIndex = bookmarkUUID ? bookmarkList.findIndex(({uuid}) => bookmarkUUID === uuid) : -1;
     React.useEffect(() => {
         if (bookmarkUUID) {
+            const anchorUuid = bookmarkUUID;
             setBookmarkUUID("");
-            const annotationFocusItemPageNumber = Math.max(
-                Math.ceil((annotationFocusFoundIndex + 1 /* 0 based */) / MAX_MATCHES_PER_PAGE),
-                START_PAGE,
-            );
-            if (annotationFocusItemPageNumber !== pageNumber) {
-                requestPublicationNotesPage(annotationFocusItemPageNumber);
-            }
-
+            requestPublicationNotesPage(START_PAGE, anchorUuid);
         }
-    }, [bookmarkUUID, annotationFocusFoundIndex, MAX_MATCHES_PER_PAGE, pageNumber, requestPublicationNotesPage, START_PAGE]);
+    }, [bookmarkUUID, requestPublicationNotesPage, START_PAGE]);
 
     const triggerEdition = (bookmarkItem: PublicationNote) =>
         (value: boolean) => value ? updateDialogOrDockDataInfo({id: bookmarkItem.uuid, edit: true}) : updateDialogOrDockDataInfo({id: "", edit: false});
@@ -576,6 +570,8 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
                         bookmark={bookmarkItem}
                         goToLocator={goToLocator}
                         isEdited={bookmarkItem.uuid === needToFocusOnID && bookmarkEdit}
+                        isSelected={bookmarkItem.uuid === needToFocusOnID}
+                        focusRequestId={focusRequestId}
                         triggerEdition={triggerEdition(bookmarkItem)}
                         setCreatorFilter={(v) => setCreatorArrayFilter(new Set([v]))}
                         setTagFilter={((v) => setTagArrayFilter(new Set([v])))}

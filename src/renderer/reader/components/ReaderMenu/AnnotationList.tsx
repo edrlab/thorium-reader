@@ -83,7 +83,7 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
     const [filterOpen, setFilterOpen] = React.useState(false);
     const [optionsOpen, setOptionsOpen] = React.useState(false);
 
-    const { id: needToFocusOnID, edit: annotationEdit } = dialogOrDockDataInfo;
+    const { id: needToFocusOnID, edit: annotationEdit, focusRequestId } = dialogOrDockDataInfo;
     const [annotationUUID, setAnnotationUUID] = React.useState(needToFocusOnID);
     React.useEffect(() => {
         setAnnotationUUID(needToFocusOnID);
@@ -95,7 +95,7 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
         setFilterOpen(false);
         setOptionsOpen(false);
 
-    }, [needToFocusOnID]);
+    }, [focusRequestId, needToFocusOnID]);
 
     const [__] = useTranslator();
     const publicationNotesView = useSelector(selectPublicationNotesViewState);
@@ -153,7 +153,7 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
     const begin = annotationsViewReady ? annotationsPagination.begin : 0;
     const end = annotationsViewReady ? annotationsPagination.end : 0;
 
-    const requestPublicationNotesPage = React.useCallback((page: number) => {
+    const requestPublicationNotesPage = React.useCallback((page: number, anchorUuid?: string) => {
         if (!pubId) {
             return;
         }
@@ -162,6 +162,7 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
             pagination: {
                 page,
                 pageSize: MAX_MATCHES_PER_PAGE,
+                anchorUuid,
             },
         }));
     }, [MAX_MATCHES_PER_PAGE, dispatch, pubId, publicationNotesViewFilter]);
@@ -188,20 +189,13 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
 
     const deletableAnnotationList = annotationList;
 
-    const annotationFocusFoundIndex = annotationUUID ? annotationList.findIndex(({ uuid }) => annotationUUID === uuid) : -1;
     React.useEffect(() => {
         if (annotationUUID) {
+            const anchorUuid = annotationUUID;
             setAnnotationUUID("");
-            const annotationFocusItemPageNumber = Math.max(
-                Math.ceil((annotationFocusFoundIndex + 1 /* 0 based */) / MAX_MATCHES_PER_PAGE),
-                START_PAGE,
-            );
-            if (annotationFocusItemPageNumber !== pageNumber) {
-                requestPublicationNotesPage(annotationFocusItemPageNumber);
-            }
-
+            requestPublicationNotesPage(START_PAGE, anchorUuid);
         }
-    }, [annotationUUID, annotationFocusFoundIndex, MAX_MATCHES_PER_PAGE, pageNumber, requestPublicationNotesPage, START_PAGE]);
+    }, [annotationUUID, requestPublicationNotesPage, START_PAGE]);
 
     const triggerEdition = (annotationItem: PublicationNote) =>
         (value: boolean) => value ? updateDialogOrDockDataInfo({id: annotationItem.uuid, edit: true}) : updateDialogOrDockDataInfo({id: "", edit: false});
@@ -703,6 +697,7 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
                         goToPdfAnnotation={goToPdfAnnotation}
                         isEdited={annotationItem.uuid === needToFocusOnID && annotationEdit}
                         isSelected={annotationItem.uuid === needToFocusOnID}
+                        focusRequestId={focusRequestId}
                         triggerEdition={triggerEdition(annotationItem)}
                         setTagFilter={(v) => setTagArrayFilter(new Set([v]))}
                         setCreatorFilter={(v) => setCreatorArrayFilter(new Set([v]))}

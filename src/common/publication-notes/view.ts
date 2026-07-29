@@ -169,14 +169,26 @@ function normalizePagination(
 
     const page = normalizePositiveInteger(pagination.page);
     const pageSize = normalizePositiveInteger(pagination.pageSize);
-    if (!page && !pageSize) {
+    const anchorUuid = normalizeString(pagination.anchorUuid);
+    if (!page && !pageSize && !anchorUuid) {
         return undefined;
     }
 
     return {
         ...(page ? { page } : {}),
         ...(pageSize ? { pageSize } : {}),
+        ...(anchorUuid ? { anchorUuid } : {}),
     };
+}
+
+function normalizeString(value: string | undefined): string | undefined {
+
+    if (typeof value !== "string") {
+        return undefined;
+    }
+
+    const normalizedValue = value.trim();
+    return normalizedValue ? normalizedValue : undefined;
 }
 
 function normalizePositiveInteger(value: number | undefined): number | undefined {
@@ -355,7 +367,14 @@ function hydratePublicationNotesPagination<TNote extends PublicationNoteEntity>(
 
     const pageSize = pagination.pageSize;
     const pageTotal = Math.max(Math.ceil(totalCount / pageSize), 1);
-    const page = Math.min(Math.max(pagination.page || 1, 1), pageTotal);
+    const anchorIndex = pagination.anchorUuid
+        ? notes.findIndex((note) => note.uuid === pagination.anchorUuid)
+        : -1;
+    const anchorPage = anchorIndex >= 0
+        ? Math.floor(anchorIndex / pageSize) + 1
+        : undefined;
+    const requestedPage = anchorPage || pagination.page || 1;
+    const page = Math.min(Math.max(requestedPage, 1), pageTotal);
     const startIndex = (page - 1) * pageSize;
     const pagedNotes = notes.slice(startIndex, startIndex + pageSize);
     const index = indexPublicationNotes(pagedNotes);

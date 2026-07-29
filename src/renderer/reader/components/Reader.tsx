@@ -141,6 +141,10 @@ import { EDrawType, type TDrawType, type TDrawView } from "readium-desktop/commo
 import type { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { URL_PROTOCOL_FILEX } from "readium-desktop/common/streamerProtocol";
+import {
+    dispatchReaderMenuRoutePush,
+    isReaderMenuRouteGroup,
+} from "readium-desktop/renderer/reader/routing";
 
 const debug = debug_("readium-desktop:renderer:reader:components:Reader");
 const debugPdfAnnotationsHost = debug_("readium-desktop:renderer:reader:pdf:annotations:host");
@@ -686,7 +690,7 @@ class Reader extends React.Component<IProps, IState> {
             //     this.setState({ blackoutMask: true });
             // }
 
-            if (highlight.group !== "annotation" && highlight.group !== "bookmark") {
+            if (!isReaderMenuRouteGroup(highlight.group)) {
                 if (typeof (window as any).__hightlightClickChannelEmitFn === "function") {
                     (window as any).__hightlightClickChannelEmitFn([href, highlight, event]);
                 }
@@ -729,8 +733,7 @@ class Reader extends React.Component<IProps, IState> {
 
             console.log(`dispatchClick CLICK ACTION ... -- uuid: [${uuid}] handlerState: [${JSON.stringify(handlerState, null, 4)}]`);
 
-            // this.handleMenuButtonClick(true, highlight.group === "annotation" ? "tab-annotation" : "tab-bookmark", true, uuid);
-            this.props.toggleMenu({open: true, section: highlight.group === "annotation" ? "tab-annotation" : "tab-bookmark", id: uuid, focus: true, edit: event.shift });
+            this.props.navigateReaderMenuTarget(highlight.group, uuid, !!event.shift);
 
             if (href && handlerState.def.selectionInfo?.rangeInfo) {
                 this.handleLinkLocator({
@@ -938,7 +941,7 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        this.props.toggleMenu(menuAction);
+        this.props.navigateReaderMenuTarget("annotation", menuAction.id, menuAction.edit);
     }
 
     private onPdfAnnotationSelectionError(payload: TPdfAnnotationSelectionErrorPayload) {
@@ -3781,6 +3784,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         toggleMenu: (data: readerLocalActionToggleMenu.Payload) => {
             dispatch(readerLocalActionToggleMenu.build(data));
         },
+        navigateReaderMenuTarget: dispatchReaderMenuRoutePush(dispatch),
         toggleSettings: (data: readerLocalActionToggleSettings.Payload) => {
             dispatch(readerLocalActionToggleSettings.build(data));
         },
