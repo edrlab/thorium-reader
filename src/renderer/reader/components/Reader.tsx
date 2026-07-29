@@ -133,10 +133,10 @@ import { MiniLocatorExtended, minimizeLocatorExtended } from "readium-desktop/co
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { getStore } from "../createStore";
-import { selectPublicationNotes } from "../publication-notes/selectors";
+import { selectPublicationNotes, selectPublicationNotesViewState } from "../publication-notes/selectors";
 import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_PUB } from "readium-desktop/common/streamerProtocol";
 import { DockTypeName } from "readium-desktop/common/models/dock";
-import type { PublicationNote } from "readium-desktop/common/publication-notes";
+import { getEffectivePublicationNotesViewSort, type PublicationNote } from "readium-desktop/common/publication-notes";
 import { EDrawType, type TDrawType, type TDrawView } from "readium-desktop/common/type/note.type";
 import type { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
@@ -145,6 +145,7 @@ import {
     dispatchReaderMenuRoutePush,
     isReaderMenuRouteGroup,
 } from "readium-desktop/renderer/reader/routing";
+import type { ReaderMenuRouteGroup } from "readium-desktop/renderer/reader/routing";
 
 const debug = debug_("readium-desktop:renderer:reader:components:Reader");
 const debugPdfAnnotationsHost = debug_("readium-desktop:renderer:reader:pdf:annotations:host");
@@ -733,7 +734,10 @@ class Reader extends React.Component<IProps, IState> {
 
             console.log(`dispatchClick CLICK ACTION ... -- uuid: [${uuid}] handlerState: [${JSON.stringify(handlerState, null, 4)}]`);
 
-            this.props.navigateReaderMenuTarget(highlight.group, uuid, !!event.shift);
+            this.props.navigateReaderMenuTarget(highlight.group, uuid, {
+                edit: !!event.shift,
+                sort: this.getReaderMenuRouteSort(highlight.group),
+            });
 
             if (href && handlerState.def.selectionInfo?.rangeInfo) {
                 this.handleLinkLocator({
@@ -941,7 +945,10 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        this.props.navigateReaderMenuTarget("annotation", menuAction.id, menuAction.edit);
+        this.props.navigateReaderMenuTarget("annotation", menuAction.id, {
+            edit: menuAction.edit,
+            sort: this.getReaderMenuRouteSort("annotation"),
+        });
     }
 
     private onPdfAnnotationSelectionError(payload: TPdfAnnotationSelectionErrorPayload) {
@@ -967,6 +974,11 @@ class Reader extends React.Component<IProps, IState> {
             "annotations:set-visibility",
             getPdfAnnotationVisibilityPayload(this.props.readerConfig.annotation_defaultDrawView),
         );
+    }
+
+    private getReaderMenuRouteSort(group: ReaderMenuRouteGroup) {
+        const filter = this.props.publicationNotesViewFilter;
+        return getEffectivePublicationNotesViewSort(filter.group === group ? filter.sort : undefined);
     }
 
     private savePdfAnnotationDraft(color: IColor, comment: string, drawType: TDrawType, tags: string[]) {
@@ -3678,6 +3690,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 
         pdfReaderConfig: state.reader.pdfConfig,
         notes: selectPublicationNotes(state),
+        publicationNotesViewFilter: selectPublicationNotesViewState(state).filter,
         creator: state.creator,
         noteTotalCount: state.reader.noteTotalCount.state,
 

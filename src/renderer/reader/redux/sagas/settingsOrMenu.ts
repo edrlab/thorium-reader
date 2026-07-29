@@ -30,7 +30,7 @@ let _timeoutId = 0;
 function* toggleSettingsOrMenu(action: readerLocalActionToggleMenu.TAction | readerLocalActionToggleSettings.TAction): SagaGenerator<void> {
 
     /* eslint-disable prefer-const */
-    let { open, readerDockingMode, section, focus, id, edit, focusRequestId } = action.payload;
+    let { open, readerDockingMode, section, focus, id, edit, focusRequestId, sort } = action.payload;
     const newReaderConfig: Partial<ReaderConfig> = {};
 
     if (_isObserving) {
@@ -167,6 +167,7 @@ function* toggleSettingsOrMenu(action: readerLocalActionToggleMenu.TAction | rea
             id: id || "",
             edit: edit || false,
             focusRequestId,
+            sort,
         };
         if (open) {
             if (currentDialogOpen && currentDialogType === dialogType) {
@@ -190,6 +191,7 @@ function* toggleSettingsOrMenu(action: readerLocalActionToggleMenu.TAction | rea
             id: id || "",
             edit: edit || false,
             focusRequestId,
+            sort,
         };
         if (open) {
             if (currentDockOpen && currentDockType === dockType) {

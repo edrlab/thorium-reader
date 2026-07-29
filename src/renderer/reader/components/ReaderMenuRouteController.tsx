@@ -7,6 +7,7 @@
 
 import * as React from "react";
 import { matchPath, useLocation } from "react-router-dom";
+import { isPublicationNotesViewSort } from "readium-desktop/common/publication-notes";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { readerLocalActionToggleMenu } from "readium-desktop/renderer/reader/redux/actions";
 import {
@@ -30,12 +31,16 @@ export const ReaderMenuRouteController: React.FC = () => {
             return;
         }
 
-        const edit = new URLSearchParams(location.search).get("edit") === "1";
+        const searchParams = new URLSearchParams(location.search);
+        const edit = searchParams.get("edit") === "1";
+        const sortSearchParam = searchParams.get("sort");
+        const sort = isPublicationNotesViewSort(sortSearchParam) ? sortSearchParam : undefined;
         dispatch(readerLocalActionToggleMenu.build({
             open: true,
             section: group === "annotation" ? "tab-annotation" : "tab-bookmark",
             id: uuid,
             edit,
+            sort,
             focusRequestId: location.key || `${location.pathname}${location.search}`,
         }));
     }, [dispatch, location.key, location.pathname, location.search]);

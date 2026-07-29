@@ -59,7 +59,7 @@ import { convertMultiLangStringToString } from "readium-desktop/common/language-
 import { AnnotationCard } from "../ReaderMenu/AnnotationCard";
 import { canUseReadiumAnnotationImportExport } from "../../pdf/pdfAnnotationPanel";
 import { selectPublicationNoteViewTagsIndex, selectPublicationNotesViewState } from "../../publication-notes/selectors";
-import { selectionToPublicationNotesViewSelection, selectionToPublicationNotesViewSort } from "../../publication-notes/viewFilters";
+import { publicationNotesViewSortToSelection, selectionToEffectivePublicationNotesViewSort, selectionToPublicationNotesViewSelection } from "../../publication-notes/viewFilters";
 
 export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotationUUID: () => void, doFocus: number,*/ isPdf: boolean, popoverBoundary: HTMLDivElement, advancedAnnotationsOnChange: () => void, quickAnnotationsOnChange: () => void, marginAnnotationsOnChange: () => void, hideAnnotationOnChange: () => void, serialAnnotator: boolean, START_PAGE: number, MAX_MATCHES_PER_PAGE: number } & Pick<IReaderMenuProps, "goToLocator" | "goToPdfAnnotation">> = (props) => {
 
@@ -81,10 +81,11 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
     const [filterOpen, setFilterOpen] = React.useState(false);
     const [optionsOpen, setOptionsOpen] = React.useState(false);
 
-    const { id: needToFocusOnID, edit: annotationEdit, focusRequestId } = dialogOrDockDataInfo;
-    const [annotationUUID, setAnnotationUUID] = React.useState(needToFocusOnID);
+    const { id: needToFocusOnID, edit: annotationEdit, focusRequestId, sort: routeSort } = dialogOrDockDataInfo;
+    const [annotationUUID, setAnnotationUUID] = React.useState("");
+    const skipNextPageResetAfterAnchorRef = React.useRef(false);
     React.useEffect(() => {
-        setAnnotationUUID(needToFocusOnID);
+        setAnnotationUUID(needToFocusOnID || "");
         setTagArrayFilter(new Set([]));
         setColorArrayFilter(new Set([]));
         setDrawTypeArrayFilter(new Set([]));
@@ -108,18 +109,44 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
     const [colorArrayFilter, setColorArrayFilter] = React.useState<Selection>(new Set([]));
     const [drawTypeArrayFilter, setDrawTypeArrayFilter] = React.useState<Selection>(new Set([]));
     const [creatorArrayFilter, setCreatorArrayFilter] = React.useState<Selection>(new Set([]));
-    const [sortType, setSortType] = React.useState<Selection>(new Set(["lastCreated"]));
+    const getInitialSortType = () => publicationNotesViewSortToSelection(
+        routeSort || (publicationNotesView.filter.group === "annotation" ? publicationNotesView.filter.sort : undefined),
+    );
+    const [sortType, setSortType] = React.useState<Selection>(getInitialSortType);
     const publicationNotesViewFilter = React.useMemo(() => ({
         group: "annotation" as const,
         tags: selectionToPublicationNotesViewSelection(tagArrayFilter),
         colors: selectionToPublicationNotesViewSelection(colorArrayFilter),
         drawTypes: selectionToPublicationNotesViewSelection(drawTypeArrayFilter),
         creators: selectionToPublicationNotesViewSelection(creatorArrayFilter),
-        sort: selectionToPublicationNotesViewSort(sortType),
+        sort: selectionToEffectivePublicationNotesViewSort(sortType),
     }), [colorArrayFilter, creatorArrayFilter, drawTypeArrayFilter, sortType, tagArrayFilter]);
+    const onSortTypeChange = React.useCallback((selection: Selection) => {
+        const sort = selectionToEffectivePublicationNotesViewSort(selection);
+        setSortType(publicationNotesViewSortToSelection(sort));
+        updateDialogOrDockDataInfo({
+            id: needToFocusOnID || "",
+            edit: !!annotationEdit,
+            focusRequestId,
+            sort,
+        });
+    }, [annotationEdit, focusRequestId, needToFocusOnID, updateDialogOrDockDataInfo]);
+
+    React.useEffect(() => {
+        if (routeSort) {
+            setSortType(publicationNotesViewSortToSelection(routeSort));
+        }
+    }, [focusRequestId, routeSort]);
 
     React.useEffect(() => {
         if (!pubId) {
+            return;
+        }
+        if (annotationUUID) {
+            return;
+        }
+        if (skipNextPageResetAfterAnchorRef.current) {
+            skipNextPageResetAfterAnchorRef.current = false;
             return;
         }
         dispatch(readerActions.publicationNotes.filter.build(pubId, {
@@ -190,6 +217,7 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
     React.useEffect(() => {
         if (annotationUUID) {
             const anchorUuid = annotationUUID;
+            skipNextPageResetAfterAnchorRef.current = true;
             setAnnotationUUID("");
             requestPublicationNotesPage(START_PAGE, anchorUuid);
         }
@@ -224,7 +252,7 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
                                 <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-gray-50" }} />
                                 <ListBox
                                     selectedKeys={sortType}
-                                    onSelectionChange={setSortType}
+                                    onSelectionChange={onSortTypeChange}
                                     selectionMode="multiple"
                                     selectionBehavior="replace"
                                     aria-label={__("reader.annotations.sorting.sortingOptions")}

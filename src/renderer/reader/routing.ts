@@ -6,22 +6,47 @@
 // ==LICENSE-END==
 
 import { push } from "redux-first-history";
-import type { PublicationNoteGroup } from "readium-desktop/common/publication-notes";
+import {
+    isPublicationNotesViewSort,
+    type PublicationNoteGroup,
+    type PublicationNotesViewSort,
+} from "readium-desktop/common/publication-notes";
 import type { TDispatch } from "readium-desktop/typings/redux";
 
 export type ReaderMenuRouteGroup = Extract<PublicationNoteGroup, "annotation" | "bookmark">;
 
 export const readerMenuRoutePattern = "/reader/menu/:group/:uuid";
 
+export interface ReaderMenuRouteOptions {
+    edit?: boolean | undefined;
+    sort?: PublicationNotesViewSort | undefined;
+}
+
 export function isReaderMenuRouteGroup(group: string | undefined): group is ReaderMenuRouteGroup {
     return group === "annotation" || group === "bookmark";
 }
 
-export function buildReaderMenuRoute(group: ReaderMenuRouteGroup, uuid: string, edit = false): string {
+function normalizeReaderMenuRouteOptions(editOrOptions: boolean | ReaderMenuRouteOptions | undefined): ReaderMenuRouteOptions {
+
+    return typeof editOrOptions === "boolean" ? { edit: editOrOptions } : editOrOptions || {};
+}
+
+export function buildReaderMenuRoute(group: ReaderMenuRouteGroup, uuid: string, editOrOptions: boolean | ReaderMenuRouteOptions | undefined = false): string {
+
+    const { edit, sort } = normalizeReaderMenuRouteOptions(editOrOptions);
     const route = `/reader/menu/${group}/${encodeURIComponent(uuid)}`;
-    return edit ? `${route}?edit=1` : route;
+    const params = new URLSearchParams();
+    if (edit) {
+        params.set("edit", "1");
+    }
+    if (isPublicationNotesViewSort(sort)) {
+        params.set("sort", sort);
+    }
+
+    const search = params.toString();
+    return search ? `${route}?${search}` : route;
 }
 
 export const dispatchReaderMenuRoutePush = (dispatch: TDispatch) =>
-    (group: ReaderMenuRouteGroup, uuid: string, edit = false) =>
-        dispatch(push(buildReaderMenuRoute(group, uuid, edit)));
+    (group: ReaderMenuRouteGroup, uuid: string, editOrOptions: boolean | ReaderMenuRouteOptions | undefined = false) =>
+        dispatch(push(buildReaderMenuRoute(group, uuid, editOrOptions)));
