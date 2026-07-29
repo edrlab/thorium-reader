@@ -10,8 +10,6 @@ import type {
     PublicationNoteDeleteChange,
     PublicationNoteEntity,
     PublicationNotesSnapshot,
-    PublicationNotesViewFilter,
-    PublicationNotesViewState,
 } from "./model";
 import type {
     PublicationNoteRepository,
@@ -19,7 +17,6 @@ import type {
     PublicationNotesIdProvider,
     PublicationNotesLogger,
 } from "./ports";
-import { serializePublicationNotesViewState } from "./view";
 
 export interface PublicationNotesControllerDependencies<TNote extends PublicationNoteEntity> {
     repository: PublicationNoteRepository<TNote>;
@@ -44,13 +41,8 @@ export class PublicationNotesController<TNote extends PublicationNoteEntity> {
         this.logger = dependencies.logger;
     }
 
-    public async list(
-        publicationIdentifier: string,
-        filter?: PublicationNotesViewFilter,
-        spineItemHrefs?: string[],
-    ): Promise<PublicationNotesViewState<TNote>> {
-        const snapshot = await this.snapshot(publicationIdentifier);
-        return serializePublicationNotesViewState(snapshot, { filter, spineItemHrefs });
+    public async list(publicationIdentifier: string): Promise<PublicationNotesSnapshot<TNote>> {
+        return this.snapshot(publicationIdentifier);
     }
 
     public async get(publicationIdentifier: string, noteIdentifier: string): Promise<TNote | undefined> {

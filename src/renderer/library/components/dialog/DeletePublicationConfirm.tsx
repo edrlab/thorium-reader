@@ -17,12 +17,13 @@ import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { dialogActions } from "readium-desktop/common/redux/actions";
 import SVG from "../../../common/components/SVG";
 import * as Trash from "readium-desktop/renderer/assets/icons/trash-icon.svg";
-import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_PUBNOTES } from "readium-desktop/common/streamerProtocol";
-import type { PublicationNote } from "readium-desktop/common/publication-notes";
+import { uuidv4 } from "readium-desktop/utils/uuid";
 
 const DeletePublicationConfirm = (props: { publicationView: PublicationView, trigger: React.ReactNode } & AlertDialog.AlertDialogProps) => {
     const [__] = useTranslator();
     const [_, remove] = useApi(undefined, "publication/delete");
+    const notesRequestId = React.useMemo(() => uuidv4(), [props.publicationView.identifier]);
+    const [notesResult, listNotes] = useApi(notesRequestId, "publication/listNotes");
     const dispatch = useDispatch();
     const removeAction = React.useCallback(() => {
         dispatch(dialogActions.closeRequest.build());
@@ -32,17 +33,22 @@ const DeletePublicationConfirm = (props: { publicationView: PublicationView, tri
 
     React.useEffect(() => {
 
-        fetch(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PUBNOTES}/${props.publicationView.identifier}`).then((res) => {
-            res.json().then((json) => {
-                const notes: PublicationNote[] = json;
+        setHasNotes(false);
+        listNotes(props.publicationView.identifier);
 
-                if (Array.isArray(notes) && notes.length) {
-                    setHasNotes(true);
-                }
-            }).catch((err) => { console.error("setHasNotes (json):", err); });
-        }).catch((err) => { console.error("setHasNotes (fetch):", err); });
+    }, [listNotes, props.publicationView.identifier]);
 
-    }, [props.publicationView.identifier]);
+    React.useEffect(() => {
+
+        if (notesResult?.data?.error) {
+            console.error("setHasNotes (api):", notesResult.data.errorMessage);
+            return;
+        }
+
+        const notes = notesResult?.data?.result;
+        setHasNotes(Array.isArray(notes) && !!notes.length);
+
+    }, [notesResult]);
 
     return (
         <AlertDialog.Root {...props}>

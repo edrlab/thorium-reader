@@ -19,6 +19,11 @@ export const ReaderMenuRouteController: React.FC = () => {
 
     const dispatch = useDispatch();
     const location = useLocation();
+    const focusRequestRef = React.useRef<{
+        focusRequestId: string;
+        sort: string | undefined;
+        target: string;
+    }>();
 
     React.useEffect(() => {
         const match = matchPath<"group" | "uuid", string>(
@@ -35,13 +40,26 @@ export const ReaderMenuRouteController: React.FC = () => {
         const edit = searchParams.get("edit") === "1";
         const sortSearchParam = searchParams.get("sort");
         const sort = isPublicationNotesViewSort(sortSearchParam) ? sortSearchParam : undefined;
+        const focusRouteTarget = `${location.pathname}?edit=${edit ? "1" : "0"}`;
+        const previousFocusRequest = focusRequestRef.current;
+        const focusRequestId = previousFocusRequest?.target === focusRouteTarget &&
+            previousFocusRequest.sort !== sort ?
+                previousFocusRequest.focusRequestId :
+                location.key || focusRouteTarget;
+
+        focusRequestRef.current = {
+            focusRequestId,
+            sort,
+            target: focusRouteTarget,
+        };
+
         dispatch(readerLocalActionToggleMenu.build({
             open: true,
             section: group === "annotation" ? "tab-annotation" : "tab-bookmark",
             id: uuid,
             edit,
             sort,
-            focusRequestId: location.key || `${location.pathname}${location.search}`,
+            focusRequestId,
         }));
     }, [dispatch, location.key, location.pathname, location.search]);
 
