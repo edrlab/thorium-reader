@@ -26,7 +26,7 @@ import { IImageClickState } from "readium-desktop/common/redux/states/renderer/i
 import { IBookmarkTotalCountState } from "readium-desktop/common/redux/states/renderer/bookmarkTotalCount";
 import { DockState } from "../dock";
 import type { PublicationNote } from "readium-desktop/common/publication-notes";
-import { IPublicationNotesViewState } from "./publicationNotes";
+import { IPublicationNotesSnapshotState } from "./publicationNotes";
 import type { RouterState } from "redux-first-history";
 
 export interface IReaderPdfConfig{
@@ -51,7 +51,7 @@ export interface IReaderStateReader {
     locator: MiniLocatorExtended;
     // bookmark: TBookmarkState;
     // annotation: TAnnotationState;
-    publicationNotes: IPublicationNotesViewState;
+    publicationNotes: IPublicationNotesSnapshotState;
     highlight: {
         handler: TMapState<string, IHighlightHandlerState>;
         mounter: TMapState<string, IHighlightMounterState>;

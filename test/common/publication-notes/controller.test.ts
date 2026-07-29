@@ -1,5 +1,7 @@
 import { describe, expect, it } from "@jest/globals";
 import {
+    hydratePublicationNotesView,
+    indexPublicationNotes,
     PublicationNotesController,
     type PublicationNoteEntity,
     type PublicationNoteRepository,
@@ -95,7 +97,7 @@ describe("PublicationNotesController", () => {
         ).rejects.toThrow("already exists");
     });
 
-    it("serializes a minimal view state from the model snapshot", async () => {
+    it("lists a model snapshot that can be derived into a minimal view", async () => {
         const repository = new MemoryPublicationNoteRepository();
         const controller = new PublicationNotesController<TestNote>({
             repository,
@@ -115,9 +117,12 @@ describe("PublicationNotesController", () => {
             tags: ["review", ""],
         });
 
-        const viewState = await controller.list("pub-a");
+        const snapshot = await controller.list("pub-a");
+        const index = indexPublicationNotes(snapshot.notes);
+        const view = hydratePublicationNotesView(snapshot.notes);
 
-        expect(viewState).toMatchObject({
+        expect(snapshot).not.toHaveProperty("view");
+        expect(snapshot).toEqual({
             publicationIdentifier: "pub-a",
             notes: [
                 {
@@ -134,6 +139,8 @@ describe("PublicationNotesController", () => {
                 },
             ],
             revision: 100,
+        });
+        expect(index).toEqual({
             byId: {
                 "note-1": {
                     uuid: "note-1",
@@ -153,19 +160,18 @@ describe("PublicationNotesController", () => {
                 review: 2,
                 "chapter-1": 1,
             },
-            totalCount: 2,
         });
-        expect(viewState.view).toEqual({
+        expect(view).toEqual({
             filter: {},
-            notes: viewState.notes,
-            byId: viewState.byId,
-            ids: viewState.ids,
-            tagIndex: viewState.tagIndex,
+            notes: snapshot.notes,
+            byId: index.byId,
+            ids: index.ids,
+            tagIndex: index.tagIndex,
             totalCount: 2,
             pagination: {
-                notes: viewState.notes,
-                byId: viewState.byId,
-                ids: viewState.ids,
+                notes: snapshot.notes,
+                byId: index.byId,
+                ids: index.ids,
                 page: 1,
                 pageSize: 2,
                 pageTotal: 1,
@@ -174,7 +180,7 @@ describe("PublicationNotesController", () => {
                 totalCount: 2,
             },
             facets: {
-                tagIndex: viewState.tagIndex,
+                tagIndex: index.tagIndex,
                 creators: [],
             },
         });
@@ -209,20 +215,22 @@ describe("PublicationNotesController", () => {
             tags: ["review", "chapter-1"],
         });
 
-        const viewState = await controller.list("pub-a", {
+        const snapshot = await controller.list("pub-a");
+        const index = indexPublicationNotes(snapshot.notes);
+        const view = hydratePublicationNotesView(snapshot.notes, {
             group: "annotation",
             tags: ["review"],
             sort: "lastCreated",
         });
 
-        expect(viewState.ids).toEqual(["annotation-1", "bookmark-1", "annotation-2"]);
-        expect(viewState.view.ids).toEqual(["annotation-2", "annotation-1"]);
-        expect(viewState.view.filter).toEqual({
+        expect(index.ids).toEqual(["annotation-1", "bookmark-1", "annotation-2"]);
+        expect(view.ids).toEqual(["annotation-2", "annotation-1"]);
+        expect(view.filter).toEqual({
             group: "annotation",
             tags: ["review"],
             sort: "lastCreated",
         });
-        expect(viewState.view.pagination).toMatchObject({
+        expect(view.pagination).toMatchObject({
             ids: ["annotation-2", "annotation-1"],
             page: 1,
             pageSize: 2,
@@ -231,13 +239,13 @@ describe("PublicationNotesController", () => {
             end: 2,
             totalCount: 2,
         });
-        expect(viewState.view.facets.tagIndex).toEqual({
+        expect(view.facets.tagIndex).toEqual({
             review: 2,
             "chapter-1": 1,
         });
     });
 
-    it("hydrates pagination in the controller view without slicing the filtered command source", async () => {
+    it("hydrates pagination in the derived view without slicing the filtered command source", async () => {
         const repository = new MemoryPublicationNoteRepository();
         const controller = new PublicationNotesController<TestNote>({
             repository,
@@ -269,7 +277,9 @@ describe("PublicationNotesController", () => {
             group: "bookmark",
         });
 
-        const viewState = await controller.list("pub-a", {
+        const snapshot = await controller.list("pub-a");
+        const index = indexPublicationNotes(snapshot.notes);
+        const view = hydratePublicationNotesView(snapshot.notes, {
             group: "annotation",
             sort: "lastCreated",
             pagination: {
@@ -278,10 +288,10 @@ describe("PublicationNotesController", () => {
             },
         });
 
-        expect(viewState.ids).toEqual(["annotation-1", "annotation-2", "annotation-3", "bookmark-1"]);
-        expect(viewState.view.ids).toEqual(["annotation-3", "annotation-2", "annotation-1"]);
-        expect(viewState.view.pagination.ids).toEqual(["annotation-1"]);
-        expect(viewState.view.pagination.notes).toEqual([
+        expect(index.ids).toEqual(["annotation-1", "annotation-2", "annotation-3", "bookmark-1"]);
+        expect(view.ids).toEqual(["annotation-3", "annotation-2", "annotation-1"]);
+        expect(view.pagination.ids).toEqual(["annotation-1"]);
+        expect(view.pagination.notes).toEqual([
             {
                 uuid: "annotation-1",
                 label: "First annotation",
@@ -289,7 +299,7 @@ describe("PublicationNotesController", () => {
                 group: "annotation",
             },
         ]);
-        expect(viewState.view.pagination).toMatchObject({
+        expect(view.pagination).toMatchObject({
             page: 2,
             pageSize: 2,
             pageTotal: 2,
@@ -321,7 +331,9 @@ describe("PublicationNotesController", () => {
             group: "bookmark",
         });
 
-        const viewState = await controller.list("pub-a", {
+        const snapshot = await controller.list("pub-a");
+        const index = indexPublicationNotes(snapshot.notes);
+        const view = hydratePublicationNotesView(snapshot.notes, {
             group: "annotation",
             sort: "lastCreated",
             pagination: {
@@ -331,7 +343,7 @@ describe("PublicationNotesController", () => {
             },
         });
 
-        expect(viewState.ids).toEqual([
+        expect(index.ids).toEqual([
             "annotation-1",
             "annotation-2",
             "annotation-3",
@@ -339,15 +351,15 @@ describe("PublicationNotesController", () => {
             "annotation-5",
             "bookmark-1",
         ]);
-        expect(viewState.view.ids).toEqual([
+        expect(view.ids).toEqual([
             "annotation-5",
             "annotation-4",
             "annotation-3",
             "annotation-2",
             "annotation-1",
         ]);
-        expect(viewState.view.pagination.ids).toEqual(["annotation-3", "annotation-2"]);
-        expect(viewState.view.pagination).toMatchObject({
+        expect(view.pagination.ids).toEqual(["annotation-3", "annotation-2"]);
+        expect(view.pagination).toMatchObject({
             page: 2,
             pageSize: 2,
             pageTotal: 3,
@@ -355,7 +367,7 @@ describe("PublicationNotesController", () => {
             end: 4,
             totalCount: 5,
         });
-        expect(viewState.view.filter.pagination).toEqual({
+        expect(view.filter.pagination).toEqual({
             page: 1,
             pageSize: 2,
             anchorUuid: "annotation-2",
@@ -379,10 +391,11 @@ describe("PublicationNotesController", () => {
             label: "Use clock",
         });
 
-        const viewState = await controller.list("pub-a");
+        const snapshot = await controller.list("pub-a");
+        const index = indexPublicationNotes(snapshot.notes);
 
-        expect(viewState.byId["note-with-modified"].created).toBe(200);
-        expect(viewState.byId["note-without-timestamps"].created).toBe(300);
+        expect(index.byId["note-with-modified"].created).toBe(200);
+        expect(index.byId["note-without-timestamps"].created).toBe(300);
     });
 
     it("reads one note through the injected repository", async () => {

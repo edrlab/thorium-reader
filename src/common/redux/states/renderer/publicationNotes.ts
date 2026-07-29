@@ -5,39 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import type { PublicationNote, PublicationNotesViewState } from "readium-desktop/common/publication-notes";
+import type { PublicationNote, PublicationNotesSnapshot } from "readium-desktop/common/publication-notes";
 
-export type IPublicationNotesViewState = PublicationNotesViewState<PublicationNote>;
+export type IPublicationNotesSnapshotState = PublicationNotesSnapshot<PublicationNote>;
 
-export const publicationNotesViewInitialState: IPublicationNotesViewState = {
+export const publicationNotesSnapshotInitialState: IPublicationNotesSnapshotState = {
     publicationIdentifier: "",
     notes: [],
     revision: 0,
-    byId: {},
-    ids: [],
-    tagIndex: {},
-    totalCount: 0,
-    view: {
-        filter: {},
-        notes: [],
-        byId: {},
-        ids: [],
-        tagIndex: {},
-        totalCount: 0,
-        pagination: {
-            notes: [],
-            byId: {},
-            ids: [],
-            page: 1,
-            pageSize: 0,
-            pageTotal: 1,
-            begin: 0,
-            end: 0,
-            totalCount: 0,
-        },
-        facets: {
-            tagIndex: {},
-            creators: [],
-        },
-    },
 };

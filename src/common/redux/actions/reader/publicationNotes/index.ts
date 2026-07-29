@@ -10,13 +10,11 @@ import * as commands from "./commands";
 import * as export_ from "./export";
 import * as exportHtmlRequest from "./exportHtmlRequest";
 import * as exportHtmlResult from "./exportHtmlResult";
-import * as filter from "./filter";
 
 export {
     commands,
     export_ as export,
     exportHtmlRequest,
     exportHtmlResult,
-    filter,
     snapshot,
 };

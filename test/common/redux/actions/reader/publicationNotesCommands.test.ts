@@ -1,7 +1,7 @@
 import { describe, expect, it } from "@jest/globals";
-import type { PublicationNote, PublicationNotesViewFilter } from "readium-desktop/common/publication-notes";
+import type { PublicationNote } from "readium-desktop/common/publication-notes";
 import { readerActions } from "readium-desktop/common/redux/actions";
-import { publicationNotesViewInitialState } from "readium-desktop/common/redux/states/renderer/publicationNotes";
+import { publicationNotesSnapshotInitialState } from "readium-desktop/common/redux/states/renderer/publicationNotes";
 import { EDrawType } from "readium-desktop/common/type/note.type";
 
 function createNote(overrides: Partial<PublicationNote> = {}): PublicationNote {
@@ -19,34 +19,14 @@ function createNote(overrides: Partial<PublicationNote> = {}): PublicationNote {
 describe("reader publication note command actions", () => {
     it("builds a snapshot action with a consistent publication destination", () => {
         const action = readerActions.publicationNotes.snapshot.build("pub-a", {
-            ...publicationNotesViewInitialState,
+            ...publicationNotesSnapshotInitialState,
             publicationIdentifier: "stale-pub",
             notes: [],
             revision: 1,
         });
 
         expect(action.destination.publicationIdentifier).toBe("pub-a");
-        expect(action.payload.viewState.publicationIdentifier).toBe("pub-a");
-    });
-
-    it("builds a filter action with pagination for main-process view hydration", () => {
-        const filter = {
-            group: "annotation",
-            tags: ["review"],
-            sort: "lastCreated",
-            pagination: {
-                page: 2,
-                pageSize: 20,
-            },
-        } satisfies PublicationNotesViewFilter;
-        const action = readerActions.publicationNotes.filter.build("pub-a", filter);
-
-        expect(action.type).toBe(readerActions.publicationNotes.filter.ID);
-        expect(action.destination.publicationIdentifier).toBe("pub-a");
-        expect(action.payload).toEqual({
-            publicationIdentifier: "pub-a",
-            filter,
-        });
+        expect(action.payload.snapshot.publicationIdentifier).toBe("pub-a");
     });
 
     it("builds a save command with a publication destination and note payload", () => {
@@ -60,6 +40,14 @@ describe("reader publication note command actions", () => {
         expect(action.payload.previousNote).toBe(previousNote);
         expect(action.payload.newNote).toEqual(newNote);
         expect(action.payload.newNote).not.toBe(newNote);
+    });
+
+    it("can mark a save command as already persisted", () => {
+        const action = readerActions.publicationNotes.commands.save.build("pub-a", createNote(), undefined, {
+            alreadyPersisted: true,
+        });
+
+        expect(action.meta?.alreadyPersisted).toBe(true);
     });
 
     it("assigns a note UUID on create commands", () => {

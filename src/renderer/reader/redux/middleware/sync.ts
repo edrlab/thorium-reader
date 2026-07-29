@@ -56,7 +56,6 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     readerActions.publicationNotes.commands.remove.ID,
     readerActions.publicationNotes.export.ID,
     readerActions.publicationNotes.exportHtmlResult.ID,
-    readerActions.publicationNotes.filter.ID,
 
     annotationActions.importAnnotationSet.ID,
     annotationActions.importConfirmOrAbort.ID,

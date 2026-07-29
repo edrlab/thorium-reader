@@ -58,7 +58,7 @@ import { ICustomizationProfileHistory } from "readium-desktop/common/redux/state
 import { customizationPackageWelcomeScreenReducer } from "readium-desktop/common/redux/reducers/customization/welcomeScreen";
 import { ICustomizationManifest } from "readium-desktop/common/readium/customization/manifest";
 import { readerPdfConfigReducer } from "readium-desktop/common/redux/reducers/reader/pdfConfig";
-import { readerPublicationNotesViewReducer } from "readium-desktop/common/redux/reducers/reader/publicationNotes";
+import { readerPublicationNotesSnapshotReducer } from "readium-desktop/common/redux/reducers/reader/publicationNotes";
 import type { Reducer } from "redux";
 import type { RouterState } from "redux-first-history";
 
@@ -79,7 +79,7 @@ export const rootReducer = (routerReducer: Reducer<RouterState>) => {
             transientConfig: readerTransientConfigReducer,// ReaderConfigPublisher
             info: readerInfoReducer,
             locator: readerLocatorReducer,
-            publicationNotes: readerPublicationNotesViewReducer,
+            publicationNotes: readerPublicationNotesSnapshotReducer,
             highlight: combineReducers({
                 handler: mapReducer
                     <

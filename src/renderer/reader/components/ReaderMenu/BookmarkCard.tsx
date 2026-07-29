@@ -127,6 +127,7 @@ export const BookmarkCard: React.FC<{ bookmark: PublicationNote, isEdited: boole
 
     return (<li
         className={stylesAnnotations.annotations_line}
+        data-publication-note-uuid={uuid}
         data-selected={isSelected ? "true" : undefined}
         style={{
             backgroundColor: dockedEditBookmark ? "var(--color-gray-50" : "",

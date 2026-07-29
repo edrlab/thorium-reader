@@ -24,7 +24,7 @@ import { settingsKeepLibraryWindowInBackgroundOnReaderCloseIsEnabled } from "rea
 // import { comparePublisherReaderConfig } from "readium-desktop/common/publisherConfig";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { publicationNotesViewInitialState } from "readium-desktop/common/redux/states/renderer/publicationNotes";
+import { publicationNotesSnapshotInitialState } from "readium-desktop/common/redux/states/renderer/publicationNotes";
 import { dialog } from "electron";
 import { restoreBrowserWindowState } from "./session/browserWindowState";
 
@@ -97,7 +97,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
 
     const publicationNotes = pubId
         ? yield* callTyped(() => diMainGet("publication-notes-controller").list(pubId))
-        : publicationNotesViewInitialState;
+        : publicationNotesSnapshotInitialState;
 
     if (readerWindow.isDestroyed() || readerWindow.webContents.isDestroyed()) {
         debug("readerWindow or webcontents distroyed -> exit on winId=${winId} -> pubId=${pubId}");

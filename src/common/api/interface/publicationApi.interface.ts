@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
+import type { PublicationNote } from "readium-desktop/common/publication-notes";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { SagaGenerator } from "typed-redux-saga";
 
@@ -31,6 +32,9 @@ export interface IPublicationApi {
     findByTag: (
         tag: string,
     ) => SagaGenerator<PublicationView[]>;
+    listNotes: (
+        identifier: string,
+    ) => SagaGenerator<PublicationNote[]>;
     updateTags: (
         identifier: string,
         tags: string[],
@@ -74,6 +78,7 @@ export interface IPublicationModuleApi {
     "publication/delete": IPublicationApi["delete"];
     "publication/findAll": IPublicationApi["findAll"];
     "publication/findByTag": IPublicationApi["findByTag"];
+    "publication/listNotes": IPublicationApi["listNotes"];
     "publication/updateTags": IPublicationApi["updateTags"];
     "publication/importFromLink": IPublicationApi["importFromLink"];
     "publication/importFromFs": IPublicationApi["importFromFs"];

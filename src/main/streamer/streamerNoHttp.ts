@@ -48,11 +48,9 @@ import {
     READIUMCSS_FILE_PATH, setupMathJaxTransformer,
 } from "./streamerCommon";
 // import { URL_PROTOCOL_OPDS_MEDIA } from "readium-desktop/main/redux/sagas/getEventChannel";
-import { URL_PROTOCOL_PDFJSEXTRACT, URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP, URL_PATH_PREFIX_PUBNOTES, URL_PATH_PREFIX_MATHJAX, URL_PATH_PREFIX_READIUMCSS, URL_PATH_PREFIX_PUB, URL_PATH_PREFIX_PDFJS } from "readium-desktop/common/streamerProtocol";
+import { URL_PROTOCOL_PDFJSEXTRACT, URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP, URL_PATH_PREFIX_MATHJAX, URL_PATH_PREFIX_READIUMCSS, URL_PATH_PREFIX_PUB, URL_PATH_PREFIX_PDFJS } from "readium-desktop/common/streamerProtocol";
 import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
 import { diMainGet } from "../di";
-import { getNotesFromMainWinState } from "../redux/sagas/note";
-import type { PublicationNote } from "readium-desktop/common/publication-notes";
 import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
 import { customizationWellKnownFolder } from "../customization/provisioning";
 import { SESSION_PARTITION_PDFJS, SESSION_PARTITION_PDFJSEXTRACT } from "readium-desktop/common/sessions";
@@ -471,9 +469,6 @@ const streamProtocolHandler = async (
     const customProfileZipAssetsPrefix = `/${URL_PATH_PREFIX_CUSTOMPROFILEZIP}/`;
     const isCustomProfileZipAssets = uPathname.startsWith(customProfileZipAssetsPrefix);
 
-    const notesFromPublicationPrefix = `/${URL_PATH_PREFIX_PUBNOTES}/`;
-    const isNotesFromPublicationRequest = uPathname.startsWith(notesFromPublicationPrefix);
-
     const pdfjsAssetsPrefix = `/${URL_PATH_PREFIX_PDFJS}/`;
     const isPdfjsAssets = uPathname.startsWith(pdfjsAssetsPrefix);
 
@@ -491,7 +486,6 @@ const streamProtocolHandler = async (
 
     debug("streamProtocolHandler uPathname", uPathname);
     debug("streamProtocolHandler isCustomProfileZipAssets", isCustomProfileZipAssets);
-    debug("streamProtocolHandler isNotesFromPublicationRequest", isNotesFromPublicationRequest);
     debug("streamProtocolHandler isPdfjsAssets", isPdfjsAssets);
     debug("streamProtocolHandler isPublicationAssets", isPublicationAssets);
     debug("streamProtocolHandler isMediaOverlays", isMediaOverlays);
@@ -832,26 +826,6 @@ const streamProtocolHandler = async (
             callback(obj);
             return;
         }
-    } else if (isNotesFromPublicationRequest) {
-
-        const publicationUUID = uPathname.substr(notesFromPublicationPrefix.length);
-
-        const sagaMiddleware = diMainGet("saga-middleware");
-        const notes = await sagaMiddleware.run(getNotesFromMainWinState, publicationUUID).toPromise<PublicationNote[]>();
-        const notesSerialized = JSON.stringify(notes);
-        const notesSerializedBuf = Buffer.from(notesSerialized, "utf-8");
-        const contentLength = `${notesSerializedBuf.length || 0}`;
-        headers["Content-Length"] = contentLength;
-        const contentType = "application/json; charset=utf-8";
-        headers["Content-Type"] = contentType;
-
-        const obj = {
-            data: bufferToStream(notesSerializedBuf),
-            headers,
-            statusCode: 200,
-        } satisfies Electron.ProtocolResponse;
-        callback(obj);
-        return;
     } else if (isPdfjsAssets) {
 
         const pdfjsUrlPathname = uPathname.substr(pdfjsAssetsPrefix.length);

@@ -24,6 +24,7 @@ import { isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
 import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import {
+    IReaderDialogOrDockSettingsMenuState,
     ReaderConfig,
 } from "readium-desktop/common/models/reader";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -133,10 +134,10 @@ import { MiniLocatorExtended, minimizeLocatorExtended } from "readium-desktop/co
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { getStore } from "../createStore";
-import { selectPublicationNotes, selectPublicationNotesViewState } from "../publication-notes/selectors";
+import { selectPublicationNotes } from "../publication-notes/selectors";
 import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_PUB } from "readium-desktop/common/streamerProtocol";
 import { DockTypeName } from "readium-desktop/common/models/dock";
-import { getEffectivePublicationNotesViewSort, type PublicationNote } from "readium-desktop/common/publication-notes";
+import { getEffectivePublicationNotesViewSort, isPublicationNotesViewSort, type PublicationNote } from "readium-desktop/common/publication-notes";
 import { EDrawType, type TDrawType, type TDrawView } from "readium-desktop/common/type/note.type";
 import type { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
@@ -977,8 +978,12 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private getReaderMenuRouteSort(group: ReaderMenuRouteGroup) {
-        const filter = this.props.publicationNotesViewFilter;
-        return getEffectivePublicationNotesViewSort(filter.group === group ? filter.sort : undefined);
+        const activeSection = group === "annotation" ? "tab-annotation" : "tab-bookmark";
+        return getEffectivePublicationNotesViewSort(
+            this.props.readerConfig.readerMenuSection === activeSection
+                ? this.props.readerMenuRouteSort
+                : undefined,
+        );
     }
 
     private savePdfAnnotationDraft(color: IColor, comment: string, drawType: TDrawType, tags: string[]) {
@@ -3659,6 +3664,15 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     debug("state.reader.info.publicationIdentifier", state.reader.info.publicationIdentifier);
     debug("state.reader.info.publicationView.identifier", state.reader.info.publicationView.identifier);
 
+    const readerMenuData = state.dialog.open && state.dialog.type === DialogTypeName.ReaderMenu ?
+        state.dialog.data as IReaderDialogOrDockSettingsMenuState :
+        state.dock.open && state.dock.type === DockTypeName.ReaderMenu ?
+            state.dock.data as IReaderDialogOrDockSettingsMenuState :
+            undefined;
+    const readerMenuRouteSortSearchParam = new URLSearchParams(state.router.location?.search || "").get("sort");
+    const readerMenuRouteSort = readerMenuData?.sort ||
+        (isPublicationNotesViewSort(readerMenuRouteSortSearchParam) ? readerMenuRouteSortSearchParam : undefined);
+
     return {
         isDivina,
         isPdf,
@@ -3690,7 +3704,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 
         pdfReaderConfig: state.reader.pdfConfig,
         notes: selectPublicationNotes(state),
-        publicationNotesViewFilter: selectPublicationNotesViewState(state).filter,
+        readerMenuRouteSort,
         creator: state.creator,
         noteTotalCount: state.reader.noteTotalCount.state,
 

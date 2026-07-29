@@ -118,14 +118,6 @@ export interface PublicationNotesSnapshot<TNote extends PublicationNoteEntity> {
     revision: number;
 }
 
-export interface PublicationNotesViewState<TNote extends PublicationNoteEntity> extends PublicationNotesSnapshot<TNote> {
-    byId: Record<string, TNote>;
-    ids: string[];
-    tagIndex: Record<string, number>;
-    totalCount: number;
-    view: PublicationNotesHydratedView<TNote>;
-}
-
 export interface PublicationNoteChange<TNote extends PublicationNoteEntity> {
     publicationIdentifier: string;
     note: TNote;
