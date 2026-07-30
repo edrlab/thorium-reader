@@ -57,7 +57,13 @@ const convertReadiumAnnotationSetToHtml = async (
     htmlMustacheTemplate: string = noteExportHtmlMustacheTemplate,
 ): Promise<string> => {
     const output = Mustache.render(htmlMustacheTemplate, await viewConverterFn(readiumAnnotation));
-    return output;
+    return output + `
+
+<!--
+JSON (base64):
+${Buffer.from(JsonStringifySortedKeys(readiumAnnotation, 2)).toString("base64")}
+-->
+`;
 };
 const downloadAnnotationFile = (data: string, filenameWithExtension: string, extension: typeof EXT_ANNOTATIONS | ".html") => {
 
