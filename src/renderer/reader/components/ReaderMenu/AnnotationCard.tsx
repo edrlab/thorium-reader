@@ -41,11 +41,11 @@ import { EDrawType, type TDrawType } from "readium-desktop/common/type/note.type
 import DOMPurify from "dompurify";
 import { marked } from "readium-desktop/renderer/common/marked/marked";
 import { computeProgression } from "./ReaderMenu";
-import { buildAnnotationPanelSaveNote, canDeleteAnnotationInPanel, canEditAnnotationInPanel, getAnnotationCardText, getAnnotationPanelNavigation, getAnnotationSelectionText, getPdfAnnotationPageLabel, getReadiumAnnotationImportUnresolvedReasonLabel } from "../../pdf/pdfAnnotationPanel";
+import { buildAnnotationPanelSaveNote, canDeleteAnnotationInPanel, canEditAnnotationInPanel, getAnnotationCardText, getAnnotationPanelNavigation, getAnnotationSelectionText, getPdfAnnotationPageLabel, getReadiumAnnotationImportUnresolvedReasonLabel } from "../../publication-notes/annotationPanel";
 
 import debug_ from "debug";
 
-const debugPdfAnnotationsPanel = debug_("readium-desktop:renderer:reader:pdf:annotations:panel");
+const debugPublicationNotesPanel = debug_("readium-desktop:renderer:reader:publication-notes:annotations:panel");
 
 export const AnnotationCard: React.FC<{ annotation: PublicationNote, isEdited: boolean, isSelected: boolean, focusRequestId?: string, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void, setCreatorFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator" | "goToPdfAnnotation">> = (props) => {
 
@@ -177,7 +177,7 @@ export const AnnotationCard: React.FC<{ annotation: PublicationNote, isEdited: b
                         } else if (annotationPanelNavigation?.type === "pdf") {
                             goToPdfAnnotation(annotationPanelNavigation.target, closeNavAnnotation);
                         } else if (annotation.pdfAnnotation) {
-                            debugPdfAnnotationsPanel("annotation panel navigation target invalid", {
+                            debugPublicationNotesPanel("annotation panel navigation target invalid", {
                                 uuid: annotation.uuid,
                                 pdfAnnotation: annotation.pdfAnnotation,
                             });

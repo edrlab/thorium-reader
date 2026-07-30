@@ -104,7 +104,7 @@ import {
 } from "readium-desktop/renderer/reader/pdf/pdfAnnotationConverters";
 import {
     getPdfAnnotationSelectionMenuAction,
-} from "readium-desktop/renderer/reader/pdf/pdfAnnotationPanel";
+} from "readium-desktop/renderer/reader/publication-notes/annotationPanel";
 import {
     buildPdfAnnotationDraftEditorTransport,
     getPdfAnnotationCreatePresentation,

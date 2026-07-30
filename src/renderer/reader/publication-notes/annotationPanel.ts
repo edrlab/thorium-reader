@@ -101,7 +101,7 @@ export function getReadiumAnnotationImportUnresolvedReasonLabel(
     }
 
     const reasonLabel = getPublicationNoteImportUnresolvedReasonLabel(reason, translate);
-    return `${translate("message.annotations.importReportUnresolvedImportedNotes")}: ${reasonLabel}`;
+    return reasonLabel;
 }
 
 function getPdfAnnotationVisualSortPosition(rect?: TPdfAnnotationRectTransport) {

@@ -22,7 +22,7 @@ import {
     getReadiumAnnotationImportUnresolvedReasonLabel,
     isPdfAnnotationPanelNote,
     normalizePdfAnnotationNavigationRect,
-} from "readium-desktop/renderer/reader/pdf/pdfAnnotationPanel";
+} from "readium-desktop/renderer/reader/publication-notes/annotationPanel";
 
 const color = {
     red: 10,

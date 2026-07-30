@@ -92,6 +92,7 @@ export interface PublicationNotesViewFilter {
     colors?: PublicationNotesViewSelection | undefined;
     drawTypes?: PublicationNotesViewSelection | undefined;
     creators?: PublicationNotesViewSelection | undefined;
+    importReportUnresolvedImportedNotes?: boolean | undefined;
     sort?: PublicationNotesViewSort | undefined;
     pagination?: PublicationNotesViewPagination | undefined;
 }
