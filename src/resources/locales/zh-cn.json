@@ -165,6 +165,8 @@
                 "title": "准备并激活自定义配置文件"
             }
         },
+        "deleteAnnotations": "",
+        "deleteBookmarks": "",
         "deleteFeed": "您真的要删除此出版目录吗？",
         "deletePublication": "您真的要删除此出版物吗?",
         "deletePublicationWithNotes": "警告：此出版物包含注释和/或书签，这些也将被删除！（如果您想保留它们，请在移除该出版物前确保已导出笔记）",
@@ -233,6 +235,9 @@
             "errorParsing": "文件解析时发生错误： ",
             "importReportAlreadyImported": "",
             "importReportAmbiguousMatch": "",
+            "importReportConflictNewer": "",
+            "importReportConflictOlder": "",
+            "importReportPrefix": "",
             "importReportReasonAmbiguousMatch": "",
             "importReportReasonSelectorNotFound": "",
             "importReportReasonSourceMismatch": "",

@@ -168,6 +168,12 @@
                 "title": "Mukautetun profiilin käyttöönotto ja aktivointi"
             }
         },
+        "deleteAnnotations": "",
+        "deleteAnnotationsText_one": "",
+        "deleteAnnotationsText_other": "",
+        "deleteBookmarks": "",
+        "deleteBookmarksText_one": "",
+        "deleteBookmarksText_other": "",
         "deleteFeed": "Haluatko poistaa tämän luettelon?",
         "deletePublication": "Haluatko poistaa tämän julkaisun?",
         "deletePublicationWithNotes": "Varoitus: tämä julkaisu sisältää muistiinpanoja ja/tai kirjanmerkkejä, myös ne poistetaan! (Jos haluat säilyttää ne, muista viedä muistiinpanot talteen ennen kuin poistat julkaisun)",
@@ -236,6 +242,9 @@
             "errorParsing": "Virhe tiedoston jäsentämisessä: ",
             "importReportAlreadyImported": "",
             "importReportAmbiguousMatch": "",
+            "importReportConflictNewer": "",
+            "importReportConflictOlder": "",
+            "importReportPrefix": "",
             "importReportReasonAmbiguousMatch": "",
             "importReportReasonSelectorNotFound": "",
             "importReportReasonSourceMismatch": "",

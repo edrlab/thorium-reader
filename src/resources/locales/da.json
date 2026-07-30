@@ -168,6 +168,12 @@
                 "title": "Tilpasningsprofil for klargøring og aktivering"
             }
         },
+        "deleteAnnotations": "",
+        "deleteAnnotationsText_one": "",
+        "deleteAnnotationsText_other": "",
+        "deleteBookmarks": "",
+        "deleteBookmarksText_one": "",
+        "deleteBookmarksText_other": "",
         "deleteFeed": "Er du sikker på at du vil slette dette katalog?",
         "deletePublication": "Er du sikker på at du vil fjerne bogen?",
         "deletePublicationWithNotes": "Advarsel: denne bog har noter og/eller bogmærker, som også vil blive slettet! (hvis du vil beholde dem, så eksporter dem venligst inden du sletter bogen)",
@@ -236,6 +242,9 @@
             "errorParsing": "Fejl under læsning af filen: ",
             "importReportAlreadyImported": "",
             "importReportAmbiguousMatch": "",
+            "importReportConflictNewer": "",
+            "importReportConflictOlder": "",
+            "importReportPrefix": "",
             "importReportReasonAmbiguousMatch": "",
             "importReportReasonSelectorNotFound": "",
             "importReportReasonSourceMismatch": "",

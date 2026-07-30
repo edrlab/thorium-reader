@@ -168,6 +168,12 @@
                 "title": "Προετοιμασία και ενεργοποίηση προφίλ προσαρμογής"
             }
         },
+        "deleteAnnotations": "",
+        "deleteAnnotationsText_one": "",
+        "deleteAnnotationsText_other": "",
+        "deleteBookmarks": "",
+        "deleteBookmarksText_one": "",
+        "deleteBookmarksText_other": "",
         "deleteFeed": "Διαγραφή καταλόγου;",
         "deletePublication": "Διαγραφή δημοσίευσης;",
         "deletePublicationWithNotes": "Προειδοποίηση: αυτή η δημοσίευση έχει σχολιασμούς ή/και σελιδοδείκτες, θα διαγραφούν και αυτοί! (αν θέλεις να τους κρατήσεις, φρόντισε να τους εξάγεις πριν τη διαγραφή της δημοσίευσης)",
@@ -236,6 +242,9 @@
             "errorParsing": "Σφάλμα κατά την ανάλυση αρχείου: ",
             "importReportAlreadyImported": "",
             "importReportAmbiguousMatch": "",
+            "importReportConflictNewer": "",
+            "importReportConflictOlder": "",
+            "importReportPrefix": "",
             "importReportReasonAmbiguousMatch": "",
             "importReportReasonSelectorNotFound": "",
             "importReportReasonSourceMismatch": "",

@@ -168,6 +168,12 @@
                 "title": "Kohandatud profiili ettevalmistamine ja aktiveerimine"
             }
         },
+        "deleteAnnotations": "",
+        "deleteAnnotationsText_one": "",
+        "deleteAnnotationsText_other": "",
+        "deleteBookmarks": "",
+        "deleteBookmarksText_one": "",
+        "deleteBookmarksText_other": "",
         "deleteFeed": "Kas kustutad kataloogi?",
         "deletePublication": "Kas kustutad raamatu?",
         "deletePublicationWithNotes": "Hoiatus: sellel väljaandel leidub märkmeid ja/või järjehoidjaid ning need kustutatakse samuti! (kui soovid neid säilitada, ekspordi märkmed enne väljaande eemaldamist)",
@@ -236,6 +242,9 @@
             "errorParsing": "Viga faili töötlemisel: ",
             "importReportAlreadyImported": "",
             "importReportAmbiguousMatch": "",
+            "importReportConflictNewer": "",
+            "importReportConflictOlder": "",
+            "importReportPrefix": "",
             "importReportReasonAmbiguousMatch": "",
             "importReportReasonSelectorNotFound": "",
             "importReportReasonSourceMismatch": "",

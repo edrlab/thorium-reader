@@ -168,6 +168,12 @@
                 "title": ""
             }
         },
+        "deleteAnnotations": "",
+        "deleteAnnotationsText_one": "",
+        "deleteAnnotationsText_other": "",
+        "deleteBookmarks": "",
+        "deleteBookmarksText_one": "",
+        "deleteBookmarksText_other": "",
         "deleteFeed": "Seguro que queres eliminar este catálogo?",
         "deletePublication": "Seguro que queres eliminar esta publicación?",
         "deletePublicationWithNotes": "",
@@ -236,6 +242,9 @@
             "errorParsing": "",
             "importReportAlreadyImported": "",
             "importReportAmbiguousMatch": "",
+            "importReportConflictNewer": "",
+            "importReportConflictOlder": "",
+            "importReportPrefix": "",
             "importReportReasonAmbiguousMatch": "",
             "importReportReasonSelectorNotFound": "",
             "importReportReasonSourceMismatch": "",

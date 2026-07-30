@@ -168,6 +168,12 @@
                 "title": "Özelleştirme profilinin hazırlanması ve etkinleştirilmesi"
             }
         },
+        "deleteAnnotations": "",
+        "deleteAnnotationsText_one": "",
+        "deleteAnnotationsText_other": "",
+        "deleteBookmarks": "",
+        "deleteBookmarksText_one": "",
+        "deleteBookmarksText_other": "",
         "deleteFeed": "Katalogu silmek istiyor musunuz?",
         "deletePublication": "Eseri silmek istiyor musunuz?",
         "deletePublicationWithNotes": "Uyarı: Bu eserde açıklayıcı notlar ve/veya yer imleri bulunuyor, bunlar da silinecek! (Eğer bunları saklamak istiyorsanız, eseri kaldırmadan önce notları dışa aktardığınızdan emin olun)",
@@ -236,6 +242,9 @@
             "errorParsing": "Dosya işlenirken hata oluştu: ",
             "importReportAlreadyImported": "",
             "importReportAmbiguousMatch": "",
+            "importReportConflictNewer": "",
+            "importReportConflictOlder": "",
+            "importReportPrefix": "",
             "importReportReasonAmbiguousMatch": "",
             "importReportReasonSelectorNotFound": "",
             "importReportReasonSourceMismatch": "",

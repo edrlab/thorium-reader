@@ -367,21 +367,25 @@ function formatImportReportDiagnostics(
         "selector-not-found": importReport.selectorNotFound.length,
         "ambiguous-match": importReport.ambiguousMatch.length,
     };
+    const importReportConflictNewerLabel = translate("message.annotations.importReportConflictNewer");
+    const importReportConflictOlderLabel = translate("message.annotations.importReportConflictOlder");
+    const importReportAlreadyImportedLabel = translate("message.annotations.importReportAlreadyImported");
+    const importReportPrefixLabel = translate("message.annotations.importReportPrefix");
     const parts = [
         formatUnresolvedCounts(unresolvedCounts, translate),
         formatUnsupportedSelectorDiagnostics(importReport.unsupportedSelector, translate),
         importReport.annotationsConflictListNewer.length
-            ? `${translate("message.annotations.importReportConflictNewer")}: ${importReport.annotationsConflictListNewer.length}`
+            ? `${importReportConflictNewerLabel}: ${importReport.annotationsConflictListNewer.length}`
             : "",
         importReport.annotationsConflictListOlder.length
-            ? `${translate("message.annotations.importReportConflictOlder")}: ${importReport.annotationsConflictListOlder.length}`
+            ? `${importReportConflictOlderLabel}: ${importReport.annotationsConflictListOlder.length}`
             : "",
         importReport.annotationsAlreadyImportedList.length
-            ? `${translate("message.annotations.importReportAlreadyImported")}: ${importReport.annotationsAlreadyImportedList.length}`
+            ? `${importReportAlreadyImportedLabel}: ${importReport.annotationsAlreadyImportedList.length}`
             : "",
     ].filter((part) => !!part);
 
-    return parts.length ? `${translate("message.annotations.importReportPrefix")}: ${parts.join("; ")}` : "";
+    return parts.length ? `${importReportPrefixLabel}: ${parts.join("; ")}` : "";
 }
 
 function appendImportReportDiagnostics(

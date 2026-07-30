@@ -165,6 +165,8 @@
                 "title": ""
             }
         },
+        "deleteAnnotations": "",
+        "deleteBookmarks": "",
         "deleteFeed": "この図書目録を削除しますか？",
         "deletePublication": "この本を削除しますか？",
         "deletePublicationWithNotes": "",
@@ -233,6 +235,9 @@
             "errorParsing": "ファイル解析中にエラーが発生しました： ",
             "importReportAlreadyImported": "",
             "importReportAmbiguousMatch": "",
+            "importReportConflictNewer": "",
+            "importReportConflictOlder": "",
+            "importReportPrefix": "",
             "importReportReasonAmbiguousMatch": "",
             "importReportReasonSelectorNotFound": "",
             "importReportReasonSourceMismatch": "",
