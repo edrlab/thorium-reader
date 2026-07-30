@@ -43,12 +43,12 @@
         "update": {
             "message": "Nowa wersja jest dostępna, kliknij aby dowiedzieć się więcej.",
             "title": "{{- appName}} aktualizacja oprogramowania.",
-            "whatsnew": ""
+            "whatsnew": "Nowa wersja oprogramowania została zainstalowana, kliknij żeby dowiedzieć się więcej"
         },
         "window": {
             "showLibrary": "Pokaż bibliotekę / półkę z książkami",
-            "trayHint": "",
-            "trayTooltip": ""
+            "trayHint": "{{- appName}} nadal działa w obszarze powiadomień. Kliknij na ikonę kosza, aby wyświetlić bibliotekę.",
+            "trayTooltip": "{{- appName}} - kliknij żeby pokazać albo schować bibliotekę"
         }
     },
     "catalog": {
@@ -91,8 +91,8 @@
         "lastRead": "Ostatnio czytane",
         "login": "Zaloguj się",
         "logout": "Wyloguj się",
-        "missing": "",
-        "missingUnavailableDescription": "",
+        "missing": "Brakujące pliki",
+        "missingUnavailableDescription": "Nie można otworzyć tej publikacji, ponieważ jej pliki są niedostępne. Zaimportuj je ponownie lub przejdź do sekcji „Ustawienia”, a następnie do sekcji „Pamięć”, aby dodać lub zmienić dodatkową przestrzeń dyskową.",
         "moreInfo": "Szczegóły publikacji",
         "myBooks": "Moje publikacje",
         "noPublicationHelpL1": "Upuść pliki tutaj",
@@ -109,8 +109,8 @@
                 "password": "Hasło",
                 "register": "Rejestracja",
                 "retry": "Spróbuj ponownie",
-                "unauthorized": "",
-                "unauthorizedUnsupportedType": "",
+                "unauthorized": "Błąd autoryzacji",
+                "unauthorizedUnsupportedType": "Błąd autoryzacji (brak wsparcia dla WWWAuthenticate typ '{{- type}}')",
                 "username": "Nazwa użytkownika / adres e-mail"
             },
             "info": {
@@ -132,7 +132,7 @@
                 "state": "Stan"
             }
         },
-        "openFolder": "",
+        "openFolder": "Otwórz folder",
         "publisher": "Wydawca",
         "readBook": "Czytaj",
         "released": "Opublikowano",
@@ -150,15 +150,12 @@
             "descList_few": "{{- count}} notatki {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
             "descList_many": "{{- count}} notatek {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
             "descList_one": "{{- count}} notatka {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
-            "descList_other": "",
             "descNewer_few": "Konflikt(y): {{- count}} nowsze notatki",
             "descNewer_many": "Konflikt(y): {{- count}} nowszych notatek",
             "descNewer_one": "Konflikt(y): {{- count}} nowsza notatka",
-            "descNewer_other": "",
             "descOlder_few": "Konflikt(y): {{- count}} starsze notatki",
             "descOlder_many": "Konflikt(y): {{- count}} starszych notatek",
             "descOlder_one": "Konflikt(y): {{- count}} starsza notatka",
-            "descOlder_other": "",
             "descTitle": "Tytuł adnotacji: ",
             "importAll": "Importuj wszystkie notatki",
             "importWithoutConflict": "Importuj notatki tylko wolne od konfliktów",
@@ -178,12 +175,10 @@
         "deleteAnnotationsText_few": "Czy na pewno chcesz usunąć {{- count}} notatki?",
         "deleteAnnotationsText_many": "Czy na pewno chcesz usunąć {{- count}} notatek?",
         "deleteAnnotationsText_one": "Czy na pewno chcesz usunąć {{- count}} notatkę?",
-        "deleteAnnotationsText_other": "",
         "deleteBookmarks": "Usunąć zakładki?",
         "deleteBookmarksText_few": "Czy na pewno chcesz usunąć {{- count}} zakładki?",
         "deleteBookmarksText_many": "Czy na pewno chcesz usunąć {{- count}} zakładek?",
         "deleteBookmarksText_one": "Czy na pewno chcesz usunąć {{- count}} zakładkę?",
-        "deleteBookmarksText_other": "",
         "deleteFeed": "Usunąć katalog?",
         "deletePublication": "Usunąć publikację?",
         "deletePublicationWithNotes": "Uwaga: ta publikacja zawiera adnotacje i/lub zakładki, one również zostaną usunięte! (jeśli chcesz je zachować, pamiętaj o wyeksportowaniu notatek przed usunięciem publikacji)",
@@ -255,7 +250,7 @@
             "success": "Import zakończony pomyślnie."
         },
         "download": {
-            "cancelled": "",
+            "cancelled": "Pobieranie pliku zostało anulowane.",
             "error": "Pobieranie [{{- title}}] nie powiodło się: [{{- err}}]",
             "errors": {
                 "hashMismatch": "",
@@ -843,7 +838,6 @@
                 "founds_few": "{{- count}} dopasowania",
                 "founds_many": "{{- count}} dopasowań",
                 "founds_one": "{{- count}} dopasowanie",
-                "founds_other": "",
                 "input": "tekst do wyszukania",
                 "next": "Następny",
                 "notFound": "brak dopasowań",
