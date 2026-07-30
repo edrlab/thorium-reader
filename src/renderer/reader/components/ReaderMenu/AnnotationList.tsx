@@ -509,10 +509,10 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
                                         </div>
                                         <div className={stylesInputs.form_group}>
                                         <label htmlFor="file_type">
-                                            {__("reader.annotations.annotationsExport.format")}
+                                            {__("catalog.format")}
                                             </label>
                                         <select defaultValue="annotation" ref={selectFileTypeRef} name="file_type">
-                                                <option value="annotation">Annotations (Readium)</option>
+                                                <option value="annotation">JSON</option>
                                                 <option value="html">HTML</option>
                                             </select>
                                         </div>
