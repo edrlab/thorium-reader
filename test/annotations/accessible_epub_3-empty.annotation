@@ -1,0 +1,19 @@
+{
+    "@context": "http://www.w3.org/ns/anno.jsonld",
+    "id": "urn:uuid:accessible-epub-3-empty-set",
+    "type": "AnnotationSet",
+    "generated": "2026-02-01T11:30:00.000Z",
+    "title": "Accessible EPUB 3 - empty annotation set",
+    "about": {
+        "dc:identifier": [
+            "urn:isbn:9781449328030"
+        ],
+        "dc:format": "application/epub+zip",
+        "dc:title": "Accessible EPUB 3",
+        "dc:creator": [
+            "Matt Garrish"
+        ],
+        "dc:date": "2012-02-20"
+    },
+    "items": []
+}

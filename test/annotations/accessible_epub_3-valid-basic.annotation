@@ -1,0 +1,145 @@
+{
+    "@context": "http://www.w3.org/ns/anno.jsonld",
+    "id": "urn:uuid:accessible-epub-3-valid-basic-set",
+    "type": "AnnotationSet",
+    "generator": {
+        "id": "urn:thorium:test:annotation-fixtures",
+        "type": "Software",
+        "name": "Thorium annotation test fixtures"
+    },
+    "generated": "2026-02-01T09:00:00.000Z",
+    "title": "Accessible EPUB 3 - valid annotations",
+    "about": {
+        "dc:identifier": [
+            "urn:isbn:9781449328030"
+        ],
+        "dc:format": "application/epub+zip",
+        "dc:title": "Accessible EPUB 3",
+        "dc:creator": [
+            "Matt Garrish"
+        ],
+        "dc:publisher": [
+            "O'Reilly Media, Inc."
+        ],
+        "dc:date": "2012-02-20"
+    },
+    "items": [
+        {
+            "@context": "http://www.w3.org/ns/anno.jsonld",
+            "id": "urn:uuid:accessible-epub-3-basic-text-quote",
+            "created": "2026-02-01T09:10:00.000Z",
+            "modified": "2026-02-01T09:20:00.000Z",
+            "type": "Annotation",
+            "creator": {
+                "id": "urn:thorium:test:reader",
+                "type": "Person",
+                "name": "Thorium Test Reader"
+            },
+            "body": {
+                "type": "TextualBody",
+                "value": "Opening note on Accessible EPUB 3 purpose.",
+                "format": "text/plain",
+                "tag": "accessibility",
+                "highlight": "solid",
+                "color": "yellow"
+            },
+            "target": {
+                "source": "EPUB/pr01.xhtml",
+                "meta": {
+                    "headings": [
+                        {
+                            "level": 1,
+                            "txt": "Preface"
+                        }
+                    ]
+                },
+                "selector": [
+                    {
+                        "type": "TextQuoteSelector",
+                        "exact": "Accessibility is a difficult concept to define.",
+                        "prefix": "",
+                        "suffix": "There's no single magic bullet"
+                    }
+                ]
+            },
+            "motivation": "highlighting"
+        },
+        {
+            "@context": "http://www.w3.org/ns/anno.jsonld",
+            "id": "urn:uuid:accessible-epub-3-basic-css",
+            "created": "2026-02-01T09:30:00.000Z",
+            "modified": "2026-02-01T09:40:00.000Z",
+            "type": "Annotation",
+            "creator": {
+                "id": "urn:thorium:test:reader",
+                "type": "Person",
+                "name": "Thorium Test Reader"
+            },
+            "body": {
+                "type": "TextualBody",
+                "value": "Introduction section is a stable CSS-selector target.",
+                "format": "text/plain",
+                "tag": "structure",
+                "highlight": "underline",
+                "color": "green"
+            },
+            "target": {
+                "source": "EPUB/ch01.xhtml",
+                "meta": {
+                    "headings": [
+                        {
+                            "level": 1,
+                            "txt": "Chapter 1. Introduction"
+                        }
+                    ]
+                },
+                "selector": [
+                    {
+                        "type": "CssSelector",
+                        "value": "#introduction > p:nth-of-type(2)"
+                    }
+                ]
+            },
+            "motivation": "highlighting"
+        },
+        {
+            "@context": "http://www.w3.org/ns/anno.jsonld",
+            "id": "urn:uuid:accessible-epub-3-basic-position",
+            "created": "2026-02-01T09:50:00.000Z",
+            "modified": "2026-02-01T10:00:00.000Z",
+            "type": "Annotation",
+            "creator": {
+                "id": "urn:thorium:test:reader",
+                "type": "Person",
+                "name": "Thorium Test Reader"
+            },
+            "body": {
+                "type": "TextualBody",
+                "value": "Fundamental accessibility note using text offsets.",
+                "format": "text/plain",
+                "tag": "semantics",
+                "highlight": "outline",
+                "color": "blue"
+            },
+            "target": {
+                "source": "EPUB/ch02.xhtml",
+                "meta": {
+                    "headings": [
+                        {
+                            "level": 1,
+                            "txt": "Chapter 2. Building a Better EPUB: Fundamental Accessibility"
+                        }
+                    ]
+                },
+                "selector": [
+                    {
+                        "type": "TextPositionSelector",
+                        "start": 0,
+                        "end": 73
+                    }
+                ]
+            },
+            "motivation": "highlighting"
+        }
+    ]
+}

@@ -19,6 +19,13 @@ test("Readium annotation source href resolver ignores source fragments and query
     expect(resolveReadiumAnnotationSourceHref("OPS/Text/chapter.xhtml?utm=test#p1", ["OPS/Text/chapter.xhtml"])).toBe(
         "OPS/Text/chapter.xhtml",
     );
+
+    expect(
+        resolveReadiumAnnotationSourceHref(
+            "https://example.org/pub/OPS/Text/chapter.xhtml?utm=test#p1",
+            ["OPS/Text/chapter.xhtml"],
+        ),
+    ).toBe("OPS/Text/chapter.xhtml");
 });
 
 test("Readium annotation source href resolver matches percent encoded and decoded hrefs", () => {
