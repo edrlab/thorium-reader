@@ -4,6 +4,11 @@ on:
     branches: [ develop ]
     tags-ignore:
       - '*'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 # https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token
 # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#permissions
 permissions:
@@ -467,6 +472,7 @@ jobs:
 ###########################
   release_job:
     needs: build_job
+    timeout-minutes: 20
     permissions:
       actions: none
       artifact-metadata: none

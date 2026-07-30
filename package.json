@@ -97,6 +97,8 @@
     "post-i18n-scan": "npm run i18n-sort",
     "i18n-check": "i18next-locales-sync --compatibilityJSON v4  --localesFolder ./src/resources/locales/ --primaryLanguage en --secondaryLanguages ar bg brh ca cs da de el es et eu fi fr gl he hr it ja ka ko lt nl pl pt-br pt-pt ru sl sv ta tr zh-cn zh-tw --spaces 4 --useEmptyString true && npm run post-i18n-check",
     "post-i18n-check": "npm run i18n-sort",
+    "i18n-json": "node ./scripts/translate-scan.js \"src/resources/locales/und.json\" && i18next-locales-sync --compatibilityJSON v4 --localesFolder ./src/resources/locales/ --primaryLanguage und --secondaryLanguages ar bg brh ca cs da de el en es et eu fi fr gl he hr it ja ka ko lt nl pl pt-br pt-pt ru sl sv ta tr zh-cn zh-tw --spaces 4 --useEmptyString true && rimraf \"src/resources/locales/und.json\" && npm run post-i18n-json",
+    "post-i18n-json": "npm run i18n-sort",
     "i18n-typed": "node ./scripts/locale-wrap.js \"src/resources/locales/en.json\" \"en.json\" && typed_i18n -i \"en.json\" -o src/typings -l typescript && node ./scripts/translator-key-type.js \"src/typings/en.translation.d.ts\" \"src/typings/en.translation-keys.d.ts\" && rimraf \"en.json\"",
     "style-typed": "typed-scss-modules \"src/renderer/assets/styles\" --nameFormat none || echo \"!!failed!!\"",
     "ts-unused-exports_": "ts-unused-exports ./tsconfig.json $(find ./src/renderer/assets/styles -name '*.d.ts') || npm run style-typed",
