@@ -33,7 +33,7 @@ import {
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { publicationActions as publicationActionsFromMainAction } from "../actions";
 import { EXT_ANNOTATIONS } from "readium-desktop/common/extension";
-import { convertAnnotationStateArrayToReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/converter";
+import { convertAnnotationStateArrayToReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/exportConverter";
 import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/annotation/htmlTemplate";
 import { sanitizeForFilename } from "readium-desktop/common/safe-filename";
 import { JsonStringifySortedKeys } from "readium-desktop/common/utils/json";

@@ -1,12 +1,14 @@
 import { expect, test } from "@jest/globals";
 
 import {
-    convertAnnotationStateArrayToReadiumAnnotationSet,
-    convertAnnotationStateToReadiumAnnotation,
     selectSelectorTargetLocatorCandidate,
     type ISelectorTargetLocatorCandidate,
     type TSelectorTargetLocatorCandidateSource,
 } from "readium-desktop/common/readium/annotation/converter";
+import {
+    convertAnnotationStateArrayToReadiumAnnotationSet,
+    convertAnnotationStateToReadiumAnnotation,
+} from "readium-desktop/common/readium/annotation/exportConverter";
 import type { IRangeInfo, ISelectedTextInfo } from "@r2-navigator-js/electron/common/selection";
 import type { ITextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import type { PublicationNote } from "readium-desktop/common/publication-notes";
