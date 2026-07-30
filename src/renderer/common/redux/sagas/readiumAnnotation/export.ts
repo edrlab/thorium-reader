@@ -8,11 +8,11 @@
 import debug_ from "debug";
 import { select as selectTyped, call as callTyped, spawn as spawnTyped } from "typed-redux-saga/macro";
 import { SagaGenerator } from "typed-redux-saga";
+import { convertAnnotationStateArrayToReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/exportConverter";
 import {
     buildPublicationUserAnalyticsParams,
     publicationAnalyticsEvents,
 } from "readium-desktop/common/analytics/publication";
-import { convertAnnotationStateArrayToReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/converter";
 import { IReadiumAnnotation, IReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
 
 // https://github.com/janl/mustache.js/issues/797

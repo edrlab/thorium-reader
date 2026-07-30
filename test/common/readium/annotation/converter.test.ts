@@ -1,14 +1,16 @@
 import { expect, test } from "@jest/globals";
 
 import {
-    convertAnnotationStateArrayToReadiumAnnotationSet,
-    convertAnnotationStateToReadiumAnnotation,
     selectSelectorTargetLocatorCandidate,
     type ISelectorTargetLocatorCandidate,
     type TSelectorTargetLocatorCandidateSource,
 } from "readium-desktop/common/readium/annotation/converter";
-import type { IEPUBCFISelector, ITextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import {
+    convertAnnotationStateArrayToReadiumAnnotationSet,
+    convertAnnotationStateToReadiumAnnotation,
+} from "readium-desktop/common/readium/annotation/exportConverter";
 import type { IRangeInfo, ISelectedTextInfo } from "@r2-navigator-js/electron/common/selection";
+import type { IEPUBCFISelector, ITextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import type { PublicationNote } from "readium-desktop/common/publication-notes";
 import { EDrawType } from "readium-desktop/common/type/note.type";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -29,11 +31,6 @@ const textQuoteSelector: ITextQuoteSelector = {
     exact: "selected text",
     prefix: "",
     suffix: "",
-};
-
-const epubCfiSelector: IEPUBCFISelector = {
-    type: "EPUBCFISelector",
-    value: "/4/2,/1:0,/1:13",
 };
 
 const rangeInfo: IRangeInfo = {
@@ -70,6 +67,11 @@ function createCandidate(
         ...overrides,
     };
 }
+
+const epubCfiSelector: IEPUBCFISelector = {
+    type: "EPUBCFISelector",
+    value: "/4/2,/1:0,/1:13",
+};
 
 function createNote(overrides: Partial<PublicationNote> = {}): PublicationNote {
     return {
@@ -160,18 +162,6 @@ test("Readium annotation set export filters PDF annotations and preserves EPUB a
     expect(annotationSet.items[0].target.source).toBe("chapter.xhtml");
 });
 
-test("Readium annotation export preserves EPUB CFI selector vocabulary", () => {
-    const annotation = convertAnnotationStateToReadiumAnnotation(createNote({
-        readiumAnnotation: {
-            export: {
-                selector: [epubCfiSelector],
-            },
-        },
-    }));
-
-    expect(annotation?.target.selector).toContainEqual(epubCfiSelector);
-});
-
 test("Readium annotation import locator candidate selection uses explicit selector priority for agreeing ranges", () => {
     const selection = selectSelectorTargetLocatorCandidate([
         createCandidate("TextQuoteSelector"),
@@ -222,4 +212,16 @@ test("Readium annotation import locator candidate selection reports selector not
         status: "unresolved",
         reason: "selector-not-found",
     });
+});
+
+test("Readium annotation export preserves EPUB CFI selector vocabulary", () => {
+    const annotation = convertAnnotationStateToReadiumAnnotation(createNote({
+        readiumAnnotation: {
+            export: {
+                selector: [epubCfiSelector],
+            },
+        },
+    }));
+
+    expect(annotation?.target.selector).toContainEqual(epubCfiSelector);
 });
