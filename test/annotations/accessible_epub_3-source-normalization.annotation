@@ -1,0 +1,52 @@
+{
+    "@context": "http://www.w3.org/ns/anno.jsonld",
+    "id": "urn:uuid:accessible-epub-3-source-normalization-set",
+    "type": "AnnotationSet",
+    "generated": "2026-02-01T10:20:00.000Z",
+    "title": "Accessible EPUB 3 - source normalization",
+    "about": {
+        "dc:identifier": [
+            "urn:isbn:9781449328030"
+        ],
+        "dc:format": "application/epub+zip",
+        "dc:title": "Accessible EPUB 3",
+        "dc:creator": [
+            "Matt Garrish"
+        ],
+        "dc:date": "2012-02-20"
+    },
+    "items": [
+        {
+            "@context": "http://www.w3.org/ns/anno.jsonld",
+            "id": "urn:uuid:accessible-epub-3-normalized-source",
+            "created": "2026-02-01T10:25:00.000Z",
+            "modified": "2026-02-01T10:25:00.000Z",
+            "type": "Annotation",
+            "creator": {
+                "id": "urn:thorium:test:reader",
+                "type": "Person",
+                "name": "Thorium Test Reader"
+            },
+            "body": {
+                "type": "TextualBody",
+                "value": "Source URL should normalize back to the spine href.",
+                "format": "text/plain",
+                "tag": "normalization",
+                "highlight": "strikethrough",
+                "color": "orange"
+            },
+            "target": {
+                "source": "https://example.org/publications/accessible-epub-3/EPUB/ch01.xhtml?source=fixture#introduction",
+                "selector": [
+                    {
+                        "type": "TextQuoteSelector",
+                        "exact": "Inaccessible content typically means you're settling for the least value you can get",
+                        "prefix": "",
+                        "suffix": "so get ready to think bigger"
+                    }
+                ]
+            },
+            "motivation": "highlighting"
+        }
+    ]
+}
