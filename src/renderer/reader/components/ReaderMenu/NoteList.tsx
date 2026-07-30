@@ -447,6 +447,12 @@ export const NoteList: React.FC<NoteListProps> = (props) => {
     const pageOptions = Array.from({ length: pageTotal }, (_k, v) => (v += 1, ({ id: v, name: `${v} / ${pageTotal}` })));
     const begin = viewReady ? pagination.begin : 0;
     const end = viewReady ? pagination.end : 0;
+    const deleteDialogTitle = group === "bookmark"
+        ? __("dialog.deleteBookmarks")
+        : __("dialog.deleteAnnotations");
+    const deleteDialogDescription = group === "bookmark"
+        ? __("dialog.deleteBookmarksText", { count: noteList.length })
+        : __("dialog.deleteAnnotationsText", { count: noteList.length });
 
     const requestPublicationNotesPage = React.useCallback((page: number, anchorUuid?: string) => {
         setPaginationRequest({
@@ -814,15 +820,15 @@ export const NoteList: React.FC<NoteListProps> = (props) => {
                         </Popover.Root>
                     </> : <></>}
                     <AlertDialog.Root>
-                        <AlertDialog.Trigger className={styles.filterTriggerButton} disabled={!noteList.length} title={__(group === "bookmark" ? "dialog.deleteBookmarks" : "dialog.deleteAnnotations")} aria-label={__(group === "bookmark" ? "dialog.deleteBookmarks" : "dialog.deleteAnnotations")}>
+                        <AlertDialog.Trigger className={styles.filterTriggerButton} disabled={!noteList.length} title={deleteDialogTitle} aria-label={deleteDialogTitle}>
                             <SVG svg={TrashIcon} ariaHidden />
                         </AlertDialog.Trigger>
                         <AlertDialog.Portal>
                             <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay} />
                             <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
-                                <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__(group === "bookmark" ? "dialog.deleteBookmarks" : "dialog.deleteAnnotations")}</AlertDialog.Title>
+                                <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{deleteDialogTitle}</AlertDialog.Title>
                                 <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
-                                    {__(group === "bookmark" ? "dialog.deleteBookmarksText" : "dialog.deleteAnnotationsText", { count: noteList.length })}
+                                    {deleteDialogDescription}
                                 </AlertDialog.Description>
                                 <div className={stylesAlertModals.AlertDialogButtonContainer}>
                                     <AlertDialog.Cancel asChild>

@@ -168,6 +168,12 @@
                 "title": "Tilldelar och aktiverar anpassningsprofil"
             }
         },
+        "deleteAnnotations": "",
+        "deleteAnnotationsText_one": "",
+        "deleteAnnotationsText_other": "",
+        "deleteBookmarks": "",
+        "deleteBookmarksText_one": "",
+        "deleteBookmarksText_other": "",
         "deleteFeed": "Vill du ta bort den här katalogen?",
         "deletePublication": "Vill du ta bort den här boken?",
         "deletePublicationWithNotes": "Varning: Det finns anteckningar och/eller bokmärken som också kommer att tas bort! (Om du vill behålla dem så måste du exportera anteckningar och bokmärken innan du tar bort boken)",
@@ -236,6 +242,9 @@
             "errorParsing": "Fel vid tolkning av fil: ",
             "importReportAlreadyImported": "",
             "importReportAmbiguousMatch": "",
+            "importReportConflictNewer": "",
+            "importReportConflictOlder": "",
+            "importReportPrefix": "",
             "importReportReasonAmbiguousMatch": "",
             "importReportReasonSelectorNotFound": "",
             "importReportReasonSourceMismatch": "",

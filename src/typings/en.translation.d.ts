@@ -398,6 +398,10 @@ declare namespace typed_i18n {
       readonly "title": string
     }
   },
+  readonly "deleteAnnotations": string,
+  readonly "deleteAnnotationsText": string,
+  readonly "deleteBookmarks": string,
+  readonly "deleteBookmarksText": string,
   readonly "deleteFeed": string,
   readonly "deletePublication": string,
   readonly "deletePublicationWithNotes": string,
@@ -448,6 +452,10 @@ declare namespace typed_i18n {
   (_: "dialog.customization.splashscreen.fallbackWelcomeScreen", __?: {}): string;
   (_: "dialog.customization.splashscreen.state", __?: {}): string;
   (_: "dialog.customization.splashscreen.title", __?: {}): string;
+  (_: "dialog.deleteAnnotations", __?: {}): string;
+  (_: "dialog.deleteAnnotationsText", __?: {}): string;
+  (_: "dialog.deleteBookmarks", __?: {}): string;
+  (_: "dialog.deleteBookmarksText", __?: {}): string;
   (_: "dialog.deleteFeed", __?: {}): string;
   (_: "dialog.deletePublication", __?: {}): string;
   (_: "dialog.deletePublicationWithNotes", __?: {}): string;
@@ -582,6 +590,9 @@ declare namespace typed_i18n {
     readonly "errorParsing": string,
     readonly "importReportAlreadyImported": string,
     readonly "importReportAmbiguousMatch": string,
+    readonly "importReportConflictNewer": string,
+    readonly "importReportConflictOlder": string,
+    readonly "importReportPrefix": string,
     readonly "importReportReasonAmbiguousMatch": string,
     readonly "importReportReasonSelectorNotFound": string,
     readonly "importReportReasonSourceMismatch": string,
@@ -631,6 +642,9 @@ declare namespace typed_i18n {
   readonly "errorParsing": string,
   readonly "importReportAlreadyImported": string,
   readonly "importReportAmbiguousMatch": string,
+  readonly "importReportConflictNewer": string,
+  readonly "importReportConflictOlder": string,
+  readonly "importReportPrefix": string,
   readonly "importReportReasonAmbiguousMatch": string,
   readonly "importReportReasonSelectorNotFound": string,
   readonly "importReportReasonSourceMismatch": string,
@@ -649,6 +663,9 @@ declare namespace typed_i18n {
   (_: "message.annotations.errorParsing", __?: {}): string;
   (_: "message.annotations.importReportAlreadyImported", __?: {}): string;
   (_: "message.annotations.importReportAmbiguousMatch", __?: {}): string;
+  (_: "message.annotations.importReportConflictNewer", __?: {}): string;
+  (_: "message.annotations.importReportConflictOlder", __?: {}): string;
+  (_: "message.annotations.importReportPrefix", __?: {}): string;
   (_: "message.annotations.importReportReasonAmbiguousMatch", __?: {}): string;
   (_: "message.annotations.importReportReasonSelectorNotFound", __?: {}): string;
   (_: "message.annotations.importReportReasonSourceMismatch", __?: {}): string;

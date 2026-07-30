@@ -168,6 +168,12 @@
                 "title": "Bereitstellung und Aktivierung des Anpassungsprofils"
             }
         },
+        "deleteAnnotations": "",
+        "deleteAnnotationsText_one": "",
+        "deleteAnnotationsText_other": "",
+        "deleteBookmarks": "",
+        "deleteBookmarksText_one": "",
+        "deleteBookmarksText_other": "",
         "deleteFeed": "Willst du diesen Katalog wirklich löschen?",
         "deletePublication": "Willst du diese Publikation wirklich löschen?",
         "deletePublicationWithNotes": "Achtung: Diese Publikation enthält Anmerkungen und/oder Lesezeichen, die ebenfalls gelöscht werden! (Wenn Sie diese behalten möchten, sollten Sie die Notizen unbedingt exportieren, bevor Sie die Publikation entfernen.)",
@@ -236,6 +242,9 @@
             "errorParsing": "Fehler beim Einlesen der Datei: ",
             "importReportAlreadyImported": "",
             "importReportAmbiguousMatch": "",
+            "importReportConflictNewer": "",
+            "importReportConflictOlder": "",
+            "importReportPrefix": "",
             "importReportReasonAmbiguousMatch": "",
             "importReportReasonSelectorNotFound": "",
             "importReportReasonSourceMismatch": "",

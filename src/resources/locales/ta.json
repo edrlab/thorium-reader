@@ -168,6 +168,12 @@
                 "title": ""
             }
         },
+        "deleteAnnotations": "",
+        "deleteAnnotationsText_one": "",
+        "deleteAnnotationsText_other": "",
+        "deleteBookmarks": "",
+        "deleteBookmarksText_one": "",
+        "deleteBookmarksText_other": "",
         "deleteFeed": "பட்டியலை நீக்கவா?",
         "deletePublication": "வெளியீட்டை நீக்கவா?",
         "deletePublicationWithNotes": "எச்சரிக்கை: இந்த வெளியீட்டில் சிறுகுறிப்புகள் மற்றும்/அல்லது புக்மார்க்குகள் உள்ளன, அவை நீக்கப்படும்! (நீங்கள் அவற்றை வைத்திருக்க விரும்பினால், வெளியீட்டை அகற்றுவதற்கு முன் குறிப்புகளை ஏற்றுமதி செய்வதை உறுதிப்படுத்திக் கொள்ளுங்கள்)",
@@ -236,6 +242,9 @@
             "errorParsing": "கோப்பு பாகுபடுத்தலின் போது பிழை: ",
             "importReportAlreadyImported": "",
             "importReportAmbiguousMatch": "",
+            "importReportConflictNewer": "",
+            "importReportConflictOlder": "",
+            "importReportPrefix": "",
             "importReportReasonAmbiguousMatch": "",
             "importReportReasonSelectorNotFound": "",
             "importReportReasonSourceMismatch": "",

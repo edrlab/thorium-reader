@@ -165,6 +165,8 @@
                 "title": "正在佈建並啟用自訂設定檔"
             }
         },
+        "deleteAnnotations": "",
+        "deleteBookmarks": "",
         "deleteFeed": "你真的要刪除此出版目錄嗎？",
         "deletePublication": "你真的要刪除此出版物嗎？",
         "deletePublicationWithNotes": "警告：此出版物包含註釋和/或書籤，它們也將被刪除！ （如果您想保留它們，請確保在刪除出版物之前匯出註釋）",
@@ -233,6 +235,9 @@
             "errorParsing": "文件解析時發生錯誤： ",
             "importReportAlreadyImported": "",
             "importReportAmbiguousMatch": "",
+            "importReportConflictNewer": "",
+            "importReportConflictOlder": "",
+            "importReportPrefix": "",
             "importReportReasonAmbiguousMatch": "",
             "importReportReasonSelectorNotFound": "",
             "importReportReasonSourceMismatch": "",
