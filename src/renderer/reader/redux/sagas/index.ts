@@ -34,9 +34,9 @@ import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 import { resourceCacheTimer } from "./resourceCache";
 import { createOrGetPdfEventBus } from "../../pdf/driver";
 import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
+import { selectPublicationNotes } from "../../publication-notes/selectors";
 import { buildPublicationAnalyticsParams } from "readium-desktop/common/analytics/publication";
 import { logEvent } from "readium-desktop/renderer/common/analytics";
-import { selectPublicationNotes } from "../../publication-notes/selectors";
 
 // Logger
 const filename_ = "readium-desktop:renderer:reader:saga:index";

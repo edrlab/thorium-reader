@@ -69,12 +69,12 @@ import {
     selectPublicationNotesHydratedViewTagsIndex,
 } from "../../publication-notes/selectors";
 import { publicationNotesViewSortToSelection, selectionToEffectivePublicationNotesViewSort, selectionToPublicationNotesViewSelection } from "../../publication-notes/viewFilters";
-import { logEvent } from "readium-desktop/renderer/common/analytics";
 import {
     buildReaderMenuRoute,
     isReaderMenuRouteGroup,
     readerMenuRoutePattern,
 } from "readium-desktop/renderer/reader/routing";
+import { logEvent } from "readium-desktop/renderer/common/analytics";
 
 interface NoteListStyleSet {
     filterLine: string;
@@ -200,6 +200,8 @@ const openDetailsElement = (detailsId: string) => {
     }
 };
 
+const importReportUnresolvedImportedNotesFilterId = "annotationListImportReportUnresolvedImportedNotesFilter";
+
 export const NoteList: React.FC<NoteListProps> = (props) => {
 
     const {
@@ -260,6 +262,7 @@ export const NoteList: React.FC<NoteListProps> = (props) => {
     const [colorArrayFilter, setColorArrayFilter] = React.useState<Selection>(new Set([]));
     const [drawTypeArrayFilter, setDrawTypeArrayFilter] = React.useState<Selection>(new Set([]));
     const [creatorArrayFilter, setCreatorArrayFilter] = React.useState<Selection>(new Set([]));
+    const [importReportUnresolvedImportedNotesFilter, setImportReportUnresolvedImportedNotesFilter] = React.useState(false);
 
     const [sortType, setSortType] = React.useState<Selection>(() => publicationNotesViewSortToSelection(routeSort));
 
@@ -278,10 +281,13 @@ export const NoteList: React.FC<NoteListProps> = (props) => {
 
         if (group === "annotation") {
             filter.drawTypes = drawTypeFilterSelection;
+            if (importReportUnresolvedImportedNotesFilter) {
+                filter.importReportUnresolvedImportedNotes = true;
+            }
         }
 
         return filter;
-    }, [colorFilterSelection, creatorFilterSelection, drawTypeFilterSelection, group, tagFilterSelection]);
+    }, [colorFilterSelection, creatorFilterSelection, drawTypeFilterSelection, group, importReportUnresolvedImportedNotesFilter, tagFilterSelection]);
 
     const publicationNotesViewBaseFilter = React.useMemo<PublicationNotesViewFilter>(() => ({
         ...publicationNotesPageResetFilter,
@@ -368,6 +374,7 @@ export const NoteList: React.FC<NoteListProps> = (props) => {
         setColorArrayFilter(new Set([]));
         setDrawTypeArrayFilter(new Set([]));
         setCreatorArrayFilter(new Set([]));
+        setImportReportUnresolvedImportedNotesFilter(false);
     }, []);
 
     React.useEffect(() => {
@@ -498,7 +505,8 @@ export const NoteList: React.FC<NoteListProps> = (props) => {
     const nbOfFilters = getSelectionSize(tagArrayFilter, selectTagOption.length) +
         getSelectionSize(colorArrayFilter, noteColors.length) +
         getSelectionSize(creatorArrayFilter, selectCreatorOptions.length) +
-        (group === "annotation" ? getSelectionSize(drawTypeArrayFilter, selectDrawtypesOptions.length) : 0);
+        (group === "annotation" ? getSelectionSize(drawTypeArrayFilter, selectDrawtypesOptions.length) : 0) +
+        (group === "annotation" && importReportUnresolvedImportedNotesFilter ? 1 : 0);
 
     const summaryButtonContainerStyle: React.CSSProperties = group === "annotation" ?
         { display: "flex", gap: "10px", marginRight: "10px" } :
@@ -603,49 +611,58 @@ export const NoteList: React.FC<NoteListProps> = (props) => {
         </TagGroup>
     );
 
+    const renderCheckboxOption = (option: NoteListOption) => (
+        <div className={stylesAnnotations.annotations_checkbox} key={option.id}>
+            <input
+                type="checkbox"
+                id={option.id}
+                name={option.name || option.id}
+                className={stylesGlobal.checkbox_custom_input}
+                checked={option.checked}
+                onChange={() => option.onChange()}
+            />
+            <label htmlFor={option.id} className={stylesGlobal.checkbox_custom_label} style={option.labelStyle}>
+                <div
+                    tabIndex={0}
+                    role="checkbox"
+                    aria-checked={option.checked}
+                    aria-label={option.ariaLabel || option.label}
+                    onKeyDown={(e) => {
+                        if (e.key === " ") {
+                            e.preventDefault();
+                        }
+                    }}
+                    onKeyUp={(e) => {
+                        if (e.key === " ") {
+                            e.preventDefault();
+                            option.onChange();
+                        }
+                    }}
+                    className={stylesGlobal.checkbox_custom}
+                    style={{ border: option.checked ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: option.checked ? "var(--color-brand-primary)" : "transparent" }}>
+                    {option.checked ?
+                        <SVG ariaHidden svg={CheckIcon} />
+                        :
+                        <></>
+                    }
+                </div>
+                <span aria-hidden>
+                    {option.label}
+                </span>
+            </label>
+        </div>
+    );
+
+    const renderImportReportUnresolvedImportedNotesFilter = () => renderCheckboxOption({
+        checked: importReportUnresolvedImportedNotesFilter,
+        id: importReportUnresolvedImportedNotesFilterId,
+        label: __("message.annotations.importReportUnresolvedImportedNotes"),
+        onChange: () => setImportReportUnresolvedImportedNotesFilter((value) => !value),
+    });
+
     const renderOptions = () => (
         <>
-            {options.filter((option) => !option.hidden).map((option) => (
-                <div className={stylesAnnotations.annotations_checkbox} key={option.id}>
-                    <input
-                        type="checkbox"
-                        id={option.id}
-                        name={option.name || option.id}
-                        className={stylesGlobal.checkbox_custom_input}
-                        checked={option.checked}
-                        onChange={() => option.onChange()}
-                    />
-                    <label htmlFor={option.id} className={stylesGlobal.checkbox_custom_label} style={option.labelStyle}>
-                        <div
-                            tabIndex={0}
-                            role="checkbox"
-                            aria-checked={option.checked}
-                            aria-label={option.ariaLabel || option.label}
-                            onKeyDown={(e) => {
-                                if (e.key === " ") {
-                                    e.preventDefault();
-                                }
-                            }}
-                            onKeyUp={(e) => {
-                                if (e.key === " ") {
-                                    e.preventDefault();
-                                    option.onChange();
-                                }
-                            }}
-                            className={stylesGlobal.checkbox_custom}
-                            style={{ border: option.checked ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: option.checked ? "var(--color-brand-primary)" : "transparent" }}>
-                            {option.checked ?
-                                <SVG ariaHidden svg={CheckIcon} />
-                                :
-                                <></>
-                            }
-                        </div>
-                        <span aria-hidden>
-                            {option.label}
-                        </span>
-                    </label>
-                </div>
-            ))}
+            {options.filter((option) => !option.hidden).map(renderCheckboxOption)}
         </>
     );
 
@@ -742,6 +759,7 @@ export const NoteList: React.FC<NoteListProps> = (props) => {
                                         selectCreatorOptions,
                                         !!selectCreatorOptions.length,
                                     )}
+                                    {group === "annotation" ? renderImportReportUnresolvedImportedNotesFilter() : <></>}
                                 </FocusLock>
                             </Popover.Content>
                         </Popover.Portal>
@@ -791,9 +809,14 @@ export const NoteList: React.FC<NoteListProps> = (props) => {
                                                 ref={noteTitleRef}
                                                 className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                                             />
-                                            <select defaultValue="annotation" style={{ height: "inherit", border: "none", marginLeft: "5px" }} ref={selectFileTypeRef} name="file_type">
-                                                <option value="annotation">.annotation</option>
-                                                <option value="html">.html</option>
+                                        </div>
+                                        <div className={stylesInputs.form_group}>
+                                            <label htmlFor="file_type">
+                                                {__("catalog.format")}
+                                            </label>
+                                            <select defaultValue="annotation" ref={selectFileTypeRef} name="file_type">
+                                                <option value="annotation">JSON</option>
+                                                <option value="html">HTML</option>
                                             </select>
                                         </div>
 

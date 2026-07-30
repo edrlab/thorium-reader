@@ -14,7 +14,7 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
 import { AnnotationCard } from "../ReaderMenu/AnnotationCard";
-import { canUseReadiumAnnotationImportExport } from "../../pdf/pdfAnnotationPanel";
+import { canUseReadiumAnnotationImportExport } from "../../publication-notes/annotationPanel";
 import { NoteList } from "./NoteList";
 
 export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotationUUID: () => void, doFocus: number,*/ isPdf: boolean, popoverBoundary: HTMLDivElement, advancedAnnotationsOnChange: () => void, quickAnnotationsOnChange: () => void, marginAnnotationsOnChange: () => void, hideAnnotationOnChange: () => void, serialAnnotator: boolean, START_PAGE: number, MAX_MATCHES_PER_PAGE: number } & Pick<IReaderMenuProps, "goToLocator" | "goToPdfAnnotation">> = (props) => {

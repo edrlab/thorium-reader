@@ -34,8 +34,8 @@ import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import type { PublicationNote } from "readium-desktop/common/publication-notes";
 import { EDrawType } from "readium-desktop/common/type/note.type";
 import { clone } from "ramda";
-import { logEvent } from "readium-desktop/renderer/common/analytics";
 import { selectPublicationNotes, selectPublicationNotesFromReaderState } from "../../publication-notes/selectors";
+import { logEvent } from "readium-desktop/renderer/common/analytics";
 
 export interface IProps {
     shortcutEnable: boolean;

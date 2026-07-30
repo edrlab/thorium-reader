@@ -22,7 +22,7 @@ No Electron runtime test was performed during this review. The notes below are b
 
 2026-05-24: Fixed Jest module resolution for the PDF annotation geometry unit tests. `annotationGeometry.test.ts` now runs through the repository Jest config and passes with 8 tests. A representative existing Jest test, `test/utils/iso8601.test.ts`, also passes after the mapper fix.
 
-2026-05-24: Fixed the R1 annotation panel `locatorExtended` assumption. Added `pdfAnnotationPanel.ts` helpers and unit tests for PDF quote/page display, PDF page/rectangle sorting, and edit-save payloads preserving `pdfAnnotation`. Result: 5 PDF annotation Jest suites passed, 61 tests passed. A full `tsc --noEmit --project tsconfig.jest.json` check was attempted again but remains blocked by existing repository-wide CommonJS/ESM diagnostics outside this PDF annotation slice.
+2026-05-24: Fixed the R1 annotation panel `locatorExtended` assumption. Added publication-notes annotation panel helpers and unit tests for PDF quote/page display, PDF page/rectangle sorting, and edit-save payloads preserving `pdfAnnotation`. Result: 5 PDF annotation Jest suites passed, 61 tests passed. A full `tsc --noEmit --project tsconfig.jest.json` check was attempted again but remains blocked by existing repository-wide CommonJS/ESM diagnostics outside this PDF annotation slice.
 
 2026-05-24: Implemented the slice 2 read-only interaction path. PDF annotations are shown as read-only cards, panel clicks dispatch `viewer:go-to-annotation`, the webview scrolls to the target page/rect and flashes the rendered highlight, and the PDF panel hides Readium annotation import/export controls. Result: 5 PDF annotation Jest suites passed, 70 tests passed. A full `tsc --noEmit --project tsconfig.jest.json` check was attempted again but remains blocked by existing repository-wide CommonJS/ESM diagnostics outside this PDF annotation slice.
 
@@ -110,7 +110,7 @@ Why this fix is in scope:
 
 - The first slice creates persisted PDF notes, so the existing annotation panel must tolerate notes without EPUB locator data.
 - PDF annotation identity and target geometry live in `pdfAnnotation`; losing that field during a future panel save would orphan the note from the PDF overlay synchronization path.
-- The logic is extracted into `pdfAnnotationPanel.ts` so the PDF-vs-EPUB branching can be unit-tested without mounting the reader UI.
+- The logic is extracted into `src/renderer/reader/publication-notes/annotationPanel.ts` so the PDF-vs-EPUB branching can be unit-tested without mounting the reader UI.
 
 Known residual limits:
 
@@ -139,7 +139,7 @@ Known residual limits:
 
 Status: fixed in slice 2.
 
-`ReaderMenu.tsx` now hides the Readium annotation import/export controls when the active reader is PDF. The decision is centralized through `canUseReadiumAnnotationImportExport()` in `pdfAnnotationPanel.ts`, with a unit test proving the PDF context is excluded while non-PDF readers keep the existing exchange path.
+`ReaderMenu.tsx` now hides the Readium annotation import/export controls when the active reader is PDF. The decision is centralized through `canUseReadiumAnnotationImportExport()` in `src/renderer/reader/publication-notes/annotationPanel.ts`, with a unit test proving the PDF context is excluded while non-PDF readers keep the existing exchange path.
 
 Why this fix is in scope:
 
@@ -156,7 +156,7 @@ Known residual limits:
 
 Status: fixed in slice 2 and updated for slice 3.
 
-`ReaderMenu.tsx` now delegates annotation panel navigation, edit/delete availability, and bulk-delete filtering to pure helpers in `pdfAnnotationPanel.ts`. The unit tests cover PDF edit/delete action decisions, EPUB edit/delete preservation, bulk delete inclusion for PDF annotations, EPUB-vs-PDF navigation routing, and invalid PDF navigation rejection before panel dispatch.
+`ReaderMenu.tsx` now delegates annotation panel navigation, edit/delete availability, and bulk-delete filtering to pure helpers in `src/renderer/reader/publication-notes/annotationPanel.ts`. The unit tests cover PDF edit/delete action decisions, EPUB edit/delete preservation, bulk delete inclusion for PDF annotations, EPUB-vs-PDF navigation routing, and invalid PDF navigation rejection before panel dispatch.
 
 Why this fix is in scope:
 

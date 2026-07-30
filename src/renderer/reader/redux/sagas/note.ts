@@ -30,7 +30,6 @@ import type { PublicationNote } from "readium-desktop/common/publication-notes";
 import { EDrawType, type TDrawType } from "readium-desktop/common/type/note.type";
 import { checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation, readiumAnnotationSelectorFromNote } from "../../readiumAnnotation/selector";
 import { clone } from "ramda";
-import { logEvent } from "readium-desktop/renderer/common/analytics";
 import { resolveSelectorTargetToLocatorExtended } from "readium-desktop/common/readium/annotation/converter";
 import { getResourceCacheFromPublication } from "./resourceCache";
 import { selectPublicationNotes } from "../../publication-notes/selectors";
@@ -39,6 +38,7 @@ import {
     IReadiumAnnotationSelectorControllerUpdate,
     ReadiumAnnotationSelectorController,
 } from "../../readiumAnnotation/selectorController";
+import { logEvent } from "readium-desktop/renderer/common/analytics";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:annotation");
