@@ -1235,7 +1235,7 @@
             "info": "切换配置文件以使用合作伙伴供应商的品牌标识与配色来自定义本应用。每种配置文件均可提供量身定制的体验。",
             "thorium": {
                 "description": "Thorium Vanilla 配置文件是原始版本，由 EDRLab 设计。",
-                "title": "Thorium vanilla"
+                "title": "Thorium原版"
             },
             "version": "版本：{{- version}}"
         },
