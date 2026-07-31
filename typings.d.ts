@@ -49,7 +49,7 @@ declare const __TH__IS_CI__: boolean;
 declare const __TH__CUSTOMIZATION_PROFILE_PRIVATE_KEY__: string;
 // declare const __TH__CUSTOMIZATION_PROFILE_PUB_KEY__: string;
 
-declare module "bindings";
+// declare module "bindings";
 declare module "debug/src/node";
 declare module "debug/src/browser";
 declare module "debug/src/common";

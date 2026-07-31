@@ -45,8 +45,8 @@ const aliases = {
 };
 
 let externals = {
-    bindings: "bindings",
-    "file-uri-to-path": "file-uri-to-path",
+    // bindings: "bindings",
+    // "file-uri-to-path": "file-uri-to-path",
     fsevents: "fsevents",
     "electron-devtools-installer": "electron-devtools-installer",
     "remote-redux-devtools": "remote-redux-devtools",

@@ -389,7 +389,6 @@
     "agent-base": "^9.0.0",
     "ajv": "^8.20.0",
     "ajv-formats": "^3.0.1",
-    "bindings": "^1.5.0",
     "classnames": "^2.5.1",
     "color": "^5.0.3",
     "css.escape": "^1.5.1",

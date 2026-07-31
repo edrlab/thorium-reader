@@ -42,8 +42,8 @@ ForkTsCheckerWebpackPlugin.prototype[require("util").inspect.custom] = (_depth, 
 const checkTypeScriptSkip =
     nodeEnv !== "production" ? (process.env.SKIP_CHECK_TYPESCRIPT === "1" ? true : false) : false;
 let externals = {
-    bindings: "bindings",
-    "file-uri-to-path": "file-uri-to-path",
+    // bindings: "bindings",
+    // "file-uri-to-path": "file-uri-to-path",
     fsevents: "fsevents",
     "electron-devtools-installer": "electron-devtools-installer",
     "remote-redux-devtools": "remote-redux-devtools",

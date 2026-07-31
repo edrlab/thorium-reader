@@ -5,7 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as bind from "bindings";
+// https://github.com/TooTallNate/node-bindings/blob/master/bindings.js
+// import * as bind from "bindings";
+
 import * as crypto from "crypto";
 import debug_ from "debug";
 import * as fs from "fs";
@@ -150,14 +152,22 @@ export class LCP {
                 debug(fileName);
             }
             this._usesNativeNodePlugin = true;
-            this._lcpNative = bind({
-                bindings: fileName,
-                module_root: filePath,
-                try: [[
-                    "module_root",
-                    "bindings",
-                ]],
-            });
+
+            // https://github.com/webpack/webpack/issues/4175#issuecomment-342931035
+            // @ts-expect-error TS 2304
+            const requireFunc = typeof __webpack_require__ === "function" ? __non_webpack_require__ : require;
+
+            this._lcpNative = requireFunc(LCP_NATIVE_PLUGIN_PATH);
+            this._lcpNative.path = LCP_NATIVE_PLUGIN_PATH;
+
+            // this._lcpNative = bind({
+            //     bindings: fileName,
+            //     module_root: filePath,
+            //     try: [[
+            //         "module_root",
+            //         "bindings",
+            //     ]],
+            // });
         } else {
             if (IS_DEV) {
                 debug("LCP JS impl");
