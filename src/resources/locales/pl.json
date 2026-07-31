@@ -43,12 +43,12 @@
         "update": {
             "message": "Nowa wersja jest dostępna, kliknij aby dowiedzieć się więcej.",
             "title": "{{- appName}} aktualizacja oprogramowania.",
-            "whatsnew": ""
+            "whatsnew": "Nowa wersja oprogramowania została zainstalowana, kliknij żeby dowiedzieć się więcej"
         },
         "window": {
             "showLibrary": "Pokaż bibliotekę / półkę z książkami",
-            "trayHint": "",
-            "trayTooltip": ""
+            "trayHint": "{{- appName}} nadal działa w obszarze powiadomień. Kliknij na ikonę kosza, aby wyświetlić bibliotekę.",
+            "trayTooltip": "{{- appName}} - kliknij żeby pokazać albo schować bibliotekę"
         }
     },
     "catalog": {
@@ -91,8 +91,8 @@
         "lastRead": "Ostatnio czytane",
         "login": "Zaloguj się",
         "logout": "Wyloguj się",
-        "missing": "",
-        "missingUnavailableDescription": "",
+        "missing": "Brakujące pliki",
+        "missingUnavailableDescription": "Nie można otworzyć tej publikacji, ponieważ jej pliki są niedostępne. Zaimportuj je ponownie lub przejdź do sekcji „Ustawienia”, a następnie do sekcji „Przestrzeń dyskowa”, aby dodać lub zmienić dodatkową przestrzeń dyskową.",
         "moreInfo": "Szczegóły publikacji",
         "myBooks": "Moje publikacje",
         "noPublicationHelpL1": "Upuść pliki tutaj",
@@ -109,8 +109,8 @@
                 "password": "Hasło",
                 "register": "Rejestracja",
                 "retry": "Spróbuj ponownie",
-                "unauthorized": "",
-                "unauthorizedUnsupportedType": "",
+                "unauthorized": "Błąd autoryzacji",
+                "unauthorizedUnsupportedType": "Błąd autoryzacji (brak wsparcia dla WWWAuthenticate typ '{{- type}}')",
                 "username": "Nazwa użytkownika / adres e-mail"
             },
             "info": {
@@ -132,7 +132,7 @@
                 "state": "Stan"
             }
         },
-        "openFolder": "",
+        "openFolder": "Otwórz folder",
         "publisher": "Wydawca",
         "readBook": "Czytaj",
         "released": "Opublikowano",
@@ -150,15 +150,12 @@
             "descList_few": "{{- count}} notatki {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
             "descList_many": "{{- count}} notatek {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
             "descList_one": "{{- count}} notatka {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
-            "descList_other": "",
             "descNewer_few": "Konflikt(y): {{- count}} nowsze notatki",
             "descNewer_many": "Konflikt(y): {{- count}} nowszych notatek",
             "descNewer_one": "Konflikt(y): {{- count}} nowsza notatka",
-            "descNewer_other": "",
             "descOlder_few": "Konflikt(y): {{- count}} starsze notatki",
             "descOlder_many": "Konflikt(y): {{- count}} starszych notatek",
             "descOlder_one": "Konflikt(y): {{- count}} starsza notatka",
-            "descOlder_other": "",
             "descTitle": "Tytuł adnotacji: ",
             "importAll": "Importuj wszystkie notatki",
             "importWithoutConflict": "Importuj notatki tylko wolne od konfliktów",
@@ -178,12 +175,10 @@
         "deleteAnnotationsText_few": "Czy na pewno chcesz usunąć {{- count}} notatki?",
         "deleteAnnotationsText_many": "Czy na pewno chcesz usunąć {{- count}} notatek?",
         "deleteAnnotationsText_one": "Czy na pewno chcesz usunąć {{- count}} notatkę?",
-        "deleteAnnotationsText_other": "",
         "deleteBookmarks": "Usunąć zakładki?",
         "deleteBookmarksText_few": "Czy na pewno chcesz usunąć {{- count}} zakładki?",
         "deleteBookmarksText_many": "Czy na pewno chcesz usunąć {{- count}} zakładek?",
         "deleteBookmarksText_one": "Czy na pewno chcesz usunąć {{- count}} zakładkę?",
-        "deleteBookmarksText_other": "",
         "deleteFeed": "Usunąć katalog?",
         "deletePublication": "Usunąć publikację?",
         "deletePublicationWithNotes": "Uwaga: ta publikacja zawiera adnotacje i/lub zakładki, one również zostaną usunięte! (jeśli chcesz je zachować, pamiętaj o wyeksportowaniu notatek przed usunięciem publikacji)",
@@ -255,17 +250,17 @@
             "success": "Import zakończony pomyślnie."
         },
         "download": {
-            "cancelled": "",
+            "cancelled": "Pobieranie pliku zostało anulowane.",
             "error": "Pobieranie [{{- title}}] nie powiodło się: [{{- err}}]",
             "errors": {
-                "hashMismatch": "",
-                "httpGet": "",
-                "invalidFilename": "",
-                "invalidLink": "",
-                "invalidTempDirectory": "",
-                "lengthMismatch": "",
-                "readStreamMissing": "",
-                "tooManyFilenameAttempts": ""
+                "hashMismatch": "Sprawdzenie integralności pobranego pliku zakończyło się niepowodzeniem: spodziewana wartość hasha SHA-256 to {{- expected}}, a obliczona to {{- actual}}.",
+                "httpGet": "Nie udało się pobrać pliku przez HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "invalidFilename": "Tymczasowa nazwa pliku do pobrania jest nieprawidłowa.",
+                "invalidLink": "Link do pobrania jest nieprawidłowy.",
+                "invalidTempDirectory": "Tymczasowy katalog do pobierania jest nieprawidłowy.",
+                "lengthMismatch": "Sprawdzenie integralności pobranego pliku zakończyło się niepowodzeniem: spodziewana wielkość pliku to {{- expected}} bajtów, pobrany plik ma {{- actual}} bajtów.",
+                "readStreamMissing": "Transmisja danych nie jest dostępna.",
+                "tooManyFilenameAttempts": "Nie można utworzyć unikalnej tymczasowej nazwy pliku do pobrania: {{- path}}"
             }
         },
         "import": {
@@ -275,12 +270,12 @@
         },
         "open": {
             "error": "Ładowanie publikacji nie powiodło się: [{{- err}}]",
-            "folderNotFound": ""
+            "folderNotFound": "Nie można znaleźć katalogu publikacji. Zaimportuj go ponownie lub skonfiguruj dodatkową przestrzeń dyskową w sekcji Ustawienia > Przestrzeń dyskowa."
         },
         "storage": {
-            "removed": "",
-            "updateFailed": "",
-            "updated": ""
+            "removed": "Katalog publikacji został usunięty.",
+            "updateFailed": "Nie udało się zaktualizować katalogu publikacji: {{- message}}",
+            "updated": "Zaktualizowano katalog publikacji."
         },
         "wipeData": "Dane logowania zostały wyczyszczone (tokeny dostępu i pliki cookie)"
     },
@@ -615,8 +610,8 @@
                 "descriptive": "Brak informacji o możliwości modyfikacji wyglądu"
             },
             "ways-of-reading-visual-adjustments-unmodifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Wygląd nie może zostać zmodyfikowany",
+                "descriptive": "Nie można zmieniać układu strony, ponieważ odpowiada on drukowanej publikacji, jednak systemy do czytania nadal oferują opcje powiększania i pomniejszania"
             }
         }
     },
@@ -672,7 +667,7 @@
         "expiredLcp": "Licencja LCP tej publikacji wygasła.",
         "incorrectPassphrase": "Żadne zapisane hasło dostępu nie pasuje do publikacji lub wprowadzone hasło jest nieprawidłowe.",
         "lcpEnd": "Koniec",
-        "lcpNotSupported": "",
+        "lcpNotSupported": "UWAGA: jest to wersja przedpremierowa czytnika Thorium Desktop, która nie obsługuje produkcyjnych licencji LCP i umożliwia jedynie odszyfrowywanie plików LCP w „profilu podstawowym” bez weryfikacji certyfikatu.",
         "lcpRightsCopy": "Skopiowane znaki",
         "lcpRightsPrint": "Wydrukowane strony",
         "lcpStart": "Początek",
@@ -712,7 +707,7 @@
             "date": "Data modyfikacji",
             "error": {
                 "pdf": {
-                    "validationSelection": ""
+                    "validationSelection": "Nie można utworzyć adnotacji w pliku PDF na podstawie tego zaznaczenia."
                 }
             },
             "export": "Zapisz notatki jako...",
@@ -829,8 +824,8 @@
         "notes": {
             "colors": {
                 "cyan": "Cyjan",
-                "darkorange": "",
-                "darkyellow": "",
+                "darkorange": "Ciemnopomarańczowy",
+                "darkyellow": "Ciemnożółty",
                 "green": "Zielony",
                 "orange": "Pomarańczowy",
                 "purple": "Fioletowy",
@@ -843,7 +838,6 @@
                 "founds_few": "{{- count}} dopasowania",
                 "founds_many": "{{- count}} dopasowań",
                 "founds_one": "{{- count}} dopasowanie",
-                "founds_other": "",
                 "input": "tekst do wyszukania",
                 "next": "Następny",
                 "notFound": "brak dopasowań",
@@ -880,7 +874,7 @@
             },
             "customFontSelected": "Wybrano własną czcionkę",
             "customizeReader": "Dostosuj formatowanie tekstu",
-            "defaultValue": "",
+            "defaultValue": "domyślna wartość",
             "disabled": "wyłączone",
             "display": "Wyświetlanie",
             "disposition": {
@@ -896,7 +890,7 @@
             "lineSpacing": "Interlinia",
             "margin": "Margines",
             "mathjax": "Włącz MathJax",
-            "mathjaxDescription": "",
+            "mathjaxDescription": "MathJax",
             "noFootnotes": "Wyłącz wyskakujące przypisy",
             "noRTLFlip": "Wyłącz interfejs od prawej do lewej",
             "noRuby": "Ukryj japońskie ruby",
@@ -1029,16 +1023,16 @@
                     "name": "Poprzedni segment audio (pominięcie)"
                 },
                 "AudioSpeedDecrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Zmniejsz prędkość odtwarzania dźwięku w nakładkach multimedialnych EPUB3 lub tempo odczytu przez funkcję TTS (synteza głosu)",
+                    "name": "Zmniejsz prędkość odtwarzania"
                 },
                 "AudioSpeedIncrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Zwiększ prędkość odtwarzania dźwięku w nakładkach multimedialnych EPUB3 lub tempo odczytu przez funkcję TTS (synteza głosu)",
+                    "name": "Zwiększ prędkość odtwarzania"
                 },
                 "AudioSpeedReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Zresetuj prędkość odtwarzania dźwięku w nakładkach multimedialnych EPUB3 lub tempo odczytu przez funkcję TTS (synteza głosu)",
+                    "name": "Zresetuj prędkość odtwarzania"
                 },
                 "AudioStop": {
                     "description": "Zatrzymaj bieżące audio (nakładki multimedialne EPUB3, odczyt głosowy TTS lub audiobook z nagraniem)",
@@ -1225,8 +1219,8 @@
                     "name": "Przełącz pełny ekran"
                 },
                 "ToggleScreenReaderOptimize": {
-                    "description": "",
-                    "name": ""
+                    "description": "W oknie biblioteki włącz lub wyłącz dodatkowe wsparcie dla czytników ekranu",
+                    "name": "Włącz/wyłącz optymalizacje dla czytników ekranu"
                 }
             },
             "loadUserJson": "Wczytaj z pliku użytkownika",
@@ -1259,7 +1253,7 @@
         },
         "screenReaderActivate": {
             "help": "Gdy aplikacja wykryje obecność technologii wspomagającej, interfejs użytkownika lepiej współpracuje z czytnikami ekranu",
-            "invite": "",
+            "invite": "Optymalizacja wsparcia dla czytników ekranu: ({{- status}}) [{{- keyboard}}]",
             "message": "Ulepszona obsługa czytników ekranu",
             "title": "Popraw doświadczenie z czytnikami ekranu"
         },
@@ -1267,50 +1261,50 @@
             "title": "Włącz zapisywanie sesji"
         },
         "sharedComputer": {
-            "lcpAutoDeleteExpiredPublications": "",
-            "lcpAutoDeleteExpiredPublicationsDescription": "",
-            "title": ""
+            "lcpAutoDeleteExpiredPublications": "Automatyczne usuwaj nieaktualne publikacje i powiązane z nimi dane użytkowników",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Automatycznie usuwaj wygasłe wypożyczenia (wraz z osobistymi adnotacjami, zakładkami do czytania itp.). Jest to przydatne w środowiskach z „komputerami współużytkowanymi”, takich jak biblioteki czy sale uniwersyteckie.",
+            "title": "Tryb współdzielonego komputera"
         },
         "storage": {
             "actions": {
-                "addDirectory": "",
-                "changeDirectory": "",
-                "removeStorageDirectory": ""
+                "addDirectory": "Wybierz dodatkową przestrzeń dyskową",
+                "changeDirectory": "Zaktualizuj dodatkową przestrzeń dyskową",
+                "removeStorageDirectory": "Usuń dodatkową przestrzeń dyskową"
             },
             "beta": {
-                "availability": "",
-                "integrity": "",
-                "migration": "",
-                "summary": "",
-                "warning": ""
+                "availability": "Ta funkcja działa wyłącznie w najnowszych wersjach programu Thorium; zewnętrzne katalogi książek nie będą wyświetlane w programie Thorium w wersji 3.4 i starszych.",
+                "integrity": "Należy zadbać o bezpieczeństwo i dostępność tego katalogu. Nie usuwaj go, nie ograniczaj dostępu do niego, unikaj korzystania z wolnych lub niestabilnych nośników danych, takich jak dyski sieciowe.",
+                "migration": "Thorium nie przeniesie automatycznie Twoich publikacji: jeśli zwiększysz pojemność dodatkowej przestrzeni dyskowej, musisz ręcznie przenieść swoje publikacje do nowej lokalizacji. Jeśli ją usuniesz, musisz ręcznie przenieść swoje publikacje z powrotem do pierwotnej przestrzeni dyskowej.",
+                "summary": "Dowiedz się więcej o tej funkcji, która obecnie znajduje się w fazie beta",
+                "warning": "Nie należy ręcznie modyfikować plików w tym folderze, ponieważ może to spowodować problemy z książkami lub czytnikiem. Folder ten należy traktować jako bezpieczną bibliotekę zarządzaną przez Thorium."
             },
             "configuration": {
-                "chooseFolderDescription": "",
-                "configuredDescription": "",
-                "notConfiguredDescription": ""
+                "chooseFolderDescription": "Wybierz katalog, który program Thorium ma wykorzystywać jako dodatkową przestrzeń dyskową.",
+                "configuredDescription": "Dodatkowa przestrzeń dyskowa została skonfigurowana i jest gotowa do użycia dla nowozapisywanych publikacji.",
+                "notConfiguredDescription": "Publikacje zaimportowane do programu Thorium Reader zostaną zapisane w wybranym katalogu. Publikacje zaimportowane wcześniej pozostaną w poprzedniej lokalizacji w systemie."
             },
             "dialogs": {
                 "add": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Kontynuuj",
+                    "description": "Ta funkcja jest obecnie w fazie beta. Czy chcesz kontynuować i skonfigurować dodatkową przestrzeń dyskową, wybierając katalog?",
+                    "title": "Wybierz dodatkową przestrzeń dyskową"
                 },
                 "edit": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Wybierz katalog",
+                    "description": "Aktualizacja dodatkowej przestrzeni dyskowej wymaga ostrożności. System Thorium nie przeniesie za Ciebie istniejących publikacji; będziesz musiał to zrobić ręcznie. Czy chcesz kontynuować?",
+                    "title": "Zaktualizuj dodatkową przestrzeń dyskową"
                 },
                 "remove": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Usuń folder",
+                    "description": "Usunięcie dodatkowej przestrzeni dyskowej wymaga ostrożności. Serwis Thorium nie przeniesie za Ciebie istniejących publikacji; będziesz musiał to zrobić ręcznie. Czy chcesz kontynuować?",
+                    "title": "Usuń dodatkową przestrzeń dyskową"
                 }
             },
             "locations": {
-                "defaultDescription": "",
-                "defaultInternal": "",
-                "externalStorage": "",
-                "title": ""
+                "defaultDescription": "Publikacje zarządzane przez aplikację są domyślnie przechowywane w:",
+                "defaultInternal": "Pamięć systemowa",
+                "externalStorage": "Zewnętrzna pamięć",
+                "title": "Lokalizacje"
             }
         },
         "tabs": {
@@ -1318,7 +1312,7 @@
             "general": "Ogólne",
             "keyboardShortcuts": "Skróty klawiszowe",
             "profiles": "Profile",
-            "storage": ""
+            "storage": "Przestrzeń dyskowa"
         },
         "theme": {
             "auto": "Automatyczny",
@@ -1329,13 +1323,13 @@
         },
         "window": {
             "keepLibraryWindowInBackgroundOnReaderClose": "Pozostaw bibliotekę w tle po zamknięciu okien czytnika",
-            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Gdy włączone, zamknięcie okna czytnika nie przywraca okna biblioteki ani nie przenosi go na pierwszy plan.",
+            "keepLibraryWindowInBackgroundOnReaderCloseDescription": "Gdy ta opcja jest zaznaczona, zamknięcie okna czytnika nie przywraca okna biblioteki ani nie przenosi go na pierwszy plan.",
             "keepLibraryWindowInBackgroundOnReaderOpen": "Minimalizuj bibliotekę po otwarciu okien czytnika",
-            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Gdy włączone, otwarcie okna czytnika minimalizuje okno biblioteki.",
+            "keepLibraryWindowInBackgroundOnReaderOpenDescription": "Gdy ta opcja jest zaznaczona, otwarcie okna czytnika minimalizuje okno biblioteki.",
             "minimizeLibraryToTray": "Minimalizuj bibliotekę do obszaru powiadomień",
-            "minimizeLibraryToTrayDescription": "Gdy włączone, zminimalizowanie okna biblioteki pozostawia Thorium uruchomione w obszarze powiadomień systemu Windows.",
+            "minimizeLibraryToTrayDescription": "Gdy ta opcja jest zaznaczona, zminimalizowanie okna biblioteki pozostawia Thorium uruchomione w obszarze powiadomień systemu Windows.",
             "oneReaderWindowPerPublication": "Używaj jednego okna czytnika na publikację",
-            "oneReaderWindowPerPublicationDescription": "Gdy włączone, otwarcie publikacji, która jest już otwarta, przenosi fokus na jej okno czytnika zamiast otwierać kolejne.",
+            "oneReaderWindowPerPublicationDescription": "Gdy ta opcja jest zaznaczona, otwarcie publikacji, która jest już otwarta, przenosi fokus na jej okno czytnika zamiast otwierać kolejne.",
             "title": "Zachowanie okien"
         }
     },
