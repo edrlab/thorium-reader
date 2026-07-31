@@ -1240,16 +1240,16 @@
             "version": "版本：{{- version}}"
         },
         "screenReaderActivate": {
-            "help": "",
-            "invite": "",
-            "message": "",
-            "title": ""
+            "help": "当应用程序检测到辅助技术的存在时，用户界面在使用屏幕阅读器时将表现更佳",
+            "invite": "为屏幕阅读器优化 ({{- status}}) [{{- keyboard}}]",
+            "message": "对屏幕阅读器的增强支持",
+            "title": "增强屏幕阅读器体验"
         },
         "session": {
             "title": "保存登录状态"
         },
         "sharedComputer": {
-            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublications": "自动删除过期出版物及相关用户数据",
             "lcpAutoDeleteExpiredPublicationsDescription": "",
             "title": ""
         },
