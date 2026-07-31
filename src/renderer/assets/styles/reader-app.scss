@@ -173,7 +173,7 @@ button {
       height: 2px;
       background: #c0c0c0;
     }
-    
+
     &::-webkit-slider-thumb {
       height: 15px;
       width: 15px;
@@ -238,7 +238,7 @@ button {
 
 .docked {
   &_left {
-    left: 400px!important;
+    left: 422px!important;
 
     &_pdf {
       left: 370px!important;
@@ -246,8 +246,8 @@ button {
   }
 
   &_right {
-    right: 400px!important;
-    
+    right: 423px!important;
+
     &_pdf {
       right: 370px!important;
     }
@@ -363,14 +363,14 @@ button {
     list-style-type: none;
     padding: 1rem;
     margin: 0;
-  
+
     & li {
       padding-top: 0.5rem;
-  
+
       & a {
         text-decoration: none;
         color: var(--color-text-reader);
-  
+
         &:hover {
           text-decoration: underline;
         }
@@ -390,7 +390,7 @@ button {
     background-color: transparent;
     color: white;
     cursor: pointer;
-  
+
     &:hover {
       color: var(--color-text-reader);
       background-color: rgb(255 255 255 / 60%);
@@ -1118,11 +1118,11 @@ input[type="radio"] + label {
       margin-left: 0!important;
       background: none!important;
     }
-  
+
     .my_combobox_container {
       padding-right: 0;
     }
-  
+
     &:hover, &:focus {
       border: 1px solid var(--color-brand-primary);
       background-color: var(--color-brand-secondary);
