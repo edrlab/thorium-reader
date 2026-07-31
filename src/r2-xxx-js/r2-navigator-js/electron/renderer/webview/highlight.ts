@@ -942,7 +942,7 @@ function processMouseEvent(win: ReadiumElectronWebviewWindow, ev: MouseEvent) {
                 //     parseFloat(_highlightsContainer.style.zoom) :
                 //     1;
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const zoom = (foundElement as any).__inverseZoom || 1;
+                const zoom = typeof (foundElement as any).__inverseZoom === "number" ? (foundElement as any).__inverseZoom : 1;
 
                 if (dir) {
                     _highlightsFloatingUI_TEXT.setAttribute("dir", dir);
@@ -2286,8 +2286,6 @@ https://blackorwhite.lloydk.ca
 
     let clientRects: IRect[] | undefined;
 
-    const rangeClientRects = DOMRectListToArray(range.getClientRects());
-
     if (doNotMergeHorizontallyAlignedRects) {
         // non-solid highlight (underline or strikethrough), cannot merge and reduce/simplify client rectangles much due to importance of line-level decoration (must preserve horizontal/vertical line heights)
 
@@ -2379,6 +2377,8 @@ https://blackorwhite.lloydk.ca
 
         // clientRects = (DEBUG_RECTS && drawStrikeThrough) ? textClientRects : textReducedClientRectsToKeep;
     } else {
+        const rangeClientRects = DOMRectListToArray(range.getClientRects());
+
         if (drawMarginBookmark &&
             rangeClientRects.length === 2 &&
             Math.floor(rangeClientRects[0].width) === 0 && // rangeClientRects[0].left === rangeClientRects[0].right
@@ -2395,6 +2395,11 @@ https://blackorwhite.lloydk.ca
         }
         // solid highlight, can merge and reduce/simplify client rectangles as much as possible
         clientRects = getClientRectsNoOverlap(rangeClientRects, false, isVWM, highlight.expand ? highlight.expand : 0);
+
+        // if (drawMarginBookmark && clientRects.length) {
+        //     clientRects = [clientRects[0]];
+        //     clientRects = [clientRects[clientRects.length - 1]];
+        // }
     }
 
     // let highlightAreaSVGDocFrag: DocumentFragment | undefined;
@@ -2551,12 +2556,20 @@ https://blackorwhite.lloydk.ca
 
     const bodyPaddingLeft = parseInt(bodyComputedStyle.paddingLeft, 10) / inverseZoom;
     const bodyPaddingRight = parseInt(bodyComputedStyle.paddingRight, 10) / inverseZoom;
-    const bodyWidth = parseInt(bodyComputedStyle.width, 10) / inverseZoom;
-    const bodyHeight = parseInt(bodyComputedStyle.height, 10) / inverseZoom;
+    const bodyWidth = parseFloat(bodyComputedStyle.width) / inverseZoom; // parseInt(bodyComputedStyle.width, 10)
+    const bodyHeight = parseFloat(bodyComputedStyle.height) / inverseZoom; // parseInt(bodyComputedStyle.height, 10)
     const paginatedTwo = paginated && isTwoPageSpread();
     const paginatedWidth = scrollElement.clientWidth / (paginatedTwo ? 2 : 1);
     const paginatedGap = (paginatedWidth - bodyWidth) / 2;
     const paginatedOffset = paginatedGap + bodyPaddingLeft;
+    // console.log("bodyPaddingLeft", bodyPaddingLeft);
+    // console.log("bodyPaddingRight", bodyPaddingRight);
+    // console.log("bodyWidth", bodyWidth);
+    // console.log("bodyHeight", bodyHeight);
+    // console.log("paginatedTwo", paginatedTwo);
+    // console.log("paginatedWidth", paginatedWidth);
+    // console.log("paginatedGap", paginatedGap);
+    // console.log("paginatedOffset", paginatedOffset);
 
     const useFastBoundingRect = true; // we never union-join the polygons, instead we group possible rectangle bounding boxes together to allow fragmentation across page boundaries
     if (drawOpacityMask || drawOpacityMaskRuler) {
@@ -3268,6 +3281,7 @@ https://blackorwhite.lloydk.ca
             const face = f as Face;
 
             const b = face.box;
+            // console.log("xxxl", paginatedOffset, paginatedWidth, b.xmin, Math.floor((b.xmin) / paginatedWidth) * paginatedWidth);
             const left =
                 isVWM
                 ?
@@ -3381,10 +3395,44 @@ https://blackorwhite.lloydk.ca
             }
         }
 
+        const BOOKMARK_HEIGHT_MULTIPLIER = 2;
         if (useFastBoundingRect) {
             if (boundingRectCountourMargin) {
                 polygonMarginUnionPoly = new Polygon();
                 if (Array.isArray(boundingRectCountourMargin)) {
+                    if (drawMarginBookmark && boundingRectCountourMargin.length) {
+                        // console.log("boundingRectCountourMargin: ", JSON.stringify(boundingRectCountourMargin, null, 4));
+                        let firstRect: IRect = boundingRectCountourMargin[boundingRectCountourMargin.length - 1];
+                        if (isVWM) {
+                            for (const b of boundingRectCountourMargin) {
+                                if (b.left < firstRect.left) {
+                                    firstRect = b;
+                                    continue;
+                                }
+                                if (b.left == firstRect.left && b.top < firstRect.top) {
+                                    firstRect = b;
+                                    continue;
+                                }
+                            }
+                            firstRect.width = firstRect.height * BOOKMARK_HEIGHT_MULTIPLIER;
+                            firstRect.left = firstRect.right - firstRect.width;
+                        } else {
+                            for (const b of boundingRectCountourMargin) {
+                                if (rtl ? b.left > firstRect.left : b.left < firstRect.left) {
+                                    firstRect = b;
+                                    continue;
+                                }
+                                if (b.left == firstRect.left && b.top < firstRect.top) {
+                                    firstRect = b;
+                                    continue;
+                                }
+                            }
+                            firstRect.height = firstRect.width * BOOKMARK_HEIGHT_MULTIPLIER;
+                            firstRect.bottom = firstRect.top + firstRect.height;
+                        }
+                        boundingRectCountourMargin = [firstRect];
+                        // console.log("firstRect 1: ", JSON.stringify(firstRect, null, 4));
+                    }
                     for (const b of boundingRectCountourMargin) {
                         const f = polygonMarginUnionPoly.addFace(new Box(b.left, b.top, b.right, b.bottom));
                         if (f.orientation() !== BASE_ORIENTATION) {
@@ -3393,6 +3441,16 @@ https://blackorwhite.lloydk.ca
                         }
                     }
                 } else {
+                    if (drawMarginBookmark) {
+                        if (isVWM) {
+                            boundingRectCountourMargin.width = boundingRectCountourMargin.height * BOOKMARK_HEIGHT_MULTIPLIER;
+                            boundingRectCountourMargin.left = boundingRectCountourMargin.right - boundingRectCountourMargin.width;
+                        } else {
+                            boundingRectCountourMargin.height = boundingRectCountourMargin.width * BOOKMARK_HEIGHT_MULTIPLIER;
+                            boundingRectCountourMargin.bottom = boundingRectCountourMargin.top + boundingRectCountourMargin.height;
+                        }
+                        // console.log("firstRect 2: ", JSON.stringify(boundingRectCountourMargin, null, 4));
+                    }
                     const f = polygonMarginUnionPoly.addFace(new Box(boundingRectCountourMargin.left, boundingRectCountourMargin.top, boundingRectCountourMargin.right, boundingRectCountourMargin.bottom));
                     if (f.orientation() !== BASE_ORIENTATION) {
                         console.log("--POLYGON FACE ORIENTATION CCW/CW reverse() 7");
@@ -3401,7 +3459,41 @@ https://blackorwhite.lloydk.ca
                 }
             } else {
                 const poly = new Polygon();
-                for (const r of polygonCountourMarginRects) {
+                boundingRectCountourMargin = polygonCountourMarginRects;
+                if (drawMarginBookmark && polygonCountourMarginRects.length) {
+                    // console.log("polygonCountourMarginRects: ", JSON.stringify(polygonCountourMarginRects, null, 4));
+                    let firstRect: IRect = polygonCountourMarginRects[polygonCountourMarginRects.length - 1];
+                    if (isVWM) {
+                        for (const b of polygonCountourMarginRects) {
+                            if (b.left < firstRect.left) {
+                                firstRect = b;
+                                continue;
+                            }
+                            if (b.left == firstRect.left && b.top < firstRect.top) {
+                                firstRect = b;
+                                continue;
+                            }
+                        }
+                        firstRect.width = firstRect.height * BOOKMARK_HEIGHT_MULTIPLIER;
+                        firstRect.left = firstRect.right - firstRect.width;
+                    } else {
+                        for (const b of polygonCountourMarginRects) {
+                            if (rtl ? b.left > firstRect.left : b.left < firstRect.left) {
+                                firstRect = b;
+                                continue;
+                            }
+                            if (b.left == firstRect.left && b.top < firstRect.top) {
+                                firstRect = b;
+                                continue;
+                            }
+                        }
+                        firstRect.height = firstRect.width * BOOKMARK_HEIGHT_MULTIPLIER;
+                        firstRect.bottom = firstRect.top + firstRect.height;
+                    }
+                    boundingRectCountourMargin = [firstRect];
+                    // console.log("firstRect 3: ", JSON.stringify(firstRect, null, 4));
+                }
+                for (const r of boundingRectCountourMargin) {
                     const f = poly.addFace(new Box(r.left, r.top, r.right, r.bottom));
                     if (f.orientation() !== BASE_ORIENTATION) {
                         console.log("--POLYGON FACE ORIENTATION CCW/CW reverse() 8");
@@ -3444,17 +3536,17 @@ https://blackorwhite.lloydk.ca
         }
 
         if (drawMarginBookmark) {
-            const ratio = 3;
-            const delta = MARGIN_MARKER_THICKNESS / ratio;
+            // const ratio = 3;
+            // const delta = MARGIN_MARKER_THICKNESS / ratio;
             const polygonMarginUnionPoly_ = polygonMarginUnionPoly.clone(); // backup
             try {
-                const bbox = polygonMarginUnionPoly.box;
-                const vec = new Vector(bbox.center, new Point(0, 0));
-                polygonMarginUnionPoly = polygonMarginUnionPoly.translate(vec);
-                polygonMarginUnionPoly = polygonMarginUnionPoly.scale(1/ratio, 1/ratio);
-                polygonMarginUnionPoly = polygonMarginUnionPoly.translate(vec.invert());
-                // polygonMarginUnionPoly = offset(polygonMarginUnionPoly, -delta, true);
-                polygonMarginUnionPoly = offset(polygonMarginUnionPoly, delta, false);
+                // const bbox = polygonMarginUnionPoly.box;
+                // const vec = new Vector(bbox.center, new Point(0, 0));
+                // polygonMarginUnionPoly = polygonMarginUnionPoly.translate(vec);
+                // polygonMarginUnionPoly = polygonMarginUnionPoly.scale(1/ratio, 1/ratio);
+                // polygonMarginUnionPoly = polygonMarginUnionPoly.translate(vec.invert());
+                // // polygonMarginUnionPoly = offset(polygonMarginUnionPoly, -delta, true);
+                // polygonMarginUnionPoly = offset(polygonMarginUnionPoly, delta, false);
                 const p = new Polygon();
                 const triangleInset = MARGIN_MARKER_THICKNESS / 2.5;
                 const f = p.addFace([
