@@ -759,6 +759,7 @@
         },
         "marks": {
             "annotations": "Σχόλια",
+            "annotationsReadium": "Σχόλια (Readium)",
             "bookmarks": "Σελιδοδείκτες",
             "delete": "Διαγραφή",
             "edit": "Επεξεργασία",

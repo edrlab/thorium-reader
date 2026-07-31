@@ -754,6 +754,7 @@
         },
         "marks": {
             "annotations": "註解",
+            "annotationsReadium": "註解 (Readium)",
             "bookmarks": "書籤",
             "delete": "刪除",
             "edit": "編輯",

@@ -759,6 +759,7 @@
         },
         "marks": {
             "annotations": "Märkmed",
+            "annotationsReadium": "Märkmed (Readium)",
             "bookmarks": "Järjehoidjad",
             "delete": "Kustuta",
             "edit": "Muuda",

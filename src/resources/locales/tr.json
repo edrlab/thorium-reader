@@ -759,6 +759,7 @@
         },
         "marks": {
             "annotations": "Açıklayıcı notlar",
+            "annotationsReadium": "Açıklayıcı notlar (Readium)",
             "bookmarks": "Yer imleri",
             "delete": "Sil",
             "edit": "Düzenle",

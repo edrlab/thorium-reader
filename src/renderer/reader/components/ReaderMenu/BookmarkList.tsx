@@ -483,7 +483,7 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
                                             {__("catalog.format")}
                                         </label>
                                         <select defaultValue="annotation" ref={selectFileTypeRef} name="file_type">
-                                            <option value="annotation">JSON</option>
+                                            <option value="annotation">{__("reader.marks.annotationsReadium")}</option>
                                             <option value="html">HTML</option>
                                         </select>
                                     </div>

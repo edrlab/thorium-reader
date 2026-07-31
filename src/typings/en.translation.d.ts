@@ -1814,6 +1814,7 @@ declare namespace typed_i18n {
   },
   readonly "marks": {
     readonly "annotations": string,
+    readonly "annotationsReadium": string,
     readonly "bookmarks": string,
     readonly "delete": string,
     readonly "edit": string,
@@ -2131,6 +2132,7 @@ declare namespace typed_i18n {
   (_: "reader.imgViewer.zoomReset", __?: {}): string;
   (_: "reader.marks", __?: {}): {
   readonly "annotations": string,
+  readonly "annotationsReadium": string,
   readonly "bookmarks": string,
   readonly "delete": string,
   readonly "edit": string,
@@ -2142,6 +2144,7 @@ declare namespace typed_i18n {
   readonly "toc": string
 };
   (_: "reader.marks.annotations", __?: {}): string;
+  (_: "reader.marks.annotationsReadium", __?: {}): string;
   (_: "reader.marks.bookmarks", __?: {}): string;
   (_: "reader.marks.delete", __?: {}): string;
   (_: "reader.marks.edit", __?: {}): string;

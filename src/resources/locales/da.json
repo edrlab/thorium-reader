@@ -759,6 +759,7 @@
         },
         "marks": {
             "annotations": "Noter",
+            "annotationsReadium": "Noter (Readium)",
             "bookmarks": "Bogmærker",
             "delete": "Slet",
             "edit": "Rediger",

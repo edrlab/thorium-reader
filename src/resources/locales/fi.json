@@ -759,6 +759,7 @@
         },
         "marks": {
             "annotations": "Muistiinpanot",
+            "annotationsReadium": "Muistiinpanot (Readium)",
             "bookmarks": "Kirjanmerkit",
             "delete": "Poista",
             "edit": "Muokkaa",

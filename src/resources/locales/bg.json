@@ -759,6 +759,7 @@
         },
         "marks": {
             "annotations": "Анотации",
+            "annotationsReadium": "Анотации (Readium)",
             "bookmarks": "Отметки",
             "delete": "Изтрий",
             "edit": "Редактиране",

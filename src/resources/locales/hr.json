@@ -764,6 +764,7 @@
         },
         "marks": {
             "annotations": "Anotacije",
+            "annotationsReadium": "Anotacije (Readium)",
             "bookmarks": "Knjižne oznake",
             "delete": "Izbriši",
             "edit": "Uredi",

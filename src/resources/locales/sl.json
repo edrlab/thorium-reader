@@ -769,6 +769,7 @@
         },
         "marks": {
             "annotations": "Opombe",
+            "annotationsReadium": "Opombe (Readium)",
             "bookmarks": "Zaznamki",
             "delete": "Izbriši",
             "edit": "Uredi",

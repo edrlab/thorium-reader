@@ -754,6 +754,7 @@
         },
         "marks": {
             "annotations": "メモ",
+            "annotationsReadium": "メモ (Readium)",
             "bookmarks": "しおり",
             "delete": "削除",
             "edit": "編集",

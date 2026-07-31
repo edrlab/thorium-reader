@@ -779,6 +779,7 @@
         },
         "marks": {
             "annotations": "التعليقات",
+            "annotationsReadium": "(Readium) التعليقات",
             "bookmarks": "الإشارات المرجعية",
             "delete": "حذف",
             "edit": "تحرير",

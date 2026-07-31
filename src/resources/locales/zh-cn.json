@@ -754,6 +754,7 @@
         },
         "marks": {
             "annotations": "注解",
+            "annotationsReadium": "注解 (Readium)",
             "bookmarks": "书签",
             "delete": "删除",
             "edit": "编辑",

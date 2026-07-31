@@ -749,6 +749,7 @@
         },
         "marks": {
             "annotations": "주석",
+            "annotationsReadium": "주석 (Readium)",
             "bookmarks": "북마크",
             "delete": "삭제",
             "edit": "수정",

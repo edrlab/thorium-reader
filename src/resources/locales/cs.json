@@ -769,6 +769,7 @@
         },
         "marks": {
             "annotations": "Anotace",
+            "annotationsReadium": "Anotace (Readium)",
             "bookmarks": "Záložky",
             "delete": "Odstranit",
             "edit": "Upravit",

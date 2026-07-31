@@ -759,6 +759,7 @@
         },
         "marks": {
             "annotations": "Meine Anmerkungen",
+            "annotationsReadium": "Meine Anmerkungen (Readium)",
             "bookmarks": "Meine Lesezeichen",
             "delete": "Löschen",
             "edit": "Bearbeiten",

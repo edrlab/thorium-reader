@@ -759,6 +759,7 @@
         },
         "marks": {
             "annotations": "Anteckningar",
+            "annotationsReadium": "Anteckningar (Readium)",
             "bookmarks": "Bokmärken",
             "delete": "Ta bort",
             "edit": "Redigera",

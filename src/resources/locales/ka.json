@@ -759,6 +759,7 @@
         },
         "marks": {
             "annotations": "ანოტაციები",
+            "annotationsReadium": "ანოტაციები (Readium)",
             "bookmarks": "სანიშნეები",
             "delete": "წაშლა",
             "edit": "გადაკეთება",

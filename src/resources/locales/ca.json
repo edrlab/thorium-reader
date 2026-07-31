@@ -764,6 +764,7 @@
         },
         "marks": {
             "annotations": "Anotacions",
+            "annotationsReadium": "Anotacions (Readium)",
             "bookmarks": "Marcadors",
             "delete": "Eliminar",
             "edit": "Editar",

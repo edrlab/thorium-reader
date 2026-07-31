@@ -759,6 +759,7 @@
         },
         "marks": {
             "annotations": "சிறுகுறிப்புகள்",
+            "annotationsReadium": "சிறுகுறிப்புகள் (Readium)",
             "bookmarks": "புக்மார்க்குகள்",
             "delete": "நீக்கு",
             "edit": "தொகு",

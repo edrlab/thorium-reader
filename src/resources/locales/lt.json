@@ -769,6 +769,7 @@
         },
         "marks": {
             "annotations": "Pastabos",
+            "annotationsReadium": "Pastabos (Readium)",
             "bookmarks": "Skirtukai",
             "delete": "Šalinti",
             "edit": "Keisti",
