@@ -807,9 +807,14 @@ export const NoteList: React.FC<NoteListProps> = (props) => {
                                                 ref={noteTitleRef}
                                                 className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                                             />
-                                            <select defaultValue="annotation" style={{ height: "inherit", border: "none", marginLeft: "5px" }} ref={selectFileTypeRef} name="file_type">
-                                                <option value="annotation">.annotation</option>
-                                                <option value="html">.html</option>
+                                        </div>
+                                        <div className={stylesInputs.form_group}>
+                                            <label htmlFor="file_type">
+                                                {__("catalog.format")}
+                                            </label>
+                                            <select defaultValue="annotation" ref={selectFileTypeRef} name="file_type">
+                                                <option value="annotation">JSON</option>
+                                                <option value="html">HTML</option>
                                             </select>
                                         </div>
 

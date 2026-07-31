@@ -2,6 +2,11 @@ name: CI pull requests, build + lint
 on:
   pull_request:
     branches: [ develop ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 # https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token
 # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#permissions
 permissions:
@@ -22,7 +27,15 @@ permissions:
     security-events: none
     statuses: none
 jobs:
-  pr-build-job:
+  approval_job:
+# github.event.pull_request.head.repo.fork
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
+    runs-on: ubuntu-latest
+    environment: "Thorium Deskop Pull Requests"
+    steps:
+      - run: echo "Pull Request approval."
+
+  build_job:
     timeout-minutes: 30
     permissions:
       actions: none
@@ -46,7 +59,11 @@ jobs:
 #   if: "github.event_name == 'pull_request'"
 #        !contains(github.event.head_commit.message, 'skip ci') &&
 #        github.head_ref is PR branch
-    if: "github.base_ref == 'develop' && github.repository_owner == 'edrlab' && github.repository == 'edrlab/thorium-reader'"
+    needs: [approval_job]
+    if: >-
+      !cancelled()
+      && (needs.approval_job.result == 'success' || needs.approval_job.result == 'skipped')
+      && github.base_ref == 'develop' && github.repository_owner == 'edrlab' && github.repository == 'edrlab/thorium-reader'
     runs-on: ${{ matrix.runson }}
     strategy:
       fail-fast: false

@@ -43,12 +43,12 @@
         "update": {
             "message": "有新版本可用，点击了解更多信息。",
             "title": "{{- appName}} 软件更新。",
-            "whatsnew": ""
+            "whatsnew": "新版本安装好了，单击了解更多信息"
         },
         "window": {
             "showLibrary": "显示 书库/书架",
-            "trayHint": "",
-            "trayTooltip": ""
+            "trayHint": "{{- appName}} 仍在通知区域运行。单击托盘图标来显示书库。",
+            "trayTooltip": "{{- appName}} - 单击以显示或隐藏书库"
         }
     },
     "catalog": {
@@ -252,17 +252,17 @@
             "unsupportedSelectorSummary": ""
         },
         "download": {
-            "cancelled": "",
+            "cancelled": "下载已取消。",
             "error": "下载{{- title}}失败: [{{- err}}]",
             "errors": {
-                "hashMismatch": "",
-                "httpGet": "",
-                "invalidFilename": "",
-                "invalidLink": "",
-                "invalidTempDirectory": "",
-                "lengthMismatch": "",
-                "readStreamMissing": "",
-                "tooManyFilenameAttempts": ""
+                "hashMismatch": "下载文件完整性检查失败：预期SHA-256哈希值为 {{- expected}}，实际为 {{- actual}}。",
+                "httpGet": "HTTP协议下载失败： {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "invalidFilename": "当前下载文件的文件名无效。",
+                "invalidLink": "下载链接无效。",
+                "invalidTempDirectory": "当前下载文件的路径无效。",
+                "lengthMismatch": "下载文件完整性检查失败：预期大小为 {{- expected}} 字节，实际为 {{- actual}} 字节。",
+                "readStreamMissing": "下载数据流不可用。",
+                "tooManyFilenameAttempts": "无法创建特定临时下载文件名：{{- path}}"
             }
         },
         "import": {
@@ -793,8 +793,8 @@
             "speed": "语音朗读速度",
             "stop": "停止朗读",
             "title": "语音朗读",
-            "useTTSHighlightsForMO": "",
-            "useTTSHighlightsForMODescription": ""
+            "useTTSHighlightsForMO": "自定义高亮",
+            "useTTSHighlightsForMODescription": "禁用已创建的样式"
         },
         "navigation": {
             "ZenModeExit": "退出禅模式",
@@ -826,8 +826,8 @@
         "notes": {
             "colors": {
                 "cyan": "青色",
-                "darkorange": "",
-                "darkyellow": "",
+                "darkorange": "暗橙色",
+                "darkyellow": "暗黄色",
                 "green": "绿色",
                 "orange": "橙色",
                 "purple": "紫色",
@@ -874,7 +874,7 @@
             },
             "customFontSelected": "您已选择自定义字体",
             "customizeReader": "自定义文本格式",
-            "defaultValue": "",
+            "defaultValue": "默认值",
             "disabled": "已禁用",
             "display": "显示",
             "disposition": {
@@ -882,7 +882,7 @@
             },
             "font": "字体",
             "fontSize": "字体大小",
-            "increaseFontSize": "",
+            "increaseFontSize": "增加字体大小",
             "infoCustomFont": "通过输入名称从操作系统中选择自定义字体",
             "justification": "排版",
             "justify": "两端对齐",
@@ -890,7 +890,7 @@
             "lineSpacing": "行间距",
             "margin": "页边距",
             "mathjax": "启用 MathJax",
-            "mathjaxDescription": "",
+            "mathjaxDescription": "MathJax",
             "noFootnotes": "禁用脚注",
             "noRTLFlip": "禁用从右到左的界面布局",
             "noRuby": "隐藏日文振假名",
@@ -921,7 +921,7 @@
                 "title": "偏好设置"
             },
             "preview": "预览",
-            "reduceFontSize": "",
+            "reduceFontSize": "减小字体大小",
             "reduceMotion": "减少动态效果",
             "scrolled": "滚屏",
             "spacing": "间距",
@@ -1023,16 +1023,16 @@
                     "name": "上一个音频片段（跳过）"
                 },
                 "AudioSpeedDecrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "降低 EPUB3 媒体层的音频播放速度或文本转语音朗读速度",
+                    "name": "降低音频播放速度"
                 },
                 "AudioSpeedIncrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "提高EPUB3 媒体层的音频播放速度或文本转语音朗读速度",
+                    "name": "提高音频播放速度"
                 },
                 "AudioSpeedReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "重设EPUB3 媒体层的音频播放速度或文本转语音朗读速度",
+                    "name": "重设音频播放速度"
                 },
                 "AudioStop": {
                     "description": "停止当前音频（EPUB3 媒体覆盖、文本转语音朗读或预录有声读物）",
@@ -1147,35 +1147,35 @@
                     "name": "转到上一条历史记录"
                 },
                 "NavigatePreviousLibraryPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "在书库窗口中，显示分页出版物列表的前一页。请注意，此默认快捷键还有另一种替代快捷键",
+                    "name": "转到书库的前一页"
                 },
                 "NavigatePreviousLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "在书库窗口中，显示分页出版物列表的前一页。此默认快捷键还有另一种替代快捷键",
+                    "name": "转到书库的前一页（备用）"
                 },
                 "NavigatePreviousOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "在书库的“目录/ OPDS 订阅源”窗口中，跟随前一分页的链接。请注意，此默认快捷键还有另一种替代快捷键",
+                    "name": "转到前一个OPDS页面"
                 },
                 "NavigatePreviousOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "在书库的“目录/ OPDS 订阅源”窗口中，跟随前一分页的链接。此默认快捷键还有另一种替代快捷键",
+                    "name": "转到前一个OPDS页面（备用）"
                 },
                 "NavigatePreviousPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "在阅读器窗口中，转到出版物的前一页。请注意，此默认快捷键还有另一种替代快捷键",
+                    "name": "转到前一页"
                 },
                 "NavigatePreviousPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "在阅读器窗口中，转到出版物的前一页。此默认快捷键还有另一种替代快捷键",
+                    "name": "转到前一页（备用）"
                 },
                 "NavigateToBegin": {
-                    "description": "",
-                    "name": "转到开始"
+                    "description": "在阅读器窗口中，转到出版物的开头",
+                    "name": "转到开头"
                 },
                 "NavigateToEnd": {
-                    "description": "在阅读器窗口中，转到出版物的末尾",
+                    "description": "在阅读器窗口中，转到出版物的结尾",
                     "name": "转到结尾"
                 },
                 "OpenReaderInfo": {
@@ -1212,19 +1212,19 @@
                 },
                 "ToggleBookmark": {
                     "description": "添加新书签或删除当前选中的现有书签",
-                    "name": ""
+                    "name": "添加或删除书签"
                 },
                 "ToggleReaderFullscreen": {
-                    "description": "",
-                    "name": ""
+                    "description": "在阅读器窗口，激活系统全屏或恢复正常窗口模式。请注意，此操作与简化用户界面的“禅模式”不同",
+                    "name": "切换全屏"
                 },
                 "ToggleScreenReaderOptimize": {
-                    "description": "",
-                    "name": ""
+                    "description": "在书库窗口，切换对屏幕阅读的优化支持",
+                    "name": "切换屏幕阅读优化支持"
                 }
             },
             "loadUserJson": "从用户文件加载",
-            "noShortcutFound": "",
+            "noShortcutFound": "未找到对应这一标签的快捷方式",
             "resetDefaults": "重置 (加载初始设置)",
             "save": "保存",
             "searchPlaceholder": "搜索快捷键"
@@ -1238,30 +1238,30 @@
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "",
-                "enableCheckbox": "",
+                "applyDefaultTemplate": "加载默认模板",
+                "enableCheckbox": "自定义HTML模板",
                 "overrideHTMLTemplate": "导出笔记 (注释和书签)"
             }
         },
         "profiles": {
-            "info": "",
+            "info": "切换配置文件以使用合作伙伴供应商的品牌标识与配色来自定义本应用。每种配置文件均可提供量身定制的体验。",
             "thorium": {
                 "description": "Thorium Vanilla 配置文件是原始版本，由 EDRLab 设计。",
-                "title": ""
+                "title": "Thorium原版"
             },
-            "version": ""
+            "version": "版本：{{- version}}"
         },
         "screenReaderActivate": {
-            "help": "",
-            "invite": "",
-            "message": "",
-            "title": ""
+            "help": "当应用程序检测到辅助技术的存在时，用户界面在使用屏幕阅读器时将表现更佳",
+            "invite": "为屏幕阅读器优化 ({{- status}}) [{{- keyboard}}]",
+            "message": "对屏幕阅读器的增强支持",
+            "title": "增强屏幕阅读器体验"
         },
         "session": {
             "title": "保存登录状态"
         },
         "sharedComputer": {
-            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublications": "自动删除过期出版物及相关用户数据",
             "lcpAutoDeleteExpiredPublicationsDescription": "",
             "title": ""
         },

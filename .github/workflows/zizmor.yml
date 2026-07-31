@@ -4,13 +4,24 @@ name: GitHub Actions Security Analysis with zizmor
 on:
   push:
     branches: ["develop"]
+    paths:
+      - '.github/**'
+      - '!.github/CODEOWNERS'
   pull_request:
     branches: ["**"]
+    paths:
+      - '.github/**'
+      - '!.github/CODEOWNERS'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions: {}
 
 jobs:
-  zizmor:
+  zizmor_job:
+    timeout-minutes: 10
     name: Zizmor
     runs-on: ubuntu-latest
     permissions:
