@@ -1259,7 +1259,9 @@ class Reader extends React.Component<IProps, IState> {
                                         : "")}
                                     ref={this.mainElRef}
                                     style={{
-                                        inset: this.state.currentLocation?.docInfo?.isVerticalWritingMode || isAudioBook || !this.props.readerConfig.paged || this.props.isPdf || this.props.isDivina || this.isFixedLayout() ? "0" : "75px 50px",
+                                        // left: this.props.readerConfig.readerDockingMode === "left" && this.isFixedLayout() ? "372px" : undefined,
+                                        // right: this.props.readerConfig.readerDockingMode === "right" && this.isFixedLayout() ? "373px" : undefined,
+                                        inset: this.state.currentLocation?.docInfo?.isVerticalWritingMode || isAudioBook || !this.props.readerConfig.paged || this.props.isPdf || this.props.isDivina ? "0" : this.isFixedLayout() ? "0px 50px" : "75px 50px",
                                         // opacity: this.state.blackoutMask ? 0 : 1,
                                     }}>
                                 </div>
