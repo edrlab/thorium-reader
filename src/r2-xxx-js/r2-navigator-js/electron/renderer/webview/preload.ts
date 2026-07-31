@@ -152,6 +152,8 @@ win.READIUM2 = {
     // dialogs = [],
     fxlViewportHeight: 0,
     fxlViewportScale: 1,
+    fxlViewportTX: 0,
+    fxlViewportTY: 0,
     fxlViewportWidth: 0,
     fxlZoomPercent: 0,
     hashElement: null,
@@ -2275,6 +2277,8 @@ win.addEventListener("DOMContentLoaded", () => {
         win.READIUM2.fxlViewportWidth = wh.width;
         win.READIUM2.fxlViewportHeight = wh.height;
         win.READIUM2.fxlViewportScale = wh.scale;
+        win.READIUM2.fxlViewportTX = wh.tx;
+        win.READIUM2.fxlViewportTY = wh.ty;
 
         const payload: IEventPayload_R2_EVENT_FXL_CONFIGURE = {
             fxl: wh,
@@ -3467,6 +3471,8 @@ function loaded(forced: boolean) {
             win.READIUM2.fxlViewportWidth = wh.width;
             win.READIUM2.fxlViewportHeight = wh.height;
             win.READIUM2.fxlViewportScale = wh.scale;
+            win.READIUM2.fxlViewportTX = wh.tx;
+            win.READIUM2.fxlViewportTY = wh.ty;
 
             const payload: IEventPayload_R2_EVENT_FXL_CONFIGURE = {
                 fxl: wh,
