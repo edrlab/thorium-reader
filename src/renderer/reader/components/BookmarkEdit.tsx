@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import classNames from "classnames";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesBookmarks from "readium-desktop/renderer/assets/styles/components/bookmarks.scss";
 
@@ -92,7 +93,7 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
         subscribe(textAreaElement);
     }, [uuid]);
 
-    return <form className={stylesBookmarks.bookmark_form}>
+    return <form className={classNames(stylesBookmarks.bookmark_form, displayFromReaderMenu ? undefined : stylesBookmarks.bookmark_form_pop)}>
         <div style={{ backgroundColor: "var(--color-gray-50" }}>
 
             {/* <p>{bookmark.locatorExtended.selectionInfo?.cleanText ?
