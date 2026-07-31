@@ -365,7 +365,10 @@ if (optionSelectedIsOnOptionDisabled) {
                         </div>
                     </Tabs.Content>
                     <Tabs.Content value="tab-text" tabIndex={-1} id="readerSettings_tabs-tab-text" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <div className={classNames(stylesSettings.settings_tab, stylesSettings.settings_reading_text, stylesSettings.section)}>
+                        <div
+                            className={classNames(stylesSettings.settings_tab, stylesSettings.settings_reading_text, stylesSettings.section)}
+                            style={{ marginLeft: "20px" }}
+                        >
                             <FontSize />
                             <FontFamily />
                         </div>
