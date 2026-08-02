@@ -205,7 +205,7 @@
         "searchPlaceholder": "Zoeken",
         "searchTitle": "Begin met zoeken",
         "settings": "Instellingen",
-        "settingsLabel": "",
+        "settingsLabel": "Applicatie instellingen",
         "viewMode": "Weergave modus"
     },
     "library": {
@@ -231,7 +231,7 @@
             "author": "Auteur",
             "language": "Taal",
             "readingState": "Leesstatus",
-            "sortBy": "Sorteer bij : ",
+            "sortBy": "Sorteer op: ",
             "title": "Titel"
         }
     },
@@ -245,15 +245,15 @@
             "success": "Import succesvol voltooid."
         },
         "download": {
-            "cancelled": "",
+            "cancelled": "Download geannuleerd.",
             "error": "Het downloaden van{{- title}} is mislukt: [{{- err}}]",
             "errors": {
-                "hashMismatch": "",
-                "httpGet": "",
-                "invalidFilename": "",
-                "invalidLink": "",
-                "invalidTempDirectory": "",
-                "lengthMismatch": "",
+                "hashMismatch": "Integriteitscontrole van gedownload bestand mislukt: verwachte SHA-256 hash {{- expected}}, ontvangen {{- actual}}.",
+                "httpGet": "HTTP download mislukt: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "invalidFilename": "De tijdelijke download bestandsnaam is ongeldig.",
+                "invalidLink": "De download link is ongeldig.",
+                "invalidTempDirectory": "De tijdelijke download folder is ongeldig.",
+                "lengthMismatch": "Integriteitscontrole van gedownload bestand mislukt: verwacht {{- expected}} bytes, ontvangen {{- actual}} bytes.",
                 "readStreamMissing": "",
                 "tooManyFilenameAttempts": ""
             }
@@ -820,8 +820,8 @@
         "notes": {
             "colors": {
                 "cyan": "Cyaan",
-                "darkorange": "",
-                "darkyellow": "",
+                "darkorange": "Donkeroranje",
+                "darkyellow": "Donkergeel",
                 "green": "Groen",
                 "orange": "Oranje",
                 "purple": "Paars",
@@ -1298,7 +1298,7 @@
             "locations": {
                 "defaultDescription": "",
                 "defaultInternal": "",
-                "externalStorage": "",
+                "externalStorage": "Externe opslag",
                 "title": ""
             }
         },
