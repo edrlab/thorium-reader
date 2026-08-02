@@ -177,7 +177,7 @@ export async function popupFootNote(
         htmltxt = htmltxt.replace(/xmlns:epub=["']http:\/\/www.idpf.org\/2007\/ops["']/g, " ");
     }
     // htmltxt = htmltxt.replace(/epub:type=["'][^"']+["']/g, " ");
-    htmltxt = htmltxt.replace(/<script>.+<\/script>/g, " ");
+    htmltxt = htmltxt.replace(/<script>.+<\/script>/gi, " ");
 
     const ID_PREFIX_ = "r2-footnote-for_";
     const id_ = ID_PREFIX_ + targetElement.id;
