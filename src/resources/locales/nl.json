@@ -43,12 +43,12 @@
         "update": {
             "message": "Nieuwe versie beschikbaar, klik voor meer informatie.",
             "title": "{{- appName}} software update.",
-            "whatsnew": ""
+            "whatsnew": "Er is een nieuwe versie geïnstalleerd. Klik voor meer informatie"
         },
         "window": {
             "showLibrary": "Toon bibliotheek / boekenplank",
-            "trayHint": "",
-            "trayTooltip": ""
+            "trayHint": "{{- appName}} is nog actief in het notificatieveld. Klik op notificatie-icoon om de bibliotheek te tonen.",
+            "trayTooltip": "{{- appName}} - klik om de bibliotheek te tonen of te verbergen"
         }
     },
     "catalog": {
@@ -91,8 +91,8 @@
         "lastRead": "Laatst gelezen",
         "login": "Inloggen",
         "logout": "Uitloggen",
-        "missing": "",
-        "missingUnavailableDescription": "",
+        "missing": "Ontbrekende bestanden",
+        "missingUnavailableDescription": "Deze publicatie kan niet worden geopend omdat de opgeslagen bestanden niet beschikbaar zijn. Importeer de publicatie opnieuw of ga naar Instellingen en vervolgens naar Opslag om extra opslagruimte toe te voegen of te wijzigen.",
         "moreInfo": "Meer Informatie",
         "myBooks": "Mijn boeken",
         "noPublicationHelpL1": "Sleep een publicatie hier naar toe",
