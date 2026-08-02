@@ -8,7 +8,7 @@
 import {
     CSS_CLASS_NO_FOCUS_OUTLINE, POPOUTIMAGE_CONTAINER_ID, POPOUTIMAGE_CONTROLS_ID, POPOUTIMAGE_CLOSE_ID, POPOUTIMAGE_MINUS_ID, POPOUTIMAGE_PLUS_ID, POPOUTIMAGE_RESET_ID, TTS_POPUP_DIALOG_CLASS,
 } from "../../common/styles";
-import { PopupDialog, closePopupDialogs } from "../common/popup-dialog";
+import { PopupDialog, closePopupDialogs } from "./popup-dialog";
 import { ReadiumElectronWebviewWindow } from "./state";
 
 export function popoutImage(

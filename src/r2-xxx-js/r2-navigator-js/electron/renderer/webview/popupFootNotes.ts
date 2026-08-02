@@ -10,7 +10,7 @@ import * as path from "path";
 import {
     CSS_CLASS_NO_FOCUS_OUTLINE, FOOTNOTES_CONTAINER_CLASS, ROOT_CLASS_NO_FOOTNOTES,
 } from "../../common/styles";
-import { PopupDialog } from "../common/popup-dialog";
+import { PopupDialog } from "./popup-dialog";
 
 import { removeUTF8BOM } from "@r2-utils-js/_utils/bom";
 

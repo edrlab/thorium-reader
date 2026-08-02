@@ -30,7 +30,7 @@ import {
     getTtsQueueItemRef, getTtsQueueItemRefText, getTtsQueueLength, normalizeHtmlText,
 } from "../common/dom-text-utils";
 import { easings } from "../common/easings";
-import { IHTMLDialogElementWithPopup, PopupDialog, isPopupDialogOpen } from "../common/popup-dialog";
+import { IHTMLDialogElementWithPopup, PopupDialog, isPopupDialogOpen } from "./popup-dialog";
 import { createHighlights, destroyHighlight, ENABLE_CSS_HIGHLIGHTS, HIGHLIGHT_GROUP_TTS } from "./highlight";
 import { isRTL, clearImageZoomOutlineDebounced } from "./readium-css";
 

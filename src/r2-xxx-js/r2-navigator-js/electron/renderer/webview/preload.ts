@@ -82,7 +82,7 @@ import { uniqueCssSelector } from "../common/cssselector3";
 
 import { getDirection, getLanguage, normalizeText } from "../common/dom-text-utils";
 import { easings } from "../common/easings";
-import { closePopupDialogs, isPopupDialogOpen } from "../common/popup-dialog";
+import { closePopupDialogs, isPopupDialogOpen } from "./popup-dialog";
 import { getURLQueryParams } from "../common/querystring";
 import { IRect, getClientRectsNoOverlap, DOMRectListToArray } from "../common/rect-utils";
 import {
