@@ -59,8 +59,8 @@
         "addBookToLib": "Voeg toe",
         "addTags": "Voeg een label toe",
         "addTagsButton": "Voeg toe",
-        "allBooks": "Alle boeken",
-        "bookInfo": "Over dit boek",
+        "allBooks": "Alle publicaties",
+        "bookInfo": "Over deze publicatie",
         "column": {
             "ascending": "oplopend",
             "descending": "aflopend",
@@ -1262,9 +1262,9 @@
         },
         "storage": {
             "actions": {
-                "addDirectory": "Selecteer een map voor aanvullende opslag",
-                "changeDirectory": "Bijwerken aanvullende opslagmap",
-                "removeStorageDirectory": "Verwijder aanvullende opslagmap"
+                "addDirectory": "Selecteer extra opslagruimte",
+                "changeDirectory": "Bijwerken extra opslagruimte",
+                "removeStorageDirectory": "Verwijder extra opslagruimte"
             },
             "beta": {
                 "availability": "Deze functie werkt alleen met recente versies van Thorium; boeken in externe mappen worden niet weergegeven in Thorium 3.4 of ouder.",
@@ -1282,21 +1282,21 @@
                 "add": {
                     "confirm": "Ga verder",
                     "description": "Deze functie bevindt zich momenteel in de bètafase. Wilt u doorgaan en extra opslagruimte configureren door een map te selecteren?",
-                    "title": "Kies aanvullende opslag"
+                    "title": "Kies extra opslagruimte"
                 },
                 "edit": {
                     "confirm": "Wijzig map",
                     "description": "Het bijwerken van de extra opslagruimte vereist zorgvuldigheid. Thorium migreert bestaande publicaties niet automatisch; u moet dit handmatig doen. Wilt u doorgaan?",
-                    "title": ""
+                    "title": "Extra opslagruimte bijwerken"
                 },
                 "remove": {
                     "confirm": "Verwijder map",
-                    "description": "",
-                    "title": "Verwijder extra opslag"
+                    "description": "Het verwijderen van de extra opslagruimte vereist zorgvuldigheid. Thorium migreert bestaande publicaties niet automatisch; u moet dit handmatig doen. Wilt u doorgaan?",
+                    "title": "Verwijder extra opslagruimte"
                 }
             },
             "locations": {
-                "defaultDescription": "",
+                "defaultDescription": "Publicaties die door de applicatie worden beheerd, worden standaard opgeslagen in:",
                 "defaultInternal": "Systeem opslag",
                 "externalStorage": "Externe opslag",
                 "title": "Locaties"
