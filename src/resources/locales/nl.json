@@ -1,10 +1,10 @@
 {
     "accessibility": {
         "bookMenu": "Menu",
-        "closeDialog": "Sluiten",
-        "leftSlideButton": "Schuif lijst naar links",
-        "mainContent": "hoofd inhoud",
-        "rightSlideButton": "Schuif lijst naar rechts",
+        "closeDialog": "Sluit",
+        "leftSlideButton": "Vorige",
+        "mainContent": "hoofdinhoud",
+        "rightSlideButton": "Volgende",
         "skipLink": "Ga naar inhoud",
         "toolbar": "werkbalk"
     },
@@ -109,8 +109,8 @@
                 "password": "Wachtwoord",
                 "register": "Registreer",
                 "retry": "Probeer opnieuw",
-                "unauthorized": "",
-                "unauthorizedUnsupportedType": "",
+                "unauthorized": "Geen toegang",
+                "unauthorizedUnsupportedType": "Geen toegang (niet ondersteund WWWAuthenticate type '{{- type}}')",
                 "username": "Gebruikersnaam / e-mailadres"
             },
             "info": {
@@ -132,12 +132,12 @@
                 "state": "Status"
             }
         },
-        "openFolder": "",
+        "openFolder": "Open map",
         "publisher": "Uitgever",
         "readBook": "Gelezen",
         "released": "Uitgegeven op",
         "removeFromFavorites": "Verwijder van favorieten",
-        "selectTableHeaders": "",
+        "selectTableHeaders": "Selecteer kolommen om te tonen",
         "sort": "Sorteer op",
         "tag": "Label",
         "tags": "Labels",
@@ -179,7 +179,7 @@
         "deletePublicationWithNotes": "Waarschuwing: deze publicatie bevat annotaties en/of bladwijzers, deze zullen ook verwijderd worden! (als je deze wilt bewaren, zorg ervoor dat je deze notities exporteert voordat je de publicatie verwijderd)",
         "import": "Wil je deze bestanden echt importeren :",
         "importError": "er is een fout opgetreden, controleer je bestandsextensie ({{acceptedExtension}})",
-        "renew": "Wil je de licentie voor deze publicatie echt vernieuwen?",
+        "renew": "Wil je de uitleenlicentie voor deze publicatie echt vernieuwen?",
         "return": "Wil je de licentie voor deze publicatie echt inleveren?",
         "yes": "Ja"
     },
@@ -212,7 +212,7 @@
         "filter": {
             "addFilters": "Voeg filters toe",
             "filterBy": "Filter bij",
-            "selectOption": "Selecteer een item/element"
+            "selectOption": "Selecteer een item"
         },
         "lcp": {
             "hidePassphrase": "Verberg de wachtwoordzin",
@@ -252,10 +252,10 @@
                 "httpGet": "HTTP download mislukt: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
                 "invalidFilename": "De tijdelijke download bestandsnaam is ongeldig.",
                 "invalidLink": "De download link is ongeldig.",
-                "invalidTempDirectory": "De tijdelijke download folder is ongeldig.",
+                "invalidTempDirectory": "De tijdelijke downloadmap is ongeldig.",
                 "lengthMismatch": "Integriteitscontrole van gedownload bestand mislukt: verwacht {{- expected}} bytes, ontvangen {{- actual}} bytes.",
-                "readStreamMissing": "",
-                "tooManyFilenameAttempts": ""
+                "readStreamMissing": "Downloadstream is niet beschikbaar.",
+                "tooManyFilenameAttempts": "Kan geen unieke tijdelijke downloadbestandsnaam aanmaken: {{- path}}"
             }
         },
         "import": {
@@ -265,14 +265,14 @@
         },
         "open": {
             "error": "De publicatie kan niet worden geopend: {{- err}}",
-            "folderNotFound": ""
+            "folderNotFound": "De publicatiemap kan niet worden gevonden. Importeer deze opnieuw of configureer de extra opslagruimte in Instellingen > Opslag."
         },
         "storage": {
-            "removed": "",
-            "updateFailed": "",
-            "updated": ""
+            "removed": "Publicatiemap verwijderd.",
+            "updateFailed": "Het bijwerken van de publicatiemap is mislukt: {{- message}}",
+            "updated": "Publicatiemap bijgewerkt."
         },
-        "wipeData": "Login data is verwijderd (toegang tot logintekens en cookies)"
+        "wipeData": "Inloggegevens zijn verwijderd (toegangstokens en cookies)"
     },
     "opds": {
         "addForm": {
@@ -297,7 +297,7 @@
             "addExtract": "Voeg de samenvatting toe",
             "goBuyBook": "Koop dit boek",
             "goLoanBook": "Leen dit boek",
-            "goRevokeLoanBook": "Herroep lening",
+            "goRevokeLoanBook": "Uitlening intrekken",
             "goSubBook": "Abonneer"
         },
         "network": {
@@ -605,8 +605,8 @@
                 "descriptive": "Geen informatie beschikbaar over de mogelijkheid weergave aan te passen"
             },
             "ways-of-reading-visual-adjustments-unmodifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "De opmaak kan niet worden aangepast",
+                "descriptive": "De tekst en pagina-indeling kunnen niet worden aangepast, aangezien de leeservaring vrijwel gelijk is aan die van een gedrukte versie. Leessystemen kunnen echter wel zoomopties bieden"
             }
         }
     },
@@ -658,11 +658,11 @@
             "title": "Duur"
         },
         "encryptedNoLicense": "Publicatie is versleuteld maar heeft geen LCP-licentie!",
-        "expired": "Lening verlopen",
+        "expired": "Uitlening verlopen",
         "expiredLcp": "Dit boek kan niet gelezen worden omdat de LCP licentie verlopen is.",
         "incorrectPassphrase": "Geen opgeslagen wachtwoordzin past bij de publicatie of de ingevoerde wachtwoordzin is verkeerd.",
         "lcpEnd": "Einde",
-        "lcpNotSupported": "",
+        "lcpNotSupported": "LET OP: dit is een pre-releaseversie van de Thorium Desktop Reader die geen ondersteuning biedt voor LCP-licenties voor productieomgevingen en alleen LCP-ontsleuteling met het 'basisprofiel' ondersteunt zonder certificaatvalidatie.",
         "lcpRightsCopy": "Toegestaan aantal te kopiëren karakters",
         "lcpRightsPrint": "Toegestaan aantal af te drukken pagina's",
         "lcpStart": "Start",
@@ -678,7 +678,7 @@
             "title": "Voortgang"
         },
         "read": "Klaar",
-        "remainingTime": "Lening (resterende tijd)",
+        "remainingTime": "Uitlening (resterende tijd)",
         "renewButton": "Vernieuw",
         "returnButton": "Lever in",
         "returnedLcp": "Dit boek kan niet gelezen worden omdat de LCP licentie is ingeleverd.",
@@ -702,7 +702,7 @@
             "date": "Wijzigingsdatum",
             "error": {
                 "pdf": {
-                    "validationSelection": ""
+                    "validationSelection": "Het is niet mogelijk om een PDF-annotatie te maken op basis van deze selectie."
                 }
             },
             "export": "Bewaar aantekeningen als...",
@@ -787,8 +787,8 @@
             "speed": "Voorlezen snelheid",
             "stop": "Stop Voorlezen",
             "title": "Voorlezen",
-            "useTTSHighlightsForMO": "",
-            "useTTSHighlightsForMODescription": ""
+            "useTTSHighlightsForMO": "Aangepaste markering",
+            "useTTSHighlightsForMODescription": "Auteursstijlen uitschakelen"
         },
         "navigation": {
             "ZenModeExit": "Verlaat Zen modus",
@@ -815,7 +815,7 @@
             "printDisabled": "Verboden te printen",
             "screenNext": "Ga vooruit",
             "screenPrevious": "Ga terug",
-            "settingsTitle": "Instellingen"
+            "settingsTitle": "Reader instellingen"
         },
         "notes": {
             "colors": {
@@ -869,7 +869,7 @@
             },
             "customFontSelected": "Je hebt een eigen lettertype gekozen",
             "customizeReader": "Pas de tekstopmaak aan",
-            "defaultValue": "",
+            "defaultValue": "standaardwaarde",
             "disabled": "uitgeschakeld",
             "display": "Weergave",
             "disposition": {
@@ -885,7 +885,7 @@
             "lineSpacing": "Regelafstand",
             "margin": "Marge",
             "mathjax": "Schakel MathJax in",
-            "mathjaxDescription": "",
+            "mathjaxDescription": "MathJax",
             "noFootnotes": "Verberg pop-up voetnoten",
             "noRTLFlip": "Schakel de rechts-naar-links-UI uit",
             "noRuby": "Verberg Japanse Ruby",
@@ -1022,12 +1022,12 @@
                     "name": ""
                 },
                 "AudioSpeedIncrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Verhoog de afspeelsnelheid van audio in EPUB3 Media Overlays of de voorleessnelheid van TTS",
+                    "name": "Speel de audio sneller af"
                 },
                 "AudioSpeedReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Stel de afspeelsnelheid van de audio in EPUB3 Media Overlays of de voorleessnelheid van TTS opnieuw in",
+                    "name": "Reset audio afspeelsnelheid"
                 },
                 "AudioStop": {
                     "description": "Stop huidige audio (EPUB3 Media Overlappingen, Tekst naar Spraak hardop voorlezen, of voorgaand opgenomen audioboek)",
@@ -1035,7 +1035,7 @@
                 },
                 "CloseReader": {
                     "description": "Sluit de leesvenster en ga terug naar de bibliotheek",
-                    "name": "Sluit Lezer"
+                    "name": "Sluit Reader"
                 },
                 "FXLZoomIn": {
                     "description": "Vergoot in een vast lay-out enkele pagina of twee pagina's.",
@@ -1054,7 +1054,7 @@
                     "name": "Focus op Hoofdinhoud"
                 },
                 "FocusMainDeep": {
-                    "description": "In het leesvenster, dit verplaats de toetsenbordfocus tot in de publicatie-inhoud door gebruik van een betrouwbaardere techniek voor schermlezers",
+                    "description": "In het leesvenster wordt de toetsenbordfocus verplaatst naar de inhoud van de publicatie met behulp van een voor schermlezers betrouwbaardere techniek",
                     "name": "Diepe Focus op Hoofdinhoud"
                 },
                 "FocusReaderGotoPage": {
@@ -1083,7 +1083,7 @@
                 },
                 "FocusReaderSettings": {
                     "description": "Verplaats de toetsenbordfocus naar het instellingspaneel van het leesvenster (voorvertoning voorkeuren, enz.)",
-                    "name": "Focus op Lezer Instellingen"
+                    "name": "Focus op Reader Instellingen"
                 },
                 "FocusSearch": {
                     "description": "Verplaats de toetsenbordfocus naar het tekst zoekveld van het leesvenster, of naar het bibliotheekvenster dit doorzoekt de boekenplanken of het actieve OPDS laadpagina",
@@ -1202,7 +1202,7 @@
                     "name": "Zoekresultaat Vorige (Alternatief)"
                 },
                 "SpeakReaderInfoWhereAmI": {
-                    "description": "In het leesvenster, beschrijf de context van de huidige lees locatie, doormiddel van spraak tekst dat compatibel is met schermlezers",
+                    "description": "Beschrijf in het leesvenster de context van de huidige leeslocatie met behulp van spraaktekst die compatibel is met schermlezers",
                     "name": "Beschrijf Lees Locatie (Spraak)"
                 },
                 "ToggleBookmark": {
@@ -1214,8 +1214,8 @@
                     "name": "Schakelaar Volledig Scherm"
                 },
                 "ToggleScreenReaderOptimize": {
-                    "description": "",
-                    "name": ""
+                    "description": "Schakel in het bibliotheekvenster de geoptimaliseerde ondersteuning voor schermlezers in of uit",
+                    "name": "Schermlezeroptimalisaties in- of uitschakelen"
                 }
             },
             "loadUserJson": "Laad uit gebruikersbestand",
@@ -1248,49 +1248,49 @@
         },
         "screenReaderActivate": {
             "help": "Wanneer de app de aanwezigheid van hulpsoftware waarneemt, zal het gebruikersinterface beter werken voor schermlezers",
-            "invite": "",
+            "invite": "Optimaliseer voor schermlezer ({{- status}}) [{{- keyboard}}]",
             "message": "Verbeterde ondersteuning voor schermlezers",
-            "title": "Verbeterde schermlezer ervaring"
+            "title": "Verbeter de schermlezerervaring"
         },
         "session": {
             "title": "Stel sessie bewaring in"
         },
         "sharedComputer": {
-            "lcpAutoDeleteExpiredPublications": "",
-            "lcpAutoDeleteExpiredPublicationsDescription": "",
-            "title": ""
+            "lcpAutoDeleteExpiredPublications": "Verwijder automatisch verlopen publicaties en bijbehorende gebruikersgegevens",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Zorgt ervoor dat verlopen uitleningen automatisch worden verwijderd (inclusief persoonlijke aantekeningen, leesvoorkeuren, enz.). Dit is handig in omgevingen met gedeelde computers, zoals bibliotheken of universiteitsruimtes.",
+            "title": "Gedeelde computermodus"
         },
         "storage": {
             "actions": {
-                "addDirectory": "",
-                "changeDirectory": "",
-                "removeStorageDirectory": ""
+                "addDirectory": "Selecteer een map voor aanvullende opslag",
+                "changeDirectory": "Bijwerken aanvullende opslagmap",
+                "removeStorageDirectory": "Verwijder aanvullende opslagmap"
             },
             "beta": {
-                "availability": "",
-                "integrity": "",
-                "migration": "",
-                "summary": "",
-                "warning": ""
+                "availability": "Deze functie werkt alleen met recente versies van Thorium; boeken in externe mappen worden niet weergegeven in Thorium 3.4 of ouder.",
+                "integrity": "U moet deze map veilig en toegankelijk houden. Verwijder de map niet, beperk de toegang ertoe niet en gebruik geen trage of instabiele opslagmedia, zoals netwerkstations.",
+                "migration": "Thorium verplaatst uw boeken niet automatisch: als u de extra opslagruimte bijwerkt, moet u uw publicaties handmatig naar de nieuwe locatie verplaatsen. Als u de extra opslagruimte verwijdert, moet u uw publicaties handmatig terugzetten naar de oorspronkelijke opslagruimte.",
+                "summary": "Lees meer over deze functie, die momenteel in bèta is",
+                "warning": "Wijzig de bestanden in deze map niet handmatig, aangezien dit problemen kan veroorzaken met uw boeken of de e-reader. Beschouw deze map als een beveiligde bibliotheek die wordt beheerd door Thorium."
             },
             "configuration": {
-                "chooseFolderDescription": "",
+                "chooseFolderDescription": "Kies de map die Thorium als extra opslagruimte moet gebruiken.",
                 "configuredDescription": "",
-                "notConfiguredDescription": ""
+                "notConfiguredDescription": "Publicaties die in Thorium Reader worden geïmporteerd, worden opgeslagen in de geselecteerde map. Eerder geïmporteerde publicaties blijven in de oorspronkelijke systeemopslag."
             },
             "dialogs": {
                 "add": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Ga verder",
+                    "description": "Deze functie bevindt zich momenteel in de bètafase. Wilt u doorgaan en extra opslagruimte configureren door een map te selecteren?",
+                    "title": "Kies aanvullende opslag"
                 },
                 "edit": {
-                    "confirm": "",
-                    "description": "",
+                    "confirm": "Wijzig map",
+                    "description": "Het bijwerken van de extra opslagruimte vereist zorgvuldigheid. Thorium migreert bestaande publicaties niet automatisch; u moet dit handmatig doen. Wilt u doorgaan?",
                     "title": ""
                 },
                 "remove": {
-                    "confirm": "",
+                    "confirm": "Verwijder map",
                     "description": "",
                     "title": ""
                 }
@@ -1299,7 +1299,7 @@
                 "defaultDescription": "",
                 "defaultInternal": "",
                 "externalStorage": "Externe opslag",
-                "title": ""
+                "title": "Locaties"
             }
         },
         "tabs": {
