@@ -831,8 +831,8 @@
         },
         "picker": {
             "search": {
-                "founds_one": "{{- count}} overeenkomst(en)",
-                "founds_other": "{{- count}} overeenkomst(en)",
+                "founds_one": "{{- count}} overeenkomst",
+                "founds_other": "{{- count}} overeenkomsten",
                 "input": "zoektekst",
                 "next": "Volgende",
                 "notFound": "geen overeenkomst",
@@ -876,8 +876,8 @@
                 "title": "Indeling"
             },
             "font": "Lettertype",
-            "fontSize": "Letter grootte",
-            "increaseFontSize": "",
+            "fontSize": "Lettergrootte",
+            "increaseFontSize": "Lettergrootte vergroten",
             "infoCustomFont": "Selecteer een aangepast lettertype van het besturingssysteem door de naam ervan te typen",
             "justification": "Uitlijning",
             "justify": "Uitvullen",
@@ -916,7 +916,7 @@
                 "title": "Voorkeuren"
             },
             "preview": "Voorbeeld",
-            "reduceFontSize": "",
+            "reduceFontSize": "Lettergrootte verkleinen",
             "reduceMotion": "Beperk beweging",
             "scrolled": "Doorlopend",
             "spacing": "Afstand",
@@ -994,16 +994,16 @@
                     "name": "Maak Snelle Annotatie Aan"
                 },
                 "AnnotationsToggleMargin": {
-                    "description": "Verwissel de visuele indicaties van de annotatie en bladwijzer, in of het document marge of de tekst",
+                    "description": "Wissel de visuele aanduidingen voor annotaties en bladwijzers af, hetzij in de marge van het document, hetzij in de tekst",
                     "name": "Schakelaar Annotatie Marge"
                 },
                 "AudioNext": {
                     "description": "Verplaats Vooruit naar het volgende audio fragment in de vertelling (EPUB3 Media Overlappingen, Tekst Naar Spraak, of voorafgaand opgenomen audioboek)",
-                    "name": "Volgend Audiofragment"
+                    "name": "Volgend audiofragment"
                 },
                 "AudioNextAlt": {
                     "description": "Verplaats Vooruit naar volgend audio fragment in de vertelling (EPUB3 Media Overlappingen, Tekst Naar Spraak, of voorafgaand opgenomen audioboek). Dit slaat alle huidige verlaatbare structuren over",
-                    "name": "Volgend Audiofragment (verlaat)"
+                    "name": "Volgend audiofragment (verlaat)"
                 },
                 "AudioPlayPause": {
                     "description": "Schakelaar speel/pauzeer voor huidige vertelling (EPUB3 Media Overlappingen, Tekst naar Spraak hardop voorlezen, of vooraf opgenomen audioboek)",
@@ -1018,8 +1018,8 @@
                     "name": "Vorig Audiofragment (verlaat)"
                 },
                 "AudioSpeedDecrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Verlaag de afspeelsnelheid van EPUB3 Media Overlays of de voorleessnelheid van TTS",
+                    "name": "Verlaag de afspeelsnelheid"
                 },
                 "AudioSpeedIncrease": {
                     "description": "Verhoog de afspeelsnelheid van audio in EPUB3 Media Overlays of de voorleessnelheid van TTS",
@@ -1271,11 +1271,11 @@
                 "integrity": "U moet deze map veilig en toegankelijk houden. Verwijder de map niet, beperk de toegang ertoe niet en gebruik geen trage of instabiele opslagmedia, zoals netwerkstations.",
                 "migration": "Thorium verplaatst uw boeken niet automatisch: als u de extra opslagruimte bijwerkt, moet u uw publicaties handmatig naar de nieuwe locatie verplaatsen. Als u de extra opslagruimte verwijdert, moet u uw publicaties handmatig terugzetten naar de oorspronkelijke opslagruimte.",
                 "summary": "Lees meer over deze functie, die momenteel in bèta is",
-                "warning": "Wijzig de bestanden in deze map niet handmatig, aangezien dit problemen kan veroorzaken met uw boeken of de e-reader. Beschouw deze map als een beveiligde bibliotheek die wordt beheerd door Thorium."
+                "warning": "Wijzig de bestanden in deze map niet handmatig. Dit kan problemen veroorzaken met uw boeken of de e-reader. Beschouw deze map als een beveiligde bibliotheek die wordt beheerd door Thorium."
             },
             "configuration": {
                 "chooseFolderDescription": "Kies de map die Thorium als extra opslagruimte moet gebruiken.",
-                "configuredDescription": "",
+                "configuredDescription": "De extra opslagruimte is geconfigureerd en klaar voor gebruik voor nieuw opgeslagen publicaties.",
                 "notConfiguredDescription": "Publicaties die in Thorium Reader worden geïmporteerd, worden opgeslagen in de geselecteerde map. Eerder geïmporteerde publicaties blijven in de oorspronkelijke systeemopslag."
             },
             "dialogs": {
@@ -1292,12 +1292,12 @@
                 "remove": {
                     "confirm": "Verwijder map",
                     "description": "",
-                    "title": ""
+                    "title": "Verwijder extra opslag"
                 }
             },
             "locations": {
                 "defaultDescription": "",
-                "defaultInternal": "",
+                "defaultInternal": "Systeem opslag",
                 "externalStorage": "Externe opslag",
                 "title": "Locaties"
             }
