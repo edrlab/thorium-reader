@@ -29,38 +29,38 @@ import { OPDSPublication } from "./opds2/opds2-publication";
 // import { OPDSContributor } from "./opds2/opds2-contributor";
 // import { OPDSPublicationMetadata } from "./opds2/opds2-publicationMetadata";
 
-export const unescapeHtmlEntities = (str: string, onlyEssential: boolean | undefined = undefined): string => {
-    if (onlyEssential) {
-        return str
-            .replace(/&lt;/g, "<") // &#60;
-            .replace(/&amp;/g, "&") // &#38;
-            ;
-    }
-    return str
-        .replace(/&lt;/g, "<") // &#60;
-        .replace(/&gt;/g, ">") // &#62;
-        .replace(/&quot;/g, "\"") // &#34;
-        .replace(/&#039;/g, "'") // &apos;
-        .replace(/&apos;/g, "'") // xhtml, not html
-        .replace(/&amp;/g, "&") // &#38;
-        ;
-};
-export const escapeHtmlEntities = (str: string, onlyEssential: boolean | undefined = undefined): string => {
-    if (onlyEssential) {
-        return str
-            .replace(/</g, "&lt;") // &#60;
-            .replace(/&/g, "&amp;") // &#38;
-            ;
-    }
-    return str
-        .replace(/</g, "&lt;") // &#60;
-        .replace(/>/g, "&gt;") // &#62;
-        .replace(/"/g, "&quot;") // &#34;
-        .replace(/'/g, "&#039;") // &apos;
-        // .replace(/'/g, "&apos;") // xhtml, not html
-        .replace(/&/g, "&amp;") // &#38;
-        ;
-};
+// export const unescapeHtmlEntities = (str: string, onlyEssential: boolean | undefined = undefined): string => {
+//     if (onlyEssential) {
+//         return str
+//             .replace(/&lt;/g, "<") // &#60;
+//             .replace(/&amp;/g, "&") // &#38; // =======> this replaces previous ampersand characters in the .replace() chain!
+//             ;
+//     }
+//     return str
+//         .replace(/&lt;/g, "<") // &#60;
+//         .replace(/&gt;/g, ">") // &#62;
+//         .replace(/&quot;/g, "\"") // &#34;
+//         .replace(/&#039;/g, "'") // &apos;
+//         .replace(/&apos;/g, "'") // xhtml, not html
+//         .replace(/&amp;/g, "&") // &#38; // =======> this replaces previous ampersand characters in the .replace() chain!
+//         ;
+// };
+// export const escapeHtmlEntities = (str: string, onlyEssential: boolean | undefined = undefined): string => {
+//     if (onlyEssential) {
+//         return str
+//             .replace(/</g, "&lt;") // &#60;
+//             .replace(/&/g, "&amp;") // &#38; // =======> this replaces previous ampersand characters in the .replace() chain!
+//             ;
+//     }
+//     return str
+//         .replace(/</g, "&lt;") // &#60;
+//         .replace(/>/g, "&gt;") // &#62;
+//         .replace(/"/g, "&quot;") // &#34;
+//         .replace(/'/g, "&#039;") // &apos;
+//         // .replace(/'/g, "&apos;") // xhtml, not html
+//         .replace(/&/g, "&amp;") // &#38; // =======> this replaces previous ampersand characters in the .replace() chain!
+//         ;
+// };
 const processTypedString = (str: string, type: string | undefined) => {
     if (type === "text/html" || type === "html") {
         // ALREADY UNESCAPED BY THE XPATH text() selector
