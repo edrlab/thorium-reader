@@ -755,6 +755,7 @@ jobs:
 #run: ls -alsR release ; node scripts/release-github.mjs
 # GH_TOKEN: ${{ github.token }}
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+# SECURITY NOTE: template expansion with ${{ github.ref_name }} is safe here (potential malicious injection in Bash shell script) because of branch rules for pushing release tags v*
       run: >
         ls -alsR release ;
         (gh release create ${{ github.ref_name }} --target=develop --latest=false --prerelease --draft --title="Thorium Desktop reader ${{ github.ref_name }}" --notes="Expand the 'Assets' below to reveal the download links (build job: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" || echo OK || true) ;
