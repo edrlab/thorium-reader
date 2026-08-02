@@ -1,0 +1,28 @@
+# https://docs.github.com/en/code-security/how-tos/secure-your-supply-chain/manage-your-dependency-security/controlling-dependencies-updated#allowing-specific-dependencies-to-be-updated
+# https://docs.github.com/en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/configure-version-updates
+# https://docs.github.com/en/code-security/tutorials/secure-your-dependencies
+# https://docs.github.com/en/code-security/reference/supply-chain-security/dependabot-options-reference
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    cooldown:
+      default-days: 3
+      include:
+        - "*"
+#      exclude:
+#        - "xxx"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    cooldown:
+      default-days: 2
+      include:
+        - "*"
+#      exclude:
+#        - "xxx"
