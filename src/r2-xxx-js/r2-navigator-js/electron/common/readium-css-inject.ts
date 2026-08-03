@@ -40,17 +40,18 @@ const debug = debug_("r2:navigator#electron/common/readium-css-inject");
 
 // import { ReadiumElectronWebviewWindow } from "../renderer/webview/state";
 // (global.window as ReadiumElectronWebviewWindow).READIUM2.DEBUG_VISUALS
-function isDEBUG_VISUALS(documant: Document): boolean {
+function isDEBUG_VISUALS(_documant: Document): boolean {
     if (!IS_DEV) {
         return false;
     }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if (documant.defaultView && (documant.defaultView as any).READIUM2 &&
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (documant.defaultView as any).READIUM2.DEBUG_VISUALS) {
-        return true;
-    }
-    return false;
+    return true;
+    // // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // if (documant.defaultView && (documant.defaultView as any).READIUM2 &&
+    //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    //     (documant.defaultView as any).READIUM2.DEBUG_VISUALS) {
+    //     return true;
+    // }
+    // return false;
 }
 
 export function isDocVertical(documant: Document): boolean {
@@ -705,6 +706,12 @@ export function configureFixedLayout(
     if (!documant || !documant.head || !documant.body) {
         return undefined;
     }
+    debug("configureFixedLayout isFixedLayout ", isFixedLayout);
+    debug("configureFixedLayout fxlViewportWidth ", fxlViewportWidth);
+    debug("configureFixedLayout fxlViewportHeight ", fxlViewportHeight);
+    debug("configureFixedLayout innerWidth ", innerWidth);
+    debug("configureFixedLayout innerHeight ", innerHeight);
+    debug("configureFixedLayout wvSlot ", wvSlot);
     debug("configureFixedLayout zoomPercent ", zoomPercent);
 
     let wh: IwidthHeight | undefined;

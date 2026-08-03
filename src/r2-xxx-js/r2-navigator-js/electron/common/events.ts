@@ -60,8 +60,8 @@ export const R2_EVENT_READIUMCSS = "R2_EVENT_READIUMCSS";
 export interface IEventPayload_R2_EVENT_READIUMCSS {
     setCSS: IReadiumCSS | undefined;
     isFixedLayout?: boolean;
-    fixedLayoutWebViewWidth?: number;
-    fixedLayoutWebViewHeight?: number;
+    fixedLayoutAvailableWebViewWidth?: number;
+    fixedLayoutAvailableWebViewHeight?: number;
     fixedLayoutZoomPercent?: number;
     urlRoot?: string;
 }

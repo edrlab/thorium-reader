@@ -2233,6 +2233,7 @@ win.addEventListener("DOMContentLoaded", () => {
     }
 
     if (readiumcssJson) {
+        debug("readiumcssJson::=", JSON.stringify(readiumcssJson, null, 4));
         win.READIUM2.isFixedLayout = (typeof readiumcssJson.isFixedLayout !== "undefined") ?
             readiumcssJson.isFixedLayout : false;
     }
@@ -2267,13 +2268,15 @@ win.addEventListener("DOMContentLoaded", () => {
     // testReadiumCSS(readiumcssJson);
 
     // innerWidth/Height can be zero at this rendering stage! :(
-    const w = (readiumcssJson && readiumcssJson.fixedLayoutWebViewWidth) || win.innerWidth;
-    const h = (readiumcssJson && readiumcssJson.fixedLayoutWebViewHeight) || win.innerHeight;
+    const w = (readiumcssJson && readiumcssJson.fixedLayoutAvailableWebViewWidth) || win.innerWidth;
+    const h = (readiumcssJson && readiumcssJson.fixedLayoutAvailableWebViewHeight) || win.innerHeight;
     win.READIUM2.fxlZoomPercent = (readiumcssJson && readiumcssJson.fixedLayoutZoomPercent) || 0;
+
+    debug("configureFixedLayout...(DOMContentLoaded)", readiumcssJson?.fixedLayoutAvailableWebViewWidth, win.innerWidth, readiumcssJson?.fixedLayoutAvailableWebViewHeight, win.innerHeight);
     const wh = configureFixedLayout(win.document, win.READIUM2.isFixedLayout,
         win.READIUM2.fxlViewportWidth, win.READIUM2.fxlViewportHeight,
         w, h, win.READIUM2.webViewSlot, win.READIUM2.fxlZoomPercent);
-    if (wh) {
+    if (wh && win.READIUM2.isFixedLayout) {
         win.READIUM2.fxlViewportWidth = wh.width;
         win.READIUM2.fxlViewportHeight = wh.height;
         win.READIUM2.fxlViewportScale = wh.scale;
@@ -2285,6 +2288,12 @@ win.addEventListener("DOMContentLoaded", () => {
         };
         ipcRenderer.sendToHost(R2_EVENT_FXL_CONFIGURE, payload);
     } else {
+        win.READIUM2.fxlViewportWidth = 0;
+        win.READIUM2.fxlViewportHeight = 0;
+        win.READIUM2.fxlViewportScale = 1;
+        win.READIUM2.fxlViewportTX = 0;
+        win.READIUM2.fxlViewportTY = 0;
+
         const payload: IEventPayload_R2_EVENT_FXL_CONFIGURE = {
             fxl: null,
         };
@@ -3462,12 +3471,13 @@ function loaded(forced: boolean) {
             return;
         }
 
+        debug("configureFixedLayout...(R2_EVENT_WINDOW_RESIZE)", win.innerWidth, win.innerHeight);
         const wh = configureFixedLayout(win.document, win.READIUM2.isFixedLayout,
             win.READIUM2.fxlViewportWidth, win.READIUM2.fxlViewportHeight,
             win.innerWidth, win.innerHeight, win.READIUM2.webViewSlot,
             win.READIUM2.fxlZoomPercent);
 
-        if (wh) {
+        if (wh && win.READIUM2.isFixedLayout) { // win.READIUM2.isFixedLayout always true here
             win.READIUM2.fxlViewportWidth = wh.width;
             win.READIUM2.fxlViewportHeight = wh.height;
             win.READIUM2.fxlViewportScale = wh.scale;
@@ -3479,6 +3489,12 @@ function loaded(forced: boolean) {
             };
             ipcRenderer.sendToHost(R2_EVENT_FXL_CONFIGURE, payload);
         } else {
+            win.READIUM2.fxlViewportWidth = 0;
+            win.READIUM2.fxlViewportHeight = 0;
+            win.READIUM2.fxlViewportScale = 1;
+            win.READIUM2.fxlViewportTX = 0;
+            win.READIUM2.fxlViewportTY = 0;
+
             const payload: IEventPayload_R2_EVENT_FXL_CONFIGURE = {
                 fxl: null,
             };

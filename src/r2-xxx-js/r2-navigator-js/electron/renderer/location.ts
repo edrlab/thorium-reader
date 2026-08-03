@@ -96,7 +96,8 @@ export function setWebViewStyle(wv: IReadiumElectronWebview, wvSlot: WebViewSlot
             wv.READIUM2.fxlViewportHeight !== fxl.height ||
             wv.READIUM2.fxlViewportScale !== fxl.scale ||
             wv.READIUM2.fxlViewportTX !== fxl.tx ||
-            wv.READIUM2.fxlViewportTY !== fxl.ty) {
+            wv.READIUM2.fxlViewportTY !== fxl.ty ||
+            wv.READIUM2.webViewSlot !== wvSlot) {
             debug("setWebViewStyle CHANGED (FXL data)", v);
             changed = true;
         }
@@ -117,6 +118,8 @@ export function setWebViewStyle(wv: IReadiumElectronWebview, wvSlot: WebViewSlot
             wv.setAttribute("data-wv-slot", wvSlot);
             debug("wvSlot_ !== wvSlot ??!"); // this should never happen?
         }
+
+        wv.READIUM2.webViewSlot = wvSlot;
 
         // fxl.tx can only be negative for WebViewSlotEnum.left and WebViewSlotEnum.center
         // (WebViewSlotEnum.right is always aligned on the middle line of the spread)
@@ -168,6 +171,7 @@ export function setWebViewStyle(wv: IReadiumElectronWebview, wvSlot: WebViewSlot
             wv.READIUM2.fxlViewportScale = 1;
             wv.READIUM2.fxlViewportTX = 0;
             wv.READIUM2.fxlViewportTY = 0;
+            wv.READIUM2.webViewSlot = wvSlot;
 
             if (wv.hasAttribute("data-wv-fxl")) {
                 debug("setWebViewStyle CHANGED (FXL)", wv.getAttribute("data-wv-fxl"));
@@ -1053,7 +1057,7 @@ function loadLink(
                 }
             }
             if (activeWebView) {
-                debug("loadLink LEFT ... setWebViewStyle");
+                debug("loadLink LEFT ... setWebViewStyle", sameFXL, JSON.stringify(fxl, null, 4));
                 const changed = setWebViewStyle(activeWebView, WebViewSlotEnum.left, sameFXL ? fxl : null);
                 debug("DOM OPACITY ZERO 3: ", changed, win.READIUM2.domRootElement.style.opacity, win.READIUM2.opacityMaskCounter);
                 if (activeWebView.READIUM2.link !== pubLink) { //  || changed
@@ -1091,7 +1095,7 @@ function loadLink(
                 }
             }
             if (activeWebView) {
-                debug("loadLink RIGHT ... setWebViewStyle");
+                debug("loadLink RIGHT ... setWebViewStyle", sameFXL, JSON.stringify(fxl, null, 4));
                 const changed = setWebViewStyle(activeWebView, WebViewSlotEnum.right, sameFXL ? fxl : null);
                 debug("DOM OPACITY ZERO 4: ", changed, win.READIUM2.domRootElement.style.opacity, win.READIUM2.opacityMaskCounter);
                 if (activeWebView.READIUM2.link !== pubLink) { //  || changed
@@ -1102,7 +1106,7 @@ function loadLink(
         } else {
             webViewSlot = WebViewSlotEnum.center;
             if (activeWebView) {
-                debug("loadLink CENTER ... setWebViewStyle");
+                debug("loadLink CENTER ... setWebViewStyle", sameFXL, JSON.stringify(fxl, null, 4));
                 const changed = setWebViewStyle(activeWebView, WebViewSlotEnum.center, sameFXL ? fxl : null);
                 debug("DOM OPACITY ZERO 5: ", changed, win.READIUM2.domRootElement.style.opacity, win.READIUM2.opacityMaskCounter);
                 if (activeWebView.READIUM2.link !== pubLink) { //  || changed

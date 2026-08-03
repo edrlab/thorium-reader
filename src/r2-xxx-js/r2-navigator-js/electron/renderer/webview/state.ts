@@ -99,6 +99,8 @@ export interface IReadiumElectronWebviewState {
     fxlViewportScale?: number;
     fxlViewportTX?: number;
     fxlViewportTY?: number;
+
+    webViewSlot?: WebViewSlotEnum;
 }
 export interface IReadiumElectronWebview extends Electron.WebviewTag {
     READIUM2: IReadiumElectronWebviewState;

@@ -387,11 +387,13 @@ function createWebViewInternal(READIUM2: IReadiumElectronWebviewState, preloadSc
             webview.style.opacity = "1";
         } else if (event.channel === R2_EVENT_FXL_CONFIGURE) {
             const payload = event.args[0] as IEventPayload_R2_EVENT_FXL_CONFIGURE;
-            debug("R2_EVENT_FXL_CONFIGURE ... setWebViewStyle");
+            const wvSlot = webview.getAttribute("data-wv-slot") as WebViewSlotEnum;
+            debug("R2_EVENT_FXL_CONFIGURE ... setWebViewStyle", wvSlot, JSON.stringify(payload.fxl, null, 4));
             if (payload.fxl) {
-                setWebViewStyle(webview, WebViewSlotEnum.center, payload.fxl);
+                setWebViewStyle(webview, wvSlot ? wvSlot : WebViewSlotEnum.center, payload.fxl);
             } else {
-                setWebViewStyle(webview, WebViewSlotEnum.center, undefined);
+                // setWebViewStyle(webview, wvSlot ? wvSlot : WebViewSlotEnum.center, undefined);
+                setWebViewStyle(webview, WebViewSlotEnum.center, null);
             }
 
             debug("DOM OPACITY ONE 2 (IPC R2_EVENT_FXL_CONFIGURE): ", win.READIUM2.domRootElement.style.opacity, win.READIUM2.opacityMaskCounter);
