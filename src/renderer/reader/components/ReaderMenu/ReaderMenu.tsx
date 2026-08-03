@@ -676,7 +676,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
             }}>
                 {__("reader.navigation.openTableOfContentsTitle")}
             </h1>
-            {dockedMode ? <DockedHeader dockedMode={dockedMode} dockingMode={dockingMode} isEpub={isEpub} setSection={setSection} dockedModeRef={dockedModeRef} options={options} optionSelected={optionSelected} section={section} /> : <></>}
+            {dockedMode ? <DockedHeader dockedMode={dockedMode} dockingMode={dockingMode} isEpub={isEpub} setSection={setSection} dockedModeRef={dockedModeRef} options={options} optionSelected={optionSelected} section={section} panel={"menu"} /> : <></>}
             <Tabs.Root value={section} onValueChange={(value) => dockedMode ? null : setSection(value)} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                 {
                     dockedMode ? <></> :
