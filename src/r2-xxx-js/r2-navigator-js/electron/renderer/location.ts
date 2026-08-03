@@ -106,6 +106,7 @@ export function setWebViewStyle(wv: IReadiumElectronWebview, wvSlot: WebViewSlot
         wv.READIUM2.fxlViewportScale = fxl.scale;
         wv.READIUM2.fxlViewportTX = fxl.tx;
         wv.READIUM2.fxlViewportTY = fxl.ty;
+        wv.READIUM2.webViewSlot = wvSlot;
 
         let wvSlot_ = wv.getAttribute("data-wv-slot") as WebViewSlotEnum;
         // if (!wvSlot_) {
@@ -118,8 +119,6 @@ export function setWebViewStyle(wv: IReadiumElectronWebview, wvSlot: WebViewSlot
             wv.setAttribute("data-wv-slot", wvSlot);
             debug("wvSlot_ !== wvSlot ??!"); // this should never happen?
         }
-
-        wv.READIUM2.webViewSlot = wvSlot;
 
         // fxl.tx can only be negative for WebViewSlotEnum.left and WebViewSlotEnum.center
         // (WebViewSlotEnum.right is always aligned on the middle line of the spread)
@@ -164,6 +163,7 @@ export function setWebViewStyle(wv: IReadiumElectronWebview, wvSlot: WebViewSlot
         }
         wv.setAttribute("style", attrStyleVal);
 
+        wv.READIUM2.webViewSlot = wvSlot;
         if (fxl === null) { // when undefined, preserve same-link FXL (loadLink() same doc)
 
             wv.READIUM2.fxlViewportWidth = 0;
@@ -171,7 +171,6 @@ export function setWebViewStyle(wv: IReadiumElectronWebview, wvSlot: WebViewSlot
             wv.READIUM2.fxlViewportScale = 1;
             wv.READIUM2.fxlViewportTX = 0;
             wv.READIUM2.fxlViewportTY = 0;
-            wv.READIUM2.webViewSlot = wvSlot;
 
             if (wv.hasAttribute("data-wv-fxl")) {
                 debug("setWebViewStyle CHANGED (FXL)", wv.getAttribute("data-wv-fxl"));
