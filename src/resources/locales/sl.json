@@ -43,18 +43,18 @@
         "update": {
             "message": "Na voljo je nova različica, kliknite za več informacij.",
             "title": "Posodobitev programske opreme za {{- appName}}",
-            "whatsnew": ""
+            "whatsnew": "Nameščena je bila nova različica, kliknite za več informacij"
         },
         "window": {
             "showLibrary": "Prikaži knjižnico / knjižna polica",
-            "trayHint": "",
-            "trayTooltip": ""
+            "trayHint": "{{- appName}} se še vedno izvaja v območju za obvestila. Kliknite ikono v opravilni vrstici, da prikažete knjižnico.",
+            "trayTooltip": "{{- appName}} – kliknite za prikaz ali skrivanje knjižnice"
         }
     },
     "catalog": {
-        "AddToFavorites": "",
+        "AddToFavorites": "Dodaj med priljubljene",
         "about": {
-            "title": "O {{- appName}}"
+            "title": "O {{- appName}} (na spletu)"
         },
         "addBookToLib": "Uvozi",
         "addTags": "Dodaj oznako",
