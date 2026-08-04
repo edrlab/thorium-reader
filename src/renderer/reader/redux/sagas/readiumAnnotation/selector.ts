@@ -7,7 +7,7 @@
 
 import debug_ from "debug";
 
-import { ICFIFragmentSelector, ICssSelector, IEPUBCFISelector, IProgressionSelector, ISelector, ITextPositionSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import { ICssSelector, IEPUBCFISelector, IProgressionSelector, ISelector, ITextPositionSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import { uniqueCssSelector } from "@r2-navigator-js/electron/renderer/common/cssselector3";
 import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import {  describeTextPosition, describeTextQuote } from "readium-desktop/third_party/apache-annotator/dom";
@@ -18,9 +18,6 @@ import { SagaGenerator } from "typed-redux-saga";
 import { EpubCfiUtils } from "@r2-navigator-js/electron/common/colibrio-cfi/EpubCfiUtils";
 import { EpubCfiBuilderHelper } from "@r2-navigator-js/electron/common/colibrio-cfi/builder/EpubCfiBuilderHelper";
 import { EpubCfiStringifier } from "@r2-navigator-js/electron/common/colibrio-cfi/stringifier/EpubCfiStringifier";
-import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-
-import { select as selectTyped } from "typed-redux-saga/macro";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:readiumAnnotation:selector");
@@ -49,7 +46,7 @@ const describeCssSelectorWithTextPosition = async (range: Range, document: Docum
     };
 };
 
-export function* readiumAnnotationSelectorFromNote(note: INoteState, isLcp: boolean, sourceHref: string, xmlDom: Document): SagaGenerator<ISelector[]> {
+export function* readiumAnnotationSelectorFromNote(note: INoteState, isLcp: boolean, _sourceHref: string, xmlDom: Document): SagaGenerator<ISelector[]> {
 
     const { locatorExtended } = note;
     if (!locatorExtended) {
@@ -116,25 +113,12 @@ export function* readiumAnnotationSelectorFromNote(note: INoteState, isLcp: bool
         debug("ProgressionSelector SKIP : ", progression);
     }
 
-    const { r2Publication } = yield* selectTyped((state: IReaderRootState) => state.reader.info);
-    const opfSpineItemIndex = r2Publication.Spine.findIndex((link) => link.Href === sourceHref);
-    const opfSpineItemCFIPath = opfSpineItemIndex > -1 ? `/6/${(opfSpineItemIndex*2+2)}` : "/6/0"; // TODO Fallback !?
-
     const rootNode = EpubCfiUtils.createEmptyRootNode();
     EpubCfiBuilderHelper.appendTerminalDomRange(range, rootNode);
     let cfi = EpubCfiStringifier.stringifyRootNode(rootNode);
-    let cfi_ = cfi;
     if (cfi) {
         cfi = cfi.replace(/^epubcfi\(/, "").replace(/\)$/, "");
-        cfi_ = `epubcfi(${opfSpineItemCFIPath}!${cfi})`;
     }
-
-    const cfiFragmentSelector: ICFIFragmentSelector = {
-        type: "FragmentSelector",
-        conformsTo: "http://www.idpf.org/epub/linking/cfi/epub-cfi.html",
-        value: cfi_,
-    };
-    selector.push(cfiFragmentSelector);
 
     const cfiSelector: IEPUBCFISelector = {
         type: "EPUBCFISelector",
