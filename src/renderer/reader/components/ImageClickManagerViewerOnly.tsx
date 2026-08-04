@@ -91,7 +91,7 @@ export const ImageClickManagerImgViewerOnly: React.FC = () => {
     let scale = Math.min(scaleX, scaleY);
     if (scale > 1) scale = 1;
     // Forced "scale = 1" to avoid the image being not centered when the image is smaller than the window size. The image will be centered by default in the TransformComponent.
-    scale = 1
+    scale = 1;
 
     return (<>
 
