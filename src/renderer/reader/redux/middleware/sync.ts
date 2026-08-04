@@ -19,7 +19,6 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     readerActions.clipboardCopy.ID,
     readerActions.openRequest.ID,
     readerActions.closeRequest.ID,
-    readerActions.detachModeRequest.ID,
     readerActions.configSetDefault.ID,  // readerConfig
     // readerActions.saveBookmarkRequest.ID,
     readerActions.fullScreenRequest.ID,

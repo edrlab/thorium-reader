@@ -27,7 +27,6 @@ import { readerLocatorReducer } from "./readerLocator";
 import { searchReducer } from "./search";
 // import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 // import { priorityQueueReducer } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
-import { winModeReducer } from "readium-desktop/common/redux/reducers/winModeReducer";
 import { readerDivinaReducer } from "./divina";
 import { readerRTLFlipReducer } from "readium-desktop/common/redux/reducers/reader/rtlFlip";
 import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
@@ -208,7 +207,6 @@ export const rootReducer = () => {
         dock: dockReducer,
         toast: toastReducer,
         keyboard: keyboardReducer,
-        mode: winModeReducer,
         creator: creatorReducer,
         importAnnotations: importAnnotationReducer,
         publication: combineReducers({

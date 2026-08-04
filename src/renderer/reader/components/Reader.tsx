@@ -443,7 +443,6 @@ class Reader extends React.Component<IProps, IState> {
         // this.handleSettingsClick = this.handleSettingsClick.bind(this);
         this.handleFullscreenClick = this.handleFullscreenClick.bind(this);
         this.handleReaderClose = this.handleReaderClose.bind(this);
-        this.handleReaderDetach = this.handleReaderDetach.bind(this);
         this.handleReadingLocationChange = this.handleReadingLocationChange.bind(this);
         this.goToLocator = this.goToLocator.bind(this);
         this.goToPdfAnnotation = this.goToPdfAnnotation.bind(this);
@@ -1177,9 +1176,7 @@ class Reader extends React.Component<IProps, IState> {
                         // handleMenuClick={this.handleMenuButtonClick}
                         // handleSettingsClick={this.handleSettingsClick}
                         fullscreen={this.state.fullscreen}
-                        mode={this.props.readerMode}
                         // handleFullscreenClick={this.handleFullscreenClick}
-                        handleReaderDetach={this.handleReaderDetach}
                         handleReaderClose={this.handleReaderClose}
                         isOnSearch={this.props.searchEnable}
                         ReaderSettingsProps={ReaderSettingsProps}
@@ -3302,10 +3299,6 @@ class Reader extends React.Component<IProps, IState> {
         this.props.closeReader();
     }
 
-    private handleReaderDetach() {
-        this.props.detachReader();
-    }
-
     private handleFullscreenClick() {
         this.props.toggleFullscreen(!this.state.fullscreen);
         this.setState({ fullscreen: !this.state.fullscreen });
@@ -3659,7 +3652,6 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         searchEnable: state.search.enable,
         manifestUrlR2Protocol: manifestUrlR2Protocol_pub_id_not_path,
         winId: state.win.identifier,
-        readerMode: state.mode,
         divinaReadingMode: state.reader.divina.readingMode,
         locale: state.i18n.locale,
         disableRTLFlip: !!state.reader.disableRTLFlip?.disabled,
@@ -3707,10 +3699,6 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         closeReader: () => {
             dispatch(readerActions.closeRequest.build());
         },
-        detachReader: () => {
-            dispatch(readerActions.detachModeRequest.build());
-        },
-
         displayPublicationInfo: (pubId: string, pdfPlayerNumberOfPages: number | undefined, divinaNumberOfPages: number | undefined, divinaContinousEqualTrue: boolean, readerReadingLocation: MiniLocatorExtended | undefined, handleLinkUrl: ((url: string) => void) | undefined, focusWhereAmI?: boolean) => {
             dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoReader,
                 {

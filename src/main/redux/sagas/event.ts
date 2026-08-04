@@ -112,7 +112,6 @@ export function saga() {
                     if (pubView) {
                         yield* callTyped(appActivate);
                         yield put(readerActions.openRequest.build(pubView.identifier));
-                        yield put(readerActions.detachModeRequest.build());
                     }
 
                 } catch (e) {
