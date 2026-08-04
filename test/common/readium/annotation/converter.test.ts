@@ -4,7 +4,7 @@ import {
     convertAnnotationStateArrayToReadiumAnnotationSet,
     convertAnnotationStateToReadiumAnnotation,
 } from "readium-desktop/common/readium/annotation/converter";
-import type { ITextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import type { IEPUBCFISelector, ITextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import { EDrawType, INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
@@ -24,6 +24,11 @@ const textQuoteSelector: ITextQuoteSelector = {
     exact: "selected text",
     prefix: "",
     suffix: "",
+};
+
+const epubCfiSelector: IEPUBCFISelector = {
+    type: "EPUBCFISelector",
+    value: "/4/2,/1:0,/1:13",
 };
 
 function createNote(overrides: Partial<INoteState> = {}): INoteState {
@@ -113,4 +118,16 @@ test("Readium annotation set export filters PDF annotations and preserves EPUB a
     expect(annotationSet.items).toHaveLength(1);
     expect(annotationSet.items[0].id).toBe("urn:uuid:epub-note");
     expect(annotationSet.items[0].target.source).toBe("chapter.xhtml");
+});
+
+test("Readium annotation export preserves EPUB CFI selector vocabulary", () => {
+    const annotation = convertAnnotationStateToReadiumAnnotation(createNote({
+        readiumAnnotation: {
+            export: {
+                selector: [epubCfiSelector],
+            },
+        },
+    }));
+
+    expect(annotation?.target.selector).toContainEqual(epubCfiSelector);
 });

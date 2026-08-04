@@ -7,7 +7,7 @@
 
 import debug_ from "debug";
 
-import { ICFIFragmentSelector, ICfiSelector, ICssSelector, IProgressionSelector, ISelector, ITextPositionSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import { ICFIFragmentSelector, ICssSelector, IEPUBCFISelector, IProgressionSelector, ISelector, ITextPositionSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import { uniqueCssSelector } from "@r2-navigator-js/electron/renderer/common/cssselector3";
 import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import {  describeTextPosition, describeTextQuote } from "readium-desktop/third_party/apache-annotator/dom";
@@ -136,8 +136,8 @@ export function* readiumAnnotationSelectorFromNote(note: INoteState, isLcp: bool
     };
     selector.push(cfiFragmentSelector);
 
-    const cfiSelector: ICfiSelector = {
-        type: "CfiSelector",
+    const cfiSelector: IEPUBCFISelector = {
+        type: "EPUBCFISelector",
         value: cfi,
     };
     selector.push(cfiSelector);
