@@ -1207,6 +1207,10 @@
                     "description": "在阅读器窗口，激活系统全屏或恢复正常窗口模式。请注意，此操作与简化用户界面的“禅模式”不同",
                     "name": "切换全屏"
                 },
+                "ToggleReaderZenMode": {
+                    "description": "",
+                    "name": ""
+                },
                 "ToggleScreenReaderOptimize": {
                     "description": "在书库窗口，切换对屏幕阅读的优化支持",
                     "name": "切换屏幕阅读优化支持"

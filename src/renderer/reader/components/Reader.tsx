@@ -338,6 +338,7 @@ class Reader extends React.Component<IProps, IState> {
         this.onKeyboardFocusMainDeep = this.onKeyboardFocusMainDeep.bind(this);
         this.onKeyboardFocusToolbar = this.onKeyboardFocusToolbar.bind(this);
         this.onKeyboardFullScreen = this.onKeyboardFullScreen.bind(this);
+        this.onKeyboardZenMode = this.onKeyboardZenMode.bind(this);
         this.onKeyboardInfo = this.onKeyboardInfo.bind(this);
         this.onKeyboardInfoWhereAmI = this.onKeyboardInfoWhereAmI.bind(this);
         this.onKeyboardInfoWhereAmISpeak = this.onKeyboardInfoWhereAmISpeak.bind(this);
@@ -1484,6 +1485,10 @@ class Reader extends React.Component<IProps, IState> {
             true, // listen for key up (not key down)
             this.props.keyboardShortcuts.ToggleReaderFullscreen,
             this.onKeyboardFullScreen);
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.ToggleReaderZenMode,
+            this.onKeyboardZenMode);
 
         registerKeyboardListener(
             true, // listen for key up (not key down)
@@ -1607,6 +1612,7 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardFocusMainDeep);
         unregisterKeyboardListener(this.onKeyboardFocusToolbar);
         unregisterKeyboardListener(this.onKeyboardFullScreen);
+        unregisterKeyboardListener(this.onKeyboardZenMode);
         unregisterKeyboardListener(this.onKeyboardInfo);
         unregisterKeyboardListener(this.onKeyboardInfoWhereAmI);
         unregisterKeyboardListener(this.onKeyboardInfoWhereAmISpeak);
@@ -2021,6 +2027,11 @@ class Reader extends React.Component<IProps, IState> {
         // HACK ALERT: simulate window resize to trigger navigator 100ms timeout debouncer
         // window.dispatchEvent(document.createEvent("resize")); // CRASH
         // window.dispatchEvent(new Event("resize")); // WORKS
+    };
+
+    private onKeyboardZenMode = () => {
+
+        this.setZenModeAndFXLZoom(!this.state.zenMode, this.state.fxlZoomPercent);
     };
 
     private onKeyboardCloseReader = () => {

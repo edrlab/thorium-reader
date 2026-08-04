@@ -1202,6 +1202,10 @@
                     "description": "",
                     "name": ""
                 },
+                "ToggleReaderZenMode": {
+                    "description": "",
+                    "name": ""
+                },
                 "ToggleScreenReaderOptimize": {
                     "description": "",
                     "name": ""

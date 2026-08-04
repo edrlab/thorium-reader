@@ -1213,6 +1213,10 @@
                     "description": "",
                     "name": "Lülita täisekraanivaade sisse/välja"
                 },
+                "ToggleReaderZenMode": {
+                    "description": "",
+                    "name": ""
+                },
                 "ToggleScreenReaderOptimize": {
                     "description": "",
                     "name": ""

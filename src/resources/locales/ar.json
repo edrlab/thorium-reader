@@ -1237,6 +1237,10 @@
                     "description": "في نافذة القارئ، تفعيل وضع ملء الشاشة للنظام أو استعد الوضع العادي للنافذة. لاحظ أن هذا يختلف عن \"وضع zen\" الذي يبسط واجهة المستخدم",
                     "name": "تبديل وضع ملء الشاشة"
                 },
+                "ToggleReaderZenMode": {
+                    "description": "",
+                    "name": ""
+                },
                 "ToggleScreenReaderOptimize": {
                     "description": "",
                     "name": ""

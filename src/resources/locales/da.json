@@ -1213,6 +1213,10 @@
                     "description": "I læseren - Aktivér systemets fuldskærmstilstand eller gå tilbage til normalt vindue. Bemærk at dette er anderledes end 'zen mode', hvilket simplificerer brugergrænsefladen",
                     "name": "Slå Fuldskærm Til/Fra"
                 },
+                "ToggleReaderZenMode": {
+                    "description": "",
+                    "name": ""
+                },
                 "ToggleScreenReaderOptimize": {
                     "description": "Slå forbedret oplevelse med skærmlæser til eller fra i biblioteksvinduet",
                     "name": "Slå forbedret oplevelse med skærmoplæser til/fra"
