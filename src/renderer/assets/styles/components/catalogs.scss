@@ -185,6 +185,12 @@
             justify-content: center;
             box-sizing: border-box;
 
+            &[aria-current="page"] {
+                background-color: var(--color-brand-secondary);
+                color: var(--color-brand-primary);
+                font-weight: 700;
+            }
+
             span {
                 // display: block;
                 max-height: 55px;

@@ -698,8 +698,10 @@ export class OpdsFeedViewConverter {
             : "";
 
         const links = r2OpdsFacet.Links?.map(
-            (item) =>
-                this.convertOpdsNavigationLinkToView(item, baseUrl));
+            (item) => ({
+                ...this.convertOpdsNavigationLinkToView(item, baseUrl),
+                active: item.HasRel("self") || undefined,
+            }));
 
         const ret: IOpdsFacetView = {
             title,

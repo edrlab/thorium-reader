@@ -85,6 +85,7 @@ export interface IOpdsNavigationLinkView {
     subtitle?: string;
     url: string;
     numberOfItems?: number;
+    active?: boolean;
 }
 
 export interface IOpdsFeedMetadataView {
