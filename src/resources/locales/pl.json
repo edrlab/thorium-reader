@@ -1225,6 +1225,10 @@
                     "description": "W oknie czytnika aktywuj pełny ekran lub przywróć normalny tryb okna. To różni się od 'trybu Zen', który upraszcza interfejs",
                     "name": "Przełącz pełny ekran"
                 },
+                "ToggleReaderZenMode": {
+                    "description": "",
+                    "name": ""
+                },
                 "ToggleScreenReaderOptimize": {
                     "description": "W oknie biblioteki włącz lub wyłącz dodatkowe wsparcie dla czytników ekranu",
                     "name": "Włącz/wyłącz optymalizacje dla czytników ekranu"

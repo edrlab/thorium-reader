@@ -2821,6 +2821,10 @@ declare namespace typed_i18n {
         readonly "description": string,
         readonly "name": string
       },
+      readonly "ToggleReaderZenMode": {
+        readonly "description": string,
+        readonly "name": string
+      },
       readonly "ToggleScreenReaderOptimize": {
         readonly "description": string,
         readonly "name": string
@@ -3194,6 +3198,10 @@ declare namespace typed_i18n {
       readonly "description": string,
       readonly "name": string
     },
+    readonly "ToggleReaderZenMode": {
+      readonly "description": string,
+      readonly "name": string
+    },
     readonly "ToggleScreenReaderOptimize": {
       readonly "description": string,
       readonly "name": string
@@ -3444,6 +3452,10 @@ declare namespace typed_i18n {
     readonly "description": string,
     readonly "name": string
   },
+  readonly "ToggleReaderZenMode": {
+    readonly "description": string,
+    readonly "name": string
+  },
   readonly "ToggleScreenReaderOptimize": {
     readonly "description": string,
     readonly "name": string
@@ -3623,6 +3635,9 @@ declare namespace typed_i18n {
   (_: "settings.keyboard.list.ToggleReaderFullscreen", __?: {}): { readonly "description": string, readonly "name": string };
   (_: "settings.keyboard.list.ToggleReaderFullscreen.description", __?: {}): string;
   (_: "settings.keyboard.list.ToggleReaderFullscreen.name", __?: {}): string;
+  (_: "settings.keyboard.list.ToggleReaderZenMode", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.ToggleReaderZenMode.description", __?: {}): string;
+  (_: "settings.keyboard.list.ToggleReaderZenMode.name", __?: {}): string;
   (_: "settings.keyboard.list.ToggleScreenReaderOptimize", __?: {}): { readonly "description": string, readonly "name": string };
   (_: "settings.keyboard.list.ToggleScreenReaderOptimize.description", __?: {}): string;
   (_: "settings.keyboard.list.ToggleScreenReaderOptimize.name", __?: {}): string;

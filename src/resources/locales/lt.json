@@ -1225,6 +1225,10 @@
                     "description": "Skaitytuvės lange įjungti sistemos viso ekrano režimą arba atkurti įprastą lango režimą. Atkreipkite dėmesį, jog tai skiriasi nuo „zen“ režimo, kuris supaprastina naudotojo sąsają",
                     "name": "Perjungti viso ekrano režimą"
                 },
+                "ToggleReaderZenMode": {
+                    "description": "",
+                    "name": ""
+                },
                 "ToggleScreenReaderOptimize": {
                     "description": "Bibliotekos lange perjungti optimizuotą ekrano skaitytuvų palaikymą",
                     "name": "Perjungti ekrano skaitytuvų optimizacijas"

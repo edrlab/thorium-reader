@@ -1219,6 +1219,10 @@
                     "description": "Dans la fenêtre du lecteur, bascule en plein écran. Notez que cela est différent du mode Zen. Le raccourci clavier est le seul moyen de passer en plein écran.",
                     "name": "Basculer en plein écran"
                 },
+                "ToggleReaderZenMode": {
+                    "description": "Dans la fenêtre du lecteur, active ou quitte le mode Zen, qui simplifie l'interface pendant la lecture.",
+                    "name": "Basculer le mode Zen"
+                },
                 "ToggleScreenReaderOptimize": {
                     "description": "Dans la vue bibliothèque, bascule vers le support optimisé des lecteurs d'écran",
                     "name": "Basculer vers le support optimisé des lecteurs d'écran"

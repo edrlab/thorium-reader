@@ -186,6 +186,14 @@ const _defaults_ = {
         key: "F11",
         scope: ["reader"],
     } satisfies TKeyboardShortcutFull,
+    ToggleReaderZenMode: {
+        meta: false,
+        alt: false,
+        control: true,
+        shift: true,
+        key: "F11",
+        scope: ["reader"],
+    } satisfies TKeyboardShortcutFull,
 
     ToggleScreenReaderOptimize: {
         meta: false,

@@ -1213,6 +1213,10 @@
                     "description": "In het leesvenster, activeer systeem volledig scherm of herstel normaal venster modus. Merk op dat dit anders is van de 'zen modus' wat het gebruikersinterface versimpelt",
                     "name": "Schakelaar Volledig Scherm"
                 },
+                "ToggleReaderZenMode": {
+                    "description": "",
+                    "name": ""
+                },
                 "ToggleScreenReaderOptimize": {
                     "description": "Schakel in het bibliotheekvenster de geoptimaliseerde ondersteuning voor schermlezers in of uit",
                     "name": "Schermlezeroptimalisaties in- of uitschakelen"

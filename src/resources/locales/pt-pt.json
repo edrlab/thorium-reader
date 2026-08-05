@@ -1219,6 +1219,10 @@
                     "description": "",
                     "name": "Alternar ecrã completo"
                 },
+                "ToggleReaderZenMode": {
+                    "description": "",
+                    "name": ""
+                },
                 "ToggleScreenReaderOptimize": {
                     "description": "",
                     "name": ""
