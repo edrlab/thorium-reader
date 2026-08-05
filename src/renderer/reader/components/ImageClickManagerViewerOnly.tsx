@@ -93,6 +93,8 @@ export const ImageClickManagerImgViewerOnly: React.FC = () => {
     const scaleY = naturalHeightOf_HTMLImg_SVGImage ? ((window.innerWidth - 50) / naturalHeightOf_HTMLImg_SVGImage) : 1;
     let scale = Math.min(scaleX, scaleY);
     if (scale > 1) scale = 1;
+    // Forced "scale = 1" to avoid the image being not centered when the image is smaller than the window size. The image will be centered by default in the TransformComponent.
+    scale = 1;
 
     return (<>
 
@@ -104,7 +106,7 @@ export const ImageClickManagerImgViewerOnly: React.FC = () => {
         >
             <Dialog.Portal>
                 <div className={stylesModals.modal_dialog_overlay}></div>
-                <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined} style={{ minWidth: "700px", minHeight: "400px", padding: "5px 10px", width: "unset", maxWidth: "calc(100% - 200px)", maxHeight: "calc(100% - 100px)" }} >
+                <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined} style={{ minWidth: "85%", minHeight: "85%", padding: "5px 10px", width: "unset", maxWidth: "calc(100% - 100px)", maxHeight: "calc(100% - 100px)" }} >
                     <VisuallyHidden>
                         <Dialog.DialogTitle>{__("reader.imgViewer.title")}</Dialog.DialogTitle>
                     </VisuallyHidden>
@@ -116,10 +118,10 @@ export const ImageClickManagerImgViewerOnly: React.FC = () => {
                         </Dialog.Close>
                     </div>
                     <div style={{ display: "flex", flexDirection: "column", padding: "5px 10px", alignItems: "center", flex: 1 }}>
-                        <div style={{ position: "relative", display: "flex", gap: 10, width: "100%", height: "100%", paddingLeft: 5, flex: 1 }}>
+                        <div style={{ position: "relative", display: "flex", gap: 10, width: "100%", height: "100%", paddingLeft: 5, flex: 1, justifyContent: "center", alignItems: "center" }}>
                             <TransformWrapper initialScale={scale} minScale={scale / 2} maxScale={4 * scale}>
                                 <Controls />
-                                <TransformComponent wrapperStyle={{ display: "flex", width: "100%", height: "100%", minHeight: "350px", flex: "1", position: "relative" }} >
+                                <TransformComponent wrapperStyle={{ display: "flex", width: "100%", height: "100%", minHeight: "350px", flex: "1", position: "relative", justifyContent: "center", alignItems: "center" }} >
                                     <img
                                         style={{ height: "100%", width: "100%", maxHeight: "calc(100vh - 250px)", backgroundColor: "white", color: "black", fill: "currentcolor", stroke: "currentcolor" }}
                                         src={isSVGFragment ? ("data:image/svg+xml;base64," + Buffer.from(HTMLImgSrc_SVGImageHref_SVGFragmentMarkup).toString("base64")) : HTMLImgSrc_SVGImageHref_SVGFragmentMarkup}
