@@ -7,7 +7,7 @@
 
 import debug_ from "debug";
 
-import { ICssSelector, IReadiumAnnotation, IReadiumAnnotationSet, isCFIFragmentSelector, isCfiSelector, isCssSelector, isProgressionSelector, isTextPositionSelector, isTextQuoteSelector, ITextPositionSelector, ITextQuoteSelector } from "./annotationModel.type";
+import { ICssSelector, IReadiumAnnotation, IReadiumAnnotationSet, isCFIFragmentSelector, isCssSelector, isEPUBCFISelector, isLegacyCfiSelector, isProgressionSelector, isTextPositionSelector, isTextQuoteSelector, ITextPositionSelector, ITextQuoteSelector } from "./annotationModel.type";
 import { uuidv4 } from "readium-desktop/utils/uuid";
 import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -37,7 +37,7 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
 
     const root = xmlDom.body;
 
-    const cfiSelector = target.selector.find(isCfiSelector);
+    const cfiSelector = target.selector.find(isEPUBCFISelector) || target.selector.find(isLegacyCfiSelector);
     const cfiFragmentSelector = target.selector.find(isCFIFragmentSelector);
     const textQuoteSelector = target.selector.find(isTextQuoteSelector);
     const textPositionSelector = target.selector.find(isTextPositionSelector);

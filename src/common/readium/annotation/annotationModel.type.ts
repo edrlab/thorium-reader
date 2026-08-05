@@ -113,11 +113,21 @@ export function isCssSelector(a: any): a is ICssSelector<undefined> {
     && typeof a.value === "string";
 }
 
-export interface ICfiSelector<T extends ISelector = any> extends ISelector<T> {
+export interface IEPUBCFISelector<T extends ISelector = any> extends ISelector<T> {
+    type: "EPUBCFISelector";
+    value: string;
+}
+
+interface ILegacyCfiSelector<T extends ISelector = any> extends ISelector<T> {
     type: "CfiSelector";
     value: string;
 }
-export function isCfiSelector(a: any): a is ICfiSelector<undefined> {
+export function isEPUBCFISelector(a: any): a is IEPUBCFISelector<undefined> {
+    return typeof a === "object" && a.type === "EPUBCFISelector"
+    && typeof a.value === "string";
+}
+// Thorium exported this non-standard type before EPUBCFISelector was adopted.
+export function isLegacyCfiSelector(a: any): a is ILegacyCfiSelector<undefined> {
     return typeof a === "object" && a.type === "CfiSelector"
     && typeof a.value === "string";
 }

@@ -16,7 +16,7 @@ import { SagaGenerator } from "typed-redux-saga";
 import { call as callTyped, put as putTyped, take as takeTyped, delay as delayTyped, all as allTyped } from "typed-redux-saga/macro";
 import { hexToRgb } from "readium-desktop/common/rgb";
 import { isNil } from "readium-desktop/utils/nil";
-import { __READIUM_ANNOTATION_AJV_ERRORS, isCFIFragmentSelector, isCfiSelector, isCssSelector, isFragmentSelector, isIReadiumAnnotationSet, isTextPositionSelector, isTextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import { __READIUM_ANNOTATION_AJV_ERRORS, isCFIFragmentSelector, isCssSelector, isEPUBCFISelector, isFragmentSelector, isIReadiumAnnotationSet, isLegacyCfiSelector, isTextPositionSelector, isTextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import path from "path";
 import { getPublication } from "./api/publication/getPublication";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
@@ -238,7 +238,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 debug(`for ${uuid} a CFI selector is available (${JSON.stringify(textPositionSelector, null, 4)})`);
             }
 
-            const cfiSelector = incommingAnnotation.target.selector.find(isCfiSelector);
+            const cfiSelector = incommingAnnotation.target.selector.find(isEPUBCFISelector) || incommingAnnotation.target.selector.find(isLegacyCfiSelector);
             if (cfiSelector) {
                 debug(`for ${uuid} a CFI selector is available (${JSON.stringify(cfiSelector, null, 4)})`);
             }
