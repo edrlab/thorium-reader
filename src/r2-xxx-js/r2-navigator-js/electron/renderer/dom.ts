@@ -27,6 +27,7 @@ import {
     R2_EVENT_PAGE_TURN_RES, R2_EVENT_READIUMCSS, R2_EVENT_SHOW, R2_EVENT_WEBVIEW_KEYDOWN,
     R2_EVENT_WEBVIEW_KEYUP,
     R2_EVENT_IMAGE_CLICK, IEventPayload_R2_EVENT_IMAGE_CLICK,
+    ENABLE_NAVIGATOR_R2_EVENT_IMAGE_CLICK,
 } from "../common/events";
 import { READIUM_CSS_URL_PATH } from "../common/readium-css-settings";
 import {
@@ -478,12 +479,14 @@ function createWebViewInternal(READIUM2: IReadiumElectronWebviewState, preloadSc
             }
             if (_imageClickHandler) {
                 debug("R2_EVENT_IMAGE_CLICK (ipc-message) href [_imageClickHandler]: " + JSON.stringify(payload, null, 4));
-                _imageClickHandler({...payload});
-            } else {
+                _imageClickHandler({ ...payload });
+            } else if (ENABLE_NAVIGATOR_R2_EVENT_IMAGE_CLICK) {
                 debug("R2_EVENT_IMAGE_CLICK (ipc-message) href [NOT _imageClickHandler => webview.send(R2_EVENT_IMAGE_CLICK]: " + JSON.stringify(payload, null, 4));
                 // webview === event.currentTarget as IReadiumElectronWebview
                 // webview === wv
-                webview.send(R2_EVENT_IMAGE_CLICK, {...payload}).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+                webview.send(R2_EVENT_IMAGE_CLICK, { ...payload }).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+            } else {
+                debug("R2_EVENT_IMAGE_CLICK (ipc-message) NO HANDLER?!: " + JSON.stringify(payload, null, 4));
             }
         } else if (!highlightsHandleIpcMessage(event.channel, event.args, webview) &&
             !ttsHandleIpcMessage(event.channel, event.args, webview) &&

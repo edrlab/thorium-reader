@@ -60,7 +60,7 @@ const Controls = () => {
         width: 24px;
         height: 24px;
 }
-        
+
 .imgViewerControls button:hover {
     filter: opacity(1);
 }
@@ -81,6 +81,9 @@ const Controls = () => {
 };
 
 export const ImageClickManagerImgViewerOnly: React.FC = () => {
+
+    // SVG SCRIPT SECURITY NOTE: the Javascript is inert when the SVG fragment is rendered via an `img` HTML image tag (as is the case here),
+    // but the Javascript WILL EXECUTE when the SVG is embedded directly in the HTML markup or via an `object`, or `embed` or `iframe` tag!
 
     const { open, isSVGFragment, HTMLImgSrc_SVGImageHref_SVGFragmentMarkup, altAttributeOf_HTMLImg_SVGImage_SVGFragment, titleAttributeOf_HTMLImg_SVGImage_SVGFragment, ariaLabelAttributeOf_HTMLImg_SVGImage_SVGFragment, naturalWidthOf_HTMLImg_SVGImage, naturalHeightOf_HTMLImg_SVGImage } = useSelector((state: IReaderRootState) => state.img);
     const dispatch = useDispatch();

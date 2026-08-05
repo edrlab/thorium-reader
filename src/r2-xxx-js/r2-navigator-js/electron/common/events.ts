@@ -15,6 +15,8 @@ import { IPaginationInfo } from "./pagination";
 import { IReadiumCSS } from "./readium-css-settings";
 import { IRangeInfo, ISelectionInfo } from "./selection";
 
+export const ENABLE_NAVIGATOR_R2_EVENT_IMAGE_CLICK = false;
+
 // in WEBVIEW: ipcRenderer.sendToHost()
 // in RENDERER: webview.addEventListener("ipc-message")
 //
