@@ -207,6 +207,7 @@ export default class App extends React.Component<{}, undefined> {
                             getFilesFromEvent={this.getFiles}
                             onDrop={this.onDrop}
                             noClick={true}
+                            noPaste={true}
                         >
                             {({ getRootProps, getInputProps }) => {
                                 const rootProps = getRootProps({ onClick: (e) => e.stopPropagation() } as DropzoneRootProps);

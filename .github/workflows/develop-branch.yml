@@ -524,8 +524,6 @@ jobs:
             runson: ubuntu-latest # ubuntu-22.04 #ubuntu-latest is ubuntu-24.04
             packname: linux
             release_tag: latest-linux-arm
-#    env:
-#      RELEASE_TAG: ${{ matrix.release_tag }} # ONLY NEEDED in scripts/release-github.mjs
     steps:
 ###########################
     - name: Checkout
@@ -563,12 +561,8 @@ jobs:
 ###########################
 #    - run: npm --version
 ###########################
-#    - run: npm --global install @octokit/rest
-###########################
     - name: GitHub Tagged Release Delete/ReCreate and Upload Build Artefacts
       env:
-#GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#run: ls -alsR release ; node scripts/release-github.mjs
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: >
         ls -alsR release ;

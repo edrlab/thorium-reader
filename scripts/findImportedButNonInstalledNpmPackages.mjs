@@ -23,7 +23,6 @@ const ignoreds = [
     /^stylelint.*/,
     /^@types\/.+$/,
     /^@rollup\/.+$/,
-    /^@octokit\/.+$/,
     /^@kogai\/.+$/,
     /^@babel\/.+$/,
     /^@electron\/.+$/,
