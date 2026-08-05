@@ -20,7 +20,6 @@ import { readerDefaultConfigReducer } from "../../../common/redux/reducers/reade
 // import { winRegistryReaderReducer } from "./win/registry/reader";
 import { winSessionLibraryReducer } from "./win/session/library";
 import { winSessionReaderReducer } from "./win/session/reader";
-import { winModeReducer } from "../../../common/redux/reducers/winModeReducer";
 import { readerRTLFlipReducer } from "../../../common/redux/reducers/reader/rtlFlip";
 import { publicationDbReducers } from "./publication/db";
 import { opdsDbReducers } from "./opds/db";
@@ -71,7 +70,6 @@ export const rootReducer = combineReducers({ // RootState
             reader: (state: any = null) => state, // winRegistryReaderReducer,
         }),
     }),
-    mode: winModeReducer,
     lcp: lcpReducer,
     publication: combineReducers({
         lastReadingQueue: priorityQueueReducer

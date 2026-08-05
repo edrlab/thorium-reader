@@ -401,7 +401,6 @@ export function* importFromFs(
     // if (publicationViews?.[0]) {
     //     yield* callTyped(appActivate);
     //     yield put(readerActions.openRequest.build(publicationViews[0].identifier));
-    //     yield put(readerActions.detachModeRequest.build());
     // }
 
     // TEST PURPOSE

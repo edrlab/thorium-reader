@@ -12,11 +12,6 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { TDrawType, TDrawView } from "../redux/states/renderer/note";
 
-export enum ReaderMode {
-    Attached = "attached",
-    Detached = "detached",
-}
-
 export interface ReaderTTSMediaOverlay {
     ttsPlaybackRate: string;
 
