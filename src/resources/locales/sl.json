@@ -2,24 +2,24 @@
     "accessibility": {
         "bookMenu": "Meni",
         "closeDialog": "Zapri",
-        "leftSlideButton": "Premakni seznam v levo",
+        "leftSlideButton": "Podrsaj v levo",
         "mainContent": "glavna vsebina",
-        "rightSlideButton": "Premakni seznam v desno",
+        "rightSlideButton": "Podrsaj v desno",
         "skipLink": "Skoči na vsebino",
         "toolbar": "orodna vrstica"
     },
     "apiapp": {
-        "documentation": "Thorium dokumentacija",
-        "howItWorks": "Kako deluje",
-        "informations": "V Franciji številne javne knjižnice ponujajo strojno berljiv katalog (podoben OPDS, vendar ni identičen), ki uporabnikom omogoča prenos digitalnih publikacij iz njihove osebne knjižne police. Integracija te tehnologije v Thorium Reader omogoča prenos e-knjige ali zvočne knjige neposredno v Thorium Reader za takojšnje branje.\nKako povežete svoj račun francoske javne knjižnice s Thorium Readerjem? Preprosto je. V iskalno polje vnesite francosko mesto ('Pariz') ali del imena knjižnice in pritisnite gumb Iskanje. Prikazal se bo seznam javnih knjižnic, ki ustrezajo vašemu iskanju. Izberite knjižnico in pritisnite Dodaj. V posodobljenem seznamu katalogov izberite to knjižnico: prikazal se bo obrazec za overjanje. Vnesite svoje uporabniško ime/e-poštni naslov in geslo ter pritisnite Prijava. Zdaj lahko vidite vsebino svoje osebne knjižne police, iz katere lahko prenesete in preberete e-knjige in zvočne knjige, ki ste jih prej izposodili.",
-        "noLibraryFound": "Ne najdem knjižnice ({{- ime}})"
+        "documentation": "Dokumentacija Thorium",
+        "howItWorks": "Kako deluje?",
+        "informations": "V Franciji številne javne knjižnice ponujajo strojno berljiv katalog (podoben OPDS, vendar ni identičen), ki uporabnikom omogoča prenos digitalnih publikacij iz njihove osebne knjižne police. Integracija te tehnologije v Thorium Reader omogoča prenos e-knjige ali zvočne knjige neposredno v Thorium Reader za takojšnje branje.\nKako povežete svoj račun francoske javne knjižnice s Thorium Readerjem? Preprosto je. V iskalno polje vnesite francosko mesto (»Pariz«) ali del imena knjižnice in pritisnite gumb Iskanje. Prikazal se bo seznam javnih knjižnic, ki ustrezajo vašemu iskanju. Izberite knjižnico in pritisnite Dodaj. V posodobljenem seznamu katalogov izberite to knjižnico: prikazal se bo obrazec za overjanje. Vnesite svoje uporabniško ime/e-poštni naslov in geslo ter pritisnite Prijava. Zdaj lahko vidite vsebino svoje osebne knjižne police, iz katere lahko prenesete in preberete e-knjige in zvočne knjige, ki ste jih prej izposodili.",
+        "noLibraryFound": "Knjižnica ni najdena ({{- name}})"
     },
     "app": {
         "edit": {
             "copy": "Kopiraj",
             "cut": "Izreži",
             "paste": "Prilepi",
-            "print": "",
+            "print": "Natisni",
             "redo": "Ponovi",
             "selectAll": "Izberi vse",
             "title": "Uredi",
@@ -43,18 +43,18 @@
         "update": {
             "message": "Na voljo je nova različica, kliknite za več informacij.",
             "title": "Posodobitev programske opreme za {{- appName}}",
-            "whatsnew": ""
+            "whatsnew": "Nameščena je bila nova različica, kliknite za več informacij"
         },
         "window": {
             "showLibrary": "Prikaži knjižnico / knjižna polica",
-            "trayHint": "",
-            "trayTooltip": ""
+            "trayHint": "{{- appName}} se še vedno izvaja v območju za obvestila. Kliknite ikono v opravilni vrstici, da prikažete knjižnico.",
+            "trayTooltip": "{{- appName}} – kliknite za prikaz ali skrivanje knjižnice"
         }
     },
     "catalog": {
-        "AddToFavorites": "",
+        "AddToFavorites": "Dodaj med priljubljene",
         "about": {
-            "title": "O {{- appName}}"
+            "title": "O {{- appName}} (na spletu)"
         },
         "addBookToLib": "Uvozi",
         "addTags": "Dodaj oznako",
