@@ -1220,8 +1220,8 @@
                     "name": "Attiva/disattiva schermo intero"
                 },
                 "ToggleReaderZenMode": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nella finestra di lettura, attiva o disattiva la modalità zen che semplifica l'interfaccia visualizzata durante la lettura",
+                    "name": "Attiva/Disattiva la modalità zen"
                 },
                 "ToggleScreenReaderOptimize": {
                     "description": "Attiva/disattiva il supporto ottimizzato per i lettori di schermo nella finestra della biblioteca",
