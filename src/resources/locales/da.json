@@ -1034,7 +1034,7 @@
                     "name": "Stop Afspilning"
                 },
                 "CloseReader": {
-                    "description": "Luk læser-vinduet og gå tilbage til biblioteket",
+                    "description": "Luk læse-vinduet og gå tilbage til biblioteket",
                     "name": "Luk Læser"
                 },
                 "FXLZoomIn": {
@@ -1214,8 +1214,8 @@
                     "name": "Slå Fuldskærm Til/Fra"
                 },
                 "ToggleReaderZenMode": {
-                    "description": "",
-                    "name": ""
+                    "description": "I læse-vinduet, start eller stop zen-mode, som simplificerer brugergrænsefladen under læsning",
+                    "name": "Slå Zen-tilstand til eller fra"
                 },
                 "ToggleScreenReaderOptimize": {
                     "description": "Slå forbedret oplevelse med skærmlæser til eller fra i biblioteksvinduet",
@@ -1252,7 +1252,7 @@
         },
         "screenReaderActivate": {
             "help": "Når applikationen registrerer at hjælpeteknologier benyttes, fungerer brugergrænsefladen bedre med skærmlæsere",
-            "invite": "Optimer til skærmoplæser",
+            "invite": "Optimer til skærmoplæser ({{- status}}) [{{- keyboard}}]",
             "message": "Forbedret understøttelse af skærmlæsere",
             "title": "Forbedret oplevelse med skærmlæser"
         },
