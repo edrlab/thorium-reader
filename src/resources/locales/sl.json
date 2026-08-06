@@ -34,19 +34,19 @@
                         "no": "Ne",
                         "yes": "Da"
                     },
-                    "help": "Aktiviraj, če želiš, da se okna bralnika, ki so odprta, ko zapreš aplikacijo, samodejno znova odprejo ob naslednjem zagonu.",
-                    "message": "Ali želiš shraniti sejo?",
-                    "title": "Shrani sejo"
+                    "help": "Aktivirajte to možnost, če želite, da se okna bralnika, ki so odprta ob zaprtju aplikacije, samodejno ponovno odprejo ob naslednjem zagonu.",
+                    "message": "Shranjevanje in obnavljanje bralne seje",
+                    "title": "Shrani sejo?"
                 }
             }
         },
         "update": {
             "message": "Na voljo je nova različica, kliknite za več informacij.",
-            "title": "Posodobitev programske opreme za {{- appName}}",
+            "title": "Posodobitev programske opreme za {{- appName}}.",
             "whatsnew": "Nameščena je bila nova različica, kliknite za več informacij"
         },
         "window": {
-            "showLibrary": "Prikaži knjižnico / knjižna polica",
+            "showLibrary": "Prikaži knjižnico/knjižno polico",
             "trayHint": "{{- appName}} se še vedno izvaja v območju za obvestila. Kliknite ikono v opravilni vrstici, da prikažete knjižnico.",
             "trayTooltip": "{{- appName}} – kliknite za prikaz ali skrivanje knjižnice"
         }
@@ -59,8 +59,8 @@
         "addBookToLib": "Uvozi",
         "addTags": "Dodaj oznako",
         "addTagsButton": "Dodaj",
-        "allBooks": "Vse knjige",
-        "bookInfo": "O knjigi",
+        "allBooks": "Vse publikacije",
+        "bookInfo": "O publikaciji",
         "column": {
             "ascending": "naraščajoče",
             "descending": "padajoče",
@@ -68,76 +68,76 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
-                "publications": "",
-                "screen": "",
-                "title": ""
+                "description": "Brez opisa profila",
+                "publications": "Publikacije profila",
+                "screen": "Brez naslova",
+                "title": "Naslov profila"
             }
         },
         "delete": "Izbriši",
         "deleteBook": "Izbriši",
-        "deleteTag": "Odstrani oznako",
+        "deleteTag": "Izbriši oznako",
         "description": "Opis",
-        "emptyTagList": "Ni označenih knjig.",
+        "emptyTagList": "Ni označenih publikacij.",
         "entry": {
             "continueReading": "Nadaljuj z branjem",
             "lastAdditions": "Nedavno dodano"
         },
         "export": "Shrani kot",
-        "exportAnnotation": "Izvoz opomb ...",
+        "exportAnnotation": "Izvoz opomb",
         "format": "Format",
         "importAnnotation": "Uvoz opomb",
         "lang": "Jezik",
         "lastRead": "Nazadnje brano",
-        "login": "",
-        "logout": "",
-        "missing": "",
-        "missingUnavailableDescription": "",
-        "moreInfo": "Osnovni podatki",
-        "myBooks": "Moje knjige",
-        "noPublicationHelpL1": "Tukaj spusti datoteke",
-        "noPublicationHelpL2": "ali uporabi \"{{- importTitle }}\" zgornji gumb.",
-        "noPublicationHelpL3": "LCP zaščitene datoteke so podprte.",
+        "login": "Prijava",
+        "logout": "Odjava",
+        "missing": "Manjkajoče datoteke",
+        "missingUnavailableDescription": "Te publikacije ni mogoče odpreti, ker shranjene datoteke niso na voljo. Ponovno jo uvozite ali pa pojdite v Nastavitve in nato v Shramba, da dodate ali spremenite dodatno shrambo.",
+        "moreInfo": "Podrobnosti o publikaciji",
+        "myBooks": "Moje publikacije",
+        "noPublicationHelpL1": "Spustite datoteke sem",
+        "noPublicationHelpL2": "ali uporabite gumb \"{{- importTitle }}\" zgoraj.",
+        "noPublicationHelpL3": "Publikacije z zaščito LCP so podprte.",
         "noPublicationHelpL4": "Podprte razširitve:",
         "numberOfPages": "Število strani",
         "opds": {
             "auth": {
                 "cancel": "Prekliči",
-                "external": "",
-                "fallback": "",
-                "login": "Prijavi se",
+                "external": "V vašem spletnem brskalniku se bo odprla prijavna stran, sledite navodilom. Ko se prijavite, vas bo spletni brskalnik vrnil v to aplikacijo.",
+                "fallback": "Opomba: v primeru težav s prijavo s privzetim spletnim brskalnikom poskusite znova z alternativnim načinom v aplikaciji.",
+                "login": "Prijava",
                 "password": "Geslo",
-                "register": "Register",
-                "retry": "",
-                "unauthorized": "",
-                "unauthorizedUnsupportedType": "",
-                "username": "Uporabniško ime / elektronski naslov"
+                "register": "Registracija",
+                "retry": "Poskusite ponovno",
+                "unauthorized": "Nepooblaščeno",
+                "unauthorizedUnsupportedType": "Nepooblaščeno (nepodprt tip WWWAuthenticate '{{- type}}')",
+                "username": "Uporabniško ime/E-poštni naslov"
             },
             "info": {
-                "availableSince": "Na voljo od",
+                "availableSince": "Od",
                 "availableState": {
                     "available": "Na voljo",
-                    "ready": "Pripravljen",
+                    "ready": "Pripravljeno",
                     "reserved": "Rezervirano",
                     "unavailable": "Ni na voljo",
                     "unknown": "Neznano"
                 },
-                "availableUntil": "Na voljo do",
+                "availableUntil": "Do",
                 "copyAvalaible": "Na voljo",
                 "copyTotal": "Kopije",
-                "holdPosition": "Položaj držanja",
-                "holdTotal": "Držano",
+                "holdPosition": "Zadrži položaj",
+                "holdTotal": "Zadržano",
                 "numberOfItems": "Število elementov",
                 "priveValue": "Cena",
                 "state": "Stanje"
             }
         },
-        "openFolder": "",
-        "publisher": "Založba",
-        "readBook": "Začni brati",
-        "released": "Objavljeno na",
-        "removeFromFavorites": "",
-        "selectTableHeaders": "",
+        "openFolder": "Odpri direktorij",
+        "publisher": "Založnik",
+        "readBook": "Beri",
+        "released": "Objavljeno dne",
+        "removeFromFavorites": "Odstrani iz priljubljenih",
+        "selectTableHeaders": "Izberite stolpce za prikaz",
         "sort": "Razvrsti po",
         "tag": "Oznaka",
         "tags": "Oznake",
@@ -145,7 +145,7 @@
     },
     "dialog": {
         "annotations": {
-            "descAuthor": "avtor '{{- avtor}}'",
+            "descAuthor": "avtor {{- author}}",
             "descCreator": "ustvaril",
             "descList_few": "{{- count}} opombe {{- creator}} bodo uvožene v '{{- title}}' {{- avtor}}",
             "descList_one": "{{- count}} opombe {{- creator}} bodo uvožene v '{{- title}}' {{- avtor}}",
