@@ -43,7 +43,7 @@
         "update": {
             "message": "Uus versioon on saadaval, klõpsa lisateabe lugemiseks.",
             "title": "{{- appName}} - tarkvarauuendus.",
-            "whatsnew": ""
+            "whatsnew": "Uus versioon on paigaldatud, lisateabe lugemiseks klõpsa"
         },
         "window": {
             "showLibrary": "Näita oma kogu / raamaturiiulit",
