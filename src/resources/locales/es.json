@@ -43,7 +43,7 @@
         "update": {
             "message": "Nueva versión disponible, haz clic para obtener más información.",
             "title": "Actualización de software {{- appName}}.",
-            "whatsnew": ""
+            "whatsnew": "Se ha instalado una nueva versión. Haz clic aquí para obtener más información"
         },
         "window": {
             "showLibrary": "Mostrar biblioteca",
