@@ -196,42 +196,42 @@
     "error": {
         "errorBox": {
             "error": "Sporočilo o napaki:",
-            "message": "Prišlo je do napake v {{- filename}}",
-            "title": "Notranja {{- appName}} napaka"
+            "message": "Napaka v {{- filename}}",
+            "title": "Notranja napaka {{- appName}}"
         }
     },
     "header": {
-        "allBooks": "Vse knjige",
+        "allBooks": "Vse publikacije",
         "catalogs": "Katalogi",
         "downloads": "Prenosi",
         "fitlerTagTitle": "Filtriraj po oznaki",
         "gridTitle": "Mrežni pogled",
-        "home": "Knjižna polica",
+        "home": "Meni knjižne police",
         "homeTitle": "Domov",
         "importTitle": "Uvozi publikacijo",
-        "listTitle": "Prikaz seznama",
+        "listTitle": "Razpredelnica",
         "myCatalogs": "Moji katalogi",
         "refreshTitle": "osveži",
         "searchPlaceholder": "Iskanje",
-        "searchTitle": "Išči",
+        "searchTitle": "Iskanje",
         "settings": "Nastavitve",
-        "settingsLabel": "",
-        "viewMode": "View mode"
+        "settingsLabel": "Nastavitve aplikacije",
+        "viewMode": "Način ogleda"
     },
     "library": {
         "filter": {
-            "addFilters": "",
-            "filterBy": "",
-            "selectOption": ""
+            "addFilters": "Dodaj filtre",
+            "filterBy": "Filtriraj po",
+            "selectOption": "Izberi element"
         },
         "lcp": {
-            "hidePassphrase": "",
-            "hint": "Namig: ",
+            "hidePassphrase": "Skrij geslo",
+            "hint": "Namig:",
             "open": "Odpri",
             "password": "Geslo",
-            "sentence": "Za odprtje publikacije vnesi LCP geslo: ",
-            "showPassphrase": "",
-            "urlHint": "Pozabljeno geslo? Tu lahko poiščeš pomoč",
+            "sentence": "Za odpiranje te publikacije je potrebno geslo LCP",
+            "showPassphrase": "Prikaži geslo",
+            "urlHint": "Ste pozabili geslo? Kliknite tukaj za podporo.",
             "whatIsLcp?": "Kaj je LCP?",
             "whatIsLcpInfoDetails": "LCP je kratica za 'Licensed Content Protection'.",
             "whatIsLcpInfoDetailsLink": "Za več informacij kliknite na to povezavo in obiščite spletno stran EDRLab."
