@@ -284,6 +284,9 @@ jobs:
       run: echo "NPM Cache HIT - restored with primary key"
       if: steps.action-cache.outputs.cache-hit == 'true'
 ###########################
+    - run: ls -als "$(npm config get cache)"
+      shell: bash
+###########################
     - run: npm cache verify
 ###########################
     - run: python --version || echo ok || true
@@ -348,7 +351,7 @@ jobs:
       shell: bash
       #export npm_config_arch=x64 && export npm_config_cpu=x64 &&
 ###########################
-    - run: npm cache verify
+#    - run: npm cache verify
 ###########################
     - name: Electron version + arch (Windows)
       #if: ${{ matrix.osarch == 'windows-intel' || matrix.osarch == 'windows-arm' }}
