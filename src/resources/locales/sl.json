@@ -340,152 +340,152 @@
             },
             "additional-accessibility-information-audio-descriptions": {
                 "compact": "Zvočni opisi",
-                "descriptive": ""
+                "descriptive": "Zvočni opisi"
             },
             "additional-accessibility-information-braille": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Braillova pisava",
+                "descriptive": "Braillova pisava"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Celotni rubijski pripisi",
+                "descriptive": "Celotni rubijski pripisi"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Visok kontrast med zvokom v ospredju in ozadju",
+                "descriptive": "Visok kontrast med zvokom v ospredju in ozadju"
             },
             "additional-accessibility-information-high-contrast-between-text-and-background": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Visok kontrast med besedilom v ospredju in ozadju",
+                "descriptive": "Visok kontrast med besedilom v ospredju in ozadju"
             },
             "additional-accessibility-information-large-print": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Velik tisk",
+                "descriptive": "Velik tisk"
             },
             "additional-accessibility-information-page-breaks": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Vključeni prelomi strani",
+                "descriptive": "Prelomi strani so vključeni iz izvirnega vira za tiskanje"
             },
             "additional-accessibility-information-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Nekateri rubijski pripisi",
+                "descriptive": "Nekateri rubijski pripisi"
             },
             "additional-accessibility-information-sign-language": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Znakovni jezik",
+                "descriptive": "Znakovni jezik"
             },
             "additional-accessibility-information-tactile-graphics": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Vključena taktilna grafika",
+                "descriptive": "Vgrajena je taktilna grafika, ki slepim osebam olajša dostop do vizualnih elementov"
             },
             "additional-accessibility-information-tactile-objects": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Taktilni 3D-predmeti",
+                "descriptive": "Taktilni 3D-predmeti"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Na voljo je namigovanje za pretvorbo besedila v govor",
+                "descriptive": "Na voljo je namigovanje za pretvorbo besedila v govor"
             },
-            "additional-accessibility-information-title": ""
+            "additional-accessibility-information-title": "Dodatne informacije o dostopnosti"
         },
         "conformance": {
             "conformance-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ta publikacija izpolnjuje minimalne standarde dostopnosti",
+                "descriptive": "Publikacija vsebuje izjavo o skladnosti, da izpolnjuje standarda dostopnosti EPUB in WCAG 2 Level A"
             },
             "conformance-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ta publikacija izpolnjuje sprejete standarde dostopnosti",
+                "descriptive": "Publikacija vsebuje izjavo o skladnosti, da ustreza standardu EPUB Accessibility in WCAG 2 Level AA"
             },
             "conformance-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ta publikacija presega sprejete standarde dostopnosti",
+                "descriptive": "Publikacija vsebuje izjavo o skladnosti, da ustreza standardu EPUB Accessibility in WCAG 2 Level AAA"
             },
             "conformance-certifier": {
-                "compact": ""
+                "compact": "Publikacijo je potrdil/a "
             },
             "conformance-certifier-credentials": {
-                "compact": ""
+                "compact": "Pooblastilo overitelja je "
             },
             "conformance-details-certifier-report": {
-                "compact": ""
+                "compact": "Za več informacij glejte poročilo overitelja"
             },
             "conformance-details-claim": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ta publikacija trdi, da izpolnjuje",
+                "descriptive": "Ta publikacija trdi, da izpolnjuje"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Dostopnost EPUB 1.0",
+                "descriptive": "Dostopnost EPUB 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Dostopnost EPUB 1.1",
+                "descriptive": "Dostopnost EPUB 1.1"
             },
             "conformance-details-level-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Stopnja A",
+                "descriptive": "Stopnja A"
             },
             "conformance-details-level-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Level AA",
+                "descriptive": "Level AA"
             },
             "conformance-details-level-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Level AAA",
+                "descriptive": "Level AAA"
             },
             "conformance-details-wcag-2-0": {
-                "compact": ""
+                "compact": "WCAG 2.0"
             },
             "conformance-details-wcag-2-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.1",
+                "descriptive": "Smernice za dostopnost spletnih vsebin (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.2",
+                "descriptive": "Smernice za dostopnost spletnih vsebin (WCAG) 2.2"
             },
             "conformance-no": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Informacije niso na voljo",
+                "descriptive": "Informacije niso na voljo"
             },
-            "conformance-title": "",
+            "conformance-title": "Skladnost",
             "conformance-unknown-standard": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Skladnosti s sprejetimi standardi za dostopnost te publikacije ni mogoče ugotoviti",
+                "descriptive": "Skladnosti s sprejetimi standardi za dostopnost te publikacije ni mogoče ugotoviti"
             }
         },
         "hazards": {
             "hazards-flashing": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Utripajoča vsebina",
+                "descriptive": "Publikacija vsebuje utripajočo vsebino, ki lahko povzroči fotosenzibilne napade"
             },
             "hazards-flashing-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Brez utripajoče vsebine",
+                "descriptive": "Publikacija ne vsebuje utripajoče vsebine"
             },
             "hazards-flashing-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Prisotnost utripajoče vsebine ni znana",
+                "descriptive": "Prisotnost utripajoče vsebine ni znana"
             },
             "hazards-motion": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Simulacija gibanja",
+                "descriptive": "Publikacija vsebuje simulacije gibanja, ki lahko povzročijo potovalno slabost"
             },
             "hazards-motion-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Brez simulacije gibanja",
+                "descriptive": "Publikacija ne vsebuje simulacije gibanja"
             },
             "hazards-motion-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Prisotnost simulacije gibanja ni znana",
+                "descriptive": "Prisotnost simulacije gibanja ni znana"
             },
             "hazards-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Informacije niso na voljo",
+                "descriptive": "Informacije niso na voljo"
             },
             "hazards-none": {
-                "compact": "",
+                "compact": "Brez nevarnosti",
                 "descriptive": ""
             },
             "hazards-sound": {
