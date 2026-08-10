@@ -1214,8 +1214,8 @@
                     "name": "Schakelaar Volledig Scherm"
                 },
                 "ToggleReaderZenMode": {
-                    "description": "",
-                    "name": ""
+                    "description": "Activeer of deactiveer in het leesvenster de zen-modus, die de gebruikersinterface tijdens het lezen vereenvoudigt",
+                    "name": "Zen-modus in-/uitschakelen"
                 },
                 "ToggleScreenReaderOptimize": {
                     "description": "Schakel in het bibliotheekvenster de geoptimaliseerde ondersteuning voor schermlezers in of uit",
