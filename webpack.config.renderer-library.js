@@ -302,7 +302,7 @@ let config = Object.assign(
                     options: {
                         configFile: "tsconfig_renderer.json",
                         transpileOnly: true, // checkTypeScriptSkip
-                        // compiler: "@typescript/native-preview",
+                        // compiler: "@typescript/native",
                     },
                 },
                 {
@@ -321,7 +321,7 @@ let config = Object.assign(
                             options: {
                                 configFile: "tsconfig_renderer.json",
                                 transpileOnly: true, // checkTypeScriptSkip
-                                // compiler: "@typescript/native-preview",
+                                // compiler: "@typescript/native",
                             },
                         },
                     ],
@@ -425,11 +425,10 @@ if (checkTypeScriptSkip) {
         new ForkTsCheckerWebpackPlugin({
             typescript: {
                 configFile: "tsconfig_renderer.json",
-                // typescriptPath: `./node_modules/.bin/tsgo${os.platform() === "win32" ? ".exe" : ""}`,
-                // typescriptPath: "@typescript/native-preview",
+                // typescriptPath: "@typescript/native",
                 typescriptPath: require.resolve("typescript"),
-                // typescriptPath: require.resolve("@typescript/native-preview"),
-                // typescriptPath: "./node_modules/@typescript/native-preview",
+                // typescriptPath: require.resolve("@typescript/native"),
+                // typescriptPath: "./node_modules/@typescript/native",
             },
             // measureCompilationTime: true,
         }),

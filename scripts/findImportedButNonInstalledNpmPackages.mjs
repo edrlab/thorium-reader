@@ -19,6 +19,7 @@ const ignoreds = [
     /^tslib$/,
     /^i18next-locales-sync$/,
     /^@typescript\/native-preview$/,
+    /^@typescript\/native$/,
     /^jest.*/,
     /^stylelint.*/,
     /^@types\/.+$/,

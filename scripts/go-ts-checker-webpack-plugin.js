@@ -18,7 +18,7 @@ class TsgoError extends Error {
 
 const removeNewLinesAtEnd = (str) => str.replace(/(\r\n|\n|\r)+$/g, "");
 
-const PLUGIN_NAME = "tsgo-plugin";
+const PLUGIN_NAME = "tsgo-plugin"; // TypeScript v7+
 
 class TsgoWebpackPlugin {
   constructor(options = {}) {
@@ -51,7 +51,7 @@ class TsgoWebpackPlugin {
 
     const file = path.resolve(
       compiler.context,
-      `./node_modules/.bin/tsgo${os.platform() === "win32" ? ".exe" : ""}`
+      `./node_modules/.bin/tsc` // ${os.platform() === "win32" ? ".exe" : ""}
     );
 
     const options = {
