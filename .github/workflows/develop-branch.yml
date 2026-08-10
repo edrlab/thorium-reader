@@ -243,18 +243,48 @@ jobs:
 # https://github.com/actions/setup-node/issues/1553#issuecomment-4750595425
       with:
         node-version: '24'
-        cache: 'npm'
-        node-version-file: package.json
-        package-manager-cache: true
-        cache-dependency-path: 'package-lock.json'
+        package-manager-cache: false
+        cache: ''
+#        cache: 'npm'
+#        node-version-file: package.json
+#        package-manager-cache: true
+#        cache-dependency-path: 'package-lock.json'
         #check-latest: true
 ###########################
     - run: node --version && npm --version
-# https://github.com/npm/cli/issues/9133
 ###########################
     - run: npm --global install npm
 ###########################
-    - run: npm --version
+    - run: npm --version && npm config get cache
+###########################
+    - name: Get NPM cache
+      id: npm-config-get-cache
+      run: echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
+      shell: bash
+      # run: echo "dir=$(npm config get cache)" >> ${env:GITHUB_OUTPUT}
+      # shell: pwsh
+###########################
+# https://github.com/actions/cache/commits/v6.1.0
+# https://github.com/actions/cache/commits/55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+# https://github.com/actions/cache/compare/v6.1.0...55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+    - name: Action Cache
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+      id: action-cache
+      with:
+        path: ${{ steps.npm-config-get-cache.outputs.dir }}
+        key: npm-cache-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('package-lock.json') }}
+        restore-keys: |
+          npm-cache-${{ runner.os }}-${{ runner.arch }}-
+###########################
+    - name: NPM Cache NOT HIT
+      run: echo "NPM Cache NOT HIT - not restored at all, or restored with restore-keys instead of primary key"
+      if: steps.action-cache.outputs.cache-hit != 'true'
+###########################
+    - name: NPM Cache HIT
+      run: echo "NPM Cache HIT - restored with primary key"
+      if: steps.action-cache.outputs.cache-hit == 'true'
+###########################
+    - run: npm cache verify
 ###########################
     - run: python --version || echo ok || true
 ###########################
@@ -288,9 +318,9 @@ jobs:
 ###########################
     - run: git --no-pager diff
 ###########################
-    - run: npm cache clean --force
+#    - run: npm cache clean --force
 ###########################
-    - run: npm cache verify
+#    - run: npm cache verify
 ###########################
 # - run: cat package-lock.json | grep -i divina-player-js
 ###########################
