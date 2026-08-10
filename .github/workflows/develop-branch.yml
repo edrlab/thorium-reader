@@ -240,9 +240,11 @@ jobs:
 # https://github.com/actions/setup-node#caching-global-packages-data
 # https://github.com/actions/setup-node/blob/main/docs/advanced-usage.md#caching-packages-data
 # https://github.com/actions/cache/blob/main/examples.md#node---npm
+# https://github.com/actions/setup-node/issues/1553#issuecomment-4750595425
       with:
         node-version: '24'
         cache: 'npm'
+        node-version-file: package.json
         package-manager-cache: true
         cache-dependency-path: 'package-lock.json'
         #check-latest: true
