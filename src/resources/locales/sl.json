@@ -486,111 +486,111 @@
             },
             "hazards-none": {
                 "compact": "Brez nevarnosti",
-                "descriptive": ""
+                "descriptive": "Publikacija ne vsebuje nevarnosti"
             },
             "hazards-sound": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Zvoki",
+                "descriptive": "Publikacija vsebuje zvoke, ki so lahko neprijetni"
             },
             "hazards-sound-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Brez zvokov",
+                "descriptive": "Publikacija ne vsebuje zvokov"
             },
             "hazards-sound-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Prisotnost zvokov ni znana",
+                "descriptive": "Prisotnost zvokov ni znana"
             },
-            "hazards-title": "",
+            "hazards-title": "Nevarnosti",
             "hazards-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Prisotnost nevarnosti ni znana",
+                "descriptive": "Prisotnost nevarnosti ni znana"
             }
         },
         "navigation": {
             "navigation-index": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Stvarno kazalo",
+                "descriptive": "Stvarno kazalo s povezavami do navedenih vnosov"
             },
             "navigation-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Informacije niso na voljo",
+                "descriptive": "Informacije niso na voljo"
             },
             "navigation-page-navigation": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Pojdi na stran",
+                "descriptive": "Seznam strani za prehod na stran iz tiskane različice"
             },
             "navigation-structural": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Naslovi",
+                "descriptive": "Elementi, kot so naslovi, razpredelnice itd. za strukturirano navigacijo"
             },
-            "navigation-title": "",
+            "navigation-title": "Navigacija",
             "navigation-toc": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Kazalo vsebine",
+                "descriptive": "Kazalo vsebine do vseh poglavij besedila prek povezav"
             }
         },
         "rich-content": {
             "rich-content-accessible-chemistry-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Kemijske formule v LaTeX",
+                "descriptive": "Kemijske formule v dostopnem formatu (LaTeX)"
             },
             "rich-content-accessible-chemistry-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Kemijske formule v MathML",
+                "descriptive": "Kemijske formule v dostopnem formatu (MathML)"
             },
             "rich-content-accessible-math-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Math kot LaTeX",
+                "descriptive": "Matematične formule v dostopnem formatu (LaTeX)"
             },
             "rich-content-accessible-math-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Math kot MathML",
+                "descriptive": "Matematične formule v dostopnem formatu (MathML)"
             },
             "rich-content-accessible-math-described": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Na voljo so besedilni opisi matematike",
+                "descriptive": "Na voljo so besedilni opisi matematike"
             },
             "rich-content-closed-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Videoposnetki imajo izbirne podnapise",
+                "descriptive": "Videoposnetki, vključeni v publikacije, imajo izbirne podnapise"
             },
             "rich-content-extended": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Slike, bogate z informacijami, so opisane z razširjenimi opisi",
+                "descriptive": "Slike, bogate z informacijami, so opisane z razširjenimi opisi"
             },
             "rich-content-open-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Videoposnetki imajo vdelane podnapise",
+                "descriptive": "Videoposnetki, vključeni v publikacije, imajo vdelane podnapise"
             },
-            "rich-content-title": "",
+            "rich-content-title": "Bogata vsebina",
             "rich-content-transcript": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Na voljo so transkripcije",
+                "descriptive": "Na voljo so transkripcije"
             },
             "rich-content-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Informacije niso na voljo",
+                "descriptive": "Informacije niso na voljo"
             }
         },
         "ways-of-reading": {
             "ways-of-reading-nonvisual-reading-alt-text": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ima alternativno besedilo",
+                "descriptive": "Ima alternativne besedilne opise za slike"
             },
             "ways-of-reading-nonvisual-reading-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Na voljo ni nobenih informacij o nevizualnem branju",
+                "descriptive": "Na voljo ni nobenih informacij o nevizualnem branju"
             },
             "ways-of-reading-nonvisual-reading-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ni mogoče prebrati s funkcijo glasnega branja ali dinamičnim braillovim zaslonom",
+                "descriptive": "Vsebine ni mogoče brati s funkcijo glasnega branja ali dinamičnim braillovim zaslonom"
             },
             "ways-of-reading-nonvisual-reading-not-fully": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ni mogoče v celoti brati s funkcijo glasnega branja ali dinamičnim braillovim zaslonom",
+                "descriptive": "Vse vsebine ne bo mogoče brati s funkcijo glasnega branja ali dinamičnim braillovim zaslonom"
             },
             "ways-of-reading-nonvisual-reading-readable": {
-                "compact": "",
+                "compact": "Berljivo s funkcijo glasnega branja ali dinamičnim braillovim zaslonom",
                 "descriptive": ""
             },
             "ways-of-reading-prerecorded-audio-complementary": {
