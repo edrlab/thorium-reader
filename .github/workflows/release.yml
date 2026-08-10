@@ -337,10 +337,14 @@ jobs:
 # https://github.com/actions/setup-node/commits/820762786026740c76f36085b0efc47a31fe5020
 # https://github.com/actions/setup-node/compare/v7.0.0...820762786026740c76f36085b0efc47a31fe5020
     - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+# https://github.com/actions/setup-node#caching-global-packages-data
+# https://github.com/actions/setup-node/blob/main/docs/advanced-usage.md#caching-packages-data
+# https://github.com/actions/cache/blob/main/examples.md#node---npm
       with:
         node-version: '24'
-        cache: ''
-        package-manager-cache: false
+        cache: 'npm'
+        package-manager-cache: true
+        cache-dependency-path: 'package-lock.json'
         #check-latest: true
 ###########################
     - run: node --version && npm --version
@@ -728,22 +732,6 @@ jobs:
 #        artifact-ids: artifact-latest-linux-arm-${{ github.run_id }},artifact-latest-windows-arm-${{ github.run_id }},artifact-latest-macos-arm-${{ github.run_id }},artifact-latest-linux-intel-${{ github.run_id }},artifact-latest-windows-intel-${{ github.run_id }},artifact-latest-macos-intel-${{ github.run_id }}
 #        merge-multiple: true
         path: release
-###########################
-# https://github.com/actions/setup-node/commits/v7.0.0
-# https://github.com/actions/setup-node/commits/820762786026740c76f36085b0efc47a31fe5020
-# https://github.com/actions/setup-node/compare/v7.0.0...820762786026740c76f36085b0efc47a31fe5020
-#    - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
-#      with:
-#        node-version: '24'
-#        cache: ''
-#        package-manager-cache: false
-#        #check-latest: true
-###########################
-#    - run: node --version && npm --version
-###########################
-#    - run: npm --global install npm
-###########################
-#    - run: npm --version
 ###########################
     - name: GitHub Tagged Release Create and Upload Build Artefacts
       env:
