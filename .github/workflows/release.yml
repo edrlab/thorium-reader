@@ -442,6 +442,8 @@ jobs:
       shell: bash
       #export npm_config_arch=x64 && export npm_config_cpu=x64 &&
 ###########################
+    - run: npm cache verify
+###########################
     - name: Electron version + arch (Windows)
       #if: ${{ matrix.osarch == 'windows-intel' || matrix.osarch == 'windows-arm' }}
       if: startsWith(matrix.osarch, 'windows-')
