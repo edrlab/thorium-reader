@@ -10,6 +10,8 @@ import {
     IEventPayload_R2_EVENT_HIGHLIGHT_REMOVE, IEventPayload_R2_EVENT_HIGHLIGHT_REMOVE_ALL, R2_EVENT_HIGHLIGHT_CLICK, R2_EVENT_HIGHLIGHT_CREATE,
     R2_EVENT_HIGHLIGHT_REMOVE, R2_EVENT_HIGHLIGHT_REMOVE_ALL,
     IEventPayload_R2_EVENT_HIGHLIGHT_DRAW_MARGIN, R2_EVENT_HIGHLIGHT_DRAW_MARGIN,
+    IEventPayload_R2_EVENT_ENABLE_PAGE_BREAK_MARGIN_INDICATORS,
+    R2_EVENT_ENABLE_PAGE_BREAK_MARGIN_INDICATORS,
 } from "../common/events";
 import { IHighlight, IHighlightDefinition } from "../common/highlight";
 import { ReadiumElectronBrowserWindow, IReadiumElectronWebview } from "./webview/state";
@@ -19,6 +21,24 @@ import { ReadiumElectronBrowserWindow, IReadiumElectronWebview } from "./webview
 // const IS_DEV = (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "dev");
 
 const win = global.window as ReadiumElectronBrowserWindow;
+
+export function enablePageBreakMarginIndicators(doEnable: boolean) {
+
+    if (win.READIUM2) {
+        win.READIUM2.enablePageBreakMarginIndicators = doEnable;
+    }
+
+    const activeWebViews = win.READIUM2.getActiveWebViews();
+    for (const activeWebView of activeWebViews) {
+        const payload: IEventPayload_R2_EVENT_ENABLE_PAGE_BREAK_MARGIN_INDICATORS = {
+            doEnable,
+        };
+
+        if (activeWebView.READIUM2?.DOMisReady) {
+            activeWebView.send(R2_EVENT_ENABLE_PAGE_BREAK_MARGIN_INDICATORS, payload).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+        }
+    }
+}
 
 export function highlightsHandleIpcMessage(
     eventChannel: string,

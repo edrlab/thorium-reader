@@ -11,7 +11,7 @@ import debug_ from "debug";
 import { ipcRenderer } from "electron";
 import { isFocusable } from "tabbable";
 
-import { DISABLE_TEMPORARY_NAV_TARGET_OUTLINE_CLASS, ENABLE_SKIP_LINK, ID_HIGHLIGHTS_FLOATING } from "../../common/styles";
+import { CLASS_HIGHLIGHT_CURSOR2, DISABLE_TEMPORARY_NAV_TARGET_OUTLINE_CLASS, ENABLE_SKIP_LINK, ID_HIGHLIGHTS_FLOATING } from "../../common/styles";
 
 import { ISelectionInfo } from "../../common/selection";
 
@@ -54,10 +54,12 @@ import {
     IEventPayload_R2_EVENT_TTS_HIGHLIGHT_STYLE,
     R2_EVENT_TTS_HIGHLIGHT_STYLE,
     ENABLE_NAVIGATOR_R2_EVENT_IMAGE_CLICK,
+    R2_EVENT_ENABLE_PAGE_BREAK_MARGIN_INDICATORS,
+    IEventPayload_R2_EVENT_ENABLE_PAGE_BREAK_MARGIN_INDICATORS,
     // R2_EVENT_DISABLE_TEMPORARY_NAV_TARGET_OUTLINE,
     // IEventPayload_R2_EVENT_DISABLE_TEMPORARY_NAV_TARGET_OUTLINE,
 } from "../../common/events";
-import { HighlightDrawTypeOpacityMask, HighlightDrawTypeOpacityMaskRuler, IColor, HighlightDrawTypeNONE, HighlightDrawTypeBackground, HighlightDrawTypeOutline, IHighlightDefinition } from "../../common/highlight";
+import { HighlightDrawTypeOpacityMask, HighlightDrawTypeOpacityMaskRuler, IColor, HighlightDrawTypeNONE, HighlightDrawTypeBackground, IHighlightDefinition, HighlightDrawTypeMarginBookmark } from "../../common/highlight";
 import { IPaginationInfo } from "../../common/pagination";
 import {
     appendCSSInline, configureFixedLayout, injectDefaultCSS, injectReadPosCSS, isPaginated,
@@ -100,7 +102,6 @@ import { setupAudioBook } from "./audiobook";
 import { INameVersion, setWindowNavigatorEpubReadingSystem } from "./epubReadingSystem";
 import {
     createHighlights, destroyAllhighlights, destroyHighlight, destroyHighlightsGroup,
-    ENABLE_PAGEBREAK_MARGIN_TEXT_EXPERIMENT,
     HIGHLIGHT_GROUP_PAGEBREAK, HIGHLIGHT_GROUP_TTS,
     recreateAllHighlights, recreateAllHighlightsRaw, setDrawMargin,
 } from "./highlight";
@@ -194,6 +195,7 @@ win.READIUM2 = {
     ttsOverlayEnabled: false,
     ttsPlaybackRate: 1,
     ttsAndMediaOverlaysManualPlayNext: false,
+    enablePageBreakMarginIndicators: false,
     ttsSkippabilityEnabled: false,
     ttsSentenceDetectionEnabled: true,
     // mediaOverlaysUseTTSHighlights: false,
@@ -483,7 +485,7 @@ if (IS_DEV) {
 }
 
 function isVisible(allowPartial: boolean, element: Element, domRect: DOMRect | undefined): boolean {
-    if (DEBUG_TRACE) debug("isVisible:", getCssSelector(element), allowPartial);
+    if (DEBUG_TRACE) debug("isVisible check, allowPartial:", getCssSelector(element), allowPartial);
     if (DEBUG_TRACE && domRect) debug("isVisible domRect:", domRect.x, domRect.y, domRect.width, domRect.height);
 
     if (win.READIUM2.isFixedLayout) {
@@ -2197,6 +2199,7 @@ win.addEventListener("DOMContentLoaded", () => {
     // win.READIUM2.mediaOverlaysUseTTSHighlights = false;
     win.READIUM2.ttsClickEnabled = false;
     win.READIUM2.ttsAndMediaOverlaysManualPlayNext = false;
+    win.READIUM2.enablePageBreakMarginIndicators = false;
     win.READIUM2.ttsSkippabilityEnabled = false;
     win.READIUM2.ttsSentenceDetectionEnabled = true;
     win.READIUM2.ttsOverlayEnabled = false;
@@ -3026,6 +3029,11 @@ function loaded(forced: boolean) {
             ev.preventDefault();
             ev.stopPropagation();
 
+            return;
+        }
+
+        if (win.document.documentElement.classList.contains(CLASS_HIGHLIGHT_CURSOR2)) {
+            debug("!AUX __CLICK skip because CLASS_HIGHLIGHT_CURSOR2 (highlights)");
             return;
         }
 
@@ -4885,7 +4893,7 @@ const findPrecedingAncestorSiblingEpubPageBreak = (element: Element): { epubPage
         // debug("_allEpubPageBreaks XPath", JSON.stringify(_allEpubPageBreaks, null, 4));
         debug("_allEpubPageBreaks XPath", _allEpubPageBreaks.length, xpathResult.snapshotLength);
 
-        if (ENABLE_PAGEBREAK_MARGIN_TEXT_EXPERIMENT) {
+        if (win.READIUM2.enablePageBreakMarginIndicators) {
             destroyHighlightsGroup(win.document, HIGHLIGHT_GROUP_PAGEBREAK);
             const highlightDefinitions: IHighlightDefinition[] = [];
             for (const pageBreak of _allEpubPageBreaks) {
@@ -4894,32 +4902,35 @@ const findPrecedingAncestorSiblingEpubPageBreak = (element: Element): { epubPage
                 // range.setStart(pageBreak.element, 0);
                 // range.setEnd(pageBreak.element, 0);
                 range.selectNode(pageBreak.element);
+                // debug("pageBreak.element", pageBreak.element.tagName, pageBreak.element.nodeName, pageBreak.element.nodeType, pageBreak.element.nodeValue);
+                // debug("pageBreak range startContainer", range.startOffset, range.startContainer.nodeName, range.startContainer.nodeType, range.startContainer.nodeValue);
+                // debug("pageBreak range endContainer", range.endOffset, range.endContainer.nodeName, range.endContainer.nodeType, range.endContainer.nodeValue);
 
                 highlightDefinitions.push(
                     {
                         // https://htmlcolorcodes.com/
                         color: {
-                            blue: 60,
-                            green: 76,
-                            red:  231,
+                            blue: 249,
+                            green: 133,
+                            red:  255,
                         },
-                        // drawType: HighlightDrawTypeUnderline,
-                        // expand: ENABLE_CSS_HIGHLIGHTS ? 0 : 2,
-                        drawType: HighlightDrawTypeOutline,
-                        expand: 1,
+                        drawType: HighlightDrawTypeMarginBookmark,
+                        expand: 0,
                         selectionInfo: undefined,
                         group: HIGHLIGHT_GROUP_PAGEBREAK,
                         range,
                         marginText: pageBreak.text ? pageBreak.text : undefined,
-                        textPopup: undefined,
+                        textPopup: pageBreak.text ? { text: pageBreak.text } : undefined,
                     },
                 );
             }
-            createHighlights(
-                win,
-                highlightDefinitions,
-                true, // mouse / pointer interaction
-            );
+            if (highlightDefinitions.length) {
+                createHighlights(
+                    win,
+                    highlightDefinitions,
+                    true, // mouse / pointer interaction
+                );
+            }
         }
     }
 
@@ -5412,6 +5423,11 @@ if (!win.READIUM2.isAudio) {
         ttsVoices(payload.voices);
     });
 
+    ipcRenderer.on(R2_EVENT_ENABLE_PAGE_BREAK_MARGIN_INDICATORS,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (_event: any, payload: IEventPayload_R2_EVENT_ENABLE_PAGE_BREAK_MARGIN_INDICATORS) => {
+        win.READIUM2.enablePageBreakMarginIndicators = payload.doEnable;
+    });
     ipcRenderer.on(R2_EVENT_TTS_MEDIAOVERLAYS_MANUAL_PLAY_NEXT,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (_event: any, payload: IEventPayload_R2_EVENT_TTS_MEDIAOVERLAYS_MANUAL_PLAY_NEXT) => {
@@ -5813,6 +5829,14 @@ if (!win.READIUM2.isAudio) {
         if (DEBUG_TRACE) debug("R2_EVENT_FOCUS_READING_LOC: focusCurrentReadingLocationElement()...");
         // CONTEXT: R2_EVENT_FOCUS_READING_LOC
         focusCurrentReadingLocationElement(true);
+    });
+    win.addEventListener("message", (event) => {
+        // debug("event.data", event.data);
+        if (event.data === R2_EVENT_FOCUS_READING_LOC) {
+            if (DEBUG_TRACE) debug("R2_EVENT_FOCUS_READING_LOC (postMessage): focusCurrentReadingLocationElement()...");
+            // CONTEXT: R2_EVENT_FOCUS_READING_LOC
+            focusCurrentReadingLocationElement(true);
+        }
     });
 }
 
