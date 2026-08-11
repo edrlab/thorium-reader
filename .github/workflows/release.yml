@@ -372,9 +372,9 @@ jobs:
       id: action-cache
       with:
         path: ${{ steps.npm-config-get-cache.outputs.dir }}
-        key: npm-electron-cache-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('package-lock.json') }}
+        key: npm-electron-cache-notpr-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('package-lock.json') }}
         restore-keys: |
-          npm-electron-cache-${{ runner.os }}-${{ runner.arch }}-
+          npm-electron-cache-notpr-${{ runner.os }}-${{ runner.arch }}-
 ###########################
     - name: NPM Cache NOT HIT
       run: echo "NPM Cache NOT HIT - not restored at all, or restored with restore-keys instead of primary key"
