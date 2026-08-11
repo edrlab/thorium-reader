@@ -641,11 +641,11 @@
                 "noFlashing": "Brez bliskanja",
                 "noMotionSimulation": "Brez simulacije gibanja",
                 "noSound": "Brez zvoka",
-                "none": "Nič",
+                "none": "Brez",
                 "sound": "Zvok",
                 "unknown": "Neznano"
             },
-            "certifierReport": "Poročilo certifikatorja",
+            "certifierReport": "Poročilo overitelja:",
             "conformsTo": "V skladu z:",
             "moreInformation": "Več informacij",
             "name": "Dostopnost",
@@ -657,10 +657,10 @@
         },
         "author": "Avtor",
         "cancelledLcp": "Knjige ni mogoče prebrati, ker je bila licenca LCP preklicana.",
-        "certificateRevoked": "Certifikat je preklican",
-        "certificateSignatureInvalid": "Podpis certifikata je neveljaven",
+        "certificateRevoked": "Preklicano potrdilo o licenci LCP.",
+        "certificateSignatureInvalid": "Neveljaven podpis potrdila o licenci LCP.",
         "cover": {
-            "img": "Naslovnica"
+            "img": "naslovnica"
         },
         "day": "dan",
         "days": "dni",
