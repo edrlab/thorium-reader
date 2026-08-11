@@ -591,45 +591,45 @@
             },
             "ways-of-reading-nonvisual-reading-readable": {
                 "compact": "Berljivo s funkcijo glasnega branja ali dinamičnim braillovim zaslonom",
-                "descriptive": ""
+                "descriptive": "Vso vsebino je mogoče brati s funkcijo glasnega branja ali dinamičnim braillovim zaslonom"
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Predhodno posneti zvočni posnetki",
+                "descriptive": "V vsebino so vdelani vnaprej posneti zvočni posnetki"
             },
             "ways-of-reading-prerecorded-audio-only": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Samo vnaprej posnet zvok",
+                "descriptive": "Zvočna knjiga brez alternativnega besedila"
             },
             "ways-of-reading-prerecorded-audio-synchronized": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Predposneti zvok, sinhroniziran z besedilom",
+                "descriptive": "Vsa vsebina je na voljo kot vnaprej posnet zvok, sinhroniziran z besedilom"
             },
-            "ways-of-reading-title": "",
+            "ways-of-reading-title": "Načini branja",
             "ways-of-reading-visual-adjustments-modifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Videz je mogoče spremeniti",
+                "descriptive": "Videz besedila in postavitev strani je mogoče prilagoditi glede na zmogljivosti bralnega sistema (družina in velikost pisave, presledki med odstavki, stavki, besedami in črkami ter barva ozadja in besedila)"
             },
             "ways-of-reading-visual-adjustments-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ni na voljo informacij o možnosti spreminjanja videza",
+                "descriptive": "Ni na voljo informacij o možnosti spreminjanja videza"
             },
             "ways-of-reading-visual-adjustments-unmodifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Videza ni mogoče spremeniti",
+                "descriptive": "Besedila in postavitve strani ni mogoče spreminjati, saj je bralna izkušnja podobna tiskani različici, vendar lahko bralni sistemi še vedno ponujajo možnosti povečave"
             }
         }
     },
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": "Prijazno sintetizatorjem govora in čitalcem zaslona"
+                "textual": "Vso vsebino je mogoče brati s funkcijo glasnega branja ali dinamičnim braillovim zaslonom"
             },
             "accessibilityFeature": {
-                "alternativeText": "Vsebuje alternativno besedilo",
-                "displayTransformability": "Prilagodljivo besedilo in postavitev",
+                "alternativeText": "Ima alternativno besedilo na slikah",
+                "displayTransformability": "Videz besedila in postavitev strani je mogoče spremeniti",
                 "longDescription": "V celoti opisani grafični viri",
-                "printPageNumbers": "Sklic na paginacijo tiskane knjige",
+                "printPageNumbers": "Vsebuje seznam strani za prehod na strani iz različice za tiskanje",
                 "readingOrder": "Vsebuje vrstni red branja",
                 "synchronizedAudioText": "Besedilo in avdio sta sinhronizirana",
                 "tableOfContents": "Vsebuje kazalo vsebine"
