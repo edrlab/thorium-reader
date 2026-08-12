@@ -26,7 +26,9 @@ USER root
 # ARG DEBIAN_FRONTEND=noninteractive
 # ENV DEBIAN_FRONTEND=noninteractive
 
-RUN echo $CONTAINER_TIMEZONE && arch && uname &&\
+RUN arch && uname
+
+RUN echo $CONTAINER_TIMEZONE &&\
     apt-get update -y &&\
     apt-get upgrade -y &&\
     ln -snf /usr/share/zoneinfo/$CONTAINER_TIMEZONE /etc/localtime &&\
