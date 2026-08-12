@@ -697,25 +697,25 @@
         "seeMore": "Prikaži več",
         "timeLeft": "Preostali čas",
         "title": "Naslov",
-        "userKeyCheckInvalid": "Napačno geslo"
+        "userKeyCheckInvalid": "Napačno geslo."
     },
     "reader": {
         "annotations": {
             "Color": "Barva",
-            "addNote": "Dodaj opombo",
+            "addNote": "Dodaj pripis",
             "advancedMode": "Takojšnji način (samodejno ustvarjanje po izbiri)",
             "annotationsExport": {
-                "description": "Poimenuj izvožene zapiske:",
+                "description": "Poimenuj izvožene opombe:",
                 "title": "Naslov"
             },
-            "annotationsOptions": "Možnosti",
+            "annotationsOptions": "Možnosti pripisov",
             "date": "Datum spremembe",
             "error": {
                 "pdf": {
-                    "validationSelection": ""
+                    "validationSelection": "Iz te izbire ni mogoče ustvariti pripisov PDF."
                 }
             },
-            "export": "Shrani zapiske kot ...",
+            "export": "Shrani opombe kot ...",
             "filter": {
                 "all": "Vse",
                 "filterByColor": "Filtriraj po barvi",
