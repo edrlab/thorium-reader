@@ -722,19 +722,19 @@
                 "filterByCreator": "Filtriraj po ustvarjalcu",
                 "filterByDrawtype": "Filtriraj po vrsti",
                 "filterByTag": "Filtriraj po oznaki",
-                "filterOptions": "Možnosti filtra",
+                "filterOptions": "Možnosti filtriranja",
                 "none": "Noben"
             },
             "hide": "Ne prikaži",
             "highlight": "Poudari",
             "noSelectionToast": "Brez izbire",
-            "note": "{{- barva}} Opomba",
+            "note": "{{- color}} Opomba",
             "quickAnnotations": "Hitro ustvarjanje (preskoči urejevalnik)",
             "saveNote": "Shrani",
             "sorting": {
                 "lastcreated": "Nazadnje ustvarjeno",
                 "lastmodified": "Nazadnje spremenjeno",
-                "progression": "Napredek\n",
+                "progression": "Napredek",
                 "sortingOptions": "Možnosti razvrščanja"
             },
             "toggleMarginMarks": "Prikaži v robovih",
@@ -746,30 +746,30 @@
             }
         },
         "bookmarks": {
-            "index": ""
+            "index": "Zaznamek {{- index}}"
         },
         "divina": {
             "mute": "izklopi zvok",
             "unmute": "vklopi zvok"
         },
         "dock": {
-            "dockDefault": "",
-            "dockLeft": "",
-            "dockRight": ""
+            "dockDefault": "Prikaži ploščo kot modalno pojavno okno",
+            "dockLeft": "Priklopi ploščo na levo",
+            "dockRight": "Priklopi ploščo na desno"
         },
         "fxl": {
-            "fit": "Prilagajanje zaslonu"
+            "fit": "Prilagodi"
         },
         "goToContent": "Pojdi na vsebino",
         "imgViewer": {
-            "title": "",
-            "zoomIn": "",
-            "zoomOut": "",
-            "zoomReset": ""
+            "title": "Pregledovalnik slik (povečava)",
+            "zoomIn": "Povečaj",
+            "zoomOut": "Pomanjšaj",
+            "zoomReset": "Ponastavi povečavo"
         },
         "marks": {
-            "annotations": "Opombe",
-            "annotationsReadium": "Opombe (Readium)",
+            "annotations": "Pripisi",
+            "annotationsReadium": "Pripisi Readium",
             "bookmarks": "Zaznamki",
             "delete": "Izbriši",
             "edit": "Uredi",
