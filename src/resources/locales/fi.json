@@ -1214,11 +1214,11 @@
                     "name": "Muuta koko ruudun tila"
                 },
                 "ToggleReaderZenMode": {
-                    "description": "Aloita tai poistu keskittymistilasta, joka yksinkertaistaa lukunäkymän käyttöliittymää",
+                    "description": "Lukunäkymässä voit ottaa käyttöön tai pois käytöstä keskittymistilan, joka yksinkertaistaa käyttöliittymää lukemisen aikana",
                     "name": "Muuta keskittymistila"
                 },
                 "ToggleScreenReaderOptimize": {
-                    "description": "Ota käyttöön tai poista käytöstä optimoitu tuki ruudunlukuohjelmille kirjastoikkunassa",
+                    "description": "Kirjastonäkymässä voit ottaa käyttöön tai poistaa käytöstä optimoidun tuen ruudunlukuohjelmille",
                     "name": "Ota käyttöön tai poista käytöstä ruudunlukijan optimoinnit"
                 }
             },
