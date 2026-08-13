@@ -156,8 +156,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        osarch: [windows-intel, windows-arm, macos-intel, macos-arm, linux-intel, linux-arm]
-        # osarch: [windows-intel, windows-arm]
+        # osarch: [windows-intel, windows-arm, macos-intel, macos-arm, linux-intel, linux-arm]
+        osarch: [macos-arm]
 # Thorium for MacOS x64 and arm64 is built on GitHub Actions arm64 runners
 # Thorium for Linux x64 and arm64 is built on GitHub Actions x64 runners
 # Thorium for Windows x64 and arm64 is built on GitHub Actions x64 runners
@@ -184,42 +184,42 @@ jobs:
 # ubuntu-20.04 is the oldest available (good for glibc compat) ... but GitHub says "The Ubuntu 20.04 runner image will be fully unsupported by April 1, 2025"
 #       https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2004-Readme.md
         include:
-          - osarch: windows-intel
-            runson: windows-2025
-            packname: win
-            release_tag: latest-windows-intel
-            os: windows
-            arch: intel
-          - osarch: windows-arm
-            runson: windows-11-vs2026-arm # win11-vs2026-arm64 # https://github.com/actions/runner-images/blob/main/images/windows/Windows11-VS2026-Arm64-Readme.md
-            packname: win
-            release_tag: latest-windows-arm
-            os: windows
-            arch: arm
-          - osarch: macos-intel
-            runson: macos-latest #macos-14-arm64
-            packname: 'mac'
-            release_tag: latest-macos-intel
-            os: macos
-            arch: intel
+          # - osarch: windows-intel
+          #   runson: windows-2025
+          #   packname: win
+          #   release_tag: latest-windows-intel
+          #   os: windows
+          #   arch: intel
+          # - osarch: windows-arm
+          #   runson: windows-11-vs2026-arm # win11-vs2026-arm64 # https://github.com/actions/runner-images/blob/main/images/windows/Windows11-VS2026-Arm64-Readme.md
+          #   packname: win
+          #   release_tag: latest-windows-arm
+          #   os: windows
+          #   arch: arm
+          # - osarch: macos-intel
+          #   runson: macos-latest #macos-14-arm64
+          #   packname: 'mac'
+          #   release_tag: latest-macos-intel
+          #   os: macos
+          #   arch: intel
           - osarch: macos-arm
             runson: macos-latest #macos-14-arm64
             packname: 'mac'
             release_tag: latest-macos-arm
             os: macos
             arch: arm
-          - osarch: linux-intel
-            runson: ubuntu-22.04 #ubuntu-latest is ubuntu-24.04
-            packname: linux
-            release_tag: latest-linux-intel
-            os: linux
-            arch: intel
-          - osarch: linux-arm
-            runson: ubuntu-22.04-arm #ubuntu-latest is ubuntu-24.04
-            packname: linux
-            release_tag: latest-linux-arm
-            os: linux
-            arch: arm
+          # - osarch: linux-intel
+          #   runson: ubuntu-22.04 #ubuntu-latest is ubuntu-24.04
+          #   packname: linux
+          #   release_tag: latest-linux-intel
+          #   os: linux
+          #   arch: intel
+          # - osarch: linux-arm
+          #   runson: ubuntu-22.04-arm #ubuntu-latest is ubuntu-24.04
+          #   packname: linux
+          #   release_tag: latest-linux-arm
+          #   os: linux
+          #   arch: arm
 #    env:
 #      RELEASE_TAG: ${{ matrix.release_tag }} # MUST keep for WebPack config, detection of CI build
     steps:
@@ -743,32 +743,33 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        osarch: [windows-intel, windows-arm, macos-intel, macos-arm, linux-intel, linux-arm]
+        #osarch: [windows-intel, windows-arm, macos-intel, macos-arm, linux-intel, linux-arm]
+        osarch: [macos-arm]
         include:
-          - osarch: windows-intel
-            runson: ubuntu-latest # windows-2025
-            packname: win
-            release_tag: latest-windows-intel
-          - osarch: windows-arm
-            runson: ubuntu-latest # windows-2025
-            packname: win
-            release_tag: latest-windows-arm
-          - osarch: macos-intel
-            runson: ubuntu-latest # macos-latest #macos-14-arm64
-            packname: 'mac'
-            release_tag: latest-macos-intel
+          # - osarch: windows-intel
+          #   runson: ubuntu-latest # windows-2025
+          #   packname: win
+          #   release_tag: latest-windows-intel
+          # - osarch: windows-arm
+          #   runson: ubuntu-latest # windows-2025
+          #   packname: win
+          #   release_tag: latest-windows-arm
+          # - osarch: macos-intel
+          #   runson: ubuntu-latest # macos-latest #macos-14-arm64
+          #   packname: 'mac'
+          #   release_tag: latest-macos-intel
           - osarch: macos-arm
             runson: ubuntu-latest # macos-latest #macos-14-arm64
             packname: 'mac'
             release_tag: latest-macos-arm
-          - osarch: linux-intel
-            runson: ubuntu-latest # ubuntu-22.04 #ubuntu-latest is ubuntu-24.04
-            packname: linux
-            release_tag: latest-linux-intel
-          - osarch: linux-arm
-            runson: ubuntu-latest # ubuntu-22.04 #ubuntu-latest is ubuntu-24.04
-            packname: linux
-            release_tag: latest-linux-arm
+          # - osarch: linux-intel
+          #   runson: ubuntu-latest # ubuntu-22.04 #ubuntu-latest is ubuntu-24.04
+          #   packname: linux
+          #   release_tag: latest-linux-intel
+          # - osarch: linux-arm
+          #   runson: ubuntu-latest # ubuntu-22.04 #ubuntu-latest is ubuntu-24.04
+          #   packname: linux
+          #   release_tag: latest-linux-arm
     steps:
 ###########################
     - name: Checkout

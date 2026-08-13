@@ -144,23 +144,23 @@ module.exports = async function afterPack(context) {
 
     console.log("=-=-=-=-=- AFTER PACK ASAR ...");
 
-    if (context.electronPlatformName === "darwin") {
-        // if (context.arch === 3) { // arm64 (builder.Arch.arm64)
-        //     // release/mac-arm64/Thorium.app/Contents/Resources/app.asar
-        // } else {
-        //     // release/mac/Thorium.app/Contents/Resources/app.asar
-        // }
-        asarChecksum.generateSHA256(path.join(context.appOutDir, "Thorium.app", "Contents", "Resources", "app.asar"));
-    } else if (context.electronPlatformName === "win32") {
-        // release/win-unpacked/resources/app.asar/app.asar
-        asarChecksum.generateSHA256(path.join(context.appOutDir, "resources", "app.asar"));
-    } else if (context.electronPlatformName === "linux") {
-        // release/linux-unpacked/resources/app.asar
-        asarChecksum.generateSHA256(path.join(context.appOutDir, "resources", "app.asar"));
-    } else {
-        console.log("context.electronPlatformName ??!", context.electronPlatformName);
-        process.exit(1);
-    }
+    // if (context.electronPlatformName === "darwin") {
+    //     // if (context.arch === 3) { // arm64 (builder.Arch.arm64)
+    //     //     // release/mac-arm64/Thorium.app/Contents/Resources/app.asar
+    //     // } else {
+    //     //     // release/mac/Thorium.app/Contents/Resources/app.asar
+    //     // }
+    //     asarChecksum.generateSHA256(path.join(context.appOutDir, "Thorium.app", "Contents", "Resources", "app.asar"));
+    // } else if (context.electronPlatformName === "win32") {
+    //     // release/win-unpacked/resources/app.asar/app.asar
+    //     asarChecksum.generateSHA256(path.join(context.appOutDir, "resources", "app.asar"));
+    // } else if (context.electronPlatformName === "linux") {
+    //     // release/linux-unpacked/resources/app.asar
+    //     asarChecksum.generateSHA256(path.join(context.appOutDir, "resources", "app.asar"));
+    // } else {
+    //     console.log("context.electronPlatformName ??!", context.electronPlatformName);
+    //     process.exit(1);
+    // }
 
     console.log("=-=-=-=-=- AFTER PACK :)");
 };
