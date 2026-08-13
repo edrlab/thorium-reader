@@ -361,7 +361,7 @@
       "gatekeeperAssess": false,
       "provisioningProfile": "./scripts/ThoriumDesktop.provisionprofile",
       "entitlements": "./scripts/entitlements.mac.plist",
-      "entitlementsInherit": "./scripts/entitlements.mac.plist",
+      "entitlementsInherit": "./scripts/entitlements.mac.inherit.plist",
       "artifactName": "${productName}-${version}-${arch}.${ext}"
     },
     "appx": {
