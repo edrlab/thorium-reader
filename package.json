@@ -359,6 +359,7 @@
       "type": "distribution",
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
+      "provisioningProfile": "./scripts/ThoriumDesktop.provisionprofile",
       "entitlements": "./scripts/entitlements.mac.plist",
       "entitlementsInherit": "./scripts/entitlements.mac.plist",
       "artifactName": "${productName}-${version}-${arch}.${ext}"
