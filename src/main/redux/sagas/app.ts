@@ -92,7 +92,8 @@ export function* init() {
     // });
 
     app.on("accessibility-support-changed", (_e, accessibilitySupportEnabled) => {
-        console.log("app.on - accessibility-support-changed: ", accessibilitySupportEnabled);
+        const accessibilitySupportFeatureScreenReader = app.getAccessibilitySupportFeatures().includes("screenReader");
+        console.log("app.on - accessibility-support-changed: ", accessibilitySupportEnabled, accessibilitySupportFeatureScreenReader);
         if (app.accessibilitySupportEnabled !== accessibilitySupportEnabled) { // .isAccessibilitySupportEnabled()
             console.log("!!?? app.accessibilitySupportEnabled !== app.on - accessibility-support-changed");
         }
@@ -121,10 +122,10 @@ export function* init() {
             if (!win.isDestroyed() && !win.webContents.isDestroyed()) {
                 const store = diMainGet("store");
                 const screenReaderActivated = store.getState().screenReader.activate;
-                console.log("webContents.send - accessibility-support-changed: ", accessibilitySupportEnabled, screenReaderActivated, win.id);
+                console.log("webContents.send - accessibility-support-changed: ", accessibilitySupportEnabled, accessibilitySupportFeatureScreenReader, screenReaderActivated, win.id);
                 try {
-                    win.webContents.send("accessibility-support-changed", accessibilitySupportEnabled && screenReaderActivated);
-                    win.webContents.send("accessibility-support-changed-raw", accessibilitySupportEnabled);
+                    win.webContents.send("accessibility-support-changed", accessibilitySupportEnabled && accessibilitySupportFeatureScreenReader && screenReaderActivated);
+                    win.webContents.send("accessibility-support-changed-raw", accessibilitySupportEnabled && accessibilitySupportFeatureScreenReader);
                 } catch (e) {
                     debug("webContents.send - accessibility-support-changed ERROR?", e);
                 }
@@ -136,15 +137,17 @@ export function* init() {
     // so there is no duplicate event handler.
     ipcMain.on("accessibility-support-query", (e) => {
         const accessibilitySupportEnabled = app.accessibilitySupportEnabled; // .isAccessibilitySupportEnabled()
+        const accessibilitySupportFeatureScreenReader = app.getAccessibilitySupportFeatures().includes("screenReader");
         const store = diMainGet("store");
         const screenReaderActivated = store.getState().screenReader.activate;
-        console.log("ipcMain.on - accessibility-support-query, sender.send - accessibility-support-changed: ", accessibilitySupportEnabled, screenReaderActivated);
-        e.sender.send("accessibility-support-changed", accessibilitySupportEnabled && screenReaderActivated);
+        console.log("ipcMain.on - accessibility-support-query, sender.send - accessibility-support-changed: ", accessibilitySupportEnabled, accessibilitySupportFeatureScreenReader, screenReaderActivated);
+        e.sender.send("accessibility-support-changed", accessibilitySupportEnabled && accessibilitySupportFeatureScreenReader && screenReaderActivated);
     });
     ipcMain.on("accessibility-support-query-raw", (e) => {
         const accessibilitySupportEnabled = app.accessibilitySupportEnabled; // .isAccessibilitySupportEnabled()
-        console.log("ipcMain.on - accessibility-support-query-raw, sender.send - accessibility-support-changed: ", accessibilitySupportEnabled);
-        e.sender.send("accessibility-support-changed-raw", accessibilitySupportEnabled);
+        const accessibilitySupportFeatureScreenReader = app.getAccessibilitySupportFeatures().includes("screenReader");
+        console.log("ipcMain.on - accessibility-support-query-raw, sender.send - accessibility-support-changed: ", accessibilitySupportEnabled, accessibilitySupportFeatureScreenReader);
+        e.sender.send("accessibility-support-changed-raw", accessibilitySupportEnabled && accessibilitySupportFeatureScreenReader);
     });
 
     yield call(() => app.whenReady());
