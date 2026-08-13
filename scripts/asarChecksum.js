@@ -1,3 +1,6 @@
+/*
+set -xv ; container --version ; container system stop ; container system start ; container system status ; container stop test-container ; container rm --force test-container ; container prune ; container list --all ; container run --cpus 4 --memory 2g --platform linux/arm64 --name test-container --volume ${PWD}:/MOUNT -w /MOUNT registry.access.redhat.com/hi/nodejs:latest sh -c 'set -xv ; node --version ; npm --version ; npm init foo -y ; npm i chromium-pickle-js ; npm i @electron/asar ; DEBUG_ASAR_INTEGRITY_CHECKSUM=1 node -e "require(\"./asarChecksum\").generateSHA256(require(\"path\").join(process.cwd(), \"./app.asar\"));"' ; container list --all ; container stop test-container ; container rm --force test-container ; container prune ; container system status ; container system stop ; set +xv
+*/
 
 const fs = require("fs");
 const path = require("path");
@@ -5,7 +8,7 @@ const crypto = require("crypto");
 const pickle = require('chromium-pickle-js');
 const electronAsar = require('@electron/asar');
 
-const DEBUG = false;
+const DEBUG = !!process.env.DEBUG_ASAR_INTEGRITY_CHECKSUM;
 
 const readArchiveHeaderSync = function (archive) {
     const fd = fs.openSync(archive, 'r');
@@ -41,11 +44,12 @@ function generateSHA256(asarFile) {
     if (DEBUG) {
         console.log(JSON.stringify(process.argv, null, 4));
         console.log(process.mainModule?.filename);
-        console.log(require.main.filename);
+        console.log(require.main?.filename);
         console.log(require.main);
         console.log(__filename);
         console.log(__dirname);
         console.log(process.cwd());
+
         console.log(asarFile);
     }
 
