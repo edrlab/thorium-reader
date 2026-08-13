@@ -1,6 +1,8 @@
+src/r2-xxx-js/r2-navigator-js/electron/common/colibrio-cfi/*
 .vscode/*
 .history/*
 .github/*
+.github_release/*
 .git/*
 dist/*
 docs/*
@@ -13,11 +15,10 @@ src/typings/*
 src/resources/*
 src/renderer/assets/*
 src/renderer/reader/pdf/*
-
-src/*
-webpack.config.*
 .flox/*
 .zed/*
+webpack.config.*
 package.json
 src/package.json
 package-lock.json
+src/*
