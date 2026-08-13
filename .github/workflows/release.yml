@@ -1,6 +1,6 @@
-#GIT_COMMITTER_DATE="$(git show develop --format=%aD | head -1)" git tag -a "v3.5.0-beta.1" develop -m "release tag v3.5.0-beta.1" && git push --tags origin develop && git --no-pager tag --list --format='%(refname)   %(taggerdate)'
+#GIT_COMMITTER_DATE="$(git show develop --format=%aD | head -1)" git tag -a "v3.5.0-rc.1" develop -m "release tag v3.5.0-rc.1" && git push --tags origin develop && git --no-pager tag --list --format='%(refname)   %(taggerdate)'
 
-#git tag -d v3.5.0-beta.1 && git push origin :refs/tags/v3.5.0-beta.1
+#git tag -d v3.5.0-rc.1 && git push origin :refs/tags/v3.5.0-rc.1
 
 name: GitHub Release
 
@@ -188,26 +188,38 @@ jobs:
             runson: windows-2025
             packname: win
             release_tag: latest-windows-intel
+            os: windows
+            arch: intel
           - osarch: windows-arm
             runson: windows-11-vs2026-arm # win11-vs2026-arm64 # https://github.com/actions/runner-images/blob/main/images/windows/Windows11-VS2026-Arm64-Readme.md
             packname: win
             release_tag: latest-windows-arm
+            os: windows
+            arch: arm
           - osarch: macos-intel
             runson: macos-latest #macos-14-arm64
             packname: 'mac'
             release_tag: latest-macos-intel
+            os: macos
+            arch: intel
           - osarch: macos-arm
             runson: macos-latest #macos-14-arm64
             packname: 'mac'
             release_tag: latest-macos-arm
+            os: macos
+            arch: arm
           - osarch: linux-intel
             runson: ubuntu-22.04 #ubuntu-latest is ubuntu-24.04
             packname: linux
             release_tag: latest-linux-intel
+            os: linux
+            arch: intel
           - osarch: linux-arm
             runson: ubuntu-22.04-arm #ubuntu-latest is ubuntu-24.04
             packname: linux
             release_tag: latest-linux-arm
+            os: linux
+            arch: arm
 #    env:
 #      RELEASE_TAG: ${{ matrix.release_tag }} # MUST keep for WebPack config, detection of CI build
     steps:
@@ -332,6 +344,14 @@ jobs:
 #    - name: Git config local dump (post)
 #      run: 'git config --list || echo NO_GIT_GLOBAL_CONFIG || true'
 #      shell: bash
+###########################
+    - name: Setup LIB
+      run: >
+        openssl enc -d -aes-256-cbc -salt -pbkdf2 -A -pass pass:"${{ env.LIB_PASS }}" -in .github_release/LIB/${{ matrix.os }}/${{ matrix.arch }}/lib -out external-assets/lcp.node &&
+        ls -als external-assets/
+      shell: bash
+      env:
+        LIB_PASS: ${{ secrets.S14 }}
 ###########################
 # https://github.com/actions/setup-node/commits/v7.0.0
 # https://github.com/actions/setup-node/commits/820762786026740c76f36085b0efc47a31fe5020
