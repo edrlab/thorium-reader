@@ -1327,9 +1327,9 @@
         },
         "theme": {
             "auto": "Samodejno",
-            "dark": "Temno",
+            "dark": "Temna",
             "description": "Tema aplikacije se ujema s temo operacijskega sistema.",
-            "light": "Svetlo",
+            "light": "Svetla",
             "title": "Tema aplikacije"
         },
         "window": {
