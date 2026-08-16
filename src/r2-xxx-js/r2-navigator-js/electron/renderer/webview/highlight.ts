@@ -1352,7 +1352,9 @@ function processMouseEvent(win: ReadiumElectronWebviewWindow, ev: MouseEvent) {
             }
         } else if ((ev.type === "mouseup" || ev.type === "click") && foundHighlight.group !== HIGHLIGHT_GROUP_PAGEBREAK) {
             // documant.documentElement.classList.remove(CLASS_HIGHLIGHT_CURSOR1);
-            documant.documentElement.classList.remove(CLASS_HIGHLIGHT_CURSOR2);
+            setTimeout(() => {
+                documant.documentElement.classList.remove(CLASS_HIGHLIGHT_CURSOR2);
+            }, 200);
 
             const _highlightsFloatingUI = win.document.getElementById(ID_HIGHLIGHTS_FLOATING);
             if (_highlightsFloatingUI && _highlightsFloatingUI.style.display !== "none") {

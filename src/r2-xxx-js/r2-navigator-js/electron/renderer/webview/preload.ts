@@ -11,7 +11,7 @@ import debug_ from "debug";
 import { ipcRenderer } from "electron";
 import { isFocusable } from "tabbable";
 
-import { DISABLE_TEMPORARY_NAV_TARGET_OUTLINE_CLASS, ENABLE_SKIP_LINK, ID_HIGHLIGHTS_FLOATING } from "../../common/styles";
+import { CLASS_HIGHLIGHT_CURSOR2, DISABLE_TEMPORARY_NAV_TARGET_OUTLINE_CLASS, ENABLE_SKIP_LINK, ID_HIGHLIGHTS_FLOATING } from "../../common/styles";
 
 import { ISelectionInfo } from "../../common/selection";
 
@@ -483,7 +483,7 @@ if (IS_DEV) {
 }
 
 function isVisible(allowPartial: boolean, element: Element, domRect: DOMRect | undefined): boolean {
-    if (DEBUG_TRACE) debug("isVisible:", getCssSelector(element), allowPartial);
+    if (DEBUG_TRACE) debug("isVisible check, allowPartial:", getCssSelector(element), allowPartial);
     if (DEBUG_TRACE && domRect) debug("isVisible domRect:", domRect.x, domRect.y, domRect.width, domRect.height);
 
     if (win.READIUM2.isFixedLayout) {
@@ -3026,6 +3026,11 @@ function loaded(forced: boolean) {
             ev.preventDefault();
             ev.stopPropagation();
 
+            return;
+        }
+
+        if (win.document.documentElement.classList.contains(CLASS_HIGHLIGHT_CURSOR2)) {
+            debug("!AUX __CLICK skip because CLASS_HIGHLIGHT_CURSOR2 (highlights)");
             return;
         }
 
