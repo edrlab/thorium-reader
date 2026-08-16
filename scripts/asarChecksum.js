@@ -1,9 +1,14 @@
+/*
+set -xv ; container --version ; container system stop ; container system start ; container system status ; container stop test-container ; container rm --force test-container ; container prune ; container list --all ; container run --cpus 4 --memory 2g --platform linux/arm64 --name test-container --volume ${PWD}:/MOUNT -w /MOUNT registry.access.redhat.com/hi/nodejs:latest sh -c 'set -xv ; node --version ; npm --version ; npm init foo -y ; npm i chromium-pickle-js ; npm i @electron/asar ; DEBUG_ASAR_INTEGRITY_CHECKSUM=1 node -e "require(\"./asarChecksum\").generateSHA256(require(\"path\").join(process.cwd(), \"./app.asar\"));"' ; container list --all ; container stop test-container ; container rm --force test-container ; container prune ; container system status ; container system stop ; set +xv
+*/
 
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
 const pickle = require('chromium-pickle-js');
 const electronAsar = require('@electron/asar');
+
+const DEBUG = !!process.env.DEBUG_ASAR_INTEGRITY_CHECKSUM;
 
 const readArchiveHeaderSync = function (archive) {
     const fd = fs.openSync(archive, 'r');
@@ -34,27 +39,38 @@ const readArchiveHeaderSync = function (archive) {
 }
 
 function generateSHA256(asarFile) {
-    console.log(JSON.stringify(process.argv, null, 4));
-    console.log(process.mainModule?.filename);
-    console.log(require.main.filename);
-    console.log(require.main);
-    console.log(__filename);
-    console.log(__dirname);
-    console.log(process.cwd());
-    console.log(asarFile);
+    console.log("PROD_THORIUM_HASH_MOD ...");
+
+    if (DEBUG) {
+        console.log(JSON.stringify(process.argv, null, 4));
+        console.log(process.mainModule?.filename);
+        console.log(require.main?.filename);
+        console.log(require.main);
+        console.log(__filename);
+        console.log(__dirname);
+        console.log(process.cwd());
+
+        console.log(asarFile);
+    }
 
     const asarHeader = readArchiveHeaderSync(asarFile);
-    console.log("ASAR HEADER SIZE:", asarHeader.headerSize);
-    // console.log(JSON.stringify(JSON.parse(asarHeader.header), null, 2));
+    if (DEBUG) {
+        console.log("ASAR HEADER SIZE:", asarHeader.headerSize);
+        // console.log(JSON.stringify(JSON.parse(asarHeader.header), null, 2));
+    }
 
     // https://github.com/electron/asar/blob/0959a13120775a8c3544e698e971074e0f496988/src/disk.ts#L314-L345
     // https://github.com/electron/asar/blob/0959a13120775a8c3544e698e971074e0f496988/src/pickle.ts#L2-L240
     const asarHeaderCheck = electronAsar.getRawHeader(asarFile);
-    console.log("ASAR HEADER SIZE (check):", asarHeaderCheck.headerSize);
+    if (DEBUG) {
+        console.log("ASAR HEADER SIZE (check):", asarHeaderCheck.headerSize);
+    }
 
     if (asarHeader.headerSize !== asarHeaderCheck.headerSize || asarHeader.header !== asarHeaderCheck.headerString) {
-        console.log("ASAR HEADER:", asarHeader.header);
-        console.log("ASAR HEADER (check):", asarHeader.headerString);
+        if (DEBUG) {
+            console.log("ASAR HEADER:", asarHeader.header);
+            console.log("ASAR HEADER (check):", asarHeader.headerString);
+        }
         console.log("!!!!!ERROR ASAR HEADER CHECKS!!!!");
         process.exit(1);
     }
@@ -62,19 +78,24 @@ function generateSHA256(asarFile) {
     const checkSum = crypto.createHash("sha256");
     checkSum.update(asarHeader.header);
     let hash = checkSum.digest("hex");
-    console.log(hash);
+    if (DEBUG) {
+        console.log(hash);
+    }
 
     const hashMod = process.env.PROD_THORIUM_HASH_MOD || `function hh(h){const c=require("crypto").createHash("sha256");c.update(h.toUpperCase());return c.digest("hex");}`;
     if (hashMod) {
-        console.log("PROD_THORIUM_HASH_MOD ...");
         eval(hashMod);
         hash = hh(hash);
-        console.log(hash);
+        if (DEBUG) {
+            console.log(hash);
+        }
     }
 
     // // const head = asarHeader.header.replace(/"offset":"[^"]+"/g, '"offset":"0"');
     // // console.log(JSON.stringify(JSON.parse(head), null, 2) + "\n");
 
     fs.writeFileSync(path.join(asarFile, "..", `${hash.toUpperCase()}.sha`), hash, { encoding: "utf8" });
+
+    console.log("PROD_THORIUM_HASH_MOD.");
 }
 exports.generateSHA256 = generateSHA256;

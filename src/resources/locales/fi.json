@@ -606,7 +606,7 @@
             },
             "ways-of-reading-visual-adjustments-unmodifiable": {
                 "compact": "Ulkoasua ei voi mukauttaa",
-                "descriptive": "Tekstin ja sivujen ulkoasu mukailee painettua versiota eikä ulkoasua voi mukauttaa. Lukuohjelmassa voi kuitenkin olla mahdollista zoomata."
+                "descriptive": "Tekstin ja sivujen ulkoasu mukailee painettua versiota eikä ulkoasua voi mukauttaa. Lukuohjelmassa voi kuitenkin olla mahdollista zoomata"
             }
         }
     },
@@ -1214,11 +1214,11 @@
                     "name": "Muuta koko ruudun tila"
                 },
                 "ToggleReaderZenMode": {
-                    "description": "Aloita tai poistu keskittymistilasta, joka yksinkertaistaa lukunäkymän käyttöliittymää",
+                    "description": "Lukunäkymässä voit ottaa käyttöön tai pois käytöstä keskittymistilan, joka yksinkertaistaa käyttöliittymää lukemisen aikana",
                     "name": "Muuta keskittymistila"
                 },
                 "ToggleScreenReaderOptimize": {
-                    "description": "Ota käyttöön tai poista käytöstä optimoitu tuki ruudunlukuohjelmille kirjastoikkunassa",
+                    "description": "Kirjastonäkymässä voit ottaa käyttöön tai poistaa käytöstä optimoidun tuen ruudunlukuohjelmille",
                     "name": "Ota käyttöön tai poista käytöstä ruudunlukijan optimoinnit"
                 }
             },
@@ -1252,7 +1252,7 @@
         },
         "screenReaderActivate": {
             "help": "Kun sovellus havaitsee, että käytössä on avustavaa teknologiaa, käyttöliittymä mukautuu toimimaan paremmin yhteen ruudunlukuohjelmien kanssa.",
-            "invite": "Optimoi ruudunlukuohjelmaa ({{- status}}) [{{- keyboard}}]",
+            "invite": "Optimoi ruudunlukuohjelmaa varten ({{- status}}) [{{- keyboard}}]",
             "message": "Parannettu tuki ruudunlukuohjelmille",
             "title": "Paranna ruudunlukukokemusta"
         },

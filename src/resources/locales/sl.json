@@ -591,45 +591,45 @@
             },
             "ways-of-reading-nonvisual-reading-readable": {
                 "compact": "Berljivo s funkcijo glasnega branja ali dinamičnim braillovim zaslonom",
-                "descriptive": ""
+                "descriptive": "Vso vsebino je mogoče brati s funkcijo glasnega branja ali dinamičnim braillovim zaslonom"
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Predhodno posneti zvočni posnetki",
+                "descriptive": "V vsebino so vdelani vnaprej posneti zvočni posnetki"
             },
             "ways-of-reading-prerecorded-audio-only": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Samo vnaprej posnet zvok",
+                "descriptive": "Zvočna knjiga brez alternativnega besedila"
             },
             "ways-of-reading-prerecorded-audio-synchronized": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Predposneti zvok, sinhroniziran z besedilom",
+                "descriptive": "Vsa vsebina je na voljo kot vnaprej posnet zvok, sinhroniziran z besedilom"
             },
-            "ways-of-reading-title": "",
+            "ways-of-reading-title": "Načini branja",
             "ways-of-reading-visual-adjustments-modifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Videz je mogoče spremeniti",
+                "descriptive": "Videz besedila in postavitev strani je mogoče prilagoditi glede na zmogljivosti bralnega sistema (družina in velikost pisave, presledki med odstavki, stavki, besedami in črkami ter barva ozadja in besedila)"
             },
             "ways-of-reading-visual-adjustments-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ni na voljo informacij o možnosti spreminjanja videza",
+                "descriptive": "Ni na voljo informacij o možnosti spreminjanja videza"
             },
             "ways-of-reading-visual-adjustments-unmodifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Videza ni mogoče spremeniti",
+                "descriptive": "Besedila in postavitve strani ni mogoče spreminjati, saj je bralna izkušnja podobna tiskani različici, vendar lahko bralni sistemi še vedno ponujajo možnosti povečave"
             }
         }
     },
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": "Prijazno sintetizatorjem govora in čitalcem zaslona"
+                "textual": "Vso vsebino je mogoče brati s funkcijo glasnega branja ali dinamičnim braillovim zaslonom"
             },
             "accessibilityFeature": {
-                "alternativeText": "Vsebuje alternativno besedilo",
-                "displayTransformability": "Prilagodljivo besedilo in postavitev",
+                "alternativeText": "Ima alternativno besedilo na slikah",
+                "displayTransformability": "Videz besedila in postavitev strani je mogoče spremeniti",
                 "longDescription": "V celoti opisani grafični viri",
-                "printPageNumbers": "Sklic na paginacijo tiskane knjige",
+                "printPageNumbers": "Vsebuje seznam strani za prehod na strani iz različice za tiskanje",
                 "readingOrder": "Vsebuje vrstni red branja",
                 "synchronizedAudioText": "Besedilo in avdio sta sinhronizirana",
                 "tableOfContents": "Vsebuje kazalo vsebine"
@@ -641,11 +641,11 @@
                 "noFlashing": "Brez bliskanja",
                 "noMotionSimulation": "Brez simulacije gibanja",
                 "noSound": "Brez zvoka",
-                "none": "Nič",
+                "none": "Brez",
                 "sound": "Zvok",
                 "unknown": "Neznano"
             },
-            "certifierReport": "Poročilo certifikatorja",
+            "certifierReport": "Poročilo overitelja:",
             "conformsTo": "V skladu z:",
             "moreInformation": "Več informacij",
             "name": "Dostopnost",
@@ -657,10 +657,10 @@
         },
         "author": "Avtor",
         "cancelledLcp": "Knjige ni mogoče prebrati, ker je bila licenca LCP preklicana.",
-        "certificateRevoked": "Certifikat je preklican",
-        "certificateSignatureInvalid": "Podpis certifikata je neveljaven",
+        "certificateRevoked": "Preklicano potrdilo o licenci LCP.",
+        "certificateSignatureInvalid": "Neveljaven podpis potrdila o licenci LCP.",
         "cover": {
-            "img": "Naslovnica"
+            "img": "naslovnica"
         },
         "day": "dan",
         "days": "dni",
@@ -669,72 +669,72 @@
         },
         "encryptedNoLicense": "Publikacija je šifrirana, vendar nima licence LCP!",
         "expired": "Rok izposoje je potekel",
-        "expiredLcp": "Knjige ni mogoče prebrati, ker je licenca LCP potekla.",
+        "expiredLcp": "Licenca LCP za to publikacijo je potekla.",
         "incorrectPassphrase": "Nobeno shranjeno geslo ne ustreza publikaciji ali pa je vneseno geslo napačno.",
         "lcpEnd": "Konec",
-        "lcpNotSupported": "",
+        "lcpNotSupported": "OPOZORILO: to je predizdaja bralnika Thorium Desktop, ki ne podpira produkcijskih licenc LCP in podpira le dešifriranje »osnovnega profila« LCP brez preverjanja potrdila.",
         "lcpRightsCopy": "Kopirani znaki",
         "lcpRightsPrint": "Tiskane strani",
         "lcpStart": "Začetek",
         "licenceLCP": "Licenca (LCP)",
-        "licenseCertificateDateInvalid": "Datum podpisa licence ni veljaven ({{- dateTime}})",
-        "licenseOutOfDate": "Licenca ni več veljavna",
-        "licenseSignatureInvalid": "Podpis licence ni veljaven",
+        "licenseCertificateDateInvalid": "Potrdilo ponudnika LCP je poteklo pred datumom izdaje licence ({{- dateTime}}).",
+        "licenseOutOfDate": "Zastarela licenca LCP.",
+        "licenseSignatureInvalid": "Neveljaven podpis licence LCP.",
         "licensed": "Licencirano",
         "markAsRead": "Označi kot prebrano",
-        "notStarted": "Neprebrano",
+        "notStarted": "Ni začeto",
         "onGoing": "V teku",
         "progression": {
             "title": "Napredek"
         },
         "read": "Končano",
-        "remainingTime": "Veljavnost izposoje (število dni)",
-        "renewButton": "Obnovi",
+        "remainingTime": "Izposoja (preostali čas)",
+        "renewButton": "Podaljšaj",
         "returnButton": "Vrni",
-        "returnedLcp": "Knjige ni mogoče prebrati, ker je bila licenca LCP vrnjena.",
-        "revokedLcp": "Knjige ni mogoče prebrati, ker je bila licenca LCP preklicana.",
+        "returnedLcp": "Ta publikacija, zaščitena z LCP, je vrnjena.",
+        "revokedLcp": "Licenca LCP za to publikacijo je preklicana.",
         "seeLess": "Prikaži manj",
         "seeMore": "Prikaži več",
-        "timeLeft": "Levo",
+        "timeLeft": "Preostali čas",
         "title": "Naslov",
-        "userKeyCheckInvalid": "Napačno geslo"
+        "userKeyCheckInvalid": "Napačno geslo."
     },
     "reader": {
         "annotations": {
             "Color": "Barva",
-            "addNote": "Dodaj opombo",
+            "addNote": "Dodaj pripis",
             "advancedMode": "Takojšnji način (samodejno ustvarjanje po izbiri)",
             "annotationsExport": {
-                "description": "Poimenuj izvožene zapiske:",
+                "description": "Poimenuj izvožene opombe:",
                 "title": "Naslov"
             },
-            "annotationsOptions": "Možnosti",
+            "annotationsOptions": "Možnosti pripisov",
             "date": "Datum spremembe",
             "error": {
                 "pdf": {
-                    "validationSelection": ""
+                    "validationSelection": "Iz te izbire ni mogoče ustvariti pripisov PDF."
                 }
             },
-            "export": "Shrani zapiske kot ...",
+            "export": "Shrani opombe kot ...",
             "filter": {
                 "all": "Vse",
                 "filterByColor": "Filtriraj po barvi",
                 "filterByCreator": "Filtriraj po ustvarjalcu",
                 "filterByDrawtype": "Filtriraj po vrsti",
                 "filterByTag": "Filtriraj po oznaki",
-                "filterOptions": "Možnosti filtra",
-                "none": "Noben"
+                "filterOptions": "Možnosti filtriranja",
+                "none": "Brez"
             },
             "hide": "Ne prikaži",
             "highlight": "Poudari",
             "noSelectionToast": "Brez izbire",
-            "note": "{{- barva}} Opomba",
+            "note": "{{- color}} Opomba",
             "quickAnnotations": "Hitro ustvarjanje (preskoči urejevalnik)",
             "saveNote": "Shrani",
             "sorting": {
                 "lastcreated": "Nazadnje ustvarjeno",
                 "lastmodified": "Nazadnje spremenjeno",
-                "progression": "Napredek\n",
+                "progression": "Napredek",
                 "sortingOptions": "Možnosti razvrščanja"
             },
             "toggleMarginMarks": "Prikaži v robovih",
@@ -746,36 +746,36 @@
             }
         },
         "bookmarks": {
-            "index": ""
+            "index": "Zaznamek {{- index}}"
         },
         "divina": {
             "mute": "izklopi zvok",
             "unmute": "vklopi zvok"
         },
         "dock": {
-            "dockDefault": "",
-            "dockLeft": "",
-            "dockRight": ""
+            "dockDefault": "Prikaži ploščo kot modalno pojavno okno",
+            "dockLeft": "Priklopi ploščo na levo",
+            "dockRight": "Priklopi ploščo na desno"
         },
         "fxl": {
-            "fit": "Prilagajanje zaslonu"
+            "fit": "Prilagodi"
         },
         "goToContent": "Pojdi na vsebino",
         "imgViewer": {
-            "title": "",
-            "zoomIn": "",
-            "zoomOut": "",
-            "zoomReset": ""
+            "title": "Pregledovalnik slik (povečava)",
+            "zoomIn": "Povečaj",
+            "zoomOut": "Pomanjšaj",
+            "zoomReset": "Ponastavi povečavo"
         },
         "marks": {
-            "annotations": "Opombe",
-            "annotationsReadium": "Opombe (Readium)",
+            "annotations": "Pripisi",
+            "annotationsReadium": "Pripisi Readium",
             "bookmarks": "Zaznamki",
             "delete": "Izbriši",
             "edit": "Uredi",
             "goTo": "Pojdi na stran",
             "landmarks": "Mejniki",
-            "saveMark": "Shrani zaznamek",
+            "saveMark": "Shrani",
             "search": "Iskanje",
             "searchResult": "Iskanje [{{- searchText}}]",
             "toc": "Kazalo vsebine"
@@ -783,55 +783,55 @@
         "media-overlays": {
             "activate": "Vključi glasovno branje",
             "captions": "Podnapisi / čisti prikaz",
-            "captionsDescription": "Poenostavljen prikaz besedila z minimalnim oblikovanjem napisov.",
+            "captionsDescription": "Poenostavljen prikaz besedila z minimalnim oblikovanjem podnapisov.",
             "disableContinuousPlay": "Onemogoči neprekinjeno predvajanje",
-            "disableContinuousPlayDescription": "Ne predvajaj samodejno naslednjega predmeta, začasno ustavi predvajanje trenutnega elementa.",
-            "ignoreAndUseTTS": "",
-            "ignoreAndUseTTSDescription": "",
+            "disableContinuousPlayDescription": "Naslednjega elementa ne predvajaj samodejno, začasno ustavi takoj po koncu predvajanja trenutnega elementa.",
+            "ignoreAndUseTTS": "Prezri vnaprej posneti zvok, uporabi pretvorbo besedila v govor",
+            "ignoreAndUseTTSDescription": "Prezri prekrivne sloje EPUB Media, namesto tega beri s pretvorbo besedila v govor",
             "next": "Naslednje glasovno branje",
             "pause": "Premor glasovnega branja",
             "play": "Predvajaj glasovno branje",
             "previous": "Prejšnje glasovno branje",
-            "skip": "Preskoči",
+            "skip": "Možnost preskoka",
             "skipDescription": "Preskoči/prezri pomožno vsebino, kot so prelomi strani, sprotne/končne opombe itd.",
             "speed": "Hitrost glasovnega branja",
             "stop": "Prekini glasovno branje",
             "title": "Glasovno branje",
-            "useTTSHighlightsForMO": "",
-            "useTTSHighlightsForMODescription": ""
+            "useTTSHighlightsForMO": "Označevanje po meri",
+            "useTTSHighlightsForMODescription": "Onemogoči avtorske sloge"
         },
         "navigation": {
             "ZenModeExit": "Izhod iz Zen načina",
             "ZenModeTitle": "Zen način",
-            "annotationTitle": "opomba",
-            "backHomeTitle": "nazaj na knjižno polico",
-            "bookmarkTitle": "zaznamek",
+            "annotationTitle": "Pripis",
+            "backHomeTitle": "Zapri to bralno okno (nazaj na knjižno polico)",
+            "bookmarkTitle": "Zaznamek",
             "currentPage": "Trenutna stran: {{- current}}",
             "currentPageTotal": "Trenutna stran: {{- current}}/{{- total}}",
-            "detachWindowTitle": "prikaži knjižnico / okno knjižne police",
+            "detachWindowTitle": "Prikaži knjižnico / okno knjižne police",
             "goTo": "Pojdi na",
             "goToError": "Prelom strani ne obstaja",
             "goToPlaceHolder": "Vnesi številko strani",
             "goToTitle": "Pojdi na stran",
-            "history": "",
-            "historyNext": "Skok naprej",
-            "historyPrevious": "Skok nazaj",
-            "infoTitle": "informacije",
-            "magnifyingGlassButton": "išči v publikaciji",
-            "openTableOfContentsTitle": "navigacija",
+            "history": "Zgodovina navigacije",
+            "historyNext": "Skoči naprej v zgodovini navigacije",
+            "historyPrevious": "Skoči nazaj v zgodovini navigacije",
+            "infoTitle": "Informacije",
+            "magnifyingGlassButton": "Išči v publikaciji",
+            "openTableOfContentsTitle": "Navigacija",
             "page": "Stran",
             "pdfscalemode": "Prileganje strani ali širine",
-            "print": "",
-            "printDisabled": "",
-            "screenNext": "",
-            "screenPrevious": "",
-            "settingsTitle": "nastavitve"
+            "print": "Tiskanje",
+            "printDisabled": "Tiskanje prepovedano",
+            "screenNext": "Pojdi naprej",
+            "screenPrevious": "Pojdi nazaj",
+            "settingsTitle": "Nastavitve bralnika"
         },
         "notes": {
             "colors": {
-                "cyan": "Cyan",
-                "darkorange": "",
-                "darkyellow": "",
+                "cyan": "Cian",
+                "darkorange": "Temno oranžna",
+                "darkyellow": "Temno rumena",
                 "green": "Zelena",
                 "orange": "Oranžna",
                 "purple": "Vijolična",
@@ -841,30 +841,30 @@
         },
         "picker": {
             "search": {
-                "founds_few": "{{- count}} zadetek(kov)",
-                "founds_one": "{{- count}} zadetek(kov)",
-                "founds_other": "{{- count}} zadetek(kov)",
-                "founds_two": "{{- count}} zadetek(kov)",
+                "founds_few": "{{- count}} zadetki",
+                "founds_one": "{{- count}} zadetek",
+                "founds_other": "{{- count}} zadetkov",
+                "founds_two": "{{- count}} zadetka",
                 "input": "besedilo, ki se ujema z",
-                "next": "Naslednje",
+                "next": "Naslednji",
                 "notFound": "ni zadetkov",
-                "previous": "Prejšnje",
+                "previous": "Prejšnji",
                 "results": "Rezultati",
                 "submit": "Išči"
             },
             "searchTitle": "Iskanje:"
         },
         "print": {
-            "descriptionLcpCount": "",
-            "descriptionLcpPrintable": "",
-            "howTo": "",
-            "lcpInfo": "",
-            "noPagesLcpLimitReached": "",
-            "noPrintablePages": "",
-            "pageHelpInfo": "",
-            "pageHelpInfo1": "",
-            "pageHelpInfo2": "",
-            "pageHelpInfo3": "",
+            "descriptionLcpCount": "Omejitev preostalih strani: {{- count}}",
+            "descriptionLcpPrintable": "Prej natisnjene strani: {{- printable}} ({{- count}})",
+            "howTo": "Kako izbrati obseg strani za tiskanje",
+            "lcpInfo": "Število strani, ki jih lahko natisnete v tej publikaciji, je omejeno na {{- count}}. Tukaj izberite želeno število strani.",
+            "noPagesLcpLimitReached": "Dosegli ste omejitev LCP",
+            "noPrintablePages": "Ni strani za tiskanje",
+            "pageHelpInfo": "Sintaksa izbirnika strani:",
+            "pageHelpInfo1": "vnesite številko strani, ki se nanaša na posamezno stran (npr. »6«)",
+            "pageHelpInfo2": "vnesite dve številki strani, ločeni z vezajem, da se sklicujete na obseg sosednjih strani (npr. »6-13«)",
+            "pageHelpInfo3": "za ločevanje več strani ali obsegov strani uporabite podpičje (npr. \"5;14-20;37\")",
             "pageHelpInfo4": "",
             "pages": "",
             "preview": "",
@@ -1327,9 +1327,9 @@
         },
         "theme": {
             "auto": "Samodejno",
-            "dark": "Temno",
+            "dark": "Temna",
             "description": "Tema aplikacije se ujema s temo operacijskega sistema.",
-            "light": "Svetlo",
+            "light": "Svetla",
             "title": "Tema aplikacije"
         },
         "window": {

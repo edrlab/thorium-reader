@@ -43,7 +43,7 @@
         "update": {
             "message": "Ny version tillgänglig, klicka för mer information.",
             "title": "{{- appName}}-programuppdatering.",
-            "whatsnew": ""
+            "whatsnew": "En ny version har installerats. Klicka för att få mer information"
         },
         "window": {
             "showLibrary": "Visa bokhylla",
@@ -1218,8 +1218,8 @@
                     "name": ""
                 },
                 "ToggleScreenReaderOptimize": {
-                    "description": "",
-                    "name": ""
+                    "description": "I biblioteksfönstret, slå av eller på utökat stöd för skärmläsare",
+                    "name": "Slå av eller på utökat stöd för skärmläsare"
                 }
             },
             "loadUserJson": "Läs in från användarfil",

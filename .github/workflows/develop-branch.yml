@@ -592,4 +592,4 @@ jobs:
       run: >
         ls -alsR release ;
         (gh release delete ${{ matrix.release_tag }} --cleanup-tag --yes || echo OK || true) ;
-        gh release create ${{ matrix.release_tag }} --target=develop --latest=false --prerelease --title="${{ matrix.release_tag }} automated test build (beta)" --notes="Expand the 'Assets' below to reveal the download links (build job: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" "./release/*.*"
+        gh release create ${{ matrix.release_tag }} --target=develop --latest=false --prerelease --title="${{ matrix.release_tag }} automated test build" --notes="Expand the 'Assets' below to reveal the download links (build job: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" "./release/*.*"

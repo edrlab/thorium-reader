@@ -16,7 +16,6 @@ import * as StylesCombobox from "readium-desktop/renderer/assets/styles/componen
 import * as stylesBookmarks from "readium-desktop/renderer/assets/styles/components/bookmarks.scss";
 import classNames from "classnames";
 import * as React from "react";
-import FocusLock from "react-focus-lock";
 
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
@@ -28,7 +27,6 @@ import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/arrowLast-
 import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/arrowFirst-icon.svg";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
-import * as MenuIcon from "readium-desktop/renderer/assets/icons/filter3-icon.svg";
 import * as OptionsIcon from "readium-desktop/renderer/assets/icons/filter2-icon.svg";
 import * as SortIcon from "readium-desktop/renderer/assets/icons/sort-icon.svg";
 
@@ -36,7 +34,6 @@ import * as Popover from "@radix-ui/react-popover";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import { ListBox, ListBoxItem  } from "react-aria-components";
 import type { Selection } from "react-aria-components";
-import { TagGroup, TagList, Tag, Label } from "react-aria-components";
 
 import { IReaderMenuProps } from "../options-values";
 
@@ -57,6 +54,7 @@ import { getSaga } from "../../createStore";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { BookmarkCard } from "../ReaderMenu/BookmarkCard";
 import { computeProgression } from "./ReaderMenu";
+import FilterPopover from "./FilterPopover";
 
 export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnChange: () => void, START_PAGE: number, selectionIsSet: (a: Selection) => a is Set<string>, MAX_MATCHES_PER_PAGE: number } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
@@ -273,166 +271,21 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
                             </Popover.Content>
                         </Popover.Portal>
                     </Popover.Root>
-                    <Popover.Root modal open={filterOpen} onOpenChange={(open) => setFilterOpen(open)}>
-                        <Popover.Trigger asChild>
-                            <button aria-label={__("reader.annotations.filter.filterOptions")} className={stylesBookmarks.bookmarks_filter_trigger_button}
-                                title={__("reader.annotations.filter.filterOptions")}>
-                                <SVG svg={MenuIcon} />
-                                {nbOfFilters > 0 ?
-                                    <p className={stylesBookmarks.bookmarks_filter_nbOfFilters} style={{ fontSize: nbOfFilters > 9 ? "10px" : "12px", paddingLeft: nbOfFilters > 9 ? "3px" : "4px" }}>{nbOfFilters}</p>
-                                    : <></>
-                                }
-                            </button>
-                        </Popover.Trigger>
-                        <Popover.Portal>
-                            <Popover.Content
-                                collisionBoundary={popoverBoundary}
-                                avoidCollisions
-                                alignOffset={-10}
-                                align="end"
-                                hideWhenDetached
-                                sideOffset={5}
-                                className={stylesBookmarks.bookmarks_filter_container}
-                                style={{ maxHeight: Math.round(window.innerHeight / 2) }}
-                            >
-                                <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-gray-50" }} />
-                                <FocusLock>
-                                    <TagGroup
-                                        selectionMode="multiple"
-                                        selectedKeys={tagArrayFilter}
-                                        onSelectionChange={setTagArrayFilter}
-                                        aria-label={__("reader.annotations.filter.filterByTag")}
-                                        style={{ marginBottom: "20px" }}
-                                    >
-                                        <details open id="bookmark-tags-list-details">
-                                            <summary className={stylesBookmarks.bookmarks_filter_tagGroup} style={{ pointerEvents: !selectTagOption.length ? "none" : "auto", opacity: !selectTagOption.length ? "0.5" : "1" }}
-                                                tabIndex={!selectTagOption.length ? -1 : 0}
-                                            >
-                                                <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByTag")}</Label>
-                                                <div style={{ display: "flex", gap: "10px" }}>
-                                                    <button
-                                                        disabled={!selectTagOption.length}
-                                                        style={{ width: "fit-content", minWidth: "unset" }}
-                                                        className={tagArrayFilter === "all" ? stylesButtons.button_primary_blue : stylesButtons.button_secondary_blue}
-                                                        onClick={() => {
-                                                            setTagArrayFilter("all");
-                                                            const detailsElement = document.getElementById("bookmark-tags-list-details") as HTMLDetailsElement;
-                                                            if (detailsElement) {
-                                                                detailsElement.open = true;
-                                                            }
-
-                                                        }}>
-                                                        {__("reader.annotations.filter.all")}
-                                                    </button>
-                                                    <button
-                                                        disabled={!selectTagOption.length}
-                                                        style={{ width: "fit-content", minWidth: "unset" }}
-                                                        className={stylesButtons.button_secondary_blue}
-                                                        onClick={() => {
-                                                            setTagArrayFilter(new Set([]));
-
-                                                        }}>
-                                                        {__("reader.annotations.filter.none")}
-                                                    </button>
-                                                </div>
-                                            </summary>
-                                            {
-                                                selectTagOption.length ?
-                                                    <TagList items={selectTagOption} className={stylesBookmarks.bookmarks_filter_taglist} style={{ margin: !selectTagOption.length ? "0" : "20px 0" }}>
-                                                        {(item) => <Tag className={stylesBookmarks.bookmarks_filter_tag} id={item.name} textValue={item.name}>{item.name}</Tag>}
-                                                    </TagList>
-                                                    : <></>
-                                            }
-                                        </details>
-                                    </TagGroup>
-                                    <TagGroup
-                                        selectionMode="multiple"
-                                        selectedKeys={colorArrayFilter}
-                                        onSelectionChange={setColorArrayFilter}
-                                        aria-label={__("reader.annotations.filter.filterByColor")}
-                                        style={{ marginBottom: "20px" }}
-                                    >
-                                        <details open id="bookmark-color-list">
-                                            <summary className={stylesBookmarks.bookmarks_filter_tagGroup}>
-                                                <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByColor")}</Label>
-                                                <div style={{ display: "flex", gap: "10px" }}>
-                                                    <button
-                                                        style={{ width: "fit-content", minWidth: "unset" }}
-                                                        className={colorArrayFilter === "all" ? stylesButtons.button_primary_blue : stylesButtons.button_secondary_blue}
-                                                        onClick={() => {
-                                                            setColorArrayFilter("all");
-                                                            const detailsElement = document.getElementById("bookmark-color-list") as HTMLDetailsElement;
-                                                            if (detailsElement) {
-                                                                detailsElement.open = true;
-                                                            }
-
-                                                        }}>
-                                                        {__("reader.annotations.filter.all")}
-                                                    </button>
-                                                    <button
-                                                        style={{ width: "fit-content", minWidth: "unset" }}
-                                                        className={stylesButtons.button_secondary_blue}
-                                                        onClick={() => {
-                                                            setColorArrayFilter(new Set([]));
-
-                                                        }}>
-                                                        {__("reader.annotations.filter.none")}
-                                                    </button>
-                                                </div>
-                                            </summary>
-                                            <TagList items={bookmarksColors} className={stylesBookmarks.bookmarks_filter_taglist}>
-                                                {(item) => <Tag className={stylesBookmarks.bookmarks_filter_color} style={{ backgroundColor: item.hex, outlineColor: item.hex }} id={item.hex} textValue={item.name} ref={(r) => { if (r && (r as unknown as HTMLDivElement).setAttribute) { (r as unknown as HTMLDivElement).setAttribute("title", item.name); } }}></Tag>}
-                                            </TagList>
-                                        </details>
-                                    </TagGroup>
-                                    <TagGroup
-                                        selectionMode="multiple"
-                                        selectedKeys={creatorArrayFilter}
-                                        onSelectionChange={setCreatorArrayFilter}
-                                        aria-label={__("reader.annotations.filter.filterByCreator")}
-                                        style={{ marginBottom: "20px" }}
-                                    >
-                                        <details id="bookmark-creator-list-details" open={!!selectCreatorOptions.length}>
-                                            <summary className={stylesBookmarks.bookmarks_filter_tagGroup} style={{ pointerEvents: !selectCreatorOptions.length ? "none" : "auto", opacity: !selectCreatorOptions.length ? "0.5" : "1" }}
-                                                tabIndex={!selectCreatorOptions.length ? -1 : 0}
-                                            >
-                                                <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByCreator")}</Label>
-                                                <div style={{ display: "flex", gap: "10px" }}>
-                                                    <button
-                                                        tabIndex={!selectCreatorOptions.length ? -1 : 0}
-                                                        style={{ width: "fit-content", minWidth: "unset" }}
-                                                        className={creatorArrayFilter === "all" ? stylesButtons.button_primary_blue : stylesButtons.button_secondary_blue}
-                                                        onClick={() => {
-                                                            setCreatorArrayFilter("all");
-                                                            const detailsElement = document.getElementById("bookmark-creator-list-details") as HTMLDetailsElement;
-                                                            if (detailsElement) {
-                                                                detailsElement.open = true;
-                                                            }
-
-                                                        }}>
-                                                        {__("reader.annotations.filter.all")}
-                                                    </button>
-                                                    <button
-                                                        tabIndex={!selectCreatorOptions.length ? -1 : 0}
-                                                        style={{ width: "fit-content", minWidth: "unset" }}
-                                                        className={stylesButtons.button_secondary_blue}
-                                                        onClick={() => {
-                                                            setCreatorArrayFilter(new Set([]));
-
-                                                        }}>
-                                                        {__("reader.annotations.filter.none")}
-                                                    </button>
-                                                </div>
-                                            </summary>
-                                            <TagList items={selectCreatorOptions} className={stylesBookmarks.bookmarks_filter_taglist} style={{ margin: !selectCreatorOptions.length ? "0" : "20px 0" }}>
-                                                {(item) => <Tag className={stylesBookmarks.bookmarks_filter_tag} id={item.name} textValue={item.name}>{item.name}</Tag>}
-                                            </TagList>
-                                        </details>
-                                    </TagGroup>
-                                </FocusLock>
-                            </Popover.Content>
-                        </Popover.Portal>
-                    </Popover.Root>
+                    <FilterPopover
+                        filterOpen={filterOpen}
+                        setFilterOpen={setFilterOpen}
+                        colorSet={bookmarksColors}
+                        nbOfFilters={nbOfFilters}
+                        selectCreatorOptions={selectCreatorOptions}
+                        selectTagOption={selectTagOption}
+                        popoverBoundary={popoverBoundary}
+                        tagArrayFilter={tagArrayFilter}
+                        setTagArrayFilter={setTagArrayFilter}
+                        colorArrayFilter={colorArrayFilter}
+                        setColorArrayFilter={setColorArrayFilter}
+                        creatorArrayFilter={creatorArrayFilter}
+                        setCreatorArrayFilter={setCreatorArrayFilter}
+                    />
                 </div>
                 <div style={{ display: "flex", gap: "10px" }}>
                     <ImportAnnotationsDialog winId={winId} publicationView={publicationView}>
@@ -554,7 +407,7 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
                             >
                                 <div className={stylesAnnotations.annotations_checkbox}>
                                     <input type="checkbox" id="hideBookmark" name="hideBookmark" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "hide"} onChange={hideBookmarkOnChange} />
-                                    <label htmlFor="hideBookmark" className={stylesGlobal.checkbox_custom_label} style={{ marginLeft: "10px" }}>
+                                    <label htmlFor="hideBookmark" className={stylesGlobal.checkbox_custom_label} style={{ marginLeft: "10px", marginBottom: "0px" }}>
                                         <div
                                             tabIndex={0}
                                             role="checkbox"
