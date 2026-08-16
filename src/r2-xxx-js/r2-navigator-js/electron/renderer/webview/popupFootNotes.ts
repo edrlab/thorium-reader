@@ -212,8 +212,9 @@ export async function popupFootNote(
 
     const val = ensureTwoPageSpreadWithOddColumnsIsOffsetTempDisable();
 
-    function onDialogClosed(_thiz: PopupDialog, el: HTMLOrSVGElement | null) {
+    function onDialogClosed(thiz: PopupDialog, el: HTMLOrSVGElement | null) {
 
+        console.log("----> link popup footnote IN POP CLOSE");
         if (el) {
             focusScrollRaw(el, true, true, undefined);
         } else {
@@ -221,11 +222,13 @@ export async function popupFootNote(
         }
 
         setTimeout(() => {
-            pop.dialog.remove();
+            thiz.dialog.remove();
         }, 50);
     }
+
     const pop = new PopupDialog(element.ownerDocument as Document /* documant_ */, htmltxt, onDialogClosed);
     pop.show(element);
+    console.log("----> link popup footnote AFTER POP");
 
     return true;
 }

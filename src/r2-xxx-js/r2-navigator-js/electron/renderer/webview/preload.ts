@@ -39,7 +39,7 @@ import {
     IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN, MediaOverlaysStateEnum, R2_EVENT_AUDIO_SOUNDTRACK, R2_EVENT_CAPTIONS,
     R2_EVENT_CLIPBOARD_COPY, R2_EVENT_DEBUG_VISUALS, R2_EVENT_FXL_CONFIGURE,
     R2_EVENT_HIGHLIGHT_CREATE, R2_EVENT_HIGHLIGHT_REMOVE, R2_EVENT_HIGHLIGHT_REMOVE_ALL,
-    /* R2_EVENT_KEYBOARD_FOCUS_REQUEST,*/ R2_EVENT_FOCUS_READING_LOC, R2_EVENT_LINK, R2_EVENT_LOCATOR_VISIBLE,
+    R2_EVENT_KEYBOARD_FOCUS_REQUEST, R2_EVENT_FOCUS_READING_LOC, R2_EVENT_LINK, R2_EVENT_LOCATOR_VISIBLE,
     R2_EVENT_MEDIA_OVERLAY_CLICK, R2_EVENT_MEDIA_OVERLAY_HIGHLIGHT,
     R2_EVENT_MEDIA_OVERLAY_STARTSTOP, R2_EVENT_MEDIA_OVERLAY_STATE, R2_EVENT_PAGE_TURN, R2_EVENT_PAGE_TURN_RES,
     R2_EVENT_READING_LOCATION, R2_EVENT_READIUMCSS, R2_EVENT_SCROLLTO, R2_EVENT_SHIFT_VIEW_X,
@@ -1265,11 +1265,11 @@ ipcRenderer.on(R2_EVENT_PAGE_TURN, (_event: any, payload: IEventPayload_R2_EVENT
 });
 
 // +R2_EVENT_KEYBOARD_FOCUS_REQUEST
-function focusElement(element: Element, preventScroll: boolean /*, focusHost: boolean */) {
+function focusElement(element: Element, preventScroll: boolean, focusHost?: boolean) {
 
     if (DEBUG_TRACE) debug("focusElement", getCssSelector(element));
 
-    if (preventScroll &&
+    if (preventScroll && !focusHost &&
         (
         // win.READIUM2.focussedElement ??
         element === win.document.activeElement
@@ -1311,13 +1311,14 @@ function focusElement(element: Element, preventScroll: boolean /*, focusHost: bo
         (element as HTMLElement).focus({preventScroll});
     }
 
-    // if (focusHost) {
-    //     // win.blur();
-    //     // win.focus();
-    //     // const payload: IEventPayload_R2_EVENT_KEYBOARD_FOCUS_REQUEST = {
-    //     // };
-    //     ipcRenderer.sendToHost(R2_EVENT_KEYBOARD_FOCUS_REQUEST, null);
-    // }
+    if (focusHost) {
+        if (DEBUG_TRACE) debug("focusElement - focusHost");
+        // win.blur();
+        win.focus();
+        // const payload: IEventPayload_R2_EVENT_KEYBOARD_FOCUS_REQUEST = {
+        // };
+        ipcRenderer.sendToHost(R2_EVENT_KEYBOARD_FOCUS_REQUEST, null);
+    }
 }
 
 const tempLinkTargetOutline = (element: Element, time: number, alt: boolean) => {
@@ -2429,7 +2430,7 @@ function mediaOverlaysClickRaw(element: Element | undefined, userInteract: boole
 // }, 100);
 
 const onScrollRaw = (fromScrollEvent?: boolean) => {
-    if (DEBUG_TRACE) debug("onScrollRaw: fromScrollEvent", fromScrollEvent);
+    if (DEBUG_TRACE) debug("onScrollRaw: fromScrollEvent / accessibilitySupportEnabled", fromScrollEvent, win.READIUM2.accessibilitySupportEnabled);
 
     if (!win.document || !win.document.documentElement) {
         return;
@@ -2476,7 +2477,8 @@ const onScrollRaw = (fromScrollEvent?: boolean) => {
 
     if (!win.READIUM2.ttsClickEnabled &&
         !win.document.documentElement.classList.contains(TTS_CLASS_PLAYING) &&
-        !win.document.documentElement.classList.contains(TTS_CLASS_PAUSED)) {
+        !win.document.documentElement.classList.contains(TTS_CLASS_PAUSED) &&
+        !win.READIUM2.accessibilitySupportEnabled) {
 
         const el = win.READIUM2.locationHashOverride; // || win.READIUM2.hashElement
         if (el && isVisible(false, el, undefined)) {
@@ -3436,6 +3438,12 @@ function loaded(forced: boolean) {
             ipcRenderer.sendToHost(R2_EVENT_LINK, payload); // this will result in the app registering the element in the navigation history, but is skipped in location.ts ipcRenderer.on(R2_EVENT_LINK)
         }
 
+        if (win.READIUM2.accessibilitySupportEnabled) {
+            debug("----> link popup footnote accessibilitySupportEnabled ==> force hyperlink focus:", skipHistory, encCssSel);
+            focusElement(linkElement, true, true);
+        }
+
+        debug("----> link popup footnote? skipHistory / encCssSel:", skipHistory, encCssSel);
         popupFootNote(
             linkElement as HTMLElement,
             focusScrollRaw,
@@ -3443,6 +3451,8 @@ function loaded(forced: boolean) {
             ensureTwoPageSpreadWithOddColumnsIsOffsetTempDisable,
             ensureTwoPageSpreadWithOddColumnsIsOffsetReEnable).then((done) => {
                 if (done) {
+                    debug("----> link popup footnote DONE skipHistory / encCssSel:", skipHistory, encCssSel);
+
                     if (!skipHistory) {
                         // double-insert the hyperlink to trigger the popup programmatically on history.back()/forward()
                         const payload: IEventPayload_R2_EVENT_LINK = {
@@ -3451,6 +3461,8 @@ function loaded(forced: boolean) {
                         ipcRenderer.sendToHost(R2_EVENT_LINK, payload);
                     }
                 } else {
+                    debug("----> link popup footnote !!!DONE skipHistory / encCssSel:", skipHistory, encCssSel);
+
                     focusScrollDebounced.clear();
                     // processXYDebounced.clear();
                     processXYDebouncedImmediate.clear();
@@ -5067,7 +5079,7 @@ const $_namespaceResolver = (prefix: string | null): string | null => {
 };
 
 const notifyReadingLocationRaw = (userInteract?: boolean, ignoreMediaOverlays?: boolean, doNotFocus?: boolean) => {
-    if (DEBUG_TRACE) debug("notifyReadingLocationRaw", win.READIUM2.locationHashOverride ? getCssSelector(win.READIUM2.locationHashOverride) : "!!!? win.READIUM2.locationHashOverride");
+    if (DEBUG_TRACE) debug("notifyReadingLocationRaw", win.READIUM2.locationHashOverride ? getCssSelector(win.READIUM2.locationHashOverride) : "!!!? win.READIUM2.locationHashOverride", win.READIUM2.accessibilitySupportEnabled);
 
     if (!win.READIUM2.locationHashOverride) {
         return;
@@ -5818,6 +5830,11 @@ if (!win.READIUM2.isAudio) {
         if (DEBUG_TRACE) debug("R2_EVENT_FOCUS_READING_LOC: focusCurrentReadingLocationElement()...");
         // CONTEXT: R2_EVENT_FOCUS_READING_LOC
         focusCurrentReadingLocationElement(true);
+    });
+
+    ipcRenderer.on("accessibility-support-changed", (_event: any, accessibilitySupportEnabled: boolean) => {
+        debug("accessibility-support-changed event received in navigator Electron BrowserWindow's Webview", accessibilitySupportEnabled);
+        win.READIUM2.accessibilitySupportEnabled = accessibilitySupportEnabled;
     });
 }
 

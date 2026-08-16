@@ -2951,7 +2951,7 @@ class Reader extends React.Component<IProps, IState> {
                 "publication_viewport",
                 preloadPath,
                 locator,
-                true,
+                this.state.accessibilitySupportEnabled,
                 (this.props.publicationView.lcp) ? clipboardInterceptor : undefined,
                 this.props.winId,
                 computeReadiumCssJsonMessage(this.props.readerConfig),
