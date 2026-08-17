@@ -196,7 +196,7 @@
         "downloads": "Nedladdningar",
         "fitlerTagTitle": "Filtrera efter tagg",
         "gridTitle": "Galleri",
-        "home": "Huvudmeny",
+        "home": "Bokhyllemeny",
         "homeTitle": "Hem",
         "importTitle": "Importera en bok",
         "listTitle": "Tabell",
@@ -1214,8 +1214,8 @@
                     "name": "Starta eller avsluta helskärmsläge"
                 },
                 "ToggleReaderZenMode": {
-                    "description": "",
-                    "name": ""
+                    "description": "I läsarfönstret, aktivera eller avsluta zenläget, som förenklar användargränssnittet medan du läser",
+                    "name": "Starta eller avsluta zenläge"
                 },
                 "ToggleScreenReaderOptimize": {
                     "description": "I biblioteksfönstret, slå av eller på utökat stöd för skärmläsare",
@@ -1252,7 +1252,7 @@
         },
         "screenReaderActivate": {
             "help": "När programmet upptäcker hjälpmedelsteknik så anpassas gränssnittet för att fungera bättre med skärmläsare",
-            "invite": "",
+            "invite": "Optimera för skärmläsare ({{- status}}) [{{- keyboard}}]",
             "message": "Förbättrat stöd för skärmläsare",
             "title": "Förbättra skärmläsarupplevelsen"
         },
