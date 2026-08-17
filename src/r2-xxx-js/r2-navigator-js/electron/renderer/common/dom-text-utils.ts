@@ -392,10 +392,6 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
     let ttsQueue: ITtsQueueItem[] = [];
     const elementStack: Element[] = [];
 
-    // set just before descending into a sup/sub, consumed by the first text node found
-    // inside it, which then contributes SUBSUP_SEPARATOR ahead of its text
-    let pendingSubSupSeparator = false;
-
     function processTextNode(textNode: Node) {
 
         if (textNode.nodeType !== Node.TEXT_NODE) {
@@ -474,14 +470,15 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
             ttsQueue.push(current);
         }
 
-        if (pendingSubSupSeparator) {
-            pendingSubSupSeparator = false;
-            // whitespace-only nodes already contribute a single space, so tagging one
-            // would double-count against the offset walkers
-            if (textNode.nodeValue.trim().length) {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                (textNode as any).__SUBSUP = true;
-            }
+        // Same idea as the __RUBY tagging above, but closest() rather than a direct
+        // parent-tag test, because inline markup inside a sup/sub is common and the text
+        // still needs fencing: <sup><a href="#fn1">1</a></sup> (footnote markers),
+        // <sup><em>n</em></sup>. With a direct parent test those read as fused again.
+        // Whitespace-only nodes already contribute a single space, so tagging one would
+        // double-count against the offset walkers in readaloud.ts.
+        if (textNode.nodeValue.trim().length && textNode.parentElement?.closest("sup, sub")) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (textNode as any).__SUBSUP = true;
         }
 
         current.textNodes.push(textNode);
@@ -758,12 +755,7 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
                     ;
 
                     if (processDeepChild) {
-                        if (isSubSup) {
-                            // the first text node inside contributes SUBSUP_SEPARATOR
-                            pendingSubSupSeparator = true;
-                        }
                         processElement(childElement);
-                        pendingSubSupSeparator = false;
                     } else if (!hidden) {
                         if (isPageBreak || isLink || isSubSup) {
                             // do nothing, already dealt with above (either shallow or deep)
