@@ -957,8 +957,8 @@ export const transliteratesPureDiacriticsEXTRA = {
 } as { [str: string]: string };
 
 // https://github.com/sindresorhus/transliterate/blob/f4a527f5e8fa6dc7c2142c3125b594cfa3f0d0c2/index.js#L58
-// remove all remaining diacritics?
-// .normalize('NFD').replaceAll(/\p{Diacritic}/gu, '').normalize();
+// TODO? remove diacritics
+// .normalize("NFD").replace(/\p{Diacritic}/gu, "").normalize();
 
 // https://fr.wikipedia.org/wiki/%C5%92
 // Œuf œuf oeuf

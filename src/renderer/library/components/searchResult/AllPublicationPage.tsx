@@ -424,7 +424,10 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
         // if (v) {}
         props.setShowColumnFilters(true);
 
-        props.setGlobalFilter(v);
+        const searchText = (v || "").trim();
+        // TODO? remove diacritics
+        // searchText = searchText.normalize("NFD").replace(/\p{Diacritic}/gu, "");
+        props.setGlobalFilter(searchText || undefined);
     }, 500);
 
     return (
@@ -453,14 +456,16 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
                 onChange={(e) => {
                     // setValue(e.target.value);
                     if (!props.accessibilitySupportEnabled) {
-                        onInputChange((e.target.value || "").trim() || undefined);
+                        onInputChange(e.target.value);
                     }
                 }}
                 onKeyUp={(e) => {
                     if (props.accessibilitySupportEnabled && e.key === "Enter") {
                         props.setShowColumnFilters(true);
-                        props.setGlobalFilter( // value
-                            (props.focusInputRef?.current?.value || "").trim() || undefined);
+                        const searchText = (props.focusInputRef?.current?.value || "").trim();
+                        // TODO? remove diacritics
+                        // searchText = searchText.normalize("NFD").replace(/\p{Diacritic}/gu, "");
+                        props.setGlobalFilter(searchText || undefined);
                     }
                 }}
                 placeholder={`${props.__("header.searchTitle")}`}
@@ -468,8 +473,10 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
             {props.accessibilitySupportEnabled ? <button
                 onClick={() => {
                     props.setShowColumnFilters(true);
-                    props.setGlobalFilter( // value
-                        (props.focusInputRef?.current?.value || "").trim() || undefined);
+                    const searchText = (props.focusInputRef?.current?.value || "").trim();
+                    // TODO? remove diacritics
+                    // searchText = searchText.normalize("NFD").replace(/\p{Diacritic}/gu, "");
+                    props.setGlobalFilter(searchText || undefined);
                 }}
             >{`${props.__("header.searchPlaceholder")}`}</button> : <></>}
         </div>
@@ -541,7 +548,10 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
 
     // https://github.com/TanStack/table/blob/7535f8fd51a2aa784949e32a68b9bb24c8a6c811/src/publicUtils.js#L163
     const onInputChange = useAsyncDebounce((v) => {
-        props.column.setFilter(v);
+        const searchText = (v || "").trim();
+        // TODO? remove diacritics
+        // searchText = searchText.normalize("NFD").replace(/\p{Diacritic}/gu, "");
+        props.column.setFilter(searchText || undefined);
     }, 500);
 
     const [searchParams] = useSearchParams();
@@ -570,13 +580,16 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
             inputRef.current.focus();
             inputRef.current.value = decodeURIComponent(searchParamsValue || "");
             if (!props.accessibilitySupportEnabled) {
-                onInputChange((inputRef.current.value || "").trim() || undefined);
+                onInputChange(inputRef.current.value);
             }
             if (props.accessibilitySupportEnabled) {
                 // (e.target as EventTarget & HTMLInputElement).value
                 // value
-                props.column.setFilter( // props.column.filterValue
-                    (inputRef?.current?.value || "").trim() || undefined);
+                // props.column.filterValue
+                const searchText = (inputRef?.current?.value || "").trim();
+                // TODO? remove diacritics
+                // searchText = searchText.normalize("NFD").replace(/\p{Diacritic}/gu, "");
+                props.column.setFilter(searchText || undefined);
             }
         }
     }, [props.showColumnFilters, setShowColumnFilters, props.column.id, props.accessibilitySupportEnabled, props.column, searchParamsFocus, searchParamsValue, searchParamsFocus_, searchParamsValue_, onInputChange]);
@@ -604,7 +617,7 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
                     // setValue(e.target.value);
                     // forceReRender(NaN);
                     if (!props.accessibilitySupportEnabled) {
-                        onInputChange((e.target.value || "").trim() || undefined);
+                        onInputChange(e.target.value);
                         if (props.column.id === "colTags") {
                             props.setSelectedTag(e.target.value.trim());
                         }
@@ -614,8 +627,11 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
                     if (props.accessibilitySupportEnabled && e.key === "Enter") {
                         // (e.target as EventTarget & HTMLInputElement).value
                         // value
-                        props.column.setFilter( // props.column.filterValue
-                            (inputRef?.current?.value || "").trim() || undefined);
+                        // props.column.filterValue
+                        const searchText = (inputRef?.current?.value || "").trim();
+                        // TODO? remove diacritics
+                        // searchText = searchText.normalize("NFD").replace(/\p{Diacritic}/gu, "");
+                        props.column.setFilter(searchText || undefined);
                         if (props.column.id === "colTags") {
                             props.setSelectedTag(inputRef?.current?.value.trim());
                             // console.log(inputRef.current.value);
@@ -625,7 +641,10 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
                     const trimmedValue = rawValue.trim();
 
                     if (e.key === "Enter") {
-                        props.column.setFilter(trimmedValue || undefined);
+                        const searchText = trimmedValue;
+                        // TODO? remove diacritics
+                        // searchText = searchText.normalize("NFD").replace(/\p{Diacritic}/gu, "");
+                        props.column.setFilter(searchText || undefined);
 
                         if (props.column.id === "colTags") {
                             props.setSelectedTag(trimmedValue);
@@ -661,8 +680,11 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
                     aria-label={`${props.__("header.searchPlaceholder")}`}
                     onClick={() => {
                         // value
-                        props.column.setFilter( // props.column.filterValue
-                            (inputRef?.current?.value || "").trim() || undefined);
+                        // props.column.filterValue
+                        const searchText = (inputRef?.current?.value || "").trim();
+                        // TODO? remove diacritics
+                        // searchText = searchText.normalize("NFD").replace(/\p{Diacritic}/gu, "");
+                        props.column.setFilter(searchText || undefined);
                     }}
                 ><SVG ariaHidden svg={SearchIcon} /></button> : <></>
             }
@@ -1635,7 +1657,10 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             setShowColumnFilters(show);
 
             setTimeout(() => {
-                tableInstance.setFilter(columnId, filterValue);
+                const searchText = filterValue;
+                // TODO? remove diacritics
+                // searchText = searchText.normalize("NFD").replace(/\p{Diacritic}/gu, "");
+                tableInstance.setFilter(columnId, searchText);
             }, 200);
 
             if (scrollToViewRef?.current) {
@@ -2902,7 +2927,11 @@ const FilterComponent = ({ tableInstance, target, targetColName, targetList, sel
 
                     if (found) {
                         setSelection(found.name);
-                        tableInstance.setFilter(targetColName, found.name || undefined);
+
+                        const searchText = found.name;
+                        // TODO? remove diacritics
+                        // searchText = searchText.normalize("NFD").replace(/\p{Diacritic}/gu, "");
+                        tableInstance.setFilter(targetColName, searchText || undefined);
 
                         setActiveFiltersArray(prevArray => {
                             const filtered = prevArray.filter(f => f.filterType !== target);
@@ -2922,7 +2951,7 @@ const FilterComponent = ({ tableInstance, target, targetColName, targetList, sel
                 allowsCustomValue
                 onInputChange={(v) => {
                     setSelection(v);
-                    if (v === "") {
+                    if (!(v || "").trim()) {
                         tableInstance.setFilter(targetColName, undefined);
                         setActiveFiltersArray(prev => prev.filter(f => f.filterType !== target));
                     }
