@@ -31,7 +31,9 @@ jobs:
 # github.event.pull_request.head.repo.fork
     if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
     runs-on: ubuntu-latest
-    environment: "Thorium Deskop Pull Requests"
+    environment:
+      name: "Thorium Deskop Pull Requests"
+      deployment: false
     steps:
       - run: echo "Pull Request approval."
 
