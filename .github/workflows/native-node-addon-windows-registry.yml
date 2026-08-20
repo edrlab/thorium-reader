@@ -358,7 +358,7 @@ jobs:
       if: ${{ startsWith(matrix.osarch, 'linux-') }}
       run: >
         ls -alsR dist/external-assets &&
-        dbus-run-session -- bash -c "export DBUS_SYSTEM_BUS_ADDRESS=\$DBUS_SESSION_BUS_ADDRESS; xvfb-run --auto-servernumnpm run start:quick"
+        dbus-run-session -- bash -c "export DBUS_SYSTEM_BUS_ADDRESS=\$DBUS_SESSION_BUS_ADDRESS; xvfb-run --auto-servernum npm run start:quick"
       shell: bash
 ###########################
 # uses: coactions/setup-xvfb@6b00cf1889f4e1d5a48635647013c0508128ee1a #v1
