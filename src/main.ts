@@ -25,6 +25,14 @@ import { _APP_NAME, _APP_VERSION, _PACK_NAME } from "readium-desktop/preprocesso
 import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
 import { appendFileSyncWithRotation } from "readium-desktop/utils/log";
 
+import { getWindowsSystemProxy } from "readium-desktop/main/windows-proxy-registry/proxy";
+
+console.log("*********** TEST PROXY...");
+const data = await getWindowsSystemProxy();
+console.log(JSON.stringify(data, null, 4));
+console.log("*********** TEST PROXY.");
+app.quit();
+
 // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
 // import isURL from "validator/lib/isURL";
 // if (__TH__IS_DEV__) {

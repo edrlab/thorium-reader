@@ -219,70 +219,70 @@ Napi::Value ReadValues(const Napi::CallbackInfo& info)
   }
 }
 
-Napi::Value EnumKeys(const Napi::CallbackInfo& info) {
-  const Napi::Env& env = info.Env();
+// Napi::Value EnumKeys(const Napi::CallbackInfo& info) {
+//   const Napi::Env& env = info.Env();
 
-  auto argCount = info.Length();
-  if (argCount != 1 && argCount != 2)
-  {
-    Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
-    return env.Undefined();
-  }
+//   auto argCount = info.Length();
+//   if (argCount != 1 && argCount != 2)
+//   {
+//     Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
+//     return env.Undefined();
+//   }
 
-  if (!info[0].IsNumber())
-  {
-    Napi::TypeError::New(env, "A number was expected for the first argument, but wasn't received.").ThrowAsJavaScriptException();
-    return env.Undefined();
-  }
+//   if (!info[0].IsNumber())
+//   {
+//     Napi::TypeError::New(env, "A number was expected for the first argument, but wasn't received.").ThrowAsJavaScriptException();
+//     return env.Undefined();
+//   }
 
-  auto first = reinterpret_cast<HKEY>(info[0].As<Napi::Number>().Int64Value());
+//   auto first = reinterpret_cast<HKEY>(info[0].As<Napi::Number>().Int64Value());
 
-  HKEY hCurrentKey = first;
-  if (argCount == 2 && !info[1].IsNull() && !info[1].IsUndefined())
-  {
-    if (!info[1].IsString())
-    {
-      Napi::TypeError::New(env, "A string was expected for the second argument, but wasn't received.").ThrowAsJavaScriptException();
-      return env.Undefined();
-    }
-    std::string subkeyArg = info[1].As<Napi::String>();
-    auto subkey = utf8ToWideChar(subkeyArg);
-    if (subkey == nullptr)
-    {
-      Napi::TypeError::New(env, "A string was expected for the second argument, but could not be parsed.").ThrowAsJavaScriptException();
-      return env.Undefined();
-    }
+//   HKEY hCurrentKey = first;
+//   if (argCount == 2 && !info[1].IsNull() && !info[1].IsUndefined())
+//   {
+//     if (!info[1].IsString())
+//     {
+//       Napi::TypeError::New(env, "A string was expected for the second argument, but wasn't received.").ThrowAsJavaScriptException();
+//       return env.Undefined();
+//     }
+//     std::string subkeyArg = info[1].As<Napi::String>();
+//     auto subkey = utf8ToWideChar(subkeyArg);
+//     if (subkey == nullptr)
+//     {
+//       Napi::TypeError::New(env, "A string was expected for the second argument, but could not be parsed.").ThrowAsJavaScriptException();
+//       return env.Undefined();
+//     }
 
-    auto openKey = RegOpenKeyEx(
-        first,
-        subkey,
-        0,
-        KEY_READ | KEY_WOW64_64KEY,
-        &hCurrentKey);
-    if (openKey != ERROR_SUCCESS)
-    {
-      // FIXME: the key does not exist, just return an empty array for now
-      return Napi::Array::New(env, 0);
-    }
-  }
+//     auto openKey = RegOpenKeyEx(
+//         first,
+//         subkey,
+//         0,
+//         KEY_READ | KEY_WOW64_64KEY,
+//         &hCurrentKey);
+//     if (openKey != ERROR_SUCCESS)
+//     {
+//       // FIXME: the key does not exist, just return an empty array for now
+//       return Napi::Array::New(env, 0);
+//     }
+//   }
 
-  auto results = Napi::Array::New(env, 0);
-  WCHAR name[MAX_VALUE_NAME];
-  for (int i = 0;; i++)
-  {
-    DWORD nameLen = MAX_VALUE_NAME;
-    auto ret = RegEnumKeyEx(hCurrentKey, i, name, &nameLen, nullptr, nullptr, nullptr, nullptr);
-    if (ret == ERROR_SUCCESS)
-    {
-      results.Set(i, Napi::String::New(env, (char16_t*)name));
-      continue;
-    }
-    break; // FIXME: We should do better error handling here
-  }
-  if (hCurrentKey != first)
-    RegCloseKey(hCurrentKey);
-  return results;
-}
+//   auto results = Napi::Array::New(env, 0);
+//   WCHAR name[MAX_VALUE_NAME];
+//   for (int i = 0;; i++)
+//   {
+//     DWORD nameLen = MAX_VALUE_NAME;
+//     auto ret = RegEnumKeyEx(hCurrentKey, i, name, &nameLen, nullptr, nullptr, nullptr, nullptr);
+//     if (ret == ERROR_SUCCESS)
+//     {
+//       results.Set(i, Napi::String::New(env, (char16_t*)name));
+//       continue;
+//     }
+//     break; // FIXME: We should do better error handling here
+//   }
+//   if (hCurrentKey != first)
+//     RegCloseKey(hCurrentKey);
+//   return results;
+// }
 
 // Napi::Value CreateKey(const Napi::CallbackInfo& info)
 // {
@@ -487,7 +487,7 @@ Napi::Value EnumKeys(const Napi::CallbackInfo& info) {
 Napi::Object Init(Napi::Env env, Napi::Object exports)
 {
   exports.Set(Napi::String::New(env, "readValues"), Napi::Function::New(env, ReadValues));
-  exports.Set(Napi::String::New(env, "enumKeys"), Napi::Function::New(env, EnumKeys));
+  // exports.Set(Napi::String::New(env, "enumKeys"), Napi::Function::New(env, EnumKeys));
   // exports.Set(Napi::String::New(env, "createKey"), Napi::Function::New(env, CreateKey));
   // exports.Set(Napi::String::New(env, "setValue"), Napi::Function::New(env, SetValue));
 

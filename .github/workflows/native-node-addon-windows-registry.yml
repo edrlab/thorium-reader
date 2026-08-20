@@ -240,7 +240,7 @@ jobs:
     - name: RESTORE package-lock.json
       run: >
         dir /A ${{ steps.npm-config-get-cache.outputs.dir }} &&
-        (copy ${{ steps.npm-config-get-cache.outputs.dir }}/package-lock.json . || del /f /s package-lock.json)
+        (copy "${{ steps.npm-config-get-cache.outputs.dir }}\package-lock.json" . || del /f /q package-lock.json)
       shell: cmd
 ###########################
     - name: NPM install
@@ -263,9 +263,9 @@ jobs:
 ###########################
     - name: BACKUP package-lock.json
       run: >
-        cp package-lock.json ${{ steps.npm-config-get-cache.outputs.dir }} &&
-        ls -als ${{ steps.npm-config-get-cache.outputs.dir }}
-      shell: bash
+        copy package-lock.json ${{ steps.npm-config-get-cache.outputs.dir }} &&
+        dir /A ${{ steps.npm-config-get-cache.outputs.dir }}
+      shell: cmd
 ###########################
     - name: Electron version + arch (Windows)
       #if: ${{ matrix.osarch == 'windows-intel' || matrix.osarch == 'windows-arm' }}
@@ -281,11 +281,17 @@ jobs:
 ###########################
     - run: npm list node-gyp || echo ok || true
 ###########################
-    - name: NODE GYP configure + build
-      run: npm run node-gyp-native-node-addon-windows-registry
+    - name: BUILD Windows
+      run: npm run build:prod:windows
 ###########################
     - name: NODE GYP check generated artefacts
       run: >
         cd native-node-addon-windows-registry &&
-        ls -alsR
+        dir /A &&
+        dir /A "build\Release" &&
+        type "build\Release\windows-registry.node"
+      shell: cmd
+###########################
+    - name: RUN TEST Windows
+      run: npm run start:quick
 ###########################

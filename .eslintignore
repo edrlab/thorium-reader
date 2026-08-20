@@ -21,3 +21,4 @@ webpack.config.*
 package.json
 src/package.json
 package-lock.json
+src/main/windows-proxy-registry/*

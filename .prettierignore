@@ -22,3 +22,4 @@ package.json
 src/package.json
 package-lock.json
 src/*
+src/main/windows-proxy-registry/*
