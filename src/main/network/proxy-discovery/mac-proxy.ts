@@ -7,7 +7,7 @@
 
 // https://github.com/httptoolkit/mac-system-proxy/blob/main/src/index.ts
 
-import { spawn } from 'child_process';
+import { spawn } from "child_process";
 
 export interface MacProxySettings {
     ExceptionsList?: string[];
@@ -34,21 +34,21 @@ export interface MacProxySettings {
     ProxyAutoConfigURLString?: string;
 }
 
-export function getMacSystemProxy(): Promise<MacProxySettings | undefined> {
-    if (process.platform !== 'darwin') {
-        // throw new Error("Can't detect Mac system proxy on non-Mac platform");
-        return undefined;
+export function getMacSystemProxy(): Promise<MacProxySettings> {
+    if (process.platform !== "darwin") {
+        // throw new Error("Can"t detect Mac system proxy on non-Mac platform");
+        return {};
     }
-    return new Promise((resolve, reject) => {
-        const scutilProc = spawn('scutil', ['--proxy'], { stdio: 'pipe' });
-        scutilProc.on('error', reject);
+    return new Promise<MacProxySettings>((resolve, reject) => {
+        const scutilProc = spawn("scutil", ["--proxy"], { stdio: "pipe" });
+        scutilProc.on("error", reject);
 
         const stdoutData: Buffer[] = [];
-        scutilProc.stdout.on('data', (d) => stdoutData.push(d));
+        scutilProc.stdout.on("data", (d) => stdoutData.push(d));
 
-        scutilProc.on('exit', (code, signal) => {
+        scutilProc.on("exit", (code, signal) => {
             if (code !== 0) reject(new Error(`Scutil exited with ${code || signal}`));
-            const output = Buffer.concat(stdoutData).toString('utf8');
+            const output = Buffer.concat(stdoutData).toString("utf8");
 
             try {
                 resolve(parseScutilOutput(output));
@@ -65,32 +65,32 @@ export function getMacSystemProxy(): Promise<MacProxySettings | undefined> {
 const TYPE_KEY = "__scutil__type__";
 
 // Quick hacky parser, which translates output into valid JSON:
-const parseScutilOutput = (output: string): {} => {
+const parseScutilOutput = (output: string): MacProxySettings => {
     try {
-        console.log("*********** parseScutilOutput: ", output);
+        // console.log("*********** parseScutilOutput: ", output);
 
         // Unclear how this happens, but it seems that it can in some cases:
-        if (output === '') return {};
+        if (output === "") return {} as MacProxySettings;
 
         const unquotedJsonString = output
             // Reduce type markers to just an inline __scutil__type__ marker on array objects:
-            .replace(/<dictionary> /g, '')
+            .replace(/<dictionary> /g, "")
             .replace(/<array> {/g, `{\n${TYPE_KEY} : array`)
             .trim();
 
         // Turn unquoted key/value string into a string of quote key values (but with no commas).
         // We effectively parse by splitting on the first " : " in each line, if present.
         const jsonKeyValues = unquotedJsonString
-            .split('\n')
+            .split("\n")
             .map((line) => {
                 const [key, value] = line.split(/ : (.*)/);
 
                 if (value === undefined) return key.trim();
-                else if (value === '{') return `"${key.trim()}": {`;
+                else if (value === "{") return `"${key.trim()}": {`;
                 else return `"${key.trim()}": ${JSON.stringify(value.trim())}`;
             });
 
-        // Insert commas everywhere they're needed
+        // Insert commas everywhere they"re needed
         const jsonFormattedString = jsonKeyValues
             .reduce((jsonString, nextValue) => {
                 if (!jsonString || jsonString.endsWith("{") || nextValue === "}") {
@@ -98,13 +98,13 @@ const parseScutilOutput = (output: string): {} => {
                     // at the very start of the string:
                     return jsonString + nextValue;
                 } else {
-                    return jsonString + ', ' + nextValue;
+                    return jsonString + ", " + nextValue;
                 }
             }, "");
 
         const data = JSON.parse(jsonFormattedString, (_key, value) => {
             // Convert array-tagged objects back into arrays:
-            if (value[TYPE_KEY] === 'array') {
+            if (value[TYPE_KEY] === "array") {
                 delete value[TYPE_KEY];
                 return Object.values(value);
             } else {
@@ -112,7 +112,7 @@ const parseScutilOutput = (output: string): {} => {
             }
         });
 
-        return data;
+        return data as MacProxySettings;
     } catch (e) {
         throw Object.assign(
             new Error("Unexpected scutil proxy output format"),

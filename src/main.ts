@@ -25,19 +25,6 @@ import { _APP_NAME, _APP_VERSION, _PACK_NAME } from "readium-desktop/preprocesso
 import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
 import { appendFileSyncWithRotation } from "readium-desktop/utils/log";
 
-import { getSystemProxy, type ProxyConfig } from "readium-desktop/main/network/proxy-discovery/os-proxy";
-
-console.log("*********** TEST PROXY...");
-let data: ProxyConfig | undefined = undefined;
-try {
-    data = await getSystemProxy();
-    console.log(JSON.stringify(data, null, 4));
-} catch (err) {
-    console.log(err);
-}
-console.log("*********** TEST PROXY.");
-app.quit();
-
 // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
 // import isURL from "validator/lib/isURL";
 // if (__TH__IS_DEV__) {
@@ -170,3 +157,19 @@ dump += `Date: ${(new Date()).toISOString()}\n`;
 dump += `Process: ${processInfoStr}\n`;
 dump += "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$44\n";
 appendFileSyncWithRotation(appLogs, dump);
+
+const BRANCH = "master";
+const JSON_URL = `https://raw.githubusercontent.com/edrlab/thorium-reader/${BRANCH}/latest.json`;
+debug("*********** HTTP REQUEST test...");
+httpGet(JSON_URL).then((res) => {
+    debug("*********** HTTP REQUEST test: ", res.isSuccess);
+    if (res.isSuccess) {
+        debug(await res.response.text())
+    }
+}).catch((err) => {
+    debug(err);
+});
+setTimeout(() => {
+    app.quit();
+    process.exit();
+}, 1000);

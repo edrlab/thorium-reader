@@ -10,6 +10,14 @@
 
 // DIFFERENCE: removed pac-proxy-agent as this introduces QuickJS WASM bloat
 
+// TODO: NODE_USE_ENV_PROXY=1 ?
+// https://github.com/Rob--W/proxy-from-env#built-in-proxy-support
+// https://github.com/nodejs/node/issues/57872
+// https://github.com/nodejs/node/issues/43187
+// https://gist.github.com/Aditi-1400/09a915398a90e23691784b6810263781
+
+import { getSystemProxy, type ProxyConfig } from "readium-desktop/main/network/proxy-discovery/os-proxy";
+
 import * as http from "http";
 import * as https from "https";
 import { URL } from "url";
@@ -112,6 +120,114 @@ export type ProxyAgentOptions = HttpProxyAgentOptions<""> &
         getProxyForUrl?: GetProxyForUrlCallback;
     };
 
+// https://github.com/Rob--W/proxy-from-env/blob/570ce3a4279d83af3ff13e7600a347d01c453394/index.js#L3-L18
+const DEFAULT_PORTS = {
+    ftp: 21,
+    gopher: 70,
+    http: 80,
+    https: 443,
+    ws: 80,
+    wss: 443,
+};
+function parseUrl(urlString: string): URL | null {
+    try {
+        return new URL(urlString);
+    } catch {
+        return null;
+    }
+}
+// https://github.com/Rob--W/proxy-from-env/blob/570ce3a4279d83af3ff13e7600a347d01c453394/index.js#L26-L50
+function getProxyForUrl_(proxyUrl: string, noProxy: string, url: string) {
+
+    const parsedUrl = parseUrl(url);
+
+    const proto = parsedUrl.protocol;
+    const hostname = parsedUrl.host;
+    const port = parsedUrl.port;
+
+    if (typeof hostname !== "string" || !hostname || typeof proto !== "string") {
+        return "";
+    }
+
+    proto = proto.split(":", 1)[0];
+    hostname = hostname.replace(/:\d*$/, "");
+    port = parseInt(port) || DEFAULT_PORTS[proto] || 0;
+
+    if (!shouldProxy(noProxy, hostname, port)) {
+        return "";
+    }
+
+    const proxy = proxyUrl;
+    if (proxy && proxy.indexOf("://") === -1) {
+        proxy = proto + "://" + proxy;
+    }
+
+    return proxy;
+}
+// https://github.com/Rob--W/proxy-from-env/blob/570ce3a4279d83af3ff13e7600a347d01c453394/index.js#L60-L92
+function shouldProxy(noProxy: string, hostname: string, port: number): boolean {
+
+    if (!noProxy) {
+        return true;
+    }
+    noProxy = noProxy.toLowerCase();
+
+    if (noProxy === "*") {
+        return false;
+    }
+
+    return noProxy.split(/[,\s]/).every(function(proxy) {
+        if (!proxy) {
+            return true;
+        }
+        const parsedProxy = proxy.match(/^(.+):(\d+)$/);
+        const parsedProxyHostname = parsedProxy ? parsedProxy[1] : proxy;
+        const parsedProxyPort = parsedProxy ? parseInt(parsedProxy[2]) : 0;
+        if (parsedProxyPort && parsedProxyPort !== port) {
+            return true;
+        }
+
+        if (!/^[.*]/.test(parsedProxyHostname)) {
+            return hostname !== parsedProxyHostname;
+        }
+
+        if (parsedProxyHostname.charAt(0) === "*") {
+            parsedProxyHostname = parsedProxyHostname.slice(1);
+        }
+
+        return !hostname.endsWith(parsedProxyHostname);
+    });
+}
+
+async function myGetProxyForUrl(
+    url: string,
+    _req: http.ClientRequest
+): string | Promise<string> {
+
+    // linux passthrough to env vars
+    if (process.platform === "darwin" || process.platform === "win32") {
+        let data: ProxyConfig | undefined = undefined;
+        try {
+            debug("*********** SYSTEM PROXY CHECK...");
+            data = await getSystemProxy();
+            debug("*********** SYSTEM PROXY CHECK result: ", JSON.stringify(data, null, 4));
+        } catch (err) {
+            debug("*********** SYSTEM PROXY CHECK error: ", err);
+        }
+        if (data?.proxyUrl || data?.noProxy) {
+            debug("*********** SYSTEM PROXY CHECK pass? ", data.proxyUrl, data.noProxy, url);
+            const proxyUrl = getProxyForUrl_(data.proxyUrl, data.noProxy, url);
+            if (proxyUrl) {
+                debug("*********** SYSTEM PROXY CHECK pass: ", proxyUrl);
+                return proxyUrl;
+            }
+        }
+    }
+
+    debug("*********** SYSTEM PROXY CHECK fallback: ", url);
+    return envGetProxyForUrl(url);
+}
+
 /**
  * Uses the appropriate `Agent` subclass based off of the "proxy"
  * environment variables that are currently set.
@@ -140,7 +256,7 @@ export class ProxyAgent extends Agent {
         this.httpAgent = opts?.httpAgent || new http.Agent(opts);
         this.httpsAgent =
             opts?.httpsAgent || new https.Agent(opts as https.AgentOptions);
-        this.getProxyForUrl = opts?.getProxyForUrl || envGetProxyForUrl;
+        this.getProxyForUrl = opts?.getProxyForUrl || myGetProxyForUrl;
     }
 
     async connect(

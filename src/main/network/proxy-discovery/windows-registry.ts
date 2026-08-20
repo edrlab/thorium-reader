@@ -11,11 +11,11 @@ import * as path from "path";
 import * as fs from "fs";
 
 const p = path.normalize(path.join(__dirname, "external-assets", "windows-registry.node"));
-console.log("*********** REGISTRY NODE:", p, fs.existsSync(p));
+// console.log("*********** REGISTRY NODE:", p, fs.existsSync(p));
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let nativeModule: any | undefined = undefined;
-if (process.platform === 'win32' && fs.existsSync(p)) {
+if (process.platform === "win32" && fs.existsSync(p)) {
 
     // https://github.com/webpack/webpack/issues/4175#issuecomment-342931035
     // @ts-expect-error TS 2304
@@ -25,7 +25,7 @@ if (process.platform === 'win32' && fs.existsSync(p)) {
     nativeModule.path = p;
 }
 
-console.log("*********** REGISTRY MODULE:", typeof nativeModule);
+// console.log("*********** REGISTRY MODULE:", typeof nativeModule);
 
 /**
  * Utility function used to achieve exhaustive type checks at compile time.
@@ -50,17 +50,17 @@ function assertNever(_x: never, message: string): never {
  * Source: https://msdn.microsoft.com/en-us/library/windows/desktop/ms724884(v=vs.85).aspx
  */
 export enum RegistryValueType {
-  REG_BINARY = 'REG_BINARY',
-  REG_DWORD = 'REG_DWORD',
-  REG_DWORD_LITTLE_ENDIAN = 'REG_DWORD_LITTLE_ENDIAN',
-  REG_DWORD_BIG_ENDIAN = 'REG_DWORD_BIG_ENDIAN',
-  REG_EXPAND_SZ = 'REG_EXPAND_SZ',
-  REG_LINK = 'REG_LINK',
-  REG_MULTI_SZ = 'REG_MULTI_SZ',
-  REG_NONE = 'REG_NONE',
-  REG_QWORD = 'REG_QWORD',
-  REG_QWORD_LITTLE_ENDIAN = 'REG_QWORD_LITTLE_ENDIAN',
-  REG_SZ = 'REG_SZ',
+  REG_BINARY = "REG_BINARY",
+  REG_DWORD = "REG_DWORD",
+  REG_DWORD_LITTLE_ENDIAN = "REG_DWORD_LITTLE_ENDIAN",
+  REG_DWORD_BIG_ENDIAN = "REG_DWORD_BIG_ENDIAN",
+  REG_EXPAND_SZ = "REG_EXPAND_SZ",
+  REG_LINK = "REG_LINK",
+  REG_MULTI_SZ = "REG_MULTI_SZ",
+  REG_NONE = "REG_NONE",
+  REG_QWORD = "REG_QWORD",
+  REG_QWORD_LITTLE_ENDIAN = "REG_QWORD_LITTLE_ENDIAN",
+  REG_SZ = "REG_SZ",
 }
 
 export type RegistryStringEntry = {
@@ -79,16 +79,16 @@ export type RegistryNumberEntry = {
 export type RegistryValue = RegistryStringEntry | RegistryNumberEntry
 
 export enum HKEY {
-  HKEY_CLASSES_ROOT = 'HKEY_CLASSES_ROOT',
-  HKEY_CURRENT_CONFIG = 'HKEY_CURRENT_CONFIG',
-  HKEY_DYN_DATA = 'HKEY_DYN_DATA',
-  HKEY_CURRENT_USER_LOCAL_SETTINGS = 'HKEY_CURRENT_USER_LOCAL_SETTINGS',
-  HKEY_CURRENT_USER = 'HKEY_CURRENT_USER',
-  HKEY_LOCAL_MACHINE = 'HKEY_LOCAL_MACHINE',
-  HKEY_PERFORMANCE_DATA = 'HKEY_PERFORMANCE_DATA',
-  HKEY_PERFORMANCE_TEXT = 'HKEY_PERFORMANCE_TEXT',
-  HKEY_PERFORMANCE_NLSTEXT = 'HKEY_PERFORMANCE_NLSTEXT',
-  HKEY_USERS = 'HKEY_USERS',
+  HKEY_CLASSES_ROOT = "HKEY_CLASSES_ROOT",
+  HKEY_CURRENT_CONFIG = "HKEY_CURRENT_CONFIG",
+  HKEY_DYN_DATA = "HKEY_DYN_DATA",
+  HKEY_CURRENT_USER_LOCAL_SETTINGS = "HKEY_CURRENT_USER_LOCAL_SETTINGS",
+  HKEY_CURRENT_USER = "HKEY_CURRENT_USER",
+  HKEY_LOCAL_MACHINE = "HKEY_LOCAL_MACHINE",
+  HKEY_PERFORMANCE_DATA = "HKEY_PERFORMANCE_DATA",
+  HKEY_PERFORMANCE_TEXT = "HKEY_PERFORMANCE_TEXT",
+  HKEY_PERFORMANCE_NLSTEXT = "HKEY_PERFORMANCE_NLSTEXT",
+  HKEY_USERS = "HKEY_USERS",
 }
 
 function mapToLong(key: HKEY): number {
@@ -103,7 +103,7 @@ function mapToLong(key: HKEY): number {
   if (key === HKEY.HKEY_PERFORMANCE_TEXT) return 0x80000050
   if (key === HKEY.HKEY_PERFORMANCE_NLSTEXT) return 0x80000060
 
-  return assertNever(key, 'The key does not map to an expected number value')
+  return assertNever(key, "The key does not map to an expected number value")
 }
 
 export function enumerateValues(

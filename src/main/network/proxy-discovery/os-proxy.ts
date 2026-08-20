@@ -7,8 +7,8 @@
 
 // https://github.com/httptoolkit/os-proxy-config/blob/main/src/index.ts
 
-import { getWindowsSystemProxy } from './windows-proxy';
-import { getMacSystemProxy } from './mac-proxy';
+import { getWindowsSystemProxy } from "./windows-proxy";
+import { getMacSystemProxy } from "./mac-proxy";
 
 export interface ProxyConfig {
     /**
@@ -29,18 +29,18 @@ export interface ProxyConfig {
 }
 
 export async function getSystemProxy(): Promise<ProxyConfig | undefined> {
-    if (process.platform === 'win32') {
-        console.log("*********** getSystemProxy WIN...");
+    if (process.platform === "win32") {
+        // console.log("*********** getSystemProxy WIN...");
         return getWindowsSystemProxy();
-    } else if (process.platform === 'darwin') {
-        console.log("*********** getSystemProxy MAC...");
+    } else if (process.platform === "darwin") {
+        // console.log("*********** getSystemProxy MAC...");
         const proxySettings = await getMacSystemProxy();
 
-        const noProxy = proxySettings?.ExceptionsList || [];
+        const noProxy = proxySettings.ExceptionsList || [];
 
-        if (proxySettings.HTTPEnable && proxySettings.HTTPProxy && proxySettings.HTTPPort) {
+        if (proxySettings.HTTPSEnable && proxySettings.HTTPSProxy && proxySettings.HTTPSPort) {
             return {
-                proxyUrl: `http://${proxySettings.HTTPProxy}:${proxySettings.HTTPPort}`,
+                proxyUrl: `https://${proxySettings.HTTPSProxy}:${proxySettings.HTTPSPort}`,
                 noProxy
             };
         } else if (proxySettings.SOCKSEnable && proxySettings.SOCKSProxy && proxySettings.SOCKSPort) {
@@ -48,16 +48,16 @@ export async function getSystemProxy(): Promise<ProxyConfig | undefined> {
                 proxyUrl: `socks://${proxySettings.SOCKSProxy}:${proxySettings.SOCKSPort}`,
                 noProxy
             };
-        } else if (proxySettings.HTTPSEnable && proxySettings.HTTPSProxy && proxySettings.HTTPSPort) {
+        } else if (proxySettings.HTTPEnable && proxySettings.HTTPProxy && proxySettings.HTTPPort) {
             return {
-                proxyUrl: `http://${proxySettings.HTTPSProxy}:${proxySettings.HTTPSPort}`,
+                proxyUrl: `http://${proxySettings.HTTPProxy}:${proxySettings.HTTPPort}`,
                 noProxy
             };
         } else {
             return undefined;
         }
     } else {
-        console.log("*********** getSystemProxy LINUX...");
+        // console.log("*********** getSystemProxy LINUX...");
         const {
             HTTPS_PROXY,
             https_proxy,
@@ -72,7 +72,7 @@ export async function getSystemProxy(): Promise<ProxyConfig | undefined> {
         if (!proxyUrl) return undefined;
 
         const noProxy = !!(NO_PROXY || no_proxy)
-            ? (NO_PROXY || no_proxy)!.split(',')
+            ? (NO_PROXY || no_proxy)!.split(",")
             : [];
 
         return {

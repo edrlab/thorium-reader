@@ -23,4 +23,3 @@ src/package.json
 package-lock.json
 src/*
 native-node-addon-windows-registry/*
-src/main/windows-proxy-registry/*
