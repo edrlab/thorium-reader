@@ -293,5 +293,8 @@ jobs:
       shell: cmd
 ###########################
     - name: RUN TEST Windows
-      run: npm run start:quick
+      run: >
+        ls -alsR dist/external-assets &&
+        npm run start:quick
+      shell: bash
 ###########################

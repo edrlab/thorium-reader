@@ -45,7 +45,7 @@ export function parseScutilOutput(output: string): {} {
                 }
             }, "");
 
-        const data = JSON.parse(jsonFormattedString, (key, value) => {
+        const data = JSON.parse(jsonFormattedString, (_key, value) => {
             // Convert array-tagged objects back into arrays:
             if (value[TYPE_KEY] === 'array') {
                 delete value[TYPE_KEY];
