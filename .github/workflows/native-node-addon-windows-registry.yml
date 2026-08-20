@@ -258,12 +258,21 @@ jobs:
     - run: python3 -m pip install setuptools || python -m pip install setuptools
     # - run: npm --global install asar
 ###########################
-    - name: RESTORE package-lock.json
+    - name: RESTORE package-lock.json (WINDOWS)
+      if: startsWith(matrix.osarch, 'windows-')
       run: >
         dir /A ${{ steps.npm-config-get-cache.outputs.dir }} &&
         del /f /q package-lock.json &&
         copy "${{ steps.npm-config-get-cache.outputs.dir }}\package-lock.json" .
       shell: cmd
+      continue-on-error: true
+###########################
+    - name: RESTORE package-lock.json (MAC or LINUX)
+      if: ${{ !startsWith(matrix.osarch, 'windows-') }}
+      run: >
+        ls -als ${{ steps.npm-config-get-cache.outputs.dir }} &&
+        rm -f package-lock.json &&
+        cp "${{ steps.npm-config-get-cache.outputs.dir }}\package-lock.json" .
       continue-on-error: true
 ###########################
     - name: NPM install
@@ -274,11 +283,18 @@ jobs:
         cd -
       shell: bash
 ###########################
-    - name: BACKUP package-lock.json
+    - name: BACKUP package-lock.json (WINDOWS)
+      if: startsWith(matrix.osarch, 'windows-')
       run: >
         copy package-lock.json ${{ steps.npm-config-get-cache.outputs.dir }} &&
         dir /A ${{ steps.npm-config-get-cache.outputs.dir }}
       shell: cmd
+###########################
+    - name: BACKUP package-lock.json (MAC or LINUX)
+      if: ${{ !startsWith(matrix.osarch, 'windows-') }}
+      run: >
+        cp package-lock.json ${{ steps.npm-config-get-cache.outputs.dir }} &&
+        ls -als ${{ steps.npm-config-get-cache.outputs.dir }}
 ###########################
 # https://github.com/actions/cache#using-a-combination-of-restore-and-save-actions
 # https://github.com/actions/cache/blob/main/save/README.md
@@ -305,9 +321,15 @@ jobs:
     - run: npm list node-gyp || echo ok || true
 ###########################
     - name: BUILD Windows
+      if: startsWith(matrix.osarch, 'windows-')
       run: npm run build:prod:windows
 ###########################
+    - name: BUILD Linux or Mac
+      if: ${{ !startsWith(matrix.osarch, 'windows-') }}
+      run: npm run build:prod
+###########################
     - name: NODE GYP check generated artefacts
+      if: startsWith(matrix.osarch, 'windows-')
       run: >
         cd native-node-addon-windows-registry &&
         dir /A &&
@@ -315,8 +337,16 @@ jobs:
       shell: cmd
 ###########################
     - name: RUN TEST Windows
+      if: startsWith(matrix.osarch, 'windows-')
       run: >
         ls -alsR native-node-addon-windows-registry/build/Release &&
+        ls -alsR dist/external-assets &&
+        npm run start:quick
+      shell: bash
+###########################
+    - name: RUN TEST Linux or Mac
+      if: ${{ !startsWith(matrix.osarch, 'windows-') }}
+      run: >
         ls -alsR dist/external-assets &&
         npm run start:quick
       shell: bash

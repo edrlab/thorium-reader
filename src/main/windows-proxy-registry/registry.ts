@@ -13,7 +13,8 @@ import * as fs from "fs";
 const p = path.normalize(path.join(__dirname, "external-assets", "windows-registry.node"));
 console.log("*********** REGISTRY NODE:", p, fs.existsSync(p));
 
-let nativeModule = undefined;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let nativeModule: any | undefined = undefined;
 if (process.platform === 'win32' && fs.existsSync(p)) {
 
     // https://github.com/webpack/webpack/issues/4175#issuecomment-342931035
