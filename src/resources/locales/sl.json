@@ -865,44 +865,44 @@
             "pageHelpInfo1": "vnesite številko strani, ki se nanaša na posamezno stran (npr. »6«)",
             "pageHelpInfo2": "vnesite dve številki strani, ločeni z vezajem, da se sklicujete na obseg sosednjih strani (npr. »6-13«)",
             "pageHelpInfo3": "za ločevanje več strani ali obsegov strani uporabite podpičje (npr. \"5;14-20;37\")",
-            "pageHelpInfo4": "",
-            "pages": "",
-            "preview": "",
-            "print": "",
-            "printablePages": "",
-            "title": ""
+            "pageHelpInfo4": "izpustite prvo ali zadnjo stran obsega, ki se nanaša na prvo ali zadnjo stran publikacije (npr. »-16« je enakovredno »1-16« in »34-« je enakovredno »34-100«, če predpostavimo, da ima knjiga skupaj 100 strani)",
+            "pages": "Strani",
+            "preview": "Predogled",
+            "print": "Tiskaj",
+            "printablePages": "Število strani za tiskanje (skupaj)",
+            "title": "Izbor strani za tiskanje"
         },
         "settings": {
             "column": {
                 "auto": "Privzeto",
-                "one": "1 col",
+                "one": "1 stolpec",
                 "title": "Stolpci",
-                "two": "2 cols"
+                "two": "2 stolpca"
             },
             "customFontSelected": "Izbrana je pisava po meri",
             "customizeReader": "Prilagodi oblikovanje besedila",
-            "defaultValue": "",
+            "defaultValue": "privzeta vrednost",
             "disabled": "onemogočeno",
             "display": "Zaslon",
             "disposition": {
                 "title": "Postavitev"
             },
-            "font": "Font",
-            "fontSize": "Velikost fonta",
-            "increaseFontSize": "",
-            "infoCustomFont": "Izberi pisavo po meri iz operacijskega sistema z vnosom njenega imena.",
+            "font": "Pisava",
+            "fontSize": "Velikost pisave",
+            "increaseFontSize": "Povečaj velikost pisave",
+            "infoCustomFont": "Izberi pisavo po meri iz operacijskega sistema z vnosom njenega imena",
             "justification": "Poravnava",
-            "justify": "Razmik",
+            "justify": "Obojestranska poravnava",
             "letterSpacing": "Razmik med črkami",
             "lineSpacing": "Razmik med vrsticami",
-            "margin": "Obroba",
-            "mathjax": "",
-            "mathjaxDescription": "",
+            "margin": "Rob",
+            "mathjax": "Omogoči MathJax",
+            "mathjaxDescription": "MathJax",
             "noFootnotes": "Onemogoči opombe",
             "noRTLFlip": "Onemogoči uporabniški vmesnik od desne proti levi",
             "noRuby": "Skrij japonski Ruby",
             "noTemporaryNavTargetOutline": "Onemogoči vizualne navigacijske indikatorje",
-            "paginated": "Paginirano",
+            "paginated": "Oštevilčeno",
             "paraSpacing": "Razmik med odstavki",
             "pdfZoom": {
                 "name": {
@@ -923,16 +923,16 @@
                 "detail": "Shrani / Uporabi / Ponastavi želeno konfiguracijo.",
                 "reset": "Ponastavi",
                 "resetDetails": "Ponastavi želeno konfiguracijo (privzete nastavitve).",
-                "save": "Shrani\n",
-                "saveDetails": "To dejanje shrani trenutno konfiguracijo, tj. želene možnosti prikaza in oblikovanja besedila. Nastavitve lahko nato uporabiš za druge publikacije s klikom na gumb »uporabi« v drugih oknih bralnika.",
-                "title": "Nastavitve"
+                "save": "Shrani",
+                "saveDetails": "To dejanje shrani trenutno konfiguracijo, tj. želene možnosti prikaza in oblikovanja besedila. Nastavitve lahko nato uporabite za druge publikacije s klikom na gumb »uporabi« v drugih oknih bralnika.",
+                "title": "Uporabniške nastavitve"
             },
             "preview": "Predogled",
-            "reduceFontSize": "",
+            "reduceFontSize": "Zmanjšaj velikost pisave",
             "reduceMotion": "Zmanjšaj gibanje",
-            "scrolled": "Pomikanje",
+            "scrolled": "Drsno",
             "spacing": "Razmik",
-            "spreadModeEven": "",
+            "spreadModeEven": "Razmiki strani »sodi« (privzeto so »lihi«)",
             "text": "Besedilo",
             "theme": {
                 "name": {
@@ -954,27 +954,27 @@
             "right": "Desno"
         },
         "toc": {
-            "publicationNoToc": "publikacija ne vsebuje kazala vsebine"
+            "publicationNoToc": "Brez kazala vsebine"
         },
         "tts": {
-            "activate": "Vklopi sintetizator govora",
-            "language": "TTS jezik",
-            "next": "Naslednji",
-            "options": "TTS možnosti",
-            "pause": "Premor",
-            "play": "Predvajaj",
-            "previous": "Prejšnji",
-            "sentenceDetect": "Razdeli TTS besedilo",
+            "activate": "Aktiviraj pretvorbo besedila v govor (TTS)",
+            "language": "Jezik TTS",
+            "next": "Naslednji TTS",
+            "options": "Možnosti TTS",
+            "pause": "Premor TTS",
+            "play": "Predvajaj TTS",
+            "previous": "Prejšnji TTS",
+            "sentenceDetect": "Razdeli besedilo TTS",
             "sentenceDetectDescription": "Razdeli dolge odstavke na stavke.",
-            "speed": "Hitrost predvajanja",
-            "stop": "Prekini predvajanje",
-            "voice": "Sintetizator govora"
+            "speed": "Hitrost predvajanja TTS",
+            "stop": "Prekini predvajanje TTS",
+            "voice": "Glas TTS"
         }
     },
     "settings": {
         "annotationCreator": {
-            "creator": "Ustvarjalec opomb (neobvezno)",
-            "help": "Če je navedeno, bo to ime vključeno v metapodatke izvoženih zapiskov.",
+            "creator": "Ustvarjalec pripisov (neobvezno)",
+            "help": "Če je navedeno, bo to ime vključeno v metapodatke izvoženih opomb.",
             "name": "Ime",
             "organization": "Organizacija",
             "person": "Oseba",
@@ -983,23 +983,23 @@
         "auth": {
             "help": "To dejanje izbriše vse poverilnice za prijavo v OPDS.",
             "title": "Dostop do katalogov publikacij",
-            "wipeData": "Izbriši avtentikacijske podatke"
+            "wipeData": "Počisti prijavne podatke"
         },
         "keyboard": {
-            "advancedMenu": "Meni",
+            "advancedMenu": "Napredni meni bližnjic na tipkovnici",
             "cancel": "Prekliči",
-            "disclaimer": "Bližnjice so bile določene na podlagi postavitve tipkovnice QWERTY.",
-            "editUserJson": "Uredi datoteko uporabnika...",
-            "exportToHTML": "",
+            "disclaimer": "Privzete nastavitve aplikacije so bile zasnovane na podlagi fizične lokacije tipk na postavitvi QWERTY.",
+            "editUserJson": "Uredi datoteko uporabnika ...",
+            "exportToHTML": "Izvozi v HTML",
             "keyboardShortcuts": "Bližnjice tipkovnice",
             "list": {
                 "AddBookmarkWithLabel": {
-                    "description": "",
-                    "name": ""
+                    "description": "Odprite pogovorno okno za ustvarjanje zaznamkov in uredite besedilno oznako (opombo), barvo in oznako",
+                    "name": "Ustvari zaznamek z oznako"
                 },
                 "AnnotationsCreate": {
-                    "description": "",
-                    "name": ""
+                    "description": "Odprite pogovorno okno za ustvarjanje pripisov za izbrano besedilo dokumenta in uredite besedilno opombo, barvo in vrsto označevanja ter označite",
+                    "name": "Ustvari pripis"
                 },
                 "AnnotationsCreateQuick": {
                     "description": "",
