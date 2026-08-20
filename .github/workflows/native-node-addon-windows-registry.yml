@@ -54,13 +54,34 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        osarch: [windows-intel, windows-arm]
+        osarch: [
+            windows-intel,
+            windows-arm,
+
+            macos-intel,
+            macos-arm,
+
+            linux-intel,
+            linux-arm,
+        ]
         include:
           - osarch: windows-intel
             runson: windows-2025
 
           - osarch: windows-arm
             runson: windows-11-vs2026-arm
+
+          - osarch: macos-intel
+            runson: macos-15-intel
+
+          - osarch: macos-arm
+            runson: macos-26
+
+          - osarch: linux-intel
+            runson: ubuntu-22.04
+
+          - osarch: linux-arm
+            runson: ubuntu-22.04-arm
     steps:
 ###########################
     - name: Checking graceful shell command failure
@@ -211,7 +232,7 @@ jobs:
       uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
       with:
         path: ${{ steps.npm-config-get-cache.outputs.dir }}
-        key: node-gyp-native-node-addon-windows-registry-${{ runner.os }}-${{ runner.arch }}
+        key: node-gyp-native-node-addon-windows-registry-${{ runner.os }}-${{ runner.arch }}_
 ###########################
     - name: NPM Cache NOT HIT
       run: echo "NPM Cache NOT HIT - not restored at all, or restored with restore-keys instead of primary key"
@@ -240,8 +261,10 @@ jobs:
     - name: RESTORE package-lock.json
       run: >
         dir /A ${{ steps.npm-config-get-cache.outputs.dir }} &&
-        (copy "${{ steps.npm-config-get-cache.outputs.dir }}\package-lock.json" . || del /f /q package-lock.json)
+        del /f /q package-lock.json &&
+        copy "${{ steps.npm-config-get-cache.outputs.dir }}\package-lock.json" .
       shell: cmd
+      continue-on-error: true
 ###########################
     - name: NPM install
       run: >
@@ -250,6 +273,12 @@ jobs:
         DEBUG=@electron/get* force_no_cache=true node install.js &&
         cd -
       shell: bash
+###########################
+    - name: BACKUP package-lock.json
+      run: >
+        copy package-lock.json ${{ steps.npm-config-get-cache.outputs.dir }} &&
+        dir /A ${{ steps.npm-config-get-cache.outputs.dir }}
+      shell: cmd
 ###########################
 # https://github.com/actions/cache#using-a-combination-of-restore-and-save-actions
 # https://github.com/actions/cache/blob/main/save/README.md
@@ -260,12 +289,6 @@ jobs:
       with:
         path: ${{ steps.npm-config-get-cache.outputs.dir }}
         key: ${{ steps.cache-node-gyp-native-node-addon-windows-registry-restore.outputs.cache-primary-key }}
-###########################
-    - name: BACKUP package-lock.json
-      run: >
-        copy package-lock.json ${{ steps.npm-config-get-cache.outputs.dir }} &&
-        dir /A ${{ steps.npm-config-get-cache.outputs.dir }}
-      shell: cmd
 ###########################
     - name: Electron version + arch (Windows)
       #if: ${{ matrix.osarch == 'windows-intel' || matrix.osarch == 'windows-arm' }}
@@ -288,12 +311,12 @@ jobs:
       run: >
         cd native-node-addon-windows-registry &&
         dir /A &&
-        dir /A "build\Release" &&
-        type "build\Release\windows-registry.node"
+        dir /A "build\Release"
       shell: cmd
 ###########################
     - name: RUN TEST Windows
       run: >
+        ls -alsR native-node-addon-windows-registry/build/Release &&
         ls -alsR dist/external-assets &&
         npm run start:quick
       shell: bash

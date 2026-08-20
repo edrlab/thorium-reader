@@ -11,11 +11,19 @@ import * as path from "path";
 import * as fs from "fs";
 
 const p = path.normalize(path.join(__dirname, "external-assets", "windows-registry.node"));
-console.log("*********** REGISTRY NODE:", p);
-const nativeModule =
-  process.platform === 'win32' && fs.existsSync(p)
-    ? require(p)
-    : undefined
+console.log("*********** REGISTRY NODE:", p, fs.existsSync(p));
+
+let nativeModule = undefined;
+if (process.platform === 'win32' && fs.existsSync(p)) {
+
+    // https://github.com/webpack/webpack/issues/4175#issuecomment-342931035
+    // @ts-expect-error TS 2304
+    const requireFunc = typeof __webpack_require__ === "function" ? __non_webpack_require__ : require;
+
+    nativeModule = requireFunc(p);
+    nativeModule.path = p;
+}
+
 console.log("*********** REGISTRY MODULE:", typeof nativeModule);
 
 /**
