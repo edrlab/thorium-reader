@@ -120,7 +120,7 @@ export function enumerateValues(
   const result: ReadonlyArray<RegistryValue> = nativeModule.readValues(
     hkey,
     subkey,
-  )
+  );
 
   return result;
 }
