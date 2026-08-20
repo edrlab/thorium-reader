@@ -25,7 +25,7 @@ import { _APP_NAME, _APP_VERSION, _PACK_NAME } from "readium-desktop/preprocesso
 import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
 import { appendFileSyncWithRotation } from "readium-desktop/utils/log";
 
-import { getSystemProxy, type ProxyConfig } from "readium-desktop/main/windows-proxy-registry/os-proxy";
+import { getSystemProxy, type ProxyConfig } from "readium-desktop/main/network/proxy-discovery/os-proxy";
 
 console.log("*********** TEST PROXY...");
 let data: ProxyConfig | undefined = undefined;
