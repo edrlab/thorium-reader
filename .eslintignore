@@ -21,4 +21,5 @@ webpack.config.*
 package.json
 src/package.json
 package-lock.json
+native-node-addon-windows-registry/*
 src/main/windows-proxy-registry/*

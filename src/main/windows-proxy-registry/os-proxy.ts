@@ -7,7 +7,7 @@
 
 // https://github.com/httptoolkit/os-proxy-config/blob/main/src/index.ts
 
-import { getWindowsSystemProxy } from './proxy';
+import { getWindowsSystemProxy } from './windows-proxy';
 import { getMacSystemProxy } from './mac-proxy';
 
 export interface ProxyConfig {
