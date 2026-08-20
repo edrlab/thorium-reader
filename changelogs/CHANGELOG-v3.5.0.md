@@ -57,7 +57,7 @@ https://github.com/edrlab/thorium-reader/compare/v3.4.0...v3.5.0
 * [(_)](https://github.com/edrlab/thorium-reader/commit/db591eeb6cee0c8a831e6cc75465d5ead1a6a80f) __fix(l10n):__ updated translations via Weblate - Finnish, Swedish, Spanish (PR [#3769](https://github.com/edrlab/thorium-reader/pull/3769))
 * [(_)](https://github.com/edrlab/thorium-reader/commit/5d8e5190a6a62bdd042485e02574307fcbc5fe3b) __fix(GUI):__ filter popover arrows (PR [#3771](https://github.com/edrlab/thorium-reader/pull/3771) Fixes [#3760](https://github.com/edrlab/thorium-reader/issues/3760))
 * [(_)](https://github.com/edrlab/thorium-reader/commit/c8839f213114ec9537225d7cb4c6866689c34629) __fix(a11y):__ stricter screen-reader detection / Electron 'accessibility supported' features (Fixes [#3772](https://github.com/edrlab/thorium-reader/issues/3772) )
-* [(_)](https://github.com/edrlab/thorium-reader/commit/a151360bb116ed7f1363bf2974917f1c9b86c518) __(tag:__ v3.5.0-rc.1) chore(release): full matrix build 3.5.0-rc.1
+* [(_)](https://github.com/edrlab/thorium-reader/commit/a151360bb116ed7f1363bf2974917f1c9b86c518) __chore(release):__ full matrix build 3.5.0-rc.1
 * [(_)](https://github.com/edrlab/thorium-reader/commit/17f3d16dafa3170210e0e80f559a9b9053330aae) __chore(build):__ Electron afterPack ASAR integrity (was removed for testing)
 * [(_)](https://github.com/edrlab/thorium-reader/commit/c8e0be31586e4f33258d3d9e6ef9af4aeb2271d2) __chore(dev):__ added comments about MacOS deep app link (associated domains) [skip ci]
 * [(_)](https://github.com/edrlab/thorium-reader/commit/c2cb7d175b7a906d686c51bc2cd8a6be1fc36f94) __chore(build):__ MacOS entitlements inherit JIT

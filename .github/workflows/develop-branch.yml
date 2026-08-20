@@ -51,7 +51,11 @@ jobs:
 #   if: "!contains(toJSON(github.event.commits.*.message), '[skip-ci]')"
 #   if: ${{ github.ref == 'refs/heads/develop' }}
 #   if: "github.event_name != 'pull_request'"
-    if: "!contains(github.event.head_commit.message, 'skip ci') && github.ref_name == 'develop' && github.repository_owner == 'edrlab' && github.repository == 'edrlab/thorium-reader'"
+    #
+    # https://docs.github.com/en/actions/how-tos/manage-workflow-runs/skip-workflow-runs
+    # [skip ci] is supported by default, not really needed here.
+    # [skip cd] is a custom one we use to avoid triggering when pushing to the active branch (e.g. `develop`), when all we need is the subsequent release tag trigger (see release.yml)
+    if: "!contains(github.event.head_commit.message, 'skip cd') && !contains(github.event.head_commit.message, 'skip ci') && github.ref_name == 'develop' && github.repository_owner == 'edrlab' && github.repository == 'edrlab/thorium-reader'"
     runs-on: ${{ matrix.runson }}
     strategy:
       fail-fast: false
@@ -534,7 +538,11 @@ jobs:
 #   if: "!contains(toJSON(github.event.commits.*.message), '[skip-ci]')"
 #   if: ${{ github.ref == 'refs/heads/develop' }}
 #   if: "github.event_name != 'pull_request'"
-    if: "!contains(github.event.head_commit.message, 'skip ci') && github.ref_name == 'develop' && github.repository_owner == 'edrlab' && github.repository == 'edrlab/thorium-reader'"
+    #
+    # https://docs.github.com/en/actions/how-tos/manage-workflow-runs/skip-workflow-runs
+    # [skip ci] is supported by default, not really needed here.
+    # [skip cd] is a custom one we use to avoid triggering when pushing to the active branch (e.g. `develop`), when all we need is the subsequent release tag trigger (see `./release.yml`)
+    if: "!contains(github.event.head_commit.message, 'skip cd') && !contains(github.event.head_commit.message, 'skip ci') && github.ref_name == 'develop' && github.repository_owner == 'edrlab' && github.repository == 'edrlab/thorium-reader'"
     runs-on: ${{ matrix.runson }}
     strategy:
       fail-fast: false

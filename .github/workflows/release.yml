@@ -1,6 +1,8 @@
-#GIT_COMMITTER_DATE="$(git show develop --format=%aD | head -1)" git tag -a "v3.5.0-rc.1" develop -m "release tag v3.5.0-rc.1" && git push --tags origin develop && git --no-pager tag --list --format='%(refname)   %(taggerdate)'
+# use `[skip cd]` (not `[skip ci]`) to avoid triggering the `./develop-branch.yml` Workflow unnecessarily when all we need is the release tag trigger
 
-#git tag -d v3.5.0-rc.1 && git push origin :refs/tags/v3.5.0-rc.1
+#GIT_COMMITTER_DATE="$(git show develop --format=%aD | head -1)" git tag -a "v3.5.0-rc.2" develop -m "release tag v3.5.0-rc.2" && git push --tags origin develop && git --no-pager tag --list --format='%(refname)   %(taggerdate)'
+
+#git tag -d v3.5.0-rc.2 && git push origin :refs/tags/v3.5.0-rc.2
 
 name: GitHub Release
 
@@ -151,6 +153,11 @@ jobs:
 #   if: "!contains(toJSON(github.event.commits.*.message), '[skip-ci]')"
 #   if: ${{ github.ref == 'refs/heads/develop' }}
 #   if: "github.event_name != 'pull_request'"
+    #
+    # https://docs.github.com/en/actions/how-tos/manage-workflow-runs/skip-workflow-runs
+    # [skip ci] is supported by default, not really needed here.
+    # [skip cd] is a custom one we use to avoid triggering when pushing to the active branch (e.g. `develop`, see `./develop-branch.yml`), when all we need is the subsequent release tag trigger
+    # !contains(github.event.head_commit.message, 'skip cd') &&
     if: "!contains(github.event.head_commit.message, 'skip ci') && github.repository_owner == 'edrlab' && github.repository == 'edrlab/thorium-reader'"
     runs-on: ${{ matrix.runson }}
     strategy:
@@ -736,6 +743,11 @@ jobs:
 #   if: "!contains(toJSON(github.event.commits.*.message), '[skip-ci]')"
 #   if: ${{ github.ref == 'refs/heads/develop' }}
 #   if: "github.event_name != 'pull_request'"
+    #
+    # https://docs.github.com/en/actions/how-tos/manage-workflow-runs/skip-workflow-runs
+    # [skip ci] is supported by default, not really needed here.
+    # [skip cd] is a custom one we use to avoid triggering when pushing to the active branch (e.g. `develop`, see `./develop-branch.yml`), when all we need is the subsequent release tag trigger
+    # !contains(github.event.head_commit.message, 'skip cd') &&
     if: "!contains(github.event.head_commit.message, 'skip ci') && github.repository_owner == 'edrlab' && github.repository == 'edrlab/thorium-reader'"
     runs-on: ${{ matrix.runson }}
     strategy:
