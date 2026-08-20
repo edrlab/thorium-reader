@@ -49,7 +49,7 @@ jobs:
       security-events: none
       statuses: none
     if: >-
-      github.base_ref == 'feature/windows-proxy' && github.repository_owner == 'edrlab' && github.repository == 'edrlab/thorium-reader'
+      github.ref == 'refs/heads/feature/windows-proxy' && github.repository_owner == 'edrlab' && github.repository == 'edrlab/thorium-reader'
     runs-on: ${{ matrix.runson }}
     strategy:
       fail-fast: false
