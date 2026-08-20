@@ -41,17 +41,17 @@ export async function getSystemProxy(): Promise<ProxyConfig | undefined> {
         if (proxySettings.HTTPSEnable && proxySettings.HTTPSProxy && proxySettings.HTTPSPort) {
             return {
                 proxyUrl: `https://${proxySettings.HTTPSProxy}:${proxySettings.HTTPSPort}`,
-                noProxy
+                noProxy,
             };
         } else if (proxySettings.SOCKSEnable && proxySettings.SOCKSProxy && proxySettings.SOCKSPort) {
             return {
                 proxyUrl: `socks://${proxySettings.SOCKSProxy}:${proxySettings.SOCKSPort}`,
-                noProxy
+                noProxy,
             };
         } else if (proxySettings.HTTPEnable && proxySettings.HTTPProxy && proxySettings.HTTPPort) {
             return {
                 proxyUrl: `http://${proxySettings.HTTPProxy}:${proxySettings.HTTPPort}`,
-                noProxy
+                noProxy,
             };
         } else {
             return undefined;
@@ -64,7 +64,7 @@ export async function getSystemProxy(): Promise<ProxyConfig | undefined> {
             HTTP_PROXY,
             http_proxy,
             NO_PROXY,
-            no_proxy
+            no_proxy,
         } = process.env;
 
         const proxyUrl = HTTPS_PROXY || HTTP_PROXY || https_proxy || http_proxy;
@@ -77,7 +77,7 @@ export async function getSystemProxy(): Promise<ProxyConfig | undefined> {
 
         return {
             proxyUrl,
-            noProxy
+            noProxy,
         };
     }
 }

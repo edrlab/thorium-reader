@@ -25,7 +25,7 @@ export async function getWindowsSystemProxy(): Promise<WindowsProxySettings | un
 
     const proxyValues = registry.enumerateValues(
         registry.HKEY.HKEY_CURRENT_USER,
-        "Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings"
+        "Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings",
     );
 
     // console.log("*********** REGISTRY VALUES:", JSON.stringify(proxyValues, null, 4));
@@ -41,8 +41,7 @@ export async function getWindowsSystemProxy(): Promise<WindowsProxySettings | un
     const noProxy = (proxyOverride ? (proxyOverride as string).split(";") : [])
         .flatMap((host) => host === "<local>"
             ? ["localhost", "127.0.0.1", "::1"]
-            : [host]
-        );
+            : [host]);
 
     // ProxyServer specifies the proxy host(s), but in a few different formats...
     const proxyConfigString = proxyServer.data as string;
@@ -52,7 +51,7 @@ export async function getWindowsSystemProxy(): Promise<WindowsProxySettings | un
         // docs: https://docs.microsoft.com/en-us/troubleshoot/windows-client/networking/configure-client-proxy-server-settings-by-registry-file
         return {
             proxyUrl: proxyConfigString,
-            noProxy
+            noProxy,
         };
     } else if (proxyConfigString.includes("=")) {
         // If you separately configure proxies by protocol (in Internet Settings), it seems to store them as a
@@ -61,8 +60,7 @@ export async function getWindowsSystemProxy(): Promise<WindowsProxySettings | un
         const proxies = Object.fromEntries(
             proxyConfigString
                 .split(";")
-                .map((proxyPair) => proxyPair.split("=") as [string, string])
-        );
+                .map((proxyPair) => proxyPair.split("=") as [string, string]));
 
         const proxyUrl = proxies["https"]
                 ? `https://${proxies["https"]}`
@@ -78,13 +76,13 @@ export async function getWindowsSystemProxy(): Promise<WindowsProxySettings | un
 
         return {
             proxyUrl,
-            noProxy
+            noProxy,
         };
     } else {
         // Alternatively, it"s often just a bare hostname, so we use that directly:
         return {
             proxyUrl: `http://${proxyConfigString}`,
-            noProxy
+            noProxy,
         };
     }
 }

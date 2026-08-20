@@ -164,7 +164,7 @@ debug("*********** HTTP REQUEST test...");
 httpGet(JSON_URL).then((res) => {
     debug("*********** HTTP REQUEST test: ", res.isSuccess);
     if (res.isSuccess) {
-        debug(await res.response.text())
+        debug(await res.response.text());
     }
 }).catch((err) => {
     debug(err);

@@ -201,7 +201,7 @@ function shouldProxy(noProxy: string, hostname: string, port: number): boolean {
 
 async function myGetProxyForUrl(
     url: string,
-    _req: http.ClientRequest
+    _req: http.ClientRequest,
 ): string | Promise<string> {
 
     // linux passthrough to env vars

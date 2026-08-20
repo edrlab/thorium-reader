@@ -113,10 +113,10 @@ const parseScutilOutput = (output: string): MacProxySettings => {
         });
 
         return data as MacProxySettings;
-    } catch (e) {
+    } catch (_e) {
         throw Object.assign(
             new Error("Unexpected scutil proxy output format"),
-            { scutilOutput: output } // Attach output for debugging elsewhere
+            { scutilOutput: output }, // Attach output for debugging elsewhere
         );
     }
 };

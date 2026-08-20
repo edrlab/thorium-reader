@@ -41,7 +41,7 @@ if (process.platform === "win32" && fs.existsSync(p)) {
  *
  */
 function assertNever(_x: never, message: string): never {
-  throw new Error(message)
+  throw new Error(message);
 }
 
 /**
@@ -92,37 +92,37 @@ export enum HKEY {
 }
 
 function mapToLong(key: HKEY): number {
-  if (key === HKEY.HKEY_CLASSES_ROOT) return 0x80000000
-  if (key === HKEY.HKEY_CURRENT_USER) return 0x80000001
-  if (key === HKEY.HKEY_LOCAL_MACHINE) return 0x80000002
-  if (key === HKEY.HKEY_USERS) return 0x80000003
-  if (key === HKEY.HKEY_PERFORMANCE_DATA) return 0x80000004
-  if (key === HKEY.HKEY_CURRENT_CONFIG) return 0x80000005
-  if (key === HKEY.HKEY_DYN_DATA) return 0x80000006
-  if (key === HKEY.HKEY_CURRENT_USER_LOCAL_SETTINGS) return 0x80000007
-  if (key === HKEY.HKEY_PERFORMANCE_TEXT) return 0x80000050
-  if (key === HKEY.HKEY_PERFORMANCE_NLSTEXT) return 0x80000060
+  if (key === HKEY.HKEY_CLASSES_ROOT) return 0x80000000;
+  if (key === HKEY.HKEY_CURRENT_USER) return 0x80000001;
+  if (key === HKEY.HKEY_LOCAL_MACHINE) return 0x80000002;
+  if (key === HKEY.HKEY_USERS) return 0x80000003;
+  if (key === HKEY.HKEY_PERFORMANCE_DATA) return 0x80000004;
+  if (key === HKEY.HKEY_CURRENT_CONFIG) return 0x80000005;
+  if (key === HKEY.HKEY_DYN_DATA) return 0x80000006;
+  if (key === HKEY.HKEY_CURRENT_USER_LOCAL_SETTINGS) return 0x80000007;
+  if (key === HKEY.HKEY_PERFORMANCE_TEXT) return 0x80000050;
+  if (key === HKEY.HKEY_PERFORMANCE_NLSTEXT) return 0x80000060;
 
-  return assertNever(key, "The key does not map to an expected number value")
+  return assertNever(key, "The key does not map to an expected number value");
 }
 
 export function enumerateValues(
   key: HKEY,
-  subkey: string
+  subkey: string,
 ): ReadonlyArray<RegistryValue> {
   if (!nativeModule) {
     // this code is a no-op when the module is missing
-    return []
+    return [];
   }
 
-  const hkey = mapToLong(key)
+  const hkey = mapToLong(key);
 
   const result: ReadonlyArray<RegistryValue> = nativeModule.readValues(
     hkey,
-    subkey
+    subkey,
   )
 
-  return result
+  return result;
 }
 
 // export function enumerateValuesSafe(
