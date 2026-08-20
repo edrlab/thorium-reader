@@ -7,8 +7,8 @@
 
 // https://github.com/httptoolkit/windows-system-proxy/blob/main/src/index.ts
 
-import type { RegistryValue } from "./registry";
-import * as registry from "./registry";
+import type { RegistryValue } from "./windows-registry";
+import * as registry from "./windows-registry";
 
 export interface WindowsProxySettings {
     proxyUrl: string;
@@ -21,7 +21,7 @@ export async function getWindowsSystemProxy(): Promise<WindowsProxySettings | un
         return undefined;
     }
 
-    // const registry = await import("./registry");
+    // const registry = await import("./windows-registry");
 
     const proxyValues = registry.enumerateValues(
         registry.HKEY.HKEY_CURRENT_USER,

@@ -51,10 +51,10 @@ type AgentConstructor = new (
     proxyAgentOptions?: ProxyAgentOptions
 ) => Agent;
 
-type GetProxyForUrlCallback = (
+type GetProxyForUrlCallback = async (
     url: string,
     req: http.ClientRequest
-) => string | Promise<string>;
+) => Promise<string>;
 
 /**
  * Shorthands for built-in supported types.
@@ -137,13 +137,12 @@ function parseUrl(urlString: string): URL | null {
     }
 }
 // https://github.com/Rob--W/proxy-from-env/blob/570ce3a4279d83af3ff13e7600a347d01c453394/index.js#L26-L50
-function getProxyForUrl_(proxyUrl: string, noProxy: string, url: string) {
+function getProxyForUrl_(proxyUrl: string | undefined, noProxy: string[] | undefined, url: string) {
 
     const parsedUrl = parseUrl(url);
 
-    const proto = parsedUrl.protocol;
+    let proto = parsedUrl.protocol;
     const hostname = parsedUrl.host;
-    const port = parsedUrl.port;
 
     if (typeof hostname !== "string" || !hostname || typeof proto !== "string") {
         return "";
@@ -151,15 +150,18 @@ function getProxyForUrl_(proxyUrl: string, noProxy: string, url: string) {
 
     proto = proto.split(":", 1)[0];
     hostname = hostname.replace(/:\d*$/, "");
-    port = parseInt(port) || DEFAULT_PORTS[proto] || 0;
+    const port = parseInt(parsedUrl.port, 10) || DEFAULT_PORTS[proto] || 0;
 
-    if (!shouldProxy(noProxy, hostname, port)) {
-        return "";
+    if (noProxy?.length) {
+        for (const n of noProxy) {
+            if (!shouldProxy(noProxy, hostname, port)) {
+                return "";
+            }
+        }
     }
 
-    const proxy = proxyUrl;
-    if (proxy && proxy.indexOf("://") === -1) {
-        proxy = proto + "://" + proxy;
+    if (proxyUrl && proxyUrl.indexOf("://") === -1) {
+        proxyUrl = proto + "://" + proxyUrl;
     }
 
     return proxy;
@@ -181,7 +183,7 @@ function shouldProxy(noProxy: string, hostname: string, port: number): boolean {
             return true;
         }
         const parsedProxy = proxy.match(/^(.+):(\d+)$/);
-        const parsedProxyHostname = parsedProxy ? parsedProxy[1] : proxy;
+        let parsedProxyHostname = parsedProxy ? parsedProxy[1] : proxy;
         const parsedProxyPort = parsedProxy ? parseInt(parsedProxy[2]) : 0;
         if (parsedProxyPort && parsedProxyPort !== port) {
             return true;
@@ -202,7 +204,7 @@ function shouldProxy(noProxy: string, hostname: string, port: number): boolean {
 async function myGetProxyForUrl(
     url: string,
     _req: http.ClientRequest,
-): string | Promise<string> {
+): Promise<string> {
 
     // linux passthrough to env vars
     if (process.platform === "darwin" || process.platform === "win32") {
@@ -214,7 +216,7 @@ async function myGetProxyForUrl(
         } catch (err) {
             debug("*********** SYSTEM PROXY CHECK error: ", err);
         }
-        if (data?.proxyUrl || data?.noProxy) {
+        if (data?.proxyUrl || data?.noProxy?.length) {
             debug("*********** SYSTEM PROXY CHECK pass? ", data.proxyUrl, data.noProxy, url);
             const proxyUrl = getProxyForUrl_(data.proxyUrl, data.noProxy, url);
             if (proxyUrl) {
