@@ -239,9 +239,9 @@ jobs:
 ###########################
     - name: RESTORE package-lock.json
       run: >
-        ls -als ${{ steps.npm-config-get-cache.outputs.dir }} &&
-        (cp ${{ steps.npm-config-get-cache.outputs.dir }}/package-lock.json . || rm -f package-lock.json)
-      shell: bash
+        dir /A ${{ steps.npm-config-get-cache.outputs.dir }} &&
+        (copy ${{ steps.npm-config-get-cache.outputs.dir }}/package-lock.json . || del /f /s package-lock.json)
+      shell: cmd
 ###########################
     - name: NPM install
       run: >
