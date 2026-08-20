@@ -28,7 +28,7 @@ import { appendFileSyncWithRotation } from "readium-desktop/utils/log";
 import { getSystemProxy, type ProxyConfig } from "readium-desktop/main/windows-proxy-registry/os-proxy";
 
 console.log("*********** TEST PROXY...");
-const data: ProxyConfig | undefined = undefined;
+let data: ProxyConfig | undefined = undefined;
 try {
     data = await getSystemProxy();
     console.log(JSON.stringify(data, null, 4));
