@@ -31,7 +31,7 @@ console.log("*********** REGISTRY MODULE:", typeof nativeModule);
  * @param {message} The message to be used in the runtime exception.
  *
  */
-function assertNever(x: never, message: string): never {
+function assertNever(_x: never, message: string): never {
   throw new Error(message)
 }
 
