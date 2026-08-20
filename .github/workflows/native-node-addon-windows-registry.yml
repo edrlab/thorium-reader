@@ -1,0 +1,291 @@
+name: node-gyp-native-node-addon-windows-registry
+on:
+  push:
+    branches: [ feature/windows-proxy ]
+    tags-ignore:
+      - '*'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token
+# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#permissions
+permissions:
+    actions: none
+    artifact-metadata: none
+    attestations: none
+    checks: none
+    contents: none
+    deployments: none
+    discussions: none
+    id-token: none
+    issues: none
+    models: none
+    packages: none
+    pages: none
+    pull-requests: none
+    repository-projects: none
+    security-events: none
+    statuses: none
+jobs:
+  build_job:
+    timeout-minutes: 30
+    permissions:
+      actions: none
+      artifact-metadata: none
+      attestations: none
+      checks: none
+      contents: none
+      deployments: none
+      discussions: none
+      id-token: none
+      issues: none
+      models: none
+      packages: none
+      pages: none
+      pull-requests: none
+      repository-projects: none
+      security-events: none
+      statuses: none
+    if: >-
+      github.base_ref == 'feature/windows-proxy' && github.repository_owner == 'edrlab' && github.repository == 'edrlab/thorium-reader'
+    runs-on: ${{ matrix.runson }}
+    strategy:
+      fail-fast: false
+      matrix:
+        osarch: [windows-intel, windows-arm]
+        include:
+          - osarch: windows-intel
+            runson: windows-2025
+
+          - osarch: windows-arm
+            runson: windows-11-vs2026-arm
+    steps:
+###########################
+    - name: Checking graceful shell command failure
+      run: |-
+        pwdx || echo OK || true
+      shell: cmd
+      continue-on-error: true
+###########################
+    - name: Microsoft Windows Visual Studio lookup
+      if: startsWith(matrix.osarch, 'windows-')
+      run: >
+        dir /A "C:\Program Files\Microsoft Visual Studio" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Auxiliary" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Auxiliary\Build" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\Hostx64" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\Hostx64\x64" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\HostArm64" &&
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\HostArm64\arm64" &&
+        type "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Auxiliary\Build\vcvarsall.bat"
+      shell: cmd
+###########################
+    - name: Microsoft Windows dumpbin to PATH (ARM)
+      #if: startsWith(matrix.osarch, 'windows-')
+      if: ${{ matrix.osarch == 'windows-arm' }}
+#echo "VSINSTALLDIR=\"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\18\\\\Enterprise\"" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+# echo "_1";
+# echo "$env:GITHUB_ENV";
+# echo "_2";
+# type "$env:GITHUB_ENV";
+# echo "_3";
+# echo "VSINSTALLDIR=\"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\18\\\\Enterprise\"" >> $env:GITHUB_ENV;
+# echo "_4";
+# type "$env:GITHUB_ENV";
+# echo "_5";
+      run: >
+        $VS_ROOT = "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC";
+        Get-ChildItem -Path $VS_ROOT -Force;
+        $VS_VERSION = (Get-ChildItem -Path $VS_ROOT | Sort-Object Name -Descending | Select-Object -First 1).Name;
+        $VS_BIN = "$VS_ROOT\$VS_VERSION\bin\HostArm64\arm64";
+        echo $VS_BIN >> $env:GITHUB_PATH;
+        echo $VS_BIN
+      shell: powershell
+###########################
+    - name: Microsoft Windows dumpbin to PATH (INTEL)
+      #if: startsWith(matrix.osarch, 'windows-')
+      if: ${{ matrix.osarch == 'windows-intel' }}
+#echo "VSINSTALLDIR=\"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\18\\\\Enterprise\"" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+# echo "_1";
+# echo "$env:GITHUB_ENV";
+# echo "_2";
+# type "$env:GITHUB_ENV";
+# echo "_3";
+# echo "VSINSTALLDIR=\"C:\\Program Files\\Microsoft Visual Studio\\18\\Enterprise\"" >> $env:GITHUB_ENV;
+# echo "_4";
+# type "$env:GITHUB_ENV";
+# echo "_5";
+      run: >
+        $VS_ROOT = "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC";
+        Get-ChildItem -Path $VS_ROOT -Force;
+        $VS_VERSION = (Get-ChildItem -Path $VS_ROOT | Sort-Object Name -Descending | Select-Object -First 1).Name;
+        $VS_BIN = "$VS_ROOT\$VS_VERSION\bin\Hostx64\x64";
+        echo $VS_BIN >> $env:GITHUB_PATH;
+        echo $VS_BIN
+      shell: powershell
+###########################
+    - name: Microsoft Windows dumpbin check (ARM)
+      #if: startsWith(matrix.osarch, 'windows-')
+      if: ${{ matrix.osarch == 'windows-arm' }}
+      run: >
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC" &&
+        dumpbin /headers "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\HostArm64\arm64\dumpbin.exe" | findstr /i machine
+      shell: cmd
+###########################
+    - name: Microsoft Windows dumpbin check (INTEL)
+      #if: startsWith(matrix.osarch, 'windows-')
+      if: ${{ matrix.osarch == 'windows-intel' }}
+      run: >
+        dir /A "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC" &&
+        dumpbin /headers "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\Hostx64\x64\dumpbin.exe" | findstr /i machine
+      shell: cmd
+###########################
+    - run: >
+        echo "${{ matrix.osarch }} // ${{ runner.arch }}"
+      shell: bash
+###########################
+    - name: Checkout
+# https://github.com/actions/checkout/commits/v7.0.1
+# https://github.com/actions/checkout/commits/3d3c42e5aac5ba805825da76410c181273ba90b1
+# https://github.com/actions/checkout/compare/v7.0.1...3d3c42e5aac5ba805825da76410c181273ba90b1
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      with:
+        persist-credentials: false
+###########################
+# https://github.com/actions/setup-node/commits/v7.0.0
+# https://github.com/actions/setup-node/commits/820762786026740c76f36085b0efc47a31fe5020
+# https://github.com/actions/setup-node/compare/v7.0.0...820762786026740c76f36085b0efc47a31fe5020
+    - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+# https://github.com/actions/setup-node#caching-global-packages-data
+# https://github.com/actions/setup-node/blob/main/docs/advanced-usage.md#caching-packages-data
+# https://github.com/actions/cache/blob/main/examples.md#node---npm
+# https://github.com/actions/setup-node/issues/1553#issuecomment-4750595425
+      with:
+        node-version: '24'
+        package-manager-cache: false
+        cache: ''
+#        cache: 'npm'
+#        node-version-file: package.json
+#        package-manager-cache: true
+#        cache-dependency-path: 'package-lock.json'
+        #check-latest: true
+###########################
+    - run: node --version && npm --version
+###########################
+    - run: npm --global install npm
+###########################
+    - run: npm --version && npm config get cache
+###########################
+    - name: Get NPM cache
+      id: npm-config-get-cache
+      run: echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
+      shell: bash
+      # run: echo "dir=$(npm config get cache)" >> ${env:GITHUB_OUTPUT}
+      # shell: pwsh
+###########################
+# https://github.com/actions/cache/commits/v6.1.0
+# https://github.com/actions/cache/commits/55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+# https://github.com/actions/cache/compare/v6.1.0...55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+    # - name: Action Cache
+    #   uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+    #   id: action-cache
+    #   with:
+    #     path: ${{ steps.npm-config-get-cache.outputs.dir }}
+    #     key: node-gyp-native-node-addon-windows-registry-${{ runner.os }}-${{ runner.arch }}
+    #     restore-keys: |
+    #       node-gyp-native-node-addon-windows-registry-${{ runner.os }}-${{ runner.arch }}-
+###########################
+# https://github.com/actions/cache#using-a-combination-of-restore-and-save-actions
+# https://github.com/actions/cache/blob/main/restore/README.md
+    - name: Action Cache RESTORE
+      id: cache-node-gyp-native-node-addon-windows-registry-restore
+      uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+      with:
+        path: ${{ steps.npm-config-get-cache.outputs.dir }}
+        key: node-gyp-native-node-addon-windows-registry-${{ runner.os }}-${{ runner.arch }}
+###########################
+    - name: NPM Cache NOT HIT
+      run: echo "NPM Cache NOT HIT - not restored at all, or restored with restore-keys instead of primary key"
+      if: steps.cache-node-gyp-native-node-addon-windows-registry-restore.outputs.cache-hit != 'true'
+###########################
+    - name: NPM Cache HIT
+      run: echo "NPM Cache HIT - restored with primary key"
+      if: steps.cache-node-gyp-native-node-addon-windows-registry-restore.outputs.cache-hit == 'true'
+###########################
+    - run: ls -als "$(npm config get cache)"
+      shell: bash
+###########################
+    - run: npm cache verify
+###########################
+    - run: python --version || echo ok || true
+###########################
+    - run: python3 --version || echo ok || true
+###########################
+    - run: pip --version || echo ok || true
+###########################
+    # PYTHON 3.12 distutils deprecation remediation:
+    #- run: python3 -m pip install packaging || python -m pip install packaging
+    - run: python3 -m pip install setuptools || python -m pip install setuptools
+    # - run: npm --global install asar
+###########################
+    - name: RESTORE package-lock.json
+      run: >
+        ls -als ${{ steps.npm-config-get-cache.outputs.dir }} &&
+        (cp ${{ steps.npm-config-get-cache.outputs.dir }}/package-lock.json . || rm -f package-lock.json)
+      shell: bash
+###########################
+    - name: NPM install
+      run: >
+        npm install --min-release-age=3 --ignore-scripts --foreground-scripts --allow-git=root &&
+        cd node_modules/electron &&
+        DEBUG=@electron/get* force_no_cache=true node install.js &&
+        cd -
+      shell: bash
+###########################
+# https://github.com/actions/cache#using-a-combination-of-restore-and-save-actions
+# https://github.com/actions/cache/blob/main/save/README.md
+    - name: Action Cache SAVE
+      if: ${{ steps.cache-node-gyp-native-node-addon-windows-registry-restore.outputs.cache-hit != 'true' }}
+      id: cache-node-gyp-native-node-addon-windows-registry-save
+      uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+      with:
+        path: ${{ steps.npm-config-get-cache.outputs.dir }}
+        key: ${{ steps.cache-node-gyp-native-node-addon-windows-registry-restore.outputs.cache-primary-key }}
+###########################
+    - name: BACKUP package-lock.json
+      run: >
+        cp package-lock.json ${{ steps.npm-config-get-cache.outputs.dir }} &&
+        ls -als ${{ steps.npm-config-get-cache.outputs.dir }}
+      shell: bash
+###########################
+    - name: Electron version + arch (Windows)
+      #if: ${{ matrix.osarch == 'windows-intel' || matrix.osarch == 'windows-arm' }}
+      if: startsWith(matrix.osarch, 'windows-')
+      run: >
+        (dumpbin /headers "node_modules\electron\dist\electron.exe" | findstr /i machine) &&
+        (node_modules\\electron\\dist\\electron.exe --no-sandbox --version || echo INVALID_ARCH || true) &&
+        (node_modules\\electron\\dist\\electron.exe --no-sandbox --abi || echo INVALID_ARCH || true)
+      shell: cmd
+      continue-on-error: true
+###########################
+    - run: npm list -g node-gyp || echo ok || true
+###########################
+    - run: npm list node-gyp || echo ok || true
+###########################
+    - name: NODE GYP configure + build
+      run: npm run node-gyp-native-node-addon-windows-registry
+###########################
+    - name: NODE GYP check generated artefacts
+      run: >
+        cd native-node-addon-windows-registry &&
+        ls -alsR
+###########################

@@ -124,7 +124,8 @@
     "typescript-check-GO:VERBOSE": "npm run patch-types && tsc --showConfig --project ./tsconfig-cli.json && echo \"####################\" && tsc --noEmit --project ./tsconfig-cli.json --listFiles --extendedDiagnostics --diagnostics --explainFiles && npm run unpatch-types",
     "typescript-check-GO:watch": "npm run patch-types && concurrently \"tsc --noEmit --project ./tsconfig-cli.json --watch --excludeDirectories **/node_modules\" \"npm run unpatch-types\"",
     "package-customization-profile": "sh ./scripts/package-customization-profile.sh && echo \"\nnode ./customization-dist/main/customization/cli.js\" && node ./customization-dist/main/customization/cli.js",
-    "_NOT_NEEDED_action-validator": "node node_modules/@action-validator/cli/cli.mjs .github/workflows/main.yml && echo \"SUCCESS\" || echo \"FAIL\""
+    "_NOT_NEEDED_action-validator": "node node_modules/@action-validator/cli/cli.mjs .github/workflows/main.yml && echo \"SUCCESS\" || echo \"FAIL\"",
+    "node-gyp-native-node-addon-windows-registry": "node-gyp --directory native-node-addon-windows-registry --verbose configure --target=41.10.5 --dist-url=https://electronjs.org/headers && node-gyp build --directory native-node-addon-windows-registry --loglevel=verbose --verbose --strip --target=41.10.5 --dist-url=https://electronjs.org/headers"
   },
   "repository": {
     "type": "git",
@@ -557,6 +558,8 @@
     "mini-css-extract-plugin": "^2.10.2",
     "minimizer-webpack-plugin": "^5.6.1",
     "ncp": "^2.0.0",
+    "node-addon-api": "^8.9.1",
+    "node-gyp": "^13.0.1",
     "npm-scripts-lifecycle": "^1.0.0",
     "prettier": "^3.9.6",
     "remote-redux-devtools": "^0.5.16",
