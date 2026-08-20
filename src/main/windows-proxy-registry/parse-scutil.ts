@@ -12,6 +12,8 @@ const TYPE_KEY = "__scutil__type__";
 // Quick hacky parser, which translates output into valid JSON:
 export function parseScutilOutput(output: string): {} {
     try {
+        console.log("*********** parseScutilOutput: ", output);
+
         // Unclear how this happens, but it seems that it can in some cases:
         if (output === '') return {};
 

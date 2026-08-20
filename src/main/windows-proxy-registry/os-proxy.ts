@@ -30,11 +30,13 @@ export interface ProxyConfig {
 
 export async function getSystemProxy(): Promise<ProxyConfig | undefined> {
     if (process.platform === 'win32') {
+        console.log("*********** getSystemProxy WIN...");
         return getWindowsSystemProxy();
     } else if (process.platform === 'darwin') {
+        console.log("*********** getSystemProxy MAC...");
         const proxySettings = await getMacSystemProxy();
 
-        const noProxy = proxySettings.ExceptionsList || [];
+        const noProxy = proxySettings?.ExceptionsList || [];
 
         if (proxySettings.HTTPEnable && proxySettings.HTTPProxy && proxySettings.HTTPPort) {
             return {
@@ -55,6 +57,7 @@ export async function getSystemProxy(): Promise<ProxyConfig | undefined> {
             return undefined;
         }
     } else {
+        console.log("*********** getSystemProxy LINUX...");
         const {
             HTTPS_PROXY,
             https_proxy,

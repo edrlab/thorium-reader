@@ -82,6 +82,9 @@ jobs:
 
           - osarch: linux-arm
             runson: ubuntu-22.04-arm
+    env:
+      DBUS_SYSTEM_BUS_ADDRESS: "unix:path=/var/run/dbus/system_bus_socket"
+      DBUS_SESSION_BUS_ADDRESS: "unix:path=/var/run/dbus/system_bus_socket"
     steps:
 ###########################
     - name: Checking graceful shell command failure
@@ -344,10 +347,22 @@ jobs:
         npm run start:quick
       shell: bash
 ###########################
-    - name: RUN TEST Linux or Mac
-      if: ${{ !startsWith(matrix.osarch, 'windows-') }}
+    - name: RUN TEST Mac
+      if: ${{ startsWith(matrix.osarch, 'macos-') }}
       run: >
         ls -alsR dist/external-assets &&
         npm run start:quick
       shell: bash
 ###########################
+    - name: RUN TEST Linux
+      if: ${{ startsWith(matrix.osarch, 'linux-') }}
+      run: >
+        ls -alsR dist/external-assets &&
+        dbus-run-session -- bash -c "export DBUS_SYSTEM_BUS_ADDRESS=\$DBUS_SESSION_BUS_ADDRESS; xvfb-run --auto-servernumnpm run start:quick"
+      shell: bash
+###########################
+# uses: coactions/setup-xvfb@6b00cf1889f4e1d5a48635647013c0508128ee1a #v1
+# with:
+#   run: yarn test-electron && yarn test-electron-cli
+#   working-directory: ./
+#   # options:

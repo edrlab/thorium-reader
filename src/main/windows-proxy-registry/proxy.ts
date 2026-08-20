@@ -17,7 +17,7 @@ export interface WindowsProxySettings {
 
 export async function getWindowsSystemProxy(): Promise<WindowsProxySettings | undefined> {
     if (process.platform !== 'win32') {
-        // throw new Error("Can't detect windows system proxy on non-Windows platform");
+        // throw new Error("Can't detect Windows system proxy on non-Windows platform");
         return undefined;
     }
 

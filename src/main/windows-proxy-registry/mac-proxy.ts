@@ -36,7 +36,11 @@ export interface MacProxySettings {
     ProxyAutoConfigURLString?: string;
 }
 
-export function getMacSystemProxy(): Promise<MacProxySettings> {
+export function getMacSystemProxy(): Promise<MacProxySettings | undefined> {
+    if (process.platform !== 'darwin') {
+        // throw new Error("Can't detect Mac system proxy on non-Mac platform");
+        return undefined;
+    }
     return new Promise((resolve, reject) => {
         const scutilProc = spawn('scutil', ['--proxy'], { stdio: 'pipe' });
         scutilProc.on('error', reject);
