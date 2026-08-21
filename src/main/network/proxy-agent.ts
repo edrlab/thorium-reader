@@ -9,6 +9,8 @@
 // https://github.com/TooTallNate/proxy-agents/blob/4813885d3f4e2ff837878ceffdba656a71dc31f0/packages/proxy-agent/src/index.ts
 
 // DIFFERENCE: removed pac-proxy-agent as this introduces QuickJS WASM bloat
+// also see:
+// ---- LAZY vs. NOT LAZY
 
 // TODO: NODE_USE_ENV_PROXY=1 ?
 // https://github.com/Rob--W/proxy-from-env#built-in-proxy-support
@@ -25,16 +27,24 @@ import { LRUCache } from "lru-cache";
 import { Agent, AgentConnectOpts } from "agent-base";
 import createDebug from "debug";
 import { getProxyForUrl as envGetProxyForUrl } from "proxy-from-env";
+
 // import type { PacProxyAgent, PacProxyAgentOptions } from "pac-proxy-agent";
-import type { HttpProxyAgent, HttpProxyAgentOptions } from "http-proxy-agent";
 import type {
-    HttpsProxyAgent,
+    // HttpProxyAgent, // ---- LAZY vs. NOT LAZY
+    HttpProxyAgentOptions,
+} from "http-proxy-agent";
+import type {
+    // HttpsProxyAgent, // ---- LAZY vs. NOT LAZY
     HttpsProxyAgentOptions,
 } from "https-proxy-agent";
 import type {
-    SocksProxyAgent,
+    // SocksProxyAgent, // ---- LAZY vs. NOT LAZY
     SocksProxyAgentOptions,
 } from "socks-proxy-agent";
+
+import { HttpProxyAgent } from "http-proxy-agent"; // ---- LAZY vs. NOT LAZY
+import { HttpsProxyAgent } from "https-proxy-agent"; // ---- LAZY vs. NOT LAZY
+import { SocksProxyAgent } from "socks-proxy-agent"; // ---- LAZY vs. NOT LAZY
 
 const debug = createDebug("proxy-agent");
 
@@ -56,25 +66,34 @@ type GetProxyForUrlCallback = (
     req: http.ClientRequest
 ) => Promise<string>;
 
-/**
- * Shorthands for built-in supported types.
- * Lazily loaded since some of these imports can be quite expensive
- * (in particular, pac-proxy-agent).
- */
+// ---- LAZY vs. NOT LAZY
+// /**
+//  * Shorthands for built-in supported types.
+//  * Lazily loaded since some of these imports can be quite expensive
+//  * (in particular, pac-proxy-agent).
+//  */
+// const wellKnownAgents = {
+//     http: async () => (await import("http-proxy-agent")).HttpProxyAgent,
+//     https: async () => (await import("https-proxy-agent")).HttpsProxyAgent,
+//     socks: async () => (await import("socks-proxy-agent")).SocksProxyAgent,
+//     // pac: async () => (await import("pac-proxy-agent")).PacProxyAgent,
+// } as const;
 const wellKnownAgents = {
-    http: async () => (await import("http-proxy-agent")).HttpProxyAgent,
-    https: async () => (await import("https-proxy-agent")).HttpsProxyAgent,
-    socks: async () => (await import("socks-proxy-agent")).SocksProxyAgent,
-    // pac: async () => (await import("pac-proxy-agent")).PacProxyAgent,
+    http: HttpProxyAgent,
+    https: HttpsProxyAgent,
+    socks: SocksProxyAgent,
 } as const;
 
+// ---- LAZY vs. NOT LAZY
 /**
  * Supported proxy types.
  */
 export const proxies: {
     [P in ValidProtocol]: [
-        () => Promise<AgentConstructor>,
-        () => Promise<AgentConstructor>
+        // () => Promise<AgentConstructor>, // ---- LAZY vs. NOT LAZY
+        // () => Promise<AgentConstructor> // ---- LAZY vs. NOT LAZY
+        AgentConstructor, // ---- LAZY vs. NOT LAZY
+        AgentConstructor // ---- LAZY vs. NOT LAZY
     ];
 } = {
     http: [wellKnownAgents.http, wellKnownAgents.https],
@@ -203,6 +222,7 @@ function shouldProxy(noProxy: string, hostname: string, port: number): boolean {
     });
 }
 
+let _dataProxyConfig: ProxyConfig | undefined | null = undefined;
 async function myGetProxyForUrl(
     url: string,
     _req: http.ClientRequest,
@@ -210,26 +230,47 @@ async function myGetProxyForUrl(
 
     // linux passthrough to env vars
     if (process.platform === "darwin" || process.platform === "win32") {
-        let data: ProxyConfig | undefined = undefined;
-        try {
-            debug("*********** SYSTEM PROXY CHECK...");
-            data = await getSystemProxy();
-            debug("*********** SYSTEM PROXY CHECK result: ", JSON.stringify(data, null, 4));
-        } catch (err) {
-            debug("*********** SYSTEM PROXY CHECK error: ", err);
+
+        if (typeof _dataProxyConfig === "undefined") {
+            try {
+                console.log("*********** SYSTEM PROXY CHECK...");
+                _dataProxyConfig = await getSystemProxy();
+                if (!_dataProxyConfig) {
+                    _dataProxyConfig = null;
+                }
+                debug("*********** SYSTEM PROXY CHECK result: ", JSON.stringify(_dataProxyConfig, null, 4));
+            } catch (err) {
+                console.log("*********** SYSTEM PROXY CHECK error1: ", err);
+                _dataProxyConfig = null;
+            }
         }
-        if (data?.proxyUrl || data?.noProxy?.length) {
-            debug("*********** SYSTEM PROXY CHECK pass? ", data.proxyUrl, data.noProxy, url);
-            const proxyUrl = getProxyForUrl_(data.proxyUrl, data.noProxy, url);
-            if (proxyUrl) {
-                debug("*********** SYSTEM PROXY CHECK pass: ", proxyUrl);
-                return proxyUrl;
+
+        if (_dataProxyConfig && (_dataProxyConfig.proxyUrl || _dataProxyConfig.noProxy?.length)) {
+            try {
+                debug("*********** SYSTEM PROXY CHECK pass? ", _dataProxyConfig.proxyUrl, _dataProxyConfig.noProxy, url);
+                const proxyUrl = getProxyForUrl_(_dataProxyConfig.proxyUrl, _dataProxyConfig.noProxy, url);
+                if (proxyUrl) {
+                    debug("*********** SYSTEM PROXY CHECK pass: ", proxyUrl);
+                    return proxyUrl;
+                }
+            } catch (err) {
+                debug("*********** SYSTEM PROXY CHECK error2: ", err);
             }
         }
     }
 
-    debug("*********** SYSTEM PROXY CHECK fallback: ", url);
-    return envGetProxyForUrl(url);
+    let proxyUrl: string | undefined;
+    try {
+        proxyUrl = envGetProxyForUrl(url);
+        if (!proxyUrl) {
+            proxyUrl = "";
+        }
+    } catch (err) {
+        debug("*********** SYSTEM PROXY CHECK error3: ", url, err);
+        proxyUrl = "";
+    }
+    debug("*********** SYSTEM PROXY CHECK fallback: ", url, proxyUrl);
+    return proxyUrl;
 }
 
 /**
@@ -297,9 +338,15 @@ export class ProxyAgent extends Agent {
             if (!isValidProtocol(proxyProto)) {
                 throw new Error(`Unsupported protocol for proxy URL: ${proxy}`);
             }
-            const ctor = await proxies[proxyProto][
+
+            // ---- LAZY vs. NOT LAZY
+            // const ctor = await proxies[proxyProto][
+            //     secureEndpoint || isWebSocket ? 1 : 0
+            // ]();
+            const ctor = proxies[proxyProto][
                 secureEndpoint || isWebSocket ? 1 : 0
-            ]();
+            ];
+
             agent = new ctor(proxy, this.connectOpts);
             this.cache.set(cacheKey, agent);
         } else {

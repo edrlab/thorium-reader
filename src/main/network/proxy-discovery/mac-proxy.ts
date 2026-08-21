@@ -67,7 +67,7 @@ const TYPE_KEY = "__scutil__type__";
 // Quick hacky parser, which translates output into valid JSON:
 const parseScutilOutput = (output: string): MacProxySettings => {
     try {
-        // console.log("*********** parseScutilOutput: ", output);
+        console.log("***********--------- parseScutilOutput: ", output);
 
         // Unclear how this happens, but it seems that it can in some cases:
         if (output === "") return {} as MacProxySettings;

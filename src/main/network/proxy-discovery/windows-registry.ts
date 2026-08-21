@@ -10,23 +10,6 @@
 import * as path from "path";
 import * as fs from "fs";
 
-const p = path.normalize(path.join(__dirname, "external-assets", "windows-registry.node"));
-// console.log("*********** REGISTRY NODE:", p, fs.existsSync(p));
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let nativeModule: any | undefined = undefined;
-if (process.platform === "win32" && fs.existsSync(p)) {
-
-    // https://github.com/webpack/webpack/issues/4175#issuecomment-342931035
-    // @ts-expect-error TS 2304
-    const requireFunc = typeof __webpack_require__ === "function" ? __non_webpack_require__ : require;
-
-    nativeModule = requireFunc(p);
-    nativeModule.path = p;
-}
-
-// console.log("*********** REGISTRY MODULE:", typeof nativeModule);
-
 /**
  * Utility function used to achieve exhaustive type checks at compile time.
  *
@@ -106,12 +89,38 @@ function mapToLong(key: HKEY): number {
     return assertNever(key, "The key does not map to an expected number value");
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let nativeModule: any | undefined | null = undefined;
+
 export function enumerateValues(
     key: HKEY,
     subkey: string,
 ): ReadonlyArray<RegistryValue> {
+
+    if (process.platform !== "win32") {
+        return [];
+    }
+    if (typeof nativeModule === "undefined") {
+        const p = path.normalize(path.join(__dirname, "external-assets", "windows-registry.node"));
+        const exists = fs.existsSync(p);
+        console.log("*********** REGISTRY NODE:", p, exists);
+        if (exists) {
+            // https://github.com/webpack/webpack/issues/4175#issuecomment-342931035
+            // @ts-expect-error TS 2304
+            const requireFunc = typeof __webpack_require__ === "function" ? __non_webpack_require__ : require;
+            try {
+                nativeModule = requireFunc(p);
+                nativeModule.path = p;
+            } catch (eerr) {
+                console.log("*********** REGISTRY NODE error", eerr);
+                nativeModule = null;
+            }
+            console.log("*********** REGISTRY MODULE:", typeof nativeModule);
+        } else {
+            nativeModule = null;
+        }
+    }
     if (!nativeModule) {
-        // this code is a no-op when the module is missing
         return [];
     }
 

@@ -27,8 +27,7 @@ export async function getWindowsSystemProxy(): Promise<WindowsProxySettings | un
         registry.HKEY.HKEY_CURRENT_USER,
         "Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings",
     );
-
-    // console.log("*********** REGISTRY VALUES:", JSON.stringify(proxyValues, null, 4));
+    console.log("***********--------- REGISTRY VALUES:", JSON.stringify(proxyValues, null, 4));
 
     const proxyEnabled = getValue(proxyValues, "ProxyEnable");
     const proxyServer = getValue(proxyValues, "ProxyServer");
