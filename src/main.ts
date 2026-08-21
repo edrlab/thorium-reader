@@ -116,6 +116,31 @@ if (__TH__IS_VSCODE_LAUNCH__) {
     createStoreFromDi().then((store) => store.dispatch(appActions.initRequest.build())).catch((err) => { debug(err); });
 } else {
     commandLineMainEntry(); // call main fct
+
+    // setTimeout(() => {
+
+    //     const BRANCH = "master";
+    //     const JSON_URL = `https://raw.githubusercontent.com/edrlab/thorium-reader/${BRANCH}/latest.json`;
+    //     debug("*********** HTTP REQUEST test...");
+    //     httpGet(JSON_URL).then((res) => {
+    //         debug("*********** HTTP REQUEST test: ", res.isSuccess);
+    //         if (res.isSuccess) {
+    //             res.response.text().then((t) => {
+    //                 debug("*********** HTTP REQUEST res: ", t);
+    //             }).catch((err) => {
+    //                 debug("*********** HTTP REQUEST err: ", err);
+    //             }).finally(() => {
+    //                 app.quit();
+    //                 process.exit();
+    //             });
+    //         } else {
+    //             debug("*********** HTTP REQUEST not success: ");
+    //         }
+    //     }).catch((err) => {
+    //         debug(err);
+    //     });
+
+    // }, 4000);
 }
 
 const processInfoStr = JSON.stringify({
