@@ -51,7 +51,7 @@ type AgentConstructor = new (
     proxyAgentOptions?: ProxyAgentOptions
 ) => Agent;
 
-type GetProxyForUrlCallback = async (
+type GetProxyForUrlCallback = (
     url: string,
     req: http.ClientRequest
 ) => Promise<string>;
@@ -121,7 +121,9 @@ export type ProxyAgentOptions = HttpProxyAgentOptions<""> &
     };
 
 // https://github.com/Rob--W/proxy-from-env/blob/570ce3a4279d83af3ff13e7600a347d01c453394/index.js#L3-L18
-const DEFAULT_PORTS = {
+const DEFAULT_PORTS: {
+  [key: string]: number | undefined
+} = {
     ftp: 21,
     gopher: 70,
     http: 80,
@@ -137,12 +139,12 @@ function parseUrl(urlString: string): URL | null {
     }
 }
 // https://github.com/Rob--W/proxy-from-env/blob/570ce3a4279d83af3ff13e7600a347d01c453394/index.js#L26-L50
-function getProxyForUrl_(proxyUrl: string | undefined, noProxy: string[] | undefined, url: string) {
+function getProxyForUrl_(proxyUrl: string | undefined, noProxy: string[] | undefined, url: string): string {
 
     const parsedUrl = parseUrl(url);
 
     let proto = parsedUrl.protocol;
-    const hostname = parsedUrl.host;
+    let hostname = parsedUrl.host;
 
     if (typeof hostname !== "string" || !hostname || typeof proto !== "string") {
         return "";
@@ -154,7 +156,7 @@ function getProxyForUrl_(proxyUrl: string | undefined, noProxy: string[] | undef
 
     if (noProxy?.length) {
         for (const n of noProxy) {
-            if (!shouldProxy(noProxy, hostname, port)) {
+            if (!shouldProxy(n, hostname, port)) {
                 return "";
             }
         }
@@ -164,7 +166,7 @@ function getProxyForUrl_(proxyUrl: string | undefined, noProxy: string[] | undef
         proxyUrl = proto + "://" + proxyUrl;
     }
 
-    return proxy;
+    return proxyUrl;
 }
 // https://github.com/Rob--W/proxy-from-env/blob/570ce3a4279d83af3ff13e7600a347d01c453394/index.js#L60-L92
 function shouldProxy(noProxy: string, hostname: string, port: number): boolean {

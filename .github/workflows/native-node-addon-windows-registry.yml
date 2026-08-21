@@ -235,7 +235,7 @@ jobs:
       uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
       with:
         path: ${{ steps.npm-config-get-cache.outputs.dir }}
-        key: node-gyp-native-node-addon-windows-registry-${{ runner.os }}-${{ runner.arch }}_
+        key: node-gyp-native-node-addon-windows-registry-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('package-lock.json') }}
 ###########################
     - name: NPM Cache NOT HIT
       run: echo "NPM Cache NOT HIT - not restored at all, or restored with restore-keys instead of primary key"
@@ -261,43 +261,43 @@ jobs:
     - run: python3 -m pip install setuptools || python -m pip install setuptools
     # - run: npm --global install asar
 ###########################
-    - name: RESTORE package-lock.json (WINDOWS)
-      if: startsWith(matrix.osarch, 'windows-')
-      run: >
-        dir /A ${{ steps.npm-config-get-cache.outputs.dir }} &&
-        del /f /q package-lock.json &&
-        copy "${{ steps.npm-config-get-cache.outputs.dir }}\package-lock.json" .
-      shell: cmd
-      continue-on-error: true
-###########################
-    - name: RESTORE package-lock.json (MAC or LINUX)
-      if: ${{ !startsWith(matrix.osarch, 'windows-') }}
-      run: >
-        ls -als ${{ steps.npm-config-get-cache.outputs.dir }} &&
-        rm -f package-lock.json &&
-        cp "${{ steps.npm-config-get-cache.outputs.dir }}\package-lock.json" .
-      continue-on-error: true
+#     - name: RESTORE package-lock.json (WINDOWS)
+#       if: startsWith(matrix.osarch, 'windows-')
+#       run: >
+#         dir /A ${{ steps.npm-config-get-cache.outputs.dir }} &&
+#         del /f /q package-lock.json &&
+#         copy "${{ steps.npm-config-get-cache.outputs.dir }}\package-lock.json" .
+#       shell: cmd
+#       continue-on-error: true
+# ###########################
+#     - name: RESTORE package-lock.json (MAC or LINUX)
+#       if: ${{ !startsWith(matrix.osarch, 'windows-') }}
+#       run: >
+#         ls -als ${{ steps.npm-config-get-cache.outputs.dir }} &&
+#         rm -f package-lock.json &&
+#         cp "${{ steps.npm-config-get-cache.outputs.dir }}\package-lock.json" .
+#       continue-on-error: true
 ###########################
     - name: NPM install
       run: >
-        npm install --min-release-age=3 --ignore-scripts --foreground-scripts --allow-git=root &&
+        npm ci --min-release-age=3 --ignore-scripts --foreground-scripts --allow-git=root &&
         cd node_modules/electron &&
         DEBUG=@electron/get* force_no_cache=true node install.js &&
         cd -
       shell: bash
 ###########################
-    - name: BACKUP package-lock.json (WINDOWS)
-      if: startsWith(matrix.osarch, 'windows-')
-      run: >
-        copy package-lock.json ${{ steps.npm-config-get-cache.outputs.dir }} &&
-        dir /A ${{ steps.npm-config-get-cache.outputs.dir }}
-      shell: cmd
-###########################
-    - name: BACKUP package-lock.json (MAC or LINUX)
-      if: ${{ !startsWith(matrix.osarch, 'windows-') }}
-      run: >
-        cp package-lock.json ${{ steps.npm-config-get-cache.outputs.dir }} &&
-        ls -als ${{ steps.npm-config-get-cache.outputs.dir }}
+#     - name: BACKUP package-lock.json (WINDOWS)
+#       if: startsWith(matrix.osarch, 'windows-')
+#       run: >
+#         copy package-lock.json ${{ steps.npm-config-get-cache.outputs.dir }} &&
+#         dir /A ${{ steps.npm-config-get-cache.outputs.dir }}
+#       shell: cmd
+# ###########################
+#     - name: BACKUP package-lock.json (MAC or LINUX)
+#       if: ${{ !startsWith(matrix.osarch, 'windows-') }}
+#       run: >
+#         cp package-lock.json ${{ steps.npm-config-get-cache.outputs.dir }} &&
+#         ls -als ${{ steps.npm-config-get-cache.outputs.dir }}
 ###########################
 # https://github.com/actions/cache#using-a-combination-of-restore-and-save-actions
 # https://github.com/actions/cache/blob/main/save/README.md

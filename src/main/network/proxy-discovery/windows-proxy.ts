@@ -63,12 +63,12 @@ export async function getWindowsSystemProxy(): Promise<WindowsProxySettings | un
                 .map((proxyPair) => proxyPair.split("=") as [string, string]));
 
         const proxyUrl = proxies["https"]
-                ? `https://${proxies["https"]}`
+            ? `https://${proxies["https"]}`
             : proxies["socks"]
                 ? `socks://${proxies["socks"]}`
-            : proxies["http"]
-                ? `http://${proxies["http"]}`
-            : undefined;
+                : proxies["http"]
+                    ? `http://${proxies["http"]}`
+                    : undefined;
 
         if (!proxyUrl) {
             throw new Error(`Could not get usable proxy URL from ${proxyConfigString}`);
