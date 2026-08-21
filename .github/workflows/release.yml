@@ -53,69 +53,69 @@ jobs:
     #
     #
 ###########################
-  test_job:
-    runs-on: ubuntu-latest
-    if: false
-    environment:
-      name: "Thorium Desktop Release"
-      deployment: false
-    env:
-      PASSPHRASE: ${{ secrets.S11 }}
-      APPLEIDKEYCHAIN: ${{ secrets.S6 }}
-    steps:
-############################################
-      - name: Checkout
-# https://github.com/actions/checkout/commits/v7.0.1
-# https://github.com/actions/checkout/commits/3d3c42e5aac5ba805825da76410c181273ba90b1
-# https://github.com/actions/checkout/compare/v7.0.1...3d3c42e5aac5ba805825da76410c181273ba90b1
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with:
-          persist-credentials: false
-############################################
-      - name: Set ENV
-        run: |
-          SECRET_THING="$(cat ./.github_release/.DATA1 | openssl enc -d -aes-256-cbc -salt -pbkdf2 -a -A -pass pass:"$PASSPHRASE")"
-          echo "NOT MASKED:"
-          echo "$SECRET_THING"
-          echo "::add-mask::$SECRET_THING"
-          echo "$SECRET_THING"
-          echo "SECRET_THING=$SECRET_THING" >> $GITHUB_ENV
-          echo "$SECRET_THING"
-          OTHER_SECRET_THING="$SECRET_THING$APPLEIDKEYCHAIN"
-          echo "::add-mask::$OTHER_SECRET_THING"
-          echo "$OTHER_SECRET_THING"
-          echo "OTHER_SECRET_THING=$OTHER_SECRET_THING" >> $GITHUB_ENV
-          echo "$OTHER_SECRET_THING"
-#### ${{ secrets.SECRET_THING }}
-#echo "::add-mask::$SECRET_THING"
-#echo "SECRET_THING=$SECRET_THING" >> $GITHUB_ENV
-# ENCRYPT:
-# echo -n "PLAIN_TEXT" | openssl enc -aes-256-cbc -salt -pbkdf2 -a -A -pass pass:"PASSPHRASE"
-# DECRYPT:
-# echo "PLAIN_TEXT=$(...)" >> $GITHUB_ENV
-# {
-#   echo 'PLAIN_TEXT<<EOF'
-#   ...
-#   echo EOF
-# } >> "$GITHUB_ENV"
-#
-# echo "$GITHUB_ENV" ====> e.g. /home/runner/work/_temp/_runner_file_commands/set_env_2d3b5d21-744e-4723-b86b-45aab0fd9632
-# cat "$GITHUB_ENV" ====> NO-OP
-############################################
-      - name: Use ENV
-        run: |
-          echo "MASKED SECRETS:"
-          echo "$PASSPHRASE"
-          echo "$APPLEIDKEYCHAIN"
-          echo "$SECRET_THING"
-          echo "$SECRET_THING$APPLEIDKEYCHAIN"
-          echo "$OTHER_SECRET_THING"
-############################################
-      - name: forced EXIT
-        run: |-
-          exit 1 && false
-        shell: bash
-        continue-on-error: false
+#   test_job:
+#     runs-on: ubuntu-latest
+#     if: false
+#     environment:
+#       name: "Thorium Desktop Release"
+#       deployment: false
+#     env:
+#       PASSPHRASE: ${{ secrets.S11 }}
+#       APPLEIDKEYCHAIN: ${{ secrets.S6 }}
+#     steps:
+# ############################################
+#       - name: Checkout
+# # https://github.com/actions/checkout/commits/v7.0.1
+# # https://github.com/actions/checkout/commits/3d3c42e5aac5ba805825da76410c181273ba90b1
+# # https://github.com/actions/checkout/compare/v7.0.1...3d3c42e5aac5ba805825da76410c181273ba90b1
+#         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+#         with:
+#           persist-credentials: false
+# ############################################
+#       - name: Set ENV
+#         run: |
+#           SECRET_THING="$(cat ./.github_release/.DATA1 | openssl enc -d -aes-256-cbc -salt -pbkdf2 -a -A -pass pass:"$PASSPHRASE")"
+#           echo "NOT MASKED:"
+#           echo "$SECRET_THING"
+#           echo "::add-mask::$SECRET_THING"
+#           echo "$SECRET_THING"
+#           echo "SECRET_THING=$SECRET_THING" >> $GITHUB_ENV
+#           echo "$SECRET_THING"
+#           OTHER_SECRET_THING="$SECRET_THING$APPLEIDKEYCHAIN"
+#           echo "::add-mask::$OTHER_SECRET_THING"
+#           echo "$OTHER_SECRET_THING"
+#           echo "OTHER_SECRET_THING=$OTHER_SECRET_THING" >> $GITHUB_ENV
+#           echo "$OTHER_SECRET_THING"
+# #### ${{ secrets.SECRET_THING }}
+# #echo "::add-mask::$SECRET_THING"
+# #echo "SECRET_THING=$SECRET_THING" >> $GITHUB_ENV
+# # ENCRYPT:
+# # echo -n "PLAIN_TEXT" | openssl enc -aes-256-cbc -salt -pbkdf2 -a -A -pass pass:"PASSPHRASE"
+# # DECRYPT:
+# # echo "PLAIN_TEXT=$(...)" >> $GITHUB_ENV
+# # {
+# #   echo 'PLAIN_TEXT<<EOF'
+# #   ...
+# #   echo EOF
+# # } >> "$GITHUB_ENV"
+# #
+# # echo "$GITHUB_ENV" ====> e.g. /home/runner/work/_temp/_runner_file_commands/set_env_2d3b5d21-744e-4723-b86b-45aab0fd9632
+# # cat "$GITHUB_ENV" ====> NO-OP
+# ############################################
+#       - name: Use ENV
+#         run: |
+#           echo "MASKED SECRETS:"
+#           echo "$PASSPHRASE"
+#           echo "$APPLEIDKEYCHAIN"
+#           echo "$SECRET_THING"
+#           echo "$SECRET_THING$APPLEIDKEYCHAIN"
+#           echo "$OTHER_SECRET_THING"
+# ############################################
+#       - name: forced EXIT
+#         run: |-
+#           exit 1 && false
+#         shell: bash
+#         continue-on-error: false
 ###########################
     #
     #
@@ -354,7 +354,8 @@ jobs:
     - name: Setup LIB
       run: >
         openssl enc -d -aes-256-cbc -salt -pbkdf2 -A -pass pass:"${{ env.LIB_PASS }}" -in .github_release/LIB/${{ matrix.os }}/${{ matrix.arch }}/lib -out external-assets/lcp.node &&
-        ls -als external-assets/
+        ls -als external-assets/ &&
+        node .github_release/LIB/checksum.js external-assets/lcp.node
       shell: bash
       env:
         LIB_PASS: ${{ secrets.S14 }}

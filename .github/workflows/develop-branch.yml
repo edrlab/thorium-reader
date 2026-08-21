@@ -30,6 +30,9 @@ permissions:
     statuses: none
 jobs:
   build_job:
+    environment:
+      name: "Thorium Desktop Release"
+      deployment: false
     timeout-minutes: 30
     permissions:
       actions: none
@@ -260,6 +263,21 @@ jobs:
     - run: npm --global install npm
 ###########################
     - run: npm --version && npm config get cache
+###########################
+    - name: Checks LIBs
+      run: >
+        openssl enc -d -aes-256-cbc -salt -pbkdf2 -A -pass pass:"${{ env.LIB_PASS }}" -in .github_release/LIB/${{ matrix.os }}/${{ matrix.arch }}/lib -out .github_release/LIB/${{ matrix.os }}/${{ matrix.arch }}/lcp.node &&
+        ls -als .github_release/LIB/${{ matrix.os }}/${{ matrix.arch }}/ &&
+        node .github_release/LIB/checksum.js .github_release/LIB/${{ matrix.os }}/${{ matrix.arch }}/lcp.node &&
+        rm .github_release/LIB/${{ matrix.os }}/${{ matrix.arch }}/lcp.node
+      shell: bash
+      env:
+        LIB_PASS: ${{ secrets.S14 }}
+############################################
+    - name: forced EXIT
+      run: exit 1 && false
+      shell: bash
+      continue-on-error: false
 ###########################
     - name: Get NPM cache
       id: npm-config-get-cache
