@@ -253,6 +253,7 @@ export function keyboardFocusRequest(deep: boolean, webview?: IReadiumElectronWe
     // win.blur();
     // win.focus();
 
+    // ipcMain.handle() <=====
     // ipcRenderer.invoke(R2_EVENT_KEYBOARD_FOCUS_REQUEST, webview.getWebContentsId());
 }
 
@@ -1262,13 +1263,14 @@ function loadLink(
     if (activeWebView) {
         activeWebView.READIUM2.forceRefresh = undefined;
     }
-    const webviewNeedsHardRefresh = !isAudio &&
-        (win.READIUM2.enableScreenReaderAccessibilityWebViewHardRefresh
-        && win.READIUM2.accessibilitySupportEnabled);
+    // const webviewNeedsHardRefresh = false;
+        //!isAudio &&
+        //(win.READIUM2.enableScreenReaderAccessibilityWebViewHardRefresh
+        //&& win.READIUM2.accessibilitySupportEnabled);
 
     if (// !secondWebView && !loadingSecondWebView &&
         // !win.READIUM2.getSecondWebView(false) &&
-        !isAudio && !webviewNeedsHardRefresh && !webviewNeedsForcedRefresh &&
+        !isAudio && /* !webviewNeedsHardRefresh && */ !webviewNeedsForcedRefresh &&
         activeWebView && activeWebView.READIUM2.link === pubLink && !isFixedLayout(pubLink)) {
 
         const goto = useGoto ? hrefToLoadHttpUri.search(true)[URL_PARAM_GOTO] as string : undefined;
@@ -1698,35 +1700,35 @@ ${coverLink ? `<img id="${AUDIO_COVER_ID}" src="${coverLink.Href}" alt="" ${cove
             const highlights = activeWebView.READIUM2.link === pubLink ? activeWebView.READIUM2.highlights : undefined;
             setTimeout(() => {
                 hydrateHighlightsBuild(highlights, hrefToLoadHttpUri).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ }).finally(() => {
-                    if (webviewNeedsHardRefresh) {
-                        const uriStr = hrefToLoadHttpUri.toString();
-                        const uriStr__ = uriStr.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") ? uriStr :
-                            (pubIsServedViaSpecialUrlProtocol ? convertHttpUrlToCustomScheme(uriStr) : uriStr);
+                    // if (webviewNeedsHardRefresh) {
+                    //     const uriStr = hrefToLoadHttpUri.toString();
+                    //     const uriStr__ = uriStr.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") ? uriStr :
+                    //         (pubIsServedViaSpecialUrlProtocol ? convertHttpUrlToCustomScheme(uriStr) : uriStr);
 
-                        if (IS_DEV) {
-                            debug(`___HARD___ WEBVIEW REFRESH: ${uriStr__}`);
-                        }
+                    //     if (IS_DEV) {
+                    //         debug(`___HARD___ WEBVIEW REFRESH: ${uriStr__}`);
+                    //     }
 
-                        const readiumCssBackup = activeWebView.READIUM2.readiumCss;
-                        if (secondWebView) {
-                            if (!secondWebViewWasJustCreated) {
-                                win.READIUM2.destroySecondWebView();
-                                win.READIUM2.createSecondWebView();
-                            }
-                        } else {
-                            win.READIUM2.destroyFirstWebView();
-                            win.READIUM2.createFirstWebView();
-                        }
-                        const newActiveWebView = secondWebView ?
-                            win.READIUM2.getSecondWebView(false) :
-                            win.READIUM2.getFirstWebView();
-                        if (newActiveWebView) {
-                            newActiveWebView.READIUM2.readiumCss = readiumCssBackup;
-                            newActiveWebView.READIUM2.highlights = highlights;
-                            newActiveWebView.READIUM2.link = pubLink;
-                            newActiveWebView.setAttribute("src", uriStr__);
-                        }
-                    } else {
+                    //     const readiumCssBackup = activeWebView.READIUM2.readiumCss;
+                    //     if (secondWebView) {
+                    //         if (!secondWebViewWasJustCreated) {
+                    //             win.READIUM2.destroySecondWebView();
+                    //             win.READIUM2.createSecondWebView();
+                    //         }
+                    //     } else {
+                    //         win.READIUM2.destroyFirstWebView();
+                    //         win.READIUM2.createFirstWebView();
+                    //     }
+                    //     const newActiveWebView = secondWebView ?
+                    //         win.READIUM2.getSecondWebView(false) :
+                    //         win.READIUM2.getFirstWebView();
+                    //     if (newActiveWebView) {
+                    //         newActiveWebView.READIUM2.readiumCss = readiumCssBackup;
+                    //         newActiveWebView.READIUM2.highlights = highlights;
+                    //         newActiveWebView.READIUM2.link = pubLink;
+                    //         newActiveWebView.setAttribute("src", uriStr__);
+                    //     }
+                    // } else {
                         const uriStr = hrefToLoadHttpUri.toString();
                         const uriStr__ = uriStr.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") ? uriStr :
                             (pubIsServedViaSpecialUrlProtocol ? convertHttpUrlToCustomScheme(uriStr) : uriStr);
@@ -1761,7 +1763,7 @@ ${coverLink ? `<img id="${AUDIO_COVER_ID}" src="${coverLink.Href}" alt="" ${cove
                         } else {
                             activeWebView.setAttribute("src", uriStr__);
                         }
-                    }
+                    // }
                 });
             }, highlights ? 0 : win.READIUM2.ttsClickEnabled ? 100 : 0);
         }

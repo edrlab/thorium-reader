@@ -56,7 +56,7 @@ function* unlockPublicationWithPassphrase(action: lcpActions.unlockPublicationWi
         if (typeof unlockPublicationRes !== "undefined") {
             // import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
             // import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-            // const r2PublicationStr = Buffer.from(publicationView.r2PublicationBase64, "base64").toString("utf-8");
+            // const r2PublicationStr = Buffer.from(publicationView.r2PublicationBase64, "base64").toString("utf8");
             // const r2PublicationJson = JSON.parse(r2PublicationStr);
             // const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
 

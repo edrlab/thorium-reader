@@ -27,7 +27,7 @@ export async function computeReadiumCssJsonMessageInStreamer(
     sessionInfo: string | undefined,
 ): Promise<IEventPayload_R2_EVENT_READIUMCSS> {
 
-    const winId = sessionInfo ? Buffer.from(sessionInfo, "base64").toString("utf-8") : "";
+    const winId = sessionInfo ? Buffer.from(sessionInfo, "base64").toString("utf8") : "";
     const store = diMainGet("store");
     const state = store.getState();
     const pubId = state.win.session.reader[winId]?.publicationIdentifier;
@@ -88,7 +88,7 @@ export function setupMathJaxTransformer(getUrl: () => string) {
     const transformerMathJax = async (
         _publication: R2Publication, _link: Link, _url: string | undefined, str: string, sessionInfo: string | undefined): Promise<string> => {
 
-        const winId = sessionInfo ? Buffer.from(sessionInfo, "base64").toString("utf-8") : "";
+        const winId = sessionInfo ? Buffer.from(sessionInfo, "base64").toString("utf8") : "";
         const store = diMainGet("store");
         const state = store.getState();
         const pubId = state.win.session.reader[winId]?.publicationIdentifier;

@@ -798,7 +798,6 @@
             "bookmarkTitle": "Marcador",
             "currentPage": "Páxina actual: {{- current}}",
             "currentPageTotal": "Páxina actual: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Mostrar xanela de biblioteca",
             "goTo": "Ir a",
             "goToError": "Este salto de páxina non existe",
             "goToPlaceHolder": "Introduce un número de páxina",

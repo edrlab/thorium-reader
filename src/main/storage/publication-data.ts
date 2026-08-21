@@ -51,12 +51,12 @@ export class PublicationData {
 
     // List of file metadata associated with the publication
     private _files: Array<TFileStructPubData> = [];
-    
+
     // Tracks visited publication IDs to prevent duplicate final disk persistence
     private _visitedPubIdSet: Set<string> = new Set();
 
     private filterFilesByType = (t: TFileTypePubData) => this._files!.filter(({type}) => type === t);
-    
+
     private assertAndGetFileName = (type: TFileTypePubData) => {
         const fileName = type === "locator" ? "locator.json" : type === "config" ? "config.json" : type === "disableRTLFlip" ? "disableRTLFlip.json" : type === "divina" ? "divina.json" : type === "allowCustomConfig" ? "allowCustomConfig.json" : type === "noteTotalCount" ? "noteTotalCount.json" : type === "pdfConfig" ? "pdfConfig.json" : type === "bound" ? "bound.json" : "";
         if (!fileName) {
@@ -68,7 +68,7 @@ export class PublicationData {
     public constructor(publicationConfigPath: string) {
         this._publicationConfigPath = publicationConfigPath;
     }
-    
+
     public get visited() {
         return this._visitedPubIdSet;
     }
@@ -203,7 +203,7 @@ export class PublicationData {
 
                 file.mutex = file.mutex.then(async () => {
                     try {
-                        const jsonStr = await fileHandle.readFile({ encoding: "utf-8" });
+                        const jsonStr = await fileHandle.readFile({ encoding: "utf8" });
                         try {
                             if (jsonStr) {
                                 const jsonObj = JSON.parse(jsonStr);
@@ -256,9 +256,9 @@ export class PublicationData {
             try {
                 if (this._readWriteFileHandleEnabled && file.fileHandle) {
                     await file.fileHandle.truncate(jsonStr.length);
-                    await file.fileHandle.write(jsonStr, 0, "utf-8");
+                    await file.fileHandle.write(jsonStr, 0, "utf8");
                 } else {
-                    await fs.promises.writeFile(file.filePath, jsonStr, { encoding: "utf-8", flush: true });
+                    await fs.promises.writeFile(file.filePath, jsonStr, { encoding: "utf8", flush: true });
                 }
 
                 // Wait the end of the write to set it as local reference
@@ -300,9 +300,9 @@ export class PublicationData {
             try {
                 let jsonStr: string;
                 if (this._readWriteFileHandleEnabled && file.fileHandle) {
-                    jsonStr = await fs.promises.readFile(file.fileHandle, { encoding: "utf-8" });
+                    jsonStr = await fs.promises.readFile(file.fileHandle, { encoding: "utf8" });
                 } else {
-                    jsonStr = await fs.promises.readFile(file.filePath, { encoding: "utf-8" });
+                    jsonStr = await fs.promises.readFile(file.filePath, { encoding: "utf8" });
                 }
                 try {
                     if (jsonStr) {

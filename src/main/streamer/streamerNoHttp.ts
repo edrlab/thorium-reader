@@ -839,7 +839,7 @@ const streamProtocolHandler = async (
         const sagaMiddleware = diMainGet("saga-middleware");
         const notes = await sagaMiddleware.run(getNotesFromMainWinState, publicationUUID).toPromise<INoteState[]>();
         const notesSerialized = JSON.stringify(notes);
-        const notesSerializedBuf = Buffer.from(notesSerialized, "utf-8");
+        const notesSerializedBuf = Buffer.from(notesSerialized, "utf8");
         const contentLength = `${notesSerializedBuf.length || 0}`;
         headers["Content-Length"] = contentLength;
         const contentType = "application/json; charset=utf-8";

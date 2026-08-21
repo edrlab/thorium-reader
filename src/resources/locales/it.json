@@ -803,7 +803,6 @@
             "bookmarkTitle": "Segnalibro",
             "currentPage": "Pagina attuale: {{- current}}",
             "currentPageTotal": "Pagina attuale: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Visualizza la libreria",
             "goTo": "Vai a",
             "goToError": "Questa interruzione di pagina non esiste",
             "goToPlaceHolder": "Inserisci il numero della pagina",

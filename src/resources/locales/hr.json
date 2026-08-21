@@ -803,7 +803,6 @@
             "bookmarkTitle": "knjižna oznaka",
             "currentPage": "Trenutna stranica: {{- current}}",
             "currentPageTotal": "Trenutna stranica: {{- current}}/{{- total}}",
-            "detachWindowTitle": "prikaži knjižnicu / policu knjiga",
             "goTo": "Idi",
             "goToError": "Ovaj prijelom stranice ne postoji",
             "goToPlaceHolder": "Unesi broj stranice",

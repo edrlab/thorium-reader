@@ -803,7 +803,6 @@
             "bookmarkTitle": "Marcador",
             "currentPage": "Pàgina actual: {{- current}}",
             "currentPageTotal": "Pàgina actual: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Mostrar finestra de biblioteca",
             "goTo": "Anar a",
             "goToError": "Aquest salt de pàgina no existeix",
             "goToPlaceHolder": "Introdueix un número de pàgina",

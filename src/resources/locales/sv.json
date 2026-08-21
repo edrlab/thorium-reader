@@ -196,7 +196,7 @@
         "downloads": "Nedladdningar",
         "fitlerTagTitle": "Filtrera efter tagg",
         "gridTitle": "Galleri",
-        "home": "Huvudmeny",
+        "home": "Bokhyllemeny",
         "homeTitle": "Hem",
         "importTitle": "Importera en bok",
         "listTitle": "Tabell",
@@ -646,7 +646,7 @@
             "tracks": "Spår"
         },
         "author": "Författare",
-        "cancelledLcp": "Den här bokens LCP-licens är annullerad.",
+        "cancelledLcp": "Den här bokens LCP-licens är upphävd.",
         "certificateRevoked": "LCP-certifikatet är återkallat.",
         "certificateSignatureInvalid": "LCP-certifikatets signatur är ogiltig.",
         "cover": {
@@ -798,7 +798,6 @@
             "bookmarkTitle": "Bokmärke",
             "currentPage": "Aktuell sida: {{- current}}",
             "currentPageTotal": "Aktuell sida: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Visa biblioteks-/bokhyllefönstret",
             "goTo": "Gå till",
             "goToError": "Sidan finns inte",
             "goToPlaceHolder": "Ange ett sidnummer",
@@ -1214,8 +1213,8 @@
                     "name": "Starta eller avsluta helskärmsläge"
                 },
                 "ToggleReaderZenMode": {
-                    "description": "",
-                    "name": ""
+                    "description": "I läsarfönstret, aktivera eller avsluta zenläget, som förenklar användargränssnittet medan du läser",
+                    "name": "Starta eller avsluta zenläge"
                 },
                 "ToggleScreenReaderOptimize": {
                     "description": "I biblioteksfönstret, slå av eller på utökat stöd för skärmläsare",
@@ -1252,7 +1251,7 @@
         },
         "screenReaderActivate": {
             "help": "När programmet upptäcker hjälpmedelsteknik så anpassas gränssnittet för att fungera bättre med skärmläsare",
-            "invite": "",
+            "invite": "Optimera för skärmläsare ({{- status}}) [{{- keyboard}}]",
             "message": "Förbättrat stöd för skärmläsare",
             "title": "Förbättra skärmläsarupplevelsen"
         },

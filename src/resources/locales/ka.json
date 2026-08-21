@@ -798,7 +798,6 @@
             "bookmarkTitle": "სანიშნე",
             "currentPage": "წინა გვერდი: {{- current}}",
             "currentPageTotal": "მიმდინარე გვერდი: {{- current}}/{{- total}}",
-            "detachWindowTitle": "მანახე ბიბლიოთეკა / წიგნების კარადის ფანჯარა",
             "goTo": "გადადით",
             "goToError": "ამ გვერდის წყვეტა არ არსებობს",
             "goToPlaceHolder": "შეიტანეთ გვერდის ნომერი",

@@ -272,7 +272,7 @@ const Header = () => {
             } catch {
                 // ignore
             }
-            const hostEncoded = Buffer.from(encodeURIComponent(catalogOrigin), "utf-8").toString("base64");
+            const hostEncoded = Buffer.from(encodeURIComponent(catalogOrigin), "utf8").toString("base64");
             const label = convertMultiLangStringToString(catalog?.title, locale) || __("header.myCatalogs");
             headerNav.push({
                 route: buildOpdsBrowserRoute(hostEncoded, label, catalog.href),

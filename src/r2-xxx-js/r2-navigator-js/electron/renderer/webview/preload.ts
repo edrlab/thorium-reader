@@ -39,7 +39,7 @@ import {
     IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN, MediaOverlaysStateEnum, R2_EVENT_AUDIO_SOUNDTRACK, R2_EVENT_CAPTIONS,
     R2_EVENT_CLIPBOARD_COPY, R2_EVENT_DEBUG_VISUALS, R2_EVENT_FXL_CONFIGURE,
     R2_EVENT_HIGHLIGHT_CREATE, R2_EVENT_HIGHLIGHT_REMOVE, R2_EVENT_HIGHLIGHT_REMOVE_ALL,
-    /* R2_EVENT_KEYBOARD_FOCUS_REQUEST,*/ R2_EVENT_FOCUS_READING_LOC, R2_EVENT_LINK, R2_EVENT_LOCATOR_VISIBLE,
+    R2_EVENT_KEYBOARD_FOCUS_REQUEST, R2_EVENT_FOCUS_READING_LOC, R2_EVENT_LINK, R2_EVENT_LOCATOR_VISIBLE,
     R2_EVENT_MEDIA_OVERLAY_CLICK, R2_EVENT_MEDIA_OVERLAY_HIGHLIGHT,
     R2_EVENT_MEDIA_OVERLAY_STARTSTOP, R2_EVENT_MEDIA_OVERLAY_STATE, R2_EVENT_PAGE_TURN, R2_EVENT_PAGE_TURN_RES,
     R2_EVENT_READING_LOCATION, R2_EVENT_READIUMCSS, R2_EVENT_SCROLLTO, R2_EVENT_SHIFT_VIEW_X,
@@ -1267,11 +1267,11 @@ ipcRenderer.on(R2_EVENT_PAGE_TURN, (_event: any, payload: IEventPayload_R2_EVENT
 });
 
 // +R2_EVENT_KEYBOARD_FOCUS_REQUEST
-function focusElement(element: Element, preventScroll: boolean /*, focusHost: boolean */) {
+function focusElement(element: Element, preventScroll: boolean, focusHost?: boolean) {
 
     if (DEBUG_TRACE) debug("focusElement", getCssSelector(element));
 
-    if (preventScroll &&
+    if (preventScroll && !focusHost &&
         (
         // win.READIUM2.focussedElement ??
         element === win.document.activeElement
@@ -1313,13 +1313,14 @@ function focusElement(element: Element, preventScroll: boolean /*, focusHost: bo
         (element as HTMLElement).focus({preventScroll});
     }
 
-    // if (focusHost) {
-    //     // win.blur();
-    //     // win.focus();
-    //     // const payload: IEventPayload_R2_EVENT_KEYBOARD_FOCUS_REQUEST = {
-    //     // };
-    //     ipcRenderer.sendToHost(R2_EVENT_KEYBOARD_FOCUS_REQUEST, null);
-    // }
+    if (focusHost) {
+        if (DEBUG_TRACE) debug("focusElement - focusHost");
+        // win.blur();
+        win.focus();
+        // const payload: IEventPayload_R2_EVENT_KEYBOARD_FOCUS_REQUEST = {
+        // };
+        ipcRenderer.sendToHost(R2_EVENT_KEYBOARD_FOCUS_REQUEST, null);
+    }
 }
 
 const tempLinkTargetOutline = (element: Element, time: number, alt: boolean) => {
@@ -2432,7 +2433,7 @@ function mediaOverlaysClickRaw(element: Element | undefined, userInteract: boole
 // }, 100);
 
 const onScrollRaw = (fromScrollEvent?: boolean) => {
-    if (DEBUG_TRACE) debug("onScrollRaw: fromScrollEvent", fromScrollEvent);
+    if (DEBUG_TRACE) debug("onScrollRaw: fromScrollEvent / accessibilitySupportEnabled", fromScrollEvent, win.READIUM2.accessibilitySupportEnabled);
 
     if (!win.document || !win.document.documentElement) {
         return;
@@ -2479,7 +2480,8 @@ const onScrollRaw = (fromScrollEvent?: boolean) => {
 
     if (!win.READIUM2.ttsClickEnabled &&
         !win.document.documentElement.classList.contains(TTS_CLASS_PLAYING) &&
-        !win.document.documentElement.classList.contains(TTS_CLASS_PAUSED)) {
+        !win.document.documentElement.classList.contains(TTS_CLASS_PAUSED) &&
+        !win.READIUM2.accessibilitySupportEnabled) {
 
         const el = win.READIUM2.locationHashOverride; // || win.READIUM2.hashElement
         if (el && isVisible(false, el, undefined)) {
@@ -3439,6 +3441,12 @@ function loaded(forced: boolean) {
             ipcRenderer.sendToHost(R2_EVENT_LINK, payload); // this will result in the app registering the element in the navigation history, but is skipped in location.ts ipcRenderer.on(R2_EVENT_LINK)
         }
 
+        if (win.READIUM2.accessibilitySupportEnabled) {
+            debug("----> link popup footnote accessibilitySupportEnabled ==> force hyperlink focus:", skipHistory, encCssSel);
+            focusElement(linkElement, true, true);
+        }
+
+        debug("----> link popup footnote? skipHistory / encCssSel:", skipHistory, encCssSel);
         popupFootNote(
             linkElement as HTMLElement,
             focusScrollRaw,
@@ -3446,6 +3454,8 @@ function loaded(forced: boolean) {
             ensureTwoPageSpreadWithOddColumnsIsOffsetTempDisable,
             ensureTwoPageSpreadWithOddColumnsIsOffsetReEnable).then((done) => {
                 if (done) {
+                    debug("----> link popup footnote DONE skipHistory / encCssSel:", skipHistory, encCssSel);
+
                     if (!skipHistory) {
                         // double-insert the hyperlink to trigger the popup programmatically on history.back()/forward()
                         const payload: IEventPayload_R2_EVENT_LINK = {
@@ -3454,6 +3464,8 @@ function loaded(forced: boolean) {
                         ipcRenderer.sendToHost(R2_EVENT_LINK, payload);
                     }
                 } else {
+                    debug("----> link popup footnote !!!DONE skipHistory / encCssSel:", skipHistory, encCssSel);
+
                     focusScrollDebounced.clear();
                     // processXYDebounced.clear();
                     processXYDebouncedImmediate.clear();
@@ -5073,7 +5085,7 @@ const $_namespaceResolver = (prefix: string | null): string | null => {
 };
 
 const notifyReadingLocationRaw = (userInteract?: boolean, ignoreMediaOverlays?: boolean, doNotFocus?: boolean) => {
-    if (DEBUG_TRACE) debug("notifyReadingLocationRaw", win.READIUM2.locationHashOverride ? getCssSelector(win.READIUM2.locationHashOverride) : "!!!? win.READIUM2.locationHashOverride");
+    if (DEBUG_TRACE) debug("notifyReadingLocationRaw", win.READIUM2.locationHashOverride ? getCssSelector(win.READIUM2.locationHashOverride) : "!!!? win.READIUM2.locationHashOverride", win.READIUM2.accessibilitySupportEnabled);
 
     if (!win.READIUM2.locationHashOverride) {
         return;
@@ -5838,54 +5850,9 @@ if (!win.READIUM2.isAudio) {
             focusCurrentReadingLocationElement(true);
         }
     });
-}
 
-// -------------------------------------------------
-// https://mermaid.live/edit#pako:eNqtVu9vqjAU_VdM92VLlKiIMj68xAhTMpQFnXl7IWk66JQMWsOP7W2L__srqDwYgs3LMzG29Z7TnnvvKXwBh7oYKCCKUYxVD21CFHTe-jZptSB8oU4SaT4OMImvb1qdzg-2KGSr1zc2uUo_aeQVhJETUt8_xuokpmsPv-eYMlEJsqIzFG0t1BQM4S6kDo6in0-XAgmNvZcPCyPXIxuDOij2KGkCVUVUT1Qj7ojKGJdZCD_I6kNtrS1WcK6p-hiaa80yxk9wpk9nBvuuLpEcj33VMg21BR3fc14FQVje6w_Q0Bf3UFcPG-X73JmTxyW0tLGqL6bQMCcsPDv5JAlDRv4tZXmGTmEHgSp-pglxsFvOZ0H9UZ9qzieUxIzCoMjFLqPx2eD4k-JPxB5hoy0iro_v0rlOCpt8_6tSydLOxVrmwpcTyzSMlVnKaKHGZ2pfVXkGxdM45bY9dCgl1V6pxjHSgCYRTnZ5CubpXHs7VSXH5KfVgwC7HvNxM29dZr4H5wJrXFXNUr35eGiqx2_m43dRE09B5akyBWEHfKlkNW32MJ5qcPVoLVhpmH3SMj2gDV4lIcn1nNmA6_qswfG57EDdxFTUw-VbljwceZ-Y5eOMP6rquEgPlOZzhMM3HP4n3ks0JRNjHztpZzjMbxvMWCIcL0-Lk2xxnI2bG7R6zjrHccLrbhdOeM3ziRPNnWMevpoH-WVowaX_wFC4WWwC2iDAYYA8l732fKWcNoi3zHg2UNjQReGrDWyyZ3EoienygzhAicMEt0FIk80WKC_Ij9gs2bl_35ny1R0ivygNThA2BcoX-A0USRQGtwNJFCVRlnuyOGyDD6D0pJEw6srdoSwPRkNp2Jf2bfCZEXQFeXjbHfUG3X5PEnuyLO7_AEh-OrI
-// -------------------------------------------------
-// stateDiagram-v2
-//   __focusElement() --> __.focus()
-// #####
-//   #__scrollElementIntoView() --> __focusElement()
-//   #__scrollToHashRaw() --> __focusElement()
-//   __processXYRaw() --> __focusElement()
-//   __notifyReadingLocationRaw() --> __focusElement()
-// #####
-//   #__scrollToHashRaw() --> __scrollElementIntoView()
-//   #__focusScrollRaw() --> __scrollElementIntoView()
-//   #__R2_EVENT_MEDIA_OVERLAY_HIGHLIGHT --> __scrollElementIntoView()
-// #####
-// # OLD _click...SKIP_LINK_ID
-//   #_R2_EVENT_FOCUS_READING_LOC...focusCurrentReadingLocationElement()...focusScrollDebounced() --> __focusScrollRaw()
-//   #__DOMContentLoaded...load...loaded()...focusin...handleFocusInDebounced()...handleFocusInRaw() --> __focusScrollRaw()
-// #####
-//   #__R2_EVENT_SCROLLTO --> __scrollToHashRaw()
-//   #__scrollToHashDebounced() --> __scrollToHashRaw()
-// #####
-//   #__scrollToHashRaw() --> __processXYRaw()
-//   __onScrollRaw() --> __processXYRaw()
-//   #__mouseup...handleMouseEvent()...processXYDebouncedImmediate() --> __processXYRaw()
-//   #__R2_EVENT_SCROLLTO --> __processXYRaw()
-// #####
-//   __notifyReadingLocationDebounced() --> __notifyReadingLocationRaw()
-//   __notifyReadingLocationDebouncedImmediate() --> __notifyReadingLocationRaw()
-//   #__R2_EVENT_MEDIA_OVERLAY_HIGHLIGHT --> __notifyReadingLocationRaw()
-// #####
-//   __onScrollDebounced()--> __onScrollRaw()
-// #####
-//   #__R2_EVENT_PAGE_TURN...onEventPageTurn() --> __onScrollDebounced()
-//   #__scrollElementIntoView() --> __onScrollDebounced()
-//   __DOMContentLoaded...load...loaded()..scroll --> __onScrollDebounced()
-// #####
-//   #__DOMContentLoaded...load...loaded()...onResizeRaw --> __scrollToHashDebounced()
-//   #__DOMContentLoaded...load...loaded()...ResizeObserver --> __scrollToHashDebounced()
-//   #__DOMContentLoaded...load...loaded() --> __scrollToHashDebounced()
-// #####
-//   #__selectionchange...setSelectionChangeAction() --> __notifyReadingLocationDebounced()
-//   #__R2_EVENT_SCROLLTO --> __notifyReadingLocationDebounced()
-//   #__scrollToHashRaw() --> __notifyReadingLocationDebounced()
-//   #__focusScrollRaw() --> __notifyReadingLocationDebounced()
-//   #__DOMContentLoaded...load...loaded() --> __notifyReadingLocationDebounced()
-//   __processXYRaw() --> __notifyReadingLocationDebounced()
-// #####
-//   __processXYRaw() --> __notifyReadingLocationDebouncedImmediate()
+    ipcRenderer.on("accessibility-support-changed", (_event: any, accessibilitySupportEnabled: boolean) => {
+        debug("accessibility-support-changed event received in navigator Electron BrowserWindow's Webview", accessibilitySupportEnabled);
+        win.READIUM2.accessibilitySupportEnabled = accessibilitySupportEnabled;
+    });
+}

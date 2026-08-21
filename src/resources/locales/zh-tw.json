@@ -1,6 +1,6 @@
 {
     "accessibility": {
-        "bookMenu": "菜單",
+        "bookMenu": "選單",
         "closeDialog": "關閉",
         "leftSlideButton": "將列表移至左側",
         "mainContent": "主要內容",
@@ -43,16 +43,16 @@
         "update": {
             "message": "有新版本，點選了解更多。",
             "title": "{{- appName}} 軟體已更新。",
-            "whatsnew": ""
+            "whatsnew": "已安裝新版本，點擊了解更多資訊"
         },
         "window": {
             "showLibrary": "顯示 書庫/書架",
-            "trayHint": "",
-            "trayTooltip": ""
+            "trayHint": "{{- appName}} 仍在通知區域運作。點擊系統匣圖示即可顯示書庫。",
+            "trayTooltip": "{{- appName}} - 點選顯示或隱藏書庫"
         }
     },
     "catalog": {
-        "AddToFavorites": "",
+        "AddToFavorites": "加入收藏夾",
         "about": {
             "title": "關於 {{- appName}} (線上)"
         },
@@ -84,15 +84,15 @@
             "lastAdditions": "最近添加"
         },
         "export": "匯出",
-        "exportAnnotation": "匯出註解...",
+        "exportAnnotation": "匯出註解",
         "format": "格式",
         "importAnnotation": "匯入註解",
         "lang": "語言",
         "lastRead": "最後閱讀",
         "login": "登入",
         "logout": "登出",
-        "missing": "",
-        "missingUnavailableDescription": "",
+        "missing": "遺失檔案",
+        "missingUnavailableDescription": "無法開啟此出版物，因為其中儲存的檔案目前無法使用。請重新匯入，或前往「設定」中的「儲存空間」來新增或變更額外儲存空間。",
         "moreInfo": "更多訊息",
         "myBooks": "我的書籍",
         "noPublicationHelpL1": "將文件拖放到此處",
@@ -109,8 +109,8 @@
                 "password": "密碼",
                 "register": "註冊",
                 "retry": "在試一次",
-                "unauthorized": "",
-                "unauthorizedUnsupportedType": "",
+                "unauthorized": "未經授權",
+                "unauthorizedUnsupportedType": "未經授權(不支援WWWAuthenticate 類型'{{- type}}')",
                 "username": "使用者名稱/電子郵件地址"
             },
             "info": {
@@ -132,12 +132,12 @@
                 "state": "狀態"
             }
         },
-        "openFolder": "",
+        "openFolder": "開啟目錄",
         "publisher": "出版社",
         "readBook": "閱讀",
         "released": "出版日期",
-        "removeFromFavorites": "",
-        "selectTableHeaders": "",
+        "removeFromFavorites": "從收藏夾移除",
+        "selectTableHeaders": "選擇要顯示的欄位",
         "sort": "排序方式",
         "tag": "標籤",
         "tags": "標籤",
@@ -160,9 +160,9 @@
         "customization": {
             "splashscreen": {
                 "dontShow": "不再顯示",
-                "fallbackWelcomeScreen": "",
-                "state": "狀態： {{- state}}",
-                "title": ""
+                "fallbackWelcomeScreen": "未提供歡迎畫面",
+                "state": "狀態：{{- state}}",
+                "title": "正在佈建並啟用自訂設定檔"
             }
         },
         "deleteAnnotations": "刪除註解？",
@@ -191,7 +191,7 @@
         "downloads": "下載",
         "fitlerTagTitle": "按標籤過濾",
         "gridTitle": "網格視圖",
-        "home": "書架菜單",
+        "home": "書架選單",
         "homeTitle": "主頁",
         "importTitle": "匯入出版物",
         "listTitle": "列表視圖",
@@ -200,34 +200,34 @@
         "searchPlaceholder": "搜索",
         "searchTitle": "開始搜索",
         "settings": "設置",
-        "settingsLabel": "",
+        "settingsLabel": "應用程式設定",
         "viewMode": "檢視模式"
     },
     "library": {
         "filter": {
-            "addFilters": "",
-            "filterBy": "",
-            "selectOption": ""
+            "addFilters": "新增篩選器",
+            "filterBy": "篩選",
+            "selectOption": "選擇一個項目"
         },
         "lcp": {
-            "hidePassphrase": "",
+            "hidePassphrase": "隱藏密語",
             "hint": "提示：",
             "open": "開啟",
-            "password": "密碼",
-            "sentence": "此出版物需要 LCP 密碼才能打開",
-            "showPassphrase": "",
-            "urlHint": "忘記密碼？按此處取得幫助。",
+            "password": "密語",
+            "sentence": "此出版物需要 LCP 密語才能開啟",
+            "showPassphrase": "顯示密語",
+            "urlHint": "忘記您的密語了嗎？點擊這裡以取得支援。",
             "whatIsLcp?": "什麼是 LCP？",
             "whatIsLcpInfoDetails": "LCP 代表「許可內容保護」。",
             "whatIsLcpInfoDetailsLink": "要了解更多訊息，請點擊連結前往 EDRLab。"
         },
         "sorting": {
-            "addSorting": "",
-            "author": "",
-            "language": "",
-            "readingState": "",
-            "sortBy": "",
-            "title": ""
+            "addSorting": "新增排序",
+            "author": "作者",
+            "language": "語言",
+            "readingState": "閱讀時狀態",
+            "sortBy": "排序方式： ",
+            "title": "標題"
         }
     },
     "message": {
@@ -240,7 +240,7 @@
             "success": "匯入已成功完成。"
         },
         "download": {
-            "cancelled": "",
+            "cancelled": "下載已取消。",
             "error": "下載 [{{- title}}] 失敗：[{{- err}}]",
             "errors": {
                 "hashMismatch": "",
@@ -296,7 +296,7 @@
             "goSubBook": "訂閱"
         },
         "network": {
-            "error": "無法訪問 OPDS 訂閱來源",
+            "error": "存取訂閱源時出錯",
             "noInternet": "未連線至網際網路",
             "noInternetMessage": "請重新嘗試：檢查網路連線",
             "reject": "抱歉，意外錯誤！",
@@ -608,7 +608,7 @@
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": "TTS 和閱讀器友好"
+                "textual": "所有內容均可朗讀為語音或動態點字。"
             },
             "accessibilityFeature": {
                 "alternativeText": "包含替代文字",
@@ -655,14 +655,14 @@
         "encryptedNoLicense": "出版物已加密，但缺少 LCP 許可證！",
         "expired": "出借到期",
         "expiredLcp": "此書無法閱讀，因為 LCP 授權已到期。",
-        "incorrectPassphrase": "沒有已儲存的密碼適合出版物，或輸入的密碼錯誤。",
+        "incorrectPassphrase": "有符合此出版物的已儲存密語，或輸入的密語不正確。",
         "lcpEnd": "結束",
         "lcpNotSupported": "",
         "lcpRightsCopy": "複製的文字",
         "lcpRightsPrint": "列印頁數",
         "lcpStart": "開始",
         "licenceLCP": "授權（LCP）",
-        "licenseCertificateDateInvalid": "LCP 提供者憑證已過期。 ({{- dateTime}})",
+        "licenseCertificateDateInvalid": "LCP 提供者憑證在授權發行日期（{{- dateTime}}）之前已過期。",
         "licenseOutOfDate": "LCP 許可證已過期。",
         "licenseSignatureInvalid": "LCP 許可證簽章無效。",
         "licensed": "已授權",
@@ -682,7 +682,7 @@
         "seeMore": "查看更多",
         "timeLeft": "左邊",
         "title": "標題",
-        "userKeyCheckInvalid": "密碼不正確"
+        "userKeyCheckInvalid": "密語不正確。"
     },
     "reader": {
         "annotations": {
@@ -793,7 +793,6 @@
             "bookmarkTitle": "書籤",
             "currentPage": "當前頁面：{{- current}}",
             "currentPageTotal": "當前頁面：{{- current}}/{{- total}}",
-            "detachWindowTitle": "顯示 書庫/書架 視窗",
             "goTo": "轉到",
             "goToError": "此頁不存在",
             "goToPlaceHolder": "輸入頁碼",
@@ -968,7 +967,7 @@
             "wipeData": "清除登入數據"
         },
         "keyboard": {
-            "advancedMenu": "菜單",
+            "advancedMenu": "鍵盤快捷鍵進階選單",
             "cancel": "取消",
             "disclaimer": "快捷鍵是根據 QWERTY 鍵盤佈局定義的。",
             "editUserJson": "編輯使用者文件...",

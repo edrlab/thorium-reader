@@ -793,7 +793,6 @@
             "bookmarkTitle": "しおりを挟む",
             "currentPage": "現在のページ：{{- current}}",
             "currentPageTotal": "現在のページ：（{{- current}}/{{- total}}）",
-            "detachWindowTitle": "蔵書/本棚を表示",
             "goTo": "移動",
             "goToError": "そのページは存在しません",
             "goToPlaceHolder": "移動先のページ番号",

@@ -808,7 +808,6 @@
             "bookmarkTitle": "záložka",
             "currentPage": "Aktuální stránka: {{- current}}",
             "currentPageTotal": "Aktuální stránka: {{- current}}/{{- total}}",
-            "detachWindowTitle": "",
             "goTo": "Jít na",
             "goToError": "Zalomení stránky neexistuje",
             "goToPlaceHolder": "Zadejte číslo stránky",

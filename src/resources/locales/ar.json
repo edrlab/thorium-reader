@@ -818,7 +818,6 @@
             "bookmarkTitle": "إشارة مرجعية",
             "currentPage": "الصفحة الحالية: {{- current}}",
             "currentPageTotal": "الصفحة الحالية: {{- current}}/{{- total}}",
-            "detachWindowTitle": "إظهار نافذة المكتبة / رف الكتب",
             "goTo": "الانتقال إلى",
             "goToError": "لا يوجد فاصل صفحات",
             "goToPlaceHolder": "اكتب رقم الصفحة",

@@ -798,7 +798,6 @@
             "bookmarkTitle": "Järjehoidja",
             "currentPage": "Praegune leht: {{- current}}",
             "currentPageTotal": "Praegune leht: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Näita raamatukogu / raamaturiiuli akent",
             "goTo": "Mine",
             "goToError": "Lehevahetust pole olemas",
             "goToPlaceHolder": "Sisesta lehe number",

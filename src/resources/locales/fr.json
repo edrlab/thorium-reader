@@ -803,7 +803,6 @@
             "bookmarkTitle": "Marque-page",
             "currentPage": "Page courante : {{- current}}",
             "currentPageTotal": "Page courante : {{- current}}/{{- total}}",
-            "detachWindowTitle": "Afficher la bibliothèque",
             "goTo": "Aller à",
             "goToError": "Cette page n'existe pas",
             "goToPlaceHolder": "Entrer un numéro de page",

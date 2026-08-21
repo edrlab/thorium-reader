@@ -206,7 +206,7 @@
         "downloads": "Pobieranie",
         "fitlerTagTitle": "Filtruj według etykiety",
         "gridTitle": "Siatka",
-        "home": "Menu biblioteki",
+        "home": "Menu półki",
         "homeTitle": "Strona główna",
         "importTitle": "Importuj publikację",
         "listTitle": "Tabela",
@@ -804,11 +804,10 @@
             "ZenModeExit": "Wyjdź z trybu Zen",
             "ZenModeTitle": "Tryb Zen",
             "annotationTitle": "Adnotacja",
-            "backHomeTitle": "Zamknij to okno czytnika (wróć do biblioteki)",
+            "backHomeTitle": "Zamknij to okno czytnika (wróć do półki)",
             "bookmarkTitle": "Zakładka",
             "currentPage": "Bieżąca strona: {{- current}}",
             "currentPageTotal": "Bieżąca strona: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Pokaż okno biblioteki",
             "goTo": "Przejdź do",
             "goToError": "Podział strony nie istnieje",
             "goToPlaceHolder": "Wpisz numer strony",
@@ -1098,7 +1097,7 @@
                     "name": "Fokus na ustawienia czytnika"
                 },
                 "FocusSearch": {
-                    "description": "Przenieś fokus klawiatury do pola wyszukiwania tekstu w oknie czytnika lub w oknie biblioteki",
+                    "description": "Przenieś fokus klawiatury do pola wyszukiwania tekstu w oknie czytnika lub w oknie półki",
                     "name": "Polecenie wyszukiwania"
                 },
                 "FocusToolbar": {

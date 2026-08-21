@@ -798,7 +798,6 @@
             "bookmarkTitle": "Bogmærke",
             "currentPage": "Nuværende side: {{- current}}",
             "currentPageTotal": "Nuværende side: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Vis bibliotek / boghylde-vindue",
             "goTo": "Gå til",
             "goToError": "Siden kunne ikke findes",
             "goToPlaceHolder": "Indtast et sidetal",

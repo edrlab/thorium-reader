@@ -224,7 +224,7 @@ function* BufferManifestToR2Publication(r2PublicationBuffer: Buffer, href: strin
     let r2PublicationJson: any;
     try {
 
-        const r2PublicationStr = r2PublicationBuffer.toString("utf-8");
+        const r2PublicationStr = r2PublicationBuffer.toString("utf8");
         r2PublicationJson = JSON.parse(r2PublicationStr);
 
     } catch (e) {

@@ -141,13 +141,17 @@ export function* init() {
         const store = diMainGet("store");
         const screenReaderActivated = store.getState().screenReader.activate;
         console.log("ipcMain.on - accessibility-support-query, sender.send - accessibility-support-changed: ", accessibilitySupportEnabled, accessibilitySupportFeatureScreenReader, screenReaderActivated);
-        e.sender.send("accessibility-support-changed", accessibilitySupportEnabled && accessibilitySupportFeatureScreenReader && screenReaderActivated);
+        const v = accessibilitySupportEnabled && accessibilitySupportFeatureScreenReader && screenReaderActivated;
+        e.sender.send("accessibility-support-changed", v);
+        e.returnValue = v; // for .sendSync()
     });
     ipcMain.on("accessibility-support-query-raw", (e) => {
         const accessibilitySupportEnabled = app.accessibilitySupportEnabled; // .isAccessibilitySupportEnabled()
         const accessibilitySupportFeatureScreenReader = app.getAccessibilitySupportFeatures().includes("screenReader");
         console.log("ipcMain.on - accessibility-support-query-raw, sender.send - accessibility-support-changed: ", accessibilitySupportEnabled, accessibilitySupportFeatureScreenReader);
-        e.sender.send("accessibility-support-changed-raw", accessibilitySupportEnabled && accessibilitySupportFeatureScreenReader);
+        const v = accessibilitySupportEnabled && accessibilitySupportFeatureScreenReader;
+        e.sender.send("accessibility-support-changed-raw", v);
+        e.returnValue = v; // for .sendSync()
     });
 
     yield call(() => app.whenReady());

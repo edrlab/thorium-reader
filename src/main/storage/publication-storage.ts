@@ -251,7 +251,7 @@ export class PublicationStorage {
         }
         this.setUserDirectoryPath(directoryPath);
         const jsonStr = JSON.stringify({ directory: [directoryPath] }, null, 4);
-        await fs.promises.writeFile(userPublicationDirectoryConfigPath, jsonStr, "utf-8");
+        await fs.promises.writeFile(userPublicationDirectoryConfigPath, jsonStr, { encoding: "utf8"});
     }
 
     public async getDirectoryPath(): Promise<string> {
@@ -293,7 +293,7 @@ export class PublicationStorage {
     // Load the persisted directory in the background and keep it only if it still exists.
     private async readUserDirectory(): Promise<void> {
         try {
-            const jsonStr = await fs.promises.readFile(userPublicationDirectoryConfigPath, "utf-8");
+            const jsonStr = await fs.promises.readFile(userPublicationDirectoryConfigPath, { encoding: "utf8"});
             const json = JSON.parse(jsonStr) as unknown;
             if (!isUserDirectoryConfig(json)) {
                 return;
@@ -356,7 +356,7 @@ export class PublicationStorage {
         const filePath = path.join(pubPath, fileName);
 
         try {
-            const jsonStrExisting_ = await fs.promises.readFile(filePath, { encoding: "utf-8" });
+            const jsonStrExisting_ = await fs.promises.readFile(filePath, { encoding: "utf8" });
             const jsonStrExisting = JSON.stringify(JSON.parse(jsonStrExisting_));
             const jsonStr = JSON.stringify(jsonObj);
             if (jsonStrExisting === jsonStr) {
@@ -370,8 +370,8 @@ export class PublicationStorage {
         await using dir = await fs.promises.mkdtempDisposable(pubPath); // same as defer and RAII: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/await_using
         const tmpFilePath = path.join(dir.path, "locator.json");
         const jsonStr = jsonStringify(jsonObj);
-        await fs.promises.writeFile(tmpFilePath, jsonStr, { encoding: "utf-8", flush: true});
-        const jsonStrCheck = await fs.promises.readFile(tmpFilePath, { encoding: "utf-8" });
+        await fs.promises.writeFile(tmpFilePath, jsonStr, { encoding: "utf8", flush: true});
+        const jsonStrCheck = await fs.promises.readFile(tmpFilePath, { encoding: "utf8" });
         if (jsonStrCheck === jsonStr) {
             await fs.promises.rename(tmpFilePath, filePath);
             debug("JSONObj written to", filePath);
@@ -393,7 +393,7 @@ export class PublicationStorage {
         const filePath = path.join(pubPath, fileName);
 
         try {
-            const jsonStr = await fs.promises.readFile(filePath, { encoding: "utf-8" });
+            const jsonStr = await fs.promises.readFile(filePath, { encoding: "utf8" });
             try {
                 const jsonObj = JSON.parse(jsonStr);
                 return jsonObj;
@@ -682,7 +682,7 @@ export class PublicationStorage {
         // try {
         // if (preservePublicationOnFileSystem) {
         //     const log = path.join(p, "error.txt");
-        //     fs.writeFileSync(log, preservePublicationOnFileSystem, { encoding: "utf-8" });
+        //     fs.writeFileSync(log, preservePublicationOnFileSystem, { encoding: "utf8" });
         //     shell.showItemInFolder(log);
 
         //     // const parent = path.dirname(p) + "_REMOVED";

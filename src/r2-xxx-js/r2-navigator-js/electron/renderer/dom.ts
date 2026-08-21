@@ -23,7 +23,7 @@ import {
     IEventPayload_R2_EVENT_PAGE_TURN, IEventPayload_R2_EVENT_READIUMCSS,
     IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN, IEventPayload_R2_EVENT_WEBVIEW_KEYUP, IKeyboardEvent,
     R2_EVENT_CAPTIONS, R2_EVENT_CLIPBOARD_COPY, R2_EVENT_DEBUG_VISUALS, R2_EVENT_FXL_CONFIGURE,
-    /* R2_EVENT_KEYBOARD_FOCUS_REQUEST,*/ R2_EVENT_MEDIA_OVERLAY_INTERRUPT,
+    R2_EVENT_KEYBOARD_FOCUS_REQUEST, R2_EVENT_MEDIA_OVERLAY_INTERRUPT,
     R2_EVENT_PAGE_TURN_RES, R2_EVENT_READIUMCSS, R2_EVENT_SHOW, R2_EVENT_WEBVIEW_KEYDOWN,
     R2_EVENT_WEBVIEW_KEYUP,
     R2_EVENT_IMAGE_CLICK, IEventPayload_R2_EVENT_IMAGE_CLICK,
@@ -37,7 +37,7 @@ import { ENABLE_EXTRA_COLUMN_SHIFT_METHOD, WebViewSlotEnum } from "../common/sty
 import { URL_PARAM_DEBUG_VISUALS } from "./common/url-params";
 import { enablePageBreakMarginIndicators, highlightsHandleIpcMessage } from "./highlight";
 import {
-    LocatorExtended, getCurrentReadingLocation, handleLinkLocator, locationHandleIpcMessage,
+    LocatorExtended, getCurrentReadingLocation, handleLinkLocator, keyboardFocusRequest, locationHandleIpcMessage,
     setWebViewStyle, shiftWebview,
 } from "./location";
 import { mediaOverlaysHandleIpcMessage, mediaOverlaysUseTTSHighlights } from "./media-overlays";
@@ -138,6 +138,15 @@ ipcRenderer.on("accessibility-support-changed", (_e, accessibilitySupportEnabled
 
     debug("accessibility-support-changed event received in navigator Electron BrowserWindow", accessibilitySupportEnabled);
     win.READIUM2.accessibilitySupportEnabled = accessibilitySupportEnabled;
+
+    const activeWebViews = win.READIUM2.getActiveWebViews();
+    for (const activeWebView of activeWebViews) {
+        debug("accessibility-support-changed 1");
+        if (activeWebView.READIUM2?.DOMisReady) {
+            debug("accessibility-support-changed 2");
+            activeWebView.send("accessibility-support-changed", accessibilitySupportEnabled).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+        }
+    }
 });
 
 // const queryParams = getURLQueryParams();
@@ -377,14 +386,11 @@ function createWebViewInternal(READIUM2: IReadiumElectronWebviewState, preloadSc
         if (event.channel === R2_EVENT_MEDIA_OVERLAY_INTERRUPT) {
             mediaOverlaysInterrupt();
         }
-        // else if (event.channel === R2_EVENT_KEYBOARD_FOCUS_REQUEST) {
-        //     // +R2_EVENT_KEYBOARD_FOCUS_REQUEST
-        //     const skip = win.READIUM2?.stealFocusDisabled;
-        //     debug("KEYBOARD FOCUS REQUEST (2) ", webview.id, !!win.document.activeElement, win.document.activeElement?.id, skip);
-        //     if (!skip) {
-        //         keyboardFocusRequest(webview);
-        //     }
-        // }
+        else if (event.channel === R2_EVENT_KEYBOARD_FOCUS_REQUEST) {
+            // +R2_EVENT_KEYBOARD_FOCUS_REQUEST
+            debug("KEYBOARD FOCUS REQUEST (2) ", webview.id, !!win.document.activeElement, win.document.activeElement?.id);
+            keyboardFocusRequest(false, webview);
+        }
         else if (event.channel === R2_EVENT_SHOW && ENABLE_EXTRA_COLUMN_SHIFT_METHOD) {
             webview.style.opacity = "1";
         } else if (event.channel === R2_EVENT_FXL_CONFIGURE) {
@@ -606,7 +612,8 @@ export function installNavigatorDOM(
     rootHtmlElementID: string,
     preloadScriptPath: string,
     location: Locator | undefined,
-    enableScreenReaderAccessibilityWebViewHardRefresh: boolean,
+    // enableScreenReaderAccessibilityWebViewHardRefresh: boolean,
+    accessibilitySupportEnabled: boolean,
     clipboardInterceptor: ((data: IEventPayload_R2_EVENT_CLIPBOARD_COPY) => void) | undefined,
     sessionInfo: string | undefined,
     rcss: IEventPayload_R2_EVENT_READIUMCSS | undefined,
@@ -645,8 +652,8 @@ export function installNavigatorDOM(
         },
         domRootElement,
         domSlidingViewport,
-        enableScreenReaderAccessibilityWebViewHardRefresh:
-            enableScreenReaderAccessibilityWebViewHardRefresh ? false : false, // force disable (underscore link!)
+        // enableScreenReaderAccessibilityWebViewHardRefresh:
+        //     enableScreenReaderAccessibilityWebViewHardRefresh ? false : false, // force disable (underscore link!)
         fixedLayoutZoomPercent: 0,
         getActiveWebViews: (): IReadiumElectronWebview[] => {
             const arr = [];
@@ -671,7 +678,7 @@ export function installNavigatorDOM(
             return _webview2;
         },
         // See "accessibility-support-changed" event cycles in MAIN and RENDERER (this BrowserWindow) processes
-        accessibilitySupportEnabled: false,
+        accessibilitySupportEnabled,
         preloadScriptPath,
         publication,
         publicationURL,
@@ -692,7 +699,6 @@ export function installNavigatorDOM(
         highlightsDrawMargin: false,
         // stealFocusDisabled: false,
     };
-    ipcRenderer.send("accessibility-support-query"); // See "accessibility-support-changed" and app.accessibilitySupportEnabled in the host app (screen reader support is conditional to detection of assistive technology AND user-configured setting
 
     if (IS_DEV) {
         debug("||||||++||||| installNavigatorDOM: ", JSON.stringify(location));
@@ -878,6 +884,12 @@ export function installNavigatorDOM(
     // win.addEventListener("resize", () => {
     // });
 
+    // See "accessibility-support-changed" and app.accessibilitySupportEnabled in the host app (screen reader support is conditional to detection of assistive technology AND user-configured setting
+    // DOMIsReady
+    debug("accessibility-support-query SYNC before: ", accessibilitySupportEnabled);
+    const accessibilitySupportEnabled_ = ipcRenderer.sendSync("accessibility-support-query") as boolean;
+    debug("accessibility-support-query SYNC after: ", accessibilitySupportEnabled_);
+    win.READIUM2.accessibilitySupportEnabled = accessibilitySupportEnabled_;
     setTimeout(() => {
         debug("installNavigatorDOM -> handleLinkLocator");
         handleLinkLocator(location, rcss);
