@@ -798,7 +798,6 @@
             "bookmarkTitle": "Kirjanmerkki",
             "currentPage": "Nykyinen sivu: {{- current}}",
             "currentPageTotal": "Nykyinen sivu: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Näytä kirjaston / kirjahyllyn ikkuna",
             "goTo": "Siirry",
             "goToError": "Sivua ei löydy",
             "goToPlaceHolder": "Syötä sivunumero",

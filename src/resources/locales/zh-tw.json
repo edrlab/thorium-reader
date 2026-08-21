@@ -793,7 +793,6 @@
             "bookmarkTitle": "書籤",
             "currentPage": "當前頁面：{{- current}}",
             "currentPageTotal": "當前頁面：{{- current}}/{{- total}}",
-            "detachWindowTitle": "顯示 書庫/書架 視窗",
             "goTo": "轉到",
             "goToError": "此頁不存在",
             "goToPlaceHolder": "輸入頁碼",

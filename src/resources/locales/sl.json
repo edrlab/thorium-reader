@@ -808,7 +808,6 @@
             "bookmarkTitle": "Zaznamek",
             "currentPage": "Trenutna stran: {{- current}}",
             "currentPageTotal": "Trenutna stran: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Prikaži knjižnico / okno knjižne police",
             "goTo": "Pojdi na",
             "goToError": "Prelom strani ne obstaja",
             "goToPlaceHolder": "Vnesi številko strani",

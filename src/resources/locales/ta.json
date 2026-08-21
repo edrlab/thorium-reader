@@ -798,7 +798,6 @@
             "bookmarkTitle": "புத்தககுறி",
             "currentPage": "தற்போதைய பக்கம்: {{- current}}",
             "currentPageTotal": "தற்போதைய பக்கம்: {{- current}}/{{- total}}",
-            "detachWindowTitle": "நூலகம் / புத்தக அலமாரி சாளரத்தைக் காட்டு",
             "goTo": "செல்",
             "goToError": "பக்க இடைவெளி இல்லை",
             "goToPlaceHolder": "பக்க எண்ணை உள்ளிடவும்",

@@ -803,7 +803,6 @@
             "bookmarkTitle": "Marcador",
             "currentPage": "Página atual: {{- current}}",
             "currentPageTotal": "Página atual: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Mostrar tela da biblioteca / estante",
             "goTo": "Ir para",
             "goToError": "Esta quebra de página não existe",
             "goToPlaceHolder": "Digite um número de página",

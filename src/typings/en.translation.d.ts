@@ -1853,7 +1853,6 @@ declare namespace typed_i18n {
     readonly "bookmarkTitle": string,
     readonly "currentPage": string,
     readonly "currentPageTotal": string,
-    readonly "detachWindowTitle": string,
     readonly "goTo": string,
     readonly "goToError": string,
     readonly "goToPlaceHolder": string,
@@ -2200,7 +2199,6 @@ declare namespace typed_i18n {
   readonly "bookmarkTitle": string,
   readonly "currentPage": string,
   readonly "currentPageTotal": string,
-  readonly "detachWindowTitle": string,
   readonly "goTo": string,
   readonly "goToError": string,
   readonly "goToPlaceHolder": string,
@@ -2226,7 +2224,6 @@ declare namespace typed_i18n {
   (_: "reader.navigation.bookmarkTitle", __?: {}): string;
   (_: "reader.navigation.currentPage", __?: {}): string;
   (_: "reader.navigation.currentPageTotal", __?: {}): string;
-  (_: "reader.navigation.detachWindowTitle", __?: {}): string;
   (_: "reader.navigation.goTo", __?: {}): string;
   (_: "reader.navigation.goToError", __?: {}): string;
   (_: "reader.navigation.goToPlaceHolder", __?: {}): string;

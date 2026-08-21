@@ -798,7 +798,6 @@
             "bookmarkTitle": "Bladwijzer",
             "currentPage": "Huidige pagina: {{- current}}",
             "currentPageTotal": "Huidige pagina: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Maak het venster los",
             "goTo": "Ga naar",
             "goToError": "Deze paginaovergang bestaat niet",
             "goToPlaceHolder": "Voer een paginanummer in",
