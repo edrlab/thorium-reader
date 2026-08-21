@@ -2,7 +2,8 @@
 
 ## Summary
 
-Version `3.5.0` was released on **xx August 2026**.
+Release Candidate 1 of version `3.5.0` was released on **13 August 2026**.
+Release Candidate 2 of version `3.5.0` was released on **21 August 2026**.
 
 This release includes the following (notable) new features, improvements and bug fixes:
 
