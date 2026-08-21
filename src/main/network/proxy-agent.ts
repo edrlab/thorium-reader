@@ -238,7 +238,7 @@ async function myGetProxyForUrl(
                 if (!_dataProxyConfig) {
                     _dataProxyConfig = null;
                 }
-                debug("*********** SYSTEM PROXY CHECK result: ", JSON.stringify(_dataProxyConfig, null, 4));
+                console.log("*********** SYSTEM PROXY CHECK result: ", JSON.stringify(_dataProxyConfig, null, 4));
             } catch (err) {
                 console.log("*********** SYSTEM PROXY CHECK error1: ", err);
                 _dataProxyConfig = null;
