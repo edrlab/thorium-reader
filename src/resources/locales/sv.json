@@ -646,7 +646,7 @@
             "tracks": "Spår"
         },
         "author": "Författare",
-        "cancelledLcp": "Den här bokens LCP-licens är annullerad.",
+        "cancelledLcp": "Den här bokens LCP-licens är upphävd.",
         "certificateRevoked": "LCP-certifikatet är återkallat.",
         "certificateSignatureInvalid": "LCP-certifikatets signatur är ogiltig.",
         "cover": {
