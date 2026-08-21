@@ -2,11 +2,12 @@
 
 ## Summary
 
-Version `3.5.0` was released on **18 August 2026**.
+Version `3.5.0` was released on **xx August 2026**.
 
 This release includes the following (notable) new features, improvements and bug fixes:
 
 * Updated translations
+* Automatic detection of network proxies: Windows via the registry, Mac via command line (`scutil --proxy`) and Linux via the classic environment variables which are also used as fallback on Windows and Mac (`HTTP(S)_PROXY`, `NO_PROXY` etc.)
 * Improved screen reader support in the graphical user interface (better ARIA labels, HTML structure)
 * Fixed screen reader support in the EPUB document rendering webview (notably: linking into popup footnotes)
 * Fine-tuned assistive technology detection to activate screen reader support, added user interface notification and user activation action
@@ -44,9 +45,23 @@ This release includes the following (notable) new features, improvements and bug
 Git commit diff since `3.4.0`:
 https://github.com/edrlab/thorium-reader/compare/v3.4.0...v3.5.0
 
-=> **373** GitHub Git commits:
+=> **387** GitHub Git commits:
 
-* [(_)](https://github.com/edrlab/thorium-reader/commit/6af3629cc7eb14891c20f7ce7c4f72621f351c1e) __(HEAD -> develop, origin/develop, origin/HEAD) fix(l10n):__ updated translations via Weblate - Chinese (Traditional Han script), Swedish (PR [#3776](https://github.com/edrlab/thorium-reader/pull/3776))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/1b4704e401913aa7516e7f3e9f0a37a205346ec8) __fix(l10n):__ npm run i18n-json && i18n-typed
+* [(_)](https://github.com/edrlab/thorium-reader/commit/508ba528a8ab62ef09219f888339b4016147b0a0) __chore(NPM):__ package dependencies update, 3 days minimum maturity period, checked with Socket Security Firewall
+* [(_)](https://github.com/edrlab/thorium-reader/commit/dd7298b174c22f17d3fa0728c412c95864a72071) __fix(l10n):__ updated translations via Weblate - Swedish, Slovenian (PR [#3792](https://github.com/edrlab/thorium-reader/pull/3792))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/bbab1e2f56bd58c070d6c8df2d5a63ede1b8310d) __chore(dev):__ [skip ci] UTF-8 encoding argument harmonization -- NodeJS `fs` API doc only states `utf8` but in practice `utf-8` is a valid alias -- NodeJS `Buffer` API doc states explicit `utf8` and `utf-8` aliases + lower/upper case variants -- NodeJS `TextEncoder` / `TextDecoder` API doc states ` utf-8` without alias -- TypeScript type definitions expose enum with `utf8` and `utf-8` => we choose `utf8` to match the `fs` API doc
+* [(_)](https://github.com/edrlab/thorium-reader/commit/c440ab0743dfd1ad3bedacca6d02a7d4ab4d4f6b) __feat(network):__ automatic proxy detection on Windows (native NodeJS addon for registry lookup), Mac (`scutil --proxy` process spawn) and Linux (`HTTP(S)_PROXY` etc. env vars) (PR [#3790](https://github.com/edrlab/thorium-reader/pull/3790))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/0e167ba46bdfce5984ba494c039c7f8e15a7c88f) __chore(release):__ test completed, libs verified ok [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/3caa578b4cdaefcc181116949a6eafdf56b17834) __chore(release):__ os/arch matrix YML fix
+* [(_)](https://github.com/edrlab/thorium-reader/commit/95479d8890b67df63fcf878ca51016df2c1fce1f) __chore(release):__ lib checksum
+* [(_)](https://github.com/edrlab/thorium-reader/commit/32c0839f0357fa55ff92d2a880886a6378d748af) __chore(CI):__ added support for [skip cd] in the GitHub Actions workflow, also bumped to version 3.5.0-rc.2 to avoid confusion when working in the active develop branch, since version 3.5.0-rc.1 was actually released
+* [(_)](https://github.com/edrlab/thorium-reader/commit/90ca032066e77e54ab26c5bf980ac32a41dc3104) __fix(l10n):__ updated Polish translation via Weblate (PR [#3786](https://github.com/edrlab/thorium-reader/pull/3786))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/1803a250a0083f760f3adf7937a50d239a27ea51) __chore(doc):__ --user-data-dir [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/294b7280615cc3ac0fd1be32b46c69187e7b68d2) __chore(CI):__ Pull Request environment for approval gate, deployment=false [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/42c4d90d7b0c2cd9d548e4646b86626870787ead) __chore(dev):__ added comments for future work on diacritics normalization in search needle text
+* [(_)](https://github.com/edrlab/thorium-reader/commit/dd655df8129b846ebe9fb30d22d46dc9c16a1725) __chore(release):__ changelog 3.5.0 [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/6af3629cc7eb14891c20f7ce7c4f72621f351c1e) __fix(l10n):__ updated translations via Weblate - Chinese (Traditional Han script), Swedish (PR [#3776](https://github.com/edrlab/thorium-reader/pull/3776))
 * [(_)](https://github.com/edrlab/thorium-reader/commit/2695d6b3a8ca234f9fe49938e4079f2ab5136e71) __fix(a11y):__ screen reader detection propagation from main process to renderer process to deep webview, also force-focus on hyperlinks to work around some screen readers moving focus out of the webview into the host Electron browser window (for example Voice Over control option command L to scan links and control option space to activate hyperlink). This addresses issues with popup footnotes in particular, as the modal viewport is focus-sensitive for escaping / back-linking and also history-back/forward. Note that Voice Over control option left/right with control option space to activate worked fine, this bug category was revealed with coontrol option command L ... NVDA support to be checked
 * [(_)](https://github.com/edrlab/thorium-reader/commit/35052bd72a305b3ced775381a11f87ed73b6b57a) __fix:__ annotation/bookmark margin indicators click is a non-capturing delegate, event passes through to document DOM and triggers HTML element 'set reading location', now only causes the application to select the targeted note
 * [(_)](https://github.com/edrlab/thorium-reader/commit/87d7fdf188d0c0058de8393c85f55d35141db429) __chore(NPM):__ package dependencies updates, 3-day minimum maturity period, checked with Socket Security Firewall
@@ -57,7 +72,7 @@ https://github.com/edrlab/thorium-reader/compare/v3.4.0...v3.5.0
 * [(_)](https://github.com/edrlab/thorium-reader/commit/db591eeb6cee0c8a831e6cc75465d5ead1a6a80f) __fix(l10n):__ updated translations via Weblate - Finnish, Swedish, Spanish (PR [#3769](https://github.com/edrlab/thorium-reader/pull/3769))
 * [(_)](https://github.com/edrlab/thorium-reader/commit/5d8e5190a6a62bdd042485e02574307fcbc5fe3b) __fix(GUI):__ filter popover arrows (PR [#3771](https://github.com/edrlab/thorium-reader/pull/3771) Fixes [#3760](https://github.com/edrlab/thorium-reader/issues/3760))
 * [(_)](https://github.com/edrlab/thorium-reader/commit/c8839f213114ec9537225d7cb4c6866689c34629) __fix(a11y):__ stricter screen-reader detection / Electron 'accessibility supported' features (Fixes [#3772](https://github.com/edrlab/thorium-reader/issues/3772) )
-* [(_)](https://github.com/edrlab/thorium-reader/commit/a151360bb116ed7f1363bf2974917f1c9b86c518) __chore(release):__ full matrix build 3.5.0-rc.1
+* [(_)](https://github.com/edrlab/thorium-reader/commit/a151360bb116ed7f1363bf2974917f1c9b86c518) __(tag:__ v3.5.0-rc.1) chore(release): full matrix build 3.5.0-rc.1
 * [(_)](https://github.com/edrlab/thorium-reader/commit/17f3d16dafa3170210e0e80f559a9b9053330aae) __chore(build):__ Electron afterPack ASAR integrity (was removed for testing)
 * [(_)](https://github.com/edrlab/thorium-reader/commit/c8e0be31586e4f33258d3d9e6ef9af4aeb2271d2) __chore(dev):__ added comments about MacOS deep app link (associated domains) [skip ci]
 * [(_)](https://github.com/edrlab/thorium-reader/commit/c2cb7d175b7a906d686c51bc2cd8a6be1fc36f94) __chore(build):__ MacOS entitlements inherit JIT
