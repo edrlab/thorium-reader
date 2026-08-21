@@ -193,7 +193,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                                 // }).catch((err: unknown) => { console.log(err); });
 
                                 // https://www.thoriumreader.com/release-notes/desktop/3-4-0/
-                                const href = "https://www.thoriumreader.com/release-notes/desktop/" + (__TH__IS_DEV__ || __TH__IS_CI__ ? "" : _APP_VERSION.replace(/\./, "-"));
+                                const href = "https://www.thoriumreader.com/release-notes/desktop/" + (__TH__IS_DEV__ || __TH__IS_CI__ ? "" : _APP_VERSION.replace(/\./g, "-"));
                                 // if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
                                 shell.openExternal(href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ });
                                 // }
