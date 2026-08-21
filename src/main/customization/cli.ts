@@ -63,7 +63,7 @@ function main() {
 
     let manifest: ICustomizationManifest;
     try {
-        manifest = JSON.parse(fs.readFileSync(path.join(inputDir, "manifest.json"), "utf-8"));
+        manifest = JSON.parse(fs.readFileSync(path.join(inputDir, "manifest.json"), { encoding: "utf8"}));
     } catch {
         console.error("manifest not found!!!");
         process.exit(1);

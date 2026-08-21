@@ -209,13 +209,13 @@ export const persistStateToFs = async (nextState: Partial<PersistRootState>, fil
 
     try {
         debug(`Persist the ${filePath} to disk`);
-        await fs.promises.writeFile(filePath, stateDataStringified, { encoding: "utf-8" });
+        await fs.promises.writeFile(filePath, stateDataStringified, { encoding: "utf8" });
     } catch (e) {
         debug("ERROR writing state.json to disk!", e);
     }
 
     try {
-        const data = await fs.promises.readFile(filePath, { encoding: "utf-8"});
+        const data = await fs.promises.readFile(filePath, { encoding: "utf8"});
         const reduxState = JSON.parse(data);
         delete (reduxState as any).__checksum;
         delete reduxState.win.registry.reader;

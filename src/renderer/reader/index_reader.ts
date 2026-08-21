@@ -53,7 +53,7 @@ ipcRenderer.on(readerIpc.CHANNEL,
                 // Initialize window
 
                 // Legacy Base64 data blobs
-                // const r2PublicationStr = Buffer.from(data.payload.reader.info.publicationView.r2PublicationBase64, "base64").toString("utf-8");
+                // const r2PublicationStr = Buffer.from(data.payload.reader.info.publicationView.r2PublicationBase64, "base64").toString("utf8");
                 // const r2PublicationJson = JSON.parse(r2PublicationStr);
                 const r2PublicationJson = data.payload.reader.info.publicationView.r2PublicationJson;
                 if (!r2PublicationJson) {

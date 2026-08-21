@@ -406,7 +406,7 @@ export class LcpManager {
     //     // } else {
     //     //     // Legacy Base64 data blobs
     //     //     // const r2PublicationBase64 = publicationDocument.resources.r2PublicationBase64;
-    //     //     // const r2PublicationStr = Buffer.from(r2PublicationBase64, "base64").toString("utf-8");
+    //     //     // const r2PublicationStr = Buffer.from(r2PublicationBase64, "base64").toString("utf8");
     //     //     // const r2PublicationJson = JSON.parse(r2PublicationStr);
     //     //     r2Publication = TaJsonDeserialize(publicationDocument.resources.r2PublicationJson, R2Publication);
     //     // }
@@ -416,7 +416,7 @@ export class LcpManager {
 
     //     //     // Legacy Base64 data blobs
     //     //     // const r2LCPBase64 = publicationDocument.resources.r2LCPBase64;
-    //     //     // const r2LCPStr = Buffer.from(r2LCPBase64, "base64").toString("utf-8");
+    //     //     // const r2LCPStr = Buffer.from(r2LCPBase64, "base64").toString("utf8");
     //     //     // const r2LCPJson = JSON.parse(r2LCPStr);
     //     //     const r2LCPJson = publicationDocument.resources.r2LCPJson;
 
@@ -437,7 +437,7 @@ export class LcpManager {
 
     //     //     // Legacy Base64 data blobs
     //     //     // const r2LSDBase64 = publicationDocument.resources.r2LSDBase64;
-    //     //     // const r2LSDStr = Buffer.from(r2LSDBase64, "base64").toString("utf-8");
+    //     //     // const r2LSDStr = Buffer.from(r2LSDBase64, "base64").toString("utf8");
     //     //     // const r2LSDJson = JSON.parse(r2LSDStr);
     //     //     const r2LSDJson = publicationDocument.resources.r2LSDJson;
     //     //     const r2LSD = TaJsonDeserialize(r2LSDJson, LSD);

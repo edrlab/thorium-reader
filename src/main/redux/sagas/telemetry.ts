@@ -66,7 +66,7 @@ try {
     if (!fs.existsSync(queueFilePath)) {
         fs.writeFileSync(queueFilePath, dataFromFileQueue, { encoding: "utf8" });
     } else {
-        dataFromFileQueue = fs.readFileSync(queueFilePath, { encoding: "utf-8" });
+        dataFromFileQueue = fs.readFileSync(queueFilePath, { encoding: "utf8" });
     }
 } catch {
     // ignore
@@ -120,14 +120,14 @@ function* collectAndSave(versionFromGlobalState: string) {
     queue = queue.slice(-10, queue.length); // keep last 10th elements
     queue.push(info);
 
-    fs.writeFileSync(queueFilePath, JSON.stringify(queue), { encoding: "utf-8" });
+    fs.writeFileSync(queueFilePath, JSON.stringify(queue), { encoding: "utf8" });
 
     return queue;
 }
 
 const clearQueue = () => {
 
-    fs.writeFileSync(queueFilePath, JSON.stringify(EMPTY_ARRAY), { encoding: "utf-8" });
+    fs.writeFileSync(queueFilePath, JSON.stringify(EMPTY_ARRAY), { encoding: "utf8" });
 };
 
 const sendTelemetry = async (queue: ITelemetryInfo[]) => {

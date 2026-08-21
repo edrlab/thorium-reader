@@ -282,7 +282,7 @@ function* opdsRequestMediaFlow({request, callback}: TregisterHttpProtocolHandler
     const schemePrefix = URL_PROTOCOL_OPDS_MEDIA + "://" + URL_HOST_COMMON + "/";
     if (request && request.url.startsWith(schemePrefix)) {
         const b64 = decodeURIComponent(request.url.slice(schemePrefix.length));
-        const url = Buffer.from(b64, "base64").toString("utf-8");
+        const url = Buffer.from(b64, "base64").toString("utf8");
 
         // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
         if (!url || !isURL(url)) {

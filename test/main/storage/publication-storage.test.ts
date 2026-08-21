@@ -52,7 +52,7 @@ const fileExists = async (filePath: string): Promise<boolean> => {
     }
 };
 
-const readUtf8 = (filePath: string): Promise<string> => fs.promises.readFile(filePath, "utf-8");
+const readUtf8 = (filePath: string): Promise<string> => fs.promises.readFile(filePath, { encoding: "utf8"});
 
 const listReplacementScratchFiles = async (directoryPath: string): Promise<string[]> =>
     (await fs.promises.readdir(directoryPath)).filter((fileName) => fileName.startsWith("__thorium-")).sort();

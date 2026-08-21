@@ -130,7 +130,7 @@ export async function findManifestFromHtmlEntryAndReturnBuffer(
 //                 }
 //         `);
 
-//         const manifestParsed = JSON.parse(manifestBuffer.toString("utf-8"));
+//         const manifestParsed = JSON.parse(manifestBuffer.toString("utf8"));
 
 //         const [b] = await findManifestFromHtmlEntryAndReturnBuffer(buff, () => manifestBuffer);
 
@@ -189,7 +189,7 @@ export async function findManifestFromHtmlEntryAndReturnBuffer(
 //                 }
 //         `);
 
-//         const manifestParsed = JSON.parse(manifestBuffer.toString("utf-8"));
+//         const manifestParsed = JSON.parse(manifestBuffer.toString("utf8"));
 
 //         const [b] = await findManifestFromHtmlEntryAndReturnBuffer(buff, (url) => {
 //             deepStrictEqual(url, "http://helloworld/");
