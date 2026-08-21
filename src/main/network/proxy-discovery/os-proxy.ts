@@ -38,9 +38,13 @@ export async function getSystemProxy(): Promise<ProxyConfig | undefined> {
 
         const noProxy = proxySettings.ExceptionsList || [];
 
-        if (proxySettings.HTTPSEnable && proxySettings.HTTPSProxy && proxySettings.HTTPSPort) {
+        // Secure HTTPS last in the resolution cascade
+        // see https://github.com/httptoolkit/os-proxy-config/issues/2#issuecomment-5367799120
+        // see https://github.com/httptoolkit/windows-system-proxy/pull/1
+        // see https://github.com/httptoolkit/os-proxy-config/pull/1/changes
+        if (proxySettings.HTTPEnable && proxySettings.HTTPProxy && proxySettings.HTTPPort) {
             return {
-                proxyUrl: `https://${proxySettings.HTTPSProxy}:${proxySettings.HTTPSPort}`,
+                proxyUrl: `http://${proxySettings.HTTPProxy}:${proxySettings.HTTPPort}`,
                 noProxy,
             };
         } else if (proxySettings.SOCKSEnable && proxySettings.SOCKSProxy && proxySettings.SOCKSPort) {
@@ -48,9 +52,9 @@ export async function getSystemProxy(): Promise<ProxyConfig | undefined> {
                 proxyUrl: `socks://${proxySettings.SOCKSProxy}:${proxySettings.SOCKSPort}`,
                 noProxy,
             };
-        } else if (proxySettings.HTTPEnable && proxySettings.HTTPProxy && proxySettings.HTTPPort) {
+        } else if (proxySettings.HTTPSEnable && proxySettings.HTTPSProxy && proxySettings.HTTPSPort) {
             return {
-                proxyUrl: `http://${proxySettings.HTTPProxy}:${proxySettings.HTTPPort}`,
+                proxyUrl: `http://${proxySettings.HTTPSProxy}:${proxySettings.HTTPSPort}`, // not HTTPS:// !
                 noProxy,
             };
         } else {

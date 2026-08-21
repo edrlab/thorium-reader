@@ -27,7 +27,7 @@ export async function getWindowsSystemProxy(): Promise<WindowsProxySettings | un
         registry.HKEY.HKEY_CURRENT_USER,
         "Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings",
     );
-    console.log("***********--------- REGISTRY VALUES:", JSON.stringify(proxyValues, null, 4));
+    // console.log("***********--------- REGISTRY VALUES:", JSON.stringify(proxyValues, null, 4));
 
     const proxyEnabled = getValue(proxyValues, "ProxyEnable");
     const proxyServer = getValue(proxyValues, "ProxyServer");
@@ -61,12 +61,16 @@ export async function getWindowsSystemProxy(): Promise<WindowsProxySettings | un
                 .split(";")
                 .map((proxyPair) => proxyPair.split("=") as [string, string]));
 
-        const proxyUrl = proxies["https"]
-            ? `https://${proxies["https"]}`
+        // Secure HTTPS last in the resolution cascade
+        // see https://github.com/httptoolkit/os-proxy-config/issues/2#issuecomment-5367799120
+        // see https://github.com/httptoolkit/windows-system-proxy/pull/1
+        // see https://github.com/httptoolkit/os-proxy-config/pull/1/changes
+        const proxyUrl = proxies["http"]
+            ? `http://${proxies["http"]}`
             : proxies["socks"]
                 ? `socks://${proxies["socks"]}`
-                : proxies["http"]
-                    ? `http://${proxies["http"]}`
+                : proxies["https"]
+                    ? `http://${proxies["https"]}` // not HTTPS:// !
                     : undefined;
 
         if (!proxyUrl) {
