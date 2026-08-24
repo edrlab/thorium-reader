@@ -208,7 +208,7 @@ export const initProtocols = () => {
     debug(request);
     const urlPathDecoded = requestUrl.pathname.split("/").map((segment) => {
       return segment?.length ? tryDecodeURIComponent(segment) : "";
-    }).join("/");
+    }).join("/").replace(/^\/+([a-zA-Z]:)/, "$1");
     debug("HTTPS_APP_ASSETS path", urlPathDecoded);
     const filePath = path.resolve(urlPathDecoded);
     const relativePath = path.relative(appAssetRootPath, filePath);
