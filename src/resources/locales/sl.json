@@ -1001,104 +1001,104 @@
                     "name": "Ustvari pripis"
                 },
                 "AnnotationsCreateQuick": {
-                    "description": "",
-                    "name": ""
+                    "description": "Hitro ustvarite pripis za izbrano besedilo z nazadnje uporabljeno barvo in vrsto označevanja (opomba in oznaka bosta prazni)",
+                    "name": "Ustvari hiter pripis"
                 },
                 "AnnotationsToggleMargin": {
-                    "description": "",
-                    "name": ""
+                    "description": "Izmenjujte vizualne indikatorje pripisov in zaznamkov, bodisi na robu dokumenta bodisi v besedilu",
+                    "name": "Preklopi rob pripisov"
                 },
                 "AudioNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "Premakni se naprej na naslednji zvočni segment v pripovedovanju (EPUB3 medijski prekrivni elementi, pretvorba besedila v govor ali vnaprej posneta zvočna knjiga)",
+                    "name": "Naslednji zvočni segment"
                 },
                 "AudioNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Premakni se naprej na naslednji zvočni segment v pripovedovanju (prekrivne plasti medijev EPUB3, branje besedila v govor ali vnaprej posneta zvočna knjiga). S tem preskoči vse strukture, ki se jim je trenutno mogoče izogniti",
+                    "name": "Naslednji zvočni segment (Esc)"
                 },
                 "AudioPlayPause": {
-                    "description": "",
-                    "name": ""
+                    "description": "Preklopi predvajanje/premor pripovedovanja (EPUB3 medijske prekrivne plasti, branje besedila v govor ali vnaprej posneta zvočna knjiga)",
+                    "name": "Predvajanje/premor zvoka"
                 },
                 "AudioPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "Premik nazaj na prejšnji zvočni segment v pripovedovanju (EPUB3 medijski prekrivni elementi, branje besedila v govor ali vnaprej posneta zvočna knjiga)",
+                    "name": "Prejšnji zvočni segment"
                 },
                 "AudioPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Premakni se nazaj na prejšnji zvočni segment v pripovedovanju (EPUB3 medijski prekrivni elementi, branje besedila v govor ali vnaprej posneta zvočna knjiga). S tem preskočite vse strukture, ki se jim je trenutno mogoče izogniti",
+                    "name": "Prejšnji zvočni segment (Esc)"
                 },
                 "AudioSpeedDecrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Zmanjšajte hitrost predvajanja zvoka v prekrivnih plasteh medijev EPUB3 ali hitrost branja govora s pretvorbo besedila v besedilo",
+                    "name": "Zmanjšajte hitrost zvoka"
                 },
                 "AudioSpeedIncrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Povečajte hitrost predvajanja zvoka v medijskih prekrivnih slojih EPUB3 ali hitrost branja govora s pretvorbo besedila v besedilo",
+                    "name": "Povečaj hitrost zvoka"
                 },
                 "AudioSpeedReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Ponastavitev hitrosti predvajanja zvoka v prekrivnih plasteh medijev EPUB3 ali hitrosti branja govora s pretvorbo besedila v besedilo",
+                    "name": "Ponastavi hitrost zvoka"
                 },
                 "AudioStop": {
-                    "description": "",
-                    "name": ""
+                    "description": "Ustavitev trenutnega zvoka (prekrivne plasti medijev EPUB3, branje besedila v govor ali vnaprej posneta zvočna knjiga)",
+                    "name": "Ustavi zvok"
                 },
                 "CloseReader": {
-                    "description": "",
-                    "name": ""
+                    "description": "Zapri okno bralnika in se vrni v knjižnico",
+                    "name": "Zapri bralnik"
                 },
                 "FXLZoomIn": {
-                    "description": "",
-                    "name": ""
+                    "description": "Povečajte na eno stran s fiksno postavitvijo ali dvostransko razporeditev.",
+                    "name": "Povečava FXL"
                 },
                 "FXLZoomOut": {
-                    "description": "",
-                    "name": ""
+                    "description": "Pomanjšajte fiksno postavitev ene strani ali dvostranske razporeditve.",
+                    "name": "Pomanjšaj FXL"
                 },
                 "FXLZoomReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Ponastavi povečavo na fiksni postavitvi ene strani ali dvostranske razporeditve.",
+                    "name": "Ponastavi povečavo FXL"
                 },
                 "FocusMain": {
-                    "description": "",
-                    "name": ""
+                    "description": "Premakni fokus tipkovnice na »glavno« znamenitost v grafičnem uporabniškem vmesniku. V oknu bralnika se s tem premakne na vsebino publikacije",
+                    "name": "Osredotoči se na glavno vsebino"
                 },
                 "FocusMainDeep": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika to premakne fokus tipkovnice na vsebino publikacije z uporabo zanesljivejše tehnike za bralnike zaslona",
+                    "name": "Globok fokus na glavni vsebini"
                 },
                 "FocusReaderGotoPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Premakni fokus tipkovnice na razdelek »pojdi na stran« v navigacijski plošči okna bralnika",
+                    "name": "Osredotoči se na »Pojdi na stran«"
                 },
                 "FocusReaderNavigation": {
-                    "description": "",
-                    "name": ""
+                    "description": "Premakni fokus tipkovnice na navigacijsko ploščo okna bralnika",
+                    "name": "Osredotoči se na navigacijsko ploščo"
                 },
                 "FocusReaderNavigationAnnotations": {
-                    "description": "",
-                    "name": ""
+                    "description": "Premakni fokus tipkovnice na razdelek »pripisi« v navigacijski plošči okna bralnika",
+                    "name": "Osredotoči se na »Pripise«"
                 },
                 "FocusReaderNavigationBookmarks": {
-                    "description": "",
-                    "name": ""
+                    "description": "Premakni fokus tipkovnice na razdelek »zaznamki« v navigacijski plošči okna bralnika",
+                    "name": "Osredotoči se na »Zaznamke«"
                 },
                 "FocusReaderNavigationSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "Premakni fokus tipkovnice na razdelek »iskanje« v navigacijski plošči okna bralnika",
+                    "name": "Osredotoči se na »Iskanje«"
                 },
                 "FocusReaderNavigationTOC": {
-                    "description": "",
-                    "name": ""
+                    "description": "Premakni fokus tipkovnice na razdelek »Kazalo« v navigacijski plošči okna bralnika",
+                    "name": "Osredotoči se na 'kazalo vsebine'"
                 },
                 "FocusReaderSettings": {
-                    "description": "",
-                    "name": ""
+                    "description": "Premakni fokus tipkovnice na ploščo z nastavitvami okna bralnika (nastavitve prikaza itd.)",
+                    "name": "Osredotoči se na nastavitve bralnika"
                 },
                 "FocusSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "Premakni fokus tipkovnice na iskalni vnos besedila v oknu bralnika ali v oknu knjižnice, s čimer se išče po knjižni polici ali aktivnem viru OPDS",
+                    "name": "Iskalni ukaz"
                 },
                 "FocusToolbar": {
                     "description": "",
