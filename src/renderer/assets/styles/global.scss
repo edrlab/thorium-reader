@@ -428,6 +428,10 @@ nav + nav + .breadcrumb + .main {
         justify-content: center;
         gap: 10px;
 
+        &::after {
+          content: none;
+        }
+
         svg {
           position: relative;
           width: 16px;
