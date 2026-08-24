@@ -32,7 +32,7 @@ import { getTranslator } from "readium-desktop/common/services/translator";
 import { getStore } from "../createStore";
 import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
 import { ImageClickManagerImgViewerOnly } from "./ImageClickManagerViewerOnly";
-import { URL_PROTOCOL_FILEX, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
+import { URL_HOST_APP_ASSETS, URL_PROTOCOL_FILEX, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
 
 export default class App extends React.Component<{}, undefined> {
 
@@ -59,7 +59,10 @@ export default class App extends React.Component<{}, undefined> {
                 } else {
                     rcssPath = "src/resources/ReadiumCSS";
 
-                    if (_RENDERER_READER_BASE_URL === `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/`) {
+                    if (
+                        _RENDERER_READER_BASE_URL === `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/` ||
+                        _RENDERER_READER_BASE_URL === `https://${URL_HOST_APP_ASSETS}/`
+                    ) {
 
                         // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
                         rcssPath = `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/` + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", rcssPath)).replace(/\\/g, "/").split("/").map((segment) => encodeURIComponent_RFC3986(segment)).join("/");

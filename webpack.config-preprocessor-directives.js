@@ -15,9 +15,13 @@ console.log(`PREPROCESSOR nodeEnv: ${nodeEnv} ${isDev}`);
 
 const isContinuousIntegrationDeploy = process.env.RELEASE_TAG ? true : false;
 
-const rendererLibraryBaseUrl = isDev ? "http://localhost:" + portApp + "/" : "filex://0.0.0.0/";
+// Firebase SDK needs to used https instead of a custom scheme
+const rendererAppAssetsBaseUrl = "https://thorium-reader.localhost/";
+// const rendererAppAssetsBaseUrl = "filex://0.0.0.0/";
 
-const rendererReaderBaseUrl = isDev ? "http://localhost:" + portReader + "/" : "filex://0.0.0.0/";
+const rendererLibraryBaseUrl = isDev ? "http://localhost:" + portApp + "/" : rendererAppAssetsBaseUrl;
+
+const rendererReaderBaseUrl = isDev ? "http://localhost:" + portReader + "/" : rendererAppAssetsBaseUrl;
 
 const rendererPdfWebviewBaseUrl = isDev ? "http://localhost:" + portPdfWebview + "/" : "filex://0.0.0.0/";
 
@@ -50,6 +54,25 @@ const telemetryUrl = isPackaged
     : "";
 const telemetrySecret = process.env.THORIUM_TELEMETRY_SECRET || "";
 const telemetrySecretData = process.env.THORIUM_TELEMETRY_SECRET_DATA || "";
+const firebaseAnalyticsConfig = {
+    apiKey: process.env.THORIUM_FIREBASE_API_KEY || "",
+    appId: process.env.THORIUM_FIREBASE_APP_ID || "",
+    authDomain: process.env.THORIUM_FIREBASE_AUTH_DOMAIN || "",
+    measurementId: process.env.THORIUM_FIREBASE_MEASUREMENT_ID || "",
+    messagingSenderId: process.env.THORIUM_FIREBASE_MESSAGING_SENDER_ID || "",
+    projectId: process.env.THORIUM_FIREBASE_PROJECT_ID || "",
+    storageBucket: process.env.THORIUM_FIREBASE_STORAGE_BUCKET || "",
+};
+const firebaseAnalyticsExplicitlyEnabled =
+    ["1", "true"].includes((process.env.THORIUM_FIREBASE_ENABLED || "0").toLowerCase());
+const firebaseAnalyticsEnabled =
+    firebaseAnalyticsExplicitlyEnabled &&
+    !!firebaseAnalyticsConfig.apiKey &&
+    !!firebaseAnalyticsConfig.appId &&
+    !!firebaseAnalyticsConfig.measurementId &&
+    !!firebaseAnalyticsConfig.projectId;
+const firebaseAnalyticsDebug =
+    ["1", "true"].includes((process.env.THORIUM_FIREBASE_DEBUG || "0").toLowerCase());
 const isURLRequireTldFalse =
     !["0", "false"].includes((process.env.THORIUM_ISURL_REQUIRE_TLD_FALSE || "0").toLowerCase());
 
@@ -79,6 +102,9 @@ const data = {
     __TH__TELEMETRY_URL__: JSON.stringify(telemetryUrl),
     __TH__TELEMETRY_SECRET__: JSON.stringify(telemetrySecret),
     __TH__TELEMETRY_SECRETDATA__: JSON.stringify(telemetrySecretData),
+    __TH__FIREBASE_ANALYTICS_CONFIG__: JSON.stringify(firebaseAnalyticsConfig),
+    __TH__FIREBASE_ANALYTICS_ENABLED__: JSON.stringify(firebaseAnalyticsEnabled),
+    __TH__FIREBASE_ANALYTICS_DEBUG__: JSON.stringify(firebaseAnalyticsDebug),
     __TH__CUSTOMIZATION_PROFILE_PUB_KEY__: JSON.stringify(pubKey),
     __TH__CUSTOMIZATION_PROFILE_PRIVATE_KEY__: JSON.stringify(privateKey),
 

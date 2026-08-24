@@ -11,7 +11,7 @@ import * as ReactDOM from "react-dom";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { type ActionWithSender } from "readium-desktop/common/models/sync";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
-import { winCommonActions } from "readium-desktop/common/redux/actions";
+import { analyticsActions, winCommonActions } from "readium-desktop/common/redux/actions";
 
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {
@@ -21,8 +21,10 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { createStoreFromDi, getStore } from "./createStore";
 import moment from "moment";
+import { initFirebaseAnalytics, logFirebaseEvent } from "readium-desktop/renderer/common/analytics/firebase";
+import { _FIREBASE_ANALYTICS_DEBUG } from "readium-desktop/preprocessor-directives";
 
-if (__TH__IS_DEV__) {
+if (__TH__IS_DEV__ || _FIREBASE_ANALYTICS_DEBUG) {
     // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
     const cr = require("@r2-navigator-js/electron/renderer/common/console-redirect");
     // const releaseConsoleRedirect =
@@ -55,6 +57,32 @@ initGlobalConverters_OPDS();
 initGlobalConverters_SHARED();
 initGlobalConverters_GENERIC();
 
+const logInitialAnalyticsEvents = async (store: ReturnType<typeof getStore>) => {
+
+    const { analytics } = store.getState();
+
+    const initialized = await initFirebaseAnalytics(analytics.userId);
+    if (!initialized) {
+        return;
+    }
+
+    if (analytics.appFirstOpen) {
+        const logged = await logFirebaseEvent("app_first_open");
+        if (logged) {
+            store.dispatch(analyticsActions.appFirstOpenDone.build());
+        }
+    }
+
+    const appUpdateParams = store.getState().analytics.appUpdate;
+    if (appUpdateParams) {
+        const appUpdateLogged = await logFirebaseEvent("app_update", appUpdateParams);
+        const appVersionUpdatedLogged = await logFirebaseEvent("app_version_updated", appUpdateParams);
+        if (appUpdateLogged && appVersionUpdatedLogged) {
+            store.dispatch(analyticsActions.appUpdateDone.build());
+        }
+    }
+};
+
 // console.log(__dirname);
 // console.log((global as any).__dirname);
 // const lcpNativePluginPath = path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", "external-assets", "lcp.node"));
@@ -81,6 +109,7 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
                 publication: data.payload.publication,
                 session: data.payload.session,
                 screenReader: data.payload.screenReader,
+                analytics: data.payload.analytics,
                 creator: data.payload.creator,
                 lcp: data.payload.lcp,
                 noteExport: data.payload.noteExport,
@@ -93,6 +122,7 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
             // console.log("MOMENT SET LOCALE START", localeUsedByMoment);
 
             store.dispatch(winCommonActions.initRequest.build(data.payload.win.identifier));
+            logInitialAnalyticsEvents(store).catch((err) => console.log(err));
 
             break;
     }

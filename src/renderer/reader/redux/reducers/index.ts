@@ -58,10 +58,12 @@ import { ICustomizationProfileHistory } from "readium-desktop/common/redux/state
 import { customizationPackageWelcomeScreenReducer } from "readium-desktop/common/redux/reducers/customization/welcomeScreen";
 import { ICustomizationManifest } from "readium-desktop/common/readium/customization/manifest";
 import { readerPdfConfigReducer } from "readium-desktop/common/redux/reducers/reader/pdfConfig";
+import { analyticsReducer } from "readium-desktop/common/redux/reducers/analytics";
 
 export const rootReducer = () => {
 
     return combineReducers({ // IReaderRootState
+        analytics: analyticsReducer,
         versionUpdate: versionUpdateReducer,
         theme: themeReducer,
         session: sessionReducer,

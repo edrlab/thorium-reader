@@ -21,7 +21,7 @@ import { initSessions as initSessionsNoHTTP } from "./main/streamer/streamerNoHt
 import { createStoreFromDi } from "./main/di";
 import { appActions } from "./main/redux/actions";
 import { app } from "electron";
-import { _APP_NAME, _APP_VERSION, _PACK_NAME } from "readium-desktop/preprocessor-directives";
+import { _APP_NAME, _APP_VERSION, _FIREBASE_ANALYTICS_DEBUG, _PACK_NAME } from "readium-desktop/preprocessor-directives";
 import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
 import { appendFileSyncWithRotation } from "readium-desktop/utils/log";
 
@@ -42,7 +42,7 @@ import { appendFileSyncWithRotation } from "readium-desktop/utils/log";
 // //     console.log("#".repeat(2000), normalizeUrl("//www.sindresorhus.com:80/../baz?b=bar&a=foo"));
 // // });
 
-if (__TH__IS_PACKAGED__) {
+if (__TH__IS_PACKAGED__ && !_FIREBASE_ANALYTICS_DEBUG) {
     // Disable debug in packaged app
     delete process.env.DEBUG;
     debug_.disable();
@@ -56,6 +56,9 @@ if (__TH__IS_PACKAGED__) {
     console.error = (_message?: IArrayWinRegistryReaderState,any, ..._optionalParams: any[]) => { return; };
     console.info = (_message?: any, ..._optionalParams: any[]) => { return; };
      */
+} else if (__TH__IS_PACKAGED__ && _FIREBASE_ANALYTICS_DEBUG) {
+    process.env.DEBUG = process.env.DEBUG || "readium-desktop:*";
+    debug_.enable(process.env.DEBUG);
 }
 
 // Logger

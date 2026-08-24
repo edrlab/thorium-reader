@@ -19,6 +19,7 @@ import {
     screenReaderActions,
     opdsActions,
     settingsActions,
+    analyticsActions,
 } from "readium-desktop/common/redux/actions";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
@@ -113,6 +114,9 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     catalogActions.setUserDirectory.ID,
     catalogActions.openDefaultDirectory.ID,
     catalogActions.openUserDirectory.ID,
+
+    analyticsActions.appFirstOpenDone.ID,
+    analyticsActions.appUpdateDone.ID,
 ];
 
 export const reduxSyncMiddleware: Middleware

@@ -15,6 +15,7 @@ import {
     screenReaderActions,
     opdsActions,
     winCommonActions,
+    analyticsActions,
 } from "readium-desktop/common/redux/actions";
 import { syncFactory } from "readium-desktop/renderer/common/redux/middleware/syncFactory";
 
@@ -91,6 +92,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     opdsActions.refresh.ID,
 
     winCommonActions.initSuccess.ID,
+    analyticsActions.appFirstOpenDone.ID,
+    analyticsActions.appUpdateDone.ID,
     
     catalogActions.setUserDirectory.ID,
     catalogActions.openDefaultDirectory.ID,

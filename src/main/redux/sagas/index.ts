@@ -7,7 +7,7 @@
 
 import debug_ from "debug";
 import { app, dialog, shell } from "electron";
-import { keyboardActions, versionUpdateActions } from "readium-desktop/common/redux/actions";
+import { analyticsActions, keyboardActions, versionUpdateActions } from "readium-desktop/common/redux/actions";
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put, take } from "redux-saga/effects";
@@ -172,6 +172,9 @@ export function* rootSaga() {
     // spawn telemetry after library window ready and initialized
     // but with the hydrated reduxState version before his update from the appActions.initSuccess action with _APP_VERSION
     const versionFromHydratedGlobalState = yield* selectTyped((state: RootState) => state.version);
+    if (versionFromHydratedGlobalState && versionFromHydratedGlobalState !== _APP_VERSION) {
+        yield put(analyticsActions.appUpdateDetected.build(versionFromHydratedGlobalState, _APP_VERSION));
+    }
 
     // app initialized
     yield put(appActions.initSuccess.build());
@@ -188,6 +191,7 @@ export function* rootSaga() {
     }
 
     // spawn telemetry in background
+    // but with the hydrated reduxState version before his update from the appActions.initSuccess action with _APP_VERSION
     yield* spawnTyped(telemetry.collectSaveAndSend, versionFromHydratedGlobalState);
 }
 

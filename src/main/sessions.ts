@@ -7,7 +7,7 @@
 
 import { clearDefaultSession, clearSession, clearWebviewSession, getWebViewSession } from "@r2-navigator-js/electron/main/sessions";
 import { SESSION_PARTITION_AUTH, SESSION_PARTITION_PDFJS, SESSION_PARTITION_PDFJSEXTRACT } from "readium-desktop/common/sessions";
-import { URL_PROTOCOL_PDFJSEXTRACT, URL_PROTOCOL_FILEX, URL_PROTOCOL_STORE, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
+import { URL_HOST_APP_ASSETS, URL_PROTOCOL_PDFJSEXTRACT, URL_PROTOCOL_FILEX, URL_PROTOCOL_STORE, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
 import debug_ from "debug";
 import { net, session } from "electron";
 import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
@@ -193,6 +193,35 @@ export const initPermissions = () => {
 };
 
 export const initProtocols = () => {
+
+  const appAssetRootPath = path.resolve(__dirname);
+
+  const protocolHandler_HTTPS = (
+    request: Request,
+  ): Response | Promise<Response> => {
+    const requestUrl = new URL(request.url);
+    if (requestUrl.host !== URL_HOST_APP_ASSETS) {
+      debug("HTTPS EXTERNAL REQUEST", request.url);
+      return net.fetch(request, { bypassCustomProtocolHandlers: true });
+    }
+    debug("---protocolHandler_HTTPS_APP_ASSETS");
+    debug(request);
+    const urlPathDecoded = requestUrl.pathname.split("/").map((segment) => {
+      return segment?.length ? tryDecodeURIComponent(segment) : "";
+    }).join("/");
+    debug("HTTPS_APP_ASSETS path", urlPathDecoded);
+    const filePath = path.resolve(urlPathDecoded);
+    const relativePath = path.relative(appAssetRootPath, filePath);
+    if (relativePath.startsWith("..") || path.isAbsolute(relativePath)) {
+      debug("HTTPS_APP_ASSETS rejected path outside app root", appAssetRootPath, filePath);
+      return new Response("Forbidden", { status: 403 });
+    }
+    const filePathUrl = pathToFileURL(filePath).toString();
+    debug("HTTPS_APP_ASSETS file", filePathUrl);
+    return net.fetch(filePathUrl);
+  };
+  session.defaultSession.protocol.handle("https", protocolHandler_HTTPS);
+  // protocol.unhandle("https");
 
   const protocolHandler_FILEX = (
     request: Request,

@@ -17,6 +17,7 @@ export const URL_PROTOCOL_PDFJSEXTRACT = "pdfjs-extract";
 export const URL_PROTOCOL_OPDS_MEDIA = "opds-media";
 export const URL_PROTOCOL_FILEX = "filex";
 export const URL_PROTOCOL_STORE = "store";
+export const URL_HOST_APP_ASSETS = "thorium-reader.localhost";
 
 export const URL_PROTOCOL_OPDS = "opds"; // MUST be verbatim "opds"
 export const URL_HOST_OPDS_AUTH = "authorize"; // MUST be verbatim "authorize"
