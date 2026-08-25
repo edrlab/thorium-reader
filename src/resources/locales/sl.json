@@ -1101,107 +1101,107 @@
                     "name": "Iskalni ukaz"
                 },
                 "FocusToolbar": {
-                    "description": "",
-                    "name": ""
+                    "description": "Premakni fokus tipkovnice na območje mejnika grafičnega uporabniškega vmesnika tik pred »povezavo za preskok« (ki sama premakne fokus na glavno območje vsebine okna knjižnice ali bralnika)",
+                    "name": "Fokus na orodni vrstici"
                 },
                 "NavigateNextChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika se pomaknite na naslednji dokument v vrstnem redu branja publikacije (npr. poglavje na hrbtni strani knjige). Upoštevajte, da obstaja alternativna bližnjica na tipkovnici poleg te privzete",
+                    "name": "Pojdi na naslednje poglavje"
                 },
                 "NavigateNextChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika se pomaknite na naslednji dokument v vrstnem redu branja publikacije (npr. poglavje na hrbtu knjige). To je alternativna bližnjica na tipkovnici namesto privzete",
+                    "name": "Pojdi na naslednje poglavje (alternativa)"
                 },
                 "NavigateNextHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika skoči en korak naprej v zgodovini navigacije",
+                    "name": "Pojdi na naslednjo zgodovino"
                 },
                 "NavigateNextLibraryPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu knjižnice prikaži naslednjo stran oštevilčenega seznama publikacij. Upoštevajte, da obstaja alternativna bližnjica na tipkovnici poleg te privzete",
+                    "name": "Pojdi na naslednjo stran knjižnice"
                 },
                 "NavigateNextLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu knjižnice prikaži naslednjo stran oštevilčenega seznama publikacij. To je alternativna bližnjica na tipkovnici namesto privzete",
+                    "name": "Pojdi na naslednjo stran knjižnice (alternativa)"
                 },
                 "NavigateNextOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu knjižnice za kataloge/vire OPDS sledite naslednji povezavi za oštevilčenje strani. Upoštevajte, da obstaja alternativna bližnjica na tipkovnici poleg te privzete",
+                    "name": "Pojdi na naslednjo stran OPDS"
                 },
                 "NavigateNextOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu knjižnice za kataloge/vire OPDS sledite naslednji povezavi za oštevilčenje strani. To je alternativna bližnjica na tipkovnici namesto privzete",
+                    "name": "Pojdi na naslednjo stran OPDS (alternativa)"
                 },
                 "NavigateNextPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika se pomaknite na naslednjo »stran« v publikaciji. Upoštevajte, da obstaja alternativna bližnjica na tipkovnici poleg te privzete",
+                    "name": "Pojdi na naslednjo stran"
                 },
                 "NavigateNextPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika se pomaknite na naslednjo »stran« v publikaciji. To je alternativna bližnjica na tipkovnici namesto privzete",
+                    "name": "Pojdi na naslednjo stran (alternativa)"
                 },
                 "NavigatePreviousChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika se pomaknite na prejšnji dokument v vrstnem redu branja publikacije (npr. poglavje na hrbtni strani knjige). Upoštevajte, da obstaja alternativna bližnjica na tipkovnici poleg te privzete",
+                    "name": "Pojdi na prejšnje poglavje"
                 },
                 "NavigatePreviousChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika se pomaknite na prejšnji dokument v vrstnem redu branja publikacije (npr. poglavje na hrbtu knjige). To je alternativna bližnjica na tipkovnici namesto privzete",
+                    "name": "Pojdi na prejšnje poglavje (alternativa)"
                 },
                 "NavigatePreviousHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika skoči en korak nazaj v zgodovini navigacije",
+                    "name": "Pojdi na prejšnjo zgodovino"
                 },
                 "NavigatePreviousLibraryPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu knjižnice prikaži prejšnjo stran oštevilčenega seznama publikacij. Upoštevajte, da obstaja alternativna bližnjica na tipkovnici poleg te privzete",
+                    "name": "Pojdi na prejšnjo stran knjižnice"
                 },
                 "NavigatePreviousLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu knjižnice prikaži prejšnjo stran oštevilčenega seznama publikacij. To je alternativna bližnjica na tipkovnici namesto privzete",
+                    "name": "Pojdi na prejšnjo stran knjižnice (alternativa)"
                 },
                 "NavigatePreviousOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu knjižnice za kataloge/vire OPDS sledite prejšnji povezavi za oštevilčenje strani. Upoštevajte, da obstaja alternativna bližnjica na tipkovnici poleg te privzete",
+                    "name": "Pojdi na prejšnjo stran OPDS"
                 },
                 "NavigatePreviousOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu knjižnice za kataloge/vire OPDS sledite prejšnji povezavi za oštevilčenje strani. To je alternativna bližnjica na tipkovnici za privzeto",
+                    "name": "Pojdi na prejšnjo stran OPDS (alternativa)"
                 },
                 "NavigatePreviousPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika se pomaknite na prejšnjo »stran« v publikaciji. Upoštevajte, da obstaja alternativna bližnjica na tipkovnici poleg te privzete",
+                    "name": "Pojdi na prejšnjo stran"
                 },
                 "NavigatePreviousPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika se pomaknite na prejšnjo »stran« v publikaciji. To je alternativna bližnjica na tipkovnici namesto privzete",
+                    "name": "Pojdi na prejšnjo stran (alternativa)"
                 },
                 "NavigateToBegin": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika pojdite na začetek publikacije",
+                    "name": "Pojdi na začetek"
                 },
                 "NavigateToEnd": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika pojdite na konec publikacije",
+                    "name": "Pojdi na konec"
                 },
                 "OpenReaderInfo": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika odprite pogovorno okno z informacijami o publikaciji",
+                    "name": "Prikaz informacij o publikaciji"
                 },
                 "OpenReaderInfoWhereAmI": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika odprite pojavno pogovorno okno, ki prikazuje informacije o publikaciji, in s tipkovnico pomaknite fokus na razdelek, ki prikazuje kontekst trenutne lokacije branja",
+                    "name": "Prikaži informacije o publikaciji, Prikaži lokacijo branja"
                 },
                 "Print": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika odprite pogovorno okno za tiskanje",
+                    "name": "Natisni"
                 },
                 "SearchNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "V iskalnem orodju okna bralnika pojdite na naslednji rezultat iskanja. Upoštevajte, da obstaja alternativna bližnjica na tipkovnici poleg te privzete",
+                    "name": "Naslednji rezultat iskanja"
                 },
                 "SearchNextAlt": {
-                    "description": "",
+                    "description": "V iskalnem orodju v oknu bralnika pojdite na naslednji rezultat iskanja. To je alternativna bližnjica na tipkovnici namesto privzete",
                     "name": ""
                 },
                 "SearchPrevious": {
