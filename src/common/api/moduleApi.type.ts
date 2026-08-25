@@ -10,8 +10,10 @@ type TPublicationApi = "publication";
 type TOpdsApi = "opds";
 type TApiappApi = "apiapp";
 type THttpBrowserApi = "httpbrowser";
+type TAnalyticsApi = "analytics";
 export type TModuleApi =
     TPublicationApi |
     TOpdsApi |
     TApiappApi |
-    THttpBrowserApi
+    THttpBrowserApi |
+    TAnalyticsApi

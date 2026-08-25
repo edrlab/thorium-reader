@@ -47,6 +47,10 @@ declare const __TH__SKIP_LCP_LSD__: boolean;
 declare const __TH__IS_VSCODE_LAUNCH__: boolean;
 declare const __TH__IS_CI__: boolean;
 declare const __TH__CUSTOMIZATION_PROFILE_PRIVATE_KEY__: string;
+declare const __TH__FIREBASE_MEASUREMENT_ID__: string;
+declare const __TH__FIREBASE_MEASUREMENT_PROTOCOL_API_SECRET__: string;
+declare const __TH__FIREBASE_MEASUREMENT_PROTOCOL_ENDPOINT__: string;
+declare const __TH__FIREBASE_MEASUREMENT_PROTOCOL_DEBUG_ENDPOINT__: string;
 // declare const __TH__CUSTOMIZATION_PROFILE_PUB_KEY__: string;
 
 // declare module "bindings";
