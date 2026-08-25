@@ -26,7 +26,7 @@ import {
 
 import { getPublication } from "../../api/publication/getPublication";
 import { TIMEOUT_BROWSER_WINDOW_INITIALISATION, WINDOW_MIN_HEIGHT, WINDOW_MIN_WIDTH } from "readium-desktop/common/constant";
-import { URL_HOST_APP_ASSETS, URL_PROTOCOL_FILEX, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
+import { URL_HOST_APP_ASSETS, URL_PROTOCOL_APP_ASSETS, URL_PROTOCOL_FILEX, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
 import { readerNewWindowState } from "../../reader";
 import { winCommonActions } from "readium-desktop/common/redux/actions";
 import { assertUUIDv4 } from "readium-desktop/utils/uuid";
@@ -99,6 +99,7 @@ export function* createReaderWindow(publicationIdentifier: string, manifestUrl: 
     const htmlPath = "index_reader.html";
     if (
         readerUrl === `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/` ||
+        readerUrl === `${URL_PROTOCOL_APP_ASSETS}://${URL_HOST_COMMON}/` ||
         readerUrl === `https://${URL_HOST_APP_ASSETS}/`
     ) {
         // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)

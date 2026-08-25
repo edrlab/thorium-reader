@@ -25,7 +25,7 @@ import { put } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 
 import { WINDOW_MIN_HEIGHT, WINDOW_MIN_WIDTH } from "readium-desktop/common/constant";
-import { URL_HOST_APP_ASSETS, URL_PROTOCOL_FILEX, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
+import { URL_HOST_APP_ASSETS, URL_PROTOCOL_APP_ASSETS, URL_PROTOCOL_FILEX, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
 
 // Logger
 const debug = debug_("readium-desktop:createLibraryWindow");
@@ -87,6 +87,7 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
     const htmlPath = "index_library.html";
     if (
         rendererBaseUrl === `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/` ||
+        rendererBaseUrl === `${URL_PROTOCOL_APP_ASSETS}://${URL_HOST_COMMON}/` ||
         rendererBaseUrl === `https://${URL_HOST_APP_ASSETS}/`
     ) {
         // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)

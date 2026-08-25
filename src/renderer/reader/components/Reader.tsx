@@ -133,7 +133,7 @@ import { MiniLocatorExtended, minimizeLocatorExtended } from "readium-desktop/co
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { getStore } from "../createStore";
-import { URL_HOST_APP_ASSETS, URL_PROTOCOL_FILEX, URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_PUB } from "readium-desktop/common/streamerProtocol";
+import { URL_HOST_APP_ASSETS, URL_PROTOCOL_APP_ASSETS, URL_PROTOCOL_FILEX, URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_PUB } from "readium-desktop/common/streamerProtocol";
 import { DockTypeName } from "readium-desktop/common/models/dock";
 import { EDrawType, INoteState, TDrawType, TDrawView } from "readium-desktop/common/redux/states/renderer/note";
 import type { IColor } from "@r2-navigator-js/electron/common/highlight";
@@ -2918,7 +2918,7 @@ class Reader extends React.Component<IProps, IState> {
             const PREPATH = "preload.js";
             let preloadPath = PREPATH;
             if (__TH__IS_PACKAGED__) {
-                preloadPath = "file://" + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", PREPATH)).replace(/\\/g, "/");
+                preloadPath = "file://" + path.normalize(path.join(decodeURIComponent(window.location.pathname.replace(/^\/\//, "/")).replace(/^\/+([a-zA-Z]:)/, "$1"), "..", PREPATH)).replace(/\\/g, "/");
             } else {
                 preloadPath = "r2-navigator-js/dist/" +
                     "es8-es2017" +
@@ -2926,10 +2926,11 @@ class Reader extends React.Component<IProps, IState> {
 
                 if (
                     _RENDERER_READER_BASE_URL === `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/` ||
+                    _RENDERER_READER_BASE_URL === `${URL_PROTOCOL_APP_ASSETS}://${URL_HOST_COMMON}/` ||
                     _RENDERER_READER_BASE_URL === `https://${URL_HOST_APP_ASSETS}/`
                 ) {
                     // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
-                    preloadPath = "file://" + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", PREPATH)).replace(/\\/g, "/");
+                    preloadPath = "file://" + path.normalize(path.join(decodeURIComponent(window.location.pathname.replace(/^\/\//, "/")).replace(/^\/+([a-zA-Z]:)/, "$1"), "..", PREPATH)).replace(/\\/g, "/");
 
                     // preloadPath = "file://" + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", _NODE_MODULE_RELATIVE_URL, preloadPath)).replace(/\\/g, "/");
 

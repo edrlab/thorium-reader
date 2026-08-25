@@ -7,7 +7,7 @@
 
 import { clearDefaultSession, clearSession, clearWebviewSession, getWebViewSession } from "@r2-navigator-js/electron/main/sessions";
 import { SESSION_PARTITION_AUTH, SESSION_PARTITION_PDFJS, SESSION_PARTITION_PDFJSEXTRACT } from "readium-desktop/common/sessions";
-import { URL_HOST_APP_ASSETS, URL_PROTOCOL_PDFJSEXTRACT, URL_PROTOCOL_FILEX, URL_PROTOCOL_STORE, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
+import { URL_HOST_APP_ASSETS, URL_PROTOCOL_APP_ASSETS, URL_PROTOCOL_PDFJSEXTRACT, URL_PROTOCOL_FILEX, URL_PROTOCOL_STORE, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
 import debug_ from "debug";
 import { net, session } from "electron";
 import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
@@ -222,6 +222,33 @@ export const initProtocols = () => {
   };
   session.defaultSession.protocol.handle("https", protocolHandler_HTTPS);
   // protocol.unhandle("https");
+
+  const protocolHandler_APP_ASSETS = (
+    request: Request,
+  ): Response | Promise<Response> => {
+    const requestUrl = new URL(request.url);
+    if (requestUrl.host !== URL_HOST_COMMON) {
+      debug("APP_ASSETS rejected host", requestUrl.host);
+      return new Response("Forbidden", { status: 403 });
+    }
+    debug("---protocolHandler_APP_ASSETS");
+    debug(request);
+    const urlPathDecoded = requestUrl.pathname.split("/").map((segment) => {
+      return segment?.length ? tryDecodeURIComponent(segment) : "";
+    }).join("/").replace(/^\/+([a-zA-Z]:)/, "$1");
+    debug("APP_ASSETS path", urlPathDecoded);
+    const filePath = path.resolve(urlPathDecoded);
+    const relativePath = path.relative(appAssetRootPath, filePath);
+    if (relativePath.startsWith("..") || path.isAbsolute(relativePath)) {
+      debug("APP_ASSETS rejected path outside app root", appAssetRootPath, filePath);
+      return new Response("Forbidden", { status: 403 });
+    }
+    const filePathUrl = pathToFileURL(filePath).toString();
+    debug("APP_ASSETS file", filePathUrl);
+    return net.fetch(filePathUrl);
+  };
+  session.defaultSession.protocol.handle(URL_PROTOCOL_APP_ASSETS, protocolHandler_APP_ASSETS);
+  // protocol.unhandle(URL_PROTOCOL_APP_ASSETS);
 
   const protocolHandler_FILEX = (
     request: Request,

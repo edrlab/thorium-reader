@@ -48,7 +48,7 @@ import {
     READIUMCSS_FILE_PATH, setupMathJaxTransformer,
 } from "./streamerCommon";
 // import { URL_PROTOCOL_OPDS_MEDIA } from "readium-desktop/main/redux/sagas/getEventChannel";
-import { URL_PROTOCOL_PDFJSEXTRACT, URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP, URL_PATH_PREFIX_PUBNOTES, URL_PATH_PREFIX_MATHJAX, URL_PATH_PREFIX_READIUMCSS, URL_PATH_PREFIX_PUB, URL_PATH_PREFIX_PDFJS } from "readium-desktop/common/streamerProtocol";
+import { URL_PROTOCOL_APP_ASSETS, URL_PROTOCOL_PDFJSEXTRACT, URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP, URL_PATH_PREFIX_PUBNOTES, URL_PATH_PREFIX_MATHJAX, URL_PATH_PREFIX_READIUMCSS, URL_PATH_PREFIX_PUB, URL_PATH_PREFIX_PDFJS } from "readium-desktop/common/streamerProtocol";
 import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
 import { diMainGet } from "../di";
 import { getNotesFromMainWinState } from "../redux/sagas/note";
@@ -1815,6 +1815,20 @@ export function initSessions() {
     //     },
     //     scheme: URL_PROTOCOL_FILEX,
     // },
+    {
+        privileges: {
+            allowServiceWorkers: false,
+            bypassCSP: false,
+            corsEnabled: true,
+            secure: true,
+            stream: false,
+            supportFetchAPI: true,
+            standard: true,
+            codeCache: false,
+            allowExtensions: false,
+        },
+        scheme: URL_PROTOCOL_APP_ASSETS,
+    },
     {
         privileges: {
             allowServiceWorkers: false, // Default false
