@@ -9,11 +9,9 @@ import { IHttpBrowserApi } from "./interface/httpBrowser.interface";
 import { IOpdsApi } from "./interface/opdsApi.interface";
 import { IPublicationApi } from "./interface/publicationApi.interface";
 import { IApiappApi } from "./interface/apiappApi.interface";
-import { IAnalyticsApi } from "./interface/analyticsApi.interface";
 
 export type TMethodApi =
     keyof IPublicationApi |
     keyof IOpdsApi |
     keyof IApiappApi |
-    keyof IHttpBrowserApi |
-    keyof IAnalyticsApi
+    keyof IHttpBrowserApi

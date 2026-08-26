@@ -29,7 +29,7 @@ import {
 import { type Store } from "redux";
 import { SagaMiddleware } from "redux-saga";
 
-import { analyticsApi, httpBrowserApi, publicationApi } from "./redux/sagas/api";
+import { httpBrowserApi, publicationApi } from "./redux/sagas/api";
 import { opdsApi } from "./redux/sagas/api/opds";
 import { apiappApi } from "./redux/sagas/api";
 import { RootState } from "./redux/states";
@@ -364,7 +364,6 @@ container.bind(diSymbolTable["publication-api"]).toConstantValue(publicationApi)
 container.bind(diSymbolTable["opds-api"]).toConstantValue(opdsApi);
 container.bind(diSymbolTable["apiapp-api"]).toConstantValue(apiappApi);
 container.bind(diSymbolTable["httpbrowser-api"]).toConstantValue(httpBrowserApi);
-container.bind(diSymbolTable["analytics-api"]).toConstantValue(analyticsApi);
 
 let libraryWin: BrowserWindow;
 
@@ -418,7 +417,6 @@ interface IGet {
     (s: "opds-api"): typeof opdsApi;
     (s: "apiapp-api"): typeof apiappApi;
     (s: "httpbrowser-api"): typeof httpBrowserApi;
-    (s: "analytics-api"): typeof analyticsApi;
     (s: "saga-middleware"): SagaMiddleware;
     (s: "opds-service"): OpdsService;
     // minor overload type used in api.ts/LN32

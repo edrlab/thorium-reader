@@ -9,13 +9,11 @@ import { IOpdsModuleApi } from "./interface/opdsApi.interface";
 import { IApiappModuleApi } from "./interface/apiappApi.interface";
 import { IHttpBrowserModuleApi } from "./interface/httpBrowser.interface";
 import { IPublicationModuleApi } from "./interface/publicationApi.interface";
-import { IAnalyticsModuleApi } from "./interface/analyticsApi.interface";
 
 export type TApiMethod =
     IOpdsModuleApi &
     IApiappModuleApi &
     IHttpBrowserModuleApi &
-    IPublicationModuleApi &
-    IAnalyticsModuleApi
+    IPublicationModuleApi
 
 export type TApiMethodName = keyof TApiMethod;

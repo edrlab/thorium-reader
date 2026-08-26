@@ -5,8 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { SagaGenerator } from "typed-redux-saga";
-
 export type TAnalyticsEventParamValue = string | number | boolean;
 export type TAnalyticsEventParams = Record<string, TAnalyticsEventParamValue>;
 export type TAnalyticsValidationBehavior = "RELAXED" | "ENFORCE_RECOMMENDATIONS";
@@ -40,16 +38,4 @@ export interface IAnalyticsLogEventResult {
     statusMessage?: string;
     reason?: TAnalyticsLogEventResultReason;
     validationMessages?: IAnalyticsValidationMessage[];
-}
-
-export interface IAnalyticsApi {
-    logEvent: (
-        name: string,
-        params?: TAnalyticsEventParams,
-        options?: IAnalyticsLogEventOptions,
-    ) => SagaGenerator<IAnalyticsLogEventResult>;
-}
-
-export interface IAnalyticsModuleApi {
-    "analytics/logEvent": IAnalyticsApi["logEvent"];
 }

@@ -19,6 +19,7 @@ import { ICommonRootState } from "readium-desktop/common/redux/states/commonRoot
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { settingsLcpAutoDeleteExpiredPublicationsIsEnabled } from "readium-desktop/common/redux/states/settings";
+import { logAppSettingModified } from "./analytics";
 
 const SharedComputerSettings = () => {
 
@@ -35,7 +36,9 @@ const SharedComputerSettings = () => {
         if (lcpAutoDeleteExpiredPublicationsForced) {
             return;
         }
-        dispatch(settingsActions.lcpAutoDeleteExpiredPublications.build(!lcpAutoDeleteExpiredPublications));
+        const nextLcpAutoDeleteExpiredPublications = !lcpAutoDeleteExpiredPublications;
+        dispatch(settingsActions.lcpAutoDeleteExpiredPublications.build(nextLcpAutoDeleteExpiredPublications));
+        logAppSettingModified("remove_expired", nextLcpAutoDeleteExpiredPublications);
     };
 
     return (

@@ -5,8 +5,18 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export * from "./publication";
-export * from "./api";
-export * from "./opds";
-export * from "./browser";
-export * from "./apiapp";
+import { TAnalyticsEventParams } from "readium-desktop/common/api/interface/analyticsApi.interface";
+
+export enum EventType {
+    LogEvent = "LOG_EVENT",
+}
+
+export const CHANNEL = "ANALYTICS";
+
+export interface EventPayload {
+    type: EventType.LogEvent;
+    payload: {
+        name: string;
+        params?: TAnalyticsEventParams;
+    };
+}

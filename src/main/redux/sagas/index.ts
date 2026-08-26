@@ -24,6 +24,7 @@ import { appActions, winActions } from "../actions";
 import * as api from "./api";
 import * as appSaga from "./app";
 import * as auth from "./auth";
+import * as analyticsIpc from "./analyticsIpc";
 import * as events from "./event";
 import * as i18n from "./i18n";
 import * as ipc from "./ipc";
@@ -121,6 +122,8 @@ export function* rootSaga() {
 
     yield ipc.saga();
     // yield spawnLeading(ipc.watchers, (e) => error("main:rootSaga:ipc", e));
+
+    yield analyticsIpc.saga();
 
     yield reader.saga();
     // yield spawnLeading(reader.watchers, (e) => error("main:rootSaga:reader", e));
