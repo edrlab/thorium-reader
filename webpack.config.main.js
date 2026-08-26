@@ -63,11 +63,14 @@ if (nodeEnv !== "production") {
             if (!_externalsCache.has(moduleName)) {
                 console.log(`WEBPACK EXTERNAL (MAIN): [${moduleName}]`);
 
-                if (moduleName === "proxy-agent") {
-                    const filePath = path.join(process.cwd(), "node_modules", moduleName, "package.json");
-                    const jsonStr = fs.readFileSync(filePath, { encoding: "utf8" });
-                    fs.writeFileSync(filePath, jsonStr.replace(/"import":/, `".":`), { encoding: 'utf8' });
-                }
+                // NOT NECESSARY SINCE v8
+                // https://npmx.dev/package-code/proxy-agent/v/7.0.0/package.json#L6-L11
+                // https://npmx.dev/package-code/proxy-agent/v/8.0.0/package.json#L6-L9
+                // if (moduleName === "proxy-agent") {
+                //     const filePath = path.join(process.cwd(), "node_modules", moduleName, "package.json");
+                //     const jsonStr = fs.readFileSync(filePath, { encoding: "utf8" });
+                //     fs.writeFileSync(filePath, jsonStr.replace(/"import":/, `".":`), { encoding: 'utf8' });
+                // }
             }
             _externalsCache.add(moduleName);
 

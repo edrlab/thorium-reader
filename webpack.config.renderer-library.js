@@ -228,10 +228,28 @@ const scssLoaderConfig = [
         },
     },
     {
+        // PACKAGE.JSON SCRIPT:
+        // "build-perf-time": "cross-env NODE_ENV=production webpack --config webpack.config.js"
+        // ---
+        // npm run clean && time npm run build-perf-time
+        // ----> sass
+        // 91.11s user 10.56s system 488% cpu 20.794 total
+        // 90.93s user 11.19s system 478% cpu 21.329 total
+        // 92.24s user 12.43s system 483% cpu 21.652 total
+        // 90.18s user 11.19s system 481% cpu 21.042 total
+        // ----> sass-embedded:
+        // 92.24s user 11.66s system 483% cpu 21.482 total
+        // 89.93s user 11.90s system 480% cpu 21.172 total
+        // 90.38s user 12.27s system 469% cpu 21.855 total
+        // 90.50s user 12.10s system 473% cpu 21.680 total
         loader: "sass-loader",
         options: {
             // api: "legacy",
-            // Prefer `dart-sass`
+            // https://webpack.js.org/loaders/sass-loader/
+            // https://github.com/sass/embedded-host-node
+            // https://github.com/sass/dart-sass
+            // implementation: nodeEnv !== "production" ? require("sass-embedded") : require("sass"),
+            // implementation: require("sass-embedded"),
             implementation: require("sass"),
             additionalData: (content, loaderContext) => {
                 console.log("SASS LOADER (LIBRARY): " + loaderContext.resourcePath);

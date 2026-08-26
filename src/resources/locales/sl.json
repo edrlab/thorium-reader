@@ -1001,297 +1001,297 @@
                     "name": "Ustvari pripis"
                 },
                 "AnnotationsCreateQuick": {
-                    "description": "",
-                    "name": ""
+                    "description": "Hitro ustvarite pripis za izbrano besedilo z nazadnje uporabljeno barvo in vrsto označevanja (opomba in oznaka bosta prazni)",
+                    "name": "Ustvari hiter pripis"
                 },
                 "AnnotationsToggleMargin": {
-                    "description": "",
-                    "name": ""
+                    "description": "Izmenjujte vizualne indikatorje pripisov in zaznamkov, bodisi na robu dokumenta bodisi v besedilu",
+                    "name": "Preklopi rob pripisov"
                 },
                 "AudioNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "Premakni se naprej na naslednji zvočni segment v pripovedovanju (EPUB3 medijski prekrivni elementi, pretvorba besedila v govor ali vnaprej posneta zvočna knjiga)",
+                    "name": "Naslednji zvočni segment"
                 },
                 "AudioNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Premakni se naprej na naslednji zvočni segment v pripovedovanju (prekrivne plasti medijev EPUB3, branje besedila v govor ali vnaprej posneta zvočna knjiga). S tem preskoči vse strukture, ki se jim je trenutno mogoče izogniti",
+                    "name": "Naslednji zvočni segment (Esc)"
                 },
                 "AudioPlayPause": {
-                    "description": "",
-                    "name": ""
+                    "description": "Preklopi predvajanje/premor pripovedovanja (EPUB3 medijske prekrivne plasti, branje besedila v govor ali vnaprej posneta zvočna knjiga)",
+                    "name": "Predvajanje/premor zvoka"
                 },
                 "AudioPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "Premik nazaj na prejšnji zvočni segment v pripovedovanju (EPUB3 medijski prekrivni elementi, branje besedila v govor ali vnaprej posneta zvočna knjiga)",
+                    "name": "Prejšnji zvočni segment"
                 },
                 "AudioPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Premakni se nazaj na prejšnji zvočni segment v pripovedovanju (EPUB3 medijski prekrivni elementi, branje besedila v govor ali vnaprej posneta zvočna knjiga). S tem preskočite vse strukture, ki se jim je trenutno mogoče izogniti",
+                    "name": "Prejšnji zvočni segment (Esc)"
                 },
                 "AudioSpeedDecrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Zmanjšajte hitrost predvajanja zvoka v prekrivnih plasteh medijev EPUB3 ali hitrost branja govora s pretvorbo besedila v besedilo",
+                    "name": "Zmanjšajte hitrost zvoka"
                 },
                 "AudioSpeedIncrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "Povečajte hitrost predvajanja zvoka v medijskih prekrivnih slojih EPUB3 ali hitrost branja govora s pretvorbo besedila v besedilo",
+                    "name": "Povečaj hitrost zvoka"
                 },
                 "AudioSpeedReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Ponastavitev hitrosti predvajanja zvoka v prekrivnih plasteh medijev EPUB3 ali hitrosti branja govora s pretvorbo besedila v besedilo",
+                    "name": "Ponastavi hitrost zvoka"
                 },
                 "AudioStop": {
-                    "description": "",
-                    "name": ""
+                    "description": "Ustavitev trenutnega zvoka (prekrivne plasti medijev EPUB3, branje besedila v govor ali vnaprej posneta zvočna knjiga)",
+                    "name": "Ustavi zvok"
                 },
                 "CloseReader": {
-                    "description": "",
-                    "name": ""
+                    "description": "Zapri okno bralnika in se vrni v knjižnico",
+                    "name": "Zapri bralnik"
                 },
                 "FXLZoomIn": {
-                    "description": "",
-                    "name": ""
+                    "description": "Povečajte na eno stran s fiksno postavitvijo ali dvostransko razporeditev.",
+                    "name": "Povečava FXL"
                 },
                 "FXLZoomOut": {
-                    "description": "",
-                    "name": ""
+                    "description": "Pomanjšajte fiksno postavitev ene strani ali dvostranske razporeditve.",
+                    "name": "Pomanjšaj FXL"
                 },
                 "FXLZoomReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Ponastavi povečavo na fiksni postavitvi ene strani ali dvostranske razporeditve.",
+                    "name": "Ponastavi povečavo FXL"
                 },
                 "FocusMain": {
-                    "description": "",
-                    "name": ""
+                    "description": "Premakni fokus tipkovnice na »glavno« znamenitost v grafičnem uporabniškem vmesniku. V oknu bralnika se s tem premakne na vsebino publikacije",
+                    "name": "Osredotoči se na glavno vsebino"
                 },
                 "FocusMainDeep": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika to premakne fokus tipkovnice na vsebino publikacije z uporabo zanesljivejše tehnike za bralnike zaslona",
+                    "name": "Globok fokus na glavni vsebini"
                 },
                 "FocusReaderGotoPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Premakni fokus tipkovnice na razdelek »pojdi na stran« v navigacijski plošči okna bralnika",
+                    "name": "Osredotoči se na »Pojdi na stran«"
                 },
                 "FocusReaderNavigation": {
-                    "description": "",
-                    "name": ""
+                    "description": "Premakni fokus tipkovnice na navigacijsko ploščo okna bralnika",
+                    "name": "Osredotoči se na navigacijsko ploščo"
                 },
                 "FocusReaderNavigationAnnotations": {
-                    "description": "",
-                    "name": ""
+                    "description": "Premakni fokus tipkovnice na razdelek »pripisi« v navigacijski plošči okna bralnika",
+                    "name": "Osredotoči se na »Pripise«"
                 },
                 "FocusReaderNavigationBookmarks": {
-                    "description": "",
-                    "name": ""
+                    "description": "Premakni fokus tipkovnice na razdelek »zaznamki« v navigacijski plošči okna bralnika",
+                    "name": "Osredotoči se na »Zaznamke«"
                 },
                 "FocusReaderNavigationSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "Premakni fokus tipkovnice na razdelek »iskanje« v navigacijski plošči okna bralnika",
+                    "name": "Osredotoči se na »Iskanje«"
                 },
                 "FocusReaderNavigationTOC": {
-                    "description": "",
-                    "name": ""
+                    "description": "Premakni fokus tipkovnice na razdelek »Kazalo« v navigacijski plošči okna bralnika",
+                    "name": "Osredotoči se na 'kazalo vsebine'"
                 },
                 "FocusReaderSettings": {
-                    "description": "",
-                    "name": ""
+                    "description": "Premakni fokus tipkovnice na ploščo z nastavitvami okna bralnika (nastavitve prikaza itd.)",
+                    "name": "Osredotoči se na nastavitve bralnika"
                 },
                 "FocusSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "Premakni fokus tipkovnice na iskalni vnos besedila v oknu bralnika ali v oknu knjižnice, s čimer se išče po knjižni polici ali aktivnem viru OPDS",
+                    "name": "Iskalni ukaz"
                 },
                 "FocusToolbar": {
-                    "description": "",
-                    "name": ""
+                    "description": "Premakni fokus tipkovnice na območje mejnika grafičnega uporabniškega vmesnika tik pred »povezavo za preskok« (ki sama premakne fokus na glavno območje vsebine okna knjižnice ali bralnika)",
+                    "name": "Fokus na orodni vrstici"
                 },
                 "NavigateNextChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika se pomaknite na naslednji dokument v vrstnem redu branja publikacije (npr. poglavje na hrbtni strani knjige). Upoštevajte, da obstaja alternativna bližnjica na tipkovnici poleg te privzete",
+                    "name": "Pojdi na naslednje poglavje"
                 },
                 "NavigateNextChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika se pomaknite na naslednji dokument v vrstnem redu branja publikacije (npr. poglavje na hrbtu knjige). To je alternativna bližnjica na tipkovnici namesto privzete",
+                    "name": "Pojdi na naslednje poglavje (alternativa)"
                 },
                 "NavigateNextHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika skoči en korak naprej v zgodovini navigacije",
+                    "name": "Pojdi na naslednjo zgodovino"
                 },
                 "NavigateNextLibraryPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu knjižnice prikaži naslednjo stran oštevilčenega seznama publikacij. Upoštevajte, da obstaja alternativna bližnjica na tipkovnici poleg te privzete",
+                    "name": "Pojdi na naslednjo stran knjižnice"
                 },
                 "NavigateNextLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu knjižnice prikaži naslednjo stran oštevilčenega seznama publikacij. To je alternativna bližnjica na tipkovnici namesto privzete",
+                    "name": "Pojdi na naslednjo stran knjižnice (alternativa)"
                 },
                 "NavigateNextOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu knjižnice za kataloge/vire OPDS sledite naslednji povezavi za oštevilčenje strani. Upoštevajte, da obstaja alternativna bližnjica na tipkovnici poleg te privzete",
+                    "name": "Pojdi na naslednjo stran OPDS"
                 },
                 "NavigateNextOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu knjižnice za kataloge/vire OPDS sledite naslednji povezavi za oštevilčenje strani. To je alternativna bližnjica na tipkovnici namesto privzete",
+                    "name": "Pojdi na naslednjo stran OPDS (alternativa)"
                 },
                 "NavigateNextPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika se pomaknite na naslednjo »stran« v publikaciji. Upoštevajte, da obstaja alternativna bližnjica na tipkovnici poleg te privzete",
+                    "name": "Pojdi na naslednjo stran"
                 },
                 "NavigateNextPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika se pomaknite na naslednjo »stran« v publikaciji. To je alternativna bližnjica na tipkovnici namesto privzete",
+                    "name": "Pojdi na naslednjo stran (alternativa)"
                 },
                 "NavigatePreviousChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika se pomaknite na prejšnji dokument v vrstnem redu branja publikacije (npr. poglavje na hrbtni strani knjige). Upoštevajte, da obstaja alternativna bližnjica na tipkovnici poleg te privzete",
+                    "name": "Pojdi na prejšnje poglavje"
                 },
                 "NavigatePreviousChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika se pomaknite na prejšnji dokument v vrstnem redu branja publikacije (npr. poglavje na hrbtu knjige). To je alternativna bližnjica na tipkovnici namesto privzete",
+                    "name": "Pojdi na prejšnje poglavje (alternativa)"
                 },
                 "NavigatePreviousHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika skoči en korak nazaj v zgodovini navigacije",
+                    "name": "Pojdi na prejšnjo zgodovino"
                 },
                 "NavigatePreviousLibraryPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu knjižnice prikaži prejšnjo stran oštevilčenega seznama publikacij. Upoštevajte, da obstaja alternativna bližnjica na tipkovnici poleg te privzete",
+                    "name": "Pojdi na prejšnjo stran knjižnice"
                 },
                 "NavigatePreviousLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu knjižnice prikaži prejšnjo stran oštevilčenega seznama publikacij. To je alternativna bližnjica na tipkovnici namesto privzete",
+                    "name": "Pojdi na prejšnjo stran knjižnice (alternativa)"
                 },
                 "NavigatePreviousOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu knjižnice za kataloge/vire OPDS sledite prejšnji povezavi za oštevilčenje strani. Upoštevajte, da obstaja alternativna bližnjica na tipkovnici poleg te privzete",
+                    "name": "Pojdi na prejšnjo stran OPDS"
                 },
                 "NavigatePreviousOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu knjižnice za kataloge/vire OPDS sledite prejšnji povezavi za oštevilčenje strani. To je alternativna bližnjica na tipkovnici za privzeto",
+                    "name": "Pojdi na prejšnjo stran OPDS (alternativa)"
                 },
                 "NavigatePreviousPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika se pomaknite na prejšnjo »stran« v publikaciji. Upoštevajte, da obstaja alternativna bližnjica na tipkovnici poleg te privzete",
+                    "name": "Pojdi na prejšnjo stran"
                 },
                 "NavigatePreviousPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika se pomaknite na prejšnjo »stran« v publikaciji. To je alternativna bližnjica na tipkovnici namesto privzete",
+                    "name": "Pojdi na prejšnjo stran (alternativa)"
                 },
                 "NavigateToBegin": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika pojdite na začetek publikacije",
+                    "name": "Pojdi na začetek"
                 },
                 "NavigateToEnd": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika pojdite na konec publikacije",
+                    "name": "Pojdi na konec"
                 },
                 "OpenReaderInfo": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika odprite pogovorno okno z informacijami o publikaciji",
+                    "name": "Prikaz informacij o publikaciji"
                 },
                 "OpenReaderInfoWhereAmI": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika odprite pojavno pogovorno okno, ki prikazuje informacije o publikaciji, in s tipkovnico pomaknite fokus na razdelek, ki prikazuje kontekst trenutne lokacije branja",
+                    "name": "Prikaži informacije o publikaciji, Prikaži lokacijo branja"
                 },
                 "Print": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika odprite pogovorno okno za tiskanje",
+                    "name": "Natisni"
                 },
                 "SearchNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "V iskalnem orodju okna bralnika pojdite na naslednji rezultat iskanja. Upoštevajte, da obstaja alternativna bližnjica na tipkovnici poleg te privzete",
+                    "name": "Naslednji rezultat iskanja"
                 },
                 "SearchNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "V iskalnem orodju v oknu bralnika pojdite na naslednji rezultat iskanja. To je alternativna bližnjica na tipkovnici namesto privzete",
+                    "name": "Naslednji rezultat iskanja (alternativa)"
                 },
                 "SearchPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "V iskalnem orodju v oknu bralnika se pomaknite na prejšnji rezultat iskanja. Upoštevajte, da obstaja alternativna bližnjica na tipkovnici poleg te privzete",
+                    "name": "Prejšnji rezultat iskanja"
                 },
                 "SearchPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "V iskalnem orodju v oknu bralnika se pomaknite na prejšnji rezultat iskanja. To je alternativna bližnjica na tipkovnici namesto privzete",
+                    "name": "Prejšnji rezultat iskanja (alternativni)"
                 },
                 "SpeakReaderInfoWhereAmI": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika opišite kontekst trenutne lokacije branja z uporabo govornega besedila, združljivega z bralniki zaslona",
+                    "name": "Opišite mesto branja (govor)"
                 },
                 "ToggleBookmark": {
-                    "description": "",
-                    "name": ""
+                    "description": "Dodaj nov zaznamek ali odstrani obstoječega, če je trenutno izbran",
+                    "name": "Preklopi zaznamek"
                 },
                 "ToggleReaderFullscreen": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika aktivirajte celozaslonski način sistema ali obnovite običajni način okna. Upoštevajte, da se to razlikuje od »zen načina«, ki poenostavlja uporabniški vmesnik",
+                    "name": "Preklopi celozaslonski način"
                 },
                 "ToggleReaderZenMode": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika aktivirajte ali zapustite zen način, ki poenostavi uporabniški vmesnik med branjem",
+                    "name": "Preklopi zen način"
                 },
                 "ToggleScreenReaderOptimize": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu knjižnice preklopi optimizirano podporo za bralnike zaslona",
+                    "name": "Preklopi optimizacije bralnika zaslona"
                 }
             },
             "loadUserJson": "Nalaganje iz datoteke uporabnika",
-            "noShortcutFound": "",
-            "resetDefaults": "Ponastavitev (naloži privzete nastavitve)",
+            "noShortcutFound": "S to oznako ni bilo najdene bližnjice",
+            "resetDefaults": "Ponastavi (naloži privzete nastavitve)",
             "save": "Shrani",
-            "searchPlaceholder": ""
+            "searchPlaceholder": "Vtipkajte za iskanje bližnjice"
         },
         "language": {
-            "languageChoice": "Izbira jezika"
+            "languageChoice": "Jezik"
         },
         "library": {
-            "enableAPIAPP": "Aktivirajte knjižnični sistem 'PNB'",
+            "enableAPIAPP": "Aktiviraj knjižnični sistem »PNB«",
             "title": "Dostop do računov francoske knjižnice"
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "",
-                "enableCheckbox": "",
-                "overrideHTMLTemplate": ""
+                "applyDefaultTemplate": "Naloži privzeto predlogo",
+                "enableCheckbox": "Prilagodi predlogo HTML",
+                "overrideHTMLTemplate": "Izvoz opomb (pripisi in zaznamki)"
             }
         },
         "profiles": {
-            "info": "",
+            "info": "Preklopite med profili, da prilagodite aplikacijo z blagovno znamko in barvami partnerskega prodajalca. Vsak profil ponuja prilagojeno izkušnjo.",
             "thorium": {
-                "description": "",
-                "title": ""
+                "description": "Profil Thorium Vanilla je originalni profil, ki ga je zasnoval EDRLab.",
+                "title": "Thorium vanilla"
             },
-            "version": ""
+            "version": "Različica: {{- version}}"
         },
         "screenReaderActivate": {
-            "help": "",
-            "invite": "",
-            "message": "",
-            "title": ""
+            "help": "Ko aplikacija zazna prisotnost podporne tehnologije, uporabniški vmesnik deluje bolje z bralniki zaslona",
+            "invite": "Optimiziraj za bralnik zaslona ({{- status}}) [{{- keyboard}}]",
+            "message": "Izboljšana podpora za bralnike zaslona",
+            "title": "Izboljšajte izkušnjo bralnika zaslona"
         },
         "session": {
-            "title": "Shrani sejo"
+            "title": "Omogoči shranjevanje seje"
         },
         "sharedComputer": {
-            "lcpAutoDeleteExpiredPublications": "",
-            "lcpAutoDeleteExpiredPublicationsDescription": "",
-            "title": ""
+            "lcpAutoDeleteExpiredPublications": "Samodejno odstranjevanje potečenih publikacij in povezanih uporabniških podatkov",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Zagotavlja samodejno brisanje izposojenih gradiv, ki so jim potekli roki (vključno z osebnimi opombami, zaznamki za branje itd.). To je uporabno v okoljih s »skupnimi računalniki«, kot so knjižnice ali univerzitetne sobe.",
+            "title": "Način skupne rabe računalnika"
         },
         "storage": {
             "actions": {
-                "addDirectory": "",
-                "changeDirectory": "",
-                "removeStorageDirectory": ""
+                "addDirectory": "Izberi dodatno shrambo",
+                "changeDirectory": "Posodobi dodatno shrambo",
+                "removeStorageDirectory": "Odstrani dodatno shrambo"
             },
             "beta": {
-                "availability": "",
-                "integrity": "",
-                "migration": "",
-                "summary": "",
-                "warning": ""
+                "availability": "Ta funkcija deluje samo z novejšimi različicami Thorium; zunanje mape s knjigami se ne bodo prikazale v Thorium 3.4 ali starejših različicah.",
+                "integrity": "Ta imenik morate varno in dostopno hraniti. Izogibajte se brisanju, omejevanju dostopa do njega ali uporabi počasnega ali nestabilnega pomnilnika, kot so omrežni pogoni.",
+                "migration": "Thorium ne prenese vaših knjig samodejno: če posodobite dodatni prostor za shranjevanje, morate publikacije ročno premakniti na novo lokacijo. Če ga odstranite, morate publikacije ročno premakniti v prvotni prostor za shranjevanje.",
+                "summary": "Več o tej funkciji, ki je trenutno v beta različici",
+                "warning": "Datotek v tej mapi ne spreminjajte ročno, saj lahko to povzroči težave z vašimi knjigami ali bralnikom. Predstavljajte si to mapo kot varno knjižnico, ki jo upravlja Thorium."
             },
             "configuration": {
-                "chooseFolderDescription": "",
-                "configuredDescription": "",
-                "notConfiguredDescription": ""
+                "chooseFolderDescription": "Izberite imenik, ki ga naj Thorium uporablja kot dodatno shrambo.",
+                "configuredDescription": "Dodatni prostor za shranjevanje je konfiguriran in pripravljen za uporabo za novo shranjene publikacije.",
+                "notConfiguredDescription": "Publikacije, uvožene v Thorium Reader, bodo shranjene v izbranem imeniku. Publikacije, ki so bile predhodno uvožene, bodo ostale v prvotnem sistemskem pomnilniku."
             },
             "dialogs": {
                 "add": {
