@@ -28,7 +28,7 @@ import { Agent, AgentConnectOpts } from "agent-base";
 import createDebug from "debug";
 import { getProxyForUrl as envGetProxyForUrl } from "proxy-from-env";
 
-// import type { PacProxyAgent, PacProxyAgentOptions } from "pac-proxy-agent";
+import type { PacProxyAgent, PacProxyAgentOptions } from "pac-proxy-agent";
 import type {
     // HttpProxyAgent, // ---- LAZY vs. NOT LAZY
     HttpProxyAgentOptions,
@@ -53,7 +53,7 @@ type ValidProtocol =
     // eslint-disable-next-line @typescript-eslint/no-duplicate-type-constituents
     | (typeof HttpsProxyAgent.protocols)[number]
     | (typeof SocksProxyAgent.protocols)[number]
-    // | (typeof PacProxyAgent.protocols)[number]
+    | (typeof PacProxyAgent.protocols)[number]
     ;
 
 type AgentConstructor = new (
@@ -82,6 +82,7 @@ const wellKnownAgents = {
     http: HttpProxyAgent,
     https: HttpsProxyAgent,
     socks: SocksProxyAgent,
+    pac: async () => (await import("pac-proxy-agent")).PacProxyAgent,
 } as const;
 
 // ---- LAZY vs. NOT LAZY
@@ -92,8 +93,8 @@ export const proxies: {
     [P in ValidProtocol]: [
         // () => Promise<AgentConstructor>, // ---- LAZY vs. NOT LAZY
         // () => Promise<AgentConstructor> // ---- LAZY vs. NOT LAZY
-        AgentConstructor, // ---- LAZY vs. NOT LAZY
-        AgentConstructor // ---- LAZY vs. NOT LAZY
+        AgentConstructor | () => Promise<AgentConstructor>, // ---- LAZY vs. NOT LAZY
+        AgentConstructor | () => Promise<AgentConstructor> // ---- LAZY vs. NOT LAZY
     ];
 } = {
     http: [wellKnownAgents.http, wellKnownAgents.https],
@@ -103,11 +104,11 @@ export const proxies: {
     socks4a: [wellKnownAgents.socks, wellKnownAgents.socks],
     socks5: [wellKnownAgents.socks, wellKnownAgents.socks],
     socks5h: [wellKnownAgents.socks, wellKnownAgents.socks],
-    // "pac+data": [wellKnownAgents.pac, wellKnownAgents.pac],
-    // "pac+file": [wellKnownAgents.pac, wellKnownAgents.pac],
-    // "pac+ftp": [wellKnownAgents.pac, wellKnownAgents.pac],
-    // "pac+http": [wellKnownAgents.pac, wellKnownAgents.pac],
-    // "pac+https": [wellKnownAgents.pac, wellKnownAgents.pac],
+    "pac+data": [wellKnownAgents.pac, wellKnownAgents.pac],
+    "pac+file": [wellKnownAgents.pac, wellKnownAgents.pac],
+    "pac+ftp": [wellKnownAgents.pac, wellKnownAgents.pac],
+    "pac+http": [wellKnownAgents.pac, wellKnownAgents.pac],
+    "pac+https": [wellKnownAgents.pac, wellKnownAgents.pac],
 };
 
 function isValidProtocol(v: string): v is ValidProtocol {
@@ -117,7 +118,7 @@ function isValidProtocol(v: string): v is ValidProtocol {
 export type ProxyAgentOptions = HttpProxyAgentOptions<""> &
     HttpsProxyAgentOptions<""> &
     SocksProxyAgentOptions &
-    // PacProxyAgentOptions<""> &
+    PacProxyAgentOptions<""> &
     {
         /**
          * Default `http.Agent` instance to use when no proxy is
@@ -251,6 +252,12 @@ async function myGetProxyForUrl(
                 const proxyUrl = getProxyForUrl_(_dataProxyConfig.proxyUrl, _dataProxyConfig.noProxy, url);
                 if (proxyUrl) {
                     debug("*********** SYSTEM PROXY CHECK pass: ", proxyUrl);
+
+                    // TODO? early bailout for isValidProtocol()
+                    // if (!proxyUrl.startsWith("file://")) {
+                    //     return proxyUrl;
+                    // }
+
                     return proxyUrl;
                 }
             } catch (err) {
@@ -270,6 +277,13 @@ async function myGetProxyForUrl(
         proxyUrl = "";
     }
     debug("*********** SYSTEM PROXY CHECK fallback: ", url, proxyUrl);
+
+    // TODO? early bailout for isValidProtocol()
+    // if (!proxyUrl.startsWith("file://")) {
+    //     return proxyUrl;
+    // }
+    // return "";
+
     return proxyUrl;
 }
 
@@ -336,16 +350,21 @@ export class ProxyAgent extends Agent {
             const proxyUrl = new URL(proxy);
             const proxyProto = proxyUrl.protocol.replace(":", "");
             if (!isValidProtocol(proxyProto)) {
-                throw new Error(`Unsupported protocol for proxy URL: ${proxy}`);
+                // throw new Error(...);
+                debug(`Unsupported protocol for proxy URL: ${proxy}`);
+                return secureEndpoint ? this.httpsAgent : this.httpAgent;
             }
 
             // ---- LAZY vs. NOT LAZY
             // const ctor = await proxies[proxyProto][
             //     secureEndpoint || isWebSocket ? 1 : 0
             // ]();
-            const ctor = proxies[proxyProto][
+            let ctor = proxies[proxyProto][
                 secureEndpoint || isWebSocket ? 1 : 0
-            ];
+            ] as unknown as AgentConstructor;
+            if (proxyProto.startsWith("pac+")) {
+                ctor = (await ctor()) as unknown as AgentConstructor;
+            }
 
             agent = new ctor(proxy, this.connectOpts);
             this.cache.set(cacheKey, agent);
