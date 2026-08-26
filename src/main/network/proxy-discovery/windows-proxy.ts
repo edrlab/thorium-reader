@@ -55,7 +55,7 @@ export async function getWindowsSystemProxy(): Promise<WindowsProxySettings | un
             : [host]);
 
     // ProxyServer specifies the proxy host(s), but in a few different formats...
-    let proxyConfigString =
+    const proxyConfigString =
         autoConfigURL?.data ? autoConfigURL.data as string // TODO?: && autoconfig
         : proxyServer?.data ? proxyServer.data as string
         : "";
