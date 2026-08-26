@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { screen } from "electron";
+import { app, screen } from "electron";
 import os from "node:os";
 
 import {
@@ -26,6 +26,28 @@ import {
 
 const debug = debug_("readium-desktop:main:analytics:measurement-protocol");
 const sessionId = Math.floor(Date.now() / 1000);
+
+const getDeviceLanguage = (): string | undefined => {
+    try {
+        const preferredSystemLanguage = app.getPreferredSystemLanguages()?.[0];
+        if (preferredSystemLanguage) {
+            return preferredSystemLanguage;
+        }
+    } catch (err) {
+        debug("Measurement Protocol device preferred language unavailable", err);
+    }
+
+    try {
+        const systemLocale = app.getSystemLocale();
+        if (systemLocale) {
+            return systemLocale;
+        }
+    } catch (err) {
+        debug("Measurement Protocol device system locale unavailable", err);
+    }
+
+    return undefined;
+};
 
 /**
  * Sends one GA4 Measurement Protocol event immediately, without queueing or retry.
@@ -170,7 +192,8 @@ export const logMeasurementProtocol = async (
         debug("Measurement Protocol device screen resolution unavailable", err);
     }
 
-    const language = options.locale || undefined;
+    const userLanguage = options.locale || undefined;
+    const deviceLanguage = getDeviceLanguage();
 
     const osName =
         process.platform === "darwin" ? "macOS" :
@@ -273,9 +296,9 @@ export const logMeasurementProtocol = async (
             os_version: {
                 value: osVersion,
             },
-            ...(language ? {
+            ...(userLanguage ? {
                 language: {
-                    value: language,
+                    value: userLanguage,
                 },
             } : {}),
         },
@@ -287,7 +310,7 @@ export const logMeasurementProtocol = async (
         device: {
             category: "desktop",
             model: "Desktop",
-            ...(language ? { language } : {}),
+            ...(deviceLanguage ? { language: deviceLanguage } : {}),
             ...(screenResolution ? { screen_resolution: screenResolution } : {}),
             operating_system: deviceOperatingSystem,
             operating_system_version: osVersion,
