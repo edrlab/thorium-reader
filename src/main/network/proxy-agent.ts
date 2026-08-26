@@ -93,8 +93,8 @@ export const proxies: {
     [P in ValidProtocol]: [
         // () => Promise<AgentConstructor>, // ---- LAZY vs. NOT LAZY
         // () => Promise<AgentConstructor> // ---- LAZY vs. NOT LAZY
-        AgentConstructor | () => Promise<AgentConstructor>, // ---- LAZY vs. NOT LAZY
-        AgentConstructor | () => Promise<AgentConstructor> // ---- LAZY vs. NOT LAZY
+        AgentConstructor | (() => Promise<AgentConstructor>), // ---- LAZY vs. NOT LAZY
+        AgentConstructor | (() => Promise<AgentConstructor>) // ---- LAZY vs. NOT LAZY
     ];
 } = {
     http: [wellKnownAgents.http, wellKnownAgents.https],
@@ -363,7 +363,7 @@ export class ProxyAgent extends Agent {
                 secureEndpoint || isWebSocket ? 1 : 0
             ] as unknown as AgentConstructor;
             if (proxyProto.startsWith("pac+")) {
-                ctor = (await ctor()) as unknown as AgentConstructor;
+                ctor = await (ctor as unknown as (() => Promise<AgentConstructor>))();
             }
 
             agent = new ctor(proxy, this.connectOpts);
