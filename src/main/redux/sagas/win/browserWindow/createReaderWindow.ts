@@ -40,12 +40,10 @@ debug("_");
 const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
 
 function* logPublicationOpen(publicationView: PublicationView) {
+    const eventName = publicationView.isAudio ? "listen" : "read";
     yield* spawnTyped(function*() {
         try {
-            yield* callTyped(() => logPublicationMeasurement(
-                publicationView.isAudio ? "listen" : "read",
-                publicationView,
-            ));
+            yield* callTyped(() => logPublicationMeasurement(eventName, publicationView));
         } catch (e) {
             debug("Publication open analytics event failed", e);
         }

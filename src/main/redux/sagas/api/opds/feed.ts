@@ -8,9 +8,14 @@
 import debug_ from "debug";
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
+import {
+    catalogAnalyticsEvents,
+    TCatalogAddAnalyticsOrigin,
+} from "readium-desktop/common/analytics/catalog";
 import { OpdsFeed } from "readium-desktop/common/models/opds";
 import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import { diMainGet } from "readium-desktop/main/di";
+import { logCatalogAdd, logCatalogEvent } from "readium-desktop/main/analytics/catalog";
 import { httpGetWithAuth } from "readium-desktop/main/network/http";
 import { contentTypeisOpdsAuth, parseContentType } from "readium-desktop/utils/contentType";
 import { SagaGenerator } from "typed-redux-saga";
@@ -19,6 +24,17 @@ import { opdsActions } from "readium-desktop/common/redux/actions";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/opds/feed");
+
+const getCatalogAddAnalyticsOrigin = (
+    data: OpdsFeed,
+    origin?: TCatalogAddAnalyticsOrigin,
+): TCatalogAddAnalyticsOrigin => {
+    if (origin) {
+        return origin;
+    }
+
+    return data.url.startsWith("apiapp://") ? "pnb" : "manual";
+};
 
 /*
 
@@ -66,9 +82,16 @@ export function* deleteFeed(identifier: string) {
 
     const opdsFeedRepository = diMainGet("opds-feed-repository");
     yield* callTyped(() => opdsFeedRepository.delete(identifier));
+
+    yield* spawnTyped(function*() {
+        yield* callTyped(() => logCatalogEvent(catalogAnalyticsEvents.remove));
+    });
 }
 
-export function* addFeed(data: OpdsFeed): SagaGenerator<IOpdsFeedView> {
+export function* addFeed(
+    data: OpdsFeed,
+    origin?: TCatalogAddAnalyticsOrigin,
+): SagaGenerator<IOpdsFeedView> {
 
     const opdsFeedRepository = diMainGet("opds-feed-repository");
     const opdsFeedViewConverter = diMainGet("opds-feed-view-converter");
@@ -108,8 +131,11 @@ export function* addFeed(data: OpdsFeed): SagaGenerator<IOpdsFeedView> {
                             const opdsFeeds = yield* callTyped(() => opdsFeedRepository.findAll());
                             const found = opdsFeeds.find((o) => o.url === data.url);
                             if (found) {
-                                yield* callTyped(deleteFeed, found.identifier);
-                                yield* callTyped(addFeed, {...found, authenticationUrl: bookshelf.url});
+                                yield* callTyped(() => opdsFeedRepository.delete(found.identifier));
+                                yield* callTyped(() => opdsFeedRepository.save({
+                                    ...found,
+                                    authenticationUrl: bookshelf.url,
+                                }));
 
                                 yield* putTyped(opdsActions.refresh.build());
                             }
@@ -123,7 +149,62 @@ export function* addFeed(data: OpdsFeed): SagaGenerator<IOpdsFeedView> {
     }
 
     const doc = yield* callTyped(() => opdsFeedRepository.save(data));
-    return yield* callTyped(() => opdsFeedViewConverter.convertDocumentToView(doc));
+    const view = yield* callTyped(() => opdsFeedViewConverter.convertDocumentToView(doc));
+    yield* spawnTyped(function*() {
+        yield* callTyped(() => logCatalogAdd(getCatalogAddAnalyticsOrigin(data, origin)));
+    });
+
+    return view;
+}
+
+export function* updateFeed(
+    identifier: string,
+    data: OpdsFeed,
+): SagaGenerator<IOpdsFeedView> {
+
+    const opdsFeedRepository = diMainGet("opds-feed-repository");
+    const opdsFeedViewConverter = diMainGet("opds-feed-view-converter");
+
+    const previous = yield* callTyped(() => opdsFeedRepository.get(identifier));
+    const isAddingFavorite = data.favorite === true && previous.favorite !== true;
+
+    yield* callTyped(() => opdsFeedRepository.delete(identifier));
+    const doc = yield* callTyped(() => opdsFeedRepository.save(data));
+    const view = yield* callTyped(() => opdsFeedViewConverter.convertDocumentToView(doc));
+
+    yield* spawnTyped(function*() {
+        yield* callTyped(() => logCatalogEvent(catalogAnalyticsEvents.edit));
+    });
+    if (isAddingFavorite) {
+        yield* spawnTyped(function*() {
+            yield* callTyped(() => logCatalogEvent(catalogAnalyticsEvents.favorite));
+        });
+    }
+
+    return view;
+}
+
+export function* setFeedFavorite(
+    identifier: string,
+    favorite: boolean,
+): SagaGenerator<void> {
+
+    const opdsFeedRepository = diMainGet("opds-feed-repository");
+    const feed = yield* callTyped(() => opdsFeedRepository.get(identifier));
+
+    if (favorite !== feed.favorite) {
+
+        yield* callTyped(() => opdsFeedRepository.delete(identifier));
+        const doc = yield* callTyped(() => opdsFeedRepository.save({
+            ...feed,
+            favorite,
+        }));
+        if (doc && favorite) {
+            yield* spawnTyped(function*() {
+                yield* callTyped(() => logCatalogEvent(catalogAnalyticsEvents.favorite));
+            });
+        }
+    }
 }
 
 export function* findAllFeeds(): SagaGenerator<IOpdsFeedView[]> {

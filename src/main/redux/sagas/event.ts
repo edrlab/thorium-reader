@@ -308,7 +308,7 @@ export function saga() {
                             }
                         }
 
-                        const feed = yield* callTyped(opdsApi.addFeed, { title, url: theUrl });
+                        const feed = yield* opdsApi.addFeed({ title, url: theUrl }, "deeplink");
                         if (feed) {
 
                             yield* callTyped(appActivate);
@@ -368,10 +368,10 @@ export function saga() {
                             debug("import the feed", feed.documentTitle, feedUrl);
 
                             // addFeed has a security to not duplicate a feed
-                            yield* callTyped(addFeed, {
+                            yield* addFeed({
                                 title: feed.documentTitle,
                                 url: feedUrl,
-                            });
+                            }, "registry");
 
                         } catch (e) {
                             debug("loop into catalogs list: Wrong feed format:", feed);

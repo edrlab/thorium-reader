@@ -141,12 +141,10 @@ export function* rootSaga() {
             return;
         }
 
-        try {
+        yield* spawnTyped(function*() {
             yield* callTyped(logEvent, "listen", buildPublicationAnalyticsParams(publicationView));
-            listenEventLogged = true;
-        } catch (e) {
-            debug("Publication listen analytics event failed", e);
-        }
+        });
+        listenEventLogged = true;
     }
 
     yield all([

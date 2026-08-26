@@ -197,10 +197,10 @@ export function* rootSaga() {
 
     yield* spawnTyped(function* () {
         try {
-            yield* callTyped(logMeasurementProtocol, "app_start", undefined, {
+            yield* callTyped(() => logMeasurementProtocol("app_start", undefined, {
                 clientId: analyticsClientId,
                 locale: analyticsLocale,
-            });
+            }));
         } catch (e) {
             error(filename_ + ":app_start", e);
         }
@@ -209,10 +209,10 @@ export function* rootSaga() {
     if (!versionFromHydratedGlobalState) {
         yield* spawnTyped(function* () {
             try {
-                yield* callTyped(logMeasurementProtocol, "app_first_open", undefined, {
+                yield* callTyped(() => logMeasurementProtocol("app_first_open", undefined, {
                     clientId: analyticsClientId,
                     locale: analyticsLocale,
-                });
+                }));
             } catch (e) {
                 error(filename_ + ":app_first_open", e);
             }
@@ -227,13 +227,13 @@ export function* rootSaga() {
     ) {
         yield* spawnTyped(function* () {
             try {
-                yield* callTyped(logMeasurementProtocol, "app_version_updated", {
+                yield* callTyped(() => logMeasurementProtocol("app_version_updated", {
                     previous_version: versionFromHydratedGlobalState,
                     current_version: _APP_VERSION,
                 }, {
                     clientId: analyticsClientId,
                     locale: analyticsLocale,
-                });
+                }));
             } catch (e) {
                 error(filename_ + ":app_version_updated", e);
             }

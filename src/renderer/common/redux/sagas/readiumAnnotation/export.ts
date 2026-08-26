@@ -6,7 +6,7 @@
 // ==LICENSE-END=
 
 import debug_ from "debug";
-import { select as selectTyped, call as callTyped } from "typed-redux-saga/macro";
+import { select as selectTyped, call as callTyped, spawn as spawnTyped } from "typed-redux-saga/macro";
 import { SagaGenerator } from "typed-redux-saga";
 import { publicationAnalyticsEvents } from "readium-desktop/common/analytics/publication";
 import { convertAnnotationStateArrayToReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/converter";
@@ -101,5 +101,7 @@ export function* exportAnnotationSet(notes: INoteState[], publicationView: Publi
     const filenameWithExtension = sanitizeForFilename(annoSetTitle + extension);
 
     downloadAnnotationFile(stringData, filenameWithExtension, extension);
-    yield* callTyped(logEvent, publicationAnalyticsEvents.exportAnnotations);
+    yield* spawnTyped(function*() {
+        yield* callTyped(logEvent, publicationAnalyticsEvents.exportAnnotations);
+    });
 }
