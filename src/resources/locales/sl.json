@@ -1225,73 +1225,73 @@
                     "name": ""
                 },
                 "ToggleReaderZenMode": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika aktivirajte ali zapustite zen način, ki poenostavi uporabniški vmesnik med branjem",
+                    "name": "Preklopi zen način"
                 },
                 "ToggleScreenReaderOptimize": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu knjižnice preklopi optimizirano podporo za bralnike zaslona",
+                    "name": "Preklopi optimizacije bralnika zaslona"
                 }
             },
             "loadUserJson": "Nalaganje iz datoteke uporabnika",
-            "noShortcutFound": "",
-            "resetDefaults": "Ponastavitev (naloži privzete nastavitve)",
+            "noShortcutFound": "S to oznako ni bilo najdene bližnjice",
+            "resetDefaults": "Ponastavi (naloži privzete nastavitve)",
             "save": "Shrani",
-            "searchPlaceholder": ""
+            "searchPlaceholder": "Vtipkajte za iskanje bližnjice"
         },
         "language": {
-            "languageChoice": "Izbira jezika"
+            "languageChoice": "Jezik"
         },
         "library": {
-            "enableAPIAPP": "Aktivirajte knjižnični sistem 'PNB'",
+            "enableAPIAPP": "Aktiviraj knjižnični sistem »PNB«",
             "title": "Dostop do računov francoske knjižnice"
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "",
-                "enableCheckbox": "",
-                "overrideHTMLTemplate": ""
+                "applyDefaultTemplate": "Naloži privzeto predlogo",
+                "enableCheckbox": "Prilagodi predlogo HTML",
+                "overrideHTMLTemplate": "Izvoz opomb (pripisi in zaznamki)"
             }
         },
         "profiles": {
-            "info": "",
+            "info": "Preklopite med profili, da prilagodite aplikacijo z blagovno znamko in barvami partnerskega prodajalca. Vsak profil ponuja prilagojeno izkušnjo.",
             "thorium": {
-                "description": "",
-                "title": ""
+                "description": "Profil Thorium Vanilla je originalni profil, ki ga je zasnoval EDRLab.",
+                "title": "Thorium vanilla"
             },
-            "version": ""
+            "version": "Različica: {{- version}}"
         },
         "screenReaderActivate": {
-            "help": "",
-            "invite": "",
-            "message": "",
-            "title": ""
+            "help": "Ko aplikacija zazna prisotnost podporne tehnologije, uporabniški vmesnik deluje bolje z bralniki zaslona",
+            "invite": "Optimiziraj za bralnik zaslona ({{- status}}) [{{- keyboard}}]",
+            "message": "Izboljšana podpora za bralnike zaslona",
+            "title": "Izboljšajte izkušnjo bralnika zaslona"
         },
         "session": {
-            "title": "Shrani sejo"
+            "title": "Omogoči shranjevanje seje"
         },
         "sharedComputer": {
-            "lcpAutoDeleteExpiredPublications": "",
-            "lcpAutoDeleteExpiredPublicationsDescription": "",
-            "title": ""
+            "lcpAutoDeleteExpiredPublications": "Samodejno odstranjevanje potečenih publikacij in povezanih uporabniških podatkov",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Zagotavlja samodejno brisanje izposojenih gradiv, ki so jim potekli roki (vključno z osebnimi opombami, zaznamki za branje itd.). To je uporabno v okoljih s »skupnimi računalniki«, kot so knjižnice ali univerzitetne sobe.",
+            "title": "Način skupne rabe računalnika"
         },
         "storage": {
             "actions": {
-                "addDirectory": "",
-                "changeDirectory": "",
-                "removeStorageDirectory": ""
+                "addDirectory": "Izberi dodatno shrambo",
+                "changeDirectory": "Posodobi dodatno shrambo",
+                "removeStorageDirectory": "Odstrani dodatno shrambo"
             },
             "beta": {
-                "availability": "",
-                "integrity": "",
-                "migration": "",
-                "summary": "",
-                "warning": ""
+                "availability": "Ta funkcija deluje samo z novejšimi različicami Thorium; zunanje mape s knjigami se ne bodo prikazale v Thorium 3.4 ali starejših različicah.",
+                "integrity": "Ta imenik morate varno in dostopno hraniti. Izogibajte se brisanju, omejevanju dostopa do njega ali uporabi počasnega ali nestabilnega pomnilnika, kot so omrežni pogoni.",
+                "migration": "Thorium ne prenese vaših knjig samodejno: če posodobite dodatni prostor za shranjevanje, morate publikacije ročno premakniti na novo lokacijo. Če ga odstranite, morate publikacije ročno premakniti v prvotni prostor za shranjevanje.",
+                "summary": "Več o tej funkciji, ki je trenutno v beta različici",
+                "warning": "Datotek v tej mapi ne spreminjajte ročno, saj lahko to povzroči težave z vašimi knjigami ali bralnikom. Predstavljajte si to mapo kot varno knjižnico, ki jo upravlja Thorium."
             },
             "configuration": {
-                "chooseFolderDescription": "",
-                "configuredDescription": "",
-                "notConfiguredDescription": ""
+                "chooseFolderDescription": "Izberite imenik, ki ga naj Thorium uporablja kot dodatno shrambo.",
+                "configuredDescription": "Dodatni prostor za shranjevanje je konfiguriran in pripravljen za uporabo za novo shranjene publikacije.",
+                "notConfiguredDescription": "Publikacije, uvožene v Thorium Reader, bodo shranjene v izbranem imeniku. Publikacije, ki so bile predhodno uvožene, bodo ostale v prvotnem sistemskem pomnilniku."
             },
             "dialogs": {
                 "add": {
