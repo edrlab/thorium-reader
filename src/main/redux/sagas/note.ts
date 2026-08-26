@@ -8,6 +8,7 @@
 import debug_ from "debug";
 import { dialog } from "electron";
 import * as fs from "fs";
+import { publicationAnalyticsEvents } from "readium-desktop/common/analytics/publication";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { annotationActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
@@ -31,6 +32,7 @@ import { sqliteTableNoteDelete, sqliteTableNoteDeleteWherePubId, sqliteTableNote
 import { publicationActions as publicationActionsFromMainAction } from "../actions";
 import { EXT_ANNOTATIONS } from "readium-desktop/common/extension";
 import { resolveReadiumAnnotationSourceHref } from "readium-desktop/common/readium/annotation/sourceHref";
+import { spawnPublicationAnalyticsEvent } from "./analyticsPublication";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:annotationsImporter";
@@ -382,6 +384,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
     }
 
     debug("Annotations importer success and exit");
+    yield* spawnPublicationAnalyticsEvent(publicationAnalyticsEvents.importAnnotations);
     yield* putTyped(toastActions.openRequest.build(ToastType.Success, __("message.annotations.success"), readerPublicationIdentifier));
     return;
 }

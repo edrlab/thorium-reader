@@ -7,6 +7,10 @@
 
 import debug_ from "debug";
 import { dialog, shell } from "electron";
+import {
+    buildPublicationMarkAsAnalyticsParams,
+    publicationAnalyticsEvents,
+} from "readium-desktop/common/analytics/publication";
 import { catalogActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
@@ -34,6 +38,7 @@ import { EventPayload } from "readium-desktop/common/ipc/sync";
 import { SenderType } from "readium-desktop/common/models/sync";
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { openPublicationFolder } from "./publication/openFolder";
+import { spawnPublicationAnalyticsEvent } from "./analyticsPublication";
 
 const filename_ = "readium-desktop:main:redux:sagas:catalog";
 const debug = debug_(filename_);
@@ -430,6 +435,12 @@ export function saga() {
                     debug("sender is not renderer !!!");
                     return;
                 }
+
+                yield* spawnPublicationAnalyticsEvent(
+                    publicationAnalyticsEvents.markAs,
+                    buildPublicationMarkAsAnalyticsParams("finished"),
+                );
+
                 let winId = sender.reader_pubId /* see syncFactory */ ? sender.identifier : undefined; // action dispatched from library;
                 if (!winId) {
                     const readers = yield* selectTyped((state: RootState) => state.win.session.reader);

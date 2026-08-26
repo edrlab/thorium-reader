@@ -6,9 +6,11 @@
 // ==LICENSE-END==
 
 import { call as callTyped } from "typed-redux-saga/macro";
+import { publicationAnalyticsEvents } from "readium-desktop/common/analytics/publication";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { SagaGenerator } from "typed-redux-saga";
+import { spawnPublicationAnalyticsEvent } from "readium-desktop/main/redux/sagas/analyticsPublication";
 
 import { getPublication } from "./getPublication";
 
@@ -25,6 +27,12 @@ export function* updateTags(identifier: string, tags: string[]): SagaGenerator<P
 
     yield* callTyped(() => publicationRepository.save(newDoc));
     const pubView = yield* getPublication(identifier, false);
+
+    const previousTags = Array.isArray(doc?.tags) ? doc.tags : [];
+    const hasAddedTag = tags.length > previousTags.length && tags.some((tag) => !previousTags.includes(tag));
+    if (hasAddedTag) {
+        yield* spawnPublicationAnalyticsEvent(publicationAnalyticsEvents.addTag);
+    }
 
     return pubView;
 }

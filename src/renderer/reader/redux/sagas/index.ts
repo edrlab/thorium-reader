@@ -33,11 +33,19 @@ import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 import { resourceCacheTimer } from "readium-desktop/common/redux/sagas/resourceCache";
 import { createOrGetPdfEventBus } from "../../pdf/driver";
 import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
+import { buildPublicationAnalyticsParams } from "readium-desktop/common/analytics/publication";
+import { logEvent } from "readium-desktop/renderer/common/analytics";
 
 // Logger
 const filename_ = "readium-desktop:renderer:reader:saga:index";
 const debug = debug_(filename_);
 debug("_");
+
+const isMediaOverlayListeningState = (state: MediaOverlaysStateEnum) =>
+    state === MediaOverlaysStateEnum.PLAYING || state === MediaOverlaysStateEnum.PAUSED;
+
+const isTTSListeningState = (state: TTSStateEnum) =>
+    state === TTSStateEnum.PLAYING || state === TTSStateEnum.PAUSED;
 
 export function getMediaOverlayStateChannel() {
     const channel = eventChannel<MediaOverlaysStateEnum>(
@@ -122,17 +130,42 @@ export function* rootSaga() {
 
     const MOChannel = getMediaOverlayStateChannel();
     const TTSChannel = getTTSStateChannel();
+    let listenEventLogged = false;
+    function* logPublicationListenIfNeeded() {
+        if (listenEventLogged) {
+            return;
+        }
+
+        const publicationView = yield* selectTyped((state: IReaderRootState) => state.reader.info.publicationView);
+        if (!publicationView || publicationView.isAudio) {
+            return;
+        }
+
+        try {
+            yield* callTyped(logEvent, "listen", buildPublicationAnalyticsParams(publicationView));
+            listenEventLogged = true;
+        } catch (e) {
+            debug("Publication listen analytics event failed", e);
+        }
+    }
+
     yield all([
         takeSpawnEveryChannel(
             MOChannel,
             function* (state: MediaOverlaysStateEnum) {
                 yield* putTyped(readerLocalActionReader.setMediaOverlayState.build(state));
+                if (isMediaOverlayListeningState(state)) {
+                    yield* logPublicationListenIfNeeded();
+                }
             },
         ),
         takeSpawnEveryChannel(
             TTSChannel,
             function* (state: TTSStateEnum) {
                 yield* putTyped(readerLocalActionReader.setTTSState.build(state));
+                if (isTTSListeningState(state)) {
+                    yield* logPublicationListenIfNeeded();
+                }
             },
         ),
         spawnTyped(function*() {

@@ -7,12 +7,14 @@
 
 import { diMainGet } from "readium-desktop/main/di";
 import { lcpActions } from "readium-desktop/common/redux/actions";
+import { publicationAnalyticsEvents } from "readium-desktop/common/analytics/publication";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call, delay } from "redux-saga/effects";
 import { call as callTyped } from "typed-redux-saga/macro";
 import { SagaGenerator } from "typed-redux-saga";
 import debug_ from "debug";
 import { RequesetToCloseAllReadersWithTheSamePubId } from "../../reader";
+import { spawnPublicationAnalyticsEvent } from "readium-desktop/main/redux/sagas/analyticsPublication";
 
 const debug = debug_("readium-desktop:main/redux/saga/api/publication/delete");
 
@@ -95,6 +97,8 @@ export function* deletePublication(
         const publicationViewConverter = diMainGet("publication-view-converter");
         // Remove from memory cache
         yield call(() => publicationViewConverter.removeFromMemoryCache(publicationIdentifier));
+
+        yield* spawnPublicationAnalyticsEvent(publicationAnalyticsEvents.deletePublication);
     } finally {
         if (shouldUsePublicationFileLock && !publicationFileLockAlreadyHeld) {
             yield* callTyped(releasePublicationFileLock, publicationIdentifier);
