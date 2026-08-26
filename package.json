@@ -39,6 +39,7 @@
     "_NOT_NEEDED_electron-build_": "npm rebuild --runtime=electron --target=41.10.7 --disturl=https://electronjs.org/headers --build-from-source",
     "_NOT_NEEDED_electron-build": "electron-rebuild --version=41.10.7 --disturl=https://electronjs.org/headers",
     "_NOT_NEEDED_rmDupeReactReduxTypes": "rimraf \"./node_modules/@types/react-redux/node_modules/@types/react\"",
+    "build-nodeintegration": "cross-env NODE_ENV=production webpack --config webpack.config.renderer-reader.js && webpack --config webpack.config.renderer-library.js",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.js && ncp src/package.json dist/package.json && ncp src/package-lock.json dist/package-lock.json && cd dist && rimraf node_modules && npm ci --ignore-scripts --foreground-scripts --allow-git=root && cd ..",
     "build:prod:windows": "npm run node-gyp-native-node-addon-windows-registry && ncp native-node-addon-windows-registry/build/Release/windows-registry.node external-assets/windows-registry.node && npm run build:prod",
     "build:prod": "npm run lint && npm run build",

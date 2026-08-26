@@ -55,7 +55,7 @@ if (nodeEnv !== "production") {
     const nodeExternals = require("webpack-node-externals");
     const neFunc = nodeExternals({
         // allowlist: ["marked", "pdf.js", "readium-speech", "@github/paste-markdown", "yargs", "timeout-signal", "nanoid", "normalize-url", "node-fetch", "data-uri-to-buffer", /^fetch-blob/, /^formdata-polyfill/],
-        importType: function (moduleName) {
+        importType: function(moduleName) {
             if (!_externalsCache.has(moduleName)) {
                 console.log(`WEBPACK EXTERNAL (LIBRARY): [${moduleName}]`);
             }
@@ -68,7 +68,7 @@ if (nodeEnv !== "production") {
     });
     externals = [
         externals,
-        function ({ context, request, contextInfo, getResolve }, callback) {
+        function({ context, request, contextInfo, getResolve }, callback) {
             const isRDesk = request.indexOf("readium-desktop/") === 0;
             if (isRDesk) {
                 if (!_externalsCache.has(request)) {
@@ -82,7 +82,7 @@ if (nodeEnv !== "production") {
             const isRDeskR2 = request.indexOf("@r2-") === 0;
             if (isRDeskR2) {
                 if (!_externalsCache.has(request)) {
-                    console.log(`WEBPACK EXTERNAL (MAIN): READIUM-DESKTOP @R2 [${request}]`);
+                    console.log(`WEBPACK EXTERNAL (LIBRARY): READIUM-DESKTOP @R2 [${request}]`);
                 }
                 _externalsCache.add(request);
 
@@ -109,6 +109,68 @@ if (nodeEnv !== "production") {
             }
 
             neFunc(context, request, callback);
+        },
+    ];
+} else {
+    // const nodeExternals = require("webpack-node-externals");
+    // const neFunc = nodeExternals({
+    //     importType: function (moduleName) {
+    //         if (!_externalsCache.has(moduleName)) {
+    //             console.log(`WEBPACK EXTERNAL (LIBRARY): [${moduleName}]`);
+    //         }
+    //         _externalsCache.add(moduleName);
+    //         return "commonjs " + moduleName;
+    //     },
+    // });
+    externals = [
+        externals,
+        function ({ context, request, contextInfo, getResolve }, callback) {
+            const isRDesk = request.indexOf("readium-desktop/") === 0;
+            if (isRDesk) {
+                if (!_externalsCache.has(request)) {
+                    console.log(`WEBPACK EXTERNAL (LIBRARY): READIUM-DESKTOP [${request}]`);
+                }
+                _externalsCache.add(request);
+
+                return callback();
+            }
+
+            const isRDeskR2 = request.indexOf("@r2-") === 0;
+            if (isRDeskR2) {
+                if (!_externalsCache.has(request)) {
+                    console.log(`WEBPACK EXTERNAL (LIBRARY): READIUM-DESKTOP @R2 [${request}]`);
+                }
+                _externalsCache.add(request);
+
+                return callback();
+            }
+
+            let request_ = request;
+            if (aliases) {
+                // const isR2 = /^r2-.+-js/.test(request);
+                // const isR2Alias = /^@r2-.+-js/.test(request);
+
+                const iSlash = request.indexOf("/");
+                const key = request.substr(0, iSlash >= 0 ? iSlash : request.length);
+                if (aliases[key]) {
+                    request_ = request.replace(key, aliases[key]);
+
+                    if (!_externalsCache.has(request)) {
+                        console.log(`WEBPACK EXTERNAL (LIBRARY): ALIAS [${request}] => [${request_}]`);
+                    }
+                    _externalsCache.add(request);
+
+                    // return callback(null, "commonjs " + request_);
+                    return callback();
+                }
+            }
+
+            if (!_externalsCache.has(request)) {
+                console.log(`WEBPACK EXTERNAL (LIBRARY): XXX [${request}]`);
+            }
+            _externalsCache.add(request);
+            // neFunc(context, request, callback);
+            return callback();
         },
     ];
 }
@@ -298,7 +360,77 @@ let config = Object.assign(
 
         mode: nodeEnv,
 
-        externalsPresets: { node: true },
+        // set -xv ; container --version ; container system stop ; container system start ; container system status ; container stop test-container ; container rm --force test-container ; container prune ; container list --all ; container run --cpus 4 --memory 2g --platform linux/arm64 --name test-container --volume ${PWD}:/MOUNT -w /MOUNT registry.access.redhat.com/hi/nodejs:latest sh -c 'set -xv ; node --version ; npm --version ; node -e "console.log(JSON.stringify(require(\"node:module\").builtinModules, null, 2))"' ; container list --all ; container stop test-container ; container rm --force test-container ; container prune ; container system status ; container system stop ; set +xv
+        /*
+        _http_agent
+        _http_client
+        _http_common
+        _http_incoming
+        _http_outgoing
+        _http_server
+        _tls_common
+        _tls_wrap
+        assert
+        assert/strict
+        async_hooks
+        buffer
+        child_process
+        cluster
+        console
+        constants
+        crypto
+        dgram
+        diagnostics_channel
+        dns
+        dns/promises
+        domain
+        events
+        fs
+        fs/promises
+        http
+        http2
+        https
+        inspector
+        inspector/promises
+        module
+        net
+        os
+        path
+        path/posix
+        path/win32
+        perf_hooks
+        process
+        punycode
+        querystring
+        readline
+        readline/promises
+        repl
+        stream
+        stream/consumers
+        stream/promises
+        stream/web
+        string_decoder
+        sys
+        timers
+        timers/promises
+        tls
+        trace_events
+        tty
+        url
+        util
+        util/types
+        v8
+        vm
+        wasi
+        worker_threads
+        zlib
+        node:sea
+        node:sqlite
+        node:test
+        node:test/reporters
+        */
+        externalsPresets: { node: false },
+        // externalsPresets: { node: true },
         externals: externals,
         externalsType: "commonjs", // module, node-commonjs
         experiments: {
