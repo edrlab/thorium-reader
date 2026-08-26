@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { Transform } from "stream";
+import { Transform } from "node:stream";
 
 const debug = debug_("r2:utils#stream/RangeStream");
 

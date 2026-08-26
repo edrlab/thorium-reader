@@ -15,7 +15,7 @@ import { fixedLayoutZoomPercent } from "@r2-navigator-js/electron/renderer/dom";
 import { ipcRenderer } from "electron";
 import classNames from "classnames";
 import divinaPlayer from "divina-player-js";
-import * as path from "path";
+import * as path from "node:path";
 import * as r from "ramda";
 import * as React from "react";
 import { connect } from "react-redux";

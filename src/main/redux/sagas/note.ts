@@ -7,7 +7,7 @@
 
 import debug_ from "debug";
 import { dialog } from "electron";
-import * as fs from "fs";
+import * as fs from "node:fs";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { annotationActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
@@ -17,7 +17,7 @@ import { call as callTyped, put as putTyped, take as takeTyped, delay as delayTy
 import { hexToRgb } from "readium-desktop/common/rgb";
 import { isNil } from "readium-desktop/utils/nil";
 import { __READIUM_ANNOTATION_AJV_ERRORS, isCFIFragmentSelector, isCssSelector, isEPUBCFISelector, isFragmentSelector, isIReadiumAnnotationSet, isLegacyCfiSelector, isTextPositionSelector, isTextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
-import path from "path";
+import path from "node:path";
 import { getPublication } from "./api/publication/getPublication";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";

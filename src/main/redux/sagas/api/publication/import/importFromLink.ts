@@ -29,14 +29,14 @@ import { downloader } from "../../../downloader";
 import { packageFromLink } from "../packager/packageLink";
 import { importFromFsService } from "./importFromFs";
 import isURL from "readium-desktop/common/utils/isURL";
-import path from "path";
+import path from "node:path";
 import { app } from "electron";
 import { findExtWithMimeType } from "readium-desktop/utils/mimeTypes";
 import { nanoid } from "nanoid";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
 import { customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
-import * as fs from "fs";
+import * as fs from "node:fs";
 import { URL_PATH_PREFIX_CUSTOMPROFILEZIP } from "readium-desktop/common/streamerProtocol";
 
 // Logger

@@ -12,7 +12,7 @@ import { customizationPackageProvisioningManifest, customizationPackageProvision
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { error } from "readium-desktop/main/tools/error";
-import * as fs from "fs";
+import * as fs from "node:fs";
 import { nanoid } from "nanoid";
 import { fork as forkTyped, call as callTyped, select as selectTyped, put as putTyped, take as takeTyped, race as raceTyped, delay as delayTyped, all as allTyped } from "typed-redux-saga/macro";
 import { SagaGenerator } from "typed-redux-saga";

@@ -7,7 +7,7 @@
 
 import debug_ from "debug";
 import moment from "moment";
-import { extname } from "path";
+import { extname } from "node:path";
 import { JsonMap } from "readium-desktop/typings/json";
 import { iso8601DurationsToSeconds } from "readium-desktop/utils/iso8601";
 import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";

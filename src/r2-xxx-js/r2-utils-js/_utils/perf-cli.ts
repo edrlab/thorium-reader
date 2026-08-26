@@ -5,8 +5,8 @@
 // // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // // ==LICENSE-END==
 
-// import * as fs from "fs";
-// import * as path from "path";
+// import * as fs from "node:fs";
+// import * as path from "node:path";
 
 // import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 // import { IStreamAndLength, IZip } from "@r2-utils-js/_utils/zip/zip";

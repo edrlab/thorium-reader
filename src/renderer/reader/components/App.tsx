@@ -13,7 +13,7 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 // import * as globalScssStyle from "readium-desktop/renderer/assets/styles/global.scss";
 import "readium-desktop/renderer/assets/styles/global.scss";
 
-import * as path from "path";
+import * as path from "node:path";
 import * as React from "react";
 import { Provider } from "react-redux";
 import {

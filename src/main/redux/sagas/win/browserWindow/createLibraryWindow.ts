@@ -8,7 +8,7 @@
 import debug_ from "debug";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
-import * as path from "path";
+import * as path from "node:path";
 import { normalizeWinBoundRectangle } from "readium-desktop/common/rectangle/window";
 import { diMainGet } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
@@ -54,9 +54,12 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
             allowRunningInsecureContent: false,
             backgroundThrottling: true,
             devTools: ENABLE_DEV_TOOLS, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
-            nodeIntegration: true, // ==> disables sandbox https://www.electronjs.org/docs/latest/tutorial/sandbox
-            sandbox: false,
-            contextIsolation: false, // must be false because nodeIntegration, see https://github.com/electron/electron/issues/23506
+            // nodeIntegration: true, // ==> disables sandbox https://www.electronjs.org/docs/latest/tutorial/sandbox
+            // sandbox: false,
+            // contextIsolation: false, // must be false because nodeIntegration, see https://github.com/electron/electron/issues/23506
+            nodeIntegration: false,
+            sandbox: true, // preload NodeJS module shims
+            contextIsolation: true,
             nodeIntegrationInWorker: false,
             webSecurity: true,
             webviewTag: false,

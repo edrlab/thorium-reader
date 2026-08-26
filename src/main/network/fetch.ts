@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import fetchCookie from "fetch-cookie";
-import * as fs from "fs";
+import * as fs from "node:fs";
 import debug_ from "debug";
 
 // TypeScript GO:

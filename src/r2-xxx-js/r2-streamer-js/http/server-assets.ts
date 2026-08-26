@@ -10,7 +10,7 @@
 // import debug_ from "debug";
 // import * as express from "express";
 // import * as mime from "mime-types";
-// import * as path from "path";
+// import * as path from "node:path";
 
 // import { zipHasEntry } from "@r2-shared-js/_utils/zipHasEntry";
 // import { Publication } from "@r2-shared-js/models/publication";
@@ -27,7 +27,7 @@
 // import { Server } from "./server";
 
 // // import { CounterPassThroughStream } from "@r2-utils-js/_utils/stream/CounterPassThroughStream";
-// // import { PassThrough } from "stream";
+// // import { PassThrough } from "node:stream";
 
 // const debug = debug_("r2:streamer#http/server-assets");
 

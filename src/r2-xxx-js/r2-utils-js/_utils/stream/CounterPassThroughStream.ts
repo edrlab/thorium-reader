@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Transform } from "stream";
+import { Transform } from "node:stream";
 
 // const debug = debug_("r2:utils#stream/CounterPassThroughStream");
 

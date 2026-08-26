@@ -5,8 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as fs from "fs";
-// import { URL } from "url";
+import * as fs from "node:fs";
+// import { URL } from "node:url";
 
 // import { isHTTP } from "../http/UrlUtils";
 import { IZip } from "./zip";
