@@ -673,7 +673,7 @@
         "licensed": "Licensierad",
         "markAsRead": "Markera som läst",
         "notStarted": "Ej påbörjad",
-        "onGoing": "Pågående",
+        "onGoing": "Läser just nu",
         "progression": {
             "title": "Läsposition"
         },
@@ -693,7 +693,7 @@
         "annotations": {
             "Color": "Färg",
             "addNote": "Anteckna",
-            "advancedMode": "Omedelbart-läge (skapa automatiskt efter markering)",
+            "advancedMode": "Omedelbart-läge (skapa automatiskt efter textmarkering)",
             "annotationsExport": {
                 "description": "Namnge anteckningarna:",
                 "title": "Titel"
@@ -710,13 +710,13 @@
                 "all": "Alla",
                 "filterByColor": "Filtrera efter färg",
                 "filterByCreator": "Filtrera efter skapare",
-                "filterByDrawtype": "Filtrera efter markeringstyp",
+                "filterByDrawtype": "Filtrera efter typ av markering",
                 "filterByTag": "Filtrera efter tagg",
                 "filterOptions": "Filteralternativ",
                 "none": "Ingen"
             },
             "hide": "Visa inte",
-            "highlight": "Markera",
+            "highlight": "Markering",
             "noSelectionToast": "Ingen markering",
             "note": "{{- color}} anteckning",
             "quickAnnotations": "Snabbskapa (hoppa över redigeraren)",
@@ -1328,7 +1328,7 @@
             "minimizeLibraryToTrayDescription": "När detta är aktiverat fortsätter Thorium att köras i meddelandefältet i Windows när biblioteksfönstret minimeras.",
             "oneReaderWindowPerPublication": "Använd bara ett läsfönster per bok",
             "oneReaderWindowPerPublicationDescription": "När detta är aktiverat öppnas inte ett nytt läsfönster för böcker som redan är öppna.",
-            "title": "Fönsterbeteende"
+            "title": "Fönsterhantering"
         }
     },
     "tts": {
