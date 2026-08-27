@@ -68,6 +68,7 @@ export interface IReadiumElectronWebviewWindowState {
     // mediaOverlaysUseTTSHighlights: boolean;
 
     ttsSkippabilityEnabled: boolean;
+    ttsSubSupEnabled: boolean;
     ttsSentenceDetectionEnabled: boolean;
     ttsClickEnabled: boolean;
     ttsOverlayEnabled: boolean;
@@ -138,6 +139,7 @@ export interface IReadiumElectronBrowserWindow {
     mediaOverlaysUseTTSHighlights: boolean;
 
     ttsSkippabilityEnabled: boolean;
+    ttsSubSupEnabled: boolean;
     ttsSentenceDetectionEnabled: boolean;
     ttsClickEnabled: boolean;
     ttsOverlayEnabled: boolean;

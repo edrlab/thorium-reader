@@ -12,7 +12,7 @@ import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEver
 
 import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysEnableCaptionsMode, mediaOverlaysEnableSkippability,
     mediaOverlaysPause, mediaOverlaysResume, readiumCssUpdate, reloadContent, ttsOverlayEnable, ttsPlay,
-    ttsSentenceDetectionEnable, ttsAndMediaOverlaysManualPlayNext, ttsSkippabilityEnable, ttsStop,
+    ttsSentenceDetectionEnable, ttsSubSupEnable, ttsAndMediaOverlaysManualPlayNext, ttsSkippabilityEnable, ttsStop,
     ttsHighlightStyle,
     mediaOverlaysStop, mediaOverlaysUseTTSHighlights,
     mediaOverlaysPlay,
@@ -80,6 +80,10 @@ function* readerConfigChanged(action: readerActions.setConfig.TAction): SagaGene
 
     if (isNotNil(payload.ttsEnableSentenceDetection)) {
         ttsSentenceDetectionEnable(readerConfig.ttsEnableSentenceDetection);
+    }
+
+    if (isNotNil(payload.ttsEnableSubSup)) {
+        ttsSubSupEnable(readerConfig.ttsEnableSubSup);
     }
 
     if (isNotNil(payload.ttsAndMediaOverlaysDisableContinuousPlay)) {
@@ -251,7 +255,8 @@ function* readerConfigChanged(action: readerActions.setConfig.TAction): SagaGene
         // (isNotNil(payload.ttsVoices) && payload.ttsVoices.length) ||
         // isNotNil(payload.ttsPlaybackRate) ||
         isNotNil(payload.ttsEnableOverlayMode) ||
-        isNotNil(payload.ttsEnableSentenceDetection)
+        isNotNil(payload.ttsEnableSentenceDetection) ||
+        isNotNil(payload.ttsEnableSubSup)
     ) {
         const ttsState = yield* selectTyped((state: IReaderRootState) => state.reader.tts.state);
         const ttsWasPlaying = ttsState !== TTSStateEnum.STOPPED;

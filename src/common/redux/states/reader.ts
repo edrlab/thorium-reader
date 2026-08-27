@@ -85,6 +85,7 @@ export const readerConfigInitialState: ReaderConfig = {
     mediaOverlaysIgnoreAndUseTTS: false,
     mediaOverlaysUseTTSHighlights: false,
     ttsEnableSentenceDetection: true,
+    ttsEnableSubSup: true,
     mediaOverlaysEnableCaptionsMode: false,
     ttsEnableOverlayMode: false,
     ...readerConfigInitialStateDefaultPublisher,
