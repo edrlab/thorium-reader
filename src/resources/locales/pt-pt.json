@@ -880,6 +880,7 @@
             "disposition": {
                 "title": "Disposição"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Tipo de letra",
             "fontSize": "Tamanho da letra",
             "increaseFontSize": "",
@@ -890,7 +891,6 @@
             "lineSpacing": "Espaçamento de linhas",
             "margin": "Margem",
             "mathjax": "Ativar MathJax",
-            "mathjaxDescription": "",
             "noFootnotes": "Desativar janelas de notas de rodapé",
             "noRTLFlip": "Desativar interface Direita-para-esquerda",
             "noRuby": "Ocultar Ruby Japonês",

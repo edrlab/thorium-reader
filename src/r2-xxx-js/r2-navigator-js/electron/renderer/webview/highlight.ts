@@ -10,7 +10,7 @@ import debounce from "debounce";
 import { ipcRenderer } from "electron";
 
 import {
-    IEventPayload_R2_EVENT_HIGHLIGHT_CLICK, R2_EVENT_HIGHLIGHT_CLICK,
+    IEventPayload_R2_EVENT_HIGHLIGHT_CLICK, R2_EVENT_FOCUS_READING_LOC, R2_EVENT_HIGHLIGHT_CLICK,
 } from "../../common/events";
 import {
     HighlightDrawTypeStrikethrough, HighlightDrawTypeUnderline, HighlightDrawTypeOutline, IColor, IHighlight,
@@ -51,6 +51,7 @@ Edge,
 const { unify, subtract } = BooleanOperations;
 
 import { computePosition, flip, shift, offset as offsetFloat, arrow } from "@floating-ui/dom";
+import { isPopupDialogOpen } from "./popup-dialog";
 
 const IS_DEV = (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "dev");
 
@@ -59,7 +60,6 @@ const IS_DEV = (process.env.NODE_ENV === "development" || process.env.NODE_ENV =
 
 export const ENABLE_FLOATING_UI = true;
 export const ENABLE_CSS_HIGHLIGHTS = true && !!CSS.highlights;
-export const ENABLE_PAGEBREAK_MARGIN_TEXT_EXPERIMENT = false;
 
 let lastMouseDownX = -1;
 let lastMouseDownY = -1;
@@ -900,9 +900,10 @@ function processMouseEvent(win: ReadiumElectronWebviewWindow, ev: MouseEvent) {
 
             // const doDrawMargin = drawMargin(foundHighlight);
             // documant.documentElement.classList.add(doDrawMargin ? CLASS_HIGHLIGHT_CURSOR1 : CLASS_HIGHLIGHT_CURSOR2);
-            if (foundHighlight.group !== HIGHLIGHT_GROUP_PAGEBREAK) {
-                documant.documentElement.classList.add(CLASS_HIGHLIGHT_CURSOR2);
-            }
+
+            // if (foundHighlight.group !== HIGHLIGHT_GROUP_PAGEBREAK) {
+            documant.documentElement.classList.add(CLASS_HIGHLIGHT_CURSOR2);
+            // }
 
             const text = foundHighlight.textPopup?.text ? foundHighlight.textPopup.text : undefined;
             if (text && _highlightsContainer) {
@@ -1350,7 +1351,7 @@ function processMouseEvent(win: ReadiumElectronWebviewWindow, ev: MouseEvent) {
                 // });
                 }, TIMEOUT_MOUSE_MS);
             }
-        } else if ((ev.type === "mouseup" || ev.type === "click") && foundHighlight.group !== HIGHLIGHT_GROUP_PAGEBREAK) {
+        } else if ((ev.type === "mouseup" || ev.type === "click")) {
             // documant.documentElement.classList.remove(CLASS_HIGHLIGHT_CURSOR1);
             setTimeout(() => {
                 documant.documentElement.classList.remove(CLASS_HIGHLIGHT_CURSOR2);
@@ -1364,20 +1365,59 @@ function processMouseEvent(win: ReadiumElectronWebviewWindow, ev: MouseEvent) {
             ev.preventDefault();
             ev.stopPropagation();
 
-            const payload: IEventPayload_R2_EVENT_HIGHLIGHT_CLICK = {
-                highlight: foundHighlight,
-                event: {
-                    type: ev.type,
-                    button: ev.button,
-                    alt: ev.altKey,
-                    shift: ev.shiftKey,
-                    ctrl: ev.ctrlKey,
-                    meta: ev.metaKey,
-                    x: ev.clientX,
-                    y: ev.clientY,
-                },
-            };
-            ipcRenderer.sendToHost(R2_EVENT_HIGHLIGHT_CLICK, payload);
+            if (foundHighlight.group === HIGHLIGHT_GROUP_PAGEBREAK) {
+                // console.log("HIGHLIGHT_GROUP_PAGEBREAK commonAncestorContainer:", foundHighlight.range?.commonAncestorContainer?.nodeName, foundHighlight.range?.commonAncestorContainer?.nodeType, foundHighlight.range?.commonAncestorContainer?.nodeValue);
+                // console.log("HIGHLIGHT_GROUP_PAGEBREAK startContainer:", foundHighlight.range?.startContainer?.nodeName, foundHighlight.range?.startContainer?.nodeType, foundHighlight.range?.startContainer?.nodeValue, foundHighlight.range?.startOffset);
+                // console.log("HIGHLIGHT_GROUP_PAGEBREAK endContainer:", foundHighlight.range?.endContainer?.nodeName, foundHighlight.range?.endContainer?.nodeType, foundHighlight.range?.endContainer?.nodeValue, foundHighlight.range?.endOffset);
+
+                if (foundHighlight.range?.startContainer?.nodeType === Node.ELEMENT_NODE && // 1
+                    foundHighlight.range?.endContainer?.nodeType === Node.ELEMENT_NODE && // 1
+                    foundHighlight.range?.startContainer === foundHighlight.range?.endContainer &&
+                    foundHighlight.range?.endOffset - foundHighlight.range?.startOffset === 1) {
+
+                    // includes TTS!
+                    if (isPopupDialogOpen(win.document)) {
+                        console.log("HIGHLIGHT_GROUP_PAGEBREAK: isPopupDialogOpen SKIP");
+                        return;
+                    }
+
+                    win.READIUM2.lastClickedTextChar = undefined;
+
+                    const el = foundHighlight.range.startContainer.childNodes.item(foundHighlight.range.startOffset) as Element;
+                    if (!el || el.nodeType !== Node.ELEMENT_NODE) { // 1
+                        console.log("HIGHLIGHT_GROUP_PAGEBREAK el.nodeType", el?.nodeType);
+                        return;
+                    }
+
+                    win.READIUM2.hashElement = el;
+                    win.READIUM2.locationHashOverride = el;
+
+                    if (IS_DEV) {
+                        console.log("HIGHLIGHT_GROUP_PAGEBREAK --- R2_EVENT_FOCUS_READING_LOC");
+                    }
+                    win.postMessage(R2_EVENT_FOCUS_READING_LOC);
+                    // ipcRenderer.sendToHost(R2_EVENT_FOCUS_READING_LOC);
+                    // ipcRenderer.send(R2_EVENT_FOCUS_READING_LOC);
+
+                    // notifyReadingLocationDebounced(userInteract);
+                    // focusElement(win.READIUM2.locationHashOverride, true /*, false */);
+                }
+            } else {
+                const payload: IEventPayload_R2_EVENT_HIGHLIGHT_CLICK = {
+                    highlight: foundHighlight,
+                    event: {
+                        type: ev.type,
+                        button: ev.button,
+                        alt: ev.altKey,
+                        shift: ev.shiftKey,
+                        ctrl: ev.ctrlKey,
+                        meta: ev.metaKey,
+                        x: ev.clientX,
+                        y: ev.clientY,
+                    },
+                };
+                ipcRenderer.sendToHost(R2_EVENT_HIGHLIGHT_CLICK, payload);
+            }
         }
     } else {
         const _highlightsFloatingUI = win.document.getElementById(ID_HIGHLIGHTS_FLOATING);
@@ -2380,6 +2420,18 @@ https://blackorwhite.lloydk.ca
         // clientRects = (DEBUG_RECTS && drawStrikeThrough) ? textClientRects : textReducedClientRectsToKeep;
     } else {
         const rangeClientRects = DOMRectListToArray(range.getClientRects());
+        // console.log("rangeClientRects", JSON.stringify(rangeClientRects));
+
+        // page breaks empty span without the zero-width CSS ::before contents trick
+        if (drawMarginBookmark &&
+            rangeClientRects.length === 1 &&
+            rangeClientRects[0].width === 0 && // rangeClientRects[0].left === rangeClientRects[0].right
+            rangeClientRects[0].height !== 0 // rangeClientRects[0].top !== rangeClientRects[0].bottom
+        ) {
+            rangeClientRects[0].width = 2;
+            rangeClientRects[0].left -= 1;
+            rangeClientRects[0].right += 1;
+        }
 
         if (drawMarginBookmark &&
             rangeClientRects.length === 2 &&
@@ -3542,25 +3594,40 @@ https://blackorwhite.lloydk.ca
             // const delta = MARGIN_MARKER_THICKNESS / ratio;
             const polygonMarginUnionPoly_ = polygonMarginUnionPoly.clone(); // backup
             try {
-                // const bbox = polygonMarginUnionPoly.box;
-                // const vec = new Vector(bbox.center, new Point(0, 0));
-                // polygonMarginUnionPoly = polygonMarginUnionPoly.translate(vec);
-                // polygonMarginUnionPoly = polygonMarginUnionPoly.scale(1/ratio, 1/ratio);
-                // polygonMarginUnionPoly = polygonMarginUnionPoly.translate(vec.invert());
-                // // polygonMarginUnionPoly = offset(polygonMarginUnionPoly, -delta, true);
-                // polygonMarginUnionPoly = offset(polygonMarginUnionPoly, delta, false);
-                const p = new Polygon();
-                const triangleInset = MARGIN_MARKER_THICKNESS / 2.5;
-                const f = p.addFace([
-                    new Segment(new Point(polygonMarginUnionPoly.box.xmin, polygonMarginUnionPoly.box.ymax), new Point(polygonMarginUnionPoly.box.xmax, polygonMarginUnionPoly.box.ymax)),
-                    new Segment(new Point(polygonMarginUnionPoly.box.xmax, polygonMarginUnionPoly.box.ymax), new Point(polygonMarginUnionPoly.box.xmin + polygonMarginUnionPoly.box.width / 2, polygonMarginUnionPoly.box.ymax - triangleInset)),
-                    new Segment(new Point(polygonMarginUnionPoly.box.xmin + polygonMarginUnionPoly.box.width / 2, polygonMarginUnionPoly.box.ymax - triangleInset), new Point(polygonMarginUnionPoly.box.xmin, polygonMarginUnionPoly.box.ymax)),
-                ]);
-                if (f.orientation() !== BASE_ORIENTATION) {
-                    console.log("--xPOLYGON FACE ORIENTATION CCW/CW reverse() 10");
-                    f.reverse();
+                if (highlight.group === HIGHLIGHT_GROUP_PAGEBREAK) {
+                    // // const bbox = polygonMarginUnionPoly.box;
+                    // // const vec = new Vector(bbox.center, new Point(0, 0));
+                    // // polygonMarginUnionPoly = polygonMarginUnionPoly.translate(vec);
+                    // // polygonMarginUnionPoly = polygonMarginUnionPoly.scale(1/ratio, 1/ratio);
+                    // // polygonMarginUnionPoly = polygonMarginUnionPoly.translate(vec.invert());
+                    // // // polygonMarginUnionPoly = offset(polygonMarginUnionPoly, -delta, true);
+                    // polygonMarginUnionPoly = offset(polygonMarginUnionPoly, -3, false);
+
+                    const p = new Polygon();
+                    const f = p.addFace([
+                        new Segment(new Point(polygonMarginUnionPoly.box.xmin, polygonMarginUnionPoly.box.ymax), new Point(polygonMarginUnionPoly.box.xmin, polygonMarginUnionPoly.box.ymin)),
+                        new Segment(new Point(polygonMarginUnionPoly.box.xmin, polygonMarginUnionPoly.box.ymin), new Point(polygonMarginUnionPoly.box.xmax, polygonMarginUnionPoly.box.ymin + polygonMarginUnionPoly.box.height / 2)),
+                        new Segment(new Point(polygonMarginUnionPoly.box.xmax, polygonMarginUnionPoly.box.ymin + polygonMarginUnionPoly.box.height / 2), new Point(polygonMarginUnionPoly.box.xmin, polygonMarginUnionPoly.box.ymax)),
+                    ]);
+                    if (f.orientation() !== BASE_ORIENTATION) {
+                        console.log("--xPOLYGON+ FACE ORIENTATION CCW/CW reverse() 10");
+                        f.reverse();
+                    }
+                    polygonMarginUnionPoly = p;
+                } else {
+                    const p = new Polygon();
+                    const triangleInset = MARGIN_MARKER_THICKNESS / 2.5;
+                    const f = p.addFace([
+                        new Segment(new Point(polygonMarginUnionPoly.box.xmin, polygonMarginUnionPoly.box.ymax), new Point(polygonMarginUnionPoly.box.xmax, polygonMarginUnionPoly.box.ymax)),
+                        new Segment(new Point(polygonMarginUnionPoly.box.xmax, polygonMarginUnionPoly.box.ymax), new Point(polygonMarginUnionPoly.box.xmin + polygonMarginUnionPoly.box.width / 2, polygonMarginUnionPoly.box.ymax - triangleInset)),
+                        new Segment(new Point(polygonMarginUnionPoly.box.xmin + polygonMarginUnionPoly.box.width / 2, polygonMarginUnionPoly.box.ymax - triangleInset), new Point(polygonMarginUnionPoly.box.xmin, polygonMarginUnionPoly.box.ymax)),
+                    ]);
+                    if (f.orientation() !== BASE_ORIENTATION) {
+                        console.log("--xPOLYGON FACE ORIENTATION CCW/CW reverse() 10");
+                        f.reverse();
+                    }
+                    polygonMarginUnionPoly = subtract(polygonMarginUnionPoly, p);
                 }
-                polygonMarginUnionPoly = subtract(polygonMarginUnionPoly, p);
             } catch (e) {
                 console.log(e);
                 polygonMarginUnionPoly = polygonMarginUnionPoly_;
@@ -3583,22 +3650,23 @@ https://blackorwhite.lloydk.ca
             className: undefined,
             // r: 4,
         });
-        if (ENABLE_PAGEBREAK_MARGIN_TEXT_EXPERIMENT) {
-            let svg = svgPath;
-            highlight.marginText = "Long test 1.";
-            if (highlight.marginText) {
-                const m = svg.match(/d="\s*M([0-9]+\.?[0-9]*),([0-9]+\.?[0-9]*)/);
-                if (m && m[1] && m[2]) {
-                    const r2SvgHighlightsTextFilterID = `r2SvgFilterR${highlight.color.red}G${highlight.color.green}B${highlight.color.blue}`;
-                    const el = highlightParent.querySelector(`#${r2SvgHighlightsTextFilterID}`); // documant.getElementById(r2SvgHighlightsTextFilterID);
-                    const filter = el ? "" : `<defs><filter x="0" y="0" width="1" height="1" id="${r2SvgHighlightsTextFilterID}"><feFlood flood-color="rgb(${highlight.color.red}, ${highlight.color.green}, ${highlight.color.blue})" result="bg" /><feMerge><feMergeNode in="bg"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`;
-                    svg = `${filter}${svgPath}<text x="${m[1]}" y="${m[2]}" class="${CLASS_HIGHLIGHT_CONTOUR_MARGIN}_" font-size="stroke:red; fill: magenta;" filter="url(#${r2SvgHighlightsTextFilterID})">${highlight.marginText}</text>`;
-                }
-            }
-            highlightMarginSVG.innerHTML = svg;
-        } else {
-            highlightMarginSVG.innerHTML = svgPath;
-        }
+
+        // if (false) {
+        //     let svg = svgPath;
+        //     highlight.marginText = "Long test 1.";
+        //     if (highlight.marginText) {
+        //         const m = svg.match(/d="\s*M([0-9]+\.?[0-9]*),([0-9]+\.?[0-9]*)/);
+        //         if (m && m[1] && m[2]) {
+        //             const r2SvgHighlightsTextFilterID = `r2SvgFilterR${highlight.color.red}G${highlight.color.green}B${highlight.color.blue}`;
+        //             const el = highlightParent.querySelector(`#${r2SvgHighlightsTextFilterID}`); // documant.getElementById(r2SvgHighlightsTextFilterID);
+        //             const filter = el ? "" : `<defs><filter x="0" y="0" width="1" height="1" id="${r2SvgHighlightsTextFilterID}"><feFlood flood-color="rgb(${highlight.color.red}, ${highlight.color.green}, ${highlight.color.blue})" result="bg" /><feMerge><feMergeNode in="bg"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`;
+        //             svg = `${filter}${svgPath}<text x="${m[1]}" y="${m[2]}" class="${CLASS_HIGHLIGHT_CONTOUR_MARGIN}_" font-size="stroke:red; fill: magenta;" filter="url(#${r2SvgHighlightsTextFilterID})">${highlight.marginText}</text>`;
+        //         }
+        //     }
+        //     highlightMarginSVG.innerHTML = svg;
+        // } else {
+        highlightMarginSVG.innerHTML = svgPath;
+        // }
 
         highlightParent.append(highlightMarginSVG);
     }

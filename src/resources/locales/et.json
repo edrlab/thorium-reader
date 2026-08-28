@@ -874,6 +874,7 @@
             "disposition": {
                 "title": "Paigutus"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Kirjatüüp",
             "fontSize": "Kirjatüübi suurus",
             "increaseFontSize": "Suurenda teksti suurust",
@@ -884,7 +885,6 @@
             "lineSpacing": "Reavahed",
             "margin": "Veeris",
             "mathjax": "Võta MathJax kasutusele",
-            "mathjaxDescription": "MathJax",
             "noFootnotes": "Keela hüpikaknaid sisaldavad joonealused märkused",
             "noRTLFlip": "Lülita välja paremalt vasakule lugemiseks mõeldud kasutajaliides",
             "noRuby": "Peida jaapani „Ruby“ vormingus märkused",

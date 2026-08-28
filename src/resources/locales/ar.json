@@ -898,6 +898,7 @@
             "disposition": {
                 "title": "التخطيط"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "الخط",
             "fontSize": "حجم الخط",
             "increaseFontSize": "تكبير حجم الخط",
@@ -908,7 +909,6 @@
             "lineSpacing": "تباعد الأسطر",
             "margin": "الهامش",
             "mathjax": "تفعيل MathJax",
-            "mathjaxDescription": "(MathJax)",
             "noFootnotes": "تعطيل الحواشي السفلية المنبثقة",
             "noRTLFlip": "تعطيل واجهة اليمين إلى اليسار",
             "noRuby": "إخفاء علامات روبي اليابانية",

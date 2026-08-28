@@ -880,6 +880,7 @@
             "disposition": {
                 "title": "Disposició"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Font",
             "fontSize": "Grandària de font",
             "increaseFontSize": "",
@@ -890,7 +891,6 @@
             "lineSpacing": "Interlineat",
             "margin": "Marge",
             "mathjax": "",
-            "mathjaxDescription": "",
             "noFootnotes": "Desactivar notes al peu",
             "noRTLFlip": "Desactiva la IU de dreta a esquerra",
             "noRuby": "Oculta el Ruby japonès",

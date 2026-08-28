@@ -874,6 +874,7 @@
             "disposition": {
                 "title": "Xedapena"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Iturria",
             "fontSize": "Letra-tamaina",
             "increaseFontSize": "",
@@ -884,7 +885,6 @@
             "lineSpacing": "Lerroartea",
             "margin": "Marjina",
             "mathjax": "",
-            "mathjaxDescription": "",
             "noFootnotes": "Oin-oharrak desaktibatu",
             "noRTLFlip": "Desgaitu eskuinetik ezkerrera UI",
             "noRuby": "Ezkutatu Japoniako Ruby",

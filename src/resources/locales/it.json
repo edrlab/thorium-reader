@@ -880,6 +880,7 @@
             "disposition": {
                 "title": "Impaginazione"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Font",
             "fontSize": "Dimensioni del font",
             "increaseFontSize": "Aumentare la dimensione del testo",
@@ -890,7 +891,6 @@
             "lineSpacing": "Spaziatura tra le linee",
             "margin": "Margine",
             "mathjax": "Abilita MathJax",
-            "mathjaxDescription": "MathJax",
             "noFootnotes": "Disattiva le note a piè di pagina popup",
             "noRTLFlip": "Disattiva la lettura da destra a sinistra",
             "noRuby": "Nascondi Ruby Giapponese",

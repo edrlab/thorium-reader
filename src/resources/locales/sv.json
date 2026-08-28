@@ -874,6 +874,7 @@
             "disposition": {
                 "title": "Layout"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Typsnitt",
             "fontSize": "Textstorlek",
             "increaseFontSize": "Öka textstorlek",
@@ -884,7 +885,6 @@
             "lineSpacing": "Radavstånd",
             "margin": "Marginaler",
             "mathjax": "Aktivera MathJax",
-            "mathjaxDescription": "MathJax",
             "noFootnotes": "Inaktivera popup-fotnoter",
             "noRTLFlip": "Inaktivera höger-till-vänster-gränssnitt",
             "noRuby": "Dölj japanska ruby-tecken",

@@ -886,6 +886,7 @@
             "disposition": {
                 "title": "Postavitev"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Pisava",
             "fontSize": "Velikost pisave",
             "increaseFontSize": "Povečaj velikost pisave",
@@ -896,7 +897,6 @@
             "lineSpacing": "Razmik med vrsticami",
             "margin": "Rob",
             "mathjax": "Omogoči MathJax",
-            "mathjaxDescription": "MathJax",
             "noFootnotes": "Onemogoči pojavna okna z opombami",
             "noRTLFlip": "Onemogoči uporabniški vmesnik od desne proti levi",
             "noRuby": "Skrij japonski Ruby",

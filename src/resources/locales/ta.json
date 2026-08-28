@@ -874,6 +874,7 @@
             "disposition": {
                 "title": "மனையமைவு"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "எழுத்துரு",
             "fontSize": "எழுத்துரு அளவு",
             "increaseFontSize": "",
@@ -884,7 +885,6 @@
             "lineSpacing": "வரி இடைவெளி",
             "margin": "விளிம்பு",
             "mathjax": "கணிதத்தை இயக்கவும்",
-            "mathjaxDescription": "",
             "noFootnotes": "பாப்அப் அடிக்குறிப்புகளை முடக்கு",
             "noRTLFlip": "வலது-இடது இடைமுகம் ஐ முடக்கு",
             "noRuby": "சப்பானிய ரூபியை மறைக்கவும்",

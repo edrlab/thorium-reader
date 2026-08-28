@@ -874,6 +874,7 @@
             "disposition": {
                 "title": "Indeling"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Lettertype",
             "fontSize": "Lettergrootte",
             "increaseFontSize": "Lettergrootte vergroten",
@@ -884,7 +885,6 @@
             "lineSpacing": "Regelafstand",
             "margin": "Marge",
             "mathjax": "Schakel MathJax in",
-            "mathjaxDescription": "MathJax",
             "noFootnotes": "Verberg pop-up voetnoten",
             "noRTLFlip": "Schakel de rechts-naar-links-UI uit",
             "noRuby": "Verberg Japanse Ruby",

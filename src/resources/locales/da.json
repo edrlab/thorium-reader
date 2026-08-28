@@ -874,6 +874,7 @@
             "disposition": {
                 "title": "Layout"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Skrifttype",
             "fontSize": "Skriftstørrelse",
             "increaseFontSize": "Forstør skriftstørrelsen",
@@ -884,7 +885,6 @@
             "lineSpacing": "Linje-mellemrum",
             "margin": "Margen",
             "mathjax": "Slå MathJax til",
-            "mathjaxDescription": "MathJax",
             "noFootnotes": "Slå popup med fodnoter fra",
             "noRTLFlip": "Slå højre-til-venstre UI fra",
             "noRuby": "Skjul japansk læsehjælp (Ruby)",

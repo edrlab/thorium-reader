@@ -874,6 +874,7 @@
             "disposition": {
                 "title": "Asettelu"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Fontti",
             "fontSize": "Fonttikoko",
             "increaseFontSize": "Suurenna fonttikokoa",
@@ -884,7 +885,6 @@
             "lineSpacing": "Riviväli",
             "margin": "Marginaali",
             "mathjax": "Ota MathJax käyttöön",
-            "mathjaxDescription": "MathJax",
             "noFootnotes": "Älä näytä alaviitteitä popup-ikkunassa",
             "noRTLFlip": "Estä oikealta vasemmalle -käyttöliittymä",
             "noRuby": "Piilota japanin rubi-merkit",

@@ -54,6 +54,8 @@ export interface IReadiumCSS {
 
     mathJax: boolean | undefined;
 
+    // enablePageBreakMarginIndicators: boolean | undefined;
+
     reduceMotion: boolean | undefined;
 
     // audioPlaybackRate: number | undefined;

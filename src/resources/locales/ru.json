@@ -886,6 +886,7 @@
             "disposition": {
                 "title": "Макет"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Шрифт",
             "fontSize": "Размер шрифта",
             "increaseFontSize": "Увеличить размер шрифта",
@@ -896,7 +897,6 @@
             "lineSpacing": "Межстрочный интервал",
             "margin": "Отступ",
             "mathjax": "Включить MathJax",
-            "mathjaxDescription": "MathJax",
             "noFootnotes": "Отключить всплывающие примечания",
             "noRTLFlip": "Отключить интерфейс справа-налево",
             "noRuby": "Скрыть японские Ruby-аннотации",

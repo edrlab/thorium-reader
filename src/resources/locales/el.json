@@ -874,6 +874,7 @@
             "disposition": {
                 "title": "Διάταξη"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Γραμματοσειρά",
             "fontSize": "Μέγεθος γραμματοσειράς",
             "increaseFontSize": "Αύξηση μεγέθους γραμματοσειράς",
@@ -884,7 +885,6 @@
             "lineSpacing": "Διάστημα μεταξύ γραμμών",
             "margin": "Περιθώριο",
             "mathjax": "Ενεργοποίηση MathJax",
-            "mathjaxDescription": "Βιβλιοθήκη MathJax",
             "noFootnotes": "Απενεργοποίηση αναδυόμενων υποσημειώσεων",
             "noRTLFlip": "Απενεργοποίηση Right-To-Left UI",
             "noRuby": "Κρύψιμο Japanese Ruby",

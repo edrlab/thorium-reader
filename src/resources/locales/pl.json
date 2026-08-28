@@ -886,6 +886,7 @@
             "disposition": {
                 "title": "Układ"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Czcionka",
             "fontSize": "Rozmiar czcionki",
             "increaseFontSize": "Zwiększ rozmiar czcionki",
@@ -896,7 +897,6 @@
             "lineSpacing": "Interlinia",
             "margin": "Margines",
             "mathjax": "Włącz MathJax",
-            "mathjaxDescription": "MathJax",
             "noFootnotes": "Wyłącz wyskakujące przypisy",
             "noRTLFlip": "Wyłącz interfejs od prawej do lewej",
             "noRuby": "Ukryj japońskie ruby",

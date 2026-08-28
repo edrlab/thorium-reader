@@ -35,7 +35,7 @@ import {
 } from "../common/sessions";
 import { ENABLE_EXTRA_COLUMN_SHIFT_METHOD, WebViewSlotEnum } from "../common/styles";
 import { URL_PARAM_DEBUG_VISUALS } from "./common/url-params";
-import { highlightsHandleIpcMessage } from "./highlight";
+import { enablePageBreakMarginIndicators, highlightsHandleIpcMessage } from "./highlight";
 import {
     LocatorExtended, getCurrentReadingLocation, handleLinkLocator, keyboardFocusRequest, locationHandleIpcMessage,
     setWebViewStyle, shiftWebview,
@@ -367,6 +367,7 @@ function createWebViewInternal(READIUM2: IReadiumElectronWebviewState, preloadSc
             ttsSentenceDetectionEnable(win.READIUM2.ttsSentenceDetectionEnabled);
             mediaOverlaysUseTTSHighlights(win.READIUM2.mediaOverlaysUseTTSHighlights);
             ttsAndMediaOverlaysManualPlayNext(win.READIUM2.ttsAndMediaOverlaysManualPlayNext);
+            enablePageBreakMarginIndicators(win.READIUM2.enablePageBreakMarginIndicators);
             ttsSkippabilityEnable(win.READIUM2.ttsSkippabilityEnabled);
             ttsOverlayEnable(win.READIUM2.ttsOverlayEnabled);
             // fixedLayoutZoomPercent(win.READIUM2.fixedLayoutZoomPercent);
@@ -690,6 +691,7 @@ export function installNavigatorDOM(
         ttsOverlayEnabled: false,
         ttsPlaybackRate: 1,
         ttsAndMediaOverlaysManualPlayNext: false,
+        enablePageBreakMarginIndicators: false,
         ttsSkippabilityEnabled: false,
         ttsSentenceDetectionEnabled: true,
         mediaOverlaysUseTTSHighlights: false,

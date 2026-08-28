@@ -880,6 +880,7 @@
             "disposition": {
                 "title": "Izgled"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Font",
             "fontSize": "Veličina fonta",
             "increaseFontSize": "",
@@ -890,7 +891,6 @@
             "lineSpacing": "Razmak između redova",
             "margin": "Margina",
             "mathjax": "",
-            "mathjaxDescription": "",
             "noFootnotes": "Isključi fusnote",
             "noRTLFlip": "",
             "noRuby": "",

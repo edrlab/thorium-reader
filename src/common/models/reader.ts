@@ -79,6 +79,7 @@ export interface ReaderConfigBooleans {
     paged: boolean;
     readiumcss: boolean;
     enableMathJax: boolean;
+    enablePageBreakMarginIndicators: boolean;
     reduceMotion: boolean;
     noFootnotes: boolean;
     noTemporaryNavTargetOutline: boolean;
