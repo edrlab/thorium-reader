@@ -5,8 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as path from "path";
-// import * as querystring from "querystring";
+import * as path from "node:path";
+// import * as querystring from "node:querystring";
 
 export function isHTTP(urlOrPath: string): boolean {
     return /^https?:\/\//.test(urlOrPath);

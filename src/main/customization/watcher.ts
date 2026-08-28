@@ -6,7 +6,7 @@
 // ==LICENSE-END=
 
 import debug_ from "debug";
-import path from "path";
+import path from "node:path";
 
 // Logger
 const debug = debug_("readium-desktop:main#utils/customization/watcher");
@@ -15,7 +15,7 @@ const debug = debug_("readium-desktop:main#utils/customization/watcher");
 
 // import os from "node:os";
 import chokidar, { FSWatcher } from "chokidar";
-import * as fs from "fs";
+import * as fs from "node:fs";
 import { EXT_THORIUM } from "readium-desktop/common/extension";
 
 export let __chokidarWatcherInstance: FSWatcher = undefined;
@@ -26,7 +26,7 @@ export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder
 * Polling is not necessary in win11, So let's disable it for the moment
 */
     const _isWindows = false; // true; // os.platform() === "win32";
-    
+
     wellKnownFolder = path.join(wellKnownFolder, "/").replace(/\\/g, "/");
 
     if (!fs.existsSync(wellKnownFolder)) {
@@ -43,7 +43,7 @@ export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder
         // cwd: wellKnownFolder, // not working with the glob *.thorium, so let's filter it in ignored callback
         persistent: true, // default true
 
-        alwaysStat: false, // default false        
+        alwaysStat: false, // default false
 
         // keep .thorium files
         ignored: (file, stats) => {

@@ -78,7 +78,7 @@ export async function findManifestFromHtmlEntryAndReturnBuffer(
     return [undefined, undefined];
 }
 
-// import { deepEqual, deepStrictEqual, ok } from "assert";
+// import { deepEqual, deepStrictEqual, ok } from "node:assert";
 // import { deepStrictEqual, ok } from "readium-desktop/common/utils/assert";
 // // TEST
 // if (require.main === module) {

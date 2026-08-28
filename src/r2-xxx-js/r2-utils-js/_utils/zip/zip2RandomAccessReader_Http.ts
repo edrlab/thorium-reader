@@ -8,8 +8,8 @@
 // import debug_ from "debug";
 // import * as request from "request";
 // // import * as requestPromise from "request-promise-native";
-// import { PassThrough } from "stream";
-// import { Readable } from "stream";
+// import { PassThrough } from "node:stream";
+// import { Readable } from "node:stream";
 // import * as yauzl from "yauzl";
 
 // import { bufferToStream, streamToBufferPromise } from "../stream/BufferUtils";
@@ -18,7 +18,7 @@
 
 // const debug = debug_("r2:utils#zip/zip2RandomAccessReader_Http");
 
-// // import * as util from "util";
+// // import * as util from "node:util";
 // // export interface RandomAccessReader {
 // //     _readStreamForRange(start: number, end: number): void;
 // // }

@@ -6,8 +6,8 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import * as fs from "fs";
-import { dirname } from "path";
+import * as fs from "node:fs";
+import { dirname } from "node:path";
 import { readStreamToBuffer } from "readium-desktop/main/stream/stream";
 import { extractFileFromZip } from "readium-desktop/main/zip/extract";
 

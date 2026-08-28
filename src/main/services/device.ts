@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import * as fs from "fs";
+import * as fs from "node:fs";
 import { injectable } from "inversify";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 import { uuidv4 } from "readium-desktop/utils/uuid";

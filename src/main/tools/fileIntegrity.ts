@@ -5,8 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as crypto from "crypto";
-import * as fs from "fs";
+import * as crypto from "node:crypto";
+import * as fs from "node:fs";
 
 export interface ISha256FileHash {
     base64: string;

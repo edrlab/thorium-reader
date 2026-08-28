@@ -7,9 +7,9 @@
 
 import debug_ from "debug";
 import sqlite from "node:sqlite";
-import path from "path";
-import * as fs from "fs";
-import url from "url";
+import path from "node:path";
+import * as fs from "node:fs";
+import url from "node:url";
 import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
 
 const debug = debug_("readium-desktop:main:db:sqlite");

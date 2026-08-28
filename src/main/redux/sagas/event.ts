@@ -33,8 +33,8 @@ import { EXT_THORIUM } from "readium-desktop/common/extension";
 import { getLibraryWindowFromDi } from "readium-desktop/main/di";
 import { getTranslator } from "readium-desktop/common/services/translator";
 
-import * as path from "path";
-import * as fs from "fs";import { fileProvisionning } from "./customization";
+import * as path from "node:path";
+import * as fs from "node:fs";import { fileProvisionning } from "./customization";
 import { customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
 import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
 import { ToastType } from "readium-desktop/common/models/toast";

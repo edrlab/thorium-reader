@@ -6,8 +6,8 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import * as path from "path";
-// import * as fs from "fs";
+import * as path from "node:path";
+// import * as fs from "node:fs";
 import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
 
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";

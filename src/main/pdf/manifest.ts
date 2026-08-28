@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import * as path from "path";
+import * as path from "node:path";
 import { mimeTypes } from "readium-desktop/utils/mimeTypes";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 

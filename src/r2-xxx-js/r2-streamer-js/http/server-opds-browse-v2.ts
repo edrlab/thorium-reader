@@ -7,14 +7,14 @@
 
 // // import * as regexpEscape from "regexp.escape";
 
-// import * as crypto from "crypto";
+// import * as crypto from "node:crypto";
 // import * as css2json from "css2json";
 // import debug_ from "debug";
 // import * as DotProp from "dot-prop";
 // import * as express from "express";
 // import * as jsonMarkup from "json-markup";
 // import * as morgan from "morgan";
-// import * as path from "path";
+// import * as path from "node:path";
 // import * as request from "request";
 // // import * as requestPromise from "request-promise-native";
 // import { v4 as uuidv4 } from "uuid";

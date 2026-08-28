@@ -6,9 +6,9 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import * as fs from "fs";
-import { tmpdir } from "os";
-import * as path from "path";
+import * as fs from "node:fs";
+import { tmpdir } from "node:os";
+import * as path from "node:path";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 
 // Logger
