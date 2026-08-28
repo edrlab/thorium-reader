@@ -7,7 +7,7 @@
 
 // https://github.com/httptoolkit/mac-system-proxy/blob/main/src/index.ts
 
-import { spawn } from "child_process";
+import { spawn } from "node:child_process";
 
 export interface MacProxySettings {
     ExceptionsList?: string[];

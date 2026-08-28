@@ -6,12 +6,12 @@
 // ==LICENSE-END=
 
 import debug_ from "debug";
-import * as fs from "fs";
-import * as path from "path";
-import * as crypto from "crypto";
+import * as fs from "node:fs";
+import * as path from "node:path";
+import * as crypto from "node:crypto";
 
 import { extractCrc32OnZip } from "../tools/crc";
-import { createSign, createVerify } from "crypto";
+import { createSign, createVerify } from "node:crypto";
 
 // import { _CUSTOMIZATION_PROFILE_PRIVATE_KEY, _CUSTOMIZATION_PROFILE_PUB_KEY } from "readium-desktop/preprocessor-directives";
 import { _CUSTOMIZATION_PROFILE_PUB_KEY } from "readium-desktop/preprocessor-directives";

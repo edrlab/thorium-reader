@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import * as fs from "fs";
+import * as fs from "node:fs";
 import {
     diMainGet, memoryLoggerFilename, patchFilePath, runtimeDiffStateFilePath, runtimeStateFilePath, stateDiffFilePath, stateFilePath,
 } from "readium-desktop/main/di";

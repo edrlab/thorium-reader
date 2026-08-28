@@ -18,7 +18,7 @@ import debug_ from "debug";
 // @__ts-ignore TS1479
 import { nanoid } from "nanoid";
 
-import * as path from "path";
+import * as path from "node:path";
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";

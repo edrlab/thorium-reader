@@ -2,8 +2,10 @@
 
 ## Summary
 
-Release Candidate 1 of version `3.5.0` was released on **13 August 2026**.
-Release Candidate 2 of version `3.5.0` was released on **21 August 2026**.
+Version `3.5.0` was released on **28 August 2026**.
+
+( Release Candidate 1 of version `3.5.0` was released on **13 August 2026** )
+( Release Candidate 2 of version `3.5.0` was released on **21 August 2026** )
 
 This release includes the following (notable) new features, improvements and bug fixes:
 
@@ -46,8 +48,28 @@ This release includes the following (notable) new features, improvements and bug
 Git commit diff since `3.4.0`:
 https://github.com/edrlab/thorium-reader/compare/v3.4.0...v3.5.0
 
-=> **387** GitHub Git commits:
+=> **407** GitHub Git commits:
 
+* [(_)](https://github.com/edrlab/thorium-reader/commit/cfe46cbab9705daf873d4e13f1647577545a6fce) __fix(l10n):__ updated translations via Weblate - Swedish, Lithuanian, Estonian (PR [#3803](https://github.com/edrlab/thorium-reader/pull/3803))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/d4123e7dc5f21b4a1102343f5ce5c2d337f0f760) __fix:__ typeface loading in application user interface (Nunito and ReadiumCSS preview fonts), enabled CORS for filex:// protocol and replaced WebPack import loader for TTF (Fixes [#3805](https://github.com/edrlab/thorium-reader/issues/3805))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/095b91ff57244b696aa1bcb117234d13057bea2e) __chore(NPM):__ package dependencies update, checked with Socket Security Firewall, 3 days minimum maturity period
+* [(_)](https://github.com/edrlab/thorium-reader/commit/398981c296489d830440db8c4f86a077f6a83c72) __chore(dev):__ Taze concurrency and HTTP request timeout in Docker / Apple Container VM [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/a45563dca74c89ac3081dea17bcf6ee7ce8d89dd) __chore(dev):__ Apple Container Linux guest utility script to CI install packages with local MacOS host NPM cache / prefix [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/9528b5953a857a837c2f9cde923b6d812e5388ee) __fix(l10n):__ updated translation via Weblate - Slovenian (PR [#3801](https://github.com/edrlab/thorium-reader/pull/3801))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/ebf06eef51275610b740b2b7b79545a8aaf515aa) __fix(l10n):__ updated translations via Weblate - Slovenian (PR [#3797](https://github.com/edrlab/thorium-reader/pull/3797))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/cb10f4da094b8441e6c2ece3af8b90d5847a51f7) __chore(NPM):__ package dependencies updates, 3 days minimum maturity period, checked with Socket Security Firewall
+* [(_)](https://github.com/edrlab/thorium-reader/commit/c5ca03ba766df67cc6cdffc2b50df78842c98e1a) __chore(dev):__ added sass-embedded performance comments vs. dart JS [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/63c10039950eb605ea22412f22c5d8e18def06ce) __chore(dev):__ commented-out unused source code [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/c794096c20b45f68f9e49cca18b420e12a4b43da) __fix(l10n):__ updated translations via Weblate - Arabic, Slovenian (PR [#3793](https://github.com/edrlab/thorium-reader/pull/3793))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/96799727b7f022801b4ab5350a8c49aa3d8fa979) __fix(GUI):__ welcome screen with zero publications in local bookshelf displayed duplicate disclosure arrow (PR [#3794](https://github.com/edrlab/thorium-reader/pull/3794) Fixes [#3780](https://github.com/edrlab/thorium-reader/issues/3780) )
+* [(_)](https://github.com/edrlab/thorium-reader/commit/3b80512a3f40587af4744d8752d10bea78328547) __chore(dev):__ removed unnecessary monkey-patching during Webpack build (a package had incorrect export/import statements in its package.json) [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/3dd3968ed13fe4045f3dcbbbe5372c8f9a58a832) __chore(release):__ changelog dates [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/82564b80231221b1046907f9c6433f10440e67e3) __Revert "fix:__ prod console logging during initialization of system proxy detector [skip ci]"
+* [(_)](https://github.com/edrlab/thorium-reader/commit/c87fe5d24fe9e71a159164652f3981f2ee14b9f2) __fix:__ prod console logging during initialization of system proxy detector [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/bedfada6327064874c7a08dfd871573ab40aa881) __fix:__ website version number dots replaced with dashes [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/bb3b986226b15d99df67b31e5cd56c7c73b7ae8a) __(tag:__ v3.5.0-rc.2) fix(CI): relative path [skip cd]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/9c5baa59e948d90b54deb6512c640f4450a808a4) __chore(release):__ v3.5.0-rc.2 [skip cd]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/d0d2e8f11062c8981a22a4e10092917ff858fe75) __chore(release):__ 3.5.0 changelog update [skip ci]
 * [(_)](https://github.com/edrlab/thorium-reader/commit/1b4704e401913aa7516e7f3e9f0a37a205346ec8) __fix(l10n):__ npm run i18n-json && i18n-typed
 * [(_)](https://github.com/edrlab/thorium-reader/commit/508ba528a8ab62ef09219f888339b4016147b0a0) __chore(NPM):__ package dependencies update, 3 days minimum maturity period, checked with Socket Security Firewall
 * [(_)](https://github.com/edrlab/thorium-reader/commit/dd7298b174c22f17d3fa0728c412c95864a72071) __fix(l10n):__ updated translations via Weblate - Swedish, Slovenian (PR [#3792](https://github.com/edrlab/thorium-reader/pull/3792))
@@ -439,6 +461,6 @@ https://github.com/edrlab/thorium-reader/compare/v3.4.0...v3.5.0
 __Developer Notes__:
 
 * The [standard-changelog](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/standard-changelog) utility (`npx standard-changelog --first-release`) somehow only generates a limited number of commits, so we use a one-liner command line / shell script instead:
-* `git --no-pager log --decorate=short --pretty=oneline v3.4.0...develop | cut -d " " -f 1- | sed -En '/^([0-9a-zA-Z]+)[[:space:]]([^:]+):(.+)$/!p;s//\1 __\2:__\3/p' | sed -En 's/^(.+)$/* \1/p' | sed -En '/PR[[:space:]]*#([0-9]+)/!p;s//PR [#\1](https:\/\/github.com\/edrlab\/thorium-reader\/pull\/\1)/gp' | sed -En '/\(#([0-9]+)/!p;s//(PR [#\1](https:\/\/github.com\/edrlab\/thorium-reader\/pull\/\1)/gp' | sed -En '/(Fixes|See|Fix|Fixed)[[:space:]]*#([0-9]+)/!p;s//\1 [#\2](https:\/\/github.com\/edrlab\/thorium-reader\/issues\/\2)/gp' | sed -En '/^.[[:space:]]([0-9a-zA-Z]+)[[:space:]]/!p;s//* [(_)](https:\/\/github.com\/edrlab\/thorium-reader\/commit\/\1) /p' | sed -En '/[[:space:]]#([0-9]+)/!p;s// [#\1](https:\/\/github.com\/edrlab\/thorium-reader\/issues\/\1)/gp'`
+* `git --no-pager log --decorate=short --pretty=oneline v3.4.0...v3.5.0 | cut -d " " -f 1- | sed -En '/^([0-9a-zA-Z]+)[[:space:]]([^:]+):(.+)$/!p;s//\1 __\2:__\3/p' | sed -En 's/^(.+)$/* \1/p' | sed -En '/PR[[:space:]]*#([0-9]+)/!p;s//PR [#\1](https:\/\/github.com\/edrlab\/thorium-reader\/pull\/\1)/gp' | sed -En '/\(#([0-9]+)/!p;s//(PR [#\1](https:\/\/github.com\/edrlab\/thorium-reader\/pull\/\1)/gp' | sed -En '/(Fixes|See|Fix|Fixed)[[:space:]]*#([0-9]+)/!p;s//\1 [#\2](https:\/\/github.com\/edrlab\/thorium-reader\/issues\/\2)/gp' | sed -En '/^.[[:space:]]([0-9a-zA-Z]+)[[:space:]]/!p;s//* [(_)](https:\/\/github.com\/edrlab\/thorium-reader\/commit\/\1) /p' | sed -En '/[[:space:]]#([0-9]+)/!p;s// [#\1](https:\/\/github.com\/edrlab\/thorium-reader\/issues\/\1)/gp'`
 * ...append `| pbcopy` on MacOS to copy the result into the clipboard.
 * ...append `| wc -l` to verify that the result actually matches the number of Git commits.

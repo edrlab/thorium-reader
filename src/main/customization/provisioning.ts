@@ -5,15 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
-import { createVerify } from "crypto";
+import { createVerify } from "node:crypto";
 import debug_ from "debug";
 import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
 import { ICustomizationManifest } from "readium-desktop/common/readium/customization/manifest";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 import { extractCrc32OnZip } from "../tools/crc";
-import * as path from "path";
-import * as fs from "fs";
+import * as path from "node:path";
+import * as fs from "node:fs";
 import { ICustomizationProfileProvisioned, ICustomizationProfileError, ICustomizationProfileProvisionedWithError } from "readium-desktop/common/redux/states/customization";
 import { _CUSTOMIZATION_PROFILE_PUB_KEY } from "readium-desktop/preprocessor-directives";
 import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP } from "readium-desktop/common/streamerProtocol";

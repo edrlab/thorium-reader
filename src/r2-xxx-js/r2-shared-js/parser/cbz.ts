@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as mime from "mime-types";
-import * as path from "path";
+import * as path from "node:path";
 import slugify from "slugify";
 import * as xmldom from "@xmldom/xmldom";
 

@@ -8,7 +8,7 @@
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import debug_ from "debug";
 import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
-import * as path from "path";
+import * as path from "node:path";
 import { call as callTyped, put as putTyped, race as raceTyped, take as takeTyped, delay as delayTyped, spawn as spawnTyped, fork as forkTyped } from "typed-redux-saga/macro";
 import { SagaGenerator } from "typed-redux-saga";
 import { buffers, END, eventChannel } from "redux-saga";
@@ -64,9 +64,12 @@ export function* createReaderWindow(publicationIdentifier: string, manifestUrl: 
             allowRunningInsecureContent: false,
             backgroundThrottling: false,
             devTools: ENABLE_DEV_TOOLS, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
-            nodeIntegration: true, // ==> disables sandbox https://www.electronjs.org/docs/latest/tutorial/sandbox
-            sandbox: false,
-            contextIsolation: false, // must be false because nodeIntegration, see https://github.com/electron/electron/issues/23506
+            // nodeIntegration: true, // ==> disables sandbox https://www.electronjs.org/docs/latest/tutorial/sandbox
+            // sandbox: false,
+            // contextIsolation: false, // must be false because nodeIntegration, see https://github.com/electron/electron/issues/23506
+            nodeIntegration: false,
+            sandbox: true, // preload NodeJS module shims
+            contextIsolation: true,
             nodeIntegrationInWorker: false,
             webSecurity: true,
             webviewTag: true,
@@ -229,6 +232,7 @@ export function* createReaderWindow(publicationIdentifier: string, manifestUrl: 
 
             if (!readerWindow.isDestroyed() && !readerWindow.webContents.isDestroyed()) {
                 try {
+                    debug("ReaderWindow loadURL: " + readerUrl);
                     await readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" });
                 } catch (e) {
                     debug("Load url rejected", e);

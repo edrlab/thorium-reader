@@ -6,8 +6,8 @@
 // ==LICENSE-END=
 
 import slugify from "slugify";
-import { TextEncoder as NodeTextEncoder, TextDecoder as NodeTextDecoder } from "util";
-import path from "path";
+import { TextEncoder as NodeTextEncoder, TextDecoder as NodeTextDecoder } from "node:util";
+import path from "node:path";
 import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
 
 // https://github.com/parshap/node-sanitize-filename/blob/209c39b914c8eb48ee27bcbde64b2c7822fdf3de/index.js#L1

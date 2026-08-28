@@ -6,8 +6,8 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import * as fs from "fs";
-import * as path from "path";
+import * as fs from "node:fs";
+import * as path from "node:path";
 
 import { Metadata } from "@r2-shared-js/models/metadata";
 import { Publication } from "@r2-shared-js/models/publication";

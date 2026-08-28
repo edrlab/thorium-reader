@@ -11,7 +11,7 @@
 import * as debugBrowser from "debug";
 // https://github.com/visionmedia/debug/blob/master/src/node.js
 import * as debugNode from "debug/src/node"; // used for shell output (print to stderr/out stream)
-import * as util from "util";
+import * as util from "node:util";
 
 // https://github.com/visionmedia/debug/blob/master/src/common.js
 // import * as debugCommon from "debug/src/common";

@@ -15,7 +15,7 @@ import * as stylesInputs from "readium-desktop/renderer/assets/styles/components
 import { webUtils } from "electron";
 import classNames from "classnames";
 import { HistoryRouter } from "redux-first-history/rr6";
-import * as path from "path";
+import * as path from "node:path";
 import * as React from "react";
 import Dropzone, { DropEvent, DropzoneRootProps } from "react-dropzone";
 import { Provider } from "react-redux";
@@ -34,8 +34,13 @@ import { customizationActions, toastActions } from "readium-desktop/common/redux
 import { ToastType } from "readium-desktop/common/models/toast";
 
 import { acceptedExtensionArray } from "readium-desktop/common/extension";
-import Nunito from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-Regular.ttf";
-import NunitoBold from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-SemiBold.ttf";
+// import Nunito from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-Regular.ttf";
+// import NunitoBold from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-SemiBold.ttf";
+import { URL_PROTOCOL_FILEX, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
+import {
+    _NODE_MODULE_RELATIVE_URL, _RENDERER_LIBRARY_BASE_URL,
+} from "readium-desktop/preprocessor-directives";
+import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 import { getReduxHistory, getStore } from "../createStore";
 import { getTranslator } from "readium-desktop/common/services/translator";
@@ -153,6 +158,57 @@ export default class App extends React.Component<{}, undefined> {
             const nunitoFontStyleID = "nunitoFontStyleID";
             const el = document.getElementById(nunitoFontStyleID);
             if (!el) {
+
+                const FONTSSUB = "assets/fonts";
+                let fontsPath = FONTSSUB;
+                if (__TH__IS_PACKAGED__) {
+                    fontsPath = `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/` + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", FONTSSUB)).replace(/\\/g, "/").split("/").map((segment) => encodeURIComponent_RFC3986(segment)).join("/");
+                    fontsPath = FONTSSUB; // the above is not necessary for encodeURIComponent_RFC3986() as window.location.pathname is already percent-encoded (for example ':' in Windows C:)
+                } else {
+                    if (_RENDERER_LIBRARY_BASE_URL === `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/`) {
+
+                        // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
+                        fontsPath = `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/` + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", FONTSSUB)).replace(/\\/g, "/").split("/").map((segment) => encodeURIComponent_RFC3986(segment)).join("/");
+                        fontsPath = FONTSSUB; // the above is not necessary for encodeURIComponent_RFC3986() as window.location.pathname is already percent-encoded (for example ':' in Windows C:)
+
+                        // const debugStr = `[[APP.TSX ${rcssPath} >>> ${window.location.href} *** ${window.location.pathname} === ${process.cwd()} ^^^ ${(global as any).__dirname} --- ${_NODE_MODULE_RELATIVE_URL} @@@ ${rcssPath}]]`;
+                        // if (document.body.firstElementChild) {
+                        //     document.body.innerText = debugStr;
+                        // } else {
+                        //     document.body.innerText += debugStr;
+                        // }
+                    } else {
+                        // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
+
+                        // CSP Content Security Policy for loading fonts from file://
+                        // rcssPath = "file://" + path.normalize(path.join(process.cwd(), "node_modules", rcssPath));
+
+                        // HTTP localhost:port
+                        // rcssPath = _RENDERER_LIBRARY_BASE_URL + "dist/ReadiumCSS";
+
+                        // static server (WebPack publicPath)
+                        // rcssPath = "/dist/ReadiumCSS";
+                        fontsPath = "/src/renderer/assets/fonts";
+                        // fontsPath = fontsPath.replace(/\\/g, "/");
+                    }
+                }
+
+                console.log("fonts path:",
+                    fontsPath, __TH__IS_PACKAGED__, _NODE_MODULE_RELATIVE_URL, _RENDERER_LIBRARY_BASE_URL);
+
+                // import Nunito from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-Regular.ttf";
+                // import NunitoBold from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-SemiBold.ttf";
+
+                const Nunito = fontsPath + "/NunitoSans_10pt-Regular.ttf";
+                const NunitoBold = fontsPath + "/NunitoSans_10pt-SemiBold.ttf";
+
+                // console.log("Nunito URLs (LIBRARY):");
+                // console.log(Nunito);
+                // console.log(NunitoBold);
+                // setTimeout(() => {
+                //     window.document.title = NunitoBold;
+                // }, 1000);
+
                 const css = `
         @font-face {
             font-family: "Nunito";

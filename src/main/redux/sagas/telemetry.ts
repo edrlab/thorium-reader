@@ -10,9 +10,9 @@ import debug_ from "debug";
 import { _TELEMETRY_SECRET, _TELEMETRY_SECRETDATA, _TELEMETRY_URL, _APP_VERSION, _APP_NAME } from "readium-desktop/preprocessor-directives";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 import { RootState } from "../states";
-import { version as osVersion } from "os";
-import * as fs from "fs";
-import * as path from "path";
+import { version as osVersion } from "node:os";
+import * as fs from "node:fs";
+import * as path from "node:path";
 import { httpPost } from "readium-desktop/main/network/http";
 
 // TypeScript GO:
@@ -26,8 +26,8 @@ import { httpPost } from "readium-desktop/main/network/http";
 // @__ts-ignore TS1479
 import { Headers } from "node-fetch";
 
-import { createHmac } from "crypto";
-import * as crypto from "crypto";
+import { createHmac } from "node:crypto";
+import * as crypto from "node:crypto";
 
 import isURL from "readium-desktop/common/utils/isURL";
 import { USER_DATA_FOLDER } from "readium-desktop/common/constant";

@@ -6,11 +6,11 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import * as fs from "fs";
+import * as fs from "node:fs";
 import { imageSize } from "image-size";
 // import { ISize } from "image-size/dist/types/interface";
-import * as path from "path";
-import { URL } from "url";
+import * as path from "node:path";
+import { URL } from "node:url";
 import * as xmldom from "@xmldom/xmldom";
 import * as xpath from "xpath";
 

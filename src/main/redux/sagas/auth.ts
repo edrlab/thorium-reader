@@ -43,7 +43,7 @@ import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, cancel, delay, join, put, race, spawn } from "redux-saga/effects";
 import { call as callTyped, fork as forkTyped, take as takeTyped } from "typed-redux-saga/macro";
-import { URL } from "url";
+import { URL } from "node:url";
 
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";

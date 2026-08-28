@@ -8,7 +8,7 @@
 // import debug_ from "debug";
 // import * as request from "request";
 // // import * as requestPromise from "request-promise-native";
-// import { Readable } from "stream";
+// import { Readable } from "node:stream";
 
 // import { streamToBufferPromise } from "../stream/BufferUtils";
 

@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Readable } from "stream";
+import { Readable } from "node:stream";
 
 // import debug_ from "debug";
 // const debug = debug_("r2:utils#stream/BufferReadableStream");

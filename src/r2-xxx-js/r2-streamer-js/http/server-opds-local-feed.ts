@@ -5,13 +5,13 @@
 // // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // // ==LICENSE-END==
 
-// import * as crypto from "crypto";
+// import * as crypto from "node:crypto";
 // import * as css2json from "css2json";
 // import debug_ from "debug";
 // import * as DotProp from "dot-prop";
 // import * as express from "express";
 // import * as jsonMarkup from "json-markup";
-// import * as path from "path";
+// import * as path from "node:path";
 
 // import { JsonArray, TaJsonSerialize } from "@r2-lcp-js/serializable";
 // import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";

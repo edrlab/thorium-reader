@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import * as util from "util";
+import * as util from "node:util";
 
 import { getCurrentReadingLocation } from "./location";
 

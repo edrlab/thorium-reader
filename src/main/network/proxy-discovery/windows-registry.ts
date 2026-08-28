@@ -7,8 +7,8 @@
 
 // https://github.com/desktop/registry-js/blob/master/lib/registry.ts
 
-import * as path from "path";
-import * as fs from "fs";
+import * as path from "node:path";
+import * as fs from "node:fs";
 
 /**
  * Utility function used to achieve exhaustive type checks at compile time.

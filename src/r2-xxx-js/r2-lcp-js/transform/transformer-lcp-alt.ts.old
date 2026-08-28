@@ -1,4 +1,4 @@
-import { Transform } from "stream";
+import { Transform } from "node:stream";
 
 import { Publication } from "@models/publication";
 import { Link } from "@models/publication-link";
