@@ -5,13 +5,13 @@
 // // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // // ==LICENSE-END==
 
-// import * as child_process from "child_process";
+// import * as child_process from "node:child_process";
 // import debug_ from "debug";
 // import * as express from "express";
-// import * as fs from "fs";
-// import * as http from "http";
-// import * as https from "https";
-// import * as path from "path";
+// import * as fs from "node:fs";
+// import * as http from "node:http";
+// import * as https from "node:https";
+// import * as path from "node:path";
 // import { tmpNameSync } from "tmp";
 
 // import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
@@ -535,7 +535,7 @@
 //                         // const encrypted = Buffer.from("YGlj0vldEzpiBYojGSaw7iSlXQ6PlXJv5gkD/+jRdloeekilc9B9CSKWf1n70s0lE1qeVJrZFZY6DsyyKZn4bQ==", "base64");
 //                         // const decrypteds = [];
 //                         // const key = Buffer.from("ec4f2dbb3b140095550c9afbbb69b5d6fd9e814b9da82fad0b34e9fcbe56f1cb", "hex");
-//                         // const decryptStream = require("crypto").createDecipheriv("aes-256-cbc", key, encrypted.slice(0, 16));
+//                         // const decryptStream = require("node:crypto").createDecipheriv("aes-256-cbc", key, encrypted.slice(0, 16));
 //                         // decryptStream.setAutoPadding(false);
 //                         // const enc = encrypted.slice(16, encrypted.lenth);
 //                         // const buff1 = decryptStream.update(enc);

@@ -9,8 +9,8 @@
 // import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
 
 import debug_ from "debug";
-import EventEmitter from "events";
-import * as fs from "fs";
+import EventEmitter from "node:events";
+import * as fs from "node:fs";
 import * as yauzl from "yauzl";
 import * as yazl from "yazl";
 

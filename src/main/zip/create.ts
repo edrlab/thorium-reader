@@ -6,7 +6,7 @@
 // ==LICENSE-END=
 
 import debug_ from "debug";
-import * as fs from "fs";
+import * as fs from "node:fs";
 
 // TypeScript GO:
 // The current file is a CommonJS module whose imports will produce 'require' calls;
@@ -19,9 +19,9 @@ import * as fs from "fs";
 // @__ts-ignore TS1479
 import { nanoid } from "nanoid";
 
-import * as path from "path";
+import * as path from "node:path";
 import { ZipFile } from "yazl";
-import { EventEmitter } from "events";
+import { EventEmitter } from "node:events";
 
 import { createTempDir } from "../fs/path";
 

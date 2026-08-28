@@ -6,8 +6,8 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import * as fs from "fs";
-import * as path from "path";
+import * as fs from "node:fs";
+import * as path from "node:path";
 import { acceptedExtension, acceptedExtensionObject } from "readium-desktop/common/extension";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { authActions, downloadActions, toastActions } from "readium-desktop/common/redux/actions";

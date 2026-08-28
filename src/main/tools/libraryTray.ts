@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { app, BrowserWindow, Menu, Tray } from "electron";
-import * as path from "path";
+import * as path from "node:path";
 import { settingsMinimizeLibraryToTrayIsEnabled } from "readium-desktop/common/redux/states/settings";
 import { getTranslator } from "readium-desktop/common/services/translator";
 import {

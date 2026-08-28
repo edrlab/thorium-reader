@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import * as fs from "fs";
+import * as fs from "node:fs";
 
 // TypeScript GO:
 // The current file is a CommonJS module whose imports will produce 'require' calls;
@@ -19,8 +19,8 @@ import * as fs from "fs";
 // @__ts-ignore TS1479
 import { nanoid } from "nanoid";
 
-import * as os from "os";
-import * as path from "path";
+import * as os from "node:os";
+import * as path from "node:path";
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 

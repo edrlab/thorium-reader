@@ -8,7 +8,7 @@
 import * as he from "he";
 import debug_ from "debug";
 import * as mime from "mime-types";
-import * as path from "path";
+import * as path from "node:path";
 import * as xmldom from "@xmldom/xmldom";
 
 import { timeStrToSeconds } from "@r2-shared-js/models/media-overlay";

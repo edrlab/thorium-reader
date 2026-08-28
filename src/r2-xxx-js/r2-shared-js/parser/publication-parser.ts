@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as path from "path";
+import * as path from "node:path";
 
 import { Publication } from "@r2-shared-js/models/publication";
 import { AudioBookParsePromise, AudioBookis, isAudioBookPublication } from "@r2-shared-js/parser/audiobook";

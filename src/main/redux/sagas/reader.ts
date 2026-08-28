@@ -26,7 +26,7 @@ import { RootState } from "readium-desktop/main/redux/states";
 import { all, call, put, take } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped, put as putTyped } from "typed-redux-saga/macro";
 import { SagaGenerator } from "typed-redux-saga";
-import { types } from "util";
+import { types } from "node:util";
 
 import {
     ERROR_MESSAGE_ON_USERKEYCHECKREQUEST, ERROR_MESSAGE_ENCRYPTED_NO_LICENSE, streamerOpenPublicationAndReturnManifestUrl,

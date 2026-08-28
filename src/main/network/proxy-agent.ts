@@ -20,9 +20,9 @@
 
 import { getSystemProxy, type ProxyConfig } from "readium-desktop/main/network/proxy-discovery/os-proxy";
 
-import * as http from "http";
-import * as https from "https";
-import { URL } from "url";
+import * as http from "node:http";
+import * as https from "node:https";
+import { URL } from "node:url";
 import { LRUCache } from "lru-cache";
 import { Agent, AgentConnectOpts } from "agent-base";
 import createDebug from "debug";

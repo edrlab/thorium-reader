@@ -1,6 +1,6 @@
-import * as fs from "fs";
-import * as mockOs from "os";
-import * as mockPath from "path";
+import * as fs from "node:fs";
+import * as mockOs from "node:os";
+import * as mockPath from "node:path";
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 
 jest.mock("electron", () => ({

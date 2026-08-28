@@ -15,7 +15,7 @@ import * as stylesInputs from "readium-desktop/renderer/assets/styles/components
 import { webUtils } from "electron";
 import classNames from "classnames";
 import { HistoryRouter } from "redux-first-history/rr6";
-import * as path from "path";
+import * as path from "node:path";
 import * as React from "react";
 import Dropzone, { DropEvent, DropzoneRootProps } from "react-dropzone";
 import { Provider } from "react-redux";
