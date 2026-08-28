@@ -9,7 +9,7 @@ import debug_ from "debug";
 import { dialog } from "electron";
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
-import { types } from "util";
+import { types } from "node:util";
 
 // Logger
 const filename_ = "readium-desktop:main:error";

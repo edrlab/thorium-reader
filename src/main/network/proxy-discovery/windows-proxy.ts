@@ -23,6 +23,14 @@ export async function getWindowsSystemProxy(): Promise<WindowsProxySettings | un
 
     // const registry = await import("./windows-registry");
 
+    // const proxyValues_ = registry.enumerateValues(
+    //     registry.HKEY.HKEY_LOCAL_MACHINE,
+    //     "Software\\Policies\\Microsoft\\Internet Explorer\\Control Panel",
+    // );
+    // // console.log("***********--------- REGISTRY VALUES _:", JSON.stringify(proxyValues_, null, 4));
+
+    // const autoconfig = getValue(proxyValues_, "Autoconfig");
+
     const proxyValues = registry.enumerateValues(
         registry.HKEY.HKEY_CURRENT_USER,
         "Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings",
@@ -30,10 +38,14 @@ export async function getWindowsSystemProxy(): Promise<WindowsProxySettings | un
     // console.log("***********--------- REGISTRY VALUES:", JSON.stringify(proxyValues, null, 4));
 
     const proxyEnabled = getValue(proxyValues, "ProxyEnable");
-    const proxyServer = getValue(proxyValues, "ProxyServer");
 
     // No proxy config? We"re done, return undefined.
-    if (!proxyEnabled || !proxyEnabled.data || !proxyServer || !proxyServer.data) return undefined;
+    if (!proxyEnabled || !proxyEnabled.data || (proxyEnabled.data !== "1" && proxyEnabled.data !== 1)) return undefined;
+
+    const proxyServer = getValue(proxyValues, "ProxyServer");
+    const autoConfigURL = getValue(proxyValues, "AutoConfigURL");
+
+    if ((!proxyServer || !proxyServer.data) && (!autoConfigURL || !autoConfigURL.data)) return undefined;
 
     // ProxyOverride is a ;-separated list of hosts not to proxy
     const proxyOverride = getValue(proxyValues, "ProxyOverride")?.data;
@@ -43,9 +55,21 @@ export async function getWindowsSystemProxy(): Promise<WindowsProxySettings | un
             : [host]);
 
     // ProxyServer specifies the proxy host(s), but in a few different formats...
-    const proxyConfigString = proxyServer.data as string;
+    const proxyConfigString =
+        autoConfigURL?.data ? autoConfigURL.data as string // TODO?: && autoconfig
+        : proxyServer?.data ? proxyServer.data as string
+        : "";
 
-    if (proxyConfigString.startsWith("http://") || proxyConfigString.startsWith("https://")) {
+    if (!proxyConfigString) return undefined;
+
+    if (proxyConfigString.startsWith("pac+http://") || proxyConfigString.startsWith("pac+https://") || proxyConfigString.startsWith("pac+ftp://") || proxyConfigString.startsWith("pac+file://") || proxyConfigString.startsWith("pac+data://")) {
+        // Unclear whether this is used in reality, but it"s an example of a valid config in the microsoft
+        // docs: https://docs.microsoft.com/en-us/troubleshoot/windows-client/networking/configure-client-proxy-server-settings-by-registry-file
+        return {
+            proxyUrl: proxyConfigString,
+            noProxy,
+        };
+    } else if (proxyConfigString.startsWith("http://") || proxyConfigString.startsWith("https://")) {
         // Unclear whether this is used in reality, but it"s an example of a valid config in the microsoft
         // docs: https://docs.microsoft.com/en-us/troubleshoot/windows-client/networking/configure-client-proxy-server-settings-by-registry-file
         return {
@@ -65,13 +89,32 @@ export async function getWindowsSystemProxy(): Promise<WindowsProxySettings | un
         // see https://github.com/httptoolkit/os-proxy-config/issues/2#issuecomment-5367799120
         // see https://github.com/httptoolkit/windows-system-proxy/pull/1
         // see https://github.com/httptoolkit/os-proxy-config/pull/1/changes
-        const proxyUrl = proxies["http"]
+        const proxyUrl =
+            proxies["http"]
             ? `http://${proxies["http"]}`
+
             : proxies["socks"]
-                ? `socks://${proxies["socks"]}`
-                : proxies["https"]
-                    ? `http://${proxies["https"]}` // not HTTPS:// !
-                    : undefined;
+            ? `socks://${proxies["socks"]}`
+
+            : proxies["https"]
+            ? `http://${proxies["https"]}` // not HTTPS:// !
+
+            : proxies["pac+http"]
+            ? `pac+http://${proxies["pac+http"]}`
+
+            : proxies["pac+https"]
+            ? `pac+https://${proxies["pac+https"]}`
+
+            : proxies["pac+ftp"]
+            ? `pac+ftp://${proxies["pac+ftp"]}`
+
+            : proxies["pac+file"]
+            ? `pac+file://${proxies["pac+file"]}`
+
+            : proxies["pac+data"]
+            ? `pac+data://${proxies["pac+data"]}`
+
+            : undefined;
 
         if (!proxyUrl) {
             throw new Error(`Could not get usable proxy URL from ${proxyConfigString}`);

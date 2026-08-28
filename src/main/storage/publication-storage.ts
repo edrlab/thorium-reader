@@ -6,9 +6,9 @@
 // ==LICENSE-END==
 
 import { dialog } from "electron";
-import * as fs from "fs";
+import * as fs from "node:fs";
 import { injectable } from "inversify";
-import * as path from "path";
+import * as path from "node:path";
 import { acceptedExtensionObject, getExtensionWithoutDot, isAcceptedExtension, normalizeExtension } from "readium-desktop/common/extension";
 import { File } from "readium-desktop/common/models/file";
 import { PublicationView } from "readium-desktop/common/views/publication";

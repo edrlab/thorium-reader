@@ -6,10 +6,10 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import * as fs from "fs";
-import * as http from "http";
-import * as https from "https";
-import * as path from "path";
+import * as fs from "node:fs";
+import * as http from "node:http";
+import * as https from "node:https";
+import * as path from "node:path";
 
 import { Publication } from "@r2-shared-js/models/publication";
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";

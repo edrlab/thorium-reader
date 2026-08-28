@@ -33,7 +33,7 @@ import {
 //     URL_PARAM_SESSION_INFO, URL_PARAM_WEBVIEW_SLOT,
 // } from "../renderer/common/url-params";
 
-// import { PassThrough } from "stream";
+// import { PassThrough } from "node:stream";
 // import { CounterPassThroughStream } from "@r2-utils-js/_utils/stream/CounterPassThroughStream";
 
 const debug = debug_("r2:navigator#electron/main/sessions");

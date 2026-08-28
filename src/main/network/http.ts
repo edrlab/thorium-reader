@@ -17,9 +17,9 @@
 import timeoutSignal from "timeout-signal";
 
 import debug_ from "debug";
-import * as fs from "fs";
-import * as http from "http";
-import * as https from "https";
+import * as fs from "node:fs";
+import * as http from "node:http";
+import * as https from "node:https";
 
 // TypeScript GO:
 // The current file is a CommonJS module whose imports will produce 'require' calls;
@@ -47,7 +47,7 @@ import { opdsActions } from "readium-desktop/common/redux/actions";
 
 // https://github.com/edrlab/thorium-reader/issues/3566#issuecomment-4501072922
 // https://github.com/electron/electron/issues/45674#issuecomment-3474002008
-import * as tls from "tls";
+import * as tls from "node:tls";
 // import * as undici from "undici";
 const TLS_CERTIFICATES = [...tls.getCACertificates("system"), ...tls.rootCertificates];
 https.globalAgent.options.ca = TLS_CERTIFICATES;

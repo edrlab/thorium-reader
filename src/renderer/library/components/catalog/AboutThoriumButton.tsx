@@ -12,7 +12,7 @@ import { I18nFunction } from "readium-desktop/common/services/translator";
 
 import { ipcRenderer } from "electron";
 import { shell } from "electron";
-// import * as path from "path";
+// import * as path from "node:path";
 import * as React from "react";
 import { connect } from "react-redux";
 // import { ABOUT_BOOK_TITLE_PREFIX } from "readium-desktop/common/constant";

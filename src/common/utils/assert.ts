@@ -7,7 +7,7 @@
 
 // import { deepStrictEqual, ok } from "readium-desktop/common/utils/assert";
 
-import { AssertionError } from "assert";
+import { AssertionError } from "node:assert";
 import * as ramda from "ramda";
 
 // Bizarrely, the 'assert' package started crashing in Thorium builds based on Electron v13/14

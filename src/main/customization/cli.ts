@@ -1,7 +1,7 @@
 
 // import debug_ from "debug";
-import * as fs from "fs";
-import * as path from "path";
+import * as fs from "node:fs";
+import * as path from "node:path";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
 import { ICustomizationManifest } from "readium-desktop/common/readium/customization/manifest";

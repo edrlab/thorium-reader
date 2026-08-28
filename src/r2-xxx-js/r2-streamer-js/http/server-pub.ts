@@ -8,8 +8,8 @@
 // import debug_ from "debug";
 // import * as express from "express";
 // import * as morgan from "morgan";
-// import * as path from "path";
-// import * as querystring from "querystring";
+// import * as path from "node:path";
+// import * as querystring from "node:querystring";
 
 // import { encodeURIComponent_RFC3986, isHTTP } from "@r2-utils-js/_utils/http/UrlUtils";
 

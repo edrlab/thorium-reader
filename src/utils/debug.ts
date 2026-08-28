@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as util from "util";
+import * as util from "node:util";
 
 // Dump object
 export function dump(obj: any) {

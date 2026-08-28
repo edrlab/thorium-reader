@@ -8,13 +8,13 @@
 import { Readable } from "node:stream";
 import { ReadableStream } from "node:stream/web";
 
-import * as crypto from "crypto";
+import * as crypto from "node:crypto";
 import debug_ from "debug";
 // BeforeSendResponse, HeadersReceivedResponse, OnBeforeSendHeadersListenerDetails, OnHeadersReceivedListenerDetails
 import { app, protocol, ProtocolRequest, ProtocolResponse, session } from "electron";
-import * as fs from "fs";
+import * as fs from "node:fs";
 import * as mime from "mime-types";
-import * as path from "path";
+import * as path from "node:path";
 
 import { TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { parseDOM, serializeDOM } from "@r2-navigator-js/electron/common/dom";
@@ -48,7 +48,7 @@ import {
     READIUMCSS_FILE_PATH, setupMathJaxTransformer,
 } from "./streamerCommon";
 // import { URL_PROTOCOL_OPDS_MEDIA } from "readium-desktop/main/redux/sagas/getEventChannel";
-import { URL_PROTOCOL_PDFJSEXTRACT, URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP, URL_PATH_PREFIX_PUBNOTES, URL_PATH_PREFIX_MATHJAX, URL_PATH_PREFIX_READIUMCSS, URL_PATH_PREFIX_PUB, URL_PATH_PREFIX_PDFJS } from "readium-desktop/common/streamerProtocol";
+import { URL_PROTOCOL_PDFJSEXTRACT, URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP, URL_PATH_PREFIX_PUBNOTES, URL_PATH_PREFIX_MATHJAX, URL_PATH_PREFIX_READIUMCSS, URL_PATH_PREFIX_PUB, URL_PATH_PREFIX_PDFJS, URL_PROTOCOL_FILEX } from "readium-desktop/common/streamerProtocol";
 import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
 import { diMainGet } from "../di";
 import { getNotesFromMainWinState } from "../redux/sagas/note";
@@ -1801,20 +1801,20 @@ export function initSessions() {
     //     },
     //     scheme: URL_PROTOCOL_STORE,
     // },
-    // {
-    //     privileges: {
-    //         allowServiceWorkers: false, // Default false
-    //         bypassCSP: false, // Default false
-    //         corsEnabled: false, // Default false
-    //         secure: false, // Default false
-    //         stream: false, // Default false
-    //         supportFetchAPI: false, // Default false
-    //         standard: false, // Default false
-    //         codeCache: false, // Default false (only works with standard=true)
-    //         allowExtensions: false, // Default false
-    //     },
-    //     scheme: URL_PROTOCOL_FILEX,
-    // },
+    {
+        privileges: {
+            allowServiceWorkers: false, // Default false
+            bypassCSP: false, // Default false
+            corsEnabled: true, // Default false
+            secure: true, // Default false
+            stream: true, // Default false
+            supportFetchAPI: false, // Default false
+            standard: true, // Default false
+            codeCache: true, // Default false (only works with standard=true)
+            allowExtensions: false, // Default false
+        },
+        scheme: URL_PROTOCOL_FILEX,
+    },
     {
         privileges: {
             allowServiceWorkers: false, // Default false
@@ -1856,7 +1856,8 @@ export function initSessions() {
             allowExtensions: false, // Default false
         },
         scheme: URL_PROTOCOL_THORIUMHTTPS,
-    }, {
+    },
+    {
         privileges: {
             allowServiceWorkers: false,
             bypassCSP: false,
