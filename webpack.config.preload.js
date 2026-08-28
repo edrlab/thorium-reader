@@ -73,7 +73,7 @@ if (nodeEnv !== "production") {
             const isRDeskR2 = request.indexOf("@r2-") === 0;
             if (isRDeskR2) {
                 if (!_externalsCache.has(request)) {
-                    console.log(`WEBPACK EXTERNAL (MAIN): READIUM-DESKTOP @R2 [${request}]`);
+                    console.log(`WEBPACK EXTERNAL (preload): READIUM-DESKTOP @R2 [${request}]`);
                 }
                 _externalsCache.add(request);
 
