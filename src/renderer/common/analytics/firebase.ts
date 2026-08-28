@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import os from "os";
+import os from "node:os";
 import { getApps, initializeApp, setLogLevel } from "@firebase/app";
 import { type Analytics, initializeAnalytics, isSupported, logEvent as firebaseLogEvent, setUserId } from "@firebase/analytics";
 import { URL_HOST_APP_ASSETS } from "readium-desktop/common/streamerProtocol";
