@@ -874,6 +874,8 @@
             "disposition": {
                 "title": "Düzen"
             },
+            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "Yazı tipi",
             "fontSize": "Yazı tipi boyutu",
             "increaseFontSize": "",

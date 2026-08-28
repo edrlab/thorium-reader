@@ -874,6 +874,8 @@
             "disposition": {
                 "title": "Layout"
             },
+            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "Typsnitt",
             "fontSize": "Textstorlek",
             "increaseFontSize": "Öka textstorlek",

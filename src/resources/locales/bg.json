@@ -874,6 +874,8 @@
             "disposition": {
                 "title": "Оформление"
             },
+            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "Шрифт",
             "fontSize": "Размер на шрифта",
             "increaseFontSize": "",

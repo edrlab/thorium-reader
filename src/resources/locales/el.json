@@ -874,6 +874,8 @@
             "disposition": {
                 "title": "Διάταξη"
             },
+            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "Γραμματοσειρά",
             "fontSize": "Μέγεθος γραμματοσειράς",
             "increaseFontSize": "Αύξηση μεγέθους γραμματοσειράς",

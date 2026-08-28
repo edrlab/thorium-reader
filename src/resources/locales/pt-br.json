@@ -880,6 +880,8 @@
             "disposition": {
                 "title": "Layout"
             },
+            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "Fonte",
             "fontSize": "Tamanho de fonte",
             "increaseFontSize": "",

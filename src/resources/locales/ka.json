@@ -874,6 +874,8 @@
             "disposition": {
                 "title": "განლაგება"
             },
+            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "ფონტი",
             "fontSize": "ფონტის ზომა",
             "increaseFontSize": "",

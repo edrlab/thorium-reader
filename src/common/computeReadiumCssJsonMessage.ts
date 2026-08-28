@@ -108,7 +108,7 @@ export const computeReadiumCssJsonMessage = (settings: ReaderConfig): IEventPayl
 
         mathJax: settings.enableMathJax,
 
-        enablePageBreakMarginIndicators: settings.enablePageBreakMarginIndicators,
+        // enablePageBreakMarginIndicators: settings.enablePageBreakMarginIndicators,
 
         reduceMotion: settings.reduceMotion,
 

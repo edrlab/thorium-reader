@@ -880,6 +880,8 @@
             "disposition": {
                 "title": "Disposición"
             },
+            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "Fuente",
             "fontSize": "Tamaño de fuente",
             "increaseFontSize": "Aumentar el tamaño del texto",

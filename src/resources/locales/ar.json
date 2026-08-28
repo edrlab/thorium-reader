@@ -898,6 +898,8 @@
             "disposition": {
                 "title": "التخطيط"
             },
+            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "الخط",
             "fontSize": "حجم الخط",
             "increaseFontSize": "تكبير حجم الخط",

@@ -863,6 +863,8 @@
             "disposition": {
                 "title": "레이아웃"
             },
+            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "폰트",
             "fontSize": "폰트 크기",
             "increaseFontSize": "",

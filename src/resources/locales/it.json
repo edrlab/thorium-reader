@@ -880,6 +880,8 @@
             "disposition": {
                 "title": "Impaginazione"
             },
+            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "Font",
             "fontSize": "Dimensioni del font",
             "increaseFontSize": "Aumentare la dimensione del testo",

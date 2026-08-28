@@ -874,6 +874,8 @@
             "disposition": {
                 "title": "Indeling"
             },
+            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "Lettertype",
             "fontSize": "Lettergrootte",
             "increaseFontSize": "Lettergrootte vergroten",

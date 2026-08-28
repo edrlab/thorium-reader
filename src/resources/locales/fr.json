@@ -880,6 +880,8 @@
             "disposition": {
                 "title": "Pagination"
             },
+            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "Police de caractères",
             "fontSize": "Taille du texte",
             "increaseFontSize": "Augmenter la taille du texte",

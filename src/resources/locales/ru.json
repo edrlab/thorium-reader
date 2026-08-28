@@ -886,6 +886,8 @@
             "disposition": {
                 "title": "Макет"
             },
+            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "Шрифт",
             "fontSize": "Размер шрифта",
             "increaseFontSize": "Увеличить размер шрифта",

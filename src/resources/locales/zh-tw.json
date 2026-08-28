@@ -868,6 +868,8 @@
             "disposition": {
                 "title": "布局"
             },
+            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "字體",
             "fontSize": "字體大小",
             "increaseFontSize": "",

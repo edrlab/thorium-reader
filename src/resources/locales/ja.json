@@ -868,6 +868,8 @@
             "disposition": {
                 "title": "割り付け"
             },
+            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "書体",
             "fontSize": "文字の大きさ",
             "increaseFontSize": "",

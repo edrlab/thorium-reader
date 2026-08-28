@@ -886,6 +886,8 @@
             "disposition": {
                 "title": "Postavitev"
             },
+            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "Pisava",
             "fontSize": "Velikost pisave",
             "increaseFontSize": "Povečaj velikost pisave",

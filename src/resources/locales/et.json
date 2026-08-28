@@ -874,6 +874,8 @@
             "disposition": {
                 "title": "Paigutus"
             },
+            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "Kirjatüüp",
             "fontSize": "Kirjatüübi suurus",
             "increaseFontSize": "Suurenda teksti suurust",

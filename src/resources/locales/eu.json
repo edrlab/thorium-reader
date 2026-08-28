@@ -874,6 +874,8 @@
             "disposition": {
                 "title": "Xedapena"
             },
+            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "Iturria",
             "fontSize": "Letra-tamaina",
             "increaseFontSize": "",

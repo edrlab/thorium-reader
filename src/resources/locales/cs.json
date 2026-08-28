@@ -886,6 +886,8 @@
             "disposition": {
                 "title": "Rozložení"
             },
+            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "Písmo",
             "fontSize": "Velikost písma",
             "increaseFontSize": "",

@@ -874,6 +874,8 @@
             "disposition": {
                 "title": "Layout"
             },
+            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "Skrifttype",
             "fontSize": "Skriftstørrelse",
             "increaseFontSize": "Forstør skriftstørrelsen",

@@ -880,6 +880,8 @@
             "disposition": {
                 "title": "Izgled"
             },
+            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "Font",
             "fontSize": "Veličina fonta",
             "increaseFontSize": "",

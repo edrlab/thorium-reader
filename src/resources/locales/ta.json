@@ -874,6 +874,8 @@
             "disposition": {
                 "title": "மனையமைவு"
             },
+            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "எழுத்துரு",
             "fontSize": "எழுத்துரு அளவு",
             "increaseFontSize": "",

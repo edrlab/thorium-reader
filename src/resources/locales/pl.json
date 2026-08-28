@@ -886,6 +886,8 @@
             "disposition": {
                 "title": "Układ"
             },
+            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "Czcionka",
             "fontSize": "Rozmiar czcionki",
             "increaseFontSize": "Zwiększ rozmiar czcionki",
