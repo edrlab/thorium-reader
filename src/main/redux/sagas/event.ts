@@ -17,7 +17,6 @@ import {
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, put, spawn } from "redux-saga/effects";
 import { call as callTyped, take as takeTyped, /*select as selectTyped*/ put as putTyped /*race as raceTyped, delay as delayTyped*/ } from "typed-redux-saga/macro";
-import { opdsApi } from "./api";
 import { browse } from "./api/browser/browse";
 import { addFeed } from "./api/opds/feed";
 
@@ -39,6 +38,7 @@ import { customizationWellKnownFolder } from "readium-desktop/main/customization
 import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { appendFileSyncWithRotation } from "readium-desktop/utils/log";
+import { TCatalogAddAnalyticsOrigin } from "src/common/analytics/catalog";
 
 // Logger
 const debug = debug_("readium-desktop:main:saga:event");
@@ -308,7 +308,7 @@ export function saga() {
                             }
                         }
 
-                        const feed = yield* opdsApi.addFeed({ title, url: theUrl }, "deeplink");
+                        const feed = yield* callTyped(addFeed, { title, url: theUrl }, "deeplink" as TCatalogAddAnalyticsOrigin);
                         if (feed) {
 
                             yield* callTyped(appActivate);
@@ -368,10 +368,10 @@ export function saga() {
                             debug("import the feed", feed.documentTitle, feedUrl);
 
                             // addFeed has a security to not duplicate a feed
-                            yield* addFeed({
+                            yield* callTyped(addFeed, {
                                 title: feed.documentTitle,
                                 url: feedUrl,
-                            }, "registry");
+                            }, "registry" as TCatalogAddAnalyticsOrigin);
 
                         } catch (e) {
                             debug("loop into catalogs list: Wrong feed format:", feed);
