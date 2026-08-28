@@ -166,8 +166,8 @@ export default class App extends React.Component<{}, undefined> {
                     fontsPath = FONTSSUB; // the above is not necessary for encodeURIComponent_RFC3986() as window.location.pathname is already percent-encoded (for example ':' in Windows C:)
                 } else {
                     if (_RENDERER_LIBRARY_BASE_URL === `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/` ||
-                    _RENDERER_READER_BASE_URL === `${URL_PROTOCOL_APP_ASSETS}://${URL_HOST_COMMON}/` ||
-                    _RENDERER_READER_BASE_URL === `https://${URL_HOST_APP_ASSETS}/`) {
+                    _RENDERER_LIBRARY_BASE_URL === `${URL_PROTOCOL_APP_ASSETS}://${URL_HOST_COMMON}/` ||
+                    _RENDERER_LIBRARY_BASE_URL === `https://${URL_HOST_APP_ASSETS}/`) {
 
                         // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
                         fontsPath = `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/` + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", FONTSSUB)).replace(/\\/g, "/").split("/").map((segment) => encodeURIComponent_RFC3986(segment)).join("/");
