@@ -185,7 +185,7 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
 
                 try {
 
-                    debug("LibraryWindow load url to the webview");
+                    debug("LibraryWindow loadURL: " + rendererBaseUrl);
                     await libWindow.loadURL(rendererBaseUrl, {
                         // httpReferrer: {
                         //     url: rendererBaseUrl,
