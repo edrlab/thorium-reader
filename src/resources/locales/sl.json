@@ -897,7 +897,7 @@
             "margin": "Rob",
             "mathjax": "Omogoči MathJax",
             "mathjaxDescription": "MathJax",
-            "noFootnotes": "Onemogoči opombe",
+            "noFootnotes": "Onemogoči pojavna okna z opombami",
             "noRTLFlip": "Onemogoči uporabniški vmesnik od desne proti levi",
             "noRuby": "Skrij japonski Ruby",
             "noTemporaryNavTargetOutline": "Onemogoči vizualne navigacijske indikatorje",
@@ -1202,27 +1202,27 @@
                 },
                 "SearchNextAlt": {
                     "description": "V iskalnem orodju v oknu bralnika pojdite na naslednji rezultat iskanja. To je alternativna bližnjica na tipkovnici namesto privzete",
-                    "name": ""
+                    "name": "Naslednji rezultat iskanja (alternativa)"
                 },
                 "SearchPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "V iskalnem orodju v oknu bralnika se pomaknite na prejšnji rezultat iskanja. Upoštevajte, da obstaja alternativna bližnjica na tipkovnici poleg te privzete",
+                    "name": "Prejšnji rezultat iskanja"
                 },
                 "SearchPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "V iskalnem orodju v oknu bralnika se pomaknite na prejšnji rezultat iskanja. To je alternativna bližnjica na tipkovnici namesto privzete",
+                    "name": "Prejšnji rezultat iskanja (alternativni)"
                 },
                 "SpeakReaderInfoWhereAmI": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika opišite kontekst trenutne lokacije branja z uporabo govornega besedila, združljivega z bralniki zaslona",
+                    "name": "Opišite mesto branja (govor)"
                 },
                 "ToggleBookmark": {
-                    "description": "",
-                    "name": ""
+                    "description": "Dodaj nov zaznamek ali odstrani obstoječega, če je trenutno izbran",
+                    "name": "Preklopi zaznamek"
                 },
                 "ToggleReaderFullscreen": {
-                    "description": "",
-                    "name": ""
+                    "description": "V oknu bralnika aktivirajte celozaslonski način sistema ali obnovite običajni način okna. Upoštevajte, da se to razlikuje od »zen načina«, ki poenostavlja uporabniški vmesnik",
+                    "name": "Preklopi celozaslonski način"
                 },
                 "ToggleReaderZenMode": {
                     "description": "V oknu bralnika aktivirajte ali zapustite zen način, ki poenostavi uporabniški vmesnik med branjem",
@@ -1295,34 +1295,34 @@
             },
             "dialogs": {
                 "add": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Nadaljuj",
+                    "description": "Ta funkcija je trenutno v beta različici. Ali želite nadaljevati in nastaviti dodatni prostor za shranjevanje z izbiro mape?",
+                    "title": "Izberi dodatni prostor za shranjevanje"
                 },
                 "edit": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Uredi direktorij",
+                    "description": "Pri posodabljanju dodatnega prostora za shranjevanje je treba biti previden. Thorium ne bo samodejno prenesel obstoječih objav; to boste morali storiti ročno. Ali želite nadaljevati?",
+                    "title": "Posodobi dodatni prostor za shranjevanje"
                 },
                 "remove": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Odstrani direktorij",
+                    "description": "Pri odstranjevanju dodatnega prostora za shranjevanje je treba biti previden. Thorium ne bo samodejno prenesel obstoječih objav; to boste morali storiti ročno. Ali želite nadaljevati?",
+                    "title": "Odstrani dodatni prostor za shranjevanje"
                 }
             },
             "locations": {
-                "defaultDescription": "",
-                "defaultInternal": "",
-                "externalStorage": "",
-                "title": ""
+                "defaultDescription": "Publikacije, ki jih upravlja aplikacija, so privzeto shranjene v:",
+                "defaultInternal": "Sistemsko shranjevanje",
+                "externalStorage": "Zunanji pomnilnik",
+                "title": "Lokacije"
             }
         },
         "tabs": {
             "appearance": "Izgled",
             "general": "Splošno",
             "keyboardShortcuts": "Bližnjice tipkovnice",
-            "profiles": "",
-            "storage": ""
+            "profiles": "Profili",
+            "storage": "Shranjevanje"
         },
         "theme": {
             "auto": "Samodejno",
@@ -1345,13 +1345,13 @@
     },
     "tts": {
         "highlight": {
-            "mainColor": "",
-            "maskBlockWordOutline": "",
-            "maskBlockWordSolidBackground": "",
-            "maskBlockWordUnderline": "",
-            "maskWordOutline": "",
-            "maskWordSolidBackground": "",
-            "maskWordUnderline": "",
+            "mainColor": "Glavna barva",
+            "maskBlockWordOutline": "Blok maske, obris besed",
+            "maskBlockWordSolidBackground": "Blok maske, enobarvno ozadje besed",
+            "maskBlockWordUnderline": "Blok maske, podčrtane besede",
+            "maskWordOutline": "Maska, obris besed",
+            "maskWordSolidBackground": "Maska, enobarvno ozadje besed",
+            "maskWordUnderline": "Maska, podčrtane besede",
             "outlineWordOutline": "",
             "outlineWordSolidBackground": "",
             "outlineWordUnderline": "",

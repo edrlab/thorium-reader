@@ -42,17 +42,25 @@ export async function getSystemProxy(): Promise<ProxyConfig | undefined> {
         // see https://github.com/httptoolkit/os-proxy-config/issues/2#issuecomment-5367799120
         // see https://github.com/httptoolkit/windows-system-proxy/pull/1
         // see https://github.com/httptoolkit/os-proxy-config/pull/1/changes
-        if (proxySettings.HTTPEnable && proxySettings.HTTPProxy && proxySettings.HTTPPort) {
+        if ((proxySettings.ProxyAutoConfigEnable === "1" || (proxySettings.ProxyAutoConfigEnable as unknown as number) === 1) /* && proxySettings.ProxyAutoDiscoveryEnable === "1" */ && proxySettings.ProxyAutoConfigURLString) {
+            if (!proxySettings.ProxyAutoConfigURLString.startsWith("pac+")) {
+                proxySettings.ProxyAutoConfigURLString = "pac+" + proxySettings.ProxyAutoConfigURLString;
+            }
+            return {
+                proxyUrl: proxySettings.ProxyAutoConfigURLString,
+                noProxy,
+            };
+        } else if ((proxySettings.HTTPEnable === "1" || (proxySettings.HTTPEnable as unknown as number) === 1) && proxySettings.HTTPProxy && proxySettings.HTTPPort) {
             return {
                 proxyUrl: `http://${proxySettings.HTTPProxy}:${proxySettings.HTTPPort}`,
                 noProxy,
             };
-        } else if (proxySettings.SOCKSEnable && proxySettings.SOCKSProxy && proxySettings.SOCKSPort) {
+        } else if ((proxySettings.SOCKSEnable === "1" || (proxySettings.SOCKSEnable as unknown as number) === 1) && proxySettings.SOCKSProxy && proxySettings.SOCKSPort) {
             return {
                 proxyUrl: `socks://${proxySettings.SOCKSProxy}:${proxySettings.SOCKSPort}`,
                 noProxy,
             };
-        } else if (proxySettings.HTTPSEnable && proxySettings.HTTPSProxy && proxySettings.HTTPSPort) {
+        } else if ((proxySettings.HTTPSEnable === "1" || (proxySettings.HTTPSEnable as unknown as number) === 1) && proxySettings.HTTPSProxy && proxySettings.HTTPSPort) {
             return {
                 proxyUrl: `http://${proxySettings.HTTPSProxy}:${proxySettings.HTTPSPort}`, // not HTTPS:// !
                 noProxy,
