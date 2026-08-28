@@ -869,7 +869,6 @@
                 "title": "割り付け"
             },
             "enablePageBreakMarginIndicators": "",
-            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "書体",
             "fontSize": "文字の大きさ",
             "increaseFontSize": "",
@@ -880,7 +879,6 @@
             "lineSpacing": "行の間隔",
             "margin": "ページの余白",
             "mathjax": "",
-            "mathjaxDescription": "",
             "noFootnotes": "ポップアップ脚注を表示しない",
             "noRTLFlip": "右から左へ進むUIを無効にする",
             "noRuby": "ルビを表示しない",

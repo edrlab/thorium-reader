@@ -875,7 +875,6 @@
                 "title": "Оформление"
             },
             "enablePageBreakMarginIndicators": "",
-            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "Шрифт",
             "fontSize": "Размер на шрифта",
             "increaseFontSize": "",
@@ -886,7 +885,6 @@
             "lineSpacing": "Разстояние между редовете",
             "margin": "Отстъпи",
             "mathjax": "",
-            "mathjaxDescription": "",
             "noFootnotes": "Деактивирайте бележките под линия",
             "noRTLFlip": "",
             "noRuby": "",

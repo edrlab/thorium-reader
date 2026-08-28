@@ -875,7 +875,6 @@
                 "title": "განლაგება"
             },
             "enablePageBreakMarginIndicators": "",
-            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "ფონტი",
             "fontSize": "ფონტის ზომა",
             "increaseFontSize": "",
@@ -886,7 +885,6 @@
             "lineSpacing": "ხაზების დაშორება",
             "margin": "მინდორი",
             "mathjax": "",
-            "mathjaxDescription": "",
             "noFootnotes": "სქოლიოს გათიშვა",
             "noRTLFlip": "",
             "noRuby": "",

@@ -875,7 +875,6 @@
                 "title": "Disposición"
             },
             "enablePageBreakMarginIndicators": "",
-            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "Fonte",
             "fontSize": "Tamaño de fonte",
             "increaseFontSize": "",
@@ -886,7 +885,6 @@
             "lineSpacing": "Interlineado",
             "margin": "Marxe",
             "mathjax": "",
-            "mathjaxDescription": "",
             "noFootnotes": "Desactivar notas ao pé",
             "noRTLFlip": "Deshabilitar a interface de usuario de dereita a esquerda\n",
             "noRuby": "Ocultar Ruby xaponés",

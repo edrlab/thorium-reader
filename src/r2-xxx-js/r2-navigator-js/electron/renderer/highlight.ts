@@ -23,10 +23,11 @@ import { ReadiumElectronBrowserWindow, IReadiumElectronWebview } from "./webview
 const win = global.window as ReadiumElectronBrowserWindow;
 
 export function enablePageBreakMarginIndicators(doEnable: boolean) {
-
-    if (win.READIUM2) {
-        win.READIUM2.enablePageBreakMarginIndicators = doEnable;
+    console.log("--HIGH-- enablePageBreakMarginIndicators: " + JSON.stringify(doEnable, null, 4));
+    if (!win.READIUM2) {
+        return;
     }
+    win.READIUM2.enablePageBreakMarginIndicators = doEnable;
 
     const activeWebViews = win.READIUM2.getActiveWebViews();
     for (const activeWebView of activeWebViews) {

@@ -864,7 +864,6 @@
                 "title": "레이아웃"
             },
             "enablePageBreakMarginIndicators": "",
-            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "폰트",
             "fontSize": "폰트 크기",
             "increaseFontSize": "",
@@ -875,7 +874,6 @@
             "lineSpacing": "줄 간격",
             "margin": "여백",
             "mathjax": "",
-            "mathjaxDescription": "",
             "noFootnotes": "각주 비활성화",
             "noRTLFlip": "",
             "noRuby": "",

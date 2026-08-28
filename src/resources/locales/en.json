@@ -874,8 +874,7 @@
             "disposition": {
                 "title": "Layout"
             },
-            "enablePageBreakMarginIndicators": "Enable margin page breaks",
-            "enablePageBreakMarginIndicatorsDescription": "Display page break indicator in margin",
+            "enablePageBreakMarginIndicators": "Show page breaks in margin",
             "font": "Font",
             "fontSize": "Font size",
             "increaseFontSize": "Increase font size",
@@ -886,7 +885,6 @@
             "lineSpacing": "Line spacing",
             "margin": "Margin",
             "mathjax": "Enable MathJax",
-            "mathjaxDescription": "MathJax",
             "noFootnotes": "Disable popup footnotes",
             "noRTLFlip": "Disable Right-To-Left UI",
             "noRuby": "Hide Japanese Ruby",

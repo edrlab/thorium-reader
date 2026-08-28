@@ -35,7 +35,6 @@ export const ReadingDisplayCheckboxSettings = ({
             id: "mathjax",
             name: "mathjax",
             label: __("reader.settings.mathjax"),
-            description: __("reader.settings.mathjaxDescription"),
             checked: enableMathJax,
             onChange: () => {
                 if (enableMathJax === false) {
@@ -49,7 +48,6 @@ export const ReadingDisplayCheckboxSettings = ({
             id: "enablePageBreakMarginIndicators",
             name: "enablePageBreakMarginIndicators",
             label: __("reader.settings.enablePageBreakMarginIndicators"),
-            description: __("reader.settings.enablePageBreakMarginIndicatorsDescription"),
             checked: enablePageBreakMarginIndicators,
             onChange: () => {
                 set({ enablePageBreakMarginIndicators: !enablePageBreakMarginIndicators });

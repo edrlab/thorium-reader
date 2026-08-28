@@ -875,7 +875,6 @@
                 "title": "Düzen"
             },
             "enablePageBreakMarginIndicators": "",
-            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "Yazı tipi",
             "fontSize": "Yazı tipi boyutu",
             "increaseFontSize": "",
@@ -886,7 +885,6 @@
             "lineSpacing": "Satır aralığı",
             "margin": "Kenar boşluğu",
             "mathjax": "MathJax'i etkinleştir",
-            "mathjaxDescription": "",
             "noFootnotes": "Dipnot açılır pencerelerini devredışı bırak",
             "noRTLFlip": "Sağdan Sola Kullanıcı Arayüzü'nü devredışı bırak",
             "noRuby": "Japonca Okutucuları gizle",

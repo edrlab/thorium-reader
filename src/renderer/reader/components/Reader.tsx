@@ -81,6 +81,7 @@ import {
     mediaOverlaysEnableSkippability,
     highlightsClickListen,
     mediaOverlaysUseTTSHighlights,
+    enablePageBreakMarginIndicators,
 } from "@r2-navigator-js/electron/renderer/index";
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 
@@ -3101,6 +3102,8 @@ class Reader extends React.Component<IProps, IState> {
             mediaOverlaysUseTTSHighlights(this.props.readerConfig.mediaOverlaysUseTTSHighlights);
             ttsAndMediaOverlaysManualPlayNext(this.props.readerConfig.ttsAndMediaOverlaysDisableContinuousPlay);
             ttsSkippabilityEnable(this.props.readerConfig.mediaOverlaysEnableSkippability);
+
+            enablePageBreakMarginIndicators(this.props.readerConfig.enablePageBreakMarginIndicators);
         }
         this.ttsOverlayEnableNeedsSync = false;
 

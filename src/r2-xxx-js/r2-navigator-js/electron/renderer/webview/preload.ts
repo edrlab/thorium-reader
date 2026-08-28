@@ -4842,6 +4842,49 @@ const findPrecedingAncestorSiblingHeadings = (element: Element):
     return arr;
 };
 
+const invalidatePageBreakMarginIndicators = () => {
+    destroyHighlightsGroup(win.document, HIGHLIGHT_GROUP_PAGEBREAK);
+
+    if (win.READIUM2.enablePageBreakMarginIndicators && _allEpubPageBreaks) {
+        const highlightDefinitions: IHighlightDefinition[] = [];
+        for (const pageBreak of _allEpubPageBreaks) {
+
+            const range = new Range(); // document.createRange()
+            // range.setStart(pageBreak.element, 0);
+            // range.setEnd(pageBreak.element, 0);
+            range.selectNode(pageBreak.element);
+            // debug("pageBreak.element", pageBreak.element.tagName, pageBreak.element.nodeName, pageBreak.element.nodeType, pageBreak.element.nodeValue);
+            // debug("pageBreak range startContainer", range.startOffset, range.startContainer.nodeName, range.startContainer.nodeType, range.startContainer.nodeValue);
+            // debug("pageBreak range endContainer", range.endOffset, range.endContainer.nodeName, range.endContainer.nodeType, range.endContainer.nodeValue);
+
+            highlightDefinitions.push(
+                {
+                    // https://htmlcolorcodes.com/
+                    color: {
+                        blue: 249,
+                        green: 133,
+                        red: 255,
+                    },
+                    drawType: HighlightDrawTypeMarginBookmark,
+                    expand: 0,
+                    selectionInfo: undefined,
+                    group: HIGHLIGHT_GROUP_PAGEBREAK,
+                    range,
+                    marginText: pageBreak.text ? pageBreak.text : undefined,
+                    textPopup: pageBreak.text ? { text: pageBreak.text } : undefined,
+                },
+            );
+        }
+        if (highlightDefinitions.length) {
+            createHighlights(
+                win,
+                highlightDefinitions,
+                true, // mouse / pointer interaction
+            );
+        }
+    }
+}
+
 interface IPageBreak {
     element: Element;
     text: string;
@@ -4905,45 +4948,7 @@ const findPrecedingAncestorSiblingEpubPageBreak = (element: Element): { epubPage
         // debug("_allEpubPageBreaks XPath", JSON.stringify(_allEpubPageBreaks, null, 4));
         debug("_allEpubPageBreaks XPath", _allEpubPageBreaks.length, xpathResult.snapshotLength);
 
-        if (win.READIUM2.enablePageBreakMarginIndicators) {
-            destroyHighlightsGroup(win.document, HIGHLIGHT_GROUP_PAGEBREAK);
-            const highlightDefinitions: IHighlightDefinition[] = [];
-            for (const pageBreak of _allEpubPageBreaks) {
-
-                const range = new Range(); // document.createRange()
-                // range.setStart(pageBreak.element, 0);
-                // range.setEnd(pageBreak.element, 0);
-                range.selectNode(pageBreak.element);
-                // debug("pageBreak.element", pageBreak.element.tagName, pageBreak.element.nodeName, pageBreak.element.nodeType, pageBreak.element.nodeValue);
-                // debug("pageBreak range startContainer", range.startOffset, range.startContainer.nodeName, range.startContainer.nodeType, range.startContainer.nodeValue);
-                // debug("pageBreak range endContainer", range.endOffset, range.endContainer.nodeName, range.endContainer.nodeType, range.endContainer.nodeValue);
-
-                highlightDefinitions.push(
-                    {
-                        // https://htmlcolorcodes.com/
-                        color: {
-                            blue: 249,
-                            green: 133,
-                            red:  255,
-                        },
-                        drawType: HighlightDrawTypeMarginBookmark,
-                        expand: 0,
-                        selectionInfo: undefined,
-                        group: HIGHLIGHT_GROUP_PAGEBREAK,
-                        range,
-                        marginText: pageBreak.text ? pageBreak.text : undefined,
-                        textPopup: pageBreak.text ? { text: pageBreak.text } : undefined,
-                    },
-                );
-            }
-            if (highlightDefinitions.length) {
-                createHighlights(
-                    win,
-                    highlightDefinitions,
-                    true, // mouse / pointer interaction
-                );
-            }
-        }
+        invalidatePageBreakMarginIndicators();
     }
 
     for (let i = _allEpubPageBreaks.length - 1; i >= 0; i--) {
@@ -5438,7 +5443,13 @@ if (!win.READIUM2.isAudio) {
     ipcRenderer.on(R2_EVENT_ENABLE_PAGE_BREAK_MARGIN_INDICATORS,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (_event: any, payload: IEventPayload_R2_EVENT_ENABLE_PAGE_BREAK_MARGIN_INDICATORS) => {
-        win.READIUM2.enablePageBreakMarginIndicators = payload.doEnable;
+            win.READIUM2.enablePageBreakMarginIndicators = payload.doEnable;
+
+            if (IS_DEV) {
+                console.log("--HIGH WEBVIEW-- enablePageBreakMarginIndicators: " + JSON.stringify(payload.doEnable, null, 4));
+            }
+            // recreateAllHighlightsRaw(win);
+            invalidatePageBreakMarginIndicators();
     });
     ipcRenderer.on(R2_EVENT_TTS_MEDIAOVERLAYS_MANUAL_PLAY_NEXT,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

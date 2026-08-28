@@ -875,7 +875,6 @@
                 "title": ""
             },
             "enablePageBreakMarginIndicators": "",
-            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "",
             "fontSize": "",
             "increaseFontSize": "",
@@ -886,7 +885,6 @@
             "lineSpacing": "",
             "margin": "",
             "mathjax": "",
-            "mathjaxDescription": "",
             "noFootnotes": "",
             "noRTLFlip": "",
             "noRuby": "",

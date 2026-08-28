@@ -881,7 +881,6 @@
                 "title": "Disposición"
             },
             "enablePageBreakMarginIndicators": "",
-            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "Fuente",
             "fontSize": "Tamaño de fuente",
             "increaseFontSize": "Aumentar el tamaño del texto",
@@ -892,7 +891,6 @@
             "lineSpacing": "Interlineado",
             "margin": "Margen",
             "mathjax": "Habilitar MathJax",
-            "mathjaxDescription": "MathJax",
             "noFootnotes": "Desactivar notas al pie emergentes",
             "noRTLFlip": "Deshabilitar la interfaz de usuario de derecha a izquierda",
             "noRuby": "Ocultar Ruby japonés",

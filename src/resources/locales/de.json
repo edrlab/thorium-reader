@@ -875,7 +875,6 @@
                 "title": "Layout"
             },
             "enablePageBreakMarginIndicators": "",
-            "enablePageBreakMarginIndicatorsDescription": "",
             "font": "Schriftart",
             "fontSize": "Schriftgröße",
             "increaseFontSize": "Schriftgröße vergrößern",
@@ -886,7 +885,6 @@
             "lineSpacing": "Zeilenabstand",
             "margin": "Seitenränder",
             "mathjax": "MathJax aktivieren",
-            "mathjaxDescription": "MathJax",
             "noFootnotes": "Fußnoten deaktivieren",
             "noRTLFlip": "Rechts-nach-links-Benutzeroberfläche deaktivieren",
             "noRuby": "Japanische Ruby-Notationen ausblenden",

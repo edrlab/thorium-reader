@@ -1927,7 +1927,6 @@ declare namespace typed_i18n {
     readonly "display": string,
     readonly "disposition": { readonly "title": string },
     readonly "enablePageBreakMarginIndicators": string,
-    readonly "enablePageBreakMarginIndicatorsDescription": string,
     readonly "font": string,
     readonly "fontSize": string,
     readonly "increaseFontSize": string,
@@ -1938,7 +1937,6 @@ declare namespace typed_i18n {
     readonly "lineSpacing": string,
     readonly "margin": string,
     readonly "mathjax": string,
-    readonly "mathjaxDescription": string,
     readonly "noFootnotes": string,
     readonly "noRTLFlip": string,
     readonly "noRuby": string,
@@ -2350,7 +2348,6 @@ declare namespace typed_i18n {
   readonly "display": string,
   readonly "disposition": { readonly "title": string },
   readonly "enablePageBreakMarginIndicators": string,
-  readonly "enablePageBreakMarginIndicatorsDescription": string,
   readonly "font": string,
   readonly "fontSize": string,
   readonly "increaseFontSize": string,
@@ -2361,7 +2358,6 @@ declare namespace typed_i18n {
   readonly "lineSpacing": string,
   readonly "margin": string,
   readonly "mathjax": string,
-  readonly "mathjaxDescription": string,
   readonly "noFootnotes": string,
   readonly "noRTLFlip": string,
   readonly "noRuby": string,
@@ -2431,7 +2427,6 @@ declare namespace typed_i18n {
   (_: "reader.settings.disposition", __?: {}): { readonly "title": string };
   (_: "reader.settings.disposition.title", __?: {}): string;
   (_: "reader.settings.enablePageBreakMarginIndicators", __?: {}): string;
-  (_: "reader.settings.enablePageBreakMarginIndicatorsDescription", __?: {}): string;
   (_: "reader.settings.font", __?: {}): string;
   (_: "reader.settings.fontSize", __?: {}): string;
   (_: "reader.settings.increaseFontSize", __?: {}): string;
@@ -2442,7 +2437,6 @@ declare namespace typed_i18n {
   (_: "reader.settings.lineSpacing", __?: {}): string;
   (_: "reader.settings.margin", __?: {}): string;
   (_: "reader.settings.mathjax", __?: {}): string;
-  (_: "reader.settings.mathjaxDescription", __?: {}): string;
   (_: "reader.settings.noFootnotes", __?: {}): string;
   (_: "reader.settings.noRTLFlip", __?: {}): string;
   (_: "reader.settings.noRuby", __?: {}): string;
