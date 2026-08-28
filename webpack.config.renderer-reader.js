@@ -360,13 +360,13 @@ let config = Object.assign(
                     loader: "svg-sprite-loader",
                     test: /\.svg$/,
                 },
-                {
-                    test: /\.ttf$/,
-                    type: "asset/resource",
-                    generator: {
-                        filename: "assets/fonts/[name][ext]",
-                    },
-                },
+                // {
+                //     test: /\.ttf$/,
+                //     type: "asset/resource",
+                //     generator: {
+                //         filename: "assets/fonts/[name][ext]",
+                //     },
+                // },
                 // useful ?
                 {
                     exclude: /src/,

@@ -36,10 +36,10 @@ declare module "*.svg" {
     export default props;
 }
 
-declare module "*.ttf" {
-    const value: any;
-    export default value;
-}
+// declare module "*.ttf" {
+//     const value: any;
+//     export default value;
+// }
 
 declare const __TH__IS_DEV__: boolean;
 declare const __TH__IS_PACKAGED__: boolean;
