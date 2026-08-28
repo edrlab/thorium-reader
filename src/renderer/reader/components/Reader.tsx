@@ -2921,9 +2921,9 @@ class Reader extends React.Component<IProps, IState> {
             if (__TH__IS_PACKAGED__) {
                 preloadPath = "file://" + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", PREPATH)).replace(/\\/g, "/");
             } else {
-                preloadPath = "r2-navigator-js/dist/" +
-                    "es8-es2017" +
-                    "/src/electron/renderer/webview/preload.js";
+                // preloadPath = "r2-navigator-js/dist/" +
+                //     "es8-es2017" +
+                //     "/src/electron/renderer/webview/preload.js";
 
                 if (_RENDERER_READER_BASE_URL === `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/`) {
                     // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
@@ -2940,7 +2940,8 @@ class Reader extends React.Component<IProps, IState> {
                 } else {
                     // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
                     // preloadPath = "file://" + path.normalize(path.join(process.cwd(), "node_modules", preloadPath)).replace(/\\/g, "/");
-                    preloadPath = "file://" + path.normalize(path.join(process.cwd(), "dist", "preload.js")).replace(/\\/g, "/");
+                    preloadPath = "file://" + path.normalize(path.join(process.cwd(), "dist", PREPATH)).replace(/\\/g, "/");
+                    // preloadPath = preloadPath.replace(/\\/g, "/");
                 }
             }
 

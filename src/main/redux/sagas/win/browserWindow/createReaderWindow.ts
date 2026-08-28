@@ -218,6 +218,7 @@ export function* createReaderWindow(publicationIdentifier: string, manifestUrl: 
 
             if (!readerWindow.isDestroyed() && !readerWindow.webContents.isDestroyed()) {
                 try {
+                    debug("ReaderWindow loadURL: " + readerUrl);
                     await readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" });
                 } catch (e) {
                     debug("Load url rejected", e);
