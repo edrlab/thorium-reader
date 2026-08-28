@@ -8,7 +8,11 @@
 import debug_ from "debug";
 import { dialog } from "electron";
 import * as fs from "fs";
-import { publicationAnalyticsEvents } from "readium-desktop/common/analytics/publication";
+import {
+    buildPublicationUserAnalyticsParams,
+    publicationAnalyticsEvents,
+} from "readium-desktop/common/analytics/publication";
+import { TAnalyticsEventParams } from "readium-desktop/common/api/interface/analyticsApi.interface";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { annotationActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
@@ -111,6 +115,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
     }
 
     let filePath = "";
+    let analyticsParams: TAnalyticsEventParams | undefined;
     try {
 
         debug("Open ShowOpenDialog and ask to user the filePath");
@@ -160,6 +165,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         // if at least one annotation in the list doesn't match with the current spine item, then reject the set importation
 
         const pubView = yield* callTyped(getPublication, publicationIdentifier);
+        analyticsParams = buildPublicationUserAnalyticsParams(pubView);
         if (pubView.r2PublicationJson) {
             const r2PublicationJson = pubView.r2PublicationJson;
             const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
@@ -384,7 +390,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
     }
 
     debug("Annotations importer success and exit");
-    yield* spawnPublicationAnalyticsEvent(publicationAnalyticsEvents.importAnnotations);
+    yield* spawnPublicationAnalyticsEvent(publicationAnalyticsEvents.importAnnotations, analyticsParams);
     yield* putTyped(toastActions.openRequest.build(ToastType.Success, __("message.annotations.success"), readerPublicationIdentifier));
     return;
 }

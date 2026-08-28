@@ -9,6 +9,7 @@ import debug_ from "debug";
 import { dialog, shell } from "electron";
 import {
     buildPublicationMarkAsAnalyticsParams,
+    buildPublicationUserAnalyticsParams,
     publicationAnalyticsEvents,
 } from "readium-desktop/common/analytics/publication";
 import { catalogActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
@@ -39,6 +40,7 @@ import { SenderType } from "readium-desktop/common/models/sync";
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { openPublicationFolder } from "./publication/openFolder";
 import { spawnPublicationAnalyticsEvent } from "./analyticsPublication";
+import { getPublication } from "./api/publication/getPublication";
 
 const filename_ = "readium-desktop:main:redux:sagas:catalog";
 const debug = debug_(filename_);
@@ -436,9 +438,17 @@ export function saga() {
                     return;
                 }
 
+                let analyticsParams = buildPublicationMarkAsAnalyticsParams("finished");
+                try {
+                    const publicationView = yield* getPublication(pubId, false);
+                    analyticsParams = buildPublicationUserAnalyticsParams(publicationView, analyticsParams);
+                } catch (e) {
+                    debug("cannot build mark-as publication analytics params", pubId, e);
+                }
+
                 yield* spawnPublicationAnalyticsEvent(
                     publicationAnalyticsEvents.markAs,
-                    buildPublicationMarkAsAnalyticsParams("finished"),
+                    analyticsParams,
                 );
 
                 let winId = sender.reader_pubId /* see syncFactory */ ? sender.identifier : undefined; // action dispatched from library;

@@ -86,3 +86,11 @@ export const buildPublicationAnalyticsParams = (
 
     return params;
 };
+
+export const buildPublicationUserAnalyticsParams = (
+    publication: PublicationView,
+    params: TAnalyticsEventParams = {},
+): TAnalyticsEventParams => ({
+    ...buildPublicationAnalyticsParams(publication),
+    ...params,
+});
