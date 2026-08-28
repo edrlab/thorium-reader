@@ -52,12 +52,12 @@ export function* createReaderWindow(publicationIdentifier: string, manifestUrl: 
             allowRunningInsecureContent: false,
             backgroundThrottling: false,
             devTools: ENABLE_DEV_TOOLS, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
-            // nodeIntegration: true, // ==> disables sandbox https://www.electronjs.org/docs/latest/tutorial/sandbox
-            // sandbox: false,
-            // contextIsolation: false, // must be false because nodeIntegration, see https://github.com/electron/electron/issues/23506
-            nodeIntegration: false,
-            sandbox: true, // preload NodeJS module shims
-            contextIsolation: true,
+            nodeIntegration: true, // ==> disables sandbox https://www.electronjs.org/docs/latest/tutorial/sandbox
+            sandbox: false,
+            contextIsolation: false, // must be false because nodeIntegration, see https://github.com/electron/electron/issues/23506
+            // nodeIntegration: false,
+            // sandbox: true, // preload NodeJS module shims
+            // contextIsolation: true,
             nodeIntegrationInWorker: false,
             webSecurity: true,
             webviewTag: true,
