@@ -8,7 +8,7 @@
 import debug_ from "debug";
 import { dialog } from "electron";
 import * as fs from "node:fs";
-import { publicationAnalyticsEvents } from "readium-desktop/common/analytics/publication";
+import { buildPublicationUserAnalyticsParams, publicationAnalyticsEvents } from "readium-desktop/common/analytics/publication";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { annotationActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
@@ -33,6 +33,7 @@ import { publicationActions as publicationActionsFromMainAction } from "../actio
 import { EXT_ANNOTATIONS } from "readium-desktop/common/extension";
 import { resolveReadiumAnnotationSourceHref } from "readium-desktop/common/readium/annotation/sourceHref";
 import { spawnPublicationAnalyticsEvent } from "./analyticsPublication";
+import { TAnalyticsEventParams } from "src/common/api/interface/analyticsApi.interface";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:annotationsImporter";
