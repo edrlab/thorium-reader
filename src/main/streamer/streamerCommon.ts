@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import * as path from "path";
+import * as path from "node:path";
 import { computeReadiumCssJsonMessage } from "readium-desktop/common/computeReadiumCssJsonMessage";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { diMainGet } from "readium-desktop/main/di";

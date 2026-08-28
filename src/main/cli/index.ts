@@ -7,14 +7,14 @@
 
 import debug_ from "debug";
 import { app, dialog } from "electron";
-import * as path from "path";
-import * as fs from "fs";
+import * as path from "node:path";
+import * as fs from "node:fs";
 import { lockInstance } from "readium-desktop/main/cli/lock";
 import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import yargs from "yargs";
 // import { hideBin } from "yargs/helpers";
 import { closeProcessLock } from "../di";
-import { EOL } from "os";
+import { EOL } from "node:os";
 import { diMainGet } from "readium-desktop/main/di";
 import { createStoreFromDi } from "../di";
 import { needToPersistFinalState } from "../redux/sagas/persist";

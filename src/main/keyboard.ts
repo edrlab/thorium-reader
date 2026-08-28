@@ -7,8 +7,8 @@
 
 import debug_ from "debug";
 import { shell } from "electron";
-import * as fs from "fs";
-import * as path from "path";
+import * as fs from "node:fs";
+import * as path from "node:path";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 
 import {

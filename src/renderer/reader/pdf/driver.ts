@@ -6,7 +6,7 @@
 // ==LICENSE-END
 
 import { ipcRenderer } from "electron";
-import * as path from "path";
+import * as path from "node:path";
 import {
     _DIST_RELATIVE_URL, _RENDERER_PDF_WEBVIEW_BASE_URL,
 } from "readium-desktop/preprocessor-directives";

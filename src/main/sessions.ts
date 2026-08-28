@@ -11,8 +11,8 @@ import { URL_HOST_APP_ASSETS, URL_PROTOCOL_APP_ASSETS, URL_PROTOCOL_PDFJSEXTRACT
 import debug_ from "debug";
 import { net, session } from "electron";
 import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
-import { pathToFileURL } from "url";
-import * as path from "path";
+import { pathToFileURL } from "node:url";
+import * as path from "node:path";
 import { diMainGet } from "readium-desktop/main/di";
 
 // const debug = (..._: any[]) => {};

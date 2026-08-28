@@ -8,8 +8,8 @@
 // import debug_ from "debug";
 // import * as request from "request";
 // // import * as requestPromise from "request-promise-native";
-// import { PassThrough } from "stream";
-// import { URL } from "url";
+// import { PassThrough } from "node:stream";
+// import { URL } from "node:url";
 
 // import { IStreamAndLength, IZip, Zip } from "./zip";
 

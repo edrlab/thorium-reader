@@ -6,8 +6,8 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import * as path from "path";
-import * as fs from "fs";
+import * as path from "node:path";
+import * as fs from "node:fs";
 import { commandLineMainEntry } from "readium-desktop/main/cli";
 import { httpGet } from "readium-desktop/main/network/http";
 import { CRL_URL, DUMMY_CRL } from "@r2-lcp-js/parser/epub/lcp-certificate";

@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as crypto from "crypto";
+import * as crypto from "node:crypto";
 import debug_ from "debug";
-import * as fs from "fs";
+import * as fs from "node:fs";
 import * as yauzl from "yauzl";
 
 const debug = debug_("readium-desktop:main/crc");

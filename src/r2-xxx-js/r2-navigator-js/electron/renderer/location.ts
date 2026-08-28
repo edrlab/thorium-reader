@@ -7,8 +7,8 @@
 
 import debug_ from "debug";
 import { ipcRenderer, shell } from "electron";
-import * as path from "path";
-import { URL } from "url";
+import * as path from "node:path";
+import { URL } from "node:url";
 
 // import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 

@@ -6,9 +6,9 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import * as fs from "fs";
+import * as fs from "node:fs";
 import moment from "moment";
-import * as path from "path";
+import * as path from "node:path";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";

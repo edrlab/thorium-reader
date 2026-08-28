@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as fs from "fs";
+import * as fs from "node:fs";
 
 // const DEFAULT_MAX_LOG_BYTES = 1024;
 const DEFAULT_MAX_LOG_BYTES = 1024 * 1024;
