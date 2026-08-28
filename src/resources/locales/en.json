@@ -885,6 +885,8 @@
             "margin": "Margin",
             "mathjax": "Enable MathJax",
             "mathjaxDescription": "MathJax",
+            "enablePageBreakMarginIndicators": "Enable margin page breaks",
+            "enablePageBreakMarginIndicatorsDescription": "Display page break indicator in margin",
             "noFootnotes": "Disable popup footnotes",
             "noRTLFlip": "Disable Right-To-Left UI",
             "noRuby": "Hide Japanese Ruby",
