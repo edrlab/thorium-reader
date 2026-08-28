@@ -1352,18 +1352,18 @@
             "maskWordOutline": "Maska, obris besed",
             "maskWordSolidBackground": "Maska, enobarvno ozadje besed",
             "maskWordUnderline": "Maska, podčrtane besede",
-            "outlineWordOutline": "",
-            "outlineWordSolidBackground": "",
-            "outlineWordUnderline": "",
-            "preview": "",
-            "solidBackgroundWordOutline": "",
-            "solidBackgroundWordSolidBackground": "",
-            "solidBackgroundWordUnderline": "",
-            "style": "",
-            "underlineWordOutline": "",
-            "underlineWordSolidBackground": "",
-            "underlineWordUnderline": "",
-            "wordColor": ""
+            "outlineWordOutline": "Osnutek, Word: osnutek",
+            "outlineWordSolidBackground": "Osnutek, enobarvno ozadje",
+            "outlineWordUnderline": "Osnutek, podčrtane besede",
+            "preview": "Predogled stila TTS highlight",
+            "solidBackgroundWordOutline": "Enobarvno ozadje, obris besed",
+            "solidBackgroundWordSolidBackground": "Enobarvno ozadje, Word: enobarvno ozadje",
+            "solidBackgroundWordUnderline": "Enobarvno ozadje, podčrtane besede",
+            "style": "Stil TTS highlight",
+            "underlineWordOutline": "Podčrtano, obris besed",
+            "underlineWordSolidBackground": "Podčrtano, enobarvno ozadje",
+            "underlineWordUnderline": "Podčrtano, podčrtane besede",
+            "wordColor": "Barva"
         }
     }
 }
