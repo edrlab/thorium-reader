@@ -4883,7 +4883,7 @@ const invalidatePageBreakMarginIndicators = () => {
             );
         }
     }
-}
+};
 
 interface IPageBreak {
     element: Element;
