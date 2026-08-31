@@ -457,7 +457,7 @@
     "node-fetch": "^3.3.2",
     "node-stream-zip": "^1.16.0",
     "pac-proxy-agent": "^9.1.0",
-    "pdf.js": "github:edrlab/pdf.js#4a0213b8f033f5d52b4483892de533d2906e0557",
+    "pdf.js": "github:edrlab/pdf.js#87c600766c413e7d2723f64cfa5f235f7f914961",
     "proxy-from-env": "^2.1.0",
     "ramda": "^0.32.0",
     "react": "^18.3.1",
