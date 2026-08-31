@@ -10,6 +10,7 @@ import { TAnalyticsEventParams } from "readium-desktop/common/api/interface/anal
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+import { ContentType } from "readium-desktop/utils/contentType";
 
 // Logger
 const debug = debug_("readium-desktop:common:analytics:publication");
@@ -44,31 +45,30 @@ export type TPublicationAnalyticsFormat =
     "audiobook" |
     "webpub";
 
-export const getPublicationAnalyticsFormat = (
+const getPublicationAnalyticsFormat = (
     publication: PublicationView,
-): TPublicationAnalyticsFormat => {
-
+): { format: TPublicationAnalyticsFormat, mediaType: string } => {
 
     if (
         publication.isAudio
     ) {
-        return "audiobook";
+        return { format: "audiobook", mediaType: ContentType.AudioBook };
     }
 
     if (
         publication.isPDF
     ) {
-        return "pdf";
+        return { format: "pdf", mediaType: ContentType.pdf };
     }
 
     if (
         publication.isDivina
     ) {
-        return "divina";
+        return { format: "divina", mediaType: ContentType.Divina };
     }
 
     if (publication.isFixedLayoutPublication) {
-        return "fxl";
+        return { format: "fxl", mediaType: ContentType.Epub };
     }
 
     if (publication.isDaisy) {
@@ -80,7 +80,16 @@ export const getPublicationAnalyticsFormat = (
             `TODO: DAISY publication format is not yet reported to telemetry; falling back to "reflow" instead of "${daisy_format}".`,
         );
 
-        return "reflow";
+        if (daisy_format === "DAISY_audioNCX") {
+            return { format: "audiobook", mediaType: "application/vnd.daisy.audio"};
+        }
+        if (daisy_format === "DAISY_textNCX") {
+            return { format: "reflow", mediaType: "application/vnd.daisy.text"};
+        }
+        if (daisy_format === "DAISY_audioFullText") {
+            return { format: "reflow", mediaType: "application/vnd.daisy.textaudio"};
+        }
+
     }
 
     // // TODO: not yet supported
@@ -88,7 +97,7 @@ export const getPublicationAnalyticsFormat = (
     //     return "webpub";
     // }
 
-    return "reflow";
+    return { format: "reflow", mediaType: ContentType.Epub };
 };
 
 export const buildPublicationAnalyticsParams = (
@@ -96,8 +105,7 @@ export const buildPublicationAnalyticsParams = (
 ): TAnalyticsEventParams => {
     const format = getPublicationAnalyticsFormat(publication);
     const params: TAnalyticsEventParams = {
-        format,
-        media_type: "", // TODO: TBD
+        ...format,
     };
 
     if (publication.lcp) {
