@@ -135,6 +135,7 @@ export async function pdfManifest(pdfPath: string, info: IInfo): Promise<R2Publi
     r2Publication.Context = ["https://readium.org/webpub-manifest/context.jsonld"];
     r2Publication.Metadata = new R2Metadata();
     r2Publication.Metadata.Title = name || ""; // required
+    r2Publication.Metadata.ConformsTo = ["https://readium.org/webpub-manifest/profiles/pdf"];
 
     if (info) {
         debug(info);
