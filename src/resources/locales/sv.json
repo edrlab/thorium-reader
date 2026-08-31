@@ -874,7 +874,7 @@
             "disposition": {
                 "title": "Layout"
             },
-            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicators": "Visa sidbrytningar i marginalen",
             "font": "Typsnitt",
             "fontSize": "Textstorlek",
             "increaseFontSize": "Öka textstorlek",

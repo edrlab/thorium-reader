@@ -880,7 +880,7 @@
             "disposition": {
                 "title": "Impaginazione"
             },
-            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicators": "Mostra le interruzioni di pagina nel margine",
             "font": "Font",
             "fontSize": "Dimensioni del font",
             "increaseFontSize": "Aumentare la dimensione del testo",

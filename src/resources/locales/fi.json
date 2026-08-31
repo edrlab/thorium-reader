@@ -874,7 +874,7 @@
             "disposition": {
                 "title": "Asettelu"
             },
-            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicators": "Näytä sivunvaihtokohdat marginaalissa",
             "font": "Fontti",
             "fontSize": "Fonttikoko",
             "increaseFontSize": "Suurenna fonttikokoa",
