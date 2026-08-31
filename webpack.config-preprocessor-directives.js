@@ -1,4 +1,5 @@
 const webpack = require("webpack");
+// require("dotenv").config({ quiet: true });
 
 const { version, build, name } = require("./package.json");
 // var git = require("git-rev-sync");
@@ -52,9 +53,9 @@ const telemetrySecret = process.env.THORIUM_TELEMETRY_SECRET || "";
 const telemetrySecretData = process.env.THORIUM_TELEMETRY_SECRET_DATA || "";
 const firebaseEnabled =
     !["0", "false"].includes((process.env.THORIUM_FIREBASE_ENABLED || "0").toLowerCase());
-// const firebaseDebug =
-    // !["0", "false"].includes((process.env.THORIUM_FIREBASE_DEBUG || "0").toLowerCase());
-// const firebaseAppId = process.env.THORIUM_FIREBASE_APP_ID || "";
+const firebaseDebug =
+    !["0", "false"].includes((process.env.THORIUM_FIREBASE_DEBUG || "0").toLowerCase());
+const firebaseAppId = process.env.THORIUM_FIREBASE_APP_ID || "";
 const firebaseMeasurementId = process.env.THORIUM_FIREBASE_MEASUREMENT_ID || "";
 const firebaseMeasurementProtocolApiSecret =
     process.env.THORIUM_FIREBASE_MEASUREMENT_PROTOCOL_API_SECRET || "";
@@ -94,8 +95,8 @@ const data = {
     __TH__TELEMETRY_SECRET__: JSON.stringify(telemetrySecret),
     __TH__TELEMETRY_SECRETDATA__: JSON.stringify(telemetrySecretData),
     __TH__FIREBASE_ENABLED__: JSON.stringify(firebaseEnabled),
-    // __TH__FIREBASE_DEBUG__: JSON.stringify(firebaseDebug),
-    // __TH__FIREBASE_APP_ID__: JSON.stringify(firebaseAppId),
+    __TH__FIREBASE_DEBUG__: JSON.stringify(firebaseDebug),
+    __TH__FIREBASE_APP_ID__: JSON.stringify(firebaseAppId),
     __TH__FIREBASE_MEASUREMENT_ID__: JSON.stringify(firebaseMeasurementId),
     __TH__FIREBASE_MEASUREMENT_PROTOCOL_API_SECRET__: JSON.stringify(firebaseMeasurementProtocolApiSecret),
     __TH__FIREBASE_MEASUREMENT_PROTOCOL_ENDPOINT__: JSON.stringify(firebaseMeasurementProtocolEndpoint),
