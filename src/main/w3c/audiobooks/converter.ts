@@ -299,11 +299,13 @@ export async function w3cPublicationManifestToReadiumPublicationManifest(
         const validType = validTypeUpper.includes("AUDIO") || validTypeUpper.includes("AUDIOBOOK");
 
         if (validConformsTo || validType) {
-            publication.Metadata.RDFType = "https://schema.org/Audiobook";
+            publication.Metadata.RDFType = "http://schema.org/Audiobook";
+            publication.Metadata.ConformsTo = [ "https://readium.org/webpub-manifest/profiles/audiobook" ];
         } else {
             debug(`not an audiobook W3C publication manifest. conformsTo=${w3cManifest.conformsTo}`);
 
-            publication.Metadata.RDFType = "https://schema.org/CreativeWork";
+            publication.Metadata.RDFType = "http://schema.org/CreativeWork";
+            publication.Metadata.ConformsTo = conformsToArray;
         }
     }
     {

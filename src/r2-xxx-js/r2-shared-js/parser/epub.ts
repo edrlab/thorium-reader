@@ -185,7 +185,10 @@ export async function EpubParsePromise(filePath: string): Promise<Publication> {
     const publication = new Publication();
     publication.Context = ["https://readium.org/webpub-manifest/context.jsonld"];
     publication.Metadata = new Metadata();
+
     publication.Metadata.RDFType = "http://schema.org/Book";
+    publication.Metadata.ConformsTo = [ "https://readium.org/webpub-manifest/profiles/epub" ];
+
     // publication.Metadata.Modified = moment(Date.now()).toDate();
 
     publication.AddToInternal("filename", path.basename(filePath));
