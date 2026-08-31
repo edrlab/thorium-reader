@@ -130,6 +130,7 @@ export function* findAllFeeds(): SagaGenerator<IOpdsFeedView[]> {
 
     const opdsFeedRepository = diMainGet("opds-feed-repository");
     const opdsFeedViewConverter = diMainGet("opds-feed-view-converter");
+    const sortText = (value: unknown) => typeof value === "string" ? value : "";
 
     const docs = yield* callTyped(() => opdsFeedRepository.findAll());
     const res: IOpdsFeedView[] = [];
@@ -147,11 +148,11 @@ export function* findAllFeeds(): SagaGenerator<IOpdsFeedView[]> {
             return favoriteSort;
         }
 
-        const titleSort = a.title.localeCompare(b.title, undefined, { sensitivity: "base" });
+        const titleSort = sortText(a.title).localeCompare(sortText(b.title), undefined, { sensitivity: "base" });
         if (titleSort !== 0) {
             return titleSort;
         }
 
-        return a.url.localeCompare(b.url, undefined, { sensitivity: "base" });
+        return sortText(a.url).localeCompare(sortText(b.url), undefined, { sensitivity: "base" });
     });
 }
