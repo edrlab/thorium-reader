@@ -218,17 +218,6 @@ export function* findAllFeeds(): SagaGenerator<IOpdsFeedView[]> {
         res.push(yield* callTyped(() => opdsFeedViewConverter.convertDocumentToView(doc)));
     }
 
-    return res.sort((a, b) => {
-        const favoriteSort = Number(!!b.favorite) - Number(!!a.favorite);
-        if (favoriteSort !== 0) {
-            return favoriteSort;
-        }
-
-        const titleSort = a.title.localeCompare(b.title, undefined, { sensitivity: "base" });
-        if (titleSort !== 0) {
-            return titleSort;
-        }
-
-        return a.url.localeCompare(b.url, undefined, { sensitivity: "base" });
-    });
+    const sortedByFavorite = [...res.filter((res) => !!res.favorite), ...res.filter((res) => !(!!res.favorite))];
+    return sortedByFavorite;
 }

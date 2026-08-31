@@ -169,10 +169,6 @@ class SearchFormPicker extends React.Component<IProps, IState> {
     private search(e: TFormEvent) {
         e.preventDefault();
 
-        if (!this.state.inputValue) {
-            return;
-        }
-
         this.props.reset();
 
         logEvent(readerAnalyticsEvents.search);

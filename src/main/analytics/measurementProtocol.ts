@@ -17,12 +17,7 @@ import {
 } from "readium-desktop/common/api/interface/analyticsApi.interface";
 import isURL from "readium-desktop/common/utils/isURL";
 import { httpPost } from "readium-desktop/main/network/http";
-import {
-    _APP_VERSION,
-    // _FIREBASE_DEBUG,
-    _FIREBASE_ENABLED,
-    _FIREBASE_MEASUREMENT_ID,
-} from "readium-desktop/preprocessor-directives";
+import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 
 const debug = debug_("readium-desktop:main:analytics:measurement-protocol");
 const sessionId = Math.floor(Date.now() / 1000);
@@ -77,7 +72,7 @@ export const logMeasurementProtocol = async (
         optionKeys: Object.keys(options),
     });
 
-    if (!_FIREBASE_ENABLED) {
+    if (!__TH__FIREBASE_ENABLED__) {
         debug("Measurement Protocol disabled");
         return {
             sent: false,
@@ -95,7 +90,7 @@ export const logMeasurementProtocol = async (
         };
     }
 
-    const debugMode = typeof options.debug === "boolean" ? options.debug : false; // _FIREBASE_DEBUG;
+    const debugMode = typeof options.debug === "boolean" ? options.debug : __TH__FIREBASE_DEBUG__;
     const clientId = options.clientId;
     const apiSecret = __TH__FIREBASE_MEASUREMENT_PROTOCOL_API_SECRET__;
     const endpoint = debugMode
@@ -106,14 +101,14 @@ export const logMeasurementProtocol = async (
     debug("Measurement Protocol config", {
         debugMode,
         endpoint,
-        measurementId: _FIREBASE_MEASUREMENT_ID,
+        measurementId: __TH__FIREBASE_MEASUREMENT_ID__,
         hasApiSecret: !!apiSecret,
         hasClientId: !!clientId,
     });
 
-    if (!_FIREBASE_MEASUREMENT_ID || !apiSecret || !clientId) {
+    if (!__TH__FIREBASE_MEASUREMENT_ID__ || !apiSecret || !clientId) {
         debug("Measurement Protocol missing config", {
-            hasMeasurementId: !!_FIREBASE_MEASUREMENT_ID,
+            hasMeasurementId: !!__TH__FIREBASE_MEASUREMENT_ID__,
             hasApiSecret: !!apiSecret,
             hasClientId: !!clientId,
         });
@@ -132,7 +127,7 @@ export const logMeasurementProtocol = async (
         // Reference: https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference?client_type=gtag
         // Web Measurement Protocol sends api_secret and measurement_id as query parameters.
         // Keep api_secret in the main runtime only; do not expose it through renderer bundles.
-        url.searchParams.set("measurement_id", _FIREBASE_MEASUREMENT_ID);
+        url.searchParams.set("measurement_id", __TH__FIREBASE_MEASUREMENT_ID__);
         url.searchParams.set("api_secret", apiSecret);
 
         href = url.toString();

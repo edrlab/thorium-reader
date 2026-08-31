@@ -59,17 +59,6 @@ export const _TELEMETRY_SECRET = __TH__TELEMETRY_SECRET__;
 declare const __TH__TELEMETRY_SECRETDATA__: string;
 export const _TELEMETRY_SECRETDATA = __TH__TELEMETRY_SECRETDATA__;
 
-declare const __TH__FIREBASE_ENABLED__: boolean;
-export const _FIREBASE_ENABLED = __TH__FIREBASE_ENABLED__;
-
-// declare const __TH__FIREBASE_DEBUG__: boolean;
-// export const _FIREBASE_DEBUG = __TH__FIREBASE_DEBUG__;
-
-// declare const __TH__FIREBASE_APP_ID__: string;
-// export const _FIREBASE_APP_ID = __TH__FIREBASE_APP_ID__;
-
-declare const __TH__FIREBASE_MEASUREMENT_ID__: string;
-export const _FIREBASE_MEASUREMENT_ID = __TH__FIREBASE_MEASUREMENT_ID__;
 
 declare const __TH__CUSTOMIZATION_PROFILE_PUB_KEY__: string;
 export const _CUSTOMIZATION_PROFILE_PUB_KEY = __TH__CUSTOMIZATION_PROFILE_PUB_KEY__;
