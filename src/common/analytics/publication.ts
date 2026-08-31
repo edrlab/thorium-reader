@@ -8,7 +8,7 @@
 import debug_ from "debug";
 import { TAnalyticsEventParams } from "readium-desktop/common/api/interface/analyticsApi.interface";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { TaJsonDeserialize } from "src/r2-xxx-js/r2-lcp-js/serializable";
+import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 // Logger
