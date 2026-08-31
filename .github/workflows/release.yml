@@ -1,8 +1,8 @@
 # use `[skip cd]` (not `[skip ci]`) to avoid triggering the `./develop-branch.yml` Workflow unnecessarily when all we need is the release tag trigger
 
-#GIT_COMMITTER_DATE="$(git show develop --format=%aD | head -1)" git tag -a "v3.5.0-rc.2" develop -m "release tag v3.5.0-rc.2" && git push --tags origin develop && git --no-pager tag --list --format='%(refname)   %(taggerdate)'
+#GIT_COMMITTER_DATE="$(git show develop --format=%aD | head -1)" git tag -a "v3.5.1-beta.1" develop -m "release tag v3.5.1-beta.1" && git push --tags origin develop && git --no-pager tag --list --format='%(refname)   %(taggerdate)'
 
-#git tag -d v3.5.0-rc.2 && git push origin :refs/tags/v3.5.0-rc.2
+#git tag -d v3.5.1-beta.1 && git push origin :refs/tags/v3.5.1-beta.1
 
 name: GitHub Release
 
