@@ -10,9 +10,8 @@ import { ipcMain } from "electron";
 import { analyticsIpc } from "readium-desktop/common/ipc";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { logMeasurementProtocol } from "readium-desktop/main/analytics/measurementProtocol";
-import { error } from "readium-desktop/main/tools/error";
 import { buffers, eventChannel } from "redux-saga";
-import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
+import { call as callTyped, select as selectTyped, spawn as spawnTyped } from "typed-redux-saga/macro";
 
 import { RootState } from "../states";
 
@@ -45,13 +44,23 @@ function getAnalyticsIpcChannel() {
 
 function* analyticsIpcChannel(ipcData: analyticsIpc.EventPayload) {
 
-    const clientId = yield* selectTyped((state: RootState) => state.analytics.clientId);
-    const locale = yield* selectTyped((state: RootState) => state.i18n.locale);
+    try {
+        const clientId = yield* selectTyped((state: RootState) => state.analytics.clientId);
+        const locale = yield* selectTyped((state: RootState) => state.i18n.locale);
 
-    yield* callTyped(logMeasurementProtocol, ipcData.payload.name, ipcData.payload.params, {
-        clientId,
-        locale,
-    });
+        yield* spawnTyped(function* () {
+            try {
+                yield* callTyped(logMeasurementProtocol, ipcData.payload.name, ipcData.payload.params, {
+                    clientId,
+                    locale,
+                });
+            } catch (e) {
+                debug("analytics IPC log event failed silently", e);
+            }
+        });
+    } catch (e) {
+        debug("analytics IPC channel failed silently", e);
+    }
 }
 
 export function saga() {
@@ -62,8 +71,7 @@ export function saga() {
         ipcChannel,
         analyticsIpcChannel,
         (e) => {
-            debug("analytics IPC channel error", e);
-            error(filename_, e);
+            debug("analytics IPC channel error handled silently", e);
         },
     );
 }

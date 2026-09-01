@@ -16,11 +16,85 @@ import {
     TAnalyticsValidationBehavior,
 } from "readium-desktop/common/api/interface/analyticsApi.interface";
 import isURL from "readium-desktop/common/utils/isURL";
-import { httpPost } from "readium-desktop/main/network/http";
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
+
+import { enqueueMeasurementProtocolRequest } from "./measurementProtocolQueue";
 
 const debug = debug_("readium-desktop:main:analytics:measurement-protocol");
 const sessionId = Math.floor(Date.now() / 1000);
+
+export interface IMeasurementProtocolEvent {
+
+    // Required. Event name, 40 characters or fewer.
+    name: string;
+
+    timestamp_micros?: number;
+
+    // Optional. Up to 25 parameters per event.
+    // Common parameters reference:
+    // https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference?client_type=gtag#common_params
+    // Documented common parameters: session_id, engagement_time_msec, timestamp_micros.
+    // Custom event-scoped parameters are accepted here; item-scoped parameters belong under items[].
+    params?: TAnalyticsEventParams;
+}
+
+export interface IMeasurementProtocolBody {
+    client_id: string;
+    user_id?: string;
+    timestamp_micros?: number;
+    user_properties?: Record<string, {
+        value: string | number | boolean;
+        timestamp_micros?: number;
+    }>;
+    user_data?: {
+        sha256_email_address?: string | string[];
+        sha256_phone_number?: string | string[];
+        address?: {
+            sha256_first_name?: string;
+            sha256_last_name?: string;
+            sha256_street?: string;
+            city?: string;
+            region?: string;
+            postal_code?: string;
+            country?: string;
+        } | Array<{
+            sha256_first_name?: string;
+            sha256_last_name?: string;
+            sha256_street?: string;
+            city?: string;
+            region?: string;
+            postal_code?: string;
+            country?: string;
+        }>;
+    };
+    consent?: {
+        ad_user_data?: "GRANTED" | "DENIED";
+        ad_personalization?: "GRANTED" | "DENIED";
+    };
+    non_personalized_ads?: boolean;
+    user_location?: {
+        city?: string;
+        region_id?: string;
+        country_id?: string;
+        subcontinent_id?: string;
+        continent_id?: string;
+    };
+    ip_override?: string;
+    device?: {
+        category?: string;
+        language?: string;
+        screen_resolution?: string;
+        operating_system?: string;
+        operating_system_version?: string;
+        model?: string;
+        brand?: string;
+        browser?: string;
+        browser_version?: string;
+    };
+    user_agent?: string;
+    validation_behavior?: TAnalyticsValidationBehavior;
+    events: IMeasurementProtocolEvent[];
+}
 
 const getDeviceLanguage = (): string | undefined => {
     try {
@@ -45,22 +119,19 @@ const getDeviceLanguage = (): string | undefined => {
 };
 
 /**
- * Sends one GA4 Measurement Protocol event immediately, without queueing or retry.
+ * Queues one GA4 Measurement Protocol event for batched delivery.
  *
  * Request reference:
  * - Endpoint: https://www.google-analytics.com/mp/collect, or /debug/mp/collect for validation.
  * - Query string: api_secret and measurement_id.
  * - JSON body: client_id and events[].
  *
- * Google recommends using the validation endpoint during development, and warns not to retry
- * the same request because repeated sends can inflate event counts.
- *
  * References:
  * https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference?client_type=gtag
  * https://developers.google.com/analytics/devguides/collection/protocol/ga4/validating-events?client_type=gtag
  * https://developers.google.com/analytics/devguides/collection/protocol/ga4/verify-implementation?client_type=gtag
  */
-export const logMeasurementProtocol = async (
+const logMeasurementProtocolInternal = async (
     name: string,
     params?: TAnalyticsEventParams,
     options: IAnalyticsLogEventOptions & { clientId?: string; locale?: string } = {},
@@ -212,72 +283,7 @@ export const logMeasurementProtocol = async (
     // - device or user_agent: optional device override; device takes precedence over user_agent.
     // - validation_behavior: optional validation mode, RELAXED or ENFORCE_RECOMMENDATIONS.
     // - events: required array of event items, up to 25 per request.
-    const body: {
-        client_id: string;
-        user_id?: string;
-        timestamp_micros?: number;
-        user_properties?: Record<string, {
-            value: string | number | boolean;
-            timestamp_micros?: number;
-        }>;
-        user_data?: {
-            sha256_email_address?: string | string[];
-            sha256_phone_number?: string | string[];
-            address?: {
-                sha256_first_name?: string;
-                sha256_last_name?: string;
-                sha256_street?: string;
-                city?: string;
-                region?: string;
-                postal_code?: string;
-                country?: string;
-            } | Array<{
-                sha256_first_name?: string;
-                sha256_last_name?: string;
-                sha256_street?: string;
-                city?: string;
-                region?: string;
-                postal_code?: string;
-                country?: string;
-            }>;
-        };
-        consent?: {
-            ad_user_data?: "GRANTED" | "DENIED";
-            ad_personalization?: "GRANTED" | "DENIED";
-        };
-        non_personalized_ads?: boolean;
-        user_location?: {
-            city?: string;
-            region_id?: string;
-            country_id?: string;
-            subcontinent_id?: string;
-            continent_id?: string;
-        };
-        ip_override?: string;
-        device?: {
-            category?: string;
-            language?: string;
-            screen_resolution?: string;
-            operating_system?: string;
-            operating_system_version?: string;
-            model?: string;
-            brand?: string;
-            browser?: string;
-            browser_version?: string;
-        };
-        user_agent?: string;
-        validation_behavior?: TAnalyticsValidationBehavior;
-        events: Array<{
-            // Required. Event name, 40 characters or fewer.
-            name: string;
-            // Optional. Up to 25 parameters per event.
-            // Common parameters reference:
-            // https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference?client_type=gtag#common_params
-            // Documented common parameters: session_id, engagement_time_msec, timestamp_micros.
-            // Custom event-scoped parameters are accepted here; item-scoped parameters belong under items[].
-            params?: TAnalyticsEventParams;
-        }>;
-    } = {
+    const body: IMeasurementProtocolBody = {
         client_id: clientId,
         // User properties are user-scoped dimensions for the measurement.
         // https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference?client_type=gtag#payload_post_body
@@ -336,58 +342,26 @@ export const logMeasurementProtocol = async (
     const bodyJson = JSON.stringify(body);
     debug("Measurement Protocol body", bodyJson);
 
+    return enqueueMeasurementProtocolRequest({
+        debugMode,
+        body,
+    });
+};
+
+export const logMeasurementProtocol = async (
+    name: string,
+    params?: TAnalyticsEventParams,
+    options: IAnalyticsLogEventOptions & { clientId?: string; locale?: string } = {},
+): Promise<IAnalyticsLogEventResult> => {
+
     try {
-        debug("Measurement Protocol POST", {
-            url: hrefDebug,
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-
-        const response = await httpPost(href, {
-            body: bodyJson,
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-
-        const result: IAnalyticsLogEventResult = {
-            sent: response.isSuccess,
-            isSuccess: response.isSuccess,
-            statusCode: response.statusCode,
-            statusMessage: response.statusMessage,
-        };
-
-        debug("Measurement Protocol response", result);
-
-        if (debugMode && response.statusCode !== 204 && response.response?.json) {
-            try {
-                const json: any = await response.response.json();
-                debug("Measurement Protocol debug response body", json);
-                if (Array.isArray(json?.validationMessages)) {
-                    const validationMessages: NonNullable<IAnalyticsLogEventResult["validationMessages"]> = [];
-                    for (const message of json.validationMessages) {
-                        validationMessages.push({
-                            fieldPath: typeof message?.fieldPath === "string" ? message.fieldPath : undefined,
-                            description: typeof message?.description === "string" ? message.description : undefined,
-                            validationCode: typeof message?.validationCode === "string" ? message.validationCode : undefined,
-                        });
-                    }
-                    result.validationMessages = validationMessages;
-                    debug("Measurement Protocol validation messages", validationMessages);
-                }
-            } catch (err) {
-                debug("Measurement Protocol debug response JSON parse failed", err);
-            }
-        }
-
-        return result;
+        return await logMeasurementProtocolInternal(name, params, options);
     } catch (err) {
-        debug("Measurement Protocol network error", err);
+        debug("Measurement Protocol log event failed silently", err);
         return {
             sent: false,
             isSuccess: false,
-            reason: "network-error",
+            statusMessage: "Measurement Protocol log event failed silently",
         };
     }
 };

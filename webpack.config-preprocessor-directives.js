@@ -1,5 +1,5 @@
 const webpack = require("webpack");
-// require("dotenv").config({ quiet: true });
+require("dotenv").config({ quiet: true });
 
 const { version, build, name } = require("./package.json");
 // var git = require("git-rev-sync");
