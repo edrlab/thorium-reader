@@ -136,6 +136,41 @@ describe("MeasurementProtocolEventQueue", () => {
         expect(await readQueueFile(queueFilePath)).toEqual([]);
     });
 
+    it("retries transient Windows rename failures when persisting queued events", async () => {
+        const originalRename = fs.promises.rename;
+        let renameAttempt = 0;
+        const renameSpy = jest.spyOn(fs.promises, "rename").mockImplementation(async (oldPath, newPath) => {
+            renameAttempt++;
+
+            if (renameAttempt === 1) {
+                throw Object.assign(new Error("locked queue file"), {
+                    code: "EPERM",
+                    errno: -4048,
+                    syscall: "rename",
+                    path: oldPath,
+                    dest: newPath,
+                });
+            }
+
+            return originalRename(oldPath, newPath);
+        });
+
+        try {
+            const queue = createQueue();
+            await queue.enqueue({
+                debugMode: false,
+                body: makeBody("event_after_rename_retry"),
+            });
+
+            expect(renameSpy).toHaveBeenCalledTimes(2);
+            expect((await readQueueFile(queueFilePath)).map((event) => event.event.name)).toEqual([
+                "event_after_rename_retry",
+            ]);
+        } finally {
+            renameSpy.mockRestore();
+        }
+    });
+
     it("keeps queued events on disk when delivery fails", async () => {
         const queue = createQueue(async () => ({
             sent: false,

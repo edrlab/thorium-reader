@@ -33,6 +33,14 @@ const MEASUREMENT_PROTOCOL_QUEUE_FILE_PATH = path.join(
     "analytics",
     "measurement-protocol-queue.json",
 );
+// Windows can briefly lock the destination queue file during replace operations.
+// Keep the atomic temp-file write path, but retry transient rename failures.
+const MEASUREMENT_PROTOCOL_QUEUE_RENAME_RETRY_DELAYS_MS = [25, 100, 250, 500];
+const MEASUREMENT_PROTOCOL_QUEUE_TRANSIENT_FS_ERROR_CODES = new Set([
+    "EACCES",
+    "EBUSY",
+    "EPERM",
+]);
 
 export interface IQueuedMeasurementProtocolEvent {
     id: string;
@@ -281,6 +289,123 @@ const isRetryableMeasurementProtocolFailure = (
 
     return result.statusCode === 408 || result.statusCode === 429 || result.statusCode >= 500;
 };
+
+const wait = (ms: number): Promise<void> =>
+    new Promise((resolve) => setTimeout(resolve, ms));
+
+const getFsErrorCode = (err: unknown): string | undefined => {
+
+    const code = (err as NodeJS.ErrnoException)?.code;
+    return typeof code === "string" ? code : undefined;
+};
+
+const isTransientQueueReplaceError = (err: unknown): boolean => {
+
+    const code = getFsErrorCode(err);
+    return !!code && MEASUREMENT_PROTOCOL_QUEUE_TRANSIENT_FS_ERROR_CODES.has(code);
+};
+
+const renameMeasurementProtocolQueueFile = async (
+    tmpFilePath: string,
+    queueFilePath: string,
+): Promise<void> => {
+
+    let attempt = 0;
+
+    while (true) {
+        try {
+            await fs.promises.rename(tmpFilePath, queueFilePath);
+
+            if (attempt > 0) {
+                debug("Measurement Protocol queue rename succeeded after retry", {
+                    attempt: attempt + 1,
+                    queueFilePath,
+                    tmpFilePath,
+                });
+            }
+
+            return;
+        } catch (err) {
+            const retryDelayMs = MEASUREMENT_PROTOCOL_QUEUE_RENAME_RETRY_DELAYS_MS[attempt];
+
+            if (!isTransientQueueReplaceError(err) || retryDelayMs === undefined) {
+                debug("Measurement Protocol queue rename failed", {
+                    attempt: attempt + 1,
+                    queueFilePath,
+                    tmpFilePath,
+                    errorCode: getFsErrorCode(err),
+                    willRetry: false,
+                    error: err,
+                });
+                throw err;
+            }
+
+            debug("Measurement Protocol queue rename failed, retrying", {
+                attempt: attempt + 1,
+                queueFilePath,
+                tmpFilePath,
+                retryDelayMs,
+                errorCode: getFsErrorCode(err),
+                error: err,
+            });
+
+            attempt++;
+            await wait(retryDelayMs);
+        }
+    }
+};
+
+const summarizeQueuedEventForDebug = (
+    event: IQueuedMeasurementProtocolEvent,
+) => ({
+    id: event.id,
+    name: event.event.name,
+    debugMode: event.debugMode,
+    queuedAtMicros: event.queuedAtMicros,
+    timestampMicros: event.event.timestamp_micros,
+    bodyRootKeys: Object.keys(event.bodyRoot).sort(),
+    paramKeys: event.event.params ? Object.keys(event.event.params).sort() : [],
+});
+
+const summarizeQueueForDebug = (
+    queue: IQueuedMeasurementProtocolEvent[],
+) => ({
+    eventCount: queue.length,
+    firstEvent: queue[0] ? summarizeQueuedEventForDebug(queue[0]) : undefined,
+    lastEvent: queue.length > 1 ? summarizeQueuedEventForDebug(queue[queue.length - 1]) : undefined,
+});
+
+const summarizeRequestForDebug = (
+    request: IMeasurementProtocolQueueRequest,
+) => {
+
+    const event = request.body.events[0];
+    const bodyRoot = { ...(request.body as unknown as Record<string, unknown>) };
+    delete bodyRoot.events;
+    delete bodyRoot.timestamp_micros;
+
+    return {
+        debugMode: request.debugMode,
+        eventCount: request.body.events.length,
+        firstEventName: event?.name,
+        bodyRootKeys: Object.keys(bodyRoot).sort(),
+        paramKeys: event?.params ? Object.keys(event.params).sort() : [],
+        hasRequestTimestampMicros: isFiniteNumber(request.body.timestamp_micros),
+        hasEventTimestampMicros: isFiniteNumber(event?.timestamp_micros),
+    };
+};
+
+const summarizeBatchForDebug = (
+    batch: IMeasurementProtocolQueueBatch,
+) => ({
+    eventCount: batch.events.length,
+    bodyBytes: batch.bodyBytes,
+    isOversized: batch.isOversized,
+    firstEvent: batch.events[0] ? summarizeQueuedEventForDebug(batch.events[0]) : undefined,
+    lastEvent: batch.events.length > 1 ?
+        summarizeQueuedEventForDebug(batch.events[batch.events.length - 1]) :
+        undefined,
+});
 
 const buildMeasurementProtocolQueueBodyJson = (
     events: IQueuedMeasurementProtocolEvent[],
@@ -542,100 +667,212 @@ export class MeasurementProtocolEventQueue {
         this.createId = dependencies.createId || uuidv4;
         this.nowMicros = dependencies.nowMicros || (() => Date.now() * 1000);
         this.sendBatch = dependencies.sendBatch || sendMeasurementProtocolBatch;
+
+        debug("Measurement Protocol queue configured", {
+            queueFilePath: dependencies.queueFilePath,
+            batchSize: this.batchSize,
+            maxBodyBytes: this.maxBodyBytes,
+            flushIntervalMs: this.flushIntervalMs,
+            maxQueuedEvents: this.maxQueuedEvents,
+            maxEventAgeMicros: this.maxEventAgeMicros,
+        });
     }
 
     public async start(): Promise<void> {
 
-        await this.ensureLoaded();
+        try {
+            debug("Measurement Protocol queue start requested", {
+                loaded: this.loaded,
+                hasFlushInterval: !!this.flushInterval,
+                flushIntervalMs: this.flushIntervalMs,
+            });
 
-        if (!this.flushInterval && this.flushIntervalMs > 0) {
-            this.flushInterval = setInterval(() => {
-                this.flush().catch((err) => debug("Measurement Protocol timer flush failed", err));
-            }, this.flushIntervalMs);
+            await this.ensureLoaded();
+            debug("Measurement Protocol queue start loaded", summarizeQueueForDebug(this.queue));
 
-            if (typeof (this.flushInterval as any).unref === "function") {
-                (this.flushInterval as any).unref();
+            if (!this.flushInterval && this.flushIntervalMs > 0) {
+                this.flushInterval = setInterval(() => {
+                    debug("Measurement Protocol queue timer flush requested", summarizeQueueForDebug(this.queue));
+                    this.flush().catch((err) => debug("Measurement Protocol timer flush failed", err));
+                }, this.flushIntervalMs);
+
+                if (typeof (this.flushInterval as any).unref === "function") {
+                    (this.flushInterval as any).unref();
+                }
+
+                debug("Measurement Protocol queue timer started", {
+                    flushIntervalMs: this.flushIntervalMs,
+                });
+            } else if (this.flushIntervalMs <= 0) {
+                debug("Measurement Protocol queue timer disabled", {
+                    flushIntervalMs: this.flushIntervalMs,
+                });
+            } else {
+                debug("Measurement Protocol queue timer already running");
             }
-        }
 
-        this.flush().catch((err) => debug("Measurement Protocol startup flush failed", err));
+            debug("Measurement Protocol queue startup flush requested", summarizeQueueForDebug(this.queue));
+            this.flush().catch((err) => debug("Measurement Protocol startup flush failed", err));
+        } catch (err) {
+            debug("Measurement Protocol queue start failed silently", err);
+        }
     }
 
     public stop(): void {
 
-        if (this.flushInterval) {
-            clearInterval(this.flushInterval);
-            this.flushInterval = undefined;
+        try {
+            debug("Measurement Protocol queue stop requested", {
+                hadFlushInterval: !!this.flushInterval,
+            });
+
+            if (this.flushInterval) {
+                clearInterval(this.flushInterval);
+                this.flushInterval = undefined;
+                debug("Measurement Protocol queue timer stopped");
+            }
+        } catch (err) {
+            debug("Measurement Protocol queue stop failed silently", err);
         }
     }
 
     public async enqueue(request: IMeasurementProtocolQueueRequest): Promise<IAnalyticsLogEventResult> {
 
-        if (request.debugMode) {
-            return this.sendImmediately(request);
+        try {
+            debug("Measurement Protocol queue enqueue requested", summarizeRequestForDebug(request));
+
+            if (request.debugMode) {
+                // Debug validation requests return diagnostics immediately and are not
+                // intended to be reported or replayed later from the persistent queue.
+                debug("Measurement Protocol queue enqueue bypassing persistence for debug event");
+                return this.sendImmediately(request);
+            }
+
+            const queuedEvent = buildQueuedEvent(request, this.createId(), this.nowMicros());
+            if (!queuedEvent) {
+                debug("Measurement Protocol queue enqueue rejected invalid event", summarizeRequestForDebug(request));
+                return failureResult("invalid-event-name");
+            }
+
+            const queueLength = await this.runExclusive(async () => {
+                await this.ensureLoaded();
+                this.queue.push(queuedEvent);
+                this.dropOldestEventsOverQueueLimit();
+                await this.persistQueue();
+                debug("Measurement Protocol queue event persisted", {
+                    queueLength: this.queue.length,
+                    event: summarizeQueuedEventForDebug(queuedEvent),
+                });
+                return this.queue.length;
+            });
+
+            if (queueLength >= this.batchSize) {
+                debug("Measurement Protocol queue batch-size threshold reached", {
+                    queueLength,
+                    batchSize: this.batchSize,
+                });
+                this.flush().catch((err) => debug("Measurement Protocol batch-size flush failed", err));
+            }
+
+            return successfulUnsentResult();
+        } catch (err) {
+            debug("Measurement Protocol queue enqueue failed silently", err);
+            return {
+                sent: false,
+                isSuccess: false,
+                statusMessage: "Measurement Protocol queue enqueue failed silently",
+            };
         }
-
-        const queuedEvent = buildQueuedEvent(request, this.createId(), this.nowMicros());
-        if (!queuedEvent) {
-            return failureResult("invalid-event-name");
-        }
-
-        const queueLength = await this.runExclusive(async () => {
-            await this.ensureLoaded();
-            this.queue.push(queuedEvent);
-            this.dropOldestEventsOverQueueLimit();
-            await this.persistQueue();
-            return this.queue.length;
-        });
-
-        if (queueLength >= this.batchSize) {
-            this.flush().catch((err) => debug("Measurement Protocol batch-size flush failed", err));
-        }
-
-        return successfulUnsentResult();
     }
 
     public async sendImmediately(request: IMeasurementProtocolQueueRequest): Promise<IAnalyticsLogEventResult> {
 
-        const queuedEvent = buildQueuedEvent(request, this.createId(), this.nowMicros());
-        if (!queuedEvent) {
-            return failureResult("invalid-event-name");
-        }
+        try {
+            debug("Measurement Protocol immediate send requested", summarizeRequestForDebug(request));
 
-        const batch = buildMeasurementProtocolQueueBatch(
-            [queuedEvent],
-            1,
-            this.maxBodyBytes,
-        );
+            const queuedEvent = buildQueuedEvent(request, this.createId(), this.nowMicros());
+            if (!queuedEvent) {
+                debug("Measurement Protocol immediate send rejected invalid event", summarizeRequestForDebug(request));
+                return failureResult("invalid-event-name");
+            }
 
-        if (!batch || batch.isOversized) {
-            debug("Measurement Protocol immediate event dropped before send", {
-                name: queuedEvent.event.name,
-                bodyBytes: batch?.bodyBytes,
-                maxBodyBytes: this.maxBodyBytes,
+            const batch = buildMeasurementProtocolQueueBatch(
+                [queuedEvent],
+                1,
+                this.maxBodyBytes,
+            );
+
+            if (!batch || batch.isOversized) {
+                debug("Measurement Protocol immediate event dropped before send", {
+                    name: queuedEvent.event.name,
+                    bodyBytes: batch?.bodyBytes,
+                    maxBodyBytes: this.maxBodyBytes,
+                });
+                return {
+                    sent: false,
+                    isSuccess: false,
+                    statusMessage: "Measurement Protocol event exceeds the maximum POST body size.",
+                };
+            }
+
+            debug("Measurement Protocol immediate batch sending", summarizeBatchForDebug(batch));
+            const result = await this.sendBatch(batch);
+            debug("Measurement Protocol immediate batch result", {
+                result,
+                event: summarizeQueuedEventForDebug(queuedEvent),
             });
+
+            return result;
+        } catch (err) {
+            debug("Measurement Protocol immediate send failed silently", err);
             return {
                 sent: false,
                 isSuccess: false,
-                statusMessage: "Measurement Protocol event exceeds the maximum POST body size.",
+                statusMessage: "Measurement Protocol immediate send failed silently",
             };
         }
-
-        return this.sendBatch(batch);
     }
 
     public async flush(): Promise<IAnalyticsLogEventResult> {
 
-        if (this.flushPromise !== undefined) {
-            return this.flushPromise;
-        }
+        try {
+            if (this.flushPromise !== undefined) {
+                // Startup, timer, batch-size, and shutdown flushes can overlap; share
+                // the in-flight flush so the queue only mutates in one flush loop.
+                debug("Measurement Protocol queue flush joined existing flush");
+                return this.flushPromise;
+            }
 
-        this.flushPromise = this.flushInternal()
-            .finally(() => {
-                this.flushPromise = undefined;
+            debug("Measurement Protocol queue flush requested", {
+                loaded: this.loaded,
+                hasFlushInterval: !!this.flushInterval,
             });
 
-        return this.flushPromise;
+            this.flushPromise = this.flushInternal()
+                .then((result) => {
+                    debug("Measurement Protocol queue flush completed", result);
+                    return result;
+                })
+                .catch((err) => {
+                    debug("Measurement Protocol queue flush failed silently", err);
+                    return {
+                        sent: false,
+                        isSuccess: false,
+                        statusMessage: "Measurement Protocol queue flush failed silently",
+                    };
+                })
+                .finally(() => {
+                    this.flushPromise = undefined;
+                });
+
+            return this.flushPromise;
+        } catch (err) {
+            debug("Measurement Protocol queue flush failed silently", err);
+            return {
+                sent: false,
+                isSuccess: false,
+                statusMessage: "Measurement Protocol queue flush failed silently",
+            };
+        }
     }
 
     private async flushInternal(): Promise<IAnalyticsLogEventResult> {
@@ -654,6 +891,7 @@ export class MeasurementProtocolEventQueue {
             });
 
             if (!batch) {
+                debug("Measurement Protocol queue flush found no batch", summarizeQueueForDebug(this.queue));
                 return result;
             }
 
@@ -671,6 +909,10 @@ export class MeasurementProtocolEventQueue {
             debug("Measurement Protocol queue flushing batch", {
                 eventCount: batch.events.length,
                 bodyBytes: batch.bodyBytes,
+                firstEvent: batch.events[0] ? summarizeQueuedEventForDebug(batch.events[0]) : undefined,
+                lastEvent: batch.events.length > 1 ?
+                    summarizeQueuedEventForDebug(batch.events[batch.events.length - 1]) :
+                    undefined,
             });
 
             result = await this.sendBatch(batch);
@@ -678,6 +920,10 @@ export class MeasurementProtocolEventQueue {
             if (!result.isSuccess) {
                 debug("Measurement Protocol queue batch delivery failed", result);
                 if (isRetryableMeasurementProtocolFailure(result)) {
+                    debug("Measurement Protocol queue preserving batch for retry", {
+                        result,
+                        batch: summarizeBatchForDebug(batch),
+                    });
                     return result;
                 }
 
@@ -707,6 +953,16 @@ export class MeasurementProtocolEventQueue {
 
             if (this.queue.length !== previousLength) {
                 await this.persistQueue();
+                debug("Measurement Protocol queue removed events", {
+                    removedCount: previousLength - this.queue.length,
+                    remainingCount: this.queue.length,
+                    removedEvents: events.map(summarizeQueuedEventForDebug),
+                });
+            } else {
+                debug("Measurement Protocol queue remove skipped, events already absent", {
+                    requestedCount: events.length,
+                    queueLength: this.queue.length,
+                });
             }
         });
     }
@@ -754,16 +1010,25 @@ export class MeasurementProtocolEventQueue {
         }
 
         if (this.loadPromise === undefined) {
+            debug("Measurement Protocol queue load requested", {
+                queueFilePath: this.dependencies.queueFilePath,
+            });
             this.loadPromise = this.loadQueue()
                 .finally(() => {
                     this.loadPromise = undefined;
                 });
+        } else {
+            debug("Measurement Protocol queue waiting for existing load");
         }
 
         await this.loadPromise;
     }
 
     private async loadQueue(): Promise<void> {
+
+        debug("Measurement Protocol queue loading from disk", {
+            queueFilePath: this.dependencies.queueFilePath,
+        });
 
         try {
             await fs.promises.mkdir(path.dirname(this.dependencies.queueFilePath), { recursive: true });
@@ -776,10 +1041,16 @@ export class MeasurementProtocolEventQueue {
             const data = await fs.promises.readFile(this.dependencies.queueFilePath, { encoding: "utf8" });
             this.queue = parseMeasurementProtocolQueueFile(data);
             queueWasLoaded = true;
+            debug("Measurement Protocol queue read from disk", {
+                bytes: Buffer.byteLength(data, "utf8"),
+                eventCount: this.queue.length,
+            });
         } catch (err) {
             const code = (err as NodeJS.ErrnoException).code;
             if (code !== "ENOENT") {
                 debug("Measurement Protocol queue read failed", err);
+            } else {
+                debug("Measurement Protocol queue file not found, starting empty");
             }
             this.queue = [];
         }
@@ -811,14 +1082,32 @@ export class MeasurementProtocolEventQueue {
         await fs.promises.mkdir(path.dirname(this.dependencies.queueFilePath), { recursive: true });
 
         try {
+            debug("Measurement Protocol queue persisting", {
+                queueFilePath: this.dependencies.queueFilePath,
+                tmpFilePath,
+                bytes: Buffer.byteLength(data, "utf8"),
+                ...summarizeQueueForDebug(this.queue),
+            });
+            // Write the complete queue to a temp file first so failed persistence
+            // does not corrupt or truncate the last known-good queue file.
             await fs.promises.writeFile(tmpFilePath, data, { encoding: "utf8", flush: true });
-            await fs.promises.rename(tmpFilePath, this.dependencies.queueFilePath);
+            await renameMeasurementProtocolQueueFile(tmpFilePath, this.dependencies.queueFilePath);
+            debug("Measurement Protocol queue persisted", {
+                queueFilePath: this.dependencies.queueFilePath,
+                eventCount: this.queue.length,
+            });
         } catch (err) {
             try {
                 await fs.promises.rm(tmpFilePath, { force: true });
             } catch {
                 // ignore cleanup failure
             }
+            debug("Measurement Protocol queue persist failed", {
+                queueFilePath: this.dependencies.queueFilePath,
+                tmpFilePath,
+                eventCount: this.queue.length,
+                error: err,
+            });
             throw err;
         }
     }
@@ -855,34 +1144,60 @@ const getMeasurementProtocolQueue = (): MeasurementProtocolEventQueue => {
 export const enqueueMeasurementProtocolRequest = async (
     request: IMeasurementProtocolQueueRequest,
 ): Promise<IAnalyticsLogEventResult> =>
-    getMeasurementProtocolQueue().enqueue(request);
+    getMeasurementProtocolQueue()
+        .enqueue(request)
+        .catch((err) => {
+            debug("Measurement Protocol queue request failed silently", err);
+            return {
+                sent: false,
+                isSuccess: false,
+                statusMessage: "Measurement Protocol queue request failed silently",
+            };
+        });
 
 export const startMeasurementProtocolQueue = async (): Promise<void> => {
 
-    if (!isMeasurementProtocolQueueEnabled()) {
-        debug("Measurement Protocol queue not started, missing config or disabled");
-        return;
-    }
+    try {
+        if (!isMeasurementProtocolQueueEnabled()) {
+            debug("Measurement Protocol queue not started, missing config or disabled");
+            return;
+        }
 
-    await getMeasurementProtocolQueue().start();
+        await getMeasurementProtocolQueue().start();
+    } catch (err) {
+        debug("Measurement Protocol queue start request failed silently", err);
+    }
 };
 
 export const stopMeasurementProtocolQueue = (): void => {
 
-    if (measurementProtocolQueue) {
-        measurementProtocolQueue.stop();
+    try {
+        if (measurementProtocolQueue) {
+            measurementProtocolQueue.stop();
+        }
+    } catch (err) {
+        debug("Measurement Protocol queue stop request failed silently", err);
     }
 };
 
 export const flushMeasurementProtocolQueue = async (): Promise<IAnalyticsLogEventResult> => {
 
-    if (!__TH__FIREBASE_ENABLED__) {
-        return failureResult("disabled");
-    }
+    try {
+        if (!__TH__FIREBASE_ENABLED__) {
+            return failureResult("disabled");
+        }
 
-    if (!isMeasurementProtocolQueueEnabled()) {
-        return failureResult("missing-config");
-    }
+        if (!isMeasurementProtocolQueueEnabled()) {
+            return failureResult("missing-config");
+        }
 
-    return getMeasurementProtocolQueue().flush();
+        return await getMeasurementProtocolQueue().flush();
+    } catch (err) {
+        debug("Measurement Protocol queue flush request failed silently", err);
+        return {
+            sent: false,
+            isSuccess: false,
+            statusMessage: "Measurement Protocol queue flush request failed silently",
+        };
+    }
 };

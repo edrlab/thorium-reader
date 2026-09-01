@@ -131,7 +131,7 @@ const getDeviceLanguage = (): string | undefined => {
  * https://developers.google.com/analytics/devguides/collection/protocol/ga4/validating-events?client_type=gtag
  * https://developers.google.com/analytics/devguides/collection/protocol/ga4/verify-implementation?client_type=gtag
  */
-export const logMeasurementProtocol = async (
+const logMeasurementProtocolInternal = async (
     name: string,
     params?: TAnalyticsEventParams,
     options: IAnalyticsLogEventOptions & { clientId?: string; locale?: string } = {},
@@ -346,4 +346,22 @@ export const logMeasurementProtocol = async (
         debugMode,
         body,
     });
+};
+
+export const logMeasurementProtocol = async (
+    name: string,
+    params?: TAnalyticsEventParams,
+    options: IAnalyticsLogEventOptions & { clientId?: string; locale?: string } = {},
+): Promise<IAnalyticsLogEventResult> => {
+
+    try {
+        return await logMeasurementProtocolInternal(name, params, options);
+    } catch (err) {
+        debug("Measurement Protocol log event failed silently", err);
+        return {
+            sent: false,
+            isSuccess: false,
+            statusMessage: "Measurement Protocol log event failed silently",
+        };
+    }
 };
