@@ -24,6 +24,7 @@ import * as customization from "./customization";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { getStore } from "../../createStore";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
+import * as analytics from "./analytics";
 
 // Logger
 const filename_ = "readium-desktop:renderer:library:saga:index";
@@ -48,6 +49,7 @@ export function* rootSaga() {
         publicationInfoReaderAndLib.saga(),
 
         sameFileImport.saga(),
+        analytics.saga(),
         history.saga(),
         publicationInfoSyncTags.saga(),
 
