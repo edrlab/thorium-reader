@@ -25,6 +25,8 @@ export const GA4_MEASUREMENT_PROTOCOL_MAX_EVENTS_PER_REQUEST = 25;
 export const GA4_MEASUREMENT_PROTOCOL_MAX_POST_BODY_BYTES = 130 * 1024;
 export const DEFAULT_MEASUREMENT_PROTOCOL_QUEUE_FLUSH_INTERVAL_MS = 60 * 1000;
 export const DEFAULT_MEASUREMENT_PROTOCOL_QUEUE_MAX_EVENTS = 1000;
+
+// GA4 Measurement Protocol rejects events that arrive more than 72 hours late.
 export const DEFAULT_MEASUREMENT_PROTOCOL_QUEUE_MAX_EVENT_AGE_MICROS = 72 * 60 * 60 * 1000 * 1000;
 
 const MEASUREMENT_PROTOCOL_QUEUE_FILE_VERSION = 1;
@@ -607,6 +609,9 @@ const buildQueuedEvent = (
     delete bodyRootRecord.events;
     delete bodyRootRecord.timestamp_micros;
 
+    // Queue one GA4 event per record so retries and drops stay precise. The
+    // request-level timestamp is folded into the event before persistence,
+    // because persisted batches reconstruct a fresh root body later.
     const bodyRoot = sanitizeBodyRoot(bodyRootRecord);
     const sourceEvent = request.body.events[0];
     const event = sanitizeMeasurementProtocolQueueEvent({
@@ -879,6 +884,8 @@ export class MeasurementProtocolEventQueue {
 
         let result = successfulUnsentResult();
 
+        // Drain until the queue is empty or a retryable delivery failure tells
+        // us to leave the current batch on disk for a later flush.
         while (true) {
             const batch = await this.runExclusive(async () => {
                 await this.ensureLoaded();
@@ -1057,6 +1064,8 @@ export class MeasurementProtocolEventQueue {
 
         if (queueWasLoaded) {
             try {
+                // Normalize only a successfully read queue. A missing or
+                // unreadable file simply starts an empty in-memory queue.
                 await this.dropExpiredEvents();
                 if (this.dropOldestEventsOverQueueLimit()) {
                     await this.persistQueue();
@@ -1114,6 +1123,8 @@ export class MeasurementProtocolEventQueue {
 
     private runExclusive<T>(operation: () => Promise<T>): Promise<T> {
 
+        // Serialize disk and in-memory queue mutations without blocking future
+        // operations behind a rejected promise.
         const nextOperation = this.operationLock.then(operation, operation);
         this.operationLock = nextOperation.then(
             (): void => undefined,
