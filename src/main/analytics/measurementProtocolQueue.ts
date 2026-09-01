@@ -17,13 +17,15 @@ import { USER_DATA_FOLDER } from "readium-desktop/common/constant";
 import isURL from "readium-desktop/common/utils/isURL";
 import { httpPost } from "readium-desktop/main/network/http";
 import { uuidv4 } from "readium-desktop/utils/uuid";
-import { IMeasurementProtocolBody, IMeasurementProtocolEvent } from "./measurementProtocol";
+import type { IMeasurementProtocolBody, IMeasurementProtocolEvent } from "./measurementProtocol";
 
 const debug = debug_("readium-desktop:main:analytics:measurement-protocol-queue");
 
 export const GA4_MEASUREMENT_PROTOCOL_MAX_EVENTS_PER_REQUEST = 25;
 export const GA4_MEASUREMENT_PROTOCOL_MAX_POST_BODY_BYTES = 130 * 1024;
 export const DEFAULT_MEASUREMENT_PROTOCOL_QUEUE_FLUSH_INTERVAL_MS = 60 * 1000;
+export const DEFAULT_MEASUREMENT_PROTOCOL_QUEUE_MAX_EVENTS = 1000;
+export const DEFAULT_MEASUREMENT_PROTOCOL_QUEUE_MAX_EVENT_AGE_MICROS = 72 * 60 * 60 * 1000 * 1000;
 
 const MEASUREMENT_PROTOCOL_QUEUE_FILE_VERSION = 1;
 const MEASUREMENT_PROTOCOL_QUEUE_FILE_PATH = path.join(
@@ -60,6 +62,8 @@ export interface IMeasurementProtocolEventQueueDependencies {
     batchSize?: number;
     maxBodyBytes?: number;
     flushIntervalMs?: number;
+    maxQueuedEvents?: number;
+    maxEventAgeMicros?: number;
 }
 
 interface IMeasurementProtocolQueueFile {
@@ -233,6 +237,49 @@ const normalizeBatchSize = (batchSize: number | undefined): number => {
             GA4_MEASUREMENT_PROTOCOL_MAX_EVENTS_PER_REQUEST,
         ),
     );
+};
+
+const normalizePositiveInteger = (
+    value: number | undefined,
+    fallback: number,
+): number => {
+
+    if (!value || !Number.isFinite(value)) {
+        return fallback;
+    }
+
+    return Math.max(1, Math.floor(value));
+};
+
+const getQueuedEventTimestampMicros = (
+    event: IQueuedMeasurementProtocolEvent,
+): number => isFiniteNumber(event.event.timestamp_micros) ?
+    event.event.timestamp_micros :
+    event.queuedAtMicros;
+
+const isQueuedEventExpired = (
+    event: IQueuedMeasurementProtocolEvent,
+    nowMicros: number,
+    maxEventAgeMicros: number,
+): boolean => nowMicros - getQueuedEventTimestampMicros(event) > maxEventAgeMicros;
+
+const isRetryableMeasurementProtocolFailure = (
+    result: IAnalyticsLogEventResult,
+): boolean => {
+
+    if (result.reason === "network-error" || result.reason === "missing-config" || result.reason === "disabled") {
+        return true;
+    }
+
+    if (result.reason === "invalid-url" || result.reason === "invalid-event-name") {
+        return false;
+    }
+
+    if (typeof result.statusCode !== "number") {
+        return true;
+    }
+
+    return result.statusCode === 408 || result.statusCode === 429 || result.statusCode >= 500;
 };
 
 const buildMeasurementProtocolQueueBodyJson = (
@@ -470,6 +517,8 @@ export class MeasurementProtocolEventQueue {
     private readonly batchSize: number;
     private readonly maxBodyBytes: number;
     private readonly flushIntervalMs: number;
+    private readonly maxQueuedEvents: number;
+    private readonly maxEventAgeMicros: number;
     private readonly createId: () => string;
     private readonly nowMicros: () => number;
     private readonly sendBatch: (batch: IMeasurementProtocolQueueBatch) => Promise<IAnalyticsLogEventResult>;
@@ -482,6 +531,14 @@ export class MeasurementProtocolEventQueue {
             typeof dependencies.flushIntervalMs === "number" ?
                 dependencies.flushIntervalMs :
                 DEFAULT_MEASUREMENT_PROTOCOL_QUEUE_FLUSH_INTERVAL_MS;
+        this.maxQueuedEvents = normalizePositiveInteger(
+            dependencies.maxQueuedEvents,
+            DEFAULT_MEASUREMENT_PROTOCOL_QUEUE_MAX_EVENTS,
+        );
+        this.maxEventAgeMicros = normalizePositiveInteger(
+            dependencies.maxEventAgeMicros,
+            DEFAULT_MEASUREMENT_PROTOCOL_QUEUE_MAX_EVENT_AGE_MICROS,
+        );
         this.createId = dependencies.createId || uuidv4;
         this.nowMicros = dependencies.nowMicros || (() => Date.now() * 1000);
         this.sendBatch = dependencies.sendBatch || sendMeasurementProtocolBatch;
@@ -514,6 +571,10 @@ export class MeasurementProtocolEventQueue {
 
     public async enqueue(request: IMeasurementProtocolQueueRequest): Promise<IAnalyticsLogEventResult> {
 
+        if (request.debugMode) {
+            return this.sendImmediately(request);
+        }
+
         const queuedEvent = buildQueuedEvent(request, this.createId(), this.nowMicros());
         if (!queuedEvent) {
             return failureResult("invalid-event-name");
@@ -522,6 +583,7 @@ export class MeasurementProtocolEventQueue {
         const queueLength = await this.runExclusive(async () => {
             await this.ensureLoaded();
             this.queue.push(queuedEvent);
+            this.dropOldestEventsOverQueueLimit();
             await this.persistQueue();
             return this.queue.length;
         });
@@ -533,9 +595,38 @@ export class MeasurementProtocolEventQueue {
         return successfulUnsentResult();
     }
 
+    public async sendImmediately(request: IMeasurementProtocolQueueRequest): Promise<IAnalyticsLogEventResult> {
+
+        const queuedEvent = buildQueuedEvent(request, this.createId(), this.nowMicros());
+        if (!queuedEvent) {
+            return failureResult("invalid-event-name");
+        }
+
+        const batch = buildMeasurementProtocolQueueBatch(
+            [queuedEvent],
+            1,
+            this.maxBodyBytes,
+        );
+
+        if (!batch || batch.isOversized) {
+            debug("Measurement Protocol immediate event dropped before send", {
+                name: queuedEvent.event.name,
+                bodyBytes: batch?.bodyBytes,
+                maxBodyBytes: this.maxBodyBytes,
+            });
+            return {
+                sent: false,
+                isSuccess: false,
+                statusMessage: "Measurement Protocol event exceeds the maximum POST body size.",
+            };
+        }
+
+        return this.sendBatch(batch);
+    }
+
     public async flush(): Promise<IAnalyticsLogEventResult> {
 
-        if (this.flushPromise) {
+        if (this.flushPromise !== undefined) {
             return this.flushPromise;
         }
 
@@ -554,6 +645,7 @@ export class MeasurementProtocolEventQueue {
         while (true) {
             const batch = await this.runExclusive(async () => {
                 await this.ensureLoaded();
+                await this.dropExpiredEvents();
                 return buildMeasurementProtocolQueueBatch(
                     this.queue,
                     this.batchSize,
@@ -585,7 +677,18 @@ export class MeasurementProtocolEventQueue {
 
             if (!result.isSuccess) {
                 debug("Measurement Protocol queue batch delivery failed", result);
-                return result;
+                if (isRetryableMeasurementProtocolFailure(result)) {
+                    return result;
+                }
+
+                debug("Measurement Protocol queue dropping permanently failed batch", {
+                    eventCount: batch.events.length,
+                    statusCode: result.statusCode,
+                    statusMessage: result.statusMessage,
+                    reason: result.reason,
+                });
+                await this.removeEvents(batch.events);
+                continue;
             }
 
             await this.removeEvents(batch.events);
@@ -608,13 +711,49 @@ export class MeasurementProtocolEventQueue {
         });
     }
 
+    private dropOldestEventsOverQueueLimit(): boolean {
+
+        if (this.queue.length <= this.maxQueuedEvents) {
+            return false;
+        }
+
+        const droppedCount = this.queue.length - this.maxQueuedEvents;
+        this.queue = this.queue.slice(droppedCount);
+        debug("Measurement Protocol queue dropped oldest events over size limit", {
+            droppedCount,
+            maxQueuedEvents: this.maxQueuedEvents,
+        });
+
+        return true;
+    }
+
+    private async dropExpiredEvents(): Promise<void> {
+
+        const previousLength = this.queue.length;
+        if (!previousLength) {
+            return;
+        }
+
+        const nowMicros = this.nowMicros();
+        this.queue = this.queue.filter((event) =>
+            !isQueuedEventExpired(event, nowMicros, this.maxEventAgeMicros));
+
+        if (this.queue.length !== previousLength) {
+            debug("Measurement Protocol queue dropped expired events", {
+                droppedCount: previousLength - this.queue.length,
+                maxEventAgeMicros: this.maxEventAgeMicros,
+            });
+            await this.persistQueue();
+        }
+    }
+
     private async ensureLoaded(): Promise<void> {
 
         if (this.loaded) {
             return;
         }
 
-        if (!this.loadPromise) {
+        if (this.loadPromise === undefined) {
             this.loadPromise = this.loadQueue()
                 .finally(() => {
                     this.loadPromise = undefined;
@@ -632,10 +771,11 @@ export class MeasurementProtocolEventQueue {
             debug("Measurement Protocol queue directory creation failed", err);
         }
 
+        let queueWasLoaded = false;
         try {
             const data = await fs.promises.readFile(this.dependencies.queueFilePath, { encoding: "utf8" });
             this.queue = parseMeasurementProtocolQueueFile(data);
-            debug("Measurement Protocol queue loaded", { eventCount: this.queue.length });
+            queueWasLoaded = true;
         } catch (err) {
             const code = (err as NodeJS.ErrnoException).code;
             if (code !== "ENOENT") {
@@ -644,6 +784,18 @@ export class MeasurementProtocolEventQueue {
             this.queue = [];
         }
 
+        if (queueWasLoaded) {
+            try {
+                await this.dropExpiredEvents();
+                if (this.dropOldestEventsOverQueueLimit()) {
+                    await this.persistQueue();
+                }
+            } catch (err) {
+                debug("Measurement Protocol queue load cleanup failed", err);
+            }
+        }
+
+        debug("Measurement Protocol queue loaded", { eventCount: this.queue.length });
         this.loaded = true;
     }
 
