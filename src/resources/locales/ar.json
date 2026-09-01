@@ -1336,6 +1336,11 @@
             "profiles": "الملفات الشخصية",
             "storage": "الذاكرة"
         },
+        "telemetry": {
+            "disableGoogleAnalyticsTelemetry": "",
+            "disableGoogleAnalyticsTelemetryDescription": "",
+            "title": ""
+        },
         "theme": {
             "auto": "تلقائي",
             "dark": "داكن",

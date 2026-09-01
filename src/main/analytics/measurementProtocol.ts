@@ -72,6 +72,15 @@ export const logMeasurementProtocol = async (
         optionKeys: Object.keys(options),
     });
 
+    if (options.disabled) {
+        debug("Measurement Protocol disabled by settings");
+        return {
+            sent: false,
+            isSuccess: false,
+            reason: "disabled",
+        };
+    }
+
     if (!__TH__FIREBASE_ENABLED__) {
         debug("Measurement Protocol disabled");
         return {

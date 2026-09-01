@@ -1312,6 +1312,11 @@
             "profiles": "Profiles",
             "storage": "Storage"
         },
+        "telemetry": {
+            "disableGoogleAnalyticsTelemetry": "Disable Google Analytics telemetry",
+            "disableGoogleAnalyticsTelemetryDescription": "When enabled, Thorium does not send usage events to Google Analytics.",
+            "title": "Telemetry"
+        },
         "theme": {
             "auto": "Automatic",
             "dark": "Dark",

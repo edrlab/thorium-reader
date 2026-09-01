@@ -1306,6 +1306,11 @@
             "profiles": "配置文件",
             "storage": ""
         },
+        "telemetry": {
+            "disableGoogleAnalyticsTelemetry": "",
+            "disableGoogleAnalyticsTelemetryDescription": "",
+            "title": ""
+        },
         "theme": {
             "auto": "自动",
             "dark": "深色",

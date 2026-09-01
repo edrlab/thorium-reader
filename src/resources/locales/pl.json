@@ -1324,6 +1324,11 @@
             "profiles": "Profile",
             "storage": "Przestrzeń dyskowa"
         },
+        "telemetry": {
+            "disableGoogleAnalyticsTelemetry": "",
+            "disableGoogleAnalyticsTelemetryDescription": "",
+            "title": ""
+        },
         "theme": {
             "auto": "Automatyczny",
             "dark": "Ciemny",

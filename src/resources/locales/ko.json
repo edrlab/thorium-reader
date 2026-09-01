@@ -1301,6 +1301,11 @@
             "profiles": "",
             "storage": ""
         },
+        "telemetry": {
+            "disableGoogleAnalyticsTelemetry": "",
+            "disableGoogleAnalyticsTelemetryDescription": "",
+            "title": ""
+        },
         "theme": {
             "auto": "",
             "dark": "",

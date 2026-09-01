@@ -1312,6 +1312,11 @@
             "profiles": "Profiler",
             "storage": "Lagerplads"
         },
+        "telemetry": {
+            "disableGoogleAnalyticsTelemetry": "",
+            "disableGoogleAnalyticsTelemetryDescription": "",
+            "title": ""
+        },
         "theme": {
             "auto": "Automatisk",
             "dark": "Mørk",
