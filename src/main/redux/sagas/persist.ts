@@ -53,6 +53,7 @@ export const convertDiffableReduxState = (nextState: Partial<PersistRootState>):
         : nextState.settings;
 
     return {
+        analytics: nextState.analytics,
         theme: nextState.theme,
         win: {
             // disable session saving

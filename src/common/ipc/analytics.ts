@@ -5,14 +5,18 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as analyticsIpc from "./analytics";
-import * as readerIpc from "./reader";
-import * as syncIpc from "./sync";
-import * as winIpc from "./win";
+import { TAnalyticsEventParams } from "readium-desktop/common/api/interface/analyticsApi.interface";
 
-export {
-    analyticsIpc,
-    readerIpc,
-    syncIpc,
-    winIpc,
-};
+export enum EventType {
+    LogEvent = "LOG_EVENT",
+}
+
+export const CHANNEL = "ANALYTICS";
+
+export interface EventPayload {
+    type: EventType.LogEvent;
+    payload: {
+        name: string;
+        params?: TAnalyticsEventParams;
+    };
+}

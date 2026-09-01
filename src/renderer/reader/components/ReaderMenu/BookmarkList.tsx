@@ -40,6 +40,7 @@ import { IReaderMenuProps } from "../options-values";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import { readerAnalyticsEvents } from "readium-desktop/common/analytics/reader";
 import { dialogActions, dockActions, readerActions } from "readium-desktop/common/redux/actions";
 import { IReaderDialogOrDockSettingsMenuState } from "readium-desktop/common/models/reader";
 import { rgbToHex } from "readium-desktop/common/rgb";
@@ -55,6 +56,7 @@ import { convertMultiLangStringToString } from "readium-desktop/common/language-
 import { BookmarkCard } from "../ReaderMenu/BookmarkCard";
 import { computeProgression } from "./ReaderMenu";
 import FilterPopover from "./FilterPopover";
+import { logEvent } from "readium-desktop/renderer/common/analytics";
 
 export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnChange: () => void, START_PAGE: number, selectionIsSet: (a: Selection) => a is Set<string>, MAX_MATCHES_PER_PAGE: number } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
@@ -375,6 +377,7 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
                                             for (const bookmark of bookmarkListFiltered) {
 
                                                 dispatch(readerActions.note.remove.build(bookmark));
+                                                logEvent(readerAnalyticsEvents.bookmarkToggle);
                                             }
 
                                             // reset filters
