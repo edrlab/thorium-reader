@@ -35,6 +35,7 @@ import { createOrGetPdfEventBus } from "../../pdf/driver";
 import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import { buildPublicationAnalyticsParams } from "readium-desktop/common/analytics/publication";
 import { logEvent } from "readium-desktop/renderer/common/analytics";
+import { buildReaderScreenViewAnalyticsEvent } from "readium-desktop/renderer/reader/analytics";
 
 // Logger
 const filename_ = "readium-desktop:renderer:reader:saga:index";
@@ -95,6 +96,9 @@ export function* rootSaga() {
     yield take(winCommonActions.initRequest.ID);
 
     yield call(winInit.render);
+
+    const readerScreenViewAnalyticsEvent = buildReaderScreenViewAnalyticsEvent();
+    yield* callTyped(logEvent, readerScreenViewAnalyticsEvent.name, readerScreenViewAnalyticsEvent.params);
 
     yield all([
         i18n.saga(),

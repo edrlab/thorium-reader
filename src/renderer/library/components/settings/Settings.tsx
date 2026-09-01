@@ -43,6 +43,8 @@ import Themes from "./ThemesSettings";
 import ConnectionSettings from "./ConnexionSettings";
 
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+import { logEvent } from "readium-desktop/renderer/common/analytics";
+import { buildLibraryAppSettingsScreenViewAnalyticsEvent } from "readium-desktop/renderer/library/analytics";
 
 // import { TagGroup, TagList, Tag, Label } from "react-aria-components";
 
@@ -85,10 +87,16 @@ export const Settings: React.FC<ISettingsProps> = () => {
         setTabTitle(__("settings.tabs.general"));
     }, [__, locale]);
 
+    const logAppSettingsScreenView = React.useCallback((open: boolean) => {
+        if (open) {
+            const analyticsEvent = buildLibraryAppSettingsScreenViewAnalyticsEvent();
+            logEvent(analyticsEvent.name, analyticsEvent.params);
+        }
+    }, []);
 
     // https://github.com/edrlab/thorium-reader/discussions/3177#discussioncomment-14752676
     // <DirectionProvider dir={isRTL ? "rtl" : "ltr"}> ... </DirectionProvider>
-    return <Dialog.Root>
+    return <Dialog.Root onOpenChange={logAppSettingsScreenView}>
         <Dialog.Trigger asChild>
             <button title={__("header.settings")} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                 <SVG ariaHidden svg={GearIcon} />

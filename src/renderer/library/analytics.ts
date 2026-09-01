@@ -9,8 +9,11 @@ import { TAnalyticsEventParams } from "readium-desktop/common/api/interface/anal
 import {
     buildScreenViewAnalyticsParams,
     screenAnalyticsEvents,
+    TScreenViewAnalyticsScreenClass,
     TScreenViewAnalyticsScreenName,
 } from "readium-desktop/common/analytics/screen";
+
+export const libraryScreenViewAnalyticsScreenClass: TScreenViewAnalyticsScreenClass = "library";
 
 export interface ILibraryScreenViewAnalyticsEvent {
     name: typeof screenAnalyticsEvents.view;
@@ -27,15 +30,15 @@ export const resolveLibraryScreenViewAnalyticsScreenName = (
     }
 
     if (pathname === "/" || pathname === "/home") {
-        return "home";
+        return "HomeView";
     }
 
     if (pathname === "/library" || pathname.startsWith("/library/")) {
-        return "library";
+        return "BookshelfView";
     }
 
     if (pathname === "/opds" || pathname.startsWith("/opds/")) {
-        return "catalog";
+        return "CatalogsView";
     }
 
     return undefined;
@@ -52,7 +55,13 @@ export const buildLibraryScreenViewAnalyticsEvent = (
 
     return {
         name: screenAnalyticsEvents.view,
-        params: buildScreenViewAnalyticsParams(screenName),
+        params: buildScreenViewAnalyticsParams(screenName, libraryScreenViewAnalyticsScreenClass),
         screenName,
     };
 };
+
+export const buildLibraryAppSettingsScreenViewAnalyticsEvent = (): ILibraryScreenViewAnalyticsEvent => ({
+    name: screenAnalyticsEvents.view,
+    params: buildScreenViewAnalyticsParams("AppSettingsView", libraryScreenViewAnalyticsScreenClass),
+    screenName: "AppSettingsView",
+});

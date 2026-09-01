@@ -15,19 +15,20 @@ export type TScreenAnalyticsEventName =
     typeof screenAnalyticsEvents[keyof typeof screenAnalyticsEvents];
 
 export type TScreenViewAnalyticsScreenName =
-    "home" |
-    "library" |
-    "catalog";
+    "HomeView" |
+    "BookshelfView" |
+    "CatalogsView" |
+    "AppSettingsView" |
+    "ReaderView";
 
-const screenViewAnalyticsScreenClasses: Record<TScreenViewAnalyticsScreenName, string> = {
-    home: "Home",
-    library: "Library",
-    catalog: "Catalog",
-};
+export type TScreenViewAnalyticsScreenClass =
+    "library" |
+    "reader";
 
 export const buildScreenViewAnalyticsParams = (
     screenName: TScreenViewAnalyticsScreenName,
+    screenClass: TScreenViewAnalyticsScreenClass,
 ): TAnalyticsEventParams => ({
     screen_name: screenName,
-    screen_class: screenViewAnalyticsScreenClasses[screenName],
+    screen_class: screenClass,
 });
