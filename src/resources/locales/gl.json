@@ -1312,6 +1312,11 @@
             "profiles": "",
             "storage": ""
         },
+        "telemetry": {
+            "disableGoogleAnalyticsTelemetry": "",
+            "disableGoogleAnalyticsTelemetryDescription": "",
+            "title": ""
+        },
         "theme": {
             "auto": "Automático\n",
             "dark": "Escuro",

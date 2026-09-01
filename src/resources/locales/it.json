@@ -1318,6 +1318,11 @@
             "profiles": "Profili",
             "storage": "Spazio d'archiviazione"
         },
+        "telemetry": {
+            "disableGoogleAnalyticsTelemetry": "",
+            "disableGoogleAnalyticsTelemetryDescription": "",
+            "title": ""
+        },
         "theme": {
             "auto": "Automatico",
             "dark": "Scuro",

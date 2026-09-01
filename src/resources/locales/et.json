@@ -1312,6 +1312,11 @@
             "profiles": "Profiilid",
             "storage": ""
         },
+        "telemetry": {
+            "disableGoogleAnalyticsTelemetry": "",
+            "disableGoogleAnalyticsTelemetryDescription": "",
+            "title": ""
+        },
         "theme": {
             "auto": "Automaatne",
             "dark": "Tume kujundus",

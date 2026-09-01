@@ -1312,6 +1312,11 @@
             "profiles": "Profiller",
             "storage": "Depolama"
         },
+        "telemetry": {
+            "disableGoogleAnalyticsTelemetry": "",
+            "disableGoogleAnalyticsTelemetryDescription": "",
+            "title": ""
+        },
         "theme": {
             "auto": "Otomatik",
             "dark": "Karanlık",

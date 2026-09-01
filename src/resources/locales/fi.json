@@ -1312,6 +1312,11 @@
             "profiles": "Profiilit",
             "storage": "Tallennustila"
         },
+        "telemetry": {
+            "disableGoogleAnalyticsTelemetry": "",
+            "disableGoogleAnalyticsTelemetryDescription": "",
+            "title": ""
+        },
         "theme": {
             "auto": "Automaattinen",
             "dark": "Tumma",

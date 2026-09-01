@@ -1324,6 +1324,11 @@
             "profiles": "Profili",
             "storage": "Shranjevanje"
         },
+        "telemetry": {
+            "disableGoogleAnalyticsTelemetry": "",
+            "disableGoogleAnalyticsTelemetryDescription": "",
+            "title": ""
+        },
         "theme": {
             "auto": "Samodejno",
             "dark": "Temna",

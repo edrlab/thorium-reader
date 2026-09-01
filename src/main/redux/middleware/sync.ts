@@ -80,6 +80,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     creatorActions.set.ID,
 
+    settingsActions.disableGoogleAnalyticsTelemetry.ID,
     settingsActions.keepLibraryWindowInBackgroundOnReaderClose.ID,
     settingsActions.keepLibraryWindowInBackgroundOnReaderOpen.ID,
     settingsActions.minimizeLibraryToTray.ID,
