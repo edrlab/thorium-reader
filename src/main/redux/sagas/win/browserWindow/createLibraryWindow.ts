@@ -16,6 +16,7 @@ import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { registerWindowsLibraryTray } from "readium-desktop/main/tools/libraryTray";
 import {
+    _FIREBASE_ANALYTICS_DEBUG,
     _RENDERER_LIBRARY_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
@@ -24,12 +25,12 @@ import { put } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 
 import { WINDOW_MIN_HEIGHT, WINDOW_MIN_WIDTH } from "readium-desktop/common/constant";
-import { URL_PROTOCOL_FILEX, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
+import { URL_HOST_APP_ASSETS, URL_PROTOCOL_APP_ASSETS, URL_PROTOCOL_FILEX, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
 
 // Logger
 const debug = debug_("readium-desktop:createLibraryWindow");
 
-const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
+const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__ || _FIREBASE_ANALYTICS_DEBUG;
 
 // Global reference to the main window,
 // so the garbage collector doesn't close it.
@@ -88,7 +89,11 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
     // let httpReferrer: string | undefined;
     let rendererBaseUrl = _RENDERER_LIBRARY_BASE_URL;
     const htmlPath = "index_library.html";
-    if (rendererBaseUrl === `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/`) {
+    if (
+        rendererBaseUrl === `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/` ||
+        rendererBaseUrl === `${URL_PROTOCOL_APP_ASSETS}://${URL_HOST_COMMON}/` ||
+        rendererBaseUrl === `https://${URL_HOST_APP_ASSETS}/`
+    ) {
         // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
         rendererBaseUrl += path.normalize(path.join(__dirname, htmlPath)).replace(/\\/g, "/").split("/").map((segment) => encodeURIComponent_RFC3986(segment)).join("/");
         // baseURLForDataURL = rendererBaseUrl; // + "/../";
@@ -131,6 +136,14 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
             const identifier = store.getState().win.session.library.identifier;
             // const identifier = yield* selectTyped((state: RootState) => state.win.session.library.identifier);
             store.dispatch(winActions.library.openSucess.build(libWindow, identifier));
+
+            if (_FIREBASE_ANALYTICS_DEBUG) {
+                setTimeout(() => {
+                    if (!libWindow.isDestroyed() && !libWindow.webContents.isDestroyed()) {
+                        libWindow.webContents.openDevTools({ activate: true, mode: "detach" });
+                    }
+                }, 1000);
+            }
 
         });
 

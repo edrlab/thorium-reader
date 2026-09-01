@@ -36,7 +36,7 @@ import { ToastType } from "readium-desktop/common/models/toast";
 import { acceptedExtensionArray } from "readium-desktop/common/extension";
 // import Nunito from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-Regular.ttf";
 // import NunitoBold from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-SemiBold.ttf";
-import { URL_PROTOCOL_FILEX, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
+import { URL_HOST_APP_ASSETS, URL_PROTOCOL_APP_ASSETS, URL_PROTOCOL_FILEX, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
 import {
     _NODE_MODULE_RELATIVE_URL, _RENDERER_LIBRARY_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
@@ -165,7 +165,9 @@ export default class App extends React.Component<{}, undefined> {
                     fontsPath = `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/` + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", FONTSSUB)).replace(/\\/g, "/").split("/").map((segment) => encodeURIComponent_RFC3986(segment)).join("/");
                     fontsPath = FONTSSUB; // the above is not necessary for encodeURIComponent_RFC3986() as window.location.pathname is already percent-encoded (for example ':' in Windows C:)
                 } else {
-                    if (_RENDERER_LIBRARY_BASE_URL === `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/`) {
+                    if (_RENDERER_LIBRARY_BASE_URL === `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/` ||
+                    _RENDERER_LIBRARY_BASE_URL === `${URL_PROTOCOL_APP_ASSETS}://${URL_HOST_COMMON}/` ||
+                    _RENDERER_LIBRARY_BASE_URL === `https://${URL_HOST_APP_ASSETS}/`) {
 
                         // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
                         fontsPath = `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/` + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", FONTSSUB)).replace(/\\/g, "/").split("/").map((segment) => encodeURIComponent_RFC3986(segment)).join("/");

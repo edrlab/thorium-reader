@@ -42,12 +42,14 @@ import { ICustomizationManifest } from "readium-desktop/common/readium/customiza
 import { EventPayload } from "readium-desktop/common/ipc/sync";
 import { SenderType } from "readium-desktop/common/models/sync";
 import debug_ from "debug";
+import { analyticsReducer } from "readium-desktop/common/redux/reducers/analytics";
 
 const filename_ = "readium-desktop:main:redux:reducers:index";
 const debug = debug_(filename_);
 debug("_");
 
 export const rootReducer = combineReducers({ // RootState
+    analytics: analyticsReducer,
     versionUpdate: versionUpdateReducer,
     theme: themeReducer,
     session: sessionReducer,

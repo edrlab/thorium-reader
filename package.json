@@ -407,6 +407,8 @@
     }
   },
   "dependencies": {
+    "@firebase/analytics": "^0.10.24",
+    "@firebase/app": "^0.16.1",
     "@flatten-js/core": "^1.6.14",
     "@floating-ui/dom": "^1.8.0",
     "@github/paste-markdown": "^1.5.3",

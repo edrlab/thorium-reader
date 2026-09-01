@@ -16,6 +16,7 @@ import { diMainGet, saveReaderWindowInDi } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import { winActions } from "readium-desktop/main/redux/actions";
 import {
+    _FIREBASE_ANALYTICS_DEBUG,
     _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
 
@@ -25,7 +26,7 @@ import {
 
 import { getPublication } from "../../api/publication/getPublication";
 import { TIMEOUT_BROWSER_WINDOW_INITIALISATION, WINDOW_MIN_HEIGHT, WINDOW_MIN_WIDTH } from "readium-desktop/common/constant";
-import { URL_PROTOCOL_FILEX, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
+import { URL_HOST_APP_ASSETS, URL_PROTOCOL_APP_ASSETS, URL_PROTOCOL_FILEX, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
 import { readerNewWindowState } from "../../reader";
 import { winCommonActions } from "readium-desktop/common/redux/actions";
 import { assertUUIDv4 } from "readium-desktop/utils/uuid";
@@ -35,7 +36,7 @@ import { persistableWindowBound } from "../session/browserWindowState";
 const debug = debug_("readium-desktop:createReaderWindow");
 debug("_");
 
-const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
+const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__ || _FIREBASE_ANALYTICS_DEBUG;
 
 export function* createReaderWindow(publicationIdentifier: string, manifestUrl: string,  windowIdentifier: string /* winBound, reduxState*/) {
     assertUUIDv4(windowIdentifier);
@@ -99,7 +100,11 @@ export function* createReaderWindow(publicationIdentifier: string, manifestUrl: 
 
     let readerUrl = _RENDERER_READER_BASE_URL;
     const htmlPath = "index_reader.html";
-    if (readerUrl === `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/`) {
+    if (
+        readerUrl === `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/` ||
+        readerUrl === `${URL_PROTOCOL_APP_ASSETS}://${URL_HOST_COMMON}/` ||
+        readerUrl === `https://${URL_HOST_APP_ASSETS}/`
+    ) {
         // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
         readerUrl += path.normalize(path.join(__dirname, htmlPath)).replace(/\\/g, "/").split("/").map((segment) => encodeURIComponent_RFC3986(segment)).join("/");
     } else {
@@ -220,6 +225,13 @@ export function* createReaderWindow(publicationIdentifier: string, manifestUrl: 
                 try {
                     debug("ReaderWindow loadURL: " + readerUrl);
                     await readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" });
+                    if (_FIREBASE_ANALYTICS_DEBUG && !readerWindow.isDestroyed() && !readerWindow.webContents.isDestroyed()) {
+                        setTimeout(() => {
+                            if (!readerWindow.isDestroyed() && !readerWindow.webContents.isDestroyed()) {
+                                readerWindow.webContents.openDevTools({ activate: true, mode: "detach" });
+                            }
+                        }, 1000);
+                    }
                 } catch (e) {
                     debug("Load url rejected", e);
                 };

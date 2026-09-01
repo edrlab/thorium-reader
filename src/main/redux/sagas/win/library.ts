@@ -113,6 +113,7 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
     const state = yield* selectTyped((_state: RootState) => _state);
 
     const payload: Partial<ILibraryRootState> = {
+        analytics: state.analytics,
         i18n: state.i18n,
         keyboard: state.keyboard,
         theme: state.theme,

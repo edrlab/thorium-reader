@@ -22,6 +22,15 @@ import { publicationHasMediaOverlays } from "@r2-navigator-js/electron/renderer"
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import moment from "moment";
+import { initFirebaseAnalytics, logFirebaseEvent } from "readium-desktop/renderer/common/analytics/firebase";
+import { _FIREBASE_ANALYTICS_DEBUG } from "readium-desktop/preprocessor-directives";
+
+if (__TH__IS_DEV__ || _FIREBASE_ANALYTICS_DEBUG) {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
+    const cr = require("@r2-navigator-js/electron/renderer/common/console-redirect");
+    // const releaseConsoleRedirect =
+    cr.consoleRedirect("readium-desktop:renderer:reader", process.stdout, process.stderr, true);
+}
 
 let axe: any;
 if (__TH__IS_DEV__) {
@@ -98,6 +107,11 @@ ipcRenderer.on(readerIpc.CHANNEL,
                 // console.log("MOMENT SET LOCALE START", localeUsedByMoment);
 
                 store.dispatch(winCommonActions.initRequest.build(data.payload.win.identifier));
+                initFirebaseAnalytics(data.payload.analytics.userId).catch((err) => console.log(err));
+                logFirebaseEvent("screen_view", {
+                    firebase_screen: "reader",
+                    firebase_screen_class: "reader",
+                }).catch((err) => console.log(err));
 
                 break;
         }

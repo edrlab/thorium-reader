@@ -59,6 +59,23 @@ export const _TELEMETRY_SECRET = __TH__TELEMETRY_SECRET__;
 declare const __TH__TELEMETRY_SECRETDATA__: string;
 export const _TELEMETRY_SECRETDATA = __TH__TELEMETRY_SECRETDATA__;
 
+declare const __TH__FIREBASE_ANALYTICS_CONFIG__: {
+    apiKey: string;
+    appId: string;
+    authDomain?: string;
+    measurementId: string;
+    messagingSenderId?: string;
+    projectId: string;
+    storageBucket?: string;
+};
+export const _FIREBASE_ANALYTICS_CONFIG = __TH__FIREBASE_ANALYTICS_CONFIG__;
+
+declare const __TH__FIREBASE_ANALYTICS_ENABLED__: boolean;
+export const _FIREBASE_ANALYTICS_ENABLED = __TH__FIREBASE_ANALYTICS_ENABLED__;
+
+declare const __TH__FIREBASE_ANALYTICS_DEBUG__: boolean;
+export const _FIREBASE_ANALYTICS_DEBUG = __TH__FIREBASE_ANALYTICS_DEBUG__;
+
 declare const __TH__CUSTOMIZATION_PROFILE_PUB_KEY__: string;
 export const _CUSTOMIZATION_PROFILE_PUB_KEY = __TH__CUSTOMIZATION_PROFILE_PUB_KEY__;
 

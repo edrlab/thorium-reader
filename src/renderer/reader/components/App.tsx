@@ -32,7 +32,7 @@ import { getTranslator } from "readium-desktop/common/services/translator";
 import { getStore } from "../createStore";
 import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
 import { ImageClickManagerImgViewerOnly } from "./ImageClickManagerViewerOnly";
-import { URL_PROTOCOL_FILEX, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
+import { URL_HOST_APP_ASSETS, URL_PROTOCOL_APP_ASSETS, URL_PROTOCOL_FILEX, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
 
 export default class App extends React.Component<{}, undefined> {
 
@@ -58,7 +58,9 @@ export default class App extends React.Component<{}, undefined> {
                     rcssPath = `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/` + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", RCSSP)).replace(/\\/g, "/").split("/").map((segment) => encodeURIComponent_RFC3986(segment)).join("/");
                     rcssPath = RCSSP; // the above is not necessary for encodeURIComponent_RFC3986() as window.location.pathname is already percent-encoded (for example ':' in Windows C:)
                 } else {
-                    if (_RENDERER_READER_BASE_URL === `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/`) {
+                    if (_RENDERER_READER_BASE_URL === `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/` ||
+                    _RENDERER_READER_BASE_URL === `${URL_PROTOCOL_APP_ASSETS}://${URL_HOST_COMMON}/` ||
+                    _RENDERER_READER_BASE_URL === `https://${URL_HOST_APP_ASSETS}/`) {
 
                         // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
                         rcssPath = `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/` + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", RCSSP)).replace(/\\/g, "/").split("/").map((segment) => encodeURIComponent_RFC3986(segment)).join("/");
@@ -211,7 +213,9 @@ url("${rcssPath}/fonts/iAWriterDuospace-Regular.ttf") format("truetype");
                     fontsPath = `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/` + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", FONTSSUB)).replace(/\\/g, "/").split("/").map((segment) => encodeURIComponent_RFC3986(segment)).join("/");
                     fontsPath = FONTSSUB; // the above is not necessary for encodeURIComponent_RFC3986() as window.location.pathname is already percent-encoded (for example ':' in Windows C:)
                 } else {
-                    if (_RENDERER_READER_BASE_URL === `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/`) {
+                    if (_RENDERER_READER_BASE_URL === `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/` ||
+                    _RENDERER_READER_BASE_URL === `${URL_PROTOCOL_APP_ASSETS}://${URL_HOST_COMMON}/` ||
+                    _RENDERER_READER_BASE_URL === `https://${URL_HOST_APP_ASSETS}/`) {
 
                         // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
                         fontsPath = `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/` + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", FONTSSUB)).replace(/\\/g, "/").split("/").map((segment) => encodeURIComponent_RFC3986(segment)).join("/");

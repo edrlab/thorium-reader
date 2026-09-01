@@ -47,9 +47,11 @@ import { ICustomizationProfileHistory } from "readium-desktop/common/redux/state
 import { customizationPackageWelcomeScreenReducer } from "readium-desktop/common/redux/reducers/customization/welcomeScreen";
 import { customizationPackageManifestReducer } from "readium-desktop/common/redux/reducers/customization/manifest";
 import { directoryReducer } from "readium-desktop/common/redux/reducers/directory";
+import { analyticsReducer } from "readium-desktop/common/redux/reducers/analytics";
 
 export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reducer<Partial<ILibraryRootState>>
     return combineReducers({ // ILibraryRootState
+        analytics: analyticsReducer,
         versionUpdate: versionUpdateReducer,
         theme: themeReducer,
         reader: combineReducers({

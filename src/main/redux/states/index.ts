@@ -49,7 +49,7 @@ export interface RootState extends ICommonRootState {
     settings: ISettingsState;
 }
 
-export type PersistRootState_ = Pick<RootState, "win" | "publication" | "reader" | "session" | "screenReader" | "i18n" | "opds" | "version" | "theme" | "whatsNew" | "settings" | "creator" | "noteExport" | "customization">;
+export type PersistRootState_ = Pick<RootState, "analytics" | "win" | "publication" | "reader" | "session" | "screenReader" | "i18n" | "opds" | "version" | "theme" | "whatsNew" | "settings" | "creator" | "noteExport" | "customization">;
 export type PersistRootState = Omit<PersistRootState_, "win"> & {
     win: {
         session: {

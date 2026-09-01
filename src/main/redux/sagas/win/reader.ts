@@ -70,6 +70,8 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const noteExport = yield* selectTyped((state: RootState) => state.noteExport);
     const customization = yield* selectTyped((state: RootState) => state.customization);
 
+    const analytics = yield* selectTyped((state: RootState) => state.analytics);
+
     const publicationRepository = diMainGet("publication-repository");
     let tag: string[] = [];
     try {
@@ -103,6 +105,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     webContents.send(readerIpc.CHANNEL, {
         type: readerIpc.EventType.request,
         payload: {
+            analytics,
             screenReader: {
                 activate: screenReaderActivate,
             },
@@ -166,6 +169,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
             customization,
         },
     } as readerIpc.EventPayload);
+
 }
 
 function* winOpenError(action: winActions.reader.openError.TAction) {
