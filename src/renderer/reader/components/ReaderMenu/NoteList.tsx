@@ -41,6 +41,8 @@ import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import { ListBox, ListBoxItem  } from "react-aria-components";
 import type { Selection } from "react-aria-components";
 import { TagGroup, TagList, Tag, Label } from "react-aria-components";
+import { replace } from "redux-first-history";
+import { matchPath, useLocation } from "react-router-dom";
 
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
@@ -61,9 +63,18 @@ import {
 import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/publication-notes/colors";
 
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
-import { selectPublicationNoteViewTagsIndex, selectPublicationNotesViewState } from "../../publication-notes/selectors";
+import {
+    selectPublicationNotes,
+    selectPublicationNotesHydratedView,
+    selectPublicationNotesHydratedViewTagsIndex,
+} from "../../publication-notes/selectors";
 import { publicationNotesViewSortToSelection, selectionToEffectivePublicationNotesViewSort, selectionToPublicationNotesViewSelection } from "../../publication-notes/viewFilters";
 import { logEvent } from "readium-desktop/renderer/common/analytics";
+import {
+    buildReaderMenuRoute,
+    isReaderMenuRouteGroup,
+    readerMenuRoutePattern,
+} from "readium-desktop/renderer/reader/routing";
 
 interface NoteListStyleSet {
     filterLine: string;
@@ -209,59 +220,148 @@ export const NoteList: React.FC<NoteListProps> = (props) => {
 
     const dispatch = useDispatch();
     const dockedMode = useSelector((state: IReaderRootState) => state.reader.config.readerDockingMode !== "full");
+    const location = useLocation();
     const dialogOrDockDataInfo = useSelector((state: IReaderRootState): IReaderDialogOrDockSettingsMenuState =>
         (state.dialog.open && state.dialog.type === DialogTypeName.ReaderMenu) ?
             state.dialog.data as IReaderDialogOrDockSettingsMenuState : (state.dock.open && state.dock.type === DockTypeName.ReaderMenu) ?
                 state.dock.data : {} as unknown as IReaderDialogOrDockSettingsMenuState);
-    const updateDialogOrDockDataInfo = React.useCallback((data: IReaderDialogOrDockSettingsMenuState) => {
-        dispatch(dockedMode ? dockActions.updateRequest.build(data) : dialogActions.updateRequest.build(data));
-    }, [dockedMode, dispatch]);
 
     const [sortingOpen, setSortingOpen] = React.useState(false);
     const [filterOpen, setFilterOpen] = React.useState(false);
     const [optionsOpen, setOptionsOpen] = React.useState(false);
 
     const { id: needToFocusOnID, edit: noteEdit, focusRequestId, sort: routeSort } = dialogOrDockDataInfo;
+    const updateDialogOrDockDataInfo = React.useCallback((data: Partial<IReaderDialogOrDockSettingsMenuState>) => {
+        const nextData: IReaderDialogOrDockSettingsMenuState = {
+            id: needToFocusOnID || "",
+            edit: !!noteEdit,
+            focusRequestId,
+            sort: routeSort,
+            ...data,
+        };
+        dispatch(dockedMode ? dockActions.updateRequest.build(nextData) : dialogActions.updateRequest.build(nextData));
+    }, [dockedMode, dispatch, focusRequestId, needToFocusOnID, noteEdit, routeSort]);
+
     const [noteUUID, setNoteUUID] = React.useState("");
     const skipNextPageResetAfterAnchorRef = React.useRef(false);
+    const focusedNoteUuidRef = React.useRef<string | undefined>();
 
     const paginatorRef = React.useRef<HTMLSelectElement>();
     const noteTitleRef = React.useRef<HTMLInputElement>();
     const selectFileTypeRef = React.useRef<HTMLSelectElement & { value: "html" | "annotation" }>();
 
-    const publicationNotesView = useSelector(selectPublicationNotesViewState);
-    const viewReady = publicationNotesView.filter.group === group;
-    const noteList = viewReady ? publicationNotesView.notes : [];
     const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
     const publicationView = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
     const winId = useSelector((state: IReaderRootState) => state.win.identifier);
     const locale = useSelector((state: IReaderRootState) => state.i18n.locale);
+    const publicationNotes = useSelector(selectPublicationNotes);
 
     const [tagArrayFilter, setTagArrayFilter] = React.useState<Selection>(new Set([]));
     const [colorArrayFilter, setColorArrayFilter] = React.useState<Selection>(new Set([]));
     const [drawTypeArrayFilter, setDrawTypeArrayFilter] = React.useState<Selection>(new Set([]));
     const [creatorArrayFilter, setCreatorArrayFilter] = React.useState<Selection>(new Set([]));
 
-    const getInitialSortType = () => publicationNotesViewSortToSelection(
-        routeSort || (publicationNotesView.filter.group === group ? publicationNotesView.filter.sort : undefined),
-    );
-    const [sortType, setSortType] = React.useState<Selection>(getInitialSortType);
+    const [sortType, setSortType] = React.useState<Selection>(() => publicationNotesViewSortToSelection(routeSort));
 
-    const publicationNotesViewFilter = React.useMemo<PublicationNotesViewFilter>(() => {
+    const tagFilterSelection = React.useMemo(() => selectionToPublicationNotesViewSelection(tagArrayFilter), [tagArrayFilter]);
+    const colorFilterSelection = React.useMemo(() => selectionToPublicationNotesViewSelection(colorArrayFilter), [colorArrayFilter]);
+    const drawTypeFilterSelection = React.useMemo(() => selectionToPublicationNotesViewSelection(drawTypeArrayFilter), [drawTypeArrayFilter]);
+    const creatorFilterSelection = React.useMemo(() => selectionToPublicationNotesViewSelection(creatorArrayFilter), [creatorArrayFilter]);
+
+    const publicationNotesPageResetFilter = React.useMemo<PublicationNotesViewFilter>(() => {
         const filter: PublicationNotesViewFilter = {
             group,
-            tags: selectionToPublicationNotesViewSelection(tagArrayFilter),
-            colors: selectionToPublicationNotesViewSelection(colorArrayFilter),
-            creators: selectionToPublicationNotesViewSelection(creatorArrayFilter),
-            sort: selectionToEffectivePublicationNotesViewSort(sortType),
+            tags: tagFilterSelection,
+            colors: colorFilterSelection,
+            creators: creatorFilterSelection,
         };
 
         if (group === "annotation") {
-            filter.drawTypes = selectionToPublicationNotesViewSelection(drawTypeArrayFilter);
+            filter.drawTypes = drawTypeFilterSelection;
         }
 
         return filter;
-    }, [colorArrayFilter, creatorArrayFilter, drawTypeArrayFilter, group, sortType, tagArrayFilter]);
+    }, [colorFilterSelection, creatorFilterSelection, drawTypeFilterSelection, group, tagFilterSelection]);
+
+    const publicationNotesViewBaseFilter = React.useMemo<PublicationNotesViewFilter>(() => ({
+        ...publicationNotesPageResetFilter,
+        sort: selectionToEffectivePublicationNotesViewSort(sortType),
+    }), [publicationNotesPageResetFilter, sortType]);
+
+    const [paginationRequest, setPaginationRequest] = React.useState<{
+        anchorUuid?: string | undefined;
+        page: number;
+    }>(() => ({ page: startPage }));
+    const previousRouteSortRef = React.useRef(routeSort);
+
+    const publicationNotesViewFilter = React.useMemo<PublicationNotesViewFilter>(() => ({
+        ...publicationNotesViewBaseFilter,
+        pagination: {
+            page: paginationRequest.page,
+            pageSize: maxMatchesPerPage,
+            ...(paginationRequest.anchorUuid ? { anchorUuid: paginationRequest.anchorUuid } : {}),
+        },
+    }), [maxMatchesPerPage, paginationRequest, publicationNotesViewBaseFilter]);
+
+    const publicationNotesView = useSelector((state: IReaderRootState) =>
+        selectPublicationNotesHydratedView(state, publicationNotesViewFilter));
+    const viewReady = publicationNotesView.filter.group === group;
+    const noteList = viewReady ? publicationNotesView.notes : [];
+    const knownNoteUuidSet = React.useMemo(
+        () => new Set(publicationNotes
+            .filter((note) => note.group === group)
+            .map((note) => note.uuid)),
+        [group, publicationNotes],
+    );
+    const knownNoteUuidSetRef = React.useRef(knownNoteUuidSet);
+    knownNoteUuidSetRef.current = knownNoteUuidSet;
+
+    const getFocusedNoteUuid = React.useCallback((target: EventTarget | null): string | undefined => {
+        if (!(target instanceof HTMLElement)) {
+            return undefined;
+        }
+
+        return target.closest<HTMLElement>("[data-publication-note-uuid]")?.dataset.publicationNoteUuid;
+    }, []);
+
+    const getKnownNoteUuid = React.useCallback((uuid: string | undefined): string | undefined =>
+        uuid && knownNoteUuidSetRef.current.has(uuid) ? uuid : undefined, []);
+
+    const rememberFocusedNoteUuid = React.useCallback((target: EventTarget | null) => {
+        const noteUuid = getKnownNoteUuid(getFocusedNoteUuid(target));
+        if (noteUuid) {
+            focusedNoteUuidRef.current = noteUuid;
+        }
+    }, [getFocusedNoteUuid, getKnownNoteUuid]);
+
+    const getReaderMenuRouteMatch = React.useCallback(() => {
+        const match = matchPath<"group" | "uuid", string>(readerMenuRoutePattern, location.pathname);
+        const routeGroup = match?.params.group;
+        const uuid = match?.params.uuid;
+        if (!isReaderMenuRouteGroup(routeGroup) || routeGroup !== group || !uuid) {
+            return undefined;
+        }
+
+        return { group: routeGroup, uuid };
+    }, [group, location.pathname]);
+
+    const getSortAnchorUuid = React.useCallback(
+        () =>
+            getKnownNoteUuid(focusedNoteUuidRef.current) ||
+            getKnownNoteUuid(needToFocusOnID) ||
+            getKnownNoteUuid(getReaderMenuRouteMatch()?.uuid),
+        [getKnownNoteUuid, getReaderMenuRouteMatch, needToFocusOnID],
+    );
+
+    const requestPageForSortChange = React.useCallback((anchorUuid: string | undefined) => {
+        if (anchorUuid) {
+            skipNextPageResetAfterAnchorRef.current = true;
+        }
+        setPaginationRequest({
+            page: startPage,
+            ...(anchorUuid ? { anchorUuid } : {}),
+        });
+    }, [startPage]);
 
     const resetFilters = React.useCallback(() => {
         setTagArrayFilter(new Set([]));
@@ -271,34 +371,50 @@ export const NoteList: React.FC<NoteListProps> = (props) => {
     }, []);
 
     React.useEffect(() => {
-        setNoteUUID(needToFocusOnID || "");
+        const noteUuid = getKnownNoteUuid(needToFocusOnID);
+        if (noteUuid) {
+            focusedNoteUuidRef.current = noteUuid;
+        }
+        setNoteUUID(noteUuid || "");
         resetFilters();
         setSortingOpen(false);
         setFilterOpen(false);
         setOptionsOpen(false);
-    }, [focusRequestId, needToFocusOnID, resetFilters]);
+    }, [focusRequestId, getKnownNoteUuid, needToFocusOnID, resetFilters]);
 
     const onSortTypeChange = React.useCallback((selection: Selection) => {
         const sort = selectionToEffectivePublicationNotesViewSort(selection);
         setSortType(publicationNotesViewSortToSelection(sort));
+        requestPageForSortChange(getSortAnchorUuid());
         updateDialogOrDockDataInfo({
             id: needToFocusOnID || "",
             edit: !!noteEdit,
             focusRequestId,
             sort,
         });
-    }, [focusRequestId, needToFocusOnID, noteEdit, updateDialogOrDockDataInfo]);
+
+        const routeMatch = getReaderMenuRouteMatch();
+        if (routeMatch) {
+            dispatch(replace(buildReaderMenuRoute(routeMatch.group, routeMatch.uuid, {
+                edit: !!noteEdit,
+                sort,
+            })));
+        }
+    }, [dispatch, focusRequestId, getReaderMenuRouteMatch, getSortAnchorUuid, needToFocusOnID, noteEdit, requestPageForSortChange, updateDialogOrDockDataInfo]);
 
     React.useEffect(() => {
-        if (routeSort) {
+        const sortChanged = previousRouteSortRef.current !== routeSort;
+        previousRouteSortRef.current = routeSort;
+
+        if (focusRequestId) {
             setSortType(publicationNotesViewSortToSelection(routeSort));
+            if (sortChanged) {
+                requestPageForSortChange(getSortAnchorUuid());
+            }
         }
-    }, [focusRequestId, routeSort]);
+    }, [focusRequestId, getSortAnchorUuid, requestPageForSortChange, routeSort]);
 
     React.useEffect(() => {
-        if (!pubId) {
-            return;
-        }
         if (noteUUID) {
             return;
         }
@@ -306,14 +422,11 @@ export const NoteList: React.FC<NoteListProps> = (props) => {
             skipNextPageResetAfterAnchorRef.current = false;
             return;
         }
-        dispatch(readerActions.publicationNotes.filter.build(pubId, {
-            ...publicationNotesViewFilter,
-            pagination: {
-                page: startPage,
-                pageSize: maxMatchesPerPage,
-            },
-        }));
-    }, [dispatch, maxMatchesPerPage, noteUUID, pubId, publicationNotesViewFilter, startPage]);
+        setPaginationRequest((current) =>
+            current.page === startPage && !current.anchorUuid
+                ? current
+                : { page: startPage });
+    }, [noteUUID, publicationNotesPageResetFilter, startPage]);
 
     const textObj = publicationView.publicationTitle;
     const pubLangs = publicationView.languages;
@@ -336,26 +449,21 @@ export const NoteList: React.FC<NoteListProps> = (props) => {
     const end = viewReady ? pagination.end : 0;
 
     const requestPublicationNotesPage = React.useCallback((page: number, anchorUuid?: string) => {
-        if (!pubId) {
-            return;
-        }
-        dispatch(readerActions.publicationNotes.filter.build(pubId, {
-            ...publicationNotesViewFilter,
-            pagination: {
-                page,
-                pageSize: maxMatchesPerPage,
-                anchorUuid,
-            },
-        }));
-    }, [dispatch, maxMatchesPerPage, pubId, publicationNotesViewFilter]);
+        setPaginationRequest({
+            page,
+            ...(anchorUuid ? { anchorUuid } : {}),
+        });
+    }, []);
 
     const changePageNumber = React.useCallback((cb: (n: number) => number) => {
+        focusedNoteUuidRef.current = undefined;
         setTimeout(() => paginatorRef.current?.focus(), 100);
         updateDialogOrDockDataInfo({id: "", edit: false});
         requestPublicationNotesPage(Math.max(cb(pageNumber), startPage));
     }, [pageNumber, requestPublicationNotesPage, startPage, updateDialogOrDockDataInfo]);
 
-    const tagsIndexListAll = useSelector(selectPublicationNoteViewTagsIndex);
+    const tagsIndexListAll = useSelector((state: IReaderRootState) =>
+        selectPublicationNotesHydratedViewTagsIndex(state, publicationNotesViewFilter));
     const tagsIndexList = React.useMemo(() => viewReady ? tagsIndexListAll : [], [tagsIndexListAll, viewReady]);
     const selectTagOption = React.useMemo(() => tagsIndexList.map((v, i) => ({ id: i, name: v.tag })), [tagsIndexList]);
 
@@ -764,7 +872,10 @@ export const NoteList: React.FC<NoteListProps> = (props) => {
                 </div>
             </div>
             <div className={stylesAnnotations.separator} />
-            <ol style={group === "bookmark" ? { paddingLeft: "0px" } : undefined}>
+            <ol
+                onFocusCapture={(event) => rememberFocusedNoteUuid(event.target)}
+                onMouseDownCapture={(event) => rememberFocusedNoteUuid(event.target)}
+                style={group === "bookmark" ? { paddingLeft: "0px" } : undefined}>
                 {notesPagedArray.map((noteItem) =>
                     <React.Fragment key={`${cardKeyPrefix}_${noteItem.uuid}`}>
                         {renderNote(noteItem, {

@@ -11,7 +11,6 @@ import * as ReactDOM from "react-dom";
 import { readerIpc } from "readium-desktop/common/ipc";
 import { winCommonActions } from "readium-desktop/common/redux/actions";
 import { createStoreFromDi } from "readium-desktop/renderer/reader/createStore";
-import { serializePublicationNotesViewState } from "readium-desktop/common/publication-notes";
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
@@ -80,11 +79,11 @@ ipcRenderer.on(readerIpc.CHANNEL,
                         note.created = (new Date()).getTime();
                     }
                 }
-                data.payload.reader.publicationNotes = serializePublicationNotesViewState({
+                data.payload.reader.publicationNotes = {
                     publicationIdentifier,
                     notes,
                     revision: data.payload.reader.publicationNotes?.revision || Date.now(),
-                });
+                };
                 delete data.payload.reader.note;
 
                 const store = createStoreFromDi(data.payload as Partial<IReaderRootState>);

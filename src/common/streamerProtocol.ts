@@ -92,7 +92,6 @@ export const URL_DOMAIN_APP_HANDLER_THORIUM_READER = "www.thoriumreader.com"; //
 export const URL_HOST_CUSTOMPROFILE = "customization-profile";
 
 export const URL_PATH_PREFIX_CUSTOMPROFILEZIP = "custom-profile-zip";
-export const URL_PATH_PREFIX_PUBNOTES = "publication-notes";
 export const URL_PATH_PREFIX_MATHJAX = "math-jax";
 export const URL_PATH_PREFIX_READIUMCSS = "readium-css";
 export const URL_PATH_PREFIX_PDFJS = "pdfjs";

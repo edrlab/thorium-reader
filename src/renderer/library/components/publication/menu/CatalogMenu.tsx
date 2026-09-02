@@ -20,16 +20,15 @@ import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCh
 import * as ImportIcon from "readium-desktop/renderer/assets/icons/import.svg";
 import { publicationActions } from "readium-desktop/common/redux/actions";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
+import { apiClean, apiDispatch, apiState } from "readium-desktop/renderer/common/redux/api/api";
 import { ImportAnnotationsDialog } from "../../../../common/components/ImportAnnotationsDialog";
 import { exportAnnotationSet } from "readium-desktop/renderer/common/redux/sagas/readiumAnnotation/export";
-import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_PUBNOTES } from "readium-desktop/common/streamerProtocol";
 import debounce from "debounce";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { getSaga } from "readium-desktop/renderer/library/createStore";
-import type { PublicationNote } from "readium-desktop/common/publication-notes";
+import { uuidv4 } from "readium-desktop/utils/uuid";
 
 function useShiftKey() {
   const [isShiftPressed, setIsShiftPressed] = React.useState(false);
@@ -63,36 +62,76 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
     const dispatch = useDispatch();
     const locale = useSelector((state: ILibraryRootState) => state.i18n.locale);
     const isShiftKeyPressed = useShiftKey();
+    const [pendingNoteExport, setPendingNoteExport] = React.useState<{
+        requestId: string;
+        publicationView: PublicationView;
+        annoSetTitle: string;
+    } | undefined>(undefined);
+    const noteExportResult = useSelector((state: ILibraryRootState) =>
+        pendingNoteExport
+            ? apiState(state)(pendingNoteExport.requestId)("publication/listNotes")
+            : undefined);
 
     const canOpen = canOpenPublication(props.publicationView);
+
+    React.useEffect(() => {
+
+        if (!pendingNoteExport || !noteExportResult?.data) {
+            return;
+        }
+
+        if (noteExportResult.data.error) {
+            console.error("EXPORT NOTES (api):", noteExportResult.data.errorMessage);
+            apiClean(dispatch)(pendingNoteExport.requestId);
+            setPendingNoteExport(undefined);
+            return;
+        }
+
+        const notes = noteExportResult.data.result;
+        if (!Array.isArray(notes)) {
+            return;
+        }
+
+        getSaga().run(
+            exportAnnotationSet,
+            notes,
+            pendingNoteExport.publicationView,
+            pendingNoteExport.annoSetTitle,
+            "annotation",
+        ).toPromise().then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+
+        apiClean(dispatch)(pendingNoteExport.requestId);
+        setPendingNoteExport(undefined);
+
+    }, [dispatch, noteExportResult, pendingNoteExport]);
 
     const noteExport = <button
         className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
         onClick={debounce(() => {
 
-            fetch(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PUBNOTES}/${props.publicationView.identifier}`).then((res) => {
-                res.json().then((json) => {
-                    const notes: PublicationNote[] = json;
+            const textObj = props.publicationView.publicationTitle;
+            const pubLangs = props.publicationView.languages;
+            const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
+            const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
+            const annoSetTitle = convertMultiLangStringToString(textObj_, locale) || "thorium-notes";
 
-                    const textObj = props.publicationView.publicationTitle;
-                    const pubLangs = props.publicationView.languages;
-                    const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
-                    const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
-                    const annoSetTitle = convertMultiLangStringToString(textObj_, locale) || "thorium-notes";
+            // let label = title.slice(0, 200);
+            // label = label.trim();
+            // label = label.replace(/[^a-z0-9_-]/gi, "_");
+            // label = label.replace(/^_+|_+$/g, ""); // leading and trailing underscore
+            // label = label.replace(/^\./, ""); // remove dot start
+            // label = label.toLowerCase();
 
-                    // let label = title.slice(0, 200);
-                    // label = label.trim();
-                    // label = label.replace(/[^a-z0-9_-]/gi, "_");
-                    // label = label.replace(/^_+|_+$/g, ""); // leading and trailing underscore
-                    // label = label.replace(/^\./, ""); // remove dot start
-                    // label = label.toLowerCase();
+            // Be careful Selector can be not settled on th3.0 / th3.1 publication, you need to open it first to generate selectors for each notes
+            // TODO: add a dialog to warm user on incorrect notes
 
-                    // Be careful Selector can be not settled on th3.0 / th3.1 publication, you need to open it first to generate selectors for each notes
-                    // TODO: add a dialog to warm user on incorrect notes
-
-                    getSaga().run(exportAnnotationSet, notes, props.publicationView, annoSetTitle, "annotation").toPromise().then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });;
-                }).catch((err) => { console.error("EXPORT NOTES (json):", err); });
-            }).catch((err) => { console.error("EXPORT NOTES (fetch):", err); });
+            const requestId = uuidv4();
+            setPendingNoteExport({
+                requestId,
+                publicationView: props.publicationView,
+                annoSetTitle,
+            });
+            apiDispatch(dispatch)(requestId)("publication/listNotes")(props.publicationView.identifier);
 
         }, 1000, { immediate: true })}
     >
