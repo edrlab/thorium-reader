@@ -1,7 +1,9 @@
 import { expect, jest, test } from "@jest/globals";
 
-import { EDrawType } from "readium-desktop/common/redux/states/renderer/note";
-import type { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import type { ITextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import type { PublicationNote } from "readium-desktop/common/publication-notes";
+import type { I18nFunction } from "readium-desktop/common/services/translator";
+import { EDrawType } from "readium-desktop/common/type/note.type";
 import {
     buildAnnotationPanelSaveNote,
     canDeleteAnnotationInPanel,
@@ -17,9 +19,10 @@ import {
     getPdfAnnotationSelectionMenuAction,
     getPdfAnnotationNavigationTarget,
     getPdfAnnotationPageLabel,
+    getReadiumAnnotationImportUnresolvedReasonLabel,
     isPdfAnnotationPanelNote,
     normalizePdfAnnotationNavigationRect,
-} from "readium-desktop/renderer/reader/pdf/pdfAnnotationPanel";
+} from "readium-desktop/renderer/reader/publication-notes/annotationPanel";
 
 const color = {
     red: 10,
@@ -27,7 +30,15 @@ const color = {
     blue: 30,
 };
 
-function createPdfAnnotationNote(overrides: Partial<INoteState> = {}): INoteState {
+const translate = ((key: string) => ({
+    "message.annotations.importReportReasonAmbiguousMatch": "ambiguous match",
+    "message.annotations.importReportReasonSelectorNotFound": "selector not found",
+    "message.annotations.importReportReasonSourceMismatch": "source mismatch",
+    "message.annotations.importReportReasonUnsupportedSelector": "unsupported selector",
+    "message.annotations.importReportUnresolvedImportedNotes": "Unresolved imported notes",
+}[key] || key)) as I18nFunction;
+
+function createPdfAnnotationNote(overrides: Partial<PublicationNote> = {}): PublicationNote {
     return {
         uuid: "pdf-note",
         index: 1,
@@ -47,7 +58,7 @@ function createPdfAnnotationNote(overrides: Partial<INoteState> = {}): INoteStat
     };
 }
 
-function createEpubAnnotationNote(overrides: Partial<INoteState> = {}): INoteState {
+function createEpubAnnotationNote(overrides: Partial<PublicationNote> = {}): PublicationNote {
     return createPdfAnnotationNote({
         uuid: "epub-note",
         pdfAnnotation: undefined,
@@ -58,7 +69,7 @@ function createEpubAnnotationNote(overrides: Partial<INoteState> = {}): INoteSta
             selectionInfo: {
                 cleanText: "EPUB quote",
             },
-        } as INoteState["locatorExtended"],
+        } as PublicationNote["locatorExtended"],
         ...overrides,
     });
 }
@@ -320,10 +331,48 @@ test("annotation panel text keeps EPUB locator text precedence", () => {
             selectionInfo: {
                 cleanText: "EPUB selected text",
             },
-        } as INoteState["locatorExtended"],
+        } as PublicationNote["locatorExtended"],
     });
 
     expect(getAnnotationSelectionText(note)).toBe("EPUB selected text");
+});
+
+test("annotation panel exposes unresolved imported annotation state", () => {
+    const source = createEpubAnnotationNote({
+        locatorExtended: undefined,
+        readiumAnnotation: {
+            import: {
+                target: {
+                    source: "chapter.xhtml",
+                    selector: [{
+                        type: "TextQuoteSelector",
+                        exact: "Imported quote",
+                        prefix: "",
+                        suffix: "",
+                    } as ITextQuoteSelector],
+                },
+                unresolved: {
+                    reason: "selector-not-found",
+                    source: "chapter.xhtml",
+                    selectorTypes: ["TextQuoteSelector"],
+                },
+            },
+        },
+    });
+
+    const saved = buildAnnotationPanelSaveNote(source, {
+        color,
+        comment: "updated imported comment",
+        drawType: "solid_background",
+        tags: [],
+        modified: 4000,
+    });
+
+    expect(getAnnotationSelectionText(source)).toBe("Imported quote");
+    expect(getAnnotationCardText(source, "Fallback title")).toBe("Imported quote");
+    expect(getReadiumAnnotationImportUnresolvedReasonLabel(source, translate)).toBe("Unresolved imported notes: selector not found");
+    expect(saved.readiumAnnotation).toEqual(source.readiumAnnotation);
+    expect(saved.readiumAnnotation).not.toBe(source.readiumAnnotation);
 });
 
 test("PDF annotation page label uses pdfAnnotation page metadata", () => {
@@ -401,7 +450,7 @@ test("annotation panel progression comparator uses PDF visual order before EPUB 
                     progression: 0.1,
                 },
             },
-        } as INoteState["locatorExtended"],
+        } as PublicationNote["locatorExtended"],
     });
     const epubLate = createEpubAnnotationNote({
         uuid: "epub-late",
@@ -412,9 +461,9 @@ test("annotation panel progression comparator uses PDF visual order before EPUB 
                     progression: 0.9,
                 },
             },
-        } as INoteState["locatorExtended"],
+        } as PublicationNote["locatorExtended"],
     });
-    const compareEpubProgression = jest.fn((left: INoteState, right: INoteState) => {
+    const compareEpubProgression = jest.fn((left: PublicationNote, right: PublicationNote) => {
         return (
             (left.locatorExtended?.locator.locations?.progression || 0) -
             (right.locatorExtended?.locator.locations?.progression || 0)
@@ -520,7 +569,7 @@ test("annotation panel save payload preserves EPUB locator data when present", (
             selectionInfo: {
                 cleanText: "EPUB text",
             },
-        } as INoteState["locatorExtended"],
+        } as PublicationNote["locatorExtended"],
     });
     const saved = buildAnnotationPanelSaveNote(source, {
         color,

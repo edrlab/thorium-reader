@@ -17,14 +17,17 @@ import { Store } from "redux";
 import { isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
 import { SagaMiddleware } from "redux-saga";
 import { readerActions } from "readium-desktop/common/redux/actions";
+import type { IHistoryContext } from "redux-first-history";
 
 let __store: Store<IReaderRootState> | undefined;
 let __sagaMiddleware: SagaMiddleware | undefined;
+let __reduxHistory: ReturnType<IHistoryContext["createReduxHistory"]> | undefined;
 
 export const createStoreFromDi = (preloadedState: Partial<IReaderRootState>): Store<IReaderRootState> => {
 
-    const [store, sagaMiddleware] = initStore(preloadedState);
+    const [store, reduxHistory, sagaMiddleware] = initStore(preloadedState);
     __store = store;
+    __reduxHistory = reduxHistory;
     __sagaMiddleware = sagaMiddleware;
 
     // see issue https://github.com/edrlab/thorium-reader/issues/2532
@@ -141,6 +144,13 @@ export const getStore = () => {
         return __store;
     }
     throw new Error("STORE is UNDEFINED !!!");
+};
+
+export const getReduxHistory = () => {
+    if (__reduxHistory) {
+        return __reduxHistory;
+    }
+    throw new Error("reduxHistory is UNDEFINED !!!");
 };
 
 export const getSaga = () => {

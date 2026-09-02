@@ -1,0 +1,112 @@
+{
+    "@context": "http://www.w3.org/ns/anno.jsonld",
+    "id": "urn:uuid:accessible-epub-3-conflicts-seed-set",
+    "type": "AnnotationSet",
+    "generated": "2026-02-01T10:48:00.000Z",
+    "title": "Accessible EPUB 3 - import conflict seed",
+    "about": {
+        "dc:identifier": [
+            "urn:isbn:9781449328030"
+        ],
+        "dc:format": "application/epub+zip",
+        "dc:title": "Accessible EPUB 3",
+        "dc:creator": [
+            "Matt Garrish"
+        ],
+        "dc:date": "2012-02-20"
+    },
+    "items": [
+        {
+            "@context": "http://www.w3.org/ns/anno.jsonld",
+            "id": "urn:uuid:accessible-epub-3-conflict-newer",
+            "created": "2026-02-01T11:00:00.000Z",
+            "modified": "2026-02-02T11:00:00.000Z",
+            "type": "Annotation",
+            "creator": {
+                "id": "urn:thorium:test:reader",
+                "type": "Person",
+                "name": "Thorium Test Reader"
+            },
+            "body": {
+                "type": "TextualBody",
+                "value": "Stored annotation should be reported as older than the incoming note.",
+                "format": "text/plain",
+                "tag": "conflict-seed",
+                "highlight": "solid",
+                "color": "green"
+            },
+            "target": {
+                "source": "EPUB/ch01.xhtml",
+                "selector": [
+                    {
+                        "type": "TextQuoteSelector",
+                        "exact": "The ebook revolution holds out the promise of improvement",
+                        "prefix": "",
+                        "suffix": "as mainstream publishing finds itself"
+                    }
+                ]
+            },
+            "motivation": "highlighting"
+        },
+        {
+            "@context": "http://www.w3.org/ns/anno.jsonld",
+            "id": "urn:uuid:accessible-epub-3-conflict-older",
+            "created": "2026-02-01T11:10:00.000Z",
+            "modified": "2026-02-02T11:10:00.000Z",
+            "type": "Annotation",
+            "creator": {
+                "id": "urn:thorium:test:reader",
+                "type": "Person",
+                "name": "Thorium Test Reader"
+            },
+            "body": {
+                "type": "TextualBody",
+                "value": "Stored annotation should be reported as newer than the incoming note.",
+                "format": "text/plain",
+                "tag": "conflict-seed",
+                "highlight": "underline",
+                "color": "blue"
+            },
+            "target": {
+                "source": "EPUB/ch02.xhtml",
+                "selector": [
+                    {
+                        "type": "CssSelector",
+                        "value": "#building_a_better_epub > p:nth-of-type(1)"
+                    }
+                ]
+            },
+            "motivation": "highlighting"
+        },
+        {
+            "@context": "http://www.w3.org/ns/anno.jsonld",
+            "id": "urn:uuid:accessible-epub-3-already-imported",
+            "created": "2026-02-01T11:20:00.000Z",
+            "modified": "2026-02-02T11:20:00.000Z",
+            "type": "Annotation",
+            "creator": {
+                "id": "urn:thorium:test:reader",
+                "type": "Person",
+                "name": "Thorium Test Reader"
+            },
+            "body": {
+                "type": "TextualBody",
+                "value": "Incoming annotation should be reported as already imported.",
+                "format": "text/plain",
+                "tag": "conflict",
+                "highlight": "outline",
+                "color": "purple"
+            },
+            "target": {
+                "source": "EPUB/pr01.xhtml",
+                "selector": [
+                    {
+                        "type": "CssSelector",
+                        "value": "#_preface > p:nth-of-type(1)"
+                    }
+                ]
+            },
+            "motivation": "highlighting"
+        }
+    ]
+}

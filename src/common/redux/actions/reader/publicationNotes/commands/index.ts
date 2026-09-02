@@ -5,10 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as addUpdate from "./addUpdate";
 import * as remove from "./remove";
+import * as save from "./save";
 
 export {
-    addUpdate,
     remove,
+    save,
 };

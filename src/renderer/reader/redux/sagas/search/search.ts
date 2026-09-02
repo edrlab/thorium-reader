@@ -8,7 +8,7 @@
 // import { JSDOM } from "jsdom";
 // import * as xmldom from "@xmldom/xmldom";
 
-import { ICacheDocument } from "readium-desktop/common/redux/sagas/resourceCache";
+import type { ICacheDocument } from "../resourceCache";
 import { searchDocDomSeek } from "./searchWithDomSeek";
 import { ISearchResult } from "readium-desktop/common/redux/states/renderer/search";
 

@@ -7,20 +7,19 @@
 
 import debug_ from "debug";
 
-import { ICssSelector, IEPUBCFISelector, IProgressionSelector, ISelector, ITextPositionSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import { ICFIFragmentSelector, ICssSelector, IEPUBCFISelector, IProgressionSelector, ISelector, ITextPositionSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import { uniqueCssSelector } from "@r2-navigator-js/electron/renderer/common/cssselector3";
-import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import type { PublicationNote } from "readium-desktop/common/publication-notes";
 import {  describeTextPosition, describeTextQuote } from "readium-desktop/third_party/apache-annotator/dom";
 import { convertRangeInfo } from "@r2-navigator-js/electron/renderer/webview/selection";
-import { call as callTyped } from "typed-redux-saga/macro";
-import { SagaGenerator } from "typed-redux-saga";
+import type { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 import { EpubCfiUtils } from "@r2-navigator-js/electron/common/colibrio-cfi/EpubCfiUtils";
 import { EpubCfiBuilderHelper } from "@r2-navigator-js/electron/common/colibrio-cfi/builder/EpubCfiBuilderHelper";
 import { EpubCfiStringifier } from "@r2-navigator-js/electron/common/colibrio-cfi/stringifier/EpubCfiStringifier";
 
 // Logger
-const debug = debug_("readium-desktop:renderer:reader:redux:sagas:readiumAnnotation:selector");
+const debug = debug_("readium-desktop:renderer:reader:readiumAnnotation:selector");
 
 const describeCssSelectorWithTextPosition = async (range: Range, document: Document, root: HTMLElement): Promise<ICssSelector<ITextPositionSelector> | undefined> => {
     // normalizeRange can fundamentally alter the DOM Range by repositioning / snapping to Text boundaries, this is an internal implementation detail inside navigator when CREATING ranges from user document selections.
@@ -46,7 +45,13 @@ const describeCssSelectorWithTextPosition = async (range: Range, document: Docum
     };
 };
 
-export function* readiumAnnotationSelectorFromNote(note: INoteState, isLcp: boolean, _sourceHref: string, xmlDom: Document): SagaGenerator<ISelector[]> {
+export async function readiumAnnotationSelectorFromNote(
+    note: PublicationNote,
+    isLcp: boolean,
+    sourceHref: string,
+    xmlDom: Document | undefined,
+    r2Publication: R2Publication,
+): Promise<ISelector[]> {
 
     const { locatorExtended } = note;
     if (!locatorExtended) {
@@ -75,6 +80,10 @@ export function* readiumAnnotationSelectorFromNote(note: INoteState, isLcp: bool
     }
     const range = convertRangeInfo(xmlDom, rangeInfo);
     debug("Dump range memory found:", range);
+    if (!range) {
+        debug("ERROR!! RangeInfo could not be converted to DOM Range !!!");
+        return selector;
+    }
 
     if (range.collapsed) {
         debug("RANGE COLLAPSED??! skipping...");
@@ -82,7 +91,7 @@ export function* readiumAnnotationSelectorFromNote(note: INoteState, isLcp: bool
     }
 
     // createTextPositionSelectorMatcher()
-    const selectorCssSelectorWithTextPosition = yield* callTyped(() => describeCssSelectorWithTextPosition(range, document, root));
+    const selectorCssSelectorWithTextPosition = await describeCssSelectorWithTextPosition(range, document, root);
     if (selectorCssSelectorWithTextPosition) {
 
         debug("CssWithTextPositionSelector : ", selectorCssSelectorWithTextPosition);
@@ -90,14 +99,14 @@ export function* readiumAnnotationSelectorFromNote(note: INoteState, isLcp: bool
     }
 
     // describeTextPosition()
-    const selectorTextPosition = yield* callTyped(() => describeTextPosition(range, root));
+    const selectorTextPosition = await describeTextPosition(range, root);
     debug("TextPositionSelector : ", selectorTextPosition);
     selector.push(selectorTextPosition);
 
     if (!isLcp) {
 
         // describeTextQuote()
-        const selectorTextQuote = yield* callTyped(() => describeTextQuote(range, root));
+        const selectorTextQuote = await describeTextQuote(range, root);
         debug("TextQuoteSelector : ", selectorTextQuote);
         selector.push(selectorTextQuote);
     }
@@ -113,12 +122,24 @@ export function* readiumAnnotationSelectorFromNote(note: INoteState, isLcp: bool
         debug("ProgressionSelector SKIP : ", progression);
     }
 
+    const opfSpineItemIndex = r2Publication.Spine.findIndex((link) => link.Href === sourceHref);
+    const opfSpineItemCFIPath = opfSpineItemIndex > -1 ? `/6/${(opfSpineItemIndex*2+2)}` : "/6/0"; // TODO Fallback !?
+
     const rootNode = EpubCfiUtils.createEmptyRootNode();
     EpubCfiBuilderHelper.appendTerminalDomRange(range, rootNode);
     let cfi = EpubCfiStringifier.stringifyRootNode(rootNode);
+    let cfiFragmentValue = cfi;
     if (cfi) {
         cfi = cfi.replace(/^epubcfi\(/, "").replace(/\)$/, "");
+        cfiFragmentValue = `epubcfi(${opfSpineItemCFIPath}!${cfi})`;
     }
+
+    const cfiFragmentSelector: ICFIFragmentSelector = {
+        type: "FragmentSelector",
+        conformsTo: "http://www.idpf.org/epub/linking/cfi/epub-cfi.html",
+        value: cfiFragmentValue,
+    };
+    selector.push(cfiFragmentSelector);
 
     const cfiSelector: IEPUBCFISelector = {
         type: "EPUBCFISelector",
@@ -136,7 +157,8 @@ export function* readiumAnnotationSelectorFromNote(note: INoteState, isLcp: bool
     return selector;
 }
 
-export function checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation(note: INoteState) {
+export function checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation(note: PublicationNote) {
 
-    return Array.isArray(note.readiumAnnotation?.export?.selector);
+    const selector = note.readiumAnnotation?.export?.selector;
+    return Array.isArray(selector) && selector.length > 0;
 }

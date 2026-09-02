@@ -91,7 +91,7 @@ Current coverage:
 
 File:
 
-- `test/renderer/reader/pdf/pdfAnnotationPanel.test.ts`
+- `test/renderer/reader/publication-notes/annotationPanel.test.ts`
 
 Current coverage:
 
@@ -375,7 +375,7 @@ Existing coverage:
 
 Target modules:
 
-- `src/renderer/reader/pdf/pdfAnnotationPanel.ts`
+- `src/renderer/reader/publication-notes/annotationPanel.ts`
 - future PDF-specific annotation card helpers/components.
 
 Add:
@@ -397,7 +397,7 @@ Add:
 
 Target modules:
 
-- `src/renderer/reader/pdf/pdfAnnotationPanel.ts`
+- `src/renderer/reader/publication-notes/annotationPanel.ts`
 - `src/renderer/reader/pdf/webview/annotations.ts`
 
 Add:
@@ -415,7 +415,7 @@ Add:
 
 Target modules:
 
-- `src/renderer/reader/pdf/pdfAnnotationPanel.ts`
+- `src/renderer/reader/publication-notes/annotationPanel.ts`
 - `ReaderMenu.tsx` save path or extracted annotation edit helper.
 
 Add:

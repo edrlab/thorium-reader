@@ -6,6 +6,8 @@ export const diSymbolTable = {
     // "win-registry": Symbol("win-registry"),
     "downloader": Symbol("downloader"),
     "publication-repository": Symbol("publication-repository"),
+    "publication-note-repository": Symbol("publication-note-repository"),
+    "publication-notes-controller": Symbol("publication-notes-controller"),
     "opds-feed-repository": Symbol("opds-feed-repository"),
     "publication-view-converter": Symbol("publication-view-converter"),
 //    "locator-view-converter": Symbol("locator-view-converter"),

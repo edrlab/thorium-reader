@@ -34,24 +34,26 @@ import { useReaderConfig } from "readium-desktop/renderer/common/hooks/useReader
 import { rgbToHex } from "readium-desktop/common/rgb";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
-import { EDrawType, INoteState, noteColorCodeToColorTranslatorKeySet, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
+import type { PublicationNote } from "readium-desktop/common/publication-notes";
+import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/publication-notes/colors";
+import { EDrawType, type TDrawType } from "readium-desktop/common/type/note.type";
 
 import DOMPurify from "dompurify";
 import { marked } from "readium-desktop/renderer/common/marked/marked";
 import { computeProgression } from "./ReaderMenu";
-import { buildAnnotationPanelSaveNote, canDeleteAnnotationInPanel, canEditAnnotationInPanel, getAnnotationCardText, getAnnotationPanelNavigation, getAnnotationSelectionText, getPdfAnnotationPageLabel } from "../../pdf/pdfAnnotationPanel";
+import { buildAnnotationPanelSaveNote, canDeleteAnnotationInPanel, canEditAnnotationInPanel, getAnnotationCardText, getAnnotationPanelNavigation, getAnnotationSelectionText, getPdfAnnotationPageLabel, getReadiumAnnotationImportUnresolvedReasonLabel } from "../../publication-notes/annotationPanel";
 
 import debug_ from "debug";
 
-const debugPdfAnnotationsPanel = debug_("readium-desktop:renderer:reader:pdf:annotations:panel");
+const debugPublicationNotesPanel = debug_("readium-desktop:renderer:reader:publication-notes:annotations:panel");
 
-export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, isSelected: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void, setCreatorFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator" | "goToPdfAnnotation">> = (props) => {
+export const AnnotationCard: React.FC<{ annotation: PublicationNote, isEdited: boolean, isSelected: boolean, focusRequestId?: string, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void, setCreatorFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator" | "goToPdfAnnotation">> = (props) => {
 
     const { goToLocator, goToPdfAnnotation, setTagFilter, setCreatorFilter } = props;
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const dockingMode = useReaderConfig("readerDockingMode");
     const dockedMode = dockingMode !== "full";
-    const { annotation, isEdited, isSelected, triggerEdition } = props;
+    const { annotation, isEdited, isSelected, focusRequestId, triggerEdition } = props;
     const { uuid, textualValue, tags: tagsStringArrayMaybeUndefined } = annotation;
     const canEditAnnotation = canEditAnnotationInPanel(annotation);
     const canDeleteAnnotation = canDeleteAnnotationInPanel(annotation);
@@ -79,9 +81,8 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
     const dispatch = useDispatch();
     const [__] = useTranslator();
     const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
-    // const noteTotalCount = useSelector((state: IReaderRootState) => state.reader.noteTotalCount.state);
     const save = React.useCallback((color: IColor, comment: string, drawType: TDrawType, tags: string[]) => {
-        dispatch(readerActions.note.addUpdate.build(
+        dispatch(readerActions.publicationNotes.commands.save.build(
             pubId,
             buildAnnotationPanelSaveNote(annotation, {
                 color,
@@ -93,7 +94,6 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
             annotation,
         ));
         triggerEdition(false);
-        // dispatch(readerActions.bookmarkTotalCount.build(noteTotalCount + 1));
     }, [dispatch, annotation, triggerEdition, pubId]);
 
     const date = new Date(annotation.modified || annotation.created);
@@ -113,6 +113,7 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
     const selectionText = getAnnotationSelectionText(annotation);
     const pdfPageLabel = getPdfAnnotationPageLabel(annotation, __("reader.navigation.page"));
     const annotationPanelNavigation = getAnnotationPanelNavigation(annotation);
+    const unresolvedReasonLabel = getReadiumAnnotationImportUnresolvedReasonLabel(annotation, __);
     const annotationButtonRef = React.useRef<HTMLButtonElement>();
 
     React.useEffect(() => {
@@ -122,10 +123,10 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
                 annotationButtonRef.current?.focus();
             }, 0);
         }
-    }, [isSelected, isEditing]);
+    }, [focusRequestId, isSelected, isEditing]);
 
-    const locationText = pdfPageLabel || (percentRounded >= 0 ? `${percentRounded}% ` : "");
-    const locationLabel = pdfPageLabel ? __("reader.navigation.page") : __("publication.progression.title");
+    const locationText = unresolvedReasonLabel || pdfPageLabel || (annotation.locatorExtended && percentRounded >= 0 ? `${percentRounded}% ` : "");
+    const locationLabel = unresolvedReasonLabel ? __("message.annotations.importReportUnresolvedImportedNotes") : (pdfPageLabel ? __("reader.navigation.page") : __("publication.progression.title"));
 
     if (!uuid) {
         return <></>;
@@ -135,6 +136,7 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
 
     return (<li
         className={stylesAnnotations.annotations_line}
+        data-publication-note-uuid={uuid}
         data-selected={isSelected ? "true" : undefined}
         style={{
             backgroundColor: dockedEditAnnotation ? "var(--color-gray-50" : "",
@@ -162,7 +164,9 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
                 : <button className={classNames(stylesAnnotations.annotation_name, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
                     ref={annotationButtonRef}
                     // title={bname}
-                    aria-label={annotationPanelNavigation ? `${__("reader.goToContent")} (${btext})` : btext}
+                    title={unresolvedReasonLabel}
+                    aria-disabled={annotationPanelNavigation ? undefined : "true"}
+                    aria-label={annotationPanelNavigation ? `${__("reader.goToContent")} (${btext})` : (unresolvedReasonLabel ? `${btext} (${unresolvedReasonLabel})` : btext)}
                     aria-current={isSelected ? "true" : undefined}
                     style={{ borderLeft: dockedEditAnnotation && "2px solid var(--color-brand-primary)" }}
                     onClick={(e) => {
@@ -173,7 +177,7 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
                         } else if (annotationPanelNavigation?.type === "pdf") {
                             goToPdfAnnotation(annotationPanelNavigation.target, closeNavAnnotation);
                         } else if (annotation.pdfAnnotation) {
-                            debugPdfAnnotationsPanel("annotation panel navigation target invalid", {
+                            debugPublicationNotesPanel("annotation panel navigation target invalid", {
                                 uuid: annotation.uuid,
                                 pdfAnnotation: annotation.pdfAnnotation,
                             });
@@ -266,7 +270,7 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
                 </div>
                 <div aria-label={locationLabel}>
                     <SVG ariaHidden svg={BookOpenIcon} />
-                    <p>{locationText}</p>
+                    <p title={locationText}>{locationText}</p>
                 </div>
                 {creatorName
                     ?
@@ -311,7 +315,7 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
                 className={stylesPopoverDialog.delete_item_edition}
                 onClick={() => {
                     triggerEdition(false);
-                    dispatch(readerActions.note.remove.build(annotation));
+                    dispatch(readerActions.publicationNotes.commands.remove.build(pubId, annotation));
                     // alert("deleted");
                 }}
                 >
@@ -331,7 +335,7 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
                             <Popover.Close
                                 onClick={() => {
                                     triggerEdition(false);
-                                    dispatch(readerActions.note.remove.build(annotation));
+                                    dispatch(readerActions.publicationNotes.commands.remove.build(pubId, annotation));
                                 }}
                                 title={__("reader.marks.delete")}
                             >

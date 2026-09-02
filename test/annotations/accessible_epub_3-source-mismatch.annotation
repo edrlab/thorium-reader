@@ -1,0 +1,52 @@
+{
+    "@context": "http://www.w3.org/ns/anno.jsonld",
+    "id": "urn:uuid:accessible-epub-3-source-mismatch-set",
+    "type": "AnnotationSet",
+    "generated": "2026-02-01T10:30:00.000Z",
+    "title": "Accessible EPUB 3 - source mismatch",
+    "about": {
+        "dc:identifier": [
+            "urn:isbn:9781449328030"
+        ],
+        "dc:format": "application/epub+zip",
+        "dc:title": "Accessible EPUB 3",
+        "dc:creator": [
+            "Matt Garrish"
+        ],
+        "dc:date": "2012-02-20"
+    },
+    "items": [
+        {
+            "@context": "http://www.w3.org/ns/anno.jsonld",
+            "id": "urn:uuid:accessible-epub-3-missing-source",
+            "created": "2026-02-01T10:35:00.000Z",
+            "modified": "2026-02-01T10:35:00.000Z",
+            "type": "Annotation",
+            "creator": {
+                "id": "urn:thorium:test:reader",
+                "type": "Person",
+                "name": "Thorium Test Reader"
+            },
+            "body": {
+                "type": "TextualBody",
+                "value": "This annotation references a resource that is not in the EPUB spine.",
+                "format": "text/plain",
+                "tag": "unresolved",
+                "highlight": "solid",
+                "color": "pink"
+            },
+            "target": {
+                "source": "EPUB/missing.xhtml",
+                "selector": [
+                    {
+                        "type": "TextQuoteSelector",
+                        "exact": "This text cannot be found in the source document.",
+                        "prefix": "",
+                        "suffix": ""
+                    }
+                ]
+            },
+            "motivation": "highlighting"
+        }
+    ]
+}

@@ -7,8 +7,13 @@
 
 import { clone } from "ramda";
 
-import { EDrawType } from "readium-desktop/common/redux/states/renderer/note";
-import type { INoteState, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
+import {
+    getPublicationNoteImportUnresolvedReasonLabel,
+    type PublicationNote,
+} from "readium-desktop/common/publication-notes/model";
+import { isTextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import type { I18nFunction } from "readium-desktop/common/services/translator";
+import { EDrawType, type TDrawType } from "readium-desktop/common/type/note.type";
 import type {
     IColor,
     TPdfAnnotationNavigationTarget,
@@ -27,7 +32,7 @@ export interface IAnnotationPanelSaveChanges {
 export type TAnnotationPanelNavigation =
     | {
         type: "epub";
-        locator: NonNullable<INoteState["locatorExtended"]>["locator"];
+        locator: NonNullable<PublicationNote["locatorExtended"]>["locator"];
     }
     | {
         type: "pdf";
@@ -46,39 +51,57 @@ export function canUseReadiumAnnotationImportExport(isPdf: boolean): boolean {
     return !isPdf;
 }
 
-export function isPdfAnnotationPanelNote(annotation: INoteState): boolean {
+export function isPdfAnnotationPanelNote(annotation: PublicationNote): boolean {
     return !!annotation.pdfAnnotation;
 }
 
-export function canEditAnnotationInPanel(annotation: INoteState): boolean {
+export function canEditAnnotationInPanel(annotation: PublicationNote): boolean {
     return annotation.group === "annotation";
 }
 
-export function canDeleteAnnotationInPanel(annotation: INoteState): boolean {
+export function canDeleteAnnotationInPanel(annotation: PublicationNote): boolean {
     return annotation.group === "annotation";
 }
 
-export function filterDeletableAnnotationPanelNotes(annotations: INoteState[]): INoteState[] {
+export function filterDeletableAnnotationPanelNotes(annotations: PublicationNote[]): PublicationNote[] {
     return annotations.filter(canDeleteAnnotationInPanel);
 }
 
-export function getAnnotationSelectionText(annotation: INoteState): string | undefined {
+export function getAnnotationSelectionText(annotation: PublicationNote): string | undefined {
     const epubSelectionText = annotation.locatorExtended?.selectionInfo?.cleanText;
     if (epubSelectionText) {
         return epubSelectionText;
     }
 
-    return annotation.pdfAnnotation?.quote || undefined;
+    if (annotation.pdfAnnotation?.quote) {
+        return annotation.pdfAnnotation.quote;
+    }
+
+    return annotation.readiumAnnotation?.import?.target.selector.find(isTextQuoteSelector)?.exact || undefined;
 }
 
-export function getAnnotationCardText(annotation: INoteState, fallback: string): string {
+export function getAnnotationCardText(annotation: PublicationNote, fallback: string): string {
     return getAnnotationSelectionText(annotation) || fallback;
 }
 
-export function getPdfAnnotationPageLabel(annotation: INoteState, pageLabel: string): string | undefined {
+export function getPdfAnnotationPageLabel(annotation: PublicationNote, pageLabel: string): string | undefined {
     return typeof annotation.pdfAnnotation?.page === "number"
         ? `${pageLabel} ${annotation.pdfAnnotation.page}`
         : undefined;
+}
+
+export function getReadiumAnnotationImportUnresolvedReasonLabel(
+    annotation: PublicationNote,
+    translate: I18nFunction,
+): string | undefined {
+
+    const reason = annotation.readiumAnnotation?.import?.unresolved?.reason;
+    if (!reason) {
+        return undefined;
+    }
+
+    const reasonLabel = getPublicationNoteImportUnresolvedReasonLabel(reason, translate);
+    return reasonLabel;
 }
 
 function getPdfAnnotationVisualSortPosition(rect?: TPdfAnnotationRectTransport) {
@@ -95,7 +118,7 @@ function getPdfAnnotationVisualSortPosition(rect?: TPdfAnnotationRectTransport) 
     };
 }
 
-export function comparePdfAnnotationsByPagePosition(a: INoteState, b: INoteState): number | undefined {
+export function comparePdfAnnotationsByPagePosition(a: PublicationNote, b: PublicationNote): number | undefined {
     if (!a.pdfAnnotation || !b.pdfAnnotation) {
         return undefined;
     }
@@ -123,9 +146,9 @@ export function comparePdfAnnotationsByPagePosition(a: INoteState, b: INoteState
 }
 
 export function compareAnnotationPanelProgression(
-    a: INoteState,
-    b: INoteState,
-    compareEpubProgression: (a: INoteState, b: INoteState) => number,
+    a: PublicationNote,
+    b: PublicationNote,
+    compareEpubProgression: (a: PublicationNote, b: PublicationNote) => number,
 ): number {
     const pdfComparison = comparePdfAnnotationsByPagePosition(a, b);
     if (typeof pdfComparison === "number") {
@@ -165,7 +188,7 @@ export function normalizePdfAnnotationNavigationRect(rect?: TPdfAnnotationRectTr
     };
 }
 
-export function getPdfAnnotationNavigationTarget(annotation: INoteState): TPdfAnnotationNavigationTarget | undefined {
+export function getPdfAnnotationNavigationTarget(annotation: PublicationNote): TPdfAnnotationNavigationTarget | undefined {
     if (!annotation.uuid || !annotation.pdfAnnotation) {
         return undefined;
     }
@@ -187,7 +210,7 @@ export function getPdfAnnotationNavigationTarget(annotation: INoteState): TPdfAn
     };
 }
 
-export function getAnnotationPanelNavigation(annotation: INoteState): TAnnotationPanelNavigation | undefined {
+export function getAnnotationPanelNavigation(annotation: PublicationNote): TAnnotationPanelNavigation | undefined {
     if (annotation.locatorExtended?.locator) {
         return {
             type: "epub",
@@ -208,7 +231,7 @@ export function getAnnotationPanelNavigation(annotation: INoteState): TAnnotatio
 
 export function getPdfAnnotationSelectionMenuAction(
     payload: Partial<TPdfAnnotationSelectionTarget> | undefined,
-    notes: INoteState[],
+    notes: PublicationNote[],
 ): IPdfAnnotationSelectionMenuAction | undefined {
     const hasModifierState = !!payload &&
         typeof payload.shiftKey === "boolean" &&
@@ -243,7 +266,7 @@ export function getPdfAnnotationSelectionMenuAction(
 }
 
 export function getCreatedPdfAnnotationEditMenuAction(
-    annotation: INoteState,
+    annotation: PublicationNote,
     options: {
         skipEditor?: boolean;
     } = {},
@@ -267,10 +290,10 @@ export function getCreatedPdfAnnotationEditMenuAction(
 }
 
 export function buildAnnotationPanelSaveNote(
-    annotation: INoteState,
+    annotation: PublicationNote,
     changes: IAnnotationPanelSaveChanges,
-): INoteState {
-    const note: INoteState = {
+): PublicationNote {
+    const note: PublicationNote = {
         uuid: annotation.uuid,
         color: clone(changes.color),
         textualValue: changes.comment,
@@ -292,6 +315,10 @@ export function buildAnnotationPanelSaveNote(
 
     if (annotation.creator) {
         note.creator = clone(annotation.creator);
+    }
+
+    if (annotation.readiumAnnotation) {
+        note.readiumAnnotation = clone(annotation.readiumAnnotation);
     }
 
     return note;

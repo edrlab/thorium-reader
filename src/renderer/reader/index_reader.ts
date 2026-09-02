@@ -68,12 +68,9 @@ ipcRenderer.on(readerIpc.CHANNEL,
                     r2PublicationHasMediaOverlays: publicationHasMediaOverlays(r2Publication),
                 };
 
-                const notes = data.payload.reader.note || [];
-
-                const noteTagList = [];
+                const publicationIdentifier = data.payload.reader.info.publicationIdentifier;
+                const notes = data.payload.reader.publicationNotes?.notes || data.payload.reader.note || [];
                 for (const note of notes) {
-                    noteTagList.push(...(note.tags || []));
-
                     // already checked and migrated from main memory , just a double security for note import
                     if (!note.created && note.modified) {
                         note.created = note.modified;
@@ -82,16 +79,14 @@ ipcRenderer.on(readerIpc.CHANNEL,
                         note.created = (new Date()).getTime();
                     }
                 }
-                let noteTagsIndex: Array<{ tag: string, index: number }> = [];
-                for (const tag of noteTagList) {
-                    if (!tag) continue;
+                data.payload.reader.publicationNotes = {
+                    publicationIdentifier,
+                    notes,
+                    revision: data.payload.reader.publicationNotes?.revision || Date.now(),
+                };
+                delete data.payload.reader.note;
 
-                    const found = noteTagsIndex.find(({ tag: tagFromNote }) => tagFromNote === tag);
-                    noteTagsIndex = noteTagsIndex.filter((v) => v !== found);
-                    noteTagsIndex.push({ tag, index: (found?.index || 0) + 1 });
-                }
-
-                const store = createStoreFromDi({ ...data.payload, noteTagsIndex } as Partial<IReaderRootState>);
+                const store = createStoreFromDi(data.payload as Partial<IReaderRootState>);
                 const locale = store.getState().i18n.locale;
                 getTranslator().setLocale(locale).then(() => { /* noop */ }).catch((err) => { console.log(err); });
                 /*const localeUsedByMoment = */moment.locale([locale, "en"]);

@@ -33,6 +33,7 @@ export function normalizeEpubResourceHref(href: string): string | undefined {
     try {
         const parsedUrl = new URL(trimmedHref, baseUrl);
         parsedUrl.hash = "";
+        parsedUrl.search = "";
 
         if (parsedUrl.origin === baseUrl.origin) {
             return tryDecodeURIComponentSilent(parsedUrl.pathname.replace(/^\/+/, ""));

@@ -8,11 +8,11 @@
 import debug_ from "debug";
 import { select as selectTyped, call as callTyped, spawn as spawnTyped } from "typed-redux-saga/macro";
 import { SagaGenerator } from "typed-redux-saga";
+import { convertAnnotationStateArrayToReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/exportConverter";
 import {
     buildPublicationUserAnalyticsParams,
     publicationAnalyticsEvents,
 } from "readium-desktop/common/analytics/publication";
-import { convertAnnotationStateArrayToReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/converter";
 import { IReadiumAnnotation, IReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
 
 // https://github.com/janl/mustache.js/issues/797
@@ -23,7 +23,7 @@ import Mustache from "mustache";
 
 import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/annotation/htmlTemplate";
 import DOMPurify from "dompurify";
-import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import type { PublicationNote } from "readium-desktop/common/publication-notes";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { marked } from "readium-desktop/renderer/common/marked/marked";
@@ -56,7 +56,7 @@ const __htmlMustacheViewConverterFn: (readiumAnnotation: IReadiumAnnotationSet) 
 
     return view;
 };
-const convertReadiumAnnotationSetToHtml = async (
+export const convertReadiumAnnotationSetToHtml = async (
     readiumAnnotation: IReadiumAnnotationSet,
     viewConverterFn: (_: IReadiumAnnotationSet) => Promise<object> = __htmlMustacheViewConverterFn,
     htmlMustacheTemplate: string = noteExportHtmlMustacheTemplate,
@@ -80,7 +80,7 @@ const downloadAnnotationFile = (data: string, filenameWithExtension: string, ext
     anchorEl.click();
     URL.revokeObjectURL(jsonObjectUrl);
 };
-export function* exportAnnotationSet(notes: INoteState[], publicationView: PublicationView, annoSetTitle?: string, fileType: "html" | "annotation" = "annotation"): SagaGenerator<void> {
+export function* exportAnnotationSet(notes: PublicationNote[], publicationView: PublicationView, annoSetTitle?: string, fileType: "html" | "annotation" = "annotation"): SagaGenerator<void> {
 
     debug("exportAnnotationSet just started !");
     debug("AnnotationArray: ", notes);

@@ -13,12 +13,14 @@ import * as fs from "node:fs";
 import { Container } from "inversify";
 import * as path from "node:path";
 import { ok } from "readium-desktop/common/utils/assert";
+import { PublicationNotesController, type PublicationNote, type PublicationNoteRepository } from "readium-desktop/common/publication-notes";
 // import { LocatorViewConverter } from "readium-desktop/main/converter/locator";
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
+import { SqlitePublicationNoteRepository } from "readium-desktop/main/publication-notes/sqlitePublicationNoteRepository";
 import { initStore } from "readium-desktop/main/redux/store/memory";
 import { DeviceIdManager } from "readium-desktop/main/services/device";
 import { LcpManager } from "readium-desktop/main/services/lcp";
@@ -200,6 +202,8 @@ if (!fs.existsSync(publicationConfigPath)) {
 
 const publicationRepository = new PublicationRepository();
 
+const publicationNoteRepository = new SqlitePublicationNoteRepository();
+
 const opdsFeedRepository = new OpdsFeedRepository();
 
 // Create filesystem storage for publications
@@ -319,6 +323,17 @@ const createStoreFromDi = async () => {
 container.bind<PublicationRepository>(diSymbolTable["publication-repository"]).toConstantValue(
     publicationRepository,
 );
+container.bind<PublicationNoteRepository<PublicationNote>>(diSymbolTable["publication-note-repository"]).toConstantValue(
+    publicationNoteRepository,
+);
+container.bind<PublicationNotesController<PublicationNote>>(diSymbolTable["publication-notes-controller"]).toConstantValue(
+    new PublicationNotesController<PublicationNote>({
+        repository: publicationNoteRepository,
+        logger: {
+            debug: (message, ...values) => debug(message, ...values),
+        },
+    }),
+);
 container.bind<OpdsFeedRepository>(diSymbolTable["opds-feed-repository"]).toConstantValue(
     opdsFeedRepository,
 );
@@ -404,6 +419,8 @@ interface IGet {
     (s: "store"): Store<RootState>;
     // (s: "win-registry"): WinRegistry;
     (s: "publication-repository"): PublicationRepository;
+    (s: "publication-note-repository"): PublicationNoteRepository<PublicationNote>;
+    (s: "publication-notes-controller"): PublicationNotesController<PublicationNote>;
     (s: "opds-feed-repository"): OpdsFeedRepository;
     (s: "publication-view-converter"): PublicationViewConverter;
     //    (s: "locator-view-converter"): LocatorViewConverter;

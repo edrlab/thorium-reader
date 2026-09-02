@@ -10,7 +10,8 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
-import { TDrawType, TDrawView } from "../redux/states/renderer/note";
+import type { PublicationNotesViewSort } from "readium-desktop/common/publication-notes";
+import type { TDrawType, TDrawView } from "readium-desktop/common/type/note.type";
 
 export interface ReaderTTSMediaOverlay {
     ttsPlaybackRate: string;
@@ -144,4 +145,6 @@ export interface ReaderConfig extends ReaderConfigStrings, ReaderConfigBooleans,
 export interface IReaderDialogOrDockSettingsMenuState {
     id: string,
     edit: boolean,
+    focusRequestId?: string,
+    sort?: PublicationNotesViewSort,
 }

@@ -6,8 +6,8 @@
 // ==LICENSE-END==
 
 import type { INoteCreator } from "readium-desktop/common/redux/states/creator";
-import { EDrawType } from "readium-desktop/common/redux/states/renderer/note";
-import type { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import type { PublicationNote } from "readium-desktop/common/publication-notes";
+import { EDrawType } from "readium-desktop/common/type/note.type";
 import type {
     IColor,
     TPdfAnnotationDraftTransport,
@@ -22,7 +22,7 @@ export interface IPdfAnnotationDraftToNoteContext {
     created: number;
 }
 
-export function filterPdfAnnotationNotes(notes: INoteState[]) {
+export function filterPdfAnnotationNotes(notes: PublicationNote[]) {
     return notes.filter((note) => note.group === "annotation" && !!note.pdfAnnotation);
 }
 
@@ -40,7 +40,7 @@ function noteDrawTypeToPdfDrawType(drawType: EDrawType): TPdfAnnotationDrawType 
     return "solid_background";
 }
 
-export function noteToPdfAnnotation(note: INoteState): TPdfAnnotationTransport | undefined {
+export function noteToPdfAnnotation(note: PublicationNote): TPdfAnnotationTransport | undefined {
     if (note.group !== "annotation" || !note.pdfAnnotation) {
         return undefined;
     }
@@ -64,7 +64,7 @@ export function noteToPdfAnnotation(note: INoteState): TPdfAnnotationTransport |
 export function pdfAnnotationDraftToNote(
     draft: TPdfAnnotationDraftTransport,
     context: IPdfAnnotationDraftToNoteContext,
-): Omit<INoteState, "uuid"> {
+): Omit<PublicationNote, "uuid"> {
 
     return {
         index: context.index,

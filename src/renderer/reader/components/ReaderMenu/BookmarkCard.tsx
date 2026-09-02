@@ -37,7 +37,7 @@ import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/r
 import { BookmarkEdit } from "../BookmarkEdit";
 import { BookmarkLocatorInfo } from "../BookmarkLocatorInfo";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
-import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import type { PublicationNote } from "readium-desktop/common/publication-notes";
 
 import DOMPurify from "dompurify";
 
@@ -46,13 +46,13 @@ import { marked } from "readium-desktop/renderer/common/marked/marked";
 import { computeProgression } from "./ReaderMenu";
 import { logEvent } from "readium-desktop/renderer/common/analytics";
 
-export const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void, setCreatorFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+export const BookmarkCard: React.FC<{ bookmark: PublicationNote, isEdited: boolean, isSelected: boolean, focusRequestId?: string, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void, setCreatorFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
     const { goToLocator, setCreatorFilter, setTagFilter } = props;
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const dockingMode = useReaderConfig("readerDockingMode");
     const dockedMode = dockingMode !== "full";
-    const { bookmark, isEdited, triggerEdition } = props;
+    const { bookmark, isEdited, isSelected, focusRequestId, triggerEdition } = props;
     const { uuid, color, tags } = bookmark;
     const tag = Array.isArray(tags) ? tags[0] || "" : "";
     const dockedEditBookmark = isEdited && dockedMode;
@@ -76,9 +76,8 @@ export const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, t
     const [__] = useTranslator();
 
     const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
-    // const noteTotalCount = useSelector((state: IReaderRootState) => state.reader.noteTotalCount.state);
     const save = React.useCallback((name: string, color: IColor, tag: string | undefined) => {
-        dispatch(readerActions.note.addUpdate.build(
+        dispatch(readerActions.publicationNotes.commands.save.build(
             pubId,
             {
                 uuid: bookmark.uuid,
@@ -96,7 +95,6 @@ export const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, t
             bookmark,
         ));
         triggerEdition(false);
-        // dispatch(readerActions.bookmarkTotalCount.build(noteTotalCount + 1));
     }, [dispatch, bookmark, triggerEdition, pubId]);
 
     const date = new Date(bookmark.modified || bookmark.created);
@@ -112,6 +110,16 @@ export const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, t
     }, [r2Publication, bookmark]);
 
     const bprogression = (percentRounded >= 0 ? `${percentRounded}% ` : "");
+    const bookmarkButtonRef = React.useRef<HTMLButtonElement>();
+
+    React.useEffect(() => {
+        if (isSelected && !isEdited) {
+            window.setTimeout(() => {
+                bookmarkButtonRef.current?.scrollIntoView({ block: "nearest" });
+                bookmarkButtonRef.current?.focus();
+            }, 0);
+        }
+    }, [focusRequestId, isSelected, isEdited]);
 
     if (!uuid) {
         return <></>;
@@ -121,7 +129,14 @@ export const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, t
 
     return (<li
         className={stylesAnnotations.annotations_line}
-        style={{ backgroundColor: dockedEditBookmark ? "var(--color-gray-50" : "", borderLeft: dockedEditBookmark ? "none" : `4px solid ${rgbToHex(color)}` }}
+        data-publication-note-uuid={uuid}
+        data-selected={isSelected ? "true" : undefined}
+        style={{
+            backgroundColor: dockedEditBookmark ? "var(--color-gray-50" : "",
+            borderLeft: dockedEditBookmark ? "none" : `4px solid ${rgbToHex(color)}`,
+            outline: isSelected && !isEdited ? "2px solid var(--color-brand-primary)" : undefined,
+            outlineOffset: isSelected && !isEdited ? "2px" : undefined,
+        }}
         onKeyDown={isEdited ? (e) => {
             if (e.key === "Escape") {
                 e.preventDefault();
@@ -141,8 +156,10 @@ export const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, t
                 <></>
                 : <div>
                     <button className={classNames(stylesAnnotations.annotation_name, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
+                    ref={bookmarkButtonRef}
                     // title={bname}
                     aria-label={`${__("reader.goToContent")} (${__("reader.bookmarks.index", {index: bookmark.index})})`}
+                    aria-current={isSelected ? "true" : undefined}
                     style={{ borderLeft: dockedEditBookmark && "2px solid var(--color-brand-primary)" }}
                     onClick={(e) => {
                         e.preventDefault();
@@ -307,7 +324,7 @@ export const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, t
                 className={stylesPopoverDialog.delete_item_edition}
                 onClick={() => {
                     triggerEdition(false);
-                    dispatch(readerActions.note.remove.build(bookmark));
+                    dispatch(readerActions.publicationNotes.commands.remove.build(pubId, bookmark));
                     logEvent(readerAnalyticsEvents.bookmarkToggle);
                     // alert("deleted");
                 }}
@@ -328,7 +345,7 @@ export const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, t
                             <Popover.Close
                                 onClick={() => {
                                     triggerEdition(false);
-                                    dispatch(readerActions.note.remove.build(bookmark));
+                                    dispatch(readerActions.publicationNotes.commands.remove.build(pubId, bookmark));
                                     logEvent(readerAnalyticsEvents.bookmarkToggle);
                                 }}
                                 title={__("reader.marks.delete")}

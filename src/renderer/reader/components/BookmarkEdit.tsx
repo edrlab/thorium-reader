@@ -20,13 +20,13 @@ import * as TagIcon from "readium-desktop/renderer/assets/icons/tag-icon.svg";
 // import { TextArea } from "react-aria-components";
 import { BookmarkLocatorInfo } from "./BookmarkLocatorInfo";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
-import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/renderer/note";
+import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/publication-notes/colors";
 import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
+import { selectPublicationNoteTagsIndex } from "../publication-notes/selectors";
 
 // TypeScript GO:
 // The current file is a CommonJS module whose imports will produce 'require' calls;
@@ -68,7 +68,7 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
     const previousColorSelected = React.useRef<string>(colorSelected);
 
     const [tag, setTag] = React.useState<string>((tags || [])[0] || "");
-    const tagsIndexList = useSelector((state: IReaderRootState) => state.noteTagsIndex);
+    const tagsIndexList = useSelector(selectPublicationNoteTagsIndex);
     const selectTagOption = tagsIndexList.map((v, i) => ({ id: i, name: v.tag }));
 
     const saveConfig = React.useCallback(() => {

@@ -11,7 +11,6 @@ import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/compo
 import * as React from "react";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
-import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
 import * as Popover from "@radix-ui/react-popover";
 // import * as PenIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
@@ -29,8 +28,10 @@ import classNames from "classnames";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
-import { noteColorCodeToColorTranslatorKeySet, noteDrawType, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
+import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/publication-notes/colors";
+import { noteDrawType, type TDrawType } from "readium-desktop/common/type/note.type";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+import { selectPublicationNoteTagsIndex } from "../publication-notes/selectors";
 
 // TypeScript GO:
 // The current file is a CommonJS module whose imports will produce 'require' calls;
@@ -76,7 +77,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
     const previousDrawTypeSelected = React.useRef<TDrawType>(drawTypeSelected);
 
     const [tag, setTag] = React.useState<string>((tags || [])[0] || "");
-    const tagsIndexList = useSelector((state: IReaderRootState) => state.noteTagsIndex);
+    const tagsIndexList = useSelector(selectPublicationNoteTagsIndex);
     const selectTagOption = tagsIndexList.map((v, i) => ({ id: i, name: v.tag }));
 
     const annotationMaxLength = 1500;

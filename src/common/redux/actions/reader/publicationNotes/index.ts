@@ -5,16 +5,16 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export interface IPdfAnnotationRect {
-    x1: number;
-    y1: number;
-    x2: number;
-    y2: number;
-}
+import * as snapshot from "./snapshot";
+import * as commands from "./commands";
+import * as export_ from "./export";
+import * as exportHtmlRequest from "./exportHtmlRequest";
+import * as exportHtmlResult from "./exportHtmlResult";
 
-export interface IPdfTextAnnotationTarget {
-    type: "pdf-text-highlight";
-    page: number;
-    rects: IPdfAnnotationRect[];
-    quote?: string;
-}
+export {
+    commands,
+    export_ as export,
+    exportHtmlRequest,
+    exportHtmlResult,
+    snapshot,
+};

@@ -16,6 +16,7 @@ import {
     convertHttpUrlToCustomScheme, READIUM2_ELECTRON_HTTP_PROTOCOL,
 } from "@r2-navigator-js/electron/common/sessions";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
+import { publicationNotesSnapshotInitialState } from "readium-desktop/common/redux/states/renderer/publicationNotes";
 
 export const ID = "WIN_SESSION_REGISTER_READER";
 
@@ -71,7 +72,7 @@ export function build(
             },
             lock: false,
         },          
-        note: [], // hydrated by sagas/win/reader/winOpen
+        publicationNotes: publicationNotesSnapshotInitialState,
     };
 
     return {

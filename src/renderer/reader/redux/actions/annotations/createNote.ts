@@ -7,12 +7,13 @@
 
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { Action } from "readium-desktop/common/models/redux";
-import { EDrawType, INoteState, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
+import type { PublicationNote } from "readium-desktop/common/publication-notes";
+import { EDrawType, type TDrawType } from "readium-desktop/common/type/note.type";
 
 export const ID = "READER_ANNOTATIONS_CREATE_NOTE";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IPayload extends Pick<INoteState, "color"|"textualValue"|"drawType"|"tags"> {
+interface IPayload extends Pick<PublicationNote, "color"|"textualValue"|"drawType"|"tags"> {
 }
 
 export function build(color: IColor, comment: string, drawType: TDrawType, tags: string[]):

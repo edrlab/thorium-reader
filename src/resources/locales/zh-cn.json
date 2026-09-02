@@ -165,10 +165,8 @@
                 "title": "准备并激活自定义配置文件"
             }
         },
-        "deleteAnnotations": "您要删除笔记吗？",
-        "deleteAnnotationsText": "您确定要删除 {{- count}} 条笔记吗？",
-        "deleteBookmarks": "删除书签？",
-        "deleteBookmarksText": "确认删除{{- count}}个书签？",
+        "deleteAnnotations": "",
+        "deleteBookmarks": "",
         "deleteFeed": "您真的要删除此出版目录吗？",
         "deletePublication": "您真的要删除此出版物吗?",
         "deletePublicationWithNotes": "警告：此出版物包含注释和/或书签，这些也将被删除！（如果您想保留它们，请在移除该出版物前确保已导出笔记）",
@@ -235,9 +233,23 @@
             "alreadyImported": "所有笔记已经导入。",
             "emptyFile": "文件中没有可用的笔记。",
             "errorParsing": "文件解析时发生错误： ",
-            "noBelongTo": "无法导入笔记，至少有一条笔记不属于此出版物。",
+            "importReportAlreadyImported": "",
+            "importReportAmbiguousMatch": "",
+            "importReportConflictNewer": "",
+            "importReportConflictOlder": "",
+            "importReportPrefix": "",
+            "importReportReasonAmbiguousMatch": "",
+            "importReportReasonSelectorNotFound": "",
+            "importReportReasonSourceMismatch": "",
+            "importReportReasonUnsupportedSelector": "",
+            "importReportSelectorNotFound": "",
+            "importReportSourceMismatch": "",
+            "importReportUnresolvedImportedNotes": "",
             "nothing": "没有可导入的笔记，导入已终止",
-            "success": "导入已成功完成。"
+            "success": "导入已成功完成。",
+            "unsupportedSelectorItem": "",
+            "unsupportedSelectorNoSelector": "",
+            "unsupportedSelectorSummary": ""
         },
         "download": {
             "cancelled": "下载已取消。",

@@ -1,10 +1,13 @@
 
 import debug_ from "debug";
 import { getSqliteDatabaseSync } from ".";
-import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import type { PublicationNote } from "readium-desktop/common/publication-notes";
 import { JsonStringifySortedKeys } from "readium-desktop/common/utils/json";
 
 const debug = debug_("readium-desktop:main:db:sqlite:note");
+
+const parseNoteJson = (value: unknown): PublicationNote | undefined =>
+    typeof value === "string" ? JSON.parse(value) : undefined;
 
 export const sqliteInitTableNote = () => {
 
@@ -34,7 +37,7 @@ export const sqliteInitTableNote = () => {
 };
 
 
-export const sqliteTableNoteInsert = (pubId: string, notes: INoteState[]): boolean => {
+export const sqliteTableNoteInsert = (pubId: string, notes: PublicationNote[]): boolean => {
 
     const database = getSqliteDatabaseSync();
 
@@ -44,6 +47,9 @@ export const sqliteTableNoteInsert = (pubId: string, notes: INoteState[]): boole
         for (const note of notes) {
             const result = stm.run(pubId, note.uuid, JsonStringifySortedKeys(note));
             debug(`TRYING TO INSERT ${note.uuid} from ${pubId} in sqlite notes table, result=`, result);
+            if (result.changes !== 1) {
+                return false;
+            }
         }
 
     } catch (e) {
@@ -54,7 +60,7 @@ export const sqliteTableNoteInsert = (pubId: string, notes: INoteState[]): boole
     return true;
 };
 
-export const sqliteTableNoteInsertOrReplace = (pubId: string, notes: INoteState[]): boolean => {
+export const sqliteTableNoteInsertOrReplace = (pubId: string, notes: PublicationNote[]): boolean => {
 
     const database = getSqliteDatabaseSync();
 
@@ -64,6 +70,9 @@ export const sqliteTableNoteInsertOrReplace = (pubId: string, notes: INoteState[
         for (const note of notes) {
             const result = stm.run(pubId, note.uuid, JsonStringifySortedKeys(note));
             debug(`TRYING TO INSERT OR REPLACE ${note.uuid} from ${pubId} in sqlite notes table, result=`, result);
+            if (result.changes < 1) {
+                return false;
+            }
         }
 
     } catch (e) {
@@ -74,15 +83,18 @@ export const sqliteTableNoteInsertOrReplace = (pubId: string, notes: INoteState[
     return true;
 };
 
-export const sqliteTableNoteUpdate = (note: INoteState): boolean => {
+export const sqliteTableNoteUpdate = (pubId: string, note: PublicationNote): boolean => {
 
     const database = getSqliteDatabaseSync();
 
     try {
-        const stm = database.prepare("UPDATE notes SET updated_at=(strftime('%s','now')),note_json=? WHERE note_id=?");
+        const stm = database.prepare("UPDATE notes SET updated_at=(strftime('%s','now')),note_json=? WHERE pub_id=? AND note_id=?");
         debug("SQLITE UPDATE STATEMENT:", stm.sourceSQL);
-        const result = stm.run(JsonStringifySortedKeys(note), note.uuid);
-        debug(`TRYING TO UPDATE ${note.uuid} in sqlite notes table, result=`, result);
+        const result = stm.run(JsonStringifySortedKeys(note), pubId, note.uuid);
+        debug(`TRYING TO UPDATE ${note.uuid} from ${pubId} in sqlite notes table, result=`, result);
+        if (result.changes !== 1) {
+            return false;
+        }
 
     } catch (e) {
         debug(`SQLITE UPDATE note (${note.uuid}) ERROR !!!`);
@@ -93,7 +105,7 @@ export const sqliteTableNoteUpdate = (note: INoteState): boolean => {
     return true;
 };
 
-export const sqliteTableSelectAllNotesWherePubId = (pubId: string): INoteState[] => {
+export const sqliteTableSelectAllNotesWherePubId = (pubId: string): PublicationNote[] => {
 
     const database = getSqliteDatabaseSync();
 
@@ -105,7 +117,7 @@ export const sqliteTableSelectAllNotesWherePubId = (pubId: string): INoteState[]
         // debug(JSON.stringify(result, null, 4)); // debug
 
         const notes_raw = result.map((rec) => rec["note_json"]);
-        const notes = notes_raw.map((value) => typeof value === "string" ? JSON.parse(value) : undefined).filter((v) => !!v);
+        const notes = notes_raw.map(parseNoteJson).filter((v) => !!v);
 
         // debug(JSON.stringify(notes, null, 4));
 
@@ -117,6 +129,25 @@ export const sqliteTableSelectAllNotesWherePubId = (pubId: string): INoteState[]
         debug(e);
     }
     return [];
+};
+
+export const sqliteTableSelectNoteWherePubIdAndNoteId = (pubId: string, noteId: string): PublicationNote | undefined => {
+
+    const database = getSqliteDatabaseSync();
+
+    try {
+        const stm = database.prepare("SELECT (note_json) FROM notes where pub_id=? AND note_id=? LIMIT 1");
+        debug("SQLITE SELECT STATEMENT:", stm.sourceSQL);
+        const result = stm.get(pubId, noteId);
+        debug(`TRYING TO SELECT note ${noteId} from pubId=${pubId} in sqlite notes table, result=`);
+
+        return parseNoteJson(result?.note_json);
+
+    } catch (e) {
+        debug(`SQLITE SELECT note (${noteId}) ERROR !!!`);
+        debug(e);
+    }
+    return undefined;
 };
 
 export const sqliteTableSelectLastModifiedDateWherePubId = (pubId: string): number => {
@@ -141,15 +172,18 @@ export const sqliteTableSelectLastModifiedDateWherePubId = (pubId: string): numb
     return 0;
 };
 
-export const sqliteTableNoteDelete = (noteId: string): boolean => {
+export const sqliteTableNoteDelete = (pubId: string, noteId: string): boolean => {
 
     const database = getSqliteDatabaseSync();
 
     try {
-        const stm = database.prepare("DELETE FROM notes WHERE note_id=?");
+        const stm = database.prepare("DELETE FROM notes WHERE pub_id=? AND note_id=?");
         debug("SQLITE DELETE STATEMENT:", stm.sourceSQL);
-        const result = stm.run(noteId);
-        debug(`TRYING TO DELETE ${noteId} in sqlite notes table, result=`, result);
+        const result = stm.run(pubId, noteId);
+        debug(`TRYING TO DELETE ${noteId} from ${pubId} in sqlite notes table, result=`, result);
+        if (result.changes !== 1) {
+            return false;
+        }
 
     } catch (e) {
         debug(`SQLITE DELETE note (${noteId}) ERROR !!!`);

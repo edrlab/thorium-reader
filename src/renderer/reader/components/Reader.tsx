@@ -25,6 +25,7 @@ import { isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
 import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import {
+    IReaderDialogOrDockSettingsMenuState,
     ReaderConfig,
 } from "readium-desktop/common/models/reader";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -105,7 +106,7 @@ import {
 } from "readium-desktop/renderer/reader/pdf/pdfAnnotationConverters";
 import {
     getPdfAnnotationSelectionMenuAction,
-} from "readium-desktop/renderer/reader/pdf/pdfAnnotationPanel";
+} from "readium-desktop/renderer/reader/publication-notes/annotationPanel";
 import {
     buildPdfAnnotationDraftEditorTransport,
     getPdfAnnotationCreatePresentation,
@@ -136,12 +137,19 @@ import { MiniLocatorExtended, minimizeLocatorExtended } from "readium-desktop/co
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { getStore } from "../createStore";
+import { selectPublicationNotes } from "../publication-notes/selectors";
 import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_PUB } from "readium-desktop/common/streamerProtocol";
 import { DockTypeName } from "readium-desktop/common/models/dock";
-import { EDrawType, INoteState, TDrawType, TDrawView } from "readium-desktop/common/redux/states/renderer/note";
+import { getEffectivePublicationNotesViewSort, isPublicationNotesViewSort, type PublicationNote } from "readium-desktop/common/publication-notes";
+import { EDrawType, type TDrawType, type TDrawView } from "readium-desktop/common/type/note.type";
 import type { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { URL_PROTOCOL_FILEX } from "readium-desktop/common/streamerProtocol";
+import {
+    dispatchReaderMenuRoutePush,
+    isReaderMenuRouteGroup,
+} from "readium-desktop/renderer/reader/routing";
+import type { ReaderMenuRouteGroup } from "readium-desktop/renderer/reader/routing";
 
 const debug = debug_("readium-desktop:renderer:reader:components:Reader");
 const debugPdfAnnotationsHost = debug_("readium-desktop:renderer:reader:pdf:annotations:host");
@@ -687,7 +695,7 @@ class Reader extends React.Component<IProps, IState> {
             //     this.setState({ blackoutMask: true });
             // }
 
-            if (highlight.group !== "annotation" && highlight.group !== "bookmark") {
+            if (!isReaderMenuRouteGroup(highlight.group)) {
                 if (typeof (window as any).__hightlightClickChannelEmitFn === "function") {
                     (window as any).__hightlightClickChannelEmitFn([href, highlight, event]);
                 }
@@ -730,8 +738,10 @@ class Reader extends React.Component<IProps, IState> {
 
             console.log(`dispatchClick CLICK ACTION ... -- uuid: [${uuid}] handlerState: [${JSON.stringify(handlerState, null, 4)}]`);
 
-            // this.handleMenuButtonClick(true, highlight.group === "annotation" ? "tab-annotation" : "tab-bookmark", true, uuid);
-            this.props.toggleMenu({open: true, section: highlight.group === "annotation" ? "tab-annotation" : "tab-bookmark", id: uuid, focus: true, edit: event.shift });
+            this.props.navigateReaderMenuTarget(highlight.group, uuid, {
+                edit: !!event.shift,
+                sort: this.getReaderMenuRouteSort(highlight.group),
+            });
 
             if (href && handlerState.def.selectionInfo?.rangeInfo) {
                 this.handleLinkLocator({
@@ -943,7 +953,10 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        this.props.toggleMenu(menuAction);
+        this.props.navigateReaderMenuTarget("annotation", menuAction.id, {
+            edit: menuAction.edit,
+            sort: this.getReaderMenuRouteSort("annotation"),
+        });
     }
 
     private onPdfAnnotationSelectionError(payload: TPdfAnnotationSelectionErrorPayload) {
@@ -952,7 +965,7 @@ class Reader extends React.Component<IProps, IState> {
         this.props.toastError(getTranslator().__("reader.annotations.error.pdf.validationSelection"));
     }
 
-    private syncPdfAnnotations(extraNote?: INoteState) {
+    private syncPdfAnnotations(extraNote?: PublicationNote) {
         createOrGetPdfEventBus().dispatch("annotations:sync", {
             annotations: buildPdfAnnotationTransportList(this.props.notes, extraNote),
         });
@@ -968,6 +981,15 @@ class Reader extends React.Component<IProps, IState> {
         createOrGetPdfEventBus().dispatch(
             "annotations:set-visibility",
             getPdfAnnotationVisibilityPayload(this.props.readerConfig.annotation_defaultDrawView),
+        );
+    }
+
+    private getReaderMenuRouteSort(group: ReaderMenuRouteGroup) {
+        const activeSection = group === "annotation" ? "tab-annotation" : "tab-bookmark";
+        return getEffectivePublicationNotesViewSort(
+            this.props.readerConfig.readerMenuSection === activeSection
+                ? this.props.readerMenuRouteSort
+                : undefined,
         );
     }
 
@@ -3668,6 +3690,15 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     debug("state.reader.info.publicationIdentifier", state.reader.info.publicationIdentifier);
     debug("state.reader.info.publicationView.identifier", state.reader.info.publicationView.identifier);
 
+    const readerMenuData = state.dialog.open && state.dialog.type === DialogTypeName.ReaderMenu ?
+        state.dialog.data as IReaderDialogOrDockSettingsMenuState :
+        state.dock.open && state.dock.type === DockTypeName.ReaderMenu ?
+            state.dock.data as IReaderDialogOrDockSettingsMenuState :
+            undefined;
+    const readerMenuRouteSortSearchParam = new URLSearchParams(state.router.location?.search || "").get("sort");
+    const readerMenuRouteSort = readerMenuData?.sort ||
+        (isPublicationNotesViewSort(readerMenuRouteSortSearchParam) ? readerMenuRouteSortSearchParam : undefined);
+
     return {
         isDivina,
         isPdf,
@@ -3697,7 +3728,8 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 
 
         pdfReaderConfig: state.reader.pdfConfig,
-        notes: state.reader.note,
+        notes: selectPublicationNotes(state),
+        readerMenuRouteSort,
         creator: state.creator,
         noteTotalCount: state.reader.noteTotalCount.state,
 
@@ -3800,14 +3832,15 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         toggleMenu: (data: readerLocalActionToggleMenu.Payload) => {
             dispatch(readerLocalActionToggleMenu.build(data));
         },
+        navigateReaderMenuTarget: dispatchReaderMenuRoutePush(dispatch),
         toggleSettings: (data: readerLocalActionToggleSettings.Payload) => {
             dispatch(readerLocalActionToggleSettings.build(data));
         },
         setPdfReaderConfig: (data: IReaderPdfConfig) => {
             dispatch(readerActions.pdfConfig.build(data));
         },
-        addUpdatePdfAnnotationNote: (publicationIdentifier: string, newNote: Omit<INoteState, "uuid">) => {
-            return dispatch(readerActions.note.addUpdate.build(publicationIdentifier, newNote));
+        addUpdatePdfAnnotationNote: (publicationIdentifier: string, newNote: Omit<PublicationNote, "uuid">) => {
+            return dispatch(readerActions.publicationNotes.commands.save.build(publicationIdentifier, newNote));
         },
     };
 };
