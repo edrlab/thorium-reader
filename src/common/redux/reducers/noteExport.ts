@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { type Reducer } from "redux";
-import { INoteExportState } from "../states/renderer/note";
+import { INoteExportState } from "../states/noteExport";
 import { noteExport } from "../actions";
 
 function noteExportReducer_(
