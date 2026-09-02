@@ -59,11 +59,17 @@ export const FeedCard: React.FC<IFeedCardProps> = (props) => {
         dispatch(customizationActions.triggerOpdsAuth.build(feedUrl, authenticationUrl));
     };
 
-    const setFeedFavoriteButton = () => {
-        apiAction("opds/setFeedFavorite", feed.identifier, !feed.favorite).then(() => {
-            loadFeeds();
+    const addFeedButton = () => {
+        apiAction("opds/deleteFeed", feed.identifier).then(() => {
+            apiAction("opds/addFeed", {
+                title: feed.title,
+                url: feed.url,
+                favorite: !feed.favorite,
+            }).catch((err) => {
+                console.error("Error to fetch api opds/addFeed", err);
+            });
         }).catch((err) => {
-            console.error("Error to fetch api opds/setFeedFavorite", err);
+            console.error("Error to fetch api opds/deleteFeed", err);
         });
     };
 
@@ -110,7 +116,7 @@ export const FeedCard: React.FC<IFeedCardProps> = (props) => {
                     <p title={`${feed.title} --- ${feed.url}`}>{feed.title}</p>
                 </div>
             </Link>
-            <button onClick={setFeedFavoriteButton}
+            <button onClick={addFeedButton}
                 className={stylesCatalogs.button_favorites}>
                 <SVG svg={StarIcon} ariaHidden className={feed.favorite ? stylesCatalogs.catalog_favorite_icon_true : stylesCatalogs.catalog_favorite_icon_false} />
             </button>

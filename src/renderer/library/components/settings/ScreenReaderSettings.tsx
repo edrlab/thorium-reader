@@ -18,7 +18,6 @@ import { screenReaderActions } from "readium-desktop/common/redux/actions";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
-import { logAppSettingModified } from "./analytics";
 
 const ScreenReaderSettings: React.FC<{}> = () => {
     const [__] = useTranslator();
@@ -28,9 +27,7 @@ const ScreenReaderSettings: React.FC<{}> = () => {
     const dispatch = useDispatch();
     const screenReaderActivate = useSelector((state: ICommonRootState) => state.screenReader.activate);
     const onChange = () => {
-        const nextScreenReaderActivate = !screenReaderActivate;
-        dispatch(screenReaderActions.save.build(nextScreenReaderActivate));
-        logAppSettingModified("screenreader", nextScreenReaderActivate);
+        dispatch(screenReaderActions.save.build(!screenReaderActivate));
     };
     return (
         <section className={stylesSettings.section} style={{ position: "relative" }}>

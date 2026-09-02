@@ -1,5 +1,4 @@
 const webpack = require("webpack");
-// require("dotenv").config({ quiet: true });
 
 const { version, build, name } = require("./package.json");
 // var git = require("git-rev-sync");
@@ -51,20 +50,6 @@ const telemetryUrl = isPackaged
     : "";
 const telemetrySecret = process.env.THORIUM_TELEMETRY_SECRET || "";
 const telemetrySecretData = process.env.THORIUM_TELEMETRY_SECRET_DATA || "";
-const firebaseEnabled =
-    !["0", "false"].includes((process.env.THORIUM_FIREBASE_ENABLED || "0").toLowerCase());
-const firebaseDebug =
-    !["0", "false"].includes((process.env.THORIUM_FIREBASE_DEBUG || "0").toLowerCase());
-const firebaseAppId = process.env.THORIUM_FIREBASE_APP_ID || "";
-const firebaseMeasurementId = process.env.THORIUM_FIREBASE_MEASUREMENT_ID || "";
-const firebaseMeasurementProtocolApiSecret =
-    process.env.THORIUM_FIREBASE_MEASUREMENT_PROTOCOL_API_SECRET || "";
-const firebaseMeasurementProtocolEndpoint =
-    process.env.THORIUM_FIREBASE_MEASUREMENT_PROTOCOL_ENDPOINT ||
-    "https://www.google-analytics.com/mp/collect";
-const firebaseMeasurementProtocolDebugEndpoint =
-    process.env.THORIUM_FIREBASE_MEASUREMENT_PROTOCOL_DEBUG_ENDPOINT ||
-    "https://www.google-analytics.com/debug/mp/collect";
 const isURLRequireTldFalse =
     !["0", "false"].includes((process.env.THORIUM_ISURL_REQUIRE_TLD_FALSE || "0").toLowerCase());
 
@@ -94,13 +79,6 @@ const data = {
     __TH__TELEMETRY_URL__: JSON.stringify(telemetryUrl),
     __TH__TELEMETRY_SECRET__: JSON.stringify(telemetrySecret),
     __TH__TELEMETRY_SECRETDATA__: JSON.stringify(telemetrySecretData),
-    __TH__FIREBASE_ENABLED__: JSON.stringify(firebaseEnabled),
-    __TH__FIREBASE_DEBUG__: JSON.stringify(firebaseDebug),
-    __TH__FIREBASE_APP_ID__: JSON.stringify(firebaseAppId),
-    __TH__FIREBASE_MEASUREMENT_ID__: JSON.stringify(firebaseMeasurementId),
-    __TH__FIREBASE_MEASUREMENT_PROTOCOL_API_SECRET__: JSON.stringify(firebaseMeasurementProtocolApiSecret),
-    __TH__FIREBASE_MEASUREMENT_PROTOCOL_ENDPOINT__: JSON.stringify(firebaseMeasurementProtocolEndpoint),
-    __TH__FIREBASE_MEASUREMENT_PROTOCOL_DEBUG_ENDPOINT__: JSON.stringify(firebaseMeasurementProtocolDebugEndpoint),
     __TH__CUSTOMIZATION_PROFILE_PUB_KEY__: JSON.stringify(pubKey),
     __TH__CUSTOMIZATION_PROFILE_PRIVATE_KEY__: JSON.stringify(privateKey),
 

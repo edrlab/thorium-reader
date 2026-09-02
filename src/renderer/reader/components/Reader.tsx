@@ -19,7 +19,6 @@ import * as path from "node:path";
 import * as r from "ramda";
 import * as React from "react";
 import { connect } from "react-redux";
-import { readerAnalyticsEvents } from "readium-desktop/common/analytics/reader";
 import { computeReadiumCssJsonMessage } from "readium-desktop/common/computeReadiumCssJsonMessage";
 import { isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
 import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
@@ -129,7 +128,6 @@ import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 
-import { logEvent } from "readium-desktop/renderer/common/analytics";
 import { winCommonActions } from "readium-desktop/common/redux/actions";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { MiniLocatorExtended, minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
@@ -926,10 +924,6 @@ class Reader extends React.Component<IProps, IState> {
             },
         });
 
-        if (result) {
-            logEvent(readerAnalyticsEvents.annotate);
-        }
-
         if (!result && payload?.draft) {
             this.props.toastError(getTranslator().__("reader.annotations.error.pdf.validationSelection"));
             return;
@@ -988,7 +982,6 @@ class Reader extends React.Component<IProps, IState> {
         noteDraft.tags = tags;
 
         const action = this.props.addUpdatePdfAnnotationNote(this.props.pubId, noteDraft);
-        logEvent(readerAnalyticsEvents.annotate);
         this.setState({ pdfAnnotationDraft: undefined });
         this.syncPdfAnnotations(action.payload.newNote);
     }
@@ -2316,17 +2309,11 @@ class Reader extends React.Component<IProps, IState> {
 
     private onKeyboardHistoryNavigationNext = () => {
         // console.log("#+$%".repeat(5)  + " history forward()", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
-        if (this.state.historyCanGoForward) {
-            logEvent(readerAnalyticsEvents.historyForward);
-        }
         window.history.forward();
         // window.history.go(1);
     };
     private onKeyboardHistoryNavigationPrevious = () => {
         // console.log("#+$%".repeat(5)  + " history back()", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
-        if (this.state.historyCanGoBack) {
-            logEvent(readerAnalyticsEvents.historyBack);
-        }
         window.history.back();
         // window.history.go(-1);
     };
@@ -3196,7 +3183,6 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         if (this.props.isPdf) {
-            logEvent(readerAnalyticsEvents.paginate);
             if (left) {
                 createOrGetPdfEventBus().dispatch("page-previous");
             } else {
@@ -3205,7 +3191,6 @@ class Reader extends React.Component<IProps, IState> {
         } else if (this.props.isDivina) {
 
             if (this.currentDivinaPlayer) {
-                logEvent(readerAnalyticsEvents.paginate);
                 if (left) {
                     this.currentDivinaPlayer.goLeft();
                 } else {
@@ -3223,7 +3208,6 @@ class Reader extends React.Component<IProps, IState> {
             const rtlIsOverridden = this.isRTL(this.isFixedLayout()) && this.props.disableRTLFlip;
             const left_ = rtlIsOverridden ? !left : left;
 
-            logEvent(readerAnalyticsEvents.paginate);
             if (wasPaused || wasPlaying) {
                 navLeftOrRight(left_, false);
                 // if (!this.state.r2PublicationHasMediaOverlays) {

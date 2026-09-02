@@ -12,7 +12,6 @@ import debug_ from "debug";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { SagaGenerator } from "typed-redux-saga";
 import { select as selectTyped, take as takeTyped, race as raceTyped, put as putTyped, all as allTyped, call as callTyped, spawn as spawnTyped, delay as delayTyped} from "typed-redux-saga/macro";
-import { readerAnalyticsEvents } from "readium-desktop/common/analytics/reader";
 import { readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalActionLocatorHrefChanged } from "../actions";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
@@ -31,7 +30,6 @@ import { checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation, readiumAnnot
 import { clone, equals } from "ramda";
 import { convertSelectorTargetToLocatorExtended } from "readium-desktop/common/readium/annotation/converter";
 import { getResourceCache } from "readium-desktop/common/redux/sagas/resourceCache";
-import { logEvent } from "readium-desktop/renderer/common/analytics";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:annotation");
@@ -275,9 +273,6 @@ function* createAnnotation(locatorExtended: MiniLocatorExtended, color: IColor, 
         created: (new Date()).getTime(),
         group: "annotation",
     }));
-    yield* spawnTyped(function*() {
-        yield* callTyped(logEvent, readerAnalyticsEvents.annotate);
-    });
 
     yield* putTyped(readerActions.bookmarkTotalCount.build(noteTotalCount + 1));
 

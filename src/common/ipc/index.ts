@@ -5,13 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as analyticsIpc from "./analytics";
 import * as readerIpc from "./reader";
 import * as syncIpc from "./sync";
 import * as winIpc from "./win";
 
 export {
-    analyticsIpc,
     readerIpc,
     syncIpc,
     winIpc,

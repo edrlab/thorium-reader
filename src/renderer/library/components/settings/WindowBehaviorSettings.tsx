@@ -19,7 +19,6 @@ import { ICommonRootState } from "readium-desktop/common/redux/states/commonRoot
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import os from "node:os";
-import { logAppSettingModified } from "./analytics";
 
 const IS_WINDOWS = os.platform() === "win32";
 
@@ -39,24 +38,16 @@ const WindowBehaviorSettings: React.FC<{}> = () => {
         state.settings.oneReaderWindowPerPublication === true);
 
     const toggleMinimizeLibraryToTray = () => {
-        const nextMinimizeLibraryToTray = !minimizeLibraryToTray;
-        dispatch(settingsActions.minimizeLibraryToTray.build(nextMinimizeLibraryToTray));
-        logAppSettingModified("minimize_library_to_tray", nextMinimizeLibraryToTray);
+        dispatch(settingsActions.minimizeLibraryToTray.build(!minimizeLibraryToTray));
     };
     const toggleKeepLibraryWindowInBackgroundOnReaderOpen = () => {
-        const nextKeepLibraryWindowInBackgroundOnReaderOpen = !keepLibraryWindowInBackgroundOnReaderOpen;
-        dispatch(settingsActions.keepLibraryWindowInBackgroundOnReaderOpen.build(nextKeepLibraryWindowInBackgroundOnReaderOpen));
-        logAppSettingModified("minimize_library", nextKeepLibraryWindowInBackgroundOnReaderOpen);
+        dispatch(settingsActions.keepLibraryWindowInBackgroundOnReaderOpen.build(!keepLibraryWindowInBackgroundOnReaderOpen));
     };
     const toggleKeepLibraryWindowInBackgroundOnReaderClose = () => {
-        const nextKeepLibraryWindowInBackgroundOnReaderClose = !keepLibraryWindowInBackgroundOnReaderClose;
-        dispatch(settingsActions.keepLibraryWindowInBackgroundOnReaderClose.build(nextKeepLibraryWindowInBackgroundOnReaderClose));
-        logAppSettingModified("keep_library_background", nextKeepLibraryWindowInBackgroundOnReaderClose);
+        dispatch(settingsActions.keepLibraryWindowInBackgroundOnReaderClose.build(!keepLibraryWindowInBackgroundOnReaderClose));
     };
     const toggleOneReaderWindowPerPublication = () => {
-        const nextOneReaderWindowPerPublication = !oneReaderWindowPerPublication;
-        dispatch(settingsActions.oneReaderWindowPerPublication.build(nextOneReaderWindowPerPublication));
-        logAppSettingModified("user_one_reader_window", nextOneReaderWindowPerPublication);
+        dispatch(settingsActions.oneReaderWindowPerPublication.build(!oneReaderWindowPerPublication));
     };
 
     return (

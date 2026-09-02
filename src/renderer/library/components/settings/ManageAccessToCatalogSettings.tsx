@@ -20,7 +20,6 @@ import { ICommonRootState } from "readium-desktop/common/redux/states/commonRoot
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { ApiappHowDoesItWorkInfoBox } from "../dialog/ApiappAddForm";
-import { logAppSettingModified } from "./analytics";
 
 const ManageAccessToCatalogSettings = () => {
 
@@ -32,9 +31,7 @@ const ManageAccessToCatalogSettings = () => {
     const enableAPIAPP = useSelector((state: ILibraryRootState) => state.settings.enableAPIAPP);
 
     const toggleEnableAPIAPP = () => {
-        const nextEnableAPIAPP = !enableAPIAPP;
-        dispatch(settingsActions.enableAPIAPP.build(nextEnableAPIAPP));
-        logAppSettingModified("pnb", nextEnableAPIAPP);
+        dispatch(settingsActions.enableAPIAPP.build(!enableAPIAPP));
     };
 
     return (

@@ -7,19 +7,12 @@
 
 import { diMainGet } from "readium-desktop/main/di";
 import { lcpActions } from "readium-desktop/common/redux/actions";
-import {
-    buildPublicationUserAnalyticsParams,
-    publicationAnalyticsEvents,
-} from "readium-desktop/common/analytics/publication";
-import { TAnalyticsEventParams } from "readium-desktop/common/api/interface/analyticsApi.interface";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call, delay } from "redux-saga/effects";
 import { call as callTyped } from "typed-redux-saga/macro";
 import { SagaGenerator } from "typed-redux-saga";
 import debug_ from "debug";
 import { RequesetToCloseAllReadersWithTheSamePubId } from "../../reader";
-import { spawnPublicationAnalyticsEvent } from "readium-desktop/main/redux/sagas/analyticsPublication";
-import { getPublication } from "./getPublication";
 
 const debug = debug_("readium-desktop:main/redux/saga/api/publication/delete");
 
@@ -71,14 +64,6 @@ export function* deletePublication(
     }
 
     try {
-        let analyticsParams: TAnalyticsEventParams | undefined;
-        try {
-            const publicationView = yield* getPublication(publicationIdentifier, false);
-            analyticsParams = buildPublicationUserAnalyticsParams(publicationView);
-        } catch (e) {
-            debug("cannot build delete publication analytics params", publicationIdentifier, e);
-        }
-
         // LCP publications use this lock so deletion cannot race with LCP/LSD license injection.
         // Non-LCP publications skip it; the shared-computer cleanup already owns it when needed.
         // yield put(readerActions.closeRequest.build(publicationIdentifier));
@@ -110,8 +95,6 @@ export function* deletePublication(
         const publicationViewConverter = diMainGet("publication-view-converter");
         // Remove from memory cache
         yield call(() => publicationViewConverter.removeFromMemoryCache(publicationIdentifier));
-
-        yield* spawnPublicationAnalyticsEvent(publicationAnalyticsEvents.deletePublication, analyticsParams);
     } finally {
         if (shouldUsePublicationFileLock && !publicationFileLockAlreadyHeld) {
             yield* callTyped(releasePublicationFileLock, publicationIdentifier);

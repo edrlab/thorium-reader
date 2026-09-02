@@ -18,7 +18,6 @@ import { ICommonRootState } from "readium-desktop/common/redux/states/commonRoot
 import { TTheme } from "readium-desktop/common/redux/states/theme";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import * as BrushIcon from "readium-desktop/renderer/assets/icons/paintbrush-icon.svg";
-import { logAppSettingModified } from "./analytics";
 
 const Themes = () => {
     const [__] = useTranslator();
@@ -37,10 +36,8 @@ const Themes = () => {
 
         if (typeof themeSelected !== "number") return;
         const { value: themeChosen } = options.find(({ id }) => id === themeSelected) || {};
-        if (!themeChosen || themeChosen === theme.name) return;
         document.body.setAttribute("data-theme", themeChosen);
         dispatch(themeActions.setTheme.build(themeChosen));
-        logAppSettingModified("theme", themeChosen);
     };
     const selectedKey = options.find(({ value }) => value === theme.name);
 

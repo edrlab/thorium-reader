@@ -18,14 +18,9 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import { useDiffBoolBetweenReaderConfigAndDefaultConfig, useReaderConfig, useSavePublisherReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
-import {
-    buildReaderPreferenceAnalyticsParams,
-    readerAnalyticsEvents,
-} from "readium-desktop/common/analytics/reader";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { comparePublisherReaderConfig } from "readium-desktop/common/publisherConfig";
 import debounce from "debounce";
-import { logEvent } from "readium-desktop/renderer/common/analytics";
 
 export const SaveResetApplyPreset = () => {
 
@@ -70,7 +65,6 @@ export const SaveResetApplyPreset = () => {
             <div>
                 <button className={stylesButtons.button_secondary_blue} style={{maxWidth: dockedMode ? "284px" : "", height: dockedMode ? "fit-content" : "30px"}} onClick={() => {
                     dispatch(readerActions.configSetDefault.build(readerConfig));
-                    logEvent(readerAnalyticsEvents.prefSave, buildReaderPreferenceAnalyticsParams(true));
                 }} disabled={!diffBetweenDefaultConfigAndConfig}>
                     <SVG ariaHidden={true} svg={SaveIcon} />
                     {__("reader.settings.preset.save")}</button>
@@ -78,10 +72,7 @@ export const SaveResetApplyPreset = () => {
             </div>
 
             <div>
-                <button className={stylesButtons.button_secondary_blue} style={{maxWidth: dockedMode ? "284px" : "", height: dockedMode ? "fit-content" : "30px"}} onClick={() => {
-                    applyPreferredConfig();
-                    logEvent(readerAnalyticsEvents.prefApply, buildReaderPreferenceAnalyticsParams(true));
-                }}>
+                <button className={stylesButtons.button_secondary_blue} style={{maxWidth: dockedMode ? "284px" : "", height: dockedMode ? "fit-content" : "30px"}} onClick={applyPreferredConfig}>
                     <SVG ariaHidden={true} svg={DoubleCheckIcon} />
                     {__("reader.settings.preset.apply")}
                 </button>
@@ -92,7 +83,6 @@ export const SaveResetApplyPreset = () => {
                 <button className={stylesButtons.button_secondary_blue} style={{maxWidth: dockedMode ? "284px" : "", height: dockedMode ? "fit-content" : "30px"}} onClick={() => {
                     dispatch(readerActions.configSetDefault.build(readerConfigInitialState));
                     applyPreferredConfig();
-                    logEvent(readerAnalyticsEvents.prefReset, buildReaderPreferenceAnalyticsParams(true));
                 }}>
                     <SVG ariaHidden={true} svg={ResetIcon} />
                     {__("reader.settings.preset.reset")}

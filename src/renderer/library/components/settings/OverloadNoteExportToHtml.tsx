@@ -22,7 +22,6 @@ import debounce from "debounce";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { TextArea } from "react-aria-components";
 import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/annotation/htmlTemplate";
-import { logAppSettingModified } from "./analytics";
 
 const OverloadNoteExportToHtml: React.FC<{}> = () => {
 
@@ -36,9 +35,7 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
     const htmlContent = useSelector((state: ILibraryRootState) => state.noteExport.htmlContent);
     const textAreaRef = React.useRef<HTMLTextAreaElement>();
     const toggleEnableCheckbox = () => {
-        const nextEnableCheckbox = !enableCheckbox;
-        dispatch(noteExport.overrideHTMLTemplate.build(nextEnableCheckbox, htmlContent));
-        logAppSettingModified("custom_annot_template", nextEnableCheckbox);
+        dispatch(noteExport.overrideHTMLTemplate.build(!enableCheckbox, htmlContent));
     };
     const updateHtmlContent = React.useCallback((str: string) => {
         const slicedStr = str.slice(0, MAX_LEN);
@@ -52,7 +49,6 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
     const resetHtmlContent = () => {
         dispatch(noteExport.overrideHTMLTemplate.build(enableCheckbox, noteExportHtmlMustacheTemplate));
         textAreaRef.current.value = noteExportHtmlMustacheTemplate;
-        logAppSettingModified("default_annot_template", true);
     };
 
     return (<>

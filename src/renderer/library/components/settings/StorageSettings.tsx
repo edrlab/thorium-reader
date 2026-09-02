@@ -24,7 +24,6 @@ import { ICommonRootState } from "readium-desktop/common/redux/states/commonRoot
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import SettingsRecovery from "./SettingsRecovery";
-import { logAppSettingModified } from "./analytics";
 
 const StorageConfirmDialog = (props: {
     open: boolean;
@@ -81,27 +80,6 @@ const StorageSettings: React.FC<{}> = () => {
     const [confirmAddOpen, setConfirmAddOpen] = React.useState(false);
     const [confirmEditOpen, setConfirmEditOpen] = React.useState(false);
     const [confirmDeleteOpen, setConfirmDeleteOpen] = React.useState(false);
-    const storageReadyRef = React.useRef(false);
-    const previousUserDirectoryRef = React.useRef(userDirectory);
-
-    React.useEffect(() => {
-        if (!defaultDirectory) {
-            return;
-        }
-
-        if (!storageReadyRef.current) {
-            storageReadyRef.current = true;
-            previousUserDirectoryRef.current = userDirectory;
-            return;
-        }
-
-        const previousUserDirectory = previousUserDirectoryRef.current;
-        previousUserDirectoryRef.current = userDirectory;
-
-        if (userDirectory && userDirectory !== previousUserDirectory) {
-            logAppSettingModified("storage", true);
-        }
-    }, [defaultDirectory, userDirectory]);
 
     const removeUserDirectory = React.useCallback(() => {
         dispatch(catalogActions.setUserDirectory.build(""));

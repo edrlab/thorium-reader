@@ -10,7 +10,6 @@ import * as stylesInputs from "readium-desktop/renderer/assets/styles/components
 import * as React from "react";
 import { connect } from "react-redux";
 import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
-import { readerAnalyticsEvents } from "readium-desktop/common/analytics/reader";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import * as searchIcon from "readium-desktop/renderer/assets/icons/search-icon.svg";
 import {
@@ -28,7 +27,6 @@ import { readerLocalActionSearch } from "../../redux/actions";
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 import LoaderSearch from "./LoaderSearch";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
-import { logEvent } from "readium-desktop/renderer/common/analytics";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -171,7 +169,6 @@ class SearchFormPicker extends React.Component<IProps, IState> {
 
         this.props.reset();
 
-        logEvent(readerAnalyticsEvents.search);
         this.props.searchRequest(this.state.inputValue);
     }
 }

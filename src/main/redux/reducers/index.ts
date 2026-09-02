@@ -8,7 +8,6 @@
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 import { keyboardReducer } from "readium-desktop/common/redux/reducers/keyboard";
 import { appReducer } from "readium-desktop/main/redux/reducers/app";
-import { analyticsReducer } from "readium-desktop/main/redux/reducers/analytics";
 import { streamerReducer } from "readium-desktop/main/redux/reducers/streamer";
 import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
 import { screenReaderReducer } from "readium-desktop/common/redux/reducers/screenReader";
@@ -49,7 +48,6 @@ const debug = debug_(filename_);
 debug("_");
 
 export const rootReducer = combineReducers({ // RootState
-    analytics: analyticsReducer,
     versionUpdate: versionUpdateReducer,
     theme: themeReducer,
     session: sessionReducer,

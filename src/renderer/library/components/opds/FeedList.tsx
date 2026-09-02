@@ -56,8 +56,7 @@ class FeedList extends React.Component<IProps, IState> {
         this.unsubscribe = apiSubscribe([
             "opds/addFeed",
             "opds/deleteFeed",
-            "opds/updateFeed",
-            "opds/setFeedFavorite",
+            // "opds/updateFeed",
         ], this.loadFeeds);
 
         this.unsubscribeAction = subscribeToAction(opdsActions.refresh.ID, (_action) => {

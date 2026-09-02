@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import { OpdsFeed } from "readium-desktop/common/models/opds";
-import { TCatalogAddAnalyticsOrigin } from "readium-desktop/common/analytics/catalog";
 import {
     IOpdsFeedView, IOpdsLinkView,
 } from "readium-desktop/common/views/opds";
@@ -26,16 +25,10 @@ export interface IOpdsApi {
     ) => SagaGenerator<IOpdsFeedView[]>;
     addFeed: (
         data: OpdsFeed,
-        origin?: TCatalogAddAnalyticsOrigin,
     ) => SagaGenerator<IOpdsFeedView>;
-    updateFeed: (
-        identifier: string,
-        data: OpdsFeed,
-    ) => SagaGenerator<IOpdsFeedView>;
-    setFeedFavorite: (
-        identifier: string,
-        favorite: boolean,
-    ) => SagaGenerator<void>;
+    // updateFeed: (
+    //     data: OpdsFeed,
+    // ) => Promise<IOpdsFeedView>;
     getUrlWithSearchLinks: (
         searchLink: TOpdsLinkSearch[] | TOpdsLinkSearch,
     ) => SagaGenerator<string | undefined>;
@@ -46,7 +39,6 @@ export interface IOpdsModuleApi {
     "opds/deleteFeed": IOpdsApi["deleteFeed"];
     "opds/findAllFeeds": IOpdsApi["findAllFeeds"];
     "opds/addFeed": IOpdsApi["addFeed"];
-    "opds/updateFeed": IOpdsApi["updateFeed"];
-    "opds/setFeedFavorite": IOpdsApi["setFeedFavorite"];
+    // "opds/updateFeed": IOpdsApi["updateFeed"];
     "opds/getUrlWithSearchLinks": IOpdsApi["getUrlWithSearchLinks"];
 }

@@ -7,13 +7,8 @@
 
 import { dialog } from "electron";
 import { call as callTyped } from "typed-redux-saga/macro";
-import {
-    buildPublicationUserAnalyticsParams,
-    publicationAnalyticsEvents,
-} from "readium-desktop/common/analytics/publication";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
-import { spawnPublicationAnalyticsEvent } from "readium-desktop/main/redux/sagas/analyticsPublication";
 
 export function* exportPublication(publicationView: PublicationView) {
 
@@ -38,10 +33,6 @@ export function* exportPublication(publicationView: PublicationView) {
     if (!res.canceled) {
         if (res.filePath) {
             yield* callTyped(() => publicationStorage.copyPublicationToPath(publicationView, res.filePath));
-            yield* spawnPublicationAnalyticsEvent(
-                publicationAnalyticsEvents.saveAs,
-                buildPublicationUserAnalyticsParams(publicationView),
-            );
         }
     }
 }

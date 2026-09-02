@@ -10,15 +10,10 @@ import * as stylesSettings from "readium-desktop/renderer/assets/styles/componen
 import * as React from "react";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
-import {
-    buildReaderPreferenceAnalyticsParams,
-    readerAnalyticsEvents,
-} from "readium-desktop/common/analytics/reader";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { TTheme } from "readium-desktop/common/models/reader";
 import { useReaderConfig, useSaveReaderConfigDebounced } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 import { RadioGroupItem } from "readium-desktop/renderer/reader/components/ReaderSettings/ReaderSettings";
-import { logEvent } from "readium-desktop/renderer/common/analytics";
 
 export const Theme = ({ dockedMode }: { dockedMode: boolean }) => {
     const [__] = useTranslator();
@@ -93,10 +88,7 @@ export const Theme = ({ dockedMode }: { dockedMode: boolean }) => {
             <h3>{__("reader.settings.theme.title")}</h3>
             <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: dockedMode ? "10px" : "20px", marginTop: "5px", flexWrap: "wrap" }}
                 value={themeOptions.find((theme) => theme.id === defaultKey).value}
-                onValueChange={(option) => {
-                    set({ theme: option as TTheme });
-                    logEvent(readerAnalyticsEvents.prefTheme, buildReaderPreferenceAnalyticsParams(option));
-                }}
+                onValueChange={(option) => set({ theme: option as TTheme })}
             >
                 {themeOptions.map((theme) =>
                     <RadioGroupItem

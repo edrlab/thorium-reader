@@ -8,7 +8,6 @@
 import debug_ from "debug";
 import { app, dialog, shell } from "electron";
 import { keyboardActions, versionUpdateActions } from "readium-desktop/common/redux/actions";
-import { logMeasurementProtocol } from "readium-desktop/main/analytics/measurementProtocol";
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put, take } from "redux-saga/effects";
@@ -24,7 +23,6 @@ import { appActions, winActions } from "../actions";
 import * as api from "./api";
 import * as appSaga from "./app";
 import * as auth from "./auth";
-import * as analyticsIpc from "./analyticsIpc";
 import * as events from "./event";
 import * as i18n from "./i18n";
 import * as ipc from "./ipc";
@@ -123,8 +121,6 @@ export function* rootSaga() {
     yield ipc.saga();
     // yield spawnLeading(ipc.watchers, (e) => error("main:rootSaga:ipc", e));
 
-    yield analyticsIpc.saga();
-
     yield reader.saga();
     // yield spawnLeading(reader.watchers, (e) => error("main:rootSaga:reader", e));
 
@@ -192,54 +188,6 @@ export function* rootSaga() {
     }
 
     // spawn telemetry in background
-    const analyticsClientId = yield* selectTyped((state: RootState) => state.analytics.clientId);
-    const analyticsLocale = yield* selectTyped((state: RootState) => state.i18n.locale);
-
-    yield* spawnTyped(function* () {
-        try {
-            yield* callTyped(() => logMeasurementProtocol("app_start", undefined, {
-                clientId: analyticsClientId,
-                locale: analyticsLocale,
-            }));
-        } catch (e) {
-            error(filename_ + ":app_start", e);
-        }
-    });
-
-    if (!versionFromHydratedGlobalState) {
-        yield* spawnTyped(function* () {
-            try {
-                yield* callTyped(() => logMeasurementProtocol("app_first_open", undefined, {
-                    clientId: analyticsClientId,
-                    locale: analyticsLocale,
-                }));
-            } catch (e) {
-                error(filename_ + ":app_first_open", e);
-            }
-        });
-    }
-
-    // Send the app_version_updated event whenever the persisted version differs from the current
-    // application version, whether it is an upgrade, a downgrade, or a dev build switch.
-    if (
-        versionFromHydratedGlobalState &&
-        versionFromHydratedGlobalState !== _APP_VERSION
-    ) {
-        yield* spawnTyped(function* () {
-            try {
-                yield* callTyped(() => logMeasurementProtocol("app_version_updated", {
-                    previous_version: versionFromHydratedGlobalState,
-                    current_version: _APP_VERSION,
-                }, {
-                    clientId: analyticsClientId,
-                    locale: analyticsLocale,
-                }));
-            } catch (e) {
-                error(filename_ + ":app_version_updated", e);
-            }
-        });
-    }
-
     yield* spawnTyped(telemetry.collectSaveAndSend, versionFromHydratedGlobalState);
 }
 

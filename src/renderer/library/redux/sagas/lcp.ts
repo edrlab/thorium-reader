@@ -6,12 +6,10 @@
 // ==LICENSE-END==
 
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
-import { lcpAnalyticsEvents } from "readium-desktop/common/analytics/lcp";
 import { lcpActions } from "readium-desktop/common/redux/actions";
 import { dialogActions } from "readium-desktop/common/redux/actions/";
-import { logEvent } from "readium-desktop/renderer/common/analytics";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { call, put, spawn, takeEvery } from "redux-saga/effects";
+import { put, takeEvery } from "redux-saga/effects";
 
 function* lcpUserKeyCheckRequest(action: lcpActions.userKeyCheckRequest.TAction) {
     const { hint, urlHint, publicationView, message } = action.payload;
@@ -26,9 +24,6 @@ function* lcpUserKeyCheckRequest(action: lcpActions.userKeyCheckRequest.TAction)
             message,
         },
     ));
-    yield spawn(function*() {
-        yield call(logEvent, lcpAnalyticsEvents.dialog);
-    });
 }
 
 export function saga() {
