@@ -1,7 +1,7 @@
 
 // import debug_ from "debug";
-import * as fs from "fs";
-import * as path from "path";
+import * as fs from "node:fs";
+import * as path from "node:path";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
 import { ICustomizationManifest } from "readium-desktop/common/readium/customization/manifest";
@@ -63,7 +63,7 @@ function main() {
 
     let manifest: ICustomizationManifest;
     try {
-        manifest = JSON.parse(fs.readFileSync(path.join(inputDir, "manifest.json"), "utf-8"));
+        manifest = JSON.parse(fs.readFileSync(path.join(inputDir, "manifest.json"), { encoding: "utf8"}));
     } catch {
         console.error("manifest not found!!!");
         process.exit(1);

@@ -6,9 +6,9 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import * as fs from "fs";
+import * as fs from "node:fs";
 import * as mime from "mime-types";
-import * as path from "path";
+import * as path from "node:path";
 import * as xmldom from "@xmldom/xmldom";
 import * as xpath from "xpath";
 import { ZipFile } from "yazl";
@@ -1184,6 +1184,7 @@ ${cssHrefs.reduce((pv, cv) => {
                         audioPublication.Metadata = new Metadata();
                     }
                     audioPublication.Metadata.RDFType = "http://schema.org/Audiobook";
+                    audioPublication.Metadata.ConformsTo = [ "https://readium.org/webpub-manifest/profiles/audiobook" ];
 
                     const processLinkAudio = async (link: Link): Promise<boolean | null> => {
 

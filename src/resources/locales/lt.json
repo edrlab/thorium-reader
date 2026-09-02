@@ -174,16 +174,16 @@
                 "title": "Aktyvuojamas tinkinimo profilis"
             }
         },
-        "deleteAnnotations": "",
-        "deleteAnnotationsText_few": "",
+        "deleteAnnotations": "Šalinti pastabas?",
+        "deleteAnnotationsText_few": "Ar tikrai norite pašalinti {{- count}} pastabas?",
         "deleteAnnotationsText_many": "",
-        "deleteAnnotationsText_one": "",
-        "deleteAnnotationsText_other": "",
-        "deleteBookmarks": "",
-        "deleteBookmarksText_few": "",
+        "deleteAnnotationsText_one": "Ar tikrai norite pašalinti {{- count}} pastabą?",
+        "deleteAnnotationsText_other": "Ar tikrai norite pašalinti {{- count}} pastabų?",
+        "deleteBookmarks": "Šalinti skirtukus?",
+        "deleteBookmarksText_few": "Ar tikrai norite pašalinti {{- count}} skirtukus?",
         "deleteBookmarksText_many": "",
-        "deleteBookmarksText_one": "",
-        "deleteBookmarksText_other": "",
+        "deleteBookmarksText_one": "Ar tikrai norite pašalinti {{- count}} skirtuką?",
+        "deleteBookmarksText_other": "Ar tikrai norite pašalinti {{- count}} skirtukų?",
         "deleteFeed": "Pašalinti katalogą?",
         "deletePublication": "Pašalinti leidinį?",
         "deletePublicationWithNotes": "Įspėjimas: šiame leidinyje yra pastabų ir (arba) skirtukų, kurios taip pat bus pašalintos! (jei norite jas išsaugoti, prieš pašalindami leidinį eksportuokite pastabas)",
@@ -787,6 +787,7 @@
         },
         "marks": {
             "annotations": "Pastabos",
+            "annotationsReadium": "Pastabos (Readium)",
             "bookmarks": "Skirtukai",
             "delete": "Šalinti",
             "edit": "Keisti",
@@ -818,14 +819,13 @@
             "useTTSHighlightsForMODescription": "Išjungti leidėjo stilius"
         },
         "navigation": {
-            "ZenModeExit": "Išeiti iš Zen režimo",
-            "ZenModeTitle": "Zen režimas",
+            "ZenModeExit": "Išeiti iš „zen“ režimo",
+            "ZenModeTitle": "„Zen“ režimas",
             "annotationTitle": "Pastaba",
             "backHomeTitle": "Užverti šį skaitytuvės langą (grįžti į knygų lentyną)",
             "bookmarkTitle": "Sukurti skirtuką",
             "currentPage": "Dabartinis puslapis: {{- current}}",
             "currentPageTotal": "Dabartinis puslapis: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Rodyti bibliotekos / lentynos langą",
             "goTo": "Eiti į",
             "goToError": "Toks puslapių skirtukas neegzistuoja",
             "goToPlaceHolder": "Įveskite puslapio numerį",
@@ -904,6 +904,7 @@
             "disposition": {
                 "title": "Išdėstymas"
             },
+            "enablePageBreakMarginIndicators": "Rodyti puslapio skirtukus paraštėje",
             "font": "Šriftas",
             "fontSize": "Šrifto dydis",
             "increaseFontSize": "Padidinti šrifto dydį",
@@ -914,7 +915,6 @@
             "lineSpacing": "Eilučių išretinimas",
             "margin": "Paraštė",
             "mathjax": "Įgalinti MathJax",
-            "mathjaxDescription": "MathJax",
             "noFootnotes": "Išjungti iššokančias išnašas",
             "noRTLFlip": "Išjungti iš-dešinės-į-kairę naudotojo sąsają",
             "noRuby": "Slėpti japonų kalbos „ruby“ simbolius",
@@ -1241,6 +1241,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "Skaitytuvės lange įjungti sistemos viso ekrano režimą arba atkurti įprastą lango režimą. Atkreipkite dėmesį, jog tai skiriasi nuo „zen“ režimo, kuris supaprastina naudotojo sąsają",
                     "name": "Perjungti viso ekrano režimą"
+                },
+                "ToggleReaderZenMode": {
+                    "description": "Skaitytuvės lange įjungti arba išjungti „zen“ režimą, kuris supaprastina naudotojo sąsają skaitymo metu",
+                    "name": "Perjungti „zen“ režimą"
                 },
                 "ToggleScreenReaderOptimize": {
                     "description": "Bibliotekos lange perjungti optimizuotą ekrano skaitytuvų palaikymą",

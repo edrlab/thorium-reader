@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ReaderMode } from "readium-desktop/common/models/reader";
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
 import { IKeyboardState } from "readium-desktop/common/redux/states/keyboard";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
@@ -20,8 +19,10 @@ import { IDictWinSessionReaderState } from "./win/session/reader";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { IWhatsNewState } from "readium-desktop/common/redux/states/whatsNew";
 import { ISettingsState } from "readium-desktop/common/redux/states/settings";
+import { IAnalyticsState } from "./analytics";
 
 export interface RootState extends ICommonRootState {
+    analytics: IAnalyticsState;
     app: AppState;
     // net: NetState;
     i18n: I18NState;
@@ -36,7 +37,6 @@ export interface RootState extends ICommonRootState {
             reader: unknown, // IDictWinRegistryReaderState,
         },
     };
-    mode: ReaderMode;
     publication: {
         lastReadingQueue: TPQueueState;
         readingFinishedQueue: TPQueueState;
@@ -51,7 +51,7 @@ export interface RootState extends ICommonRootState {
     settings: ISettingsState;
 }
 
-export type PersistRootState_ = Pick<RootState, "win" | "publication" | "reader" | "session" | "screenReader" | "i18n" | "opds" | "version" | "theme" | "whatsNew" | "settings" | "creator" | "noteExport" | "customization">;
+export type PersistRootState_ = Pick<RootState, "analytics" | "win" | "publication" | "reader" | "session" | "screenReader" | "i18n" | "opds" | "version" | "theme" | "whatsNew" | "settings" | "creator" | "noteExport" | "customization">;
 export type PersistRootState = Omit<PersistRootState_, "win"> & {
     win: {
         session: {

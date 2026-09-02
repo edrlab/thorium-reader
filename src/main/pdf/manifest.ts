@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import * as path from "path";
+import * as path from "node:path";
 import { mimeTypes } from "readium-desktop/utils/mimeTypes";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 
@@ -136,10 +136,11 @@ export async function pdfManifest(pdfPath: string, info: IInfo): Promise<R2Publi
     r2Publication.Metadata = new R2Metadata();
     r2Publication.Metadata.Title = name || ""; // required
 
+    r2Publication.Metadata.RDFType = "http://schema.org/Book";
+    r2Publication.Metadata.ConformsTo = [ "https://readium.org/webpub-manifest/profiles/pdf" ];
+
     if (info) {
         debug(info);
-
-        r2Publication.Metadata.RDFType = "https://schema.org/Book";
 
         {
             const title = info.Title;

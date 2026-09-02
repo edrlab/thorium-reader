@@ -13,11 +13,6 @@ import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import type { PublicationNotesViewSort } from "readium-desktop/common/publication-notes";
 import type { TDrawType, TDrawView } from "readium-desktop/common/type/note.type";
 
-export enum ReaderMode {
-    Attached = "attached",
-    Detached = "detached",
-}
-
 export interface ReaderTTSMediaOverlay {
     ttsPlaybackRate: string;
 
@@ -85,6 +80,7 @@ export interface ReaderConfigBooleans {
     paged: boolean;
     readiumcss: boolean;
     enableMathJax: boolean;
+    enablePageBreakMarginIndicators: boolean;
     reduceMotion: boolean;
     noFootnotes: boolean;
     noTemporaryNavTargetOutline: boolean;

@@ -43,7 +43,7 @@ import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, cancel, delay, join, put, race, spawn } from "redux-saga/effects";
 import { call as callTyped, fork as forkTyped, take as takeTyped } from "typed-redux-saga/macro";
-import { URL } from "url";
+import { URL } from "node:url";
 
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
@@ -282,7 +282,7 @@ function* opdsRequestMediaFlow({request, callback}: TregisterHttpProtocolHandler
     const schemePrefix = URL_PROTOCOL_OPDS_MEDIA + "://" + URL_HOST_COMMON + "/";
     if (request && request.url.startsWith(schemePrefix)) {
         const b64 = decodeURIComponent(request.url.slice(schemePrefix.length));
-        const url = Buffer.from(b64, "base64").toString("utf-8");
+        const url = Buffer.from(b64, "base64").toString("utf8");
 
         // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
         if (!url || !isURL(url)) {

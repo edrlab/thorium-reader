@@ -7,7 +7,7 @@
 
 import debug_ from "debug";
 
-import { ICFIFragmentSelector, ICfiSelector, ICssSelector, IProgressionSelector, ISelector, ITextPositionSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import { ICFIFragmentSelector, ICssSelector, IEPUBCFISelector, IProgressionSelector, ISelector, ITextPositionSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import { uniqueCssSelector } from "@r2-navigator-js/electron/renderer/common/cssselector3";
 import type { PublicationNote } from "readium-desktop/common/publication-notes";
 import {  describeTextPosition, describeTextQuote } from "readium-desktop/third_party/apache-annotator/dom";
@@ -128,21 +128,21 @@ export async function readiumAnnotationSelectorFromNote(
     const rootNode = EpubCfiUtils.createEmptyRootNode();
     EpubCfiBuilderHelper.appendTerminalDomRange(range, rootNode);
     let cfi = EpubCfiStringifier.stringifyRootNode(rootNode);
-    let cfi_ = cfi;
+    let cfiFragmentValue = cfi;
     if (cfi) {
         cfi = cfi.replace(/^epubcfi\(/, "").replace(/\)$/, "");
-        cfi_ = `epubcfi(${opfSpineItemCFIPath}!${cfi})`;
+        cfiFragmentValue = `epubcfi(${opfSpineItemCFIPath}!${cfi})`;
     }
 
     const cfiFragmentSelector: ICFIFragmentSelector = {
         type: "FragmentSelector",
         conformsTo: "http://www.idpf.org/epub/linking/cfi/epub-cfi.html",
-        value: cfi_,
+        value: cfiFragmentValue,
     };
     selector.push(cfiFragmentSelector);
 
-    const cfiSelector: ICfiSelector = {
-        type: "CfiSelector",
+    const cfiSelector: IEPUBCFISelector = {
+        type: "EPUBCFISelector",
         value: cfi,
     };
     selector.push(cfiSelector);

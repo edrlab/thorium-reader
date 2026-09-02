@@ -33,6 +33,7 @@ interface DockedHeaderProps {
     optionDisabled?: number[];
     section: string;
     allowCustomContainer?: () => JSX.Element;
+    panel: "menu" | "settings"
 }
 
 interface SelectRefProps {
@@ -49,16 +50,17 @@ interface SelectRefProps {
     }[],
     optionSelected: number,
     optionDisabled: number[],
-    section: string
+    section: string,
+    panel: "menu" | "settings"
 }
 
 const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: string, name: string, disabled: boolean, svg: {} }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
 SelectRef.displayName = "ComboBox";
 
-const SelectRefComponent = ({ isEpub, setSection, dockedMode, dockedModeRef, options, optionSelected, optionDisabled, section }: SelectRefProps) => {
+const SelectRefComponent = ({ isEpub, setSection, dockedMode, dockedModeRef, options, optionSelected, optionDisabled, section, panel }: SelectRefProps & { panel: "menu" | "settings" }) => {
     return (
         <SelectRef
-            id="reader-settings-nav"
+            id={`reader-${panel}-nav`}
             items={options}
             selectedKey={optionSelected}
             disabledKeys={optionDisabled}
@@ -99,7 +101,7 @@ const SelectRefComponent = ({ isEpub, setSection, dockedMode, dockedModeRef, opt
     );
 };
 
-export const DockedHeader = ({ dockedMode, dockingMode, isEpub, setSection, dockedModeRef, options, optionSelected, optionDisabled, section, allowCustomContainer }: DockedHeaderProps) => {
+export const DockedHeader = ({ dockedMode, dockingMode, isEpub, setSection, dockedModeRef, options, optionSelected, optionDisabled, section, allowCustomContainer, panel }: DockedHeaderProps) => {
 
     const setReaderConfig = useSaveReaderConfig();
     const setDockingMode = (value: ReaderConfig["readerDockingMode"]) => {
@@ -113,7 +115,7 @@ export const DockedHeader = ({ dockedMode, dockingMode, isEpub, setSection, dock
     const [__] = useTranslator();
 
     const showAllowCustom = dockedMode && isEpub && allowCustomContainer;
-    const selectRef = <SelectRefComponent key="select-ref" isEpub={isEpub} setSection={setSection} dockedMode={dockedMode} dockedModeRef={dockedModeRef} options={options} optionSelected={optionSelected} optionDisabled={optionDisabled} section={section} />;
+    const selectRef = <SelectRefComponent key="select-ref" isEpub={isEpub} setSection={setSection} dockedMode={dockedMode} dockedModeRef={dockedModeRef} options={options} optionSelected={optionSelected} optionDisabled={optionDisabled} section={section} panel={panel} />;
     return (
         <>
             <div key="docked-header" className={stylesPopoverDialog.docked_header}>

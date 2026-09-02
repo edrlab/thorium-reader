@@ -30,6 +30,9 @@ permissions:
     statuses: none
 jobs:
   build_job:
+    # environment:
+    #   name: "Thorium Desktop Release"
+    #   deployment: false
     timeout-minutes: 30
     permissions:
       actions: none
@@ -51,7 +54,11 @@ jobs:
 #   if: "!contains(toJSON(github.event.commits.*.message), '[skip-ci]')"
 #   if: ${{ github.ref == 'refs/heads/develop' }}
 #   if: "github.event_name != 'pull_request'"
-    if: "!contains(github.event.head_commit.message, 'skip ci') && github.ref_name == 'develop' && github.repository_owner == 'edrlab' && github.repository == 'edrlab/thorium-reader'"
+    #
+    # https://docs.github.com/en/actions/how-tos/manage-workflow-runs/skip-workflow-runs
+    # [skip ci] is supported by default, not really needed here.
+    # [skip cd] is a custom one we use to avoid triggering when pushing to the active branch (e.g. `develop`), when all we need is the subsequent release tag trigger (see release.yml)
+    if: "!contains(github.event.head_commit.message, 'skip cd') && !contains(github.event.head_commit.message, 'skip ci') && github.ref_name == 'develop' && github.repository_owner == 'edrlab' && github.repository == 'edrlab/thorium-reader'"
     runs-on: ${{ matrix.runson }}
     strategy:
       fail-fast: false
@@ -88,26 +95,43 @@ jobs:
             runson: windows-2025
             packname: win
             release_tag: latest-windows-intel
+            os: windows
+            arch: intel
+
           - osarch: windows-arm
             runson: windows-11-vs2026-arm # win11-vs2026-arm64 # https://github.com/actions/runner-images/blob/main/images/windows/Windows11-VS2026-Arm64-Readme.md
             packname: win
             release_tag: latest-windows-arm
+            os: windows
+            arch: arm
+
           - osarch: macos-intel
             runson: macos-latest #macos-14-arm64
             packname: 'mac:skip-notarize'
             release_tag: latest-macos-intel
+            os: macos
+            arch: intel
+
           - osarch: macos-arm
             runson: macos-latest #macos-14-arm64
             packname: 'mac:skip-notarize'
             release_tag: latest-macos-arm
+            os: macos
+            arch: arm
+
           - osarch: linux-intel
             runson: ubuntu-22.04 #ubuntu-latest is ubuntu-24.04
             packname: linux
             release_tag: latest-linux-intel
+            os: linux
+            arch: intel
+
           - osarch: linux-arm
             runson: ubuntu-22.04-arm #ubuntu-latest is ubuntu-24.04
             packname: linux
             release_tag: latest-linux-arm
+            os: linux
+            arch: arm
     env:
       RELEASE_TAG: ${{ matrix.release_tag }} # MUST keep for WebPack config, detection of CI build
     steps:
@@ -198,10 +222,10 @@ jobs:
       run: uname -m && arch
 ###########################
     - name: Checkout
-# https://github.com/actions/checkout/commits/v6.0.2
-# https://github.com/actions/checkout/commits/de0fac2e4500dabe0009e67214ff5f5447ce83dd
-# https://github.com/actions/checkout/compare/v6.0.2...de0fac2e4500dabe0009e67214ff5f5447ce83dd
-      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+# https://github.com/actions/checkout/commits/v7.0.1
+# https://github.com/actions/checkout/commits/3d3c42e5aac5ba805825da76410c181273ba90b1
+# https://github.com/actions/checkout/compare/v7.0.1...3d3c42e5aac5ba805825da76410c181273ba90b1
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       with:
         persist-credentials: false
     # - name: Git config global dump (pre)
@@ -233,22 +257,78 @@ jobs:
 #      run: 'git config --list || echo NO_GIT_GLOBAL_CONFIG || true'
 #      shell: bash
 ###########################
-# https://github.com/actions/setup-node/commits/v6.4.0
-# https://github.com/actions/setup-node/commits/48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
-# https://github.com/actions/setup-node/compare/v6.4.0...48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
-    - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+# https://github.com/actions/setup-node/commits/v7.0.0
+# https://github.com/actions/setup-node/commits/820762786026740c76f36085b0efc47a31fe5020
+# https://github.com/actions/setup-node/compare/v7.0.0...820762786026740c76f36085b0efc47a31fe5020
+    - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+# https://github.com/actions/setup-node#caching-global-packages-data
+# https://github.com/actions/setup-node/blob/main/docs/advanced-usage.md#caching-packages-data
+# https://github.com/actions/cache/blob/main/examples.md#node---npm
+# https://github.com/actions/setup-node/issues/1553#issuecomment-4750595425
       with:
         node-version: '24'
-        cache: ''
         package-manager-cache: false
+        cache: ''
+#        cache: 'npm'
+#        node-version-file: package.json
+#        package-manager-cache: true
+#        cache-dependency-path: 'package-lock.json'
         #check-latest: true
 ###########################
     - run: node --version && npm --version
-# https://github.com/npm/cli/issues/9133
 ###########################
     - run: npm --global install npm
 ###########################
-    - run: npm --version
+    - run: npm --version && npm config get cache
+###########################
+# ###########################
+#     - name: Checks LIBs
+#       run: >
+#         openssl enc -d -aes-256-cbc -salt -pbkdf2 -A -pass pass:"${{ env.LIB_PASS }}" -in .github_release/LIB/${{ matrix.os }}/${{ matrix.arch }}/lib -out .github_release/LIB/${{ matrix.os }}/${{ matrix.arch }}/lcp.node &&
+#         ls -als .github_release/LIB/${{ matrix.os }}/${{ matrix.arch }}/ &&
+#         node .github_release/LIB/checksum.js .github_release/LIB/${{ matrix.os }}/${{ matrix.arch }}/lcp.node &&
+#         rm .github_release/LIB/${{ matrix.os }}/${{ matrix.arch }}/lcp.node
+#       shell: bash
+#       env:
+#         LIB_PASS: ${{ secrets.S14 }}
+# ############################################
+#     - name: forced EXIT
+#       run: exit 1 && false
+#       shell: bash
+#       continue-on-error: false
+# ###########################
+###########################
+    - name: Get NPM cache
+      id: npm-config-get-cache
+      run: echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
+      shell: bash
+      # run: echo "dir=$(npm config get cache)" >> ${env:GITHUB_OUTPUT}
+      # shell: pwsh
+###########################
+# https://github.com/actions/cache/commits/v6.1.0
+# https://github.com/actions/cache/commits/55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+# https://github.com/actions/cache/compare/v6.1.0...55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+    - name: Action Cache
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+      id: action-cache
+      with:
+        path: ${{ steps.npm-config-get-cache.outputs.dir }}
+        key: npm-electron-cache-notpr-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('package-lock.json') }}
+        restore-keys: |
+          npm-electron-cache-notpr-${{ runner.os }}-${{ runner.arch }}-
+###########################
+    - name: NPM Cache NOT HIT
+      run: echo "NPM Cache NOT HIT - not restored at all, or restored with restore-keys instead of primary key"
+      if: steps.action-cache.outputs.cache-hit != 'true'
+###########################
+    - name: NPM Cache HIT
+      run: echo "NPM Cache HIT - restored with primary key"
+      if: steps.action-cache.outputs.cache-hit == 'true'
+###########################
+    - run: ls -als "$(npm config get cache)"
+      shell: bash
+###########################
+    - run: npm cache verify
 ###########################
     - run: python --version || echo ok || true
 ###########################
@@ -282,9 +362,9 @@ jobs:
 ###########################
     - run: git --no-pager diff
 ###########################
-    - run: npm cache clean --force
+#    - run: npm cache clean --force
 ###########################
-    - run: npm cache verify
+#    - run: npm cache verify
 ###########################
 # - run: cat package-lock.json | grep -i divina-player-js
 ###########################
@@ -295,7 +375,7 @@ jobs:
       run: >
         npm ci --ignore-scripts --foreground-scripts --allow-git=root --cpu=arm64 &&
         cd node_modules/electron &&
-        DEBUG=@electron/get* force_no_cache=true npm_config_arch=arm64 ELECTRON_INSTALL_ARCH=arm64 node install.js --cpu=arm64 &&
+        DEBUG=@electron/get* force_no_cache=false electron_config_cache="$(npm config get cache)" npm_config_arch=arm64 ELECTRON_INSTALL_ARCH=arm64 node install.js --cpu=arm64 &&
         cd -
       shell: bash
       #export npm_config_arch=arm64 && export npm_config_cpu=arm64 &&
@@ -307,10 +387,12 @@ jobs:
       run: >
         npm ci --ignore-scripts --foreground-scripts --allow-git=root --cpu=x64 &&
         cd node_modules/electron &&
-        DEBUG=@electron/get* force_no_cache=true npm_config_arch=x64 ELECTRON_INSTALL_ARCH=x64 node install.js --cpu=x64 &&
+        DEBUG=@electron/get* force_no_cache=false electron_config_cache="$(npm config get cache)" npm_config_arch=x64 ELECTRON_INSTALL_ARCH=x64 node install.js --cpu=x64 &&
         cd -
       shell: bash
       #export npm_config_arch=x64 && export npm_config_cpu=x64 &&
+###########################
+#    - run: npm cache verify
 ###########################
     - name: Electron version + arch (Windows)
       #if: ${{ matrix.osarch == 'windows-intel' || matrix.osarch == 'windows-arm' }}
@@ -493,7 +575,11 @@ jobs:
 #   if: "!contains(toJSON(github.event.commits.*.message), '[skip-ci]')"
 #   if: ${{ github.ref == 'refs/heads/develop' }}
 #   if: "github.event_name != 'pull_request'"
-    if: "!contains(github.event.head_commit.message, 'skip ci') && github.ref_name == 'develop' && github.repository_owner == 'edrlab' && github.repository == 'edrlab/thorium-reader'"
+    #
+    # https://docs.github.com/en/actions/how-tos/manage-workflow-runs/skip-workflow-runs
+    # [skip ci] is supported by default, not really needed here.
+    # [skip cd] is a custom one we use to avoid triggering when pushing to the active branch (e.g. `develop`), when all we need is the subsequent release tag trigger (see `./release.yml`)
+    if: "!contains(github.event.head_commit.message, 'skip cd') && !contains(github.event.head_commit.message, 'skip ci') && github.ref_name == 'develop' && github.repository_owner == 'edrlab' && github.repository == 'edrlab/thorium-reader'"
     runs-on: ${{ matrix.runson }}
     strategy:
       fail-fast: false
@@ -524,15 +610,13 @@ jobs:
             runson: ubuntu-latest # ubuntu-22.04 #ubuntu-latest is ubuntu-24.04
             packname: linux
             release_tag: latest-linux-arm
-#    env:
-#      RELEASE_TAG: ${{ matrix.release_tag }} # ONLY NEEDED in scripts/release-github.mjs
     steps:
 ###########################
     - name: Checkout
-# https://github.com/actions/checkout/commits/v6.0.2
-# https://github.com/actions/checkout/commits/de0fac2e4500dabe0009e67214ff5f5447ce83dd
-# https://github.com/actions/checkout/compare/v6.0.2...de0fac2e4500dabe0009e67214ff5f5447ce83dd
-      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+# https://github.com/actions/checkout/commits/v7.0.1
+# https://github.com/actions/checkout/commits/3d3c42e5aac5ba805825da76410c181273ba90b1
+# https://github.com/actions/checkout/compare/v7.0.1...3d3c42e5aac5ba805825da76410c181273ba90b1
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       with:
         persist-credentials: false
 ###########################
@@ -547,30 +631,10 @@ jobs:
 #        merge-multiple: true
         path: release
 ###########################
-# https://github.com/actions/setup-node/commits/v6.4.0
-# https://github.com/actions/setup-node/commits/48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
-# https://github.com/actions/setup-node/compare/v6.4.0...48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
-#    - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
-#      with:
-#        node-version: '24'
-#        cache: ''
-#        package-manager-cache: false
-#        #check-latest: true
-###########################
-#    - run: node --version && npm --version
-###########################
-#    - run: npm --global install npm
-###########################
-#    - run: npm --version
-###########################
-#    - run: npm --global install @octokit/rest
-###########################
     - name: GitHub Tagged Release Delete/ReCreate and Upload Build Artefacts
       env:
-#GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#run: ls -alsR release ; node scripts/release-github.mjs
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: >
         ls -alsR release ;
         (gh release delete ${{ matrix.release_tag }} --cleanup-tag --yes || echo OK || true) ;
-        gh release create ${{ matrix.release_tag }} --target=develop --latest=false --prerelease --title="${{ matrix.release_tag }} automated test build (beta)" --notes="Expand the 'Assets' below to reveal the download links (build job: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" "./release/*.*"
+        gh release create ${{ matrix.release_tag }} --target=develop --latest=false --prerelease --title="${{ matrix.release_tag }} automated test build" --notes="Expand the 'Assets' below to reveal the download links (build job: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" "./release/*.*"

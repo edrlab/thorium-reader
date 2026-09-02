@@ -6,8 +6,8 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import * as path from "path";
-import * as fs from "fs";
+import * as path from "node:path";
+import * as fs from "node:fs";
 
 import { isAudiobookFn, isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
 import { inject, injectable } from "inversify";
@@ -89,7 +89,7 @@ export class PublicationViewConverter {
             _pubCache[publicationDocument.identifier].r2LCPStr = r2LCPStr;
         }
 
-        fs.writeFileSync(lcpPath, r2LCPStr, { encoding: "utf-8"});
+        fs.writeFileSync(lcpPath, r2LCPStr, { encoding: "utf8"});
     }
 
     public async updatePublicationCache(publicationDocument: PublicationDocumentWithoutTimestampable, r2Publication: R2Publication) {
@@ -106,7 +106,7 @@ export class PublicationViewConverter {
 
         _pubCache[publicationDocument.identifier].r2PublicationStr = r2PublicationStr;
 
-        fs.writeFileSync(manifestPath, r2PublicationStr, { encoding: "utf-8"});
+        fs.writeFileSync(manifestPath, r2PublicationStr, { encoding: "utf8"});
 
         if (r2Publication.LCP) {
             await this.updateLcpCache(publicationDocument, r2Publication.LCP);
@@ -158,14 +158,14 @@ export class PublicationViewConverter {
 
         try {
             const manifestPath = path.join(pubFolder, "manifest.json");
-            const r2PublicationStr = fs.readFileSync(manifestPath, { encoding: "utf-8"});
+            const r2PublicationStr = fs.readFileSync(manifestPath, { encoding: "utf8"});
             debug("====> manifest: ", manifestPath);
             const r2PublicationJson = JSON.parse(r2PublicationStr);
             const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
 
             try {
                 const lcpPath = path.join(pubFolder, "license.lcpl");
-                const r2LCPStr = fs.readFileSync(lcpPath, { encoding: "utf-8"});
+                const r2LCPStr = fs.readFileSync(lcpPath, { encoding: "utf8"});
                 debug("====> LCP: ", lcpPath);
                 const r2LCPJson = JSON.parse(r2LCPStr);
 
@@ -212,7 +212,7 @@ export class PublicationViewConverter {
         const readerStateLocator = await diMainGet("publication-data").readJsonObj(document.identifier, "locator") as MiniLocatorExtended | undefined; // TODO: type object
 
         const title = document.title || "-"; // default title;
-        
+
         let cover: CoverView | undefined;
         if (document.coverFile) {
             cover = {
@@ -248,7 +248,7 @@ export class PublicationViewConverter {
     public async convertDocumentToView(document: PublicationDocument): Promise<PublicationView> {
         // Legacy Base64 data blobs
         // const r2PublicationBase64 = document.resources.r2PublicationBase64;
-        // const r2PublicationStr = Buffer.from(r2PublicationBase64, "base64").toString("utf-8");
+        // const r2PublicationStr = Buffer.from(r2PublicationBase64, "base64").toString("utf8");
         // const r2PublicationJson = JSON.parse(r2PublicationStr);
         // const r2PublicationJson = document.resources.r2PublicationJson;
         // const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);

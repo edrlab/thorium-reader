@@ -766,6 +766,7 @@
         },
         "marks": {
             "annotations": "メモ",
+            "annotationsReadium": "メモ (Readium)",
             "bookmarks": "しおり",
             "delete": "削除",
             "edit": "編集",
@@ -804,7 +805,6 @@
             "bookmarkTitle": "しおりを挟む",
             "currentPage": "現在のページ：{{- current}}",
             "currentPageTotal": "現在のページ：（{{- current}}/{{- total}}）",
-            "detachWindowTitle": "蔵書/本棚を表示",
             "goTo": "移動",
             "goToError": "そのページは存在しません",
             "goToPlaceHolder": "移動先のページ番号",
@@ -880,6 +880,7 @@
             "disposition": {
                 "title": "割り付け"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "書体",
             "fontSize": "文字の大きさ",
             "increaseFontSize": "",
@@ -890,7 +891,6 @@
             "lineSpacing": "行の間隔",
             "margin": "ページの余白",
             "mathjax": "",
-            "mathjaxDescription": "",
             "noFootnotes": "ポップアップ脚注を表示しない",
             "noRTLFlip": "右から左へ進むUIを無効にする",
             "noRuby": "ルビを表示しない",
@@ -1215,6 +1215,10 @@
                     "name": ""
                 },
                 "ToggleReaderFullscreen": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleReaderZenMode": {
                     "description": "",
                     "name": ""
                 },

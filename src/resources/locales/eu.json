@@ -775,6 +775,7 @@
         },
         "marks": {
             "annotations": "Oharrak",
+            "annotationsReadium": "Oharrak (Readium)",
             "bookmarks": "Markatzaileak",
             "delete": "Ezabatu",
             "edit": "Editatu",
@@ -813,7 +814,6 @@
             "bookmarkTitle": "Markatzailea",
             "currentPage": "Uneko orrialdea: {{- current}}",
             "currentPageTotal": "Uneko orrialdea: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Liburutegiko leihoa erakutsi",
             "goTo": "Joan hona",
             "goToError": "Orrialde-jauzi hori ez dago",
             "goToPlaceHolder": "Sartu orrialde-zenbaki bat",
@@ -890,6 +890,7 @@
             "disposition": {
                 "title": "Xedapena"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Iturria",
             "fontSize": "Letra-tamaina",
             "increaseFontSize": "",
@@ -900,7 +901,6 @@
             "lineSpacing": "Lerroartea",
             "margin": "Marjina",
             "mathjax": "",
-            "mathjaxDescription": "",
             "noFootnotes": "Oin-oharrak desaktibatu",
             "noRTLFlip": "Desgaitu eskuinetik ezkerrera UI",
             "noRuby": "Ezkutatu Japoniako Ruby",
@@ -1225,6 +1225,10 @@
                     "name": ""
                 },
                 "ToggleReaderFullscreen": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleReaderZenMode": {
                     "description": "",
                     "name": ""
                 },

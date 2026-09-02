@@ -92,6 +92,7 @@ function getFocusables(rootElement: Element): HTMLOrSVGElement[] {
 function focusInside(rootElement: Element) {
     const toFocus = rootElement.querySelector("[autofocus]") || getFocusables(rootElement)[0];
     if (toFocus) {
+        console.log("focusInside");
         (toFocus as HTMLOrSVGElement).focus();
     }
 }

@@ -8,7 +8,7 @@
 import debug_ from "debug";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
-import * as path from "path";
+import * as path from "node:path";
 import { normalizeWinBoundRectangle } from "readium-desktop/common/rectangle/window";
 import { diMainGet } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
@@ -57,12 +57,16 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
             nodeIntegration: true, // ==> disables sandbox https://www.electronjs.org/docs/latest/tutorial/sandbox
             sandbox: false,
             contextIsolation: false, // must be false because nodeIntegration, see https://github.com/electron/electron/issues/23506
+            // nodeIntegration: false,
+            // sandbox: true, // preload NodeJS module shims
+            // contextIsolation: true,
             nodeIntegrationInWorker: false,
             webSecurity: true,
             webviewTag: false,
         },
         icon: path.join(__dirname, "assets/icons/icon.png"),
     });
+
     debug("LibraryWindow new BrowserWindow instancied");
     registerWindowsLibraryTray(libWindow);
 
@@ -144,10 +148,55 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         yield* callTyped(async () => {
 
             if (!libWindow.isDestroyed()) {
+
+                // function injectHeader(headers: Record<string, string[]> | Record<string, string>, key: string, value: string | string[]) {
+                //   const keyLower = key.toLowerCase();
+                //   for (const k of Object.keys(headers)) {
+                //     if (k.toLowerCase() === keyLower) {
+                //       headers[k] = value;
+                //       return;
+                //     }
+                //   }
+                //   headers[key] = value;
+                // }
+                // libWindow.webContents.session.webRequest.onBeforeSendHeaders(
+                //   (details, callback) => {
+                //     const { requestHeaders, url, resourceType, referrer } = details;
+                //     console.log("HEADERS: requestHeaders BEFORE", resourceType, url, referrer, JSON.stringify(requestHeaders, null, 4));
+
+                //     // // injectHeader(requestHeaders, 'Origin', '*');
+                //     // injectHeader(requestHeaders, 'Origin', 'null');
+                //     // // injectHeader(requestHeaders, 'Referrer', rendererBaseUrl);
+                //     // // injectHeader(requestHeaders, 'Referrer-Policy', "origin");
+
+                //     // console.log("HEADERS: requestHeaders AFTER", resourceType, url, referrer, JSON.stringify(requestHeaders, null, 4));
+                //     callback({ requestHeaders });
+                //   },
+                // );
+                // libWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
+                //   const { responseHeaders, url, resourceType, referrer } = details;
+                //   console.log("HEADERS: responseHeaders BEFORE", resourceType, url, referrer, JSON.stringify(responseHeaders, null, 4));
+
+                //   // injectHeader(responseHeaders, 'Access-Control-Allow-Origin', ['*', 'null']);
+                //   // injectHeader(responseHeaders, 'Access-Control-Allow-Headers', ['*']);
+                //   // // injectHeader(responseHeaders, 'Referrer', rendererBaseUrl);
+                //   // // injectHeader(responseHeaders, 'Referrer-Policy', "origin");
+
+                //   // console.log("HEADERS: responseHeaders AFTER", resourceType, url, referrer, JSON.stringify(responseHeaders, null, 4));
+                //   callback({ responseHeaders });
+                // });
+
                 try {
 
-                    debug("LibraryWindow load url to the webview");
-                    await libWindow.loadURL(rendererBaseUrl /*, {baseURLForDataURL, httpReferrer} */);
+                    debug("LibraryWindow loadURL: " + rendererBaseUrl);
+                    await libWindow.loadURL(rendererBaseUrl, {
+                        // httpReferrer: {
+                        //     url: rendererBaseUrl,
+                        //     policy: "origin",
+                        // },
+                        // extraHeaders: "Origin: " + rendererBaseUrl,
+                        // baseURLForDataURL
+                    });
                 } catch (e) {
                     debug("Load url rejected", e);
                 }

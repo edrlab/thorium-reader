@@ -11,7 +11,7 @@ import debug_ from "debug";
 import { ipcRenderer } from "electron";
 import { isFocusable } from "tabbable";
 
-import { DISABLE_TEMPORARY_NAV_TARGET_OUTLINE_CLASS, ENABLE_SKIP_LINK, ID_HIGHLIGHTS_FLOATING } from "../../common/styles";
+import { CLASS_HIGHLIGHT_CURSOR2, DISABLE_TEMPORARY_NAV_TARGET_OUTLINE_CLASS, ENABLE_SKIP_LINK, ID_HIGHLIGHTS_FLOATING } from "../../common/styles";
 
 import { ISelectionInfo } from "../../common/selection";
 
@@ -39,7 +39,7 @@ import {
     IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN, MediaOverlaysStateEnum, R2_EVENT_AUDIO_SOUNDTRACK, R2_EVENT_CAPTIONS,
     R2_EVENT_CLIPBOARD_COPY, R2_EVENT_DEBUG_VISUALS, R2_EVENT_FXL_CONFIGURE,
     R2_EVENT_HIGHLIGHT_CREATE, R2_EVENT_HIGHLIGHT_REMOVE, R2_EVENT_HIGHLIGHT_REMOVE_ALL,
-    /* R2_EVENT_KEYBOARD_FOCUS_REQUEST,*/ R2_EVENT_FOCUS_READING_LOC, R2_EVENT_LINK, R2_EVENT_LOCATOR_VISIBLE,
+    R2_EVENT_KEYBOARD_FOCUS_REQUEST, R2_EVENT_FOCUS_READING_LOC, R2_EVENT_LINK, R2_EVENT_LOCATOR_VISIBLE,
     R2_EVENT_MEDIA_OVERLAY_CLICK, R2_EVENT_MEDIA_OVERLAY_HIGHLIGHT,
     R2_EVENT_MEDIA_OVERLAY_STARTSTOP, R2_EVENT_MEDIA_OVERLAY_STATE, R2_EVENT_PAGE_TURN, R2_EVENT_PAGE_TURN_RES,
     R2_EVENT_READING_LOCATION, R2_EVENT_READIUMCSS, R2_EVENT_SCROLLTO, R2_EVENT_SHIFT_VIEW_X,
@@ -53,10 +53,13 @@ import {
     IEventPayload_R2_EVENT_TTS_MEDIAOVERLAYS_MANUAL_PLAY_NEXT,
     IEventPayload_R2_EVENT_TTS_HIGHLIGHT_STYLE,
     R2_EVENT_TTS_HIGHLIGHT_STYLE,
+    ENABLE_NAVIGATOR_R2_EVENT_IMAGE_CLICK,
+    R2_EVENT_ENABLE_PAGE_BREAK_MARGIN_INDICATORS,
+    IEventPayload_R2_EVENT_ENABLE_PAGE_BREAK_MARGIN_INDICATORS,
     // R2_EVENT_DISABLE_TEMPORARY_NAV_TARGET_OUTLINE,
     // IEventPayload_R2_EVENT_DISABLE_TEMPORARY_NAV_TARGET_OUTLINE,
 } from "../../common/events";
-import { HighlightDrawTypeOpacityMask, HighlightDrawTypeOpacityMaskRuler, IColor, HighlightDrawTypeNONE, HighlightDrawTypeBackground, HighlightDrawTypeOutline, IHighlightDefinition } from "../../common/highlight";
+import { HighlightDrawTypeOpacityMask, HighlightDrawTypeOpacityMaskRuler, IColor, HighlightDrawTypeNONE, HighlightDrawTypeBackground, IHighlightDefinition, HighlightDrawTypeMarginBookmark } from "../../common/highlight";
 import { IPaginationInfo } from "../../common/pagination";
 import {
     appendCSSInline, configureFixedLayout, injectDefaultCSS, injectReadPosCSS, isPaginated,
@@ -82,7 +85,7 @@ import { uniqueCssSelector } from "../common/cssselector3";
 
 import { getDirection, getLanguage, normalizeText } from "../common/dom-text-utils";
 import { easings } from "../common/easings";
-import { closePopupDialogs, isPopupDialogOpen } from "../common/popup-dialog";
+import { closePopupDialogs, isPopupDialogOpen } from "./popup-dialog";
 import { getURLQueryParams } from "../common/querystring";
 import { IRect, getClientRectsNoOverlap, DOMRectListToArray } from "../common/rect-utils";
 import {
@@ -99,7 +102,6 @@ import { setupAudioBook } from "./audiobook";
 import { INameVersion, setWindowNavigatorEpubReadingSystem } from "./epubReadingSystem";
 import {
     createHighlights, destroyAllhighlights, destroyHighlight, destroyHighlightsGroup,
-    ENABLE_PAGEBREAK_MARGIN_TEXT_EXPERIMENT,
     HIGHLIGHT_GROUP_PAGEBREAK, HIGHLIGHT_GROUP_TTS,
     recreateAllHighlights, recreateAllHighlightsRaw, setDrawMargin,
 } from "./highlight";
@@ -152,6 +154,8 @@ win.READIUM2 = {
     // dialogs = [],
     fxlViewportHeight: 0,
     fxlViewportScale: 1,
+    fxlViewportTX: 0,
+    fxlViewportTY: 0,
     fxlViewportWidth: 0,
     fxlZoomPercent: 0,
     hashElement: null,
@@ -191,6 +195,7 @@ win.READIUM2 = {
     ttsOverlayEnabled: false,
     ttsPlaybackRate: 1,
     ttsAndMediaOverlaysManualPlayNext: false,
+    enablePageBreakMarginIndicators: false,
     ttsSkippabilityEnabled: false,
     ttsSentenceDetectionEnabled: true,
     // mediaOverlaysUseTTSHighlights: false,
@@ -480,7 +485,7 @@ if (IS_DEV) {
 }
 
 function isVisible(allowPartial: boolean, element: Element, domRect: DOMRect | undefined): boolean {
-    if (DEBUG_TRACE) debug("isVisible:", getCssSelector(element), allowPartial);
+    if (DEBUG_TRACE) debug("isVisible check, allowPartial:", getCssSelector(element), allowPartial);
     if (DEBUG_TRACE && domRect) debug("isVisible domRect:", domRect.x, domRect.y, domRect.width, domRect.height);
 
     if (win.READIUM2.isFixedLayout) {
@@ -1262,11 +1267,11 @@ ipcRenderer.on(R2_EVENT_PAGE_TURN, (_event: any, payload: IEventPayload_R2_EVENT
 });
 
 // +R2_EVENT_KEYBOARD_FOCUS_REQUEST
-function focusElement(element: Element, preventScroll: boolean /*, focusHost: boolean */) {
+function focusElement(element: Element, preventScroll: boolean, focusHost?: boolean) {
 
     if (DEBUG_TRACE) debug("focusElement", getCssSelector(element));
 
-    if (preventScroll &&
+    if (preventScroll && !focusHost &&
         (
         // win.READIUM2.focussedElement ??
         element === win.document.activeElement
@@ -1308,13 +1313,14 @@ function focusElement(element: Element, preventScroll: boolean /*, focusHost: bo
         (element as HTMLElement).focus({preventScroll});
     }
 
-    // if (focusHost) {
-    //     // win.blur();
-    //     // win.focus();
-    //     // const payload: IEventPayload_R2_EVENT_KEYBOARD_FOCUS_REQUEST = {
-    //     // };
-    //     ipcRenderer.sendToHost(R2_EVENT_KEYBOARD_FOCUS_REQUEST, null);
-    // }
+    if (focusHost) {
+        if (DEBUG_TRACE) debug("focusElement - focusHost");
+        // win.blur();
+        win.focus();
+        // const payload: IEventPayload_R2_EVENT_KEYBOARD_FOCUS_REQUEST = {
+        // };
+        ipcRenderer.sendToHost(R2_EVENT_KEYBOARD_FOCUS_REQUEST, null);
+    }
 }
 
 const tempLinkTargetOutline = (element: Element, time: number, alt: boolean) => {
@@ -2194,6 +2200,7 @@ win.addEventListener("DOMContentLoaded", () => {
     // win.READIUM2.mediaOverlaysUseTTSHighlights = false;
     win.READIUM2.ttsClickEnabled = false;
     win.READIUM2.ttsAndMediaOverlaysManualPlayNext = false;
+    win.READIUM2.enablePageBreakMarginIndicators = false;
     win.READIUM2.ttsSkippabilityEnabled = false;
     win.READIUM2.ttsSentenceDetectionEnabled = true;
     win.READIUM2.ttsOverlayEnabled = false;
@@ -2231,6 +2238,7 @@ win.addEventListener("DOMContentLoaded", () => {
     }
 
     if (readiumcssJson) {
+        debug("readiumcssJson::=", JSON.stringify(readiumcssJson, null, 4));
         win.READIUM2.isFixedLayout = (typeof readiumcssJson.isFixedLayout !== "undefined") ?
             readiumcssJson.isFixedLayout : false;
     }
@@ -2265,22 +2273,32 @@ win.addEventListener("DOMContentLoaded", () => {
     // testReadiumCSS(readiumcssJson);
 
     // innerWidth/Height can be zero at this rendering stage! :(
-    const w = (readiumcssJson && readiumcssJson.fixedLayoutWebViewWidth) || win.innerWidth;
-    const h = (readiumcssJson && readiumcssJson.fixedLayoutWebViewHeight) || win.innerHeight;
+    const w = (readiumcssJson && readiumcssJson.fixedLayoutAvailableWebViewWidth) || win.innerWidth;
+    const h = (readiumcssJson && readiumcssJson.fixedLayoutAvailableWebViewHeight) || win.innerHeight;
     win.READIUM2.fxlZoomPercent = (readiumcssJson && readiumcssJson.fixedLayoutZoomPercent) || 0;
+
+    debug("configureFixedLayout...(DOMContentLoaded)", readiumcssJson?.fixedLayoutAvailableWebViewWidth, win.innerWidth, readiumcssJson?.fixedLayoutAvailableWebViewHeight, win.innerHeight);
     const wh = configureFixedLayout(win.document, win.READIUM2.isFixedLayout,
         win.READIUM2.fxlViewportWidth, win.READIUM2.fxlViewportHeight,
         w, h, win.READIUM2.webViewSlot, win.READIUM2.fxlZoomPercent);
-    if (wh) {
+    if (wh && win.READIUM2.isFixedLayout) {
         win.READIUM2.fxlViewportWidth = wh.width;
         win.READIUM2.fxlViewportHeight = wh.height;
         win.READIUM2.fxlViewportScale = wh.scale;
+        win.READIUM2.fxlViewportTX = wh.tx;
+        win.READIUM2.fxlViewportTY = wh.ty;
 
         const payload: IEventPayload_R2_EVENT_FXL_CONFIGURE = {
             fxl: wh,
         };
         ipcRenderer.sendToHost(R2_EVENT_FXL_CONFIGURE, payload);
     } else {
+        win.READIUM2.fxlViewportWidth = 0;
+        win.READIUM2.fxlViewportHeight = 0;
+        win.READIUM2.fxlViewportScale = 1;
+        win.READIUM2.fxlViewportTX = 0;
+        win.READIUM2.fxlViewportTY = 0;
+
         const payload: IEventPayload_R2_EVENT_FXL_CONFIGURE = {
             fxl: null,
         };
@@ -2415,7 +2433,7 @@ function mediaOverlaysClickRaw(element: Element | undefined, userInteract: boole
 // }, 100);
 
 const onScrollRaw = (fromScrollEvent?: boolean) => {
-    if (DEBUG_TRACE) debug("onScrollRaw: fromScrollEvent", fromScrollEvent);
+    if (DEBUG_TRACE) debug("onScrollRaw: fromScrollEvent / accessibilitySupportEnabled", fromScrollEvent, win.READIUM2.accessibilitySupportEnabled);
 
     if (!win.document || !win.document.documentElement) {
         return;
@@ -2462,7 +2480,8 @@ const onScrollRaw = (fromScrollEvent?: boolean) => {
 
     if (!win.READIUM2.ttsClickEnabled &&
         !win.document.documentElement.classList.contains(TTS_CLASS_PLAYING) &&
-        !win.document.documentElement.classList.contains(TTS_CLASS_PAUSED)) {
+        !win.document.documentElement.classList.contains(TTS_CLASS_PAUSED) &&
+        !win.READIUM2.accessibilitySupportEnabled) {
 
         const el = win.READIUM2.locationHashOverride; // || win.READIUM2.hashElement
         if (el && isVisible(false, el, undefined)) {
@@ -3015,6 +3034,11 @@ function loaded(forced: boolean) {
             return;
         }
 
+        if (win.document.documentElement.classList.contains(CLASS_HIGHLIGHT_CURSOR2)) {
+            debug("!AUX __CLICK skip because CLASS_HIGHLIGHT_CURSOR2 (highlights)");
+            return;
+        }
+
         if (!isPopupDialogOpen(win.document)) {
             // relative to fixed window top-left corner
             // (unlike pageX/Y which is relative to top-left rendered content area, subject to scrolling)
@@ -3176,6 +3200,38 @@ function loaded(forced: boolean) {
 
                     href_src = href_src.replace(/[\r\n]/g, " ").replace(/\s\s+/g, " ").trim();
                     href_src = href_src.replace(/<desc[^<]+<\/desc>/g, "");
+
+                    // SVG SCRIPT SECURITY NOTE: the Javascript is inert when the SVG fragment is rendered via an `img` HTML image tag (as is the case here),
+                    // but the Javascript WILL EXECUTE when the SVG is embedded directly in the HTML markup or via an `object`, or `embed` or `iframe` tag!
+                    // Uncomment the following to test:
+//                     href_src =
+// `
+// <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 120" width="300" height="120">
+//     <style>
+//     .btn { cursor: pointer; fill: #0066cc; }
+//     .btn:hover { fill: #004499; }
+//     text { fill: white; font-family: sans-serif; font-size: 14px; text-anchor: middle; }
+//     </style>
+
+//     <script type="text/javascript">
+//     <![CDATA[
+//         function consoleLog(msg) {
+//         console.log(msg);
+//         }
+//     ]]>
+//     </script>
+
+//     <a href="javascript:console.log('CLICK 1')">
+//     <rect class="btn" x="10" y="10" width="280" height="40" rx="6" />
+//     <text x="150" y="35">Click Me 1</text>
+//     </a>
+
+//     <a href="#" onclick="consoleLog('CLICK 2'); return false;">
+//     <rect class="btn" x="10" y="65" width="280" height="40" rx="6" />
+//     <text x="150" y="90">Click Me 2</text>
+//     </a>
+// </svg>
+// `;
                     debug(`SVG CLICK: ${href_src}`);
                 } else {
                     // absolute (already resolved against base)
@@ -3327,7 +3383,7 @@ function loaded(forced: boolean) {
                 payload.naturalWidthOf_HTMLImg_SVGImage = payload.naturalWidthOf_HTMLImg_SVGImage || undefined;
                 payload.naturalHeightOf_HTMLImg_SVGImage = payload.naturalHeightOf_HTMLImg_SVGImage || undefined;
                 if (!isSVGFragment && // isSVGImage or just HTML image
-                    !payload.naturalWidthOf_HTMLImg_SVGImage || !payload.naturalHeightOf_HTMLImg_SVGImage) {
+                    (!payload.naturalWidthOf_HTMLImg_SVGImage || !payload.naturalHeightOf_HTMLImg_SVGImage)) {
 
                     const imageObject = new Image();
                     imageObject.onload = function() {
@@ -3385,6 +3441,12 @@ function loaded(forced: boolean) {
             ipcRenderer.sendToHost(R2_EVENT_LINK, payload); // this will result in the app registering the element in the navigation history, but is skipped in location.ts ipcRenderer.on(R2_EVENT_LINK)
         }
 
+        if (win.READIUM2.accessibilitySupportEnabled) {
+            debug("----> link popup footnote accessibilitySupportEnabled ==> force hyperlink focus:", skipHistory, encCssSel);
+            focusElement(linkElement, true, true);
+        }
+
+        debug("----> link popup footnote? skipHistory / encCssSel:", skipHistory, encCssSel);
         popupFootNote(
             linkElement as HTMLElement,
             focusScrollRaw,
@@ -3392,6 +3454,8 @@ function loaded(forced: boolean) {
             ensureTwoPageSpreadWithOddColumnsIsOffsetTempDisable,
             ensureTwoPageSpreadWithOddColumnsIsOffsetReEnable).then((done) => {
                 if (done) {
+                    debug("----> link popup footnote DONE skipHistory / encCssSel:", skipHistory, encCssSel);
+
                     if (!skipHistory) {
                         // double-insert the hyperlink to trigger the popup programmatically on history.back()/forward()
                         const payload: IEventPayload_R2_EVENT_LINK = {
@@ -3400,6 +3464,8 @@ function loaded(forced: boolean) {
                         ipcRenderer.sendToHost(R2_EVENT_LINK, payload);
                     }
                 } else {
+                    debug("----> link popup footnote !!!DONE skipHistory / encCssSel:", skipHistory, encCssSel);
+
                     focusScrollDebounced.clear();
                     // processXYDebounced.clear();
                     processXYDebouncedImmediate.clear();
@@ -3421,27 +3487,29 @@ function loaded(forced: boolean) {
             }).catch((_err) => { /* debug(err); */ });
     }, true);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ipcRenderer.on("R2_EVENT_IMAGE_CLICK", (_event: any, payload: IEventPayload_R2_EVENT_IMAGE_CLICK) => {
-        debug("R2_EVENT_IMAGE_CLICK (ipcRenderer.on) href: " + JSON.stringify(payload, null, 4));
-        // win.document.querySelectorAll(`img[data-${POPOUTIMAGE_CONTAINER_ID}]`);
-        // win.document.querySelectorAll(`image[data-${POPOUTIMAGE_CONTAINER_ID}]`);
-        // win.document.querySelectorAll(`svg[data-${POPOUTIMAGE_CONTAINER_ID}]`);
-        // const HTMLImg_SVGImage_SVGFragment = win.document.querySelector(`[data-${POPOUTIMAGE_CONTAINER_ID}]`);
-        const HTMLImg_SVGImage_SVGFragment = win.document.querySelector(payload.cssSelectorOf_HTMLImg_SVGImage_SVGFragment);
-        if (HTMLImg_SVGImage_SVGFragment) {
-            popoutImage(
-                win,
-                payload.cssSelectorOf_HTMLImg_SVGImage_SVGFragment,
-                HTMLImg_SVGImage_SVGFragment as HTMLImageElement | SVGElement,
-                payload.HTMLImgSrc_SVGImageHref_SVGFragmentMarkup,
-                payload.isSVGFragment,
-                payload.isSVGImage,
-                focusScrollRaw,
-                ensureTwoPageSpreadWithOddColumnsIsOffsetTempDisable,
-                ensureTwoPageSpreadWithOddColumnsIsOffsetReEnable);
-        }
-    });
+    if (ENABLE_NAVIGATOR_R2_EVENT_IMAGE_CLICK) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ipcRenderer.on(R2_EVENT_IMAGE_CLICK, (_event: any, payload: IEventPayload_R2_EVENT_IMAGE_CLICK) => {
+            debug("R2_EVENT_IMAGE_CLICK (ipcRenderer.on) href: " + JSON.stringify(payload, null, 4));
+            // win.document.querySelectorAll(`img[data-${POPOUTIMAGE_CONTAINER_ID}]`);
+            // win.document.querySelectorAll(`image[data-${POPOUTIMAGE_CONTAINER_ID}]`);
+            // win.document.querySelectorAll(`svg[data-${POPOUTIMAGE_CONTAINER_ID}]`);
+            // const HTMLImg_SVGImage_SVGFragment = win.document.querySelector(`[data-${POPOUTIMAGE_CONTAINER_ID}]`);
+            const HTMLImg_SVGImage_SVGFragment = win.document.querySelector(payload.cssSelectorOf_HTMLImg_SVGImage_SVGFragment);
+            if (HTMLImg_SVGImage_SVGFragment) {
+                popoutImage(
+                    win,
+                    payload.cssSelectorOf_HTMLImg_SVGImage_SVGFragment,
+                    HTMLImg_SVGImage_SVGFragment as HTMLImageElement | SVGElement,
+                    payload.HTMLImgSrc_SVGImageHref_SVGFragmentMarkup,
+                    payload.isSVGFragment,
+                    payload.isSVGImage,
+                    focusScrollRaw,
+                    ensureTwoPageSpreadWithOddColumnsIsOffsetTempDisable,
+                    ensureTwoPageSpreadWithOddColumnsIsOffsetReEnable);
+            }
+        });
+    }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ipcRenderer.on("R2_EVENT_WINDOW_RESIZE", (_event: any, zoomPercent: number) => {
@@ -3458,21 +3526,30 @@ function loaded(forced: boolean) {
             return;
         }
 
+        debug("configureFixedLayout...(R2_EVENT_WINDOW_RESIZE)", win.innerWidth, win.innerHeight);
         const wh = configureFixedLayout(win.document, win.READIUM2.isFixedLayout,
             win.READIUM2.fxlViewportWidth, win.READIUM2.fxlViewportHeight,
             win.innerWidth, win.innerHeight, win.READIUM2.webViewSlot,
             win.READIUM2.fxlZoomPercent);
 
-        if (wh) {
+        if (wh && win.READIUM2.isFixedLayout) { // win.READIUM2.isFixedLayout always true here
             win.READIUM2.fxlViewportWidth = wh.width;
             win.READIUM2.fxlViewportHeight = wh.height;
             win.READIUM2.fxlViewportScale = wh.scale;
+            win.READIUM2.fxlViewportTX = wh.tx;
+            win.READIUM2.fxlViewportTY = wh.ty;
 
             const payload: IEventPayload_R2_EVENT_FXL_CONFIGURE = {
                 fxl: wh,
             };
             ipcRenderer.sendToHost(R2_EVENT_FXL_CONFIGURE, payload);
         } else {
+            win.READIUM2.fxlViewportWidth = 0;
+            win.READIUM2.fxlViewportHeight = 0;
+            win.READIUM2.fxlViewportScale = 1;
+            win.READIUM2.fxlViewportTX = 0;
+            win.READIUM2.fxlViewportTY = 0;
+
             const payload: IEventPayload_R2_EVENT_FXL_CONFIGURE = {
                 fxl: null,
             };
@@ -4765,6 +4842,49 @@ const findPrecedingAncestorSiblingHeadings = (element: Element):
     return arr;
 };
 
+const invalidatePageBreakMarginIndicators = () => {
+    destroyHighlightsGroup(win.document, HIGHLIGHT_GROUP_PAGEBREAK);
+
+    if (win.READIUM2.enablePageBreakMarginIndicators && _allEpubPageBreaks) {
+        const highlightDefinitions: IHighlightDefinition[] = [];
+        for (const pageBreak of _allEpubPageBreaks) {
+
+            const range = new Range(); // document.createRange()
+            // range.setStart(pageBreak.element, 0);
+            // range.setEnd(pageBreak.element, 0);
+            range.selectNode(pageBreak.element);
+            // debug("pageBreak.element", pageBreak.element.tagName, pageBreak.element.nodeName, pageBreak.element.nodeType, pageBreak.element.nodeValue);
+            // debug("pageBreak range startContainer", range.startOffset, range.startContainer.nodeName, range.startContainer.nodeType, range.startContainer.nodeValue);
+            // debug("pageBreak range endContainer", range.endOffset, range.endContainer.nodeName, range.endContainer.nodeType, range.endContainer.nodeValue);
+
+            highlightDefinitions.push(
+                {
+                    // https://htmlcolorcodes.com/
+                    color: {
+                        blue: 249,
+                        green: 133,
+                        red: 255,
+                    },
+                    drawType: HighlightDrawTypeMarginBookmark,
+                    expand: 0,
+                    selectionInfo: undefined,
+                    group: HIGHLIGHT_GROUP_PAGEBREAK,
+                    range,
+                    marginText: pageBreak.text ? pageBreak.text : undefined,
+                    textPopup: pageBreak.text ? { text: pageBreak.text } : undefined,
+                },
+            );
+        }
+        if (highlightDefinitions.length) {
+            createHighlights(
+                win,
+                highlightDefinitions,
+                true, // mouse / pointer interaction
+            );
+        }
+    }
+};
+
 interface IPageBreak {
     element: Element;
     text: string;
@@ -4828,42 +4948,7 @@ const findPrecedingAncestorSiblingEpubPageBreak = (element: Element): { epubPage
         // debug("_allEpubPageBreaks XPath", JSON.stringify(_allEpubPageBreaks, null, 4));
         debug("_allEpubPageBreaks XPath", _allEpubPageBreaks.length, xpathResult.snapshotLength);
 
-        if (ENABLE_PAGEBREAK_MARGIN_TEXT_EXPERIMENT) {
-            destroyHighlightsGroup(win.document, HIGHLIGHT_GROUP_PAGEBREAK);
-            const highlightDefinitions: IHighlightDefinition[] = [];
-            for (const pageBreak of _allEpubPageBreaks) {
-
-                const range = new Range(); // document.createRange()
-                // range.setStart(pageBreak.element, 0);
-                // range.setEnd(pageBreak.element, 0);
-                range.selectNode(pageBreak.element);
-
-                highlightDefinitions.push(
-                    {
-                        // https://htmlcolorcodes.com/
-                        color: {
-                            blue: 60,
-                            green: 76,
-                            red:  231,
-                        },
-                        // drawType: HighlightDrawTypeUnderline,
-                        // expand: ENABLE_CSS_HIGHLIGHTS ? 0 : 2,
-                        drawType: HighlightDrawTypeOutline,
-                        expand: 1,
-                        selectionInfo: undefined,
-                        group: HIGHLIGHT_GROUP_PAGEBREAK,
-                        range,
-                        marginText: pageBreak.text ? pageBreak.text : undefined,
-                        textPopup: undefined,
-                    },
-                );
-            }
-            createHighlights(
-                win,
-                highlightDefinitions,
-                true, // mouse / pointer interaction
-            );
-        }
+        invalidatePageBreakMarginIndicators();
     }
 
     for (let i = _allEpubPageBreaks.length - 1; i >= 0; i--) {
@@ -5005,7 +5090,7 @@ const $_namespaceResolver = (prefix: string | null): string | null => {
 };
 
 const notifyReadingLocationRaw = (userInteract?: boolean, ignoreMediaOverlays?: boolean, doNotFocus?: boolean) => {
-    if (DEBUG_TRACE) debug("notifyReadingLocationRaw", win.READIUM2.locationHashOverride ? getCssSelector(win.READIUM2.locationHashOverride) : "!!!? win.READIUM2.locationHashOverride");
+    if (DEBUG_TRACE) debug("notifyReadingLocationRaw", win.READIUM2.locationHashOverride ? getCssSelector(win.READIUM2.locationHashOverride) : "!!!? win.READIUM2.locationHashOverride", win.READIUM2.accessibilitySupportEnabled);
 
     if (!win.READIUM2.locationHashOverride) {
         return;
@@ -5355,6 +5440,17 @@ if (!win.READIUM2.isAudio) {
         ttsVoices(payload.voices);
     });
 
+    ipcRenderer.on(R2_EVENT_ENABLE_PAGE_BREAK_MARGIN_INDICATORS,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (_event: any, payload: IEventPayload_R2_EVENT_ENABLE_PAGE_BREAK_MARGIN_INDICATORS) => {
+            win.READIUM2.enablePageBreakMarginIndicators = payload.doEnable;
+
+            if (IS_DEV) {
+                console.log("--HIGH WEBVIEW-- enablePageBreakMarginIndicators: " + JSON.stringify(payload.doEnable, null, 4));
+            }
+            // recreateAllHighlightsRaw(win);
+            invalidatePageBreakMarginIndicators();
+    });
     ipcRenderer.on(R2_EVENT_TTS_MEDIAOVERLAYS_MANUAL_PLAY_NEXT,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (_event: any, payload: IEventPayload_R2_EVENT_TTS_MEDIAOVERLAYS_MANUAL_PLAY_NEXT) => {
@@ -5757,54 +5853,17 @@ if (!win.READIUM2.isAudio) {
         // CONTEXT: R2_EVENT_FOCUS_READING_LOC
         focusCurrentReadingLocationElement(true);
     });
-}
+    win.addEventListener("message", (event) => {
+        // debug("event.data", event.data);
+        if (event.data === R2_EVENT_FOCUS_READING_LOC) {
+            if (DEBUG_TRACE) debug("R2_EVENT_FOCUS_READING_LOC (postMessage): focusCurrentReadingLocationElement()...");
+            // CONTEXT: R2_EVENT_FOCUS_READING_LOC
+            focusCurrentReadingLocationElement(true);
+        }
+    });
 
-// -------------------------------------------------
-// https://mermaid.live/edit#pako:eNqtVu9vqjAU_VdM92VLlKiIMj68xAhTMpQFnXl7IWk66JQMWsOP7W2L__srqDwYgs3LMzG29Z7TnnvvKXwBh7oYKCCKUYxVD21CFHTe-jZptSB8oU4SaT4OMImvb1qdzg-2KGSr1zc2uUo_aeQVhJETUt8_xuokpmsPv-eYMlEJsqIzFG0t1BQM4S6kDo6in0-XAgmNvZcPCyPXIxuDOij2KGkCVUVUT1Qj7ojKGJdZCD_I6kNtrS1WcK6p-hiaa80yxk9wpk9nBvuuLpEcj33VMg21BR3fc14FQVje6w_Q0Bf3UFcPG-X73JmTxyW0tLGqL6bQMCcsPDv5JAlDRv4tZXmGTmEHgSp-pglxsFvOZ0H9UZ9qzieUxIzCoMjFLqPx2eD4k-JPxB5hoy0iro_v0rlOCpt8_6tSydLOxVrmwpcTyzSMlVnKaKHGZ2pfVXkGxdM45bY9dCgl1V6pxjHSgCYRTnZ5CubpXHs7VSXH5KfVgwC7HvNxM29dZr4H5wJrXFXNUr35eGiqx2_m43dRE09B5akyBWEHfKlkNW32MJ5qcPVoLVhpmH3SMj2gDV4lIcn1nNmA6_qswfG57EDdxFTUw-VbljwceZ-Y5eOMP6rquEgPlOZzhMM3HP4n3ks0JRNjHztpZzjMbxvMWCIcL0-Lk2xxnI2bG7R6zjrHccLrbhdOeM3ziRPNnWMevpoH-WVowaX_wFC4WWwC2iDAYYA8l732fKWcNoi3zHg2UNjQReGrDWyyZ3EoienygzhAicMEt0FIk80WKC_Ij9gs2bl_35ny1R0ivygNThA2BcoX-A0USRQGtwNJFCVRlnuyOGyDD6D0pJEw6srdoSwPRkNp2Jf2bfCZEXQFeXjbHfUG3X5PEnuyLO7_AEh-OrI
-// -------------------------------------------------
-// stateDiagram-v2
-//   __focusElement() --> __.focus()
-// #####
-//   #__scrollElementIntoView() --> __focusElement()
-//   #__scrollToHashRaw() --> __focusElement()
-//   __processXYRaw() --> __focusElement()
-//   __notifyReadingLocationRaw() --> __focusElement()
-// #####
-//   #__scrollToHashRaw() --> __scrollElementIntoView()
-//   #__focusScrollRaw() --> __scrollElementIntoView()
-//   #__R2_EVENT_MEDIA_OVERLAY_HIGHLIGHT --> __scrollElementIntoView()
-// #####
-// # OLD _click...SKIP_LINK_ID
-//   #_R2_EVENT_FOCUS_READING_LOC...focusCurrentReadingLocationElement()...focusScrollDebounced() --> __focusScrollRaw()
-//   #__DOMContentLoaded...load...loaded()...focusin...handleFocusInDebounced()...handleFocusInRaw() --> __focusScrollRaw()
-// #####
-//   #__R2_EVENT_SCROLLTO --> __scrollToHashRaw()
-//   #__scrollToHashDebounced() --> __scrollToHashRaw()
-// #####
-//   #__scrollToHashRaw() --> __processXYRaw()
-//   __onScrollRaw() --> __processXYRaw()
-//   #__mouseup...handleMouseEvent()...processXYDebouncedImmediate() --> __processXYRaw()
-//   #__R2_EVENT_SCROLLTO --> __processXYRaw()
-// #####
-//   __notifyReadingLocationDebounced() --> __notifyReadingLocationRaw()
-//   __notifyReadingLocationDebouncedImmediate() --> __notifyReadingLocationRaw()
-//   #__R2_EVENT_MEDIA_OVERLAY_HIGHLIGHT --> __notifyReadingLocationRaw()
-// #####
-//   __onScrollDebounced()--> __onScrollRaw()
-// #####
-//   #__R2_EVENT_PAGE_TURN...onEventPageTurn() --> __onScrollDebounced()
-//   #__scrollElementIntoView() --> __onScrollDebounced()
-//   __DOMContentLoaded...load...loaded()..scroll --> __onScrollDebounced()
-// #####
-//   #__DOMContentLoaded...load...loaded()...onResizeRaw --> __scrollToHashDebounced()
-//   #__DOMContentLoaded...load...loaded()...ResizeObserver --> __scrollToHashDebounced()
-//   #__DOMContentLoaded...load...loaded() --> __scrollToHashDebounced()
-// #####
-//   #__selectionchange...setSelectionChangeAction() --> __notifyReadingLocationDebounced()
-//   #__R2_EVENT_SCROLLTO --> __notifyReadingLocationDebounced()
-//   #__scrollToHashRaw() --> __notifyReadingLocationDebounced()
-//   #__focusScrollRaw() --> __notifyReadingLocationDebounced()
-//   #__DOMContentLoaded...load...loaded() --> __notifyReadingLocationDebounced()
-//   __processXYRaw() --> __notifyReadingLocationDebounced()
-// #####
-//   __processXYRaw() --> __notifyReadingLocationDebouncedImmediate()
+    ipcRenderer.on("accessibility-support-changed", (_event: any, accessibilitySupportEnabled: boolean) => {
+        debug("accessibility-support-changed event received in navigator Electron BrowserWindow's Webview", accessibilitySupportEnabled);
+        win.READIUM2.accessibilitySupportEnabled = accessibilitySupportEnabled;
+    });
+}

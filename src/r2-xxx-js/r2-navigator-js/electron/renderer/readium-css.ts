@@ -9,6 +9,7 @@ import { Link } from "@r2-shared-js/models/publication-link";
 
 import { IEventPayload_R2_EVENT_READIUMCSS } from "../common/events";
 import { ReadiumElectronBrowserWindow, IReadiumElectronWebview } from "./webview/state";
+import { WebViewSlotEnum } from "../common/styles";
 
 const win = global.window as ReadiumElectronBrowserWindow;
 
@@ -79,9 +80,26 @@ export function adjustReadiumCssJsonMessageForFixedLayout(
 
     if (isFixedLayout(pubLink)) {
 
+        // console.log("webview.clientWidth", webview.clientWidth);
+        // console.log("webview.clientHeight", webview.clientHeight);
+        // console.log("webview.offsetWidth", webview.offsetWidth);
+        // console.log("webview.offsetHeight", webview.offsetHeight);
+        // console.log("webview.scrollWidth", webview.scrollWidth);
+        // console.log("webview.scrollHeight", webview.scrollHeight);
+
+        // console.log("win.READIUM2.domRootElement.clientWidth", win.READIUM2.domRootElement.clientWidth);
+        // console.log("win.READIUM2.domRootElement.clientHeight", win.READIUM2.domRootElement.clientHeight);
+        // console.log("win.READIUM2.domRootElement.offsetWidth", win.READIUM2.domRootElement.offsetWidth);
+        // console.log("win.READIUM2.domRootElement.offsetHeight", win.READIUM2.domRootElement.offsetHeight);
+        // console.log("win.READIUM2.domRootElement.scrollWidth", win.READIUM2.domRootElement.scrollWidth);
+        // console.log("win.READIUM2.domRootElement.scrollHeight", win.READIUM2.domRootElement.scrollHeight);
+
+        const fixedLayoutAvailableWebViewWidth = !webview.READIUM2.webViewSlot ? webview.clientWidth : webview.READIUM2.webViewSlot === WebViewSlotEnum.center ? win.READIUM2.domRootElement.clientWidth : win.READIUM2.domRootElement.clientWidth / 2;
+        const fixedLayoutAvailableWebViewHeight = win.READIUM2.domRootElement.clientHeight || webview.clientHeight;
+
         return {
-            fixedLayoutWebViewHeight: webview.clientHeight,
-            fixedLayoutWebViewWidth: webview.clientWidth,
+            fixedLayoutAvailableWebViewHeight,
+            fixedLayoutAvailableWebViewWidth,
             fixedLayoutZoomPercent: win.READIUM2.fixedLayoutZoomPercent,
             isFixedLayout: true,
             setCSS: undefined,

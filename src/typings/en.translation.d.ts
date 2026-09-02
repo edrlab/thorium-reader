@@ -1856,6 +1856,7 @@ declare namespace typed_i18n {
   },
   readonly "marks": {
     readonly "annotations": string,
+    readonly "annotationsReadium": string,
     readonly "bookmarks": string,
     readonly "delete": string,
     readonly "edit": string,
@@ -1894,7 +1895,6 @@ declare namespace typed_i18n {
     readonly "bookmarkTitle": string,
     readonly "currentPage": string,
     readonly "currentPageTotal": string,
-    readonly "detachWindowTitle": string,
     readonly "goTo": string,
     readonly "goToError": string,
     readonly "goToPlaceHolder": string,
@@ -1968,6 +1968,7 @@ declare namespace typed_i18n {
     readonly "disabled": string,
     readonly "display": string,
     readonly "disposition": { readonly "title": string },
+    readonly "enablePageBreakMarginIndicators": string,
     readonly "font": string,
     readonly "fontSize": string,
     readonly "increaseFontSize": string,
@@ -1978,7 +1979,6 @@ declare namespace typed_i18n {
     readonly "lineSpacing": string,
     readonly "margin": string,
     readonly "mathjax": string,
-    readonly "mathjaxDescription": string,
     readonly "noFootnotes": string,
     readonly "noRTLFlip": string,
     readonly "noRuby": string,
@@ -2173,6 +2173,7 @@ declare namespace typed_i18n {
   (_: "reader.imgViewer.zoomReset", __?: {}): string;
   (_: "reader.marks", __?: {}): {
   readonly "annotations": string,
+  readonly "annotationsReadium": string,
   readonly "bookmarks": string,
   readonly "delete": string,
   readonly "edit": string,
@@ -2184,6 +2185,7 @@ declare namespace typed_i18n {
   readonly "toc": string
 };
   (_: "reader.marks.annotations", __?: {}): string;
+  (_: "reader.marks.annotationsReadium", __?: {}): string;
   (_: "reader.marks.bookmarks", __?: {}): string;
   (_: "reader.marks.delete", __?: {}): string;
   (_: "reader.marks.edit", __?: {}): string;
@@ -2239,7 +2241,6 @@ declare namespace typed_i18n {
   readonly "bookmarkTitle": string,
   readonly "currentPage": string,
   readonly "currentPageTotal": string,
-  readonly "detachWindowTitle": string,
   readonly "goTo": string,
   readonly "goToError": string,
   readonly "goToPlaceHolder": string,
@@ -2265,7 +2266,6 @@ declare namespace typed_i18n {
   (_: "reader.navigation.bookmarkTitle", __?: {}): string;
   (_: "reader.navigation.currentPage", __?: {}): string;
   (_: "reader.navigation.currentPageTotal", __?: {}): string;
-  (_: "reader.navigation.detachWindowTitle", __?: {}): string;
   (_: "reader.navigation.goTo", __?: {}): string;
   (_: "reader.navigation.goToError", __?: {}): string;
   (_: "reader.navigation.goToPlaceHolder", __?: {}): string;
@@ -2389,6 +2389,7 @@ declare namespace typed_i18n {
   readonly "disabled": string,
   readonly "display": string,
   readonly "disposition": { readonly "title": string },
+  readonly "enablePageBreakMarginIndicators": string,
   readonly "font": string,
   readonly "fontSize": string,
   readonly "increaseFontSize": string,
@@ -2399,7 +2400,6 @@ declare namespace typed_i18n {
   readonly "lineSpacing": string,
   readonly "margin": string,
   readonly "mathjax": string,
-  readonly "mathjaxDescription": string,
   readonly "noFootnotes": string,
   readonly "noRTLFlip": string,
   readonly "noRuby": string,
@@ -2468,6 +2468,7 @@ declare namespace typed_i18n {
   (_: "reader.settings.display", __?: {}): string;
   (_: "reader.settings.disposition", __?: {}): { readonly "title": string };
   (_: "reader.settings.disposition.title", __?: {}): string;
+  (_: "reader.settings.enablePageBreakMarginIndicators", __?: {}): string;
   (_: "reader.settings.font", __?: {}): string;
   (_: "reader.settings.fontSize", __?: {}): string;
   (_: "reader.settings.increaseFontSize", __?: {}): string;
@@ -2478,7 +2479,6 @@ declare namespace typed_i18n {
   (_: "reader.settings.lineSpacing", __?: {}): string;
   (_: "reader.settings.margin", __?: {}): string;
   (_: "reader.settings.mathjax", __?: {}): string;
-  (_: "reader.settings.mathjaxDescription", __?: {}): string;
   (_: "reader.settings.noFootnotes", __?: {}): string;
   (_: "reader.settings.noRTLFlip", __?: {}): string;
   (_: "reader.settings.noRuby", __?: {}): string;
@@ -2860,6 +2860,10 @@ declare namespace typed_i18n {
         readonly "description": string,
         readonly "name": string
       },
+      readonly "ToggleReaderZenMode": {
+        readonly "description": string,
+        readonly "name": string
+      },
       readonly "ToggleScreenReaderOptimize": {
         readonly "description": string,
         readonly "name": string
@@ -3233,6 +3237,10 @@ declare namespace typed_i18n {
       readonly "description": string,
       readonly "name": string
     },
+    readonly "ToggleReaderZenMode": {
+      readonly "description": string,
+      readonly "name": string
+    },
     readonly "ToggleScreenReaderOptimize": {
       readonly "description": string,
       readonly "name": string
@@ -3483,6 +3491,10 @@ declare namespace typed_i18n {
     readonly "description": string,
     readonly "name": string
   },
+  readonly "ToggleReaderZenMode": {
+    readonly "description": string,
+    readonly "name": string
+  },
   readonly "ToggleScreenReaderOptimize": {
     readonly "description": string,
     readonly "name": string
@@ -3662,6 +3674,9 @@ declare namespace typed_i18n {
   (_: "settings.keyboard.list.ToggleReaderFullscreen", __?: {}): { readonly "description": string, readonly "name": string };
   (_: "settings.keyboard.list.ToggleReaderFullscreen.description", __?: {}): string;
   (_: "settings.keyboard.list.ToggleReaderFullscreen.name", __?: {}): string;
+  (_: "settings.keyboard.list.ToggleReaderZenMode", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.ToggleReaderZenMode.description", __?: {}): string;
+  (_: "settings.keyboard.list.ToggleReaderZenMode.name", __?: {}): string;
   (_: "settings.keyboard.list.ToggleScreenReaderOptimize", __?: {}): { readonly "description": string, readonly "name": string };
   (_: "settings.keyboard.list.ToggleScreenReaderOptimize.description", __?: {}): string;
   (_: "settings.keyboard.list.ToggleScreenReaderOptimize.name", __?: {}): string;

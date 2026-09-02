@@ -162,11 +162,12 @@ export const isTwoPageSpread = (): boolean => {
     }
     const scrollElement = getScrollingElement(win.document);
     const bodyComputedStyle = win.getComputedStyle(win.document.body);
-    const bodyWidth = parseInt(bodyComputedStyle.width, 10);
+    const bodyWidth = parseFloat(bodyComputedStyle.width); // parseInt(bodyComputedStyle.width, 10);
     let paginatedTwo = docColumnCount === 2;
-    if (paginatedTwo && (bodyWidth * 2) > scrollElement.clientWidth) {
-        paginatedTwo = false;
-    }
+    // if (paginatedTwo && (bodyWidth * 2) > scrollElement.clientWidth) {
+    //     console.log("paginatedTwo force FALSE", docColumnCount, bodyComputedStyle.width, bodyWidth * 2, scrollElement.clientWidth);
+    //     paginatedTwo = false;
+    // }
     if (docColumnCount && isNaN(docColumnCount) // "auto"?
         && (bodyWidth * 2) <= (scrollElement.clientWidth + 10)) {
         paginatedTwo = true;

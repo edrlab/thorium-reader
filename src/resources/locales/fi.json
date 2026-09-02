@@ -622,7 +622,7 @@
             },
             "ways-of-reading-visual-adjustments-unmodifiable": {
                 "compact": "Ulkoasua ei voi mukauttaa",
-                "descriptive": "Tekstin ja sivujen ulkoasu mukailee painettua versiota eikä ulkoasua voi mukauttaa. Lukuohjelmassa voi kuitenkin olla mahdollista zoomata."
+                "descriptive": "Tekstin ja sivujen ulkoasu mukailee painettua versiota eikä ulkoasua voi mukauttaa. Lukuohjelmassa voi kuitenkin olla mahdollista zoomata"
             }
         }
     },
@@ -775,6 +775,7 @@
         },
         "marks": {
             "annotations": "Muistiinpanot",
+            "annotationsReadium": "Muistiinpanot (Readium)",
             "bookmarks": "Kirjanmerkit",
             "delete": "Poista",
             "edit": "Muokkaa",
@@ -813,7 +814,6 @@
             "bookmarkTitle": "Kirjanmerkki",
             "currentPage": "Nykyinen sivu: {{- current}}",
             "currentPageTotal": "Nykyinen sivu: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Näytä kirjaston / kirjahyllyn ikkuna",
             "goTo": "Siirry",
             "goToError": "Sivua ei löydy",
             "goToPlaceHolder": "Syötä sivunumero",
@@ -890,6 +890,7 @@
             "disposition": {
                 "title": "Asettelu"
             },
+            "enablePageBreakMarginIndicators": "Näytä sivunvaihtokohdat marginaalissa",
             "font": "Fontti",
             "fontSize": "Fonttikoko",
             "increaseFontSize": "Suurenna fonttikokoa",
@@ -900,7 +901,6 @@
             "lineSpacing": "Riviväli",
             "margin": "Marginaali",
             "mathjax": "Ota MathJax käyttöön",
-            "mathjaxDescription": "MathJax",
             "noFootnotes": "Älä näytä alaviitteitä popup-ikkunassa",
             "noRTLFlip": "Estä oikealta vasemmalle -käyttöliittymä",
             "noRuby": "Piilota japanin rubi-merkit",
@@ -1228,8 +1228,12 @@
                     "description": "Ota lukunäkymässä käyttöön tai poista käytöstä koko ruudun tila. Huomaa, että toiminto ei ole sama kuin keskittymistila, joka yksinkertaistaa käyttöliittymää",
                     "name": "Muuta koko ruudun tila"
                 },
+                "ToggleReaderZenMode": {
+                    "description": "Lukunäkymässä voit ottaa käyttöön tai pois käytöstä keskittymistilan, joka yksinkertaistaa käyttöliittymää lukemisen aikana",
+                    "name": "Muuta keskittymistila"
+                },
                 "ToggleScreenReaderOptimize": {
-                    "description": "Ota käyttöön tai poista käytöstä optimoitu tuki ruudunlukuohjelmille kirjastoikkunassa",
+                    "description": "Kirjastonäkymässä voit ottaa käyttöön tai poistaa käytöstä optimoidun tuen ruudunlukuohjelmille",
                     "name": "Ota käyttöön tai poista käytöstä ruudunlukijan optimoinnit"
                 }
             },
@@ -1263,7 +1267,7 @@
         },
         "screenReaderActivate": {
             "help": "Kun sovellus havaitsee, että käytössä on avustavaa teknologiaa, käyttöliittymä mukautuu toimimaan paremmin yhteen ruudunlukuohjelmien kanssa.",
-            "invite": "Optimoi ruudunlukuohjelmaa ({{- status}}) [{{- keyboard}}]",
+            "invite": "Optimoi ruudunlukuohjelmaa varten ({{- status}}) [{{- keyboard}}]",
             "message": "Parannettu tuki ruudunlukuohjelmille",
             "title": "Paranna ruudunlukukokemusta"
         },

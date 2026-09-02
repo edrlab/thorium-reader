@@ -8,6 +8,7 @@
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 import { keyboardReducer } from "readium-desktop/common/redux/reducers/keyboard";
 import { appReducer } from "readium-desktop/main/redux/reducers/app";
+import { analyticsReducer } from "readium-desktop/main/redux/reducers/analytics";
 import { streamerReducer } from "readium-desktop/main/redux/reducers/streamer";
 import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
 import { screenReaderReducer } from "readium-desktop/common/redux/reducers/screenReader";
@@ -20,7 +21,6 @@ import { readerDefaultConfigReducer } from "../../../common/redux/reducers/reade
 // import { winRegistryReaderReducer } from "./win/registry/reader";
 import { winSessionLibraryReducer } from "./win/session/library";
 import { winSessionReaderReducer } from "./win/session/reader";
-import { winModeReducer } from "../../../common/redux/reducers/winModeReducer";
 import { readerRTLFlipReducer } from "../../../common/redux/reducers/reader/rtlFlip";
 import { publicationDbReducers } from "./publication/db";
 import { opdsDbReducers } from "./opds/db";
@@ -49,6 +49,7 @@ const debug = debug_(filename_);
 debug("_");
 
 export const rootReducer = combineReducers({ // RootState
+    analytics: analyticsReducer,
     versionUpdate: versionUpdateReducer,
     theme: themeReducer,
     session: sessionReducer,
@@ -71,7 +72,6 @@ export const rootReducer = combineReducers({ // RootState
             reader: (state: any = null) => state, // winRegistryReaderReducer,
         }),
     }),
-    mode: winModeReducer,
     lcp: lcpReducer,
     publication: combineReducers({
         lastReadingQueue: priorityQueueReducer

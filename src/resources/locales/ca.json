@@ -781,6 +781,7 @@
         },
         "marks": {
             "annotations": "Anotacions",
+            "annotationsReadium": "Anotacions (Readium)",
             "bookmarks": "Marcadors",
             "delete": "Eliminar",
             "edit": "Editar",
@@ -819,7 +820,6 @@
             "bookmarkTitle": "Marcador",
             "currentPage": "Pàgina actual: {{- current}}",
             "currentPageTotal": "Pàgina actual: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Mostrar finestra de biblioteca",
             "goTo": "Anar a",
             "goToError": "Aquest salt de pàgina no existeix",
             "goToPlaceHolder": "Introdueix un número de pàgina",
@@ -897,6 +897,7 @@
             "disposition": {
                 "title": "Disposició"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Font",
             "fontSize": "Grandària de font",
             "increaseFontSize": "",
@@ -907,7 +908,6 @@
             "lineSpacing": "Interlineat",
             "margin": "Marge",
             "mathjax": "",
-            "mathjaxDescription": "",
             "noFootnotes": "Desactivar notes al peu",
             "noRTLFlip": "Desactiva la IU de dreta a esquerra",
             "noRuby": "Oculta el Ruby japonès",
@@ -1232,6 +1232,10 @@
                     "name": ""
                 },
                 "ToggleReaderFullscreen": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleReaderZenMode": {
                     "description": "",
                     "name": ""
                 },

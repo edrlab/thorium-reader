@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ReaderConfig, ReaderConfigPublisher, ReaderInfo, ReaderMode } from "readium-desktop/common/models/reader";
+import { ReaderConfig, ReaderConfigPublisher, ReaderInfo } from "readium-desktop/common/models/reader";
 import { IRendererCommonRootState, IRendererCommonRootStateHydration } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { IDivinaState } from "readium-desktop/common/redux/states/renderer/divina";
 import { IHighlightHandlerState, IHighlightMounterState } from "./highlight";
@@ -38,7 +38,6 @@ export interface IReaderRootState extends IRendererCommonRootState {
     reader: IReaderStateReader;
     router: RouterState;
     search: ISearchState;
-    mode: ReaderMode;
     annotation: IAnnotationModeState;
     img: IImageClickState; // TODO: replace by dock/dialog state
     dock: DockState;

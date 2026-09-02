@@ -787,6 +787,7 @@
         },
         "marks": {
             "annotations": "Anotace",
+            "annotationsReadium": "Anotace (Readium)",
             "bookmarks": "Záložky",
             "delete": "Odstranit",
             "edit": "Upravit",
@@ -825,7 +826,6 @@
             "bookmarkTitle": "záložka",
             "currentPage": "Aktuální stránka: {{- current}}",
             "currentPageTotal": "Aktuální stránka: {{- current}}/{{- total}}",
-            "detachWindowTitle": "",
             "goTo": "Jít na",
             "goToError": "Zalomení stránky neexistuje",
             "goToPlaceHolder": "Zadejte číslo stránky",
@@ -904,6 +904,7 @@
             "disposition": {
                 "title": "Rozložení"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Písmo",
             "fontSize": "Velikost písma",
             "increaseFontSize": "",
@@ -914,7 +915,6 @@
             "lineSpacing": "Řádkování",
             "margin": "Okraj",
             "mathjax": "",
-            "mathjaxDescription": "",
             "noFootnotes": "Vypnout poznámky pod čarou",
             "noRTLFlip": "",
             "noRuby": "Skrýt japonské znaky rubi",
@@ -1239,6 +1239,10 @@
                     "name": ""
                 },
                 "ToggleReaderFullscreen": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleReaderZenMode": {
                     "description": "",
                     "name": ""
                 },

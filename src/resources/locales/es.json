@@ -43,7 +43,7 @@
         "update": {
             "message": "Nueva versión disponible, haz clic para obtener más información.",
             "title": "Actualización de software {{- appName}}.",
-            "whatsnew": ""
+            "whatsnew": "Se ha instalado una nueva versión. Haz clic aquí para obtener más información"
         },
         "window": {
             "showLibrary": "Mostrar biblioteca",
@@ -54,7 +54,7 @@
     "catalog": {
         "AddToFavorites": "Añadir a favoritos",
         "about": {
-            "title": "Acerca de {{appName}}"
+            "title": "Acerca de {{- appName}} (en línea)"
         },
         "addBookToLib": "Importar",
         "addTags": "Añadir etiqueta",
@@ -206,7 +206,7 @@
         "importTitle": "Importar publicación",
         "listTitle": "Presentación en lista",
         "myCatalogs": "Mis catálogos",
-        "refreshTitle": "Recargar",
+        "refreshTitle": "recargar",
         "searchPlaceholder": "Buscar",
         "searchTitle": "Iniciar búsqueda",
         "settings": "Opciones de configuración",
@@ -242,8 +242,8 @@
     },
     "message": {
         "annotations": {
-            "alreadyImported": "Ya están importadas todas las anotaciones, cancelando la importación",
-            "emptyFile": "El fichero no tiene anotaciones disponibles",
+            "alreadyImported": "Ya están importadas todas las anotaciones, cancelando la importación.",
+            "emptyFile": "El fichero no tiene anotaciones disponibles.",
             "errorParsing": "Error al validar el formato del fichero: ",
             "importReportAlreadyImported": "",
             "importReportAmbiguousMatch": "",
@@ -281,7 +281,7 @@
             }
         },
         "import": {
-            "alreadyImport": "{{- title}} ya estaba importado",
+            "alreadyImport": "{{- title}} ya estaba importado.",
             "fail": "La importación de {{- path}} falló. {{- err}}",
             "success": "La importación de {{- title}} ha finalizado."
         },
@@ -635,7 +635,7 @@
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": "Texto e imágenes disponibles en voz sintetizada y braille."
+                "textual": "Texto e imágenes disponibles en voz sintetizada y braille"
             },
             "accessibilityFeature": {
                 "alternativeText": "Contiene texto alternativo",
@@ -657,8 +657,8 @@
                 "sound": "Sonido",
                 "unknown": "Desconocido"
             },
-            "certifierReport": "Informe de la entidad certificadora",
-            "conformsTo": "Conforme con",
+            "certifierReport": "Informe de la entidad certificadora:",
+            "conformsTo": "Conforme con:",
             "moreInformation": "Más información",
             "name": "Accesibilidad",
             "noA11y": "No hay disponible información sobre accesibilidad"
@@ -669,8 +669,8 @@
         },
         "author": "Autor",
         "cancelledLcp": "Este libro no se puede leer porque la licencia LCP se ha cancelado.",
-        "certificateRevoked": "El certificado de la licencia LCP está cancelado",
-        "certificateSignatureInvalid": "La firma del certificado de la licencia LCP no es válida",
+        "certificateRevoked": "El certificado de la licencia LCP está cancelado.",
+        "certificateSignatureInvalid": "La firma del certificado de la licencia LCP no es válida.",
         "cover": {
             "img": "Imagen de portada"
         },
@@ -682,16 +682,16 @@
         "encryptedNoLicense": "¡La publicación está encriptada pero sin licencia LCP!",
         "expired": "Préstamo vencido",
         "expiredLcp": "Este libro no se puede leer porque la licencia LCP ha expirado.",
-        "incorrectPassphrase": "No hay contraseñas almacenadas para esta publicación o la contraseña es incorrecta",
+        "incorrectPassphrase": "No hay contraseñas almacenadas para esta publicación o la contraseña es incorrecta.",
         "lcpEnd": "Fin",
         "lcpNotSupported": "Aviso: esta es una versión de desarrollo de Thorium Desktop reader que no admite licencias LCP completas, y solo admite el descifrado de LCP con «perfil básico» sin validación de certificado.",
         "lcpRightsCopy": "Caracteres copiados",
         "lcpRightsPrint": "Páginas impresas",
-        "lcpStart": "Inicio",
+        "lcpStart": "Iniciar",
         "licenceLCP": "Licencia (LCP)",
-        "licenseCertificateDateInvalid": "La fecha de la firma de la licencia LCP no es válida ({{- dateTime}})",
+        "licenseCertificateDateInvalid": "La fecha de la firma de la licencia LCP no es válida ({{- dateTime}}).",
         "licenseOutOfDate": "La licencia está desactualizada.",
-        "licenseSignatureInvalid": "La firma de la licencia LCP no es válida",
+        "licenseSignatureInvalid": "La firma de la licencia LCP no es válida.",
         "licensed": "Con licencia",
         "markAsRead": "Marcar como leído",
         "notStarted": "No iniciado",
@@ -717,7 +717,7 @@
             "addNote": "Anotar",
             "advancedMode": "Modo instantáneo (creación automática al seleccionar)",
             "annotationsExport": {
-                "description": "Indicar un nombre para este conjunto de anotaciones",
+                "description": "Indicar un nombre para este conjunto de anotaciones:",
                 "title": "Título"
             },
             "annotationsOptions": "Opciones",
@@ -781,6 +781,7 @@
         },
         "marks": {
             "annotations": "Anotaciones",
+            "annotationsReadium": "Anotaciones (Readium)",
             "bookmarks": "Marcadores",
             "delete": "Eliminar",
             "edit": "Editar",
@@ -819,7 +820,6 @@
             "bookmarkTitle": "Marcador",
             "currentPage": "Página actual: {{- current}}",
             "currentPageTotal": "Página actual: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Mostrar ventana de biblioteca",
             "goTo": "Ir a",
             "goToError": "Este salto de página no existe",
             "goToPlaceHolder": "Introduce un número de página",
@@ -852,7 +852,7 @@
         },
         "picker": {
             "search": {
-                "founds_many": "{{- count}} encontrado(s)",
+                "founds_many": "{{- count}} encontrados",
                 "founds_one": "{{- count}} encontrado",
                 "founds_other": "{{- count}} encontrados",
                 "input": "texto de búsqueda",
@@ -897,6 +897,7 @@
             "disposition": {
                 "title": "Disposición"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Fuente",
             "fontSize": "Tamaño de fuente",
             "increaseFontSize": "Aumentar el tamaño del texto",
@@ -907,7 +908,6 @@
             "lineSpacing": "Interlineado",
             "margin": "Margen",
             "mathjax": "Habilitar MathJax",
-            "mathjaxDescription": "MathJax",
             "noFootnotes": "Desactivar notas al pie emergentes",
             "noRTLFlip": "Deshabilitar la interfaz de usuario de derecha a izquierda",
             "noRuby": "Ocultar Ruby japonés",
@@ -996,7 +996,7 @@
             "wipeData": "Borrar datos de autenticación"
         },
         "keyboard": {
-            "advancedMenu": "Menú",
+            "advancedMenu": "Menú avanzado de atajos de teclado",
             "cancel": "Cancelar",
             "disclaimer": "Los predeterminados de la aplicación se diseñó en función de la ubicación física de las teclas en un teclado QWERTY.",
             "editUserJson": "Editar archivo de usuario...",
@@ -1235,9 +1235,13 @@
                     "description": "En la ventana del lector, activa el modo de pantalla completa del sistema o vuelve al modo de ventana normal. Ten en cuenta que esto es diferente del «modo zen», que simplifica la interfaz de usuario",
                     "name": "Pantalla completa"
                 },
+                "ToggleReaderZenMode": {
+                    "description": "En la ventana del lector, activa o desactiva el modo Zen, que simplifica la interfaz de usuario durante la lectura",
+                    "name": "Activar/desactivar el modo Zen"
+                },
                 "ToggleScreenReaderOptimize": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana de la biblioteca, activa o desactiva la compatibilidad optimizada con lectores de pantalla",
+                    "name": "Activar/desactivar las optimizaciones para lectores de pantalla"
                 }
             },
             "loadUserJson": "Cargar desde archivo de usuario",
@@ -1270,7 +1274,7 @@
         },
         "screenReaderActivate": {
             "help": "Cuando la aplicación detecta la presencia de tecnología de apoyo, la interfaz de usuario funciona mejor con los lectores de pantalla",
-            "invite": "",
+            "invite": "Optimizar para lectores de pantalla ({{- status}}) [{{- keyboard}}]",
             "message": "Mejora de la compatibilidad con lectores de pantalla",
             "title": "Mejorar la experiencia con los lectores de pantalla"
         },
@@ -1318,7 +1322,7 @@
                 }
             },
             "locations": {
-                "defaultDescription": "Las publicaciones gestionadas por la aplicación, por defecto, se almacenan en ",
+                "defaultDescription": "Las publicaciones gestionadas por la aplicación, por defecto, se almacenan en:",
                 "defaultInternal": "Espacio de almacenamiento del sistema",
                 "externalStorage": "Espacio de almacenamiento externo",
                 "title": "Ubicaciones"

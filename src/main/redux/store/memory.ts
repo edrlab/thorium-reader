@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import * as fs from "fs";
+import * as fs from "node:fs";
 import {
     diMainGet, memoryLoggerFilename, patchFilePath, runtimeDiffStateFilePath, runtimeStateFilePath, stateDiffFilePath, stateFilePath,
 } from "readium-desktop/main/di";
@@ -227,7 +227,7 @@ const validateReduxState = (reduxState: any): TReduxStateParsed => {
 const parseAndValidateReduxState = async (filePath: string) => {
 
     debug("State filePath=", filePath);
-    const reduxStateStr = await fs.promises.readFile(filePath, { encoding: "utf-8" });
+    const reduxStateStr = await fs.promises.readFile(filePath, { encoding: "utf8" });
     const reduxState = JSON.parse(reduxStateStr);
     const reduxStateParsed = validateReduxState(reduxState);
     reduxStateParsed.filePath = filePath;
@@ -250,10 +250,10 @@ const validateRecoveredReduxState = (reduxRecoveredState: object, reduxState: Pe
         debug("Overriding state with recovered runtime+patch version");
 
         debug("State runtime+patch written to ", runtimeDiffStateFilePath);
-        Promise.resolve().then(() => fs.promises.writeFile(runtimeDiffStateFilePath, JsonStringifySortedKeys(reduxRecoveredState), { encoding: "utf-8" })).catch(() => {});
+        Promise.resolve().then(() => fs.promises.writeFile(runtimeDiffStateFilePath, JsonStringifySortedKeys(reduxRecoveredState), { encoding: "utf8" })).catch(() => {});
 
         debug("State reduxState written to ", stateDiffFilePath);
-        Promise.resolve().then(() => fs.promises.writeFile(stateDiffFilePath, JsonStringifySortedKeys(reduxState), { encoding: "utf-8" })).catch(() => {});
+        Promise.resolve().then(() => fs.promises.writeFile(stateDiffFilePath, JsonStringifySortedKeys(reduxState), { encoding: "utf8" })).catch(() => {});
 
         debug("Diff:");
         try { debug(JSON.stringify(deepDiff(reduxRecoveredState, reduxState), null, 4)); } catch { }

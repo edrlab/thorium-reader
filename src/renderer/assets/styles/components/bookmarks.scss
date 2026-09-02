@@ -16,13 +16,16 @@
   margin-top: 15px !important;
 }
 
+.bookmark_form_pop {
+    padding: 5px 10px;
+    border: 1px solid var(--color-gray-300);
+}
+
 .bookmark_form {
     background-color: var(--color-gray-50);
     border-radius: 6px;
-    // border: 1px solid var(--color-gray-300);
     display: flex;
     flex-direction: column;
-    // padding: 5px 10px;
     color: var(--color-text-primary);
 
     // gap: 10px;

@@ -5,9 +5,9 @@
 // // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // // ==LICENSE-END==
 
-// import * as crypto from "crypto";
+// import * as crypto from "node:crypto";
 // import debug_ from "debug";
-// import * as zlib from "zlib";
+// import * as zlib from "node:zlib";
 
 // import { bufferToStream, streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 // import { RangeStream } from "@r2-utils-js/_utils/stream/RangeStream";
@@ -22,7 +22,7 @@
 
 // // import * as forge from "node-forge";
 // // import { CounterPassThroughStream } from "@r2-utils-js/_utils/stream/CounterPassThroughStream";
-// // import { Transform } from "stream";
+// // import { Transform } from "node:stream";
 
 // const debug = debug_("r2:streamer#transformer-lcp-raw");
 

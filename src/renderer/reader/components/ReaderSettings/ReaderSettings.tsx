@@ -341,7 +341,7 @@ if (optionSelectedIsOnOptionDisabled) {
 
     return (
         <div style={{minHeight: "inherit"}}>
-            { dockedMode ? <DockedHeader dockedMode={dockedMode} dockingMode={dockingMode} isEpub={isEpub} setSection={setSection} dockedModeRef={dockedModeRef} options={options} optionSelected={optionSelected} optionDisabled={optionDisabled} section={section} allowCustomContainer={AllowCustomContainer} /> : <></>}
+            { dockedMode ? <DockedHeader dockedMode={dockedMode} dockingMode={dockingMode} isEpub={isEpub} setSection={setSection} dockedModeRef={dockedModeRef} options={options} optionSelected={optionSelected} optionDisabled={optionDisabled} section={section} allowCustomContainer={AllowCustomContainer} panel={"settings"} /> : <></>}
             <Tabs.Root value={section} defaultValue={section} onValueChange={dockedMode ? null : setSection} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                 {
                     dockedMode ? <></> :
@@ -365,7 +365,10 @@ if (optionSelectedIsOnOptionDisabled) {
                         </div>
                     </Tabs.Content>
                     <Tabs.Content value="tab-text" tabIndex={-1} id="readerSettings_tabs-tab-text" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <div className={classNames(stylesSettings.settings_tab, stylesSettings.settings_reading_text, stylesSettings.section)}>
+                        <div
+                            className={classNames(stylesSettings.settings_tab, stylesSettings.settings_reading_text)}
+                            // style={{ marginLeft: "20px" }}
+                        >
                             <FontSize />
                             <FontFamily />
                         </div>

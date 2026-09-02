@@ -763,6 +763,7 @@
         },
         "marks": {
             "annotations": "주석",
+            "annotationsReadium": "주석 (Readium)",
             "bookmarks": "북마크",
             "delete": "삭제",
             "edit": "수정",
@@ -801,7 +802,6 @@
             "bookmarkTitle": "북마크",
             "currentPage": "현재 페이지: {{- current}}",
             "currentPageTotal": "현재 페이지: {{- current}}/{{- total}}",
-            "detachWindowTitle": "라이브러리 / 내서재 창 보기",
             "goTo": "이동",
             "goToError": "페이지 구분이 존재하지 않습니다.",
             "goToPlaceHolder": "페이지 번호를 입력하세요.",
@@ -877,6 +877,7 @@
             "disposition": {
                 "title": "레이아웃"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "폰트",
             "fontSize": "폰트 크기",
             "increaseFontSize": "",
@@ -887,7 +888,6 @@
             "lineSpacing": "줄 간격",
             "margin": "여백",
             "mathjax": "",
-            "mathjaxDescription": "",
             "noFootnotes": "각주 비활성화",
             "noRTLFlip": "",
             "noRuby": "",
@@ -1212,6 +1212,10 @@
                     "name": ""
                 },
                 "ToggleReaderFullscreen": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleReaderZenMode": {
                     "description": "",
                     "name": ""
                 },

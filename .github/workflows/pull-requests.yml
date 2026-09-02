@@ -31,7 +31,9 @@ jobs:
 # github.event.pull_request.head.repo.fork
     if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
     runs-on: ubuntu-latest
-    environment: "Thorium Deskop Pull Requests"
+    environment:
+      name: "Thorium Deskop Pull Requests"
+      deployment: false
     steps:
       - run: echo "Pull Request approval."
 
@@ -209,10 +211,10 @@ jobs:
       run: uname -m && arch
 ###########################
     - name: Checkout
-# https://github.com/actions/checkout/commits/v6.0.2
-# https://github.com/actions/checkout/commits/de0fac2e4500dabe0009e67214ff5f5447ce83dd
-# https://github.com/actions/checkout/compare/v6.0.2...de0fac2e4500dabe0009e67214ff5f5447ce83dd
-      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+# https://github.com/actions/checkout/commits/v7.0.1
+# https://github.com/actions/checkout/commits/3d3c42e5aac5ba805825da76410c181273ba90b1
+# https://github.com/actions/checkout/compare/v7.0.1...3d3c42e5aac5ba805825da76410c181273ba90b1
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       with:
         persist-credentials: false
     # - name: Git config global dump (pre)
@@ -244,22 +246,61 @@ jobs:
 #      run: 'git config --list || echo NO_GIT_GLOBAL_CONFIG || true'
 #      shell: bash
 ###########################
-# https://github.com/actions/setup-node/commits/v6.4.0
-# https://github.com/actions/setup-node/commits/48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
-# https://github.com/actions/setup-node/compare/v6.4.0...48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
-    - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+# https://github.com/actions/setup-node/commits/v7.0.0
+# https://github.com/actions/setup-node/commits/820762786026740c76f36085b0efc47a31fe5020
+# https://github.com/actions/setup-node/compare/v7.0.0...820762786026740c76f36085b0efc47a31fe5020
+    - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+# https://github.com/actions/setup-node#caching-global-packages-data
+# https://github.com/actions/setup-node/blob/main/docs/advanced-usage.md#caching-packages-data
+# https://github.com/actions/cache/blob/main/examples.md#node---npm
+# https://github.com/actions/setup-node/issues/1553#issuecomment-4750595425
       with:
         node-version: '24'
-        cache: ''
         package-manager-cache: false
+        cache: ''
+#        cache: 'npm'
+#        node-version-file: package.json
+#        package-manager-cache: true
+#        cache-dependency-path: 'package-lock.json'
         #check-latest: true
 ###########################
     - run: node --version && npm --version
-# https://github.com/npm/cli/issues/9133
 ###########################
     - run: npm --global install npm
 ###########################
-    - run: npm --version
+    - run: npm --version && npm config get cache
+###########################
+    - name: Get NPM cache
+      id: npm-config-get-cache
+      run: echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
+      shell: bash
+      # run: echo "dir=$(npm config get cache)" >> ${env:GITHUB_OUTPUT}
+      # shell: pwsh
+###########################
+# https://github.com/actions/cache/commits/v6.1.0
+# https://github.com/actions/cache/commits/55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+# https://github.com/actions/cache/compare/v6.1.0...55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+    - name: Action Cache
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+      id: action-cache
+      with:
+        path: ${{ steps.npm-config-get-cache.outputs.dir }}
+        key: npm-electron-cache-pr-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('package-lock.json') }}
+        restore-keys: |
+          npm-electron-cache-pr-${{ runner.os }}-${{ runner.arch }}-
+###########################
+    - name: NPM Cache NOT HIT
+      run: echo "NPM Cache NOT HIT - not restored at all, or restored with restore-keys instead of primary key"
+      if: steps.action-cache.outputs.cache-hit != 'true'
+###########################
+    - name: NPM Cache HIT
+      run: echo "NPM Cache HIT - restored with primary key"
+      if: steps.action-cache.outputs.cache-hit == 'true'
+###########################
+    - run: ls -als "$(npm config get cache)"
+      shell: bash
+###########################
+    - run: npm cache verify
 ###########################
     - run: python --version || echo ok || true
 ###########################
@@ -292,9 +333,9 @@ jobs:
 ###########################
     - run: git --no-pager diff
 ###########################
-    - run: npm cache clean --force
+#    - run: npm cache clean --force
 ###########################
-    - run: npm cache verify
+#    - run: npm cache verify
 ###########################
 # - run: cat package-lock.json | grep -i divina-player-js
 ###########################
@@ -305,7 +346,7 @@ jobs:
       run: >
         npm ci --ignore-scripts --foreground-scripts --allow-git=root --cpu=arm64 &&
         cd node_modules/electron &&
-        DEBUG=@electron/get* force_no_cache=true npm_config_arch=arm64 ELECTRON_INSTALL_ARCH=arm64 node install.js --cpu=arm64 &&
+        DEBUG=@electron/get* force_no_cache=false electron_config_cache="$(npm config get cache)" npm_config_arch=arm64 ELECTRON_INSTALL_ARCH=arm64 node install.js --cpu=arm64 &&
         cd -
       shell: bash
       #export npm_config_arch=arm64 && export npm_config_cpu=arm64 &&
@@ -317,10 +358,12 @@ jobs:
       run: >
         npm ci --ignore-scripts --foreground-scripts --allow-git=root --cpu=x64 &&
         cd node_modules/electron &&
-        DEBUG=@electron/get* force_no_cache=true npm_config_arch=x64 ELECTRON_INSTALL_ARCH=x64 node install.js --cpu=x64 &&
+        DEBUG=@electron/get* force_no_cache=false electron_config_cache="$(npm config get cache)" npm_config_arch=x64 ELECTRON_INSTALL_ARCH=x64 node install.js --cpu=x64 &&
         cd -
       shell: bash
       #export npm_config_arch=x64 && export npm_config_cpu=x64 &&
+###########################
+#    - run: npm cache verify
 ###########################
     - name: Electron version + arch (Windows)
       #if: ${{ matrix.osarch == 'windows-intel' || matrix.osarch == 'windows-arm' }}

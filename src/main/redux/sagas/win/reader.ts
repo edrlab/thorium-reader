@@ -7,10 +7,9 @@
 
 import debug_ from "debug";
 import { readerIpc } from "readium-desktop/common/ipc";
-import { ReaderInfo, ReaderMode } from "readium-desktop/common/models/reader";
-import { normalizeWinBoundRectangle } from "readium-desktop/common/rectangle/window";
+import { ReaderInfo } from "readium-desktop/common/models/reader";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { deleteReaderWindowInDi, diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
+import { deleteReaderWindowInDi, diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
 import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
@@ -26,7 +25,6 @@ import { readerActions } from "readium-desktop/common/redux/actions";
 import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { publicationNotesSnapshotInitialState } from "readium-desktop/common/redux/states/renderer/publicationNotes";
 import { dialog } from "electron";
-import { restoreBrowserWindowState } from "./session/browserWindowState";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:win:reader";
@@ -65,7 +63,6 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const allowCustomConfig = pubId ? yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "allowCustomConfig")) : undefined; // TODO: type object
 
     const keyboard = yield* selectTyped((_state: RootState) => _state.keyboard);
-    const mode = yield* selectTyped((state: RootState) => state.mode);
     const theme = yield* selectTyped((state: RootState) => state.theme);
     const transientConfigMerge = {...readerConfigInitialState, ...config};
     const creator = yield* selectTyped((_state: RootState) => _state.creator);
@@ -159,7 +156,6 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
                 pdfConfig: pdfConfig,
             } as IReaderStateReader,
             keyboard,
-            mode,
             theme,
             creator,
             publication: {
@@ -226,38 +222,6 @@ export function* winClose(windowIdentifier: string, publicationIdentifier: strin
 
                 debug("Nb of readers:", readersArray.length);
                 debug("readers: ", readersArray);
-                if (readersArray.length < 1) {
-
-                    const mode = yield* selectTyped((state: RootState) => state.mode);
-                    if (mode === ReaderMode.Detached) {
-
-                        // disabled for the new UI refactoring by choice of the designer
-                        // yield put(readerActions.attachModeRequest.build());
-
-                    } else {
-                        const readerWin = yield* callTyped(() => getReaderWindowFromDi(windowIdentifier));
-                        if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
-                            try {
-                                const libraryWindowState = yield* selectTyped((state: RootState) => state.win.session.library);
-
-                                if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
-                                    if (libraryWindowState.windowMaximized) {
-                                        debug("restore maximized library window state", libraryWindowState);
-                                        restoreBrowserWindowState(libraryWin, libraryWindowState);
-                                    } else {
-                                        let winBound = readerWin.getBounds();
-                                        debug("_______3 readerWin.getBounds()", winBound);
-                                        winBound = normalizeWinBoundRectangle(winBound);
-                                        libraryWin.setBounds(winBound);
-                                    }
-                                }
-                            } catch (e) {
-                                debug("error restore library window state", e);
-                            }
-                        }
-                    }
-                }
-
                 if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
                     if (libraryWin.isMinimized()) {
                         libraryWin.restore();

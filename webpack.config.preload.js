@@ -33,8 +33,8 @@ ForkTsCheckerWebpackPlugin.prototype[require("util").inspect.custom] = (_depth, 
 const checkTypeScriptSkip =
     nodeEnv !== "production" ? (process.env.SKIP_CHECK_TYPESCRIPT === "1" ? true : false) : false;
 let externals = {
-    bindings: "bindings",
-    "file-uri-to-path": "file-uri-to-path",
+    // bindings: "bindings",
+    // "file-uri-to-path": "file-uri-to-path",
     fsevents: "fsevents",
     "electron-devtools-installer": "electron-devtools-installer",
     "remote-redux-devtools": "remote-redux-devtools",
@@ -73,7 +73,7 @@ if (nodeEnv !== "production") {
             const isRDeskR2 = request.indexOf("@r2-") === 0;
             if (isRDeskR2) {
                 if (!_externalsCache.has(request)) {
-                    console.log(`WEBPACK EXTERNAL (MAIN): READIUM-DESKTOP @R2 [${request}]`);
+                    console.log(`WEBPACK EXTERNAL (preload): READIUM-DESKTOP @R2 [${request}]`);
                 }
                 _externalsCache.add(request);
 
@@ -146,7 +146,7 @@ let config = Object.assign(
                     options: {
                         configFile: "tsconfig_renderer.json",
                         transpileOnly: true, // checkTypeScriptSkip
-                        // compiler: "@typescript/native-preview",
+                        // compiler: "@typescript/native",
                     },
                 },
                 {
@@ -165,7 +165,7 @@ let config = Object.assign(
                             options: {
                                 configFile: "tsconfig_renderer.json",
                                 transpileOnly: true, // checkTypeScriptSkip
-                                // compiler: "@typescript/native-preview",
+                                // compiler: "@typescript/native",
                             },
                         },
                     ],
@@ -200,11 +200,10 @@ if (checkTypeScriptSkip) {
         new ForkTsCheckerWebpackPlugin({
             typescript: {
                 configFile: "tsconfig_renderer.json",
-                // typescriptPath: `./node_modules/.bin/tsgo${os.platform() === "win32" ? ".exe" : ""}`,
-                // typescriptPath: "@typescript/native-preview",
+                // typescriptPath: "@typescript/native",
                 typescriptPath: require.resolve("typescript"),
-                // typescriptPath: require.resolve("@typescript/native-preview"),
-                // typescriptPath: "./node_modules/@typescript/native-preview",
+                // typescriptPath: require.resolve("@typescript/native"),
+                // typescriptPath: "./node_modules/@typescript/native",
             },
             // measureCompilationTime: true,
         }),

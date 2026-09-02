@@ -28,14 +28,13 @@ export const ReadingDisplayCheckboxSettings = ({
     const [__] = useTranslator();
 
     const set = useSaveReaderConfigDebounced();
-    const { enableMathJax, reduceMotion, noFootnotes, noTemporaryNavTargetOutline, noRuby } = useReaderConfigAll();
+    const { enableMathJax, enablePageBreakMarginIndicators, reduceMotion, noFootnotes, noTemporaryNavTargetOutline, noRuby } = useReaderConfigAll();
 
     const options = [
         {
             id: "mathjax",
             name: "mathjax",
             label: __("reader.settings.mathjax"),
-            description: __("reader.settings.mathjaxDescription"),
             checked: enableMathJax,
             onChange: () => {
                 if (enableMathJax === false) {
@@ -43,6 +42,15 @@ export const ReadingDisplayCheckboxSettings = ({
                     return;
                 }
                 set({ enableMathJax: false });
+            },
+        },
+        {
+            id: "enablePageBreakMarginIndicators",
+            name: "enablePageBreakMarginIndicators",
+            label: __("reader.settings.enablePageBreakMarginIndicators"),
+            checked: enablePageBreakMarginIndicators,
+            onChange: () => {
+                set({ enablePageBreakMarginIndicators: !enablePageBreakMarginIndicators });
             },
         },
         {

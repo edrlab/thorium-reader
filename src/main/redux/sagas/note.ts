@@ -7,14 +7,15 @@
 
 import debug_ from "debug";
 import { dialog } from "electron";
-import * as fs from "fs";
+import * as fs from "node:fs";
+import { buildPublicationUserAnalyticsParams, publicationAnalyticsEvents } from "readium-desktop/common/analytics/publication";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { annotationActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
 import { SagaGenerator } from "typed-redux-saga";
 import { call as callTyped, put as putTyped, take as takeTyped, delay as delayTyped, all as allTyped, select as selectTyped } from "typed-redux-saga/macro";
-import path from "path";
+import path from "node:path";
 import { getPublication } from "./api/publication/getPublication";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
@@ -43,6 +44,8 @@ import {
     PublicationNotesImportController,
     type PublicationNotesImportPreview,
 } from "readium-desktop/main/publication-notes/importController";
+import { spawnPublicationAnalyticsEvent } from "./analyticsPublication";
+import type { TAnalyticsEventParams } from "readium-desktop/common/api/interface/analyticsApi.interface";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:annotationsImporter";
@@ -69,16 +72,6 @@ function* getPublicationSpineItemHrefs(publicationIdentifier: string): SagaGener
     const pubView = yield* callTyped(getPublication, publicationIdentifier);
     if (!pubView.r2PublicationJson) {
         return [];
-    }
-
-    return getPublicationSpineItemHrefsFromR2PublicationJson(pubView.r2PublicationJson);
-}
-
-function* getPublicationImportSpineItemHrefs(publicationIdentifier: string): SagaGenerator<string[] | undefined> {
-
-    const pubView = yield* callTyped(getPublication, publicationIdentifier);
-    if (!pubView.r2PublicationJson) {
-        return undefined;
     }
 
     return getPublicationSpineItemHrefsFromR2PublicationJson(pubView.r2PublicationJson);
@@ -502,10 +495,11 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
     }
 
     let filePath = "";
+    let analyticsParams: TAnalyticsEventParams | undefined;
     try {
 
         debug("Open ShowOpenDialog and ask to user the filePath");
-        const res = yield* callTyped(() => dialog.showOpenDialog(win, { filters: [{ extensions: [EXT_ANNOTATIONS.substring(1)], name: "Readium Annotation Set (" + EXT_ANNOTATIONS + ")" }], properties: ["openFile"] }));
+        const res = yield* callTyped(() => dialog.showOpenDialog(win, { filters: [{ extensions: [EXT_ANNOTATIONS.substring(1)], name: __("reader.marks.annotationsReadium") + " [" + EXT_ANNOTATIONS + "]" }], properties: ["openFile"] }));
 
         if (!res.canceled) {
             filePath = res.filePaths[0] || "";
@@ -524,7 +518,11 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
     try {
 
         const dataString = yield* callTyped(() => fs.promises.readFile(filePath, { encoding: "utf8" }));
-        const spineItemHrefs = yield* callTyped(getPublicationImportSpineItemHrefs, publicationIdentifier);
+        const publicationView = yield* callTyped(getPublication, publicationIdentifier);
+        analyticsParams = buildPublicationUserAnalyticsParams(publicationView);
+        const spineItemHrefs = publicationView.r2PublicationJson
+            ? getPublicationSpineItemHrefsFromR2PublicationJson(publicationView.r2PublicationJson)
+            : undefined;
         const importController = new PublicationNotesImportController({
             publicationNotesController: diMainGet("publication-notes-controller"),
             logger: {
@@ -592,6 +590,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
     }
 
     debug("Annotations importer success and exit");
+    yield* spawnPublicationAnalyticsEvent(publicationAnalyticsEvents.importAnnotations, analyticsParams);
     yield* putTyped(toastActions.openRequest.build(
         ToastType.Success,
         appendImportedUnresolvedDiagnostics(

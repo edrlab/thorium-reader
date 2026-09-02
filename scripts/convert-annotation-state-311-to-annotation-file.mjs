@@ -83,7 +83,7 @@ export function convertAnnotationStateToReadiumAnnotation(note/*: INoteState*/)/
             } : undefined,
             selector: [
                 {
-                    type: "CfiSelector",
+                    type: "EPUBCFISelector",
                     value: locatorExtended?.selectionInfo?.rangeInfo?.cfi
                         || locatorExtended?.locator?.locations?.rangeInfo?.cfi
                         || locatorExtended?.locator?.locations?.cfi

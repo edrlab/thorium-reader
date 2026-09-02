@@ -78,7 +78,7 @@ export async function findManifestFromHtmlEntryAndReturnBuffer(
     return [undefined, undefined];
 }
 
-// import { deepEqual, deepStrictEqual, ok } from "assert";
+// import { deepEqual, deepStrictEqual, ok } from "node:assert";
 // import { deepStrictEqual, ok } from "readium-desktop/common/utils/assert";
 // // TEST
 // if (require.main === module) {
@@ -130,7 +130,7 @@ export async function findManifestFromHtmlEntryAndReturnBuffer(
 //                 }
 //         `);
 
-//         const manifestParsed = JSON.parse(manifestBuffer.toString("utf-8"));
+//         const manifestParsed = JSON.parse(manifestBuffer.toString("utf8"));
 
 //         const [b] = await findManifestFromHtmlEntryAndReturnBuffer(buff, () => manifestBuffer);
 
@@ -189,7 +189,7 @@ export async function findManifestFromHtmlEntryAndReturnBuffer(
 //                 }
 //         `);
 
-//         const manifestParsed = JSON.parse(manifestBuffer.toString("utf-8"));
+//         const manifestParsed = JSON.parse(manifestBuffer.toString("utf8"));
 
 //         const [b] = await findManifestFromHtmlEntryAndReturnBuffer(buff, (url) => {
 //             deepStrictEqual(url, "http://helloworld/");

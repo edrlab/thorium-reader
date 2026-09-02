@@ -781,6 +781,7 @@
         },
         "marks": {
             "annotations": "Anotações",
+            "annotationsReadium": "Anotações (Readium)",
             "bookmarks": "Marcadores",
             "delete": "Apagar",
             "edit": "Editar",
@@ -819,7 +820,6 @@
             "bookmarkTitle": "Marcador",
             "currentPage": "Página atual: {{- current}}",
             "currentPageTotal": "Página atual: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Mostrar tela da biblioteca / estante",
             "goTo": "Ir para",
             "goToError": "Esta quebra de página não existe",
             "goToPlaceHolder": "Digite um número de página",
@@ -897,6 +897,7 @@
             "disposition": {
                 "title": "Layout"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Fonte",
             "fontSize": "Tamanho de fonte",
             "increaseFontSize": "",
@@ -907,7 +908,6 @@
             "lineSpacing": "Espaçamento de linhas",
             "margin": "Margem",
             "mathjax": "Habilitar MathJax",
-            "mathjaxDescription": "",
             "noFootnotes": "Desativar notas de rodapé popup",
             "noRTLFlip": "Desativar UI da direita para a esquerda",
             "noRuby": "Ocultar Ruby Japonês",
@@ -1234,6 +1234,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "Na janela do leitor, ativar a tela cheia do sistema ou restaurar o modo normal. Note que isso é diferente do 'modo Zen' que simplifica a interface do usuário",
                     "name": "Ativar/desativar Tela Cheia"
+                },
+                "ToggleReaderZenMode": {
+                    "description": "",
+                    "name": ""
                 },
                 "ToggleScreenReaderOptimize": {
                     "description": "",

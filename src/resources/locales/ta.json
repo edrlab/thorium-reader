@@ -775,6 +775,7 @@
         },
         "marks": {
             "annotations": "சிறுகுறிப்புகள்",
+            "annotationsReadium": "சிறுகுறிப்புகள் (Readium)",
             "bookmarks": "புக்மார்க்குகள்",
             "delete": "நீக்கு",
             "edit": "தொகு",
@@ -813,7 +814,6 @@
             "bookmarkTitle": "புத்தககுறி",
             "currentPage": "தற்போதைய பக்கம்: {{- current}}",
             "currentPageTotal": "தற்போதைய பக்கம்: {{- current}}/{{- total}}",
-            "detachWindowTitle": "நூலகம் / புத்தக அலமாரி சாளரத்தைக் காட்டு",
             "goTo": "செல்",
             "goToError": "பக்க இடைவெளி இல்லை",
             "goToPlaceHolder": "பக்க எண்ணை உள்ளிடவும்",
@@ -890,6 +890,7 @@
             "disposition": {
                 "title": "மனையமைவு"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "எழுத்துரு",
             "fontSize": "எழுத்துரு அளவு",
             "increaseFontSize": "",
@@ -900,7 +901,6 @@
             "lineSpacing": "வரி இடைவெளி",
             "margin": "விளிம்பு",
             "mathjax": "கணிதத்தை இயக்கவும்",
-            "mathjaxDescription": "",
             "noFootnotes": "பாப்அப் அடிக்குறிப்புகளை முடக்கு",
             "noRTLFlip": "வலது-இடது இடைமுகம் ஐ முடக்கு",
             "noRuby": "சப்பானிய ரூபியை மறைக்கவும்",
@@ -1227,6 +1227,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "ரீடர் சாளரத்தில், கணினி முழுத் திரையை செயல்படுத்தவும் அல்லது சாதாரண சாளர பயன்முறையை மீட்டெடுக்கவும். இது பயனர் இடைமுகத்தை எளிதாக்கும் 'சென் பயன்முறை' இலிருந்து வேறுபட்டது என்பதை நினைவில் கொள்க",
                     "name": "மாற்று முழுத்திரை"
+                },
+                "ToggleReaderZenMode": {
+                    "description": "",
+                    "name": ""
                 },
                 "ToggleScreenReaderOptimize": {
                     "description": "",

@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # rm -rf node_modules/ && rm -f package-lock.json &&\
 rm -rf node_modules/electron &&\
 npm ci --ignore-scripts --foreground-scripts --allow-git=root --cpu=x64 && cd node_modules/electron && DEBUG=@electron/get* force_no_cache=true npm_config_arch=x64 ELECTRON_INSTALL_ARCH=x64 node install.js --cpu=x64 && cd - &&\

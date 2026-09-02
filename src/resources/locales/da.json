@@ -775,6 +775,7 @@
         },
         "marks": {
             "annotations": "Noter",
+            "annotationsReadium": "Noter (Readium)",
             "bookmarks": "Bogmærker",
             "delete": "Slet",
             "edit": "Rediger",
@@ -813,7 +814,6 @@
             "bookmarkTitle": "Bogmærke",
             "currentPage": "Nuværende side: {{- current}}",
             "currentPageTotal": "Nuværende side: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Vis bibliotek / boghylde-vindue",
             "goTo": "Gå til",
             "goToError": "Siden kunne ikke findes",
             "goToPlaceHolder": "Indtast et sidetal",
@@ -890,6 +890,7 @@
             "disposition": {
                 "title": "Layout"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Skrifttype",
             "fontSize": "Skriftstørrelse",
             "increaseFontSize": "Forstør skriftstørrelsen",
@@ -900,7 +901,6 @@
             "lineSpacing": "Linje-mellemrum",
             "margin": "Margen",
             "mathjax": "Slå MathJax til",
-            "mathjaxDescription": "MathJax",
             "noFootnotes": "Slå popup med fodnoter fra",
             "noRTLFlip": "Slå højre-til-venstre UI fra",
             "noRuby": "Skjul japansk læsehjælp (Ruby)",
@@ -1049,7 +1049,7 @@
                     "name": "Stop Afspilning"
                 },
                 "CloseReader": {
-                    "description": "Luk læser-vinduet og gå tilbage til biblioteket",
+                    "description": "Luk læse-vinduet og gå tilbage til biblioteket",
                     "name": "Luk Læser"
                 },
                 "FXLZoomIn": {
@@ -1228,6 +1228,10 @@
                     "description": "I læseren - Aktivér systemets fuldskærmstilstand eller gå tilbage til normalt vindue. Bemærk at dette er anderledes end 'zen mode', hvilket simplificerer brugergrænsefladen",
                     "name": "Slå Fuldskærm Til/Fra"
                 },
+                "ToggleReaderZenMode": {
+                    "description": "I læse-vinduet, start eller stop zen-mode, som simplificerer brugergrænsefladen under læsning",
+                    "name": "Slå Zen-tilstand til eller fra"
+                },
                 "ToggleScreenReaderOptimize": {
                     "description": "Slå forbedret oplevelse med skærmlæser til eller fra i biblioteksvinduet",
                     "name": "Slå forbedret oplevelse med skærmoplæser til/fra"
@@ -1263,7 +1267,7 @@
         },
         "screenReaderActivate": {
             "help": "Når applikationen registrerer at hjælpeteknologier benyttes, fungerer brugergrænsefladen bedre med skærmlæsere",
-            "invite": "Optimer til skærmoplæser",
+            "invite": "Optimer til skærmoplæser ({{- status}}) [{{- keyboard}}]",
             "message": "Forbedret understøttelse af skærmlæsere",
             "title": "Forbedret oplevelse med skærmlæser"
         },

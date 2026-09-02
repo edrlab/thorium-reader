@@ -15,3 +15,4 @@ external-assets/*
 .flox/NPM_CACHE
 .env
 vendor/
+native-node-addon-windows-registry/build/

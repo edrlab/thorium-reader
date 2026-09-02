@@ -43,12 +43,12 @@
         "update": {
             "message": "يتوفر إصدار جديد، اضغط لمعرفة المزيد.",
             "title": "تحديث برنامج {{- appName}}.",
-            "whatsnew": ""
+            "whatsnew": "تم تحميل إصدار جديد، اضغط هنا لمعرفة المزيد"
         },
         "window": {
             "showLibrary": "إظهار المكتبة / رف الكتب",
-            "trayHint": "",
-            "trayTooltip": ""
+            "trayHint": "ما زال تطبيق {{- appName}} يعمل في مساحة الإشعارات. اضغط على أيقونة التطبيقات لعرض المكتبة.",
+            "trayTooltip": "{{- appName}} - اضغط لإظهار المكتبة أو إخفائها"
         }
     },
     "catalog": {
@@ -91,8 +91,8 @@
         "lastRead": "آخر قراءة",
         "login": "تسجيل الدخول",
         "logout": "تسجيل الخروج",
-        "missing": "",
-        "missingUnavailableDescription": "",
+        "missing": "ملفات مفقودة",
+        "missingUnavailableDescription": "لا يمكن فتح الكتاب لأن الملفات المخزنة غير متاحة. أعد جلب الكتاب، أو اذهب إلى صفحة الإعدادات ثم التخزين لإضافة مساحة تخزين جديدة أو تغييرها.",
         "moreInfo": "تفاصيل المنشور",
         "myBooks": "منشوراتي",
         "noPublicationHelpL1": "أفلت الملفات هنا",
@@ -109,8 +109,8 @@
                 "password": "كلمة المرور",
                 "register": "تسجيل",
                 "retry": "حاول مرة أخرى",
-                "unauthorized": "",
-                "unauthorizedUnsupportedType": "",
+                "unauthorized": "غير مصرح لك",
+                "unauthorizedUnsupportedType": "غير مصرح لك (نوع الـ WWWAuthenticate غير مدعوم: {{- type}})",
                 "username": "اسم المستخدم / البريد الإلكتروني"
             },
             "info": {
@@ -132,12 +132,12 @@
                 "state": "الحالة"
             }
         },
-        "openFolder": "",
+        "openFolder": "افتح مجلد",
         "publisher": "الناشر",
         "readBook": "اقرأ",
         "released": "نُشر في",
         "removeFromFavorites": "إزالة من المفضلة",
-        "selectTableHeaders": "",
+        "selectTableHeaders": "اختر الأعمدة التي ترغب في إظهارها",
         "sort": "فرز حسب",
         "tag": "الوسم",
         "tags": "الوسوم",
@@ -159,12 +159,12 @@
             "descNewer_other": "تعارض: {{- count}} أحدث ملاحظة",
             "descNewer_two": "تعارض:أحدث(ملاحظتان",
             "descNewer_zero": "تعارض: {{- count}} أحدث ملاحظة",
-            "descOlder_few": "تعارض: {{- count}} ملاحظة (ملاحظات) أقدم",
-            "descOlder_many": "تعارض: {{- count}} ملاحظة (ملاحظات) أقدم",
-            "descOlder_one": "تعارض: {{- count}} ملاحظة (ملاحظات) أقدم",
-            "descOlder_other": "تعارض: {{- count}} ملاحظة (ملاحظات) أقدم",
-            "descOlder_two": "تعارض: {{- count}} ملاحظة (ملاحظات) أقدم",
-            "descOlder_zero": "تعارض: {{- count}} ملاحظة (ملاحظات) أقدم",
+            "descOlder_few": "تعارض: {{- count}} ملاحظات أقدم",
+            "descOlder_many": "تعارض: {{- count}} ملاحظة أقدم",
+            "descOlder_one": "تعارض: ملاحظة واحدة أقدم",
+            "descOlder_other": "تعارض: {{- count}} ملاحظة أقدم",
+            "descOlder_two": "تعارض: ملاحظتان أقدم",
+            "descOlder_zero": "لا يوجد تعارض",
             "descTitle": "عنوان التعليقات: ",
             "importAll": "استيراد كل الملاحظات",
             "importWithoutConflict": "استيراد الملاحظات غير المتعارضة فقط",
@@ -225,14 +225,14 @@
         "searchPlaceholder": "بحث",
         "searchTitle": "بحث",
         "settings": "إعدادات",
-        "settingsLabel": "",
+        "settingsLabel": "إعدادات التطبيق",
         "viewMode": "وضع العرض"
     },
     "library": {
         "filter": {
-            "addFilters": "",
-            "filterBy": "",
-            "selectOption": ""
+            "addFilters": "أضف عناصر تصفية",
+            "filterBy": "التصفية بـ",
+            "selectOption": "اختر مادة"
         },
         "lcp": {
             "hidePassphrase": "إخفاء عبارة المرور",
@@ -247,12 +247,12 @@
             "whatIsLcpInfoDetailsLink": "لمعرفة المزيد، اضغط على هذا الرابط لزيارة موقع EDRLab."
         },
         "sorting": {
-            "addSorting": "",
-            "author": "",
-            "language": "",
-            "readingState": "",
-            "sortBy": "",
-            "title": ""
+            "addSorting": "أضف ترتيب",
+            "author": "المؤلف",
+            "language": "اللغة",
+            "readingState": "حالة القراءة",
+            "sortBy": "رتِّب بـ: ",
+            "title": "العنوان"
         }
     },
     "message": {
@@ -285,17 +285,17 @@
             "unsupportedSelectorSummary_zero": ""
         },
         "download": {
-            "cancelled": "",
+            "cancelled": "تم إلغاء التحميل.",
             "error": "فشل تنزيل [{{- title}}]: [{{- err}}]",
             "errors": {
-                "hashMismatch": "",
-                "httpGet": "",
-                "invalidFilename": "",
-                "invalidLink": "",
-                "invalidTempDirectory": "",
-                "lengthMismatch": "",
-                "readStreamMissing": "",
-                "tooManyFilenameAttempts": ""
+                "hashMismatch": "فشل التحقق من الملف المحمَّل: شفرة SHA-256 المتوقعة هي: {{- expected}}، لكن الفعلية: {{- actual}}.",
+                "httpGet": "فشل التحميل عبر HTTP: [{{- statusMessage}}] ({{- statusCode}}) [{{- url}}]",
+                "invalidFilename": "الاسم المؤلف للملف المحمل غير صحيح.",
+                "invalidLink": "رابط التحميل غير صالح.",
+                "invalidTempDirectory": "مجلد التحميل المؤقت غير صالح.",
+                "lengthMismatch": "فشل التحقق من سلامة الملف المحمل: المتوقع {{- expected}} بايت، لكن الفعلي {{- actual}} بايت.",
+                "readStreamMissing": "مسار التحميل غير متاح.",
+                "tooManyFilenameAttempts": "لم نتمكن من إنشاء اسم ملف محمًّل غير مكرر: {{- path}}"
             }
         },
         "import": {
@@ -305,12 +305,12 @@
         },
         "open": {
             "error": "فشل تحميل المنشور: [{{- err}}]",
-            "folderNotFound": ""
+            "folderNotFound": "لم نتمكن من العثور على مجلد الكتاب. أعد جلبه أو عدل إعدادات ذاكرة التخزين الإضافية في الإعدادات > التخزين."
         },
         "storage": {
-            "removed": "",
-            "updateFailed": "",
-            "updated": ""
+            "removed": "مجلد الكتاب تم حذفه.",
+            "updateFailed": "فشل تحديث مجلد الكتاب: {{- message}}",
+            "updated": "تم تحديث مجلد الكتاب."
         },
         "wipeData": "تم مسح بيانات تسجيل الدخول (رموز الوصول وملفات تعريف الارتباط)"
     },
@@ -413,8 +413,8 @@
                 "descriptive": "مجسمات لمسية ثلاثية الأبعاد"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "إرشادات تحويل النص إلى كلام (TTS)متوفرة",
-                "descriptive": "إرشادات تحويل النص إلى كلام (TTS)متوفرة"
+                "compact": "إرشادات الإلقاء الصوتي الآلي متوفرة",
+                "descriptive": "توجد إرشادات الإلقاء الصوتي الآلي"
             },
             "additional-accessibility-information-title": "معلومات إضافية عن إمكانية الوصول"
         },
@@ -645,8 +645,8 @@
                 "descriptive": "لا توجد معلومات عن إمكانية تعديل المظهر"
             },
             "ways-of-reading-visual-adjustments-unmodifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "لا يمكن تعديل المظهر",
+                "descriptive": "لا يمكن تعديل النص ولا تنسيق الصفحة لأن تجربة القراءة أقرب ما تكون للنسخة المطبوعة من الكتاب، ومع ذلك، يمكن لأنظمة القراءة أن تقدم بعض إمكانيات تكبير الصور"
             }
         }
     },
@@ -702,7 +702,7 @@
         "expiredLcp": "انتهت صلاحية ترخيص LCP الخاص بهذا المنشور.",
         "incorrectPassphrase": "لا يوجد عبارة مرور مخزّنة تتناسب مع المنشور، أو أن عبارة المرور المكتوبة غير صحيحة.",
         "lcpEnd": "النهاية",
-        "lcpNotSupported": "",
+        "lcpNotSupported": "تنبيه: هذه نسخة تجريبية من قارئ ثوريوم لأنظمة سطح المكتب، ولا تدعم تراخيص LCP الفعلية النشطة، لكنها تدعم فك تشفير النموذج التجريبي من LCP دون التحقق من شهادة الحماية.",
         "lcpRightsCopy": "الأحرف المنسوخة",
         "lcpRightsPrint": "الصفحات المطبوعة",
         "lcpStart": "البداية",
@@ -742,7 +742,7 @@
             "date": "تاريخ التعديل",
             "error": {
                 "pdf": {
-                    "validationSelection": ""
+                    "validationSelection": "لا يمكن إنشاء تعليق من النص المختار."
                 }
             },
             "export": "حفظ الملاحظات باسم...",
@@ -783,9 +783,9 @@
             "unmute": "إلغاء كتم الصوت"
         },
         "dock": {
-            "dockDefault": "",
-            "dockLeft": "",
-            "dockRight": ""
+            "dockDefault": "إظهار القائمة في نافذة منبثقة",
+            "dockLeft": "نقل القائمة إلى اليسار",
+            "dockRight": "نقل القائمة إلى اليمين"
         },
         "fxl": {
             "fit": "ملاءمة"
@@ -795,10 +795,11 @@
             "title": "عارض الصور (تكبير)",
             "zoomIn": "تكبير",
             "zoomOut": "تصغير",
-            "zoomReset": "إعادة ضبط التكبير/التصغير"
+            "zoomReset": "إعادة ضبط التكبير/التصغير إلى الوضع الطبيعي"
         },
         "marks": {
             "annotations": "التعليقات",
+            "annotationsReadium": "(Readium) التعليقات",
             "bookmarks": "الإشارات المرجعية",
             "delete": "حذف",
             "edit": "تحرير",
@@ -826,8 +827,8 @@
             "speed": "سرعة القراءة بصوت عالٍ",
             "stop": "إيقاف القراءة بصوت عالٍ",
             "title": "القراءة بصوت عالٍ",
-            "useTTSHighlightsForMO": "",
-            "useTTSHighlightsForMODescription": ""
+            "useTTSHighlightsForMO": "تظليل مخصص",
+            "useTTSHighlightsForMODescription": "إلغاء الأنماط الخاصة"
         },
         "navigation": {
             "ZenModeExit": "الخروج من وضع القراءة المبسّطة",
@@ -837,7 +838,6 @@
             "bookmarkTitle": "إشارة مرجعية",
             "currentPage": "الصفحة الحالية: {{- current}}",
             "currentPageTotal": "الصفحة الحالية: {{- current}}/{{- total}}",
-            "detachWindowTitle": "إظهار نافذة المكتبة / رف الكتب",
             "goTo": "الانتقال إلى",
             "goToError": "لا يوجد فاصل صفحات",
             "goToPlaceHolder": "اكتب رقم الصفحة",
@@ -854,13 +854,13 @@
             "printDisabled": "الطباعة محظورة",
             "screenNext": "تقدم للأمام",
             "screenPrevious": "تراجع للخلف",
-            "settingsTitle": "إعدادات"
+            "settingsTitle": "إعدادات القارئ"
         },
         "notes": {
             "colors": {
                 "cyan": "أزرق سماوي",
-                "darkorange": "",
-                "darkyellow": "",
+                "darkorange": "برتقالي غامق",
+                "darkyellow": "أصفر غامق",
                 "green": "أخضر",
                 "orange": "برتقالي",
                 "purple": "أرجواني",
@@ -912,15 +912,16 @@
             },
             "customFontSelected": "لقد اخترت خطاً شخصياً",
             "customizeReader": "تخصيص تنسيق النص",
-            "defaultValue": "",
+            "defaultValue": "الوضع الافتراضي",
             "disabled": "تم تعطيله",
             "display": "العرض",
             "disposition": {
                 "title": "التخطيط"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "الخط",
             "fontSize": "حجم الخط",
-            "increaseFontSize": "",
+            "increaseFontSize": "تكبير حجم الخط",
             "infoCustomFont": "اختر خطاً مخصصاً من نظام التشغيل بكتابة إسمه",
             "justification": "المحاذاة",
             "justify": "ضبط",
@@ -928,7 +929,6 @@
             "lineSpacing": "تباعد الأسطر",
             "margin": "الهامش",
             "mathjax": "تفعيل MathJax",
-            "mathjaxDescription": "",
             "noFootnotes": "تعطيل الحواشي السفلية المنبثقة",
             "noRTLFlip": "تعطيل واجهة اليمين إلى اليسار",
             "noRuby": "إخفاء علامات روبي اليابانية",
@@ -959,7 +959,7 @@
                 "title": "التفضيلات"
             },
             "preview": "معاينة",
-            "reduceFontSize": "",
+            "reduceFontSize": "تصغير حجم الخط",
             "reduceMotion": "تقليل الحركة",
             "scrolled": "قابل للتمرير",
             "spacing": "التباعد",
@@ -1061,16 +1061,16 @@
                     "name": "المقطع الصوتي السابق (تخطي)"
                 },
                 "AudioSpeedDecrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "تقليل سرعة إلقاء الصوت في ملفات الـ EPUB3 أو سرعة إلقاء القارئ الآلي",
+                    "name": "تقليل سرعة الصوت"
                 },
                 "AudioSpeedIncrease": {
-                    "description": "",
-                    "name": ""
+                    "description": "زيادة سرعة إلقاء الصوت في ملفات الـ EPUB3 أو سرعة إلقاء القارئ الآلي",
+                    "name": "زيادة سرعة الصوت"
                 },
                 "AudioSpeedReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "إعادة سرعة إلقاء الصوت في ملفات الـ EPUB3 أو سرعة إلقاء القارئ الآلي إلى الوضع الافتراضي",
+                    "name": "إعادة سرعة الصوت إلى الوضع الافتراضي"
                 },
                 "AudioStop": {
                     "description": "إيقاف الصوت الحالي (EPUB Media Overlays، Text To Speech ، أو الكتاب الصوتي المسجل مسبقًا)",
@@ -1256,9 +1256,13 @@
                     "description": "في نافذة القارئ، تفعيل وضع ملء الشاشة للنظام أو استعد الوضع العادي للنافذة. لاحظ أن هذا يختلف عن \"وضع zen\" الذي يبسط واجهة المستخدم",
                     "name": "تبديل وضع ملء الشاشة"
                 },
+                "ToggleReaderZenMode": {
+                    "description": "في صفحة القارئ الداخلية، فعِّل نظام التركيز أو أغلقه، والذي يقلل عناصر الشاشة أثناء القراءة",
+                    "name": "تبديل نظام التركيز"
+                },
                 "ToggleScreenReaderOptimize": {
-                    "description": "",
-                    "name": ""
+                    "description": "تحكم في نظام الدعم المحسَّن لأجهزة قارئ الشاشة في صفحة المكتبة",
+                    "name": "فعِّل أو أغلق التحسينات الإضافية لدعم قارئ الشاشة"
                 }
             },
             "loadUserJson": "تحميل من ملف المستخدم",
@@ -1285,13 +1289,13 @@
             "info": "غيّر الملف الشخصي لتخصيص التطبيق بعلامة تجارية وألوان الشريك. كل ملف شخصي يوفر تجربة مخصصة.",
             "thorium": {
                 "description": "الملف الشخصي Thorium Vanilla هو الأصلي، صممه EDRLab.",
-                "title": "Thorium vanilla"
+                "title": "ثوريوم فانيلا"
             },
             "version": "إصدار: {{- version}}"
         },
         "screenReaderActivate": {
             "help": "عند اكتشاف التطبيق للتقنيات المساعدة، تعمل واجهة المستخدم بشكل أفضل مع قارئات الشاشة",
-            "invite": "",
+            "invite": "التحسينات الإضافية لقارئ الشاشة ({{- status}}) [{{- keyboard}}]",
             "message": "دعم محسّن لقارئات الشاشة",
             "title": "تحسين تجربة قارئ الشاشة"
         },
@@ -1299,50 +1303,50 @@
             "title": "تفعيل حفظ الجلسة"
         },
         "sharedComputer": {
-            "lcpAutoDeleteExpiredPublications": "",
-            "lcpAutoDeleteExpiredPublicationsDescription": "",
-            "title": ""
+            "lcpAutoDeleteExpiredPublications": "الحذف التلقائي للكتب المنتهية صلاحيتها وما يرتبط بها من بيانات خاصة بالمستخدم",
+            "lcpAutoDeleteExpiredPublicationsDescription": "يضمن هذا الخيار الحذف التلقائي للاستعارات المنتهية صلاحيتها (بما تحمله من تعليقات شخصية أو مواضع قراءة مسجلة.. إلخ). وهو خيار مفيد في حالة \"الأجهزة المشتركة\" في المكتبات أو الجامعات.",
+            "title": "نظام الجهاز المشترك"
         },
         "storage": {
             "actions": {
-                "addDirectory": "",
-                "changeDirectory": "",
-                "removeStorageDirectory": ""
+                "addDirectory": "اختر ذاكرة تخزين إضافية",
+                "changeDirectory": "حدث ذاكرة التخزين الإضافية",
+                "removeStorageDirectory": "احذف ذاكرة التخزين الإضافية"
             },
             "beta": {
-                "availability": "",
-                "integrity": "",
-                "migration": "",
-                "summary": "",
-                "warning": ""
+                "availability": "لا تعمل هذه الخاصية إلا مع الإصدارات الحديثة من ثوريوم: مجلدات الكتب الخارجية لن تظهر في إصدارات ثوريوم 3.4 وما قبله.",
+                "integrity": "يجب أن تحافظ على أمان هذا المجلد وإمكانية الوصول إليه. تجنب حذفه، منع الوصول إليه، أو استخدام ذاكرة تخزين بطيئة أو غير مستقرة، مثل الذواكر المربوطة عن طريق الشبكة (network drives).",
+                "migration": "لا ينقل ثوريوم كتبك بشكل تلقائي؛ فإن قمت بتحديث الذاكرة الإضافية، يجب عليك نقل كتبك بنفسك إلى المجلد الجديد. وإن قمت بحذفها، يجب عليك نقلها بنفسك إلى الذاكرة الأصلية.",
+                "summary": "اعرف المزيد عن هذه الخاصية، وهي تجريبية حتى الآن",
+                "warning": "لا تغير الملفات الموجودة في هذا المجلد يدويًا، لأن ذلك قد يضر بكتبك أو القارئ. تعامل مع هذا المجلد باعتباره مكتبة مؤمَّنة يديرها لها ثوريوم."
             },
             "configuration": {
-                "chooseFolderDescription": "",
-                "configuredDescription": "",
-                "notConfiguredDescription": ""
+                "chooseFolderDescription": "اختر المجلد الذي تريد أن يتعامل معه ثوريوم بوصفه ذاكرةً إضافية.",
+                "configuredDescription": "تم تجهيز الذاكرة الإضافية وهي جاهزة للاستخدام لأي كتب جديدة.",
+                "notConfiguredDescription": "الكتب المجلوبة إلى قارئ ثوريوم سيتم تخزينها في هذا المجلد المختار. والكتب التي تم جلبها سابقًا ستظل في ذاكرة النظام الأصلية."
             },
             "dialogs": {
                 "add": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "استمر",
+                    "description": "هذه الخاصية ما زالت تجريبية؛ هل تريد الاستمرار وإعداد ذاكرة إضافية باختيار أحد المجلدات؟",
+                    "title": "اختر ذاكرةً إضافية"
                 },
                 "edit": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "عدِّل المجلد",
+                    "description": "يتطلب تحديث الذاكرة الإضافية مزيدًا من الحرص. لن ينقل ثوريوم الكتب الحالية، ويجب عليك فعل ذلك بنفسك. هل تريد الاستكمال؟",
+                    "title": "حدِّث الذاكرة الإضافية"
                 },
                 "remove": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "احذف المجلد",
+                    "description": "يتطلب حذف الذاكرة الإضافية مزيدًا من الحرص. لن ينقل ثوريوم الكتب الحالية، ويجب عليك فعل ذلك بنفسك. هل تريد الاستكمال؟",
+                    "title": "حذف الذاكرة الإضافية"
                 }
             },
             "locations": {
-                "defaultDescription": "",
-                "defaultInternal": "",
-                "externalStorage": "",
-                "title": ""
+                "defaultDescription": "الكتب التي يديرها التطبيق تُحفظ في الوضع الافتراضي في:",
+                "defaultInternal": "ذاكرة النظام",
+                "externalStorage": "الذاكرة الخارجية",
+                "title": "الأماكن"
             }
         },
         "tabs": {
@@ -1350,14 +1354,14 @@
             "general": "عام",
             "keyboardShortcuts": "اختصارات لوحة المفاتيح",
             "profiles": "الملفات الشخصية",
-            "storage": ""
+            "storage": "الذاكرة"
         },
         "theme": {
             "auto": "تلقائي",
             "dark": "داكن",
             "description": "نسق البرنامج يطابق نظام التشغيل.",
             "light": "فاتح",
-            "title": "نسق البرنامج"
+            "title": "النمط العام للتطبيق"
         },
         "window": {
             "keepLibraryWindowInBackgroundOnReaderClose": "إبقاء المكتبة في الخلفية بعد إغلاق نوافذ القراءة",
@@ -1390,7 +1394,7 @@
             "style": "نمط إبراز ميزة تحويل النص إلى كلام (TTS)",
             "underlineWordOutline": "تسطير، إبراز الكلمة بإطار",
             "underlineWordSolidBackground": "تسطير، تلوين خلفية الكلمة",
-            "underlineWordUnderline": "تسطير، تسطير الكلمات",
+            "underlineWordUnderline": "تسطير، وضع خط تحت الكلمات",
             "wordColor": "لون الكلمات"
         }
     }

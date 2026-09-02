@@ -3,6 +3,7 @@ export declare const allowCustom: string;
 export declare const blink: string;
 export declare const btn_primary: string;
 export declare const button_transparency_icon: string;
+export declare const checkbox_custom_label: string;
 export declare const close_button_div: string;
 export declare const container: string;
 export declare const CSS_END_components_settings: string;

@@ -41,6 +41,9 @@ export interface IReadiumElectronWebviewWindowState {
     fxlViewportWidth: number;
     fxlViewportHeight: number;
     fxlViewportScale: number;
+    fxlViewportTX: number;
+    fxlViewportTY: number;
+
     fxlZoomPercent: number; // fixedLayoutZoomPercent
 
     webViewSlot: WebViewSlotEnum;
@@ -48,6 +51,8 @@ export interface IReadiumElectronWebviewWindowState {
     DEBUG_VISUALS: boolean;
 
     ttsAndMediaOverlaysManualPlayNext: boolean;
+
+    enablePageBreakMarginIndicators: boolean;
 
     ttsHighlightStyle: number;
     ttsHighlightColor: IColor | undefined;
@@ -89,6 +94,15 @@ export interface IReadiumElectronWebviewState {
     highlights: IHighlight[] | undefined;
 
     DOMisReady?: boolean;
+
+    isFixedLayout?: boolean;
+    fxlViewportWidth?: number;
+    fxlViewportHeight?: number;
+    fxlViewportScale?: number;
+    fxlViewportTX?: number;
+    fxlViewportTY?: number;
+
+    webViewSlot?: WebViewSlotEnum;
 }
 export interface IReadiumElectronWebview extends Electron.WebviewTag {
     READIUM2: IReadiumElectronWebviewState;
@@ -108,6 +122,8 @@ export interface IReadiumElectronBrowserWindow {
     DEBUG_VISUALS: boolean;
 
     ttsAndMediaOverlaysManualPlayNext: boolean;
+
+    enablePageBreakMarginIndicators: boolean;
 
     ttsHighlightStyle: number;
     ttsHighlightColor: IColor | undefined;
@@ -153,7 +169,7 @@ export interface IReadiumElectronBrowserWindow {
 
     getActiveWebViews: () => IReadiumElectronWebview[];
 
-    enableScreenReaderAccessibilityWebViewHardRefresh: boolean;
+    // enableScreenReaderAccessibilityWebViewHardRefresh: boolean;
     accessibilitySupportEnabled: boolean;
 
     highlightsDrawMargin: boolean | string[];

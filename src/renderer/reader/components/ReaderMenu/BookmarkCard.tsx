@@ -29,6 +29,7 @@ import { IReaderMenuProps } from "../options-values";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import { readerAnalyticsEvents } from "readium-desktop/common/analytics/reader";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { useReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 import { rgbToHex } from "readium-desktop/common/rgb";
@@ -43,6 +44,7 @@ import DOMPurify from "dompurify";
 import { clone } from "ramda";
 import { marked } from "readium-desktop/renderer/common/marked/marked";
 import { computeProgression } from "./ReaderMenu";
+import { logEvent } from "readium-desktop/renderer/common/analytics";
 
 export const BookmarkCard: React.FC<{ bookmark: PublicationNote, isEdited: boolean, isSelected: boolean, focusRequestId?: string, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void, setCreatorFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
@@ -323,6 +325,7 @@ export const BookmarkCard: React.FC<{ bookmark: PublicationNote, isEdited: boole
                 onClick={() => {
                     triggerEdition(false);
                     dispatch(readerActions.publicationNotes.commands.remove.build(pubId, bookmark));
+                    logEvent(readerAnalyticsEvents.bookmarkToggle);
                     // alert("deleted");
                 }}
                 >
@@ -343,6 +346,7 @@ export const BookmarkCard: React.FC<{ bookmark: PublicationNote, isEdited: boole
                                 onClick={() => {
                                     triggerEdition(false);
                                     dispatch(readerActions.publicationNotes.commands.remove.build(pubId, bookmark));
+                                    logEvent(readerAnalyticsEvents.bookmarkToggle);
                                 }}
                                 title={__("reader.marks.delete")}
                             >

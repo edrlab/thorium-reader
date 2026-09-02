@@ -47,6 +47,7 @@ import { matchPath, useLocation } from "react-router-dom";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import { readerAnalyticsEvents } from "readium-desktop/common/analytics/reader";
 import { dialogActions, dockActions, readerActions } from "readium-desktop/common/redux/actions";
 import { IReaderDialogOrDockSettingsMenuState } from "readium-desktop/common/models/reader";
 import { ImportAnnotationsDialog } from "readium-desktop/renderer/common/components/ImportAnnotationsDialog";
@@ -73,6 +74,7 @@ import {
     isReaderMenuRouteGroup,
     readerMenuRoutePattern,
 } from "readium-desktop/renderer/reader/routing";
+import { logEvent } from "readium-desktop/renderer/common/analytics";
 
 interface NoteListStyleSet {
     filterLine: string;
@@ -861,6 +863,9 @@ export const NoteList: React.FC<NoteListProps> = (props) => {
                                             for (const note of noteList) {
 
                                                 dispatch(readerActions.publicationNotes.commands.remove.build(pubId, note));
+                                                if (group === "bookmark") {
+                                                    logEvent(readerAnalyticsEvents.bookmarkToggle);
+                                                }
                                             }
 
                                             resetFilters();

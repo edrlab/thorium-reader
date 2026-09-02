@@ -781,6 +781,7 @@
         },
         "marks": {
             "annotations": "Annotazioni",
+            "annotationsReadium": "Annotazioni (Readium)",
             "bookmarks": "Segnalibri",
             "delete": "Elimina",
             "edit": "Modifica",
@@ -819,7 +820,6 @@
             "bookmarkTitle": "Segnalibro",
             "currentPage": "Pagina attuale: {{- current}}",
             "currentPageTotal": "Pagina attuale: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Visualizza la libreria",
             "goTo": "Vai a",
             "goToError": "Questa interruzione di pagina non esiste",
             "goToPlaceHolder": "Inserisci il numero della pagina",
@@ -897,6 +897,7 @@
             "disposition": {
                 "title": "Impaginazione"
             },
+            "enablePageBreakMarginIndicators": "Mostra le interruzioni di pagina nel margine",
             "font": "Font",
             "fontSize": "Dimensioni del font",
             "increaseFontSize": "Aumentare la dimensione del testo",
@@ -907,7 +908,6 @@
             "lineSpacing": "Spaziatura tra le linee",
             "margin": "Margine",
             "mathjax": "Abilita MathJax",
-            "mathjaxDescription": "MathJax",
             "noFootnotes": "Disattiva le note a piè di pagina popup",
             "noRTLFlip": "Disattiva la lettura da destra a sinistra",
             "noRuby": "Nascondi Ruby Giapponese",
@@ -1234,6 +1234,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "Nella finestra di lettura, attiva la modalità a schermo intero o ripristina la modalità finestra normale. Questa funzione è diversa dalla \"modalità zen\", che semplifica l'interfaccia utente",
                     "name": "Attiva/disattiva schermo intero"
+                },
+                "ToggleReaderZenMode": {
+                    "description": "Nella finestra di lettura, attiva o disattiva la modalità zen che semplifica l'interfaccia visualizzata durante la lettura",
+                    "name": "Attiva/Disattiva la modalità zen"
                 },
                 "ToggleScreenReaderOptimize": {
                     "description": "Attiva/disattiva il supporto ottimizzato per i lettori di schermo nella finestra della biblioteca",

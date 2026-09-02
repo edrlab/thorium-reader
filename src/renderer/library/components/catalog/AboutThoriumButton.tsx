@@ -12,7 +12,7 @@ import { I18nFunction } from "readium-desktop/common/services/translator";
 
 import { ipcRenderer } from "electron";
 import { shell } from "electron";
-// import * as path from "path";
+// import * as path from "node:path";
 import * as React from "react";
 import { connect } from "react-redux";
 // import { ABOUT_BOOK_TITLE_PREFIX } from "readium-desktop/common/constant";
@@ -130,7 +130,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
     public render() {
         const { __ } = this.props;
         const displayVersionToast =  this.state.versionInfo && !!this.props.newVersionURL && !!this.props.newVersion;
-        const displayWhatsNew = !this.props.displayWhatsNew;
+        const displayWhatsNew = !this.props.displayWhatsNew && !_APP_VERSION.includes("-"); // exclude "-alpha", "-beta", "-rc", etc. (official website changelog only available for production releases like "3.5.0", not "3.5.0-rc.1" for example)
         const displayScreenReaderInvite = !this.props.screenReaderActivate && this.state.accessibilitySupportEnabled;
 
         // const locale = encodeURIComponent_RFC3986(this.props.locale);
@@ -193,7 +193,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                                 // }).catch((err: unknown) => { console.log(err); });
 
                                 // https://www.thoriumreader.com/release-notes/desktop/3-4-0/
-                                const href = "https://www.thoriumreader.com/release-notes/desktop/" + (__TH__IS_DEV__ || __TH__IS_CI__ ? "" : _APP_VERSION.replace(/\./, "-"));
+                                const href = "https://www.thoriumreader.com/release-notes/desktop/" + (__TH__IS_DEV__ || __TH__IS_CI__ ? "" : _APP_VERSION.replace(/\./g, "-"));
                                 // if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
                                 shell.openExternal(href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ });
                                 // }

@@ -775,6 +775,7 @@
         },
         "marks": {
             "annotations": "Açıklayıcı notlar",
+            "annotationsReadium": "Readium Açıklayıcı Notları",
             "bookmarks": "Yer imleri",
             "delete": "Sil",
             "edit": "Düzenle",
@@ -813,7 +814,6 @@
             "bookmarkTitle": "Yer İmi",
             "currentPage": "Şu anki sayfa: {{- current}}",
             "currentPageTotal": "Şu anki sayfa: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Kütüphane / kitaplık penceresini göster",
             "goTo": "Git:",
             "goToError": "Sayfa geçişi mevcut değil",
             "goToPlaceHolder": "Sayfa numarasını gir",
@@ -890,6 +890,7 @@
             "disposition": {
                 "title": "Düzen"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Yazı tipi",
             "fontSize": "Yazı tipi boyutu",
             "increaseFontSize": "",
@@ -900,7 +901,6 @@
             "lineSpacing": "Satır aralığı",
             "margin": "Kenar boşluğu",
             "mathjax": "MathJax'i etkinleştir",
-            "mathjaxDescription": "",
             "noFootnotes": "Dipnot açılır pencerelerini devredışı bırak",
             "noRTLFlip": "Sağdan Sola Kullanıcı Arayüzü'nü devredışı bırak",
             "noRuby": "Japonca Okutucuları gizle",
@@ -1227,6 +1227,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "Okuma penceresinde, sistem tam ekran modunu etkinleştirir veya normal pencere modunu geri yükler. Bunun, kullanıcı arayüzünü basitleştiren 'zen modu'ndan farklı olduğunu unutmayın",
                     "name": "Tam Ekrana Geç veya Tam Ekrandan Çık"
+                },
+                "ToggleReaderZenMode": {
+                    "description": "",
+                    "name": ""
                 },
                 "ToggleScreenReaderOptimize": {
                     "description": "Kütüphane penceresinde, ekran okuyucular için iyileştirilmiş desteği açar veya kapatır",

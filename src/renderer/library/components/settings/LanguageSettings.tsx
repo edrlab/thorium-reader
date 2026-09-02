@@ -14,6 +14,7 @@ import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { i18nActions } from "readium-desktop/common/redux/actions";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import * as LanguageIcon from "readium-desktop/renderer/assets/icons/language.svg";
+import { logAppSettingModified } from "./analytics";
 
 const LanguageSettings: React.FC<{}> = () => {
     const [__] = useTranslator();
@@ -33,7 +34,9 @@ const LanguageSettings: React.FC<{}> = () => {
 
         if (typeof localeSelected !== "number") return;
         const obj = options.find(({id}) => id === localeSelected);
+        if (!obj || obj.iso === currentLanguageISO) return;
         dispatch(i18nActions.setLocale.build(obj.iso));
+        logAppSettingModified("language", obj.iso);
     };
     const selectedKey = options.find(({name}) => name === currentLanguageString);
     return (

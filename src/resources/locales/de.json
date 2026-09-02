@@ -775,6 +775,7 @@
         },
         "marks": {
             "annotations": "Meine Anmerkungen",
+            "annotationsReadium": "Meine Anmerkungen (Readium)",
             "bookmarks": "Meine Lesezeichen",
             "delete": "Löschen",
             "edit": "Bearbeiten",
@@ -813,7 +814,6 @@
             "bookmarkTitle": "Lesezeichen",
             "currentPage": "Aktuelle Seite: {{- current}}",
             "currentPageTotal": "Aktuelle Seite: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Bibliotheks-/Bücherregal-Fenster anzeigen",
             "goTo": "Gehe zu",
             "goToError": "Diese Seite existiert nicht",
             "goToPlaceHolder": "Eingabe der Seitenzahl",
@@ -890,6 +890,7 @@
             "disposition": {
                 "title": "Layout"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Schriftart",
             "fontSize": "Schriftgröße",
             "increaseFontSize": "Schriftgröße vergrößern",
@@ -900,7 +901,6 @@
             "lineSpacing": "Zeilenabstand",
             "margin": "Seitenränder",
             "mathjax": "MathJax aktivieren",
-            "mathjaxDescription": "MathJax",
             "noFootnotes": "Fußnoten deaktivieren",
             "noRTLFlip": "Rechts-nach-links-Benutzeroberfläche deaktivieren",
             "noRuby": "Japanische Ruby-Notationen ausblenden",
@@ -1225,6 +1225,10 @@
                     "name": ""
                 },
                 "ToggleReaderFullscreen": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleReaderZenMode": {
                     "description": "",
                     "name": ""
                 },

@@ -51,6 +51,7 @@ export const readerConfigInitialState: ReaderConfig = {
     sepia: false,
     theme: "neutral",
     enableMathJax: false,
+    enablePageBreakMarginIndicators: false,
     reduceMotion: false,
     noFootnotes: false,
     noTemporaryNavTargetOutline: false,

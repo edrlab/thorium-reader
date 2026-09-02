@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import * as fs from "fs";
+import * as fs from "node:fs";
 import { diMainGet, stateFilePath, patchFilePath, closeProcessLock } from "readium-desktop/main/di";
 import { PersistRootState } from "readium-desktop/main/redux/states";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
@@ -53,6 +53,7 @@ export const convertDiffableReduxState = (nextState: Partial<PersistRootState>):
         : nextState.settings;
 
     return {
+        analytics: nextState.analytics,
         theme: nextState.theme,
         win: {
             // disable session saving
@@ -209,13 +210,13 @@ export const persistStateToFs = async (nextState: Partial<PersistRootState>, fil
 
     try {
         debug(`Persist the ${filePath} to disk`);
-        await fs.promises.writeFile(filePath, stateDataStringified, { encoding: "utf-8" });
+        await fs.promises.writeFile(filePath, stateDataStringified, { encoding: "utf8" });
     } catch (e) {
         debug("ERROR writing state.json to disk!", e);
     }
 
     try {
-        const data = await fs.promises.readFile(filePath, { encoding: "utf-8"});
+        const data = await fs.promises.readFile(filePath, { encoding: "utf8"});
         const reduxState = JSON.parse(data);
         delete (reduxState as any).__checksum;
         delete reduxState.win.registry.reader;

@@ -7,6 +7,11 @@
 
 import debug_ from "debug";
 import { dialog, shell } from "electron";
+import {
+    buildPublicationMarkAsAnalyticsParams,
+    buildPublicationUserAnalyticsParams,
+    publicationAnalyticsEvents,
+} from "readium-desktop/common/analytics/publication";
 import { catalogActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
@@ -34,6 +39,8 @@ import { EventPayload } from "readium-desktop/common/ipc/sync";
 import { SenderType } from "readium-desktop/common/models/sync";
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { openPublicationFolder } from "./publication/openFolder";
+import { spawnPublicationAnalyticsEvent } from "./analyticsPublication";
+import { getPublication } from "./api/publication/getPublication";
 
 const filename_ = "readium-desktop:main:redux:sagas:catalog";
 const debug = debug_(filename_);
@@ -46,7 +53,7 @@ const NB_PUB = 10;
 // so it would make sense to hoist the cache higher in the application architecture
 // const viewToR2Pub = (view: PublicationView) => {
 //     // Legacy Base64 data blobs
-//     // const r2PublicationStr = Buffer.from(view.r2PublicationBase64, "base64").toString("utf-8");
+//     // const r2PublicationStr = Buffer.from(view.r2PublicationBase64, "base64").toString("utf8");
 //     // const r2PublicationJson = JSON.parse(r2PublicationStr);
 //     const r2Publication = TaJsonDeserialize(view.r2PublicationJson, R2Publication);
 
@@ -430,6 +437,20 @@ export function saga() {
                     debug("sender is not renderer !!!");
                     return;
                 }
+
+                let analyticsParams = buildPublicationMarkAsAnalyticsParams("finished");
+                try {
+                    const publicationView = yield* getPublication(pubId, false);
+                    analyticsParams = buildPublicationUserAnalyticsParams(publicationView, analyticsParams);
+                } catch (e) {
+                    debug("cannot build mark-as publication analytics params", pubId, e);
+                }
+
+                yield* spawnPublicationAnalyticsEvent(
+                    publicationAnalyticsEvents.markAs,
+                    analyticsParams,
+                );
+
                 let winId = sender.reader_pubId /* see syncFactory */ ? sender.identifier : undefined; // action dispatched from library;
                 if (!winId) {
                     const readers = yield* selectTyped((state: RootState) => state.win.session.reader);

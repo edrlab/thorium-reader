@@ -19,7 +19,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
 // import * as ReactDOM from "react-dom";
-import { ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
+import { ReaderConfig } from "readium-desktop/common/models/reader";
 import * as BackIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
 import * as viewMode from "readium-desktop/renderer/assets/icons/fullscreen-corners-icon.svg";
 import * as MuteIcon from "readium-desktop/renderer/assets/icons/baseline-mute-24px.svg";
@@ -131,7 +131,6 @@ interface IBaseProps extends TranslatorProps {
     infoOpen: boolean;
     shortcutEnable: boolean;
     setShortcutEnable: (v: boolean) => void;
-    mode?: ReaderMode;
     // settingsOpen: boolean;
     // handleMenuClick: (open?: boolean) => void;
     // handleSettingsClick: (open?: boolean) => void;
@@ -156,7 +155,6 @@ interface IBaseProps extends TranslatorProps {
     handleMediaOverlaysPlaybackRate: (speed: string) => void;
 
     handleReaderClose: () => void;
-    handleReaderDetach: () => void;
     isOnSearch: boolean;
     handlePublicationInfo: () => void;
     readerMenuProps: IReaderMenuProps;
@@ -598,18 +596,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 <PublicationInfoReaderWithRadixContent />
                             </PublicationInfoReaderWithRadix>
                         </li>
-                        {/* {(this.props.mode === ReaderMode.Attached) ? (
-                            <li>
-                                <button
-                                    className={stylesReader.menu_button}
-                                    onClick={this.props.handleReaderDetach}
-                                    title={__("reader.navigation.detachWindowTitle")}
-                                >
-                                    <SVG ariaHidden={true} svg={DetachIcon} />
-                                </button>
-                            </li>
-                        ) : (<></>)
-                        } */}
                     </ul>
                     {
                         (this.props.isPdf || isAudioBook) ? <></> :

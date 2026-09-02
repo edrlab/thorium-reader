@@ -6,7 +6,7 @@
 // // ==LICENSE-END==
 
 // import debug_ from "debug";
-// import * as fs from "fs";
+// import * as fs from "node:fs";
 
 // import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 // import { TaJsonDeserialize } from "@r2-lcp-js/serializable";

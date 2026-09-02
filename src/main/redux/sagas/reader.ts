@@ -26,7 +26,7 @@ import { RootState } from "readium-desktop/main/redux/states";
 import { all, call, put, take } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped, put as putTyped } from "typed-redux-saga/macro";
 import { SagaGenerator } from "typed-redux-saga";
-import { types } from "util";
+import { types } from "node:util";
 
 import {
     ERROR_MESSAGE_ON_USERKEYCHECKREQUEST, ERROR_MESSAGE_ENCRYPTED_NO_LICENSE, streamerOpenPublicationAndReturnManifestUrl,
@@ -60,48 +60,6 @@ function* readerFullscreenRequest(action: readerActions.fullScreenRequest.TActio
     }
 }
 
-function* readerDetachRequest(action: readerActions.detachModeRequest.TAction) {
-
-    const libWin = yield* callTyped(() => getLibraryWindowFromDi());
-    if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed()) {
-
-        // try-catch to do not trigger an error message when the winbound is not handle by the os
-        let libBound: Electron.Rectangle;
-        try {
-            // get an bound with offset
-            libBound = yield* callTyped(readerNewWindowBound, undefined);
-            debug("getWinBound(undefined)", libBound);
-            if (libBound) {
-                libWin.setBounds(libBound);
-            }
-        } catch (e) {
-            debug("error libWin.setBounds(libBound)", e);
-        }
-
-        // this should never occur, but let's do it for certainty
-        if (libWin.isMinimized()) {
-            libWin.restore();
-        }
-        libWin.show(); // focuses as well
-    }
-
-    const readerWinId = action.sender?.identifier;
-    if (readerWinId && action.sender?.type === SenderType.Renderer) {
-
-        const readerWin = getReaderWindowFromDi(readerWinId);
-        if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
-
-            // this should never occur, but let's do it for certainty
-            if (readerWin.isMinimized()) {
-                readerWin.restore();
-            }
-            readerWin.show(); // focuses as well
-        }
-    }
-
-    yield put(readerActions.detachModeSuccess.build());
-}
-
 export function* readerNewWindowState(publicationIdentifier: string | undefined): SagaGenerator<IBrowserWindowStateSnapshot> {
 
     const libraryBrowserWindows = getLibraryWindowFromDi();
@@ -133,12 +91,6 @@ export function* readerNewWindowState(publicationIdentifier: string | undefined)
         windowBound,
         windowMaximized,
     };
-}
-
-export function* readerNewWindowBound(publicationIdentifier: string | undefined): SagaGenerator<Electron.Rectangle> {
-
-    const { windowBound } = yield* callTyped(readerNewWindowState, publicationIdentifier);
-    return windowBound;
 }
 
 function* minimizeLibraryWindowOnReaderOpenIfEnabled() {
@@ -244,24 +196,6 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
         //     (state: RootState) => state.win.session.reader,
         // );
         // const readersArray = ObjectValues(readers);
-
-        // TODO: restore/update this attached-reader behavior if attached mode comes back.
-        // See https://github.com/edrlab/thorium-reader/issues/3675
-        // const mode = yield* selectTyped((state: RootState) => state.mode);
-        // if (mode === ReaderMode.Attached) {
-        //     if (!keepLibraryWindowInBackgroundOnReaderOpen) {
-        //         try {
-        //             const libWin = getLibraryWindowFromDi();
-        //             if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed()) {
-        //                 libWin.hide();
-        //             }
-        //         } catch (_err) {
-        //             debug("library can't be loaded from di");
-        //         }
-        //     } else {
-        //         debug("keep library window in background on reader open");
-        //     }
-        // }
 
         yield* callTyped(minimizeLibraryWindowOnReaderOpenIfEnabled);
 
@@ -515,11 +449,6 @@ export function saga() {
             readerActions.openRequest.ID,
             readerOpenRequest,
             (e) => error(filename_ + ":readerOpenRequest", e),
-        ),
-        takeSpawnLeading(
-            readerActions.detachModeRequest.ID,
-            readerDetachRequest,
-            (e) => error(filename_ + ":readerDetachRequest", e),
         ),
         takeSpawnLeading(
             readerActions.fullScreenRequest.ID,

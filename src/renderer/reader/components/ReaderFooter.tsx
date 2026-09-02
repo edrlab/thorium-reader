@@ -19,6 +19,7 @@ import * as ForwardIcon from "readium-desktop/renderer/assets/icons/forward-icon
 import classNames from "classnames";
 import * as React from "react";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
+import { readerAnalyticsEvents } from "readium-desktop/common/analytics/reader";
 import { formatTime } from "readium-desktop/common/utils/time";
 import {
     TranslatorProps, withTranslator,
@@ -40,6 +41,7 @@ import { publicationActions } from "readium-desktop/common/redux/actions";
 import { connect } from "react-redux";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { logEvent } from "readium-desktop/renderer/common/analytics";
 
 const isFixedLayout = (link: Link, publication: R2Publication): boolean => {
     if (link && link.Properties) {
@@ -181,6 +183,8 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         let afterCurrentLocation = false;
 
         const isRTL = this.props.isRTLFlip();
+        const leftHistoryButtonEnabled = isRTL ? this.props.historyCanGoForward : this.props.historyCanGoBack;
+        const rightHistoryButtonEnabled = isRTL ? this.props.historyCanGoBack : this.props.historyCanGoForward;
 
         let _chunkIndex = -1;
         let _chunkIndexMapped = -1;
@@ -200,11 +204,14 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                             role="navigation"
                             aria-label={this.props.__("reader.navigation.history")}>
                             <button
-                                className={(isRTL ? this.props.historyCanGoForward : this.props.historyCanGoBack) ? undefined : stylesReaderFooter.disabled}
-                                aria-disabled={(isRTL ? this.props.historyCanGoForward : this.props.historyCanGoBack) ? undefined : true}
+                                className={leftHistoryButtonEnabled ? undefined : stylesReaderFooter.disabled}
+                                aria-disabled={leftHistoryButtonEnabled ? undefined : true}
                                 onClick={() => {
 
                                     // console.log("#+$%".repeat(5)  + " history back()", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
+                                    if (leftHistoryButtonEnabled) {
+                                        logEvent(isRTL ? readerAnalyticsEvents.historyForward : readerAnalyticsEvents.historyBack);
+                                    }
                                     if (isRTL) {
                                       window.history.forward();
                                     } else {
@@ -218,11 +225,14 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                 <SVG ariaHidden={true} svg={BackIcon} />
                             </button>
                             <button
-                                className={(isRTL ? this.props.historyCanGoBack : this.props.historyCanGoForward) ? undefined : stylesReaderFooter.disabled}
-                                aria-disabled={(isRTL ? this.props.historyCanGoBack : this.props.historyCanGoForward) ? undefined : true}
+                                className={rightHistoryButtonEnabled ? undefined : stylesReaderFooter.disabled}
+                                aria-disabled={rightHistoryButtonEnabled ? undefined : true}
                                 onClick={() => {
 
                                     // console.log("#+$%".repeat(5)  + " history forward()", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
+                                    if (rightHistoryButtonEnabled) {
+                                        logEvent(isRTL ? readerAnalyticsEvents.historyBack : readerAnalyticsEvents.historyForward);
+                                    }
                                     if (isRTL) {
                                       window.history.back();
                                     } else {

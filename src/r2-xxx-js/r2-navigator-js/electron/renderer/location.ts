@@ -7,8 +7,8 @@
 
 import debug_ from "debug";
 import { ipcRenderer, shell } from "electron";
-import * as path from "path";
-import { URL } from "url";
+import * as path from "node:path";
+import { URL } from "node:url";
 
 // import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 
@@ -85,16 +85,39 @@ const webviewStyleRight_ = "opacity: 1; " + webviewStyleCommon +
 const webviewStyleCenter_ = "opacity: 1; " + webviewStyleCommon +
     "left: 0; top: calc(0 - var(--R2_FXL_Y_SHIFT));";
 
-export function setWebViewStyle(wv: IReadiumElectronWebview, wvSlot: WebViewSlotEnum, fxl?: IwidthHeight | null) {
+export function setWebViewStyle(wv: IReadiumElectronWebview, wvSlot: WebViewSlotEnum, fxl: IwidthHeight | null | undefined): boolean {
+    let changed = false;
 
     const v = fxl ? JSON.stringify(fxl).replace(/{/g, "").replace(/}/g, "").replace(/"/g, "") : "NO FXL";
     debug("setWebViewStyle fxl: " + v);
 
     if (fxl) {
+        if (wv.READIUM2.fxlViewportWidth !== fxl.width ||
+            wv.READIUM2.fxlViewportHeight !== fxl.height ||
+            wv.READIUM2.fxlViewportScale !== fxl.scale ||
+            wv.READIUM2.fxlViewportTX !== fxl.tx ||
+            wv.READIUM2.fxlViewportTY !== fxl.ty ||
+            wv.READIUM2.webViewSlot !== wvSlot) {
+            debug("setWebViewStyle CHANGED (FXL data)", v);
+            changed = true;
+        }
+        wv.READIUM2.fxlViewportWidth = fxl.width;
+        wv.READIUM2.fxlViewportHeight = fxl.height;
+        wv.READIUM2.fxlViewportScale = fxl.scale;
+        wv.READIUM2.fxlViewportTX = fxl.tx;
+        wv.READIUM2.fxlViewportTY = fxl.ty;
+        wv.READIUM2.webViewSlot = wvSlot;
 
         let wvSlot_ = wv.getAttribute("data-wv-slot") as WebViewSlotEnum;
-        if (!wvSlot_) {
+        // if (!wvSlot_) {
+        //     wvSlot_ = wvSlot;
+        // }
+        if (wvSlot_ !== wvSlot) {
+            debug("setWebViewStyle CHANGED SLOT)", wvSlot_, wvSlot);
             wvSlot_ = wvSlot;
+            changed = true;
+            wv.setAttribute("data-wv-slot", wvSlot);
+            debug("wvSlot_ !== wvSlot ??!"); // this should never happen?
         }
 
         // fxl.tx can only be negative for WebViewSlotEnum.left and WebViewSlotEnum.center
@@ -112,28 +135,61 @@ export function setWebViewStyle(wv: IReadiumElectronWebview, wvSlot: WebViewSlot
 
         // tslint:disable-next-line:max-line-length
         const cxx = ` width:${fxl.width * fxl.scale}px; height:${fxl.height * fxl.scale}px; transform-origin: 0 0; transform: translate(${tx}px, ${ty}px) scale(${"1"});`;
-        wv.setAttribute("style",
-            wvSlot_ === WebViewSlotEnum.center ? webviewStyleCenter_ + cxx :
-                (wvSlot_ === WebViewSlotEnum.left ? webviewStyleLeft_ + cxx :
-                webviewStyleRight_ + cxx),
-        );
+        const attrStyleVal = wvSlot_ === WebViewSlotEnum.center ? webviewStyleCenter_ + cxx :
+            (wvSlot_ === WebViewSlotEnum.left ? webviewStyleLeft_ + cxx :
+                webviewStyleRight_ + cxx);
+        if (wv.getAttribute("style") !== attrStyleVal) {
+            debug("setWebViewStyle CHANGED (style)", wv.getAttribute("style"), attrStyleVal);
+            changed = true;
+        }
+        wv.setAttribute("style", attrStyleVal);
 
+        // if (wv.getAttribute("data-wv-fxl") !== v) {
+        //     debug("setWebViewStyle CHANGED (FXL)", wv.getAttribute("data-wv-fxl"), v);
+        //     changed = true;
+        // }
+        if (!wv.hasAttribute("data-wv-fxl")) {
+            debug("setWebViewStyle CHANGED (FXL)", v);
+            changed = true;
+        }
         wv.setAttribute("data-wv-fxl", v);
     } else {
-        wv.setAttribute("style",
-            wvSlot === WebViewSlotEnum.center ? webviewStyleCenter :
-                (wvSlot === WebViewSlotEnum.left ? webviewStyleLeft :
-                webviewStyleRight),
-        );
+        const attrStyleVal = wvSlot === WebViewSlotEnum.center ? webviewStyleCenter :
+            (wvSlot === WebViewSlotEnum.left ? webviewStyleLeft :
+                webviewStyleRight);
+        if (wv.getAttribute("style") !== attrStyleVal) {
+            debug("setWebViewStyle CHANGED (style)", wv.getAttribute("style"), attrStyleVal);
+            changed = true;
+        }
+        wv.setAttribute("style", attrStyleVal);
 
-        wv.removeAttribute("data-wv-fxl");
+        wv.READIUM2.webViewSlot = wvSlot;
+        if (fxl === null) { // when undefined, preserve same-link FXL (loadLink() same doc)
 
-        wv.setAttribute("data-wv-slot",
-            wvSlot === WebViewSlotEnum.center ? "center" :
-                (wvSlot === WebViewSlotEnum.left ? "left" :
-                "right"),
-        );
+            wv.READIUM2.fxlViewportWidth = 0;
+            wv.READIUM2.fxlViewportHeight = 0;
+            wv.READIUM2.fxlViewportScale = 1;
+            wv.READIUM2.fxlViewportTX = 0;
+            wv.READIUM2.fxlViewportTY = 0;
+
+            if (wv.hasAttribute("data-wv-fxl")) {
+                debug("setWebViewStyle CHANGED (FXL)", wv.getAttribute("data-wv-fxl"));
+                changed = true;
+            }
+            wv.removeAttribute("data-wv-fxl");
+        }
+
+        const val = wvSlot === WebViewSlotEnum.center ? "center" :
+            (wvSlot === WebViewSlotEnum.left ? "left" :
+                "right");
+        if (wv.getAttribute("data-wv-slot") !== val) {
+            debug("setWebViewStyle CHANGED SLOT)", wv.getAttribute("data-wv-slot"), val);
+            changed = true;
+        }
+        wv.setAttribute("data-wv-slot", val);
     }
+
+    return changed;
 }
 
 // export function stealFocusDisable(doDisable: boolean) {
@@ -197,6 +253,7 @@ export function keyboardFocusRequest(deep: boolean, webview?: IReadiumElectronWe
     // win.blur();
     // win.focus();
 
+    // ipcMain.handle() <=====
     // ipcRenderer.invoke(R2_EVENT_KEYBOARD_FOCUS_REQUEST, webview.getWebContentsId());
 }
 
@@ -951,6 +1008,22 @@ function loadLink(
             }
         });
 
+        const sameFXL = isFixedLayout(pubLink) && activeWebView.READIUM2.link === pubLink;
+        const fxl: IwidthHeight = sameFXL &&
+            activeWebView.READIUM2.fxlViewportWidth &&
+            activeWebView.READIUM2.fxlViewportHeight &&
+            typeof activeWebView.READIUM2.fxlViewportTX === "number" &&
+            typeof activeWebView.READIUM2.fxlViewportTY === "number" &&
+            typeof activeWebView.READIUM2.fxlViewportScale === "number"
+            ?
+        {
+            width: activeWebView.READIUM2.fxlViewportWidth,
+            height: activeWebView.READIUM2.fxlViewportHeight,
+            tx: activeWebView.READIUM2.fxlViewportTX,
+            ty: activeWebView.READIUM2.fxlViewportTY,
+            scale: activeWebView.READIUM2.fxlViewportScale,
+        } : undefined;
+
         const prev = previous ? true : false;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const page = (pubLink as any).__notInSpreadForced ? PageEnum.Center : pubLink.Properties?.Page;
@@ -984,10 +1057,13 @@ function loadLink(
                 }
             }
             if (activeWebView) {
-                debug("loadLink LEFT ... setWebViewStyle");
-                win.READIUM2.domRootElement.style.opacity = "0";
-                win.READIUM2.opacityMaskCounter++;
-                setWebViewStyle(activeWebView, WebViewSlotEnum.left);
+                debug("loadLink LEFT ... setWebViewStyle", sameFXL, JSON.stringify(fxl, null, 4));
+                const changed = setWebViewStyle(activeWebView, WebViewSlotEnum.left, sameFXL ? fxl : null);
+                debug("DOM OPACITY ZERO 3: ", changed, win.READIUM2.domRootElement.style.opacity, win.READIUM2.opacityMaskCounter);
+                if (activeWebView.READIUM2.link !== pubLink) { //  || changed
+                    win.READIUM2.domRootElement.style.opacity = "0";
+                    win.READIUM2.opacityMaskCounter++;
+                }
             }
         } else if (page === PageEnum.Right) {
             webViewSlot = WebViewSlotEnum.right;
@@ -1019,18 +1095,24 @@ function loadLink(
                 }
             }
             if (activeWebView) {
-                debug("loadLink RIGHT ... setWebViewStyle");
-                win.READIUM2.domRootElement.style.opacity = "0";
-                win.READIUM2.opacityMaskCounter++;
-                setWebViewStyle(activeWebView, WebViewSlotEnum.right);
+                debug("loadLink RIGHT ... setWebViewStyle", sameFXL, JSON.stringify(fxl, null, 4));
+                const changed = setWebViewStyle(activeWebView, WebViewSlotEnum.right, sameFXL ? fxl : null);
+                debug("DOM OPACITY ZERO 4: ", changed, win.READIUM2.domRootElement.style.opacity, win.READIUM2.opacityMaskCounter);
+                if (activeWebView.READIUM2.link !== pubLink) { //  || changed
+                    win.READIUM2.domRootElement.style.opacity = "0";
+                    win.READIUM2.opacityMaskCounter++;
+                }
             }
         } else {
             webViewSlot = WebViewSlotEnum.center;
             if (activeWebView) {
-                debug("loadLink CENTER ... setWebViewStyle");
-                win.READIUM2.domRootElement.style.opacity = "0";
-                win.READIUM2.opacityMaskCounter++;
-                setWebViewStyle(activeWebView, WebViewSlotEnum.center);
+                debug("loadLink CENTER ... setWebViewStyle", sameFXL, JSON.stringify(fxl, null, 4));
+                const changed = setWebViewStyle(activeWebView, WebViewSlotEnum.center, sameFXL ? fxl : null);
+                debug("DOM OPACITY ZERO 5: ", changed, win.READIUM2.domRootElement.style.opacity, win.READIUM2.opacityMaskCounter);
+                if (activeWebView.READIUM2.link !== pubLink) { //  || changed
+                    win.READIUM2.domRootElement.style.opacity = "0";
+                    win.READIUM2.opacityMaskCounter++;
+                }
             }
         }
     }
@@ -1181,13 +1263,14 @@ function loadLink(
     if (activeWebView) {
         activeWebView.READIUM2.forceRefresh = undefined;
     }
-    const webviewNeedsHardRefresh = !isAudio &&
-        (win.READIUM2.enableScreenReaderAccessibilityWebViewHardRefresh
-        && win.READIUM2.accessibilitySupportEnabled);
+    // const webviewNeedsHardRefresh = false;
+        //!isAudio &&
+        //(win.READIUM2.enableScreenReaderAccessibilityWebViewHardRefresh
+        //&& win.READIUM2.accessibilitySupportEnabled);
 
     if (// !secondWebView && !loadingSecondWebView &&
         // !win.READIUM2.getSecondWebView(false) &&
-        !isAudio && !webviewNeedsHardRefresh && !webviewNeedsForcedRefresh &&
+        !isAudio && /* !webviewNeedsHardRefresh && */ !webviewNeedsForcedRefresh &&
         activeWebView && activeWebView.READIUM2.link === pubLink && !isFixedLayout(pubLink)) {
 
         const goto = useGoto ? hrefToLoadHttpUri.search(true)[URL_PARAM_GOTO] as string : undefined;
@@ -1617,35 +1700,35 @@ ${coverLink ? `<img id="${AUDIO_COVER_ID}" src="${coverLink.Href}" alt="" ${cove
             const highlights = activeWebView.READIUM2.link === pubLink ? activeWebView.READIUM2.highlights : undefined;
             setTimeout(() => {
                 hydrateHighlightsBuild(highlights, hrefToLoadHttpUri).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ }).finally(() => {
-                    if (webviewNeedsHardRefresh) {
-                        const uriStr = hrefToLoadHttpUri.toString();
-                        const uriStr__ = uriStr.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") ? uriStr :
-                            (pubIsServedViaSpecialUrlProtocol ? convertHttpUrlToCustomScheme(uriStr) : uriStr);
+                    // if (webviewNeedsHardRefresh) {
+                    //     const uriStr = hrefToLoadHttpUri.toString();
+                    //     const uriStr__ = uriStr.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") ? uriStr :
+                    //         (pubIsServedViaSpecialUrlProtocol ? convertHttpUrlToCustomScheme(uriStr) : uriStr);
 
-                        if (IS_DEV) {
-                            debug(`___HARD___ WEBVIEW REFRESH: ${uriStr__}`);
-                        }
+                    //     if (IS_DEV) {
+                    //         debug(`___HARD___ WEBVIEW REFRESH: ${uriStr__}`);
+                    //     }
 
-                        const readiumCssBackup = activeWebView.READIUM2.readiumCss;
-                        if (secondWebView) {
-                            if (!secondWebViewWasJustCreated) {
-                                win.READIUM2.destroySecondWebView();
-                                win.READIUM2.createSecondWebView();
-                            }
-                        } else {
-                            win.READIUM2.destroyFirstWebView();
-                            win.READIUM2.createFirstWebView();
-                        }
-                        const newActiveWebView = secondWebView ?
-                            win.READIUM2.getSecondWebView(false) :
-                            win.READIUM2.getFirstWebView();
-                        if (newActiveWebView) {
-                            newActiveWebView.READIUM2.readiumCss = readiumCssBackup;
-                            newActiveWebView.READIUM2.highlights = highlights;
-                            newActiveWebView.READIUM2.link = pubLink;
-                            newActiveWebView.setAttribute("src", uriStr__);
-                        }
-                    } else {
+                    //     const readiumCssBackup = activeWebView.READIUM2.readiumCss;
+                    //     if (secondWebView) {
+                    //         if (!secondWebViewWasJustCreated) {
+                    //             win.READIUM2.destroySecondWebView();
+                    //             win.READIUM2.createSecondWebView();
+                    //         }
+                    //     } else {
+                    //         win.READIUM2.destroyFirstWebView();
+                    //         win.READIUM2.createFirstWebView();
+                    //     }
+                    //     const newActiveWebView = secondWebView ?
+                    //         win.READIUM2.getSecondWebView(false) :
+                    //         win.READIUM2.getFirstWebView();
+                    //     if (newActiveWebView) {
+                    //         newActiveWebView.READIUM2.readiumCss = readiumCssBackup;
+                    //         newActiveWebView.READIUM2.highlights = highlights;
+                    //         newActiveWebView.READIUM2.link = pubLink;
+                    //         newActiveWebView.setAttribute("src", uriStr__);
+                    //     }
+                    // } else {
                         const uriStr = hrefToLoadHttpUri.toString();
                         const uriStr__ = uriStr.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") ? uriStr :
                             (pubIsServedViaSpecialUrlProtocol ? convertHttpUrlToCustomScheme(uriStr) : uriStr);
@@ -1680,7 +1763,7 @@ ${coverLink ? `<img id="${AUDIO_COVER_ID}" src="${coverLink.Href}" alt="" ${cove
                         } else {
                             activeWebView.setAttribute("src", uriStr__);
                         }
-                    }
+                    // }
                 });
             }, highlights ? 0 : win.READIUM2.ttsClickEnabled ? 100 : 0);
         }

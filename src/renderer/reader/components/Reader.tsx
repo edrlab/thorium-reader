@@ -15,10 +15,11 @@ import { fixedLayoutZoomPercent } from "@r2-navigator-js/electron/renderer/dom";
 import { ipcRenderer } from "electron";
 import classNames from "classnames";
 import divinaPlayer from "divina-player-js";
-import * as path from "path";
+import * as path from "node:path";
 import * as r from "ramda";
 import * as React from "react";
 import { connect } from "react-redux";
+import { readerAnalyticsEvents } from "readium-desktop/common/analytics/reader";
 import { computeReadiumCssJsonMessage } from "readium-desktop/common/computeReadiumCssJsonMessage";
 import { isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
 import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
@@ -82,6 +83,7 @@ import {
     mediaOverlaysEnableSkippability,
     highlightsClickListen,
     mediaOverlaysUseTTSHighlights,
+    enablePageBreakMarginIndicators,
 } from "@r2-navigator-js/electron/renderer/index";
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 
@@ -128,6 +130,7 @@ import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 
+import { logEvent } from "readium-desktop/renderer/common/analytics";
 import { winCommonActions } from "readium-desktop/common/redux/actions";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { MiniLocatorExtended, minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
@@ -346,6 +349,7 @@ class Reader extends React.Component<IProps, IState> {
         this.onKeyboardFocusMainDeep = this.onKeyboardFocusMainDeep.bind(this);
         this.onKeyboardFocusToolbar = this.onKeyboardFocusToolbar.bind(this);
         this.onKeyboardFullScreen = this.onKeyboardFullScreen.bind(this);
+        this.onKeyboardZenMode = this.onKeyboardZenMode.bind(this);
         this.onKeyboardInfo = this.onKeyboardInfo.bind(this);
         this.onKeyboardInfoWhereAmI = this.onKeyboardInfoWhereAmI.bind(this);
         this.onKeyboardInfoWhereAmISpeak = this.onKeyboardInfoWhereAmISpeak.bind(this);
@@ -451,7 +455,6 @@ class Reader extends React.Component<IProps, IState> {
         // this.handleSettingsClick = this.handleSettingsClick.bind(this);
         this.handleFullscreenClick = this.handleFullscreenClick.bind(this);
         this.handleReaderClose = this.handleReaderClose.bind(this);
-        this.handleReaderDetach = this.handleReaderDetach.bind(this);
         this.handleReadingLocationChange = this.handleReadingLocationChange.bind(this);
         this.goToLocator = this.goToLocator.bind(this);
         this.goToPdfAnnotation = this.goToPdfAnnotation.bind(this);
@@ -933,6 +936,10 @@ class Reader extends React.Component<IProps, IState> {
             },
         });
 
+        if (result) {
+            logEvent(readerAnalyticsEvents.annotate);
+        }
+
         if (!result && payload?.draft) {
             this.props.toastError(getTranslator().__("reader.annotations.error.pdf.validationSelection"));
             return;
@@ -1003,6 +1010,7 @@ class Reader extends React.Component<IProps, IState> {
         noteDraft.tags = tags;
 
         const action = this.props.addUpdatePdfAnnotationNote(this.props.pubId, noteDraft);
+        logEvent(readerAnalyticsEvents.annotate);
         this.setState({ pdfAnnotationDraft: undefined });
         this.syncPdfAnnotations(action.payload.newNote);
     }
@@ -1199,9 +1207,7 @@ class Reader extends React.Component<IProps, IState> {
                         // handleMenuClick={this.handleMenuButtonClick}
                         // handleSettingsClick={this.handleSettingsClick}
                         fullscreen={this.state.fullscreen}
-                        mode={this.props.readerMode}
                         // handleFullscreenClick={this.handleFullscreenClick}
-                        handleReaderDetach={this.handleReaderDetach}
                         handleReaderClose={this.handleReaderClose}
                         isOnSearch={this.props.searchEnable}
                         ReaderSettingsProps={ReaderSettingsProps}
@@ -1281,7 +1287,9 @@ class Reader extends React.Component<IProps, IState> {
                                         : "")}
                                     ref={this.mainElRef}
                                     style={{
-                                        inset: this.state.currentLocation?.docInfo?.isVerticalWritingMode || isAudioBook || !this.props.readerConfig.paged || this.props.isPdf || this.props.isDivina || this.isFixedLayout() ? "0" : "75px 50px",
+                                        // left: this.props.readerConfig.readerDockingMode === "left" && this.isFixedLayout() ? "372px" : undefined,
+                                        // right: this.props.readerConfig.readerDockingMode === "right" && this.isFixedLayout() ? "373px" : undefined,
+                                        inset: this.state.currentLocation?.docInfo?.isVerticalWritingMode || isAudioBook || !this.props.readerConfig.paged || this.props.isPdf || this.props.isDivina ? "0" : this.isFixedLayout() ? "0px 50px" : "75px 50px",
                                         // opacity: this.state.blackoutMask ? 0 : 1,
                                     }}>
                                 </div>
@@ -1319,7 +1327,7 @@ class Reader extends React.Component<IProps, IState> {
                                         }}
                                             title={isRTL ? this.props.__("reader.navigation.screenPrevious") : this.props.__("reader.navigation.screenNext")}
                                             className={(this.props.settingsOpen || this.props.menuOpen) ? (this.props.readerConfig.readerDockingMode === "right" ? stylesReaderFooter.navigation_arrow_docked_right :  stylesReaderFooter.navigation_arrow_right) : stylesReaderFooter.navigation_arrow_right}
-                                            style={{ right: !this.props.readerConfig.paged ? "15px" : "4px" }}
+                                            style={{ right: !this.props.readerConfig.paged ? ((this.props.settingsOpen || this.props.menuOpen) && this.props.readerConfig.readerDockingMode === "right" ? "384px" : "15px") : ((this.props.settingsOpen || this.props.menuOpen) && this.props.readerConfig.readerDockingMode === "right" ? "373px" : "4px") }}
                                         >
                                             <SVG ariaHidden={true} svg={ArrowRightIcon} aria-label={this.props.__("reader.svg.right")}/>
                                         </button>
@@ -1504,6 +1512,10 @@ class Reader extends React.Component<IProps, IState> {
             true, // listen for key up (not key down)
             this.props.keyboardShortcuts.ToggleReaderFullscreen,
             this.onKeyboardFullScreen);
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.ToggleReaderZenMode,
+            this.onKeyboardZenMode);
 
         registerKeyboardListener(
             true, // listen for key up (not key down)
@@ -1627,6 +1639,7 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardFocusMainDeep);
         unregisterKeyboardListener(this.onKeyboardFocusToolbar);
         unregisterKeyboardListener(this.onKeyboardFullScreen);
+        unregisterKeyboardListener(this.onKeyboardZenMode);
         unregisterKeyboardListener(this.onKeyboardInfo);
         unregisterKeyboardListener(this.onKeyboardInfoWhereAmI);
         unregisterKeyboardListener(this.onKeyboardInfoWhereAmISpeak);
@@ -2043,6 +2056,11 @@ class Reader extends React.Component<IProps, IState> {
         // window.dispatchEvent(new Event("resize")); // WORKS
     };
 
+    private onKeyboardZenMode = () => {
+
+        this.setZenModeAndFXLZoom(!this.state.zenMode, this.state.fxlZoomPercent);
+    };
+
     private onKeyboardCloseReader = () => {
         // if (!this.state.shortcutEnable) {
         //     if (DEBUG_KEYBOARD) {
@@ -2320,11 +2338,17 @@ class Reader extends React.Component<IProps, IState> {
 
     private onKeyboardHistoryNavigationNext = () => {
         // console.log("#+$%".repeat(5)  + " history forward()", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
+        if (this.state.historyCanGoForward) {
+            logEvent(readerAnalyticsEvents.historyForward);
+        }
         window.history.forward();
         // window.history.go(1);
     };
     private onKeyboardHistoryNavigationPrevious = () => {
         // console.log("#+$%".repeat(5)  + " history back()", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
+        if (this.state.historyCanGoBack) {
+            logEvent(readerAnalyticsEvents.historyBack);
+        }
         window.history.back();
         // window.history.go(-1);
     };
@@ -2933,9 +2957,9 @@ class Reader extends React.Component<IProps, IState> {
             if (__TH__IS_PACKAGED__) {
                 preloadPath = "file://" + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", PREPATH)).replace(/\\/g, "/");
             } else {
-                preloadPath = "r2-navigator-js/dist/" +
-                    "es8-es2017" +
-                    "/src/electron/renderer/webview/preload.js";
+                // preloadPath = "r2-navigator-js/dist/" +
+                //     "es8-es2017" +
+                //     "/src/electron/renderer/webview/preload.js";
 
                 if (_RENDERER_READER_BASE_URL === `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/`) {
                     // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
@@ -2952,7 +2976,8 @@ class Reader extends React.Component<IProps, IState> {
                 } else {
                     // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
                     // preloadPath = "file://" + path.normalize(path.join(process.cwd(), "node_modules", preloadPath)).replace(/\\/g, "/");
-                    preloadPath = "file://" + path.normalize(path.join(process.cwd(), "dist", "preload.js")).replace(/\\/g, "/");
+                    preloadPath = "file://" + path.normalize(path.join(process.cwd(), "dist", PREPATH)).replace(/\\/g, "/");
+                    // preloadPath = preloadPath.replace(/\\/g, "/");
                 }
             }
 
@@ -2963,7 +2988,7 @@ class Reader extends React.Component<IProps, IState> {
                 "publication_viewport",
                 preloadPath,
                 locator,
-                true,
+                this.state.accessibilitySupportEnabled,
                 (this.props.publicationView.lcp) ? clipboardInterceptor : undefined,
                 this.props.winId,
                 computeReadiumCssJsonMessage(this.props.readerConfig),
@@ -3112,6 +3137,8 @@ class Reader extends React.Component<IProps, IState> {
             mediaOverlaysUseTTSHighlights(this.props.readerConfig.mediaOverlaysUseTTSHighlights);
             ttsAndMediaOverlaysManualPlayNext(this.props.readerConfig.ttsAndMediaOverlaysDisableContinuousPlay);
             ttsSkippabilityEnable(this.props.readerConfig.mediaOverlaysEnableSkippability);
+
+            enablePageBreakMarginIndicators(this.props.readerConfig.enablePageBreakMarginIndicators);
         }
         this.ttsOverlayEnableNeedsSync = false;
 
@@ -3191,6 +3218,7 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         if (this.props.isPdf) {
+            logEvent(readerAnalyticsEvents.paginate);
             if (left) {
                 createOrGetPdfEventBus().dispatch("page-previous");
             } else {
@@ -3199,6 +3227,7 @@ class Reader extends React.Component<IProps, IState> {
         } else if (this.props.isDivina) {
 
             if (this.currentDivinaPlayer) {
+                logEvent(readerAnalyticsEvents.paginate);
                 if (left) {
                     this.currentDivinaPlayer.goLeft();
                 } else {
@@ -3216,6 +3245,7 @@ class Reader extends React.Component<IProps, IState> {
             const rtlIsOverridden = this.isRTL(this.isFixedLayout()) && this.props.disableRTLFlip;
             const left_ = rtlIsOverridden ? !left : left;
 
+            logEvent(readerAnalyticsEvents.paginate);
             if (wasPaused || wasPlaying) {
                 navLeftOrRight(left_, false);
                 // if (!this.state.r2PublicationHasMediaOverlays) {
@@ -3320,10 +3350,6 @@ class Reader extends React.Component<IProps, IState> {
 
     private handleReaderClose() {
         this.props.closeReader();
-    }
-
-    private handleReaderDetach() {
-        this.props.detachReader();
     }
 
     private handleFullscreenClick() {
@@ -3688,7 +3714,6 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         searchEnable: state.search.enable,
         manifestUrlR2Protocol: manifestUrlR2Protocol_pub_id_not_path,
         winId: state.win.identifier,
-        readerMode: state.mode,
         divinaReadingMode: state.reader.divina.readingMode,
         locale: state.i18n.locale,
         disableRTLFlip: !!state.reader.disableRTLFlip?.disabled,
@@ -3737,10 +3762,6 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         closeReader: () => {
             dispatch(readerActions.closeRequest.build());
         },
-        detachReader: () => {
-            dispatch(readerActions.detachModeRequest.build());
-        },
-
         displayPublicationInfo: (pubId: string, pdfPlayerNumberOfPages: number | undefined, divinaNumberOfPages: number | undefined, divinaContinousEqualTrue: boolean, readerReadingLocation: MiniLocatorExtended | undefined, handleLinkUrl: ((url: string) => void) | undefined, focusWhereAmI?: boolean) => {
             dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoReader,
                 {

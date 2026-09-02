@@ -37,9 +37,6 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     dialogActions.openRequest.ID,
 
-    readerActions.detachModeSuccess.ID,
-
-
     readerActions.fullScreenRequest.ID,
 
     lcpActions.userKeyCheckRequest.ID,

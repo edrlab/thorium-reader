@@ -15,6 +15,8 @@ import { IPaginationInfo } from "./pagination";
 import { IReadiumCSS } from "./readium-css-settings";
 import { IRangeInfo, ISelectionInfo } from "./selection";
 
+export const ENABLE_NAVIGATOR_R2_EVENT_IMAGE_CLICK = false;
+
 // in WEBVIEW: ipcRenderer.sendToHost()
 // in RENDERER: webview.addEventListener("ipc-message")
 //
@@ -60,8 +62,8 @@ export const R2_EVENT_READIUMCSS = "R2_EVENT_READIUMCSS";
 export interface IEventPayload_R2_EVENT_READIUMCSS {
     setCSS: IReadiumCSS | undefined;
     isFixedLayout?: boolean;
-    fixedLayoutWebViewWidth?: number;
-    fixedLayoutWebViewHeight?: number;
+    fixedLayoutAvailableWebViewWidth?: number;
+    fixedLayoutAvailableWebViewHeight?: number;
     fixedLayoutZoomPercent?: number;
     urlRoot?: string;
 }
@@ -280,6 +282,14 @@ export const R2_EVENT_TTS_VOICE = "R2_EVENT_TTS_VOICE";
 // tslint:disable-next-line:class-name
 export interface IEventPayload_R2_EVENT_TTS_VOICE {
     voices: SpeechSynthesisVoice[] | null;
+}
+
+// in RENDERER: webview.send()
+// in WEBVIEW: ipcRenderer.on()
+export const R2_EVENT_ENABLE_PAGE_BREAK_MARGIN_INDICATORS = "R2_EVENT_ENABLE_PAGE_BREAK_MARGIN_INDICATORS";
+// tslint:disable-next-line:class-name
+export interface IEventPayload_R2_EVENT_ENABLE_PAGE_BREAK_MARGIN_INDICATORS {
+    doEnable: boolean;
 }
 
 // in RENDERER: webview.send()

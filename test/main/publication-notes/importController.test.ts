@@ -1,4 +1,4 @@
-import * as os from "os";
+import * as os from "node:os";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, jest } from "@jest/globals";
 
 import { PublicationNotesController, type PublicationNote } from "readium-desktop/common/publication-notes";

@@ -9,7 +9,6 @@ export declare const catalog_container: string;
 export declare const catalog_content: string;
 export declare const catalog_favorite_icon_false: string;
 export declare const catalog_favorite_icon_true: string;
-export declare const catalog_globe_icon: string;
 export declare const catalog_infos_text: string;
 export declare const catalog_title: string;
 export declare const catalog_wrapper: string;

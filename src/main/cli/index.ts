@@ -7,14 +7,14 @@
 
 import debug_ from "debug";
 import { app, dialog } from "electron";
-import * as path from "path";
-import * as fs from "fs";
+import * as path from "node:path";
+import * as fs from "node:fs";
 import { lockInstance } from "readium-desktop/main/cli/lock";
 import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import yargs from "yargs";
 // import { hideBin } from "yargs/helpers";
 import { closeProcessLock } from "../di";
-import { EOL } from "os";
+import { EOL } from "node:os";
 import { diMainGet } from "readium-desktop/main/di";
 import { createStoreFromDi } from "../di";
 import { needToPersistFinalState } from "../redux/sagas/persist";
@@ -372,6 +372,17 @@ export function commandLineMainEntry(
         // https://github.com/electron/fuses/issues/2
         for (const arg of process.argv) {
             debug("arg", arg);
+            //
+            // --user-data-dir
+            // Just as an additional data point (not an official recommendation at this stage, as we need to explore possible bugs):
+            // There is a `--user-data-dir` command line argument for Chromium ( https://chromium.googlesource.com/chromium/src/+/HEAD/docs/user_data_dir.md )
+            // It works on MacOS (tested with `rm -rf ~/Desktop/th-tmp ; mkdir -p ~/Desktop/th-tmp ; /Applications/Thorium.app/Contents/MacOS/Thorium --user-data-dir=/Users/ME/Desktop/th-tmp`)
+            // It also works in development mode (tested with `rm -rf ~/Desktop/th-tmp ; mkdir -p ~/Desktop/th-tmp ; node_modules/.bin/electron . --user-data-dir=/Users/ME/Desktop/th-tmp`)
+            // It was reported working on Windows too.
+            //
+            // TODO: explore ramifications with `src/main/storage/publication-storage.ts` https://github.com/edrlab/thorium-reader/pull/3529
+            // ... and potentially `src/main/storage/publication-storage.ts` in the future.
+            //
             if ( // https://github.com/electron/electron/blob/main/shell/common/node_bindings.cc#L427
                 arg === "-r" ||
                 arg.includes("--require") ||

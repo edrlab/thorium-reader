@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as crypto from "crypto";
+import * as crypto from "node:crypto";
 import debug_ from "debug";
-import * as path from "path";
+import * as path from "node:path";
 import { ok } from "readium-desktop/common/utils/assert";
 import { httpGet } from "readium-desktop/main/network/http";
 import {
@@ -224,7 +224,7 @@ function* BufferManifestToR2Publication(r2PublicationBuffer: Buffer, href: strin
     let r2PublicationJson: any;
     try {
 
-        const r2PublicationStr = r2PublicationBuffer.toString("utf-8");
+        const r2PublicationStr = r2PublicationBuffer.toString("utf8");
         r2PublicationJson = JSON.parse(r2PublicationStr);
 
     } catch (e) {

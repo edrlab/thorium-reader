@@ -775,6 +775,7 @@
         },
         "marks": {
             "annotations": "",
+            "annotationsReadium": "",
             "bookmarks": "",
             "delete": "",
             "edit": "",
@@ -813,7 +814,6 @@
             "bookmarkTitle": "",
             "currentPage": "",
             "currentPageTotal": "",
-            "detachWindowTitle": "",
             "goTo": "",
             "goToError": "",
             "goToPlaceHolder": "",
@@ -890,6 +890,7 @@
             "disposition": {
                 "title": ""
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "",
             "fontSize": "",
             "increaseFontSize": "",
@@ -900,7 +901,6 @@
             "lineSpacing": "",
             "margin": "",
             "mathjax": "",
-            "mathjaxDescription": "",
             "noFootnotes": "",
             "noRTLFlip": "",
             "noRuby": "",
@@ -1225,6 +1225,10 @@
                     "name": ""
                 },
                 "ToggleReaderFullscreen": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleReaderZenMode": {
                     "description": "",
                     "name": ""
                 },

@@ -11,8 +11,8 @@
 // // => the DEBUG env var enables verbose console logging (remove completely to disable)
 // // => the "1" trailing command line argument enables resource streaming (in addition to ZIP directory CRC checks)
 
-// import * as fs from "fs";
-// import * as path from "path";
+// import * as fs from "node:fs";
+// import * as path from "node:path";
 
 // // ZIP 1
 // // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports

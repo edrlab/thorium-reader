@@ -781,6 +781,7 @@
         },
         "marks": {
             "annotations": "Annotations",
+            "annotationsReadium": "Annotations Readium",
             "bookmarks": "Marque-pages",
             "delete": "Supprimer",
             "edit": "Éditer",
@@ -819,7 +820,6 @@
             "bookmarkTitle": "Marque-page",
             "currentPage": "Page courante : {{- current}}",
             "currentPageTotal": "Page courante : {{- current}}/{{- total}}",
-            "detachWindowTitle": "Afficher la bibliothèque",
             "goTo": "Aller à",
             "goToError": "Cette page n'existe pas",
             "goToPlaceHolder": "Entrer un numéro de page",
@@ -897,6 +897,7 @@
             "disposition": {
                 "title": "Pagination"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Police de caractères",
             "fontSize": "Taille du texte",
             "increaseFontSize": "Augmenter la taille du texte",
@@ -907,7 +908,6 @@
             "lineSpacing": "Espacement des lignes",
             "margin": "Marge",
             "mathjax": "Activer MathJax",
-            "mathjaxDescription": "MathJax",
             "noFootnotes": "Désactiver la fenêtre pop-up des notes de bas de page",
             "noRTLFlip": "Désactiver l'interface droite-à-gauche",
             "noRuby": "Cacher les caractères Ruby Japonais",
@@ -1234,6 +1234,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "Dans la fenêtre du lecteur, bascule en plein écran. Notez que cela est différent du mode Zen. Le raccourci clavier est le seul moyen de passer en plein écran.",
                     "name": "Basculer en plein écran"
+                },
+                "ToggleReaderZenMode": {
+                    "description": "Dans la fenêtre du lecteur, active ou quitte le mode Zen, qui simplifie l'interface pendant la lecture.",
+                    "name": "Basculer le mode Zen"
                 },
                 "ToggleScreenReaderOptimize": {
                     "description": "Dans la vue bibliothèque, bascule vers le support optimisé des lecteurs d'écran",

@@ -8,11 +8,12 @@
 import debug_ from "debug";
 import { lcpActions, readerActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
+import { logLcpPassphrase } from "readium-desktop/main/analytics/lcp";
 import { diMainGet } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all } from "redux-saga/effects";
-import { call as callTyped, put as putTyped } from "typed-redux-saga/macro";
+import { call as callTyped, put as putTyped, spawn as spawnTyped } from "typed-redux-saga/macro";
 
 const filename_ = "readium-desktop:main:redux:sagas:lcp";
 const debug = debug_(filename_);
@@ -53,10 +54,14 @@ function* unlockPublicationWithPassphrase(action: lcpActions.unlockPublicationWi
             yield* callTyped(() => lcpManager.unlockPublication(publicationDocument, passphrase));
 
         debug(unlockPublicationRes, "'undefined' means OKay the publication is decrypted, Well Done !");
+        const passphraseValue = typeof unlockPublicationRes === "undefined" ? "valid" : "invalid";
+        yield* spawnTyped(function*() {
+            yield* callTyped(() => logLcpPassphrase(passphraseValue));
+        });
         if (typeof unlockPublicationRes !== "undefined") {
             // import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
             // import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-            // const r2PublicationStr = Buffer.from(publicationView.r2PublicationBase64, "base64").toString("utf-8");
+            // const r2PublicationStr = Buffer.from(publicationView.r2PublicationBase64, "base64").toString("utf8");
             // const r2PublicationJson = JSON.parse(r2PublicationStr);
             // const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
 

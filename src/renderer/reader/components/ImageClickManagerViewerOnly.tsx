@@ -60,7 +60,7 @@ const Controls = () => {
         width: 24px;
         height: 24px;
 }
-        
+
 .imgViewerControls button:hover {
     filter: opacity(1);
 }
@@ -82,6 +82,9 @@ const Controls = () => {
 
 export const ImageClickManagerImgViewerOnly: React.FC = () => {
 
+    // SVG SCRIPT SECURITY NOTE: the Javascript is inert when the SVG fragment is rendered via an `img` HTML image tag (as is the case here),
+    // but the Javascript WILL EXECUTE when the SVG is embedded directly in the HTML markup or via an `object`, or `embed` or `iframe` tag!
+
     const { open, isSVGFragment, HTMLImgSrc_SVGImageHref_SVGFragmentMarkup, altAttributeOf_HTMLImg_SVGImage_SVGFragment, titleAttributeOf_HTMLImg_SVGImage_SVGFragment, ariaLabelAttributeOf_HTMLImg_SVGImage_SVGFragment, naturalWidthOf_HTMLImg_SVGImage, naturalHeightOf_HTMLImg_SVGImage } = useSelector((state: IReaderRootState) => state.img);
     const dispatch = useDispatch();
     const [__] = useTranslator();
@@ -90,6 +93,8 @@ export const ImageClickManagerImgViewerOnly: React.FC = () => {
     const scaleY = naturalHeightOf_HTMLImg_SVGImage ? ((window.innerWidth - 50) / naturalHeightOf_HTMLImg_SVGImage) : 1;
     let scale = Math.min(scaleX, scaleY);
     if (scale > 1) scale = 1;
+    // Forced "scale = 1" to avoid the image being not centered when the image is smaller than the window size. The image will be centered by default in the TransformComponent.
+    scale = 1;
 
     return (<>
 
@@ -101,7 +106,7 @@ export const ImageClickManagerImgViewerOnly: React.FC = () => {
         >
             <Dialog.Portal>
                 <div className={stylesModals.modal_dialog_overlay}></div>
-                <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined} style={{ minWidth: "700px", minHeight: "400px", padding: "5px 10px", width: "unset", maxWidth: "calc(100% - 200px)", maxHeight: "calc(100% - 100px)" }} >
+                <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined} style={{ minWidth: "85%", minHeight: "85%", padding: "5px 10px", width: "unset", maxWidth: "calc(100% - 100px)", maxHeight: "calc(100% - 100px)" }} >
                     <VisuallyHidden>
                         <Dialog.DialogTitle>{__("reader.imgViewer.title")}</Dialog.DialogTitle>
                     </VisuallyHidden>
@@ -113,8 +118,8 @@ export const ImageClickManagerImgViewerOnly: React.FC = () => {
                         </Dialog.Close>
                     </div>
                     <div style={{ display: "flex", flexDirection: "column", padding: "5px 10px", alignItems: "center", flex: 1 }}>
-                        <div style={{ position: "relative", display: "flex", gap: 10, width: "100%", height: "100%", paddingLeft: 5, flex: 1 }}>
-                            <TransformWrapper initialScale={scale} minScale={scale / 2} maxScale={4 * scale}>
+                        <div style={{ position: "relative", display: "flex", gap: 10, width: "100%", height: "100%", paddingLeft: 5, flex: 1, justifyContent: "center", alignItems: "center" }}>
+                            <TransformWrapper initialScale={scale} minScale={scale / 2} maxScale={4 * scale} centerOnInit={true} centerZoomedOut={true} limitToBounds={true}>
                                 <Controls />
                                 <TransformComponent wrapperStyle={{ display: "flex", width: "100%", height: "100%", minHeight: "350px", flex: "1", position: "relative" }} >
                                     <img

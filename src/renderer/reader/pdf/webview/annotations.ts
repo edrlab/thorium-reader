@@ -631,12 +631,20 @@ export class PdfAnnotationController {
 
     private createNavigationMarker(target: TPdfAnnotationNavigationTarget, pageElement: HTMLElement) {
         const pageView = this.getPageView(target.page);
-        const viewportRect = pageView?.viewport?.convertToViewportRectangle?.([
+        const viewportRect = pageView?.viewport?.convertToViewportRectangle ? pageView.viewport.convertToViewportRectangle([
             target.rect.x1,
             target.rect.y1,
             target.rect.x2,
             target.rect.y2,
-        ]);
+        ]) : [];
+        if (!pageView?.viewport?.convertToViewportRectangle) {
+            const p1 = pageView.viewport.convertToViewportPoint(target.rect.x1, target.rect.y1);
+            viewportRect.push(p1[0]);
+            viewportRect.push(p1[1]);
+            const p2 = pageView.viewport.convertToViewportPoint(target.rect.x2, target.rect.y2);
+            viewportRect.push(p2[0]);
+            viewportRect.push(p2[1]);
+        }
         if (!Array.isArray(viewportRect) || viewportRect.length < 4) {
             console.error(DEBUG_PREFIX, "viewer:go-to-annotation skipped rect alignment: missing viewport conversion", {
                 id: target.id,
@@ -1068,12 +1076,25 @@ export class PdfAnnotationController {
         rectIndex: number,
         pageView: any,
     ) {
-        const viewportRect = pageView.viewport.convertToViewportRectangle([
+        console.log(typeof pageView.viewport);
+        console.log(typeof pageView.getViewport);
+        console.log(pageView);
+
+        const viewportRect = pageView.viewport.convertToViewportRectangle ? pageView.viewport.convertToViewportRectangle([
             rect.x1,
             rect.y1,
             rect.x2,
             rect.y2,
-        ]);
+        ]) : [];
+        if (!pageView.viewport.convertToViewportRectangle) {
+            const p1 = pageView.viewport.convertToViewportPoint(rect.x1, rect.y1);
+            viewportRect.push(p1[0]);
+            viewportRect.push(p1[1]);
+            const p2 = pageView.viewport.convertToViewportPoint(rect.x2, rect.y2);
+            viewportRect.push(p2[0]);
+            viewportRect.push(p2[1]);
+        }
+
         const left = Math.min(viewportRect[0], viewportRect[2]);
         const top = Math.min(viewportRect[1], viewportRect[3]);
         const width = Math.abs(viewportRect[0] - viewportRect[2]);

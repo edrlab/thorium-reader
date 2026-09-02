@@ -775,6 +775,7 @@
         },
         "marks": {
             "annotations": "ანოტაციები",
+            "annotationsReadium": "ანოტაციები (Readium)",
             "bookmarks": "სანიშნეები",
             "delete": "წაშლა",
             "edit": "გადაკეთება",
@@ -813,7 +814,6 @@
             "bookmarkTitle": "სანიშნე",
             "currentPage": "წინა გვერდი: {{- current}}",
             "currentPageTotal": "მიმდინარე გვერდი: {{- current}}/{{- total}}",
-            "detachWindowTitle": "მანახე ბიბლიოთეკა / წიგნების კარადის ფანჯარა",
             "goTo": "გადადით",
             "goToError": "ამ გვერდის წყვეტა არ არსებობს",
             "goToPlaceHolder": "შეიტანეთ გვერდის ნომერი",
@@ -890,6 +890,7 @@
             "disposition": {
                 "title": "განლაგება"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "ფონტი",
             "fontSize": "ფონტის ზომა",
             "increaseFontSize": "",
@@ -900,7 +901,6 @@
             "lineSpacing": "ხაზების დაშორება",
             "margin": "მინდორი",
             "mathjax": "",
-            "mathjaxDescription": "",
             "noFootnotes": "სქოლიოს გათიშვა",
             "noRTLFlip": "",
             "noRuby": "",
@@ -1225,6 +1225,10 @@
                     "name": ""
                 },
                 "ToggleReaderFullscreen": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleReaderZenMode": {
                     "description": "",
                     "name": ""
                 },

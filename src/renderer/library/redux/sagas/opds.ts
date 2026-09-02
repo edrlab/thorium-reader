@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import { catalogAnalyticsEvents } from "readium-desktop/common/analytics/catalog";
 import { TApiMethod } from "readium-desktop/common/api/api.type";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
@@ -21,9 +22,10 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 import { TReturnPromiseOrGeneratorType } from "readium-desktop/typings/api";
 import { ContentType } from "readium-desktop/utils/contentType";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { call, delay, put, take } from "redux-saga/effects";
+import { call, delay, put, spawn, take } from "redux-saga/effects";
 import { race as raceTyped, select as selectTyped } from "typed-redux-saga/macro";
 import { IOpdsHeaderState } from "readium-desktop/common/redux/states/renderer/opds";
+import { logEvent } from "readium-desktop/renderer/common/analytics";
 
 export const BROWSE_OPDS_API_REQUEST_ID = "browseOpdsApiResult";
 export const SEARCH_OPDS_API_REQUEST_ID = "searchOpdsApiResult";
@@ -88,6 +90,11 @@ function* browseWatcher(action: routerActions.locationChanged.TAction) {
         }
 
         debug("opds browse data received");
+        if (!opdsBrowseAction.payload.isFailure && parsedResult.level === 1) {
+            yield spawn(function*() {
+                yield call(logEvent, catalogAnalyticsEvents.browse);
+            });
+        }
         yield call(updateHeaderLinkWatcher, opdsBrowseAction);
     }
 }

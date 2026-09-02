@@ -6,7 +6,7 @@
 // // ==LICENSE-END==
 
 // import debug_ from "debug";
-// import * as crypto from "crypto";
+// import * as crypto from "node:crypto";
 
 // import { traverseJsonObjects } from "@r2-utils-js/_utils/JsonUtils";
 

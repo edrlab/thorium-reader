@@ -6,7 +6,7 @@
 // // ==LICENSE-END==
 
 // import debug_ from "debug";
-// import * as fs from "fs";
+// import * as fs from "node:fs";
 // import * as yauzl from "yauzl";
 // import * as yazl from "yazl";
 

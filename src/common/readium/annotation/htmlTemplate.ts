@@ -8,7 +8,7 @@ export const noteExportHtmlMustacheTemplate = `
     <title>Annotations about {{#dc:title}}{{.}}{{/dc:title}}</title>
     {{#generator}}
     <meta name=generator content="{{name}}" />
-    <meta name="dc:identifier" content="{{id}}" />
+    <meta name="dc:identifier" content="{{& id}}" />
     {{/generator}}
     {{#about}}
     <meta name="dc:date" content="{{dc:date}}" />
@@ -40,7 +40,7 @@ export const noteExportHtmlMustacheTemplate = `
                     <summary>More about this publication</summary>
                     <ul>
                     {{#dc:date}}<li>Date: {{.}}</li>{{/dc:date}}
-                    {{#dc:format}}<li>Format: {{.}}</li>{{/dc:format}}
+                    {{#dc:format}}<li>Format: {{& .}}</li>{{/dc:format}}
                     {{#dc:identifier}}<li>Identifier: {{.}}</li>{{/dc:identifier}}
                     </ul>
                 </details>
@@ -120,7 +120,7 @@ export const noteExportHtmlMustacheTemplate = `
                                     {{#prefix}}<li>Prefix: {{prefix}}</li>{{/prefix}}
                                     {{#suffix}}<li>Suffix: {{suffix}}</li>{{/suffix}}
                                     {{#value}}<li>Value: {{value}}</li>{{/value}}
-                                    {{#conformsTo}}<li>Conforms to: {{conformsTo}}</li>{{/conformsTo}}
+                                    {{#conformsTo}}<li>Conforms to: {{& conformsTo}}</li>{{/conformsTo}}
                                     {{#refinedBy}}<div class="refined">{{> selector}}</div>{{/refinedBy}}
                                 </ul>
                             {{/target.selector}}
@@ -142,7 +142,7 @@ export const noteExportHtmlMustacheTemplate = `
             <summary>
                 Generator details
             </summary>
-                <p>ID: {{id}} | Type: {{type}} |  | Context: {{@context}} </p
+                <p>ID: {{& id}} | Type: {{type}} |  | Context: {{& @context}} </p
             </section>
             {{/generator}}
     </footer>

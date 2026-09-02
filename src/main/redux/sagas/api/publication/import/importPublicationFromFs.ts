@@ -18,7 +18,7 @@ import debug_ from "debug";
 // @__ts-ignore TS1479
 import { nanoid } from "nanoid";
 
-import * as path from "path";
+import * as path from "node:path";
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
@@ -178,7 +178,7 @@ export async function importPublicationFromFS(
             if (r2PublicationBuffer) {
                 debug("r2Publication found in zip");
 
-                const r2PublicationStr = r2PublicationBuffer.toString("utf-8");
+                const r2PublicationStr = r2PublicationBuffer.toString("utf8");
                 const r2PublicationJson = JSON.parse(r2PublicationStr);
                 r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
 
@@ -192,7 +192,7 @@ export async function importPublicationFromFS(
                 if (r2LCPBuffer) {
                     debug("lcp licence found in zip");
 
-                    const r2LCPStr = r2LCPBuffer.toString("utf-8");
+                    const r2LCPStr = r2LCPBuffer.toString("utf8");
                     const r2LCPJson = JSON.parse(r2LCPStr);
 
                     if (lcpLicenseIsNotWellFormed(r2LCPJson)) {

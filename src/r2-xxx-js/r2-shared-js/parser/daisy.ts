@@ -6,8 +6,8 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import * as fs from "fs";
-import * as path from "path";
+import * as fs from "node:fs";
+import * as path from "node:path";
 
 import { Metadata } from "@r2-shared-js/models/metadata";
 import { Publication } from "@r2-shared-js/models/publication";
@@ -114,7 +114,10 @@ export async function DaisyParsePromise(filePath: string): Promise<Publication> 
     const publication = new Publication();
     publication.Context = ["https://readium.org/webpub-manifest/context.jsonld"];
     publication.Metadata = new Metadata();
+
     publication.Metadata.RDFType = "http://schema.org/Book";
+    publication.Metadata.ConformsTo = [ "https://readium.org/webpub-manifest/profiles/epub" ];
+
     // publication.Metadata.Modified = moment(Date.now()).toDate();
 
     publication.AddToInternal("filename", path.basename(filePath));

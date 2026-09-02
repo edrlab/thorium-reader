@@ -7,7 +7,7 @@
 
 import debug_ from "debug";
 
-import { ICssSelector, IReadiumAnnotation, isCFIFragmentSelector, isCfiSelector, isCssSelector, isProgressionSelector, isTextPositionSelector, isTextQuoteSelector, ITextPositionSelector, ITextQuoteSelector } from "./annotationModel.type";
+import { ICssSelector, IReadiumAnnotation, isCFIFragmentSelector, isCssSelector, isEPUBCFISelector, isLegacyCfiSelector, isProgressionSelector, isTextPositionSelector, isTextQuoteSelector, ITextPositionSelector, ITextQuoteSelector } from "./annotationModel.type";
 import { createCssSelectorMatcher, createTextPositionSelectorMatcher, createTextQuoteSelectorMatcher } from "readium-desktop/third_party/apache-annotator/dom";
 import { makeRefinable } from "readium-desktop/third_party/apache-annotator/selector";
 import { convertRange, normalizeRange } from "@r2-navigator-js/electron/renderer/webview/selection";
@@ -151,7 +151,7 @@ export async function resolveSelectorTargetToLocatorExtended(target: IReadiumAnn
         return unresolvedSelectorTarget(target, "source-mismatch", "The annotation source could not be loaded from the publication.");
     }
 
-    const cfiSelector = target.selector.find(isCfiSelector);
+    const cfiSelector = target.selector.find(isEPUBCFISelector) || target.selector.find(isLegacyCfiSelector);
     const cfiFragmentSelector = target.selector.find(isCFIFragmentSelector);
     const textQuoteSelector = target.selector.find(isTextQuoteSelector);
     const textPositionSelector = target.selector.find(isTextPositionSelector);

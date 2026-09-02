@@ -26,6 +26,7 @@ import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { registerKeyboardListener, unregisterKeyboardListener } from "readium-desktop/renderer/common/keyboard";
 import { DEBUG_KEYBOARD } from "readium-desktop/common/keyboard";
+import { readerAnalyticsEvents } from "readium-desktop/common/analytics/reader";
 import { ReadiumElectronBrowserWindow } from "@r2-navigator-js/electron/renderer/webview/state";
 import { readerLocalActionHighlights } from "../../redux/actions";
 import { BookmarkEdit } from "../BookmarkEdit";
@@ -34,6 +35,7 @@ import type { PublicationNote } from "readium-desktop/common/publication-notes";
 import { EDrawType } from "readium-desktop/common/type/note.type";
 import { clone } from "ramda";
 import { selectPublicationNotes, selectPublicationNotesFromReaderState } from "../../publication-notes/selectors";
+import { logEvent } from "readium-desktop/renderer/common/analytics";
 
 export interface IProps {
     shortcutEnable: boolean;
@@ -184,17 +186,18 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
 
     const toasty = React.useCallback((msg: string) => dispatch(toastActions.openRequest.build(ToastType.Success, msg)), [dispatch]);
 
-    const addBookmark = React.useCallback((bookmark: Omit<PublicationNote, "uuid">) => {
+    const addBookmark = React.useCallback((bookmark: Omit<PublicationNote, "uuid">): boolean => {
 
         if (ttsState !== TTSStateEnum.STOPPED ||
             mediaOverlaysState !== MediaOverlaysStateEnum.STOPPED
         ) {
             // ToastType.Error
             toasty(`${__("reader.tts.stop")} / ${__("reader.media-overlays.stop")}`);
-            return;
+            return false;
         }
 
         dispatch(readerActions.publicationNotes.commands.save.build(pubId, bookmark));
+        return true;
     }, [dispatch, ttsState, mediaOverlaysState, __, toasty, pubId]);
 
     const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
@@ -210,6 +213,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
             if (bookmarkSelected) {
                 toasty(`${__("catalog.delete")} - ${bookmarkSelected.textualValue ? bookmarkSelected.textualValue : `${__("reader.marks.bookmarks")} [${noteTotalCount}]`}`);
                 deleteBookmark(bookmarkSelected);
+                logEvent(readerAnalyticsEvents.bookmarkToggle);
                 return ;
             }
 
@@ -223,7 +227,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                     };
                 }
 
-                addBookmark({
+                if (addBookmark({
                     textualValue: name,
                     created: (new Date()).getTime(),
                     index: noteTotalCount + 1,
@@ -233,7 +237,9 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                     tags: tag ? [tag] : undefined,
                     group: "bookmark",
                     drawType: EDrawType.bookmark,
-                });
+                })) {
+                    logEvent(readerAnalyticsEvents.bookmarkToggle);
+                }
             }
 
         } else {
@@ -245,9 +251,10 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                 if (bookmarkSelected) {
                     toasty(`${__("catalog.delete")} - ${bookmarkSelected.textualValue ? bookmarkSelected.textualValue : `${__("reader.marks.bookmarks")} [${noteTotalCount}]`}`);
                     deleteBookmark(bookmarkSelected);
+                    logEvent(readerAnalyticsEvents.bookmarkToggle);
                 } else {
                     toasty(`${__("catalog.addTagsButton")} - ${name ? name : `${__("reader.marks.bookmarks")} [${noteTotalCount + 1}]`}`);
-                    addBookmark({
+                    if (addBookmark({
                         textualValue: name,
                         created: (new Date()).getTime(),
                         index: noteTotalCount + 1,
@@ -257,7 +264,9 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                         tags: tag ? [tag] : undefined,
                         group: "bookmark",
                         drawType: EDrawType.bookmark,
-                    });
+                    })) {
+                        logEvent(readerAnalyticsEvents.bookmarkToggle);
+                    }
                 }
             }
         }

@@ -10,9 +10,9 @@ import debug_ from "debug";
 import { _TELEMETRY_SECRET, _TELEMETRY_SECRETDATA, _TELEMETRY_URL, _APP_VERSION, _APP_NAME } from "readium-desktop/preprocessor-directives";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 import { RootState } from "../states";
-import { version as osVersion } from "os";
-import * as fs from "fs";
-import * as path from "path";
+import { version as osVersion } from "node:os";
+import * as fs from "node:fs";
+import * as path from "node:path";
 import { httpPost } from "readium-desktop/main/network/http";
 
 // TypeScript GO:
@@ -26,8 +26,8 @@ import { httpPost } from "readium-desktop/main/network/http";
 // @__ts-ignore TS1479
 import { Headers } from "node-fetch";
 
-import { createHmac } from "crypto";
-import * as crypto from "crypto";
+import { createHmac } from "node:crypto";
+import * as crypto from "node:crypto";
 
 import isURL from "readium-desktop/common/utils/isURL";
 import { USER_DATA_FOLDER } from "readium-desktop/common/constant";
@@ -66,7 +66,7 @@ try {
     if (!fs.existsSync(queueFilePath)) {
         fs.writeFileSync(queueFilePath, dataFromFileQueue, { encoding: "utf8" });
     } else {
-        dataFromFileQueue = fs.readFileSync(queueFilePath, { encoding: "utf-8" });
+        dataFromFileQueue = fs.readFileSync(queueFilePath, { encoding: "utf8" });
     }
 } catch {
     // ignore
@@ -120,14 +120,14 @@ function* collectAndSave(versionFromGlobalState: string) {
     queue = queue.slice(-10, queue.length); // keep last 10th elements
     queue.push(info);
 
-    fs.writeFileSync(queueFilePath, JSON.stringify(queue), { encoding: "utf-8" });
+    fs.writeFileSync(queueFilePath, JSON.stringify(queue), { encoding: "utf8" });
 
     return queue;
 }
 
 const clearQueue = () => {
 
-    fs.writeFileSync(queueFilePath, JSON.stringify(EMPTY_ARRAY), { encoding: "utf-8" });
+    fs.writeFileSync(queueFilePath, JSON.stringify(EMPTY_ARRAY), { encoding: "utf8" });
 };
 
 const sendTelemetry = async (queue: ITelemetryInfo[]) => {

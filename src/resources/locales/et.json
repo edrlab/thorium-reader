@@ -43,7 +43,7 @@
         "update": {
             "message": "Uus versioon on saadaval, klõpsa lisateabe lugemiseks.",
             "title": "{{- appName}} - tarkvarauuendus.",
-            "whatsnew": ""
+            "whatsnew": "Uus versioon on paigaldatud, lisateabe lugemiseks klõpsa"
         },
         "window": {
             "showLibrary": "Näita oma kogu / raamaturiiulit",
@@ -747,7 +747,7 @@
             "type": {
                 "outline": "Äärejoon",
                 "solid": "Ühevärviline taust",
-                "strikethrough": "Läbukriipsutus",
+                "strikethrough": "Läbikriipsutus",
                 "underline": "Allajoonimine"
             }
         },
@@ -775,6 +775,7 @@
         },
         "marks": {
             "annotations": "Märkmed",
+            "annotationsReadium": "Märkmed (Readium)",
             "bookmarks": "Järjehoidjad",
             "delete": "Kustuta",
             "edit": "Muuda",
@@ -813,7 +814,6 @@
             "bookmarkTitle": "Järjehoidja",
             "currentPage": "Praegune leht: {{- current}}",
             "currentPageTotal": "Praegune leht: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Näita raamatukogu / raamaturiiuli akent",
             "goTo": "Mine",
             "goToError": "Lehevahetust pole olemas",
             "goToPlaceHolder": "Sisesta lehe number",
@@ -890,6 +890,7 @@
             "disposition": {
                 "title": "Paigutus"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Kirjatüüp",
             "fontSize": "Kirjatüübi suurus",
             "increaseFontSize": "Suurenda teksti suurust",
@@ -900,7 +901,6 @@
             "lineSpacing": "Reavahed",
             "margin": "Veeris",
             "mathjax": "Võta MathJax kasutusele",
-            "mathjaxDescription": "MathJax",
             "noFootnotes": "Keela hüpikaknaid sisaldavad joonealused märkused",
             "noRTLFlip": "Lülita välja paremalt vasakule lugemiseks mõeldud kasutajaliides",
             "noRuby": "Peida jaapani „Ruby“ vormingus märkused",
@@ -1001,55 +1001,55 @@
                     "name": "Lisa sildiga järjehoidja"
                 },
                 "AnnotationsCreate": {
-                    "description": "",
-                    "name": ""
+                    "description": "Ava valitud dokumendi teksti märkme loomise vaade ning muuda tekstilist märkust, esiletõstmise värvi ja tüüpi ning silti",
+                    "name": "Lisa märge"
                 },
                 "AnnotationsCreateQuick": {
                     "description": "",
-                    "name": ""
+                    "name": "Lisa kiirmärge"
                 },
                 "AnnotationsToggleMargin": {
                     "description": "",
-                    "name": ""
+                    "name": "Lülita märkme veerised sisse/välja"
                 },
                 "AudioNext": {
                     "description": "",
-                    "name": ""
+                    "name": "Heliriba järgmine segment"
                 },
                 "AudioNextAlt": {
                     "description": "Mine edasi järgmise heliriba lõigu juurde (EPUB3 meediaülekate, kõnesüntees ettelugemise jaoks või eelnevalt salvestatud heliraamat). See jätab vahele kõik struktuurid, millest on hetkel võimalik väljuda",
-                    "name": ""
+                    "name": "Heliriba järgmine segment (sürjuta)"
                 },
                 "AudioPlayPause": {
                     "description": "Alusta praeguse heliriba kuulamist või peata see (EPUB3 meediaülekate, kõnesüntees ettelugemise jaoks või eelnevalt salvestatud heliraamat)",
-                    "name": ""
+                    "name": "Esita heli või peata esitus"
                 },
                 "AudioPrevious": {
                     "description": "Mine tagasi eelmise heliriba lõigu juurde (EPUB3 meediaülekate, kõnesüntees ettelugemise jaoks või eelnevalt salvestatud heliraamat)",
-                    "name": ""
+                    "name": "Heliriba eelmine segment"
                 },
                 "AudioPreviousAlt": {
                     "description": "Mine tagasi eelmise heliriba lõigu juurde (EPUB3 meediaülekate, kõnesüntees ettelugemise jaoks või eelnevalt salvestatud heliraamat). See jätab vahele kõik struktuurid, millest on hetkel võimalik väljuda",
-                    "name": ""
+                    "name": "Heliriba eelmine segment (sürjuta)"
                 },
                 "AudioSpeedDecrease": {
                     "description": "",
-                    "name": ""
+                    "name": "Vähenda heliriba esituskiirust"
                 },
                 "AudioSpeedIncrease": {
                     "description": "",
-                    "name": ""
+                    "name": "Suurenda heliriba esituskiirust"
                 },
                 "AudioSpeedReset": {
                     "description": "",
-                    "name": ""
+                    "name": "Lähtesta heliriba esituskiirus"
                 },
                 "AudioStop": {
                     "description": "Lõpeta praeguse heliriba kuulamine (EPUB3 meediaülekate, kõnesüntees ettelugemise jaoks või eelnevalt salvestatud heliraamat)",
-                    "name": ""
+                    "name": "Peata heliriba esitus"
                 },
                 "CloseReader": {
-                    "description": "",
+                    "description": "Sulge lugemisvaate aken ja mine tagasi oma raamatukogu juurde",
                     "name": "Sulge lugemisvaade"
                 },
                 "FXLZoomIn": {
@@ -1066,11 +1066,11 @@
                 },
                 "FocusMain": {
                     "description": "",
-                    "name": ""
+                    "name": "Fookus põhilisele sisule"
                 },
                 "FocusMainDeep": {
-                    "description": "",
-                    "name": ""
+                    "description": "Lugemisvaate aknas suunatakse sellega klaviatuuri fookus väljaande sisule, kasutades ekraanilugejate jaoks usaldusväärsemat meetodit",
+                    "name": "Süvafookus põhisisule"
                 },
                 "FocusReaderGotoPage": {
                     "description": "",
@@ -1098,7 +1098,7 @@
                 },
                 "FocusReaderSettings": {
                     "description": "",
-                    "name": ""
+                    "name": "Fookus lugemisvaate seadistustele"
                 },
                 "FocusSearch": {
                     "description": "",
@@ -1106,43 +1106,43 @@
                 },
                 "FocusToolbar": {
                     "description": "",
-                    "name": ""
+                    "name": "Fookus tööriistaribale"
                 },
                 "NavigateNextChapter": {
                     "description": "",
-                    "name": ""
+                    "name": "Mine järgmise peatüki juurde"
                 },
                 "NavigateNextChapterAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Mine järgmise peatüki juurde (alternatiivne)"
                 },
                 "NavigateNextHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "Liigu lugemisvaate aknas ajaloopunktides ühe sammu jagu edasi",
+                    "name": "Liigu ajaloos edasi"
                 },
                 "NavigateNextLibraryPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Mine raamatukogu järgmisele lehele"
                 },
                 "NavigateNextLibraryPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Mine raamatukogu järgmisele lehele (alternatiivne)"
                 },
                 "NavigateNextOPDSPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Ava järgmine OPDS-i leht"
                 },
                 "NavigateNextOPDSPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Ava järgmine OPDS-i leht (alternatiivne)"
                 },
                 "NavigateNextPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Mine järgmisele lehele"
                 },
                 "NavigateNextPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Mine järgmisele lehele (alternatiivne)"
                 },
                 "NavigatePreviousChapter": {
                     "description": "",
@@ -1227,6 +1227,10 @@
                 "ToggleReaderFullscreen": {
                     "description": "",
                     "name": "Lülita täisekraanivaade sisse/välja"
+                },
+                "ToggleReaderZenMode": {
+                    "description": "",
+                    "name": "Lülita Zen-režiim sisse/välja"
                 },
                 "ToggleScreenReaderOptimize": {
                     "description": "",

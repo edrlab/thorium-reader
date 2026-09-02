@@ -5,12 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as path from "path";
+import * as path from "node:path";
 
 import {
     CSS_CLASS_NO_FOCUS_OUTLINE, FOOTNOTES_CONTAINER_CLASS, ROOT_CLASS_NO_FOOTNOTES,
 } from "../../common/styles";
-import { PopupDialog } from "../common/popup-dialog";
+import { PopupDialog } from "./popup-dialog";
 
 import { removeUTF8BOM } from "@r2-utils-js/_utils/bom";
 
@@ -177,7 +177,7 @@ export async function popupFootNote(
         htmltxt = htmltxt.replace(/xmlns:epub=["']http:\/\/www.idpf.org\/2007\/ops["']/g, " ");
     }
     // htmltxt = htmltxt.replace(/epub:type=["'][^"']+["']/g, " ");
-    htmltxt = htmltxt.replace(/<script>.+<\/script>/g, " ");
+    htmltxt = htmltxt.replace(/<script>.+<\/script>/gi, " ");
 
     const ID_PREFIX_ = "r2-footnote-for_";
     const id_ = ID_PREFIX_ + targetElement.id;
@@ -212,8 +212,9 @@ export async function popupFootNote(
 
     const val = ensureTwoPageSpreadWithOddColumnsIsOffsetTempDisable();
 
-    function onDialogClosed(_thiz: PopupDialog, el: HTMLOrSVGElement | null) {
+    function onDialogClosed(thiz: PopupDialog, el: HTMLOrSVGElement | null) {
 
+        console.log("----> link popup footnote IN POP CLOSE");
         if (el) {
             focusScrollRaw(el, true, true, undefined);
         } else {
@@ -221,11 +222,13 @@ export async function popupFootNote(
         }
 
         setTimeout(() => {
-            pop.dialog.remove();
+            thiz.dialog.remove();
         }, 50);
     }
+
     const pop = new PopupDialog(element.ownerDocument as Document /* documant_ */, htmltxt, onDialogClosed);
     pop.show(element);
+    console.log("----> link popup footnote AFTER POP");
 
     return true;
 }

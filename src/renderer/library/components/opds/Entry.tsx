@@ -56,6 +56,7 @@ class Entry extends React.Component<IProps, undefined> {
         return (
             <Link
                 className={stylesButtons.button_transparency}
+                aria-current={entry.active ? "page" : undefined}
                 to={{
                     ...this.props.location,
                     pathname: route,

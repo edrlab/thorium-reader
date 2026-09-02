@@ -775,6 +775,7 @@
         },
         "marks": {
             "annotations": "Анотации",
+            "annotationsReadium": "Анотации (Readium)",
             "bookmarks": "Отметки",
             "delete": "Изтрий",
             "edit": "Редактиране",
@@ -813,7 +814,6 @@
             "bookmarkTitle": "Отметка",
             "currentPage": "Текуща страница: {{- current}}",
             "currentPageTotal": "Текуща страница: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Показване на библиотеката / рафта с книги",
             "goTo": "Иди на",
             "goToError": "Това местоположение не съществува",
             "goToPlaceHolder": "Въведи номер на страница",
@@ -890,6 +890,7 @@
             "disposition": {
                 "title": "Оформление"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Шрифт",
             "fontSize": "Размер на шрифта",
             "increaseFontSize": "",
@@ -900,7 +901,6 @@
             "lineSpacing": "Разстояние между редовете",
             "margin": "Отстъпи",
             "mathjax": "",
-            "mathjaxDescription": "",
             "noFootnotes": "Деактивирайте бележките под линия",
             "noRTLFlip": "",
             "noRuby": "",
@@ -1225,6 +1225,10 @@
                     "name": ""
                 },
                 "ToggleReaderFullscreen": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleReaderZenMode": {
                     "description": "",
                     "name": ""
                 },

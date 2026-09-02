@@ -775,6 +775,7 @@
         },
         "marks": {
             "annotations": "Anotacións",
+            "annotationsReadium": "Anotacións (Readium)",
             "bookmarks": "Marcadores",
             "delete": "Eliminar",
             "edit": "Editar",
@@ -813,7 +814,6 @@
             "bookmarkTitle": "Marcador",
             "currentPage": "Páxina actual: {{- current}}",
             "currentPageTotal": "Páxina actual: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Mostrar xanela de biblioteca",
             "goTo": "Ir a",
             "goToError": "Este salto de páxina non existe",
             "goToPlaceHolder": "Introduce un número de páxina",
@@ -890,6 +890,7 @@
             "disposition": {
                 "title": "Disposición"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Fonte",
             "fontSize": "Tamaño de fonte",
             "increaseFontSize": "",
@@ -900,7 +901,6 @@
             "lineSpacing": "Interlineado",
             "margin": "Marxe",
             "mathjax": "",
-            "mathjaxDescription": "",
             "noFootnotes": "Desactivar notas ao pé",
             "noRTLFlip": "Deshabilitar a interface de usuario de dereita a esquerda\n",
             "noRuby": "Ocultar Ruby xaponés",
@@ -1225,6 +1225,10 @@
                     "name": ""
                 },
                 "ToggleReaderFullscreen": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleReaderZenMode": {
                     "description": "",
                     "name": ""
                 },

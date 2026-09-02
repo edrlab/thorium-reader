@@ -14,7 +14,7 @@ import { diMainGet } from "readium-desktop/main/di";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { put } from "redux-saga/effects";
 import { SagaGenerator } from "typed-redux-saga";
-import { all as allTyped, call as callTyped } from "typed-redux-saga/macro";
+import { all as allTyped, call as callTyped, spawn as spawnTyped } from "typed-redux-saga/macro";
 
 import { importFromFsService } from "./importFromFs";
 import { importFromLinkService } from "./importFromLink";
@@ -28,6 +28,7 @@ import type { PublicationNote } from "readium-desktop/common/publication-notes";
 import { RootState } from "readium-desktop/main/redux/states";
 import { settingsLcpAutoDeleteExpiredPublicationsIsEnabled } from "readium-desktop/common/redux/states/settings";
 import type { TFileTypePubData } from "readium-desktop/main/storage/publication-data";
+import { logPublicationMeasurement } from "readium-desktop/main/analytics/publication";
 
 // import { appActivate } from "readium-desktop/main/redux/sagas/win/library";
 // import { readerActions } from "readium-desktop/common/redux/actions";
@@ -45,6 +46,16 @@ const convertDoc = async (doc: PublicationDocument, publicationViewConverter: Pu
         return pub;
     }
 };
+
+function* logPublicationImport(
+    publicationView: PublicationView,
+) {
+    yield* spawnTyped(function*() {
+        yield* callTyped(() => logPublicationMeasurement("import", {
+            ...publicationView,
+        }));
+    });
+}
 
 const PERSONAL_MODE_REPLACEMENT_READING_DATA_TYPES: TFileTypePubData[] = [
     "locator",
@@ -224,6 +235,7 @@ export function* importFromLink(
                         { title: publicationView.documentTitle }),
                 ),
             );
+            yield* logPublicationImport(publicationView);
 
         }
 
@@ -261,7 +273,9 @@ export function* importFromString(
 
             const publicationViewConverter = diMainGet("publication-view-converter");
 
-            return yield* callTyped(() => convertDoc(publicationDocument, publicationViewConverter));
+            const publicationView = yield* callTyped(() => convertDoc(publicationDocument, publicationViewConverter));
+            yield* logPublicationImport(publicationView);
+            return publicationView;
 
         } catch (error) {
             throw new Error(`importFromLink error ${error}`);
@@ -373,6 +387,7 @@ export function* importFromFs(
                                     { title: publicationView.documentTitle }),
                             ),
                         );
+                        yield* logPublicationImport(publicationView);
                     }
 
                     return publicationView;
@@ -403,7 +418,6 @@ export function* importFromFs(
     // if (publicationViews?.[0]) {
     //     yield* callTyped(appActivate);
     //     yield put(readerActions.openRequest.build(publicationViews[0].identifier));
-    //     yield put(readerActions.detachModeRequest.build());
     // }
 
     // TEST PURPOSE
