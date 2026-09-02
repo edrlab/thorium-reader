@@ -4,11 +4,17 @@ import {
     indexPublicationNotes,
     PublicationNotesController,
     type PublicationNoteEntity,
+    type PublicationNoteImportUnresolvedState,
     type PublicationNoteRepository,
 } from "readium-desktop/common/publication-notes";
 
 interface TestNote extends PublicationNoteEntity {
     label: string;
+    readiumAnnotation?: {
+        import?: {
+            unresolved?: PublicationNoteImportUnresolvedState | undefined;
+        } | undefined;
+    } | undefined;
 }
 
 class MemoryPublicationNoteRepository implements PublicationNoteRepository<TestNote> {
@@ -242,6 +248,73 @@ describe("PublicationNotesController", () => {
         expect(view.facets.tagIndex).toEqual({
             review: 2,
             "chapter-1": 1,
+        });
+    });
+
+    it("hydrates a filtered view for unresolved imported notes", async () => {
+        const repository = new MemoryPublicationNoteRepository();
+        const controller = new PublicationNotesController<TestNote>({
+            repository,
+            clock: { now: () => 100 },
+        });
+
+        await repository.create("pub-a", {
+            uuid: "annotation-unresolved",
+            label: "Unresolved annotation",
+            created: 1,
+            group: "annotation",
+            readiumAnnotation: {
+                import: {
+                    unresolved: {
+                        reason: "selector-not-found",
+                    },
+                },
+            },
+        });
+        await repository.create("pub-a", {
+            uuid: "annotation-resolved",
+            label: "Resolved annotation",
+            created: 2,
+            group: "annotation",
+        });
+        await repository.create("pub-a", {
+            uuid: "bookmark-unresolved",
+            label: "Unresolved bookmark",
+            created: 3,
+            group: "bookmark",
+            readiumAnnotation: {
+                import: {
+                    unresolved: {
+                        reason: "source-mismatch",
+                    },
+                },
+            },
+        });
+
+        const snapshot = await controller.list("pub-a");
+        const inactiveView = hydratePublicationNotesView(snapshot.notes, {
+            group: "annotation",
+            importReportUnresolvedImportedNotes: false,
+        });
+        const view = hydratePublicationNotesView(snapshot.notes, {
+            group: "annotation",
+            importReportUnresolvedImportedNotes: true,
+            sort: "lastCreated",
+        });
+
+        expect(inactiveView.filter).toEqual({
+            group: "annotation",
+        });
+        expect(inactiveView.ids).toEqual(["annotation-unresolved", "annotation-resolved"]);
+        expect(view.filter).toEqual({
+            group: "annotation",
+            importReportUnresolvedImportedNotes: true,
+            sort: "lastCreated",
+        });
+        expect(view.ids).toEqual(["annotation-unresolved"]);
+        expect(view.pagination).toMatchObject({
+            ids: ["annotation-unresolved"],
+            totalCount: 1,
         });
     });
 

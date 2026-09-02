@@ -40,6 +40,11 @@ interface PublicationNotesFilterableNote extends PublicationNoteEntity {
         page?: number | undefined;
         rects?: PublicationNotesFilterablePdfRect[] | undefined;
     } | undefined;
+    readiumAnnotation?: {
+        import?: {
+            unresolved?: unknown;
+        } | undefined;
+    } | undefined;
 }
 
 const emptyFilter: PublicationNotesViewFilter = {};
@@ -145,6 +150,10 @@ function normalizeFilter(filter: PublicationNotesViewFilter): PublicationNotesVi
         normalizedFilter.creators = creators;
     }
 
+    if (filter.importReportUnresolvedImportedNotes) {
+        normalizedFilter.importReportUnresolvedImportedNotes = true;
+    }
+
     if (filter.sort) {
         normalizedFilter.sort = filter.sort;
     }
@@ -236,7 +245,8 @@ function hasFacetFilters(filter: PublicationNotesViewFilter): boolean {
     return isSelectionActive(filter.tags) ||
         isSelectionActive(filter.colors) ||
         isSelectionActive(filter.drawTypes) ||
-        isSelectionActive(filter.creators);
+        isSelectionActive(filter.creators) ||
+        !!filter.importReportUnresolvedImportedNotes;
 }
 
 function isSelectionActive(selection: PublicationNotesViewSelection | undefined): boolean {
@@ -252,7 +262,16 @@ function matchesAnyFacetFilter<TNote extends PublicationNoteEntity>(
     return matchesSelection(filter.tags, note.tags || []) ||
         matchesSelection(filter.colors, getNoteColors(note)) ||
         matchesSelection(filter.drawTypes, getNoteDrawTypes(note)) ||
-        matchesSelection(filter.creators, getNoteCreators(note));
+        matchesSelection(filter.creators, getNoteCreators(note)) ||
+        matchesUnresolvedImportedNotes(note, filter.importReportUnresolvedImportedNotes);
+}
+
+function matchesUnresolvedImportedNotes<TNote extends PublicationNoteEntity>(
+    note: TNote,
+    active: boolean | undefined,
+): boolean {
+
+    return !!active && !!getFilterableNote(note).readiumAnnotation?.import?.unresolved;
 }
 
 function matchesSelection(

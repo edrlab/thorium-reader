@@ -9,10 +9,10 @@ import { hexToRgb } from "readium-desktop/common/rgb";
 import {
     __READIUM_ANNOTATION_AJV_ERRORS,
     isCFIFragmentSelector,
-    isCfiSelector,
     isCssSelector,
-    isFragmentSelector,
+    isEPUBCFISelector,
     isIReadiumAnnotationSet,
+    isLegacyCfiSelector,
     isTextPositionSelector,
     isTextQuoteSelector,
     type IReadiumAnnotation,
@@ -330,10 +330,9 @@ export class PublicationNotesImportController {
         const cssSelector = incomingAnnotation.target.selector.find(isCssSelector);
         const textQuoteSelector = incomingAnnotation.target.selector.find(isTextQuoteSelector);
         const textPositionSelector = incomingAnnotation.target.selector.find(isTextPositionSelector);
-        const cfiSelector = incomingAnnotation.target.selector.find(isCfiSelector);
-        const cfiFragmentSelector = incomingAnnotation.target.selector
-            .filter(isFragmentSelector)
-            .find(isCFIFragmentSelector);
+        const cfiSelector = incomingAnnotation.target.selector.find(isEPUBCFISelector) ||
+            incomingAnnotation.target.selector.find(isLegacyCfiSelector);
+        const cfiFragmentSelector = incomingAnnotation.target.selector.find(isCFIFragmentSelector);
         const unsupportedSelector = !(cssSelector || textQuoteSelector || textPositionSelector || cfiFragmentSelector || cfiSelector);
         const unresolvedReason: PublicationNoteImportUnresolvedReason | undefined =
             sourceUnresolvedReason || (unsupportedSelector ? "unsupported-selector" : undefined);
