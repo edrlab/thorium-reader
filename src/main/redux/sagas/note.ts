@@ -8,6 +8,7 @@
 import debug_ from "debug";
 import { dialog } from "electron";
 import * as fs from "node:fs";
+import { buildPublicationUserAnalyticsParams, publicationAnalyticsEvents } from "readium-desktop/common/analytics/publication";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { annotationActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
@@ -31,6 +32,8 @@ import { sqliteTableNoteDelete, sqliteTableNoteDeleteWherePubId, sqliteTableNote
 import { publicationActions as publicationActionsFromMainAction } from "../actions";
 import { EXT_ANNOTATIONS } from "readium-desktop/common/extension";
 import { resolveReadiumAnnotationSourceHref } from "readium-desktop/common/readium/annotation/sourceHref";
+import { spawnPublicationAnalyticsEvent } from "./analyticsPublication";
+import { TAnalyticsEventParams } from "src/common/api/interface/analyticsApi.interface";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:annotationsImporter";
@@ -109,6 +112,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
     }
 
     let filePath = "";
+    let analyticsParams: TAnalyticsEventParams | undefined;
     try {
 
         debug("Open ShowOpenDialog and ask to user the filePath");
@@ -158,6 +162,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         // if at least one annotation in the list doesn't match with the current spine item, then reject the set importation
 
         const pubView = yield* callTyped(getPublication, publicationIdentifier);
+        analyticsParams = buildPublicationUserAnalyticsParams(pubView);
         if (pubView.r2PublicationJson) {
             const r2PublicationJson = pubView.r2PublicationJson;
             const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
@@ -382,6 +387,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
     }
 
     debug("Annotations importer success and exit");
+    yield* spawnPublicationAnalyticsEvent(publicationAnalyticsEvents.importAnnotations, analyticsParams);
     yield* putTyped(toastActions.openRequest.build(ToastType.Success, __("message.annotations.success"), readerPublicationIdentifier));
     return;
 }

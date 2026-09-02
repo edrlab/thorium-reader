@@ -18,7 +18,7 @@ import {
 } from "readium-desktop/main/streamer/streamerNoHttp";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { put, take } from "redux-saga/effects";
-import { call as callTyped, select as selectTyped, put as putTyped } from "typed-redux-saga/macro";
+import { call as callTyped, select as selectTyped, put as putTyped, spawn as spawnTyped } from "typed-redux-saga/macro";
 import { SagaGenerator } from "typed-redux-saga";
 
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
@@ -29,6 +29,7 @@ import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON } from "readium-desktop/comm
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { cleanupLcpPublicationIfNoLongerUsable } from "./lcpSharedWorkstationCleanup";
+import { logLcpPassphrase } from "readium-desktop/main/analytics/lcp";
 
 // import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 
@@ -171,6 +172,16 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string): Sag
 
             debug("streamerOpenPublicationAndReturnManifestUrl() LCP unlockPublication() AFTER");
             debug(unlockPublicationRes);
+
+            if (typeof unlockPublicationRes === "undefined") {
+                yield* spawnTyped(function*() {
+                    yield* callTyped(() => logLcpPassphrase("discovered"));
+                });
+            } else if (unlockPublicationRes !== null) {
+                yield* spawnTyped(function*() {
+                    yield* callTyped(() => logLcpPassphrase("invalid"));
+                });
+            }
 
             if (typeof unlockPublicationRes !== "undefined") {
                 let publicationView: PublicationView;
