@@ -1,4 +1,4 @@
-# Thorium Reader v3.5.0
+# Thorium Reader v3.5.1
 
 ## Summary
 
