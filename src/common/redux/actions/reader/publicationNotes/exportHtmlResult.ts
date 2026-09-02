@@ -19,8 +19,8 @@ export interface IPayload {
 export function build(
     publicationIdentifier: string,
     html: string,
-    title: string | undefined,
-    windowIdentifier?: string | undefined,
+    title?: string,
+    windowIdentifier?: string,
 ): ActionWithReaderPublicationIdentifierDestination<typeof ID, IPayload> {
 
     return {

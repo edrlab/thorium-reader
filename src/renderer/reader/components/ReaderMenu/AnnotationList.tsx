@@ -5,627 +5,95 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
-import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
-import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
-import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
-import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
-import classNames from "classnames";
 import * as React from "react";
-import SVG from "readium-desktop/renderer/common/components/SVG";
-
-import * as SaveIcon from "readium-desktop/renderer/assets/icons/export-icon.svg";
-import * as ImportIcon from "readium-desktop/renderer/assets/icons/import-icon.svg";
-import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
-import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
-import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/arrowLast-icon.svg";
-import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/arrowFirst-icon.svg";
-import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
-import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
-import * as OptionsIcon from "readium-desktop/renderer/assets/icons/filter2-icon.svg";
-import * as SortIcon from "readium-desktop/renderer/assets/icons/sort-icon.svg";
-import * as HighLightIcon from "readium-desktop/renderer/assets/icons/highlight-icon.svg";
-import * as UnderLineIcon from "readium-desktop/renderer/assets/icons/underline-icon.svg";
-import * as TextStrikeThroughtIcon from "readium-desktop/renderer/assets/icons/TextStrikethrough-icon.svg";
-import * as TextOutlineIcon from "readium-desktop/renderer/assets/icons/TextOutline-icon.svg";
-
-import * as Popover from "@radix-ui/react-popover";
-import * as AlertDialog from "@radix-ui/react-alert-dialog";
-import { ListBox, ListBoxItem  } from "react-aria-components";
-import type { Selection } from "react-aria-components";
 
 import { IReaderMenuProps } from "../options-values";
 
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { dialogActions, dockActions, readerActions } from "readium-desktop/common/redux/actions";
-import { IReaderDialogOrDockSettingsMenuState } from "readium-desktop/common/models/reader";
-import { ImportAnnotationsDialog } from "readium-desktop/renderer/common/components/ImportAnnotationsDialog";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { DialogTypeName } from "readium-desktop/common/models/dialog";
-import { DockTypeName } from "readium-desktop/common/models/dock";
-import { withoutPublicationNotesViewPagination, type PublicationNote } from "readium-desktop/common/publication-notes";
-import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/publication-notes/colors";
 
-import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { AnnotationCard } from "../ReaderMenu/AnnotationCard";
 import { canUseReadiumAnnotationImportExport } from "../../pdf/pdfAnnotationPanel";
-import FilterPopover from "./FilterPopover";
-import { selectPublicationNoteViewTagsIndex, selectPublicationNotesViewState } from "../../publication-notes/selectors";
-import { selectionToPublicationNotesViewSelection, selectionToPublicationNotesViewSort } from "../../publication-notes/viewFilters";
+import { NoteList } from "./NoteList";
 
 export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotationUUID: () => void, doFocus: number,*/ isPdf: boolean, popoverBoundary: HTMLDivElement, advancedAnnotationsOnChange: () => void, quickAnnotationsOnChange: () => void, marginAnnotationsOnChange: () => void, hideAnnotationOnChange: () => void, serialAnnotator: boolean, START_PAGE: number, MAX_MATCHES_PER_PAGE: number } & Pick<IReaderMenuProps, "goToLocator" | "goToPdfAnnotation">> = (props) => {
 
+    const {
+        goToLocator,
+        goToPdfAnnotation,
+        isPdf,
+        popoverBoundary,
+        advancedAnnotationsOnChange,
+        quickAnnotationsOnChange,
+        marginAnnotationsOnChange,
+        hideAnnotationOnChange,
+        serialAnnotator,
+        START_PAGE,
+        MAX_MATCHES_PER_PAGE,
+    } = props;
+
     const readerConfig = useSelector((state: IReaderRootState) => state.reader.config);
-
-    const { goToLocator,  goToPdfAnnotation, isPdf,/*annotationUUIDFocused, resetAnnotationUUID,*/ popoverBoundary, advancedAnnotationsOnChange, quickAnnotationsOnChange, marginAnnotationsOnChange, hideAnnotationOnChange, serialAnnotator, START_PAGE, MAX_MATCHES_PER_PAGE } = props;
-
-    const dispatch = useDispatch();
-    const dockedMode = useSelector((state: IReaderRootState) => state.reader.config.readerDockingMode !== "full");
-    const dialogOrDockDataInfo = useSelector((state: IReaderRootState): IReaderDialogOrDockSettingsMenuState =>
-        (state.dialog.open && state.dialog.type === DialogTypeName.ReaderMenu) ?
-            state.dialog.data as IReaderDialogOrDockSettingsMenuState : (state.dock.open && state.dock.type === DockTypeName.ReaderMenu) ?
-                state.dock.data : {} as unknown as IReaderDialogOrDockSettingsMenuState);
-    const updateDialogOrDockDataInfo = React.useCallback((data: IReaderDialogOrDockSettingsMenuState) => {
-        dispatch(dockedMode ? dockActions.updateRequest.build(data) : dialogActions.updateRequest.build(data));
-    }, [dockedMode, dispatch]);
-
-    const [sortingOpen, setSortingOpen] = React.useState(false);
-    const [filterOpen, setFilterOpen] = React.useState(false);
-    const [optionsOpen, setOptionsOpen] = React.useState(false);
-
-    const { id: needToFocusOnID, edit: annotationEdit, focusRequestId } = dialogOrDockDataInfo;
-    const [annotationUUID, setAnnotationUUID] = React.useState(needToFocusOnID);
-    React.useEffect(() => {
-        setAnnotationUUID(needToFocusOnID);
-        setTagArrayFilter(new Set([]));
-        setColorArrayFilter(new Set([]));
-        setDrawTypeArrayFilter(new Set([]));
-        setCreatorArrayFilter(new Set([]));
-        setSortingOpen(false);
-        setFilterOpen(false);
-        setOptionsOpen(false);
-
-    }, [focusRequestId, needToFocusOnID]);
-
     const [__] = useTranslator();
-    const publicationNotesView = useSelector(selectPublicationNotesViewState);
-    const annotationsViewReady = publicationNotesView.filter.group === "annotation";
-    const annotationList = annotationsViewReady ? publicationNotesView.notes : [];
     const readiumAnnotationImportExportEnabled = canUseReadiumAnnotationImportExport(isPdf);
-    const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
-    const publicationView = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
-    const winId = useSelector((state: IReaderRootState) => state.win.identifier);
-    const locale = useSelector((state: IReaderRootState) => state.i18n.locale);
-    const [tagArrayFilter, setTagArrayFilter] = React.useState<Selection>(new Set([]));
-    const [colorArrayFilter, setColorArrayFilter] = React.useState<Selection>(new Set([]));
-    const [drawTypeArrayFilter, setDrawTypeArrayFilter] = React.useState<Selection>(new Set([]));
-    const [creatorArrayFilter, setCreatorArrayFilter] = React.useState<Selection>(new Set([]));
-    const [sortType, setSortType] = React.useState<Selection>(new Set(["lastCreated"]));
-    const publicationNotesViewFilter = React.useMemo(() => ({
-        group: "annotation" as const,
-        tags: selectionToPublicationNotesViewSelection(tagArrayFilter),
-        colors: selectionToPublicationNotesViewSelection(colorArrayFilter),
-        drawTypes: selectionToPublicationNotesViewSelection(drawTypeArrayFilter),
-        creators: selectionToPublicationNotesViewSelection(creatorArrayFilter),
-        sort: selectionToPublicationNotesViewSort(sortType),
-    }), [colorArrayFilter, creatorArrayFilter, drawTypeArrayFilter, sortType, tagArrayFilter]);
-
-    React.useEffect(() => {
-        if (!pubId) {
-            return;
-        }
-        dispatch(readerActions.publicationNotes.filter.build(pubId, {
-            ...publicationNotesViewFilter,
-            pagination: {
-                page: START_PAGE,
-                pageSize: MAX_MATCHES_PER_PAGE,
-            },
-        }));
-    }, [MAX_MATCHES_PER_PAGE, START_PAGE, dispatch, pubId, publicationNotesViewFilter]);
-
-    const textObj = publicationView.publicationTitle;
-    const pubLangs = publicationView.languages;
-    const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
-    const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
-    // r2Publication.Metadata.Title
-    const annoSetTitle = convertMultiLangStringToString(textObj_,  locale) || "thorium-notes_annotations";
-
-    const annotationsPagination = publicationNotesView.pagination;
-    const annotationsPagedArray = annotationsViewReady ? annotationsPagination.notes : [];
-    const pageNumber = annotationsViewReady ? annotationsPagination.page : START_PAGE;
-    const pageTotal = annotationsViewReady ? annotationsPagination.pageTotal : 1;
-    const totalCount = annotationsViewReady ? annotationsPagination.totalCount : 0;
-
-    const isLastPage = pageTotal === pageNumber;
-    const isFirstPage = pageNumber === 1;
-    const isPaginated = pageTotal > 1;
-    const pageOptions = Array.from({ length: pageTotal }, (_k, v) => (v += 1, ({ id: v, name: `${v} / ${pageTotal}` })));
-    const begin = annotationsViewReady ? annotationsPagination.begin : 0;
-    const end = annotationsViewReady ? annotationsPagination.end : 0;
-
-    const requestPublicationNotesPage = React.useCallback((page: number, anchorUuid?: string) => {
-        if (!pubId) {
-            return;
-        }
-        dispatch(readerActions.publicationNotes.filter.build(pubId, {
-            ...publicationNotesViewFilter,
-            pagination: {
-                page,
-                pageSize: MAX_MATCHES_PER_PAGE,
-                anchorUuid,
-            },
-        }));
-    }, [MAX_MATCHES_PER_PAGE, dispatch, pubId, publicationNotesViewFilter]);
-
-    const changePageNumber = React.useCallback((cb: (n: number) => number) => {
-        setTimeout(() => paginatorAnnotationsRef.current?.focus(), 100);
-        updateDialogOrDockDataInfo({id: "", edit: false});
-        requestPublicationNotesPage(Math.max(cb(pageNumber), START_PAGE));
-    }, [START_PAGE, pageNumber, requestPublicationNotesPage, updateDialogOrDockDataInfo]);
-
-    const tagsIndexListAll = useSelector(selectPublicationNoteViewTagsIndex);
-    const tagsIndexList = React.useMemo(() => annotationsViewReady ? tagsIndexListAll : [], [annotationsViewReady, tagsIndexListAll]);
-    const selectTagOption = React.useMemo(() => tagsIndexList.map((v, i) => ({ id: i, name: v.tag })), [tagsIndexList]);
-
-    const creatorListName = React.useMemo(() => annotationsViewReady ? publicationNotesView.facets.creators : [], [annotationsViewReady, publicationNotesView.facets.creators]);
-    const selectCreatorOptions = React.useMemo(() => [...(new Set(creatorListName))].map((name, index) => ({ id: `${index}_${name}`, name })), [creatorListName]);
-    const annotationsColors = React.useMemo(() => Object.entries(noteColorCodeToColorTranslatorKeySet).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
-    const selectDrawtypesOptions = React.useMemo(() => [
-        { name: "solid_background", svg: HighLightIcon, textValue: `${__("reader.annotations.type.solid")}` },
-        { name: "underline", svg: UnderLineIcon, textValue: `${__("reader.annotations.type.underline")}` },
-        { name: "strikethrough", svg: TextStrikeThroughtIcon, textValue: `${__("reader.annotations.type.strikethrough")}` },
-        { name: "outline", svg: TextOutlineIcon,  textValue: `${__("reader.annotations.type.outline")}` },
-    ], [__]);
-
-    const deletableAnnotationList = annotationList;
-
-    React.useEffect(() => {
-        if (annotationUUID) {
-            const anchorUuid = annotationUUID;
-            setAnnotationUUID("");
-            requestPublicationNotesPage(START_PAGE, anchorUuid);
-        }
-    }, [annotationUUID, requestPublicationNotesPage, START_PAGE]);
-
-    const triggerEdition = (annotationItem: PublicationNote) =>
-        (value: boolean) => value ? updateDialogOrDockDataInfo({id: annotationItem.uuid, edit: true}) : updateDialogOrDockDataInfo({id: "", edit: false});
-
-    const nbOfFilters = ((tagArrayFilter === "all") ?
-        selectTagOption.length : tagArrayFilter.size) + ((colorArrayFilter === "all") ?
-            annotationsColors.length : colorArrayFilter.size) + ((drawTypeArrayFilter === "all") ?
-                selectDrawtypesOptions.length : drawTypeArrayFilter.size) + ((creatorArrayFilter === "all") ?
-                    selectCreatorOptions.length : creatorArrayFilter.size);
-
-    const paginatorAnnotationsRef = React.useRef<HTMLSelectElement>();
-    const annotationTitleRef = React.useRef<HTMLInputElement>();
-    const selectFileTypeRef = React.useRef<HTMLSelectElement & { value: "html" | "annotation" }>();
 
     return (
-        <>
-            <div className={stylesAnnotations.annotations_filter_line}>
-                <div style={{ display: "flex", gap: "10px" }}>
-                    <Popover.Root modal open={sortingOpen} onOpenChange={(open) => setSortingOpen(open)}>
-                        <Popover.Trigger asChild>
-                            <button aria-label={__("reader.annotations.sorting.sortingOptions")} className={stylesAnnotations.annotations_filter_trigger_button}
-                                title={__("reader.annotations.sorting.sortingOptions")}>
-                                <SVG svg={SortIcon} />
-                            </button>
-                        </Popover.Trigger>
-                        <Popover.Portal>
-                            <Popover.Content collisionBoundary={popoverBoundary} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_sorting_container} style={{ maxHeight: Math.round(window.innerHeight / 2) }}>
-                                <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-gray-50" }} />
-                                <ListBox
-                                    selectedKeys={sortType}
-                                    onSelectionChange={setSortType}
-                                    selectionMode="multiple"
-                                    selectionBehavior="replace"
-                                    aria-label={__("reader.annotations.sorting.sortingOptions")}
-                                >
-                                    <ListBoxItem id="progression" key="progression" aria-label="progression" className={({ isFocused, isSelected }) =>
-                                        classNames(StylesCombobox.my_item, isFocused ? StylesCombobox.focused : "", isSelected ? StylesCombobox.selected : "")}
-                                        style={{ marginBottom: "5px" }}
-                                    >
-                                        {__("reader.annotations.sorting.progression")}
-                                    </ListBoxItem>
-                                    <ListBoxItem id="lastCreated" key="lastCreated" aria-label="lastCreated" className={({ isFocused, isSelected }) =>
-                                        classNames(StylesCombobox.my_item, isFocused ? StylesCombobox.focused : "", isSelected ? StylesCombobox.selected : "")}
-                                        style={{ marginBottom: "5px" }}
-                                    >
-                                        {__("reader.annotations.sorting.lastcreated")}
-                                    </ListBoxItem>
-                                    <ListBoxItem id="lastModified" key="lastModified" aria-label="lastModified" className={({ isFocused, isSelected }) =>
-                                        classNames(StylesCombobox.my_item, isFocused ? StylesCombobox.focused : "", isSelected ? StylesCombobox.selected : "")}
-                                    >
-                                        {__("reader.annotations.sorting.lastmodified")}
-                                    </ListBoxItem>
-                                </ListBox>
-                            </Popover.Content>
-                        </Popover.Portal>
-                    </Popover.Root>
-                    <FilterPopover
-                        filterOpen={filterOpen}
-                        setFilterOpen={setFilterOpen}
-                        colorSet={annotationsColors}
-                        nbOfFilters={nbOfFilters}
-                        selectDrawtypesOptions={selectDrawtypesOptions}
-                        selectCreatorOptions={selectCreatorOptions}
-                        selectTagOption={selectTagOption}
-                        popoverBoundary={popoverBoundary}
-                        tagArrayFilter={tagArrayFilter}
-                        setTagArrayFilter={setTagArrayFilter}
-                        colorArrayFilter={colorArrayFilter}
-                        setColorArrayFilter={setColorArrayFilter}
-                        drawTypeArrayFilter={drawTypeArrayFilter}
-                        setDrawTypeArrayFilter={setDrawTypeArrayFilter}
-                        creatorArrayFilter={creatorArrayFilter}
-                        setCreatorArrayFilter={setCreatorArrayFilter}
-                    />
-                </div>
-                <div style={{ display: "flex", gap: "10px" }}>
-                    {readiumAnnotationImportExportEnabled ? <>
-                        <ImportAnnotationsDialog winId={winId} publicationView={publicationView}>
-                            <button className={stylesAnnotations.annotations_filter_trigger_button}
-                                title={__("catalog.importAnnotation")}
-                                aria-label={__("catalog.importAnnotation")}>
-                                <SVG svg={ImportIcon} />
-                            </button>
-                        </ImportAnnotationsDialog>
-
-                    <Popover.Root modal>
-                            <Popover.Trigger asChild>
-                                <button className={stylesAnnotations.annotations_filter_trigger_button} disabled={!annotationList.length}
-                                    title={__("catalog.exportAnnotation")}
-                                    aria-label={__("catalog.exportAnnotation")}>
-                                    <SVG svg={SaveIcon} />
-                                </button>
-                            </Popover.Trigger>
-                            <Popover.Portal>
-                                <Popover.Content collisionBoundary={popoverBoundary} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_sorting_container} style={{ maxHeight: Math.round(window.innerHeight / 2), padding: "15px 0" }}>
-                                    <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-gray-50" }} />
-                                    <div
-                                        className={stylesAnnotations.annotationsTitle_form_container}
-                                    >
-                                        <p>{__("reader.annotations.annotationsExport.description")}</p>
-                                        <div className={stylesInputs.form_group}>
-                                            <label htmlFor="annotationsTitle">{__("reader.annotations.annotationsExport.title")}</label>
-                                            <input
-                                                type="text"
-                                                defaultValue={annoSetTitle}
-                                                name="annotationsTitle"
-                                                id="annotationsTitle"
-                                                ref={annotationTitleRef}
-                                                className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
-                                            />
-                                        </div>
-                                        <div className={stylesInputs.form_group}>
-                                        <label htmlFor="file_type">
-                                            {__("catalog.format")}
-                                            </label>
-                                        <select defaultValue="annotation" ref={selectFileTypeRef} name="file_type">
-                                                <option value="annotation">{__("reader.marks.annotationsReadium")}</option>
-                                                <option value="html">HTML</option>
-                                            </select>
-                                        </div>
-
-                                    <Popover.Close aria-label={__("reader.annotations.export")} asChild>
-                                            <button onClick={() => {
-                                                if (!pubId) {
-                                                    return;
-                                                }
-                                                const fileType = selectFileTypeRef.current?.value || "annotation";
-                                                dispatch(readerActions.publicationNotes.export.build(
-                                                    pubId,
-                                                    withoutPublicationNotesViewPagination(publicationNotesView.filter),
-                                                    annotationTitleRef?.current?.value || annoSetTitle,
-                                                    fileType,
-                                                ));
-                                            }} className={stylesButtons.button_primary_blue}>
-                                                <SVG svg={SaveIcon} />
-                                                {__("reader.annotations.export")}
-                                            </button>
-                                        </Popover.Close>
-                                    </div>
-                                </Popover.Content>
-                            </Popover.Portal>
-                        </Popover.Root>
-                    </> : <></>}
-                    <AlertDialog.Root>
-                        <AlertDialog.Trigger className={stylesAnnotations.annotations_filter_trigger_button} disabled={!deletableAnnotationList.length} title={__("dialog.deleteAnnotations")} aria-label={__("dialog.deleteAnnotations")}>
-                            <SVG svg={TrashIcon} ariaHidden />
-                        </AlertDialog.Trigger>
-                        <AlertDialog.Portal>
-                            <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay} />
-                            <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
-                                <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("dialog.deleteAnnotations")}</AlertDialog.Title>
-                                <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
-                                    {__("dialog.deleteAnnotationsText", { count: deletableAnnotationList.length })}
-                                </AlertDialog.Description>
-                                <div className={stylesAlertModals.AlertDialogButtonContainer}>
-                                    <AlertDialog.Cancel asChild>
-                                        <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
-                                    </AlertDialog.Cancel>
-                                    <AlertDialog.Action asChild>
-                                        <button className={stylesButtons.button_primary_blue} onClick={() => {
-                                            updateDialogOrDockDataInfo({id: "", edit: false});
-                                            for (const annotation of deletableAnnotationList) {
-
-                                                dispatch(readerActions.publicationNotes.commands.remove.build(pubId, annotation));
-                                            }
-
-                                            // reset filters
-                                            setTagArrayFilter(new Set([]));
-                                            setColorArrayFilter(new Set([]));
-                                            setDrawTypeArrayFilter(new Set([]));
-                                            setCreatorArrayFilter(new Set([]));
-                                        }} type="button">
-                                            <SVG ariaHidden svg={TrashIcon} />
-                                            {__("dialog.yes")}</button>
-                                    </AlertDialog.Action>
-                                </div>
-                            </AlertDialog.Content>
-                        </AlertDialog.Portal>
-                    </AlertDialog.Root>
-                    <span style={{height: "30px", width: "2px", borderRight: "2px solid var(--color-gray-50"}}></span>
-                    <Popover.Root modal open={optionsOpen} onOpenChange={(open) => setOptionsOpen(open)}>
-                        <Popover.Trigger className={stylesAnnotations.annotations_filter_trigger_button} title={__("reader.annotations.annotationsOptions")} aria-label={__("reader.annotations.annotationsOptions")}>
-                            <SVG ariaHidden svg={OptionsIcon} />
-                        </Popover.Trigger>
-                        <Popover.Portal>
-                            <Popover.Content collisionBoundary={popoverBoundary} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesAnnotations.annotations_filter_container} hideWhenDetached>
-                                <div className={stylesAnnotations.annotations_checkbox}>
-                                    <input type="checkbox" id="advancedAnnotations" className={stylesGlobal.checkbox_custom_input} name="advancedAnnotations" checked={serialAnnotator} onChange={advancedAnnotationsOnChange} />
-                                    <label htmlFor="advancedAnnotations" className={stylesGlobal.checkbox_custom_label}>
-                                        <div
-                                            tabIndex={0}
-                                            role="checkbox"
-                                            aria-checked={serialAnnotator}
-                                            aria-label={__("reader.annotations.advancedMode")}
-                                            onKeyDown={(e) => {
-                                                // if (e.code === "Space") {
-                                                if (e.key === " ") {
-                                                    e.preventDefault(); // prevent scroll
-                                                }
-                                            }}
-                                            onKeyUp={(e) => {
-                                                // if (e.code === "Space") {
-                                                if (e.key === " ") {
-                                                    e.preventDefault();
-                                                    advancedAnnotationsOnChange();
-                                                }
-                                            }}
-                                            className={stylesGlobal.checkbox_custom}
-                                            style={{ border: serialAnnotator ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: serialAnnotator ? "var(--color-brand-primary)" : "transparent" }}>
-                                            {serialAnnotator ?
-                                                <SVG ariaHidden svg={CheckIcon} />
-                                                :
-                                                <></>
-                                            }
-                                        </div>
-                                        <span aria-hidden>
-                                            {__("reader.annotations.advancedMode")}
-                                        </span>
-                                    </label>
-                                </div>
-                                {/* : <></>} */}
-                                <div className={stylesAnnotations.annotations_checkbox}>
-                                    <input type="checkbox" id="quickAnnotations" name="quickAnnotations" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
-                                        onChange={quickAnnotationsOnChange}
-                                    />
-                                    <label htmlFor="quickAnnotations" className={stylesGlobal.checkbox_custom_label}>
-                                        <div
-                                            tabIndex={0}
-                                            role="checkbox"
-                                            aria-checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
-                                            aria-label={__("reader.annotations.quickAnnotations")}
-                                            onKeyDown={(e) => {
-                                                // if (e.code === "Space") {
-                                                if (e.key === " ") {
-                                                    e.preventDefault(); // prevent scroll
-                                                }
-                                            }}
-                                            onKeyUp={(e) => {
-                                                // if (e.code === "Space") {
-                                                if (e.key === " ") {
-                                                    e.preventDefault();
-                                                    quickAnnotationsOnChange();
-                                                }
-                                            }}
-                                            className={stylesGlobal.checkbox_custom}
-                                            style={{ border: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "var(--color-brand-primary)" : "transparent" }}>
-                                            {readerConfig.annotation_popoverNotOpenOnNoteTaking ?
-                                                <SVG ariaHidden svg={CheckIcon} />
-                                                :
-                                                <></>
-                                            } </div>
-                                            <span aria-hidden>
-                                            {__("reader.annotations.quickAnnotations")}
-                                        </span>
-                                    </label>
-                                </div>
-                                {!isPdf ?
-                                    <div className={stylesAnnotations.annotations_checkbox}>
-                                        <input type="checkbox" id="marginAnnotations" name="marginAnnotations" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "margin"} onChange={marginAnnotationsOnChange} />
-                                        <label htmlFor="marginAnnotations" className={stylesGlobal.checkbox_custom_label}>
-                                            <div
-                                                tabIndex={0}
-                                                role="checkbox"
-                                                aria-checked={readerConfig.annotation_defaultDrawView === "margin"}
-                                                aria-label={__("reader.annotations.toggleMarginMarks")}
-                                                onKeyDown={(e) => {
-                                                    // if (e.code === "Space") {
-                                                    if (e.key === " ") {
-                                                        e.preventDefault(); // prevent scroll
-                                                    }
-                                                }}
-                                                onKeyUp={(e) => {
-                                                    // if (e.code === "Space") {
-                                                    if (e.key === " ") {
-                                                        e.preventDefault();
-                                                        marginAnnotationsOnChange();
-                                                    }
-                                                }}
-                                                className={stylesGlobal.checkbox_custom}
-                                                style={{ border: readerConfig.annotation_defaultDrawView === "margin" ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "margin" ? "var(--color-brand-primary)" : "transparent" }}>
-                                                {readerConfig.annotation_defaultDrawView === "margin" ?
-                                                    <SVG ariaHidden svg={CheckIcon} />
-                                                    :
-                                                    <></>
-                                                }
-                                            </div>
-                                            <span aria-hidden>
-                                                {__("reader.annotations.toggleMarginMarks")}
-                                            </span>
-                                        </label>
-                                    </div> : <></>}
-                                <div className={stylesAnnotations.annotations_checkbox}>
-                                    <input type="checkbox" id="hideAnnotation" name="hideAnnotation" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "hide"} onChange={hideAnnotationOnChange} />
-                                    <label htmlFor="hideAnnotation" className={stylesGlobal.checkbox_custom_label}>
-                                        <div
-                                            tabIndex={0}
-                                            role="checkbox"
-                                            aria-checked={readerConfig.annotation_defaultDrawView === "hide"}
-                                            aria-label={__("reader.annotations.hide")}
-                                            onKeyDown={(e) => {
-                                                // if (e.code === "Space") {
-                                                if (e.key === " ") {
-                                                    e.preventDefault(); // prevent scroll
-                                                }
-                                            }}
-                                            onKeyUp={(e) => {
-                                                // if (e.code === "Space") {
-                                                if (e.key === " ") {
-                                                    e.preventDefault();
-                                                    hideAnnotationOnChange();
-                                                }
-                                            }}
-                                            className={stylesGlobal.checkbox_custom}
-                                            style={{ border: readerConfig.annotation_defaultDrawView === "hide" ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "hide" ? "var(--color-brand-primary)" : "transparent" }}>
-                                            {readerConfig.annotation_defaultDrawView === "hide" ?
-                                                <SVG ariaHidden svg={CheckIcon} />
-                                                :
-                                                <></>
-                                            }
-                                        </div>
-                                        <span aria-hidden>
-                                            {__("reader.annotations.hide")}
-                                        </span>
-                                    </label>
-                                </div>
-                                <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-gray-50" }} />
-                            </Popover.Content>
-                        </Popover.Portal>
-                    </Popover.Root>
-                </div>
-            </div>
-            <div className={stylesAnnotations.separator} />
-            <ol>
-                {annotationsPagedArray.map((annotationItem, _i) =>
-                    <AnnotationCard
-                        key={`annotation-card_${annotationItem.uuid}`}
-                        annotation={annotationItem}
-                        goToLocator={goToLocator}
-                        goToPdfAnnotation={goToPdfAnnotation}
-                        isEdited={annotationItem.uuid === needToFocusOnID && annotationEdit}
-                        isSelected={annotationItem.uuid === needToFocusOnID}
-                        focusRequestId={focusRequestId}
-                        triggerEdition={triggerEdition(annotationItem)}
-                        setTagFilter={(v) => setTagArrayFilter(new Set([v]))}
-                        setCreatorFilter={(v) => setCreatorArrayFilter(new Set([v]))}
-                    />,
-                )}
-            </ol>
-            {
-                isPaginated ? <>
-                    <div className={stylesPopoverDialog.navigation_container}>
-                        <button title={__("opds.firstPage")}
-                            onClick={() => { changePageNumber(() => 1); }}
-                            disabled={isFirstPage}>
-                            <SVG ariaHidden={true} svg={ArrowFirstIcon} />
-                        </button>
-
-                        <button title={__("opds.previous")}
-                            onClick={() => { changePageNumber((pageNumber) => pageNumber - 1); }}
-                            disabled={isFirstPage}>
-                            <SVG ariaHidden={true} svg={ArrowLeftIcon} />
-                        </button>
-                        <div className={stylesPopoverDialog.pages}>
-                            {/* <SelectRef
-                                ref={paginatorAnnotationsRef}
-                                aria-label={__("reader.navigation.page")}
-                                items={pageOptions}
-                                selectedKey={pageNumber}
-                                defaultSelectedKey={1}
-                                onSelectionChange={(id) => {
-                                    setPageNumber(id as number);
-                                }}
-                                label={__("reader.navigation.page")}
-                            >
-                                {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-                            </SelectRef> */}
-                            <label htmlFor="paginatorAnnotations" style={{ margin: "0" }}>{__("reader.navigation.page")}</label>
-                            <select
-                             onChange={(e) => {
-                                if (!e.currentTarget?.value) {
-                                    // console.error("No select Page currentTarget !!! ", e.currentTarget);
-                                    return ;
-                                }
-                                const value = e.currentTarget.value;
-                                const cb = () => pageOptions.find((option) => option.id === parseInt(value, 10)).id;
-                                changePageNumber(cb);
-                            }}
-                                ref={paginatorAnnotationsRef}
-                                id="paginatorAnnotations"
-                                aria-label={__("reader.navigation.page")}
-                                // defaultValue={1}
-                                value={pageNumber}
-                            >
-                                {pageOptions.map((item) => (
-                                    <option key={item.id} value={item.id}>{item.name}</option>
-                                ))}
-                            </select>
-                            {/* <ComboBox
-                                aria-label={__("reader.navigation.page")}
-                                items={pageOptions}
-                                selectedKey={pageNumber}
-                                defaultSelectedKey={1}
-                                onSelectionChange={(id) => {
-                                    changePageNumber(() => id as number); setItemToEdit(-1);
-                                }}
-                            >
-                                {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-                            </ComboBox> */}
-                        </div>
-                        <button title={__("opds.next")}
-                            onClick={() => { changePageNumber((pageNumber) => pageNumber + 1); }}
-                            disabled={isLastPage}>
-                            <SVG ariaHidden={true} svg={ArrowRightIcon} />
-                        </button>
-
-                        <button title={__("opds.lastPage")}
-                            onClick={() => { changePageNumber(() => pageTotal); }}
-                            disabled={isLastPage}>
-                            <SVG ariaHidden={true} svg={ArrowLastIcon} />
-                        </button>
-                    </div>
-                    {
-                        totalCount &&
-                        <p
-                            style={{
-                                textAlign: "center",
-                                padding: 0,
-                                margin: 0,
-                                marginTop: "-16px",
-                                marginBottom: "20px",
-                            }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${totalCount}`}</p>
-                    }
-                </>
-                    : <></>
-            }
-        </>
+        <NoteList
+            cardKeyPrefix="annotation-card"
+            exportTitleFallback="thorium-notes_annotations"
+            group="annotation"
+            importExportEnabled={readiumAnnotationImportExportEnabled}
+            maxMatchesPerPage={MAX_MATCHES_PER_PAGE}
+            options={[
+                {
+                    id: "advancedAnnotations",
+                    name: "advancedAnnotations",
+                    checked: serialAnnotator,
+                    onChange: advancedAnnotationsOnChange,
+                    label: __("reader.annotations.advancedMode"),
+                    ariaLabel: __("reader.annotations.advancedMode"),
+                },
+                {
+                    id: "quickAnnotations",
+                    name: "quickAnnotations",
+                    checked: readerConfig.annotation_popoverNotOpenOnNoteTaking,
+                    onChange: quickAnnotationsOnChange,
+                    label: __("reader.annotations.quickAnnotations"),
+                    ariaLabel: __("reader.annotations.quickAnnotations"),
+                },
+                {
+                    id: "marginAnnotations",
+                    name: "marginAnnotations",
+                    checked: readerConfig.annotation_defaultDrawView === "margin",
+                    hidden: isPdf,
+                    onChange: marginAnnotationsOnChange,
+                    label: __("reader.annotations.toggleMarginMarks"),
+                    ariaLabel: __("reader.annotations.toggleMarginMarks"),
+                },
+                {
+                    id: "hideAnnotation",
+                    name: "hideAnnotation",
+                    checked: readerConfig.annotation_defaultDrawView === "hide",
+                    onChange: hideAnnotationOnChange,
+                    label: __("reader.annotations.hide"),
+                    ariaLabel: __("reader.annotations.hide"),
+                },
+            ]}
+            popoverBoundary={popoverBoundary}
+            renderNote={(annotationItem, context) => (
+                <AnnotationCard
+                    annotation={annotationItem}
+                    goToLocator={goToLocator}
+                    goToPdfAnnotation={goToPdfAnnotation}
+                    isEdited={context.isEdited}
+                    isSelected={context.isSelected}
+                    focusRequestId={context.focusRequestId}
+                    triggerEdition={context.triggerEdition}
+                    setTagFilter={context.setTagFilter}
+                    setCreatorFilter={context.setCreatorFilter}
+                />
+            )}
+            startPage={START_PAGE}
+        />
     );
 };

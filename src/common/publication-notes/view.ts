@@ -13,6 +13,7 @@ import type {
     PublicationNotesViewFilter,
     PublicationNotesViewPagination,
     PublicationNotesViewSelection,
+    PublicationNotesViewSort,
     PublicationNotesViewState,
 } from "./model";
 import { rgbToHex } from "readium-desktop/common/rgb";
@@ -49,6 +50,18 @@ interface PublicationNotesFilterableNote extends PublicationNoteEntity {
 }
 
 const emptyFilter: PublicationNotesViewFilter = {};
+export const publicationNotesViewSortValues: PublicationNotesViewSort[] = ["progression", "lastCreated", "lastModified"];
+export const defaultPublicationNotesViewSort: PublicationNotesViewSort = "lastCreated";
+
+export function isPublicationNotesViewSort(value: string | null | undefined): value is PublicationNotesViewSort {
+
+    return publicationNotesViewSortValues.includes(value as PublicationNotesViewSort);
+}
+
+export function getEffectivePublicationNotesViewSort(sort: PublicationNotesViewSort | undefined): PublicationNotesViewSort {
+
+    return sort || defaultPublicationNotesViewSort;
+}
 
 export function withoutPublicationNotesViewPagination(filter: PublicationNotesViewFilter): PublicationNotesViewFilter {
 

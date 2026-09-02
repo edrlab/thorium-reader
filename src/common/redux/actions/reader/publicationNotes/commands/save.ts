@@ -17,7 +17,7 @@ export interface IPayload {
     newNote: PublicationNote;
 }
 
-export function build(publicationIdentifier: string, newNote: PublicationNoteDraft, previousNote?: PublicationNote | undefined):
+export function build(publicationIdentifier: string, newNote: PublicationNoteDraft, previousNote?: PublicationNote):
     ActionWithReaderPublicationIdentifierDestination<typeof ID, IPayload> {
 
     const note: PublicationNote = {

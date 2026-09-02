@@ -30,7 +30,7 @@ let _timeoutId = 0;
 function* toggleSettingsOrMenu(action: readerLocalActionToggleMenu.TAction | readerLocalActionToggleSettings.TAction): SagaGenerator<void> {
 
     /* eslint-disable prefer-const */
-    let { open, readerDockingMode, section, focus, id, edit, focusRequestId } = action.payload;
+    let { open, readerDockingMode, section, focus, id, edit, focusRequestId, sort } = action.payload;
     const newReaderConfig: Partial<ReaderConfig> = {};
 
     if (_isObserving) {
@@ -50,6 +50,28 @@ function* toggleSettingsOrMenu(action: readerLocalActionToggleMenu.TAction | rea
         id !== "reader-menu-tab-annotation" &&
         id !== "reader-menu-tab-bookmark";
 
+    // TODO: finish the focus transition away from this MutationObserver path.
+    //
+    // Publication-note focus no longer relies on observing late-mounted dialog/dock
+    // DOM nodes here. When a route targets a bookmark or annotation, the router
+    // dispatches the menu action with the target note id plus a fresh
+    // `focusRequestId`. This saga stores those values in the reader menu
+    // dialog/dock data. The note list then reacts to that state: it resets any
+    // filters that could hide the target note, asks the publication-notes view for
+    // the page anchored around that note, and passes the `focusRequestId` down to
+    // the row card. The card's own effect scrolls and focuses the selected row.
+    // The request id is important because it lets the row repeat focus even when
+    // the same note id is requested twice.
+    //
+    // Keep the observer below only for the older generic menu/settings focus
+    // targets, such as tab panels, settings navigation, or the go-to-page input,
+    // which may not exist in the DOM when the saga first runs. Once those targets
+    // also get explicit component-level focus effects, or a shared route/state
+    // focus-request mechanism similar to notes, this observer can be removed.
+    //
+    // If PDF annotation panel actions need repeated focus on the same note, they
+    // should also provide a fresh `focusRequestId`; otherwise a same-note request
+    // can be indistinguishable from the existing selected state.
     if (focus && !isReaderMenuPublicationNoteTarget) {
         const editId = edit ? "_edit" : "";
         const elementId = id + editId;
@@ -167,6 +189,7 @@ function* toggleSettingsOrMenu(action: readerLocalActionToggleMenu.TAction | rea
             id: id || "",
             edit: edit || false,
             focusRequestId,
+            sort,
         };
         if (open) {
             if (currentDialogOpen && currentDialogType === dialogType) {
@@ -190,6 +213,7 @@ function* toggleSettingsOrMenu(action: readerLocalActionToggleMenu.TAction | rea
             id: id || "",
             edit: edit || false,
             focusRequestId,
+            sort,
         };
         if (open) {
             if (currentDockOpen && currentDockType === dockType) {
