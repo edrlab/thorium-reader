@@ -71,9 +71,10 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     themeActions.setTheme.ID,
     versionUpdateActions.notify.ID,
 
-    // needed to broadcast events to all reader windows,
-    readerActions.note.addUpdate.ID,
-    readerActions.note.remove.ID,
+    // needed to broadcast publication note events to reader windows,
+    readerActions.publicationNotes.commands.save.ID,
+    readerActions.publicationNotes.commands.remove.ID,
+    readerActions.publicationNotes.snapshot.ID,
 
     sessionActions.save.ID,
     screenReaderActions.save.ID,

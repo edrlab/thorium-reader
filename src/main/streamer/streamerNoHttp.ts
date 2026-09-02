@@ -52,7 +52,7 @@ import { URL_PROTOCOL_PDFJSEXTRACT, URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, 
 import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
 import { diMainGet } from "../di";
 import { getNotesFromMainWinState } from "../redux/sagas/note";
-import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import type { PublicationNote } from "readium-desktop/common/publication-notes";
 import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
 import { customizationWellKnownFolder } from "../customization/provisioning";
 import { SESSION_PARTITION_PDFJS, SESSION_PARTITION_PDFJSEXTRACT } from "readium-desktop/common/sessions";
@@ -837,7 +837,7 @@ const streamProtocolHandler = async (
         const publicationUUID = uPathname.substr(notesFromPublicationPrefix.length);
 
         const sagaMiddleware = diMainGet("saga-middleware");
-        const notes = await sagaMiddleware.run(getNotesFromMainWinState, publicationUUID).toPromise<INoteState[]>();
+        const notes = await sagaMiddleware.run(getNotesFromMainWinState, publicationUUID).toPromise<PublicationNote[]>();
         const notesSerialized = JSON.stringify(notes);
         const notesSerializedBuf = Buffer.from(notesSerialized, "utf8");
         const contentLength = `${notesSerializedBuf.length || 0}`;

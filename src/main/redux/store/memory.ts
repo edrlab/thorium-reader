@@ -23,7 +23,8 @@ import { reduxPersistMiddleware } from "../middleware/persistence";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 import { MiniLocatorExtended, minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
-import { EDrawType, INoteState, NOTE_DEFAULT_COLOR_OBJ, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
+import { NOTE_DEFAULT_COLOR_OBJ, type PublicationNote } from "readium-desktop/common/publication-notes";
+import { EDrawType, type TDrawType } from "readium-desktop/common/type/note.type";
 import { TBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { TAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 import { sqliteInitTableNote, sqliteTableNoteDeleteWherePubId, sqliteTableNoteInsert, sqliteTableSelectLastModifiedDateWherePubId } from "readium-desktop/main/db/sqlite/note";
@@ -58,6 +59,14 @@ const debug = (...a: Parameters<debug_.Debugger>) => {
         "",
     );
 };
+
+const normalizeMigratedPublicationNote = (note: PublicationNote): PublicationNote => ({
+    ...note,
+    color: note.color || { ...NOTE_DEFAULT_COLOR_OBJ },
+    drawType: note.drawType || (note.group === "bookmark" ? EDrawType.bookmark : EDrawType.solid_background),
+    group: note.group || "annotation",
+    created: note.created || note.modified || Date.now(),
+});
 
 /**
  * Deep diff of two objects
@@ -644,10 +653,12 @@ export async function initStore()
 
 
                     debug("We are checking notes (", (state.reduxState as Partial<IReaderStateReaderSession>).note?.length, "); json to sqlite migration for pubicationId=", pubId);
+                    const migratedNotes = (state.reduxState as Partial<IReaderStateReaderSession>).note
+                        .map(normalizeMigratedPublicationNote);
 
-                    const lastNoteModifiedEpochFromJson = (state.reduxState as Partial<IReaderStateReaderSession>).note.reduce((acc, cv) => {
+                    const lastNoteModifiedEpochFromJson = migratedNotes.reduce((acc, cv) => {
 
-                        const currentModifiedEpoch = cv.modified || cv.created;
+                        const currentModifiedEpoch = cv.modified || cv.created || 0;
                         if (currentModifiedEpoch > acc) {
                             return currentModifiedEpoch;
                         }
@@ -665,7 +676,7 @@ export async function initStore()
                     } else {
                         debug("JSON WON, migration needed!!");
                         if (sqliteTableNoteDeleteWherePubId(pubId)) {
-                            if (sqliteTableNoteInsert(pubId, (state.reduxState as any).note)) {
+                            if (sqliteTableNoteInsert(pubId, migratedNotes)) {
                                 debug("SQLITE NOTE MIGRATION DONE for this publicationId=", pubId);
                             } else {
                                 debug("ERROR on SQLITE NOTE MIGRATION, publicationId=", pubId);
@@ -692,7 +703,7 @@ export async function initStore()
                 let noteTotalCount = state.reduxState.noteTotalCount?.state || 0;
                 for (const [_timestamp, bookmark] of (state.reduxState as any).bookmark as TBookmarkState) {
 
-                    const note: INoteState = {
+                    const note = normalizeMigratedPublicationNote({
                         uuid: bookmark.uuid,
                         index: bookmark.index || ++noteTotalCount,
                         locatorExtended: bookmark.locatorExtended,
@@ -704,7 +715,7 @@ export async function initStore()
                         created: bookmark.created,
                         creator: bookmark.creator,
                         group: "bookmark",
-                    };
+                    });
 
                     sqliteTableNoteInsert(pubId, [ note ]);
                 }
@@ -723,7 +734,7 @@ export async function initStore()
                 let noteTotalCount = state.reduxState.noteTotalCount?.state || 0;
                 for (const [_timestamp, annotation] of ((state.reduxState as any).annotation as TAnnotationState)) {
 
-                    const note: INoteState = {
+                    const note = normalizeMigratedPublicationNote({
                         uuid: annotation.uuid,
                         index: ++noteTotalCount,
                         locatorExtended: annotation.locatorExtended,
@@ -735,7 +746,7 @@ export async function initStore()
                         created: annotation.created,
                         creator: annotation.creator,
                         group: "annotation",
-                    };
+                    });
 
                     sqliteTableNoteInsert(pubId, [ note ]);
                 }
