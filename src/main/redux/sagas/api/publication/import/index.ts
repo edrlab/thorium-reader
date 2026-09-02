@@ -24,10 +24,9 @@ import { PublicationViewConverter } from "readium-desktop/main/converter/publica
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { publicationApi } from "..";
 import { cleanupLcpPublicationIfNoLongerUsable } from "readium-desktop/main/redux/sagas/publication/lcpSharedWorkstationCleanup";
-import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import type { PublicationNote } from "readium-desktop/common/publication-notes";
 import { RootState } from "readium-desktop/main/redux/states";
 import { settingsLcpAutoDeleteExpiredPublicationsIsEnabled } from "readium-desktop/common/redux/states/settings";
-import { sqliteTableNoteInsertOrReplace, sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
 import type { TFileTypePubData } from "readium-desktop/main/storage/publication-data";
 import { logPublicationMeasurement } from "readium-desktop/main/analytics/publication";
 
@@ -72,7 +71,7 @@ type TPersonalModeReplacementPublicationData = Partial<Record<TFileTypePubData, 
 
 interface IPersonalModeReplacementUserData {
     noteTotalCount: number;
-    notes: INoteState[];
+    notes: PublicationNote[];
     publicationData: TPersonalModeReplacementPublicationData;
 }
 
@@ -89,7 +88,7 @@ const getPersonalModeReplacementUserData = async (publicationIdentifier: string)
         return emptyPersonalModeReplacementUserData();
     }
 
-    const notes = sqliteTableSelectAllNotesWherePubId(publicationIdentifier);
+    const notes = (await diMainGet("publication-notes-controller").list(publicationIdentifier)).notes;
     const publicationData = diMainGet("publication-data");
     const replacementPublicationData: TPersonalModeReplacementPublicationData = {};
 
@@ -136,7 +135,10 @@ const restorePersonalModeReplacementUserData = async (
     // note UUIDs with INSERT OR REPLACE preserves annotations/bookmarks even if the old
     // publication delete saga has not finished deleting the previous pub_id rows yet.
     if (replacementUserData.notes.length) {
-        sqliteTableNoteInsertOrReplace(publicationIdentifier, replacementUserData.notes);
+        const controller = diMainGet("publication-notes-controller");
+        for (const note of replacementUserData.notes) {
+            await controller.replace(publicationIdentifier, note);
+        }
     }
 
     if (replacementUserData.noteTotalCount > 0) {
