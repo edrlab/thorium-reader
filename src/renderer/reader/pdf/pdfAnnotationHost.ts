@@ -8,7 +8,7 @@
 import debug_ from "debug";
 
 import type { INoteCreator } from "readium-desktop/common/redux/states/creator";
-import type { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import type { PublicationNote } from "readium-desktop/common/publication-notes";
 import type {
     IColor,
     TPdfAnnotationCreateSource,
@@ -40,7 +40,7 @@ export interface IPdfAnnotationCreateRequestContext {
 
 export interface IPdfAnnotationCreateRequestHostState extends IPdfAnnotationCreateRequestContext {
     publicationIdentifier: string;
-    notes: INoteState[];
+    notes: PublicationNote[];
 }
 
 /**
@@ -57,10 +57,10 @@ export interface IPdfAnnotationCreateRequestHostState extends IPdfAnnotationCrea
 export interface IPdfAnnotationCreateRequestHostPorts {
     persistNoteInRedux: (
         publicationIdentifier: string,
-        newNote: Omit<INoteState, "uuid">,
+        newNote: Omit<PublicationNote, "uuid">,
     ) => {
         payload: {
-            newNote: INoteState;
+            newNote: PublicationNote;
         };
     };
     syncAnnotationsToPdfWebview: (annotations: TPdfAnnotationTransport[]) => void;
@@ -72,8 +72,8 @@ export interface IPdfAnnotationCreateRequestHostAdapter {
 }
 
 export function buildPdfAnnotationTransportList(
-    notes: INoteState[],
-    extraNote?: INoteState,
+    notes: PublicationNote[],
+    extraNote?: PublicationNote,
 ): TPdfAnnotationTransport[] {
     const annotationsById = new Map<string, TPdfAnnotationTransport>();
     const sourceNotes = extraNote ? [...notes, extraNote] : notes;
@@ -95,7 +95,7 @@ function isValidPdfAnnotationCreateSource(source: unknown): source is TPdfAnnota
 export function createPdfAnnotationNoteDraft(
     payload: IPdfAnnotationCreateRequestPayload | undefined,
     context: IPdfAnnotationCreateRequestContext,
-): Omit<INoteState, "uuid"> | undefined {
+): Omit<PublicationNote, "uuid"> | undefined {
     if (payload?.draft && !isValidPdfAnnotationCreateSource(payload.source)) {
         debugPdfAnnotationsHost("annotation:create-requested ignored invalid source", {
             source: payload.source,

@@ -34,7 +34,9 @@ import { useReaderConfig } from "readium-desktop/renderer/common/hooks/useReader
 import { rgbToHex } from "readium-desktop/common/rgb";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
-import { EDrawType, INoteState, noteColorCodeToColorTranslatorKeySet, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
+import type { PublicationNote } from "readium-desktop/common/publication-notes";
+import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/publication-notes/colors";
+import { EDrawType, type TDrawType } from "readium-desktop/common/type/note.type";
 
 import DOMPurify from "dompurify";
 import { marked } from "readium-desktop/renderer/common/marked/marked";
@@ -45,7 +47,7 @@ import debug_ from "debug";
 
 const debugPdfAnnotationsPanel = debug_("readium-desktop:renderer:reader:pdf:annotations:panel");
 
-export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, isSelected: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void, setCreatorFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator" | "goToPdfAnnotation">> = (props) => {
+export const AnnotationCard: React.FC<{ annotation: PublicationNote, isEdited: boolean, isSelected: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void, setCreatorFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator" | "goToPdfAnnotation">> = (props) => {
 
     const { goToLocator, goToPdfAnnotation, setTagFilter, setCreatorFilter } = props;
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
@@ -79,9 +81,8 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
     const dispatch = useDispatch();
     const [__] = useTranslator();
     const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
-    // const noteTotalCount = useSelector((state: IReaderRootState) => state.reader.noteTotalCount.state);
     const save = React.useCallback((color: IColor, comment: string, drawType: TDrawType, tags: string[]) => {
-        dispatch(readerActions.note.addUpdate.build(
+        dispatch(readerActions.publicationNotes.commands.save.build(
             pubId,
             buildAnnotationPanelSaveNote(annotation, {
                 color,
@@ -93,7 +94,6 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
             annotation,
         ));
         triggerEdition(false);
-        // dispatch(readerActions.bookmarkTotalCount.build(noteTotalCount + 1));
     }, [dispatch, annotation, triggerEdition, pubId]);
 
     const date = new Date(annotation.modified || annotation.created);
@@ -311,7 +311,7 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
                 className={stylesPopoverDialog.delete_item_edition}
                 onClick={() => {
                     triggerEdition(false);
-                    dispatch(readerActions.note.remove.build(annotation));
+                    dispatch(readerActions.publicationNotes.commands.remove.build(pubId, annotation));
                     // alert("deleted");
                 }}
                 >
@@ -331,7 +331,7 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
                             <Popover.Close
                                 onClick={() => {
                                     triggerEdition(false);
-                                    dispatch(readerActions.note.remove.build(annotation));
+                                    dispatch(readerActions.publicationNotes.commands.remove.build(pubId, annotation));
                                 }}
                                 title={__("reader.marks.delete")}
                             >

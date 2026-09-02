@@ -9,7 +9,7 @@ import debug_ from "debug";
 
 import { ICssSelector, IEPUBCFISelector, IProgressionSelector, ISelector, ITextPositionSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import { uniqueCssSelector } from "@r2-navigator-js/electron/renderer/common/cssselector3";
-import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import type { PublicationNote } from "readium-desktop/common/publication-notes";
 import {  describeTextPosition, describeTextQuote } from "readium-desktop/third_party/apache-annotator/dom";
 import { convertRangeInfo } from "@r2-navigator-js/electron/renderer/webview/selection";
 import { call as callTyped } from "typed-redux-saga/macro";
@@ -46,7 +46,7 @@ const describeCssSelectorWithTextPosition = async (range: Range, document: Docum
     };
 };
 
-export function* readiumAnnotationSelectorFromNote(note: INoteState, isLcp: boolean, _sourceHref: string, xmlDom: Document): SagaGenerator<ISelector[]> {
+export function* readiumAnnotationSelectorFromNote(note: PublicationNote, isLcp: boolean, sourceHref: string, xmlDom: Document): SagaGenerator<ISelector[]> {
 
     const { locatorExtended } = note;
     if (!locatorExtended) {
@@ -136,7 +136,7 @@ export function* readiumAnnotationSelectorFromNote(note: INoteState, isLcp: bool
     return selector;
 }
 
-export function checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation(note: INoteState) {
+export function checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation(note: PublicationNote) {
 
     return Array.isArray(note.readiumAnnotation?.export?.selector);
 }

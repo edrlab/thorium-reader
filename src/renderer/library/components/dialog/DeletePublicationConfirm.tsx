@@ -18,7 +18,7 @@ import { dialogActions } from "readium-desktop/common/redux/actions";
 import SVG from "../../../common/components/SVG";
 import * as Trash from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_PUBNOTES } from "readium-desktop/common/streamerProtocol";
-import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import type { PublicationNote } from "readium-desktop/common/publication-notes";
 
 const DeletePublicationConfirm = (props: { publicationView: PublicationView, trigger: React.ReactNode } & AlertDialog.AlertDialogProps) => {
     const [__] = useTranslator();
@@ -34,7 +34,7 @@ const DeletePublicationConfirm = (props: { publicationView: PublicationView, tri
 
         fetch(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PUBNOTES}/${props.publicationView.identifier}`).then((res) => {
             res.json().then((json) => {
-                const notes: INoteState[] = json;
+                const notes: PublicationNote[] = json;
 
                 if (Array.isArray(notes) && notes.length) {
                     setHasNotes(true);

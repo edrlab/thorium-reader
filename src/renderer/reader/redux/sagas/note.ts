@@ -26,12 +26,14 @@ import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locator
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
 import { getTranslator } from "readium-desktop/common/services/translator";
-import { EDrawType, INoteState, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
+import type { PublicationNote } from "readium-desktop/common/publication-notes";
+import { EDrawType, type TDrawType } from "readium-desktop/common/type/note.type";
 import { checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation, readiumAnnotationSelectorFromNote } from "./readiumAnnotation/selector";
 import { clone, equals } from "ramda";
 import { convertSelectorTargetToLocatorExtended } from "readium-desktop/common/readium/annotation/converter";
 import { getResourceCache } from "readium-desktop/common/redux/sagas/resourceCache";
 import { logEvent } from "readium-desktop/renderer/common/analytics";
+import { selectPublicationNotes } from "../../publication-notes/selectors";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:annotation");
@@ -60,7 +62,7 @@ debug("_");
 //     // yield* putTyped(readerLocalActionAnnotations.focusMode.build({previousFocusUuid: currentFocusUuid || "", currentFocusUuid: uuid, editionEnable: false}));
 // }
 
-export function* noteUpdateExportSelectorFromLocatorExtended(note: INoteState) {
+export function* noteUpdateExportSelectorFromLocatorExtended(note: PublicationNote) {
     try {
         if ((yield* selectTyped((state: IReaderRootState) => state.reader.lock)) &&
         note.locatorExtended && !checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation(note)) {
@@ -75,7 +77,7 @@ export function* noteUpdateExportSelectorFromLocatorExtended(note: INoteState) {
             const selector = yield* callTyped(readiumAnnotationSelectorFromNote, note, isLcp, sourceHref, xmlDom);
 
             debug(`${note.uuid} does not have any readiumAnnotationSelector so let's update the note with this new selectors: ${JSON.stringify(selector, null, 2)}`);
-            yield* putTyped(readerActions.note.addUpdate.build(
+            yield* putTyped(readerActions.publicationNotes.commands.save.build(
                 publicationIdentifier,
                 { ...note, readiumAnnotation: { ...note?.readiumAnnotation || {}, export: { selector } } },
                 note,
@@ -86,7 +88,7 @@ export function* noteUpdateExportSelectorFromLocatorExtended(note: INoteState) {
     }
 }
 
-export function* noteUpdateLocatorExtendedFromImportSelector(note: INoteState) {
+export function* noteUpdateLocatorExtendedFromImportSelector(note: PublicationNote) {
 
     try {
         if ((yield* selectTyped((state: IReaderRootState) => state.reader.lock)) &&
@@ -109,7 +111,7 @@ export function* noteUpdateLocatorExtendedFromImportSelector(note: INoteState) {
 
             debug(`${note.uuid} doesn't have any locator so let's update the note with the new locator generated: ${JSON.stringify(locatorExtended, null, 2)}`);
             const { publicationIdentifier } = yield* selectTyped((state: IReaderRootState) => state.reader.info);
-            yield* putTyped(readerActions.note.addUpdate.build(publicationIdentifier, { ...note, locatorExtended }, note));
+            yield* putTyped(readerActions.publicationNotes.commands.save.build(publicationIdentifier, { ...note, locatorExtended }, note));
         }
 
     } catch (e) {
@@ -117,7 +119,7 @@ export function* noteUpdateLocatorExtendedFromImportSelector(note: INoteState) {
     }
 }
 
-function* noteAddUpdate(action: readerActions.note.addUpdate.TAction) {
+function* noteAddUpdate(action: readerActions.publicationNotes.commands.save.TAction) {
 
     const { previousNote: previousNote, newNote: note } = action.payload;
 
@@ -245,7 +247,7 @@ function* noteAddUpdate(action: readerActions.note.addUpdate.TAction) {
     }
 }
 
-function* noteRemove(action: readerActions.note.remove.TAction) {
+function* noteRemove(action: readerActions.publicationNotes.commands.remove.TAction) {
 
     const { note } = action.payload;
     debug(`noteRemove : [${note}]`);
@@ -264,7 +266,7 @@ function* createAnnotation(locatorExtended: MiniLocatorExtended, color: IColor, 
 
     const noteTotalCount = yield* selectTyped((state: IReaderRootState) => state.reader.noteTotalCount.state);
     const { publicationIdentifier } = yield* selectTyped((state: IReaderRootState) => state.reader.info);
-    yield* putTyped(readerActions.note.addUpdate.build(publicationIdentifier, {
+    yield* putTyped(readerActions.publicationNotes.commands.save.build(publicationIdentifier, {
         color,
         textualValue: comment,
         index: noteTotalCount + 1,
@@ -278,8 +280,6 @@ function* createAnnotation(locatorExtended: MiniLocatorExtended, color: IColor, 
     yield* spawnTyped(function*() {
         yield* callTyped(logEvent, readerAnalyticsEvents.annotate);
     });
-
-    yield* putTyped(readerActions.bookmarkTotalCount.build(noteTotalCount + 1));
 
     // sure! close the popover
     yield* putTyped(readerLocalActionAnnotations.enableMode.build(false, undefined, undefined));
@@ -433,14 +433,15 @@ function* readerStart() {
         highlightsDrawMargin(["bookmark"]);
     }
 
-    const notes = yield* selectTyped((store: IReaderRootState) => store.reader.note);
-    const noteUUID = notes.map(({ uuid }) => ({ uuid }));
+    const notes = yield* selectTyped(selectPublicationNotes);
+    const notesWithLocator = notes.filter((note) => !!note.locatorExtended);
+    const noteUUID = notesWithLocator.map(({ uuid }) => ({ uuid }));
 
     // const annotations = yield* selectTyped((store: IReaderRootState) => store.reader.annotation);
     // const annotationsUuids = annotations.map(([_, annotationState]) => ({ uuid: annotationState.uuid }));
     yield* putTyped(readerLocalActionHighlights.handler.pop.build(noteUUID));
 
-    const notesHighlighted = notes.map((note): IHighlightHandlerState => {
+    const notesHighlighted = notesWithLocator.map((note): IHighlightHandlerState => {
 
         return {
             uuid: note.uuid,
@@ -541,14 +542,14 @@ export const saga = () =>
             (e) => console.error("readerLocalActionSetConfig", e),
         ),
         takeSpawnEvery(
-            readerActions.note.addUpdate.ID,
+            readerActions.publicationNotes.commands.save.ID,
             noteAddUpdate,
-            (e) => console.error("readerLocalActionNoteUpdate", e),
+            (e) => console.error("readerActions.publicationNotes.commands.save", e),
         ),
         takeSpawnEvery(
-            readerActions.note.remove.ID,
+            readerActions.publicationNotes.commands.remove.ID,
             noteRemove,
-            (e) => console.error("readerLocalActionNoteRemove", e),
+            (e) => console.error("readerActions.publicationNotes.commands.remove", e),
         ),
         takeSpawnEvery(
             readerActions.setLocator.ID,

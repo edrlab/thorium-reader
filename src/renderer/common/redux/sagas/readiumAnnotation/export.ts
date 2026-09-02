@@ -23,7 +23,7 @@ import Mustache from "mustache";
 
 import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/annotation/htmlTemplate";
 import DOMPurify from "dompurify";
-import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import type { PublicationNote } from "readium-desktop/common/publication-notes";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { marked } from "readium-desktop/renderer/common/marked/marked";
@@ -80,7 +80,7 @@ const downloadAnnotationFile = (data: string, filenameWithExtension: string, ext
     anchorEl.click();
     URL.revokeObjectURL(jsonObjectUrl);
 };
-export function* exportAnnotationSet(notes: INoteState[], publicationView: PublicationView, annoSetTitle?: string, fileType: "html" | "annotation" = "annotation"): SagaGenerator<void> {
+export function* exportAnnotationSet(notes: PublicationNote[], publicationView: PublicationView, annoSetTitle?: string, fileType: "html" | "annotation" = "annotation"): SagaGenerator<void> {
 
     debug("exportAnnotationSet just started !");
     debug("AnnotationArray: ", notes);

@@ -49,7 +49,9 @@ import { ImportAnnotationsDialog } from "readium-desktop/renderer/common/compone
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { DockTypeName } from "readium-desktop/common/models/dock";
-import { EDrawType, INoteState, noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/renderer/note";
+import type { PublicationNote } from "readium-desktop/common/publication-notes";
+import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/publication-notes/colors";
+import { EDrawType } from "readium-desktop/common/type/note.type";
 
 import { exportAnnotationSet } from "readium-desktop/renderer/common/redux/sagas/readiumAnnotation/export";
 import { getSaga } from "../../createStore";
@@ -58,6 +60,7 @@ import { AnnotationCard } from "../ReaderMenu/AnnotationCard";
 import { computeProgression } from "./ReaderMenu";
 import { canUseReadiumAnnotationImportExport, compareAnnotationPanelProgression, filterDeletableAnnotationPanelNotes } from "../../pdf/pdfAnnotationPanel";
 import FilterPopover from "./FilterPopover";
+import { selectPublicationNoteTagsIndex, selectPublicationNotes } from "../../publication-notes/selectors";
 
 export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotationUUID: () => void, doFocus: number,*/ isPdf: boolean, popoverBoundary: HTMLDivElement, advancedAnnotationsOnChange: () => void, quickAnnotationsOnChange: () => void, marginAnnotationsOnChange: () => void, hideAnnotationOnChange: () => void, serialAnnotator: boolean, START_PAGE: number, selectionIsSet: (a: Selection) => a is Set<string>, MAX_MATCHES_PER_PAGE: number } & Pick<IReaderMenuProps, "goToLocator" | "goToPdfAnnotation">> = (props) => {
 
@@ -94,9 +97,10 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
     }, [needToFocusOnID]);
 
     const [__] = useTranslator();
-    const notes = useSelector((state: IReaderRootState) => state.reader.note);
+    const notes = useSelector(selectPublicationNotes);
     const annotationsListAll = React.useMemo(() => notes.filter(({ group }) => group === "annotation"), [notes]);
     const readiumAnnotationImportExportEnabled = canUseReadiumAnnotationImportExport(isPdf);
+    const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
     const publicationView = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
     const winId = useSelector((state: IReaderRootState) => state.win.identifier);
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
@@ -120,7 +124,7 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
         setPageNumber(cb);
     }, [setPageNumber, updateDialogOrDockDataInfo]);
 
-    const tagsIndexList = useSelector((state: IReaderRootState) => state.noteTagsIndex);
+    const tagsIndexList = useSelector(selectPublicationNoteTagsIndex);
     const selectTagOption = React.useMemo(() => tagsIndexList.map((v, i) => ({ id: i, name: v.tag })), [tagsIndexList]);
 
     // if tagArrayFilter value not include in the selectTagOption then take only the intersection between tagArrayFilter and selectTagOption
@@ -221,7 +225,7 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
     const begin = startIndex + 1;
     const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, annotationListFiltered.length);
 
-    const triggerEdition = (annotationItem: INoteState) =>
+    const triggerEdition = (annotationItem: PublicationNote) =>
         (value: boolean) => value ? updateDialogOrDockDataInfo({id: annotationItem.uuid, edit: true}) : updateDialogOrDockDataInfo({id: "", edit: false});
 
     const nbOfFilters = ((tagArrayFilter === "all") ?
@@ -375,7 +379,7 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
                                             updateDialogOrDockDataInfo({id: "", edit: false});
                                             for (const annotation of deletableAnnotationListFiltered) {
 
-                                                dispatch(readerActions.note.remove.build(annotation));
+                                                dispatch(readerActions.publicationNotes.commands.remove.build(pubId, annotation));
                                             }
 
                                             // reset filters
