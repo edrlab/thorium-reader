@@ -74,6 +74,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     // needed to broadcast publication note events to reader windows,
     readerActions.publicationNotes.commands.save.ID,
     readerActions.publicationNotes.commands.remove.ID,
+    readerActions.publicationNotes.exportHtmlRequest.ID,
     readerActions.publicationNotes.snapshot.ID,
 
     sessionActions.save.ID,
