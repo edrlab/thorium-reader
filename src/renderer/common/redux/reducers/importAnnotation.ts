@@ -8,12 +8,14 @@
 import { type Reducer } from "redux";
 import { IImportAnnotationState } from "readium-desktop/common/redux/states/importAnnotation";
 import { annotationActions } from "readium-desktop/common/redux/actions";
+import { createEmptyPublicationNotesImportReport } from "readium-desktop/common/publication-notes";
 
 const initialState: IImportAnnotationState = {
     open: false,
     annotationsList: [],
     annotationsConflictListOlder: [],
     annotationsConflictListNewer: [],
+    importReport: createEmptyPublicationNotesImportReport(),
     about: undefined,
     title: "",
     generated: "",

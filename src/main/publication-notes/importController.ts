@@ -23,8 +23,11 @@ import {
     NOTE_DEFAULT_COLOR,
     noteColorCodeToColorSet,
     noteColorSetToColorCode,
+    createEmptyPublicationNotesImportReport,
     type PublicationNote,
     type PublicationNoteChange,
+    type PublicationNoteImportUnresolvedReason,
+    type PublicationNotesImportReport,
     type PublicationNotesController,
 } from "readium-desktop/common/publication-notes";
 import { EDrawType } from "readium-desktop/common/type/note.type";
@@ -43,19 +46,20 @@ export interface PublicationNotesImportPreviewReady extends PublicationNotesImpo
     annotationsList: PublicationNote[];
     annotationsConflictListOlder: PublicationNote[];
     annotationsConflictListNewer: PublicationNote[];
+    importReport: PublicationNotesImportReport;
 }
 
 export type PublicationNotesImportPreview =
     | {
-          status: "emptyFile" | "publicationCorrupted" | "nothing" | "alreadyImported";
+          status: "emptyFile" | "publicationCorrupted";
       }
     | {
           status: "invalidAnnotationSet";
           errors: string;
       }
     | {
-          status: "rejectedForeignAnnotations";
-          sourceHrefs: string[];
+          status: "nothing" | "alreadyImported";
+          importReport: PublicationNotesImportReport;
       }
     | PublicationNotesImportPreviewReady;
 
@@ -81,6 +85,12 @@ export type PublicationNotesImportResult =
           status: "imported";
           preview: PublicationNotesImportPreviewReady;
       });
+
+interface PublicationNotesNormalizedImportAnnotation {
+    annotation: IReadiumAnnotation;
+    originalTarget?: IReadiumAnnotation["target"] | undefined;
+    unresolvedReason?: PublicationNoteImportUnresolvedReason | undefined;
+}
 
 export interface PublicationNotesImportControllerDependencies {
     publicationNotesController: PublicationNotesController<PublicationNote>;
@@ -131,12 +141,6 @@ export class PublicationNotesImportController {
             readiumAnnotationFormat.items,
             input.spineItemHrefs,
         );
-        if (normalizedAnnotations.rejectedSourceHrefs.length) {
-            return {
-                status: "rejectedForeignAnnotations",
-                sourceHrefs: normalizedAnnotations.rejectedSourceHrefs,
-            };
-        }
 
         const notesView = await this.publicationNotesController.list(input.publicationIdentifier);
         const existingNotes = notesView.notes;
@@ -145,32 +149,40 @@ export class PublicationNotesImportController {
         const annotationsParsedConflictOlderArray: PublicationNote[] = [];
         const annotationsParsedConflictNewerArray: PublicationNote[] = [];
         const annotationsParsedAllArray: PublicationNote[] = [];
+        const importReport = createEmptyPublicationNotesImportReport();
 
-        for (const incomingAnnotation of normalizedAnnotations.annotations) {
+        for (const incomingAnnotation of normalizedAnnotations) {
             const annotationParsed = this.convertAnnotationToNote(
-                incomingAnnotation,
+                incomingAnnotation.annotation,
                 input.fileName,
                 currentTimestamp,
+                incomingAnnotation.unresolvedReason,
+                incomingAnnotation.originalTarget,
             );
-            if (!annotationParsed) {
-                continue;
-            }
 
             annotationsParsedAllArray.push(annotationParsed);
+            this.addUnresolvedNoteToReport(importReport, annotationParsed);
 
             const annotationSameUUIDFound = existingNotes.find(({ uuid }) => uuid === annotationParsed.uuid);
             if (annotationSameUUIDFound) {
                 if (annotationSameUUIDFound.modified && annotationParsed.modified) {
                     if (annotationSameUUIDFound.modified < annotationParsed.modified) {
                         annotationsParsedConflictNewerArray.push(annotationParsed);
-                    }
-                    if (annotationSameUUIDFound.modified > annotationParsed.modified) {
+                        importReport.annotationsConflictListNewer.push(annotationParsed);
+                    } else if (annotationSameUUIDFound.modified > annotationParsed.modified) {
                         annotationsParsedConflictOlderArray.push(annotationParsed);
+                        importReport.annotationsConflictListOlder.push(annotationParsed);
+                    } else {
+                        importReport.annotationsAlreadyImportedList.push(annotationParsed);
                     }
                 } else if (annotationSameUUIDFound.modified) {
                     annotationsParsedConflictOlderArray.push(annotationParsed);
+                    importReport.annotationsConflictListOlder.push(annotationParsed);
                 } else if (annotationParsed.modified) {
                     annotationsParsedConflictNewerArray.push(annotationParsed);
+                    importReport.annotationsConflictListNewer.push(annotationParsed);
+                } else {
+                    importReport.annotationsAlreadyImportedList.push(annotationParsed);
                 }
             } else {
                 annotationsParsedNoConflictArray.push(annotationParsed);
@@ -178,7 +190,10 @@ export class PublicationNotesImportController {
         }
 
         if (!annotationsParsedAllArray.length) {
-            return { status: "nothing" };
+            return {
+                status: "nothing",
+                importReport,
+            };
         }
 
         if (
@@ -188,7 +203,10 @@ export class PublicationNotesImportController {
                 annotationsParsedNoConflictArray.length
             )
         ) {
-            return { status: "alreadyImported" };
+            return {
+                status: "alreadyImported",
+                importReport,
+            };
         }
 
         return {
@@ -201,6 +219,7 @@ export class PublicationNotesImportController {
             annotationsList: annotationsParsedNoConflictArray,
             annotationsConflictListOlder: annotationsParsedConflictOlderArray,
             annotationsConflictListNewer: annotationsParsedConflictNewerArray,
+            importReport,
         };
     }
 
@@ -245,47 +264,68 @@ export class PublicationNotesImportController {
         };
     }
 
+    private addUnresolvedNoteToReport(
+        report: PublicationNotesImportReport,
+        note: PublicationNote,
+    ) {
+        switch (note.readiumAnnotation?.import?.unresolved?.reason) {
+            case "source-mismatch":
+                report.sourceMismatch.push(note);
+                break;
+            case "unsupported-selector":
+                report.unsupportedSelector.push(note);
+                break;
+            case "selector-not-found":
+                report.selectorNotFound.push(note);
+                break;
+            case "ambiguous-match":
+                report.ambiguousMatch.push(note);
+                break;
+        }
+    }
+
     private normalizeAnnotationSources(
         annotations: IReadiumAnnotation[],
         spineItemHrefs: string[],
-    ): {
-        annotations: IReadiumAnnotation[];
-        rejectedSourceHrefs: string[];
-    } {
-        const rejectedSourceHrefs: string[] = [];
-        const normalizedAnnotations = annotations.map((annotation) => {
+    ): PublicationNotesNormalizedImportAnnotation[] {
+        return annotations.map((annotation) => {
             const sourceHref = annotation.target.source;
             const spineHref = resolveReadiumAnnotationSourceHref(sourceHref, spineItemHrefs);
 
             if (!spineHref) {
-                rejectedSourceHrefs.push(sourceHref);
-                return annotation;
+                return {
+                    annotation,
+                    unresolvedReason: "source-mismatch",
+                };
             }
 
             if (sourceHref !== spineHref) {
                 this.logger?.debug(`Normalize incoming annotation target.source href: "${sourceHref}" => "${spineHref}"`);
+                return {
+                    annotation: {
+                        ...annotation,
+                        target: {
+                            ...annotation.target,
+                            source: spineHref,
+                        },
+                    },
+                    originalTarget: annotation.target,
+                };
             }
 
             return {
-                ...annotation,
-                target: {
-                    ...annotation.target,
-                    source: spineHref,
-                },
+                annotation,
             };
         });
-
-        return {
-            annotations: normalizedAnnotations,
-            rejectedSourceHrefs,
-        };
     }
 
     private convertAnnotationToNote(
         incomingAnnotation: IReadiumAnnotation,
         fileName: string,
         currentTimestamp: number,
-    ): PublicationNote | undefined {
+        sourceUnresolvedReason?: PublicationNoteImportUnresolvedReason,
+        originalTarget?: IReadiumAnnotation["target"],
+    ): PublicationNote {
         const uuid = incomingAnnotation.id.split("urn:uuid:")[1] || this.idProvider.next();
         const cssSelector = incomingAnnotation.target.selector.find(isCssSelector);
         const textQuoteSelector = incomingAnnotation.target.selector.find(isTextQuoteSelector);
@@ -294,12 +334,14 @@ export class PublicationNotesImportController {
         const cfiFragmentSelector = incomingAnnotation.target.selector
             .filter(isFragmentSelector)
             .find(isCFIFragmentSelector);
+        const unsupportedSelector = !(cssSelector || textQuoteSelector || textPositionSelector || cfiFragmentSelector || cfiSelector);
+        const unresolvedReason: PublicationNoteImportUnresolvedReason | undefined =
+            sourceUnresolvedReason || (unsupportedSelector ? "unsupported-selector" : undefined);
 
-        if (!(cssSelector || textQuoteSelector || textPositionSelector || cfiFragmentSelector || cfiSelector)) {
+        if (unsupportedSelector) {
             this.logger?.debug(
                 `for ${uuid} no selector available (cssSelector || textQuoteSelector || textPositionSelector || cfiFragmentSelector || cfiSelector)`,
             );
-            return undefined;
         }
 
         const creator = incomingAnnotation.creator;
@@ -334,7 +376,22 @@ export class PublicationNotesImportController {
                 : undefined,
             group: incomingAnnotation.motivation === "bookmarking" ? "bookmark" : "annotation",
             readiumAnnotation: {
-                import: { target: incomingAnnotation.target },
+                import: {
+                    target: incomingAnnotation.target,
+                    originalTarget,
+                    unresolved: unresolvedReason
+                        ? {
+                              reason: unresolvedReason,
+                              source: incomingAnnotation.target.source,
+                              selectorTypes: incomingAnnotation.target.selector
+                                  .map((selector) => selector.type)
+                                  .filter((selectorType): selectorType is string => !!selectorType),
+                              message: unresolvedReason === "source-mismatch"
+                                  ? "The annotation source could not be matched to the publication spine."
+                                  : "The annotation does not include a supported selector.",
+                          }
+                        : undefined,
+                },
             },
         };
 

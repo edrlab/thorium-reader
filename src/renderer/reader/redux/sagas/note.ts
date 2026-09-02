@@ -30,8 +30,8 @@ import type { PublicationNote } from "readium-desktop/common/publication-notes";
 import { EDrawType, type TDrawType } from "readium-desktop/common/type/note.type";
 import { checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation, readiumAnnotationSelectorFromNote } from "../../readiumAnnotation/selector";
 import { clone } from "ramda";
-import { convertSelectorTargetToLocatorExtended } from "readium-desktop/common/readium/annotation/converter";
 import { logEvent } from "readium-desktop/renderer/common/analytics";
+import { resolveSelectorTargetToLocatorExtended } from "readium-desktop/common/readium/annotation/converter";
 import { getResourceCacheFromPublication } from "./resourceCache";
 import { selectPublicationNotes } from "../../publication-notes/selectors";
 import {
@@ -77,7 +77,7 @@ function createReadiumAnnotationSelectorController(
         createExportSelectors: (note, isLcp, sourceHref, xmlDom) =>
             readiumAnnotationSelectorFromNote(note, isLcp, sourceHref, xmlDom, r2Publication),
         convertImportTargetToLocatorExtended: (target, isBookmark, xmlDom, sourceHref) =>
-            convertSelectorTargetToLocatorExtended(target, undefined, isBookmark, xmlDom, sourceHref),
+            resolveSelectorTargetToLocatorExtended(target, undefined, isBookmark, xmlDom, sourceHref),
         hasGeneratedExportSelectors: checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation,
         onError: (e, note) =>
             debug(`ERROR: ${note.uuid} readium annotation selector background batch compute CRASH`, e),
@@ -114,8 +114,10 @@ function debugReadiumAnnotationSelectorControllerUpdate(
 
     if (update.kind === "exportSelector") {
         debug(`${update.previousNote.uuid} does not have any readiumAnnotationSelector so let's update the note with this new selectors: ${JSON.stringify(update.note.readiumAnnotation?.export?.selector, null, 2)}`);
-    } else {
+    } else if (update.kind === "importLocator") {
         debug(`${update.previousNote.uuid} doesn't have any locator so let's update the note with the new locator generated: ${JSON.stringify(update.note.locatorExtended, null, 2)}`);
+    } else {
+        debug(`${update.previousNote.uuid} import selectors could not be resolved: ${JSON.stringify(update.note.readiumAnnotation?.import?.unresolved, null, 2)}`);
     }
 }
 

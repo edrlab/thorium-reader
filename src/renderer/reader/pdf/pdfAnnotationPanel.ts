@@ -7,7 +7,12 @@
 
 import { clone } from "ramda";
 
-import type { PublicationNote } from "readium-desktop/common/publication-notes";
+import {
+    getPublicationNoteImportUnresolvedReasonLabel,
+    type PublicationNote,
+} from "readium-desktop/common/publication-notes/model";
+import { isTextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import type { I18nFunction } from "readium-desktop/common/services/translator";
 import { EDrawType, type TDrawType } from "readium-desktop/common/type/note.type";
 import type {
     IColor,
@@ -68,7 +73,11 @@ export function getAnnotationSelectionText(annotation: PublicationNote): string 
         return epubSelectionText;
     }
 
-    return annotation.pdfAnnotation?.quote || undefined;
+    if (annotation.pdfAnnotation?.quote) {
+        return annotation.pdfAnnotation.quote;
+    }
+
+    return annotation.readiumAnnotation?.import?.target.selector.find(isTextQuoteSelector)?.exact || undefined;
 }
 
 export function getAnnotationCardText(annotation: PublicationNote, fallback: string): string {
@@ -79,6 +88,20 @@ export function getPdfAnnotationPageLabel(annotation: PublicationNote, pageLabel
     return typeof annotation.pdfAnnotation?.page === "number"
         ? `${pageLabel} ${annotation.pdfAnnotation.page}`
         : undefined;
+}
+
+export function getReadiumAnnotationImportUnresolvedReasonLabel(
+    annotation: PublicationNote,
+    translate: I18nFunction,
+): string | undefined {
+
+    const reason = annotation.readiumAnnotation?.import?.unresolved?.reason;
+    if (!reason) {
+        return undefined;
+    }
+
+    const reasonLabel = getPublicationNoteImportUnresolvedReasonLabel(reason, translate);
+    return `${translate("message.annotations.importReportUnresolvedImportedNotes")}: ${reasonLabel}`;
 }
 
 function getPdfAnnotationVisualSortPosition(rect?: TPdfAnnotationRectTransport) {
@@ -292,6 +315,10 @@ export function buildAnnotationPanelSaveNote(
 
     if (annotation.creator) {
         note.creator = clone(annotation.creator);
+    }
+
+    if (annotation.readiumAnnotation) {
+        note.readiumAnnotation = clone(annotation.readiumAnnotation);
     }
 
     return note;

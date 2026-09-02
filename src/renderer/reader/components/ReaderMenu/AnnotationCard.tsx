@@ -41,7 +41,7 @@ import { EDrawType, type TDrawType } from "readium-desktop/common/type/note.type
 import DOMPurify from "dompurify";
 import { marked } from "readium-desktop/renderer/common/marked/marked";
 import { computeProgression } from "./ReaderMenu";
-import { buildAnnotationPanelSaveNote, canDeleteAnnotationInPanel, canEditAnnotationInPanel, getAnnotationCardText, getAnnotationPanelNavigation, getAnnotationSelectionText, getPdfAnnotationPageLabel } from "../../pdf/pdfAnnotationPanel";
+import { buildAnnotationPanelSaveNote, canDeleteAnnotationInPanel, canEditAnnotationInPanel, getAnnotationCardText, getAnnotationPanelNavigation, getAnnotationSelectionText, getPdfAnnotationPageLabel, getReadiumAnnotationImportUnresolvedReasonLabel } from "../../pdf/pdfAnnotationPanel";
 
 import debug_ from "debug";
 
@@ -113,6 +113,7 @@ export const AnnotationCard: React.FC<{ annotation: PublicationNote, isEdited: b
     const selectionText = getAnnotationSelectionText(annotation);
     const pdfPageLabel = getPdfAnnotationPageLabel(annotation, __("reader.navigation.page"));
     const annotationPanelNavigation = getAnnotationPanelNavigation(annotation);
+    const unresolvedReasonLabel = getReadiumAnnotationImportUnresolvedReasonLabel(annotation, __);
     const annotationButtonRef = React.useRef<HTMLButtonElement>();
 
     React.useEffect(() => {
@@ -124,8 +125,8 @@ export const AnnotationCard: React.FC<{ annotation: PublicationNote, isEdited: b
         }
     }, [focusRequestId, isSelected, isEditing]);
 
-    const locationText = pdfPageLabel || (percentRounded >= 0 ? `${percentRounded}% ` : "");
-    const locationLabel = pdfPageLabel ? __("reader.navigation.page") : __("publication.progression.title");
+    const locationText = unresolvedReasonLabel || pdfPageLabel || (annotation.locatorExtended && percentRounded >= 0 ? `${percentRounded}% ` : "");
+    const locationLabel = unresolvedReasonLabel ? __("message.annotations.importReportUnresolvedImportedNotes") : (pdfPageLabel ? __("reader.navigation.page") : __("publication.progression.title"));
 
     if (!uuid) {
         return <></>;
@@ -163,7 +164,9 @@ export const AnnotationCard: React.FC<{ annotation: PublicationNote, isEdited: b
                 : <button className={classNames(stylesAnnotations.annotation_name, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
                     ref={annotationButtonRef}
                     // title={bname}
-                    aria-label={annotationPanelNavigation ? `${__("reader.goToContent")} (${btext})` : btext}
+                    title={unresolvedReasonLabel}
+                    aria-disabled={annotationPanelNavigation ? undefined : "true"}
+                    aria-label={annotationPanelNavigation ? `${__("reader.goToContent")} (${btext})` : (unresolvedReasonLabel ? `${btext} (${unresolvedReasonLabel})` : btext)}
                     aria-current={isSelected ? "true" : undefined}
                     style={{ borderLeft: dockedEditAnnotation && "2px solid var(--color-brand-primary)" }}
                     onClick={(e) => {
@@ -267,7 +270,7 @@ export const AnnotationCard: React.FC<{ annotation: PublicationNote, isEdited: b
                 </div>
                 <div aria-label={locationLabel}>
                     <SVG ariaHidden svg={BookOpenIcon} />
-                    <p>{locationText}</p>
+                    <p title={locationText}>{locationText}</p>
                 </div>
                 {creatorName
                     ?

@@ -22,8 +22,13 @@ import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { takeSpawnLatest } from "readium-desktop/common/redux/sagas/takeSpawnLatest";
 import { getTranslator, type I18nFunction } from "readium-desktop/common/services/translator";
 import {
+    getPublicationNoteImportSelectorTypesLabel,
+    getPublicationNoteImportUnresolvedReasonLabel,
     hydratePublicationNotesView,
+    publicationNoteImportUnresolvedReasons,
     type PublicationNote,
+    type PublicationNoteImportUnresolvedReason,
+    type PublicationNotesImportReport,
     withoutPublicationNotesViewPagination,
 } from "readium-desktop/common/publication-notes";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
@@ -284,6 +289,131 @@ function* savePublicationNotesHtmlExport(
     );
 }
 
+function countUnresolvedImportedNotes(
+    notes: PublicationNote[],
+): Record<PublicationNoteImportUnresolvedReason, number> {
+
+    return notes.reduce<Record<PublicationNoteImportUnresolvedReason, number>>((acc, note) => {
+        const reason = note.readiumAnnotation?.import?.unresolved?.reason;
+        if (reason) {
+            acc[reason] += 1;
+        }
+        return acc;
+    }, {
+        "source-mismatch": 0,
+        "unsupported-selector": 0,
+        "selector-not-found": 0,
+        "ambiguous-match": 0,
+    });
+}
+
+function formatUnresolvedCounts(
+    counts: Record<PublicationNoteImportUnresolvedReason, number>,
+    translate: I18nFunction,
+): string {
+
+    return publicationNoteImportUnresolvedReasons
+        .filter((reason) => counts[reason] > 0)
+        .map((reason) => `${getPublicationNoteImportUnresolvedReasonLabel(reason, translate)}: ${counts[reason]}`)
+        .join("; ");
+}
+
+function formatUnsupportedSelectorNoteItem(
+    note: PublicationNote,
+    translate: I18nFunction,
+): string {
+
+    return translate("message.annotations.unsupportedSelectorItem", {
+        id: note.uuid,
+        source: note.readiumAnnotation?.import?.unresolved?.source || note.readiumAnnotation?.import?.target.source || "",
+        selectorTypes: getPublicationNoteImportSelectorTypesLabel(
+            note,
+            translate("message.annotations.unsupportedSelectorNoSelector"),
+        ),
+    });
+}
+
+function formatUnsupportedSelectorDiagnostics(
+    notes: PublicationNote[],
+    translate: I18nFunction,
+): string {
+
+    if (!notes.length) {
+        return "";
+    }
+
+    return `${translate("message.annotations.unsupportedSelectorSummary", {
+        count: notes.length,
+    })} ${notes
+        .map((note) => formatUnsupportedSelectorNoteItem(note, translate))
+        .join("; ")}`;
+}
+
+function formatImportReportDiagnostics(
+    importReport: PublicationNotesImportReport,
+    translate: I18nFunction,
+): string {
+
+    const unresolvedCounts: Record<PublicationNoteImportUnresolvedReason, number> = {
+        "source-mismatch": importReport.sourceMismatch.length,
+        "unsupported-selector": 0,
+        "selector-not-found": importReport.selectorNotFound.length,
+        "ambiguous-match": importReport.ambiguousMatch.length,
+    };
+    const importReportConflictNewerLabel = translate("message.annotations.importReportConflictNewer");
+    const importReportConflictOlderLabel = translate("message.annotations.importReportConflictOlder");
+    const importReportAlreadyImportedLabel = translate("message.annotations.importReportAlreadyImported");
+    const importReportPrefixLabel = translate("message.annotations.importReportPrefix");
+    const parts = [
+        formatUnresolvedCounts(unresolvedCounts, translate),
+        formatUnsupportedSelectorDiagnostics(importReport.unsupportedSelector, translate),
+        importReport.annotationsConflictListNewer.length
+            ? `${importReportConflictNewerLabel}: ${importReport.annotationsConflictListNewer.length}`
+            : "",
+        importReport.annotationsConflictListOlder.length
+            ? `${importReportConflictOlderLabel}: ${importReport.annotationsConflictListOlder.length}`
+            : "",
+        importReport.annotationsAlreadyImportedList.length
+            ? `${importReportAlreadyImportedLabel}: ${importReport.annotationsAlreadyImportedList.length}`
+            : "",
+    ].filter((part) => !!part);
+
+    return parts.length ? `${importReportPrefixLabel}: ${parts.join("; ")}` : "";
+}
+
+function appendImportReportDiagnostics(
+    message: string,
+    importReport: PublicationNotesImportReport,
+    translate: I18nFunction,
+): string {
+
+    const importReportDiagnostics = formatImportReportDiagnostics(importReport, translate);
+    return importReportDiagnostics ? `${message} ${importReportDiagnostics}` : message;
+}
+
+function appendImportedUnresolvedDiagnostics(
+    message: string,
+    importedNotes: PublicationNote[],
+    translate: I18nFunction,
+): string {
+
+    const unresolvedCounts = countUnresolvedImportedNotes(importedNotes);
+    unresolvedCounts["unsupported-selector"] = 0;
+    const unresolvedDiagnostics = formatUnresolvedCounts(unresolvedCounts, translate);
+    const unsupportedSelectorDiagnostics = formatUnsupportedSelectorDiagnostics(
+        importedNotes.filter((note) => note.readiumAnnotation?.import?.unresolved?.reason === "unsupported-selector"),
+        translate,
+    );
+    const diagnostics = [
+        unresolvedDiagnostics ? `${translate("message.annotations.importReportUnresolvedImportedNotes")}: ${unresolvedDiagnostics}.` : "",
+        unsupportedSelectorDiagnostics,
+    ].filter((part) => !!part);
+
+    return diagnostics.length
+        ? `${message} ${diagnostics.join(" ")}`
+        : message;
+}
+
 function* handlePublicationNotesImportPreviewStatus(
     importPreview: PublicationNotesImportPreview,
     readerPublicationIdentifier: string | undefined,
@@ -318,21 +448,15 @@ function* handlePublicationNotesImportPreviewStatus(
             ));
             return true;
 
-        case "rejectedForeignAnnotations":
-            debug("Rejected incoming Annotations target.source(hrefs):", importPreview.sourceHrefs);
-            debug("ERROR: At least one annotation is rejected and not match with the current publication SpineItem, see above");
-            yield* putTyped(toastActions.openRequest.build(
-                ToastType.Error,
-                translate("message.annotations.noBelongTo"),
-                readerPublicationIdentifier,
-            ));
-            return true;
-
         case "nothing":
             debug("there are no annotations ready to be imported, exit");
             yield* putTyped(toastActions.openRequest.build(
                 ToastType.Success,
-                translate("message.annotations.nothing"),
+                appendImportReportDiagnostics(
+                    translate("message.annotations.nothing"),
+                    importPreview.importReport,
+                    translate,
+                ),
                 readerPublicationIdentifier,
             ));
             return true;
@@ -341,7 +465,11 @@ function* handlePublicationNotesImportPreviewStatus(
             debug("all annotations are already imported, exit");
             yield* putTyped(toastActions.openRequest.build(
                 ToastType.Success,
-                translate("message.annotations.alreadyImported"),
+                appendImportReportDiagnostics(
+                    translate("message.annotations.alreadyImported"),
+                    importPreview.importReport,
+                    translate,
+                ),
                 readerPublicationIdentifier,
             ));
             return true;
@@ -385,6 +513,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
 
     debug("FilePath=", filePath);
     const fileName = path.basename(filePath).slice(0, -1 * EXT_ANNOTATIONS.length);
+    let importedNotes: PublicationNote[] = [];
 
     try {
 
@@ -428,6 +557,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 annotationsList: importPreview.annotationsList,
                 annotationsConflictListOlder: importPreview.annotationsConflictListOlder,
                 annotationsConflictListNewer: importPreview.annotationsConflictListNewer,
+                importReport: importPreview.importReport,
                 winId,
             },
         ));
@@ -440,7 +570,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         }
 
         const importResult = yield* callTyped(() => importController.apply(importPreview, importDecision));
-        const importedNotes = importResult.changes.map(({ note }) => note);
+        importedNotes = importResult.changes.map(({ note }) => note);
         const previousNotes = importResult.changes
             .map(({ previousNote }) => previousNote)
             .filter((note): note is PublicationNote => !!note);
@@ -461,7 +591,15 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
 
     debug("Annotations importer success and exit");
     yield* spawnPublicationAnalyticsEvent(publicationAnalyticsEvents.importAnnotations, analyticsParams);
-    yield* putTyped(toastActions.openRequest.build(ToastType.Success, __("message.annotations.success"), readerPublicationIdentifier));
+    yield* putTyped(toastActions.openRequest.build(
+        ToastType.Success,
+        appendImportedUnresolvedDiagnostics(
+            __("message.annotations.success"),
+            importedNotes,
+            __,
+        ),
+        readerPublicationIdentifier,
+    ));
     return;
 }
 

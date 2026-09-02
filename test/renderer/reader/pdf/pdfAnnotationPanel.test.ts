@@ -1,6 +1,8 @@
 import { expect, jest, test } from "@jest/globals";
 
+import type { ITextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import type { PublicationNote } from "readium-desktop/common/publication-notes";
+import type { I18nFunction } from "readium-desktop/common/services/translator";
 import { EDrawType } from "readium-desktop/common/type/note.type";
 import {
     buildAnnotationPanelSaveNote,
@@ -17,6 +19,7 @@ import {
     getPdfAnnotationSelectionMenuAction,
     getPdfAnnotationNavigationTarget,
     getPdfAnnotationPageLabel,
+    getReadiumAnnotationImportUnresolvedReasonLabel,
     isPdfAnnotationPanelNote,
     normalizePdfAnnotationNavigationRect,
 } from "readium-desktop/renderer/reader/pdf/pdfAnnotationPanel";
@@ -26,6 +29,14 @@ const color = {
     green: 20,
     blue: 30,
 };
+
+const translate = ((key: string) => ({
+    "message.annotations.importReportReasonAmbiguousMatch": "ambiguous match",
+    "message.annotations.importReportReasonSelectorNotFound": "selector not found",
+    "message.annotations.importReportReasonSourceMismatch": "source mismatch",
+    "message.annotations.importReportReasonUnsupportedSelector": "unsupported selector",
+    "message.annotations.importReportUnresolvedImportedNotes": "Unresolved imported notes",
+}[key] || key)) as I18nFunction;
 
 function createPdfAnnotationNote(overrides: Partial<PublicationNote> = {}): PublicationNote {
     return {
@@ -324,6 +335,44 @@ test("annotation panel text keeps EPUB locator text precedence", () => {
     });
 
     expect(getAnnotationSelectionText(note)).toBe("EPUB selected text");
+});
+
+test("annotation panel exposes unresolved imported annotation state", () => {
+    const source = createEpubAnnotationNote({
+        locatorExtended: undefined,
+        readiumAnnotation: {
+            import: {
+                target: {
+                    source: "chapter.xhtml",
+                    selector: [{
+                        type: "TextQuoteSelector",
+                        exact: "Imported quote",
+                        prefix: "",
+                        suffix: "",
+                    } as ITextQuoteSelector],
+                },
+                unresolved: {
+                    reason: "selector-not-found",
+                    source: "chapter.xhtml",
+                    selectorTypes: ["TextQuoteSelector"],
+                },
+            },
+        },
+    });
+
+    const saved = buildAnnotationPanelSaveNote(source, {
+        color,
+        comment: "updated imported comment",
+        drawType: "solid_background",
+        tags: [],
+        modified: 4000,
+    });
+
+    expect(getAnnotationSelectionText(source)).toBe("Imported quote");
+    expect(getAnnotationCardText(source, "Fallback title")).toBe("Imported quote");
+    expect(getReadiumAnnotationImportUnresolvedReasonLabel(source, translate)).toBe("Unresolved imported notes: selector not found");
+    expect(saved.readiumAnnotation).toEqual(source.readiumAnnotation);
+    expect(saved.readiumAnnotation).not.toBe(source.readiumAnnotation);
 });
 
 test("PDF annotation page label uses pdfAnnotation page metadata", () => {

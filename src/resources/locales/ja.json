@@ -165,10 +165,8 @@
                 "title": ""
             }
         },
-        "deleteAnnotations": "メモを削除しますか？",
-        "deleteAnnotationsText": "{{-count}} 件のメモを削除しますか？",
-        "deleteBookmarks": "しおりを削除しますか？",
-        "deleteBookmarksText": "しおり、 {{- count}} つを削除しますか？",
+        "deleteAnnotations": "",
+        "deleteBookmarks": "",
         "deleteFeed": "この図書目録を削除しますか？",
         "deletePublication": "この本を削除しますか？",
         "deletePublicationWithNotes": "",
@@ -235,9 +233,23 @@
             "alreadyImported": "すべてのメモがすでに取り込まれています。",
             "emptyFile": "ファイル内にメモはありません。",
             "errorParsing": "ファイル解析中にエラーが発生しました： ",
-            "noBelongTo": "メモを取りこめません。少なくとも1つのメモがこの本に関するものではありません。",
+            "importReportAlreadyImported": "",
+            "importReportAmbiguousMatch": "",
+            "importReportConflictNewer": "",
+            "importReportConflictOlder": "",
+            "importReportPrefix": "",
+            "importReportReasonAmbiguousMatch": "",
+            "importReportReasonSelectorNotFound": "",
+            "importReportReasonSourceMismatch": "",
+            "importReportReasonUnsupportedSelector": "",
+            "importReportSelectorNotFound": "",
+            "importReportSourceMismatch": "",
+            "importReportUnresolvedImportedNotes": "",
             "nothing": "取りこめる状態のメモがないため、取りこみを中止します",
-            "success": "取り込みが正常に完了しました。"
+            "success": "取り込みが正常に完了しました。",
+            "unsupportedSelectorItem": "",
+            "unsupportedSelectorNoSelector": "",
+            "unsupportedSelectorSummary": ""
         },
         "download": {
             "cancelled": "",
