@@ -16,7 +16,7 @@ import * as openError from "./openError";
 import * as openRequest from "./openRequest";
 import * as disableRTLFlip from "./rtlFlip";
 import * as setTheLock from "./setTheLock";
-import * as note from "./note";
+import * as publicationNotes from "./publicationNotes";
 import * as divina from "./divina";
 import * as pdfConfig from "./pdfConfig";
 import * as setLocator from "./setLocator";
@@ -34,7 +34,7 @@ export {
     fullScreenRequest,
     clipboardCopy,
     disableRTLFlip,
-    note,
+    publicationNotes,
     divina,
     setTheLock,
     print,

@@ -5,10 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as addUpdate from "./addUpdate";
-import * as remove from "./remove";
-
-export {
-    addUpdate,
-    remove,
-};
+export interface INoteExportState {
+    overrideHTMLTemplate: boolean;
+    htmlContent: string;
+}
