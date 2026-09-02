@@ -1,6 +1,7 @@
 import { describe, expect, it } from "@jest/globals";
-import type { PublicationNote } from "readium-desktop/common/publication-notes";
+import type { PublicationNote, PublicationNotesViewFilter } from "readium-desktop/common/publication-notes";
 import { readerActions } from "readium-desktop/common/redux/actions";
+import { publicationNotesViewInitialState } from "readium-desktop/common/redux/states/renderer/publicationNotes";
 import { EDrawType } from "readium-desktop/common/type/note.type";
 
 function createNote(overrides: Partial<PublicationNote> = {}): PublicationNote {
@@ -16,20 +17,36 @@ function createNote(overrides: Partial<PublicationNote> = {}): PublicationNote {
 }
 
 describe("reader publication note command actions", () => {
-
     it("builds a snapshot action with a consistent publication destination", () => {
         const action = readerActions.publicationNotes.snapshot.build("pub-a", {
+            ...publicationNotesViewInitialState,
             publicationIdentifier: "stale-pub",
             notes: [],
             revision: 1,
-            byId: {},
-            ids: [],
-            tagIndex: {},
-            totalCount: 0,
         });
 
         expect(action.destination.publicationIdentifier).toBe("pub-a");
         expect(action.payload.viewState.publicationIdentifier).toBe("pub-a");
+    });
+
+    it("builds a filter action with pagination for main-process view hydration", () => {
+        const filter = {
+            group: "annotation",
+            tags: ["review"],
+            sort: "lastCreated",
+            pagination: {
+                page: 2,
+                pageSize: 20,
+            },
+        } satisfies PublicationNotesViewFilter;
+        const action = readerActions.publicationNotes.filter.build("pub-a", filter);
+
+        expect(action.type).toBe(readerActions.publicationNotes.filter.ID);
+        expect(action.destination.publicationIdentifier).toBe("pub-a");
+        expect(action.payload).toEqual({
+            publicationIdentifier: "pub-a",
+            filter,
+        });
     });
 
     it("builds a save command with a publication destination and note payload", () => {

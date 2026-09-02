@@ -10,6 +10,7 @@ import type {
     PublicationNoteDeleteChange,
     PublicationNoteEntity,
     PublicationNotesSnapshot,
+    PublicationNotesViewFilter,
     PublicationNotesViewState,
 } from "./model";
 import type {
@@ -43,9 +44,13 @@ export class PublicationNotesController<TNote extends PublicationNoteEntity> {
         this.logger = dependencies.logger;
     }
 
-    public async list(publicationIdentifier: string): Promise<PublicationNotesViewState<TNote>> {
+    public async list(
+        publicationIdentifier: string,
+        filter?: PublicationNotesViewFilter,
+        spineItemHrefs?: string[],
+    ): Promise<PublicationNotesViewState<TNote>> {
         const snapshot = await this.snapshot(publicationIdentifier);
-        return serializePublicationNotesViewState(snapshot);
+        return serializePublicationNotesViewState(snapshot, { filter, spineItemHrefs });
     }
 
     public async get(publicationIdentifier: string, noteIdentifier: string): Promise<TNote | undefined> {

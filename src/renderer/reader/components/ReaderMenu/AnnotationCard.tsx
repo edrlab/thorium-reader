@@ -47,13 +47,13 @@ import debug_ from "debug";
 
 const debugPdfAnnotationsPanel = debug_("readium-desktop:renderer:reader:pdf:annotations:panel");
 
-export const AnnotationCard: React.FC<{ annotation: PublicationNote, isEdited: boolean, isSelected: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void, setCreatorFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator" | "goToPdfAnnotation">> = (props) => {
+export const AnnotationCard: React.FC<{ annotation: PublicationNote, isEdited: boolean, isSelected: boolean, focusRequestId?: string, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void, setCreatorFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator" | "goToPdfAnnotation">> = (props) => {
 
     const { goToLocator, goToPdfAnnotation, setTagFilter, setCreatorFilter } = props;
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const dockingMode = useReaderConfig("readerDockingMode");
     const dockedMode = dockingMode !== "full";
-    const { annotation, isEdited, isSelected, triggerEdition } = props;
+    const { annotation, isEdited, isSelected, focusRequestId, triggerEdition } = props;
     const { uuid, textualValue, tags: tagsStringArrayMaybeUndefined } = annotation;
     const canEditAnnotation = canEditAnnotationInPanel(annotation);
     const canDeleteAnnotation = canDeleteAnnotationInPanel(annotation);
@@ -122,7 +122,7 @@ export const AnnotationCard: React.FC<{ annotation: PublicationNote, isEdited: b
                 annotationButtonRef.current?.focus();
             }, 0);
         }
-    }, [isSelected, isEditing]);
+    }, [focusRequestId, isSelected, isEditing]);
 
     const locationText = pdfPageLabel || (percentRounded >= 0 ? `${percentRounded}% ` : "");
     const locationLabel = pdfPageLabel ? __("reader.navigation.page") : __("publication.progression.title");

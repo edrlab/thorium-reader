@@ -44,11 +44,14 @@ export function readerPublicationNotesViewReducer(
             notes = [...state.notes.filter((note) => note.uuid !== newNote.uuid), newNote];
         }
 
-        return serializePublicationNotesViewState({
-            publicationIdentifier: typedAction.payload.publicationIdentifier,
-            notes,
-            revision: state.revision + 1,
-        });
+        return {
+            ...serializePublicationNotesViewState({
+                publicationIdentifier: typedAction.payload.publicationIdentifier,
+                notes,
+                revision: state.revision + 1,
+            }),
+            view: state.view,
+        };
     }
 
     if (action.type === readerActions.publicationNotes.commands.remove.ID) {
@@ -62,11 +65,14 @@ export function readerPublicationNotesViewReducer(
 
         const notes = state.notes.filter((note) => note.uuid !== typedAction.payload.note.uuid);
 
-        return serializePublicationNotesViewState({
-            publicationIdentifier: typedAction.payload.publicationIdentifier,
-            notes,
-            revision: state.revision + 1,
-        });
+        return {
+            ...serializePublicationNotesViewState({
+                publicationIdentifier: typedAction.payload.publicationIdentifier,
+                notes,
+                revision: state.revision + 1,
+            }),
+            view: state.view,
+        };
     }
 
     return state;

@@ -12,16 +12,34 @@ import { rootSaga } from "readium-desktop/renderer/reader/redux/sagas";
 import { applyMiddleware, legacy_createStore as createStore, type Store } from "redux";
 import { composeWithDevTools } from "@redux-devtools/extension";
 import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
+import { createReduxHistoryContext } from "redux-first-history";
+import { createMemoryHistory } from "history";
+import type { History } from "history";
 
 import { locatorHrefWatcherMiddleware } from "../middleware/locatorHrefWatcher";
 
-export function initStore(preloadedState: Partial<IReaderRootState>): [Store<IReaderRootState>, SagaMiddleware] {
+export function initStore(preloadedState: Partial<IReaderRootState>): [
+    Store<IReaderRootState>,
+    History & {
+        listenObject: boolean;
+    },
+    SagaMiddleware,
+] {
+    const history: History = createMemoryHistory({
+        initialEntries: ["/reader"],
+    });
+    const {
+        createReduxHistory,
+        routerMiddleware,
+        routerReducer,
+    } = createReduxHistoryContext({ history });
     const sagaMiddleware = createSagaMiddleware();
     const store = createStore(
-        rootReducer(),
+        rootReducer(routerReducer),
         preloadedState,
         composeWithDevTools(
             applyMiddleware(
+                routerMiddleware,
                 locatorHrefWatcherMiddleware,
                 reduxSyncMiddleware,
                 sagaMiddleware,
@@ -29,5 +47,6 @@ export function initStore(preloadedState: Partial<IReaderRootState>): [Store<IRe
         ),
     );
     sagaMiddleware.run(rootSaga);
-    return [store, sagaMiddleware];
+    const reduxHistory = createReduxHistory(store);
+    return [store, reduxHistory, sagaMiddleware];
 }

@@ -16,6 +16,7 @@ import "readium-desktop/renderer/assets/styles/global.scss";
 import * as path from "node:path";
 import * as React from "react";
 import { Provider } from "react-redux";
+import { HistoryRouter } from "redux-first-history/rr6";
 import {
     _NODE_MODULE_RELATIVE_URL, _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
@@ -29,10 +30,11 @@ import ToastManager from "readium-desktop/renderer/common/components/toast/Toast
 
 import Reader from "./Reader";
 import { getTranslator } from "readium-desktop/common/services/translator";
-import { getStore } from "../createStore";
+import { getReduxHistory, getStore } from "../createStore";
 import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
 import { ImageClickManagerImgViewerOnly } from "./ImageClickManagerViewerOnly";
 import { URL_PROTOCOL_FILEX, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
+import { ReaderMenuRouteController } from "./ReaderMenuRouteController";
 
 export default class App extends React.Component<{}, undefined> {
 
@@ -285,9 +287,12 @@ url("${rcssPath}/fonts/iAWriterDuospace-Regular.ttf") format("truetype");
         return (
             <Provider store={getStore()}>
                 <TranslatorContext.Provider value={getTranslator()}>
-                    <Reader />
-                    <ToastManager />
-                    <ImageClickManagerImgViewerOnly />
+                    <HistoryRouter history={getReduxHistory()}>
+                        <ReaderMenuRouteController />
+                        <Reader />
+                        <ToastManager />
+                        <ImageClickManagerImgViewerOnly />
+                    </HistoryRouter>
                 </TranslatorContext.Provider>
             </Provider>
         );
