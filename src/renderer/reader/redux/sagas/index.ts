@@ -35,6 +35,7 @@ import { createOrGetPdfEventBus } from "../../pdf/driver";
 import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import { buildPublicationAnalyticsParams } from "readium-desktop/common/analytics/publication";
 import { logEvent } from "readium-desktop/renderer/common/analytics";
+import { selectPublicationNotes } from "../../publication-notes/selectors";
 
 // Logger
 const filename_ = "readium-desktop:renderer:reader:saga:index";
@@ -180,7 +181,7 @@ export function* rootSaga() {
 
             yield* delayTyped(1000); // wait for the reader start stabilisation (aka highlight mounting)
 
-            const notes = yield* selectTyped((state: IReaderRootState) => state.reader.note);
+            const notes = yield* selectTyped(selectPublicationNotes);
             for (const note of notes) {
 
                 yield* delayTyped(10); // 100 notes equals to 1 + 1 seconds , seems acceptable to not disturb user with a tiny compute machine
