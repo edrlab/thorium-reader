@@ -13,8 +13,12 @@ import * as React from "react";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import classNames from "classnames";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
+import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 
 const SettingsRecoveryConfirmDialog = (props: {
     open: boolean;
@@ -24,6 +28,8 @@ const SettingsRecoveryConfirmDialog = (props: {
     onConfirm: () => void;
     onOpenChange: (open: boolean) => void;
 }) => {
+    const [__] = useTranslator();
+
     return (
         <AlertDialog.Root open={props.open} onOpenChange={props.onOpenChange}>
             <AlertDialog.Portal>
@@ -38,7 +44,7 @@ const SettingsRecoveryConfirmDialog = (props: {
                     <div className={stylesAlertModals.AlertDialogButtonContainer}>
                         <AlertDialog.Cancel asChild>
                             <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.abort)}>
-                                Cancel
+                                {__("dialog.cancel")}
                             </button>
                         </AlertDialog.Cancel>
                         <AlertDialog.Action asChild>
@@ -60,6 +66,9 @@ const SettingsRecovery = (props: {
     defaultDirectory: string;
     userDirectory: string;
 }) => {
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const isRTL = langStringIsRTL(locale);
+    const [__] = useTranslator();
     const [confirmRecoveryOpen, setConfirmRecoveryOpen] = React.useState(false);
     const [isRecoveryLoading, setIsRecoveryLoading] = React.useState(false);
     const [isRecoveryChecked, setIsRecoveryChecked] = React.useState(false);
@@ -74,6 +83,7 @@ const SettingsRecovery = (props: {
             (findAllRecoverableResult?.data?.result || []),
         [findAllRecoverableResult],
     );
+    const recoverablePublicationsCount = recoverablePublications.length;
 
     const checkRecoverablePublications = React.useCallback(() => {
         setIsRecoveryLoading(true);
@@ -111,49 +121,51 @@ const SettingsRecovery = (props: {
             <SettingsRecoveryConfirmDialog
                 open={confirmRecoveryOpen}
                 onOpenChange={setConfirmRecoveryOpen}
-                title="Recover publications"
-                description={`Thorium found ${recoverablePublications.length} publication${recoverablePublications.length > 1 ? "s" : ""} on disk that ${recoverablePublications.length > 1 ? "are" : "is"} missing from the database. Do you want to import ${recoverablePublications.length > 1 ? "them" : "it"} back into Thorium?`}
-                confirmLabel="Recover"
+                title={__("settings.storage.recovery.dialog.title")}
+                description={__("settings.storage.recovery.dialog.description", { count: recoverablePublicationsCount })}
+                confirmLabel={__("settings.storage.recovery.dialog.confirm")}
                 onConfirm={recoverPublications}
             />
 
-            <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }}>
+            <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }} dir={isRTL ? "rtl" : "ltr"}>
                 <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                    <h4>Recovery</h4>
+                    <h4>{__("settings.storage.recovery.title")}</h4>
                     {!isRecoveryChecked && !isRecoveryLoading ? (
                         <p style={{ margin: 0 }}>
-                            Check publication storage to find publications that can be safely recovered.
+                            {__("settings.storage.recovery.description")}
                         </p>
                     ) : null}
                     {isRecoveryLoading ? (
-                        <p style={{ margin: 0 }}>Checking publication storage...</p>
+                        <p style={{ margin: 0 }}>{__("settings.storage.recovery.checking")}</p>
                     ) : null}
-                    {isRecoveryChecked && !isRecoveryLoading && recoverablePublications.length ? (
+                    {isRecoveryChecked && !isRecoveryLoading && recoverablePublicationsCount ? (
                         <div className={stylesSettings.session_text} style={{ margin: 0, alignItems: "flex-start" }}>
                             <SVG ariaHidden svg={InfoIcon} />
                             <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                                 <p style={{ margin: 0, fontWeight: 600 }}>
-                                    One or more publications were found on disk but are missing from the database. Recovery is possible.
+                                    {__("settings.storage.recovery.available")}
                                 </p>
                                 <p style={{ margin: 0 }}>
-                                    {recoverablePublications.length} publication{recoverablePublications.length > 1 ? "s" : ""} can be recovered with the original storage identifier.
+                                    {__("settings.storage.recovery.recoverableCount", { count: recoverablePublicationsCount })}
                                 </p>
                             </div>
                         </div>
                     ) : null}
-                    {isRecoveryChecked && !isRecoveryLoading && !recoverablePublications.length ? (
-                        <p style={{ margin: 0 }}>No recoverable publications were found.</p>
+                    {isRecoveryChecked && !isRecoveryLoading && !recoverablePublicationsCount ? (
+                        <p style={{ margin: 0 }}>{__("settings.storage.recovery.none")}</p>
                     ) : null}
                 </div>
 
                 <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-                    {isRecoveryChecked && recoverablePublications.length ? (
+                    {isRecoveryChecked && recoverablePublicationsCount ? (
                         <button
                             className={stylesSettings.btn_primary}
                             disabled={isRecoveryLoading || isRecovering}
                             onClick={() => setConfirmRecoveryOpen(true)}
                         >
-                            {isRecovering ? "Recovering..." : "Recover publications"}
+                            {isRecovering ?
+                                __("settings.storage.recovery.actions.recovering") :
+                                __("settings.storage.recovery.actions.recover")}
                         </button>
                     ) : null}
                     <button
@@ -164,7 +176,9 @@ const SettingsRecovery = (props: {
                                 checkRecoverablePublications();
                             }}
                     >
-                        {isRecoveryChecked ? "Check again" : "Check for recoverable publications"}
+                        {isRecoveryChecked ?
+                            __("settings.storage.recovery.actions.checkAgain") :
+                            __("settings.storage.recovery.actions.check")}
                     </button>
                 </div>
             </section>

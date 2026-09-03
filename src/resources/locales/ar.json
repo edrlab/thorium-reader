@@ -288,6 +288,15 @@
             "folderNotFound": "لم نتمكن من العثور على مجلد الكتاب. أعد جلبه أو عدل إعدادات ذاكرة التخزين الإضافية في الإعدادات > التخزين."
         },
         "storage": {
+            "recovery": {
+                "failure": "",
+                "success_few": "",
+                "success_many": "",
+                "success_one": "",
+                "success_other": "",
+                "success_two": "",
+                "success_zero": ""
+            },
             "removed": "مجلد الكتاب تم حذفه.",
             "updateFailed": "فشل تحديث مجلد الكتاب: {{- message}}",
             "updated": "تم تحديث مجلد الكتاب."
@@ -1327,6 +1336,35 @@
                 "defaultInternal": "ذاكرة النظام",
                 "externalStorage": "الذاكرة الخارجية",
                 "title": "الأماكن"
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "description_few": "",
+                    "description_many": "",
+                    "description_one": "",
+                    "description_other": "",
+                    "description_two": "",
+                    "description_zero": "",
+                    "title": ""
+                },
+                "none": "",
+                "recoverableCount_few": "",
+                "recoverableCount_many": "",
+                "recoverableCount_one": "",
+                "recoverableCount_other": "",
+                "recoverableCount_two": "",
+                "recoverableCount_zero": "",
+                "title": ""
             }
         },
         "tabs": {

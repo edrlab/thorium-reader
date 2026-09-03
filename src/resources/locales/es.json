@@ -273,6 +273,12 @@
             "folderNotFound": "No se encuentra el directorio de esta publicación. Vuelve a importarla, o configura el almacenamiento adicional en Opciones > Almacenamiento."
         },
         "storage": {
+            "recovery": {
+                "failure": "",
+                "success_many": "",
+                "success_one": "",
+                "success_other": ""
+            },
             "removed": "Directorio de la publicación eliminado.",
             "updateFailed": "Fallo al actualizar el directorio de la publicación: {{- message}}",
             "updated": "Directorio de la publicación actualizado."
@@ -1309,6 +1315,29 @@
                 "defaultInternal": "Espacio de almacenamiento del sistema",
                 "externalStorage": "Espacio de almacenamiento externo",
                 "title": "Ubicaciones"
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "description_many": "",
+                    "description_one": "",
+                    "description_other": "",
+                    "title": ""
+                },
+                "none": "",
+                "recoverableCount_many": "",
+                "recoverableCount_one": "",
+                "recoverableCount_other": "",
+                "title": ""
             }
         },
         "tabs": {

@@ -268,6 +268,11 @@
             "folderNotFound": "De publicatiemap kan niet worden gevonden. Importeer deze opnieuw of configureer de extra opslagruimte in Instellingen > Opslag."
         },
         "storage": {
+            "recovery": {
+                "failure": "",
+                "success_one": "",
+                "success_other": ""
+            },
             "removed": "Publicatiemap verwijderd.",
             "updateFailed": "Het bijwerken van de publicatiemap is mislukt: {{- message}}",
             "updated": "Publicatiemap bijgewerkt."
@@ -1303,6 +1308,27 @@
                 "defaultInternal": "Systeem opslag",
                 "externalStorage": "Externe opslag",
                 "title": "Locaties"
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "description_one": "",
+                    "description_other": "",
+                    "title": ""
+                },
+                "none": "",
+                "recoverableCount_one": "",
+                "recoverableCount_other": "",
+                "title": ""
             }
         },
         "tabs": {
