@@ -1,7 +1,7 @@
 import { expect, jest, test } from "@jest/globals";
 
-import { EDrawType } from "readium-desktop/common/redux/states/renderer/note";
-import type { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import type { PublicationNote } from "readium-desktop/common/publication-notes";
+import { EDrawType } from "readium-desktop/common/type/note.type";
 import {
     buildAnnotationPanelSaveNote,
     canDeleteAnnotationInPanel,
@@ -27,7 +27,7 @@ const color = {
     blue: 30,
 };
 
-function createPdfAnnotationNote(overrides: Partial<INoteState> = {}): INoteState {
+function createPdfAnnotationNote(overrides: Partial<PublicationNote> = {}): PublicationNote {
     return {
         uuid: "pdf-note",
         index: 1,
@@ -47,7 +47,7 @@ function createPdfAnnotationNote(overrides: Partial<INoteState> = {}): INoteStat
     };
 }
 
-function createEpubAnnotationNote(overrides: Partial<INoteState> = {}): INoteState {
+function createEpubAnnotationNote(overrides: Partial<PublicationNote> = {}): PublicationNote {
     return createPdfAnnotationNote({
         uuid: "epub-note",
         pdfAnnotation: undefined,
@@ -58,7 +58,7 @@ function createEpubAnnotationNote(overrides: Partial<INoteState> = {}): INoteSta
             selectionInfo: {
                 cleanText: "EPUB quote",
             },
-        } as INoteState["locatorExtended"],
+        } as PublicationNote["locatorExtended"],
         ...overrides,
     });
 }
@@ -320,7 +320,7 @@ test("annotation panel text keeps EPUB locator text precedence", () => {
             selectionInfo: {
                 cleanText: "EPUB selected text",
             },
-        } as INoteState["locatorExtended"],
+        } as PublicationNote["locatorExtended"],
     });
 
     expect(getAnnotationSelectionText(note)).toBe("EPUB selected text");
@@ -401,7 +401,7 @@ test("annotation panel progression comparator uses PDF visual order before EPUB 
                     progression: 0.1,
                 },
             },
-        } as INoteState["locatorExtended"],
+        } as PublicationNote["locatorExtended"],
     });
     const epubLate = createEpubAnnotationNote({
         uuid: "epub-late",
@@ -412,9 +412,9 @@ test("annotation panel progression comparator uses PDF visual order before EPUB 
                     progression: 0.9,
                 },
             },
-        } as INoteState["locatorExtended"],
+        } as PublicationNote["locatorExtended"],
     });
-    const compareEpubProgression = jest.fn((left: INoteState, right: INoteState) => {
+    const compareEpubProgression = jest.fn((left: PublicationNote, right: PublicationNote) => {
         return (
             (left.locatorExtended?.locator.locations?.progression || 0) -
             (right.locatorExtended?.locator.locations?.progression || 0)
@@ -520,7 +520,7 @@ test("annotation panel save payload preserves EPUB locator data when present", (
             selectionInfo: {
                 cleanText: "EPUB text",
             },
-        } as INoteState["locatorExtended"],
+        } as PublicationNote["locatorExtended"],
     });
     const saved = buildAnnotationPanelSaveNote(source, {
         color,
