@@ -17,8 +17,21 @@ export interface IPayload {
     newNote: PublicationNote;
 }
 
-export function build(publicationIdentifier: string, newNote: PublicationNoteDraft, previousNote?: PublicationNote):
-    ActionWithReaderPublicationIdentifierDestination<typeof ID, IPayload> {
+export interface IMeta {
+    alreadyPersisted?: boolean | undefined;
+}
+
+export interface IOptions {
+    alreadyPersisted?: boolean | undefined;
+}
+
+export function build(
+    publicationIdentifier: string,
+    newNote: PublicationNoteDraft,
+    previousNote?: PublicationNote,
+    options?: IOptions,
+):
+    ActionWithReaderPublicationIdentifierDestination<typeof ID, IPayload, IMeta> {
 
     const note: PublicationNote = {
         ...newNote,
@@ -32,6 +45,11 @@ export function build(publicationIdentifier: string, newNote: PublicationNoteDra
             previousNote,
             newNote: note,
         },
+        ...(options?.alreadyPersisted === undefined ? {} : {
+            meta: {
+                alreadyPersisted: options.alreadyPersisted,
+            },
+        }),
         destination: {
             publicationIdentifier,
         },

@@ -9,20 +9,13 @@ import type {
     PublicationNotesHydratedPagination,
     PublicationNoteEntity,
     PublicationNotesHydratedView,
-    PublicationNotesSnapshot,
     PublicationNotesViewFilter,
     PublicationNotesViewPagination,
     PublicationNotesViewSelection,
     PublicationNotesViewSort,
-    PublicationNotesViewState,
 } from "./model";
 import { rgbToHex } from "readium-desktop/common/rgb";
 import { EDrawType } from "readium-desktop/common/type/note.type";
-
-interface PublicationNotesViewOptions {
-    filter?: PublicationNotesViewFilter | undefined;
-    spineItemHrefs?: string[] | undefined;
-}
 
 interface PublicationNotesFilterablePdfRect {
     x1: number;
@@ -70,22 +63,7 @@ export function withoutPublicationNotesViewPagination(filter: PublicationNotesVi
     return filterWithoutPagination;
 }
 
-export function serializePublicationNotesViewState<TNote extends PublicationNoteEntity>(
-    snapshot: PublicationNotesSnapshot<TNote>,
-    options: PublicationNotesViewOptions = {},
-): PublicationNotesViewState<TNote> {
-
-    const index = indexPublicationNotes(snapshot.notes);
-
-    return {
-        ...snapshot,
-        ...index,
-        totalCount: snapshot.notes.length,
-        view: hydratePublicationNotesView(snapshot.notes, options.filter, options.spineItemHrefs),
-    };
-}
-
-function indexPublicationNotes<TNote extends PublicationNoteEntity>(
+export function indexPublicationNotes<TNote extends PublicationNoteEntity>(
     notes: TNote[],
 ): Pick<PublicationNotesHydratedView<TNote>, "byId" | "ids" | "tagIndex"> {
 
@@ -112,7 +90,7 @@ function indexPublicationNotes<TNote extends PublicationNoteEntity>(
     };
 }
 
-function hydratePublicationNotesView<TNote extends PublicationNoteEntity>(
+export function hydratePublicationNotesView<TNote extends PublicationNoteEntity>(
     notes: TNote[],
     filter: PublicationNotesViewFilter = emptyFilter,
     spineItemHrefs: string[] = [],

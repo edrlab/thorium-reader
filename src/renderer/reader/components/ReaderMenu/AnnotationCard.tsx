@@ -135,6 +135,7 @@ export const AnnotationCard: React.FC<{ annotation: PublicationNote, isEdited: b
 
     return (<li
         className={stylesAnnotations.annotations_line}
+        data-publication-note-uuid={uuid}
         data-selected={isSelected ? "true" : undefined}
         style={{
             backgroundColor: dockedEditAnnotation ? "var(--color-gray-50" : "",

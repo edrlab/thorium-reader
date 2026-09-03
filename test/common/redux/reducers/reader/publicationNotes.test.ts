@@ -1,8 +1,8 @@
 import { describe, expect, it } from "@jest/globals";
 import type { PublicationNote } from "readium-desktop/common/publication-notes";
 import { readerActions } from "readium-desktop/common/redux/actions";
-import { readerPublicationNotesViewReducer } from "readium-desktop/common/redux/reducers/reader/publicationNotes";
-import { publicationNotesViewInitialState } from "readium-desktop/common/redux/states/renderer/publicationNotes";
+import { readerPublicationNotesSnapshotReducer } from "readium-desktop/common/redux/reducers/reader/publicationNotes";
+import { publicationNotesSnapshotInitialState } from "readium-desktop/common/redux/states/renderer/publicationNotes";
 import { EDrawType } from "readium-desktop/common/type/note.type";
 
 function createNote(overrides: Partial<PublicationNote> = {}): PublicationNote {
@@ -18,112 +18,82 @@ function createNote(overrides: Partial<PublicationNote> = {}): PublicationNote {
     };
 }
 
-describe("readerPublicationNotesViewReducer", () => {
+describe("readerPublicationNotesSnapshotReducer", () => {
 
-    it("hydrates from a controller view snapshot", () => {
-        const viewState = {
-            ...publicationNotesViewInitialState,
+    function createSnapshotState() {
+        return {
+            ...publicationNotesSnapshotInitialState,
             publicationIdentifier: "pub-a",
             revision: 10,
             notes: [createNote()],
-            byId: {
-                "note-1": createNote(),
-            },
-            ids: ["note-1"],
-            tagIndex: {
-                review: 1,
-            },
-            totalCount: 1,
         };
+    }
 
-        expect(readerPublicationNotesViewReducer(
+    it("hydrates from a controller note snapshot", () => {
+        const snapshot = createSnapshotState();
+
+        expect(readerPublicationNotesSnapshotReducer(
             undefined,
-            readerActions.publicationNotes.snapshot.build("pub-a", viewState),
-        )).toEqual(viewState);
+            readerActions.publicationNotes.snapshot.build("pub-a", snapshot),
+        )).toEqual(snapshot);
     });
 
-    it("ignores view snapshots for a different publication", () => {
-        const state = readerPublicationNotesViewReducer(
+    it("ignores note snapshots for a different publication", () => {
+        const state = readerPublicationNotesSnapshotReducer(
             undefined,
-            readerActions.publicationNotes.commands.save.build("pub-a", createNote()),
+            readerActions.publicationNotes.snapshot.build("pub-a", createSnapshotState()),
         );
-        const viewState = {
-            ...publicationNotesViewInitialState,
+        const snapshot = {
+            ...publicationNotesSnapshotInitialState,
             publicationIdentifier: "pub-b",
             revision: 10,
         };
 
-        expect(readerPublicationNotesViewReducer(
+        expect(readerPublicationNotesSnapshotReducer(
             state,
-            readerActions.publicationNotes.snapshot.build("pub-b", viewState),
+            readerActions.publicationNotes.snapshot.build("pub-b", snapshot),
         )).toBe(state);
     });
 
-    it("keeps the normalized view state in sync with publication note save commands", () => {
-        const added = readerPublicationNotesViewReducer(
+    it("ignores publication note save commands", () => {
+        const state = readerPublicationNotesSnapshotReducer(
             undefined,
-            readerActions.publicationNotes.commands.save.build("pub-a", createNote()),
+            readerActions.publicationNotes.snapshot.build("pub-a", createSnapshotState()),
         );
-
-        expect(added.ids).toEqual(["note-1"]);
-        expect(added.byId["note-1"].tags).toEqual(["review"]);
-        expect(added.tagIndex).toEqual({ review: 1 });
-        expect(added.totalCount).toBe(1);
-
         const updatedNote = createNote({
             textualValue: "Updated",
             tags: ["chapter-1"],
         });
-        const updated = readerPublicationNotesViewReducer(
-            added,
-            readerActions.publicationNotes.commands.save.build("pub-a", updatedNote, createNote()),
-        );
 
-        expect(updated.byId["note-1"].textualValue).toBe("Updated");
-        expect(updated.tagIndex).toEqual({ "chapter-1": 1 });
-        expect(updated.totalCount).toBe(1);
+        expect(readerPublicationNotesSnapshotReducer(
+            state,
+            readerActions.publicationNotes.commands.save.build("pub-a", updatedNote, createNote()),
+        )).toBe(state);
     });
 
-    it("removes notes from the normalized view state from publication note remove commands", () => {
-        const state = readerPublicationNotesViewReducer(
+    it("ignores publication note remove commands", () => {
+        const state = readerPublicationNotesSnapshotReducer(
             undefined,
-            readerActions.publicationNotes.commands.save.build("pub-a", createNote()),
+            readerActions.publicationNotes.snapshot.build("pub-a", createSnapshotState()),
         );
-        const removed = readerPublicationNotesViewReducer(
+
+        expect(readerPublicationNotesSnapshotReducer(
             state,
             readerActions.publicationNotes.commands.remove.build("pub-a", createNote()),
-        );
-
-        expect(removed).toEqual({
-            ...publicationNotesViewInitialState,
-            publicationIdentifier: "pub-a",
-            revision: 2,
-        });
-    });
-
-    it("ignores remove commands for missing notes", () => {
-        const state = readerPublicationNotesViewReducer(
-            undefined,
-            readerActions.publicationNotes.commands.save.build("pub-a", createNote()),
-        );
-
-        expect(readerPublicationNotesViewReducer(
-            state,
-            readerActions.publicationNotes.commands.remove.build("pub-a", createNote({ uuid: "missing-note" })),
         )).toBe(state);
     });
 
     it("ignores publication note commands for a different publication", () => {
-        const state = readerPublicationNotesViewReducer(
+        const state = readerPublicationNotesSnapshotReducer(
             undefined,
-            readerActions.publicationNotes.commands.save.build("pub-a", createNote()),
+            readerActions.publicationNotes.snapshot.build("pub-a", createSnapshotState()),
         );
 
-        expect(readerPublicationNotesViewReducer(
+        expect(readerPublicationNotesSnapshotReducer(
             state,
             readerActions.publicationNotes.commands.save.build("pub-b", createNote({ uuid: "note-2" })),
         )).toBe(state);
-        expect(readerPublicationNotesViewReducer(
+        expect(readerPublicationNotesSnapshotReducer(
             state,
             readerActions.publicationNotes.commands.remove.build("pub-b", createNote()),
         )).toBe(state);

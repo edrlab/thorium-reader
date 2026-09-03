@@ -5,47 +5,87 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import type { PublicationNote, PublicationNotesHydratedView } from "readium-desktop/common/publication-notes";
+import {
+    hydratePublicationNotesView,
+    indexPublicationNotes,
+    type PublicationNote,
+    type PublicationNotesHydratedView,
+    type PublicationNotesViewFilter,
+} from "readium-desktop/common/publication-notes";
 import type { IReaderRootState, IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { publicationNotesViewInitialState } from "readium-desktop/common/redux/states/renderer/publicationNotes";
 
 type TReaderPublicationNotesState = Pick<IReaderStateReader, "publicationNotes">;
 export type TPublicationNoteTagIndexItem = { tag: string; index: number };
 
+const emptyPublicationNotes: PublicationNote[] = [];
+const emptyPublicationNotesViewFilter: PublicationNotesViewFilter = {};
+const emptyTagIndex: Record<string, number> = {};
 let tagIndexMemoSource: Record<string, number> | undefined;
 let tagIndexMemoResult: TPublicationNoteTagIndexItem[] = [];
-const emptyTagIndex: Record<string, number> = {};
+let noteTagIndexMemoSource: PublicationNote[] | undefined;
+let noteTagIndexMemoResult: Record<string, number> = emptyTagIndex;
 
 export function selectPublicationNotesFromReaderState(reader: TReaderPublicationNotesState): PublicationNote[] {
-    return reader.publicationNotes?.notes || [];
+    return reader.publicationNotes?.notes || emptyPublicationNotes;
 }
 
 export function selectPublicationNotes(state: IReaderRootState): PublicationNote[] {
     return selectPublicationNotesFromReaderState(state.reader);
 }
 
-export function selectPublicationNotesViewState(state: IReaderRootState): PublicationNotesHydratedView<PublicationNote> {
-    const view = state.reader.publicationNotes?.view;
-    if (!view) {
-        return publicationNotesViewInitialState.view;
+let spineItemHrefsMemoSource: unknown;
+let spineItemHrefsMemoResult: string[] = [];
+
+export function selectPublicationSpineItemHrefs(state: IReaderRootState): string[] {
+    const r2Publication = state.reader.info?.r2Publication;
+    if (spineItemHrefsMemoSource === r2Publication) {
+        return spineItemHrefsMemoResult;
     }
 
-    if (!view.pagination) {
-        return {
-            ...view,
-            pagination: publicationNotesViewInitialState.view.pagination,
-        };
-    }
-
-    return view;
+    spineItemHrefsMemoSource = r2Publication;
+    spineItemHrefsMemoResult = ((r2Publication as { Spine?: Array<{ Href?: string | undefined }> } | undefined)?.Spine || [])
+        .map((link) => link.Href)
+        .filter((href): href is string => !!href);
+    return spineItemHrefsMemoResult;
 }
 
-export function selectPublicationNotesView(state: IReaderRootState): PublicationNote[] {
-    return selectPublicationNotesViewState(state).notes;
+let publicationNotesViewMemoNotesSource: PublicationNote[] | undefined;
+let publicationNotesViewMemoFilterSource: PublicationNotesViewFilter | undefined;
+let publicationNotesViewMemoSpineSource: string[] | undefined;
+let publicationNotesViewMemoResult: PublicationNotesHydratedView<PublicationNote> | undefined;
+
+export function selectPublicationNotesHydratedView(
+    state: IReaderRootState,
+    filter: PublicationNotesViewFilter = emptyPublicationNotesViewFilter,
+): PublicationNotesHydratedView<PublicationNote> {
+    const notes = selectPublicationNotes(state);
+    const spineItemHrefs = selectPublicationSpineItemHrefs(state);
+    if (
+        publicationNotesViewMemoResult &&
+        publicationNotesViewMemoNotesSource === notes &&
+        publicationNotesViewMemoFilterSource === filter &&
+        publicationNotesViewMemoSpineSource === spineItemHrefs
+    ) {
+        return publicationNotesViewMemoResult;
+    }
+
+    publicationNotesViewMemoNotesSource = notes;
+    publicationNotesViewMemoFilterSource = filter;
+    publicationNotesViewMemoSpineSource = spineItemHrefs;
+    publicationNotesViewMemoResult = hydratePublicationNotesView(notes, filter, spineItemHrefs);
+    return publicationNotesViewMemoResult;
 }
 
 export function selectPublicationNoteTagsIndex(state: IReaderRootState): TPublicationNoteTagIndexItem[] {
-    const tagIndex = state.reader.publicationNotes?.tagIndex || emptyTagIndex;
+    const notes = selectPublicationNotes(state);
+    if (noteTagIndexMemoSource !== notes) {
+        noteTagIndexMemoSource = notes;
+        noteTagIndexMemoResult = notes === emptyPublicationNotes
+            ? emptyTagIndex
+            : indexPublicationNotes(notes).tagIndex;
+    }
+
+    const tagIndex = noteTagIndexMemoResult;
 
     if (tagIndexMemoSource === tagIndex) {
         return tagIndexMemoResult;
@@ -60,8 +100,11 @@ export function selectPublicationNoteTagsIndex(state: IReaderRootState): TPublic
 let viewTagIndexMemoSource: Record<string, number> | undefined;
 let viewTagIndexMemoResult: TPublicationNoteTagIndexItem[] = [];
 
-export function selectPublicationNoteViewTagsIndex(state: IReaderRootState): TPublicationNoteTagIndexItem[] {
-    const tagIndex = state.reader.publicationNotes?.view?.facets.tagIndex || emptyTagIndex;
+export function selectPublicationNotesHydratedViewTagsIndex(
+    state: IReaderRootState,
+    filter: PublicationNotesViewFilter = emptyPublicationNotesViewFilter,
+): TPublicationNoteTagIndexItem[] {
+    const tagIndex = selectPublicationNotesHydratedView(state, filter).facets.tagIndex;
 
     if (viewTagIndexMemoSource === tagIndex) {
         return viewTagIndexMemoResult;

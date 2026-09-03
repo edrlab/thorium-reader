@@ -7,12 +7,12 @@
 
 import type { Action } from "readium-desktop/common/models/redux";
 import type { WithDestination, WindowReaderPublicationDestination } from "readium-desktop/common/models/sync";
-import type { IPublicationNotesViewState } from "readium-desktop/common/redux/states/renderer/publicationNotes";
+import type { IPublicationNotesSnapshotState } from "readium-desktop/common/redux/states/renderer/publicationNotes";
 
 export const ID = "READER_PUBLICATION_NOTES_SNAPSHOT";
 
 export interface IPayload {
-    viewState: IPublicationNotesViewState;
+    snapshot: IPublicationNotesSnapshotState;
 }
 
 export type TPublicationNotesSnapshotDestination =
@@ -23,14 +23,14 @@ export type TPublicationNotesSnapshotAction =
     Action<typeof ID, IPayload> &
     WithDestination<TPublicationNotesSnapshotDestination>;
 
-export function build(publicationIdentifier: string, viewState: IPublicationNotesViewState, windowIdentifier?: string):
+export function build(publicationIdentifier: string, snapshot: IPublicationNotesSnapshotState, windowIdentifier?: string):
     TPublicationNotesSnapshotAction {
 
     return {
         type: ID,
         payload: {
-            viewState: {
-                ...viewState,
+            snapshot: {
+                ...snapshot,
                 publicationIdentifier,
             },
         },

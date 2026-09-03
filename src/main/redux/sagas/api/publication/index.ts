@@ -14,6 +14,7 @@ import { findByTag } from "./findByTag";
 import { getPublication } from "./getPublication";
 import { importFromFs, importFromLink, importFromString } from "./import";
 import { findAllRecoverable, recover } from "./recovery";
+import { listNotes } from "./listNotes";
 import { search, searchEqTitle } from "./search";
 import { selectFiles } from "./selectFiles";
 import { updateTags } from "./updateTags";
@@ -24,6 +25,7 @@ export const publicationApi: IPublicationApi = {
     get: getPublication,
     delete: deletePublication,
     findByTag,
+    listNotes,
     search,
     exportPublication,
     importFromFs,
