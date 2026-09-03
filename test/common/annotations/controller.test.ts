@@ -2,6 +2,7 @@ import { expect, test } from "@jest/globals";
 
 import {
     PublicationAnnotationsController,
+    serializePublicationAnnotationsViewState,
     type IPdfTextAnnotationTarget,
     type PublicationAnnotation,
     type PublicationAnnotationsClock,
@@ -627,7 +628,7 @@ test("publication annotation controller list returns serialized view state and p
     const viewState = await controller.list("publication-list");
 
     expect(repository.calls.list).toEqual(["publication-list"]);
-    expect(viewState).toEqual({
+    expect(viewState).toEqual(serializePublicationAnnotationsViewState({
         publicationIdentifier: "publication-list",
         annotations: [{
             ...first,
@@ -641,27 +642,7 @@ test("publication annotation controller list returns serialized view state and p
             group: "bookmark",
         }],
         revision: 6100,
-        byId: {
-            "first-1": {
-                ...first,
-                drawType: EDrawType.solid_background,
-                motivation: "highlighting",
-                group: "annotation",
-            },
-            "second-1": {
-                ...second,
-                drawType: EDrawType.bookmark,
-                motivation: "bookmarking",
-                group: "bookmark",
-            },
-        },
-        ids: ["first-1", "second-1"],
-        tagIndex: {
-            shared: 2,
-            "first-only": 1,
-        },
-        totalCount: 2,
-    });
+    }));
 });
 
 test("publication annotation controller get passes identifiers and returns undefined for missing annotations", async () => {
