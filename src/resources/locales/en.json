@@ -268,6 +268,11 @@
             "folderNotFound": "The publication directory cannot be found. Re-import it, or configure the additional storage in Settings > Storage."
         },
         "storage": {
+            "recovery": {
+                "failure": "Publication recovery failed.",
+                "success_one": "{{- count}} publication recovered.",
+                "success_other": "{{- count}} publications recovered."
+            },
             "removed": "Publication directory removed.",
             "updateFailed": "Failed to update publication directory: {{- message}}",
             "updated": "Publication directory updated."
@@ -1303,6 +1308,27 @@
                 "defaultInternal": "System Storage",
                 "externalStorage": "External storage",
                 "title": "Locations"
+            },
+            "recovery": {
+                "actions": {
+                    "check": "Check for recoverable publications",
+                    "checkAgain": "Check again",
+                    "recover": "Recover publications",
+                    "recovering": "Recovering..."
+                },
+                "available": "One or more publications were found on disk but are missing from the database. Recovery is possible.",
+                "checking": "Checking publication storage...",
+                "description": "Check publication storage to find publications that can be safely recovered.",
+                "dialog": {
+                    "confirm": "Recover",
+                    "description_one": "Thorium found {{- count}} publication on disk that is missing from the database. Do you want to import it back into Thorium?",
+                    "description_other": "Thorium found {{- count}} publications on disk that are missing from the database. Do you want to import them back into Thorium?",
+                    "title": "Recover publications"
+                },
+                "none": "No recoverable publications were found.",
+                "recoverableCount_one": "{{- count}} publication can be recovered with the original storage identifier.",
+                "recoverableCount_other": "{{- count}} publications can be recovered with the original storage identifier.",
+                "title": "Recovery"
             }
         },
         "tabs": {

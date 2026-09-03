@@ -273,6 +273,12 @@
             "folderNotFound": "A pasta da publicação não foi encontrada. Importe-a novamente ou configure o armazenamento adicional em Definições > Armazenamento."
         },
         "storage": {
+            "recovery": {
+                "failure": "",
+                "success_many": "",
+                "success_one": "",
+                "success_other": ""
+            },
             "removed": "Pasta da publicação removida.",
             "updateFailed": "Falha ao atualizar a pasta da publicação: {{- message}}",
             "updated": "Pasta da publicação atualizada."
@@ -1309,6 +1315,29 @@
                 "defaultInternal": "Armazenamento do sistema",
                 "externalStorage": "Armazenamento externo",
                 "title": "Locais"
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "description_many": "",
+                    "description_one": "",
+                    "description_other": "",
+                    "title": ""
+                },
+                "none": "",
+                "recoverableCount_many": "",
+                "recoverableCount_one": "",
+                "recoverableCount_other": "",
+                "title": ""
             }
         },
         "tabs": {
