@@ -15,7 +15,7 @@ import { INoteCreator } from "./creator";
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
 import { IScreenReaderState } from "./screenReader";
 import { ILcpState } from "./lcp";
-import { INoteExportState } from "./renderer/note";
+import { INoteExportState } from "./noteExport";
 import { ICustomizationProfileActivated, ICustomizationProfileHistory, ICustomizationProfileLock, ICustomizationProfileProvisioned, ICustomizationProfileWelcomeScreen } from "./customization";
 import { ICustomizationManifest } from "readium-desktop/common/readium/customization/manifest";
 
