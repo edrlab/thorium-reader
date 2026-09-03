@@ -58,8 +58,10 @@ import { customizationPackageWelcomeScreenReducer } from "readium-desktop/common
 import { ICustomizationManifest } from "readium-desktop/common/readium/customization/manifest";
 import { readerPdfConfigReducer } from "readium-desktop/common/redux/reducers/reader/pdfConfig";
 import { readerPublicationNotesViewReducer } from "readium-desktop/common/redux/reducers/reader/publicationNotes";
+import type { Reducer } from "redux";
+import type { RouterState } from "redux-first-history";
 
-export const rootReducer = () => {
+export const rootReducer = (routerReducer: Reducer<RouterState>) => {
 
     return combineReducers({ // IReaderRootState
         versionUpdate: versionUpdateReducer,
@@ -134,6 +136,7 @@ export const rootReducer = () => {
             lock: readerLockReducer,
             pdfConfig: readerPdfConfigReducer,
         }),
+        router: routerReducer,
         search: searchReducer,
         annotation: annotationModeEnableReducer,
         win: winReducer,
