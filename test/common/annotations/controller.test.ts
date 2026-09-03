@@ -627,26 +627,41 @@ test("publication annotation controller list returns serialized view state and p
     const viewState = await controller.list("publication-list");
 
     expect(repository.calls.list).toEqual(["publication-list"]);
-    expect(viewState.publicationIdentifier).toBe("publication-list");
-    expect(viewState.ids).toEqual(["first-1", "second-1"]);
-    expect(viewState.byId["first-1"]).toEqual(expect.objectContaining({
-        uuid: "first-1",
-        drawType: EDrawType.solid_background,
-        motivation: "highlighting",
-        group: "annotation",
-    }));
-    expect(viewState.byId["second-1"]).toEqual(expect.objectContaining({
-        uuid: "second-1",
-        drawType: EDrawType.bookmark,
-        motivation: "bookmarking",
-        group: "bookmark",
-    }));
-    expect(viewState.tagIndex).toEqual({
-        shared: 2,
-        "first-only": 1,
+    expect(viewState).toEqual({
+        publicationIdentifier: "publication-list",
+        annotations: [{
+            ...first,
+            drawType: EDrawType.solid_background,
+            motivation: "highlighting",
+            group: "annotation",
+        }, {
+            ...second,
+            drawType: EDrawType.bookmark,
+            motivation: "bookmarking",
+            group: "bookmark",
+        }],
+        revision: 6100,
+        byId: {
+            "first-1": {
+                ...first,
+                drawType: EDrawType.solid_background,
+                motivation: "highlighting",
+                group: "annotation",
+            },
+            "second-1": {
+                ...second,
+                drawType: EDrawType.bookmark,
+                motivation: "bookmarking",
+                group: "bookmark",
+            },
+        },
+        ids: ["first-1", "second-1"],
+        tagIndex: {
+            shared: 2,
+            "first-only": 1,
+        },
+        totalCount: 2,
     });
-    expect(viewState.totalCount).toBe(2);
-    expect(viewState.revision).toBe(6100);
 });
 
 test("publication annotation controller get passes identifiers and returns undefined for missing annotations", async () => {

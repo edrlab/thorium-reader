@@ -21,7 +21,6 @@ import type {
     PublicationAnnotationsIndexProvider,
     PublicationAnnotationsLogger,
 } from "./ports";
-import { serializePublicationAnnotationsViewState } from "./view";
 
 export interface PublicationAnnotationsControllerDependencies<TAnnotation extends PublicationAnnotation> {
     repository: PublicationAnnotationRepository<TAnnotation>;
@@ -51,7 +50,7 @@ export class PublicationAnnotationsController<TAnnotation extends PublicationAnn
 
     public async list(publicationIdentifier: string): Promise<PublicationAnnotationsViewState<TAnnotation>> {
         const snapshot = await this.snapshot(publicationIdentifier);
-        return serializePublicationAnnotationsViewState(snapshot);
+        return this.serializePublicationAnnotationsViewState(snapshot);
     }
 
     public async get(publicationIdentifier: string, annotationIdentifier: string): Promise<TAnnotation | undefined> {
@@ -144,6 +143,35 @@ export class PublicationAnnotationsController<TAnnotation extends PublicationAnn
             publicationIdentifier,
             annotations,
             revision: this.clock.now(),
+        };
+    }
+
+    private serializePublicationAnnotationsViewState(
+        snapshot: PublicationAnnotationsSnapshot<TAnnotation>,
+    ): PublicationAnnotationsViewState<TAnnotation> {
+
+        const byId: Record<string, TAnnotation> = {};
+        const ids: string[] = [];
+        const tagIndex: Record<string, number> = {};
+
+        for (const annotation of snapshot.annotations) {
+            byId[annotation.uuid] = annotation;
+            ids.push(annotation.uuid);
+
+            for (const tag of annotation.tags || []) {
+                if (!tag) {
+                    continue;
+                }
+                tagIndex[tag] = (tagIndex[tag] || 0) + 1;
+            }
+        }
+
+        return {
+            ...snapshot,
+            byId,
+            ids,
+            tagIndex,
+            totalCount: snapshot.annotations.length,
         };
     }
 
