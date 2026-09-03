@@ -269,7 +269,7 @@
         },
         "storage": {
             "recovery": {
-                "failure": "",
+                "failure": "Julkaisun palauttaminen epäonnistui.",
                 "success_one": "",
                 "success_other": ""
             },
