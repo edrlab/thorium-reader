@@ -18,6 +18,7 @@ import type {
     PublicationAnnotationRepository,
     PublicationAnnotationsClock,
     PublicationAnnotationsIdProvider,
+    PublicationAnnotationsIndexProvider,
     PublicationAnnotationsLogger,
 } from "./ports";
 import { serializePublicationAnnotationsViewState } from "./view";
@@ -26,6 +27,7 @@ export interface PublicationAnnotationsControllerDependencies<TAnnotation extend
     repository: PublicationAnnotationRepository<TAnnotation>;
     clock?: PublicationAnnotationsClock | undefined;
     idProvider?: PublicationAnnotationsIdProvider | undefined;
+    indexProvider?: PublicationAnnotationsIndexProvider | undefined;
     logger?: PublicationAnnotationsLogger | undefined;
 }
 
@@ -34,6 +36,7 @@ export class PublicationAnnotationsController<TAnnotation extends PublicationAnn
     private readonly repository: PublicationAnnotationRepository<TAnnotation>;
     private readonly clock: PublicationAnnotationsClock;
     private readonly idProvider?: PublicationAnnotationsIdProvider | undefined;
+    private readonly indexProvider?: PublicationAnnotationsIndexProvider | undefined;
     private readonly logger?: PublicationAnnotationsLogger | undefined;
 
     public constructor(dependencies: PublicationAnnotationsControllerDependencies<TAnnotation>) {
@@ -42,6 +45,7 @@ export class PublicationAnnotationsController<TAnnotation extends PublicationAnn
             now: () => Date.now(),
         };
         this.idProvider = dependencies.idProvider;
+        this.indexProvider = dependencies.indexProvider;
         this.logger = dependencies.logger;
     }
 
@@ -56,7 +60,7 @@ export class PublicationAnnotationsController<TAnnotation extends PublicationAnn
     }
 
     public async create(publicationIdentifier: string, annotation: PublicationAnnotationDraft<TAnnotation>): Promise<PublicationAnnotationChange<TAnnotation>> {
-        const annotationWithDefaults = this.prepareNewAnnotation(annotation);
+        const annotationWithDefaults = await this.prepareNewAnnotation(publicationIdentifier, annotation);
         const existingAnnotation = await this.repository.get(publicationIdentifier, annotationWithDefaults.uuid);
         if (existingAnnotation) {
             throw new Error(`Cannot create publication annotation ${annotationWithDefaults.uuid} because it already exists`);
@@ -143,7 +147,10 @@ export class PublicationAnnotationsController<TAnnotation extends PublicationAnn
         };
     }
 
-    private prepareNewAnnotation(annotation: PublicationAnnotationDraft<TAnnotation>): TAnnotation {
+    private async prepareNewAnnotation(
+        publicationIdentifier: string,
+        annotation: PublicationAnnotationDraft<TAnnotation>,
+    ): Promise<TAnnotation> {
         let uuid = annotation.uuid;
         if (!uuid && this.idProvider) {
             uuid = this.idProvider.next();
@@ -153,10 +160,16 @@ export class PublicationAnnotationsController<TAnnotation extends PublicationAnn
             throw new Error("Cannot create a publication annotation without an identifier");
         }
 
-        const created = annotation.created || this.clock.now();
+        const index = annotation.index ?? (await this.indexProvider?.next(publicationIdentifier));
+        if (typeof index !== "number" || !Number.isFinite(index)) {
+            throw new Error("Cannot create a publication annotation without an index");
+        }
+
+        const created = annotation.created ?? this.clock.now();
         const annotationWithDefaults = {
             ...annotation,
             uuid,
+            index,
             created,
         } as TAnnotation;
 
@@ -166,13 +179,13 @@ export class PublicationAnnotationsController<TAnnotation extends PublicationAnn
     }
 
     private prepareExistingAnnotation(annotation: TAnnotation): TAnnotation {
-        if (annotation.created) {
+        if (annotation.created !== undefined) {
             return normalizePublicationAnnotation(annotation);
         }
 
         return normalizePublicationAnnotation({
             ...annotation,
-            created: annotation.modified || this.clock.now(),
+            created: annotation.modified ?? this.clock.now(),
         });
     }
 }

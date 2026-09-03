@@ -39,14 +39,15 @@ export type PublicationHighlightDrawType =
     EDrawType.strikethrough |
     EDrawType.outline;
 
-export interface PublicationAnnotation {
+export interface PublicationAnnotationBase {
     uuid: string;
+    index: number;
     created: number;
     modified?: number | undefined;
-    index?: number;
-    locatorExtended?: MiniLocatorExtended | undefined;
-    pdfAnnotation?: IPdfTextAnnotationTarget | undefined;
+
+    // comment/note text value
     textualValue?: string | undefined;
+
     color?: IColor;
     drawType?: EDrawType;
     tags?: string[] | undefined;
@@ -64,6 +65,37 @@ export interface PublicationAnnotation {
     } | undefined;
 }
 
+export interface PublicationAnnotationWithLocatorTarget {
+    locatorExtended: MiniLocatorExtended;
+    pdfAnnotation?: undefined;
+}
+
+export interface PublicationAnnotationWithPdfTarget {
+    locatorExtended?: undefined;
+    pdfAnnotation: IPdfTextAnnotationTarget;
+}
+
+export interface PublicationAnnotationWithoutTarget {
+    locatorExtended?: undefined;
+    pdfAnnotation?: undefined;
+}
+
+export interface PublicationAnnotationTargetFields {
+    locatorExtended?: MiniLocatorExtended | undefined;
+    pdfAnnotation?: IPdfTextAnnotationTarget | undefined;
+}
+
+export interface PublicationAnnotationIndexFields {
+    index?: number | undefined;
+}
+
+export type PublicationAnnotationTarget =
+    PublicationAnnotationWithLocatorTarget |
+    PublicationAnnotationWithPdfTarget |
+    PublicationAnnotationWithoutTarget;
+
+export type PublicationAnnotation = PublicationAnnotationBase & PublicationAnnotationTarget;
+
 export type PublicationAnnotationKindFields = Pick<PublicationAnnotation, "drawType" | "motivation" | "group">;
 
 export type PublicationBookmarkAnnotation<TAnnotation extends PublicationAnnotation = PublicationAnnotation> =
@@ -79,6 +111,10 @@ export type PublicationHighlightAnnotation<TAnnotation extends PublicationAnnota
         motivation: "highlighting";
         group: "annotation";
     };
+
+export type PublicationNormalizedAnnotation<TAnnotation extends PublicationAnnotation = PublicationAnnotation> =
+    PublicationBookmarkAnnotation<TAnnotation> |
+    PublicationHighlightAnnotation<TAnnotation>;
 
 export const PUBLICATION_ANNOTATION_BOOKMARK_FIELDS = {
     drawType: EDrawType.bookmark,
@@ -131,26 +167,39 @@ export function getPublicationAnnotationMotivation(annotation: PublicationAnnota
     return undefined;
 }
 
-export function normalizePublicationAnnotation<TAnnotation extends PublicationAnnotation>(annotation: TAnnotation): TAnnotation {
+export function assertPublicationAnnotationTargetMutualExclusion(annotation: PublicationAnnotationTargetFields) {
+    if (annotation.locatorExtended !== undefined && annotation.pdfAnnotation !== undefined) {
+        throw new Error("Publication annotation cannot define both locatorExtended and pdfAnnotation targets");
+    }
+}
+
+export function assertPublicationAnnotationIndex(annotation: PublicationAnnotationIndexFields) {
+    if (typeof annotation.index !== "number" || !Number.isFinite(annotation.index)) {
+        throw new Error("Publication annotation index must be a finite number");
+    }
+}
+
+export function normalizePublicationAnnotation<TAnnotation extends PublicationAnnotation>(
+    annotation: TAnnotation,
+): PublicationNormalizedAnnotation<TAnnotation> {
+    assertPublicationAnnotationIndex(annotation);
+    assertPublicationAnnotationTargetMutualExclusion(annotation);
+
     const kind = getPublicationAnnotationKind(annotation);
     if (kind === "bookmark") {
         return {
             ...annotation,
             ...PUBLICATION_ANNOTATION_BOOKMARK_FIELDS,
-        } as TAnnotation;
-    } else if (kind === "highlight") {
-        return {
-            ...annotation,
-            ...PUBLICATION_ANNOTATION_DEFAULT_HIGHLIGHT_FIELDS,
-            drawType: isPublicationHighlightDrawType(annotation.drawType)
-                ? annotation.drawType
-                : PUBLICATION_ANNOTATION_DEFAULT_HIGHLIGHT_FIELDS.drawType,
-        } as TAnnotation;
-    } else {
-        return {
-            ...annotation,
-        };
+        } as PublicationBookmarkAnnotation<TAnnotation>;
     }
+
+    return {
+        ...annotation,
+        ...PUBLICATION_ANNOTATION_DEFAULT_HIGHLIGHT_FIELDS,
+        drawType: isPublicationHighlightDrawType(annotation.drawType)
+            ? annotation.drawType
+            : PUBLICATION_ANNOTATION_DEFAULT_HIGHLIGHT_FIELDS.drawType,
+    } as PublicationHighlightAnnotation<TAnnotation>;
 }
 
 export function isPublicationBookmarkAnnotation<TAnnotation extends PublicationAnnotation>(
@@ -170,8 +219,8 @@ export function isPublicationHighlightAnnotation<TAnnotation extends Publication
 }
 
 export type PublicationAnnotationDraft<TAnnotation extends PublicationAnnotation = PublicationAnnotation> =
-    Omit<TAnnotation, "uuid" | "created"> &
-    Partial<Pick<TAnnotation, "uuid" | "created">>;
+    Omit<TAnnotation, "uuid" | "created" | "index"> &
+    Partial<Pick<TAnnotation, "uuid" | "created" | "index">>;
 
 export interface PublicationAnnotationsSnapshot<TAnnotation extends PublicationAnnotation> {
     publicationIdentifier: string;

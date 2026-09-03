@@ -25,6 +25,10 @@ export interface PublicationAnnotationsIdProvider {
     next(): string;
 }
 
+export interface PublicationAnnotationsIndexProvider {
+    next(publicationIdentifier: string): number | Promise<number>;
+}
+
 export interface PublicationAnnotationsLogger {
     debug(message: string, ...values: unknown[]): void;
 }
