@@ -18,6 +18,7 @@ import * as ipc from "./ipc";
 import * as search from "./search";
 import * as winInit from "./win";
 import * as noteSaga from "./note";
+import * as publicationNotesExport from "./publicationNotesExport";
 import * as img from "./img";
 import * as settingsOrMenuDialogOrDock from "./settingsOrMenu";
 import * as customization from "./customization";
@@ -30,7 +31,7 @@ import { readerLocalActionReader } from "../actions";
 import { readerActions, winCommonActions } from "readium-desktop/common/redux/actions";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
-import { resourceCacheTimer } from "readium-desktop/common/redux/sagas/resourceCache";
+import { resourceCacheTimer } from "./resourceCache";
 import { createOrGetPdfEventBus } from "../../pdf/driver";
 import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import { buildPublicationAnalyticsParams } from "readium-desktop/common/analytics/publication";
@@ -111,6 +112,7 @@ export function* rootSaga() {
         search.saga(),
 
         noteSaga.saga(),
+        publicationNotesExport.saga(),
 
         img.saga(),
 
@@ -182,12 +184,7 @@ export function* rootSaga() {
             yield* delayTyped(1000); // wait for the reader start stabilisation (aka highlight mounting)
 
             const notes = yield* selectTyped(selectPublicationNotes);
-            for (const note of notes) {
-
-                yield* delayTyped(10); // 100 notes equals to 1 + 1 seconds , seems acceptable to not disturb user with a tiny compute machine
-                yield* callTyped(noteSaga.noteUpdateExportSelectorFromLocatorExtended, note);
-                yield* callTyped(noteSaga.noteUpdateLocatorExtendedFromImportSelector, note);
-            }
+            yield* callTyped(noteSaga.noteUpdateReadiumAnnotationSelectors, notes);
         }),
         spawnLeading(resourceCacheTimer), // resourceCache memory cleaning
         takeSpawnEvery(

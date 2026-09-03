@@ -20,7 +20,7 @@ import debug_ from "debug";
 import { ENABLE_SKIP_LINK } from "@r2-navigator-js/electron/common/styles";
 import { removeUTF8BOM } from "readium-desktop/common/utils/bom";
 
-const debug = debug_("readium-desktop:common:redux:saga:resourceCache");
+const debug = debug_("readium-desktop:renderer:reader:redux:saga:resourceCache");
 debug("_");
 
 export interface ICacheDocument {
@@ -52,7 +52,7 @@ const isFixedLayout = (link: Link, publication: R2Publication): boolean => {
     }
     return false;
 };
-function getDocumentFromICacheDocument(cacheDoc: ICacheDocument): Document {
+function getDocumentFromICacheDocument(cacheDoc: ICacheDocument): Document | undefined {
 
     if (!cacheDoc.xml) {
         return undefined;
@@ -106,22 +106,22 @@ export function* resourceCacheTimer(): SagaGenerator<void> {
 }
 
 
-function* getResourceCache__(from: Link, r2Manifest: R2Publication): SagaGenerator<ICacheDocument | undefined> {
+export async function getResourceCacheFromPublication(
+    href: string,
+    r2Manifest: R2Publication,
+    manifestUrlR2Protocol: string,
+): Promise<ICacheDocument | undefined> {
 
-    const linkFound = from;
+    const linkFound = r2Manifest.Spine.find((ln) => ln.Href === href);
     if (!linkFound) {
         return undefined;
     }
 
-    const found = __resourceCache.get(from.Href);
+    const found = __resourceCache.get(linkFound.Href);
     if (found) {
         found._live = TIMEOUT_LIVE;
         return found;
     }
-
-    const manifestUrlR2Protocol = yield* selectTyped(
-        (state: IReaderRootState) => state.reader.info.manifestUrlR2Protocol,
-    );
 
     const cacheDoc: ICacheDocument = {
         xml: "",
@@ -141,9 +141,9 @@ function* getResourceCache__(from: Link, r2Manifest: R2Publication): SagaGenerat
             || linkFound.TypeLink === ContentType.Xml) {
 
             const urlStr = url.toString();
-            const res = yield* callTyped(fetch, urlStr);
+            const res = await fetch(urlStr);
             if (res.ok) {
-                const text = yield* callTyped(() => res.text());
+                const text = await res.text();
                 cacheDoc.xml = text;
                 cacheDoc.xmlDom = getDocumentFromICacheDocument(cacheDoc);
 
@@ -164,21 +164,23 @@ function* getResourceCache__(from: Link, r2Manifest: R2Publication): SagaGenerat
 export function* getResourceCache(href: string): SagaGenerator<ICacheDocument | undefined> {
 
     const r2Manifest = yield* selectTyped((state: IReaderRootState) => state.reader.info.r2Publication);
-    const linkFound = r2Manifest.Spine.find((ln) => ln.Href === href);
-    if (linkFound) {
-        return yield* callTyped(getResourceCache__, linkFound, r2Manifest);
-    }
-
-    return undefined;
+    const manifestUrlR2Protocol = yield* selectTyped(
+        (state: IReaderRootState) => state.reader.info.manifestUrlR2Protocol,
+    );
+    return yield* callTyped(() => getResourceCacheFromPublication(href, r2Manifest, manifestUrlR2Protocol));
 }
 
 export function* getResourceCacheAll(): SagaGenerator<ICacheDocument[]> {
 
     const r2Manifest = yield* selectTyped((state: IReaderRootState) => state.reader.info.r2Publication);
+    const manifestUrlR2Protocol = yield* selectTyped(
+        (state: IReaderRootState) => state.reader.info.manifestUrlR2Protocol,
+    );
     const cacheDocs: ICacheDocument[] = [];
 
     for (const link of r2Manifest.Spine) {
-        const cacheDoc = yield* callTyped(getResourceCache__, link, r2Manifest);
+        const cacheDoc = yield* callTyped(() =>
+            getResourceCacheFromPublication(link.Href, r2Manifest, manifestUrlR2Protocol));
         if (cacheDoc) {
             cacheDocs.push(cacheDoc);
         }

@@ -32,11 +32,16 @@ import {
     noteColorSetToColorCode,
     type PublicationNote,
     type PublicationNotesViewFilter,
+    withoutPublicationNotesViewPagination,
 } from "readium-desktop/common/publication-notes";
 import { EDrawType } from "readium-desktop/common/type/note.type";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { publicationActions as publicationActionsFromMainAction } from "../actions";
 import { EXT_ANNOTATIONS } from "readium-desktop/common/extension";
+import { convertAnnotationStateArrayToReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/converter";
+import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/annotation/htmlTemplate";
+import { sanitizeForFilename } from "readium-desktop/common/safe-filename";
+import { JsonStringifySortedKeys } from "readium-desktop/common/utils/json";
 import { resolveReadiumAnnotationSourceHref } from "readium-desktop/common/readium/annotation/sourceHref";
 import { spawnPublicationAnalyticsEvent } from "./analyticsPublication";
 import { TAnalyticsEventParams } from "src/common/api/interface/analyticsApi.interface";
@@ -221,6 +226,121 @@ function* filterPublicationNotesView(
 
     publicationNotesViewFilterByWindow.set(sender.identifier, filter);
     yield* callTyped(hydratePublicationNotesView, publicationIdentifier, sender.identifier, filter);
+}
+
+function getPublicationNotesExportWindowIdentifier(action: unknown): string | undefined {
+
+    const explicitWindowIdentifier = (action as { payload?: { windowIdentifier?: string | undefined } })?.payload?.windowIdentifier;
+    if (explicitWindowIdentifier) {
+        return explicitWindowIdentifier;
+    }
+
+    const sender = (action as unknown as ActionWithSender).sender;
+    if (sender?.type !== SenderType.Renderer || !sender.identifier) {
+        return undefined;
+    }
+
+    return sender.identifier;
+}
+
+function getPublicationNotesExportWindow(windowIdentifier?: string): Electron.BrowserWindow | undefined {
+
+    if (!windowIdentifier) {
+        return undefined;
+    }
+
+    try {
+        const win = getReaderWindowFromDi(windowIdentifier);
+        if (!win || win.isDestroyed() || win.webContents.isDestroyed()) {
+            return undefined;
+        }
+
+        return win;
+    } catch (_err) {
+        return undefined;
+    }
+}
+
+function* savePublicationNotesExportData(
+    windowIdentifier: string | undefined,
+    stringData: string,
+    title: string | undefined,
+    extension: typeof EXT_ANNOTATIONS | ".html",
+): SagaGenerator<void> {
+
+    const filenameWithExtension = sanitizeForFilename((title || "thorium-notes") + extension);
+    const exportWindow = getPublicationNotesExportWindow(windowIdentifier);
+    const dialogOptions: Electron.SaveDialogOptions = {
+        defaultPath: filenameWithExtension,
+        filters: [{
+            extensions: [extension.substring(1)],
+            name: extension === EXT_ANNOTATIONS ? `Readium Annotation Set (${EXT_ANNOTATIONS})` : "HTML (.html)",
+        }],
+        properties: ["createDirectory"],
+    };
+    const res = yield* callTyped(() => exportWindow
+        ? dialog.showSaveDialog(exportWindow, dialogOptions)
+        : dialog.showSaveDialog(dialogOptions));
+
+    if (!res.canceled && res.filePath) {
+        yield* callTyped(() => fs.promises.writeFile(res.filePath, stringData, { encoding: "utf-8" }));
+    }
+}
+
+function* exportPublicationNotes(
+    action: readerActions.publicationNotes.export.TAction,
+): SagaGenerator<void> {
+
+    const { publicationIdentifier, filter, title, fileType } = action.payload;
+    const windowIdentifier = getPublicationNotesExportWindowIdentifier(action);
+    const exportFilter = withoutPublicationNotesViewPagination(filter);
+    const spineItemHrefs = exportFilter.sort === "progression"
+        ? yield* callTyped(getPublicationSpineItemHrefs, publicationIdentifier)
+        : [];
+    const viewState = yield* callTyped(() =>
+        diMainGet("publication-notes-controller").list(publicationIdentifier, exportFilter, spineItemHrefs));
+    const publicationView = yield* callTyped(getPublication, publicationIdentifier);
+    const locale = yield* selectTyped((state: RootState) => state.i18n.locale);
+    const readiumAnnotationSet = yield* callTyped(() =>
+        convertAnnotationStateArrayToReadiumAnnotationSet(locale, viewState.view.notes, publicationView, title));
+
+    if (fileType === "annotation") {
+        yield* savePublicationNotesExportData(
+            windowIdentifier,
+            JsonStringifySortedKeys(readiumAnnotationSet, 2),
+            title,
+            EXT_ANNOTATIONS,
+        );
+        return;
+    }
+
+    if (!windowIdentifier) {
+        debug("Cannot render publication notes HTML export without a reader window identifier");
+        return;
+    }
+
+    const { htmlContent, overrideHTMLTemplate } = yield* selectTyped((state: RootState) => state.noteExport);
+    const htmlMustacheTemplateContent = overrideHTMLTemplate ? htmlContent : noteExportHtmlMustacheTemplate;
+    yield* putTyped(readerActions.publicationNotes.exportHtmlRequest.build(
+        publicationIdentifier,
+        readiumAnnotationSet,
+        htmlMustacheTemplateContent,
+        title,
+        windowIdentifier,
+    ));
+}
+
+function* savePublicationNotesHtmlExport(
+    action: readerActions.publicationNotes.exportHtmlResult.TAction,
+): SagaGenerator<void> {
+
+    const { html, title } = action.payload;
+    yield* savePublicationNotesExportData(
+        getPublicationNotesExportWindowIdentifier(action),
+        html,
+        title,
+        ".html",
+    );
 }
 
 function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAction): SagaGenerator<void> {
@@ -539,6 +659,16 @@ export function saga() {
         takeSpawnLatest(
             readerActions.publicationNotes.filter.ID,
             filterPublicationNotesView,
+            (e) => error(filename_, e),
+        ),
+        takeSpawnLatest(
+            readerActions.publicationNotes.export.ID,
+            exportPublicationNotes,
+            (e) => error(filename_, e),
+        ),
+        takeSpawnLeading(
+            readerActions.publicationNotes.exportHtmlResult.ID,
+            savePublicationNotesHtmlExport,
             (e) => error(filename_, e),
         ),
         takeSpawnLeading(
