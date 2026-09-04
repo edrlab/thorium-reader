@@ -22,7 +22,7 @@ import * as TargetIcon from "readium-desktop/renderer/assets/icons/target-icon.s
 import * as SearchIcon from "readium-desktop/renderer/assets/icons/search-icon.svg";
 import * as AnnotationIcon from "readium-desktop/renderer/assets/icons/annotations-icon.svg";
 
-import * as Tabs from "@radix-ui/react-tabs";
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from "readium-desktop/renderer/common/components/TabsComponent";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import type { Selection } from "react-aria-components";
 
@@ -604,25 +604,18 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
 
     const visibleTabs = TabItem.filter(tab => tab.show);
 
-    const TabTriggers = visibleTabs.flatMap(tab => {
-        const trigger = (
-            <Tabs.Trigger
-                key={tab.value}
-                id={`reader-menu-tab-${tab.value.replace("tab-", "")}-trigger`}
-                value={tab.value}
-                data-value={tab.value}
-                title={tab.name}
-                disabled={tab.disabled}
-            >
-                <SVG ariaHidden svg={tab.svg} />
-                <span>{tab.name}</span>
-            </Tabs.Trigger>
-        );
-
-        return tab.separatorBefore
-            ? [<span key={`sep-before-${tab.value}`} style={{ borderBottom: "2px solid var(--color-gray-100)", width: "80%", margin: "0 10%" }} />, trigger]
-            : [trigger];
-    });
+    const TabTriggers = visibleTabs.map(tab => (
+        <Tab
+            key={tab.value}
+            id={tab.value}
+            data-separator-before={tab.separatorBefore || undefined}
+            data-value={tab.value}
+            isDisabled={tab.disabled}
+        >
+            <SVG ariaHidden svg={tab.svg} />
+            <span>{tab.name}</span>
+        </Tab>
+    ));
 
     const options = visibleTabs.map(({ id, value, name, svg, disabled }) => ({ id, value, name, svg, disabled }));
     const optionSelected = options.find(({ value }) => value === section)?.id ?? 0;
@@ -677,13 +670,13 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                 {__("reader.navigation.openTableOfContentsTitle")}
             </h1>
             {dockedMode ? <DockedHeader dockedMode={dockedMode} dockingMode={dockingMode} isEpub={isEpub} setSection={setSection} dockedModeRef={dockedModeRef} options={options} optionSelected={optionSelected} section={section} panel={"menu"} /> : <></>}
-            <Tabs.Root value={section} onValueChange={(value) => dockedMode ? null : setSection(value)} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
+            <Tabs selectedKey={section} onSelectionChange={(key) => dockedMode ? undefined : setSection(key.toString())} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                 {
                     dockedMode ? <></> :
                         <>
-                            <Tabs.List ref={tabModeRef} className={stylesSettings.settings_tabslist} aria-orientation="vertical" data-orientation="vertical">
+                            <TabList ref={tabModeRef} className={stylesSettings.settings_tabslist} aria-orientation="vertical" data-orientation="vertical">
                                 {TabTriggers}
-                            </Tabs.List>
+                            </TabList>
                             <TabTitle value={section} />
                         </>
                 }
@@ -693,29 +686,30 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     role="region"
                     aria-live="polite"
                 >
-                    <Tabs.Content value="tab-toc" tabIndex={-1} id={"reader-menu-tab-toc"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanels>
+                    <TabPanel id="tab-toc" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab}>
                             {(isPdf && pdfToc?.length && renderLinkTree_(__("reader.marks.toc"), pdfToc, 1, undefined)) ||
                                 (isPdf && !pdfToc?.length && <p>{__("reader.toc.publicationNoToc")}</p>) ||
                                 (!isPdf && r2Publication.TOC && renderLinkTree_(__("reader.marks.toc"), r2Publication.TOC, 1, undefined)) ||
                                 (!isPdf && r2Publication.Spine && renderLinkList_(__("reader.marks.toc"), r2Publication.Spine))}
                         </div>
-                    </Tabs.Content>
+                    </TabPanel>
 
-                    <Tabs.Content value="tab-landmark" tabIndex={-1} id={"reader-menu-tab-landmark"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanel id="tab-landmark" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab}>
                             {r2Publication.Landmarks &&
                                 renderLinkList_(__("reader.marks.landmarks"), r2Publication.Landmarks)}
                         </div>
-                    </Tabs.Content>
+                    </TabPanel>
 
-                    <Tabs.Content value="tab-bookmark" tabIndex={-1} id={"reader-menu-tab-bookmark"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanel id="tab-bookmark" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={classNames(dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab, stylesBookmarks.bookmarks_tab)}>
                             <BookmarkList popoverBoundary={popoverBoundary.current} goToLocator={goToLocator} hideBookmarkOnChange={hideAnnotationOnChange} START_PAGE={START_PAGE} selectionIsSet={selectionIsSet} MAX_MATCHES_PER_PAGE={MAX_MATCHES_PER_PAGE} />
                         </div>
-                    </Tabs.Content>
+                    </TabPanel>
 
-                    <Tabs.Content value="tab-annotation" tabIndex={-1} id={"reader-menu-tab-annotation"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanel id="tab-annotation" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={classNames(dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab, dockedMode ? stylesAnnotations.docked_annotations_tab: stylesAnnotations.annotations_tab)}>
                             <AnnotationList
                                 goToLocator={goToLocator}
@@ -734,9 +728,9 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 MAX_MATCHES_PER_PAGE={MAX_MATCHES_PER_PAGE}
                             />
                         </div>
-                    </Tabs.Content>
+                    </TabPanel>
 
-                    <Tabs.Content value="tab-search" tabIndex={-1} id={"reader-menu-tab-search"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanel id="tab-search" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={classNames(dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab, stylesPopoverDialog.search_container)}>
                             {searchEnable
                                 ? <ReaderMenuSearch
@@ -745,19 +739,20 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 />
                                 : <></>}
                         </div>
-                    </Tabs.Content>
+                    </TabPanel>
 
-                    <Tabs.Content value="tab-gotopage" tabIndex={-1} id={"reader-menu-tab-gotopage"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanel id="tab-gotopage" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab}>
                             <GoToPageSection totalPages={
                                 isPdf && pdfNumberOfPages
                                     ? pdfNumberOfPages
                                     : 0} {...props} />
                         </div>
-                    </Tabs.Content>
+                    </TabPanel>
+                    </TabPanels>
                 </div>
                 <ModalControlButtons dockedMode={dockedMode} />
-            </Tabs.Root>
+            </Tabs>
         </div>
     );
 };

@@ -138,8 +138,15 @@ $setting_color: var(--color-brand-primary);
     background-color: var(--color-gray-50);
     gap: 5px;
 
-    button {
-        height: 30px;
+    .react-aria-TabList {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .react-aria-Tab {
+        height: 20px;
         transition: 200ms;
         width: unset;
         display: flex;
@@ -151,6 +158,32 @@ $setting_color: var(--color-brand-primary);
         border-radius: 6px;
         font-weight: normal;
         border: 1px solid transparent;
+        cursor: pointer;
+
+        &[data-disabled] {
+            color: var(--color-gray-300);
+            cursor: not-allowed;
+
+            svg {
+                color: var(--color-gray-300);
+                fill: var(--color-gray-300);
+            }
+        }
+
+        &[data-separator-before] {
+            margin-top: 12px;
+            position: relative;
+
+            &::before {
+                background-color: var(--color-gray-100);
+                content: "";
+                height: 2px;
+                left: 0;
+                position: absolute;
+                right: 0;
+                top: -8px;
+            }
+        }
 
         p, h3 {
             font-size: 14px;
@@ -162,7 +195,7 @@ $setting_color: var(--color-brand-primary);
             margin: unset;
         }
 
-        &:hover {
+        &:hover:not([data-disabled]) {
             background-color: var(--color-neutral-base);
             border: 1px solid var(--color-button-border);
             color: var(--color-brand-primary);
@@ -173,7 +206,7 @@ $setting_color: var(--color-brand-primary);
             }
         }
 
-        &[data-state="active"]{
+        &[data-selected="true"]{
             color: $setting_color;
             background-color: $settings_bg;
             border: 1px solid var(--color-button-border);
@@ -198,8 +231,8 @@ $setting_color: var(--color-brand-primary);
         gap: 5px;
     }
 
-    button[data-value="tab-text"],
-    button[data-value="tab-spacing"] {
+    .react-aria-Tab[id="tab-text"],
+    .react-aria-Tab[id="tab-spacing"] {
         margin-left: 20%;
     }
 }
@@ -243,7 +276,7 @@ $setting_color: var(--color-brand-primary);
             background-color: var(--color-gray-400);
         }
 
-        &[data-state="active"] {
+        &[data-selected="true"] {
             color: $setting_color;
             background-color: $settings_bg;
             border-bottom: 2px solid $setting_color;

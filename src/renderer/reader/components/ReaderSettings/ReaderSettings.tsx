@@ -7,7 +7,7 @@
 
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import * as React from "react";
-import * as Tabs from "@radix-ui/react-tabs";
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from "readium-desktop/renderer/common/components/TabsComponent";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 
 import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
@@ -281,52 +281,24 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
         show: isEpub,
         separatorBefore: true,
         extra: diffBetweenDefaultConfigAndConfig ? <span className={stylesSettings.notification_preset}></span> : null,
-        subLabel: __("reader.settings.preset.detail"),
     },
 ];
 
 const visibleTabs = TabItem.filter(tab => tab.show);
 
-const TabTriggers = visibleTabs.flatMap(tab => {
-    const elements = [];
-
-    if (tab.separatorBefore) {
-        elements.push(
-            <span key={`${tab.value}-separator`} style={{ width: "80%", height: "2px", backgroundColor: "var(--color-gray-100)", margin: "10px auto" }} />,
-        );
-    }
-
-    if (tab.elementBefore) {
-        elements.push(
-            <div className={stylesSettings.allowCustom} key={"allowCustom"}>
-                {tab.elementBefore}
-            </div>,
-        );
-    }
-
-    elements.push(
-        <Tabs.Trigger
+const TabTriggers = visibleTabs.map(tab => (
+        <Tab
             key={tab.value}
-            value={tab.value}
+            id={tab.value}
+            data-separator-before={tab.separatorBefore || undefined}
             data-value={tab.value}
-            title={tab.name}
-            disabled={tab.disabled}
-            style={tab.separatorBefore ? { position: "relative" } : undefined}
+            isDisabled={tab.disabled}
         >
             <SVG ariaHidden svg={tab.svg} />
             <span>{tab.name}</span>
             {tab.extra ?? <></>}
-        </Tabs.Trigger>,
-    );
-
-    if (tab.subLabel) {
-        elements.push(
-            <p key={`${tab.value}-sublabel`} style={{ margin: "-5px 20px 0 60px" }}>{tab.subLabel}</p>,
-        );
-    }
-
-    return elements;
-});
+        </Tab>
+));
 
 const options = visibleTabs.map(({ id, value, name, disabled, svg }) => ({ id, value, name, disabled, svg }));
 
@@ -342,29 +314,33 @@ if (optionSelectedIsOnOptionDisabled) {
     return (
         <div style={{minHeight: "inherit"}}>
             { dockedMode ? <DockedHeader dockedMode={dockedMode} dockingMode={dockingMode} isEpub={isEpub} setSection={setSection} dockedModeRef={dockedModeRef} options={options} optionSelected={optionSelected} optionDisabled={optionDisabled} section={section} allowCustomContainer={AllowCustomContainer} panel={"settings"} /> : <></>}
-            <Tabs.Root value={section} defaultValue={section} onValueChange={dockedMode ? null : setSection} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
+            <Tabs selectedKey={section} onSelectionChange={(key) => dockedMode ? undefined : setSection(key.toString())} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                 {
                     dockedMode ? <></> :
                     <>
-                        <Tabs.List id="reader-settings-nav" ref={tabModeRef} className={stylesSettings.settings_tabslist} aria-orientation="vertical" data-orientation="vertical">
-                            {TabTriggers}
-                        </Tabs.List>
+                        <div className={stylesSettings.settings_tabslist}>
+                            <TabList ref={tabModeRef} aria-orientation="vertical" data-orientation="vertical">
+                                {TabTriggers}
+                            </TabList>
+                            <AllowCustomContainer />
+                        </div>
                         <TabTitle value={section} />
                     </>
                 }
                 <div className={stylesSettings.settings_content}
                     style={{ marginTop: dockedMode && "0" }}>
-                    <Tabs.Content value="tab-divina" tabIndex={-1} id="readerSettings_tabs-tab-divina" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanels>
+                    <TabPanel id="tab-divina" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={stylesSettings.settings_tab}>
                             <DivinaSetReadingMode handleDivinaReadingMode={handleDivinaReadingMode} divinaReadingMode={divinaReadingMode} divinaReadingModeSupported={divinaReadingModeSupported} />
                         </div>
-                    </Tabs.Content>
-                    <Tabs.Content value="tab-pdfzoom" tabIndex={-1} id="readerSettings_tabs-tab-pdfzoom" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    </TabPanel>
+                    <TabPanel id="tab-pdfzoom" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={stylesSettings.settings_tab}>
                             <PdfZoom pdfScale={props.pdfPlayerZoom} /*pdfView={pdfView}*/ />
                         </div>
-                    </Tabs.Content>
-                    <Tabs.Content value="tab-text" tabIndex={-1} id="readerSettings_tabs-tab-text" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    </TabPanel>
+                    <TabPanel id="tab-text" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div
                             className={classNames(stylesSettings.settings_tab, stylesSettings.settings_reading_text)}
                             // style={{ marginLeft: "20px" }}
@@ -372,13 +348,13 @@ if (optionSelectedIsOnOptionDisabled) {
                             <FontSize />
                             <FontFamily />
                         </div>
-                    </Tabs.Content>
-                    <Tabs.Content value="tab-spacing" tabIndex={-1} id="readerSettings_tabs-tab-spacing" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    </TabPanel>
+                    <TabPanel id="tab-spacing" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={stylesSettings.settings_tab}>
                             <ReadingSpacing />
                         </div>
-                    </Tabs.Content>
-                    <Tabs.Content value="tab-display" tabIndex={-1} id="readerSettings_tabs-tab-display" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    </TabPanel>
+                    <TabPanel id="tab-display" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <section className={stylesSettings.settings_tab}>
                             {isPdf ? <></> : <Theme dockedMode={dockedMode} />}
                             {isPdf ? <></> : <ReadingDisplayLayout isFXL={props.isFXL} />}
@@ -386,15 +362,16 @@ if (optionSelectedIsOnOptionDisabled) {
                             <ReadingDisplayCol isPdf={props.isPdf} pdfCol={props.pdfPlayerSpreadMode === 0 ? "1" : props.pdfPlayerSpreadMode > 0 ? "2" : "1" /* OR "auto" */} spreadModeEven={props.pdfPlayerSpreadMode === 2} />
                             {isPdf ? <></> : <ReadingDisplayCheckboxSettings disableRTLFlip={props.disableRTLFlip} setDisableRTLFlip={props.setDisableRTLFlip} />}
                         </section>
-                    </Tabs.Content>
-                    <Tabs.Content value="tab-preset" tabIndex={-1} id="readerSettings_tab-preset" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    </TabPanel>
+                    <TabPanel id="tab-preset" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <section className={stylesSettings.settings_tab}>
                             <SaveResetApplyPreset />
                         </section>
-                    </Tabs.Content>
+                    </TabPanel>
+                    </TabPanels>
                 </div>
                 <ModalControlButtons dockedMode={dockedMode} />
-            </Tabs.Root>
+            </Tabs>
         </div>
     );
 };

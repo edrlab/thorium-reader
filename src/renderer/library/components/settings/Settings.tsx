@@ -14,7 +14,7 @@ import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import * as Tabs from "@radix-ui/react-tabs";
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from "readium-desktop/renderer/common/components/TabsComponent";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import * as CogIcon from "readium-desktop/renderer/assets/icons/cog-icon.svg";
 import * as PaletteIcon from "readium-desktop/renderer/assets/icons/palette-icon.svg";
@@ -79,16 +79,24 @@ export const Settings: React.FC<ISettingsProps> = () => {
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
     const isRTL = langStringIsRTL(locale);
 
-    const [tabTitle, setTabTitle] = React.useState(__("settings.tabs.general"));
+    const [selectedTab, setSelectedTab] = React.useState("tab1");
 
-    React.useEffect(() => {
-        setTabTitle(__("settings.tabs.general"));
-    }, [__, locale]);
+    const tabTitle = {
+        tab1: __("settings.tabs.general"),
+        tab2: __("settings.tabs.appearance"),
+        tab4: __("settings.tabs.keyboardShortcuts"),
+        tab5: __("settings.tabs.profiles"),
+        tab6: __("settings.tabs.storage"),
+    }[selectedTab] || __("settings.tabs.general");
 
 
     // https://github.com/edrlab/thorium-reader/discussions/3177#discussioncomment-14752676
     // <DirectionProvider dir={isRTL ? "rtl" : "ltr"}> ... </DirectionProvider>
-    return <Dialog.Root>
+    return <Dialog.Root onOpenChange={(open) => {
+        if (!open) {
+            setSelectedTab("tab1");
+        }
+    }}>
         <Dialog.Trigger asChild>
             <button title={__("header.settings")} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                 <SVG ariaHidden svg={GearIcon} />
@@ -105,29 +113,29 @@ export const Settings: React.FC<ISettingsProps> = () => {
                         <Dialog.Title asChild><h1>{__("header.settings")}</h1></Dialog.Title>
                     </VisuallyHidden.Root>
                 }
-                <Tabs.Root defaultValue="tab1" data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
-                    <Tabs.List className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
-                        <Tabs.Trigger value="tab1" onFocus={() => setTabTitle(__("settings.tabs.general"))}>
+                <Tabs selectedKey={selectedTab} onSelectionChange={(key) => setSelectedTab(key.toString())} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
+                    <TabList className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
+                        <Tab id="tab1">
                             <SVG ariaHidden svg={CogIcon} />
                             <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.general")}</h3>
-                        </Tabs.Trigger>
-                        <Tabs.Trigger value="tab2" onFocus={() => setTabTitle(__("settings.tabs.appearance"))}>
+                        </Tab>
+                        <Tab id="tab2">
                             <SVG ariaHidden svg={PaletteIcon} />
                             <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.appearance")}</h3>
-                        </Tabs.Trigger>
-                        <Tabs.Trigger value="tab4" onFocus={() => setTabTitle(__("settings.tabs.keyboardShortcuts"))}>
+                        </Tab>
+                        <Tab id="tab4">
                             <SVG ariaHidden svg={KeyReturnIcon} />
                             <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.keyboardShortcuts")}</h3>
-                        </Tabs.Trigger>
-                        <Tabs.Trigger value="tab5" onFocus={() => setTabTitle(__("settings.tabs.profiles"))}>
+                        </Tab>
+                        <Tab id="tab5">
                             <SVG ariaHidden svg={AvatarIcon} />
                             <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.profiles")}</h3>
-                        </Tabs.Trigger>
-                        <Tabs.Trigger value="tab6" onFocus={() => setTabTitle(__("settings.tabs.storage"))}>
+                        </Tab>
+                        <Tab id="tab6">
                             <SVG ariaHidden svg={LibraryIcon} />
                             <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.storage")}</h3>
-                        </Tabs.Trigger>
-                    </Tabs.List>
+                        </Tab>
+                    </TabList>
                     <TabTitle title={tabTitle}>
                         {
                             tabTitle === __("settings.tabs.keyboardShortcuts") ?
@@ -136,7 +144,8 @@ export const Settings: React.FC<ISettingsProps> = () => {
                         }
                     </TabTitle>
                     <div className={stylesSettings.settings_content} style={{ marginTop: "70px" }}>
-                        <Tabs.Content value="tab1" tabIndex={-1}>
+                            <TabPanels>
+                            <TabPanel id="tab1">
                             <div className={stylesSettings.settings_tab}>
                                 <LanguageSettings />
                                 <ScreenReaderSettings />
@@ -148,30 +157,31 @@ export const Settings: React.FC<ISettingsProps> = () => {
                                 <SaveCreatorSettings />
                                 <OverloadNoteExportToHtml />
                             </div>
-                        </Tabs.Content>
-                        <Tabs.Content value="tab2" tabIndex={-1}>
+                        </TabPanel>
+                        <TabPanel id="tab2">
                             <div className={stylesSettings.settings_tab}>
                                 <Themes />
                             </div>
-                        </Tabs.Content>
-                        <Tabs.Content value="tab4" tabIndex={-1}>
+                        </TabPanel>
+                        <TabPanel id="tab4">
                             <div className={stylesSettings.settings_tab}>
                                 <KeyboardSettings />
                             </div>
-                        </Tabs.Content>
-                        <Tabs.Content value="tab5" tabIndex={-1}>
+                        </TabPanel>
+                        <TabPanel id="tab5">
                             <div className={stylesSettings.settings_tab}>
                                 <ProfilesSettings />
                             </div>
-                        </Tabs.Content>
-                        <Tabs.Content value="tab6" tabIndex={-1}>
+                        </TabPanel>
+                        <TabPanel id="tab6">
                             <div className={stylesSettings.settings_tab}>
                                 <StorageSettings />
                             </div>
-                        </Tabs.Content>
+                        </TabPanel>
+                        </TabPanels>
                     </div>
                     <ModalControlButton />
-                </Tabs.Root>
+                </Tabs>
 
                 {/* <div className={stylesSettings.close_button_div}>
                     <Dialog.Close asChild>
