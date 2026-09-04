@@ -30,12 +30,25 @@ import { readerNewWindowState } from "../../reader";
 import { winCommonActions } from "readium-desktop/common/redux/actions";
 import { assertUUIDv4 } from "readium-desktop/utils/uuid";
 import { persistableWindowBound } from "../session/browserWindowState";
+import { PublicationView } from "readium-desktop/common/views/publication";
+import { logPublicationMeasurement } from "readium-desktop/main/analytics/publication";
 
 // Logger
 const debug = debug_("readium-desktop:createReaderWindow");
 debug("_");
 
 const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
+
+function* logPublicationOpen(publicationView: PublicationView) {
+    const eventName = publicationView.isAudio ? "listen" : "read";
+    yield* spawnTyped(function*() {
+        try {
+            yield* callTyped(() => logPublicationMeasurement(eventName, publicationView));
+        } catch (e) {
+            debug("Publication open analytics event failed", e);
+        }
+    });
+}
 
 export function* createReaderWindow(publicationIdentifier: string, manifestUrl: string,  windowIdentifier: string /* winBound, reduxState*/) {
     assertUUIDv4(windowIdentifier);
@@ -74,6 +87,7 @@ export function* createReaderWindow(publicationIdentifier: string, manifestUrl: 
     const pathDecoded = Buffer.from(decodeURIComponent(pathBase64), "base64").toString("utf8");
 
     const publicationView = yield* getPublication(publicationIdentifier, false);
+    yield* logPublicationOpen(publicationView);
 
     yield* putTyped(winActions.session.registerReader.build(
         readerWindow,

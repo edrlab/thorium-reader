@@ -278,6 +278,13 @@
             "folderNotFound": ""
         },
         "storage": {
+            "recovery": {
+                "failure": "",
+                "success_few": "",
+                "success_many": "",
+                "success_one": "",
+                "success_other": ""
+            },
             "removed": "",
             "updateFailed": "",
             "updated": ""
@@ -1314,6 +1321,31 @@
                 "defaultDescription": "",
                 "defaultInternal": "",
                 "externalStorage": "",
+                "title": ""
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "description_few": "",
+                    "description_many": "",
+                    "description_one": "",
+                    "description_other": "",
+                    "title": ""
+                },
+                "none": "",
+                "recoverableCount_few": "",
+                "recoverableCount_many": "",
+                "recoverableCount_one": "",
+                "recoverableCount_other": "",
                 "title": ""
             }
         },

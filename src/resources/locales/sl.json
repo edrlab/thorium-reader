@@ -278,6 +278,13 @@
             "folderNotFound": "Imenika publikacije ni mogoče najti. Ponovno jo uvozite ali konfigurirajte dodatni prostor za shranjevanje v Nastavitve > Shramba."
         },
         "storage": {
+            "recovery": {
+                "failure": "",
+                "success_few": "",
+                "success_one": "",
+                "success_other": "",
+                "success_two": ""
+            },
             "removed": "Direktorij publikacije je bil odstranjen.",
             "updateFailed": "Direktorij publikacij je bil odstranjen: {{- message}}",
             "updated": "Direktorij publikacij je posodobljen."
@@ -1315,6 +1322,31 @@
                 "defaultInternal": "Sistemsko shranjevanje",
                 "externalStorage": "Zunanji pomnilnik",
                 "title": "Lokacije"
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "description_few": "",
+                    "description_one": "",
+                    "description_other": "",
+                    "description_two": "",
+                    "title": ""
+                },
+                "none": "",
+                "recoverableCount_few": "",
+                "recoverableCount_one": "",
+                "recoverableCount_other": "",
+                "recoverableCount_two": "",
+                "title": ""
             }
         },
         "tabs": {

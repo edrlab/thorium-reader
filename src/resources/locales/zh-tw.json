@@ -263,6 +263,9 @@
             "folderNotFound": ""
         },
         "storage": {
+            "recovery": {
+                "failure": ""
+            },
             "removed": "",
             "updateFailed": "",
             "updated": ""
@@ -1296,6 +1299,23 @@
                 "defaultDescription": "",
                 "defaultInternal": "",
                 "externalStorage": "",
+                "title": ""
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "title": ""
+                },
+                "none": "",
                 "title": ""
             }
         },

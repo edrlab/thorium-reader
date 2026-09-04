@@ -9,7 +9,7 @@ import { IRecoverablePublication } from "readium-desktop/common/api/interface/pu
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
-import { availableLanguages } from "readium-desktop/common/services/translator";
+import { availableLanguages, getTranslator } from "readium-desktop/common/services/translator";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
@@ -122,12 +122,12 @@ export function* recover(identifiers?: string[]): SagaGenerator<PublicationView[
     if (publicationViews.length) {
         yield* putTyped(toastActions.openRequest.build(
             ToastType.Success,
-            `${publicationViews.length} publication${publicationViews.length > 1 ? "s" : ""} recovered.`,
+            getTranslator().translate("message.storage.recovery.success", { count: publicationViews.length }),
         ));
     } else if (publicationsToRecover.length) {
         yield* putTyped(toastActions.openRequest.build(
             ToastType.Error,
-            "Publication recovery failed.",
+            getTranslator().translate("message.storage.recovery.failure"),
         ));
     }
 

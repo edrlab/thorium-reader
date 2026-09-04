@@ -263,6 +263,9 @@
             "folderNotFound": "出版物文件路径无法找到。重新导入，或者在“设置>储存”选项中调整附加储存位置。"
         },
         "storage": {
+            "recovery": {
+                "failure": ""
+            },
             "removed": "出版物文件路径被移除。",
             "updateFailed": "更新出版物文件路径失败: {{- message}}",
             "updated": "出版物文件路径已更新。"
@@ -1296,6 +1299,23 @@
                 "defaultDescription": "",
                 "defaultInternal": "",
                 "externalStorage": "",
+                "title": ""
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "title": ""
+                },
+                "none": "",
                 "title": ""
             }
         },
