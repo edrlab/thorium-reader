@@ -273,6 +273,12 @@
             "folderNotFound": ""
         },
         "storage": {
+            "recovery": {
+                "failure": "",
+                "success_few": "",
+                "success_one": "",
+                "success_other": ""
+            },
             "removed": "",
             "updateFailed": "",
             "updated": ""
@@ -880,6 +886,7 @@
             "disposition": {
                 "title": "Izgled"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Font",
             "fontSize": "Veličina fonta",
             "increaseFontSize": "",
@@ -890,7 +897,6 @@
             "lineSpacing": "Razmak između redova",
             "margin": "Margina",
             "mathjax": "",
-            "mathjaxDescription": "",
             "noFootnotes": "Isključi fusnote",
             "noRTLFlip": "",
             "noRuby": "",
@@ -1308,6 +1314,29 @@
                 "defaultDescription": "",
                 "defaultInternal": "",
                 "externalStorage": "",
+                "title": ""
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "description_few": "",
+                    "description_one": "",
+                    "description_other": "",
+                    "title": ""
+                },
+                "none": "",
+                "recoverableCount_few": "",
+                "recoverableCount_one": "",
+                "recoverableCount_other": "",
                 "title": ""
             }
         },

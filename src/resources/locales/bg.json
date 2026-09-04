@@ -268,6 +268,11 @@
             "folderNotFound": ""
         },
         "storage": {
+            "recovery": {
+                "failure": "",
+                "success_one": "",
+                "success_other": ""
+            },
             "removed": "",
             "updateFailed": "",
             "updated": ""
@@ -874,6 +879,7 @@
             "disposition": {
                 "title": "Оформление"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Шрифт",
             "fontSize": "Размер на шрифта",
             "increaseFontSize": "",
@@ -884,7 +890,6 @@
             "lineSpacing": "Разстояние между редовете",
             "margin": "Отстъпи",
             "mathjax": "",
-            "mathjaxDescription": "",
             "noFootnotes": "Деактивирайте бележките под линия",
             "noRTLFlip": "",
             "noRuby": "",
@@ -1302,6 +1307,27 @@
                 "defaultDescription": "",
                 "defaultInternal": "",
                 "externalStorage": "",
+                "title": ""
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "description_one": "",
+                    "description_other": "",
+                    "title": ""
+                },
+                "none": "",
+                "recoverableCount_one": "",
+                "recoverableCount_other": "",
                 "title": ""
             }
         },

@@ -268,6 +268,11 @@
             "folderNotFound": ""
         },
         "storage": {
+            "recovery": {
+                "failure": "",
+                "success_one": "",
+                "success_other": ""
+            },
             "removed": "",
             "updateFailed": "",
             "updated": ""
@@ -874,6 +879,7 @@
             "disposition": {
                 "title": "Disposición"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Fonte",
             "fontSize": "Tamaño de fonte",
             "increaseFontSize": "",
@@ -884,7 +890,6 @@
             "lineSpacing": "Interlineado",
             "margin": "Marxe",
             "mathjax": "",
-            "mathjaxDescription": "",
             "noFootnotes": "Desactivar notas ao pé",
             "noRTLFlip": "Deshabilitar a interface de usuario de dereita a esquerda\n",
             "noRuby": "Ocultar Ruby xaponés",
@@ -1302,6 +1307,27 @@
                 "defaultDescription": "",
                 "defaultInternal": "",
                 "externalStorage": "",
+                "title": ""
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "description_one": "",
+                    "description_other": "",
+                    "title": ""
+                },
+                "none": "",
+                "recoverableCount_one": "",
+                "recoverableCount_other": "",
                 "title": ""
             }
         },

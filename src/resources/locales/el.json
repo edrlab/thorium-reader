@@ -268,6 +268,11 @@
             "folderNotFound": "Δεν εντοπίστηκε ο φάκελος δημοσιεύσεων. Εισάγετέ τον ξανά ή ρυθμίστε τον επιπλέον χώρο αποθήκευσης από τις Ρυθμίσεις > Αποθήκευση."
         },
         "storage": {
+            "recovery": {
+                "failure": "",
+                "success_one": "",
+                "success_other": ""
+            },
             "removed": "Ο Φάκελος δημοσιεύσεων έχει αφαιρεθεί.",
             "updateFailed": "Αποτυχία ενημέρωσης του φακέλου δημοσιεύσεων: {{- message}}",
             "updated": "Ενημερώθηκε ο φάκελος δημοσιεύσεων."
@@ -874,6 +879,7 @@
             "disposition": {
                 "title": "Διάταξη"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Γραμματοσειρά",
             "fontSize": "Μέγεθος γραμματοσειράς",
             "increaseFontSize": "Αύξηση μεγέθους γραμματοσειράς",
@@ -884,7 +890,6 @@
             "lineSpacing": "Διάστημα μεταξύ γραμμών",
             "margin": "Περιθώριο",
             "mathjax": "Ενεργοποίηση MathJax",
-            "mathjaxDescription": "Βιβλιοθήκη MathJax",
             "noFootnotes": "Απενεργοποίηση αναδυόμενων υποσημειώσεων",
             "noRTLFlip": "Απενεργοποίηση Right-To-Left UI",
             "noRuby": "Κρύψιμο Japanese Ruby",
@@ -1303,6 +1308,27 @@
                 "defaultInternal": "Σύστημα Αποθήκευσης",
                 "externalStorage": "Εξωτερική αποθήκευση",
                 "title": "Τοποθεσίες"
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "description_one": "",
+                    "description_other": "",
+                    "title": ""
+                },
+                "none": "",
+                "recoverableCount_one": "",
+                "recoverableCount_other": "",
+                "title": ""
             }
         },
         "tabs": {

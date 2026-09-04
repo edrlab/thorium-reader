@@ -37,30 +37,32 @@ export async function getWindowsSystemProxy(): Promise<WindowsProxySettings | un
     );
     // console.log("***********--------- REGISTRY VALUES:", JSON.stringify(proxyValues, null, 4));
 
-    const proxyEnabled = getValue(proxyValues, "ProxyEnable");
-
-    // No proxy config? We"re done, return undefined.
-    if (!proxyEnabled || !proxyEnabled.data || (proxyEnabled.data !== "1" && proxyEnabled.data !== 1)) return undefined;
-
     const proxyServer = getValue(proxyValues, "ProxyServer");
     const autoConfigURL = getValue(proxyValues, "AutoConfigURL");
 
     if ((!proxyServer || !proxyServer.data) && (!autoConfigURL || !autoConfigURL.data)) return undefined;
 
+    // const proxyEnabled = getValue(proxyValues, "ProxyEnable");
+    // if ((!proxyEnabled || !proxyEnabled.data || (proxyEnabled.data !== "1" && proxyEnabled.data !== 1)) && (!autoConfigURL || !autoConfigURL.data)) return undefined;
+
     // ProxyOverride is a ;-separated list of hosts not to proxy
     const proxyOverride = getValue(proxyValues, "ProxyOverride")?.data;
     const noProxy = (proxyOverride ? (proxyOverride as string).split(";") : [])
-        .flatMap((host) => host === "<local>"
+        .flatMap((host) => host === "<local>" // TODO? `*.local`
             ? ["localhost", "127.0.0.1", "::1"]
             : [host]);
 
-    // ProxyServer specifies the proxy host(s), but in a few different formats...
-    const proxyConfigString =
-        autoConfigURL?.data ? autoConfigURL.data as string // TODO?: && autoconfig
+    const isPac = !!autoConfigURL?.data;
+    let proxyConfigString =
+        isPac ? autoConfigURL.data as string // TODO?: && autoconfig
         : proxyServer?.data ? proxyServer.data as string
         : "";
 
     if (!proxyConfigString) return undefined;
+
+    if (isPac && !proxyConfigString.startsWith("pac+")) {
+        proxyConfigString = "pac+" + proxyConfigString;
+    }
 
     if (proxyConfigString.startsWith("pac+http://") || proxyConfigString.startsWith("pac+https://") || proxyConfigString.startsWith("pac+ftp://") || proxyConfigString.startsWith("pac+file://") || proxyConfigString.startsWith("pac+data://")) {
         // Unclear whether this is used in reality, but it"s an example of a valid config in the microsoft
@@ -90,16 +92,7 @@ export async function getWindowsSystemProxy(): Promise<WindowsProxySettings | un
         // see https://github.com/httptoolkit/windows-system-proxy/pull/1
         // see https://github.com/httptoolkit/os-proxy-config/pull/1/changes
         const proxyUrl =
-            proxies["http"]
-            ? `http://${proxies["http"]}`
-
-            : proxies["socks"]
-            ? `socks://${proxies["socks"]}`
-
-            : proxies["https"]
-            ? `http://${proxies["https"]}` // not HTTPS:// !
-
-            : proxies["pac+http"]
+            proxies["pac+http"]
             ? `pac+http://${proxies["pac+http"]}`
 
             : proxies["pac+https"]
@@ -114,10 +107,20 @@ export async function getWindowsSystemProxy(): Promise<WindowsProxySettings | un
             : proxies["pac+data"]
             ? `pac+data://${proxies["pac+data"]}`
 
+            : proxies["http"]
+            ? ((isPac ? "pac+" : "") + `http://${proxies["http"]}`)
+
+            : proxies["socks"]
+            ? ((isPac ? "pac+" : "") + `socks://${proxies["socks"]}`)
+
+            : proxies["https"]
+            ? ((isPac ? "pac+" : "") + `http://${proxies["https"]}`) // not HTTPS:// !
+
             : undefined;
 
         if (!proxyUrl) {
-            throw new Error(`Could not get usable proxy URL from ${proxyConfigString}`);
+            return undefined;
+            // throw new Error(`Could not get usable proxy URL from ${proxyConfigString}`);
         }
 
         return {
@@ -127,7 +130,7 @@ export async function getWindowsSystemProxy(): Promise<WindowsProxySettings | un
     } else {
         // Alternatively, it"s often just a bare hostname, so we use that directly:
         return {
-            proxyUrl: `http://${proxyConfigString}`,
+            proxyUrl: ((isPac ? "pac+" : "") + `http://${proxyConfigString}`),
             noProxy,
         };
     }

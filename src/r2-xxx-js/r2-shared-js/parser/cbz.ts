@@ -52,7 +52,12 @@ export async function CbzParsePromise(filePath: string): Promise<Publication> {
     const publication = new Publication();
     publication.Context = ["https://readium.org/webpub-manifest/context.jsonld"];
     publication.Metadata = new Metadata();
-    publication.Metadata.RDFType = "http://schema.org/ComicIssue";
+
+    publication.Metadata.RDFType = "http://schema.org/ComicIssue"; // ComicStory?
+    // TODO?
+    // publication.Metadata.ConformsTo = [ "https://readium.org/webpub-manifest/profiles/comic" ];
+    // publication.Metadata.ConformsTo = [ "https://readium.org/webpub-manifest/profiles/divina" ];
+
     publication.Metadata.Identifier = filePathToTitle(filePath);
 
     publication.AddToInternal("type", "cbz");

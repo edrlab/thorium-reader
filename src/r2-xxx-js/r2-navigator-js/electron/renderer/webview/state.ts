@@ -52,6 +52,8 @@ export interface IReadiumElectronWebviewWindowState {
 
     ttsAndMediaOverlaysManualPlayNext: boolean;
 
+    enablePageBreakMarginIndicators: boolean;
+
     ttsHighlightStyle: number;
     ttsHighlightColor: IColor | undefined;
     ttsHighlightStyle_WORD: number | undefined;
@@ -120,6 +122,8 @@ export interface IReadiumElectronBrowserWindow {
     DEBUG_VISUALS: boolean;
 
     ttsAndMediaOverlaysManualPlayNext: boolean;
+
+    enablePageBreakMarginIndicators: boolean;
 
     ttsHighlightStyle: number;
     ttsHighlightColor: IColor | undefined;

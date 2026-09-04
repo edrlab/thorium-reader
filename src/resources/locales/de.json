@@ -268,6 +268,11 @@
             "folderNotFound": "Das Publikationsverzeichnis wurde nicht gefunden. Importieren Sie es erneut oder richten Sie den zusätzlichen Speicher unter Einstellungen > Speicher ein."
         },
         "storage": {
+            "recovery": {
+                "failure": "",
+                "success_one": "",
+                "success_other": ""
+            },
             "removed": "Verzeichnis der Publikationen entfernt.",
             "updateFailed": "Das Aktualisieren des Publikationsverzeichnisses ist fehlgeschlagen: {{- message}}",
             "updated": "Das Publikationsverzeichnis wurde aktualisiert."
@@ -874,6 +879,7 @@
             "disposition": {
                 "title": "Layout"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Schriftart",
             "fontSize": "Schriftgröße",
             "increaseFontSize": "Schriftgröße vergrößern",
@@ -884,7 +890,6 @@
             "lineSpacing": "Zeilenabstand",
             "margin": "Seitenränder",
             "mathjax": "MathJax aktivieren",
-            "mathjaxDescription": "MathJax",
             "noFootnotes": "Fußnoten deaktivieren",
             "noRTLFlip": "Rechts-nach-links-Benutzeroberfläche deaktivieren",
             "noRuby": "Japanische Ruby-Notationen ausblenden",
@@ -1302,6 +1307,27 @@
                 "defaultDescription": "",
                 "defaultInternal": "",
                 "externalStorage": "",
+                "title": ""
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "description_one": "",
+                    "description_other": "",
+                    "title": ""
+                },
+                "none": "",
+                "recoverableCount_one": "",
+                "recoverableCount_other": "",
                 "title": ""
             }
         },

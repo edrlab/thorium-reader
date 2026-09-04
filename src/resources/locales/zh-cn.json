@@ -263,6 +263,9 @@
             "folderNotFound": "出版物文件路径无法找到。重新导入，或者在“设置>储存”选项中调整附加储存位置。"
         },
         "storage": {
+            "recovery": {
+                "failure": ""
+            },
             "removed": "出版物文件路径被移除。",
             "updateFailed": "更新出版物文件路径失败: {{- message}}",
             "updated": "出版物文件路径已更新。"
@@ -868,6 +871,7 @@
             "disposition": {
                 "title": "布局"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "字体",
             "fontSize": "字体大小",
             "increaseFontSize": "增加字体大小",
@@ -878,7 +882,6 @@
             "lineSpacing": "行间距",
             "margin": "页边距",
             "mathjax": "启用 MathJax",
-            "mathjaxDescription": "MathJax",
             "noFootnotes": "禁用脚注",
             "noRTLFlip": "禁用从右到左的界面布局",
             "noRuby": "隐藏日文振假名",
@@ -1296,6 +1299,23 @@
                 "defaultDescription": "",
                 "defaultInternal": "",
                 "externalStorage": "",
+                "title": ""
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "title": ""
+                },
+                "none": "",
                 "title": ""
             }
         },

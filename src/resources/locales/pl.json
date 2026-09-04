@@ -278,6 +278,13 @@
             "folderNotFound": "Nie można znaleźć katalogu publikacji. Zaimportuj go ponownie lub skonfiguruj dodatkową przestrzeń dyskową w sekcji Ustawienia > Przestrzeń dyskowa."
         },
         "storage": {
+            "recovery": {
+                "failure": "",
+                "success_few": "",
+                "success_many": "",
+                "success_one": "",
+                "success_other": ""
+            },
             "removed": "Katalog publikacji został usunięty.",
             "updateFailed": "Nie udało się zaktualizować katalogu publikacji: {{- message}}",
             "updated": "Zaktualizowano katalog publikacji."
@@ -886,6 +893,7 @@
             "disposition": {
                 "title": "Układ"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Czcionka",
             "fontSize": "Rozmiar czcionki",
             "increaseFontSize": "Zwiększ rozmiar czcionki",
@@ -896,7 +904,6 @@
             "lineSpacing": "Interlinia",
             "margin": "Margines",
             "mathjax": "Włącz MathJax",
-            "mathjaxDescription": "MathJax",
             "noFootnotes": "Wyłącz wyskakujące przypisy",
             "noRTLFlip": "Wyłącz interfejs od prawej do lewej",
             "noRuby": "Ukryj japońskie ruby",
@@ -1315,6 +1322,31 @@
                 "defaultInternal": "Pamięć systemowa",
                 "externalStorage": "Zewnętrzna pamięć",
                 "title": "Lokalizacje"
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "description_few": "",
+                    "description_many": "",
+                    "description_one": "",
+                    "description_other": "",
+                    "title": ""
+                },
+                "none": "",
+                "recoverableCount_few": "",
+                "recoverableCount_many": "",
+                "recoverableCount_one": "",
+                "recoverableCount_other": "",
+                "title": ""
             }
         },
         "tabs": {

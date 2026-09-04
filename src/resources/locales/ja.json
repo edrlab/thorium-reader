@@ -263,6 +263,9 @@
             "folderNotFound": "出版物の保存場所が見つかりません。再登録するか、設定の保存先で追加の保存先を設定してください。"
         },
         "storage": {
+            "recovery": {
+                "failure": ""
+            },
             "removed": "",
             "updateFailed": "",
             "updated": ""
@@ -868,6 +871,7 @@
             "disposition": {
                 "title": "割り付け"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "書体",
             "fontSize": "文字の大きさ",
             "increaseFontSize": "",
@@ -878,7 +882,6 @@
             "lineSpacing": "行の間隔",
             "margin": "ページの余白",
             "mathjax": "",
-            "mathjaxDescription": "",
             "noFootnotes": "ポップアップ脚注を表示しない",
             "noRTLFlip": "右から左へ進むUIを無効にする",
             "noRuby": "ルビを表示しない",
@@ -1296,6 +1299,23 @@
                 "defaultDescription": "",
                 "defaultInternal": "",
                 "externalStorage": "",
+                "title": ""
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "title": ""
+                },
+                "none": "",
                 "title": ""
             }
         },

@@ -286,6 +286,14 @@ export interface IEventPayload_R2_EVENT_TTS_VOICE {
 
 // in RENDERER: webview.send()
 // in WEBVIEW: ipcRenderer.on()
+export const R2_EVENT_ENABLE_PAGE_BREAK_MARGIN_INDICATORS = "R2_EVENT_ENABLE_PAGE_BREAK_MARGIN_INDICATORS";
+// tslint:disable-next-line:class-name
+export interface IEventPayload_R2_EVENT_ENABLE_PAGE_BREAK_MARGIN_INDICATORS {
+    doEnable: boolean;
+}
+
+// in RENDERER: webview.send()
+// in WEBVIEW: ipcRenderer.on()
 export const R2_EVENT_TTS_MEDIAOVERLAYS_MANUAL_PLAY_NEXT = "R2_EVENT_TTS_MEDIAOVERLAYS_MANUAL_PLAY_NEXT";
 // tslint:disable-next-line:class-name
 export interface IEventPayload_R2_EVENT_TTS_MEDIAOVERLAYS_MANUAL_PLAY_NEXT {

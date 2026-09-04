@@ -258,6 +258,9 @@
             "folderNotFound": ""
         },
         "storage": {
+            "recovery": {
+                "failure": ""
+            },
             "removed": "",
             "updateFailed": "",
             "updated": ""
@@ -863,6 +866,7 @@
             "disposition": {
                 "title": "레이아웃"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "폰트",
             "fontSize": "폰트 크기",
             "increaseFontSize": "",
@@ -873,7 +877,6 @@
             "lineSpacing": "줄 간격",
             "margin": "여백",
             "mathjax": "",
-            "mathjaxDescription": "",
             "noFootnotes": "각주 비활성화",
             "noRTLFlip": "",
             "noRuby": "",
@@ -1291,6 +1294,23 @@
                 "defaultDescription": "",
                 "defaultInternal": "",
                 "externalStorage": "",
+                "title": ""
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "title": ""
+                },
+                "none": "",
                 "title": ""
             }
         },

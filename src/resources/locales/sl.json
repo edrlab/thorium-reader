@@ -278,6 +278,13 @@
             "folderNotFound": "Imenika publikacije ni mogoče najti. Ponovno jo uvozite ali konfigurirajte dodatni prostor za shranjevanje v Nastavitve > Shramba."
         },
         "storage": {
+            "recovery": {
+                "failure": "",
+                "success_few": "",
+                "success_one": "",
+                "success_other": "",
+                "success_two": ""
+            },
             "removed": "Direktorij publikacije je bil odstranjen.",
             "updateFailed": "Direktorij publikacij je bil odstranjen: {{- message}}",
             "updated": "Direktorij publikacij je posodobljen."
@@ -886,6 +893,7 @@
             "disposition": {
                 "title": "Postavitev"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Pisava",
             "fontSize": "Velikost pisave",
             "increaseFontSize": "Povečaj velikost pisave",
@@ -896,7 +904,6 @@
             "lineSpacing": "Razmik med vrsticami",
             "margin": "Rob",
             "mathjax": "Omogoči MathJax",
-            "mathjaxDescription": "MathJax",
             "noFootnotes": "Onemogoči pojavna okna z opombami",
             "noRTLFlip": "Onemogoči uporabniški vmesnik od desne proti levi",
             "noRuby": "Skrij japonski Ruby",
@@ -1315,6 +1322,31 @@
                 "defaultInternal": "Sistemsko shranjevanje",
                 "externalStorage": "Zunanji pomnilnik",
                 "title": "Lokacije"
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "description_few": "",
+                    "description_one": "",
+                    "description_other": "",
+                    "description_two": "",
+                    "title": ""
+                },
+                "none": "",
+                "recoverableCount_few": "",
+                "recoverableCount_one": "",
+                "recoverableCount_other": "",
+                "recoverableCount_two": "",
+                "title": ""
             }
         },
         "tabs": {
@@ -1352,18 +1384,18 @@
             "maskWordOutline": "Maska, obris besed",
             "maskWordSolidBackground": "Maska, enobarvno ozadje besed",
             "maskWordUnderline": "Maska, podčrtane besede",
-            "outlineWordOutline": "",
-            "outlineWordSolidBackground": "",
-            "outlineWordUnderline": "",
-            "preview": "",
-            "solidBackgroundWordOutline": "",
-            "solidBackgroundWordSolidBackground": "",
-            "solidBackgroundWordUnderline": "",
-            "style": "",
-            "underlineWordOutline": "",
-            "underlineWordSolidBackground": "",
-            "underlineWordUnderline": "",
-            "wordColor": ""
+            "outlineWordOutline": "Osnutek, Word: osnutek",
+            "outlineWordSolidBackground": "Osnutek, enobarvno ozadje",
+            "outlineWordUnderline": "Osnutek, podčrtane besede",
+            "preview": "Predogled stila TTS highlight",
+            "solidBackgroundWordOutline": "Enobarvno ozadje, obris besed",
+            "solidBackgroundWordSolidBackground": "Enobarvno ozadje, Word: enobarvno ozadje",
+            "solidBackgroundWordUnderline": "Enobarvno ozadje, podčrtane besede",
+            "style": "Stil TTS highlight",
+            "underlineWordOutline": "Podčrtano, obris besed",
+            "underlineWordSolidBackground": "Podčrtano, enobarvno ozadje",
+            "underlineWordUnderline": "Podčrtano, podčrtane besede",
+            "wordColor": "Barva"
         }
     }
 }

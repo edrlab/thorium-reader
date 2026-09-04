@@ -6,8 +6,12 @@
 // ==LICENSE-END=
 
 import debug_ from "debug";
-import { select as selectTyped, call as callTyped } from "typed-redux-saga/macro";
+import { select as selectTyped, call as callTyped, spawn as spawnTyped } from "typed-redux-saga/macro";
 import { SagaGenerator } from "typed-redux-saga";
+import {
+    buildPublicationUserAnalyticsParams,
+    publicationAnalyticsEvents,
+} from "readium-desktop/common/analytics/publication";
 import { convertAnnotationStateArrayToReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/converter";
 import { IReadiumAnnotation, IReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
 
@@ -28,6 +32,7 @@ import { JsonStringifySortedKeys } from "readium-desktop/common/utils/json";
 import { sanitizeForFilename } from "readium-desktop/common/safe-filename";
 import { EXT_ANNOTATIONS } from "readium-desktop/common/extension";
 import { mimeTypes } from "readium-desktop/utils/mimeTypes";
+import { logEvent } from "readium-desktop/renderer/common/analytics";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:common:redux:sagas:readiumAnnotation:export");
@@ -99,4 +104,11 @@ export function* exportAnnotationSet(notes: INoteState[], publicationView: Publi
     const filenameWithExtension = sanitizeForFilename(annoSetTitle + extension);
 
     downloadAnnotationFile(stringData, filenameWithExtension, extension);
+    yield* spawnTyped(function*() {
+        yield* callTyped(
+            logEvent,
+            publicationAnalyticsEvents.exportAnnotations,
+            buildPublicationUserAnalyticsParams(publicationView),
+        );
+    });
 }

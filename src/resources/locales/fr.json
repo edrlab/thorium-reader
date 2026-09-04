@@ -273,6 +273,12 @@
             "folderNotFound": "Le répertoire des publications est introuvable. Réimportez-le ou configurez le stockage additionnel dans Paramètres > Stockage."
         },
         "storage": {
+            "recovery": {
+                "failure": "La récupération des publications a échoué.",
+                "success_many": "{{- count}} publications récupérées.",
+                "success_one": "{{- count}} publication récupérée.",
+                "success_other": "{{- count}} publications récupérées."
+            },
             "removed": "Le répertoire des publications a été supprimé.",
             "updateFailed": "Erreur de mise à jour du répertoire des publications : {{- message}}",
             "updated": "Le répertoire des publications a été mis à jour."
@@ -880,6 +886,7 @@
             "disposition": {
                 "title": "Pagination"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Police de caractères",
             "fontSize": "Taille du texte",
             "increaseFontSize": "Augmenter la taille du texte",
@@ -890,7 +897,6 @@
             "lineSpacing": "Espacement des lignes",
             "margin": "Marge",
             "mathjax": "Activer MathJax",
-            "mathjaxDescription": "MathJax",
             "noFootnotes": "Désactiver la fenêtre pop-up des notes de bas de page",
             "noRTLFlip": "Désactiver l'interface droite-à-gauche",
             "noRuby": "Cacher les caractères Ruby Japonais",
@@ -1309,6 +1315,29 @@
                 "defaultInternal": "Stockage système",
                 "externalStorage": "Stockage externe",
                 "title": "Emplacements"
+            },
+            "recovery": {
+                "actions": {
+                    "check": "Rechercher des publications récupérables",
+                    "checkAgain": "Rechercher à nouveau",
+                    "recover": "Récupérer les publications",
+                    "recovering": "Récupération en cours..."
+                },
+                "available": "Une ou plusieurs publications ont été trouvées sur le disque mais sont absentes de la base de données. La récupération est possible.",
+                "checking": "Vérification du stockage des publications...",
+                "description": "Vérifiez le stockage des publications pour trouver celles qui peuvent être récupérées en toute sécurité.",
+                "dialog": {
+                    "confirm": "Récupérer",
+                    "description_many": "Thorium a trouvé {{- count}} publications sur le disque, absentes de la base de données. Voulez-vous les réimporter dans Thorium ?",
+                    "description_one": "Thorium a trouvé {{- count}} publication sur le disque, absente de la base de données. Voulez-vous la réimporter dans Thorium ?",
+                    "description_other": "Thorium a trouvé {{- count}} publications sur le disque, absentes de la base de données. Voulez-vous les réimporter dans Thorium ?",
+                    "title": "Récupérer les publications"
+                },
+                "none": "Aucune publication récupérable n'a été trouvée.",
+                "recoverableCount_many": "{{- count}} publications peuvent être récupérées avec leur identifiant de stockage d'origine.",
+                "recoverableCount_one": "{{- count}} publication peut être récupérée avec son identifiant de stockage d'origine.",
+                "recoverableCount_other": "{{- count}} publications peuvent être récupérées avec leur identifiant de stockage d'origine.",
+                "title": "Récupération"
             }
         },
         "tabs": {

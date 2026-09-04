@@ -268,6 +268,11 @@
             "folderNotFound": ""
         },
         "storage": {
+            "recovery": {
+                "failure": "",
+                "success_one": "",
+                "success_other": ""
+            },
             "removed": "",
             "updateFailed": "",
             "updated": ""
@@ -874,6 +879,7 @@
             "disposition": {
                 "title": "Düzen"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Yazı tipi",
             "fontSize": "Yazı tipi boyutu",
             "increaseFontSize": "",
@@ -884,7 +890,6 @@
             "lineSpacing": "Satır aralığı",
             "margin": "Kenar boşluğu",
             "mathjax": "MathJax'i etkinleştir",
-            "mathjaxDescription": "",
             "noFootnotes": "Dipnot açılır pencerelerini devredışı bırak",
             "noRTLFlip": "Sağdan Sola Kullanıcı Arayüzü'nü devredışı bırak",
             "noRuby": "Japonca Okutucuları gizle",
@@ -1303,6 +1308,27 @@
                 "defaultInternal": "",
                 "externalStorage": "",
                 "title": "Konumlar"
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "description_one": "",
+                    "description_other": "",
+                    "title": ""
+                },
+                "none": "",
+                "recoverableCount_one": "",
+                "recoverableCount_other": "",
+                "title": ""
             }
         },
         "tabs": {

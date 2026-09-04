@@ -273,6 +273,12 @@
             "folderNotFound": ""
         },
         "storage": {
+            "recovery": {
+                "failure": "",
+                "success_one": "",
+                "success_other": "",
+                "success_two": ""
+            },
             "removed": "",
             "updateFailed": "",
             "updated": ""
@@ -880,6 +886,7 @@
             "disposition": {
                 "title": ""
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "",
             "fontSize": "",
             "increaseFontSize": "",
@@ -890,7 +897,6 @@
             "lineSpacing": "",
             "margin": "",
             "mathjax": "",
-            "mathjaxDescription": "",
             "noFootnotes": "",
             "noRTLFlip": "",
             "noRuby": "",
@@ -1308,6 +1314,29 @@
                 "defaultDescription": "",
                 "defaultInternal": "",
                 "externalStorage": "",
+                "title": ""
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "description_one": "",
+                    "description_other": "",
+                    "description_two": "",
+                    "title": ""
+                },
+                "none": "",
+                "recoverableCount_one": "",
+                "recoverableCount_other": "",
+                "recoverableCount_two": "",
                 "title": ""
             }
         },

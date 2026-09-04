@@ -7,6 +7,7 @@
 
 import { rgbToHex } from "readium-desktop/common/rgb";
 import { HighlightDrawTypeNONE } from "@r2-navigator-js/electron/common/highlight";
+import { enablePageBreakMarginIndicators } from "@r2-navigator-js/electron/renderer/highlight";
 import { computeReadiumCssJsonMessage } from "readium-desktop/common/computeReadiumCssJsonMessage";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 
@@ -47,6 +48,10 @@ function* readerConfigChanged(action: readerActions.setConfig.TAction): SagaGene
         ...readerConfigFromReduxState,
         ...payload,
     };
+
+    if (isNotNil(payload.enablePageBreakMarginIndicators)) {
+        enablePageBreakMarginIndicators(payload.enablePageBreakMarginIndicators);
+    }
 
     if (isNotNil(payload.readerDockingMode)) {
         if (readerConfig.readerDockingMode === "full") {
@@ -294,6 +299,7 @@ function* readerConfigChanged(action: readerActions.setConfig.TAction): SagaGene
         isNotNil(payload.paged)             ||
         // isNotNil(payload.readiumcss)     ||
         isNotNil(payload.enableMathJax)     ||
+        // isNotNil(payload.enablePageBreakMarginIndicators) ||
         isNotNil(payload.reduceMotion)      ||
         isNotNil(payload.noFootnotes)       ||
         isNotNil(payload.noTemporaryNavTargetOutline) ||

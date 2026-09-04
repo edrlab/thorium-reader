@@ -268,6 +268,11 @@
             "folderNotFound": ""
         },
         "storage": {
+            "recovery": {
+                "failure": "",
+                "success_one": "",
+                "success_other": ""
+            },
             "removed": "",
             "updateFailed": "",
             "updated": ""
@@ -874,6 +879,7 @@
             "disposition": {
                 "title": "Xedapena"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Iturria",
             "fontSize": "Letra-tamaina",
             "increaseFontSize": "",
@@ -884,7 +890,6 @@
             "lineSpacing": "Lerroartea",
             "margin": "Marjina",
             "mathjax": "",
-            "mathjaxDescription": "",
             "noFootnotes": "Oin-oharrak desaktibatu",
             "noRTLFlip": "Desgaitu eskuinetik ezkerrera UI",
             "noRuby": "Ezkutatu Japoniako Ruby",
@@ -1302,6 +1307,27 @@
                 "defaultDescription": "",
                 "defaultInternal": "",
                 "externalStorage": "",
+                "title": ""
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "description_one": "",
+                    "description_other": "",
+                    "title": ""
+                },
+                "none": "",
+                "recoverableCount_one": "",
+                "recoverableCount_other": "",
                 "title": ""
             }
         },

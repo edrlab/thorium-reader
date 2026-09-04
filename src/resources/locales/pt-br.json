@@ -273,6 +273,12 @@
             "folderNotFound": ""
         },
         "storage": {
+            "recovery": {
+                "failure": "",
+                "success_many": "",
+                "success_one": "",
+                "success_other": ""
+            },
             "removed": "",
             "updateFailed": "",
             "updated": ""
@@ -880,6 +886,7 @@
             "disposition": {
                 "title": "Layout"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Fonte",
             "fontSize": "Tamanho de fonte",
             "increaseFontSize": "",
@@ -890,7 +897,6 @@
             "lineSpacing": "Espaçamento de linhas",
             "margin": "Margem",
             "mathjax": "Habilitar MathJax",
-            "mathjaxDescription": "",
             "noFootnotes": "Desativar notas de rodapé popup",
             "noRTLFlip": "Desativar UI da direita para a esquerda",
             "noRuby": "Ocultar Ruby Japonês",
@@ -1308,6 +1314,29 @@
                 "defaultDescription": "",
                 "defaultInternal": "",
                 "externalStorage": "",
+                "title": ""
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "description_many": "",
+                    "description_one": "",
+                    "description_other": "",
+                    "title": ""
+                },
+                "none": "",
+                "recoverableCount_many": "",
+                "recoverableCount_one": "",
+                "recoverableCount_other": "",
                 "title": ""
             }
         },

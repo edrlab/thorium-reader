@@ -15,7 +15,8 @@ const manifest = {
         },
         "accessMode": "auditory",
         "accessModeSufficient": [["auditory"], ["test", "no trailing comma"]],
-        "@type": "https://schema.org/Audiobook",
+        "@type": "http://schema.org/Audiobook",
+        "conformsTo": [ "https://readium.org/webpub-manifest/profiles/audiobook" ],
         "title": {
             en: "Audiotest 2",
             fr: "Test Audio 2",
