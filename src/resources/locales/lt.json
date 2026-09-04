@@ -278,6 +278,13 @@
             "folderNotFound": "Nepavyksta rasti leidinio aplanko. Importuokite leidinį iš naujo arba sukonfigūruokite papildomą saugyklą skiltyje „Nuostatos“ > „Saugykla“."
         },
         "storage": {
+            "recovery": {
+                "failure": "",
+                "success_few": "",
+                "success_many": "",
+                "success_one": "",
+                "success_other": ""
+            },
             "removed": "Leidinio aplankas pašalintas.",
             "updateFailed": "Nepavyko atnaujinti leidinio aplanko: {{- message}}",
             "updated": "Leidinio aplankas atnaujintas."
@@ -886,7 +893,7 @@
             "disposition": {
                 "title": "Išdėstymas"
             },
-            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicators": "Rodyti puslapio skirtukus paraštėje",
             "font": "Šriftas",
             "fontSize": "Šrifto dydis",
             "increaseFontSize": "Padidinti šrifto dydį",
@@ -1315,6 +1322,31 @@
                 "defaultInternal": "Sistemos saugykla",
                 "externalStorage": "Išorinė saugykla",
                 "title": "Vietos"
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "description_few": "",
+                    "description_many": "",
+                    "description_one": "",
+                    "description_other": "",
+                    "title": ""
+                },
+                "none": "",
+                "recoverableCount_few": "",
+                "recoverableCount_many": "",
+                "recoverableCount_one": "",
+                "recoverableCount_other": "",
+                "title": ""
             }
         },
         "tabs": {

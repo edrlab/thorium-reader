@@ -1184,6 +1184,7 @@ ${cssHrefs.reduce((pv, cv) => {
                         audioPublication.Metadata = new Metadata();
                     }
                     audioPublication.Metadata.RDFType = "http://schema.org/Audiobook";
+                    audioPublication.Metadata.ConformsTo = [ "https://readium.org/webpub-manifest/profiles/audiobook" ];
 
                     const processLinkAudio = async (link: Link): Promise<boolean | null> => {
 

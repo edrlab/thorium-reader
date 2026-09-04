@@ -134,12 +134,13 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
         if (!title || !url) {
             return;
         }
-        apiAction("opds/deleteFeed", this.props.feed.identifier).then(() => {
-            apiAction("opds/addFeed", { title, url, favorite }).catch((err) => {
-                console.error("Error to fetch api opds/addFeed", err);
-            });
+        apiAction("opds/updateFeed", this.props.feed.identifier, {
+            title,
+            url,
+            authenticationUrl: this.props.feed.authenticationUrl,
+            favorite,
         }).catch((err) => {
-            console.error("Error to fetch api opds/deleteFeed", err);
+            console.error("Error to fetch api opds/updateFeed", err);
         });
     };
 

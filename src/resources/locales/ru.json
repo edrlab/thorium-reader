@@ -278,6 +278,13 @@
             "folderNotFound": "Каталог публикации не найден. Повторно импортируйте его или настройте дополнительное хранилище в разделе Настройки > Хранилище."
         },
         "storage": {
+            "recovery": {
+                "failure": "",
+                "success_few": "",
+                "success_many": "",
+                "success_one": "",
+                "success_other": ""
+            },
             "removed": "Каталог публикаций удалён.",
             "updateFailed": "Не удалось обновить каталог публикаций: {{- message}}",
             "updated": "Каталог публикаций обновлён."
@@ -886,7 +893,7 @@
             "disposition": {
                 "title": "Макет"
             },
-            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicators": "Отображать разрывы страниц на полях",
             "font": "Шрифт",
             "fontSize": "Размер шрифта",
             "increaseFontSize": "Увеличить размер шрифта",
@@ -1315,6 +1322,31 @@
                 "defaultInternal": "Системное хранилище",
                 "externalStorage": "Внешнее хранилище",
                 "title": "Места расположения"
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "description_few": "",
+                    "description_many": "",
+                    "description_one": "",
+                    "description_other": "",
+                    "title": ""
+                },
+                "none": "",
+                "recoverableCount_few": "",
+                "recoverableCount_many": "",
+                "recoverableCount_one": "",
+                "recoverableCount_other": "",
+                "title": ""
             }
         },
         "tabs": {

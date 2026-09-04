@@ -14,7 +14,9 @@ import { shell } from "electron";
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { connect } from "react-redux";
+import debounce from "debounce";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
+import { lcpAnalyticsEvents } from "readium-desktop/common/analytics/lcp";
 // import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 // import * as InfoIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
@@ -37,6 +39,7 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import { lcpActions } from "readium-desktop/common/redux/actions";
 import classNames from "classnames";
 import { dialogActions } from "readium-desktop/common/redux/actions";
+import { logEvent } from "readium-desktop/renderer/common/analytics";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -57,6 +60,9 @@ interface IState {
 
 export class LCPAuthentication extends React.Component<IProps, IState> {
     private focusRef: React.RefObject<HTMLInputElement>;
+    private logLcpHelpDebounced = debounce(() => {
+        logEvent(lcpAnalyticsEvents.help);
+    }, 500);
 
     constructor(props: IProps) {
         super(props);
@@ -146,6 +152,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                                 <a href=""
                                     onClick={(ev) => {
                                         ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
+                                        this.logLcpHelpDebounced();
                                         if (this.props.urlHint.href && /^https?:\/\//.test(this.props.urlHint.href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
                                             shell.openExternal(this.props.urlHint.href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ })
                                         }

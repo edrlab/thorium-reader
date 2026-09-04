@@ -130,7 +130,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
     public render() {
         const { __ } = this.props;
         const displayVersionToast =  this.state.versionInfo && !!this.props.newVersionURL && !!this.props.newVersion;
-        const displayWhatsNew = !this.props.displayWhatsNew;
+        const displayWhatsNew = !this.props.displayWhatsNew && !_APP_VERSION.includes("-"); // exclude "-alpha", "-beta", "-rc", etc. (official website changelog only available for production releases like "3.5.0", not "3.5.0-rc.1" for example)
         const displayScreenReaderInvite = !this.props.screenReaderActivate && this.state.accessibilitySupportEnabled;
 
         // const locale = encodeURIComponent_RFC3986(this.props.locale);
