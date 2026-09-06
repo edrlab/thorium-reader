@@ -1,1 +1,68 @@
-{}
+{
+    "accessibility": {
+        "closeDialog": "بستن",
+        "toolbar": "نوار ابزار"
+    },
+    "app": {
+        "edit": {
+            "copy": "رونویسی",
+            "cut": "برش",
+            "paste": "چسباندن",
+            "print": "چاپ",
+            "redo": "انجام دوباره",
+            "selectAll": "انتخاب همه",
+            "title": "ویرایش",
+            "undo": "واگردانی"
+        },
+        "update": {
+            "message": "نسخه جدید در دسترس است، برای اطلاعات بیشتر کلیک کنید.",
+            "whatsnew": "نسخه جدید نصب شد، برای اطلاعات بیشتر کلیک کنید"
+        }
+    },
+    "catalog": {
+        "AddToFavorites": "افزودن به علایق",
+        "addTags": "افزودن برچسب",
+        "addTagsButton": "افزودن",
+        "column": {
+            "ascending": "صعودی",
+            "descending": "نزولی",
+            "unsorted": "بدون ترتیب"
+        },
+        "customization": {
+            "fallback": {
+                "screen": "بدون عنوان"
+            }
+        },
+        "delete": "حذف",
+        "deleteBook": "حذف",
+        "deleteTag": "حذف برچسب",
+        "entry": {
+            "continueReading": "ادامهٔ مطالعه",
+            "lastAdditions": "اخیراً افزوده شده"
+        },
+        "export": "ذخیره به عنوان",
+        "lang": "زبان",
+        "login": "ورود",
+        "logout": "خروج",
+        "missing": "پرونده‌های گمشده",
+        "noPublicationHelpL1": "پرونده‌ها را اینجا رها کنید",
+        "noPublicationHelpL4": "پسوندهای پشتیبانی شده:",
+        "numberOfPages": "تعداد صفحات",
+        "opds": {
+            "auth": {
+                "cancel": "لغو",
+                "login": "ورود",
+                "password": "گذرواژه",
+                "register": "ثبت‌نام",
+                "retry": "تلاش مجدد",
+                "username": "نام کاربری / نشانی ایمیل"
+            },
+            "info": {
+                "availableState": {
+                    "available": "در دسترس",
+                    "ready": "آماده"
+                }
+            }
+        }
+    }
+}
