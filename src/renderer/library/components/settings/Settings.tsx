@@ -117,23 +117,23 @@ export const Settings: React.FC<ISettingsProps> = () => {
                     <TabList className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
                         <Tab id="tab1">
                             <SVG ariaHidden svg={CogIcon} />
-                            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.general")}</h3>
+                            <span dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.general")}</span>
                         </Tab>
                         <Tab id="tab2">
                             <SVG ariaHidden svg={PaletteIcon} />
-                            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.appearance")}</h3>
+                            <span dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.appearance")}</span>
                         </Tab>
                         <Tab id="tab4">
                             <SVG ariaHidden svg={KeyReturnIcon} />
-                            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.keyboardShortcuts")}</h3>
+                            <span dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.keyboardShortcuts")}</span>
                         </Tab>
                         <Tab id="tab5">
                             <SVG ariaHidden svg={AvatarIcon} />
-                            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.profiles")}</h3>
+                            <span dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.profiles")}</span>
                         </Tab>
                         <Tab id="tab6">
                             <SVG ariaHidden svg={LibraryIcon} />
-                            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.storage")}</h3>
+                            <span dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.storage")}</span>
                         </Tab>
                     </TabList>
                     <TabTitle title={tabTitle}>

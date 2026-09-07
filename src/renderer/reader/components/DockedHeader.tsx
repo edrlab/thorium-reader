@@ -63,6 +63,7 @@ const SelectRefComponent = ({ isEpub, setSection, dockedMode, dockedModeRef, opt
             id={`reader-${panel}-nav`}
             items={options}
             selectedKey={optionSelected}
+            aria-label={options.find(({ value }) => value === section)?.name}
             disabledKeys={optionDisabled}
             svg={options.find(({ value }) => value === section)?.svg}
             onSelectionChange={(id) => {
