@@ -9,7 +9,6 @@ import * as stylesSettings from "readium-desktop/renderer/assets/styles/componen
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 
 import * as React from "react";
-import * as RadioGroup from "@radix-ui/react-radio-group";
 
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as TwoColsIcon from "readium-desktop/renderer/assets/icons/2cols-icon.svg";
@@ -22,6 +21,7 @@ import { useReaderConfig, useSaveReaderConfigDebounced } from "readium-desktop/r
 import { IReaderSettingsProps } from "readium-desktop/renderer/reader/components/options-values";
 import { IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView } from "readium-desktop/renderer/reader/pdf/common/pdfReader.type";
 import { RadioGroupItem } from "readium-desktop/renderer/reader/components/ReaderSettings/ReaderSettings";
+import { RadioGroup } from "readium-desktop/renderer/common/components/RadioGroupComponent";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderSettingsProps {
@@ -63,7 +63,7 @@ export const ReadingDisplayCol = ({ isPdf, spreadModeEven, pdfCol }: Pick<IBaseP
                 <h3>{__("reader.settings.column.title")}</h3>
             </div>
             <div className={stylesSettings.display_options}>
-                <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px" }} value={isPdf ? (pdfCol ? pdfCol : "1") : state}
+                <RadioGroup aria-label={__("reader.settings.column.title")} orientation="horizontal" style={{ display: "flex", gap: "10px" }} value={isPdf ? (pdfCol ? pdfCol : "1") : state}
                     onValueChange={(v) => {
                         if (isPdf) {
                             createOrGetPdfEventBus().dispatch("column", v === "auto" ? "1" : v === "1" ? "1" : "2");
@@ -75,7 +75,7 @@ export const ReadingDisplayCol = ({ isPdf, spreadModeEven, pdfCol }: Pick<IBaseP
                     {isPdf ? <></> : <RadioGroupItem value="auto" description={`${__("reader.settings.column.auto")}`} svg={DefaultPageIcon} disabled={false} />}
                     <RadioGroupItem value="1" description={`${__("reader.settings.column.one")}`} svg={AlignJustifyIcon} disabled={isPdf ? false : scrollable} />
                     <RadioGroupItem value="2" description={`${__("reader.settings.column.two")}`} svg={TwoColsIcon} disabled={isPdf ? false : scrollable} />
-                </RadioGroup.Root>
+                </RadioGroup>
             </div>
             {!isPdf || pdfCol === "auto" || pdfCol === "1" /* disabled={pdfCol === "auto" || pdfCol === "1"} */
                 ? <></> :
