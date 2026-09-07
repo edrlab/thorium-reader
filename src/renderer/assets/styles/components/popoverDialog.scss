@@ -19,7 +19,7 @@
   color: var(--color-text-primary);
   position: fixed;
   box-sizing: border-box;
-  overflow: hidden;
+  // overflow: hidden;
   border: 1px solid var(--color-gray-250);
 
   @media only screen and (height <= 700px) {
@@ -105,7 +105,7 @@
     color: var(--color-text-primary);
     font-size: 12px;
 
-    &:disabled {
+    &[data-disabled] {
       background-color: var(--color-gray-50);
     }
   }

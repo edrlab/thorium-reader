@@ -8,7 +8,7 @@
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import * as React from "react";
 import * as Tabs from "@radix-ui/react-tabs";
-import * as RadioGroup from "@radix-ui/react-radio-group";
+import { Radio as AriaRadio } from "readium-desktop/renderer/common/components/RadioGroupComponent";
 
 import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
 import * as GuearIcon from "readium-desktop/renderer/assets/icons/gear-icon.svg";
@@ -93,12 +93,15 @@ interface IRadioGroupItemProps {
 
 export const RadioGroupItem = (props: IRadioGroupItemProps) => {
     return (
-        <RadioGroup.Item
+        <AriaRadio
             data-input-type="radio"
-            value={props.value} id={props.value} className={classNames(stylesSettings.display_options_item, props.className)} disabled={props.disabled} style={props.style}>
-            {props.svg ? <SVG ariaHidden svg={props.svg} /> : <></>}
-            {props.description}
-        </RadioGroup.Item>
+            value={props.value}
+            description={props.description}
+            svg={props.svg}
+            className={classNames(stylesSettings.display_options_item, props.className)}
+            disabled={props.disabled}
+            style={props.style}
+        />
     );
 };
 
