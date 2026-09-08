@@ -285,6 +285,17 @@
         },
         "addMenu": "添加 OPDS 订阅源",
         "breadcrumbRoot": "出版目录",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "OPDS 官方网站",
         "empty": "未找到出版物",
         "firstPage": "首页",

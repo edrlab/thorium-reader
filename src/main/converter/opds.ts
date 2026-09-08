@@ -14,6 +14,7 @@ import {
     IOpdsPublicationView, IOpdsResultView, IOpdsTagView,
 } from "readium-desktop/common/views/opds";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
+import { getOpdsFeedColor } from "readium-desktop/common/models/opds";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { ContentType } from "readium-desktop/utils/contentType";
 
@@ -176,6 +177,7 @@ export class OpdsFeedViewConverter {
             authentified: authentified,
             authenticationUrl: document.authenticationUrl,
             favorite: document.favorite || false,
+            color: getOpdsFeedColor(document.color),
             // feedHasAuthentication: authentified || await feedHasAuthenticationFunction(),
         };
     }

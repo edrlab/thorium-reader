@@ -304,6 +304,17 @@
         },
         "addMenu": "Добавить OPDS каталог",
         "breadcrumbRoot": "Каталоги",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "Официальный сайт OPDS",
         "empty": "Книга не найдена",
         "firstPage": "Первая",

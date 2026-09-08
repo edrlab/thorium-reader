@@ -304,6 +304,17 @@
         },
         "addMenu": "Dodaj kanał OPDS",
         "breadcrumbRoot": "Katalogi",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "Oficjalna strona OPDS",
         "empty": "Nie znaleziono publikacji",
         "firstPage": "Pierwsza",

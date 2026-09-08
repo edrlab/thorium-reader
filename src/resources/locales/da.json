@@ -292,6 +292,17 @@
         },
         "addMenu": "Tilføj OPDS feed",
         "breadcrumbRoot": "Kataloger",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "OPDS' officielle hjemmeside",
         "empty": "Ingen bøger fundet",
         "firstPage": "Første",

@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import { Identifiable } from "readium-desktop/common/models/identifiable";
+import type { TOpdsFeedColor } from "readium-desktop/common/models/opds";
 import { Timestampable } from "readium-desktop/common/models/timestampable";
 
 export interface OpdsFeedDocument extends Identifiable, Timestampable {
@@ -30,4 +31,5 @@ export interface OpdsFeedDocument extends Identifiable, Timestampable {
 
     authenticationUrl?: string;
     favorite?: boolean;
+    color?: TOpdsFeedColor;
 }

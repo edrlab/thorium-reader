@@ -285,6 +285,17 @@
         },
         "addMenu": "OPDSフィードを追加",
         "breadcrumbRoot": "図書目録",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "OPDSの公式Webサイト",
         "empty": "本が見つかりません",
         "firstPage": "最初",

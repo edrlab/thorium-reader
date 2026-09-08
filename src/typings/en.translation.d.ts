@@ -712,6 +712,17 @@ declare namespace typed_i18n {
   readonly "addFormApiapp": { readonly "title": string },
   readonly "addMenu": string,
   readonly "breadcrumbRoot": string,
+  readonly "color": {
+    readonly "blue": string,
+    readonly "gray": string,
+    readonly "green": string,
+    readonly "orange": string,
+    readonly "pink": string,
+    readonly "purple": string,
+    readonly "red": string,
+    readonly "title": string,
+    readonly "yellow": string
+  },
   readonly "documentation": string,
   readonly "empty": string,
   readonly "firstPage": string,
@@ -760,6 +771,26 @@ declare namespace typed_i18n {
   (_: "opds.addFormApiapp.title", __?: {}): string;
   (_: "opds.addMenu", __?: {}): string;
   (_: "opds.breadcrumbRoot", __?: {}): string;
+  (_: "opds.color", __?: {}): {
+  readonly "blue": string,
+  readonly "gray": string,
+  readonly "green": string,
+  readonly "orange": string,
+  readonly "pink": string,
+  readonly "purple": string,
+  readonly "red": string,
+  readonly "title": string,
+  readonly "yellow": string
+};
+  (_: "opds.color.blue", __?: {}): string;
+  (_: "opds.color.gray", __?: {}): string;
+  (_: "opds.color.green", __?: {}): string;
+  (_: "opds.color.orange", __?: {}): string;
+  (_: "opds.color.pink", __?: {}): string;
+  (_: "opds.color.purple", __?: {}): string;
+  (_: "opds.color.red", __?: {}): string;
+  (_: "opds.color.title", __?: {}): string;
+  (_: "opds.color.yellow", __?: {}): string;
   (_: "opds.documentation", __?: {}): string;
   (_: "opds.empty", __?: {}): string; (_: "opds.firstPage", __?: {}): string;
   (_: "opds.informations", __?: {}): string;

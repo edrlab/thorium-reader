@@ -298,6 +298,17 @@
         },
         "addMenu": "Añadir catálogo OPDS",
         "breadcrumbRoot": "Catálogos",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "Sitio oficial de OPDS",
         "empty": "No se han encontrado publicaciones",
         "firstPage": "Primera",

@@ -304,6 +304,17 @@
         },
         "addMenu": "Pridėti OPDS sklaidos kanalą",
         "breadcrumbRoot": "Katalogai",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "Oficiali OPDS svetainė",
         "empty": "Leidinių nerasta",
         "firstPage": "Pirmas",

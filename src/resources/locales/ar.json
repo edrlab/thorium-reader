@@ -316,6 +316,17 @@
         },
         "addMenu": "إضافة مصدر OPDS",
         "breadcrumbRoot": "الفهارس",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "موقع OPDS الرسمي",
         "empty": "لم يتم العثور على أي منشور",
         "firstPage": "الأول",
