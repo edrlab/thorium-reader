@@ -40,6 +40,12 @@ export const FeedCard: React.FC<IFeedCardProps> = (props) => {
     const { feed, setFeedsResult, location } = props;
     const dispatch = useDispatch();
     const [__] = useTranslator();
+    const [iconHasError, setIconHasError] = React.useState(false);
+    const catalogIcon = feed.icon && !iconHasError ? feed.icon : undefined;
+
+    React.useEffect(() => {
+        setIconHasError(false);
+    }, [feed.icon]);
 
     const logout: (feedUrl: string) => void = (feedUrl) => {
         dispatch(authActions.logout.build(feedUrl));
@@ -109,7 +115,18 @@ export const FeedCard: React.FC<IFeedCardProps> = (props) => {
             >
                 <div className={stylesCatalogs.catalog_color_band} />
                 <div className={stylesCatalogs.catalog_title}>
-                    <SVG ariaHidden svg={GlobeIcon} />
+                    {catalogIcon ?
+                        <img
+                            aria-hidden={true}
+                            alt=""
+                            className={stylesCatalogs.catalog_icon_image}
+                            loading="lazy"
+                            referrerPolicy="no-referrer"
+                            src={catalogIcon}
+                            onError={() => setIconHasError(true)}
+                        />
+                        : <SVG ariaHidden svg={GlobeIcon} />
+                    }
                     <p title={`${feed.title} --- ${feed.url}`}>{feed.title}</p>
                 </div>
             </Link>

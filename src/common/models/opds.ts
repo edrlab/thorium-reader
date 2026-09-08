@@ -39,6 +39,46 @@ export const isOpdsFeedColor = (value: unknown): value is TOpdsFeedColor =>
 export const getOpdsFeedColor = (value: unknown): TOpdsFeedColor =>
     isOpdsFeedColor(value) ? value : OPDS_FEED_DEFAULT_COLOR;
 
+export const OPDS_FEED_ICON_DATA_URL_PREFIX = "data:image/png;base64,";
+export const OPDS_FEED_ICON_SVG_DATA_URL_PREFIX = "data:image/svg+xml;base64,";
+const OPDS_FEED_ICON_DATA_URL_PREFIXES = [
+    OPDS_FEED_ICON_DATA_URL_PREFIX,
+    OPDS_FEED_ICON_SVG_DATA_URL_PREFIX,
+];
+
+export const isOpdsFeedIconUrl = (value: unknown): value is string => {
+    if (typeof value !== "string" || !value.trim()) {
+        return false;
+    }
+
+    try {
+        const url = new URL(value);
+        return url.protocol === "http:" || url.protocol === "https:";
+    } catch {
+        return false;
+    }
+};
+
+export const getOpdsFeedIconUrl = (value: unknown): string | undefined =>
+    isOpdsFeedIconUrl(value) ? value : undefined;
+
+export const isOpdsFeedIconDataUrl = (value: unknown): value is string => {
+    if (typeof value !== "string") {
+        return false;
+    }
+
+    const prefix = OPDS_FEED_ICON_DATA_URL_PREFIXES.find((p) => value.startsWith(p));
+    if (!prefix) {
+        return false;
+    }
+
+    const data = value.slice(prefix.length);
+    return !!data && /^[A-Za-z0-9+/]+={0,2}$/.test(data);
+};
+
+export const getOpdsFeedIcon = (value: unknown): string | undefined =>
+    isOpdsFeedIconDataUrl(value) ? value : undefined;
+
 export interface OpdsFeed {
     identifier?: string;
     title: string;
@@ -46,4 +86,5 @@ export interface OpdsFeed {
     authenticationUrl?: string;
     favorite?: boolean;
     color?: TOpdsFeedColor;
+    icon?: string;
 }
