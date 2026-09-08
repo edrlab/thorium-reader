@@ -21,6 +21,7 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { dispatchOpdsLink } from "readium-desktop/renderer/library/opds/handleLink";
+import { parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { findExtWithMimeType, findMimeTypeWithExtension, ADOBE_ADEPT_XML } from "readium-desktop/utils/mimeTypes";
@@ -59,6 +60,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
             sampleButtonIsDisabled,
             __,
         } = this.props;
+        const rootFeedIdentifier = parseOpdsBrowserRoute(this.props.location.pathname)?.rootFeedIdentifier;
 
         const boxStyle = { minHeight: "50px", height: "fit-content", padding: "0.4em", paddingTop: "0.2em", marginBottom: "0.5em", marginTop: "0.4em", fontSize: "14px" };
 
@@ -106,6 +108,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                         verifyImport(
                                             ln,
                                             opdsPublicationView,
+                                            rootFeedIdentifier,
                                         );
                                     }
                                 }}
@@ -141,6 +144,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                         verifyImport(
                                             ln,
                                             opdsPublicationView,
+                                            rootFeedIdentifier,
                                         );
                                     }
                                 }}
