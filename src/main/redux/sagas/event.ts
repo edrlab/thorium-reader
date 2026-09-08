@@ -7,8 +7,10 @@
 
 import debug_ from "debug";
 import {
+    OPDS_FEED_ICON_DATA_URL_PREFIX,
     OPDS_FEED_DEFAULT_COLOR,
     getOpdsFeedColor,
+    getOpdsFeedIconUrl,
     isOpdsFeedColor,
     type TOpdsFeedColor,
 } from "readium-desktop/common/models/opds";
@@ -45,6 +47,8 @@ import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/c
 import { ToastType } from "readium-desktop/common/models/toast";
 import { appendFileSyncWithRotation } from "readium-desktop/utils/log";
 import { TCatalogAddAnalyticsOrigin } from "src/common/analytics/catalog";
+import { nativeImage } from "electron";
+import { httpGetWithAuth } from "readium-desktop/main/network/http";
 
 // Logger
 const debug = debug_("readium-desktop:main:saga:event");
@@ -60,9 +64,110 @@ const appLogs = path.join(
     folderPath,
     PROCESS_LOGS,
 );
+const OPDS_FEED_ICON_REQUEST_TIMEOUT = 2000;
+const OPDS_FEED_ICON_MAX_BYTES = 1024 * 1024;
+const OPDS_FEED_ICON_SIZE = 128;
 
 if (!fs.existsSync(folderPath)) {
     fs.mkdirSync(folderPath);
+};
+
+const isSvgImage = (buffer: Buffer, contentType: string | undefined): boolean =>
+    (contentType?.toLowerCase().includes("image/svg+xml") || buffer.toString(
+        "utf8",
+        0,
+        Math.min(buffer.length, 4096),
+    ).toLowerCase().includes("<svg"));
+
+const isOpdsFeedIconContentLengthValid = (contentLength: string | undefined, iconUrl: string): boolean => {
+    if (!contentLength) {
+        return true;
+    }
+
+    if (!/^\d+$/.test(contentLength)) {
+        debug("OPDS feed icon invalid content-length", iconUrl, contentLength);
+        return false;
+    }
+
+    const length = Number.parseInt(contentLength, 10);
+    if (length > OPDS_FEED_ICON_MAX_BYTES) {
+        debug("OPDS feed icon content-length too large", iconUrl, length);
+        return false;
+    }
+
+    return true;
+};
+
+const normalizeOpdsFeedIcon = (iconImage: Electron.NativeImage, iconUrl: string): string | undefined => {
+    const size = iconImage.getSize();
+    if (!size.width || !size.height) {
+        debug("OPDS feed icon has invalid dimensions", iconUrl, size);
+    } else if (size.width !== size.height) {
+        debug("OPDS feed icon is not square, resizing to common square size", iconUrl, size);
+    }
+
+    const resizedImage = iconImage.resize({
+        height: OPDS_FEED_ICON_SIZE,
+        quality: "best",
+        width: OPDS_FEED_ICON_SIZE,
+    });
+    const resizedSize = resizedImage.getSize();
+    if (resizedImage.isEmpty() || resizedSize.width !== OPDS_FEED_ICON_SIZE || resizedSize.height !== OPDS_FEED_ICON_SIZE) {
+        debug("OPDS feed icon resize failed", iconUrl, resizedSize);
+        return undefined;
+    }
+
+    const iconDataUrl = resizedImage.toDataURL({ scaleFactor: 1 });
+    if (!iconDataUrl.startsWith(OPDS_FEED_ICON_DATA_URL_PREFIX)) {
+        debug("OPDS feed icon PNG data URL conversion failed", iconUrl);
+        return undefined;
+    }
+
+    return iconDataUrl;
+};
+
+const downloadOpdsFeedIcon = async (iconUrl: string | undefined): Promise<string | undefined> => {
+    if (!iconUrl) {
+        return undefined;
+    }
+
+    try {
+        const response = await httpGetWithAuth(false)(iconUrl, {
+            headers: {
+                accept: "image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.1",
+            },
+            timeout: OPDS_FEED_ICON_REQUEST_TIMEOUT,
+        });
+        if (!response.isSuccess || !response.response?.buffer) {
+            debug("OPDS feed icon download failed", iconUrl, response.statusCode, response.statusMessage);
+            return undefined;
+        }
+        if (!isOpdsFeedIconContentLengthValid(response.response.headers?.get("content-length"), iconUrl)) {
+            return undefined;
+        }
+
+        const iconBuffer = await response.response.buffer();
+        if (!iconBuffer.length || iconBuffer.length > OPDS_FEED_ICON_MAX_BYTES) {
+            debug("OPDS feed icon invalid size", iconUrl, iconBuffer.length);
+            return undefined;
+        }
+
+        let iconImage = nativeImage.createFromBuffer(iconBuffer);
+        if (iconImage.isEmpty() && isSvgImage(iconBuffer, response.contentType)) {
+            iconImage = nativeImage.createFromDataURL(
+                `data:image/svg+xml;base64,${iconBuffer.toString("base64")}`,
+            );
+        }
+        if (iconImage.isEmpty()) {
+            debug("OPDS feed icon could not be decoded", iconUrl);
+            return undefined;
+        }
+
+        return normalizeOpdsFeedIcon(iconImage, iconUrl);
+    } catch (e) {
+        debug("OPDS feed icon download error", iconUrl, e);
+        return undefined;
+    }
 };
 
 export function saga() {
@@ -289,6 +394,7 @@ export function saga() {
                         let theUrl = url;
                         let title = url;
                         let feedColor: TOpdsFeedColor = OPDS_FEED_DEFAULT_COLOR;
+                        let feedIcon: string | undefined;
 
                         // https://www.thoriumreader.com/en/badge/catalog/
                         //
@@ -305,7 +411,9 @@ export function saga() {
                             // const bookshelf = u.searchParams.get("bookshelf");
                             // const passphrase = u.searchParams.get("passphrase");
                             // const hashed_passphrase = u.searchParams.get("hashed_passphrase");
-                            // const icon = u.searchParams.get("icon");
+                            feedIcon = yield* callTyped(() => downloadOpdsFeedIcon(
+                                getOpdsFeedIconUrl(u.searchParams.get("icon")),
+                            ));
                             // const banner = u.searchParams.get("banner");
                             // const open_in = u.searchParams.get("open_in");
 
@@ -319,7 +427,7 @@ export function saga() {
                             }
                         }
 
-                        const feed = yield* callTyped(addFeed, { title, url: theUrl, color: feedColor }, "deeplink" as TCatalogAddAnalyticsOrigin);
+                        const feed = yield* callTyped(addFeed, { title, url: theUrl, color: feedColor, icon: feedIcon }, "deeplink" as TCatalogAddAnalyticsOrigin);
                         if (feed) {
 
                             yield* callTyped(appActivate);

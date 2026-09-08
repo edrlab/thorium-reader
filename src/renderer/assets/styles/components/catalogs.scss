@@ -192,17 +192,26 @@ $catalog-card-colors-dark: (
             left: 30px;
             display: block;
 
-            svg {
+            svg,
+            .catalog_icon_image {
                 width: 30px;
                 height: 30px;
                 margin-bottom: 30px;
-                color: var(--catalog-card-foreground);
                 background-color: var(--color-neutral-base);
                 padding: 11px;
                 border-radius: 50%;
                 position: absolute;
                 top: 0;
                 left: -10px;
+            }
+
+            svg {
+                color: var(--catalog-card-foreground);
+            }
+
+            .catalog_icon_image {
+                box-sizing: content-box;
+                object-fit: contain;
             }
 
             p {

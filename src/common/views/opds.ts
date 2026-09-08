@@ -24,6 +24,7 @@ export interface IOpdsFeedView extends Identifiable {
     authenticationUrl?: string;
     favorite?: boolean;
     color: TOpdsFeedColor;
+    icon?: string;
 }
 
 export interface IOpdsCoverView {

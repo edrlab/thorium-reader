@@ -47,6 +47,7 @@ interface IState {
     url: string | undefined;
     favorite: boolean | undefined;
     color: TOpdsFeedColor;
+    icon: string | undefined;
 }
 
 class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
@@ -57,6 +58,7 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
             url: props.feed?.url,
             favorite: props.feed?.favorite,
             color: props.feed?.color || OPDS_FEED_DEFAULT_COLOR,
+            icon: props.feed?.icon,
         };
     }
     public render(): React.ReactElement<{}> {
@@ -143,6 +145,7 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
         const url = this.state.url;
         const favorite = this.state.favorite;
         const color = this.state.color;
+        const icon = this.state.icon;
         if (!title || !url) {
             return;
         }
@@ -152,6 +155,7 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
             authenticationUrl: this.props.feed.authenticationUrl,
             favorite,
             color,
+            icon,
         }).catch((err) => {
             console.error("Error to fetch api opds/updateFeed", err);
         });

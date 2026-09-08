@@ -32,4 +32,5 @@ export interface OpdsFeedDocument extends Identifiable, Timestampable {
     authenticationUrl?: string;
     favorite?: boolean;
     color?: TOpdsFeedColor;
+    icon?: string;
 }
