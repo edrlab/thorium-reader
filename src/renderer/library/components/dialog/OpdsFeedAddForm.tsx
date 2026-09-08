@@ -27,6 +27,11 @@ import * as FollowLinkIcon from "readium-desktop/renderer/assets/icons/followLin
 import * as penIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import * as linkIcon from "readium-desktop/renderer/assets/icons/link-icon.svg";
 import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon-bold.svg";
+import {
+    OPDS_FEED_DEFAULT_COLOR,
+    type TOpdsFeedColor,
+} from "readium-desktop/common/models/opds";
+import { OpdsFeedColorPicker } from "./OpdsFeedColorPicker";
 
 export const OpdsFeedHowDoesItWorksInfoBox = () => {
 
@@ -35,7 +40,7 @@ export const OpdsFeedHowDoesItWorksInfoBox = () => {
 
 
     return (<div>
-        <button className={stylesButtons.button_catalog_infos} onClick={(e) => { e.preventDefault(); setInfoOpen(!infoOpen); }}>
+        <button type="button" className={stylesButtons.button_catalog_infos} onClick={(e) => { e.preventDefault(); setInfoOpen(!infoOpen); }}>
             <SVG ariaHidden svg={InfoIcon} />
             {__("opds.whatIsOpds")}
             <SVG ariaHidden svg={infoOpen ? ChevronUp : ChevronDown} />
@@ -68,11 +73,12 @@ export const OpdsFeedAddFormDialog = () => {
     const [title, setTitle] = React.useState("");
     const [url, setUrl] = React.useState("");
     const [favorite, setFavorite] = React.useState(false);
+    const [color, setColor] = React.useState<TOpdsFeedColor>(OPDS_FEED_DEFAULT_COLOR);
     const addAction = () => {
         if (!title || !url) {
             return;
         }
-        apiAddFeedAction({ title, url, favorite });
+        apiAddFeedAction({ title, url, favorite, color });
     };
 
 
@@ -131,10 +137,11 @@ export const OpdsFeedAddFormDialog = () => {
                                 required
                             />
                         </div>
-                        <button onClick={() => setFavorite(!favorite)}>
+                        <button type="button" onClick={() => setFavorite(!favorite)}>
                             <SVG svg={StarIcon} ariaHidden className={favorite ? stylesCatalogs.catalog_favorite_icon_true : stylesCatalogs.catalog_favorite_icon_false} />
                             {__("catalog.AddToFavorites")}
                         </button>
+                        <OpdsFeedColorPicker value={color} onChange={setColor} />
                         <OpdsFeedHowDoesItWorksInfoBox />
                     </div>
                     <div className={stylesModals.modal_dialog_footer}>

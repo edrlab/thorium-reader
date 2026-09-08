@@ -292,6 +292,17 @@
         },
         "addMenu": "Voeg OPDS feed toe",
         "breadcrumbRoot": "Catalogi",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "Officiële website OPDS",
         "empty": "Geen publicatie gevonden",
         "firstPage": "Eerste",

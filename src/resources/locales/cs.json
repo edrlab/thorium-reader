@@ -304,6 +304,17 @@
         },
         "addMenu": "Přidat OPDS feed",
         "breadcrumbRoot": "Katalogy",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "oficiální webová stránka OPDS",
         "empty": "Nebyla nalezena žádná publikace",
         "firstPage": "První",

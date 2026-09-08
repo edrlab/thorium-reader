@@ -292,6 +292,17 @@
         },
         "addMenu": "Lisa OPDS-voog",
         "breadcrumbRoot": "Minu kataloogid",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "OPDS-i ametlik veebisait",
         "empty": "Väljaannet/teost/raamatut ei leidu",
         "firstPage": "Esimene",

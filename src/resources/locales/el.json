@@ -292,6 +292,17 @@
         },
         "addMenu": "Προσθήκη τροφοδοσίας OPDS",
         "breadcrumbRoot": "Κατάλογοι",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "Επίσημος ιστότοπος OPDS",
         "empty": "Δεν βρέθηκε δημοσίευση",
         "firstPage": "Πρώτη σελίδα",

@@ -298,6 +298,17 @@
         },
         "addMenu": "Ajouter un catalogue OPDS",
         "breadcrumbRoot": "Mes catalogues",
+        "color": {
+            "blue": "Bleu",
+            "gray": "Gris",
+            "green": "Vert",
+            "orange": "Orange",
+            "pink": "Rose",
+            "purple": "Violet",
+            "red": "Rouge",
+            "title": "Couleur du catalogue",
+            "yellow": "Jaune"
+        },
         "documentation": "Site web officiel du standard OPDS",
         "empty": "Aucune publication trouvée",
         "firstPage": "Première",

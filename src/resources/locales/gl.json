@@ -292,6 +292,17 @@
         },
         "addMenu": "Engadir catálogo OPDS",
         "breadcrumbRoot": "Catálogos",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "OPDS sitio web oficial",
         "empty": "Non se atoparon publicacións",
         "firstPage": "Primeira",

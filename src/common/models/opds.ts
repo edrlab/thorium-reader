@@ -16,10 +16,34 @@ const AES_BLOCK_SIZE = 16;
 export const OPDS_AUTH_ENCRYPTION_IV_BUFFER = Buffer.from(uuidv4()).slice(0, AES_BLOCK_SIZE);
 export const OPDS_AUTH_ENCRYPTION_IV_HEX = OPDS_AUTH_ENCRYPTION_IV_BUFFER.toString("hex");
 
+// https://github.com/edrlab/thorium-reader-website/blob/59c09aa5af6f4cc86ef87333f6f80b0057116216/docs/badge-page.md?plain=1#L33
+
+export const opdsFeedColors = [
+    "gray",
+    "red",
+    "yellow",
+    "blue",
+    "green",
+    "purple",
+    "orange",
+    "pink",
+] as const;
+
+export type TOpdsFeedColor = typeof opdsFeedColors[number];
+
+export const OPDS_FEED_DEFAULT_COLOR: TOpdsFeedColor = "gray";
+
+export const isOpdsFeedColor = (value: unknown): value is TOpdsFeedColor =>
+    typeof value === "string" && (opdsFeedColors as readonly string[]).includes(value);
+
+export const getOpdsFeedColor = (value: unknown): TOpdsFeedColor =>
+    isOpdsFeedColor(value) ? value : OPDS_FEED_DEFAULT_COLOR;
+
 export interface OpdsFeed {
     identifier?: string;
     title: string;
     url: string;
     authenticationUrl?: string;
     favorite?: boolean;
+    color?: TOpdsFeedColor;
 }

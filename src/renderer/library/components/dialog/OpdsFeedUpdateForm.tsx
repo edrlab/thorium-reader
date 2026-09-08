@@ -23,6 +23,11 @@ import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import classNames from "classnames";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { connect } from "react-redux";
+import {
+    OPDS_FEED_DEFAULT_COLOR,
+    type TOpdsFeedColor,
+} from "readium-desktop/common/models/opds";
+import { OpdsFeedColorPicker } from "./OpdsFeedColorPicker";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -41,6 +46,7 @@ interface IState {
     title: string | undefined;
     url: string | undefined;
     favorite: boolean | undefined;
+    color: TOpdsFeedColor;
 }
 
 class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
@@ -50,12 +56,13 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
             title: props.feed?.title,
             url: props.feed?.url,
             favorite: props.feed?.favorite,
+            color: props.feed?.color || OPDS_FEED_DEFAULT_COLOR,
         };
     }
     public render(): React.ReactElement<{}> {
 
         const { __ } = this.props;
-        const { title, url, favorite } = this.state;
+        const { title, url, favorite, color } = this.state;
         
         return <Dialog.Root>
             <Dialog.Trigger asChild>
@@ -108,10 +115,14 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
                                     required
                                 />
                             </div>
-                            <button onClick={() => this.setState({favorite : !favorite})} className={stylesButtons.button_nav_primary} style={{marginTop: "20px"}}>
+                            <button type="button" onClick={() => this.setState({favorite : !favorite})} className={stylesButtons.button_nav_primary} style={{marginTop: "20px"}}>
                                 <SVG svg={StarIcon} ariaHidden className={favorite ? stylesCatalogs.catalog_favorite_icon_true : stylesCatalogs.catalog_favorite_icon_false} />
                                 {favorite ? <p>{__("catalog.removeFromFavorites")}</p> :  <p>{__("catalog.AddToFavorites")}</p>}
                             </button>
+                            <OpdsFeedColorPicker
+                                value={color}
+                                onChange={(value) => this.setState({ color: value })}
+                            />
                         </div>
                         <div className={stylesModals.modal_dialog_footer}>
                             <Dialog.Close asChild>
@@ -131,6 +142,7 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
         const title = this.state.title;
         const url = this.state.url;
         const favorite = this.state.favorite;
+        const color = this.state.color;
         if (!title || !url) {
             return;
         }
@@ -139,6 +151,7 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
             url,
             authenticationUrl: this.props.feed.authenticationUrl,
             favorite,
+            color,
         }).catch((err) => {
             console.error("Error to fetch api opds/updateFeed", err);
         });

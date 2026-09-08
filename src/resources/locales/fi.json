@@ -292,6 +292,17 @@
         },
         "addMenu": "Lisää OPDS-syöte",
         "breadcrumbRoot": "Luettelot",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "OPDS:n verkkosivu",
         "empty": "Julkaisuja ei löytynyt",
         "firstPage": "Ensimmäinen",

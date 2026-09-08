@@ -6,6 +6,12 @@
 // ==LICENSE-END=
 
 import debug_ from "debug";
+import {
+    OPDS_FEED_DEFAULT_COLOR,
+    getOpdsFeedColor,
+    isOpdsFeedColor,
+    type TOpdsFeedColor,
+} from "readium-desktop/common/models/opds";
 import { customizationActions, historyActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -282,6 +288,7 @@ export function saga() {
                     } else {
                         let theUrl = url;
                         let title = url;
+                        let feedColor: TOpdsFeedColor = OPDS_FEED_DEFAULT_COLOR;
 
                         // https://www.thoriumreader.com/en/badge/catalog/
                         //
@@ -301,14 +308,18 @@ export function saga() {
                             // const icon = u.searchParams.get("icon");
                             // const banner = u.searchParams.get("banner");
                             // const open_in = u.searchParams.get("open_in");
-                            // const color = u.searchParams.get("color");
+
+                            // no color value do not save the default gray color
+                            if (isOpdsFeedColor(u.searchParams.get("color"))) {
+                                feedColor = getOpdsFeedColor(u.searchParams.get("color"));
+                            }
 
                             if (!/^https?:\/\//.test(theUrl)) {
                                 throw new Error("HTTP!! " + theUrl + " ------- " + url);
                             }
                         }
 
-                        const feed = yield* callTyped(addFeed, { title, url: theUrl }, "deeplink" as TCatalogAddAnalyticsOrigin);
+                        const feed = yield* callTyped(addFeed, { title, url: theUrl, color: feedColor }, "deeplink" as TCatalogAddAnalyticsOrigin);
                         if (feed) {
 
                             yield* callTyped(appActivate);

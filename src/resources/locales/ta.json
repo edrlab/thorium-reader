@@ -292,6 +292,17 @@
         },
         "addMenu": "OPDS ஊட்டத்தைச் சேர்க்கவும்",
         "breadcrumbRoot": "பட்டியல்கள்",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "OPDS அதிகாரப்பூர்வ வலைத்தளம்",
         "empty": "வெளியீடு எதுவும் கிடைக்கவில்லை",
         "firstPage": "முதல்",

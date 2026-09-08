@@ -292,6 +292,17 @@
         },
         "addMenu": "Добави OPDS канал",
         "breadcrumbRoot": "Каталози",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "",
         "empty": "Няма намерени публикации",
         "firstPage": "Първа",

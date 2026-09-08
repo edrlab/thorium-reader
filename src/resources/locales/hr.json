@@ -298,6 +298,17 @@
         },
         "addMenu": "Dodaj OPDS katalog",
         "breadcrumbRoot": "Katalozi",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "",
         "empty": "Građa nije pronađena",
         "firstPage": "Prva",

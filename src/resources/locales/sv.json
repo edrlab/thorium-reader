@@ -292,6 +292,17 @@
         },
         "addMenu": "Lägg till ett OPDS-flöde",
         "breadcrumbRoot": "Kataloger",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "OPDS officiella webbplats",
         "empty": "Ingen bok hittades",
         "firstPage": "Första",

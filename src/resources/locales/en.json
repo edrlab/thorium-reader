@@ -292,6 +292,17 @@
         },
         "addMenu": "Add OPDS feed",
         "breadcrumbRoot": "Catalogs",
+        "color": {
+            "blue": "Blue",
+            "gray": "Gray",
+            "green": "Green",
+            "orange": "Orange",
+            "pink": "Pink",
+            "purple": "Purple",
+            "red": "Red",
+            "title": "Catalog color",
+            "yellow": "Yellow"
+        },
         "documentation": "OPDS official website",
         "empty": "No publication found",
         "firstPage": "First",

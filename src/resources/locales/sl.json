@@ -304,6 +304,17 @@
         },
         "addMenu": "Dodaj vir OPDS",
         "breadcrumbRoot": "Katalogi",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "Uradna spletna stran OPDS",
         "empty": "Ni najdene publikacije",
         "firstPage": "Prva",

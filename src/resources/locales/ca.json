@@ -298,6 +298,17 @@
         },
         "addMenu": "Afegir catàleg OPDS",
         "breadcrumbRoot": "Catàlegs",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "Lloc web oficial de l'OPDS",
         "empty": "No s'han trovat publicacions",
         "firstPage": "Primera",

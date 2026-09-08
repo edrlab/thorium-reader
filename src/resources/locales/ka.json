@@ -292,6 +292,17 @@
         },
         "addMenu": "OPDS წყაროს დამატება",
         "breadcrumbRoot": "კატალოგები",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "",
         "empty": "პუბლიკაცია არაა ნაპოვნი",
         "firstPage": "პირველი",

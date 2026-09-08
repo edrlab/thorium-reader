@@ -68,7 +68,11 @@ export const FeedCard: React.FC<IFeedCardProps> = (props) => {
     };
 
     return (
-        <li key={"feed-" + feed.identifier} className={stylesCatalogs.catalog_container}>
+        <li
+            key={"feed-" + feed.identifier}
+            className={stylesCatalogs.catalog_container}
+            data-color={feed.color}
+        >
             <Link
                 to={{
                     ...location,
@@ -103,8 +107,7 @@ export const FeedCard: React.FC<IFeedCardProps> = (props) => {
                     }
                 }}
             >
-                <div style={{ width: "100%", height: "50px", backgroundColor: "var(--color-gray-50", borderBottom: "1px solid var(--color-gray-300)", position: "absolute", top: "2px" }}>
-                </div>
+                <div className={stylesCatalogs.catalog_color_band} />
                 <div className={stylesCatalogs.catalog_title}>
                     <SVG ariaHidden svg={GlobeIcon} />
                     <p title={`${feed.title} --- ${feed.url}`}>{feed.title}</p>
