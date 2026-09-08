@@ -51,6 +51,7 @@ import { appendFileSyncWithRotation } from "readium-desktop/utils/log";
 import { TCatalogAddAnalyticsOrigin } from "src/common/analytics/catalog";
 import { nativeImage } from "electron";
 import { httpGetWithAuth } from "readium-desktop/main/network/http";
+import { getLcpHashedPassphrase } from "readium-desktop/utils/lcp";
 
 // Logger
 const debug = debug_("readium-desktop:main:saga:event");
@@ -306,6 +307,7 @@ export function saga() {
                     }
 
                     let theUrl = url;
+                    let lcpHashedPassphrase: string | undefined;
 
                     // https://www.thoriumreader.com/en/badge/publication/
                     //
@@ -321,8 +323,10 @@ export function saga() {
                         // const title = u.searchParams.get("title") || theUrl;
                         // const author = u.searchParams.get("author");
                         // const cover = u.searchParams.get("cover");
-                        // const passphrase = u.searchParams.get("passphrase");
-                        // const hashed_passphrase = u.searchParams.get("hashed_passphrase");
+                        lcpHashedPassphrase = getLcpHashedPassphrase(
+                            u.searchParams.get("passphrase"),
+                            u.searchParams.get("hashed_passphrase"),
+                        );
 
                         if (!/^https?:\/\//.test(theUrl)) {
                             throw new Error("HTTP!! " + theUrl + " ------- " + url);
@@ -333,6 +337,9 @@ export function saga() {
 
                     const link: IOpdsLinkView = {
                         url: openUrl,
+                        properties: lcpHashedPassphrase ? {
+                            lcpHashedPassphrase,
+                        } : undefined,
                     };
 
                     const pubViewArray = (yield* callTyped(importFromLink, link, true /* willBeImmediatelyFollowedByOpen */)) as PublicationView | PublicationView[];
@@ -400,6 +407,7 @@ export function saga() {
                         let title = url;
                         let feedColor: TOpdsFeedColor = OPDS_FEED_DEFAULT_COLOR;
                         let feedIcon: string | undefined;
+                        let lcpHashedPassphrase: string | undefined;
 
                         // https://www.thoriumreader.com/en/badge/catalog/
                         //
@@ -414,8 +422,14 @@ export function saga() {
                             theUrl = u.searchParams.get("main");
                             title = u.searchParams.get("title") || theUrl;
                             // const bookshelf = u.searchParams.get("bookshelf");
-                            // const passphrase = u.searchParams.get("passphrase");
-                            // const hashed_passphrase = u.searchParams.get("hashed_passphrase");
+                            lcpHashedPassphrase = getLcpHashedPassphrase(
+                                u.searchParams.get("passphrase"),
+                                u.searchParams.get("hashed_passphrase"),
+                            );
+                            if (lcpHashedPassphrase) {
+                                // TODO: persist the hashed passphrase
+                                debug("LCP HASHED PASSPHRASE", lcpHashedPassphrase);
+                            }
                             feedIcon = yield* callTyped(() => downloadOpdsFeedIcon(
                                 getOpdsFeedIconUrl(u.searchParams.get("icon")),
                             ));
