@@ -8,12 +8,14 @@
 import debug_ from "debug";
 import {
     OPDS_FEED_ICON_DATA_URL_PREFIX,
+    OPDS_FEED_ICON_SVG_DATA_URL_PREFIX,
     OPDS_FEED_DEFAULT_COLOR,
     getOpdsFeedColor,
     getOpdsFeedIconUrl,
     isOpdsFeedColor,
     type TOpdsFeedColor,
 } from "readium-desktop/common/models/opds";
+import { imageSize } from "image-size";
 import { customizationActions, historyActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -79,23 +81,27 @@ const isSvgImage = (buffer: Buffer, contentType: string | undefined): boolean =>
         Math.min(buffer.length, 4096),
     ).toLowerCase().includes("<svg"));
 
-const isOpdsFeedIconContentLengthValid = (contentLength: string | undefined, iconUrl: string): boolean => {
-    if (!contentLength) {
-        return true;
+const getOpdsFeedIconImageSize = (iconBuffer: Buffer, iconUrl: string): { width: number; height: number } | undefined => {
+    try {
+        return imageSize(iconBuffer);
+    } catch (e) {
+        debug("OPDS feed icon size parsing failed", iconUrl, e);
+        return undefined;
+    }
+};
+
+const getOpdsFeedSvgIconDataUrl = (iconBuffer: Buffer, iconUrl: string): string | undefined => {
+    const size = getOpdsFeedIconImageSize(iconBuffer, iconUrl);
+    if (!size?.width || !size.height) {
+        debug("OPDS feed SVG icon has invalid dimensions", iconUrl, size);
+        return undefined;
+    }
+    if (size.width !== size.height) {
+        debug("OPDS feed SVG icon is not square", iconUrl, size);
+        return undefined;
     }
 
-    if (!/^\d+$/.test(contentLength)) {
-        debug("OPDS feed icon invalid content-length", iconUrl, contentLength);
-        return false;
-    }
-
-    const length = Number.parseInt(contentLength, 10);
-    if (length > OPDS_FEED_ICON_MAX_BYTES) {
-        debug("OPDS feed icon content-length too large", iconUrl, length);
-        return false;
-    }
-
-    return true;
+    return `${OPDS_FEED_ICON_SVG_DATA_URL_PREFIX}${iconBuffer.toString("base64")}`;
 };
 
 const normalizeOpdsFeedIcon = (iconImage: Electron.NativeImage, iconUrl: string): string | undefined => {
@@ -136,13 +142,11 @@ const downloadOpdsFeedIcon = async (iconUrl: string | undefined): Promise<string
             headers: {
                 accept: "image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.1",
             },
+            size: OPDS_FEED_ICON_MAX_BYTES,
             timeout: OPDS_FEED_ICON_REQUEST_TIMEOUT,
         });
         if (!response.isSuccess || !response.response?.buffer) {
             debug("OPDS feed icon download failed", iconUrl, response.statusCode, response.statusMessage);
-            return undefined;
-        }
-        if (!isOpdsFeedIconContentLengthValid(response.response.headers?.get("content-length"), iconUrl)) {
             return undefined;
         }
 
@@ -152,12 +156,13 @@ const downloadOpdsFeedIcon = async (iconUrl: string | undefined): Promise<string
             return undefined;
         }
 
-        let iconImage = nativeImage.createFromBuffer(iconBuffer);
-        if (iconImage.isEmpty() && isSvgImage(iconBuffer, response.contentType)) {
-            iconImage = nativeImage.createFromDataURL(
-                `data:image/svg+xml;base64,${iconBuffer.toString("base64")}`,
-            );
+        if (isSvgImage(iconBuffer, response.contentType)) {
+            // https://www.electronjs.org/docs/latest/api/native-image#nativeimagecreatefromdataurldataurl
+            // SVG cannot be converted to PNG
+            return getOpdsFeedSvgIconDataUrl(iconBuffer, iconUrl);
         }
+
+        const iconImage = nativeImage.createFromBuffer(iconBuffer);
         if (iconImage.isEmpty()) {
             debug("OPDS feed icon could not be decoded", iconUrl);
             return undefined;
