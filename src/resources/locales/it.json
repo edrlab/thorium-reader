@@ -274,10 +274,10 @@
         },
         "storage": {
             "recovery": {
-                "failure": "",
-                "success_many": "",
-                "success_one": "",
-                "success_other": ""
+                "failure": "Recupero delle pubblicazioni fallito.",
+                "success_many": "{{- count}} pubblicazioni recuperate.",
+                "success_one": "{{- count}} pubblicazione recuperata.",
+                "success_other": "{{- count}} pubblicazioni recuperate."
             },
             "removed": "Cartella della pubblicazione eliminata.",
             "updateFailed": "Aggiornamento della cartella della pubblicazione fallito: {{- message}}",
@@ -1329,26 +1329,26 @@
             },
             "recovery": {
                 "actions": {
-                    "check": "",
-                    "checkAgain": "",
-                    "recover": "",
-                    "recovering": ""
+                    "check": "Verifica le pubblicazioni da recuperare",
+                    "checkAgain": "Verifica di nuovo",
+                    "recover": "Recupera le pubblicazioni",
+                    "recovering": "Recupero in corso..."
                 },
-                "available": "",
-                "checking": "",
-                "description": "",
+                "available": "Sono state trovate una o più pubblicazioni in memoria ma sono assenti nel database. È possibile recuperarle.",
+                "checking": "Verifica dello spazio d'archiviazione delle pubblicazioni...",
+                "description": "Verifica dello spazio d'archiviazione per reperire le pubblicazioni che possono essere recuperate.",
                 "dialog": {
-                    "confirm": "",
-                    "description_many": "",
-                    "description_one": "",
-                    "description_other": "",
-                    "title": ""
+                    "confirm": "Recupero",
+                    "description_many": "Thorium ha trovato {{- count}} pubblicazioni in memoria mancanti nel database. Desideri importarle nuovamente su Thorium?",
+                    "description_one": "Thorium ha trovato {{- count}} pubblicazione in memoria mancante nel database. Desideri importarla nuovamente su Thorium?",
+                    "description_other": "Thorium ha trovato {{- count}} pubblicazioni in memoria mancanti nel database. Desideri importarle nuovamente su Thorium?",
+                    "title": "Recupera le pubblicazioni"
                 },
-                "none": "",
-                "recoverableCount_many": "",
-                "recoverableCount_one": "",
-                "recoverableCount_other": "",
-                "title": ""
+                "none": "Non è stata trovata alcuna pubblicazione da recuperare.",
+                "recoverableCount_many": "{{- count}} pubblicazioni possono essere recuperate con l'identificante originale d'archiviazione.",
+                "recoverableCount_one": "{{- count}} pubblicazione può essere recuperata con l'identificante originale d'archiviazione.",
+                "recoverableCount_other": "{{- count}} pubblicazioni possono essere recuperate con l'identificante originale d'archiviazione.",
+                "title": "Recupero delle pubblicazioni"
             }
         },
         "tabs": {
