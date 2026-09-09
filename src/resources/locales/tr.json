@@ -92,7 +92,7 @@
         "login": "Giriş yap",
         "logout": "Oturumu Kapat",
         "missing": "Eksik dosyalar",
-        "missingUnavailableDescription": "Bu eser, depolanan dosyaları mevcut olmadığından açılamıyor. Eseri yeniden içe aktarın veya Ayarlar'a ve ardından Depolama'ya gidip ilave depolama ekleyin veya değiştirin.",
+        "missingUnavailableDescription": "Bu eser, depolanan dosyaları kullanılamadığından açılamıyor. Eseri yeniden içe aktarın veya Ayarlar'a ve ardından Depolama'ya gidip ilave depolama ekleyin veya değiştirin.",
         "moreInfo": "Eser Ayrıntıları",
         "myBooks": "Eserlerim",
         "noPublicationHelpL1": "Dosyaları buraya bırakın",
@@ -265,17 +265,17 @@
         },
         "open": {
             "error": "Eser yüklemesi başarısız: [{{- err}}]",
-            "folderNotFound": ""
+            "folderNotFound": "Eser dizini bulunamıyor. Yeniden içe aktarın veya Ayarlar > Depolama'dan ilave depolamayı yapılandırın."
         },
         "storage": {
             "recovery": {
-                "failure": "",
-                "success_one": "",
-                "success_other": ""
+                "failure": "Eser kurtarma başarısız.",
+                "success_one": "{{- count}} eser kurtarıldı.",
+                "success_other": "{{- count}} eser kurtarıldı."
             },
-            "removed": "",
-            "updateFailed": "",
-            "updated": ""
+            "removed": "Eser dizini kaldırıldı.",
+            "updateFailed": "Eser dizini güncellemesi başarısız: {{- message}}",
+            "updated": "Eser dizini güncellendi."
         },
         "wipeData": "Giriş verileri başarıyla temizlendi (erişim dizgecikleri ve çerezler)"
     },
@@ -293,14 +293,14 @@
         "addMenu": "OPDS Beslemesi ekle",
         "breadcrumbRoot": "Kataloglar",
         "color": {
-            "blue": "",
-            "gray": "",
-            "green": "",
-            "orange": "",
-            "pink": "",
-            "purple": "",
-            "red": "",
-            "title": "",
+            "blue": "Mavi",
+            "gray": "Gri",
+            "green": "Yeşil",
+            "orange": "Turuncu",
+            "pink": "Pembe",
+            "purple": "Mor",
+            "red": "Kırmızı",
+            "title": "Katalog rengi",
             "yellow": "Sarı"
         },
         "documentation": "OPDS resmi internet sitesi",
@@ -621,8 +621,8 @@
                 "descriptive": "Görünümün değiştirilip değiştirilemeyeceği hakkında bilgi mevcut değil"
             },
             "ways-of-reading-visual-adjustments-unmodifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Görünüm değiştirilemez",
+                "descriptive": "Okuma deneyimi basılı sürüme yakın olduğu için metin ve sayfa düzeni değiştirilemez ancak okuma sistemleri yine de yakınlaştırma seçenekleri sunabilir"
             }
         }
     },
@@ -803,7 +803,7 @@
             "speed": "Sesli Okuma oynatım hızı",
             "stop": "Sesli Okumayı Durdur",
             "title": "Sesli Okuma",
-            "useTTSHighlightsForMO": "",
+            "useTTSHighlightsForMO": "Özel vurgulama",
             "useTTSHighlightsForMODescription": ""
         },
         "navigation": {
