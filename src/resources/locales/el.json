@@ -269,9 +269,9 @@
         },
         "storage": {
             "recovery": {
-                "failure": "",
-                "success_one": "",
-                "success_other": ""
+                "failure": "Η ανάκτηση της δημοσίευσης απέτυχε.",
+                "success_one": "{{- count}} δημοσίευση ανακτήθηκε.",
+                "success_other": "{{- count}} δημοσιεύσεις ανακτήθηκαν."
             },
             "removed": "Ο Φάκελος δημοσιεύσεων έχει αφαιρεθεί.",
             "updateFailed": "Αποτυχία ενημέρωσης του φακέλου δημοσιεύσεων: {{- message}}",
@@ -293,15 +293,15 @@
         "addMenu": "Προσθήκη τροφοδοσίας OPDS",
         "breadcrumbRoot": "Κατάλογοι",
         "color": {
-            "blue": "",
-            "gray": "",
-            "green": "",
-            "orange": "",
-            "pink": "",
-            "purple": "",
-            "red": "",
-            "title": "",
-            "yellow": ""
+            "blue": "Μπλε",
+            "gray": "Γκρι",
+            "green": "Πράσινο",
+            "orange": "Πορτοκαλί",
+            "pink": "Ροζ",
+            "purple": "Μωβ",
+            "red": "Κόκκινο",
+            "title": "Χρώμα καταλόγου",
+            "yellow": "Κίτρινο"
         },
         "documentation": "Επίσημος ιστότοπος OPDS",
         "empty": "Δεν βρέθηκε δημοσίευση",
@@ -890,7 +890,7 @@
             "disposition": {
                 "title": "Διάταξη"
             },
-            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicators": "Εμφάνιση αλλαγών σελίδας στο περιθώριο",
             "font": "Γραμματοσειρά",
             "fontSize": "Μέγεθος γραμματοσειράς",
             "increaseFontSize": "Αύξηση μεγέθους γραμματοσειράς",
@@ -1322,24 +1322,24 @@
             },
             "recovery": {
                 "actions": {
-                    "check": "",
-                    "checkAgain": "",
-                    "recover": "",
-                    "recovering": ""
+                    "check": "Έλεγχος ανακτήσιμων δημοσιεύσεων",
+                    "checkAgain": "Επανάληψη ελέγχου",
+                    "recover": "Ανάκτηση δημοσιεύσεων",
+                    "recovering": "Ανάκτηση..."
                 },
-                "available": "",
-                "checking": "",
-                "description": "",
+                "available": "Βρέθηκαν μία ή περισσότερες δημοσιεύσεις στο δίσκο, οι οποίες όμως δεν περιλαμβάνονται στη βάση δεδομένων. Η ανάκτησή τους είναι εφικτή.",
+                "checking": "Έλεγχος αποθήκευσης δημοσιεύσεων...",
+                "description": "Έλεγχος αποθήκης δημοσιεύσεων για τον εντοπισμό δημοσιεύσεων που μπορούν να ανακτηθούν με ασφάλεια.",
                 "dialog": {
-                    "confirm": "",
-                    "description_one": "",
-                    "description_other": "",
-                    "title": ""
+                    "confirm": "Ανάκτηση",
+                    "description_one": "Το Thorium εντόπισε {{- count}} δημοσίευση στο δίσκο που δεν υπάρχει στη βάση δεδομένων. Θέλεις να εισαχθεί ξανά στο Thorium;",
+                    "description_other": "Το Thorium εντόπισε {{- count}} δημοσιεύσεις στο δίσκο που δεν υπάρχουν στη βάση δεδομένων.Θέλεις να εισαχθούν ξανά στο Thorium;",
+                    "title": "Ανάκτηση δημοσιεύσεων"
                 },
-                "none": "",
-                "recoverableCount_one": "",
-                "recoverableCount_other": "",
-                "title": ""
+                "none": "Δεν βρέθηκαν δημοσιεύσεις προς ανάκτηση.",
+                "recoverableCount_one": "Η {{- count}} δημοσίευση μπορεί να ανακτηθεί με τον αρχικό αναγνωριστικό αποθήκευσης.",
+                "recoverableCount_other": "Οι {{- count}} δημοσιεύσεις μπορεί να ανακτηθούν με τον αρχικό αναγνωριστικό αποθήκευσης.",
+                "title": "Αποκατάσταση"
             }
         },
         "tabs": {
