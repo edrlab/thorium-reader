@@ -9,13 +9,14 @@ import debug_ from "debug";
 import * as path from "node:path";
 import * as fs from "node:fs";
 import { commandLineMainEntry } from "readium-desktop/main/cli";
-import { httpGet } from "readium-desktop/main/network/http";
+import { httpGetWithAuth } from "readium-desktop/main/network/http";
 import { CRL_URL, DUMMY_CRL } from "@r2-lcp-js/parser/epub/lcp-certificate";
 import { setLcpNativePluginPath, setCRLGetter } from "@r2-lcp-js/parser/epub/lcp";
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
 } from "@r2-shared-js/init-globals";
+import { ContentType } from "readium-desktop/utils/contentType";
 
 import { initSessions as initSessionsNoHTTP } from "./main/streamer/streamerNoHttp";
 import { createStoreFromDi } from "./main/di";
@@ -72,15 +73,34 @@ setLcpNativePluginPath(lcpNativePluginPath);
 
 setCRLGetter(async (): Promise<string> => {
     try {
-        const res = await httpGet(CRL_URL);
-        if (res.isSuccess) {
+        // RFC 2585 Security Considerations: CRL retrieval does not need
+        // authentication, so this uses Thorium's no-auth HTTP helper.
+        const res = await httpGetWithAuth(false)(CRL_URL, {
+            headers: {
+                Accept: ContentType.PkixCrl,
+            },
+            // Reject redirects so the native LCP plugin receives bytes from the
+            // configured CRL endpoint only.
+            redirect: "error",
+        });
+        const mediaType = res.contentType?.split(";")[0].trim().toLowerCase();
+        // RFC 5280 section 4.2.1.13 says HTTP CRL distribution point URIs point
+        // to a single DER encoded CRL, and HTTP servers SHOULD respond with
+        // Content-Type application/pkix-crl.
+        // https://datatracker.ietf.org/doc/html/rfc5280#section-4.2.1.13
+        // RFC 2585 section 4.2 registers application/pkix-crl.
+        // https://datatracker.ietf.org/doc/html/rfc2585#section-4.2
+        // RFC 2585 Security Considerations: authentication is not necessary
+        // to retrieve certificates and CRLs.
+        // https://datatracker.ietf.org/doc/html/rfc2585#page-6
+        if (res.statusCode === 200 && mediaType === ContentType.PkixCrl) {
             const buf = await res.response.buffer();
             const lcplStr = "-----BEGIN X509 CRL-----\n" + buf.toString("base64") + "\n-----END X509 CRL-----";
             debug("LCP CRL HTTP fetch success");
             debug(lcplStr);
             return lcplStr;
         }
-        debug("LCP CRL HTTP fetch fail => DUMMY_CRL");
+        debug(`LCP CRL HTTP fetch fail => DUMMY_CRL (${res.statusCode} ${res.contentType})`);
     } catch (err) {
         debug("LCP CRL HTTP fetch error => DUMMY_CRL");
         debug(err);
