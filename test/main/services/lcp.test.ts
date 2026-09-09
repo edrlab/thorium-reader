@@ -80,6 +80,15 @@ type TLcpManagerForPublicationArchiveReplacement = {
     };
 };
 
+type TLcpSecrets = Record<string, { passphrase?: string; provider?: string }>;
+
+type TLcpManagerForSecrets = {
+    getAllSecrets: () => Promise<TLcpSecrets>;
+    getSecrets: (doc: { identifier: string; lcp?: { provider?: string } }) => Promise<string[]>;
+    persistSecrets: (allSecrets: TLcpSecrets) => Promise<void>;
+    saveGenericSecret: (lcpHashedPassphrase: string) => Promise<void>;
+};
+
 const link = (partial: TPublicationLink): TPublicationLink => ({
     Href: "https://example.org/book.epub",
     ...partial,
@@ -108,6 +117,58 @@ const httpGetMock = httpGet as jest.MockedFunction<typeof httpGet>;
 
 beforeEach(() => {
     jest.clearAllMocks();
+});
+
+describe("LcpManager secrets", () => {
+    it("returns publication, provider, then generic fallback secrets without duplicates", async () => {
+        const manager = Object.create(LcpManager.prototype) as TLcpManagerForSecrets;
+        manager.getAllSecrets = jest.fn(async () => ({
+            "publication-1": { passphrase: "publication-passphrase" },
+            "publication-2": { passphrase: "provider-passphrase", provider: "provider-a" },
+            "publication-3": { passphrase: "not-generic-no-provider" },
+            "publication-4": { passphrase: "other-provider-passphrase", provider: "provider-b" },
+            "__THORIUM_LCP_GENERIC_SECRET__:generic-passphrase": { passphrase: "generic-passphrase" },
+            "__THORIUM_LCP_GENERIC_SECRET__:provider-passphrase": { passphrase: "provider-passphrase" },
+        }));
+
+        await expect(manager.getSecrets({
+            identifier: "publication-1",
+            lcp: {
+                provider: "provider-a",
+            },
+        })).resolves.toEqual([
+            "publication-passphrase",
+            "provider-passphrase",
+            "generic-passphrase",
+        ]);
+    });
+
+    it("stores catalog passphrases once under a generic vault key", async () => {
+        let persistedSecrets: TLcpSecrets = {
+            "publication-1": { passphrase: "publication-passphrase", provider: "provider-a" },
+        };
+
+        const manager = Object.create(LcpManager.prototype) as TLcpManagerForSecrets;
+        manager.getAllSecrets = jest.fn(async () => persistedSecrets);
+        manager.persistSecrets = jest.fn(async (allSecrets: TLcpSecrets) => {
+            persistedSecrets = allSecrets;
+        });
+
+        await manager.saveGenericSecret("catalog-passphrase-hash");
+        await manager.saveGenericSecret("catalog-passphrase-hash");
+
+        expect(persistedSecrets["publication-1"]).toEqual({
+            passphrase: "publication-passphrase",
+            provider: "provider-a",
+        });
+
+        const genericEntries = Object.entries(persistedSecrets).filter(([id, val]) =>
+            id.startsWith("__THORIUM_LCP_GENERIC_SECRET__:") &&
+            val.passphrase === "catalog-passphrase-hash",
+        );
+        expect(genericEntries).toHaveLength(1);
+        expect(genericEntries[0][1]).toEqual({ passphrase: "catalog-passphrase-hash" });
+    });
 });
 
 describe("LcpManager.lcpPublicationLinkResourceChanged", () => {
