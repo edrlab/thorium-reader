@@ -98,12 +98,13 @@ const getCacheControlMaxAgeMs = (cacheControl: string | undefined): number | und
     let maxAgeMs: number | undefined;
     for (const directive of cacheControl.split(",")) {
         const [rawName, rawValue] = directive.trim().split("=", 2);
-        const name = rawName.toLowerCase();
+        const name = rawName.trim().toLowerCase();
+        const value = rawValue?.trim();
         if (name === "no-cache" || name === "no-store") {
             return 0;
         }
-        if (name === "max-age" && rawValue) {
-            const seconds = Number(rawValue.replace(/^"|"$/g, ""));
+        if (name === "max-age" && value) {
+            const seconds = Number(value.replace(/^"|"$/g, ""));
             if (Number.isFinite(seconds) && seconds >= 0) {
                 maxAgeMs = seconds * 1000;
             }
@@ -122,7 +123,7 @@ const isLcpCrlCacheExpired = () =>
 
 const refreshLcpCrlCache = (): Promise<void> => {
     debug("REFRESH LCP CRL REQUEST", lcpCrlCache);
-    if (lcpCrlCache.refreshPromise) {
+    if (typeof lcpCrlCache.refreshPromise !== "undefined") {
         return lcpCrlCache.refreshPromise;
     }
 
