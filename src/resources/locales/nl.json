@@ -1349,6 +1349,11 @@
             "profiles": "Profielen",
             "storage": "Opslag"
         },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
+        },
         "theme": {
             "auto": "Automatisch",
             "dark": "Donker",

@@ -12,6 +12,7 @@ import { settingsActions } from "readium-desktop/common/redux/actions";
 
 const initialState: ISettingsState = {
     enableAPIAPP: false,
+    disableGoogleAnalyticsTelemetry: false,
     minimizeLibraryToTray: false,
     keepLibraryWindowInBackgroundOnReaderOpen: false,
     keepLibraryWindowInBackgroundOnReaderClose: false,
@@ -24,6 +25,7 @@ function settingsReducer_(
     state: ISettingsState = initialState,
     action:
         settingsActions.enableAPIAPP.TAction |
+        settingsActions.disableGoogleAnalyticsTelemetry.TAction |
         settingsActions.keepLibraryWindowInBackgroundOnReaderClose.TAction |
         settingsActions.keepLibraryWindowInBackgroundOnReaderOpen.TAction |
         settingsActions.minimizeLibraryToTray.TAction |
@@ -38,6 +40,12 @@ function settingsReducer_(
                 ...initialState,
                 ...state,
                 enableAPIAPP: action.payload.enableAPIAPP,
+            };
+        case settingsActions.disableGoogleAnalyticsTelemetry.ID:
+            return {
+                ...initialState,
+                ...state,
+                disableGoogleAnalyticsTelemetry: action.payload.disableGoogleAnalyticsTelemetry,
             };
         case settingsActions.minimizeLibraryToTray.ID:
             return {

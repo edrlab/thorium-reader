@@ -1349,6 +1349,11 @@
             "profiles": "Profiler",
             "storage": "Lagring"
         },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
+        },
         "theme": {
             "auto": "Automatiskt",
             "dark": "Mörkt",

@@ -1349,6 +1349,11 @@
             "profiles": "Profiles",
             "storage": "Storage"
         },
+        "telemetry": {
+            "disableTelemetryMeasurements": "Disable telemetry measurements",
+            "disableTelemetryMeasurementsDescription": "When enabled, Thorium does not send telemetry measurements.",
+            "title": "Telemetry"
+        },
         "theme": {
             "auto": "Automatic",
             "dark": "Dark",

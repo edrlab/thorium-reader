@@ -38,6 +38,7 @@ import ManageAccessToCatalogSettings from "./ManageAccessToCatalogSettings";
 import SaveCreatorSettings from "./SaveCreatorSettings";
 import OverloadNoteExportToHtml from "./OverloadNoteExportToHtml";
 import SharedComputerSettings from "./SharedComputerSettings";
+import TelemetrySettings from "./TelemetrySettings";
 import WindowBehaviorSettings from "./WindowBehaviorSettings";
 import Themes from "./ThemesSettings";
 import ConnectionSettings from "./ConnexionSettings";
@@ -143,6 +144,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
                                 <WindowBehaviorSettings />
                                 <ConnectionSettings />
                                 <SharedComputerSettings />
+                                <TelemetrySettings />
                                 {/* <SaveSessionSettings /> */}
                                 <ManageAccessToCatalogSettings />
                                 <SaveCreatorSettings />

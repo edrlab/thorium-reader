@@ -1358,6 +1358,11 @@
             "profiles": "Perfiles",
             "storage": "Espacio de almacenamiento"
         },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
+        },
         "theme": {
             "auto": "Automático",
             "dark": "Oscuro",

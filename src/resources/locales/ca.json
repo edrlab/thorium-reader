@@ -1358,6 +1358,11 @@
             "profiles": "",
             "storage": ""
         },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
+        },
         "theme": {
             "auto": "Automàtic",
             "dark": "Fosc",

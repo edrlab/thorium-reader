@@ -2975,6 +2975,11 @@ declare namespace typed_i18n {
     readonly "profiles": string,
     readonly "storage": string
   },
+  readonly "telemetry": {
+    readonly "disableTelemetryMeasurements": string,
+    readonly "disableTelemetryMeasurementsDescription": string,
+    readonly "title": string
+  },
   readonly "theme": {
     readonly "auto": string,
     readonly "dark": string,
@@ -3952,6 +3957,14 @@ declare namespace typed_i18n {
   (_: "settings.tabs.keyboardShortcuts", __?: {}): string;
   (_: "settings.tabs.profiles", __?: {}): string;
   (_: "settings.tabs.storage", __?: {}): string;
+  (_: "settings.telemetry", __?: {}): {
+  readonly "disableTelemetryMeasurements": string,
+  readonly "disableTelemetryMeasurementsDescription": string,
+  readonly "title": string
+};
+  (_: "settings.telemetry.disableTelemetryMeasurements", __?: {}): string;
+  (_: "settings.telemetry.disableTelemetryMeasurementsDescription", __?: {}): string;
+  (_: "settings.telemetry.title", __?: {}): string;
   (_: "settings.theme", __?: {}): {
   readonly "auto": string,
   readonly "dark": string,

@@ -8,6 +8,7 @@
 import debug_ from "debug";
 import { ipcMain } from "electron";
 import { analyticsIpc } from "readium-desktop/common/ipc";
+import { settingsGoogleAnalyticsTelemetryIsEnabled } from "readium-desktop/common/redux/states/settings";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { logMeasurementProtocol } from "readium-desktop/main/analytics/measurementProtocol";
 import { error } from "readium-desktop/main/tools/error";
@@ -47,10 +48,13 @@ function* analyticsIpcChannel(ipcData: analyticsIpc.EventPayload) {
 
     const clientId = yield* selectTyped((state: RootState) => state.analytics.clientId);
     const locale = yield* selectTyped((state: RootState) => state.i18n.locale);
+    const googleAnalyticsTelemetryEnabled = yield* selectTyped((state: RootState) =>
+        settingsGoogleAnalyticsTelemetryIsEnabled(state.settings));
 
     yield* callTyped(logMeasurementProtocol, ipcData.payload.name, ipcData.payload.params, {
         clientId,
         locale,
+        disabled: !googleAnalyticsTelemetryEnabled,
     });
 }
 
