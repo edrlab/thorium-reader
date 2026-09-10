@@ -71,41 +71,99 @@ initGlobalConverters_GENERIC();
 const lcpNativePluginPath = path.normalize(path.join(__dirname, "external-assets", "lcp.node"));
 setLcpNativePluginPath(lcpNativePluginPath);
 
-setCRLGetter(async (): Promise<string> => {
-    try {
-        // RFC 2585 Security Considerations: CRL retrieval does not need
-        // authentication, so this uses Thorium's no-auth HTTP helper.
-        const res = await httpGetWithAuth(false)(CRL_URL, {
-            headers: {
-                Accept: ContentType.PkixCrl,
-            },
-            // Reject redirects so the native LCP plugin receives bytes from the
-            // configured CRL endpoint only.
-            redirect: "error",
-        });
-        const mediaType = res.contentType?.split(";")[0].trim().toLowerCase();
-        // RFC 5280 section 4.2.1.13 says HTTP CRL distribution point URIs point
-        // to a single DER encoded CRL, and HTTP servers SHOULD respond with
-        // Content-Type application/pkix-crl.
-        // https://datatracker.ietf.org/doc/html/rfc5280#section-4.2.1.13
-        // RFC 2585 section 4.2 registers application/pkix-crl.
-        // https://datatracker.ietf.org/doc/html/rfc2585#section-4.2
-        // RFC 2585 Security Considerations: authentication is not necessary
-        // to retrieve certificates and CRLs.
-        // https://datatracker.ietf.org/doc/html/rfc2585#page-6
-        if (res.statusCode === 200 && mediaType === ContentType.PkixCrl) {
-            const buf = await res.response.buffer();
-            const lcplStr = "-----BEGIN X509 CRL-----\n" + buf.toString("base64") + "\n-----END X509 CRL-----";
-            debug("LCP CRL HTTP fetch success");
-            debug(lcplStr);
-            return lcplStr;
-        }
-        debug(`LCP CRL HTTP fetch fail => DUMMY_CRL (${res.statusCode} ${res.contentType})`);
-    } catch (err) {
-        debug("LCP CRL HTTP fetch error => DUMMY_CRL");
-        debug(err);
+interface ILcpCrlCache {
+    crlPem: string;
+    etag: string | undefined;
+    validatedAt: number;
+    refreshPromise: Promise<void> | undefined;
+}
+
+const lcpCrlCache: ILcpCrlCache = {
+    crlPem: DUMMY_CRL,
+    etag: undefined,
+    validatedAt: 0,
+    refreshPromise: undefined,
+};
+
+// 1h
+const LCP_CRL_CACHE_FRESHNESS_MS = 60 * 60 * 1000;
+
+// TODO: HTTP cache-control Header !?
+const isLcpCrlCacheExpired = () =>
+    Date.now() - lcpCrlCache.validatedAt >= LCP_CRL_CACHE_FRESHNESS_MS;
+
+const refreshLcpCrlCache = (): Promise<void> => {
+    debug("REFRESH LCP CRL REQUEST", lcpCrlCache);
+    if (lcpCrlCache.refreshPromise) {
+        return lcpCrlCache.refreshPromise;
     }
-    return DUMMY_CRL;
+
+    lcpCrlCache.refreshPromise = (async () => {
+        try {
+            const headers: Record<string, string> = {
+                Accept: ContentType.PkixCrl,
+            };
+            if (lcpCrlCache.etag) {
+                headers["If-None-Match"] = lcpCrlCache.etag;
+            }
+            // RFC 2585 Security Considerations: CRL retrieval does not need
+            // authentication, so this uses Thorium's no-auth HTTP helper.
+            const res = await httpGetWithAuth(false)(CRL_URL, {
+                headers,
+                // Reject redirects so the native LCP plugin receives bytes from the
+                // configured CRL endpoint only.
+                redirect: "error",
+            });
+            if (res.statusCode === 304) {
+                lcpCrlCache.validatedAt = Date.now();
+                debug("LCP CRL HTTP cache refreshed: not modified");
+                return;
+            }
+            const mediaType = res.contentType?.split(";")[0].trim().toLowerCase();
+            // RFC 5280 section 4.2.1.13 says HTTP CRL distribution point URIs point
+            // to a single DER encoded CRL, and HTTP servers SHOULD respond with
+            // Content-Type application/pkix-crl.
+            // https://datatracker.ietf.org/doc/html/rfc5280#section-4.2.1.13
+            // RFC 2585 section 4.2 registers application/pkix-crl.
+            // https://datatracker.ietf.org/doc/html/rfc2585#section-4.2
+            // RFC 2585 Security Considerations: authentication is not necessary
+            // to retrieve certificates and CRLs.
+            // https://datatracker.ietf.org/doc/html/rfc2585#page-6
+            if (res.statusCode === 200 && mediaType === ContentType.PkixCrl) {
+                const buf = await res.response.buffer();
+                const lcplStr = "-----BEGIN X509 CRL-----\n" + buf.toString("base64") + "\n-----END X509 CRL-----";
+                lcpCrlCache.crlPem = lcplStr;
+                lcpCrlCache.etag = res.response.headers?.get("etag") || undefined;
+                lcpCrlCache.validatedAt = Date.now();
+                debug("LCP CRL HTTP fetch success");
+                debug(lcplStr);
+                return;
+            }
+            debug(`LCP CRL HTTP fetch fail; keeping cached CRL (${res.statusCode} ${res.contentType})`);
+        } catch (err) {
+            debug("LCP CRL HTTP fetch error; keeping cached CRL");
+            debug(err);
+        }
+    })().finally(() => {
+        lcpCrlCache.refreshPromise = undefined;
+    });
+
+    return lcpCrlCache.refreshPromise;
+};
+const initLcpCrlCacheValidatedAt = lcpCrlCache.validatedAt;
+refreshLcpCrlCache().then(() => {
+    debug(lcpCrlCache.validatedAt > initLcpCrlCacheValidatedAt ? "INIT LCP CRL LOADED" : "INIT LCP CRL FAILED");
+}).catch((err) => {
+    debug("INIT LCP CRL FAILED");
+    debug(err);
+});
+
+setCRLGetter(async (): Promise<string> => {
+    const crlPem = lcpCrlCache.crlPem;
+    if (isLcpCrlCacheExpired()) {
+        void refreshLcpCrlCache();
+    }
+    return crlPem;
 });
 
 app.commandLine.appendSwitch("autoplay-policy", "no-user-gesture-required");
