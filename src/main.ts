@@ -74,6 +74,7 @@ setLcpNativePluginPath(lcpNativePluginPath);
 interface ILcpCrlCache {
     crlPem: string;
     etag: string | undefined;
+    lastModified: string | undefined;
     validatedAt: number;
     refreshPromise: Promise<void> | undefined;
 }
@@ -81,12 +82,13 @@ interface ILcpCrlCache {
 const lcpCrlCache: ILcpCrlCache = {
     crlPem: DUMMY_CRL,
     etag: undefined,
+    lastModified: undefined,
     validatedAt: 0,
     refreshPromise: undefined,
 };
 
 // 1h
-const LCP_CRL_CACHE_FRESHNESS_MS = 60 * 60 * 1000;
+const LCP_CRL_CACHE_FRESHNESS_MS = 0;// 60 * 60 * 1000;
 
 // TODO: HTTP cache-control Header !?
 const isLcpCrlCacheExpired = () =>
@@ -106,6 +108,9 @@ const refreshLcpCrlCache = (): Promise<void> => {
             if (lcpCrlCache.etag) {
                 headers["If-None-Match"] = lcpCrlCache.etag;
             }
+            if (lcpCrlCache.lastModified) {
+                headers["If-Modified-Since"] = lcpCrlCache.lastModified;
+            }
             // RFC 2585 Security Considerations: CRL retrieval does not need
             // authentication, so this uses Thorium's no-auth HTTP helper.
             const res = await httpGetWithAuth(false)(CRL_URL, {
@@ -115,6 +120,7 @@ const refreshLcpCrlCache = (): Promise<void> => {
                 redirect: "error",
             });
             if (res.statusCode === 304) {
+                lcpCrlCache.lastModified = res.response.headers?.get("last-modified") || lcpCrlCache.lastModified;
                 lcpCrlCache.validatedAt = Date.now();
                 debug("LCP CRL HTTP cache refreshed: not modified");
                 return;
@@ -133,7 +139,8 @@ const refreshLcpCrlCache = (): Promise<void> => {
                 const buf = await res.response.buffer();
                 const lcplStr = "-----BEGIN X509 CRL-----\n" + buf.toString("base64") + "\n-----END X509 CRL-----";
                 lcpCrlCache.crlPem = lcplStr;
-                lcpCrlCache.etag = res.response.headers?.get("etag") || undefined;
+                lcpCrlCache.etag = res.response.headers?.get("etag") || undefined; // '"295-65b0d9de8addd"' double quote is included
+                lcpCrlCache.lastModified = res.response.headers?.get("last-modified") || undefined;
                 lcpCrlCache.validatedAt = Date.now();
                 debug("LCP CRL HTTP fetch success");
                 debug(lcplStr);
