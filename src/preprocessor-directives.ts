@@ -59,6 +59,8 @@ export const _TELEMETRY_SECRET = __TH__TELEMETRY_SECRET__;
 declare const __TH__TELEMETRY_SECRETDATA__: string;
 export const _TELEMETRY_SECRETDATA = __TH__TELEMETRY_SECRETDATA__;
 
+declare const __TH__LCP_CRL__: string;
+export const _LCP_CRL = __TH__LCP_CRL__;
 
 declare const __TH__CUSTOMIZATION_PROFILE_PUB_KEY__: string;
 export const _CUSTOMIZATION_PROFILE_PUB_KEY = __TH__CUSTOMIZATION_PROFILE_PUB_KEY__;

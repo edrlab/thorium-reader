@@ -22,7 +22,7 @@ import { initSessions as initSessionsNoHTTP } from "./main/streamer/streamerNoHt
 import { createStoreFromDi } from "./main/di";
 import { appActions } from "./main/redux/actions";
 import { app } from "electron";
-import { _APP_NAME, _APP_VERSION, _PACK_NAME } from "readium-desktop/preprocessor-directives";
+import { _APP_NAME, _APP_VERSION, _LCP_CRL, _PACK_NAME } from "readium-desktop/preprocessor-directives";
 import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
 import { appendFileSyncWithRotation } from "readium-desktop/utils/log";
 
@@ -81,7 +81,7 @@ interface ILcpCrlCache {
 }
 
 const lcpCrlCache: ILcpCrlCache = {
-    crlPem: DUMMY_CRL,
+    crlPem: _LCP_CRL || DUMMY_CRL,
     etag: undefined,
     lastModified: undefined,
     validatedAt: 0,
