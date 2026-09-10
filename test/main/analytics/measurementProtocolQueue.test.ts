@@ -21,10 +21,12 @@ import { IAnalyticsLogEventResult } from "readium-desktop/common/api/interface/a
 import { IMeasurementProtocolBody } from "readium-desktop/main/analytics/measurementProtocol";
 import {
     buildMeasurementProtocolQueueBatch,
+    getMeasurementProtocolQueueStorageKind,
     IMeasurementProtocolEventQueueDependencies,
     IMeasurementProtocolQueueBatch,
     IQueuedMeasurementProtocolEvent,
     MeasurementProtocolEventQueue,
+    MeasurementProtocolSqliteQueueStore,
     parseMeasurementProtocolQueueFile,
 } from "readium-desktop/main/analytics/measurementProtocolQueue";
 
@@ -85,18 +87,27 @@ const readQueueFile = async (queueFilePath: string): Promise<IQueuedMeasurementP
     return JSON.parse(raw).events;
 };
 
+const readQueueSqliteFile = async (queueSqlitePath: string): Promise<IQueuedMeasurementProtocolEvent[]> =>
+    new MeasurementProtocolSqliteQueueStore(queueSqlitePath).load();
+
 describe("MeasurementProtocolEventQueue", () => {
     let rootPath: string;
     let queueFilePath: string;
+    let queueSqlitePath: string;
     let idCounter: number;
 
     const createQueue = (
         sendBatch: (batch: IMeasurementProtocolQueueBatch) => Promise<IAnalyticsLogEventResult> = async () =>
             successResult,
-        dependencies: Partial<Omit<IMeasurementProtocolEventQueueDependencies, "queueFilePath" | "sendBatch">> = {},
+        dependencies: Partial<Omit<
+            IMeasurementProtocolEventQueueDependencies,
+            "queueFilePath" | "queueSqlitePath" | "sendBatch"
+        >> = {},
     ) =>
         new MeasurementProtocolEventQueue({
             queueFilePath,
+            queueSqlitePath,
+            queueStorageKind: "file",
             sendBatch,
             createId: () => `id-${++idCounter}`,
             nowMicros: () => 123456789,
@@ -107,6 +118,7 @@ describe("MeasurementProtocolEventQueue", () => {
     beforeEach(async () => {
         rootPath = await fs.promises.mkdtemp(path.join(os.tmpdir(), "thorium-measurement-protocol-"));
         queueFilePath = path.join(rootPath, "analytics", "measurement-protocol-queue.json");
+        queueSqlitePath = path.join(rootPath, "analytics", "measurement-protocol-queue.sqlite");
         idCounter = 0;
     });
 
@@ -114,7 +126,7 @@ describe("MeasurementProtocolEventQueue", () => {
         await fs.promises.rm(rootPath, { force: true, recursive: true });
     });
 
-    it("persists queued events and flushes them after reload", async () => {
+    it("persists queued events to file and flushes them after reload", async () => {
         const queue = createQueue();
         await queue.enqueue({
             debugMode: false,
@@ -134,6 +146,35 @@ describe("MeasurementProtocolEventQueue", () => {
 
         expect(sentBatches).toEqual([["app_start"]]);
         expect(await readQueueFile(queueFilePath)).toEqual([]);
+    });
+
+    it("persists queued events to SQLite and flushes them after reload", async () => {
+        const queue = createQueue(undefined, { queueStorageKind: "sqlite" });
+        await queue.enqueue({
+            debugMode: false,
+            body: makeBody("app_start_sqlite"),
+        });
+
+        await expect(fs.promises.access(queueFilePath)).rejects.toThrow();
+        await expect(fs.promises.access(queueSqlitePath)).resolves.toBeUndefined();
+        expect((await readQueueSqliteFile(queueSqlitePath)).map((event) => event.event.name)).toEqual([
+            "app_start_sqlite",
+        ]);
+
+        const sentBatches: string[][] = [];
+        const reloadedQueue = createQueue(
+            async (batch) => {
+                sentBatches.push(batch.events.map((event) => event.event.name));
+                return successResult;
+            },
+            { queueStorageKind: "sqlite" },
+        );
+
+        await reloadedQueue.start();
+        await reloadedQueue.flush();
+
+        expect(sentBatches).toEqual([["app_start_sqlite"]]);
+        expect(await readQueueSqliteFile(queueSqlitePath)).toEqual([]);
     });
 
     it("retries transient Windows rename failures when persisting queued events", async () => {
@@ -372,6 +413,79 @@ describe("MeasurementProtocolEventQueue", () => {
         expect(result).toEqual(validationResult);
         expect(sentBatches).toEqual([["debug_event"]]);
         await expect(fs.promises.access(queueFilePath)).rejects.toThrow();
+    });
+
+    it("keeps queued events in SQLite when delivery fails", async () => {
+        const queue = createQueue(
+            async () => ({
+                sent: false,
+                isSuccess: false,
+                reason: "network-error",
+            }),
+            { queueStorageKind: "sqlite" },
+        );
+
+        await queue.enqueue({
+            debugMode: false,
+            body: makeBody("sqlite_retry_later"),
+        });
+
+        const result = await queue.flush();
+
+        expect(result).toEqual({
+            sent: false,
+            isSuccess: false,
+            reason: "network-error",
+        });
+        expect((await readQueueSqliteFile(queueSqlitePath)).map((event) => event.event.name)).toEqual([
+            "sqlite_retry_later",
+        ]);
+    });
+
+    it("drops stale events before flushing persisted SQLite queue data", async () => {
+        await new MeasurementProtocolSqliteQueueStore(queueSqlitePath).save([
+            makeEvent("expired_event", {
+                id: "expired_event",
+                queuedAtMicros: 100,
+                event: {
+                    name: "expired_event",
+                    timestamp_micros: 100,
+                },
+            }),
+            makeEvent("fresh_event", {
+                id: "fresh_event",
+                queuedAtMicros: 990,
+                event: {
+                    name: "fresh_event",
+                    timestamp_micros: 990,
+                },
+            }),
+        ]);
+
+        const sentBatches: string[][] = [];
+        const queue = createQueue(
+            async (batch) => {
+                sentBatches.push(batch.events.map((event) => event.event.name));
+                return successResult;
+            },
+            {
+                queueStorageKind: "sqlite",
+                maxEventAgeMicros: 100,
+                nowMicros: () => 1000,
+            },
+        );
+
+        await queue.flush();
+
+        expect(sentBatches).toEqual([["fresh_event"]]);
+        expect(await readQueueSqliteFile(queueSqlitePath)).toEqual([]);
+    });
+});
+
+describe("getMeasurementProtocolQueueStorageKind", () => {
+    it("selects the queue storage from the static SQLite feature flag", () => {
+        expect(getMeasurementProtocolQueueStorageKind(false)).toBe("file");
+        expect(getMeasurementProtocolQueueStorageKind(true)).toBe("sqlite");
     });
 });
 

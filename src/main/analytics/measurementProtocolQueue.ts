@@ -8,6 +8,7 @@
 import debug_ from "debug";
 import * as fs from "node:fs";
 import * as path from "node:path";
+import sqlite from "node:sqlite";
 
 import {
     IAnalyticsLogEventResult,
@@ -35,6 +36,11 @@ const MEASUREMENT_PROTOCOL_QUEUE_FILE_PATH = path.join(
     "analytics",
     "measurement-protocol-queue.json",
 );
+const MEASUREMENT_PROTOCOL_QUEUE_SQLITE_FILE_PATH = path.join(
+    path.dirname(MEASUREMENT_PROTOCOL_QUEUE_FILE_PATH),
+    "measurement-protocol-queue.sqlite",
+);
+const MEASUREMENT_PROTOCOL_QUEUE_SQLITE_TABLE_NAME = "measurement_protocol_queue";
 // Windows can briefly lock the destination queue file during replace operations.
 // Keep the atomic temp-file write path, but retry transient rename failures.
 const MEASUREMENT_PROTOCOL_QUEUE_RENAME_RETRY_DELAYS_MS = [25, 100, 250, 500];
@@ -64,8 +70,20 @@ export interface IMeasurementProtocolQueueRequest {
     body: IMeasurementProtocolBody;
 }
 
+export type TMeasurementProtocolQueueStorageKind = "file" | "sqlite";
+
+export interface IMeasurementProtocolQueueStore {
+    readonly kind: TMeasurementProtocolQueueStorageKind;
+    readonly storagePath: string;
+    load: () => Promise<IQueuedMeasurementProtocolEvent[]>;
+    save: (queue: IQueuedMeasurementProtocolEvent[]) => Promise<void>;
+}
+
 export interface IMeasurementProtocolEventQueueDependencies {
     queueFilePath: string;
+    queueSqlitePath?: string;
+    queueStorageKind?: TMeasurementProtocolQueueStorageKind;
+    queueStorage?: IMeasurementProtocolQueueStore;
     sendBatch?: (batch: IMeasurementProtocolQueueBatch) => Promise<IAnalyticsLogEventResult>;
     createId?: () => string;
     nowMicros?: () => number;
@@ -227,6 +245,20 @@ export const parseMeasurementProtocolQueueFile = (data: string): IQueuedMeasurem
     }
 };
 
+const parseMeasurementProtocolQueueJson = (data: unknown): unknown | undefined => {
+
+    if (typeof data !== "string") {
+        return undefined;
+    }
+
+    try {
+        return JSON.parse(data) as unknown;
+    } catch (err) {
+        debug("Measurement Protocol queue JSON row parse failed", err);
+        return undefined;
+    }
+};
+
 export const getMeasurementProtocolQueuedEventBatchKey = (
     event: IQueuedMeasurementProtocolEvent,
 ): string => JSON.stringify([
@@ -355,6 +387,248 @@ const renameMeasurementProtocolQueueFile = async (
             await wait(retryDelayMs);
         }
     }
+};
+
+export class MeasurementProtocolFileQueueStore implements IMeasurementProtocolQueueStore {
+
+    public readonly kind = "file";
+
+    constructor(public readonly storagePath: string) {
+    }
+
+    public async load(): Promise<IQueuedMeasurementProtocolEvent[]> {
+
+        try {
+            const data = await fs.promises.readFile(this.storagePath, { encoding: "utf8" });
+            const queue = parseMeasurementProtocolQueueFile(data);
+            debug("Measurement Protocol queue read from file", {
+                queueFilePath: this.storagePath,
+                bytes: Buffer.byteLength(data, "utf8"),
+                eventCount: queue.length,
+            });
+            return queue;
+        } catch (err) {
+            const code = (err as NodeJS.ErrnoException).code;
+            if (code !== "ENOENT") {
+                debug("Measurement Protocol queue file read failed", {
+                    queueFilePath: this.storagePath,
+                    error: err,
+                });
+                throw err;
+            }
+
+            debug("Measurement Protocol queue file not found, starting empty", {
+                queueFilePath: this.storagePath,
+            });
+            return [];
+        }
+    }
+
+    public async save(queue: IQueuedMeasurementProtocolEvent[]): Promise<void> {
+
+        const queueFile: IMeasurementProtocolQueueFile = {
+            version: MEASUREMENT_PROTOCOL_QUEUE_FILE_VERSION,
+            events: queue,
+        };
+        const data = JSON.stringify(queueFile);
+        const tmpFilePath = `${this.storagePath}.${process.pid}.${Date.now()}.tmp`;
+
+        await fs.promises.mkdir(path.dirname(this.storagePath), { recursive: true });
+
+        try {
+            debug("Measurement Protocol queue persisting to file", {
+                queueFilePath: this.storagePath,
+                tmpFilePath,
+                bytes: Buffer.byteLength(data, "utf8"),
+                ...summarizeQueueForDebug(queue),
+            });
+            // Write the complete queue to a temp file first so failed persistence
+            // does not corrupt or truncate the last known-good queue file.
+            await fs.promises.writeFile(tmpFilePath, data, { encoding: "utf8", flush: true });
+            await renameMeasurementProtocolQueueFile(tmpFilePath, this.storagePath);
+            debug("Measurement Protocol queue persisted to file", {
+                queueFilePath: this.storagePath,
+                eventCount: queue.length,
+            });
+        } catch (err) {
+            try {
+                await fs.promises.rm(tmpFilePath, { force: true });
+            } catch {
+                // ignore cleanup failure
+            }
+            debug("Measurement Protocol queue file persist failed", {
+                queueFilePath: this.storagePath,
+                tmpFilePath,
+                eventCount: queue.length,
+                error: err,
+            });
+            throw err;
+        }
+    }
+}
+
+const { DatabaseSync } = sqlite;
+
+const parseMeasurementProtocolQueueSqliteRow = (
+    row: Record<string, unknown>,
+): IQueuedMeasurementProtocolEvent | undefined => {
+
+    const debugMode = row.debug_mode === 1 ? true : row.debug_mode === 0 ? false : row.debug_mode;
+
+    return sanitizeQueuedEvent({
+        id: row.event_id,
+        debugMode,
+        queuedAtMicros: row.queued_at_micros,
+        bodyRoot: parseMeasurementProtocolQueueJson(row.body_root_json),
+        event: parseMeasurementProtocolQueueJson(row.event_json),
+    });
+};
+
+export class MeasurementProtocolSqliteQueueStore implements IMeasurementProtocolQueueStore {
+
+    public readonly kind = "sqlite";
+
+    constructor(public readonly storagePath: string) {
+    }
+
+    public async load(): Promise<IQueuedMeasurementProtocolEvent[]> {
+
+        if (this.storagePath !== ":memory:" && !fs.existsSync(this.storagePath)) {
+            debug("Measurement Protocol queue SQLite file not found, starting empty", {
+                queueSqlitePath: this.storagePath,
+            });
+            return [];
+        }
+
+        return this.withDatabase((database) => {
+            const rows = database
+                .prepare(`
+                    SELECT event_id, debug_mode, queued_at_micros, body_root_json, event_json
+                    FROM ${MEASUREMENT_PROTOCOL_QUEUE_SQLITE_TABLE_NAME}
+                    ORDER BY position ASC
+                `)
+                .all();
+            const queue = rows
+                .map(parseMeasurementProtocolQueueSqliteRow)
+                .filter(isQueuedMeasurementProtocolEvent);
+
+            debug("Measurement Protocol queue read from SQLite", {
+                queueSqlitePath: this.storagePath,
+                rowCount: rows.length,
+                eventCount: queue.length,
+            });
+            return queue;
+        });
+    }
+
+    public async save(queue: IQueuedMeasurementProtocolEvent[]): Promise<void> {
+
+        return this.withDatabase((database) => {
+            try {
+                debug("Measurement Protocol queue persisting to SQLite", {
+                    queueSqlitePath: this.storagePath,
+                    ...summarizeQueueForDebug(queue),
+                });
+
+                database.exec("BEGIN IMMEDIATE");
+                database
+                    .prepare(`DELETE FROM ${MEASUREMENT_PROTOCOL_QUEUE_SQLITE_TABLE_NAME}`)
+                    .run();
+
+                const insert = database.prepare(`
+                    INSERT INTO ${MEASUREMENT_PROTOCOL_QUEUE_SQLITE_TABLE_NAME}
+                        (position, event_id, debug_mode, queued_at_micros, body_root_json, event_json)
+                    VALUES (?, ?, ?, ?, ?, ?)
+                `);
+                for (const [index, event] of queue.entries()) {
+                    insert.run(
+                        index,
+                        event.id,
+                        event.debugMode ? 1 : 0,
+                        event.queuedAtMicros,
+                        JSON.stringify(event.bodyRoot),
+                        JSON.stringify(event.event),
+                    );
+                }
+
+                database.exec("COMMIT");
+                debug("Measurement Protocol queue persisted to SQLite", {
+                    queueSqlitePath: this.storagePath,
+                    eventCount: queue.length,
+                });
+            } catch (err) {
+                try {
+                    database.exec("ROLLBACK");
+                } catch {
+                    // ignore rollback failure
+                }
+                debug("Measurement Protocol queue SQLite persist failed", {
+                    queueSqlitePath: this.storagePath,
+                    eventCount: queue.length,
+                    error: err,
+                });
+                throw err;
+            }
+        });
+    }
+
+    private ensureDirectory(): void {
+
+        if (this.storagePath !== ":memory:") {
+            fs.mkdirSync(path.dirname(this.storagePath), { recursive: true });
+        }
+    }
+
+    private ensureTable(database: sqlite.DatabaseSync): void {
+
+        database.exec(`
+            CREATE TABLE IF NOT EXISTS ${MEASUREMENT_PROTOCOL_QUEUE_SQLITE_TABLE_NAME} (
+                position INTEGER PRIMARY KEY NOT NULL,
+                event_id TEXT NOT NULL,
+                debug_mode INTEGER NOT NULL CHECK (debug_mode IN (0, 1)),
+                queued_at_micros INTEGER NOT NULL,
+                body_root_json TEXT NOT NULL,
+                event_json TEXT NOT NULL
+            ) STRICT
+        `);
+    }
+
+    private withDatabase<T>(operation: (database: sqlite.DatabaseSync) => T): T {
+
+        this.ensureDirectory();
+        const database = new DatabaseSync(this.storagePath);
+
+        try {
+            this.ensureTable(database);
+            return operation(database);
+        } finally {
+            database.close();
+        }
+    }
+}
+
+export const getMeasurementProtocolQueueStorageKind = (
+    useSqliteQueueStorage = __TH__MEASUREMENT_PROTOCOL_QUEUE_SQLITE_ENABLED__,
+): TMeasurementProtocolQueueStorageKind =>
+    useSqliteQueueStorage ? "sqlite" : "file";
+
+export const createMeasurementProtocolQueueStore = (
+    dependencies: Pick<
+        IMeasurementProtocolEventQueueDependencies,
+        "queueFilePath" | "queueSqlitePath" | "queueStorageKind" | "queueStorage"
+    >,
+): IMeasurementProtocolQueueStore => {
+
+    if (dependencies.queueStorage) {
+        return dependencies.queueStorage;
+    }
+
+    const kind = dependencies.queueStorageKind || getMeasurementProtocolQueueStorageKind();
+    return kind === "sqlite" ?
+        new MeasurementProtocolSqliteQueueStore(
+            dependencies.queueSqlitePath || MEASUREMENT_PROTOCOL_QUEUE_SQLITE_FILE_PATH,
+        ) :
+        new MeasurementProtocolFileQueueStore(dependencies.queueFilePath);
 };
 
 const summarizeQueuedEventForDebug = (
@@ -652,9 +926,11 @@ export class MeasurementProtocolEventQueue {
     private readonly createId: () => string;
     private readonly nowMicros: () => number;
     private readonly sendBatch: (batch: IMeasurementProtocolQueueBatch) => Promise<IAnalyticsLogEventResult>;
+    private readonly queueStore: IMeasurementProtocolQueueStore;
 
-    constructor(private readonly dependencies: IMeasurementProtocolEventQueueDependencies) {
+    constructor(dependencies: IMeasurementProtocolEventQueueDependencies) {
 
+        this.queueStore = createMeasurementProtocolQueueStore(dependencies);
         this.batchSize = normalizeBatchSize(dependencies.batchSize);
         this.maxBodyBytes = dependencies.maxBodyBytes || GA4_MEASUREMENT_PROTOCOL_MAX_POST_BODY_BYTES;
         this.flushIntervalMs =
@@ -674,7 +950,10 @@ export class MeasurementProtocolEventQueue {
         this.sendBatch = dependencies.sendBatch || sendMeasurementProtocolBatch;
 
         debug("Measurement Protocol queue configured", {
+            queueStorageKind: this.queueStore.kind,
+            queueStoragePath: this.queueStore.storagePath,
             queueFilePath: dependencies.queueFilePath,
+            queueSqlitePath: dependencies.queueSqlitePath,
             batchSize: this.batchSize,
             maxBodyBytes: this.maxBodyBytes,
             flushIntervalMs: this.flushIntervalMs,
@@ -1018,7 +1297,8 @@ export class MeasurementProtocolEventQueue {
 
         if (this.loadPromise === undefined) {
             debug("Measurement Protocol queue load requested", {
-                queueFilePath: this.dependencies.queueFilePath,
+                queueStorageKind: this.queueStore.kind,
+                queueStoragePath: this.queueStore.storagePath,
             });
             this.loadPromise = this.loadQueue()
                 .finally(() => {
@@ -1033,32 +1313,26 @@ export class MeasurementProtocolEventQueue {
 
     private async loadQueue(): Promise<void> {
 
-        debug("Measurement Protocol queue loading from disk", {
-            queueFilePath: this.dependencies.queueFilePath,
+        debug("Measurement Protocol queue loading from storage", {
+            queueStorageKind: this.queueStore.kind,
+            queueStoragePath: this.queueStore.storagePath,
         });
-
-        try {
-            await fs.promises.mkdir(path.dirname(this.dependencies.queueFilePath), { recursive: true });
-        } catch (err) {
-            debug("Measurement Protocol queue directory creation failed", err);
-        }
 
         let queueWasLoaded = false;
         try {
-            const data = await fs.promises.readFile(this.dependencies.queueFilePath, { encoding: "utf8" });
-            this.queue = parseMeasurementProtocolQueueFile(data);
+            this.queue = await this.queueStore.load();
             queueWasLoaded = true;
-            debug("Measurement Protocol queue read from disk", {
-                bytes: Buffer.byteLength(data, "utf8"),
+            debug("Measurement Protocol queue read from storage", {
+                queueStorageKind: this.queueStore.kind,
+                queueStoragePath: this.queueStore.storagePath,
                 eventCount: this.queue.length,
             });
         } catch (err) {
-            const code = (err as NodeJS.ErrnoException).code;
-            if (code !== "ENOENT") {
-                debug("Measurement Protocol queue read failed", err);
-            } else {
-                debug("Measurement Protocol queue file not found, starting empty");
-            }
+            debug("Measurement Protocol queue storage read failed", {
+                queueStorageKind: this.queueStore.kind,
+                queueStoragePath: this.queueStore.storagePath,
+                error: err,
+            });
             this.queue = [];
         }
 
@@ -1081,39 +1355,22 @@ export class MeasurementProtocolEventQueue {
 
     private async persistQueue(): Promise<void> {
 
-        const queueFile: IMeasurementProtocolQueueFile = {
-            version: MEASUREMENT_PROTOCOL_QUEUE_FILE_VERSION,
-            events: this.queue,
-        };
-        const data = JSON.stringify(queueFile);
-        const tmpFilePath = `${this.dependencies.queueFilePath}.${process.pid}.${Date.now()}.tmp`;
-
-        await fs.promises.mkdir(path.dirname(this.dependencies.queueFilePath), { recursive: true });
-
         try {
             debug("Measurement Protocol queue persisting", {
-                queueFilePath: this.dependencies.queueFilePath,
-                tmpFilePath,
-                bytes: Buffer.byteLength(data, "utf8"),
+                queueStorageKind: this.queueStore.kind,
+                queueStoragePath: this.queueStore.storagePath,
                 ...summarizeQueueForDebug(this.queue),
             });
-            // Write the complete queue to a temp file first so failed persistence
-            // does not corrupt or truncate the last known-good queue file.
-            await fs.promises.writeFile(tmpFilePath, data, { encoding: "utf8", flush: true });
-            await renameMeasurementProtocolQueueFile(tmpFilePath, this.dependencies.queueFilePath);
+            await this.queueStore.save(this.queue);
             debug("Measurement Protocol queue persisted", {
-                queueFilePath: this.dependencies.queueFilePath,
+                queueStorageKind: this.queueStore.kind,
+                queueStoragePath: this.queueStore.storagePath,
                 eventCount: this.queue.length,
             });
         } catch (err) {
-            try {
-                await fs.promises.rm(tmpFilePath, { force: true });
-            } catch {
-                // ignore cleanup failure
-            }
             debug("Measurement Protocol queue persist failed", {
-                queueFilePath: this.dependencies.queueFilePath,
-                tmpFilePath,
+                queueStorageKind: this.queueStore.kind,
+                queueStoragePath: this.queueStore.storagePath,
                 eventCount: this.queue.length,
                 error: err,
             });
