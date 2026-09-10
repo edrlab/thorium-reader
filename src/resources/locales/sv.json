@@ -293,15 +293,15 @@
         "addMenu": "Lägg till ett OPDS-flöde",
         "breadcrumbRoot": "Kataloger",
         "color": {
-            "blue": "",
-            "gray": "",
-            "green": "",
-            "orange": "",
-            "pink": "",
-            "purple": "",
-            "red": "",
-            "title": "",
-            "yellow": ""
+            "blue": "Blå",
+            "gray": "Grå",
+            "green": "Grön",
+            "orange": "Orange",
+            "pink": "Rosa",
+            "purple": "Lila",
+            "red": "Röd",
+            "title": "Katalogfärg",
+            "yellow": "Gul"
         },
         "documentation": "OPDS officiella webbplats",
         "empty": "Ingen bok hittades",
@@ -1324,22 +1324,22 @@
                 "actions": {
                     "check": "",
                     "checkAgain": "",
-                    "recover": "",
-                    "recovering": ""
+                    "recover": "Återskapa böcker",
+                    "recovering": "Återskapar…"
                 },
-                "available": "",
-                "checking": "",
+                "available": "En eller flera böcker hittades på disk som saknas i databasen. Det kan vara möjligt att återskapa dem.",
+                "checking": "Kontrollerar lagringsutrymmet…",
                 "description": "",
                 "dialog": {
-                    "confirm": "",
+                    "confirm": "Återskapa",
                     "description_one": "",
                     "description_other": "",
-                    "title": ""
+                    "title": "Återskapa böcker"
                 },
-                "none": "",
+                "none": "Inga böcker som kan återskapas hittades.",
                 "recoverableCount_one": "",
                 "recoverableCount_other": "",
-                "title": ""
+                "title": "Återskapa"
             }
         },
         "tabs": {
@@ -1350,9 +1350,9 @@
             "storage": "Lagring"
         },
         "telemetry": {
-            "disableTelemetryMeasurements": "",
-            "disableTelemetryMeasurementsDescription": "",
-            "title": ""
+            "disableTelemetryMeasurements": "Samla inte in data om användarbeteende",
+            "disableTelemetryMeasurementsDescription": "När detta är aktiverat samlar och skickar Thorium inte data om användarbeteende.",
+            "title": "Insamling av data"
         },
         "theme": {
             "auto": "Automatiskt",
