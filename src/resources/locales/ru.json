@@ -305,15 +305,15 @@
         "addMenu": "Добавить OPDS каталог",
         "breadcrumbRoot": "Каталоги",
         "color": {
-            "blue": "",
-            "gray": "",
-            "green": "",
-            "orange": "",
-            "pink": "",
-            "purple": "",
-            "red": "",
+            "blue": "Синий",
+            "gray": "Серый",
+            "green": "Зелёный",
+            "orange": "Оранжевый",
+            "pink": "Розовый",
+            "purple": "Фиолетовый",
+            "red": "Красный",
             "title": "",
-            "yellow": ""
+            "yellow": "Жёлтый"
         },
         "documentation": "Официальный сайт OPDS",
         "empty": "Книга не найдена",

@@ -92,7 +92,7 @@
         "login": "Iniciar sessão",
         "logout": "Terminar sessão",
         "missing": "",
-        "missingUnavailableDescription": "Não foi possível abrir esta publicação porque os ficheiros armazenados não estão disponíveis. Importe-a novamente ou aceda a Definições -> Armazenamento para adicionar ou alterar o espaço de armazenamento adicional.",
+        "missingUnavailableDescription": "Não foi possível abrir esta publicação porque os ficheiros armazenados não estão disponíveis. Importe-a novamente ou aceda a Configurações -> Armazenamento para adicionar ou alterar o espaço de armazenamento adicional.",
         "moreInfo": "Detalhes do documento",
         "myBooks": "Meus documentos",
         "noPublicationHelpL1": "Soltar ficheiros aqui",
@@ -210,7 +210,7 @@
         "searchPlaceholder": "Pesquisa",
         "searchTitle": "Pesquisar por",
         "settings": "Configurações",
-        "settingsLabel": "",
+        "settingsLabel": "Configurações da aplicação",
         "viewMode": "Modo de visualização"
     },
     "library": {
@@ -270,7 +270,7 @@
         },
         "open": {
             "error": "Não foi possível carregar o documento: {{- err}}",
-            "folderNotFound": "A pasta da publicação não foi encontrada. Importe-a novamente ou configure o armazenamento adicional em Definições > Armazenamento."
+            "folderNotFound": "A pasta da publicação não foi encontrada. Importe-a novamente ou configure o armazenamento adicional em Configurações > Armazenamento."
         },
         "storage": {
             "recovery": {
@@ -279,7 +279,7 @@
                 "success_one": "",
                 "success_other": ""
             },
-            "removed": "Pasta da publicação removida.",
+            "removed": "Pasta do documento removida.",
             "updateFailed": "Falha ao atualizar a pasta da publicação: {{- message}}",
             "updated": "Pasta da publicação atualizada."
         },
@@ -836,7 +836,7 @@
             "printDisabled": "Imprimir proibido",
             "screenNext": "Avançar",
             "screenPrevious": "Recuar",
-            "settingsTitle": "Configurações"
+            "settingsTitle": "Configurações do leitor"
         },
         "notes": {
             "colors": {
@@ -891,16 +891,16 @@
             },
             "customFontSelected": "Escolheu um tipo de letra pessoal",
             "customizeReader": "Personalizar formatação do texto",
-            "defaultValue": "",
+            "defaultValue": "Valor predefinido",
             "disabled": "desativado",
             "display": "Visualização",
             "disposition": {
                 "title": "Disposição"
             },
-            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicators": "Mostrar quebras de página na margem",
             "font": "Tipo de letra",
             "fontSize": "Tamanho da letra",
-            "increaseFontSize": "",
+            "increaseFontSize": "Aumentar o tamanho da letra",
             "infoCustomFont": "Selecionar fonte personalizada, a partir do sistema operacional, digitando o seu nome",
             "justification": "Alinhamento",
             "justify": "Justificar",

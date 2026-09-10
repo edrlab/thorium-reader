@@ -274,10 +274,10 @@
         },
         "storage": {
             "recovery": {
-                "failure": "",
-                "success_many": "",
-                "success_one": "",
-                "success_other": ""
+                "failure": "No se han podido recuperar las publicaciones.",
+                "success_many": "Se han recuperado {{- count}} publicaciones.",
+                "success_one": "Se ha recuperado {{- count}} publicación.",
+                "success_other": "Se han recuperado {{- count}} publicaciones."
             },
             "removed": "Directorio de la publicación eliminado.",
             "updateFailed": "Fallo al actualizar el directorio de la publicación: {{- message}}",
@@ -299,15 +299,15 @@
         "addMenu": "Añadir catálogo OPDS",
         "breadcrumbRoot": "Catálogos",
         "color": {
-            "blue": "",
-            "gray": "",
-            "green": "",
-            "orange": "",
-            "pink": "",
-            "purple": "",
-            "red": "",
-            "title": "",
-            "yellow": ""
+            "blue": "Azul",
+            "gray": "Gris",
+            "green": "Verde",
+            "orange": "Naranja",
+            "pink": "Rosa",
+            "purple": "Morado",
+            "red": "Rojo",
+            "title": "Color del catálogo",
+            "yellow": "Amarillo"
         },
         "documentation": "Sitio oficial de OPDS",
         "empty": "No se han encontrado publicaciones",
@@ -897,7 +897,7 @@
             "disposition": {
                 "title": "Disposición"
             },
-            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicators": "Mostrar saltos de página en el margen",
             "font": "Fuente",
             "fontSize": "Tamaño de fuente",
             "increaseFontSize": "Aumentar el tamaño del texto",
@@ -1329,26 +1329,26 @@
             },
             "recovery": {
                 "actions": {
-                    "check": "",
-                    "checkAgain": "",
-                    "recover": "",
-                    "recovering": ""
+                    "check": "Comprueba si hay publicaciones recuperables",
+                    "checkAgain": "Compruébalo de nuevo",
+                    "recover": "Recuperar publicaciones",
+                    "recovering": "Recuperando..."
                 },
-                "available": "",
-                "checking": "",
-                "description": "",
+                "available": "Se han encontrado una o varias publicaciones en el disco, pero no figuran en la base de datos. Es posible recuperarlas.",
+                "checking": "Comprobando el almacenamiento de publicaciones...",
+                "description": "Revisa el almacén de publicaciones para encontrar aquellas que se puedan recuperar de forma segura.",
                 "dialog": {
-                    "confirm": "",
-                    "description_many": "",
-                    "description_one": "",
-                    "description_other": "",
-                    "title": ""
+                    "confirm": "Recuperar",
+                    "description_many": "Thorium ha encontrado {{- count}} publicaciones en el disco que no figuran en la base de datos. ¿Quieres importarlas de nuevo a Thorium?",
+                    "description_one": "Thorium ha encontrado {{- count}} publicación en el disco que no figura en la base de datos. ¿Quieres volver a importarla a Thorium?",
+                    "description_other": "Thorium ha encontrado {{- count}} publicaciones en el disco que no figuran en la base de datos. ¿Quieres importarlas de nuevo a Thorium?",
+                    "title": "Recuperar publicaciones"
                 },
-                "none": "",
-                "recoverableCount_many": "",
-                "recoverableCount_one": "",
-                "recoverableCount_other": "",
-                "title": ""
+                "none": "No se han encontrado publicaciones recuperables.",
+                "recoverableCount_many": "Se puede recuperar {{- count}} publicaciones mediante su identificador de almacenamiento original.",
+                "recoverableCount_one": "Se puede recuperar {{- count}} publicación mediante su identificador de almacenamiento original.",
+                "recoverableCount_other": "Se puede recuperar {{- count}} publicaciones mediante su identificador de almacenamiento original.",
+                "title": "Recuperación"
             }
         },
         "tabs": {
