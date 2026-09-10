@@ -92,7 +92,7 @@
         "login": "Giriş yap",
         "logout": "Oturumu Kapat",
         "missing": "Eksik dosyalar",
-        "missingUnavailableDescription": "Bu eser, depolanan dosyaları mevcut olmadığından açılamıyor. Eseri yeniden içe aktarın veya Ayarlar'a ve ardından Depolama'ya gidip ilave depolama ekleyin veya değiştirin.",
+        "missingUnavailableDescription": "Bu eser, depolanan dosyaları kullanılamadığından açılamıyor. Eseri yeniden içe aktarın veya Ayarlar'a ve ardından Depolama'ya gidip ilave depolama ekleyin veya değiştirin.",
         "moreInfo": "Eser Ayrıntıları",
         "myBooks": "Eserlerim",
         "noPublicationHelpL1": "Dosyaları buraya bırakın",
@@ -250,12 +250,12 @@
             "errors": {
                 "hashMismatch": "İndirilen dosyanın bütünlük denetimi başarısız: Beklenen SHA-256 değeri {{- expected}}, alınan {{- actual}}.",
                 "httpGet": "HTTP indirme hatası: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "invalidFilename": "",
-                "invalidLink": "",
-                "invalidTempDirectory": "",
-                "lengthMismatch": "",
-                "readStreamMissing": "",
-                "tooManyFilenameAttempts": ""
+                "invalidFilename": "Geçici indirme dosya adı geçersiz.",
+                "invalidLink": "İndirme bağlantısı geçersiz.",
+                "invalidTempDirectory": "Geçici indirme dizini geçersiz.",
+                "lengthMismatch": "İndirilen dosya bütünlüğü denetimi başarısız: beklenen {{- expected}} bayt, alınan {{- actual}} bayt.",
+                "readStreamMissing": "İndirme akışı kullanılamıyor.",
+                "tooManyFilenameAttempts": "Benzersiz geçici indirme dosya adı oluşturulamıyor: {{- path}}"
             }
         },
         "import": {
@@ -265,17 +265,17 @@
         },
         "open": {
             "error": "Eser yüklemesi başarısız: [{{- err}}]",
-            "folderNotFound": ""
+            "folderNotFound": "Eser dizini bulunamıyor. Yeniden içe aktarın veya Ayarlar > Depolama'dan ilave depolamayı yapılandırın."
         },
         "storage": {
             "recovery": {
-                "failure": "",
-                "success_one": "",
-                "success_other": ""
+                "failure": "Eser kurtarma başarısız.",
+                "success_one": "{{- count}} eser kurtarıldı.",
+                "success_other": "{{- count}} eser kurtarıldı."
             },
-            "removed": "",
-            "updateFailed": "",
-            "updated": ""
+            "removed": "Eser dizini kaldırıldı.",
+            "updateFailed": "Eser dizini güncellemesi başarısız: {{- message}}",
+            "updated": "Eser dizini güncellendi."
         },
         "wipeData": "Giriş verileri başarıyla temizlendi (erişim dizgecikleri ve çerezler)"
     },
@@ -293,17 +293,17 @@
         "addMenu": "OPDS Beslemesi ekle",
         "breadcrumbRoot": "Kataloglar",
         "color": {
-            "blue": "",
-            "gray": "",
-            "green": "",
-            "orange": "",
-            "pink": "",
-            "purple": "",
-            "red": "",
-            "title": "",
-            "yellow": ""
+            "blue": "Mavi",
+            "gray": "Gri",
+            "green": "Yeşil",
+            "orange": "Turuncu",
+            "pink": "Pembe",
+            "purple": "Mor",
+            "red": "Kırmızı",
+            "title": "Katalog rengi",
+            "yellow": "Sarı"
         },
-        "documentation": "OPDS resmi web sitesi",
+        "documentation": "OPDS resmi internet sitesi",
         "empty": "Eser bulunamadı",
         "firstPage": "İlk",
         "informations": "Sadece birkaç tıkla, kamu kütüphanelerinden ve dijital kitap satıcılarından dijital eserleri keşfedebileceğiniz ve indirebileceğiniz bir dünya hayal edin. Açık Eser Dağıtım Sistemi olarak Türkçeleştirebileceğimiz Open Publication Distribution System (OPDS) katalog biçimi, tam olarak bunu sunar. OPDS ile çeşitli e-kitap sağlayıcılarının kataloglarında gezinebilir, kaydolabilir, bir eseri ödünç alabilir, bir eseri satın alabilir veya kişisel kitaplığınızı ziyaret edebilirsiniz. Hatta anında okumak için bir e-kitap veya sesli kitabı doğrudan Thorium Reader'a indirebilirsiniz.\nPeki, bir OPDS kataloğunu nasıl bulursunuz? Gayet basit. Kataloğa yönlendiren  bir köprü bağlantısını (URL) arayıp bulun. Bu URL'yi yukarıdaki Bağlantı alanına kopyalayın. Tüm aktif OPDS katalogları için tek bir hizmet sağlama noktası olmadığını unutmayın. Tercih ettiğiniz kütüphane veya kitap satıcısıyla iletişime geçmeniz ve OPDS katalog URL'sini istemeniz gerekebilir. Nereden başlayacağınızdan emin değilseniz, Wikipedia'da çeşitli dillerde size yardımcı olabilecek birkaç OPDS katalog dizini mevcuttur.\nİsim alanı sizin için kolay bir yere yerleştirilmiştir ve Thorium Reader'a besleme tanımlamanın kolay bir yolunu sağlar.",
@@ -621,8 +621,8 @@
                 "descriptive": "Görünümün değiştirilip değiştirilemeyeceği hakkında bilgi mevcut değil"
             },
             "ways-of-reading-visual-adjustments-unmodifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Görünüm değiştirilemez",
+                "descriptive": "Okuma deneyimi basılı sürüme yakın olduğu için metin ve sayfa düzeni değiştirilemez ancak okuma sistemleri yine de yakınlaştırma seçenekleri sunabilir"
             }
         }
     },
@@ -803,7 +803,7 @@
             "speed": "Sesli Okuma oynatım hızı",
             "stop": "Sesli Okumayı Durdur",
             "title": "Sesli Okuma",
-            "useTTSHighlightsForMO": "",
+            "useTTSHighlightsForMO": "Özel vurgulama",
             "useTTSHighlightsForMODescription": ""
         },
         "navigation": {
