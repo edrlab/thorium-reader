@@ -258,6 +258,9 @@
             "folderNotFound": ""
         },
         "storage": {
+            "recovery": {
+                "failure": ""
+            },
             "removed": "",
             "updateFailed": "",
             "updated": ""
@@ -277,6 +280,17 @@
         },
         "addMenu": "OPDS feed 추가",
         "breadcrumbRoot": "카탈로그",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "",
         "empty": "항목을 찾을 수 없습니다",
         "firstPage": "처음으로",
@@ -1291,6 +1305,23 @@
                 "defaultDescription": "",
                 "defaultInternal": "",
                 "externalStorage": "",
+                "title": ""
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "title": ""
+                },
+                "none": "",
                 "title": ""
             }
         },

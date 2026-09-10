@@ -268,6 +268,11 @@
             "folderNotFound": "Julkaisuhakemistoa ei löydy. Tuo se uudelleen tai määritä lisätallennustilaa kohdassa Asetukset > Tallennustila."
         },
         "storage": {
+            "recovery": {
+                "failure": "Julkaisun palauttaminen epäonnistui.",
+                "success_one": "{{- count}} julkaisu palautettu.",
+                "success_other": "{{- count}} julkaisua palautettu."
+            },
             "removed": "Julkaisuhakemisto on poistettu.",
             "updateFailed": "Julkaisuhakemiston päivitys epäonnistui: {{- message}}",
             "updated": "Julkaisuhakemisto on päivitetty."
@@ -287,6 +292,17 @@
         },
         "addMenu": "Lisää OPDS-syöte",
         "breadcrumbRoot": "Luettelot",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "OPDS:n verkkosivu",
         "empty": "Julkaisuja ei löytynyt",
         "firstPage": "Ensimmäinen",
@@ -1303,6 +1319,27 @@
                 "defaultInternal": "Järjestelmän tallennustila",
                 "externalStorage": "Ulkoinen tallennustila",
                 "title": "Sijainnit"
+            },
+            "recovery": {
+                "actions": {
+                    "check": "Tarkista palautettavissa olevat julkaisut",
+                    "checkAgain": "Tarkista uudelleen",
+                    "recover": "Palauta julkaisut",
+                    "recovering": "Palauttaa..."
+                },
+                "available": "Yksi tai useampi julkaisu löytyi levyltä, mutta ei tietokannasta. Palautus on mahdollista.",
+                "checking": "Tarkistaa julkaisuvarastoa...",
+                "description": "Tarkista julkaisuvarasto ja etsi julkaisuja, jotka voi palauttaa turvallisesti.",
+                "dialog": {
+                    "confirm": "Palauta",
+                    "description_one": "Thorium löysi levyltä {{- count}} julkaisun, joka puuttuu tietokannasta. Haluatko tuoda sen takaisin Thoriumiin?",
+                    "description_other": "Thorium löysi levyltä {{- count}} julkaisua, jotka puuttuvat tietokannasta. Haluatko tuoda ne takaisin Thoriumiin?",
+                    "title": "Palauta julkaisut"
+                },
+                "none": "Ei löytynyt yhtään palautettavissa olevaa julkaisua.",
+                "recoverableCount_one": "{{- count}} julkaisu voidaan palauttaa alkuperäisen varastotunnisteen kanssa.",
+                "recoverableCount_other": "{{- count}} julkaisua voidaan palauttaa alkuperäisten varastotunnisteiden kanssa.",
+                "title": "Palautus"
             }
         },
         "tabs": {
