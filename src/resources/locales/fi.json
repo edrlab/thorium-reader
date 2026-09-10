@@ -1349,6 +1349,11 @@
             "profiles": "Profiilit",
             "storage": "Tallennustila"
         },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
+        },
         "theme": {
             "auto": "Automaattinen",
             "dark": "Tumma",

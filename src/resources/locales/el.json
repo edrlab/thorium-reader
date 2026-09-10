@@ -1349,6 +1349,11 @@
             "profiles": "Προφίλ",
             "storage": "Χώρος αποθήκευσης"
         },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
+        },
         "theme": {
             "auto": "Αυτόματο",
             "dark": "Σκοτεινό",

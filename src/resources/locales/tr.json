@@ -1349,6 +1349,11 @@
             "profiles": "Profiller",
             "storage": "Depolama"
         },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
+        },
         "theme": {
             "auto": "Otomatik",
             "dark": "Karanlık",

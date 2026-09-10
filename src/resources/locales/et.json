@@ -1349,6 +1349,11 @@
             "profiles": "Profiilid",
             "storage": ""
         },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
+        },
         "theme": {
             "auto": "Automaatne",
             "dark": "Tume kujundus",

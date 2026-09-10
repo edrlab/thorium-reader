@@ -8,6 +8,7 @@
 import debug_ from "debug";
 import { app, dialog, shell } from "electron";
 import { keyboardActions, versionUpdateActions } from "readium-desktop/common/redux/actions";
+import { settingsGoogleAnalyticsTelemetryIsEnabled } from "readium-desktop/common/redux/states/settings";
 import { logMeasurementProtocol } from "readium-desktop/main/analytics/measurementProtocol";
 import { startMeasurementProtocolQueue } from "readium-desktop/main/analytics/measurementProtocolQueue";
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
@@ -201,12 +202,15 @@ export function* rootSaga() {
     // spawn telemetry in background
     const analyticsClientId = yield* selectTyped((state: RootState) => state.analytics.clientId);
     const analyticsLocale = yield* selectTyped((state: RootState) => state.i18n.locale);
+    const googleAnalyticsTelemetryEnabled = yield* selectTyped((state: RootState) =>
+        settingsGoogleAnalyticsTelemetryIsEnabled(state.settings));
 
     yield* spawnTyped(function* () {
         try {
             yield* callTyped(() => logMeasurementProtocol("app_start", undefined, {
                 clientId: analyticsClientId,
                 locale: analyticsLocale,
+                disabled: !googleAnalyticsTelemetryEnabled,
             }));
         } catch (e) {
             error(filename_ + ":app_start", e);
@@ -219,6 +223,7 @@ export function* rootSaga() {
                 yield* callTyped(() => logMeasurementProtocol("app_first_open", undefined, {
                     clientId: analyticsClientId,
                     locale: analyticsLocale,
+                    disabled: !googleAnalyticsTelemetryEnabled,
                 }));
             } catch (e) {
                 error(filename_ + ":app_first_open", e);
@@ -240,6 +245,7 @@ export function* rootSaga() {
                 }, {
                     clientId: analyticsClientId,
                     locale: analyticsLocale,
+                    disabled: !googleAnalyticsTelemetryEnabled,
                 }));
             } catch (e) {
                 error(filename_ + ":app_version_updated", e);
