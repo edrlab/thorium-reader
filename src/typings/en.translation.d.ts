@@ -616,6 +616,10 @@ declare namespace typed_i18n {
     readonly "folderNotFound": string
   },
   readonly "storage": {
+    readonly "recovery": {
+      readonly "failure": string,
+      readonly "success": string
+    },
     readonly "removed": string,
     readonly "updateFailed": string,
     readonly "updated": string
@@ -682,10 +686,17 @@ declare namespace typed_i18n {
   (_: "message.open.error", __?: {}): string;
   (_: "message.open.folderNotFound", __?: {}): string;
   (_: "message.storage", __?: {}): {
+  readonly "recovery": {
+    readonly "failure": string,
+    readonly "success": string
+  },
   readonly "removed": string,
   readonly "updateFailed": string,
   readonly "updated": string
 };
+  (_: "message.storage.recovery", __?: {}): { readonly "failure": string, readonly "success": string };
+  (_: "message.storage.recovery.failure", __?: {}): string;
+  (_: "message.storage.recovery.success", __?: {}): string;
   (_: "message.storage.removed", __?: {}): string;
   (_: "message.storage.updateFailed", __?: {}): string;
   (_: "message.storage.updated", __?: {}): string;
@@ -701,6 +712,17 @@ declare namespace typed_i18n {
   readonly "addFormApiapp": { readonly "title": string },
   readonly "addMenu": string,
   readonly "breadcrumbRoot": string,
+  readonly "color": {
+    readonly "blue": string,
+    readonly "gray": string,
+    readonly "green": string,
+    readonly "orange": string,
+    readonly "pink": string,
+    readonly "purple": string,
+    readonly "red": string,
+    readonly "title": string,
+    readonly "yellow": string
+  },
   readonly "documentation": string,
   readonly "empty": string,
   readonly "firstPage": string,
@@ -749,6 +771,26 @@ declare namespace typed_i18n {
   (_: "opds.addFormApiapp.title", __?: {}): string;
   (_: "opds.addMenu", __?: {}): string;
   (_: "opds.breadcrumbRoot", __?: {}): string;
+  (_: "opds.color", __?: {}): {
+  readonly "blue": string,
+  readonly "gray": string,
+  readonly "green": string,
+  readonly "orange": string,
+  readonly "pink": string,
+  readonly "purple": string,
+  readonly "red": string,
+  readonly "title": string,
+  readonly "yellow": string
+};
+  (_: "opds.color.blue", __?: {}): string;
+  (_: "opds.color.gray", __?: {}): string;
+  (_: "opds.color.green", __?: {}): string;
+  (_: "opds.color.orange", __?: {}): string;
+  (_: "opds.color.pink", __?: {}): string;
+  (_: "opds.color.purple", __?: {}): string;
+  (_: "opds.color.red", __?: {}): string;
+  (_: "opds.color.title", __?: {}): string;
+  (_: "opds.color.yellow", __?: {}): string;
   (_: "opds.documentation", __?: {}): string;
   (_: "opds.empty", __?: {}): string; (_: "opds.firstPage", __?: {}): string;
   (_: "opds.informations", __?: {}): string;
@@ -2905,6 +2947,25 @@ declare namespace typed_i18n {
       readonly "defaultInternal": string,
       readonly "externalStorage": string,
       readonly "title": string
+    },
+    readonly "recovery": {
+      readonly "actions": {
+        readonly "check": string,
+        readonly "checkAgain": string,
+        readonly "recover": string,
+        readonly "recovering": string
+      },
+      readonly "available": string,
+      readonly "checking": string,
+      readonly "description": string,
+      readonly "dialog": {
+        readonly "confirm": string,
+        readonly "description": string,
+        readonly "title": string
+      },
+      readonly "none": string,
+      readonly "recoverableCount": string,
+      readonly "title": string
     }
   },
   readonly "tabs": {
@@ -3736,6 +3797,25 @@ declare namespace typed_i18n {
     readonly "defaultInternal": string,
     readonly "externalStorage": string,
     readonly "title": string
+  },
+  readonly "recovery": {
+    readonly "actions": {
+      readonly "check": string,
+      readonly "checkAgain": string,
+      readonly "recover": string,
+      readonly "recovering": string
+    },
+    readonly "available": string,
+    readonly "checking": string,
+    readonly "description": string,
+    readonly "dialog": {
+      readonly "confirm": string,
+      readonly "description": string,
+      readonly "title": string
+    },
+    readonly "none": string,
+    readonly "recoverableCount": string,
+    readonly "title": string
   }
 };
   (_: "settings.storage.actions", __?: {}): {
@@ -3817,6 +3897,49 @@ declare namespace typed_i18n {
   (_: "settings.storage.locations.defaultInternal", __?: {}): string;
   (_: "settings.storage.locations.externalStorage", __?: {}): string;
   (_: "settings.storage.locations.title", __?: {}): string;
+  (_: "settings.storage.recovery", __?: {}): {
+  readonly "actions": {
+    readonly "check": string,
+    readonly "checkAgain": string,
+    readonly "recover": string,
+    readonly "recovering": string
+  },
+  readonly "available": string,
+  readonly "checking": string,
+  readonly "description": string,
+  readonly "dialog": {
+    readonly "confirm": string,
+    readonly "description": string,
+    readonly "title": string
+  },
+  readonly "none": string,
+  readonly "recoverableCount": string,
+  readonly "title": string
+};
+  (_: "settings.storage.recovery.actions", __?: {}): {
+  readonly "check": string,
+  readonly "checkAgain": string,
+  readonly "recover": string,
+  readonly "recovering": string
+};
+  (_: "settings.storage.recovery.actions.check", __?: {}): string;
+  (_: "settings.storage.recovery.actions.checkAgain", __?: {}): string;
+  (_: "settings.storage.recovery.actions.recover", __?: {}): string;
+  (_: "settings.storage.recovery.actions.recovering", __?: {}): string;
+  (_: "settings.storage.recovery.available", __?: {}): string;
+  (_: "settings.storage.recovery.checking", __?: {}): string;
+  (_: "settings.storage.recovery.description", __?: {}): string;
+  (_: "settings.storage.recovery.dialog", __?: {}): {
+  readonly "confirm": string,
+  readonly "description": string,
+  readonly "title": string
+};
+  (_: "settings.storage.recovery.dialog.confirm", __?: {}): string;
+  (_: "settings.storage.recovery.dialog.description", __?: {}): string;
+  (_: "settings.storage.recovery.dialog.title", __?: {}): string;
+  (_: "settings.storage.recovery.none", __?: {}): string;
+  (_: "settings.storage.recovery.recoverableCount", __?: {}): string;
+  (_: "settings.storage.recovery.title", __?: {}): string;
   (_: "settings.tabs", __?: {}): {
   readonly "appearance": string,
   readonly "general": string,

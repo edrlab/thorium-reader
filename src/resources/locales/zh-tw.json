@@ -263,6 +263,9 @@
             "folderNotFound": ""
         },
         "storage": {
+            "recovery": {
+                "failure": ""
+            },
             "removed": "",
             "updateFailed": "",
             "updated": ""
@@ -282,6 +285,17 @@
         },
         "addMenu": "添加 OPDS 訂閱來源",
         "breadcrumbRoot": "出版目錄",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "OPDS 官方網站",
         "empty": "未找到出版物",
         "firstPage": "首頁",
@@ -1296,6 +1310,23 @@
                 "defaultDescription": "",
                 "defaultInternal": "",
                 "externalStorage": "",
+                "title": ""
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "title": ""
+                },
+                "none": "",
                 "title": ""
             }
         },

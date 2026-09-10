@@ -14,8 +14,10 @@ import {
     IOpdsPublicationView, IOpdsResultView, IOpdsTagView,
 } from "readium-desktop/common/views/opds";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
+import { getOpdsFeedColor, getOpdsFeedIcon } from "readium-desktop/common/models/opds";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { ContentType } from "readium-desktop/utils/contentType";
+import { normalizeLcpHashedPassphrase } from "readium-desktop/utils/lcp";
 
 import { IWithAdditionalJSON, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
@@ -176,6 +178,8 @@ export class OpdsFeedViewConverter {
             authentified: authentified,
             authenticationUrl: document.authenticationUrl,
             favorite: document.favorite || false,
+            color: getOpdsFeedColor(document.color),
+            icon: getOpdsFeedIcon(document.icon),
             // feedHasAuthentication: authentified || await feedHasAuthenticationFunction(),
         };
     }
@@ -197,48 +201,7 @@ export class OpdsFeedViewConverter {
 
         if (properties) {
 
-            const key = "lcp_hashed_passphrase";
-            const lcpHashedPassphraseObj = properties.AdditionalJSON ? properties.AdditionalJSON[key] : undefined;
-            let lcpHashedPassphrase: string;
-            if (typeof lcpHashedPassphraseObj === "string") {
-                const lcpHashedPassphraseHexOrB64 = lcpHashedPassphraseObj as string;
-                let isHex = false;
-                try {
-                    const low1 = lcpHashedPassphraseHexOrB64.toLowerCase();
-                    const buff = Buffer.from(low1, "hex");
-                    const str = buff.toString("hex");
-                    const low2 = str.toLowerCase();
-                    isHex = low1 === low2;
-                    if (!isHex) {
-                        debug(`OPDS lcp_hashed_passphrase should be HEX! (${lcpHashedPassphraseHexOrB64}) ${low1} !== ${low2}`);
-                    } else {
-                        debug(`OPDS lcp_hashed_passphrase is HEX: ${lcpHashedPassphraseHexOrB64}`);
-                    }
-                } catch (err) {
-                    debug(err); // ignore
-                }
-                if (isHex) {
-                    lcpHashedPassphrase = lcpHashedPassphraseHexOrB64;
-                } else {
-                    let isBase64 = false;
-                    try {
-                        const buff = Buffer.from(lcpHashedPassphraseHexOrB64, "base64");
-                        const str = buff.toString("hex");
-                        const b64 = Buffer.from(str, "hex").toString("base64");
-                        isBase64 = lcpHashedPassphraseHexOrB64 === b64;
-                        if (!isBase64) {
-                            debug(`OPDS lcp_hashed_passphrase is not BASE64?! (${lcpHashedPassphraseHexOrB64}) ${lcpHashedPassphraseHexOrB64} !== ${b64}`);
-                        } else {
-                            debug(`OPDS lcp_hashed_passphrase is BASE64! (${lcpHashedPassphraseHexOrB64})`);
-                        }
-                    } catch (err) {
-                        debug(err); // ignore
-                    }
-                    if (isBase64) {
-                        lcpHashedPassphrase = Buffer.from(lcpHashedPassphraseHexOrB64, "base64").toString("hex");
-                    }
-                }
-            }
+            const lcpHashedPassphrase = normalizeLcpHashedPassphrase(properties.AdditionalJSON?.lcp_hashed_passphrase);
 
             const indirectAcquisitions = properties.IndirectAcquisitions ?
                 (Array.isArray(properties.IndirectAcquisitions) ?

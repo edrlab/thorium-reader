@@ -273,6 +273,12 @@
             "folderNotFound": "La cartella della pubblicazione non si trova. Reimportala o configura uno spazio d'archiviazione aggiuntivo in Impostazioni > Spazio d'archiviazione."
         },
         "storage": {
+            "recovery": {
+                "failure": "Recupero delle pubblicazioni fallito.",
+                "success_many": "{{- count}} pubblicazioni recuperate.",
+                "success_one": "{{- count}} pubblicazione recuperata.",
+                "success_other": "{{- count}} pubblicazioni recuperate."
+            },
             "removed": "Cartella della pubblicazione eliminata.",
             "updateFailed": "Aggiornamento della cartella della pubblicazione fallito: {{- message}}",
             "updated": "Cartella della pubblicazione aggiornata."
@@ -292,6 +298,17 @@
         },
         "addMenu": "Aggiungi un catalogo OPDS",
         "breadcrumbRoot": "Cataloghi",
+        "color": {
+            "blue": "Blu",
+            "gray": "Grigio",
+            "green": "Verde",
+            "orange": "Arancione",
+            "pink": "Rosa",
+            "purple": "Viola",
+            "red": "Rosso",
+            "title": "Catalogo dei colori",
+            "yellow": "Giallo"
+        },
         "documentation": "Sito ufficiale di OPDS",
         "empty": "Nessuna pubblicazione trovata",
         "firstPage": "Prima",
@@ -1309,6 +1326,29 @@
                 "defaultInternal": "Archiviazione di sistema",
                 "externalStorage": "Spazio d'archiviazione esterno",
                 "title": "Posizioni"
+            },
+            "recovery": {
+                "actions": {
+                    "check": "Verifica le pubblicazioni da recuperare",
+                    "checkAgain": "Verifica di nuovo",
+                    "recover": "Recupera le pubblicazioni",
+                    "recovering": "Recupero in corso..."
+                },
+                "available": "Sono state trovate una o più pubblicazioni in memoria ma sono assenti nel database. È possibile recuperarle.",
+                "checking": "Verifica dello spazio d'archiviazione delle pubblicazioni...",
+                "description": "Verifica dello spazio d'archiviazione per reperire le pubblicazioni che possono essere recuperate.",
+                "dialog": {
+                    "confirm": "Recupero",
+                    "description_many": "Thorium ha trovato {{- count}} pubblicazioni in memoria mancanti nel database. Desideri importarle nuovamente su Thorium?",
+                    "description_one": "Thorium ha trovato {{- count}} pubblicazione in memoria mancante nel database. Desideri importarla nuovamente su Thorium?",
+                    "description_other": "Thorium ha trovato {{- count}} pubblicazioni in memoria mancanti nel database. Desideri importarle nuovamente su Thorium?",
+                    "title": "Recupera le pubblicazioni"
+                },
+                "none": "Non è stata trovata alcuna pubblicazione da recuperare.",
+                "recoverableCount_many": "{{- count}} pubblicazioni possono essere recuperate con l'identificante originale d'archiviazione.",
+                "recoverableCount_one": "{{- count}} pubblicazione può essere recuperata con l'identificante originale d'archiviazione.",
+                "recoverableCount_other": "{{- count}} pubblicazioni possono essere recuperate con l'identificante originale d'archiviazione.",
+                "title": "Recupero delle pubblicazioni"
             }
         },
         "tabs": {

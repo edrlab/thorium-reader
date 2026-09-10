@@ -273,6 +273,12 @@
             "folderNotFound": ""
         },
         "storage": {
+            "recovery": {
+                "failure": "",
+                "success_many": "",
+                "success_one": "",
+                "success_other": ""
+            },
             "removed": "",
             "updateFailed": "",
             "updated": ""
@@ -292,6 +298,17 @@
         },
         "addMenu": "Adicionar origem OPDS",
         "breadcrumbRoot": "Catálogos",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "Site oficial do OPDS",
         "empty": "Nenhuma publicação encontrada",
         "firstPage": "Primeira",
@@ -1308,6 +1325,29 @@
                 "defaultDescription": "",
                 "defaultInternal": "",
                 "externalStorage": "",
+                "title": ""
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "description_many": "",
+                    "description_one": "",
+                    "description_other": "",
+                    "title": ""
+                },
+                "none": "",
+                "recoverableCount_many": "",
+                "recoverableCount_one": "",
+                "recoverableCount_other": "",
                 "title": ""
             }
         },
