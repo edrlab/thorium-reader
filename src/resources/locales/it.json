@@ -1359,8 +1359,8 @@
             "storage": "Spazio d'archiviazione"
         },
         "telemetry": {
-            "disableGoogleAnalyticsTelemetry": "",
-            "disableGoogleAnalyticsTelemetryDescription": "",
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
             "title": ""
         },
         "theme": {

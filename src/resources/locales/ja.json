@@ -1338,8 +1338,8 @@
             "storage": ""
         },
         "telemetry": {
-            "disableGoogleAnalyticsTelemetry": "",
-            "disableGoogleAnalyticsTelemetryDescription": "",
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
             "title": ""
         },
         "theme": {

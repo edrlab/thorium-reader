@@ -1368,8 +1368,8 @@
             "storage": "Shranjevanje"
         },
         "telemetry": {
-            "disableGoogleAnalyticsTelemetry": "",
-            "disableGoogleAnalyticsTelemetryDescription": "",
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
             "title": ""
         },
         "theme": {

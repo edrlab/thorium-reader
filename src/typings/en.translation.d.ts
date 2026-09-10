@@ -2976,8 +2976,8 @@ declare namespace typed_i18n {
     readonly "storage": string
   },
   readonly "telemetry": {
-    readonly "disableGoogleAnalyticsTelemetry": string,
-    readonly "disableGoogleAnalyticsTelemetryDescription": string,
+    readonly "disableTelemetryMeasurements": string,
+    readonly "disableTelemetryMeasurementsDescription": string,
     readonly "title": string
   },
   readonly "theme": {
@@ -3958,12 +3958,12 @@ declare namespace typed_i18n {
   (_: "settings.tabs.profiles", __?: {}): string;
   (_: "settings.tabs.storage", __?: {}): string;
   (_: "settings.telemetry", __?: {}): {
-  readonly "disableGoogleAnalyticsTelemetry": string,
-  readonly "disableGoogleAnalyticsTelemetryDescription": string,
+  readonly "disableTelemetryMeasurements": string,
+  readonly "disableTelemetryMeasurementsDescription": string,
   readonly "title": string
 };
-  (_: "settings.telemetry.disableGoogleAnalyticsTelemetry", __?: {}): string;
-  (_: "settings.telemetry.disableGoogleAnalyticsTelemetryDescription", __?: {}): string;
+  (_: "settings.telemetry.disableTelemetryMeasurements", __?: {}): string;
+  (_: "settings.telemetry.disableTelemetryMeasurementsDescription", __?: {}): string;
   (_: "settings.telemetry.title", __?: {}): string;
   (_: "settings.theme", __?: {}): {
   readonly "auto": string,

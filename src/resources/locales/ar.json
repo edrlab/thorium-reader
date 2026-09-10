@@ -1386,8 +1386,8 @@
             "storage": "الذاكرة"
         },
         "telemetry": {
-            "disableGoogleAnalyticsTelemetry": "",
-            "disableGoogleAnalyticsTelemetryDescription": "",
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
             "title": ""
         },
         "theme": {

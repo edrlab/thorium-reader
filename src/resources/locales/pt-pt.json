@@ -1359,8 +1359,8 @@
             "storage": "Armazenamento"
         },
         "telemetry": {
-            "disableGoogleAnalyticsTelemetry": "",
-            "disableGoogleAnalyticsTelemetryDescription": "",
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
             "title": ""
         },
         "theme": {

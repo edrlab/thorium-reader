@@ -1359,8 +1359,8 @@
             "storage": "Stockage"
         },
         "telemetry": {
-            "disableGoogleAnalyticsTelemetry": "Désactiver la télémétrie Google Analytics",
-            "disableGoogleAnalyticsTelemetryDescription": "Lorsque cette option est activée, Thorium n'envoie pas d'événements d'utilisation à Google Analytics.",
+            "disableTelemetryMeasurements": "Désactiver la télémétrie",
+            "disableTelemetryMeasurementsDescription": "Lorsque cette option est activée, Thorium n'envoie pas de mesures de télémétrie.",
             "title": "Télémétrie"
         },
         "theme": {

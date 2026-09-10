@@ -42,7 +42,7 @@ const TelemetrySettings: React.FC<{}> = () => {
                         tabIndex={0}
                         role="checkbox"
                         aria-checked={disableGoogleAnalyticsTelemetry}
-                        aria-label={__("settings.telemetry.disableGoogleAnalyticsTelemetry")}
+                        aria-label={__("settings.telemetry.disableTelemetryMeasurements")}
                         onKeyDown={(e) => {
                             if (e.key === " ") {
                                 e.preventDefault();
@@ -63,8 +63,8 @@ const TelemetrySettings: React.FC<{}> = () => {
                         }
                     </div>
                     <div aria-hidden>
-                        <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.telemetry.disableGoogleAnalyticsTelemetry")}</h4>
-                        <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.telemetry.disableGoogleAnalyticsTelemetryDescription")}</p>
+                        <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.telemetry.disableTelemetryMeasurements")}</h4>
+                        <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.telemetry.disableTelemetryMeasurementsDescription")}</p>
                     </div>
                 </label>
             </div>
