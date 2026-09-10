@@ -56,29 +56,25 @@ interface IState {
     imgErroredOnce: boolean,
 }
 
-class Cover extends React.Component<IProps, IState> {
+function getCoverUrl(props: Readonly<IProps>): string | undefined {
+    const { cover } = props.publicationViewMaybeOpds;
+    if (!cover) {
+        return undefined;
+    }
+    const coverUrl = cover.coverUrl || cover.coverLinks[0]?.url;
+    const thumbnailUrl = cover.coverUrl || cover.thumbnailLinks[0]?.url;
+    return props.coverType === "cover" ? coverUrl || thumbnailUrl : thumbnailUrl || coverUrl;
+}
+
+export class Cover extends React.Component<IProps, IState> {
 
     public uuid: string;
 
     constructor(props: IProps) {
         super(props);
 
-        const { cover } = this.props.publicationViewMaybeOpds;
-
-        let imgUrl: string | undefined;
-        if (cover) {
-            const coverUrl = cover.coverUrl || cover.coverLinks[0]?.url;
-            const thumbnailUrl = cover.coverUrl || cover.thumbnailLinks[0]?.url;
-
-            if (this.props.coverType === "cover") {
-                imgUrl = coverUrl || thumbnailUrl;
-            } else {
-                imgUrl = thumbnailUrl || coverUrl;
-            }
-        }
-
         this.state = {
-            imgUrl,
+            imgUrl: getCoverUrl(props),
             imgErroredOnce: false,
         };
 
@@ -86,22 +82,11 @@ class Cover extends React.Component<IProps, IState> {
     }
 
     public componentDidUpdate(prevProps: Readonly<IProps>): void {
-        if (prevProps.publicationViewMaybeOpds?.cover !== this.props.publicationViewMaybeOpds?.cover) {
-
-            const { cover } = this.props.publicationViewMaybeOpds;
-
-            if (cover) {
-                const coverUrl = cover.coverUrl || cover.coverLinks[0]?.url;
-                const thumbnailUrl = cover.coverUrl || cover.thumbnailLinks[0]?.url;
-
-                if (this.props.coverType === "cover") {
-                    this.setState({ imgUrl: coverUrl || thumbnailUrl });
-                } else {
-                    this.setState({ imgUrl: thumbnailUrl || coverUrl });
-                }
-            } else {
-                this.setState({ imgUrl: undefined });
-            }
+        const imgUrl = getCoverUrl(this.props);
+        // Detail refreshes replace the cover object even when its URL is unchanged.
+        // Preserve a working authenticated fallback unless the selected source changes.
+        if (getCoverUrl(prevProps) !== imgUrl) {
+            this.setState({ imgUrl, imgErroredOnce: false });
         }
     }
 
