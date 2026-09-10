@@ -76,6 +76,7 @@ interface ILcpCrlCache {
     etag: string | undefined;
     lastModified: string | undefined;
     validatedAt: number;
+    expiresAt: number;
     refreshPromise: Promise<void> | undefined;
 }
 
@@ -84,15 +85,40 @@ const lcpCrlCache: ILcpCrlCache = {
     etag: undefined,
     lastModified: undefined,
     validatedAt: 0,
+    expiresAt: 0,
     refreshPromise: undefined,
 };
 
-// 1h
-const LCP_CRL_CACHE_FRESHNESS_MS = 0;// 60 * 60 * 1000;
+const LCP_CRL_CACHE_FALLBACK_FRESHNESS_MS = 60 * 60 * 1000;
 
-// TODO: HTTP cache-control Header !?
+const getCacheControlMaxAgeMs = (cacheControl: string | undefined): number | undefined => {
+    if (!cacheControl) {
+        return undefined;
+    }
+    let maxAgeMs: number | undefined;
+    for (const directive of cacheControl.split(",")) {
+        const [rawName, rawValue] = directive.trim().split("=", 2);
+        const name = rawName.toLowerCase();
+        if (name === "no-cache" || name === "no-store") {
+            return 0;
+        }
+        if (name === "max-age" && rawValue) {
+            const seconds = Number(rawValue.replace(/^"|"$/g, ""));
+            if (Number.isFinite(seconds) && seconds >= 0) {
+                maxAgeMs = seconds * 1000;
+            }
+        }
+    }
+    return maxAgeMs;
+};
+
+const getLcpCrlExpiresAt = (headers: { get(name: string): string | null } | undefined, validatedAt: number): number => {
+    const cacheControlMaxAgeMs = getCacheControlMaxAgeMs(headers?.get("cache-control") || undefined);
+    return validatedAt + (cacheControlMaxAgeMs ?? LCP_CRL_CACHE_FALLBACK_FRESHNESS_MS);
+};
+
 const isLcpCrlCacheExpired = () =>
-    Date.now() - lcpCrlCache.validatedAt >= LCP_CRL_CACHE_FRESHNESS_MS;
+    Date.now() >= lcpCrlCache.expiresAt;
 
 const refreshLcpCrlCache = (): Promise<void> => {
     debug("REFRESH LCP CRL REQUEST", lcpCrlCache);
@@ -121,7 +147,9 @@ const refreshLcpCrlCache = (): Promise<void> => {
             });
             if (res.statusCode === 304) {
                 lcpCrlCache.lastModified = res.response.headers?.get("last-modified") || lcpCrlCache.lastModified;
-                lcpCrlCache.validatedAt = Date.now();
+                const validatedAt = Date.now();
+                lcpCrlCache.validatedAt = validatedAt;
+                lcpCrlCache.expiresAt = getLcpCrlExpiresAt(res.response.headers, validatedAt);
                 debug("LCP CRL HTTP cache refreshed: not modified");
                 return;
             }
@@ -141,7 +169,9 @@ const refreshLcpCrlCache = (): Promise<void> => {
                 lcpCrlCache.crlPem = lcplStr;
                 lcpCrlCache.etag = res.response.headers?.get("etag") || undefined; // '"295-65b0d9de8addd"' double quote is included
                 lcpCrlCache.lastModified = res.response.headers?.get("last-modified") || undefined;
-                lcpCrlCache.validatedAt = Date.now();
+                const validatedAt = Date.now();
+                lcpCrlCache.validatedAt = validatedAt;
+                lcpCrlCache.expiresAt = getLcpCrlExpiresAt(res.response.headers, validatedAt);
                 debug("LCP CRL HTTP fetch success");
                 debug(lcplStr);
                 return;
@@ -160,6 +190,7 @@ const refreshLcpCrlCache = (): Promise<void> => {
 const initLcpCrlCacheValidatedAt = lcpCrlCache.validatedAt;
 refreshLcpCrlCache().then(() => {
     debug(lcpCrlCache.validatedAt > initLcpCrlCacheValidatedAt ? "INIT LCP CRL LOADED" : "INIT LCP CRL FAILED");
+    debug(lcpCrlCache);
 }).catch((err) => {
     debug("INIT LCP CRL FAILED");
     debug(err);
