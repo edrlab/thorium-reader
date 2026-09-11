@@ -2,6 +2,7 @@ const webpack = require("webpack");
 // require("dotenv").config({ quiet: true });
 
 const { version, build, name } = require("./package.json");
+const { DUMMY_CRL } = require("./src/r2-xxx-js/r2-lcp-js/parser/epub/lcp-certificate.ts");
 // var git = require("git-rev-sync");
 
 const portApp = process.env.PORT_APP || "8090";
@@ -67,6 +68,7 @@ const firebaseMeasurementProtocolDebugEndpoint =
     "https://www.google-analytics.com/debug/mp/collect";
 const isURLRequireTldFalse =
     !["0", "false"].includes((process.env.THORIUM_ISURL_REQUIRE_TLD_FALSE || "0").toLowerCase());
+const lcpCrl = process.env.THORIUM_LCP_CRL || DUMMY_CRL;
 
 // const USE_HTTP_STREAMER = false;
 
@@ -101,6 +103,7 @@ const data = {
     __TH__FIREBASE_MEASUREMENT_PROTOCOL_API_SECRET__: JSON.stringify(firebaseMeasurementProtocolApiSecret),
     __TH__FIREBASE_MEASUREMENT_PROTOCOL_ENDPOINT__: JSON.stringify(firebaseMeasurementProtocolEndpoint),
     __TH__FIREBASE_MEASUREMENT_PROTOCOL_DEBUG_ENDPOINT__: JSON.stringify(firebaseMeasurementProtocolDebugEndpoint),
+    __TH__LCP_CRL__: JSON.stringify(lcpCrl),
     __TH__CUSTOMIZATION_PROFILE_PUB_KEY__: JSON.stringify(pubKey),
     __TH__CUSTOMIZATION_PROFILE_PRIVATE_KEY__: JSON.stringify(privateKey),
 
