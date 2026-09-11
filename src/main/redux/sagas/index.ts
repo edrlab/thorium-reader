@@ -10,6 +10,7 @@ import { app, dialog, shell } from "electron";
 import { keyboardActions, versionUpdateActions } from "readium-desktop/common/redux/actions";
 import { settingsGoogleAnalyticsTelemetryIsEnabled } from "readium-desktop/common/redux/states/settings";
 import { logMeasurementProtocol } from "readium-desktop/main/analytics/measurementProtocol";
+import { startMeasurementProtocolQueue } from "readium-desktop/main/analytics/measurementProtocolQueue";
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put, take } from "redux-saga/effects";
@@ -125,6 +126,12 @@ export function* rootSaga() {
     // yield spawnLeading(ipc.watchers, (e) => error("main:rootSaga:ipc", e));
 
     yield analyticsIpc.saga();
+
+    try {
+        yield* callTyped(startMeasurementProtocolQueue);
+    } catch (e) {
+        error(filename_ + ":measurementProtocolQueue", e);
+    }
 
     yield reader.saga();
     // yield spawnLeading(reader.watchers, (e) => error("main:rootSaga:reader", e));
