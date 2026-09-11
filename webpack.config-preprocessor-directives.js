@@ -2,6 +2,7 @@ const webpack = require("webpack");
 // require("dotenv").config({ quiet: true });
 
 const { version, build, name } = require("./package.json");
+const { DUMMY_CRL } = require("./src/r2-xxx-js/r2-lcp-js/parser/epub/lcp-certificate.ts");
 // var git = require("git-rev-sync");
 
 const portApp = process.env.PORT_APP || "8090";
@@ -67,7 +68,7 @@ const firebaseMeasurementProtocolDebugEndpoint =
     "https://www.google-analytics.com/debug/mp/collect";
 const isURLRequireTldFalse =
     !["0", "false"].includes((process.env.THORIUM_ISURL_REQUIRE_TLD_FALSE || "0").toLowerCase());
-const lcpCrl = process.env.THORIUM_LCP_CRL;
+const lcpCrl = process.env.THORIUM_LCP_CRL || DUMMY_CRL;
 
 // const USE_HTTP_STREAMER = false;
 
