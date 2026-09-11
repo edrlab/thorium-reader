@@ -804,7 +804,7 @@
             "stop": "Sesli Okumayı Durdur",
             "title": "Sesli Okuma",
             "useTTSHighlightsForMO": "Özel vurgulama",
-            "useTTSHighlightsForMODescription": ""
+            "useTTSHighlightsForMODescription": "Kaynak stilleri devre dışı bırak"
         },
         "navigation": {
             "ZenModeExit": "Zen modundan çık",
@@ -835,8 +835,8 @@
         "notes": {
             "colors": {
                 "cyan": "Camgöbeği",
-                "darkorange": "",
-                "darkyellow": "",
+                "darkorange": "Koyu Turuncu",
+                "darkyellow": "Koyu Sarı",
                 "green": "Yeşil",
                 "orange": "Turuncu",
                 "purple": "Mor",
@@ -884,16 +884,16 @@
             },
             "customFontSelected": "Kişisel bir yazı tipi seçtiniz",
             "customizeReader": "Metin biçimlendirmesini özelleştir",
-            "defaultValue": "",
+            "defaultValue": "varsayılan değer",
             "disabled": "geçersiz",
             "display": "Görüntüleme",
             "disposition": {
                 "title": "Düzen"
             },
-            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicators": "Sayfa geçişlerini sayfa kenar boşluğunda göster",
             "font": "Yazı tipi",
             "fontSize": "Yazı tipi boyutu",
-            "increaseFontSize": "",
+            "increaseFontSize": "Yazı tipi boyutunu artır",
             "infoCustomFont": "Adını yazarak işletim sisteminden özel yazı tipini seçin",
             "justification": "Hizalama",
             "justify": "İki yana yaslama",
@@ -931,7 +931,7 @@
                 "title": "Tercihler"
             },
             "preview": "Önizleme",
-            "reduceFontSize": "",
+            "reduceFontSize": "Yazı tipi boyutunu azalt",
             "reduceMotion": "Hareketi azalt",
             "scrolled": "Kaydırılabilir",
             "spacing": "Aralık ayarları",
@@ -1229,8 +1229,8 @@
                     "name": "Tam Ekrana Geç veya Tam Ekrandan Çık"
                 },
                 "ToggleReaderZenMode": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuma penceresinde, okuma sırasında kullanıcı arayüzünü basitleştiren zen modunu etkinleştirir veya bu moddan çıkar",
+                    "name": "Zen modunu Aç / Kapat"
                 },
                 "ToggleScreenReaderOptimize": {
                     "description": "Kütüphane penceresinde, ekran okuyucular için iyileştirilmiş desteği açar veya kapatır",
@@ -1275,71 +1275,71 @@
             "title": "Oturum kaydetmeyi etkinleştir"
         },
         "sharedComputer": {
-            "lcpAutoDeleteExpiredPublications": "",
-            "lcpAutoDeleteExpiredPublicationsDescription": "",
-            "title": ""
+            "lcpAutoDeleteExpiredPublications": "Süresi dolan eserleri ve ilintili kullanıcı verilerini otomatik olarak kaldırır",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Ödünç alma süresi dolan eserlerin otomatik olarak silinmesini sağlar (kişisel açıklayıcı notlar, okuma yer imleri vb. dahil). Bu, kütüphane veya üniversite odaları gibi 'paylaşılan bilgisayar' ortamlarında kullanışlıdır.",
+            "title": "Paylaşılan bilgisayar modu"
         },
         "storage": {
             "actions": {
-                "addDirectory": "",
-                "changeDirectory": "",
-                "removeStorageDirectory": ""
+                "addDirectory": "İlave bir depolama alanı seç",
+                "changeDirectory": "İlave depolamayı güncelle",
+                "removeStorageDirectory": "İlave depolamayı kaldır"
             },
             "beta": {
-                "availability": "",
-                "integrity": "",
-                "migration": "",
-                "summary": "",
-                "warning": ""
+                "availability": "Bu özellik yalnızca Thorium'un son sürümlerinde çalışır; harici klasör kitapları Thorium 3.4 veya önceki sürümlerde görünmez.",
+                "integrity": "Bu dizini güvenli ve erişilebilir tutun. Silmekten, erişimi kısıtlamaktan veya ağ sürücüleri gibi yavaş veya kararsız depolama birimleri kullanmaktan kaçının.",
+                "migration": "Thorium kitaplarınızı otomatik olarak aktarmaz: Ek depolama alanını güncellerseniz eserlerinizi el ile yeni konuma taşımanız gerekir. Eğer kaldırırsanız, eserlerinizi özgün depolama alanına el ile taşımanız gerekir.",
+                "summary": "Şu anda beta aşamasında olan bu özellik hakkında daha fazla bilgi edinin",
+                "warning": "Bu klasördeki dosyalarda el ile değişiklik yapmayın; bu, kitaplarınızda veya Okuyucuda sorunlara neden olabilir. Bu klasörü Thorium tarafından yönetilen güvenli bir kitaplık olarak düşünün."
             },
             "configuration": {
-                "chooseFolderDescription": "",
-                "configuredDescription": "",
-                "notConfiguredDescription": ""
+                "chooseFolderDescription": "Thorium'un ek depolama alanı olarak kullanacağı dizini seçin.",
+                "configuredDescription": "İlave depolama alanı yapılandırıldı ve yeni depolanacak eserler için kullanıma hazır.",
+                "notConfiguredDescription": "Thorium Reader'a içe aktarılacak eserler seçilen dizinde saklanacak. Daha önce içe aktarılan eserler özgün sistem depolama alanında kalacak."
             },
             "dialogs": {
                 "add": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Devam Et",
+                    "description": "Bu özellik şu anda beta aşamasındadır. Bir dizin seçerek devam etmek ve ilave bir depolama alanı yapılandırmak istiyor musunuz?",
+                    "title": "İlave bir depolama alanı seç"
                 },
                 "edit": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Dizini düzenle",
+                    "description": "İlave depolama alanının güncellenmesi dikkat gerektirir. Toryum sizin için mevcut eserleri taşımayacaktır; bunu el ile yapmanız gerekecek. Devam etmek istiyor musunuz?",
+                    "title": "İlave depolama alanını güncelle"
                 },
                 "remove": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Dizini kaldır",
+                    "description": "İlave depolama alanının kaldırılması dikkat gerektirir. Toryum sizin için mevcut eserleri taşımayacaktır; bunu manuel olarak yapmanız gerekecek. Devam etmek istiyor musunuz?",
+                    "title": "İlave depolama alanını kaldır"
                 }
             },
             "locations": {
-                "defaultDescription": "",
-                "defaultInternal": "",
-                "externalStorage": "",
+                "defaultDescription": "Uygulama tarafından yönetilen eserler varsayılan olarak şu konumda depolanır:",
+                "defaultInternal": "Sistem Depolaması",
+                "externalStorage": "Harici depolama",
                 "title": "Konumlar"
             },
             "recovery": {
                 "actions": {
-                    "check": "",
-                    "checkAgain": "",
-                    "recover": "",
-                    "recovering": ""
+                    "check": "Kurtarılabilir eserleri denetle",
+                    "checkAgain": "Yeniden denetle",
+                    "recover": "Eserleri kurtar",
+                    "recovering": "Kurtarılıyor..."
                 },
-                "available": "",
-                "checking": "",
-                "description": "",
+                "available": "Diskte bir veya daha fazla eser bulundu ancak veritabanında eksik. Kurtarma mümkün.",
+                "checking": "Eser depolaması denetleniyor...",
+                "description": "Güvenli bir şekilde kurtarılabilecek eserleri bulmak için eser depolamasını denetleyin.",
                 "dialog": {
-                    "confirm": "",
-                    "description_one": "",
-                    "description_other": "",
-                    "title": ""
+                    "confirm": "Kurtar",
+                    "description_one": "Toryum, diskte, veritabanında eksik olan {{- count}} eser buldu. Bunları Toryum'a tekrar içe aktarmak ister misiniz?",
+                    "description_other": "Toryum, diskte, veritabanında eksik olan {{- count}} eser buldu. Bunları Toryum'a tekrar içe aktarmak ister misiniz?",
+                    "title": "Eserleri kurtar"
                 },
-                "none": "",
-                "recoverableCount_one": "",
-                "recoverableCount_other": "",
-                "title": ""
+                "none": "Kurtarılabilir eser bulunamadı.",
+                "recoverableCount_one": "{{- count}} eser, özgün depolama tanımlayıcısıyla kurtarılabilir.",
+                "recoverableCount_other": "{{- count}} eser, özgün depolama tanımlayıcısıyla kurtarılabilir.",
+                "title": "Kurtarma"
             }
         },
         "tabs": {
@@ -1350,9 +1350,9 @@
             "storage": "Depolama"
         },
         "telemetry": {
-            "disableTelemetryMeasurements": "",
-            "disableTelemetryMeasurementsDescription": "",
-            "title": ""
+            "disableTelemetryMeasurements": "Telemetri ölçümlerini devre dışı bırak",
+            "disableTelemetryMeasurementsDescription": "Etkinleştirildiğinde, Toryum telemetri ölçümlerini göndermez.",
+            "title": "Uzaktan ölçüm"
         },
         "theme": {
             "auto": "Otomatik",
