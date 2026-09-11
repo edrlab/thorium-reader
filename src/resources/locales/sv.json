@@ -269,9 +269,9 @@
         },
         "storage": {
             "recovery": {
-                "failure": "",
-                "success_one": "",
-                "success_other": ""
+                "failure": "Kunde inte återskapa böcker.",
+                "success_one": "{{- count}} bok återskapad.",
+                "success_other": "{{- count}} böcker återskapade."
             },
             "removed": "Mappen för boken borttagen.",
             "updateFailed": "Kunde inte uppdatera bokens mapp: {{- message}}",
@@ -293,15 +293,15 @@
         "addMenu": "Lägg till ett OPDS-flöde",
         "breadcrumbRoot": "Kataloger",
         "color": {
-            "blue": "",
-            "gray": "",
-            "green": "",
-            "orange": "",
-            "pink": "",
-            "purple": "",
-            "red": "",
-            "title": "",
-            "yellow": ""
+            "blue": "Blå",
+            "gray": "Grå",
+            "green": "Grön",
+            "orange": "Orange",
+            "pink": "Rosa",
+            "purple": "Lila",
+            "red": "Röd",
+            "title": "Katalogfärg",
+            "yellow": "Gul"
         },
         "documentation": "OPDS officiella webbplats",
         "empty": "Ingen bok hittades",
@@ -1322,24 +1322,24 @@
             },
             "recovery": {
                 "actions": {
-                    "check": "",
-                    "checkAgain": "",
-                    "recover": "",
-                    "recovering": ""
+                    "check": "Sök efter böcker som kan återskapas",
+                    "checkAgain": "Försök igen",
+                    "recover": "Återskapa böcker",
+                    "recovering": "Återskapar…"
                 },
-                "available": "",
-                "checking": "",
-                "description": "",
+                "available": "En eller flera böcker hittades på disk som saknas i databasen. Det kan vara möjligt att återskapa dem.",
+                "checking": "Kontrollerar lagringsutrymmet…",
+                "description": "Kontrollera lagring för att hitta böcker som kan återskapas.",
                 "dialog": {
-                    "confirm": "",
-                    "description_one": "",
-                    "description_other": "",
-                    "title": ""
+                    "confirm": "Återskapa",
+                    "description_one": "Thorium hittade {{- count}} bok på disken som saknas i databasen. Vill du återimportera den till Thorium?",
+                    "description_other": "Thorium hittade {{- count}} böcker på disken som saknas i databasen. Vill du återimportera dem till Thorium?",
+                    "title": "Återskapa böcker"
                 },
-                "none": "",
-                "recoverableCount_one": "",
-                "recoverableCount_other": "",
-                "title": ""
+                "none": "Inga böcker som kan återskapas hittades.",
+                "recoverableCount_one": "{{- count}} bok kan återskapas med den ursprungliga identifieraren.",
+                "recoverableCount_other": "{{- count}} böcker kan återskapas med de ursprungliga identifierarna.",
+                "title": "Återskapa"
             }
         },
         "tabs": {
@@ -1350,9 +1350,9 @@
             "storage": "Lagring"
         },
         "telemetry": {
-            "disableTelemetryMeasurements": "",
-            "disableTelemetryMeasurementsDescription": "",
-            "title": ""
+            "disableTelemetryMeasurements": "Samla inte in data om användarbeteende",
+            "disableTelemetryMeasurementsDescription": "När detta är aktiverat samlar och skickar Thorium inte data om användarbeteende.",
+            "title": "Insamling av data"
         },
         "theme": {
             "auto": "Automatiskt",
