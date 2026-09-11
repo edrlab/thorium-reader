@@ -269,9 +269,9 @@
         },
         "storage": {
             "recovery": {
-                "failure": "",
-                "success_one": "",
-                "success_other": ""
+                "failure": "Kunde inte återskapa böcker.",
+                "success_one": "{{- count}} bok återskapad.",
+                "success_other": "{{- count}} böcker återskapade."
             },
             "removed": "Mappen för boken borttagen.",
             "updateFailed": "Kunde inte uppdatera bokens mapp: {{- message}}",
@@ -1322,23 +1322,23 @@
             },
             "recovery": {
                 "actions": {
-                    "check": "",
-                    "checkAgain": "",
+                    "check": "Sök efter böcker som kan återskapas",
+                    "checkAgain": "Försök igen",
                     "recover": "Återskapa böcker",
                     "recovering": "Återskapar…"
                 },
                 "available": "En eller flera böcker hittades på disk som saknas i databasen. Det kan vara möjligt att återskapa dem.",
                 "checking": "Kontrollerar lagringsutrymmet…",
-                "description": "",
+                "description": "Kontrollera lagring för att hitta böcker som kan återskapas.",
                 "dialog": {
                     "confirm": "Återskapa",
-                    "description_one": "",
-                    "description_other": "",
+                    "description_one": "Thorium hittade {{- count}} bok på disken som saknas i databasen. Vill du återimportera den till Thorium?",
+                    "description_other": "Thorium hittade {{- count}} böcker på disken som saknas i databasen. Vill du återimportera dem till Thorium?",
                     "title": "Återskapa böcker"
                 },
                 "none": "Inga böcker som kan återskapas hittades.",
-                "recoverableCount_one": "",
-                "recoverableCount_other": "",
+                "recoverableCount_one": "{{- count}} bok kan återskapas med den ursprungliga identifieraren.",
+                "recoverableCount_other": "{{- count}} böcker kan återskapas med de ursprungliga identifierarna.",
                 "title": "Återskapa"
             }
         },
