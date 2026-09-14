@@ -2,9 +2,9 @@
     "accessibility": {
         "bookMenu": "Menu",
         "closeDialog": "Sluit",
-        "leftSlideButton": "Vorige",
+        "leftSlideButton": "Schuif naar links",
         "mainContent": "hoofdinhoud",
-        "rightSlideButton": "Volgende",
+        "rightSlideButton": "Schuif naar rechts",
         "skipLink": "Ga naar inhoud",
         "toolbar": "werkbalk"
     },
@@ -56,7 +56,7 @@
         "about": {
             "title": "Over {{- appName}}"
         },
-        "addBookToLib": "Voeg toe",
+        "addBookToLib": "Importeer",
         "addTags": "Voeg een label toe",
         "addTagsButton": "Voeg toe",
         "allBooks": "Alle publicaties",
@@ -74,7 +74,7 @@
                 "title": "Profiel titel"
             }
         },
-        "delete": "Verwijder",
+        "delete": "Wis",
         "deleteBook": "Verwijder",
         "deleteTag": "Verwijder label",
         "description": "Beschrijving",
