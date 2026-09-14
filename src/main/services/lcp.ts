@@ -14,6 +14,7 @@ import { inject, injectable } from "inversify";
 import moment from "moment";
 import * as path from "node:path";
 import { pipeline } from "node:stream/promises";
+import type { TLcpPassphraseAnalyticsValue } from "readium-desktop/common/analytics/lcp";
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
@@ -117,6 +118,7 @@ export class LcpManager {
     private readonly lsdManager!: LSDManager;
 
     private translator = getTranslator();
+    private readonly discoveredPassphraseAnalytics = new Set<string>();
 
     public async absorbDBToJson() {
         await this.getAllSecrets();
@@ -173,6 +175,27 @@ export class LcpManager {
         // );
         // const secrets = lcpSecretDocs.map((doc) => doc.secret).filter((secret) => secret);
         // return secrets;
+    }
+
+    public queueDiscoveredPassphraseAnalytics(doc: PublicationDocument) {
+        this.discoveredPassphraseAnalytics.add(doc.identifier);
+    }
+
+    public consumeDiscoveredPassphraseAnalytics(
+        doc: PublicationDocument,
+        unlockPublicationRes: string | number | null | undefined,
+    ): TLcpPassphraseAnalyticsValue | undefined {
+
+        if (!this.discoveredPassphraseAnalytics.has(doc.identifier)) {
+            return undefined;
+        }
+
+        this.discoveredPassphraseAnalytics.delete(doc.identifier);
+        if (unlockPublicationRes === null) {
+            return undefined;
+        }
+
+        return typeof unlockPublicationRes === "undefined" ? "discovered" : "invalid";
     }
 
     public async saveSecret(doc: PublicationDocument, lcpHashedPassphrase: string) {
