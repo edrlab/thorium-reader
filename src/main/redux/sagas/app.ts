@@ -19,6 +19,7 @@ import {
     flushMeasurementProtocolQueue,
     stopMeasurementProtocolQueue,
 } from "readium-desktop/main/analytics/measurementProtocolQueue";
+import { flushActiveWindowFocus } from "readium-desktop/main/analytics/windowFocus";
 import { error } from "readium-desktop/main/tools/error";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
@@ -302,7 +303,10 @@ function* closeProcess(stopAnalyticsQueue: boolean) {
 
                     try {
                         const [flushResult] = yield* raceTyped([
-                            callTyped(flushMeasurementProtocolQueue),
+                            callTyped(async () => {
+                                await flushActiveWindowFocus();
+                                return flushMeasurementProtocolQueue();
+                            }),
                             delayTyped(MEASUREMENT_PROTOCOL_SHUTDOWN_FLUSH_TIMEOUT_MS),
                         ]);
 
