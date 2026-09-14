@@ -269,9 +269,9 @@
         },
         "storage": {
             "recovery": {
-                "failure": "",
-                "success_one": "",
-                "success_other": ""
+                "failure": "Väljaande taastamine ei õnnestunud.",
+                "success_one": "{{- count}} väljaanne on taastatud.",
+                "success_other": "{{- count}} väljaannet on taastatud."
             },
             "removed": "Väljaande kaust on eemaldatud.",
             "updateFailed": "Väljaande kausta uuendamine ei õnnestu: {{- message}}",
@@ -293,15 +293,15 @@
         "addMenu": "Lisa OPDS-voog",
         "breadcrumbRoot": "Minu kataloogid",
         "color": {
-            "blue": "",
-            "gray": "",
-            "green": "",
-            "orange": "",
-            "pink": "",
-            "purple": "",
-            "red": "",
-            "title": "",
-            "yellow": ""
+            "blue": "Sinine",
+            "gray": "Hall",
+            "green": "Roheline",
+            "orange": "Oranž",
+            "pink": "Roosa",
+            "purple": "Purpurpunane",
+            "red": "Punane",
+            "title": "Kataloogi värv",
+            "yellow": "Kollane"
         },
         "documentation": "OPDS-i ametlik veebisait",
         "empty": "Väljaannet/teost/raamatut ei leidu",
@@ -890,7 +890,7 @@
             "disposition": {
                 "title": "Paigutus"
             },
-            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicators": "Näita veeristel reavahetusi",
             "font": "Kirjatüüp",
             "fontSize": "Kirjatüübi suurus",
             "increaseFontSize": "Suurenda teksti suurust",
