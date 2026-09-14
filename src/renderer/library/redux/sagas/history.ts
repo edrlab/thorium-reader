@@ -6,17 +6,50 @@
 // ==LICENSE-END==
 
 import { goBack, push } from "redux-first-history";
+import { Location } from "history";
 import { authActions, historyActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { logEvent } from "readium-desktop/renderer/common/analytics";
+import {
+    buildLibraryPageViewParams,
+    libraryPageTitleFromPathname,
+    TLibraryPageTitle,
+} from "readium-desktop/renderer/library/analytics/pageView";
 import { routerActions, winActions } from "readium-desktop/renderer/library/redux/actions";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { all, put } from "redux-saga/effects";
+import { all, call, put } from "redux-saga/effects";
 import { select as selectTyped } from "typed-redux-saga/macro";
 import { buildOpdsBrowserRoute } from "../../opds/route";
 
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 
+let lastPageViewTitle: TLibraryPageTitle | undefined;
+
+function* sendPageView(location: Location) {
+    const pageTitle = libraryPageTitleFromPathname(location.pathname);
+
+    if (!pageTitle) {
+        lastPageViewTitle = undefined;
+        return;
+    }
+
+    if (pageTitle === lastPageViewTitle) {
+        return;
+    }
+
+    lastPageViewTitle = pageTitle;
+    yield call(logEvent, "page_view", buildLibraryPageViewParams(pageTitle));
+}
+
+function* sendInitialPageView() {
+    const location = yield* selectTyped((state: ILibraryRootState) => state?.router?.location);
+    if (location) {
+        yield* sendPageView(location);
+    }
+}
+
 function* historyWatcher(action: routerActions.locationChanged.TAction) {
+    yield* sendPageView(action.payload.location);
     yield put(winActions.history.build(action.payload.location));
 }
 
@@ -56,6 +89,7 @@ function* historyGoBack() {
 export function saga() {
     return all(
         [
+            call(sendInitialPageView),
             takeSpawnEvery(
                 routerActions.locationChanged.ID,
                 historyWatcher,
