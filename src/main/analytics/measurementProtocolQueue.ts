@@ -608,7 +608,7 @@ export class MeasurementProtocolSqliteQueueStore implements IMeasurementProtocol
 }
 
 export const getMeasurementProtocolQueueStorageKind = (
-    useSqliteQueueStorage = __TH__MEASUREMENT_PROTOCOL_QUEUE_SQLITE_ENABLED__,
+    useSqliteQueueStorage = __TH__FIREBASE_MEASUREMENT_PROTOCOL_QUEUE_SQLITE_ENABLED__,
 ): TMeasurementProtocolQueueStorageKind =>
     useSqliteQueueStorage ? "sqlite" : "file";
 
