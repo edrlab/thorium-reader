@@ -7,6 +7,7 @@
 
 import { goBack, push } from "redux-first-history";
 import { Location } from "history";
+import debug_ from "debug";
 import { authActions, historyActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { logEvent } from "readium-desktop/renderer/common/analytics";
@@ -23,22 +24,28 @@ import { buildOpdsBrowserRoute } from "../../opds/route";
 
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 
+const debug = debug_("readium-desktop:renderer:redux:saga:history");
+
 let lastPageViewTitle: TLibraryPageTitle | undefined;
 
 function* sendPageView(location: Location) {
     const pageTitle = libraryPageTitleFromPathname(location.pathname);
 
     if (!pageTitle) {
+        debug("GA4 page_view skipped for untracked Library route", location.pathname);
         lastPageViewTitle = undefined;
         return;
     }
 
     if (pageTitle === lastPageViewTitle) {
+        debug("GA4 page_view skipped for duplicate Library screen", pageTitle, location.pathname);
         return;
     }
 
     lastPageViewTitle = pageTitle;
-    yield call(logEvent, "page_view", buildLibraryPageViewParams(pageTitle));
+    const params = buildLibraryPageViewParams(pageTitle);
+    debug("GA4 page_view sent for Library route", location.pathname, params);
+    yield call(logEvent, "page_view", params);
 }
 
 function* sendInitialPageView() {

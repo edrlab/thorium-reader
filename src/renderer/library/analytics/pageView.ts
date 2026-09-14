@@ -14,7 +14,7 @@ export type TLibraryPageViewParams = TAnalyticsEventParams & {
     page_location: string;
 };
 
-const PAGE_LOCATION_ORIGIN = "https://desktop.thoriumreader.com";
+const PAGE_LOCATION_ORIGIN = "https://desktop.thoriumreader.com/analytics";
 
 export const libraryPageTitleFromPathname = (pathname: string): TLibraryPageTitle | undefined => {
     const normalizedPathname = pathname.replace(/\/+$/, "") || "/";
