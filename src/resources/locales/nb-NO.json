@@ -1,1 +1,1230 @@
-{}
+{
+    "accessibility": {
+        "bookMenu": "Meny",
+        "closeDialog": "Lukk",
+        "leftSlideButton": "Flytt til venstre",
+        "mainContent": "Hovedinnhold",
+        "rightSlideButton": "Flytt til høyre",
+        "skipLink": "Hopp til hovedinnhold",
+        "toolbar": "Verktøylinje"
+    },
+    "apiapp": {
+        "documentation": "Thorium-dokumentasjon",
+        "howItWorks": "Hvordan fungerer det?",
+        "informations": "I Frankrike tilbyr mange folkebibliotek en maskinlesbar katalog (som ligner på OPDS, men ikke er helt identisk), der lånerne kan laste ned digitale publikasjoner fra sin personlige bokhylle. Ved å integrere denne teknologien i Thorium Reader kan du laste ned en e-bok eller lydbok direkte til Thorium Reader og begynne å lese eller lytte med én gang.\nHvordan kobler du kontoen din ved et fransk folkebibliotek til Thorium Reader? Det er enkelt. Skriv inn en fransk by («Paris») eller en del av bibliotekets navn i søkefeltet, og velg Søk. En liste over folkebiblioteker som samsvarer med søket, vises. Velg et bibliotek og deretter Legg til. Velg biblioteket i den oppdaterte kataloglisten. Da vises et innloggingsskjema. Skriv inn brukernavn/e-postadresse og passord, og velg Logg inn. Nå kan du se innholdet i din personlige bokhylle og laste ned og lese e-bøkene og lydbøkene du allerede har lånt.",
+        "noLibraryFound": "Fant ikke bibliotek ({{- name}})"
+    },
+    "app": {
+        "edit": {
+            "copy": "Kopier",
+            "cut": "Klipp ut",
+            "paste": "Lim inn",
+            "print": "Skriv ut",
+            "redo": "Gjør om",
+            "selectAll": "Velg alt",
+            "title": "Rediger",
+            "undo": "Angre"
+        },
+        "hide": "Skjul {{- appName}}",
+        "quit": "Avslutt {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "Nei",
+                        "yes": "Ja"
+                    },
+                    "help": "Aktiver dette hvis du vil at leservinduer som er åpne når du lukker programmet, automatisk skal åpnes igjen neste gang programmet startes.",
+                    "message": "Vil du lagre økten?",
+                    "title": "Lagre økt"
+                }
+            }
+        },
+        "update": {
+            "message": "En ny versjon er tilgjengelig. Klikk for å lese mer.",
+            "title": "Programvareoppdatering for {{- appName}}."
+        },
+        "window": {
+            "showLibrary": "Vis bibliotek / bokhylle"
+        }
+    },
+    "catalog": {
+        "AddToFavorites": "Legg til i favoritter",
+        "about": {
+            "title": "Om {{- appName}}"
+        },
+        "addBookToLib": "Importer",
+        "addTags": "Legg til tag",
+        "addTagsButton": "Legg til",
+        "allBooks": "Alle bøker",
+        "bookInfo": "Om denne boken",
+        "column": {
+            "ascending": "stigende",
+            "descending": "synkende",
+            "unsorted": "usortert"
+        },
+        "customization": {
+            "fallback": {
+                "description": "Ingen profilbeskrivelse",
+                "publications": "Publikasjoner i profilen",
+                "screen": "Ingen tittel",
+                "title": "Profiltittel"
+            }
+        },
+        "delete": "Slett",
+        "deleteBook": "Slett",
+        "deleteTag": "Slett tag",
+        "description": "Bokbeskrivelse",
+        "emptyTagList": "Slett alle tagger",
+        "entry": {
+            "continueReading": "Fortsett å lese",
+            "lastAdditions": "Nylig lagt til"
+        },
+        "export": "Lagre som",
+        "exportAnnotation": "Eksporter notater",
+        "format": "Format",
+        "importAnnotation": "Importer notater",
+        "lang": "Språk",
+        "lastRead": "Sist lest",
+        "login": "Logg inn",
+        "logout": "Logg ut",
+        "moreInfo": "Bokinformasjon",
+        "myBooks": "Mine bøker",
+        "noPublicationHelpL1": "Slipp en bok her",
+        "noPublicationHelpL2": "eller bruk «{{- importTitle }}»-knappen ovenfor",
+        "noPublicationHelpL3": "LCP-beskyttede filer støttes",
+        "noPublicationHelpL4": "Filtyper som støttes:",
+        "numberOfPages": "Antall sider",
+        "opds": {
+            "auth": {
+                "cancel": "Avbryt",
+                "external": "Innloggingssiden åpnes i nettleseren din. Følg instruksjonene der. Når du er logget inn, går nettleseren tilbake til dette programmet.",
+                "fallback": "Merk: Hvis du får problemer med innlogging via standardmetoden i nettleseren, kan du prøve igjen med den alternative innloggingsmetoden i programmet.",
+                "login": "Logg inn",
+                "password": "Passord",
+                "register": "Registrer deg",
+                "retry": "Prøv igjen",
+                "username": "Brukernavn / e-postadresse"
+            },
+            "info": {
+                "availableSince": "Tilgjengelig fra",
+                "availableState": {
+                    "available": "Tilgjengelig",
+                    "ready": "Klar",
+                    "reserved": "Reservert",
+                    "unavailable": "Ikke tilgjengelig",
+                    "unknown": "Ukjent"
+                },
+                "availableUntil": "Tilgjengelig til",
+                "copyAvalaible": "Antall tilgjengelige",
+                "copyTotal": "Antall eksemplarer",
+                "holdPosition": "Din plass i reservasjonskøen",
+                "holdTotal": "Reservert",
+                "numberOfItems": "Antall eksemplarer",
+                "priveValue": "Pris",
+                "state": "Status"
+            }
+        },
+        "publisher": "Utgiver",
+        "readBook": "Les",
+        "released": "Publisert",
+        "removeFromFavorites": "Fjern fra favoritter",
+        "sort": "Sorter etter",
+        "tag": "Tagg",
+        "tags": "Tagger",
+        "update": "Rediger"
+    },
+    "dialog": {
+        "annotations": {
+            "descAuthor": "av «{{- author}}»",
+            "descCreator": "opprettet av",
+            "descList_one": "{{- count}} notat {{- creator}} blir importert til «{{- title}}» {{- author}}",
+            "descList_other": "{{- count}} notater {{- creator}} blir importert til «{{- title}}» {{- author}}",
+            "descNewer_one": "Konflikt(er): {{- count}} nyere notat",
+            "descNewer_other": "Konflikt(er): {{- count}} nyere notater",
+            "descOlder_one": "Konflikt(er): {{- count}} eldre notat",
+            "descOlder_other": "Konflikt(er): {{- count}} eldre notater",
+            "descTitle": "Tittel på notater: ",
+            "importAll": "Importer alle notater",
+            "importWithoutConflict": "Importer bare notater uten konflikter",
+            "origin": "Opprinnelig publikasjon: «{{- title}}» {{- author}}",
+            "title": "Importere notater?"
+        },
+        "cancel": "Avbryt",
+        "customization": {
+            "splashscreen": {
+                "fallbackWelcomeScreen": "Ingen velkomstskjerm er angitt",
+                "state": "Status: {{- state}}",
+                "title": "Klargjøring og aktivering av tilpasningsprofil"
+            }
+        },
+        "deleteAnnotations": "Slette notater?",
+        "deleteAnnotationsText_one": "Er du sikker på at du vil slette {{- count}} notat?",
+        "deleteAnnotationsText_other": "Er du sikker på at du vil slette {{- count}} notater?",
+        "deleteBookmarks": "Slette bokmerker?",
+        "deleteBookmarksText_one": "Er du sikker på at du vil slette {{- count}} bokmerke?",
+        "deleteBookmarksText_other": "Er du sikker på at du vil slette {{- count}} bokmerker?",
+        "deleteFeed": "Vil du virkelig fjerne katalogen?",
+        "deletePublication": "Vil du virkelig fjerne boken?",
+        "deletePublicationWithNotes": "Advarsel: Denne publikasjonen inneholder notater og/eller bokmerker, og disse blir også slettet. Hvis du vil beholde dem, må du eksportere notatene før du fjerner publikasjonen.",
+        "import": "Vil du virkelig importere følgende filer:",
+        "importError": "Det oppsto en feil, dobbeltsjekk filtypen ({{acceptedExtension}})",
+        "renew": "Vil du virkelig fornye utlånet for denne boken?",
+        "return": "Vil du virkelig returnere denne boken?",
+        "yes": "Ja"
+    },
+    "error": {
+        "errorBox": {
+            "error": "Feilmelding:",
+            "message": "En feil oppstod i {{- filename}}",
+            "title": "Intern {{- appName}}-feil"
+        }
+    },
+    "header": {
+        "allBooks": "Alle bøker",
+        "catalogs": "Kataloger",
+        "downloads": "Nedlastinger",
+        "fitlerTagTitle": "Filtrer etter tagg",
+        "gridTitle": "Gallerivisning",
+        "home": "Bokhyllemeny",
+        "homeTitle": "Hjem",
+        "importTitle": "Importer en bok",
+        "listTitle": "Listevisning",
+        "myCatalogs": "Mine kataloger",
+        "refreshTitle": "Oppdater",
+        "searchPlaceholder": "Søk",
+        "searchTitle": "Start søk",
+        "settings": "Innstillinger",
+        "viewMode": "Visningsmodus"
+    },
+    "library": {
+        "filter": {
+            "addFilters": "Legg til filtre",
+            "filterBy": "Filtrer etter",
+            "selectOption": "Velg et element"
+        },
+        "lcp": {
+            "hidePassphrase": "Skjul passfrase",
+            "hint": "Tips:",
+            "open": "Åpne",
+            "password": "Passord",
+            "sentence": "Denne boken krever et LCP-passord for å kunne åpnes:",
+            "showPassphrase": "Vis passfrase",
+            "urlHint": "Glemt passord? Her kan du få hjelp",
+            "whatIsLcp?": "Hva er LCP?",
+            "whatIsLcpInfoDetails": "LCP står for «Licensed Content Protection».",
+            "whatIsLcpInfoDetailsLink": "Klikk på denne lenken til EDRLabs nettsted for å lese mer."
+        },
+        "sorting": {
+            "addSorting": "Legg til sortering",
+            "author": "Forfatter",
+            "language": "Språk",
+            "readingState": "Lesestatus",
+            "sortBy": "Sorter etter: ",
+            "title": "Tittel"
+        }
+    },
+    "message": {
+        "annotations": {
+            "alreadyImported": "Alle notatene er allerede importert.",
+            "emptyFile": "Filen inneholder ingen notater.",
+            "errorParsing": "Feil ved behandling av filen: ",
+            "noBelongTo": "Kan ikke importere notatene fordi minst ett notat ikke tilhører publikasjonen.",
+            "nothing": "Det finnes ingen notater som kan importeres. Importen avbrytes.",
+            "success": "Importen er fullført."
+        },
+        "download": {
+            "error": "Nedlasting av {{- title}} mislyktes: [{{- err}}]"
+        },
+        "import": {
+            "alreadyImport": "{{- title}} er allerede importert",
+            "fail": "Importen av {{- path}} mislyktes. {{- err}}",
+            "success": "{{- title}} er nå importert."
+        },
+        "open": {
+            "error": "Boken kan ikke åpnes: {{- err}}"
+        },
+        "wipeData": "Innloggingsdata ble slettet (tilgangstokener og informasjonskapsler)"
+    },
+    "opds": {
+        "addForm": {
+            "addButton": "Legg til",
+            "name": "Navn:",
+            "namePlaceholder": "Navn",
+            "url": "Lenke:",
+            "urlPlaceholder": "Lenke"
+        },
+        "addFormApiapp": {
+            "title": "Legg til en bibliotekskonto"
+        },
+        "addMenu": "Legg til en OPDS-feed",
+        "breadcrumbRoot": "Kataloger",
+        "documentation": "Offisielt nettsted for OPDS",
+        "empty": "Fant ingen bøker",
+        "firstPage": "Først",
+        "informations": "Tenk deg at du kan utforske og laste ned digitale publikasjoner fra folkebiblioteker og digitale bokhandlere med bare noen få klikk. Det er nettopp dette katalogformatet Open Publication Distribution System (OPDS) gjør mulig. Med OPDS kan du bla gjennom kataloger fra ulike tilbydere av e-bøker, registrere deg, låne eller kjøpe en publikasjon eller åpne din personlige bokhylle. Du kan også laste ned en e-bok eller lydbok direkte til Thorium Reader og begynne å lese eller lytte med én gang.\nHvordan finner du en OPDS-katalog? Det er enkelt. Finn en lenke (URL) til katalogen, og kopier adressen til feltet Lenke ovenfor. Vær oppmerksom på at det ikke finnes én samlet oversikt over alle aktive OPDS-kataloger. Du må kontakte biblioteket eller bokhandleren du ønsker å bruke, og be om adressen til deres OPDS-katalog. Hvis du ikke vet hvor du skal begynne, finnes det på Wikipedia enkelte oversikter over OPDS-kataloger på forskjellige språk som kan være nyttige.\nDu kan selv velge hva du skriver i feltet Navn. Navnet gjør det enklere å kjenne igjen katalogen i Thorium Reader.",
+        "lastPage": "Sist",
+        "menu": {
+            "aboutBook": "Om denne boken",
+            "addExtract": "Legg til utdrag",
+            "goBuyBook": "Kjøp boken",
+            "goLoanBook": "Lån boken",
+            "goRevokeLoanBook": "Forny lån",
+            "goSubBook": "Abonner"
+        },
+        "network": {
+            "error": "Fant ikke OPDS-feed",
+            "noInternet": "Ingen nettverksforbindelse",
+            "noInternetMessage": "Prøv følgende: sjekk nettverksforbindelsen",
+            "reject": "Det skjedde dessverre en uventet feil ved innhenting av OPDS-feedet",
+            "timeout": "Ingen nettverksforbindelse, prøv igjen senere"
+        },
+        "next": "Neste",
+        "previous": "Forrige",
+        "resumeBrowsing": "Fortsett å bla",
+        "shelf": "Bokhylle",
+        "updateForm": {
+            "name": "Navn:",
+            "title": "Rediger OPDS-feed",
+            "updateButton": "Rediger",
+            "url": "Lenke:"
+        },
+        "whatIsOpds": "Hva er OPDS?"
+    },
+    "publ-a11y-display-guide": {
+        "accessibility-summary": {
+            "accessibility-summary-title": "Tilgjengelighetssammendrag"
+        },
+        "additional-accessibility-information": {
+            "additional-accessibility-information-aria": {
+                "compact": "ARIA-roller inkludert",
+                "descriptive": "Innholdet er utvidet med ARIA-roller for å forbedre struktur og navigasjon"
+            },
+            "additional-accessibility-information-audio-descriptions": {
+                "compact": "Synstolking",
+                "descriptive": "Synstolking"
+            },
+            "additional-accessibility-information-braille": {
+                "compact": "Punktskrift",
+                "descriptive": "Punktskrift"
+            },
+            "additional-accessibility-information-full-ruby-annotations": {
+                "compact": "Fullstendige ruby-annotasjoner",
+                "descriptive": "Fullstendige ruby-annotasjoner"
+            },
+            "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
+                "compact": "Høy kontrast mellom forgrunns- og bakgrunnslyd",
+                "descriptive": "Høy kontrast mellom forgrunns- og bakgrunnslyd"
+            },
+            "additional-accessibility-information-high-contrast-between-text-and-background": {
+                "compact": "Høy kontrast mellom tekst og bakgrunn",
+                "descriptive": "Høy kontrast mellom tekst og bakgrunn"
+            },
+            "additional-accessibility-information-large-print": {
+                "compact": "Storskrift",
+                "descriptive": "Storskrift"
+            },
+            "additional-accessibility-information-page-breaks": {
+                "compact": "Sideskift er inkludert",
+                "descriptive": "Sideskift fra den opprinnelige trykte utgaven er inkludert"
+            },
+            "additional-accessibility-information-ruby-annotations": {
+                "compact": "Enkelte ruby-annotasjoner",
+                "descriptive": "Enkelte ruby-annotasjoner"
+            },
+            "additional-accessibility-information-sign-language": {
+                "compact": "Tegnspråk",
+                "descriptive": "Tegnspråk"
+            },
+            "additional-accessibility-information-tactile-graphics": {
+                "compact": "Taktil grafikk inkludert",
+                "descriptive": "Taktil grafikk er inkludert for å gjøre visuelt innhold tilgjengelig for blinde"
+            },
+            "additional-accessibility-information-tactile-objects": {
+                "compact": "Taktile 3D-objekter",
+                "descriptive": "Taktile 3D-objekter"
+            },
+            "additional-accessibility-information-text-to-speech-hinting": {
+                "compact": "Tilpasninger for talesyntese",
+                "descriptive": "Tilpasninger for talesyntese er inkludert"
+            },
+            "additional-accessibility-information-title": "Ytterligere informasjon om tilgjengelighet"
+        },
+        "conformance": {
+            "conformance-a": {
+                "compact": "Denne publikasjonen oppfyller minimumskravene til tilgjengelighet",
+                "descriptive": "Publikasjonen inneholder en samsvarserklæring om at den oppfyller EPUB Accessibility og WCAG 2 nivå A"
+            },
+            "conformance-aa": {
+                "compact": "Denne publikasjonen oppfyller anerkjente krav til tilgjengelighet",
+                "descriptive": "Publikasjonen inneholder en samsvarserklæring om at den oppfyller EPUB Accessibility og WCAG 2 nivå AA"
+            },
+            "conformance-aaa": {
+                "compact": "Denne publikasjonen overgår anerkjente krav til tilgjengelighet",
+                "descriptive": "Publikasjonen inneholder en samsvarserklæring om at den oppfyller EPUB Accessibility og WCAG 2 nivå AAA"
+            },
+            "conformance-certifier": {
+                "compact": "Publikasjonen er sertifisert av "
+            },
+            "conformance-certifier-credentials": {
+                "compact": "Sertifiseringsorganets kvalifikasjoner er "
+            },
+            "conformance-details-certifier-report": {
+                "compact": "Se sertifiseringsrapporten for mer informasjon"
+            },
+            "conformance-details-claim": {
+                "compact": "Publikasjonen oppgir at den oppfyller",
+                "descriptive": "Publikasjonen oppgir at den oppfyller"
+            },
+            "conformance-details-epub-accessibility-1-0": {
+                "compact": "EPUB Accessibility 1.0",
+                "descriptive": "EPUB Accessibility 1.0"
+            },
+            "conformance-details-epub-accessibility-1-1": {
+                "compact": "EPUB Accessibility 1.1",
+                "descriptive": "EPUB Accessibility 1.1"
+            },
+            "conformance-details-level-a": {
+                "compact": "Nivå A",
+                "descriptive": "Nivå A"
+            },
+            "conformance-details-level-aa": {
+                "compact": "Nivå AA",
+                "descriptive": "Nivå AA"
+            },
+            "conformance-details-level-aaa": {
+                "compact": "Nivå AAA",
+                "descriptive": "Nivå AAA"
+            },
+            "conformance-details-wcag-2-0": {
+                "compact": "WCAG 2.0"
+            },
+            "conformance-details-wcag-2-1": {
+                "compact": "WCAG 2.1",
+                "descriptive": "Retningslinjer for tilgjengelig webinnhold (WCAG) 2.1"
+            },
+            "conformance-details-wcag-2-2": {
+                "compact": "WCAG 2.2",
+                "descriptive": "Retningslinjer for tilgjengelig webinnhold (WCAG) 2.2"
+            },
+            "conformance-no": {
+                "compact": "Ingen informasjon er tilgjengelig",
+                "descriptive": "Ingen informasjon er tilgjengelig"
+            },
+            "conformance-title": "Samsvar",
+            "conformance-unknown-standard": {
+                "compact": "Det kan ikke fastslås om publikasjonen følger anerkjente standarder for tilgjengelighet",
+                "descriptive": "Det kan ikke fastslås om publikasjonen følger anerkjente standarder for tilgjengelighet"
+            }
+        },
+        "hazards": {
+            "hazards-flashing": {
+                "compact": "Blinkende innhold",
+                "descriptive": "Publikasjonen inneholder blinkende innhold som kan utløse fotosensitive anfall"
+            },
+            "hazards-flashing-none": {
+                "compact": "Ikke blinkende innhold",
+                "descriptive": "Publikasjonen inneholder ikke blinkende innhold"
+            },
+            "hazards-flashing-unknown": {
+                "compact": "Det er ukjent om publikasjonen inneholder blinkende innhold",
+                "descriptive": "Det er ukjent om publikasjonen inneholder blinkende innhold"
+            },
+            "hazards-motion": {
+                "compact": "Bevegelsessimulering",
+                "descriptive": "Publikasjonen inneholder bevegelsessimuleringer som kan føre til bevegelsessyke"
+            },
+            "hazards-motion-none": {
+                "compact": "Ingen bevegelsessimulering",
+                "descriptive": "Publikasjonen inneholder ingen bevegelsessimulering"
+            },
+            "hazards-motion-unknown": {
+                "compact": "Det er ukjent om publikasjonen inneholder bevegelsessimulering",
+                "descriptive": "Det er ukjent om publikasjonen inneholder bevegelsessimulering"
+            },
+            "hazards-no-metadata": {
+                "compact": "Ingen informasjon er tilgjengelig",
+                "descriptive": "Ingen informasjon er tilgjengelig"
+            },
+            "hazards-none": {
+                "compact": "Ingen kjente risikofaktorer",
+                "descriptive": "Publikasjonen inneholder ingen kjente risikofaktorer"
+            },
+            "hazards-sound": {
+                "compact": "Ubehagelige lyder",
+                "descriptive": "Publikasjonen inneholder lyder som kan oppleves som ubehagelige"
+            },
+            "hazards-sound-none": {
+                "compact": "Ingen slike lyder",
+                "descriptive": "Publikasjonen inneholder ingen slike lyder"
+            },
+            "hazards-sound-unknown": {
+                "compact": "Det er ukjent om publikasjonen inneholder slike lyder",
+                "descriptive": "Det er ukjent om publikasjonen inneholder slike lyder"
+            },
+            "hazards-title": "Risikofaktorer",
+            "hazards-unknown": {
+                "compact": "Det er ukjent om publikasjonen inneholder risikofaktorer",
+                "descriptive": "Det er ukjent om publikasjonen inneholder risikofaktorer"
+            }
+        },
+        "navigation": {
+            "navigation-index": {
+                "compact": "Register",
+                "descriptive": "Register med lenker til de aktuelle oppføringene"
+            },
+            "navigation-no-metadata": {
+                "compact": "Ingen informasjon er tilgjengelig",
+                "descriptive": "Ingen informasjon er tilgjengelig"
+            },
+            "navigation-page-navigation": {
+                "compact": "Gå til side",
+                "descriptive": "Sideliste for navigasjon til sider fra den trykte utgaven"
+            },
+            "navigation-structural": {
+                "compact": "Overskrifter",
+                "descriptive": "Elementer som overskrifter, tabeller osv. gjør strukturert navigasjon mulig"
+            },
+            "navigation-title": "Navigasjon",
+            "navigation-toc": {
+                "compact": "Innholdsfortegnelse",
+                "descriptive": "Innholdsfortegnelse med lenker til alle kapitlene i teksten"
+            }
+        },
+        "rich-content": {
+            "rich-content-accessible-chemistry-as-latex": {
+                "compact": "Kjemiske formler i LaTeX",
+                "descriptive": "Kjemiske formler i et tilgjengelig format (LaTeX)"
+            },
+            "rich-content-accessible-chemistry-as-mathml": {
+                "compact": "Kjemiske formler i MathML",
+                "descriptive": "Kjemiske formler i et tilgjengelig format (MathML)"
+            },
+            "rich-content-accessible-math-as-latex": {
+                "compact": "Matematikk i LaTeX",
+                "descriptive": "Matematiske formler i et tilgjengelig format (LaTeX)"
+            },
+            "rich-content-accessible-math-as-mathml": {
+                "compact": "Matematikk i MathML",
+                "descriptive": "Matematiske formler i et tilgjengelig format (MathML)"
+            },
+            "rich-content-accessible-math-described": {
+                "compact": "Tekstbeskrivelser av matematikk er inkludert",
+                "descriptive": "Tekstbeskrivelser av matematikk er inkludert"
+            },
+            "rich-content-closed-captions": {
+                "compact": "Videoer har skjult teksting",
+                "descriptive": "Videoene i publikasjonen har skjult teksting"
+            },
+            "rich-content-extended": {
+                "compact": "Informasjonsrike bilder har utvidede beskrivelser",
+                "descriptive": "Informasjonsrike bilder er beskrevet med utvidede beskrivelser"
+            },
+            "rich-content-open-captions": {
+                "compact": "Videoer har åpen teksting",
+                "descriptive": "Videoene i publikasjonen har åpen teksting"
+            },
+            "rich-content-title": "Rikt innhold",
+            "rich-content-transcript": {
+                "compact": "Transkripsjon er inkludert",
+                "descriptive": "Transkripsjon er inkludert"
+            },
+            "rich-content-unknown": {
+                "compact": "Ingen informasjon er tilgjengelig",
+                "descriptive": "Ingen informasjon er tilgjengelig"
+            }
+        },
+        "ways-of-reading": {
+            "ways-of-reading-nonvisual-reading-alt-text": {
+                "compact": "Har alternativ tekst",
+                "descriptive": "Bilder har alternative tekstbeskrivelser"
+            },
+            "ways-of-reading-nonvisual-reading-no-metadata": {
+                "compact": "Ingen informasjon om ikke-visuell lesing er tilgjengelig",
+                "descriptive": "Ingen informasjon om ikke-visuell lesing er tilgjengelig"
+            },
+            "ways-of-reading-nonvisual-reading-none": {
+                "compact": "Kan ikke leses med talesyntese eller dynamisk punktskrift",
+                "descriptive": "Innholdet kan ikke leses som syntetisk tale eller med dynamisk punktskrift"
+            },
+            "ways-of-reading-nonvisual-reading-not-fully": {
+                "compact": "Kan ikke leses fullstendig med talesyntese eller dynamisk punktskrift",
+                "descriptive": "Ikke alt innholdet kan leses som syntetisk tale eller med dynamisk punktskrift"
+            },
+            "ways-of-reading-nonvisual-reading-readable": {
+                "compact": "Kan leses med talesyntese eller dynamisk punktskrift",
+                "descriptive": "Alt innhold kan leses som syntetisk tale eller med dynamisk punktskrift"
+            },
+            "ways-of-reading-prerecorded-audio-complementary": {
+                "compact": "Forhåndsinnspilte lydklipp",
+                "descriptive": "Forhåndsinnspilte lydklipp er integrert i innholdet"
+            },
+            "ways-of-reading-prerecorded-audio-only": {
+                "compact": "Bare forhåndsinnspilt lyd",
+                "descriptive": "Lydbok uten tekstalternativ"
+            },
+            "ways-of-reading-prerecorded-audio-synchronized": {
+                "compact": "Forhåndsinnspilt lyd synkronisert med tekst",
+                "descriptive": "Alt innhold er tilgjengelig som forhåndsinnspilt lyd synkronisert med teksten"
+            },
+            "ways-of-reading-title": "Måter å lese på",
+            "ways-of-reading-visual-adjustments-modifiable": {
+                "compact": "Utseendet kan tilpasses",
+                "descriptive": "Tekstens utseende og sideoppsettet kan tilpasses innenfor lesesystemets muligheter (skrifttype og skriftstørrelse, avstand mellom avsnitt, setninger, ord og bokstaver samt bakgrunns- og tekstfarge)"
+            },
+            "ways-of-reading-visual-adjustments-unknown": {
+                "compact": "Ingen informasjon om muligheten for å tilpasse utseendet er tilgjengelig",
+                "descriptive": "Ingen informasjon om muligheten for å tilpasse utseendet er tilgjengelig"
+            }
+        }
+    },
+    "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": "Talesyntese- og skjermleservennlig"
+            },
+            "accessibilityFeature": {
+                "alternativeText": "Inneholder alternativ tekst",
+                "displayTransformability": "Justerbar tekst og layout",
+                "longDescription": "Utvidede bildebeskrivelser",
+                "printPageNumbers": "Sidenummerering fra trykt utgave",
+                "readingOrder": "Leserekkefølge",
+                "synchronizedAudioText": "Synkronisert tekst og lyd",
+                "tableOfContents": "Har innholdsfortegnelse"
+            },
+            "accessibilityHazard": {
+                "flashing": "Blinkende innhold",
+                "motionSimulation": "Bevegelsessimulering",
+                "name": "Advarsel:",
+                "noFlashing": "Ikke blinkende innhold",
+                "noMotionSimulation": "Ikke bevegelsessimulering",
+                "noSound": "Ingen lyd",
+                "none": "Ingen",
+                "sound": "Lyd",
+                "unknown": "Ukjent"
+            },
+            "certifierReport": "Tilgjengelighetserklæring",
+            "conformsTo": "Samsvarer med:",
+            "moreInformation": "Mer informasjon",
+            "name": "Tilgjengelighet",
+            "noA11y": "Ingen tilgjengelighetserklæring"
+        },
+        "actions": "Handlinger",
+        "audio": {
+            "tracks": "Spor"
+        },
+        "author": "Forfatter",
+        "cancelledLcp": "Denne boken kan ikke leses, LCP-lisensen er utløpt.",
+        "certificateRevoked": "Sertifikatet er tilbakekallet",
+        "certificateSignatureInvalid": "Sertifikatets signatur er ugyldig",
+        "cover": {
+            "img": "Omslagsbilde"
+        },
+        "day": "dag",
+        "days": "dager",
+        "duration": {
+            "title": "Spilletid"
+        },
+        "encryptedNoLicense": "Publikasjonen er kryptert, men mangler LCP-lisens!",
+        "expired": "Lånet er utløpt",
+        "expiredLcp": "Denne boken kan ikke leses, LCP-lisensen er utløpt.",
+        "incorrectPassphrase": "Ingen lagret passfrase passer til publikasjonen, eller passfrasen du skrev inn, er feil.",
+        "lcpEnd": "Slutt",
+        "lcpRightsCopy": "Kopierte tegn",
+        "lcpRightsPrint": "Utskrifter",
+        "lcpStart": "Start",
+        "licenceLCP": "Lisens (LCP)",
+        "licenseCertificateDateInvalid": "LCP-leverandørens sertifikat utløp før lisensen ble utstedt ({{- dateTime}}).",
+        "licenseOutOfDate": "Lisensen er utløpt",
+        "licenseSignatureInvalid": "Lisensens signatur er ugyldig",
+        "licensed": "Lisensiert",
+        "markAsRead": "Merk som lest",
+        "notStarted": "Ikke påbegynt",
+        "onGoing": "Under lesing",
+        "progression": {
+            "title": "Lest"
+        },
+        "read": "Ferdiglest",
+        "remainingTime": "Lån (gjenværende tid)",
+        "renewButton": "Forny lån",
+        "returnButton": "Returner",
+        "returnedLcp": "Denne boken kan ikke åpnes, LCP-lisensen er returnert",
+        "revokedLcp": "Denne boken kan ikke åpnes, LCP-lisensen er tilbakekalt",
+        "seeLess": "Vis mindre",
+        "seeMore": "Vis mer",
+        "timeLeft": "Gjenværende tid",
+        "title": "Tittel",
+        "userKeyCheckInvalid": "Passordet er feil"
+    },
+    "reader": {
+        "annotations": {
+            "Color": "Farge",
+            "addNote": "Legg til notat",
+            "advancedMode": "Direktemodus (opprett automatisk etter markering)",
+            "annotationsExport": {
+                "description": "Gi de eksporterte notatene et navn:",
+                "title": "Tittel"
+            },
+            "annotationsOptions": "Alternativer for notater",
+            "date": "Endringsdato",
+            "export": "Lagre notater som ...",
+            "filter": {
+                "all": "Alle",
+                "filterByColor": "Filtrer etter farge",
+                "filterByCreator": "Filtrer etter opphavsperson",
+                "filterByDrawtype": "Filtrer etter type",
+                "filterByTag": "Filtrer etter tagg",
+                "filterOptions": "Filteralternativer",
+                "none": "Ingen"
+            },
+            "hide": "Ikke vis",
+            "highlight": "Utheving",
+            "noSelectionToast": "Ingen tekst er markert",
+            "note": "{{- color}} notat",
+            "quickAnnotations": "Hurtigoppretting (hopp over redigering)",
+            "saveNote": "Lagre",
+            "sorting": {
+                "lastcreated": "Sist opprettet",
+                "lastmodified": "Sist endret",
+                "progression": "Leseposisjon",
+                "sortingOptions": "Sorteringsalternativer"
+            },
+            "toggleMarginMarks": "Vis i margen",
+            "type": {
+                "outline": "Omriss",
+                "solid": "Heldekkende bakgrunn",
+                "strikethrough": "Gjennomstreking",
+                "underline": "Understreking"
+            }
+        },
+        "bookmarks": {
+            "index": "Bokmerke {{- index}}"
+        },
+        "divina": {
+            "mute": "Lyd av",
+            "unmute": "Lyd på"
+        },
+        "dock": {
+            "dockDefault": "Vis panelet som et dialogvindu",
+            "dockLeft": "Fest panelet til venstre",
+            "dockRight": "Fest panelet til høyre"
+        },
+        "fxl": {
+            "fit": "Tilpass"
+        },
+        "goToContent": "Gå til innholdet",
+        "imgViewer": {
+            "title": "Bildevisning (zoom)",
+            "zoomIn": "Zoom inn",
+            "zoomOut": "Zoom ut",
+            "zoomReset": "Tilbakestill zoom"
+        },
+        "marks": {
+            "annotations": "Notater",
+            "bookmarks": "Bokmerker",
+            "delete": "Fjern",
+            "edit": "Rediger",
+            "goTo": "Gå til side",
+            "landmarks": "Landemerke",
+            "saveMark": "Lagre",
+            "search": "Søk",
+            "searchResult": "Søk [{{- searchText}}]",
+            "toc": "Innholdsfortegnelse"
+        },
+        "media-overlays": {
+            "activate": "Start opplesing",
+            "captions": "Undertekster",
+            "captionsDescription": "Forenklet tekstvisning med minimal formatering av teksting.",
+            "disableContinuousPlay": "Deaktiver kontinuerlig avspilling",
+            "disableContinuousPlayDescription": "Ikke spill av neste element automatisk. Sett avspillingen på pause straks det gjeldende elementet er ferdig.",
+            "ignoreAndUseTTS": "Ignorer forhåndsinnspilt lyd og bruk talesyntese",
+            "ignoreAndUseTTSDescription": "Ignorer EPUB Media Overlays og les med talesyntese i stedet",
+            "next": "Neste opplesings-stykke",
+            "pause": "Pause opplesing",
+            "play": "Spill av opplesing",
+            "previous": "Forrige opplesing",
+            "skip": "Hopp over",
+            "skipDescription": "Hopp over eller ignorer tilleggsinnhold som sideskift, fotnoter/sluttnoter osv.",
+            "speed": "Avspillingshastighet",
+            "stop": "Stopp opplesing",
+            "title": "Opplesing"
+        },
+        "navigation": {
+            "ZenModeExit": "Avslutt zen-modus",
+            "ZenModeTitle": "Zen-modus",
+            "annotationTitle": "Notat",
+            "backHomeTitle": "Tilbake til bokhyllen",
+            "bookmarkTitle": "Bokmerke",
+            "currentPage": "Nåværende side: {{- current}}",
+            "currentPageTotal": "Nåværende side: {{- current}}/{{- total}}",
+            "goTo": "Gå til",
+            "goToError": "Sidetallet finnes ikke",
+            "goToPlaceHolder": "Skriv inn sidetall",
+            "goToTitle": "Gå til side",
+            "history": "Navigasjonshistorikk",
+            "historyNext": "Hopp framover",
+            "historyPrevious": "Hopp tilbake",
+            "infoTitle": "Informasjon",
+            "magnifyingGlassButton": "Søk i boken",
+            "openTableOfContentsTitle": "Innholdsfortegnelse",
+            "page": "Side",
+            "pdfscalemode": "Tilpass til hel side eller skjermbredde",
+            "print": "Skriv ut",
+            "printDisabled": "Utskrift er ikke tillatt",
+            "screenNext": "Gå fremover",
+            "screenPrevious": "Gå bakover",
+            "settingsTitle": "Innstillinger"
+        },
+        "notes": {
+            "colors": {
+                "cyan": "Cyan",
+                "green": "Grønn",
+                "orange": "Oransje",
+                "purple": "Lilla",
+                "red": "Rød",
+                "yellow": "Gul"
+            }
+        },
+        "picker": {
+            "search": {
+                "founds_one": "{{- count}} treff",
+                "founds_other": "{{- count}} treff",
+                "input": "Søketekst",
+                "next": "Neste",
+                "notFound": "Ingen treff",
+                "previous": "Forrige",
+                "results": "Resultater",
+                "submit": "Søk"
+            },
+            "searchTitle": "Søk:"
+        },
+        "print": {
+            "descriptionLcpCount": "Gjenværende antall sider som kan skrives ut: {{- count}}",
+            "descriptionLcpPrintable": "Sider som allerede er skrevet ut: {{- printable}} ({{- count}})",
+            "howTo": "Slik velger du et sideområde som skal skrives ut",
+            "lcpInfo": "Antallet sider du kan skrive ut fra denne publikasjonen, er begrenset til {{- count}}. Velg sidene du trenger her.",
+            "noPagesLcpLimitReached": "Du har nådd utskriftsgrensen for LCP",
+            "noPrintablePages": "Ingen sider kan skrives ut",
+            "pageHelpInfo": "Syntaks for valg av sider:",
+            "pageHelpInfo1": "skriv inn et sidetall for å velge én side (f.eks. «6»)",
+            "pageHelpInfo2": "skriv inn to sidetall atskilt med bindestrek for å velge et sammenhengende sideområde (f.eks. «6-13»)",
+            "pageHelpInfo3": "bruk semikolon for å skille mellom flere enkeltsider eller sideområder (f.eks. «5;14-20;37»)",
+            "pageHelpInfo4": "utelat første eller siste sidetall i et område for å angi første eller siste side i publikasjonen (f.eks. tilsvarer «-16» «1-16», mens «34-» tilsvarer «34-100» dersom boken har totalt 100 sider)",
+            "pages": "Sider",
+            "preview": "Forhåndsvisning",
+            "print": "Skriv ut",
+            "printablePages": "Sider som kan skrives ut (totalt)",
+            "title": "Velg sider som skal skrives ut"
+        },
+        "settings": {
+            "column": {
+                "auto": "Standard",
+                "one": "1 kolonne",
+                "title": "Kolonner",
+                "two": "2 kolonner"
+            },
+            "customFontSelected": "Du har valgt en egen skrifttype",
+            "customizeReader": "Tilpass tekstformatering",
+            "disabled": "deaktivert",
+            "display": "Visning",
+            "disposition": {
+                "title": "Layout"
+            },
+            "font": "Skrifttype",
+            "fontSize": "Skriftstørrelse",
+            "infoCustomFont": "Skriv inn navnet på en skrifttype fra operativsystemet",
+            "justification": "Margjustering",
+            "justify": "Like marger",
+            "letterSpacing": "Tegnavstand",
+            "lineSpacing": "Linjeavstand",
+            "margin": "Marg",
+            "mathjax": "Aktiver MathJax",
+            "noFootnotes": "Deaktiver fotnoter",
+            "noRTLFlip": "Deaktiver høyre-til-venstre-visning av brukergrensesnittet",
+            "noRuby": "Skjul japansk ruby-tekst",
+            "noTemporaryNavTargetOutline": "Deaktiver visuelle navigasjonsmarkører",
+            "paginated": "Sideinndelt",
+            "paraSpacing": "Avsnittsmellomrom",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "100 %",
+                    "150pct": "150 %",
+                    "200pct": "200 %",
+                    "300pct": "300 %",
+                    "500pct": "500 %",
+                    "50pct": "50 %",
+                    "fit": "tilpass",
+                    "width": "skjermbredde"
+                },
+                "title": "Zoom"
+            },
+            "preset": {
+                "apply": "Bruk",
+                "applyDetails": "Bruk den foretrukne konfigurasjonen på den gjeldende publikasjonen.",
+                "detail": "Lagre, bruk eller tilbakestill den foretrukne konfigurasjonen.",
+                "reset": "Tilbakestill",
+                "resetDetails": "Tilbakestill den foretrukne konfigurasjonen til standardinnstillingene.",
+                "save": "Lagre",
+                "saveDetails": "Lagrer de gjeldende innstillingene som din foretrukne konfigurasjon for visning og tekstformatering. Innstillingene kan deretter brukes på andre publikasjoner ved å velge «Bruk» i andre leservinduer.",
+                "title": "Preferanser"
+            },
+            "preview": "Forhåndsvisning",
+            "reduceMotion": "Reduser bevegelser",
+            "scrolled": "Rullbar",
+            "spacing": "Avstand",
+            "spreadModeEven": "Sideoppslag med partallsside først (standard er oddetallsside)",
+            "text": "Tekst",
+            "theme": {
+                "name": {
+                    "Contrast1": "Kontrast 1",
+                    "Contrast2": "Kontrast 2",
+                    "Contrast3": "Kontrast 3",
+                    "Contrast4": "Kontrast 4",
+                    "Neutral": "Nøytral",
+                    "Night": "Natt",
+                    "Paper": "Papir",
+                    "Sepia": "Sepia"
+                },
+                "title": "Tema"
+            },
+            "wordSpacing": "Ordavstand"
+        },
+        "svg": {
+            "left": "Venstre",
+            "right": "Høyre"
+        },
+        "toc": {
+            "publicationNoToc": "Denne boken mangler innholdsfortegnelse"
+        },
+        "tts": {
+            "activate": "Aktiver tekst-til-tale",
+            "language": "Språk for talesyntese",
+            "next": "Neste tekst-til-tale",
+            "options": "Alternativer for talesyntese",
+            "pause": "Pause tekst-til-tale",
+            "play": "Spill av tekst-til-tale",
+            "previous": "Forrige tekst-til-tale",
+            "sentenceDetect": "Setningsdetektering",
+            "sentenceDetectDescription": "Del lange avsnitt inn i setninger.",
+            "speed": "Hastighet tekst-til-tale",
+            "stop": "Stopp tekst-til-tale",
+            "voice": "Stemme"
+        }
+    },
+    "settings": {
+        "annotationCreator": {
+            "creator": "Opphavsperson for notater (valgfritt)",
+            "help": "Hvis du angir et navn, blir det tatt med i metadataene til eksporterte notater.",
+            "name": "Navn",
+            "organization": "Organisasjon",
+            "person": "Person",
+            "type": "Type:"
+        },
+        "auth": {
+            "help": "Denne handlingen sletter alle innloggingsopplysninger for OPDS.",
+            "title": "Tilgang til publikasjonskataloger",
+            "wipeData": "Fjern autentiseringsdata"
+        },
+        "keyboard": {
+            "advancedMenu": "Meny",
+            "cancel": "Avbryt",
+            "disclaimer": "Programmets standardinnstillinger er utformet med utgangspunkt i den fysiske plasseringen av tastene på et QWERTY-tastatur",
+            "editUserJson": "Rediger brukerfil...",
+            "exportToHTML": "Eksporter som HTML",
+            "keyboardShortcuts": "Hurtigtaster",
+            "list": {
+                "AddBookmarkWithLabel": {
+                    "description": "Åpne dialogboksen for å opprette et bokmerke, og rediger tekstetikett (notat), farge og tagg",
+                    "name": "Opprett bokmerke med etikett"
+                },
+                "AnnotationsCreate": {
+                    "description": "Åpne dialogboksen for å opprette et notat for den markerte teksten, og rediger notattekst, uthevingsfarge, type og tagg",
+                    "name": "Opprett notat"
+                },
+                "AnnotationsCreateQuick": {
+                    "description": "Opprett raskt et notat for den markerte teksten med sist brukte uthevingsfarge og -type (notattekst og tagg blir tomme)",
+                    "name": "Opprett notat raskt"
+                },
+                "AnnotationsToggleMargin": {
+                    "description": "Bytt mellom å vise markører for notater og bokmerker i dokumentmargen eller i teksten",
+                    "name": "Bytt plassering av notatmarkører"
+                },
+                "AudioNext": {
+                    "description": "Gå frem til neste lydsegment i opplesingen (EPUB 3 Media Overlays, talesyntese eller forhåndsinnspilt lydbok)",
+                    "name": "Neste lydsegment"
+                },
+                "AudioNextAlt": {
+                    "description": "Gå frem til neste lydsegment i opplesingen (EPUB 3 Media Overlays, talesyntese eller forhåndsinnspilt lydbok). Innhold som kan hoppes over, blir hoppet over",
+                    "name": "Neste lydsegment (hopp over)"
+                },
+                "AudioPlayPause": {
+                    "description": "Start eller sett gjeldende opplesing på pause (EPUB 3 Media Overlays, talesyntese eller forhåndsinnspilt lydbok)",
+                    "name": "Spill av / pause lyd"
+                },
+                "AudioPrevious": {
+                    "description": "Gå tilbake til forrige lydsegment i opplesingen (EPUB 3 Media Overlays, talesyntese eller forhåndsinnspilt lydbok)",
+                    "name": "Forrige lydsegment"
+                },
+                "AudioPreviousAlt": {
+                    "description": "Gå tilbake til forrige lydsegment i opplesingen (EPUB 3 Media Overlays, talesyntese eller forhåndsinnspilt lydbok). Innhold som kan hoppes over, blir hoppet over",
+                    "name": "Forrige lydsegment (hopp over)"
+                },
+                "AudioStop": {
+                    "description": "Stopp gjeldende lydavspilling (EPUB 3 Media Overlays, talesyntese eller forhåndsinnspilt lydbok)",
+                    "name": "Stopp lyd"
+                },
+                "CloseReader": {
+                    "description": "Lukk leservinduet og gå tilbake til biblioteket",
+                    "name": "Lukk leser"
+                },
+                "FXLZoomIn": {
+                    "description": "Zoom inn på én side eller et tosiders oppslag med fast layout.",
+                    "name": "Zoom inn i fast layout"
+                },
+                "FXLZoomOut": {
+                    "description": "Zoom ut fra én side eller et tosiders oppslag med fast layout.",
+                    "name": "Zoom ut av fast layout"
+                },
+                "FXLZoomReset": {
+                    "description": "Tilbakestill zoom for én side eller et tosiders oppslag med fast layout.",
+                    "name": "Tilbakestill zoom i fast layout"
+                },
+                "FocusMain": {
+                    "description": "Flytt tastaturfokus til «main»-landemerket i brukergrensesnittet. I leservinduet flyttes fokus til innholdet i publikasjonen",
+                    "name": "Flytt fokus til hovedinnhold"
+                },
+                "FocusMainDeep": {
+                    "description": "Flytt tastaturfokus inn i innholdet i publikasjonen ved hjelp av en metode som fungerer mer pålitelig med skjermlesere",
+                    "name": "Flytt fokus direkte til hovedinnhold"
+                },
+                "FocusReaderGotoPage": {
+                    "description": "Flytt tastaturfokus til «Gå til side» i navigasjonspanelet",
+                    "name": "Flytt fokus til «Gå til side»"
+                },
+                "FocusReaderNavigation": {
+                    "description": "Flytt tastaturfokus til navigasjonspanelet i leservinduet",
+                    "name": "Flytt fokus til navigasjonspanelet"
+                },
+                "FocusReaderNavigationAnnotations": {
+                    "description": "Flytt tastaturfokus til delen «Notater» i navigasjonspanelet",
+                    "name": "Flytt fokus til «Notater»"
+                },
+                "FocusReaderNavigationBookmarks": {
+                    "description": "Flytt tastaturfokus til delen «Bokmerker» i navigasjonspanelet",
+                    "name": "Flytt fokus til «Bokmerker»"
+                },
+                "FocusReaderNavigationSearch": {
+                    "description": "Flytt tastaturfokus til delen «Søk» i navigasjonspanelet",
+                    "name": "Flytt fokus til «Søk»"
+                },
+                "FocusReaderNavigationTOC": {
+                    "description": "Flytt tastaturfokus til innholdsfortegnelsen i navigasjonspanelet",
+                    "name": "Flytt fokus til innholdsfortegnelsen"
+                },
+                "FocusReaderSettings": {
+                    "description": "Flytt tastaturfokus til innstillingspanelet i leservinduet (visningsinnstillinger osv.)",
+                    "name": "Flytt fokus til leseinnstillinger"
+                },
+                "FocusSearch": {
+                    "description": "Flytt tastaturfokus til tekstsøk i leservinduet. I bibliotekvinduet brukes søket på bokhyllen eller den aktive OPDS-katalogen",
+                    "name": "Søk"
+                },
+                "FocusToolbar": {
+                    "description": "Flytt tastaturfokus til verktøylinjen i brukergrensesnittet, rett før lenken for å hoppe til hovedinnholdet",
+                    "name": "Flytt fokus til verktøylinjen"
+                },
+                "NavigateNextChapter": {
+                    "description": "Gå til neste dokument i publikasjonens leserekkefølge (for eksempel neste kapittel). Det finnes også en alternativ hurtigtast",
+                    "name": "Gå til neste kapittel"
+                },
+                "NavigateNextChapterAlt": {
+                    "description": "Gå til neste dokument i publikasjonens leserekkefølge (for eksempel neste kapittel). Dette er en alternativ hurtigtast",
+                    "name": "Gå til neste kapittel (alternativ)"
+                },
+                "NavigateNextHistory": {
+                    "description": "Gå ett trinn fremover i navigasjonshistorikken",
+                    "name": "Gå fremover i historikken"
+                },
+                "NavigateNextLibraryPage": {
+                    "description": "Vis neste side i en sideinndelt liste over publikasjoner i bibliotekvinduet. Det finnes også en alternativ hurtigtast",
+                    "name": "Neste side i biblioteket"
+                },
+                "NavigateNextLibraryPageAlt": {
+                    "description": "Vis neste side i en sideinndelt liste over publikasjoner i bibliotekvinduet. Dette er en alternativ hurtigtast",
+                    "name": "Neste side i biblioteket (alternativ)"
+                },
+                "NavigateNextOPDSPage": {
+                    "description": "Følg lenken til neste side i en OPDS-katalog. Det finnes også en alternativ hurtigtast",
+                    "name": "Neste OPDS-side"
+                },
+                "NavigateNextOPDSPageAlt": {
+                    "description": "Følg lenken til neste side i en OPDS-katalog. Dette er en alternativ hurtigtast",
+                    "name": "Neste OPDS-side (alternativ)"
+                },
+                "NavigateNextPage": {
+                    "description": "Gå til neste «side» i publikasjonen. Det finnes også en alternativ hurtigtast",
+                    "name": "Gå til neste side"
+                },
+                "NavigateNextPageAlt": {
+                    "description": "Gå til neste «side» i publikasjonen. Dette er en alternativ hurtigtast",
+                    "name": "Gå til neste side (alternativ)"
+                },
+                "NavigatePreviousChapter": {
+                    "description": "Gå til forrige dokument i publikasjonens leserekkefølge (for eksempel forrige kapittel). Det finnes også en alternativ hurtigtast",
+                    "name": "Gå til forrige kapittel"
+                },
+                "NavigatePreviousChapterAlt": {
+                    "description": "Gå til forrige dokument i publikasjonens leserekkefølge (for eksempel forrige kapittel). Dette er en alternativ hurtigtast",
+                    "name": "Gå til forrige kapittel (alternativ)"
+                },
+                "NavigatePreviousHistory": {
+                    "description": "Gå ett trinn bakover i navigasjonshistorikken",
+                    "name": "Gå bakover i historikken"
+                },
+                "NavigatePreviousLibraryPage": {
+                    "description": "Vis forrige side i en sideinndelt liste over publikasjoner i bibliotekvinduet. Det finnes også en alternativ hurtigtast",
+                    "name": "Forrige side i biblioteket"
+                },
+                "NavigatePreviousLibraryPageAlt": {
+                    "description": "Vis forrige side i en sideinndelt liste over publikasjoner i bibliotekvinduet. Dette er en alternativ hurtigtast",
+                    "name": "Forrige side i biblioteket (alternativ)"
+                },
+                "NavigatePreviousOPDSPage": {
+                    "description": "Følg lenken til forrige side i en OPDS-katalog. Det finnes også en alternativ hurtigtast",
+                    "name": "Forrige OPDS-side"
+                },
+                "NavigatePreviousOPDSPageAlt": {
+                    "description": "Følg lenken til forrige side i en OPDS-katalog. Dette er en alternativ hurtigtast",
+                    "name": "Forrige OPDS-side (alternativ)"
+                },
+                "NavigatePreviousPage": {
+                    "description": "Gå til forrige «side» i publikasjonen. Det finnes også en alternativ hurtigtast",
+                    "name": "Gå til forrige side"
+                },
+                "NavigatePreviousPageAlt": {
+                    "description": "Gå til forrige «side» i publikasjonen. Dette er en alternativ hurtigtast",
+                    "name": "Gå til forrige side (alternativ)"
+                },
+                "NavigateToBegin": {
+                    "description": "Gå til begynnelsen av publikasjonen",
+                    "name": "Gå til begynnelsen"
+                },
+                "NavigateToEnd": {
+                    "description": "Gå til slutten av publikasjonen",
+                    "name": "Gå til slutten"
+                },
+                "OpenReaderInfo": {
+                    "description": "Åpne informasjonsdialogen for publikasjonen",
+                    "name": "Vis publikasjonsinformasjon"
+                },
+                "OpenReaderInfoWhereAmI": {
+                    "description": "Åpne informasjonsdialogen for publikasjonen og flytt tastaturfokus til delen som viser sammenhengen for gjeldende leseposisjon",
+                    "name": "Vis publikasjonsinformasjon og leseposisjon"
+                },
+                "Print": {
+                    "description": "Åpne utskriftsdialogen i leservinduet",
+                    "name": "Skriv ut"
+                },
+                "SearchNext": {
+                    "description": "Gå til neste søkeresultat i leservinduets søkeverktøy. Det finnes også en alternativ hurtigtast",
+                    "name": "Neste søkeresultat"
+                },
+                "SearchNextAlt": {
+                    "description": "Gå til neste søkeresultat i leservinduets søkeverktøy. Dette er en alternativ hurtigtast",
+                    "name": "Neste søkeresultat (alternativ)"
+                },
+                "SearchPrevious": {
+                    "description": "Gå til forrige søkeresultat i leservinduets søkeverktøy. Det finnes også en alternativ hurtigtast",
+                    "name": "Forrige søkeresultat"
+                },
+                "SearchPreviousAlt": {
+                    "description": "Gå til forrige søkeresultat i leservinduets søkeverktøy. Dette er en alternativ hurtigtast",
+                    "name": "Forrige søkeresultat (alternativ)"
+                },
+                "SpeakReaderInfoWhereAmI": {
+                    "description": "Beskriv sammenhengen for gjeldende leseposisjon med tekst som er egnet for opplesing med skjermleser",
+                    "name": "Beskriv leseposisjonen (tale)"
+                },
+                "ToggleBookmark": {
+                    "description": "Legg til et nytt bokmerke, eller fjern det eksisterende bokmerket hvis posisjonen allerede er bokmerket",
+                    "name": "Legg til eller fjern bokmerke"
+                },
+                "ToggleReaderFullscreen": {
+                    "description": "Aktiver fullskjermmodus eller gå tilbake til vanlig vindusmodus. Dette er ikke det samme som «zen-modus», som forenkler brukergrensesnittet",
+                    "name": "Slå fullskjerm av/på"
+                }
+            },
+            "loadUserJson": "Åpne fra brukerfil",
+            "noShortcutFound": "Fant ingen hurtigtast med denne betegnelsen",
+            "resetDefaults": "Tilbake til standard",
+            "save": "Lagre",
+            "searchPlaceholder": "Skriv for å søke etter en hurtigtast"
+        },
+        "language": {
+            "languageChoice": "Språkvalg"
+        },
+        "library": {
+            "enableAPIAPP": "Aktiver bibliotekssystemet «PNB»",
+            "title": "Tilgang til franske bibliotekkontoer"
+        },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "Last inn standardmal",
+                "enableCheckbox": "Tilpass HTML-malen",
+                "overrideHTMLTemplate": "Eksport av notater (notater og bokmerker)"
+            }
+        },
+        "profiles": {
+            "info": "Bytt profil for å tilpasse programmet med en samarbeidspartners profilering og farger. Hver profil gir en tilpasset brukeropplevelse.",
+            "thorium": {
+                "description": "Thorium Vanilla er den opprinnelige profilen, utformet av EDRLab.",
+                "title": "Thorium Vanilla"
+            },
+            "version": "Versjon: {{- version}}"
+        },
+        "screenReaderActivate": {
+            "help": "Når programmet oppdager at hjelpemiddelteknologi er i bruk, tilpasses brukergrensesnittet for å fungere bedre med skjermlesere",
+            "message": "Forbedret støtte for skjermlesere",
+            "title": "Forbedre skjermleseropplevelsen"
+        },
+        "session": {
+            "title": "Lagre økt"
+        },
+        "tabs": {
+            "appearance": "Utseende",
+            "general": "Generelt",
+            "keyboardShortcuts": "Hurtigtaster",
+            "profiles": "Profiler"
+        },
+        "theme": {
+            "auto": "Automatisk",
+            "dark": "Mørk",
+            "description": "Programtemaet følger innstillingene i operativsystemet.",
+            "light": "Lys",
+            "title": "Programtema"
+        }
+    },
+    "tts": {
+        "highlight": {
+            "mainColor": "Hovedfarge",
+            "maskBlockWordOutline": "Maskert tekstblokk, ord med omriss",
+            "maskBlockWordSolidBackground": "Maskert tekstblokk, ord med heldekkende bakgrunn",
+            "maskBlockWordUnderline": "Maskert tekstblokk, understreket ord",
+            "maskWordOutline": "Maskering, ord med omriss",
+            "maskWordSolidBackground": "Maskering, ord med heldekkende bakgrunn",
+            "maskWordUnderline": "Maskering, understreket ord",
+            "outlineWordOutline": "Omriss, ord med omriss",
+            "outlineWordSolidBackground": "Omriss, ord med heldekkende bakgrunn",
+            "outlineWordUnderline": "Omriss, understreket ord",
+            "preview": "Forhåndsvisning av utheving ved talesyntese",
+            "solidBackgroundWordOutline": "Heldekkende bakgrunn, ord med omriss",
+            "solidBackgroundWordSolidBackground": "Heldekkende bakgrunn, ord med heldekkende bakgrunn",
+            "solidBackgroundWordUnderline": "Heldekkende bakgrunn, understreket ord",
+            "style": "Uthevingsstil for talesyntese",
+            "underlineWordOutline": "Understreking, ord med omriss",
+            "underlineWordSolidBackground": "Understreking, ord med heldekkende bakgrunn",
+            "underlineWordUnderline": "Understreking, understreket ord",
+            "wordColor": "Ordfarge"
+        }
+    }
+}
