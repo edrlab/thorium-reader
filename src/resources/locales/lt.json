@@ -1329,26 +1329,26 @@
             },
             "recovery": {
                 "actions": {
-                    "check": "",
-                    "checkAgain": "",
+                    "check": "Tikrinti, ar yra atkurtinų leidinių",
+                    "checkAgain": "Tikrinti dar kartą",
                     "recover": "Atkurti leidinius",
                     "recovering": "Atkuriama..."
                 },
                 "available": "",
-                "checking": "",
+                "checking": "Tikrinama leidinių saugykla...",
                 "description": "",
                 "dialog": {
                     "confirm": "Atkurti",
                     "description_few": "",
                     "description_one": "",
                     "description_other": "",
-                    "title": ""
+                    "title": "Atkurti leidinius"
                 },
-                "none": "",
+                "none": "Nerasta atkurtinų leidinių.",
                 "recoverableCount_few": "",
                 "recoverableCount_one": "",
                 "recoverableCount_other": "",
-                "title": ""
+                "title": "Atkūrimas"
             }
         },
         "tabs": {
@@ -1359,9 +1359,9 @@
             "storage": "Saugykla"
         },
         "telemetry": {
-            "disableTelemetryMeasurements": "",
-            "disableTelemetryMeasurementsDescription": "",
-            "title": ""
+            "disableTelemetryMeasurements": "Išjungti telemetrijos matavimus",
+            "disableTelemetryMeasurementsDescription": "Kai įgalinta, Thorium nesiunčia telemetrijos duomenų.",
+            "title": "Telemetrija"
         },
         "theme": {
             "auto": "Automatinė",
