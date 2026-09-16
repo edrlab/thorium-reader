@@ -12,7 +12,6 @@ import { ICommonRootState } from "readium-desktop/common/redux/states/commonRoot
 import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import { shell } from "electron";
 import * as React from "react";
-import * as Dialog from "@radix-ui/react-dialog";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
@@ -40,6 +39,7 @@ import classNames from "classnames";
 import * as LibraryIcon from "readium-desktop/renderer/assets/icons/library-icon.svg";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { DialogRAC } from "readium-desktop/renderer/common/components/DialogComponent";
 
 const context = React.createContext<{
     selectSearchResult: IApiappSearchResultView;
@@ -201,6 +201,7 @@ export const ApiappAddFormDialog = () => {
     const [__] = useTranslator();
     const [, apiAddFeedAction] = useApi(undefined, "opds/addFeed");
     const [selectSearchResult, setSelectSearchResult] = React.useState<IApiappSearchResultView>(undefined);
+    const [isOpen, setIsOpen] = React.useState(false);
 
     const addFeedAction = React.useCallback(() => {
         if (!selectSearchResult?.name || !selectSearchResult?.id || !selectSearchResult?.url) {
@@ -216,8 +217,12 @@ export const ApiappAddFormDialog = () => {
 
     const enableAPIAPP = useSelector((state: ILibraryRootState) => state.settings.enableAPIAPP);
 
-    return <Dialog.Root>
-        <Dialog.Trigger asChild>
+    return <DialogRAC
+        isOpen={isOpen}
+        title={__("opds.addFormApiapp.title")}
+        overlayClassName={stylesModals.modal_dialog_overlay}
+        onOpenChange={setIsOpen}
+        trigger={
             <button
                 style={{ display: enableAPIAPP ? "" : "none" }}
                 className={stylesButtons.button_nav_primary}
@@ -225,20 +230,17 @@ export const ApiappAddFormDialog = () => {
                 <SVG ariaHidden={true} svg={LibraryIcon} />
                 <span>{__("opds.addFormApiapp.title")}</span>
             </button>
-        </Dialog.Trigger>
-        <Dialog.Portal>
-            <div className={stylesModals.modal_dialog_overlay}></div>
-            <Dialog.Content className={stylesModals.modal_dialog} aria-describedby={undefined}>
+        }
+        content={
+            <>
                 <div className={stylesModals.modal_dialog_header}>
-                    <Dialog.Title>
+                    <h1>
                         {__("opds.addFormApiapp.title")}
-                    </Dialog.Title>
+                    </h1>
                     <div>
-                        <Dialog.Close asChild>
-                            <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
-                                <SVG ariaHidden={true} svg={QuitIcon} />
-                            </button>
-                        </Dialog.Close>
+                        <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")} onClick={() => setIsOpen(false)}>
+                            <SVG ariaHidden={true} svg={QuitIcon} />
+                        </button>
                     </div>
                 </div>
                 <form className={stylesModals.modal_dialog_body}>
@@ -247,20 +249,17 @@ export const ApiappAddFormDialog = () => {
                         <ApiappAddForm />
                         </div>
                         <div className={stylesModals.modal_dialog_footer}>
-                            <Dialog.Close asChild>
-                                <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
-                            </Dialog.Close>
-                            <Dialog.Close asChild>
-                                <button type="submit" ref={submitButtonRef} className={stylesButtons.button_primary_blue} onClick={() => {
+                            <button type="button" className={stylesButtons.button_secondary_blue} onClick={() => setIsOpen(false)}>{__("dialog.cancel")}</button>
+                            <button type="submit" ref={submitButtonRef} className={stylesButtons.button_primary_blue} onClick={() => {
                                     addFeedAction();
+                                    setIsOpen(false);
                                 }}>
-                                    <SVG ariaHidden svg={AddIcon} />
-                                    {__("opds.addForm.addButton")}</button>
-                            </Dialog.Close>
+                                <SVG ariaHidden svg={AddIcon} />
+                                {__("opds.addForm.addButton")}</button>
                         </div>
                     </context.Provider>
                 </form>
-            </Dialog.Content>
-        </Dialog.Portal>
-    </Dialog.Root>;
+            </>
+        }
+    />;
 };

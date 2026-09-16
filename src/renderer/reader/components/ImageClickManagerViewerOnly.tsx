@@ -16,7 +16,6 @@ import * as MinusIcon from "readium-desktop/renderer/assets/icons/Minus-Bold.svg
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
-import * as Dialog from "@radix-ui/react-dialog";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { readerLocalActionSetImageClick } from "../redux/actions";
 import classNames from "classnames";
@@ -27,6 +26,7 @@ import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-
 import { TransformWrapper, TransformComponent, useControls } from "react-zoom-pan-pinch";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { DialogRAC } from "readium-desktop/renderer/common/components/DialogComponent";
 
 const Controls = () => {
     const { zoomIn, zoomOut, resetTransform } = useControls();
@@ -98,24 +98,26 @@ export const ImageClickManagerImgViewerOnly: React.FC = () => {
 
     return (<>
 
-        <Dialog.Root open={open} onOpenChange={(openState: boolean) => {
-            if (openState == false) {
-                dispatch(readerLocalActionSetImageClick.build());
-            }
-        }}
-        >
-            <Dialog.Portal>
-                <div className={stylesModals.modal_dialog_overlay}></div>
-                <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined} style={{ minWidth: "85%", minHeight: "85%", padding: "5px 10px", width: "unset", maxWidth: "calc(100% - 100px)", maxHeight: "calc(100% - 100px)" }} >
+        <DialogRAC
+            isOpen={open}
+            title={__("reader.imgViewer.title")}
+            overlayClassName={stylesModals.modal_dialog_overlay}
+            contentClassName={classNames(stylesModals.modal_dialog)}
+            contentStyle={{ minWidth: "85%", minHeight: "85%", padding: "5px 10px", width: "unset", maxWidth: "calc(100% - 100px)", maxHeight: "calc(100% - 100px)" }}
+            onOpenChange={(openState) => {
+                if (openState === false) {
+                    dispatch(readerLocalActionSetImageClick.build());
+                }
+            }}
+            content={
+                <>
                     <VisuallyHidden>
-                        <Dialog.DialogTitle>{__("reader.imgViewer.title")}</Dialog.DialogTitle>
+                        <h1>{__("reader.imgViewer.title")}</h1>
                     </VisuallyHidden>
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "end" }}>
-                        <Dialog.Close asChild>
-                            <button style={{ zIndex: 105 }} className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
-                                <SVG ariaHidden={true} svg={QuitIcon} />
-                            </button>
-                        </Dialog.Close>
+                        <button style={{ zIndex: 105 }} className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")} onClick={() => dispatch(readerLocalActionSetImageClick.build())}>
+                            <SVG ariaHidden={true} svg={QuitIcon} />
+                        </button>
                     </div>
                     <div style={{ display: "flex", flexDirection: "column", padding: "5px 10px", alignItems: "center", flex: 1 }}>
                         <div style={{ position: "relative", display: "flex", gap: 10, width: "100%", height: "100%", paddingLeft: 5, flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -134,8 +136,8 @@ export const ImageClickManagerImgViewerOnly: React.FC = () => {
                             </TransformWrapper>
                         </div>
                     </div>
-                </Dialog.Content>
-            </Dialog.Portal>
-        </Dialog.Root>
+                </>
+            }
+        />
     </>);
 };

@@ -15,8 +15,6 @@ import classNames from "classnames";
 import debug_ from "debug";
 import * as React from "react";
 import * as Popover from "@radix-ui/react-popover";
-import * as Dialog from "@radix-ui/react-dialog";
-import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
 // import * as ReactDOM from "react-dom";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
@@ -78,6 +76,7 @@ import { AnnotationEdit } from "./AnnotationEdit";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import { VoiceSelection } from "./header/voiceSelection";
 import type { TLanguage } from "./header/voiceSelection";
+import { DialogRAC } from "readium-desktop/renderer/common/components/DialogComponent";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 
 // TypeScript GO:
@@ -425,7 +424,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
     // }
 
 
-    private __closeNavPanel = false;
 
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
@@ -873,11 +871,17 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     {...(this.props.pdfPrintOpen &&
                                         { style: { backgroundColor: "var(--color-brand-primary)" } })}
                                 >
-                                    <Dialog.Root open={this.props.pdfPrintOpen} onOpenChange={(open) => {
-                                        this.props.setShortcutEnable(!open);
-                                        this.props.setPdfPrintOpen(open);
-                                    }}>
-                                        <Dialog.Trigger asChild>
+                                    <DialogRAC
+                                        isOpen={this.props.pdfPrintOpen}
+                                        title={__("reader.print.title")}
+                                        onOpenChange={(open) => {
+                                            this.props.setShortcutEnable(!open);
+                                            this.props.setPdfPrintOpen(open);
+                                        }}
+                                        UNSTABLE_portalContainer={appOverlayElement ?? undefined}
+                                        contentClassName={classNames(stylesPopoverDialog.modal_dialog_reader, stylesPrint.modal_dialog_print)}
+                                        contentStyle={{ zIndex: 101, height: "fit-content" }}
+                                        trigger={
                                             <button
                                                 disabled={!!this.props.publicationView.lcp?.rights && this.props.publicationView.lcp.rights.print < 1}
                                                 aria-pressed={this.props.pdfPrintOpen}
@@ -887,17 +891,18 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             >
                                                 <SVG ariaHidden svg={PrinterIcon} className={this.props.pdfPrintOpen ? stylesReaderHeader.active_svg : ""} />
                                             </button>
-                                        </Dialog.Trigger>
-                                        <Dialog.Portal container={appOverlayElement}>
-                                            <Dialog.Content style={{ zIndex: 101, height: "fit-content" }}
-                                            className={classNames(stylesPopoverDialog.modal_dialog_reader, stylesPrint.modal_dialog_print)}
-                                            // onPointerDownOutside={(e) => { e.preventDefault(); console.log("annotationPopover onPointerDownOutside"); }}
-                                            // onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}
-                                            >
-                                                <PrintContainer pdfPageRange={[1, this.props.pdfPlayerNumberOfPages]} pdfThumbnailImageCacheArray={this.props.pdfThumbnailImageCacheArray} />
-                                            </Dialog.Content>
-                                        </Dialog.Portal>
-                                    </Dialog.Root>
+                                        }
+                                        content={
+                                            <PrintContainer
+                                                pdfPageRange={[1, this.props.pdfPlayerNumberOfPages]}
+                                                pdfThumbnailImageCacheArray={this.props.pdfThumbnailImageCacheArray}
+                                                onClose={() => {
+                                                    this.props.setShortcutEnable(true);
+                                                    this.props.setPdfPrintOpen(false);
+                                                }}
+                                            />
+                                        }
+                                    />
                                 </li>
                                 : <></>
                         }
@@ -993,207 +998,119 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
                             {/* { this.props.menuOpen ? */}
 
-                            <Dialog.Root
-                                open={this.props.menuOpen}
-                                onOpenChange={(open) => {
-                                    console.log("MENU DialogOnOpenChange", open);
-                                    // this.props.handleMenuClick(open);
-
-                                    this.props.toggleMenu({ open });
-                                    if (open) {
-                                        // if (!this.props.isDivina  && !this.props.isPdf) {
-                                        //     stealFocusDisable(true);
-                                        // }
-                                        this.__closeNavPanel = false;
-                                    } else {
-                                        // if (!this.props.isDivina  && !this.props.isPdf) {
-                                        //     stealFocusDisable(false);
-                                        // }
-                                    }
+                            <DialogRAC
+                                isOpen={!isDockedMode && this.props.menuOpen}
+                                title={__("reader.navigation.openTableOfContentsTitle")}
+                                UNSTABLE_portalContainer={appOverlayElement ?? undefined}
+                                contentClassName={containerClassName}
+                                contentStyle={{
+                                    borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
+                                    borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-gray-100)" : "",
+                                    right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
+                                    left: "",
+                                    height: "",
+                                    marginTop: "0px",
                                 }}
-                                modal={!isDockedMode}
-                            >
-                                <Dialog.Trigger asChild>
+                                onOpenChange={(open) => {
+                                    this.props.toggleMenu({ open });
+                                }}
+                                trigger={
                                     <button
                                         aria-pressed={this.props.menuOpen}
                                         aria-label={__("reader.navigation.openTableOfContentsTitle")}
                                         className={stylesReader.menu_button}
-                                        // onClick={this.props.handleMenuClick.bind(this)}
                                         ref={this.navigationMenuButtonRef}
                                         title={__("reader.navigation.openTableOfContentsTitle")}
                                     >
                                         <SVG ariaHidden={true} svg={TOCIcon} className={this.props.menuOpen ? stylesReaderHeader.active_svg : ""} />
                                     </button>
-                                </Dialog.Trigger>
-                                <Dialog.Portal container={appOverlayElement}>
-                                                <VisuallyHidden.Root>
-                                                    <Dialog.Title asChild>
-                                                        <h1>
-                                                            {__("reader.navigation.openTableOfContentsTitle")}
-                                                        </h1>
-                                                    </Dialog.Title>
-                                                </VisuallyHidden.Root>
-                                    {
-                                        isDockedMode ?
-                                            <div
-                                                className={containerClassName}
-                                                style={{
-                                                    borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
-                                                    borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-gray-100)" : "",
-                                                    right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
-                                                    left: (this.props.readerConfig.readerDockingMode === "left") ? "0" : "",
-                                                    height: (isOnSearch) ? "calc(100dvh - 159px)" : "",
-                                                    marginTop: (!isOnSearch) ? "70px" : "20px",
-                                                }}
-                                            >
-                                                <ReaderMenu
-                                                    {...this.props.readerMenuProps}
-                                                    isDivina={this.props.isDivina}
-                                                    isPdf={this.props.isPdf}
-                                                    isAudiobook={this.props.isAudiobook}
-                                                    currentLocation={this.props.currentLocation}
-                                                    // focusNaviguationMenu={this.focusNaviguationMenuButton}
-                                                    // handleMenuClick={this.props.handleMenuClick}
-                                                />
-                                            </div>
-                                        :
-                                            <Dialog.Content
-                                                // onFocusOutside={(e) => {
-                                                // console.log(e);
-                                                // }}
-                                                // onPointerDownOutside={(e) => {
-                                                //     if (this.props.readerPopoverDialogContext.dockedMode) {
-                                                //         e.preventDefault();
-                                                //     }
-                                                //     console.log("MenuModal onPointerDownOutside");
-                                                // }}
-                                                // onInteractOutside={(e) => {
-                                                //     if (this.props.readerPopoverDialogContext.dockedMode) {
-                                                //         e.preventDefault();
-                                                //     }
-                                                //     console.log("MenuModal onInteractOutside");
-                                                // }}
-                                                onCloseAutoFocus={(e) => {
-                                                    if (this.__closeNavPanel) {
-                                                        e.preventDefault();
-                                                    }
-                                                    console.log("MenuModal onCloseAutoFocus");
-                                                }}
-                                                className={containerClassName}
-                                                style={{
-                                                    borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
-                                                    borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-gray-100)" : "",
-                                                    right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
-                                                    left: /*(isDockedMode && this.props.readerConfig.readerDockingMode === "left") ? "0" :*/ "",
-                                                    height: /*(isDockedMode && isOnSearch) ? "calc(100dvh - 159px)" :*/ "",
-                                                    marginTop: /*(isDockedMode && !isOnSearch) ? "70px" :*/ "0px",
-                                                }}
-                                                aria-describedby={undefined}
-                                            >
-                                                <ReaderMenu
-                                                    {...this.props.readerMenuProps}
-                                                    handleLinkClick={(event, url, closeNavPanel) => {
-                                                        this.props.readerMenuProps.handleLinkClick(event, url, closeNavPanel);
-                                                        if (closeNavPanel) {
-                                                            this.__closeNavPanel = true;
-                                                        }
-                                                    }}
-                                                    isDivina={this.props.isDivina}
-                                                    isPdf={this.props.isPdf}
-                                                    isAudiobook={this.props.isAudiobook}
-                                                    currentLocation={this.props.currentLocation}
-                                                    // focusNaviguationMenu={this.focusNaviguationMenuButton}
-                                                    // handleMenuClick={this.props.handleMenuClick}
-                                                />
-                                            </Dialog.Content>
-                                    }
-                                </Dialog.Portal>
-                            </Dialog.Root>
+                                }
+                                content={
+                                    <ReaderMenu
+                                        {...this.props.readerMenuProps}
+                                        handleLinkClick={(event, url, closeNavPanel) => {
+                                            this.props.readerMenuProps.handleLinkClick(event, url, closeNavPanel);
+                                        }}
+                                        isDivina={this.props.isDivina}
+                                        isPdf={this.props.isPdf}
+                                        isAudiobook={this.props.isAudiobook}
+                                        currentLocation={this.props.currentLocation}
+                                    />
+                                }
+                            />
+                            {isDockedMode && this.props.menuOpen ?
+                                <div
+                                    className={containerClassName}
+                                    style={{
+                                        borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
+                                        borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-gray-100)" : "",
+                                        right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
+                                        left: (this.props.readerConfig.readerDockingMode === "left") ? "0" : "",
+                                        height: (isOnSearch) ? "calc(100dvh - 159px)" : "",
+                                        marginTop: (!isOnSearch) ? "70px" : "20px",
+                                    }}
+                                >
+                                    <ReaderMenu
+                                        {...this.props.readerMenuProps}
+                                        isDivina={this.props.isDivina}
+                                        isPdf={this.props.isPdf}
+                                        isAudiobook={this.props.isAudiobook}
+                                        currentLocation={this.props.currentLocation}
+                                    />
+                                </div>
+                                : <></>}
                         </li>
                         <li
                             {...(this.props.settingsOpen &&
                                 { style: { backgroundColor: "var(--color-brand-primary)" } })}
                         >
-                            <Dialog.Root
-                                open={this.props.settingsOpen}
-                                onOpenChange={(open) => {
-                                    console.log("SETTINGS DialogOnOpenChange", open);
-                                    this.props.toggleSettings({ open });
-                                    // this.props.handleSettingsClick(open);
-                                    // if (open) {
-                                    //     if (!this.props.isDivina  && !this.props.isPdf) {
-                                    //         stealFocusDisable(true);
-                                    //     }
-                                    //     // this.__closeNavPanel = false;
-                                    // } else {
-                                    //     if (!this.props.isDivina  && !this.props.isPdf) {
-                                    //         stealFocusDisable(false);
-                                    //     }
-                                    // }
+                            <DialogRAC
+                                isOpen={!isDockedMode && this.props.settingsOpen}
+                                title={__("reader.navigation.settingsTitle")}
+                                UNSTABLE_portalContainer={appOverlayElement ?? undefined}
+                                contentClassName={containerClassName}
+                                contentStyle={{
+                                    borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
+                                    borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-gray-100)" : "",
+                                    right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
+                                    left: "",
+                                    height: "",
+                                    marginTop: "0px",
                                 }}
-                                modal={!isDockedMode}
-                            >
-                                <Dialog.Trigger asChild>
+                                onOpenChange={(open) => {
+                                    this.props.toggleSettings({ open });
+                                }}
+                                trigger={
                                     <button
                                         aria-pressed={this.props.settingsOpen}
                                         aria-label={__("reader.navigation.settingsTitle")}
                                         className={stylesReader.menu_button}
-                                        // onClick={() => this.props.handleSettingsClick()}
-                                        // ref={this.settingsMenuButtonRef}
                                         title={__("reader.navigation.settingsTitle")}
                                     >
                                         <SVG ariaHidden={true} svg={SettingsIcon} className={this.props.settingsOpen ? stylesReaderHeader.active_svg : ""} />
                                     </button>
-                                </Dialog.Trigger>
-                                <Dialog.Portal container={appOverlayElement}>
-                                            {/* <VisuallyHidden.Root> */}
-                                                <Dialog.Title asChild style={{width: "0", height: "0", "margin": "0"}}><h1>{__("reader.navigation.settingsTitle")}</h1></Dialog.Title>
-                                            {/* </VisuallyHidden.Root> */}
-                                    {isDockedMode ?
-                                        <div
-                                            className={containerClassName}
-                                            style={{
-                                                borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
-                                                borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-gray-100)" : "",
-                                                right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
-                                                left: this.props.readerConfig.readerDockingMode === "left" ? "0" : "",
-                                                height: isOnSearch ? "calc(100dvh - 159px)" : "",
-                                                marginTop: !isOnSearch ? "70px" : "20px",
-                                            }}
-                                        >
-                                            {/* TODO remove readerSettingsHeaderProps */}
-                                            <ReaderSettings
-                                                // {...readerSettingsHeaderProps}
-                                                {...this.props.ReaderSettingsProps}
-                                                // handleSettingsClick={this.props.handleSettingsClick}
-                                            />
-                                        </div>
-                                    :
-                                        <Dialog.Content
-                                            // onPointerDownOutside={(e) => { e.preventDefault(); console.log("settingsModal onPointerDownOutside"); }}
-                                            // onInteractOutside={(e) => { e.preventDefault(); console.log("SettingsModal onInteractOutside"); }}
-                                            className={containerClassName}
-                                            style={{
-                                                borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
-                                                borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-gray-100)" : "",
-                                                right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
-                                                left: /*isDockedMode && this.props.readerConfig.readerDockingMode === "left" ? "0" :*/ "",
-                                                height: /*isDockedMode && isOnSearch ? "calc(100dvh - 159px)" :*/ "",
-                                                marginTop: /*isDockedMode && !isOnSearch ? "70px" :*/ "0px",
-                                            }}
-                                            aria-describedby={undefined}
-                                        >
-                                            {/* TODO remove readerSettingsHeaderProps */}
-                                            <ReaderSettings
-                                                // {...readerSettingsHeaderProps}
-                                                {...this.props.ReaderSettingsProps}
-                                                // handleSettingsClick={this.props.handleSettingsClick}
-                                            />
-                                        </Dialog.Content>
-
-                                    }
-                                </Dialog.Portal>
-                            </Dialog.Root>
+                                }
+                                content={
+                                    <ReaderSettings
+                                        {...this.props.ReaderSettingsProps}
+                                    />
+                                }
+                            />
+                            {isDockedMode && this.props.settingsOpen ?
+                                <div
+                                    className={containerClassName}
+                                    style={{
+                                        borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
+                                        borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-gray-100)" : "",
+                                        right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
+                                        left: this.props.readerConfig.readerDockingMode === "left" ? "0" : "",
+                                        height: isOnSearch ? "calc(100dvh - 159px)" : "",
+                                        marginTop: !isOnSearch ? "70px" : "20px",
+                                    }}
+                                >
+                                    <ReaderSettings {...this.props.ReaderSettingsProps} />
+                                </div>
+                                : <></>}
                         </li>
                         {
                             this.props.isPdf

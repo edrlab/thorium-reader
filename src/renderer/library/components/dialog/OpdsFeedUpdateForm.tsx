@@ -11,7 +11,6 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 
 import * as React from "react";
-import * as Dialog from "@radix-ui/react-dialog";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as StarIcon from "readium-desktop/renderer/assets/icons/star-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
@@ -23,6 +22,7 @@ import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import classNames from "classnames";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { connect } from "react-redux";
+import { DialogRAC } from "readium-desktop/renderer/common/components/DialogComponent";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -38,6 +38,7 @@ interface IProps extends IBaseProps {
 }
 
 interface IState {
+    isOpen: boolean;
     title: string | undefined;
     url: string | undefined;
     favorite: boolean | undefined;
@@ -47,6 +48,7 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
         this.state = {
+            isOpen: false,
             title: props.feed?.title,
             url: props.feed?.url,
             favorite: props.feed?.favorite,
@@ -57,23 +59,22 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
         const { __ } = this.props;
         const { title, url, favorite } = this.state;
         
-        return <Dialog.Root>
-            <Dialog.Trigger asChild>
-                {this.props.trigger}
-            </Dialog.Trigger>
-            <Dialog.Portal>
-                <div className={stylesModals.modal_dialog_overlay}></div>
-                <Dialog.Content className={stylesModals.modal_dialog} aria-describedby={undefined}>
+        return <DialogRAC
+            isOpen={this.state.isOpen}
+            title={__("opds.updateForm.title")}
+            overlayClassName={stylesModals.modal_dialog_overlay}
+            onOpenChange={(isOpen) => this.setState({ isOpen })}
+            trigger={this.props.trigger as React.ReactElement}
+            content={
+                <>
                     <div className={stylesModals.modal_dialog_header}>
-                        <Dialog.Title>
+                        <h1>
                             {__("opds.updateForm.title")}
-                        </Dialog.Title>
+                        </h1>
                         <div>
-                            <Dialog.Close asChild>
-                                <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
-                                    <SVG ariaHidden={true} svg={QuitIcon} />
-                                </button>
-                            </Dialog.Close>
+                            <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")} onClick={() => this.setState({ isOpen: false })}>
+                                <SVG ariaHidden={true} svg={QuitIcon} />
+                            </button>
                         </div>
                     </div>
                     <form className={stylesModals.modal_dialog_body}>
@@ -114,17 +115,16 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
                             </button>
                         </div>
                         <div className={stylesModals.modal_dialog_footer}>
-                            <Dialog.Close asChild>
-                                <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
-                            </Dialog.Close>
-                            <Dialog.Close asChild>
-                                <button type="submit" disabled={!title || !url} className={stylesButtons.button_primary_blue} onClick={() => this.update()}>{__("opds.updateForm.updateButton")}</button>
-                            </Dialog.Close>
+                            <button type="button" className={stylesButtons.button_secondary_blue} onClick={() => this.setState({ isOpen: false })}>{__("dialog.cancel")}</button>
+                            <button type="submit" disabled={!title || !url} className={stylesButtons.button_primary_blue} onClick={() => {
+                                this.update();
+                                this.setState({ isOpen: false });
+                            }}>{__("opds.updateForm.updateButton")}</button>
                         </div>
                     </form>
-                </Dialog.Content>
-            </Dialog.Portal>
-        </Dialog.Root>;
+                </>
+            }
+        />;
     }
 
     private update = () => {

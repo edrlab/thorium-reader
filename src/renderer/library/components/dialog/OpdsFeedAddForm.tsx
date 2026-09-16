@@ -12,8 +12,8 @@ import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/componen
 
 import { shell } from "electron";
 import * as React from "react";
-import * as Dialog from "@radix-ui/react-dialog";
 import SVG from "readium-desktop/renderer/common/components/SVG";
+import { DialogRAC } from "readium-desktop/renderer/common/components/DialogComponent";
 import * as AddIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 import * as StarIcon from "readium-desktop/renderer/assets/icons/star-icon.svg";
 import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
@@ -68,6 +68,7 @@ export const OpdsFeedAddFormDialog = () => {
     const [title, setTitle] = React.useState("");
     const [url, setUrl] = React.useState("");
     const [favorite, setFavorite] = React.useState(false);
+    const [isOpen, setIsOpen] = React.useState(false);
     const addAction = () => {
         if (!title || !url) {
             return;
@@ -76,28 +77,29 @@ export const OpdsFeedAddFormDialog = () => {
     };
 
 
-    return <Dialog.Root>
-        <Dialog.Trigger asChild>
+    return <DialogRAC
+        isOpen={isOpen}
+        title={__("opds.addMenu")}
+        overlayClassName={stylesModals.modal_dialog_overlay}
+        onOpenChange={setIsOpen}
+        trigger={
             <button
                 className={classNames(stylesButtons.button_nav_primary)}
             >
                 <SVG ariaHidden={true} svg={GlobeIcon} />
                 <span>{__("opds.addMenu")}</span>
             </button>
-        </Dialog.Trigger>
-        <Dialog.Portal>
-            <div className={stylesModals.modal_dialog_overlay}></div>
-            <Dialog.Content className={stylesModals.modal_dialog} aria-describedby={undefined}>
+        }
+        content={
+            <>
                 <div className={stylesModals.modal_dialog_header}>
-                    <Dialog.Title>
+                    <h1>
                         {__("opds.addMenu")}
-                    </Dialog.Title>
+                    </h1>
                     <div>
-                        <Dialog.Close asChild>
-                            <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
-                                <SVG ariaHidden={true} svg={QuitIcon} />
-                            </button>
-                        </Dialog.Close>
+                        <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")} onClick={() => setIsOpen(false)}>
+                            <SVG ariaHidden={true} svg={QuitIcon} />
+                        </button>
                     </div>
                 </div>
                 <form className={stylesModals.modal_dialog_body}>
@@ -138,18 +140,17 @@ export const OpdsFeedAddFormDialog = () => {
                         <OpdsFeedHowDoesItWorksInfoBox />
                     </div>
                     <div className={stylesModals.modal_dialog_footer}>
-                        <Dialog.Close asChild>
-                            <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
-                        </Dialog.Close>
-                        <Dialog.Close asChild>
-                            <button type="submit" disabled={!title || !url} className={stylesButtons.button_primary_blue} onClick={() => addAction()}>
-                                <SVG ariaHidden svg={AddIcon} />
-                                {__("opds.addForm.addButton")}
-                            </button>
-                        </Dialog.Close>
+                        <button type="button" className={stylesButtons.button_secondary_blue} onClick={() => setIsOpen(false)}>{__("dialog.cancel")}</button>
+                        <button type="submit" disabled={!title || !url} className={stylesButtons.button_primary_blue} onClick={() => {
+                            addAction();
+                            setIsOpen(false);
+                        }}>
+                            <SVG ariaHidden svg={AddIcon} />
+                            {__("opds.addForm.addButton")}
+                        </button>
                     </div>
                 </form>
-            </Dialog.Content>
-        </Dialog.Portal>
-    </Dialog.Root>;
+            </>
+        }
+    />;
 };

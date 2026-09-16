@@ -13,7 +13,7 @@ import * as stylesModals from "readium-desktop/renderer/assets/styles/components
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { screenReaderActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ToastType } from "readium-desktop/common/models/toast";
-import * as Dialog from "@radix-ui/react-dialog";
+import { DialogRAC } from "readium-desktop/renderer/common/components/DialogComponent";
 
 import { Link } from "react-router-dom";
 import classNames from "classnames";
@@ -48,6 +48,33 @@ export interface NavigationHeader {
     styles: string[];
     svg: any;
 }
+
+const CustomizationScreenDialog = ({ html, title }: { html: string; title: string }) => {
+    const [isOpen, setIsOpen] = React.useState(false);
+
+    return <DialogRAC
+        isOpen={isOpen}
+        title={title}
+        overlayClassName={stylesModals.modal_dialog_overlay}
+        onOpenChange={setIsOpen}
+        trigger={
+            <button title={title} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                <SVG ariaHidden svg={InfoIcon} />
+                <h3>{title}</h3>
+            </button>
+        }
+        content={
+            <>
+                <VisuallyHidden.Root>
+                    <h1>{title}</h1>
+                </VisuallyHidden.Root>
+                {html ?
+                    <div className={stylesModals.modal_dialog_body} dangerouslySetInnerHTML={{ __html: html }} /> : <></>
+                }
+            </>
+        }
+    />;
+};
 
 const Header = () => {
 
@@ -352,36 +379,11 @@ const Header = () => {
 
                         const title = convertMultiLangStringToString(titleStringOrObject, locale);
 
-                        return <>
-                            <li className={classNames("R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} key={`customization-screen-${index}`} style={{ height: "inherit" }}>
-                                <Dialog.Root>
-                                    <Dialog.Trigger asChild>
-                                        <button title={title || __("catalog.customization.fallback.screen")} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                                            <SVG ariaHidden svg={InfoIcon} />
-                                            <h3>{title || __("catalog.customization.fallback.screen")}</h3>
-                                        </button>
-                                    </Dialog.Trigger>
-                                    <Dialog.Portal>
-                                        <div className={stylesModals.modal_dialog_overlay}></div>
-                                        <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined}>
-                                            {
-                                                // FALSE this to test sourcemaps:
-                                                true &&
-                                                <VisuallyHidden.Root>
-                                                    <Dialog.Title>{title || __("catalog.customization.fallback.screen")}</Dialog.Title>
-                                                </VisuallyHidden.Root>
-                                            }
+                        const screenTitle = title || __("catalog.customization.fallback.screen");
 
-                                            {
-                                                dangerousInnerHTML_CustomProfileScreenSanitized ?
-                                                    <div className={stylesModals.modal_dialog_body} dangerouslySetInnerHTML={{ __html: dangerousInnerHTML_CustomProfileScreenSanitized }} /> : <></>
-                                            }
-
-                                        </Dialog.Content>
-                                    </Dialog.Portal>
-                                </Dialog.Root>
-                            </li>
-                        </>;
+                        return <li className={classNames("R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} key={`customization-screen-${index}`} style={{ height: "inherit" }}>
+                            <CustomizationScreenDialog html={dangerousInnerHTML_CustomProfileScreenSanitized} title={screenTitle} />
+                        </li>;
                     }) : <></>
                 }
                 </div>

@@ -9,8 +9,6 @@ import * as stylesSettings from "readium-desktop/renderer/assets/styles/componen
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
 import * as React from "react";
-import * as Dialog from "@radix-ui/react-dialog";
-
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import * as DockLeftIcon from "readium-desktop/renderer/assets/icons/dockleft-icon.svg";
@@ -21,7 +19,7 @@ import { useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useRe
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 
 
-export const ModalControlButtons = ({ dockedMode }: { dockedMode: boolean }) => {
+export const ModalControlButtons = ({ dockedMode, onClose }: { dockedMode: boolean, onClose?: () => void }) => {
     const [__] = useTranslator();
     const setReaderConfig = useSaveReaderConfig();
 
@@ -45,11 +43,9 @@ export const ModalControlButtons = ({ dockedMode }: { dockedMode: boolean }) => 
                     <button className={stylesButtons.button_transparency_icon} disabled aria-label={__("reader.dock.dockDefault")} onClick={setDockingModeFull}>
                         <SVG ariaHidden={true} svg={DockModalIcon} />
                     </button>
-                    <Dialog.Close asChild>
-                        <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
-                            <SVG ariaHidden={true} svg={QuitIcon} />
-                        </button>
-                    </Dialog.Close>
+                    <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")} onClick={onClose}>
+                        <SVG ariaHidden={true} svg={QuitIcon} />
+                    </button>
                 </div>
             </div>
     );

@@ -34,7 +34,6 @@ import { convertMultiLangStringToLangString } from "readium-desktop/common/langu
 import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 // import PublicationInfoA11y from "./publicationInfoA11y";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import * as Dialog from "@radix-ui/react-dialog";
 import SVG from "../../SVG";
 import * as OnGoingBookIcon from "readium-desktop/renderer/assets/icons/ongoingBook-icon.svg";
 import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";
@@ -43,8 +42,9 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 
-import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+// import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { PublicationInfoA11y2 } from "./PublicationInfoA11y2";
+import {DialogRAC} from "readium-desktop/renderer/common/components/DialogComponent";
 
 
 export interface IProps {
@@ -400,10 +400,13 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
             <div className={stylePublication.publicationInfo_container}>
                 <div className={stylePublication.publicationInfo_leftSide}>
                     <div className={stylePublication.publicationInfo_leftSide_coverWrapper}>
-                        <Dialog.Root open={openCoverDialog} onOpenChange={(open) => {
-                            setOpenCoverDialog(open);
-                        }}>
-                            <Dialog.Trigger asChild>
+                        <DialogRAC
+                            isOpen={openCoverDialog}
+                            title={__("catalog.bookInfo")}
+                            onOpenChange={(open: any) => {
+                                setOpenCoverDialog(open);
+                            }}
+                            trigger={
                                 <CoverWithForwardedRef
                                     publicationViewMaybeOpds={props.publicationViewMaybeOpds}
                                     coverType="cover"
@@ -415,30 +418,24 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                                         }
                                     }
                                 />
-                            </Dialog.Trigger>
-                            <Dialog.Portal>
-                                {/* <div className={stylesModals.modal_dialog_overlay}></div> */}
-                                <Dialog.Content className={stylesModals.modal_dialog} aria-describedby={undefined}>
-                                    <VisuallyHidden.Root>
-                                        <Dialog.Title>{__("catalog.bookInfo")}</Dialog.Title>
-                                    </VisuallyHidden.Root>
-                                    <div className={stylesModals.modal_dialog_body_cover}>
-                                        <Cover
-                                            publicationViewMaybeOpds={props.publicationViewMaybeOpds}
-                                            coverType="cover"
-                                            onClick={() => setOpenCoverDialog(false)}
-                                            onKeyUp={
-                                                (e) => {
-                                                    if (e.key === "Enter") {
-                                                        setOpenCoverDialog(false);
-                                                    }
+                            }
+                            content={
+                                <div className={stylesModals.modal_dialog_body_cover}>
+                                    <Cover
+                                        publicationViewMaybeOpds={props.publicationViewMaybeOpds}
+                                        coverType="cover"
+                                        onClick={() => setOpenCoverDialog(false)}
+                                        onKeyUp={
+                                            (e) => {
+                                                if (e.key === "Enter") {
+                                                    setOpenCoverDialog(false);
                                                 }
                                             }
-                                        />
-                                    </div>
-                                </Dialog.Content>
-                            </Dialog.Portal>
-                        </Dialog.Root>
+                                        }
+                                    />
+                                </div>
+                            }
+                        />
                     </div>
                     <div className={stylePublication.publicationInfo_leftSide_buttonsWrapper}>
                         {ControlComponent ? <ControlComponent /> : <></>}
