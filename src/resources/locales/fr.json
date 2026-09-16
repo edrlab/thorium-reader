@@ -275,6 +275,7 @@
         "storage": {
             "recovery": {
                 "failure": "La récupération des publications a échoué.",
+                "success": "",
                 "success_many": "{{- count}} publications récupérées.",
                 "success_one": "{{- count}} publication récupérée.",
                 "success_other": "{{- count}} publications récupérées."
@@ -1339,12 +1340,14 @@
                 "description": "Vérifiez le stockage des publications pour trouver celles qui peuvent être récupérées en toute sécurité.",
                 "dialog": {
                     "confirm": "Récupérer",
+                    "description": "",
                     "description_many": "Thorium a trouvé {{- count}} publications sur le disque, absentes de la base de données. Voulez-vous les réimporter dans Thorium ?",
                     "description_one": "Thorium a trouvé {{- count}} publication sur le disque, absente de la base de données. Voulez-vous la réimporter dans Thorium ?",
                     "description_other": "Thorium a trouvé {{- count}} publications sur le disque, absentes de la base de données. Voulez-vous les réimporter dans Thorium ?",
                     "title": "Récupérer les publications"
                 },
                 "none": "Aucune publication récupérable n'a été trouvée.",
+                "recoverableCount": "",
                 "recoverableCount_many": "{{- count}} publications peuvent être récupérées avec leur identifiant de stockage d'origine.",
                 "recoverableCount_one": "{{- count}} publication peut être récupérée avec son identifiant de stockage d'origine.",
                 "recoverableCount_other": "{{- count}} publications peuvent être récupérées avec leur identifiant de stockage d'origine.",
