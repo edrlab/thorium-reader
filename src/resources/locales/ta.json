@@ -240,7 +240,6 @@
             "alreadyImported": "எல்லா குறிப்புகளும் ஏற்கனவே இறக்குமதி செய்யப்பட்டுள்ளன.",
             "emptyFile": "கோப்பில் குறிப்புகள் எதுவும் கிடைக்கவில்லை.",
             "errorParsing": "கோப்பு பாகுபடுத்தலின் போது பிழை: ",
-            "noBelongTo": "குறிப்புகளை இறக்குமதி செய்ய முடியவில்லை, குறைந்தது ஒரு குறிப்பையாவது வெளியீட்டிற்கு சொந்தமானது அல்ல.",
             "nothing": "இறக்குமதியை நிறுத்தி, இறக்குமதி செய்ய எந்த குறிப்பும் தயாராக இல்லை",
             "success": "இறக்குமதி வெற்றிகரமாக முடிந்தது."
         },
@@ -270,6 +269,7 @@
         "storage": {
             "recovery": {
                 "failure": "",
+                "success": "",
                 "success_one": "",
                 "success_other": ""
             },
@@ -1332,11 +1332,13 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "description_one": "",
                     "description_other": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "recoverableCount_one": "",
                 "recoverableCount_other": "",
                 "title": ""

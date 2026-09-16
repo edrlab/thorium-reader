@@ -131,3 +131,23 @@ test("Readium annotation export preserves EPUB CFI selector vocabulary", () => {
 
     expect(annotation?.target.selector).toContainEqual(epubCfiSelector);
 });
+
+test("Readium annotation export preserves the imported target when its source has no locator", () => {
+    const importedTarget = {
+        source: "unresolved/chapter.xhtml",
+        meta: {
+            page: "7",
+        },
+        selector: [epubCfiSelector],
+    };
+    const annotation = convertAnnotationStateToReadiumAnnotation(createNote({
+        locatorExtended: undefined,
+        readiumAnnotation: {
+            import: {
+                target: importedTarget,
+            },
+        },
+    }));
+
+    expect(annotation?.target).toEqual(importedTarget);
+});

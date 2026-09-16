@@ -250,7 +250,6 @@
             "alreadyImported": "Visos pastabos jau importuotos.",
             "emptyFile": "Faile nėra jokių pastabų.",
             "errorParsing": "Klaida analizuojant failą: ",
-            "noBelongTo": "Nepavyko importuoti pastabų rinkinio, nes bent viena iš pastabų nepriklauso leidiniui.",
             "nothing": "Nėra importui paruoštų pastabų, importas nutraukiamas",
             "success": "Importavimas sėkmingai užbaigtas."
         },
@@ -280,6 +279,7 @@
         "storage": {
             "recovery": {
                 "failure": "",
+                "success": "",
                 "success_few": "",
                 "success_many": "",
                 "success_one": "",
@@ -1346,6 +1346,7 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "description_few": "",
                     "description_many": "",
                     "description_one": "",
@@ -1353,6 +1354,7 @@
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "recoverableCount_few": "",
                 "recoverableCount_many": "",
                 "recoverableCount_one": "",

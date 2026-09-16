@@ -260,7 +260,6 @@
             "alreadyImported": "تم استيراد جميع الملاحظات مسبقاً.",
             "emptyFile": "لا توجد ملاحظات جاهزة للاستيراد، سيتم إلغاء العملية.",
             "errorParsing": "حدث خطأ أثناء تحليل الملف: ",
-            "noBelongTo": "تعذّر استيراد الملاحظات، فملاحظة واحدة على الأقل لا تنتمي إلى هذا المنشور.",
             "nothing": "لا توجد أي ملاحظة جاهزة للاستيراد، جاري إلغاء عملية الاستيراد",
             "success": "اكتمل الاستيراد بنجاح."
         },
@@ -290,6 +289,7 @@
         "storage": {
             "recovery": {
                 "failure": "",
+                "success": "",
                 "success_few": "",
                 "success_many": "",
                 "success_one": "",
@@ -1360,6 +1360,7 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "description_few": "",
                     "description_many": "",
                     "description_one": "",
@@ -1369,6 +1370,7 @@
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "recoverableCount_few": "",
                 "recoverableCount_many": "",
                 "recoverableCount_one": "",

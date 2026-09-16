@@ -250,7 +250,6 @@
             "alreadyImported": "Všechny poznámky byly již importovány.",
             "emptyFile": "V souboru nejsou dostupné žádné poznámky.",
             "errorParsing": "Chyba při analýze souboru: ",
-            "noBelongTo": "Poznámky nebylo možné importovat – alespoň jedna poznámka nepatří k této publikaci.",
             "nothing": "Žádná poznámka k importu, přerušuji import",
             "success": "Import úspěšně dokončen."
         },
@@ -280,6 +279,7 @@
         "storage": {
             "recovery": {
                 "failure": "",
+                "success": "",
                 "success_few": "",
                 "success_many": "",
                 "success_one": "",
@@ -1346,6 +1346,7 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "description_few": "",
                     "description_many": "",
                     "description_one": "",
@@ -1353,6 +1354,7 @@
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "recoverableCount_few": "",
                 "recoverableCount_many": "",
                 "recoverableCount_one": "",

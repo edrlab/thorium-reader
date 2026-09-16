@@ -245,7 +245,6 @@
             "alreadyImported": "Tutte le note sono già state importate.",
             "emptyFile": "Nessuna nota disponibile nel file.",
             "errorParsing": "Errore durante l'analisi del file: ",
-            "noBelongTo": "Impossibile importare le note, almeno una nota non appartiene alla pubblicazione.",
             "nothing": "Non c'è nessuna nota pronta per essere importata, l'importazione sarà interrotta",
             "success": "Importazione completata."
         },
@@ -275,6 +274,7 @@
         "storage": {
             "recovery": {
                 "failure": "Recupero delle pubblicazioni fallito.",
+                "success": "",
                 "success_many": "{{- count}} pubblicazioni recuperate.",
                 "success_one": "{{- count}} pubblicazione recuperata.",
                 "success_other": "{{- count}} pubblicazioni recuperate."
@@ -1339,12 +1339,14 @@
                 "description": "Verifica dello spazio d'archiviazione per reperire le pubblicazioni che possono essere recuperate.",
                 "dialog": {
                     "confirm": "Recupero",
+                    "description": "",
                     "description_many": "Thorium ha trovato {{- count}} pubblicazioni in memoria mancanti nel database. Desideri importarle nuovamente su Thorium?",
                     "description_one": "Thorium ha trovato {{- count}} pubblicazione in memoria mancante nel database. Desideri importarla nuovamente su Thorium?",
                     "description_other": "Thorium ha trovato {{- count}} pubblicazioni in memoria mancanti nel database. Desideri importarle nuovamente su Thorium?",
                     "title": "Recupera le pubblicazioni"
                 },
                 "none": "Non è stata trovata alcuna pubblicazione da recuperare.",
+                "recoverableCount": "",
                 "recoverableCount_many": "{{- count}} pubblicazioni possono essere recuperate con l'identificante originale d'archiviazione.",
                 "recoverableCount_one": "{{- count}} pubblicazione può essere recuperata con l'identificante originale d'archiviazione.",
                 "recoverableCount_other": "{{- count}} pubblicazioni possono essere recuperate con l'identificante originale d'archiviazione.",

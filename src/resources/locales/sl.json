@@ -250,7 +250,6 @@
             "alreadyImported": "Vse opombe so že uvožene.",
             "emptyFile": "V datoteki ni na voljo nobenih opomb.",
             "errorParsing": "Napaka med razčlenjevanjem datoteke: ",
-            "noBelongTo": "Opomb ni mogoče uvoziti, vsaj ena opomba ne pripada publikaciji.",
             "nothing": "Ni opombe, pripravljene za uvoz, zato se uvoz prekine",
             "success": "Uvoz uspešno zaključen."
         },
@@ -280,6 +279,7 @@
         "storage": {
             "recovery": {
                 "failure": "",
+                "success": "",
                 "success_few": "",
                 "success_one": "",
                 "success_other": "",
@@ -1346,6 +1346,7 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "description_few": "",
                     "description_one": "",
                     "description_other": "",
@@ -1353,6 +1354,7 @@
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "recoverableCount_few": "",
                 "recoverableCount_one": "",
                 "recoverableCount_other": "",
