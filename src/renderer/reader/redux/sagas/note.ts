@@ -440,7 +440,8 @@ function* readerStart() {
     // const annotationsUuids = annotations.map(([_, annotationState]) => ({ uuid: annotationState.uuid }));
     yield* putTyped(readerLocalActionHighlights.handler.pop.build(noteUUID));
 
-    const notesHighlighted = notes.map((note): IHighlightHandlerState => {
+    const notesWithLocator = notes.filter((note): note is INoteState & { locatorExtended: MiniLocatorExtended } => !!note.locatorExtended);
+    const notesHighlighted = notesWithLocator.map((note): IHighlightHandlerState => {
 
         return {
             uuid: note.uuid,

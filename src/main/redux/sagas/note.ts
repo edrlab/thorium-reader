@@ -255,8 +255,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
             }
 
             if (!(cssSelector || textQuoteSelector || textPositionSelector || cfiFragmentSelector || cfiSelector)) {
-                debug(`for ${uuid} no selector available (cssSelector || textQuoteSelector || textPositionSelector || cfiFragmentSelector || cfiSelector)`);
-                continue;
+                debug(`for ${uuid} no supported selector available; import the note and preserve its original target without a locator`);
             }
 
             const annotationParsed: INoteState = {
