@@ -79,7 +79,7 @@ export const noteExportHtmlMustacheTemplate = `
                     {{/body.value}}
                     <!-- Annotation Metadata -->
                     <p class="annotationmetadata">
-                        {{#body.tag}} | Tag: {{body.tag}}{{/body.tag}}
+                        {{#body.tags}} | Tag: {{.}}{{/body.tags}}
                         {{#body.color}} | Color: {{body.color}}{{/body.color}}
                         {{#body.highlight}} | Highlight type: {{body.highlight}}{{/body.highlight}};
                         {{#body.textDirection}}TextDirection:  | {{body.textDirection}}{{/body.textDirection}}

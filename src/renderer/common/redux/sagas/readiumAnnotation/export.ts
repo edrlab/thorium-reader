@@ -33,6 +33,7 @@ import { sanitizeForFilename } from "readium-desktop/common/safe-filename";
 import { EXT_ANNOTATIONS } from "readium-desktop/common/extension";
 import { mimeTypes } from "readium-desktop/utils/mimeTypes";
 import { logEvent } from "readium-desktop/renderer/common/analytics";
+import { createDetachedAnnotationPackage } from "./detachedPackage";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:common:redux:sagas:readiumAnnotation:export");
@@ -70,9 +71,9 @@ ${Buffer.from(JsonStringifySortedKeys(readiumAnnotation, 2)).toString("base64")}
 -->
 `;
 };
-const downloadAnnotationFile = (data: string, filenameWithExtension: string, extension: typeof EXT_ANNOTATIONS | ".html") => {
+const downloadAnnotationFile = (data: string | ArrayBuffer, filenameWithExtension: string, extension: typeof EXT_ANNOTATIONS | ".html") => {
 
-    const blob = new Blob([data], { type: extension === EXT_ANNOTATIONS ? mimeTypes.annotation : "text/html" });
+    const blob = new Blob([data], { type: extension === EXT_ANNOTATIONS ? mimeTypes.annotations : "text/html" });
     const jsonObjectUrl = URL.createObjectURL(blob);
     const anchorEl = document.createElement("a");
     anchorEl.href = jsonObjectUrl;
@@ -97,13 +98,14 @@ export function* exportAnnotationSet(notes: INoteState[], publicationView: Publi
     const htmlMustacheTemplateContent = overrideHTMLTemplate ? htmlContent : noteExportHtmlMustacheTemplate || noteExportHtmlMustacheTemplate;
 
     const extension = fileType === "annotation" ? EXT_ANNOTATIONS : ".html";
-    const stringData = extension === EXT_ANNOTATIONS ?
-        JsonStringifySortedKeys(readiumAnnotationSet, 2) :
+    const serializedAnnotationSet = JsonStringifySortedKeys(readiumAnnotationSet, 2);
+    const fileData = extension === EXT_ANNOTATIONS ?
+        yield* callTyped(() => createDetachedAnnotationPackage(serializedAnnotationSet)) :
         yield* callTyped(() => convertReadiumAnnotationSetToHtml(readiumAnnotationSet, __htmlMustacheViewConverterFn, htmlMustacheTemplateContent));
 
     const filenameWithExtension = sanitizeForFilename(annoSetTitle + extension);
 
-    downloadAnnotationFile(stringData, filenameWithExtension, extension);
+    downloadAnnotationFile(fileData, filenameWithExtension, extension);
     yield* spawnTyped(function*() {
         yield* callTyped(
             logEvent,

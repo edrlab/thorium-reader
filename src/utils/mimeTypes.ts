@@ -1177,7 +1177,8 @@ export const mimeTypes = {
     "lcpdivina": "application/divina+lcp",
     "lcpdf": "application/pdf+lcp",
     [ADOBE_ADEPT_XML]: "application/vnd.adobe.adept+xml",
-    "annotation": "application/rd-annotations+json", // also see acceptedExtensionObject.annotations EXT_ANNOTATIONS
+    "annotation": "application/rd-annotations+json", // legacy raw annotation set
+    "annotations": "application/zip;profile=\"https://www.w3.org/TR/epub-anno-10/\"", // detached W3C annotation package
     "thorium": "application/vnd.edrlab.thorium+zip", // also see acceptedExtensionObject.customizationProfilePackage EXT_THORIUM
 };
 
