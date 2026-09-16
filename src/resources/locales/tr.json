@@ -270,6 +270,7 @@
         "storage": {
             "recovery": {
                 "failure": "Eser kurtarma başarısız.",
+                "success": "",
                 "success_one": "{{- count}} eser kurtarıldı.",
                 "success_other": "{{- count}} eser kurtarıldı."
             },
@@ -1332,11 +1333,13 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "description_one": "",
                     "description_other": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "recoverableCount_one": "",
                 "recoverableCount_other": "",
                 "title": ""

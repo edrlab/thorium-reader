@@ -290,6 +290,7 @@
         "storage": {
             "recovery": {
                 "failure": "",
+                "success": "",
                 "success_few": "",
                 "success_many": "",
                 "success_one": "",
@@ -1360,6 +1361,7 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "description_few": "",
                     "description_many": "",
                     "description_one": "",
@@ -1369,6 +1371,7 @@
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "recoverableCount_few": "",
                 "recoverableCount_many": "",
                 "recoverableCount_one": "",
