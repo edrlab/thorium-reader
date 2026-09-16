@@ -4,6 +4,12 @@ import {
     convertAnnotationStateArrayToReadiumAnnotationSet,
     convertAnnotationStateToReadiumAnnotation,
 } from "readium-desktop/common/readium/annotation/converter";
+import {
+    EPUB_ANNOTATION_CONTEXT,
+    isIReadiumAnnotationSet,
+    LEGACY_ANNOTATION_CONTEXT,
+    normalizeReadiumAnnotationTags,
+} from "readium-desktop/common/readium/annotation/annotationModel.type";
 import type { IEPUBCFISelector, ITextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import { EDrawType, INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -130,4 +136,56 @@ test("Readium annotation export preserves EPUB CFI selector vocabulary", () => {
     }));
 
     expect(annotation?.target.selector).toContainEqual(epubCfiSelector);
+});
+
+test("EPUB annotation export uses the W3C context and preserves all tags", () => {
+    const annotation = convertAnnotationStateToReadiumAnnotation(createNote({
+        tags: ["review", "important"],
+    }));
+
+    expect(annotation?.["@context"]).toBe(EPUB_ANNOTATION_CONTEXT);
+    expect(annotation?.body.tags).toEqual(["review", "important"]);
+    expect(annotation?.body).not.toHaveProperty("tag");
+});
+
+test("EPUB annotation export omits tags when the note has none", () => {
+    const annotation = convertAnnotationStateToReadiumAnnotation(createNote({ tags: [] }));
+
+    expect(annotation?.body).not.toHaveProperty("tags");
+});
+
+test("EPUB annotation sets validate with the W3C context", () => {
+    const annotationSet = convertAnnotationStateArrayToReadiumAnnotationSet(
+        "en",
+        [createNote()],
+        publicationView,
+        "Export",
+    );
+
+    expect(annotationSet["@context"]).toBe(EPUB_ANNOTATION_CONTEXT);
+    expect(isIReadiumAnnotationSet(annotationSet)).toBe(true);
+});
+
+test("legacy annotation sets remain valid for import", () => {
+    const annotationSet = convertAnnotationStateArrayToReadiumAnnotationSet(
+        "en",
+        [createNote()],
+        publicationView,
+        "Legacy export",
+    );
+    annotationSet["@context"] = LEGACY_ANNOTATION_CONTEXT;
+    annotationSet.items[0]["@context"] = LEGACY_ANNOTATION_CONTEXT;
+    annotationSet.items[0].body.tag = annotationSet.items[0].body.tags?.[0];
+    delete annotationSet.items[0].body.tags;
+
+    expect(isIReadiumAnnotationSet(annotationSet)).toBe(true);
+});
+
+test("annotation import merges current and legacy tags without duplicates", () => {
+    expect(normalizeReadiumAnnotationTags({
+        type: "TextualBody",
+        value: "Note",
+        tags: ["review", "important"],
+        tag: "review",
+    })).toEqual(["review", "important"]);
 });

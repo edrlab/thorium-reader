@@ -7,7 +7,6 @@
 
 import debug_ from "debug";
 import { dialog } from "electron";
-import * as fs from "node:fs";
 import { buildPublicationUserAnalyticsParams, publicationAnalyticsEvents } from "readium-desktop/common/analytics/publication";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { annotationActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
@@ -17,7 +16,7 @@ import { SagaGenerator } from "typed-redux-saga";
 import { call as callTyped, put as putTyped, take as takeTyped, delay as delayTyped, all as allTyped } from "typed-redux-saga/macro";
 import { hexToRgb } from "readium-desktop/common/rgb";
 import { isNil } from "readium-desktop/utils/nil";
-import { __READIUM_ANNOTATION_AJV_ERRORS, isCFIFragmentSelector, isCssSelector, isEPUBCFISelector, isFragmentSelector, isIReadiumAnnotationSet, isLegacyCfiSelector, isTextPositionSelector, isTextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import { __READIUM_ANNOTATION_AJV_ERRORS, isCFIFragmentSelector, isCssSelector, isEPUBCFISelector, isFragmentSelector, isIReadiumAnnotationSet, isLegacyCfiSelector, isTextPositionSelector, isTextQuoteSelector, normalizeReadiumAnnotationTags } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import path from "node:path";
 import { getPublication } from "./api/publication/getPublication";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
@@ -30,10 +29,11 @@ import { EDrawType, INoteState, NOTE_DEFAULT_COLOR, noteColorCodeToColorSet, not
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { sqliteTableNoteDelete, sqliteTableNoteDeleteWherePubId, sqliteTableNoteInsert, sqliteTableNoteUpdate, sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
 import { publicationActions as publicationActionsFromMainAction } from "../actions";
-import { EXT_ANNOTATIONS } from "readium-desktop/common/extension";
+import { EXT_ANNOTATIONS, EXT_ANNOTATIONS_LEGACY } from "readium-desktop/common/extension";
 import { resolveReadiumAnnotationSourceHref } from "readium-desktop/common/readium/annotation/sourceHref";
 import { spawnPublicationAnalyticsEvent } from "./analyticsPublication";
 import { TAnalyticsEventParams } from "src/common/api/interface/analyticsApi.interface";
+import { readAnnotationSetFile } from "readium-desktop/main/w3c/annotations/read";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:annotationsImporter";
@@ -116,11 +116,14 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
     try {
 
         debug("Open ShowOpenDialog and ask to user the filePath");
-        const res = yield* callTyped(() => dialog.showOpenDialog(win, { filters: [{ extensions: [EXT_ANNOTATIONS.substring(1)], name: __("reader.marks.annotationsReadium") + " [" + EXT_ANNOTATIONS + "]" }], properties: ["openFile"] }));
+        const res = yield* callTyped(() => dialog.showOpenDialog(win, { filters: [{ extensions: [EXT_ANNOTATIONS.substring(1), EXT_ANNOTATIONS_LEGACY.substring(1)], name: __("reader.marks.annotationsReadium") + ` [${EXT_ANNOTATIONS}, ${EXT_ANNOTATIONS_LEGACY}]` }], properties: ["openFile"] }));
 
-        if (!res.canceled) {
-            filePath = res.filePaths[0] || "";
-
+        if (res.canceled) {
+            return;
+        }
+        filePath = res.filePaths[0] || "";
+        if (!filePath) {
+            return;
         }
     } catch (e) {
         debug("Error!!! to open a file, exit", e);
@@ -129,12 +132,12 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
     }
 
     debug("FilePath=", filePath);
-    const fileName = path.basename(filePath).slice(0, -1 * EXT_ANNOTATIONS.length);
+    const fileName = path.basename(filePath, path.extname(filePath));
 
     try {
 
         // read filePath
-        const dataString = yield* callTyped(() => fs.promises.readFile(filePath, { encoding: "utf8" }));
+        const dataString = yield* callTyped(() => readAnnotationSetFile(filePath));
         const readiumAnnotationFormat = JSON.parse(dataString);
         debug("filePath size=", dataString.length);
         debug("filePath serialized and ready to pass the type checker");
@@ -225,6 +228,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         // loop on each annotation to check conflicts and import it
         for (const incommingAnnotation of annotationsIncommingArray) {
             const creator = incommingAnnotation.creator;
+            const importedTags = normalizeReadiumAnnotationTags(incommingAnnotation.body);
 
             const uuid = incommingAnnotation.id.split("urn:uuid:")[1] || uuidv4(); // TODO : may not be an uuid format and maybe we should hash the uuid to get a unique identifier based on the original uuid
 
@@ -267,8 +271,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                     noteColorSetToColorCode[noteColorCodeToColorSet[incommingAnnotation.body?.color] || NOTE_DEFAULT_COLOR],
                 ),
                 drawType: EDrawType[(isNil(incommingAnnotation.body?.highlight) || incommingAnnotation.body?.highlight === "solid") ? "solid_background" : incommingAnnotation.body.highlight] || EDrawType.solid_background,
-                // TODO need to ask to user if the incomming tag is kept or the fileName is used
-                tags: [fileName], // incommingAnnotation.body?.tag ? [incommingAnnotation.body?.tag] : [],
+                tags: importedTags.length ? importedTags : [fileName],
                 modified: incommingAnnotation.modified ? tryCatchSync(() => new Date(incommingAnnotation.modified).getTime(), fileName) : undefined,
                 created: tryCatchSync(() => new Date(incommingAnnotation.created).getTime(), fileName) || currentTimestamp,
                 creator: creator?.id ? {
