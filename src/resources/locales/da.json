@@ -240,7 +240,6 @@
             "alreadyImported": "Alle noter eksisterer i forvejen, afslutter import.",
             "emptyFile": "Ingen noter blev fundet i filen.",
             "errorParsing": "Fejl under læsning af filen: ",
-            "noBelongTo": "Fejl ved import af noter, mindst en af noterne hører ikke til denne bog.",
             "nothing": "Ingen noter kunne importeres, afslutter import",
             "success": "Import færdig."
         },
@@ -270,6 +269,7 @@
         "storage": {
             "recovery": {
                 "failure": "",
+                "success": "",
                 "success_one": "",
                 "success_other": ""
             },
@@ -1332,11 +1332,13 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "description_one": "",
                     "description_other": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "recoverableCount_one": "",
                 "recoverableCount_other": "",
                 "title": ""

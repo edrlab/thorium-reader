@@ -240,7 +240,6 @@
             "alreadyImported": "Kõik märkmed on juba imporditud.",
             "emptyFile": "Failis pole märkmeid.",
             "errorParsing": "Viga faili töötlemisel: ",
-            "noBelongTo": "Märkmete importimine ei õnnestu - vähemalt üks märge pole väljaandega seotud.",
             "nothing": "Pole ühtegi imporditavat märget, katkestan impordi",
             "success": "Importimine õnnestus kenasti."
         },
@@ -270,6 +269,7 @@
         "storage": {
             "recovery": {
                 "failure": "",
+                "success": "",
                 "success_one": "",
                 "success_other": ""
             },
@@ -1332,11 +1332,13 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "description_one": "",
                     "description_other": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "recoverableCount_one": "",
                 "recoverableCount_other": "",
                 "title": ""

@@ -240,7 +240,6 @@
             "alreadyImported": "Alla anteckningar har redan importerats.",
             "emptyFile": "Det finns inga anteckningar i filen.",
             "errorParsing": "Fel vid tolkning av fil: ",
-            "noBelongTo": "Det går inte att importera anteckningarna, minst en anteckning tillhör inte publikationen.",
             "nothing": "Det finns inga anteckningar tillgängliga för import, avbryter importen",
             "success": "Importen lyckades."
         },
@@ -270,6 +269,7 @@
         "storage": {
             "recovery": {
                 "failure": "",
+                "success": "",
                 "success_one": "",
                 "success_other": ""
             },
@@ -1332,11 +1332,13 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "description_one": "",
                     "description_other": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "recoverableCount_one": "",
                 "recoverableCount_other": "",
                 "title": ""

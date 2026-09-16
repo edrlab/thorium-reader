@@ -245,7 +245,6 @@
             "alreadyImported": "Todas as notas já estão importadas.",
             "emptyFile": "Não há notas disponíveis no arquivo.",
             "errorParsing": "Erro durante a análise do arquivo: ",
-            "noBelongTo": "Incapaz de importar notas, pelo menos uma nota não pertence à publicação.",
             "nothing": "Não há nota pronta para ser importada, abortando a importação",
             "success": "Importação concluída com sucesso."
         },
@@ -275,6 +274,7 @@
         "storage": {
             "recovery": {
                 "failure": "",
+                "success": "",
                 "success_many": "",
                 "success_one": "",
                 "success_other": ""
@@ -1339,12 +1339,14 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "description_many": "",
                     "description_one": "",
                     "description_other": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "recoverableCount_many": "",
                 "recoverableCount_one": "",
                 "recoverableCount_other": "",

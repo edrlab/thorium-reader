@@ -235,7 +235,6 @@
             "alreadyImported": "所有笔记已经导入。",
             "emptyFile": "文件中没有可用的笔记。",
             "errorParsing": "文件解析时发生错误： ",
-            "noBelongTo": "无法导入笔记，至少有一条笔记不属于此出版物。",
             "nothing": "没有可导入的笔记，导入已终止",
             "success": "导入已成功完成。"
         },
@@ -264,7 +263,8 @@
         },
         "storage": {
             "recovery": {
-                "failure": ""
+                "failure": "",
+                "success": ""
             },
             "removed": "出版物文件路径被移除。",
             "updateFailed": "更新出版物文件路径失败: {{- message}}",
@@ -1324,9 +1324,11 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "title": ""
             }
         },

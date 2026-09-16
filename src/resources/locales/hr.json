@@ -245,7 +245,6 @@
             "alreadyImported": "",
             "emptyFile": "",
             "errorParsing": "",
-            "noBelongTo": "",
             "nothing": "",
             "success": ""
         },
@@ -275,6 +274,7 @@
         "storage": {
             "recovery": {
                 "failure": "",
+                "success": "",
                 "success_few": "",
                 "success_one": "",
                 "success_other": ""
@@ -1339,12 +1339,14 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "description_few": "",
                     "description_one": "",
                     "description_other": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "recoverableCount_few": "",
                 "recoverableCount_one": "",
                 "recoverableCount_other": "",
