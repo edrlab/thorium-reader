@@ -66,6 +66,17 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
 
     const canOpen = canOpenPublication(props.publicationView);
 
+    const isLicensed = props.publicationView.lcp !== null && props.publicationView.lcp !== undefined; 
+
+    let isLicenseReadyorActive = false;
+
+    if (isLicensed) {
+    isLicenseReadyorActive = 
+        (props.publicationView.lcp?.lsd?.lsdStatus?.status === "ready" )
+        || (props.publicationView.lcp.lsd?.lsdStatus?.status === "active");
+    }
+
+
     const noteExport = <button
         className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
         onClick={debounce(() => {
@@ -181,6 +192,8 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
             <PublicationExportButton
                 publicationView={props.publicationView}
             />
+            {!isLicensed || isLicenseReadyorActive ? 
+            <>
             <div style={{ borderBottom: "1px solid var(--color-brand-primary)" }}></div>
             <ImportAnnotationsDialog winId={undefined} publicationView={props.publicationView}>
                 <button
@@ -190,6 +203,8 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
                     {__("catalog.importAnnotation")}
                 </button>
             </ImportAnnotationsDialog>
+            </>
+             : <></>}
             <div style={{ borderBottom: "1px solid var(--color-brand-primary)" }}></div>
             {noteExport}
             {isShiftKeyPressed ? openFolder : <></>}
