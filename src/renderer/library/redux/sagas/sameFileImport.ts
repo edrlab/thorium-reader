@@ -6,15 +6,23 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { importActions, toastActions } from "readium-desktop/common/redux/actions";
-import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
+import { apiActions, dialogActions, importActions, toastActions } from "readium-desktop/common/redux/actions";
+import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { apiSaga } from "readium-desktop/renderer/common/redux/sagas/api";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { all, put } from "redux-saga/effects";
-import { select as selectTyped } from "typed-redux-saga/macro";
+import { all, put, select, take } from "redux-saga/effects";
 import { getTranslator } from "readium-desktop/common/services/translator";
+import { PublicationView } from "readium-desktop/common/views/publication";
+import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
+import { uuidv4 } from "readium-desktop/utils/uuid";
+
+import {
+    attachLocalBookshelfPublication,
+    isSameOpdsPublication,
+} from "readium-desktop/renderer/library/opds/localBookshelfPublication";
 
 const REQUEST_ID = "SAME_FILE_IMPORT_REQUEST";
 
@@ -22,11 +30,11 @@ const REQUEST_ID = "SAME_FILE_IMPORT_REQUEST";
 const filename_ = "readium-desktop:renderer:redux:saga:same-file-import";
 const debug = debug_(filename_);
 
-function* sameFileImport(action: importActions.verify.TAction) {
+export function* sameFileImport(action: importActions.verify.TAction) {
 
     const { link, pub, rootFeedIdentifier } = action.payload;
 
-    const downloads = yield* selectTyped(
+    const downloads: ILibraryRootState["download"] = yield select(
         (state: ILibraryRootState) => state.download);
 
     if (Array.isArray(downloads)
@@ -49,19 +57,64 @@ function* sameFileImport(action: importActions.verify.TAction) {
 
     } else {
 
+        const requestId = `${REQUEST_ID}_${uuidv4()}`;
+
         yield apiSaga("publication/importFromLink",
-            REQUEST_ID,
+            requestId,
             link,
             false, // willBeImmediatelyFollowedByOpen
             pub,
             rootFeedIdentifier,
         );
+
+        let resultAction: apiActions.result.TAction<PublicationView | undefined>;
+        while (true) {
+            resultAction = yield take(apiActions.result.ID);
+            if (resultAction.meta.api.requestId === requestId) {
+                break;
+            }
+        }
+
+        yield put(apiActions.clean.build(requestId));
+
+        const publicationIdentifier = resultAction.error
+            ? undefined
+            : resultAction.payload?.identifier;
+        if (!publicationIdentifier) {
+            return;
+        }
+
+        const dialog: ILibraryRootState["dialog"] = yield select(
+            (state: ILibraryRootState) => state.dialog,
+        );
+        if (!dialog.open || dialog.type !== DialogTypeName.PublicationInfoOpds) {
+            return;
+        }
+
+        const dialogData = dialog.data as DialogType[DialogTypeName.PublicationInfoOpds];
+        const currentPublication = dialogData?.publication as IOpdsPublicationView | undefined;
+        if (!currentPublication || !isSameOpdsPublication(currentPublication, pub)) {
+            return;
+        }
+
+        const updatedPublication = attachLocalBookshelfPublication(
+            currentPublication,
+            link,
+            publicationIdentifier,
+        );
+        if (updatedPublication === currentPublication) {
+            return;
+        }
+
+        yield put(dialogActions.updateRequest.build<DialogTypeName.PublicationInfoOpds>({
+            publication: updatedPublication,
+        }));
     }
 }
 
 export function saga() {
     return all([
-        takeSpawnLeading(
+        takeSpawnEvery(
             importActions.verify.ID,
             sameFileImport,
             (e) => debug(e),

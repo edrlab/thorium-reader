@@ -309,12 +309,12 @@ export class OpdsControls extends React.Component<IProps, undefined> {
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         verifyImport: (...data: Parameters<typeof importActions.verify.build>) => {
-            dispatch(dialogActions.closeRequest.build());
             dispatch(importActions.verify.build(...data));
         },
         link: (...data: Parameters<ReturnType<typeof dispatchOpdsLink>>) =>
             dispatchOpdsLink(dispatch)(...data),
         read: (pubIdentifier: string) => {
+            dispatch(dialogActions.closeRequest.build());
             dispatch(readerActions.openRequest.build(pubIdentifier));
         },
     };
