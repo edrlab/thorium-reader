@@ -687,7 +687,13 @@ div[data-radix-popper-content-wrapper] {
         min-height: 70px;
         background-color: var(--color-gray-50);
 
-        &:hover:not([disabled]) {
+        &[data-disabled] {
+            color: var(--color-disabled);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        &:hover:not([data-disabled]) {
             border: 1px solid $setting_color;
             background-color: $settings_bg;
             cursor: pointer;
@@ -696,10 +702,18 @@ div[data-radix-popper-content-wrapper] {
     }
 
     div[role="radiogroup"] {
-        button {
+        label[data-input-type="radio"] {
             transition: 200ms linear;
 
-            &[data-state="checked"] {
+            &[data-focused],
+            &[data-focus-visible],
+            &:focus-within {
+                outline: var(--color-brand-primary) solid 2px !important;
+                outline-offset: 2px;
+                box-shadow: 0 0 0 2px var(--color-brand-primary);
+            }
+
+            &[data-selected] {
                 border: 1px solid $setting_color;
                 background-color: $settings_bg;
                 color: $setting_color;
@@ -896,6 +910,19 @@ div[data-radix-popper-content-wrapper] {
     justify-content: center;
     cursor: pointer;
     position: relative;
+
+    &[data-focused],
+    &[data-focus-visible],
+    &:focus-within {
+        outline: var(--color-brand-primary) solid 2px !important;
+        outline-offset: 2px;
+        box-shadow: 0 0 0 2px var(--color-brand-primary);
+    }
+
+    &[data-disabled] {
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
 
     &::after {
         content: "";
