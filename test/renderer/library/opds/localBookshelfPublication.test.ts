@@ -7,10 +7,7 @@
 
 import { describe, expect, it, test } from "@jest/globals";
 import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
-import {
-    attachLocalBookshelfPublication,
-    isSameOpdsPublication,
-} from "readium-desktop/renderer/library/opds/localBookshelfPublication";
+import { attachLocalBookshelfPublication } from "readium-desktop/renderer/library/opds/localBookshelfPublication";
 
 const createPublication = (
     links: Partial<
@@ -73,42 +70,5 @@ describe("attachLocalBookshelfPublication", () => {
         });
 
         expect(attachLocalBookshelfPublication(publication, importedLink, "local-publication-id")).toBe(publication);
-    });
-});
-
-describe("isSameOpdsPublication", () => {
-    it("uses the OPDS self link when both publications provide one", () => {
-        const publication = createPublication();
-        const samePublication = {
-            ...createPublication(),
-            documentTitle: "Updated metadata title",
-        };
-        const otherPublication = {
-            ...createPublication(),
-            selfLink: {
-                url: "https://example.com/other-publication.json",
-            },
-        };
-
-        expect(isSameOpdsPublication(publication, samePublication)).toBe(true);
-        expect(isSameOpdsPublication(publication, otherPublication)).toBe(false);
-    });
-
-    it("falls back to the work identifier and base URL", () => {
-        const publication: IOpdsPublicationView = {
-            ...createPublication(),
-            selfLink: undefined,
-        };
-        const samePublication = {
-            ...publication,
-            documentTitle: "Updated metadata title",
-        };
-        const otherPublication = {
-            ...publication,
-            baseUrl: "https://other.example.com/catalog",
-        };
-
-        expect(isSameOpdsPublication(publication, samePublication)).toBe(true);
-        expect(isSameOpdsPublication(publication, otherPublication)).toBe(false);
     });
 });

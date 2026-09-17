@@ -78,20 +78,3 @@ export const attachLocalBookshelfPublication = (
         borrowLinks,
     };
 };
-
-export const isSameOpdsPublication = (
-    currentPublication: IOpdsPublicationView,
-    requestedPublication: IOpdsPublicationView,
-): boolean => {
-    if (currentPublication.selfLink?.url && requestedPublication.selfLink?.url) {
-        return currentPublication.selfLink.url === requestedPublication.selfLink.url;
-    }
-
-    if (currentPublication.workIdentifier && requestedPublication.workIdentifier) {
-        return currentPublication.workIdentifier === requestedPublication.workIdentifier
-            && currentPublication.baseUrl === requestedPublication.baseUrl;
-    }
-
-    return currentPublication.baseUrl === requestedPublication.baseUrl
-        && currentPublication.documentTitle === requestedPublication.documentTitle;
-};

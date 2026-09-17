@@ -36,14 +36,14 @@ const publication: IOpdsPublicationView = {
     openAccessLinks: [link],
 };
 
-const createState = (dialogOpen: boolean): ILibraryRootState =>
+const createState = (dialogOpen: boolean, dialogPublication: IOpdsPublicationView = publication): ILibraryRootState =>
     ({
         download: [],
         dialog: {
             open: dialogOpen,
             type: DialogTypeName.PublicationInfoOpds,
             data: {
-                publication,
+                publication: dialogPublication,
             },
         },
     }) as unknown as ILibraryRootState;
@@ -52,6 +52,7 @@ const runImport = async (
     state: ILibraryRootState,
     result: PublicationView | undefined,
     includeUnrelatedResult = false,
+    requestedPublication: IOpdsPublicationView = publication,
 ) => {
     const channel = stdChannel();
     const dispatched: any[] = [];
@@ -82,7 +83,7 @@ const runImport = async (
             getState: () => state,
         },
         sameFileImport,
-        importActions.verify.build(link, publication),
+        importActions.verify.build(link, requestedPublication),
     );
 
     await task.toPromise();
@@ -109,6 +110,49 @@ describe("sameFileImport", () => {
 
     it("does not update a dialog that was closed while importing", async () => {
         const dispatched = await runImport(createState(false), {
+            identifier: "local-publication-id",
+        } as PublicationView);
+
+        expect(dispatched.some((action) => action.type === dialogActions.updateRequest.ID)).toBe(false);
+    });
+
+    it("attaches the imported publication without OPDS identity metadata", async () => {
+        const requestedPublication: IOpdsPublicationView = {
+            ...publication,
+            selfLink: undefined,
+            workIdentifier: undefined,
+        };
+        const currentPublication: IOpdsPublicationView = {
+            ...requestedPublication,
+            baseUrl: "https://example.com/publication-entry",
+            documentTitle: "Updated publication title",
+        };
+
+        const dispatched = await runImport(
+            createState(true, currentPublication),
+            { identifier: "local-publication-id" } as PublicationView,
+            false,
+            requestedPublication,
+        );
+
+        const updateAction = dispatched.find((action) => action.type === dialogActions.updateRequest.ID);
+        expect(updateAction.payload.data.publication.openAccessLinks[0].localBookshelfPublicationId).toBe(
+            "local-publication-id",
+        );
+    });
+
+    it("does not update a different OPDS publication dialog", async () => {
+        const otherPublication: IOpdsPublicationView = {
+            ...publication,
+            openAccessLinks: [
+                {
+                    ...link,
+                    url: "https://example.com/other-publication.epub",
+                },
+            ],
+        };
+
+        const dispatched = await runImport(createState(true, otherPublication), {
             identifier: "local-publication-id",
         } as PublicationView);
 

@@ -19,10 +19,7 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { uuidv4 } from "readium-desktop/utils/uuid";
 
-import {
-    attachLocalBookshelfPublication,
-    isSameOpdsPublication,
-} from "readium-desktop/renderer/library/opds/localBookshelfPublication";
+import { attachLocalBookshelfPublication } from "readium-desktop/renderer/library/opds/localBookshelfPublication";
 
 const REQUEST_ID = "SAME_FILE_IMPORT_REQUEST";
 
@@ -93,7 +90,7 @@ export function* sameFileImport(action: importActions.verify.TAction) {
 
         const dialogData = dialog.data as DialogType[DialogTypeName.PublicationInfoOpds];
         const currentPublication = dialogData?.publication as IOpdsPublicationView | undefined;
-        if (!currentPublication || !isSameOpdsPublication(currentPublication, pub)) {
+        if (!currentPublication) {
             return;
         }
 
