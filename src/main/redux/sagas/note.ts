@@ -254,8 +254,10 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 debug(`for ${uuid} a CFI Fragment selector is available (${JSON.stringify(cfiFragmentSelector, null, 4)})`);
             }
 
-            if (!(cssSelector || textQuoteSelector || textPositionSelector || cfiFragmentSelector || cfiSelector)) {
-                debug(`for ${uuid} no selector available (cssSelector || textQuoteSelector || textPositionSelector || cfiFragmentSelector || cfiSelector)`);
+            const isResourceBookmark = incommingAnnotation.motivation === "bookmarking";
+
+            if (!(cssSelector || textQuoteSelector || textPositionSelector || cfiFragmentSelector || cfiSelector || isResourceBookmark)) {
+                debug(`for ${uuid} no supported selector available`);
                 continue;
             }
 
