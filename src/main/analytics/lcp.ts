@@ -14,6 +14,7 @@ import {
     TLcpAnalyticsEventName,
     TLcpPassphraseAnalyticsValue,
 } from "readium-desktop/common/analytics/lcp";
+import { settingsGoogleAnalyticsTelemetryIsEnabled } from "readium-desktop/common/redux/states/settings";
 import { diMainGet } from "readium-desktop/main/di";
 import { RootState } from "readium-desktop/main/redux/states";
 
@@ -32,6 +33,7 @@ export const logLcpEvent = async (
         await logMeasurementProtocol(name, params, {
             clientId: state.analytics.clientId,
             locale: state.i18n.locale,
+            disabled: !settingsGoogleAnalyticsTelemetryIsEnabled(state.settings),
         });
     } catch (err) {
         debug("LCP analytics event failed", name, err);

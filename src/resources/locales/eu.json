@@ -292,6 +292,17 @@
         },
         "addMenu": "OPDS katalogoa gehitzea",
         "breadcrumbRoot": "Katalogoak",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "OPDS webgune ofiziala",
         "empty": "Ez da argitalpenik aurkitu",
         "firstPage": "Lehena",
@@ -1337,6 +1348,11 @@
             "keyboardShortcuts": "Teklatuko lasterbideak",
             "profiles": "",
             "storage": ""
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
         },
         "theme": {
             "auto": "Automatikoa",
