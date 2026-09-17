@@ -19,7 +19,7 @@
             "copy": "Kopiatu",
             "cut": "Moztu",
             "paste": "Itsatsi",
-            "print": "",
+            "print": "Imprimatu",
             "redo": "Berregin",
             "selectAll": "Hautatu dena",
             "title": "Editatu",
@@ -34,7 +34,7 @@
                         "no": "Ez",
                         "yes": "Bai"
                     },
-                    "help": "",
+                    "help": "Aktibatu hau, aplikazioa ixtean irekita dauden irakurgailu-leihoak nahi badituzu, hurrengoan automatikoki irekitzeko.",
                     "message": "Saioa gorde nahi duzu?",
                     "title": "Gorde saioa"
                 }
@@ -43,7 +43,7 @@
         "update": {
             "message": "Bertsio berria eskuragarri, klik egin gehiago jakiteko.",
             "title": "{{- appName}} software-eguneratzea.",
-            "whatsnew": ""
+            "whatsnew": "Bertsio berri bat instalatu da, klik egin gehiago ikasteko"
         },
         "window": {
             "showLibrary": "Erakutsi liburutegia",
