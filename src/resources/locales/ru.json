@@ -20,7 +20,7 @@
             "cut": "Вырезать",
             "paste": "Вставить",
             "print": "Печать",
-            "redo": "Восстановить",
+            "redo": "Повторить",
             "selectAll": "Выбрать все",
             "title": "Редактировать",
             "undo": "Отменить"
@@ -279,10 +279,10 @@
         },
         "storage": {
             "recovery": {
-                "failure": "",
-                "success_few": "",
-                "success_many": "",
-                "success_one": "",
+                "failure": "Не удалось восстановить публикацию.",
+                "success_few": "{{- count}} публикации восстановлено.",
+                "success_many": "{{- count}} публикаций восстановлено.",
+                "success_one": "{{- count}} публикация восстановлена.",
                 "success_other": ""
             },
             "removed": "Каталог публикаций удалён.",
@@ -304,6 +304,17 @@
         },
         "addMenu": "Добавить OPDS каталог",
         "breadcrumbRoot": "Каталоги",
+        "color": {
+            "blue": "Синий",
+            "gray": "Серый",
+            "green": "Зелёный",
+            "orange": "Оранжевый",
+            "pink": "Розовый",
+            "purple": "Фиолетовый",
+            "red": "Красный",
+            "title": "",
+            "yellow": "Жёлтый"
+        },
         "documentation": "Официальный сайт OPDS",
         "empty": "Книга не найдена",
         "firstPage": "Первая",
@@ -1325,28 +1336,28 @@
             },
             "recovery": {
                 "actions": {
-                    "check": "",
-                    "checkAgain": "",
-                    "recover": "",
-                    "recovering": ""
+                    "check": "Поиск публикаций, подлежащих восстановлению",
+                    "checkAgain": "Повторите поиск",
+                    "recover": "Восстановить публикации",
+                    "recovering": "Восстановление..."
                 },
-                "available": "",
-                "checking": "",
-                "description": "",
+                "available": "На диске была обнаружена одна или несколько публикаций, но они отсутствуют в базе данных. Восстановление возможно.",
+                "checking": "Проверка хранилища публикаций...",
+                "description": "Проверьте место хранения публикаций, чтобы найти те, которые можно безопасно восстановить.",
                 "dialog": {
-                    "confirm": "",
-                    "description_few": "",
-                    "description_many": "",
-                    "description_one": "",
+                    "confirm": "Восстановить",
+                    "description_few": "Thorium обнаружил на диске {{- count}} публикации, отсутствующие в базе данных. Желаете вернуть их обратно в Thorium?",
+                    "description_many": "Thorium обнаружил на диске {{- count}} публикации, отсутствующих в базе данных. Желаете вернуть их обратно в Thorium?",
+                    "description_one": "Thorium обнаружил на диске {{- count}} публикацию, отсутствующую в базе данных. Желаете вернуть её обратно в Thorium?",
                     "description_other": "",
-                    "title": ""
+                    "title": "Восстановить публикации"
                 },
-                "none": "",
-                "recoverableCount_few": "",
-                "recoverableCount_many": "",
-                "recoverableCount_one": "",
+                "none": "Публикаций, которые можно восстановить, не обнаружено.",
+                "recoverableCount_few": "{{- count}} публикации можно восстановить, используя их исходный идентификатор хранилища.",
+                "recoverableCount_many": "{{- count}} публикаций можно восстановить, используя их исходный идентификатор хранилища.",
+                "recoverableCount_one": "{{- count}} публикацию можно восстановить, используя её исходный идентификатор хранилища.",
                 "recoverableCount_other": "",
-                "title": ""
+                "title": "Восстановление"
             }
         },
         "tabs": {
@@ -1355,6 +1366,11 @@
             "keyboardShortcuts": "Горячие клавиши",
             "profiles": "Профили",
             "storage": "Хранилище"
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
         },
         "theme": {
             "auto": "Автоматическая",

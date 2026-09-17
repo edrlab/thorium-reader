@@ -6,28 +6,17 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
+import { ISettingsState } from "../../states/settings";
 
-export const ID = "IMPORT_VERIFICATION_REQUEST";
+export const ID = "DISABLE_GOOGLE_ANALYTICS_TELEMETRY";
 
-export interface Payload {
-    link: IOpdsLinkView;
-    pub: IOpdsPublicationView;
-    rootFeedIdentifier?: string;
-}
-
-export function build(
-    link: IOpdsLinkView,
-    pub: IOpdsPublicationView,
-    rootFeedIdentifier?: string,
-): Action<typeof ID, Payload> {
+export function build(state: boolean):
+    Action<typeof ID, Pick<ISettingsState, "disableGoogleAnalyticsTelemetry">> {
 
     return {
         type: ID,
         payload: {
-            link,
-            pub,
-            rootFeedIdentifier,
+            disableGoogleAnalyticsTelemetry: state,
         },
     };
 }

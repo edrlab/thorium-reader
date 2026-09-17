@@ -24,7 +24,7 @@ const debug = debug_(filename_);
 
 function* sameFileImport(action: importActions.verify.TAction) {
 
-    const { link, pub } = action.payload;
+    const { link, pub, rootFeedIdentifier } = action.payload;
 
     const downloads = yield* selectTyped(
         (state: ILibraryRootState) => state.download);
@@ -54,6 +54,7 @@ function* sameFileImport(action: importActions.verify.TAction) {
             link,
             false, // willBeImmediatelyFollowedByOpen
             pub,
+            rootFeedIdentifier,
         );
     }
 }

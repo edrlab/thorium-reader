@@ -39,6 +39,7 @@ export interface IPublicationApi {
         link: IOpdsLinkView,
         willBeImmediatelyFollowedByOpen: boolean,
         pub?: IOpdsPublicationView,
+        rootFeedIdentifier?: string,
     ) => SagaGenerator<PublicationView>;
     importFromString: (
         manifest: string,

@@ -292,6 +292,17 @@
         },
         "addMenu": "OPDS-Feed hinzufügen",
         "breadcrumbRoot": "Kataloge",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "Offizielle OPDS-Website",
         "empty": "Keine Publikation gefunden",
         "firstPage": "Erste Seite",
@@ -1337,6 +1348,11 @@
             "keyboardShortcuts": "Tastaturkürzel",
             "profiles": "",
             "storage": ""
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
         },
         "theme": {
             "auto": "Automatisch",
