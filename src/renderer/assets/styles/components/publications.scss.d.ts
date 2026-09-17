@@ -7,6 +7,7 @@ export declare const box: string;
 export declare const corner: string;
 export declare const cover: string;
 export declare const cover_img: string;
+export declare const cover_wrapper: string;
 export declare const CSS_END_components_publications: string;
 export declare const CSS_START_components_publications: string;
 export declare const expired: string;
