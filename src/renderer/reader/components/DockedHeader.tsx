@@ -21,6 +21,7 @@ import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import { focusElement, getFocusTarget } from "readium-desktop/renderer/common/focusTarget";
 
 interface DockedHeaderProps {
     dockedMode: boolean;
@@ -63,8 +64,10 @@ const SelectRefComponent = ({ isEpub, setSection, dockedMode, dockedModeRef, opt
             id={`reader-${panel}-nav`}
             items={options}
             selectedKey={optionSelected}
+            aria-label={options.find(({ value }) => value === section)?.name}
             disabledKeys={optionDisabled}
             svg={options.find(({ value }) => value === section)?.svg}
+            triggerFocusId={panel === "menu" ? "reader-menu-docked-trigger" : "reader-settings-nav"}
             onSelectionChange={(id) => {
                 // console.log("selectionchange: ", id);
                 const value = options.find(({ id: _id }) => _id === id)?.value;
@@ -72,9 +75,12 @@ const SelectRefComponent = ({ isEpub, setSection, dockedMode, dockedModeRef, opt
                     setSection(value);
                     setTimeout(() => {
                         // TODO: is stealing focus here necessary? Should this vary depending on keyboard or mouse interaction?
-                        const elem = document.getElementById(`readerSettings_tabs-${value}`);
+                        const focusId = panel === "menu" ? `reader-menu-${value}` : `readerSettings_tabs-${value}`;
+                        const elem = getFocusTarget(focusId);
                         elem?.blur();
-                        elem?.focus();
+                        if (elem) {
+                            focusElement(elem);
+                        }
                     }, 1);
                     // console.log("set Tab Value = ", value);
                 } else {
