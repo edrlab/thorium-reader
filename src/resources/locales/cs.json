@@ -1367,6 +1367,11 @@
             "profiles": "",
             "storage": ""
         },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
+        },
         "theme": {
             "auto": "Automatický",
             "dark": "Tmavý",

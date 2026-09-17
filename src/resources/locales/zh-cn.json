@@ -1337,6 +1337,11 @@
             "profiles": "配置文件",
             "storage": ""
         },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
+        },
         "theme": {
             "auto": "自动",
             "dark": "深色",

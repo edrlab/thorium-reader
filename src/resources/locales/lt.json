@@ -1367,6 +1367,11 @@
             "profiles": "Profiliai",
             "storage": "Saugykla"
         },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
+        },
         "theme": {
             "auto": "Automatinė",
             "dark": "Tamsi",

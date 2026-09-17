@@ -1367,6 +1367,11 @@
             "profiles": "Profili",
             "storage": "Shranjevanje"
         },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
+        },
         "theme": {
             "auto": "Samodejno",
             "dark": "Temna",

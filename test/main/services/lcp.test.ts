@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, jest } from "@jest/globals";
+import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 
 jest.mock("electron", () => ({
     app: {
@@ -87,6 +87,15 @@ type TLcpManagerForSecrets = {
     getSecrets: (doc: { identifier: string; lcp?: { provider?: string } }) => Promise<string[]>;
     persistSecrets: (allSecrets: TLcpSecrets) => Promise<void>;
     saveGenericSecret: (lcpHashedPassphrase: string) => Promise<void>;
+}
+type TLcpManagerForSecretAnalytics = {
+    consumeDiscoveredPassphraseAnalytics: (
+        publicationDocument: { identifier: string; lcp?: { provider?: string } },
+        unlockPublicationRes: string | number | null | undefined,
+    ) => "valid" | "invalid" | "discovered" | undefined;
+    queueDiscoveredPassphraseAnalytics: (
+        publicationDocument: { identifier: string; lcp?: { provider?: string } },
+    ) => void;
 };
 
 const link = (partial: TPublicationLink): TPublicationLink => ({
@@ -171,6 +180,13 @@ describe("LcpManager secrets", () => {
     });
 });
 
+afterEach(() => {
+    jest.restoreAllMocks();
+});
+
+const secretAnalyticsManager = (): TLcpManagerForSecretAnalytics =>
+    new LcpManager() as unknown as TLcpManagerForSecretAnalytics;
+
 describe("LcpManager.lcpPublicationLinkResourceChanged", () => {
     it("detects changed publication link hash", () => {
         expect(resourceChanged(link({ Hash: "a".repeat(64) }), link({ Hash: "b".repeat(64) }))).toBe(true);
@@ -206,6 +222,70 @@ describe("LcpManager.lcpPublicationLinkResourceChanged", () => {
 
     it("does not treat missing previous link as replaceable", () => {
         expect(resourceChanged(undefined, link({ Href: "https://cdn.example.org/book.epub" }))).toBe(false);
+    });
+});
+
+describe("LcpManager cached passphrase analytics", () => {
+    it("consumes a queued discovered passphrase event once after a successful check", () => {
+        const manager = secretAnalyticsManager();
+        const publicationDocument = {
+            identifier: "publication-1",
+        };
+
+        manager.queueDiscoveredPassphraseAnalytics(publicationDocument);
+
+        expect(manager.consumeDiscoveredPassphraseAnalytics(publicationDocument, undefined)).toBe("discovered");
+        expect(manager.consumeDiscoveredPassphraseAnalytics(publicationDocument, undefined)).toBeUndefined();
+    });
+
+    it("does not report unqueued cached passphrase checks", () => {
+        const manager = secretAnalyticsManager();
+        const publicationDocument = {
+            identifier: "publication-1",
+        };
+
+        expect(manager.consumeDiscoveredPassphraseAnalytics(
+            publicationDocument,
+            undefined,
+        )).toBeUndefined();
+    });
+
+    it("reports a queued discovered passphrase as invalid after a failed check", () => {
+        const manager = secretAnalyticsManager();
+        const publicationDocument = {
+            identifier: "publication-1",
+        };
+
+        manager.queueDiscoveredPassphraseAnalytics(publicationDocument);
+
+        expect(manager.consumeDiscoveredPassphraseAnalytics(publicationDocument, 141)).toBe("invalid");
+    });
+
+    it("clears queued discovered analytics when no secret was checked", () => {
+        const manager = secretAnalyticsManager();
+        const publicationDocument = {
+            identifier: "publication-1",
+        };
+
+        manager.queueDiscoveredPassphraseAnalytics(publicationDocument);
+
+        expect(manager.consumeDiscoveredPassphraseAnalytics(publicationDocument, null)).toBeUndefined();
+        expect(manager.consumeDiscoveredPassphraseAnalytics(publicationDocument, undefined)).toBeUndefined();
+    });
+
+    it("does not consume a queued discovered passphrase for another publication", () => {
+        const manager = secretAnalyticsManager();
+
+        manager.queueDiscoveredPassphraseAnalytics({
+            identifier: "publication-1",
+        });
+
+        expect(manager.consumeDiscoveredPassphraseAnalytics(
+            {
+                identifier: "publication-2",
+            },
+            undefined,
+        )).toBeUndefined();
     });
 });
 

@@ -1332,6 +1332,11 @@
             "profiles": "",
             "storage": ""
         },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
+        },
         "theme": {
             "auto": "",
             "dark": "",

@@ -54,10 +54,12 @@ function* unlockPublicationWithPassphrase(action: lcpActions.unlockPublicationWi
             yield* callTyped(() => lcpManager.unlockPublication(publicationDocument, passphrase));
 
         debug(unlockPublicationRes, "'undefined' means OKay the publication is decrypted, Well Done !");
-        const passphraseValue = typeof unlockPublicationRes === "undefined" ? "valid" : "invalid";
-        yield* spawnTyped(function*() {
-            yield* callTyped(() => logLcpPassphrase(passphraseValue));
-        });
+        if (typeof passphrase === "string" && passphrase.length) {
+            const passphraseValue = typeof unlockPublicationRes === "undefined" ? "valid" : "invalid";
+            yield* spawnTyped(function*() {
+                yield* callTyped(() => logLcpPassphrase(passphraseValue));
+            });
+        }
         if (typeof unlockPublicationRes !== "undefined") {
             // import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
             // import { Publication as R2Publication } from "@r2-shared-js/models/publication";

@@ -1367,6 +1367,11 @@
             "profiles": "Profile",
             "storage": "Przestrzeń dyskowa"
         },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
+        },
         "theme": {
             "auto": "Automatyczny",
             "dark": "Ciemny",

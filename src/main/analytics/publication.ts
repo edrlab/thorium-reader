@@ -13,6 +13,7 @@ import {
     TPublicationUserAnalyticsEventName,
 } from "readium-desktop/common/analytics/publication";
 import { TAnalyticsEventParams } from "readium-desktop/common/api/interface/analyticsApi.interface";
+import { settingsGoogleAnalyticsTelemetryIsEnabled } from "readium-desktop/common/redux/states/settings";
 import { diMainGet } from "readium-desktop/main/di";
 import { RootState } from "readium-desktop/main/redux/states";
 
@@ -31,6 +32,7 @@ const logPublicationEvent_ = async (
     await logMeasurementProtocol(name, params, {
         clientId: state.analytics.clientId,
         locale: state.i18n.locale,
+        disabled: !settingsGoogleAnalyticsTelemetryIsEnabled(state.settings),
     });
 };
 
