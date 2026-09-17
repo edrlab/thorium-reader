@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
+import { IOpdsLinkView, IOpdsPublicationView, IOpdsResultView } from "readium-desktop/common/views/opds";
 
 const updateLinks = (
     links: IOpdsLinkView[] | undefined,
@@ -76,5 +76,70 @@ export const attachLocalBookshelfPublication = (
         sampleOrPreviewLinks,
         buyLinks,
         borrowLinks,
+    };
+};
+
+const updatePublications = (
+    publications: IOpdsPublicationView[] | undefined,
+    importedLink: IOpdsLinkView,
+    publicationIdentifier: string,
+): IOpdsPublicationView[] | undefined => {
+    if (!Array.isArray(publications)) {
+        return publications;
+    }
+
+    let hasChanged = false;
+    const updatedPublications = publications.map((publication) => {
+        const updatedPublication = attachLocalBookshelfPublication(
+            publication,
+            importedLink,
+            publicationIdentifier,
+        );
+        hasChanged ||= updatedPublication !== publication;
+        return updatedPublication;
+    });
+
+    return hasChanged ? updatedPublications : publications;
+};
+
+export const attachLocalBookshelfPublicationToResult = (
+    result: IOpdsResultView,
+    importedLink: IOpdsLinkView,
+    publicationIdentifier: string,
+): IOpdsResultView => {
+    const publications = updatePublications(result.publications, importedLink, publicationIdentifier);
+    const catalogs = updatePublications(result.catalogs, importedLink, publicationIdentifier);
+
+    let groupsHaveChanged = false;
+    const groups = result.groups?.map((group) => {
+        const groupPublications = updatePublications(
+            group.publications,
+            importedLink,
+            publicationIdentifier,
+        );
+        if (groupPublications === group.publications) {
+            return group;
+        }
+
+        groupsHaveChanged = true;
+        return {
+            ...group,
+            publications: groupPublications,
+        };
+    });
+
+    if (
+        publications === result.publications
+        && catalogs === result.catalogs
+        && !groupsHaveChanged
+    ) {
+        return result;
+    }
+
+    return {
+        ...result,
+        publications,
+        catalogs,
+        groups,
     };
 };

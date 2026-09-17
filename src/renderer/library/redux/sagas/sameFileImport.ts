@@ -20,6 +20,7 @@ import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { uuidv4 } from "readium-desktop/utils/uuid";
 
 import { attachLocalBookshelfPublication } from "readium-desktop/renderer/library/opds/localBookshelfPublication";
+import { opdsActions } from "readium-desktop/renderer/library/redux/actions";
 
 const REQUEST_ID = "SAME_FILE_IMPORT_REQUEST";
 
@@ -80,6 +81,8 @@ export function* sameFileImport(action: importActions.verify.TAction) {
         if (!publicationIdentifier) {
             return;
         }
+
+        yield put(opdsActions.publicationImported.build(link, publicationIdentifier));
 
         const dialog: ILibraryRootState["dialog"] = yield select(
             (state: ILibraryRootState) => state.dialog,

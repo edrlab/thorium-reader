@@ -11,6 +11,7 @@ import { apiActions, dialogActions, importActions } from "readium-desktop/common
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
+import { opdsActions } from "readium-desktop/renderer/library/redux/actions";
 import { sameFileImport } from "readium-desktop/renderer/library/redux/sagas/sameFileImport";
 import { stdChannel, runSaga } from "redux-saga";
 
@@ -113,6 +114,26 @@ describe("sameFileImport", () => {
             identifier: "local-publication-id",
         } as PublicationView);
 
+        expect(dispatched.some((action) => action.type === dialogActions.updateRequest.ID)).toBe(false);
+    });
+
+    it("updates the cached OPDS payload without an entry-link refresh", async () => {
+        const publicationWithoutSelfLink: IOpdsPublicationView = {
+            ...publication,
+            selfLink: undefined,
+        };
+        const dispatched = await runImport(
+            createState(false, publicationWithoutSelfLink),
+            { identifier: "local-publication-id" } as PublicationView,
+            false,
+            publicationWithoutSelfLink,
+        );
+
+        const browserUpdateAction = dispatched.find((action) => action.type === opdsActions.publicationImported.ID);
+        expect(browserUpdateAction.payload).toEqual({
+            link,
+            publicationIdentifier: "local-publication-id",
+        });
         expect(dispatched.some((action) => action.type === dialogActions.updateRequest.ID)).toBe(false);
     });
 
