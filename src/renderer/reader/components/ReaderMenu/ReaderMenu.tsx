@@ -608,6 +608,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
         <Tab
             key={tab.value}
             id={tab.value}
+            data-focus-id={`reader-menu-${tab.value}-trigger`}
             data-separator-before={tab.separatorBefore || undefined}
             data-value={tab.value}
             isDisabled={tab.disabled}
@@ -687,7 +688,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     // aria-live="polite"
                 >
                     <TabPanelsOrFragment dockedMode={dockedMode}>
-                    <TabPanelOrRegion id="tab-toc" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-toc")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanelOrRegion id="tab-toc" focusId="reader-menu-tab-toc" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-toc")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab}>
                             {(isPdf && pdfToc?.length && renderLinkTree_(__("reader.marks.toc"), pdfToc, 1, undefined)) ||
                                 (isPdf && !pdfToc?.length && <p>{__("reader.toc.publicationNoToc")}</p>) ||
@@ -696,20 +697,20 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         </div>
                     </TabPanelOrRegion>
 
-                    <TabPanelOrRegion id="tab-landmark" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-landmark")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanelOrRegion id="tab-landmark" focusId="reader-menu-tab-landmark" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-landmark")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab}>
                             {r2Publication.Landmarks &&
                                 renderLinkList_(__("reader.marks.landmarks"), r2Publication.Landmarks)}
                         </div>
                     </TabPanelOrRegion>
 
-                    <TabPanelOrRegion id="tab-bookmark" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-bookmark")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanelOrRegion id="tab-bookmark" focusId="reader-menu-tab-bookmark" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-bookmark")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={classNames(dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab, stylesBookmarks.bookmarks_tab)}>
                             <BookmarkList popoverBoundary={popoverBoundary.current} goToLocator={goToLocator} hideBookmarkOnChange={hideAnnotationOnChange} START_PAGE={START_PAGE} selectionIsSet={selectionIsSet} MAX_MATCHES_PER_PAGE={MAX_MATCHES_PER_PAGE} />
                         </div>
                     </TabPanelOrRegion>
 
-                    <TabPanelOrRegion id="tab-annotation" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-annotation")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanelOrRegion id="tab-annotation" focusId="reader-menu-tab-annotation" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-annotation")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={classNames(dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab, dockedMode ? stylesAnnotations.docked_annotations_tab: stylesAnnotations.annotations_tab)}>
                             <AnnotationList
                                 goToLocator={goToLocator}
@@ -730,7 +731,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         </div>
                     </TabPanelOrRegion>
 
-                    <TabPanelOrRegion id="tab-search" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-search")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanelOrRegion id="tab-search" focusId="reader-menu-tab-search" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-search")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={classNames(dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab, stylesPopoverDialog.search_container)}>
                             {searchEnable
                                 ? <ReaderMenuSearch
@@ -741,7 +742,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         </div>
                     </TabPanelOrRegion>
 
-                    <TabPanelOrRegion id="tab-gotopage" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-gotopage")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanelOrRegion id="tab-gotopage" focusId="reader-menu-tab-gotopage" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-gotopage")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab}>
                             <GoToPageSection totalPages={
                                 isPdf && pdfNumberOfPages

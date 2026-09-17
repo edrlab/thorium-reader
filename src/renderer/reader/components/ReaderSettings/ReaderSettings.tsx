@@ -290,6 +290,7 @@ const TabTriggers = visibleTabs.map(tab => (
         <Tab
             key={tab.value}
             id={tab.value}
+            data-focus-id={tab.value === section ? "reader-settings-nav" : undefined}
             data-separator-before={tab.separatorBefore || undefined}
             data-value={tab.value}
             isDisabled={tab.disabled}
@@ -330,17 +331,17 @@ if (optionSelectedIsOnOptionDisabled) {
                 <div className={stylesSettings.settings_content}
                     style={{ marginTop: dockedMode && "0" }}>
                     <TabPanelsOrFragment dockedMode={dockedMode}>
-                    <TabPanelOrRegion id="tab-divina" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-divina")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanelOrRegion id="tab-divina" focusId="readerSettings_tabs-tab-divina" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-divina")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={stylesSettings.settings_tab}>
                             <DivinaSetReadingMode handleDivinaReadingMode={handleDivinaReadingMode} divinaReadingMode={divinaReadingMode} divinaReadingModeSupported={divinaReadingModeSupported} />
                         </div>
                     </TabPanelOrRegion>
-                    <TabPanelOrRegion id="tab-pdfzoom" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-pdfzoom")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanelOrRegion id="tab-pdfzoom" focusId="readerSettings_tabs-tab-pdfzoom" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-pdfzoom")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={stylesSettings.settings_tab}>
                             <PdfZoom pdfScale={props.pdfPlayerZoom} /*pdfView={pdfView}*/ />
                         </div>
                     </TabPanelOrRegion>
-                    <TabPanelOrRegion id="tab-text" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-text")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanelOrRegion id="tab-text" focusId="readerSettings_tabs-tab-text" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-text")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div
                             className={classNames(stylesSettings.settings_tab, stylesSettings.settings_reading_text)}
                             // style={{ marginLeft: "20px" }}
@@ -349,12 +350,12 @@ if (optionSelectedIsOnOptionDisabled) {
                             <FontFamily />
                         </div>
                     </TabPanelOrRegion>
-                    <TabPanelOrRegion id="tab-spacing" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-spacing")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanelOrRegion id="tab-spacing" focusId="readerSettings_tabs-tab-spacing" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-spacing")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={stylesSettings.settings_tab}>
                             <ReadingSpacing />
                         </div>
                     </TabPanelOrRegion>
-                    <TabPanelOrRegion id="tab-display" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-display")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanelOrRegion id="tab-display" focusId="readerSettings_tabs-tab-display" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-display")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <section className={stylesSettings.settings_tab}>
                             {isPdf ? <></> : <Theme dockedMode={dockedMode} />}
                             {isPdf ? <></> : <ReadingDisplayLayout isFXL={props.isFXL} />}
@@ -363,7 +364,7 @@ if (optionSelectedIsOnOptionDisabled) {
                             {isPdf ? <></> : <ReadingDisplayCheckboxSettings disableRTLFlip={props.disableRTLFlip} setDisableRTLFlip={props.setDisableRTLFlip} />}
                         </section>
                     </TabPanelOrRegion>
-                    <TabPanelOrRegion id="tab-preset" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-preset")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanelOrRegion id="tab-preset" focusId="readerSettings_tabs-tab-preset" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-preset")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <section className={stylesSettings.settings_tab}>
                             <SaveResetApplyPreset />
                         </section>

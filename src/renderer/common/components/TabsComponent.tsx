@@ -28,9 +28,15 @@ export function Tabs({ children, ...props }: TabsProps) {
     );
 }
 
-export function TabList<T extends object>(props: Parameters<typeof TabListReactAria<T>>[0]) {
-    return <TabListReactAria {...props} />;
+type TTabListReactAriaProps<T extends object> = React.ComponentPropsWithoutRef<typeof TabListReactAria<T>>;
+
+function TabListWithRef<T extends object>(props: TTabListReactAriaProps<T>, ref: React.ForwardedRef<HTMLDivElement>) {
+    return <TabListReactAria {...props} ref={ref} />;
 }
+
+export const TabList = React.forwardRef(TabListWithRef) as <T extends object>(
+    props: TTabListReactAriaProps<T> & React.RefAttributes<HTMLDivElement>,
+) => React.ReactElement | null;
 
 export function Tab(props: Parameters<typeof TabReactAria>[0]) {
     return <TabReactAria {...props} />;
@@ -52,15 +58,18 @@ interface TabPanelOrRegionProps extends Omit<TTabPanelReactAriaProps, "children"
     children: React.ReactNode;
     className?: string;
     dockedMode: boolean;
+    focusId?: string;
     id: string;
     label: string;
     selectedKey: string;
 }
 
-export function TabPanelOrRegion({ children, className, dockedMode, id, label, selectedKey, ...props }: TabPanelOrRegionProps) {
+export function TabPanelOrRegion({ children, className, dockedMode, focusId, id, label, selectedKey, ...props }: TabPanelOrRegionProps) {
     if (dockedMode) {
-        return selectedKey === id ? <section className={className} id={id} role="region" aria-label={label}>{children}</section> : <></>;
+        return selectedKey === id ?
+            <section className={className} data-focus-id={focusId} id={id} role="region" aria-label={label} tabIndex={-1}>{children}</section> :
+            <></>;
     }
 
-    return <TabPanelReactAria {...props} className={className} id={id}>{children}</TabPanelReactAria>;
+    return <TabPanelReactAria {...props} className={className} data-focus-id={focusId} id={id}>{children}</TabPanelReactAria>;
 }

@@ -231,8 +231,8 @@ $setting_color: var(--color-brand-primary);
         gap: 5px;
     }
 
-    .react-aria-Tab[id="tab-text"],
-    .react-aria-Tab[id="tab-spacing"] {
+    .react-aria-Tab[data-value="tab-text"],
+    .react-aria-Tab[data-value="tab-spacing"] {
         margin-left: 20%;
     }
 }
