@@ -45,17 +45,12 @@ import {
     UseFiltersColumnProps,
     UseFiltersInstanceProps,
     UseFiltersOptions,
-    UseExpandedOptions,
     UseGlobalFiltersInstanceProps,
     UseGlobalFiltersOptions,
     UseGlobalFiltersState,
-    UseGroupByOptions,
     UsePaginationInstanceProps,
     UsePaginationOptions,
     UsePaginationState,
-    UseResizeColumnsOptions,
-    UseRowSelectOptions,
-    UseRowStateOptions,
     UseSortByColumnProps,
     UseSortByInstanceProps,
     UseSortByOptions,
@@ -108,6 +103,7 @@ import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar2-i
 // import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import * as KeyIcon from "readium-desktop/renderer/assets/icons/key-icon.svg";
 import AboutThoriumButton from "../catalog/AboutThoriumButton";
+import { getNextPageIndex } from "./tablePagination";
 import Menu from "readium-desktop/renderer/common/components/menu/Menu";
 import CatalogMenu from "../publication/menu/CatalogMenu";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
@@ -1576,19 +1572,10 @@ type MyTableInstance<T extends object> =
 
 type AllPublicationTableOptions =
     TableOptions<IColumns> &
-    UseExpandedOptions<IColumns> &
     UseFiltersOptions<IColumns> &
     UseGlobalFiltersOptions<IColumns> &
-    UseGroupByOptions<IColumns> &
     UsePaginationOptions<IColumns> &
-    UseResizeColumnsOptions<IColumns> &
-    UseRowSelectOptions<IColumns> &
-    UseRowStateOptions<IColumns> &
-    UseSortByOptions<IColumns> & {
-        // _UNSTABLE_usePivotColumns exposes autoResetPivot in the package source,
-        // but @types/react-table does not declare this experimental plugin option.
-        autoResetPivot?: boolean;
-    };
+    UseSortByOptions<IColumns>;
 
 interface ITableCellProps_Common {
     __: I18nFunction;
@@ -2282,36 +2269,63 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
         globalFilter: "globalFilter",
         filterTypes: filterTypes as unknown as FilterTypes<IColumns>, // because typing 'columnIds' instead of 'columnId' in FilterType<D> ?!
         initialState: initialState as TableState<IColumns>, // again, typing woes :(
-        // react-table v7 autoReset* options default to true. We set the full
-        // inventory explicitly to false so the current All Publications view
-        // survives publication refreshes triggered from reader windows. Options
-        // for plugins not installed below are inert unless the matching plugin
-        // is later added to this useTable() call.
+        // Keep the current All Publications view when publication data is
+        // refreshed from a reader window. Pagination is managed below so that
+        // criteria changes still return to the first page.
         // API: https://react-table-v7-docs.netlify.app/docs/api/usetable
         autoResetHiddenColumns: false, // default: true; reset hiddenColumns when columns change.
-        // API: https://react-table-v7-docs.netlify.app/docs/api/useexpanded
-        autoResetExpanded: false, // default: true; reset expanded rows when data changes.
         // API: https://react-table-v7-docs.netlify.app/docs/api/usefilters
         autoResetFilters: false, // default: true; reset column filters when data changes.
         // API: https://react-table-v7-docs.netlify.app/docs/api/useglobalfilter
         autoResetGlobalFilter: false, // default: true; reset global search when data changes.
-        // API: https://react-table-v7-docs.netlify.app/docs/api/usegroupby
-        autoResetGroupBy: false, // default: true; reset grouping when data changes.
         // API: https://react-table-v7-docs.netlify.app/docs/api/usepagination
         autoResetPage: false, // default: true; reset page on data, sort, filter, or group changes.
-        // API: https://react-table-v7-docs.netlify.app/docs/api/useresizecolumns
-        autoResetResize: false, // default: true; reset column resize state when columns change.
-        // API: https://react-table-v7-docs.netlify.app/docs/api/userowselect
-        autoResetSelectedRows: false, // default: true; reset selected rows when data changes.
-        // API: https://react-table-v7-docs.netlify.app/docs/api/userowstate
-        autoResetRowState: false, // default: true; reset row/cell state when data changes.
         // API: https://react-table-v7-docs.netlify.app/docs/api/usesortby
         autoResetSortBy: false, // default: true; reset sorting when data changes.
-        // Source: node_modules/react-table/src/plugin-hooks/_UNSTABLE_usePivotColumns.js
-        autoResetPivot: false, // default: true; reset experimental pivot columns when columns change.
     };
     const tableInstance =
         useTable<IColumns>(opts, useFilters, useGlobalFilter, useSortBy, usePagination) as MyTableInstance<IColumns>;
+
+    const {
+        gotoPage,
+        pageCount,
+        state: {
+            filters: paginationFilters,
+            globalFilter: paginationGlobalFilter,
+            pageIndex,
+            sortBy: paginationSortBy,
+        },
+    } = tableInstance;
+    const previousPageCriteriaRef = React.useRef({
+        filters: paginationFilters,
+        globalFilter: paginationGlobalFilter,
+        sortBy: paginationSortBy,
+    });
+    React.useLayoutEffect(() => {
+        const previousCriteria = previousPageCriteriaRef.current;
+        const criteriaChanged =
+            previousCriteria.filters !== paginationFilters ||
+            previousCriteria.globalFilter !== paginationGlobalFilter ||
+            previousCriteria.sortBy !== paginationSortBy;
+
+        previousPageCriteriaRef.current = {
+            filters: paginationFilters,
+            globalFilter: paginationGlobalFilter,
+            sortBy: paginationSortBy,
+        };
+
+        const nextPageIndex = getNextPageIndex(pageIndex, pageCount, criteriaChanged);
+        if (nextPageIndex !== pageIndex) {
+            gotoPage(nextPageIndex);
+        }
+    }, [
+        gotoPage,
+        pageCount,
+        pageIndex,
+        paginationFilters,
+        paginationGlobalFilter,
+        paginationSortBy,
+    ]);
 
     const skipInitialTableStatePersistenceRef = React.useRef(true);
     React.useEffect(() => {
