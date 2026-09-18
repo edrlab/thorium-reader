@@ -1350,9 +1350,9 @@
             "storage": "Tallennustila"
         },
         "telemetry": {
-            "disableTelemetryMeasurements": "",
-            "disableTelemetryMeasurementsDescription": "",
-            "title": ""
+            "disableTelemetryMeasurements": "Poista etämittaus käytöstä",
+            "disableTelemetryMeasurementsDescription": "Kun tämä on valittu, Thorium ei lähetä etämittausten tuloksia",
+            "title": "Etämittaus"
         },
         "theme": {
             "auto": "Automaattinen",

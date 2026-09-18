@@ -269,9 +269,9 @@
         },
         "storage": {
             "recovery": {
-                "failure": "",
-                "success_one": "",
-                "success_other": ""
+                "failure": "Gendannelsen af bogen fejlede.",
+                "success_one": "{{- count}} bog blev gendannet.",
+                "success_other": "{{- count}} bøger blev gendannet."
             },
             "removed": "Bogmappe blev fjernet.",
             "updateFailed": "Fejl ved opdatering af bog-mappe: {{- message}}",
@@ -293,15 +293,15 @@
         "addMenu": "Tilføj OPDS feed",
         "breadcrumbRoot": "Kataloger",
         "color": {
-            "blue": "",
-            "gray": "",
-            "green": "",
-            "orange": "",
-            "pink": "",
-            "purple": "",
-            "red": "",
-            "title": "",
-            "yellow": ""
+            "blue": "Blå",
+            "gray": "Grå",
+            "green": "Grøn",
+            "orange": "Orange",
+            "pink": "Pink",
+            "purple": "Lilla",
+            "red": "Rød",
+            "title": "Katalog farve",
+            "yellow": "Gul"
         },
         "documentation": "OPDS' officielle hjemmeside",
         "empty": "Ingen bøger fundet",
@@ -890,7 +890,7 @@
             "disposition": {
                 "title": "Layout"
             },
-            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicators": "Vis sideskift i margenen",
             "font": "Skrifttype",
             "fontSize": "Skriftstørrelse",
             "increaseFontSize": "Forstør skriftstørrelsen",
@@ -1322,24 +1322,24 @@
             },
             "recovery": {
                 "actions": {
-                    "check": "",
-                    "checkAgain": "",
-                    "recover": "",
-                    "recovering": ""
+                    "check": "Tjek om der findes bøger, der kan gendannes",
+                    "checkAgain": "Tjek igen",
+                    "recover": "Gendan bøger",
+                    "recovering": "Gendanner..."
                 },
-                "available": "",
-                "checking": "",
-                "description": "",
+                "available": "En eller flere bøger blev fundet på din enhed, men mangler i databasen. Gendannelse er muligt.",
+                "checking": "Undersøger lagrede bøger...",
+                "description": "Kontrollér lagerplads, for at finde bøger der kan gendannes.",
                 "dialog": {
-                    "confirm": "",
-                    "description_one": "",
-                    "description_other": "",
-                    "title": ""
+                    "confirm": "Gendan",
+                    "description_one": "Thorium fandt {{- count}} bog på enheden, der mangler i databasen. Vil du importere denne tilbage til Thorium?",
+                    "description_other": "Thorium fandt {{- count}} bøger på enheden, der mangler i databasen. Vil du importere disse tilbage til Thorium?",
+                    "title": "Gendan bøger"
                 },
-                "none": "",
-                "recoverableCount_one": "",
-                "recoverableCount_other": "",
-                "title": ""
+                "none": "Der blev ikke fundet nogen bøger, der kan gendannes.",
+                "recoverableCount_one": "{{- count}} bog kan gendannes med dens originale lagrings ID.",
+                "recoverableCount_other": "{{- count}} bøger kan gendannes med deres originale lagrings ID.",
+                "title": "Gendannelse"
             }
         },
         "tabs": {
@@ -1350,9 +1350,9 @@
             "storage": "Lagerplads"
         },
         "telemetry": {
-            "disableTelemetryMeasurements": "",
-            "disableTelemetryMeasurementsDescription": "",
-            "title": ""
+            "disableTelemetryMeasurements": "Slå statistik-rapportering fra",
+            "disableTelemetryMeasurementsDescription": "Når dette er slået til, vil Thorium IKKE sende statistik-rapportering fra din enhed.",
+            "title": "Statistik-rapportering"
         },
         "theme": {
             "auto": "Automatisk",
