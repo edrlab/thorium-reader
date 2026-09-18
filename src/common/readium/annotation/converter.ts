@@ -326,6 +326,13 @@ export function convertAnnotationStateToReadiumAnnotation(note: INoteState): IRe
         debug("Convert A Note without any locator !!!", note.uuid);
     }
 
+    const importedTarget = readiumAnnotation?.import?.target;
+    const generatedSelectors = readiumAnnotation?.export?.selector;
+    const generatedMeta = (locatorExtended?.headings || locatorExtended?.epubPage) ? {
+        headings: locatorExtended?.headings ? locatorExtended.headings.map(({ txt, level }) => ({ txt, level })) : undefined,
+        page: locatorExtended?.epubPage || undefined,
+    } : undefined;
+
     return {
         "@context": "http://www.w3.org/ns/anno.jsonld",
         id: uuid ? "urn:uuid:" + uuid : "",
@@ -348,12 +355,10 @@ export function convertAnnotationStateToReadiumAnnotation(note: INoteState): IRe
             type: creator.type,
         } : undefined,
         target: {
-            source: locatorExtended?.locator.href || "",
-            meta: (locatorExtended?.headings || locatorExtended?.epubPage) ? {
-                headings: locatorExtended?.headings ? locatorExtended.headings.map(({ txt, level }) => ({ txt, level })) : undefined,
-                page: locatorExtended?.epubPage || undefined,
-            } : undefined,
-            selector: readiumAnnotation?.export?.selector || [],
+            ...importedTarget,
+            source: locatorExtended?.locator.href || importedTarget?.source || "",
+            meta: generatedMeta || importedTarget?.meta,
+            selector: generatedSelectors?.length ? generatedSelectors : importedTarget?.selector || [],
         },
         motivation: isABookmark ? "bookmarking" : "highlighting", // isABookmark = drawType === EDrawType.bookmark
     };
