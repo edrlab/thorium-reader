@@ -26,8 +26,8 @@ import { call, delay, put, spawn, take } from "redux-saga/effects";
 import { race as raceTyped, select as selectTyped } from "typed-redux-saga/macro";
 import { IOpdsHeaderState } from "readium-desktop/common/redux/states/renderer/opds";
 import { logEvent } from "readium-desktop/renderer/common/analytics";
+import { BROWSE_OPDS_API_REQUEST_ID } from "readium-desktop/renderer/library/opds/constants";
 
-export const BROWSE_OPDS_API_REQUEST_ID = "browseOpdsApiResult";
 export const SEARCH_OPDS_API_REQUEST_ID = "searchOpdsApiResult";
 export const SEARCH_TERM = "{searchTerms}";
 
