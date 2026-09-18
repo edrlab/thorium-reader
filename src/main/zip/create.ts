@@ -6,18 +6,8 @@
 // ==LICENSE-END=
 
 import debug_ from "debug";
+import * as crypto from "node:crypto";
 import * as fs from "node:fs";
-
-// TypeScript GO:
-// The current file is a CommonJS module whose imports will produce 'require' calls;
-// however, the referenced file is an ECMAScript module and cannot be imported with 'require'.
-// Consider writing a dynamic 'import("...")' call instead.
-// To convert this file to an ECMAScript module, change its file extension to '.mts',
-// or add the field `"type": "module"` to 'package.json'.
-// @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
-// e__slint-disable-next-line @typescript-eslint/ban-ts-comment
-// @__ts-ignore TS1479
-import { nanoid } from "nanoid";
 
 import * as path from "node:path";
 import { ZipFile } from "yazl";
@@ -37,15 +27,20 @@ const debug = debug_("readium-desktop:main#utils/zip/create");
 // https://github.com/readium/readium-lcp-server/blob/e2c484f571a8013faf13a335c007890150751d79/pack/pack.go#L236-L239
 // https://github.com/readium/readium-lcp-server/blob/e2c484f571a8013faf13a335c007890150751d79/pack/pack.go#L265-L267
 // const doDeflate = (zipPath: string) => !/\.(PDF|PNG|JPE?G|MPE?G|HEIC|WEBP|MP3|MP4|WAV|OGG|AVI)$/i.test(zipPath);
-const doDeflate = (_zipPath: string) => true;
+const doDeflate = (zipPath: string) => zipPath !== "mimetype";
 
 export type TResourcesFSCreateZip = Array<[fsPath: string, zipPath: string]>;
 export type TResourcesBUFFERCreateZip = Array<[chuncks: Buffer, zipPath: string]>;
+
+export interface ICreateZipOptions {
+    buffersFirst?: boolean;
+}
 
 export async function createZip(
     packagePath: string,
     resourcesMapFs: TResourcesFSCreateZip,
     resourcesMapBuffer?: TResourcesBUFFERCreateZip,
+    options?: ICreateZipOptions,
 ): Promise<void> {
     return new Promise<void>((resolve, reject) => {
         const zipfile = new ZipFile();
@@ -92,17 +87,25 @@ export async function createZip(
 
         zipfile.outputStream.pipe(writeStream);
 
-        resourcesMapFs.forEach(([fsPath, zipPath]) => {
+        const addFsResources = () => resourcesMapFs.forEach(([fsPath, zipPath]) => {
             const compress = doDeflate(zipPath);
             debug("createWebpubZip addFile", zipPath, compress);
             zipfile.addFile(fsPath, zipPath, { compress });
         });
 
-        resourcesMapBuffer?.forEach(([buffer, zipPath]) => {
+        const addBufferResources = () => resourcesMapBuffer?.forEach(([buffer, zipPath]) => {
             const compress = doDeflate(zipPath);
             debug("createWebpubZip addBuffer", zipPath, compress);
             zipfile.addBuffer(buffer, zipPath, { compress });
         });
+
+        if (options?.buffersFirst) {
+            addBufferResources();
+            addFsResources();
+        } else {
+            addFsResources();
+            addBufferResources();
+        }
 
         debug("createWebpubZip ENDING ...", packagePath);
         zipfile.end();
@@ -115,7 +118,7 @@ export async function createWebpubZip(
     resourcesMapBuffer?: TResourcesBUFFERCreateZip,
     name = "misc",
 ) {
-    const pathFile = await createTempDir(nanoid(8), name);
+    const pathFile = await createTempDir(crypto.randomUUID(), name);
     const packagePath = path.resolve(pathFile, "package.webpub");
     debug("createWebpubZip", packagePath);
     await createZip(packagePath, resourcesMapFs, [...(resourcesMapBuffer || []), [manifestBuffer, "manifest.json"]]);

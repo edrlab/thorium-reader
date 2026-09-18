@@ -28,10 +28,9 @@ export const acceptedExtensionObject = {
     zip: ".zip",
     opf: ".opf",
     nccHtml: "ncc.html",
+    cbz: ".cbz",
     // customizationProfilePackage: EXT_THORIUM,
     // annotations: EXT_ANNOTATIONS,
-
-    // cbz: ".cbz",
 };
 
 export const acceptedExtensionArray = ObjectValues(acceptedExtensionObject);
