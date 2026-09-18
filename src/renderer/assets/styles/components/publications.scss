@@ -575,6 +575,11 @@
   border-radius: 6px;
 }
 
+.cover_wrapper {
+  position: relative;
+  width: 100%;
+}
+
 .corner {
   // transform:rotate(40deg);
   position: absolute;
