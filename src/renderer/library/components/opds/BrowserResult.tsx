@@ -27,6 +27,7 @@ import Entry from "./Entry";
 import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
 import MessageOpdBrowserResult from "./MessageOpdBrowserResult";
+import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -78,6 +79,12 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                     />
                 );
 
+            } else if (
+                browserResult.isSuccess &&
+                parseContentType(browserResult.contentType) === ContentType.Html
+            ) {
+                // The route saga hands Web Catalogs off to the system browser.
+                content = (<Loader />);
             } else if (
                 browserResult.isSuccess
                 || (browserResult.isFailure && browserResult.statusCode === 401 && browserResult?.data?.opds?.auth)
