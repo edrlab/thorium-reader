@@ -51,10 +51,21 @@ function* importLinkFromPath(
 
     // Import downloaded publication in catalog
     const lcpHashedPassphrase = link?.properties?.lcpHashedPassphrase;
+    const pdfMetadataFallback = pub ? {
+        title: pub.documentTitle,
+        authors: pub.authorsLangString?.map((author) => author.nameLangString),
+    } : undefined;
 
     const { b: [publicationDocument, alreadyImported] } = yield* raceTyped({
         a: delayTyped(30000),
-        b: callTyped(importFromFsService, downloadPath, willBeImmediatelyFollowedByOpen, lcpHashedPassphrase),
+        b: callTyped(
+            importFromFsService,
+            downloadPath,
+            willBeImmediatelyFollowedByOpen,
+            lcpHashedPassphrase,
+            undefined,
+            pdfMetadataFallback,
+        ),
     });
 
     if (link.localBookshelfPublicationId) {
