@@ -1,10 +1,18 @@
 import { expect, test } from "@jest/globals";
 
 import {
+    convertSelectorTargetToLocatorExtended,
     convertAnnotationStateArrayToReadiumAnnotationSet,
     convertAnnotationStateToReadiumAnnotation,
 } from "readium-desktop/common/readium/annotation/converter";
-import type { IEPUBCFISelector, ISelector, ITextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import type {
+    ISelector,
+    ICssSelector,
+    IEPUBCFISelector,
+    IProgressionSelector,
+    IReadiumAnnotation,
+    ITextQuoteSelector,
+} from "readium-desktop/common/readium/annotation/annotationModel.type";
 import { EDrawType, INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
@@ -121,13 +129,15 @@ test("Readium annotation set export filters PDF annotations and preserves EPUB a
 });
 
 test("Readium annotation export preserves EPUB CFI selector vocabulary", () => {
-    const annotation = convertAnnotationStateToReadiumAnnotation(createNote({
-        readiumAnnotation: {
-            export: {
-                selector: [epubCfiSelector],
+    const annotation = convertAnnotationStateToReadiumAnnotation(
+        createNote({
+            readiumAnnotation: {
+                export: {
+                    selector: [epubCfiSelector],
+                },
             },
-        },
-    }));
+        }),
+    );
 
     expect(annotation?.target.selector).toContainEqual(epubCfiSelector);
 });
@@ -186,4 +196,85 @@ test("Readium annotation export prefers generated selectors over imported select
 
     expect(annotation?.target.source).toBe("chapter.xhtml");
     expect(annotation?.target.selector).toEqual([epubCfiSelector]);
+});
+
+test("Readium bookmark import accepts a progression-only target at zero", async () => {
+    const progressionSelector: IProgressionSelector = {
+        type: "ProgressionSelector",
+        value: 0,
+    };
+    const target: IReadiumAnnotation["target"] = {
+        source: "image.xhtml",
+        selector: [progressionSelector],
+    };
+
+    const locatorExtended = await convertSelectorTargetToLocatorExtended(
+        target,
+        undefined,
+        true,
+        undefined,
+        "image.xhtml",
+    );
+
+    expect(locatorExtended?.locator).toEqual({
+        href: "image.xhtml",
+        locations: {
+            cssSelector: undefined,
+            progression: 0,
+        },
+    });
+    expect(locatorExtended?.selectionInfo).toBeUndefined();
+});
+
+test("Readium bookmark import accepts an empty resource-level target", async () => {
+    const target: IReadiumAnnotation["target"] = {
+        source: "image.xhtml",
+        selector: [],
+    };
+
+    const locatorExtended = await convertSelectorTargetToLocatorExtended(
+        target,
+        undefined,
+        true,
+        undefined,
+        "image.xhtml",
+    );
+
+    expect(locatorExtended?.locator.href).toBe("image.xhtml");
+    expect(locatorExtended?.locator.locations).toEqual({
+        cssSelector: undefined,
+        progression: undefined,
+    });
+});
+
+test("Readium bookmark import preserves a non-text element selector", async () => {
+    const cssSelector: ICssSelector<undefined> = {
+        type: "CssSelector",
+        value: "body > img",
+    };
+    const progressionSelector: IProgressionSelector = {
+        type: "ProgressionSelector",
+        value: 1,
+    };
+    const target: IReadiumAnnotation["target"] = {
+        source: "image.xhtml",
+        selector: [progressionSelector, cssSelector],
+    };
+
+    const locatorExtended = await convertSelectorTargetToLocatorExtended(
+        target,
+        undefined,
+        true,
+        undefined,
+        "image.xhtml",
+    );
+
+    expect(locatorExtended?.locator).toEqual({
+        href: "image.xhtml",
+        locations: {
+            cssSelector: "body > img",
+            progression: 1,
+        },
+    });
+    expect(locatorExtended?.selectionInfo).toBeUndefined();
 });

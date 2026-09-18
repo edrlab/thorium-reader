@@ -30,6 +30,7 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { getSaga } from "readium-desktop/renderer/library/createStore";
 import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 
 function useShiftKey() {
   const [isShiftPressed, setIsShiftPressed] = React.useState(false);
@@ -65,6 +66,12 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
     const isShiftKeyPressed = useShiftKey();
 
     const canOpen = canOpenPublication(props.publicationView);
+
+    const isLicensed = props.publicationView.lcp !== null && props.publicationView.lcp !== undefined;
+    const licenseStatus = props.publicationView.lcp?.lsd?.lsdStatus?.status;
+    const isLicenseReadyOrActive = isLicensed ?
+        licenseStatus === StatusEnum.Ready || licenseStatus === StatusEnum.Active :
+        false;
 
     const noteExport = <button
         className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
@@ -181,15 +188,19 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
             <PublicationExportButton
                 publicationView={props.publicationView}
             />
-            <div style={{ borderBottom: "1px solid var(--color-brand-primary)" }}></div>
-            <ImportAnnotationsDialog winId={undefined} publicationView={props.publicationView}>
-                <button
-                    className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
-                >
-                    <SVG ariaHidden svg={ImportIcon} />
-                    {__("catalog.importAnnotation")}
-                </button>
-            </ImportAnnotationsDialog>
+            {!isLicensed || isLicenseReadyOrActive ?
+                <>
+                    <div style={{ borderBottom: "1px solid var(--color-brand-primary)" }}></div>
+                    <ImportAnnotationsDialog winId={undefined} publicationView={props.publicationView}>
+                        <button
+                            className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
+                        >
+                            <SVG ariaHidden svg={ImportIcon} />
+                            {__("catalog.importAnnotation")}
+                        </button>
+                    </ImportAnnotationsDialog>
+                </>
+                : <></>}
             <div style={{ borderBottom: "1px solid var(--color-brand-primary)" }}></div>
             {noteExport}
             {isShiftKeyPressed ? openFolder : <></>}
