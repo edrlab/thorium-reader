@@ -1336,7 +1336,7 @@
                 },
                 "available": "",
                 "checking": "Tikrinama leidinių saugykla...",
-                "description": "",
+                "description": "Patikrinkite leidinių saugyklą, kad rastumėte leidinius, kuriuos galima saugiai atkurti.",
                 "dialog": {
                     "confirm": "Atkurti",
                     "description_few": "",
