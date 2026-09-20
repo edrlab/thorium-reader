@@ -1334,20 +1334,20 @@
                     "recover": "Atkurti leidinius",
                     "recovering": "Atkuriama..."
                 },
-                "available": "",
+                "available": "Diske rastas vienas ar daugiau leidinių, kurių nėra duomenų bazėje. Atkūrimas įmanomas.",
                 "checking": "Tikrinama leidinių saugykla...",
                 "description": "Patikrinkite leidinių saugyklą, kad rastumėte leidinius, kuriuos galima saugiai atkurti.",
                 "dialog": {
                     "confirm": "Atkurti",
-                    "description_few": "",
-                    "description_one": "",
-                    "description_other": "",
+                    "description_few": "Thorium diske rado {{- count}} leidinius, kurių nėra duomenų bazėje. Ar norite juos vėl importuoti į Thorium?",
+                    "description_one": "Thorium diske rado {{- count}} leidinį, kurio nėra duomenų bazėje. Ar norite jį vėl importuoti į Thorium?",
+                    "description_other": "Thorium diske rado {{- count}} leidinių, kurių nėra duomenų bazėje. Ar norite juos vėl importuoti į Thorium?",
                     "title": "Atkurti leidinius"
                 },
                 "none": "Nerasta atkurtinų leidinių.",
-                "recoverableCount_few": "",
-                "recoverableCount_one": "",
-                "recoverableCount_other": "",
+                "recoverableCount_few": "{{- count}} leidinius galima atkurti naudojant pradinį saugyklos identifikatorių.",
+                "recoverableCount_one": "{{- count}} leidinį galima atkurti naudojant pradinį saugyklos identifikatorių.",
+                "recoverableCount_other": "{{- count}} leidinių galima atkurti naudojant pradinį saugyklos identifikatorių.",
                 "title": "Atkūrimas"
             }
         },
