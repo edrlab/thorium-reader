@@ -78,6 +78,7 @@
         "deleteBook": "Usuń",
         "deleteTag": "Usuń etykietę",
         "description": "Opis",
+        "downloaded": "",
         "emptyTagList": "Brak zaetykietowanych publikacji.",
         "entry": {
             "continueReading": "Wznów czytanie",

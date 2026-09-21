@@ -78,6 +78,7 @@
         "deleteBook": "حذف",
         "deleteTag": "حذف الوسم",
         "description": "الوصف",
+        "downloaded": "",
         "emptyTagList": "لا توجد منشورات موسومة.",
         "entry": {
             "continueReading": "استئناف القراءة",

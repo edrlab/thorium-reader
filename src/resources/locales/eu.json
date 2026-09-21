@@ -78,6 +78,7 @@
         "deleteBook": "Ezabatu",
         "deleteTag": "Ezabatu etiketa",
         "description": "Deskribapena",
+        "downloaded": "",
         "emptyTagList": "Ez duzu libururik etiketatuta.",
         "entry": {
             "continueReading": "Berrabiarazi irakurketa",

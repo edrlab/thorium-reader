@@ -78,6 +78,7 @@
         "deleteBook": "Slet",
         "deleteTag": "Slet tag",
         "description": "Beskrivelse",
+        "downloaded": "",
         "emptyTagList": "Du har ingen taggede bøger.",
         "entry": {
             "continueReading": "Genoptag læsning",

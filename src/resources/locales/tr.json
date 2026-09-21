@@ -78,6 +78,7 @@
         "deleteBook": "Sil",
         "deleteTag": "Etiketi sil",
         "description": "Tanım",
+        "downloaded": "",
         "emptyTagList": "Etiketsiz eserler.",
         "entry": {
             "continueReading": "Okumayı duraklat",

@@ -78,6 +78,7 @@
         "deleteBook": "Poista",
         "deleteTag": "Poista tunniste",
         "description": "Kuvaus",
+        "downloaded": "",
         "emptyTagList": "Tunnisteita ei ole käytössä.",
         "entry": {
             "continueReading": "Jatka lukemista",

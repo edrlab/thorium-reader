@@ -78,6 +78,7 @@
         "deleteBook": "წაშლა",
         "deleteTag": "იარლიყის წაშლა",
         "description": "აღწერა",
+        "downloaded": "",
         "emptyTagList": "არ გაქვს არცერთი იარლიყიანი ელ-წიგნი.",
         "entry": {
             "continueReading": "კითხვის გაგრძელება",

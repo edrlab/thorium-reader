@@ -78,6 +78,7 @@
         "deleteBook": "削除",
         "deleteTag": "タグを削除",
         "description": "概要",
+        "downloaded": "",
         "emptyTagList": "タグがついた本はありません。",
         "entry": {
             "continueReading": "読書にもどる",

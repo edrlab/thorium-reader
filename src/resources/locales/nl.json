@@ -78,6 +78,7 @@
         "deleteBook": "Verwijder",
         "deleteTag": "Verwijder label",
         "description": "Beschrijving",
+        "downloaded": "",
         "emptyTagList": "Je hebt geen boeken met een label.",
         "entry": {
             "continueReading": "Ga verder met lezen",

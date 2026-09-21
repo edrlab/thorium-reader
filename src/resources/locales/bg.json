@@ -78,6 +78,7 @@
         "deleteBook": "Изтрий",
         "deleteTag": "Изтрий маркер",
         "description": "Описание",
+        "downloaded": "",
         "emptyTagList": "Нямате маркирана електронна книга.",
         "entry": {
             "continueReading": "Възобнови четенето",

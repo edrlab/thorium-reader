@@ -78,6 +78,7 @@
         "deleteBook": "删除图书",
         "deleteTag": "删除标签",
         "description": "概要",
+        "downloaded": "",
         "emptyTagList": "未带标签的电子书。",
         "entry": {
             "continueReading": "继续阅读",

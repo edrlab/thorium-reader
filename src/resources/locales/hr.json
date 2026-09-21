@@ -78,6 +78,7 @@
         "deleteBook": "Izbriši",
         "deleteTag": "Izbriši oznaku",
         "description": "Opis",
+        "downloaded": "",
         "emptyTagList": "Nemate označenu e-knjigu.",
         "entry": {
             "continueReading": "Nastavi čitati",

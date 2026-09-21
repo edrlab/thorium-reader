@@ -78,6 +78,7 @@
         "deleteBook": "Odstranit",
         "deleteTag": "Odstranit štítek",
         "description": "Popis",
+        "downloaded": "",
         "emptyTagList": "Žádné publikace se štítky.",
         "entry": {
             "continueReading": "Pokračovat ve čtení",
