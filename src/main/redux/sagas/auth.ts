@@ -34,11 +34,21 @@ import {
     deleteAuthenticationToken,
     getAuthenticationToken,
     httpGet,
+    httpGetWithAuth,
     httpPost,
     httpSetAuthenticationToken,
     IOpdsAuthenticationToken, wipeAuthenticationTokenStorage,
 } from "readium-desktop/main/network/http";
 import { ContentType } from "readium-desktop/utils/contentType";
+import {
+    IOpdsPkceTransaction,
+    OPDS_AUTHORIZATION_CODE_PKCE_TYPE,
+    OPDS_AUTHORIZATION_CODE_TOKEN_REL,
+    createOpdsPkceTransaction,
+    exchangeOpdsPkceAuthorizationCode,
+    getSafeOpdsAuthUrlForLog,
+    loadOpdsPkceAuthorizationServerMetadata,
+} from "readium-desktop/main/network/opdsPkce";
 import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, cancel, delay, join, put, race, spawn } from "redux-saga/effects";
@@ -82,11 +92,13 @@ const filename_ = "readium-desktop:main:saga:auth";
 const debug = debug_(filename_);
 debug("_");
 
-type TLinkType = "refresh" | "authenticate";
+type TLinkType = "refresh" | "authenticate" | "token";
 type TLabelName = "login" | "password";
 type TDigestInfo = "realm" | "nonce" | "qop" | "algorithm";
-type TAuthName = "id" | "access_token" | "refresh_token" | "token_type";
-type TAuthenticationType = "http://opds-spec.org/auth/oauth/password"
+type TAuthName = "id" | "access_token" | "refresh_token" | "token_type"
+    | "code" | "state" | "error" | "error_description" | "iss";
+type TAuthenticationType = typeof OPDS_AUTHORIZATION_CODE_PKCE_TYPE
+    | "http://opds-spec.org/auth/oauth/password"
     | "http://opds-spec.org/auth/oauth/password/apiapp"
     | "http://opds-spec.org/auth/oauth/implicit"
     | "http://opds-spec.org/auth/basic"
@@ -95,6 +107,7 @@ type TAuthenticationType = "http://opds-spec.org/auth/oauth/password"
     | "http://librarysimplified.org/authtype/SAML-2.0";
 
 const AUTHENTICATION_TYPE: TAuthenticationType[] = [
+    OPDS_AUTHORIZATION_CODE_PKCE_TYPE,
     "http://opds-spec.org/auth/oauth/password",
     "http://opds-spec.org/auth/oauth/password/apiapp",
     "http://opds-spec.org/auth/oauth/implicit",
@@ -132,19 +145,85 @@ const opdsAuthFlow =
             }
             debug("authentication doc parsed", authParsed);
 
-            const browserUrl = getHtmlAuthenticationUrl(authParsed);
+            let pkceTransaction: IOpdsPkceTransaction | undefined;
+            if (authParsed.authenticationType === OPDS_AUTHORIZATION_CODE_PKCE_TYPE) {
+                const registeredRedirectUri = `${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`;
+                if (authParsed.pkce?.redirectUri !== registeredRedirectUri) {
+                    debug("OPDS PKCE redirect_uri does not match Thorium's registered callback URI");
+                    return;
+                }
+                if (authParsed.pkce?.codeChallengeMethodsSupported &&
+                    !authParsed.pkce.codeChallengeMethodsSupported.includes("S256")) {
+                    debug("OPDS PKCE authentication provider does not advertise S256 support");
+                    return;
+                }
+                if (!authParsed.pkce?.authorizationServer || !authParsed.pkce.issuer) {
+                    debug("OPDS PKCE authentication provider does not advertise authorization server metadata");
+                    return;
+                }
+                const pkceMetadata = yield* callTyped(() => tryCatch(
+                    () => loadOpdsPkceAuthorizationServerMetadata(
+                        {
+                            authorizationServerMetadataUrl: authParsed.pkce.authorizationServer,
+                            expectedAuthorizationUrl: authParsed.links?.authenticate?.url,
+                            expectedIssuer: authParsed.pkce.issuer,
+                            expectedTokenUrl: authParsed.links?.token?.url,
+                        },
+                        async (metadataUrl) => {
+                            const headers = new Headers();
+                            headers.set("Accept", "application/json");
+                            const response = await httpGetWithAuth(false)(metadataUrl, { headers });
+                            if (!response.isSuccess || !response.response) {
+                                throw new Error(
+                                    `OAuth authorization server metadata failed with HTTP ${response.statusCode || 0}`,
+                                );
+                            }
+                            if (response.response.url && new URL(response.response.url).href !== metadataUrl) {
+                                throw new Error("OAuth authorization server metadata redirects are not allowed");
+                            }
+                            return response.response.json();
+                        },
+                    ),
+                    filename_,
+                ));
+                if (!pkceMetadata) {
+                    debug("invalid OPDS PKCE authorization server metadata");
+                    return;
+                }
+                pkceTransaction = tryCatchSync(
+                    () => createOpdsPkceTransaction({
+                        application: OPDS_AUTH_APPLICATION,
+                        applicationVersion: _APP_VERSION,
+                        authenticationDocumentId: authParsed.id || undefined,
+                        authorizationUrl: pkceMetadata.authorizationEndpoint,
+                        clientId: authParsed.pkce?.clientId,
+                        issuer: pkceMetadata.issuer,
+                        redirectUri: authParsed.pkce?.redirectUri,
+                        scope: authParsed.pkce?.scope,
+                        tokenUrl: pkceMetadata.tokenEndpoint,
+                    }),
+                    filename_,
+                );
+                if (!pkceTransaction) {
+                    debug("invalid OPDS PKCE authentication configuration");
+                    return;
+                }
+            }
+
+            const browserUrl = getHtmlAuthenticationUrl(authParsed, pkceTransaction);
             if (!browserUrl) {
                 debug("no valid authentication html url");
                 return;
             }
-            debug("Browser URL", browserUrl.slice(0, 100)+"...");
+            debug("Browser URL", getSafeOpdsAuthUrlForLog(browserUrl));
 
             const authCredentials: IOpdsAuthenticationToken = {
                 id: authParsed?.id || undefined,
                 opdsAuthenticationUrl: baseUrl,
                 tokenType: "Bearer",
-                refreshUrl: authParsed?.links?.refresh?.url || undefined,
-                authenticateUrl: authParsed?.links?.authenticate?.url || undefined,
+                refreshUrl: pkceTransaction?.tokenUrl || authParsed?.links?.refresh?.url || undefined,
+                authenticateUrl: pkceTransaction?.authorizationUrl || authParsed?.links?.authenticate?.url || undefined,
+                clientId: pkceTransaction?.clientId,
             };
             debug("authentication credential config", authCredentials);
             yield* callTyped(httpSetAuthenticationToken, authCredentials);
@@ -155,7 +234,7 @@ const opdsAuthFlow =
                 // yield delay(1000);
 
                 return {
-                    request: parseRequestFromCustomProtocol(parsedRequest.request),
+                    request: parseRequestFromCustomProtocol(parsedRequest.request, authParsed.authenticationType),
                     callback: parsedRequest.callback,
                 };
             });
@@ -205,7 +284,7 @@ const opdsAuthFlow =
                             return;
                         }
                         if (!retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser && opdsCustomProtocolRequestParsed.data[URL_OPDS_AUTH_RETRY] === URL_OPDS_AUTH_RETRY) {
-                            debug("OPDS auth retry ...", opdsCustomProtocolRequestParsed.url);
+                            debug("OPDS auth retry ...", getSafeOpdsAuthUrlForLog(opdsCustomProtocolRequestParsed.url.href));
 
                             callback({
                                 url: undefined,
@@ -224,7 +303,12 @@ const opdsAuthFlow =
 
                             // yield put(historyActions.refresh.build()); // ==> keep current context and recalls auth, but we need retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser
                             yield spawn(function* () {
-                                debug("OPDS auth retry GO!", opdsCustomProtocolRequestParsed.url, baseUrl, JSON.stringify(doc, null, 4));
+                                debug(
+                                    "OPDS auth retry GO!",
+                                    getSafeOpdsAuthUrlForLog(opdsCustomProtocolRequestParsed.url.href),
+                                    getSafeOpdsAuthUrlForLog(baseUrl),
+                                    JSON.stringify(doc, null, 4),
+                                );
                                 const opdsAuthChannel = getOpdsAuthenticationChannel();
                                 opdsAuthChannel.put([doc, baseUrl, true]); // retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser
                             });
@@ -236,6 +320,7 @@ const opdsAuthFlow =
                             opdsCustomProtocolRequestParsed,
                             authCredentials,
                             authParsed.authenticationType,
+                            pkceTransaction,
                         );
 
                         callback({
@@ -244,6 +329,8 @@ const opdsAuthFlow =
 
                         if (err instanceof Error) {
                             debug("OPDS auth err", err.message);
+
+                            yield put(authActions.cancel.build());
 
                             return;
                         } else {
@@ -386,6 +473,7 @@ async function opdsSetAuthCredentials(
     opdsCustomProtocolRequestParsed: IParseRequestFromCustomProtocol<TLabelName | TAuthName | TDigestInfo>,
     authCredentials: IOpdsAuthenticationToken,
     authenticationType: TAuthenticationType,
+    pkceTransaction?: IOpdsPkceTransaction,
 ): Promise<[undefined, Error]> {
 
     if (!opdsCustomProtocolRequestParsed) {
@@ -538,6 +626,46 @@ async function opdsSetAuthCredentials(
 
         if (method === "GET") {
 
+            if (authenticationType === OPDS_AUTHORIZATION_CODE_PKCE_TYPE) {
+                if (!pkceTransaction) {
+                    return [, new Error("missing PKCE authentication transaction")];
+                }
+
+                try {
+                    const tokenResponse = await exchangeOpdsPkceAuthorizationCode(
+                        pkceTransaction,
+                        data,
+                        async (tokenUrl, body) => {
+                            const headers = new Headers();
+                            headers.set("Accept", "application/json");
+                            headers.set("Content-Type", ContentType.FormUrlEncoded);
+                            const response = await httpPost<unknown>(tokenUrl, {
+                                body,
+                                headers,
+                            });
+                            const responseJson = await response.response?.json();
+                            if (!response.isSuccess && !responseJson) {
+                                throw new Error(`OAuth token endpoint failed with HTTP ${response.statusCode || 0}`);
+                            }
+                            return responseJson;
+                        },
+                    );
+                    const tokenType = tokenResponse.tokenType.charAt(0).toUpperCase() +
+                        tokenResponse.tokenType.slice(1);
+                    await httpSetAuthenticationToken({
+                        ...authCredentials,
+                        accessToken: tokenResponse.accessToken,
+                        clientId: pkceTransaction.clientId,
+                        refreshToken: tokenResponse.refreshToken,
+                        refreshUrl: pkceTransaction.tokenUrl,
+                        tokenType,
+                    });
+                    return [, undefined];
+                } catch (error) {
+                    return [, error instanceof Error ? error : new Error(String(error))];
+                }
+            }
+
             const newCredentials = {
                 ...authCredentials,
                 id: data.id || searchParams?.get("id") || authCredentials.id || undefined,
@@ -571,9 +699,13 @@ const _implicitAuthData = { authenticationDocumentId: "", nonce: "" };
 const setAndGetImplicitNonceForImplicitAuthentication = () => (_implicitAuthData.nonce = nanoid(16), _implicitAuthData.nonce);
 const getImplicitAuthData = () => _implicitAuthData;
 
-function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
+function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed, pkceTransaction?: IOpdsPkceTransaction) {
     let browserUrl: string;
     switch (auth.authenticationType) {
+        case OPDS_AUTHORIZATION_CODE_PKCE_TYPE: {
+            browserUrl = pkceTransaction?.authorizationRequestUrl || "";
+            break;
+        }
         case "http://opds-spec.org/auth/oauth/implicit": {
             try {
                 if (!auth.links?.authenticate?.url) {
@@ -685,6 +817,15 @@ interface IOPDSAuthDocParsed {
     qop?: string,
     realm?: string,
 
+    pkce?: {
+        authorizationServer?: string;
+        clientId?: string;
+        redirectUri?: string;
+        scope?: string;
+        issuer?: string;
+        codeChallengeMethodsSupported?: string[];
+    },
+
 }
 function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPDSAuthDocParsed | undefined {
     if (!doc || !(doc instanceof OPDSAuthenticationDoc)) {
@@ -717,13 +858,26 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
         return undefined;
     }
 
-    const authentication = doc.Authentication.find((v) => AUTHENTICATION_TYPE.includes(v.Type as any));
+    const authentication = doc.Authentication.find((v) => v.Type === OPDS_AUTHORIZATION_CODE_PKCE_TYPE) ||
+        doc.Authentication.find((v) => AUTHENTICATION_TYPE.includes(v.Type as any));
+    if (!authentication) {
+        debug("OPDS Authentication Document does not contain a supported authentication type.");
+        return undefined;
+    }
 
     const links = Array.isArray(authentication.Links)
         ? authentication.Links.reduce((pv, cv) => {
 
             const rel = (cv.Rel || [])
-                .reduce((pvRel, cvRel) => pvRel || LINK_TYPE.find((v) => v === cvRel) || "", "") as TLinkType;
+                .reduce((pvRel, cvRel) => {
+                    if (pvRel) {
+                        return pvRel;
+                    }
+                    if (cvRel === OPDS_AUTHORIZATION_CODE_TOKEN_REL) {
+                        return "token";
+                    }
+                    return LINK_TYPE.find((v) => v === cvRel) || "";
+                }, "") as TLinkType;
 
             if (
                 rel
@@ -806,12 +960,34 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
         algorithm: typeof authentication.AdditionalJSON?.algorithm === "string" ? authentication.AdditionalJSON.algorithm : undefined,
         qop: typeof authentication.AdditionalJSON?.qop === "string" ? authentication.AdditionalJSON.qop : undefined,
         realm: typeof authentication.AdditionalJSON?.realm === "string" ? authentication.AdditionalJSON.realm : "", // mapping to title in opdsAuthentication json
+        pkce: authentication.Type === OPDS_AUTHORIZATION_CODE_PKCE_TYPE ? {
+            authorizationServer: typeof authentication.AdditionalJSON?.authorization_server === "string"
+                ? authentication.AdditionalJSON.authorization_server
+                : undefined,
+            clientId: typeof authentication.AdditionalJSON?.client_id === "string"
+                ? authentication.AdditionalJSON.client_id
+                : undefined,
+            redirectUri: typeof authentication.AdditionalJSON?.redirect_uri === "string"
+                ? authentication.AdditionalJSON.redirect_uri
+                : undefined,
+            scope: typeof authentication.AdditionalJSON?.scope === "string"
+                ? authentication.AdditionalJSON.scope
+                : undefined,
+            issuer: typeof authentication.AdditionalJSON?.issuer === "string"
+                ? authentication.AdditionalJSON.issuer
+                : undefined,
+            codeChallengeMethodsSupported:
+                Array.isArray(authentication.AdditionalJSON?.code_challenge_methods_supported)
+                    ? authentication.AdditionalJSON.code_challenge_methods_supported
+                        .filter((method): method is string => typeof method === "string")
+                    : undefined,
+        } : undefined,
     };
 }
 
 async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser: boolean): Promise<BrowserWindow | undefined> {
 
-    debug("OPDS AUTH win URL", urlStr.slice(0, 100) + (urlStr.length > 100 ? "..." : ""));
+    debug("OPDS AUTH win URL", getSafeOpdsAuthUrlForLog(urlStr));
 
     const libWin = tryCatchSync(() => getLibraryWindowFromDi(), filename_);
     if (!libWin || libWin.isDestroyed() || libWin.webContents.isDestroyed()) {
@@ -825,7 +1001,7 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
         // passthrough
     } else if (/^https?:\/\//.test(urlStr)) {
         if (!retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser) {
-            debug("OPDS AUTH win URL EXTERNAL ...", urlStr);
+            debug("OPDS AUTH win URL EXTERNAL ...", getSafeOpdsAuthUrlForLog(urlStr));
 
             urlExternal = urlStr;
             title = getTranslator().translate("catalog.opds.auth.login");
@@ -844,7 +1020,7 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
             // return undefined;
         }
     } else {
-        debug("INVALID AUTH urlStr", urlStr);
+        debug("INVALID AUTH urlStr", getSafeOpdsAuthUrlForLog(urlStr));
         return undefined;
     }
 
@@ -893,7 +1069,7 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
     // });
 
     win.once("ready-to-show", () => {
-        debug("OPDS AUTH win ready-to-show", urlStr.substring(0, 500));
+        debug("OPDS AUTH win ready-to-show", getSafeOpdsAuthUrlForLog(urlStr));
         win.show();
     });
 
@@ -906,16 +1082,28 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
 
         if (/^https?:\/\//.test(navUrl)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
 
-            debug("willNavigate ==> EXTERNAL: ", win.webContents.getURL().substring(0, 500), " *** ", navUrl);
+            debug(
+                "willNavigate ==> EXTERNAL: ",
+                getSafeOpdsAuthUrlForLog(win.webContents.getURL()),
+                " *** ",
+                getSafeOpdsAuthUrlForLog(navUrl),
+            );
             shell.openExternal(navUrl).then(() => { /* noop */ }).catch((err: unknown) => { debug(err); }); // .finally(() => { /* noop */ })
             return;
         }
 
-        debug("willNavigate ==> noop: ", navUrl);
+        debug("willNavigate ==> noop: ", getSafeOpdsAuthUrlForLog(navUrl));
     };
 
     win.webContents.setWindowOpenHandler((details: HandlerDetails) => {
-        debug("BrowserWindow.webContents.setWindowOpenHandler (always DENY), win.webContents.id: ", win.webContents.id, "\n --- details.url: ", details.url.substring(0, 500), "\n === win.webContents.getURL()", win.webContents.getURL().substring(0, 500));
+        debug(
+            "BrowserWindow.webContents.setWindowOpenHandler (always DENY), win.webContents.id: ",
+            win.webContents.id,
+            "\n --- details.url: ",
+            getSafeOpdsAuthUrlForLog(details.url),
+            "\n === win.webContents.getURL()",
+            getSafeOpdsAuthUrlForLog(win.webContents.getURL()),
+        );
 
         // willNavigate(details.url);
 
@@ -923,14 +1111,28 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
     });
 
     win.webContents.on("will-navigate", (details: ElectronEvent<WebContentsWillNavigateEventParams>, detailsUrl: string) => {
-        debug("BrowserWindow.webContents.on('will-navigate') (always PREVENT?), win.webContents.id: ", win.webContents.id, "\n --- details.url: ", details.url?.substring(0, 500), "\n *** detailsUrl: ", detailsUrl?.substring(0, 500), "\n ~~~ urlStr: ", urlStr.substring(0, 500), "\n === win.webContents.getURL(): ", win.webContents.getURL()?.substring(0, 500));
+        debug(
+            "BrowserWindow.webContents.on('will-navigate') (always PREVENT?), win.webContents.id: ",
+            win.webContents.id,
+            "\n --- details.url: ",
+            details.url ? getSafeOpdsAuthUrlForLog(details.url) : undefined,
+            "\n *** detailsUrl: ",
+            detailsUrl ? getSafeOpdsAuthUrlForLog(detailsUrl) : undefined,
+            "\n ~~~ urlStr: ",
+            getSafeOpdsAuthUrlForLog(urlStr),
+            "\n === win.webContents.getURL(): ",
+            getSafeOpdsAuthUrlForLog(win.webContents.getURL()),
+        );
 
         if (details.url?.startsWith(`${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`)) {
-            debug(`${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/ ==> PASS: `, details.url?.substring(0, 500));
+            debug(
+                `${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/ ==> PASS: `,
+                getSafeOpdsAuthUrlForLog(details.url),
+            );
             return;
         }
         if (details.url === win.webContents.getURL()) {
-            debug("same URL ==> PASS: ", details.url?.substring(0, 500));
+            debug("same URL ==> PASS: ", getSafeOpdsAuthUrlForLog(details.url));
             return;
         }
 
@@ -1019,13 +1221,15 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
     //     });
     // });
 
-    debug("OPDS AUTH win LOAD 1", urlStr.substring(0, 500));
+    debug("OPDS AUTH win LOAD 1", getSafeOpdsAuthUrlForLog(urlStr));
 
     // win.webContents.loadURL
     // await DO NOT AWAIT!! (race condition when urlStr is a HTTP link that immediately redirects to OPDS://AUTHORIZE)
-    win.loadURL(urlStr).then(() => { debug("loadURL() ok " + urlStr); }).catch((err) => { debug("loadURL() nok " + urlStr); debug(err); });
+    win.loadURL(urlStr)
+        .then(() => { debug("loadURL() ok", getSafeOpdsAuthUrlForLog(urlStr)); })
+        .catch((err) => { debug("loadURL() nok", getSafeOpdsAuthUrlForLog(urlStr)); debug(err); });
 
-    debug("OPDS AUTH win LOAD 2", urlStr.substring(0, 500));
+    debug("OPDS AUTH win LOAD 2", getSafeOpdsAuthUrlForLog(urlStr));
 
     if (urlExternal) {
         setTimeout(() => {
@@ -1043,12 +1247,15 @@ interface IParseRequestFromCustomProtocol<T = string> {
         [key in T & string]?: string;
     };
 }
-function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest)
-    : IParseRequestFromCustomProtocol<TLabelName | TDigestInfo | typeof URL_OPDS_AUTH_RETRY> | undefined {
+function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest, authenticationType: TAuthenticationType)
+    : IParseRequestFromCustomProtocol<TLabelName | TAuthName | TDigestInfo | typeof URL_OPDS_AUTH_RETRY> | undefined {
 
-    debug("########");
-    debug("opds:// request:", req);
-    debug("########");
+    debug("opds:// request:", {
+        method: typeof req === "object" ? req.method : undefined,
+        url: typeof req === "object" && typeof req.url === "string"
+            ? getSafeOpdsAuthUrlForLog(req.url)
+            : undefined,
+    });
 
     if (typeof req === "object") {
         const { method, url, uploadData } = req;
@@ -1145,26 +1352,27 @@ function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest)
                 //     query component of the Redirection URI, unless a different Response Mode was specified.
                 if (data.error) {
                     debug("OAuth Error Response", "error:", { error: data.error, error_description: data.error_description });
-                    return undefined;
                 }
 
-                const implicitAuthData = getImplicitAuthData();
+                if (authenticationType === "http://opds-spec.org/auth/oauth/implicit") {
+                    const implicitAuthData = getImplicitAuthData();
 
-                if (data.id && implicitAuthData.authenticationDocumentId && data.id !== implicitAuthData.authenticationDocumentId) {
-                    debug("OAuth 2.0 implicit grant flow ID mismatch!", "expected (auth doc):", implicitAuthData.authenticationDocumentId, "actual (URL query param):", data.id);
-                    return undefined;
-                    // see https://github.com/edrlab/thorium-reader/pull/2510
-                } else {
-                    debug("OAuth 2.0 implicit grant flow ID match or missing (URL query param and/or auth doc) ==> pass.", "expected (auth doc):", implicitAuthData.authenticationDocumentId, "actual (URL query param):", data.id);
-                }
+                    if (data.id && implicitAuthData.authenticationDocumentId && data.id !== implicitAuthData.authenticationDocumentId) {
+                        debug("OAuth 2.0 implicit grant flow ID mismatch!", "expected (auth doc):", implicitAuthData.authenticationDocumentId, "actual (URL query param):", data.id);
+                        return undefined;
+                        // see https://github.com/edrlab/thorium-reader/pull/2510
+                    } else {
+                        debug("OAuth 2.0 implicit grant flow ID match or missing (URL query param and/or auth doc) ==> pass.", "expected (auth doc):", implicitAuthData.authenticationDocumentId, "actual (URL query param):", data.id);
+                    }
 
-                 if (data.state && implicitAuthData.nonce && data.state !== implicitAuthData.nonce) {
-                    debug("OAuth 2.0 implicit grant flow NONCE mismatch!", "expected (auth doc):", implicitAuthData.nonce, "actual (URL query param):", data.state);
-                    return undefined;
-                    // https://auth0.com/docs/secure/attack-protection/state-parameters
-                    // https://github.com/edrlab/thorium-reader/issues/2506
-                } else {
-                    debug("OAuth 2.0 implicit grant flow NONCE match or missing (URL query param and/or auth doc) ==> pass.", "expected (auth doc):", implicitAuthData.nonce, "actual (URL query param):", data.state);
+                    if (data.state && implicitAuthData.nonce && data.state !== implicitAuthData.nonce) {
+                        debug("OAuth 2.0 implicit grant flow NONCE mismatch!", "expected (auth doc):", implicitAuthData.nonce, "actual (URL query param):", data.state);
+                        return undefined;
+                        // https://auth0.com/docs/secure/attack-protection/state-parameters
+                        // https://github.com/edrlab/thorium-reader/issues/2506
+                    } else {
+                        debug("OAuth 2.0 implicit grant flow NONCE match or missing (URL query param and/or auth doc) ==> pass.", "expected (auth doc):", implicitAuthData.nonce, "actual (URL query param):", data.state);
+                    }
                 }
 
                 return {

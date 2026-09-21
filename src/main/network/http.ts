@@ -92,6 +92,7 @@ export interface IOpdsAuthenticationToken {
     opdsAuthenticationUrl?: string; // application/opds-authentication+json
     refreshUrl?: string;
     authenticateUrl?: string;
+    clientId?: string;
     accessToken?: string;
     refreshToken?: string;
     tokenType?: string;
@@ -681,12 +682,20 @@ const httpGetUnauthorizedRefresh =
             options.headers = options.headers instanceof Headers
                 ? options.headers
                 : new Headers(options.headers || {});
-            (options.headers as Headers).set("Content-Type", "application/json");
-
-            options.body = JSON.stringify({
-                refresh_token: refreshToken,
-                grant_type: "refresh_token",
-            });
+            if (auth.clientId) {
+                (options.headers as Headers).set("Content-Type", "application/x-www-form-urlencoded");
+                options.body = new URLSearchParams({
+                    client_id: auth.clientId,
+                    grant_type: "refresh_token",
+                    refresh_token: refreshToken,
+                }).toString();
+            } else {
+                (options.headers as Headers).set("Content-Type", "application/json");
+                options.body = JSON.stringify({
+                    refresh_token: refreshToken,
+                    grant_type: "refresh_token",
+                });
+            }
 
             const httpPostResponse = await httpPost(refreshUrl, options);
             if (httpPostResponse.isSuccess) {
