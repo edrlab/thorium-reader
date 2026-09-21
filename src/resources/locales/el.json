@@ -1350,9 +1350,9 @@
             "storage": "Χώρος αποθήκευσης"
         },
         "telemetry": {
-            "disableTelemetryMeasurements": "",
-            "disableTelemetryMeasurementsDescription": "",
-            "title": ""
+            "disableTelemetryMeasurements": "Απενεργοποίηση μετρήσεων τηλεμετρίας",
+            "disableTelemetryMeasurementsDescription": "Όταν είναι ενεργοποιημένο, το Thorium δεν αποστέλλει μετρήσεις τηλεμετρίας.",
+            "title": "Τηλεμετρία"
         },
         "theme": {
             "auto": "Αυτόματο",
