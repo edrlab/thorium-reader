@@ -240,6 +240,25 @@
   }
 }
 
+.downloadedIndicator {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background-color: var(--color-brand-secondary);
+  color: var(--color-text-primary);
+  font-size: 12px;
+  font-weight: 600;
+
+  svg {
+    width: 13px;
+    height: 13px;
+    color: var(--color-text-primary)!important;
+  }
+}
+
 .lcp_over svg {
   color: var(--color-error-text)!important;
 }

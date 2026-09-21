@@ -7,6 +7,21 @@
 
 import { IOpdsLinkView, IOpdsPublicationView, IOpdsResultView } from "readium-desktop/common/views/opds";
 
+const acquisitionLinkProperties = [
+    "openAccessLinks",
+    "sampleOrPreviewLinks",
+    "buyLinks",
+    "borrowLinks",
+] as const;
+
+export const isOpdsPublicationDownloaded = (
+    publication: IOpdsPublicationView,
+): boolean => acquisitionLinkProperties.some(
+    (propertyName) => publication[propertyName]?.some(
+        (link) => !!link.localBookshelfPublicationId,
+    ),
+);
+
 const updateLinks = (
     links: IOpdsLinkView[] | undefined,
     importedLink: IOpdsLinkView,

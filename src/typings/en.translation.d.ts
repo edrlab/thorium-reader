@@ -150,6 +150,7 @@ declare namespace typed_i18n {
   readonly "deleteBook": string,
   readonly "deleteTag": string,
   readonly "description": string,
+  readonly "downloaded": string,
   readonly "emptyTagList": string,
   readonly "entry": {
     readonly "continueReading": string,
@@ -253,6 +254,7 @@ declare namespace typed_i18n {
   (_: "catalog.deleteBook", __?: {}): string;
   (_: "catalog.deleteTag", __?: {}): string;
   (_: "catalog.description", __?: {}): string;
+  (_: "catalog.downloaded", __?: {}): string;
   (_: "catalog.emptyTagList", __?: {}): string;
   (_: "catalog.entry", __?: {}): { readonly "continueReading": string, readonly "lastAdditions": string };
   (_: "catalog.entry.continueReading", __?: {}): string;

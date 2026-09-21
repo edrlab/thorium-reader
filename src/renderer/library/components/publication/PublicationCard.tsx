@@ -28,7 +28,6 @@ import {
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import CatalogMenu from "./menu/CatalogMenu";
-import OpdsMenu from "./menu/OpdsMenu";
 
 import { convertMultiLangStringToLangString } from "readium-desktop/common/language-string";
 import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
@@ -43,6 +42,7 @@ import { formatTime } from "readium-desktop/common/utils/time";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/common/components/hoc/translator";
 import { isOpdsPublicationDownloading } from "readium-desktop/renderer/library/opds/download";
+import { isOpdsPublicationDownloaded } from "readium-desktop/renderer/library/opds/localBookshelfPublication";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -81,7 +81,9 @@ class PublicationCard extends React.Component<IProps> {
         const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
 
         const publicationView = publicationViewMaybeOpds as PublicationView;
+        const opdsPublicationView = publicationViewMaybeOpds as IOpdsPublicationView;
         const isLocalPublication = !isOpds;
+        const isDownloaded = !!isOpds && isOpdsPublicationDownloaded(opdsPublicationView);
         const canOpenLocalPublication = isLocalPublication &&
             canOpenPublication(publicationView);
         const showUnavailablePublicationState = isLocalPublication &&
@@ -147,7 +149,7 @@ class PublicationCard extends React.Component<IProps> {
                 {
                     isOpds ?
                         <PublicationInfoOpdsWithRadix
-                            opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}
+                            opdsPublicationView={opdsPublicationView}
                         >
                             <PublicationInfoOpdsWithRadixTrigger asChild>
                                 <button
@@ -271,7 +273,13 @@ class PublicationCard extends React.Component<IProps> {
                 }
                 <div className={stylesPublications.publication_infos_wrapper}>
                     <div className={stylesPublications.publication_infos}>
-                        {isOpds ? <></>
+                        {isOpds ?
+                            isDownloaded ?
+                                <div className={stylesPublications.downloadedIndicator}>
+                                    <SVG ariaHidden svg={DoubleCheckIcon} />
+                                    {__("catalog.downloaded")}
+                                </div>
+                                : <></>
                             : <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
                                 {/* (tagString === "/finished/") || */ publicationView.readingFinished ?
                                     <div className={stylesPublications.lcpIndicator}><SVG ariaHidden svg={DoubleCheckIcon} />{__("publication.read")}</div>
@@ -290,25 +298,19 @@ class PublicationCard extends React.Component<IProps> {
                                             : <></>
                                 }
                             </div>}
-                        <div style={{ display: "flex", alignItems: "end", height: "50px", width: "100%", justifyContent: isOpds ? "flex-end" : "space-between" }}>
-                            {isOpds ? <></>
-                                : <span className={stylesButtons.button_secondary_blue}>{pubFormat}</span>}
-                                {isOpds ? <></>
-                            :
-                            <Menu
-                                button={(
-                                    <SVG title={`${__("accessibility.bookMenu")} (${publicationViewMaybeOpds.documentTitle})`} svg={MenuIcon} />
-                                )}
-                            >
-                                {isOpds ?
-                                    <OpdsMenu
-                                        opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}
-                                    /> :
+                        {isOpds ? <></>
+                            : <div style={{ display: "flex", alignItems: "end", height: "50px", width: "100%", justifyContent: "space-between" }}>
+                                <span className={stylesButtons.button_secondary_blue}>{pubFormat}</span>
+                                <Menu
+                                    button={(
+                                        <SVG title={`${__("accessibility.bookMenu")} (${publicationViewMaybeOpds.documentTitle})`} svg={MenuIcon} />
+                                    )}
+                                >
                                     <CatalogMenu
                                         publicationView={publicationViewMaybeOpds as PublicationView}
-                                    />}
-                            </Menu>}
-                        </div>
+                                    />
+                                </Menu>
+                            </div>}
                     </div>
                 </div>
             </div>
