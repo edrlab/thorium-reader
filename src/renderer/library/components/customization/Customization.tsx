@@ -33,6 +33,10 @@ type TProfileScreenState =
 
 const PROFILE_SCREEN_SCOPE_SELECTOR = ".custom-profile-screen";
 
+// A selector list cannot be split with String.split(",") because commas are
+// also valid inside constructs such as :is(...), :not(...), and attribute
+// selectors. Track bracket and parenthesis depth so only top-level commas
+// separate selectors.
 const splitSelectorList = (selectorText: string): string[] => {
     const selectors: string[] = [];
     let currentSelector = "";
@@ -58,6 +62,11 @@ const splitSelectorList = (selectorText: string): string[] => {
 };
 
 const selectorTargetsProfileScreen = (selector: string): boolean => {
+    // Remove an optional `body` or `body[...]` ancestor followed by whitespace.
+    // For example, `body[data-theme="dark"] .custom-profile-screen h1` becomes
+    // `.custom-profile-screen h1`. This permits theme-qualified rules while the
+    // check below still requires the actual style target to be the profile
+    // container or one of its descendants.
     const normalizedSelector = selector.trim().replace(/^body(?:\[[^\]]+\])?\s+/, "");
     return normalizedSelector === PROFILE_SCREEN_SCOPE_SELECTOR ||
         [" ", ".", "#", ":", "[", ">", "+", "~"].some(
@@ -65,6 +74,11 @@ const selectorTargetsProfileScreen = (selector: string): boolean => {
         );
 };
 
+// Walk every parsed CSS rule, including rules nested in @media, @supports, or
+// similar grouping rules. Each style selector must explicitly target the
+// stable profile container. Keyframe declarations are accepted because they
+// do not select DOM nodes and can only take effect when referenced by an
+// already-scoped style rule.
 const profileCssRulesAreScoped = (rules: CSSRuleList): boolean =>
     Array.from(rules).every((rule) => {
         if ("selectorText" in rule && typeof rule.selectorText === "string") {
@@ -79,11 +93,18 @@ const profileCssRulesAreScoped = (rules: CSSRuleList): boolean =>
     });
 
 const profileCssIsSafeAndScoped = (cssText: string): boolean => {
+    // DOMPurify sanitizes markup and element attributes, but it does not
+    // provide stylesheet isolation. Block CSS that can load another
+    // stylesheet or font, plus legacy executable URL forms, before parsing.
     if (/@(?:font-face|import)\b/i.test(cssText) || /(?:expression|url)\s*\(\s*["']?\s*javascript:/i.test(cssText)) {
         return false;
     }
 
     try {
+        // Let Chromium's CSS parser interpret the stylesheet instead of using
+        // regular expressions for complete CSS syntax. Invalid stylesheets or
+        // selectors that escape the profile root cause the document to be
+        // rejected rather than risking changes to Thorium's Library UI.
         const sheet = new CSSStyleSheet();
         sheet.replaceSync(cssText);
         return profileCssRulesAreScoped(sheet.cssRules);
@@ -93,8 +114,13 @@ const profileCssIsSafeAndScoped = (cssText: string): boolean => {
 };
 
 export function prepareProfileScreenHtml(rawHtmlContent: string): string | undefined {
-    // Profile packages are controlled and signed. Their CSS may be retained, but the
-    // authoring contract requires every selector to be scoped below .custom-profile-screen.
+    // Profile packages are controlled and signed, so the page remains in the
+    // regular DOM instead of a Shadow DOM. This preserves Thorium's theme,
+    // focus management, accessibility landmarks, and link handling. Isolation
+    // is enforced by sanitizing the HTML and requiring retained stylesheet
+    // selectors to remain below .custom-profile-screen. Inline style
+    // attributes are local to their element, while Thorium's !important rules
+    // still enforce the application font and standard text sizes.
     const sanitizedHtml = DOMPurify.sanitize(rawHtmlContent, {
         FORCE_BODY: true,
         FORBID_ATTR: ["srcdoc"],
