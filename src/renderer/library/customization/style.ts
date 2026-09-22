@@ -10,10 +10,12 @@ const PROFILE_SCREEN_THEME_ANCESTOR =
     /^body\[data-theme(?:\s*=\s*(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|[^\]\s]+))?\s*\]\s+/;
 
 export type TProfileCssParser = (cssText: string) => CSSRuleList;
+export type TProfileSelectorValidator = (selectorText: string) => boolean;
 
-// See docs/customization-profile-screens.md for the parser and policy choice.
-// The selected replacement for this manual selector traversal is
-// `css-selector-parser`; the Thorium-specific allow/deny policy remains here.
+// This handwritten implementation remains Thorium's runtime policy. The AST
+// adapters in selectorCssParser.ts and selectorParsel.ts implement the same
+// policy for comparison in tests.
+//
 // A selector list cannot be split with String.split(",") because commas are
 // also valid inside constructs such as :is(...), :not(...), and attribute
 // selectors. Track bracket and parenthesis depth so only top-level commas
@@ -144,17 +146,23 @@ const selectorTargetsProfileScreen = (selector: string): boolean => {
     return true;
 };
 
+export const profileSelectorListTargetsProfileScreenWithOriginalParser: TProfileSelectorValidator =
+    (selectorText) => splitSelectorList(selectorText).every(selectorTargetsProfileScreen);
+
 // Walk every parsed CSS rule, including rules nested in @media, @supports, or
 // similar grouping rules. Each style selector must explicitly target the
 // stable profile container. Keyframes are rejected because their names belong
 // to the document-wide CSS namespace and could override a Thorium animation.
-const profileCssRulesAreScoped = (rules: CSSRuleList): boolean =>
+const profileCssRulesAreScoped = (
+    rules: CSSRuleList,
+    validateSelector: TProfileSelectorValidator,
+): boolean =>
     Array.from(rules).every((rule) => {
         if ("selectorText" in rule && typeof rule.selectorText === "string") {
-            return splitSelectorList(rule.selectorText).every(selectorTargetsProfileScreen);
+            return validateSelector(rule.selectorText);
         }
         if ("cssRules" in rule && rule.cssRules) {
-            return profileCssRulesAreScoped(rule.cssRules as CSSRuleList);
+            return profileCssRulesAreScoped(rule.cssRules as CSSRuleList, validateSelector);
         }
         return false;
     });
@@ -168,6 +176,7 @@ const parseProfileCss = (cssText: string): CSSRuleList => {
 export const profileCssIsSafeAndScoped = (
     cssText: string,
     parseCss: TProfileCssParser = parseProfileCss,
+    validateSelector: TProfileSelectorValidator = profileSelectorListTargetsProfileScreenWithOriginalParser,
 ): boolean => {
     // DOMPurify sanitizes markup and element attributes, but it does not
     // provide stylesheet isolation. Block CSS that can load another
@@ -185,7 +194,7 @@ export const profileCssIsSafeAndScoped = (
         // regular expressions for complete CSS syntax. Invalid stylesheets or
         // selectors that escape the profile root cause the document to be
         // rejected rather than risking changes to Thorium's Library UI.
-        return profileCssRulesAreScoped(parseCss(cssText));
+        return profileCssRulesAreScoped(parseCss(cssText), validateSelector);
     } catch {
         return false;
     }

@@ -1,7 +1,13 @@
 import { describe, expect, it } from "@jest/globals";
 import { JSDOM } from "jsdom";
 
-import { profileCssIsSafeAndScoped, TProfileCssParser } from "readium-desktop/renderer/library/customization/style";
+import { profileSelectorListTargetsProfileScreenWithCssSelectorParser } from "readium-desktop/renderer/library/customization/selectorCssParser";
+import { profileSelectorListTargetsProfileScreenWithParsel } from "readium-desktop/renderer/library/customization/selectorParsel";
+import {
+    profileCssIsSafeAndScoped,
+    profileSelectorListTargetsProfileScreenWithOriginalParser,
+    TProfileCssParser,
+} from "readium-desktop/renderer/library/customization/style";
 
 const parseCssWithJSDOM: TProfileCssParser = (cssText) => {
     const dom = new JSDOM("<!doctype html><html><head></head><body></body></html>");
@@ -16,9 +22,15 @@ const parseCssWithJSDOM: TProfileCssParser = (cssText) => {
     return style.sheet.cssRules as unknown as CSSRuleList;
 };
 
-const isSafe = (cssText: string) => profileCssIsSafeAndScoped(cssText, parseCssWithJSDOM);
+const selectorValidators = [
+    ["original handwritten parser", profileSelectorListTargetsProfileScreenWithOriginalParser],
+    ["css-selector-parser", profileSelectorListTargetsProfileScreenWithCssSelectorParser],
+    ["parsel-js", profileSelectorListTargetsProfileScreenWithParsel],
+] as const;
 
-describe("profile screen style enforcement", () => {
+describe.each(selectorValidators)("profile screen style enforcement with %s", (_name, validateSelector) => {
+    const isSafe = (cssText: string) => profileCssIsSafeAndScoped(cssText, parseCssWithJSDOM, validateSelector);
+
     it("accepts rules rooted at the profile container", () => {
         expect(
             isSafe(`
@@ -133,6 +145,60 @@ describe("profile screen style enforcement", () => {
             throw new Error("Invalid CSS");
         };
 
-        expect(profileCssIsSafeAndScoped(".custom-profile-screen {}", failingParser)).toBe(false);
+        expect(profileCssIsSafeAndScoped(".custom-profile-screen {}", failingParser, validateSelector)).toBe(false);
+    });
+});
+
+describe("profile selector implementation comparison", () => {
+    const sharedCases: Array<[selector: string, expected: boolean]> = [
+        [".custom-profile-screen", true],
+        [".custom-profile-screen.compact:hover", true],
+        [".custom-profile-screen > section .card", true],
+        [".custom-profile-screen .card + .card", true],
+        ["body[data-theme='dark'] .custom-profile-screen .card", true],
+        [".custom-profile-screen, .custom-profile-screen .card", true],
+        ["body .custom-profile-screen", false],
+        [".custom-profile-screen-other", false],
+        [".custom-profile-screen + .thorium-content", false],
+        [".custom-profile-screen, body", false],
+        [":is(.custom-profile-screen, body)", false],
+    ];
+
+    it.each(sharedCases)("returns $expected for %s", (selector, expected) => {
+        for (const [_name, validateSelector] of selectorValidators) {
+            expect(validateSelector(selector)).toBe(expected);
+        }
+    });
+
+    it("uses the original handwritten implementation by default", () => {
+        const stylesheet = ".custom-profile-\\73 creen {}";
+
+        expect(profileCssIsSafeAndScoped(stylesheet, parseCssWithJSDOM)).toBe(false);
+        expect(
+            profileCssIsSafeAndScoped(
+                stylesheet,
+                parseCssWithJSDOM,
+                profileSelectorListTargetsProfileScreenWithCssSelectorParser,
+            ),
+        ).toBe(true);
+    });
+
+    it("records parser-specific handling of escaped identifiers", () => {
+        const selector = ".custom-profile-\\73 creen";
+
+        // css-selector-parser decodes the escaped `s`. The original scanner
+        // compares the raw class spelling, while Parsel treats the space that
+        // terminates the escape as a descendant combinator; both fail closed.
+        expect(profileSelectorListTargetsProfileScreenWithOriginalParser(selector)).toBe(false);
+        expect(profileSelectorListTargetsProfileScreenWithCssSelectorParser(selector)).toBe(true);
+        expect(profileSelectorListTargetsProfileScreenWithParsel(selector)).toBe(false);
+    });
+
+    it("fails closed when a parser does not support a combinator", () => {
+        const selector = ".custom-profile-screen || td";
+
+        expect(profileSelectorListTargetsProfileScreenWithOriginalParser(selector)).toBe(false);
+        expect(profileSelectorListTargetsProfileScreenWithCssSelectorParser(selector)).toBe(false);
+        expect(profileSelectorListTargetsProfileScreenWithParsel(selector)).toBe(false);
     });
 });
