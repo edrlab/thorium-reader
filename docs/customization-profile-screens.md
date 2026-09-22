@@ -44,64 +44,31 @@ Only selector scope is validated here. The other stylesheet restrictions still a
 
 ### Selector validation algorithm
 
-Thorium does not interpret raw selector text as a complete CSS grammar. The browser first parses the stylesheet into CSSOM rules and gives Thorium a normalized `selectorText` for each retained style rule. Invalid or unsupported syntax may be discarded by the browser's CSS parser and therefore cannot affect the document. Thorium applies the following checks to every retained selector:
+The browser first parses the stylesheet into CSSOM rules and gives Thorium a `selectorText` for each retained style rule. Thorium then parses every selector list with [`css-selector-parser`](https://github.com/mdevils/css-selector-parser) in strict Selectors Level 4 mode. The AST is checked directly, without a second normalized model:
 
-1. Remove the optional `body[data-theme]` ancestor. No other ancestor prefix is removed or accepted.
-2. Require the remaining selector to begin with the exact `.custom-profile-screen` class. The next character must either extend the same compound selector, start a combinator, or end the selector. This rejects lookalikes such as `.custom-profile-screen-other`.
-3. Scan the text after the scope class from left to right. During this scan Thorium tracks quoted strings, escape sequences, square brackets, and parentheses. Consequently, characters inside an attribute selector or pseudo-class argument are not mistaken for top-level combinators.
-4. Inspect the first top-level combinator. A descendant combinator (whitespace) or child combinator (`>`) is accepted because it moves the target inside the profile root. A sibling combinator (`+` or `~`) or column combinator (`||`) is rejected because it could target an element outside the root.
-5. If no combinator follows the profile root, accept the selector because it only adds a class, ID, attribute, or pseudo-class condition to `.custom-profile-screen` itself.
+1. An optional ancestor must be exactly `body[data-theme]` or `body[data-theme="value"]`, without a namespace, another compound condition, a case-sensitivity modifier, or an operator other than `=`. It must be connected to the profile root by descendant whitespace.
+2. The first item in the profile-root compound must be the exact `custom-profile-screen` class. Because the parser decodes CSS identifiers, a valid escaped spelling such as `.custom-profile-\73 creen` is also accepted, while lookalikes remain rejected.
+3. With no following compound, the selector targets the profile root and is safe.
+4. When another compound follows the root, its first combinator must be descendant whitespace or child (`>`). A sibling (`+` or `~`) or column (`||`) combinator at this position is rejected because it can target content outside the root.
+5. Later combinators cannot escape the subtree after the selector has entered it, so they do not affect the containment decision. For example, `.custom-profile-screen .card + .card` is safe, while `.custom-profile-screen + .card` is not.
 
-Only the first top-level combinator is decisive. After a descendant or child combinator has moved into the profile subtree, later sibling combinators still select elements within that subtree. For example, `.custom-profile-screen .card + .card` is safe, while `.custom-profile-screen + .card` is not.
+An empty selector list, a parser exception, an unsafe selector in a list, an unknown CSS rule shape, or an unsupported global at-rule causes validation to fail closed. `css-selector-parser` only provides the AST; the containment checks in `selectorCssParser.ts` remain the Thorium security policy.
 
-This scan is linear in the selector length. An exception from the CSS parser, an unknown retained rule shape, an unsafe selector in a selector list, or an unsupported global at-rule causes validation to fail closed and the profile document to be rejected.
+### Test strategy and limitations
 
-Thorium keeps the handwritten selector validation in `selectorCustom.ts` as the runtime reference implementation, while `style.ts` applies it during stylesheet traversal. No maintained JavaScript policy library directly expresses Thorium's root-containment rule. The test suite compares the custom implementation with two AST-based implementations: [`css-selector-parser`](https://github.com/mdevils/css-selector-parser) and [`parsel-js`](https://github.com/LeaVerou/parsel). Both adapters normalize their parser-specific AST into the same Thorium-owned policy model, and all three implementations run against the complete enforcement corpus. The parser packages are development dependencies and are not included in the production runtime path.
+`style.test.ts` exercises both enforcement layers. Fourteen stylesheet tests pass CSS through CSSOM and verify selector lists, grouping rules, resource-loading and global at-rules, executable legacy values, escaped identifiers, and parser failures. A table of 42 direct selector cases covers the policy independently of CSSOM, including theme qualifiers, compound conditions, pseudo-classes, attributes containing combinator characters, namespaces, escaped lookalikes, partial selector lists, nesting selectors, malformed input, and every relevant combinator position.
 
-The comparison currently exposes one intentional difference: `css-selector-parser` decodes a valid escaped spelling of `.custom-profile-screen`, while the handwritten scanner and Parsel fail closed on it. Other alternatives were PostCSS with `postcss-selector-parser`, which duplicates CSSOM stylesheet parsing and adds a larger dependency surface; Stylelint, which is intended for build-time linting; general CSS sanitizers, whose policies do not enforce Thorium's containment contract; and the Rust [`css-sanitizer`](https://github.com/levish0/css-sanitizer), which is not a JavaScript dependency and still requires a custom selector-isolation policy.
+The suite is intentionally exhaustive for the Thorium policy, not for the complete CSS grammar. Important limits remain:
 
-### Multi-implementation test strategy
-
-`style.test.ts` defines the three selector validators in one parameterized table. Each validator runs against the same complete stylesheet enforcement corpus, covering accepted scope forms, selector lists, nested grouping rules, rejected ancestors, root-level sibling combinators, global at-rules, executable values, and parser failures. A second table exercises the validators directly with selectors for which all implementations must return the same decision.
-
-Parser-specific cases are kept outside the shared table so a known difference cannot silently weaken the common expectations. The escaped profile-root identifier is one such case: `css-selector-parser` accepts it after decoding the escape, while the custom implementation and Parsel reject it. Another test verifies that `profileCssIsSafeAndScoped()` uses the custom implementation by default. Consequently, adding a validator to the table does not change production behavior.
-
-This differential testing has important limits:
-
-- Agreement between three implementations is not proof that the decision is correct. The test expectation remains the policy oracle, and the corpus may omit a CSS grammar edge case.
-- The two AST adapters share `selectorPolicy.ts`. A defect in that common policy can therefore make both AST implementations agree incorrectly.
-- The tests receive `selectorText` through CSSOM. Differences between JSDOM and the Chromium version embedded by Electron can still expose parser behavior that the unit tests do not reproduce.
-- A parser upgrade can change AST shapes or supported syntax. Adapters fail closed on exceptions or unknown structures, but every dependency update still requires the complete comparison suite and the Library renderer build.
-- Failing closed prevents a selector from escaping the profile root, but it may reject a valid customization. The comparison measures compatibility as well as security.
+- JSDOM and the Chromium version embedded by Electron may normalize or discard stylesheet syntax differently. The direct selector tests reduce this blind spot, but they do not replace an Electron integration check.
+- A future parser version can change its AST or accepted grammar. The validator catches exceptions and rejects unexpected structures, but dependency upgrades still require the focused suite, TypeScript checks, the full test suite, and the Library renderer build.
+- Failing closed protects Thorium-owned UI but may reject a valid customization when new CSS syntax is not yet understood.
+- A single parser removes differential cross-checking. Security now depends on the parser's tests, Thorium's explicit policy corpus, and review of the small AST-to-policy function.
 
 ### Code cost and security value
 
-The following snapshot counts physical lines and, separately, non-blank non-comment lines. The numbers are included to make the maintenance cost visible; line count is not itself a measure of security.
+The final selector validator is 60 physical lines, of which 45 are non-blank non-comment lines. The stylesheet traversal and unsafe-value checks in `style.ts` add 57 physical lines, or 34 non-blank non-comment lines. Removing the custom scanner, Parsel adapter, and normalized policy deletes 299 physical source lines and removes the Parsel development dependency.
 
-| Implementation area | Physical lines | Non-blank, non-comment lines | Production path |
-| --- | ---: | ---: | --- |
-| Custom handwritten validator (`selectorCustom.ts`) | 147 | 84 | Yes |
-| Shared AST policy (`selectorPolicy.ts`) | 79 | 51 | No |
-| `css-selector-parser` adapter | 59 | 42 | No |
-| Parsel adapter | 73 | 55 | No |
-| Combined AST comparison layer | 211 | 148 | No |
-
-Parameterizing the existing stylesheet tests and adding explicit differential cases increased `style.test.ts` by a net 66 physical lines. The comparison therefore costs 211 source lines plus 66 test lines, in addition to two development dependencies. The AST comparison layer alone is about 1.4 times the physical size of the custom validator.
-
-This extra code does not currently add a direct runtime security boundary: the custom validator remains the only implementation shipped and executed. Its security value is independent verification. It makes parser ambiguities visible, checks that two established parsers can express the Thorium policy, and provides evidence for a future replacement decision without increasing the Library bundle or its production dependency surface. The trade-off is worthwhile while implementations are being evaluated, but retaining all three indefinitely would increase maintenance and development-time supply-chain exposure. If one AST implementation replaces the custom validator, the unused adapter should be removed and the shared security corpus retained.
-
-### Recommended outcome
-
-`css-selector-parser` is the preferred production target. Its strict parser handles CSS identifier escapes and modern selector grammar more completely than the custom scanner, while its adapter and the shared Thorium policy remain comparable in size to the handwritten implementation. The custom validator is already conservative and fail-closed, so this change primarily improves standards compatibility and long-term maintainability rather than fixing a known selector escape vulnerability. In particular, rejecting the escaped spelling of `.custom-profile-screen` is a compatibility limitation, not a security bypass.
-
-The migration should be staged:
-
-1. Run the complete shared and differential corpus against all three implementations while `selectorCustom.ts` remains the production default.
-2. Promote `css-selector-parser` to the production validator after validating the same behavior with the Chromium version embedded by Electron.
-3. Keep the custom validator temporarily as an independent test comparison during a stabilization period.
-4. Remove the Parsel adapter because its narrower grammar does not add enough independent coverage once `css-selector-parser` is selected.
-5. Remove the custom implementation after stabilization, unless comparison tests continue to reveal useful parser regressions. Retain the shared security corpus regardless of the selected implementation.
-
-The parser is not the security policy. `css-selector-parser` only turns selector text into a structured AST; `selectorPolicy.ts` must continue to enforce Thorium's `.custom-profile-screen` containment rule and reject incomplete, unknown, or unsafe structures. Dependency updates must therefore run the full selector corpus, TypeScript checks, and the Library renderer build before release.
+This reduction makes the production decision easier to audit and eliminates the maintenance risk of three implementations drifting apart. The trade-off is that `css-selector-parser` is now a production dependency and contributes code not represented by the local line count. Its strict grammar provides standards-compliant identifier decoding and avoids maintaining a handwritten selector parser, while the Thorium-specific allow/deny policy remains explicit and covered by 56 focused tests.
 
 Thorium addresses each screen with an internal `/profile/:screenId` route. The identifier is derived from the manifest `href`; a route can only load the localized `rel: "screen"` resource it resolves to in the active manifest.

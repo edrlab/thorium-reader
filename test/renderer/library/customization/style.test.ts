@@ -1,9 +1,7 @@
 import { describe, expect, it } from "@jest/globals";
 import { JSDOM } from "jsdom";
 
-import { profileSelectorListTargetsProfileScreenWithCssSelectorParser } from "readium-desktop/renderer/library/customization/selectorCssParser";
-import { profileSelectorListTargetsProfileScreenWithCustomParser } from "readium-desktop/renderer/library/customization/selectorCustom";
-import { profileSelectorListTargetsProfileScreenWithParsel } from "readium-desktop/renderer/library/customization/selectorParsel";
+import { profileSelectorListTargetsProfileScreen } from "readium-desktop/renderer/library/customization/selectorCssParser";
 import {
     profileCssIsSafeAndScoped,
     TProfileCssParser,
@@ -22,15 +20,9 @@ const parseCssWithJSDOM: TProfileCssParser = (cssText) => {
     return style.sheet.cssRules as unknown as CSSRuleList;
 };
 
-const selectorValidators = [
-    ["custom handwritten parser", profileSelectorListTargetsProfileScreenWithCustomParser],
-    ["css-selector-parser", profileSelectorListTargetsProfileScreenWithCssSelectorParser],
-    ["parsel-js", profileSelectorListTargetsProfileScreenWithParsel],
-] as const;
+const isSafe = (cssText: string) => profileCssIsSafeAndScoped(cssText, parseCssWithJSDOM);
 
-describe.each(selectorValidators)("profile screen style enforcement with %s", (_name, validateSelector) => {
-    const isSafe = (cssText: string) => profileCssIsSafeAndScoped(cssText, parseCssWithJSDOM, validateSelector);
-
+describe("profile screen style enforcement", () => {
     it("accepts rules rooted at the profile container", () => {
         expect(
             isSafe(`
@@ -73,6 +65,10 @@ describe.each(selectorValidators)("profile screen style enforcement with %s", (_
     it("accepts compound conditions on the profile root", () => {
         expect(isSafe(".custom-profile-screen.compact:hover { color: black; }")).toBe(true);
         expect(isSafe(".custom-profile-screen[data-layout='grid']::before { content: ''; }")).toBe(true);
+    });
+
+    it("accepts an escaped spelling of the profile root", () => {
+        expect(isSafe(".custom-profile-\\73 creen { color: black; }")).toBe(true);
     });
 
     it("recursively validates rules inside grouping at-rules", () => {
@@ -145,60 +141,57 @@ describe.each(selectorValidators)("profile screen style enforcement with %s", (_
             throw new Error("Invalid CSS");
         };
 
-        expect(profileCssIsSafeAndScoped(".custom-profile-screen {}", failingParser, validateSelector)).toBe(false);
+        expect(profileCssIsSafeAndScoped(".custom-profile-screen {}", failingParser)).toBe(false);
     });
 });
 
-describe("profile selector implementation comparison", () => {
-    const sharedCases: Array<[selector: string, expected: boolean]> = [
+describe("profile selector policy", () => {
+    const selectorCases: Array<[selector: string, expected: boolean]> = [
         [".custom-profile-screen", true],
+        [".custom-profile-\\73 creen", true],
         [".custom-profile-screen.compact:hover", true],
+        [".custom-profile-screen[data-label='a>b,+~']", true],
+        [".custom-profile-screen:is(.compact, .wide)", true],
+        [".custom-profile-screen:has(> .card)", true],
+        [".custom-profile-screen::part(content)", true],
         [".custom-profile-screen > section .card", true],
         [".custom-profile-screen .card + .card", true],
+        [".custom-profile-screen .card ~ .card", true],
+        ["body[data-theme] .custom-profile-screen", true],
         ["body[data-theme='dark'] .custom-profile-screen .card", true],
+        ["body[data-theme=light] .custom-profile-screen.compact > .card", true],
         [".custom-profile-screen, .custom-profile-screen .card", true],
+        ["", false],
+        ["body", false],
+        [".other", false],
         ["body .custom-profile-screen", false],
+        ["html body[data-theme] .custom-profile-screen", false],
+        ["BODY[data-theme] .custom-profile-screen", false],
+        ["body[data-other] .custom-profile-screen", false],
+        ["body[data-theme^='dark'] .custom-profile-screen", false],
+        ["body[data-theme='dark' i] .custom-profile-screen", false],
+        ["body[data-theme].compact .custom-profile-screen", false],
+        ["*|body[data-theme] .custom-profile-screen", false],
+        ["body[*|data-theme] .custom-profile-screen", false],
+        ["body[data-theme] > .custom-profile-screen", false],
+        ["body[data-theme] + .custom-profile-screen", false],
         [".custom-profile-screen-other", false],
+        [".custom-profile-\\73 creen-other", false],
+        ["*.custom-profile-screen", false],
+        ["#profile.custom-profile-screen", false],
         [".custom-profile-screen + .thorium-content", false],
+        [".custom-profile-screen ~ .thorium-content", false],
+        [".custom-profile-screen || td", false],
         [".custom-profile-screen, body", false],
+        [".custom-profile-screen .card, .outside", false],
         [":is(.custom-profile-screen, body)", false],
+        [":where(.custom-profile-screen)", false],
+        ["& .custom-profile-screen", false],
+        [".custom-profile-screen >", false],
+        [".custom-profile-screen[", false],
     ];
 
-    it.each(sharedCases)("returns $expected for %s", (selector, expected) => {
-        for (const [_name, validateSelector] of selectorValidators) {
-            expect(validateSelector(selector)).toBe(expected);
-        }
-    });
-
-    it("uses the original handwritten implementation by default", () => {
-        const stylesheet = ".custom-profile-\\73 creen {}";
-
-        expect(profileCssIsSafeAndScoped(stylesheet, parseCssWithJSDOM)).toBe(false);
-        expect(
-            profileCssIsSafeAndScoped(
-                stylesheet,
-                parseCssWithJSDOM,
-                profileSelectorListTargetsProfileScreenWithCssSelectorParser,
-            ),
-        ).toBe(true);
-    });
-
-    it("records parser-specific handling of escaped identifiers", () => {
-        const selector = ".custom-profile-\\73 creen";
-
-        // css-selector-parser decodes the escaped `s`. The original scanner
-        // compares the raw class spelling, while Parsel treats the space that
-        // terminates the escape as a descendant combinator; both fail closed.
-        expect(profileSelectorListTargetsProfileScreenWithCustomParser(selector)).toBe(false);
-        expect(profileSelectorListTargetsProfileScreenWithCssSelectorParser(selector)).toBe(true);
-        expect(profileSelectorListTargetsProfileScreenWithParsel(selector)).toBe(false);
-    });
-
-    it("fails closed when a parser does not support a combinator", () => {
-        const selector = ".custom-profile-screen || td";
-
-        expect(profileSelectorListTargetsProfileScreenWithCustomParser(selector)).toBe(false);
-        expect(profileSelectorListTargetsProfileScreenWithCssSelectorParser(selector)).toBe(false);
-        expect(profileSelectorListTargetsProfileScreenWithParsel(selector)).toBe(false);
+    it.each(selectorCases)("validates %s as %s", (selector, expected) => {
+        expect(profileSelectorListTargetsProfileScreen(selector)).toBe(expected);
     });
 });

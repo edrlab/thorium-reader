@@ -7,53 +7,54 @@
 
 import { AstRule, createParser } from "css-selector-parser";
 
-import {
-    profileSelectorListTargetsProfileScreen,
-    TProfileSelectorCompound,
-    TProfileSelectorItem,
-} from "./selectorPolicy";
-
+const PROFILE_SCREEN_SCOPE_CLASS = "custom-profile-screen";
 const parseSelector = createParser({
     strict: true,
     syntax: "latest",
 });
 
-const normalizeItem = (item: AstRule["items"][number]): TProfileSelectorItem => {
-    switch (item.type) {
-        case "Attribute":
-            return { type: "attribute", name: item.name, operator: item.operator };
-        case "ClassName":
-            return { type: "class", name: item.name };
-        case "TagName":
-            return { type: "tag", name: item.name };
-        default:
-            return { type: "other" };
-    }
+const isThemeAncestor = (rule: AstRule): boolean => {
+    const [body, theme] = rule.items;
+    return (
+        rule.items.length === 2 &&
+        body.type === "TagName" &&
+        body.name === "body" &&
+        !body.namespace &&
+        theme.type === "Attribute" &&
+        theme.name === "data-theme" &&
+        !theme.namespace &&
+        !theme.caseSensitivityModifier &&
+        (!theme.operator || (theme.operator === "=" && theme.value?.type === "String"))
+    );
 };
 
-const normalizeRule = (rule: AstRule): TProfileSelectorCompound[] => {
-    const chain: TProfileSelectorCompound[] = [];
-    let currentRule: AstRule | undefined = rule;
+const targetsProfileScreen = (rule: AstRule): boolean => {
+    let profileRoot: AstRule | undefined = rule;
 
-    while (currentRule) {
-        chain.push({
-            items: currentRule.items.map(normalizeItem),
-            // This parser stores the combinator on the nested (right-hand)
-            // rule and represents a descendant combinator as `undefined`.
-            combinator: currentRule.nestedRule ? currentRule.nestedRule.combinator || " " : undefined,
-        });
-        currentRule = currentRule.nestedRule;
+    if (isThemeAncestor(rule)) {
+        profileRoot = rule.nestedRule;
+        // A missing combinator represents descendant whitespace in this AST.
+        if (!profileRoot || profileRoot.combinator !== undefined) {
+            return false;
+        }
+    } else if (rule.combinator !== undefined) {
+        return false;
     }
 
-    return chain;
+    const firstItem = profileRoot.items[0];
+    if (firstItem?.type !== "ClassName" || firstItem.name !== PROFILE_SCREEN_SCOPE_CLASS) {
+        return false;
+    }
+
+    const firstNestedCombinator = profileRoot.nestedRule?.combinator;
+    return !profileRoot.nestedRule || firstNestedCombinator === undefined || firstNestedCombinator === ">";
 };
 
-export const profileSelectorListTargetsProfileScreenWithCssSelectorParser = (selectorText: string): boolean => {
+export const profileSelectorListTargetsProfileScreen = (selectorText: string): boolean => {
     try {
         const selector = parseSelector(selectorText);
-        return profileSelectorListTargetsProfileScreen(selector.rules.map(normalizeRule));
+        return selector.rules.length > 0 && selector.rules.every(targetsProfileScreen);
     } catch {
         return false;
     }
 };
-

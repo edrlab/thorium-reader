@@ -5,25 +5,21 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { profileSelectorListTargetsProfileScreenWithCustomParser } from "./selectorCustom";
+import { profileSelectorListTargetsProfileScreen } from "./selectorCssParser";
 
 export type TProfileCssParser = (cssText: string) => CSSRuleList;
-export type TProfileSelectorValidator = (selectorText: string) => boolean;
 
 // Walk every parsed CSS rule, including rules nested in @media, @supports, or
 // similar grouping rules. Each style selector must explicitly target the
 // stable profile container. Keyframes are rejected because their names belong
 // to the document-wide CSS namespace and could override a Thorium animation.
-const profileCssRulesAreScoped = (
-    rules: CSSRuleList,
-    validateSelector: TProfileSelectorValidator,
-): boolean =>
+const profileCssRulesAreScoped = (rules: CSSRuleList): boolean =>
     Array.from(rules).every((rule) => {
         if ("selectorText" in rule && typeof rule.selectorText === "string") {
-            return validateSelector(rule.selectorText);
+            return profileSelectorListTargetsProfileScreen(rule.selectorText);
         }
         if ("cssRules" in rule && rule.cssRules) {
-            return profileCssRulesAreScoped(rule.cssRules as CSSRuleList, validateSelector);
+            return profileCssRulesAreScoped(rule.cssRules as CSSRuleList);
         }
         return false;
     });
@@ -37,7 +33,6 @@ const parseProfileCss = (cssText: string): CSSRuleList => {
 export const profileCssIsSafeAndScoped = (
     cssText: string,
     parseCss: TProfileCssParser = parseProfileCss,
-    validateSelector: TProfileSelectorValidator = profileSelectorListTargetsProfileScreenWithCustomParser,
 ): boolean => {
     // DOMPurify sanitizes markup and element attributes, but it does not
     // provide stylesheet isolation. Block CSS that can load another
@@ -55,7 +50,7 @@ export const profileCssIsSafeAndScoped = (
         // regular expressions for complete CSS syntax. Invalid stylesheets or
         // selectors that escape the profile root cause the document to be
         // rejected rather than risking changes to Thorium's Library UI.
-        return profileCssRulesAreScoped(parseCss(cssText), validateSelector);
+        return profileCssRulesAreScoped(parseCss(cssText));
     } catch {
         return false;
     }
