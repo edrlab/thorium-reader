@@ -11,9 +11,9 @@ const PROFILE_SCREEN_THEME_ANCESTOR =
 
 export type TProfileCssParser = (cssText: string) => CSSRuleList;
 
-// This stylesheet and selector traversal could alternatively use `postcss`
-// with `postcss-selector-parser`, which provide standards-aware ASTs for
-// complete stylesheets and complex selector lists.
+// See docs/customization-profile-screens.md for the parser and policy choice.
+// The selected replacement for this manual selector traversal is
+// `css-selector-parser`; the Thorium-specific allow/deny policy remains here.
 // A selector list cannot be split with String.split(",") because commas are
 // also valid inside constructs such as :is(...), :not(...), and attribute
 // selectors. Track bracket and parenthesis depth so only top-level commas
