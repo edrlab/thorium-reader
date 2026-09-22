@@ -28,7 +28,11 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import { Settings } from "../settings/Settings";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import { buildOpdsBrowserRoute } from "../../opds/route";
-import { buildCustomizationRoute } from "../../customization/route";
+import {
+    buildProfileCatalogRootIdentifier,
+    buildProfileRoute,
+    getLocalizedProfileScreenLinks,
+} from "../../customization/route";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP } from "readium-desktop/common/streamerProtocol";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
@@ -40,6 +44,8 @@ export interface NavigationHeader {
     route: string;
     label: string;
     matchRoutes: string[];
+    exactMatch?: boolean;
+    replace?: boolean;
     searchEnable?: boolean;
     styles: string[];
     svg: any;
@@ -87,7 +93,7 @@ const Header = () => {
                 <Link
                     to={nextLocation}
                     state={{ displayType: resolveDisplayType(nextLocation.state, savedDisplayTypeSetting) }}
-                    replace={true}
+                    replace={item.replace ?? true}
                     aria-pressed={active}
                     role={"button"}
                     className={classNames(active ? stylesButtons.button_nav_primary : "", !active ? "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" : "")}
@@ -160,13 +166,10 @@ const Header = () => {
     const logoObj = customizationManifest?.images?.find((ln) => ln?.rel === "logo");
     const customizationBaseUrl = customizationEnable ? `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_CUSTOMPROFILEZIP}/${encodeURIComponent_RFC3986(Buffer.from(customizationId).toString("base64"))}/` : "";
 
-    const screenZipLinks = React.useMemo(() => {
-        let a = customizationManifest?.links?.filter((ln) => ln.rel === "screen" && (!ln.type || ln.type === "text/html") && ln.language === locale);
-        if (!a) {
-            a = customizationManifest?.links?.filter((ln) => ln.rel === "screen" && (!ln.type || ln.type === "text/html") && (ln.language === "en" || !ln.language));
-        }
-        return a;
-    }, [customizationManifest, locale]);
+    const screenZipLinks = React.useMemo(
+        () => getLocalizedProfileScreenLinks(customizationManifest, locale),
+        [customizationManifest, locale],
+    );
 
     const screenReaderActivate = useSelector((state: ILibraryRootState) => state.screenReader.activate);
 
@@ -209,16 +212,10 @@ const Header = () => {
     const customizationCatalogs = customizationManifest?.links?.filter(({ rel }) => rel === "catalog");
     if (customizationCatalogs?.length) {
         for (const catalog of customizationCatalogs) {
-            let catalogOrigin = "";
-            try {
-                const { host } = new URL(catalog.href);
-                if (host) {
-                    catalogOrigin = host;
-                }
-            } catch {
-                // ignore
+            const hostEncoded = buildProfileCatalogRootIdentifier(catalog.href);
+            if (!hostEncoded) {
+                continue;
             }
-            const hostEncoded = Buffer.from(encodeURIComponent(catalogOrigin), "utf8").toString("base64");
             const label = convertMultiLangStringToString(catalog?.title, locale) || __("header.myCatalogs");
             headerNav.push({
                 route: buildOpdsBrowserRoute(hostEncoded, label, catalog.href),
@@ -237,12 +234,14 @@ const Header = () => {
             if (!screenLink.href) {
                 continue;
             }
-            const route = buildCustomizationRoute(screenLink.href);
+            const route = buildProfileRoute(screenLink.href);
             const label = convertMultiLangStringToString(screenLink.title, locale) || __("catalog.customization.fallback.screen");
             headerNav.push({
                 route,
                 label,
                 matchRoutes: [route],
+                exactMatch: true,
+                replace: false,
                 searchEnable: false,
                 styles: [],
                 svg: InfoIcon,
@@ -282,7 +281,10 @@ const Header = () => {
 
                                 const pathname = location.pathname;
 
-                                let active = false;
+                                let active = item.exactMatch && pathname === item.route;
+                                if (item.exactMatch) {
+                                    return buildNavItem(item, index, active);
+                                }
                                 const itemsFound = array.filter(({ matchRoutes }) => !!matchRoutes.find((route) => route.split("/")[1] === pathname.split("/")[1]));
                                 // console.log("ITEMS FOUND=", itemsFound);
                                 if (!itemsFound) {

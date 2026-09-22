@@ -18,6 +18,7 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP } from "readium-desktop/common/streamerProtocol";
 import { ICustomizationManifest, ICustomizationManifestColor } from "readium-desktop/common/readium/customization/manifest";
 import { contentTypeisOpdsAuth, parseContentType } from "readium-desktop/utils/contentType";
+import { logEvent } from "readium-desktop/renderer/common/analytics";
 
 
 // Logger
@@ -140,6 +141,7 @@ function* profileActivating(id: string): SagaGenerator<void> {
     }
 
     yield* putTyped(customizationActions.addHistory.build(id, (new Date(manifestJson.modified || manifestJson.created)).getTime()));
+    yield* callTyped(logEvent, "profile_activate");
 }
 
 

@@ -104,8 +104,8 @@ const _routes = {
         // exact: true,
         component: Catalog,
     } as Route,
-    "/customization": {
-        path: "/customization/:hrefEncoded",
+    "/profile": {
+        path: "/profile/:screenId",
         // exact: true,
         component: CustomizationPage,
     } as Route,
