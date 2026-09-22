@@ -2,10 +2,10 @@ import { describe, expect, it } from "@jest/globals";
 import { JSDOM } from "jsdom";
 
 import { profileSelectorListTargetsProfileScreenWithCssSelectorParser } from "readium-desktop/renderer/library/customization/selectorCssParser";
+import { profileSelectorListTargetsProfileScreenWithCustomParser } from "readium-desktop/renderer/library/customization/selectorCustom";
 import { profileSelectorListTargetsProfileScreenWithParsel } from "readium-desktop/renderer/library/customization/selectorParsel";
 import {
     profileCssIsSafeAndScoped,
-    profileSelectorListTargetsProfileScreenWithOriginalParser,
     TProfileCssParser,
 } from "readium-desktop/renderer/library/customization/style";
 
@@ -23,7 +23,7 @@ const parseCssWithJSDOM: TProfileCssParser = (cssText) => {
 };
 
 const selectorValidators = [
-    ["original handwritten parser", profileSelectorListTargetsProfileScreenWithOriginalParser],
+    ["custom handwritten parser", profileSelectorListTargetsProfileScreenWithCustomParser],
     ["css-selector-parser", profileSelectorListTargetsProfileScreenWithCssSelectorParser],
     ["parsel-js", profileSelectorListTargetsProfileScreenWithParsel],
 ] as const;
@@ -189,7 +189,7 @@ describe("profile selector implementation comparison", () => {
         // css-selector-parser decodes the escaped `s`. The original scanner
         // compares the raw class spelling, while Parsel treats the space that
         // terminates the escape as a descendant combinator; both fail closed.
-        expect(profileSelectorListTargetsProfileScreenWithOriginalParser(selector)).toBe(false);
+        expect(profileSelectorListTargetsProfileScreenWithCustomParser(selector)).toBe(false);
         expect(profileSelectorListTargetsProfileScreenWithCssSelectorParser(selector)).toBe(true);
         expect(profileSelectorListTargetsProfileScreenWithParsel(selector)).toBe(false);
     });
@@ -197,7 +197,7 @@ describe("profile selector implementation comparison", () => {
     it("fails closed when a parser does not support a combinator", () => {
         const selector = ".custom-profile-screen || td";
 
-        expect(profileSelectorListTargetsProfileScreenWithOriginalParser(selector)).toBe(false);
+        expect(profileSelectorListTargetsProfileScreenWithCustomParser(selector)).toBe(false);
         expect(profileSelectorListTargetsProfileScreenWithCssSelectorParser(selector)).toBe(false);
         expect(profileSelectorListTargetsProfileScreenWithParsel(selector)).toBe(false);
     });
