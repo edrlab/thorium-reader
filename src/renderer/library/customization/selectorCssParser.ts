@@ -28,26 +28,55 @@ const isThemeAncestor = (rule: AstRule): boolean => {
     );
 };
 
+/**
+ * Verifies that one selector from the comma-separated selector list targets
+ * the profile root or something contained by it.
+ *
+ * `css-selector-parser` represents a selector from left to right as linked
+ * `AstRule` nodes. The next compound is stored in `nestedRule`, and the
+ * relationship to it is stored on that nested node. For example:
+ *
+ * `.custom-profile-screen > section`
+ *     profile rule -> nested section rule with `combinator: ">"`
+ *
+ * Descendant whitespace is represented by an undefined combinator. This is
+ * different from an absent `nestedRule`: both have an undefined combinator,
+ * but the former targets a descendant and the latter targets the root itself.
+ */
 const targetsProfileScreen = (rule: AstRule): boolean => {
     let profileRoot: AstRule | undefined = rule;
 
     if (isThemeAncestor(rule)) {
+        // `body[data-theme]` is only a permitted ancestor qualifier. Require
+        // an actual following profile-root compound connected by descendant
+        // whitespace; explicit child or sibling relationships are rejected.
         profileRoot = rule.nestedRule;
-        // A missing combinator represents descendant whitespace in this AST.
         if (!profileRoot || profileRoot.combinator !== undefined) {
             return false;
         }
     } else if (rule.combinator !== undefined) {
+        // The first rule in a parsed selector should not itself have a
+        // combinator. Fail closed if the AST does not have that shape.
         return false;
     }
 
+    // The profile class must be the first condition in its compound. This
+    // rejects ancestors, universal selectors, and lookalike class names.
     const firstItem = profileRoot.items[0];
     if (firstItem?.type !== "ClassName" || firstItem.name !== PROFILE_SCREEN_SCOPE_CLASS) {
         return false;
     }
 
-    const firstNestedCombinator = profileRoot.nestedRule?.combinator;
-    return !profileRoot.nestedRule || firstNestedCombinator === undefined || firstNestedCombinator === ">";
+    // With no nested rule, the selector targets the profile root itself.
+    if (!profileRoot.nestedRule) {
+        return true;
+    }
+
+    // The first relationship after the root may enter its subtree using
+    // descendant whitespace (undefined in this AST) or a child combinator.
+    // Sibling and column combinators could escape the root and are rejected.
+    const combinator = profileRoot.nestedRule.combinator;
+    return combinator === undefined || combinator === ">";
 };
 
 export const profileSelectorListTargetsProfileScreen = (selectorText: string): boolean => {
