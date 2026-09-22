@@ -1328,8 +1328,8 @@
                     "recovering": "Palauttaa..."
                 },
                 "available": "Yksi tai useampi julkaisu löytyi levyltä, mutta ei tietokannasta. Palautus on mahdollista.",
-                "checking": "Tarkistaa julkaisuvarastoa...",
-                "description": "Tarkista julkaisuvarasto ja etsi julkaisuja, jotka voi palauttaa turvallisesti.",
+                "checking": "Tarkistaa tallennettuja julkaisuja...",
+                "description": "Tarkista tallennetut julkaisut ja etsi julkaisuja, jotka voi palauttaa turvallisesti.",
                 "dialog": {
                     "confirm": "Palauta",
                     "description_one": "Thorium löysi levyltä {{- count}} julkaisun, joka puuttuu tietokannasta. Haluatko tuoda sen takaisin Thoriumiin?",
