@@ -21,6 +21,7 @@ import * as styles from "readium-desktop/renderer/assets/styles/components/profi
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { decodeProfileRouteParam, resolveProfileScreenLink } from "../../customization/route";
+import { profileCssIsSafeAndScoped } from "../../customization/style";
 import PublicationAddButton from "../catalog/PublicationAddButton";
 import LibraryLayout from "../layout/LibraryLayout";
 
@@ -30,88 +31,6 @@ type TProfileScreenState =
     | { status: "loading" }
     | { status: "ready"; html: string }
     | { status: "error" };
-
-const PROFILE_SCREEN_SCOPE_SELECTOR = ".custom-profile-screen";
-
-// A selector list cannot be split with String.split(",") because commas are
-// also valid inside constructs such as :is(...), :not(...), and attribute
-// selectors. Track bracket and parenthesis depth so only top-level commas
-// separate selectors.
-const splitSelectorList = (selectorText: string): string[] => {
-    const selectors: string[] = [];
-    let currentSelector = "";
-    let nestingDepth = 0;
-
-    for (const character of selectorText) {
-        if (character === "(" || character === "[") {
-            nestingDepth++;
-        } else if (character === ")" || character === "]") {
-            nestingDepth--;
-        }
-
-        if (character === "," && nestingDepth === 0) {
-            selectors.push(currentSelector);
-            currentSelector = "";
-        } else {
-            currentSelector += character;
-        }
-    }
-    selectors.push(currentSelector);
-
-    return selectors;
-};
-
-const selectorTargetsProfileScreen = (selector: string): boolean => {
-    // Remove an optional `body` or `body[...]` ancestor followed by whitespace.
-    // For example, `body[data-theme="dark"] .custom-profile-screen h1` becomes
-    // `.custom-profile-screen h1`. This permits theme-qualified rules while the
-    // check below still requires the actual style target to be the profile
-    // container or one of its descendants.
-    const normalizedSelector = selector.trim().replace(/^body(?:\[[^\]]+\])?\s+/, "");
-    return normalizedSelector === PROFILE_SCREEN_SCOPE_SELECTOR ||
-        [" ", ".", "#", ":", "[", ">", "+", "~"].some(
-            (separator) => normalizedSelector.startsWith(PROFILE_SCREEN_SCOPE_SELECTOR + separator),
-        );
-};
-
-// Walk every parsed CSS rule, including rules nested in @media, @supports, or
-// similar grouping rules. Each style selector must explicitly target the
-// stable profile container. Keyframe declarations are accepted because they
-// do not select DOM nodes and can only take effect when referenced by an
-// already-scoped style rule.
-const profileCssRulesAreScoped = (rules: CSSRuleList): boolean =>
-    Array.from(rules).every((rule) => {
-        if ("selectorText" in rule && typeof rule.selectorText === "string") {
-            return splitSelectorList(rule.selectorText).every(selectorTargetsProfileScreen);
-        }
-        if ("cssRules" in rule && rule.cssRules instanceof CSSRuleList) {
-            return profileCssRulesAreScoped(rule.cssRules);
-        }
-        // Keyframe declarations have no selector of their own and can only be
-        // applied from an already-scoped style rule.
-        return "keyText" in rule;
-    });
-
-const profileCssIsSafeAndScoped = (cssText: string): boolean => {
-    // DOMPurify sanitizes markup and element attributes, but it does not
-    // provide stylesheet isolation. Block CSS that can load another
-    // stylesheet or font, plus legacy executable URL forms, before parsing.
-    if (/@(?:font-face|import)\b/i.test(cssText) || /(?:expression|url)\s*\(\s*["']?\s*javascript:/i.test(cssText)) {
-        return false;
-    }
-
-    try {
-        // Let Chromium's CSS parser interpret the stylesheet instead of using
-        // regular expressions for complete CSS syntax. Invalid stylesheets or
-        // selectors that escape the profile root cause the document to be
-        // rejected rather than risking changes to Thorium's Library UI.
-        const sheet = new CSSStyleSheet();
-        sheet.replaceSync(cssText);
-        return profileCssRulesAreScoped(sheet.cssRules);
-    } catch {
-        return false;
-    }
-};
 
 export function prepareProfileScreenHtml(rawHtmlContent: string): string | undefined {
     // Profile packages are controlled and signed, so the page remains in the
