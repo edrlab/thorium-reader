@@ -11,7 +11,6 @@ import { after, before, test } from "node:test";
 
 import {
     AUTHENTICATION_TYPE,
-    TOKEN_ENDPOINT_REL,
     createCodeChallenge,
     startPkceTestServer,
 } from "./server.mjs";
@@ -93,7 +92,7 @@ test("exposes the OPDS authentication document and OAuth metadata", async () => 
     assert.equal(document.authentication[0].redirect_uri, redirectUri);
     assert.deepEqual(document.authentication[0].code_challenge_methods_supported, ["S256"]);
     assert.equal(
-        document.authentication[0].links.find((link) => link.rel === TOKEN_ENDPOINT_REL)?.href,
+        document.authentication[0].links.find((link) => link.rel === "token")?.href,
         `${app.origin}/token`,
     );
 

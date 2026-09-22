@@ -15,7 +15,6 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 export const AUTHENTICATION_TYPE = "http://opds-spec.org/auth/oauth/authorization-code-pkce";
-export const TOKEN_ENDPOINT_REL = "http://opds-spec.org/auth/oauth/token";
 
 const DEFAULT_CLIENT_ID = "http://opds-spec.org/auth/client";
 const DEFAULT_HOST = "127.0.0.1";
@@ -266,7 +265,7 @@ export function createPkceTestServer(options = {}) {
                             type: "text/html",
                         },
                         {
-                            rel: TOKEN_ENDPOINT_REL,
+                            rel: "token",
                             href: `${origin}/token`,
                             type: "application/json",
                         },

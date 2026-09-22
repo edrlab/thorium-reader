@@ -12,15 +12,16 @@ testing:
 http://opds-spec.org/auth/oauth/authorization-code-pkce
 ```
 
-The token endpoint uses the test-only link relation:
+The token endpoint uses the local integration link relation:
 
 ```text
-http://opds-spec.org/auth/oauth/token
+token
 ```
 
-These identifiers are not part of the published OPDS Authentication 1.0 draft.
-Change the constants in `server.mjs` and `src/main/network/opdsPkce.ts` together
-if the OPDS community adopts a different discovery contract.
+The authentication type and the `token` relation are not part of the published
+OPDS Authentication 1.0 draft. If the OPDS community adopts a different
+discovery contract, update the server relation and the client's `LINK_TYPE`
+mapping together.
 
 The client validates the advertised OAuth authorization-server metadata before
 starting authorization. The metadata issuer must match the OPDS authentication

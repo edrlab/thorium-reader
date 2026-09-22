@@ -43,7 +43,6 @@ import { ContentType } from "readium-desktop/utils/contentType";
 import {
     IOpdsPkceTransaction,
     OPDS_AUTHORIZATION_CODE_PKCE_TYPE,
-    OPDS_AUTHORIZATION_CODE_TOKEN_REL,
     createOpdsPkceTransaction,
     exchangeOpdsPkceAuthorizationCode,
     getSafeOpdsAuthUrlForLog,
@@ -118,6 +117,7 @@ const AUTHENTICATION_TYPE: TAuthenticationType[] = [
 ];
 
 const LINK_TYPE: TLinkType[] = [
+    "token",
     "refresh",
     "authenticate",
 ];
@@ -868,16 +868,7 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
     const links = Array.isArray(authentication.Links)
         ? authentication.Links.reduce((pv, cv) => {
 
-            const rel = (cv.Rel || [])
-                .reduce((pvRel, cvRel) => {
-                    if (pvRel) {
-                        return pvRel;
-                    }
-                    if (cvRel === OPDS_AUTHORIZATION_CODE_TOKEN_REL) {
-                        return "token";
-                    }
-                    return LINK_TYPE.find((v) => v === cvRel) || "";
-                }, "") as TLinkType;
+            const rel = (cv.Rel || []).find((rel) => LINK_TYPE.find((v) => v === rel));
 
             if (
                 rel

@@ -14,7 +14,6 @@ import { describe, expect, test } from "@jest/globals";
 import {
     IOpdsPkceCallback,
     OPDS_AUTHORIZATION_CODE_PKCE_TYPE,
-    OPDS_AUTHORIZATION_CODE_TOKEN_REL,
     createOpdsPkceCodeChallenge,
     createOpdsPkceTokenRequest,
     createOpdsPkceTransaction,
@@ -225,14 +224,12 @@ describe("OPDS Authorization Code + PKCE", () => {
             const parsedAuthenticationDocument = TaJsonDeserialize(authenticationDocument, OPDSAuthenticationDoc);
             expect(parsedAuthenticationDocument.Authentication[0].AdditionalJSON.client_id).toBe(clientId);
             expect(
-                parsedAuthenticationDocument.Authentication[0].Links.some((link) =>
-                    link.Rel.includes(OPDS_AUTHORIZATION_CODE_TOKEN_REL),
-                ),
+                parsedAuthenticationDocument.Authentication[0].Links.some((link) => link.Rel.includes("token")),
             ).toBe(true);
             const authentication = authenticationDocument.authentication[0];
             expect(authentication.type).toBe(OPDS_AUTHORIZATION_CODE_PKCE_TYPE);
             const authorizationUrl = authentication.links.find((link) => link.rel === "authenticate")?.href;
-            const tokenUrl = authentication.links.find((link) => link.rel.endsWith("/token"))?.href;
+            const tokenUrl = authentication.links.find((link) => link.rel === "token")?.href;
             expect(authorizationUrl).toBeDefined();
             expect(tokenUrl).toBeDefined();
 

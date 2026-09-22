@@ -9,8 +9,6 @@ import { createHash, randomBytes } from "node:crypto";
 
 export const OPDS_AUTHORIZATION_CODE_PKCE_TYPE =
     "http://opds-spec.org/auth/oauth/authorization-code-pkce";
-export const OPDS_AUTHORIZATION_CODE_TOKEN_REL =
-    "http://opds-spec.org/auth/oauth/token";
 
 const PKCE_TRANSACTION_MAX_AGE_MS = 5 * 60 * 1000;
 const PKCE_VERIFIER_REGEXP = /^[A-Za-z0-9\-._~]{43,128}$/;
