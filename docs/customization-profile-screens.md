@@ -54,21 +54,4 @@ The browser first parses the stylesheet into CSSOM rules and gives Thorium a `se
 
 An empty selector list, a parser exception, an unsafe selector in a list, an unknown CSS rule shape, or an unsupported global at-rule causes validation to fail closed. `css-selector-parser` only provides the AST; the containment checks in `selectorCssParser.ts` remain the Thorium security policy.
 
-### Test strategy and limitations
-
-`style.test.ts` exercises both enforcement layers. Fourteen stylesheet tests pass CSS through CSSOM and verify selector lists, grouping rules, resource-loading and global at-rules, executable legacy values, escaped identifiers, and parser failures. A table of 42 direct selector cases covers the policy independently of CSSOM, including theme qualifiers, compound conditions, pseudo-classes, attributes containing combinator characters, namespaces, escaped lookalikes, partial selector lists, nesting selectors, malformed input, and every relevant combinator position.
-
-The suite is intentionally exhaustive for the Thorium policy, not for the complete CSS grammar. Important limits remain:
-
-- JSDOM and the Chromium version embedded by Electron may normalize or discard stylesheet syntax differently. The direct selector tests reduce this blind spot, but they do not replace an Electron integration check.
-- A future parser version can change its AST or accepted grammar. The validator catches exceptions and rejects unexpected structures, but dependency upgrades still require the focused suite, TypeScript checks, the full test suite, and the Library renderer build.
-- Failing closed protects Thorium-owned UI but may reject a valid customization when new CSS syntax is not yet understood.
-- A single parser removes differential cross-checking. Security now depends on the parser's tests, Thorium's explicit policy corpus, and review of the small AST-to-policy function.
-
-### Code cost and security value
-
-The final selector validator is 60 physical lines, of which 45 are non-blank non-comment lines. The stylesheet traversal and unsafe-value checks in `style.ts` add 57 physical lines, or 34 non-blank non-comment lines. Removing the custom scanner, Parsel adapter, and normalized policy deletes 299 physical source lines and removes the Parsel development dependency.
-
-This reduction makes the production decision easier to audit and eliminates the maintenance risk of three implementations drifting apart. The trade-off is that `css-selector-parser` is now a production dependency and contributes code not represented by the local line count. Its strict grammar provides standards-compliant identifier decoding and avoids maintaining a handwritten selector parser, while the Thorium-specific allow/deny policy remains explicit and covered by 56 focused tests.
-
 Thorium addresses each screen with an internal `/profile/:screenId` route. The identifier is derived from the manifest `href`; a route can only load the localized `rel: "screen"` resource it resolves to in the active manifest.
