@@ -1339,6 +1339,7 @@
                     "title": "Herstel publicaties"
                 },
                 "none": "Er zijn geen te herstellen publicaties gevonden.",
+                "recoverableCount": "",
                 "recoverableCount_one": "{{- count}} publicatie kan worden hersteld met de oorspronkelijke opslag-id.",
                 "recoverableCount_other": "{{- count}} publicaties kunnen worden hersteld met de oorspronkelijke opslag-id.",
                 "title": "Herstel"

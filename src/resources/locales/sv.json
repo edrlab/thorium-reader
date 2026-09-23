@@ -1339,6 +1339,7 @@
                     "title": "Återskapa böcker"
                 },
                 "none": "Inga böcker som kan återskapas hittades.",
+                "recoverableCount": "",
                 "recoverableCount_one": "{{- count}} bok kan återskapas med den ursprungliga identifieraren.",
                 "recoverableCount_other": "{{- count}} böcker kan återskapas med de ursprungliga identifierarna.",
                 "title": "Återskapa"

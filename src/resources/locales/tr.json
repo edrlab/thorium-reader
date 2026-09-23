@@ -1339,6 +1339,7 @@
                     "title": "Eserleri kurtar"
                 },
                 "none": "Kurtarılabilir eser bulunamadı.",
+                "recoverableCount": "",
                 "recoverableCount_one": "{{- count}} eser, özgün depolama tanımlayıcısıyla kurtarılabilir.",
                 "recoverableCount_other": "{{- count}} eser, özgün depolama tanımlayıcısıyla kurtarılabilir.",
                 "title": "Kurtarma"

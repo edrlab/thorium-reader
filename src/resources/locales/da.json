@@ -1339,6 +1339,7 @@
                     "title": "Gendan bøger"
                 },
                 "none": "Der blev ikke fundet nogen bøger, der kan gendannes.",
+                "recoverableCount": "",
                 "recoverableCount_one": "{{- count}} bog kan gendannes med dens originale lagrings ID.",
                 "recoverableCount_other": "{{- count}} bøger kan gendannes med deres originale lagrings ID.",
                 "title": "Gendannelse"
