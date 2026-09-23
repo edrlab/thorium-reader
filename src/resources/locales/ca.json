@@ -18,10 +18,10 @@
         "edit": {
             "copy": "Copiar",
             "cut": "Tallar",
-            "paste": "Pegar",
-            "print": "",
+            "paste": "Enganxar",
+            "print": "Imprimir",
             "redo": "Refer",
-            "selectAll": "Seleccionar tot",
+            "selectAll": "Seleccionar-ho tot",
             "title": "Editar",
             "undo": "Desfer"
         },
@@ -43,7 +43,7 @@
         "update": {
             "message": "Hi ha una nova versió disponible, feu clic per obtenir més informació.",
             "title": "{{- appName}} software actualitzat.",
-            "whatsnew": ""
+            "whatsnew": "S'ha instal·lat una nova versió, feu clic per saber-ne més"
         },
         "window": {
             "showLibrary": "Mostrar biblioteca",
@@ -52,7 +52,7 @@
         }
     },
     "catalog": {
-        "AddToFavorites": "",
+        "AddToFavorites": "Afegir als preferits",
         "about": {
             "title": "Sobre {{appName}}"
         },
@@ -68,9 +68,9 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
+                "description": "Sense descripció del perfil",
                 "publications": "",
-                "screen": "",
+                "screen": "Sense títol",
                 "title": ""
             }
         },
@@ -84,13 +84,13 @@
             "lastAdditions": "Afegits recentment"
         },
         "export": "Exportar",
-        "exportAnnotation": "",
+        "exportAnnotation": "Exportar les notes",
         "format": "Format",
-        "importAnnotation": "",
+        "importAnnotation": "Importar notes",
         "lang": "Idioma",
         "lastRead": "Última lectura",
-        "login": "",
-        "logout": "",
+        "login": "Iniciar sessió",
+        "logout": "Tancar sessió",
         "missing": "",
         "missingUnavailableDescription": "",
         "moreInfo": "Més información",
@@ -108,8 +108,8 @@
                 "login": "Iniciar sessió",
                 "password": "Contrasenya",
                 "register": "Registre",
-                "retry": "",
-                "unauthorized": "",
+                "retry": "Torna-ho a provar",
+                "unauthorized": "No autoritzat",
                 "unauthorizedUnsupportedType": "",
                 "username": "Usuari / Direcció de correu eletrònic"
             },
@@ -136,7 +136,7 @@
         "publisher": "Editor",
         "readBook": "Llegir",
         "released": "Publicat en",
-        "removeFromFavorites": "",
+        "removeFromFavorites": "Eliminar dels preferits",
         "selectTableHeaders": "",
         "sort": "Ordenar per",
         "tag": "Etiqueta",
@@ -157,10 +157,10 @@
             "descOlder_one": "",
             "descOlder_other": "",
             "descTitle": "",
-            "importAll": "",
-            "importWithoutConflict": "",
+            "importAll": "Importar totes les notes",
+            "importWithoutConflict": "Importar només notes sense conflictes",
             "origin": "",
-            "title": ""
+            "title": "Importar notes?"
         },
         "cancel": "Cancel·lar",
         "customization": {
@@ -171,16 +171,16 @@
                 "title": ""
             }
         },
-        "deleteAnnotations": "",
-        "deleteAnnotationsText_many": "",
-        "deleteAnnotationsText_one": "",
-        "deleteAnnotationsText_other": "",
-        "deleteBookmarks": "",
-        "deleteBookmarksText_many": "",
-        "deleteBookmarksText_one": "",
-        "deleteBookmarksText_other": "",
-        "deleteFeed": "Segur que vols eliminar aquest catàleg?",
-        "deletePublication": "Segur que vols eliminar aquesta publicació?",
+        "deleteAnnotations": "Eliminar les anotacions?",
+        "deleteAnnotationsText_many": "Esteu segurs que voleu eliminar {{- count}} notes?",
+        "deleteAnnotationsText_one": "Esteu segurs que voleu eliminar {{- count}} nota?",
+        "deleteAnnotationsText_other": "Esteu segurs que voleu eliminar {{- count}} notes?",
+        "deleteBookmarks": "Eliminar els preferits?",
+        "deleteBookmarksText_many": "Esteu segurs que voleu eliminar {{- count}} preferits?",
+        "deleteBookmarksText_one": "Esteu segurs que voleu eliminar {{- count}} preferit?",
+        "deleteBookmarksText_other": "Esteu segurs que voleu eliminar {{- count}} preferits?",
+        "deleteFeed": "Eliminar el catàleg?",
+        "deletePublication": "Eliminar la publicació?",
         "deletePublicationWithNotes": "",
         "import": "Segur que vols importar aquests fitxers?",
         "importError": "S'ha produït un error, comprova l'extensió del teu fitxer ({{acceptedExtension}})",
@@ -991,7 +991,7 @@
             "type": ""
         },
         "auth": {
-            "help": "",
+            "help": "Aquesta acció suprimeix totes les credencials d'inici de sessió d'OPDS.",
             "title": "",
             "wipeData": "Netejar dades d'autenticació"
         },
@@ -1282,7 +1282,7 @@
             "title": "Guardar sessió"
         },
         "sharedComputer": {
-            "lcpAutoDeleteExpiredPublications": "",
+            "lcpAutoDeleteExpiredPublications": "Eliminar automàticament les publicacions caducades i les dades d'usuari associades",
             "lcpAutoDeleteExpiredPublicationsDescription": "",
             "title": ""
         },
@@ -1367,7 +1367,7 @@
             "auto": "Automàtic",
             "dark": "Fosc",
             "description": "El tema de l'aplicació coincideix amb el sistema operatiu.",
-            "light": "Llum",
+            "light": "Clar",
             "title": "Tema d'aplicació"
         },
         "window": {
