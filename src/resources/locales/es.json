@@ -133,7 +133,7 @@
             }
         },
         "openFolder": "Abrir carpeta",
-        "publisher": "Editor",
+        "publisher": "Editorial",
         "readBook": "Leer",
         "released": "Publicado en",
         "removeFromFavorites": "Eliminar de favoritos",
@@ -1362,9 +1362,9 @@
             "storage": "Espacio de almacenamiento"
         },
         "telemetry": {
-            "disableTelemetryMeasurements": "",
-            "disableTelemetryMeasurementsDescription": "",
-            "title": ""
+            "disableTelemetryMeasurements": "Desactivar telemetría",
+            "disableTelemetryMeasurementsDescription": "Cuando está activado, Thorium no envía mediciones de telemetría.",
+            "title": "Telemetría"
         },
         "theme": {
             "auto": "Automático",

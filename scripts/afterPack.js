@@ -150,7 +150,7 @@ module.exports = async function afterPack(context) {
         // } else {
         //     // release/mac/Thorium.app/Contents/Resources/app.asar
         // }
-        asarChecksum.generateSHA256(path.join(context.appOutDir, "Thorium.app", "Contents", "Resources", "app.asar"));
+        asarChecksum.generateSHA256(path.join(context.appOutDir, context.packager.appInfo.productFilename + ".app", "Contents", "Resources", "app.asar"));
     } else if (context.electronPlatformName === "win32") {
         // release/win-unpacked/resources/app.asar/app.asar
         asarChecksum.generateSHA256(path.join(context.appOutDir, "resources", "app.asar"));

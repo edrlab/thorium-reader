@@ -8,11 +8,13 @@
 import * as browseRequest from "./browseRequest";
 import * as popBreadcrumb from "./popBreadcrumb";
 import * as headerLinksUpdate from "./headerLinksUpdate";
+import * as publicationImported from "./publicationImported";
 import * as search from "./search";
 
 export {
     headerLinksUpdate,
     browseRequest,
     popBreadcrumb,
+    publicationImported,
     search,
 };

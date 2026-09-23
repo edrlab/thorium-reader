@@ -1329,8 +1329,8 @@
                     "recovering": "Palauttaa..."
                 },
                 "available": "Yksi tai useampi julkaisu löytyi levyltä, mutta ei tietokannasta. Palautus on mahdollista.",
-                "checking": "Tarkistaa julkaisuvarastoa...",
-                "description": "Tarkista julkaisuvarasto ja etsi julkaisuja, jotka voi palauttaa turvallisesti.",
+                "checking": "Tarkistaa tallennettuja julkaisuja...",
+                "description": "Tarkista tallennetut julkaisut ja etsi julkaisuja, jotka voi palauttaa turvallisesti.",
                 "dialog": {
                     "confirm": "Palauta",
                     "description": "",
@@ -1353,9 +1353,9 @@
             "storage": "Tallennustila"
         },
         "telemetry": {
-            "disableTelemetryMeasurements": "",
-            "disableTelemetryMeasurementsDescription": "",
-            "title": ""
+            "disableTelemetryMeasurements": "Poista etämittaus käytöstä",
+            "disableTelemetryMeasurementsDescription": "Kun tämä on valittu, Thorium ei lähetä etämittausten tuloksia",
+            "title": "Etämittaus"
         },
         "theme": {
             "auto": "Automaattinen",

@@ -40,8 +40,9 @@ import * as KeyIcon from "readium-desktop/renderer/assets/icons/key-icon.svg";
 import classNames from "classnames";
 import moment from "moment";
 import { formatTime } from "readium-desktop/common/utils/time";
-import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/common/components/hoc/translator";
+import { isOpdsPublicationDownloading } from "readium-desktop/renderer/library/opds/download";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -156,7 +157,10 @@ class PublicationCard extends React.Component<IProps> {
                                     title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
                                     tabIndex={0}
                                 >
-                                    <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} />
+                                    <Cover
+                                        publicationViewMaybeOpds={publicationViewMaybeOpds}
+                                        isDownloading={this.props.isDownloading}
+                                    />
                                     <div className={stylesPublications.publication_title_wrapper}>
                                         <p aria-hidden className={stylesPublications.publication_title}
                                             dir={pubTitleIsRTL ? "rtl" : undefined}
@@ -358,8 +362,12 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     };
 };
 
-const mapStateToProps = (state: IRendererCommonRootState) => ({
+const mapStateToProps = (state: ILibraryRootState, props: IBaseProps) => ({
     locale: state.i18n.locale, // refresh
+    isDownloading: !!props.isOpds && isOpdsPublicationDownloading(
+        state.download,
+        props.publicationViewMaybeOpds as IOpdsPublicationView,
+    ),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(PublicationCard));
