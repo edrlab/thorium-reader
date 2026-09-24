@@ -56,18 +56,6 @@ export interface IOpdsPkceTokenResponse {
 
 export type TOpdsPkceTokenPost = (url: string, body: string) => Promise<unknown>;
 
-export function getSafeOpdsAuthUrlForLog(value: string): string {
-    try {
-        const url = new URL(value);
-        if (url.protocol === "data:") {
-            return "data:[redacted]";
-        }
-        return `${url.protocol}//${url.host}${url.pathname}`;
-    } catch {
-        return "[invalid URL]";
-    }
-}
-
 export function createOpdsPkceCodeChallenge(codeVerifier: string): string {
     if (!PKCE_VERIFIER_REGEXP.test(codeVerifier)) {
         throw new Error("The PKCE code verifier must contain 43 to 128 RFC 7636 unreserved characters.");

@@ -21,7 +21,6 @@ import {
     createOpdsPkceTokenRequest,
     createOpdsPkceTransaction,
     exchangeOpdsPkceAuthorizationCode,
-    getSafeOpdsAuthUrlForLog,
     parseOpdsPkceTokenResponse,
     validateOpdsPkceCallback,
 } from "readium-desktop/main/network/opdsPkce";
@@ -32,13 +31,6 @@ describe("OPDS Authorization Code with PKCE", () => {
     test("generates the RFC 7636 S256 reference challenge", () => {
         const verifier = "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk";
         expect(createOpdsPkceCodeChallenge(verifier)).toBe("E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM");
-    });
-
-    test("redacts OAuth parameters from logged URLs", () => {
-        expect(
-            getSafeOpdsAuthUrlForLog("opds://authorize/?code=authorization-code&state=state-value#access_token=token"),
-        ).toBe("opds://authorize/");
-        expect(getSafeOpdsAuthUrlForLog("data:text/html,secret-content")).toBe("data:[redacted]");
     });
 
     test("creates exactly the proposed shared-client authorization request", () => {

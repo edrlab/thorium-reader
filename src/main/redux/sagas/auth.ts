@@ -45,7 +45,6 @@ import {
     OPDS_OAUTH_CLIENT_ID,
     createOpdsPkceTransaction,
     exchangeOpdsPkceAuthorizationCode,
-    getSafeOpdsAuthUrlForLog,
 } from "readium-desktop/main/network/opdsPkce";
 import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
@@ -164,7 +163,7 @@ const opdsAuthFlow =
                 debug("no valid authentication html url");
                 return;
             }
-            debug("Browser URL", getSafeOpdsAuthUrlForLog(browserUrl));
+            debug("Browser URL", browserUrl.slice(0, 100)+"...");
 
             const authCredentials: IOpdsAuthenticationToken = {
                 id: authParsed?.id || undefined,
@@ -233,7 +232,7 @@ const opdsAuthFlow =
                             return;
                         }
                         if (!retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser && opdsCustomProtocolRequestParsed.data[URL_OPDS_AUTH_RETRY] === URL_OPDS_AUTH_RETRY) {
-                            debug("OPDS auth retry ...", getSafeOpdsAuthUrlForLog(opdsCustomProtocolRequestParsed.url.href));
+                            debug("OPDS auth retry ...", opdsCustomProtocolRequestParsed.url);
 
                             callback({
                                 url: undefined,
@@ -252,12 +251,7 @@ const opdsAuthFlow =
 
                             // yield put(historyActions.refresh.build()); // ==> keep current context and recalls auth, but we need retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser
                             yield spawn(function* () {
-                                debug(
-                                    "OPDS auth retry GO!",
-                                    getSafeOpdsAuthUrlForLog(opdsCustomProtocolRequestParsed.url.href),
-                                    getSafeOpdsAuthUrlForLog(baseUrl),
-                                    JSON.stringify(doc, null, 4),
-                                );
+                                debug("OPDS auth retry GO!", opdsCustomProtocolRequestParsed.url, baseUrl, JSON.stringify(doc, null, 4));
                                 const opdsAuthChannel = getOpdsAuthenticationChannel();
                                 opdsAuthChannel.put([doc, baseUrl, true]); // retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser
                             });
@@ -897,7 +891,7 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
 
 async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser: boolean): Promise<BrowserWindow | undefined> {
 
-    debug("OPDS AUTH win URL", getSafeOpdsAuthUrlForLog(urlStr));
+    debug("OPDS AUTH win URL", urlStr.slice(0, 100) + (urlStr.length > 100 ? "..." : ""));
 
     const libWin = tryCatchSync(() => getLibraryWindowFromDi(), filename_);
     if (!libWin || libWin.isDestroyed() || libWin.webContents.isDestroyed()) {
@@ -911,7 +905,7 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
         // passthrough
     } else if (/^https?:\/\//.test(urlStr)) {
         if (!retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser) {
-            debug("OPDS AUTH win URL EXTERNAL ...", getSafeOpdsAuthUrlForLog(urlStr));
+            debug("OPDS AUTH win URL EXTERNAL ...", urlStr);
 
             urlExternal = urlStr;
             title = getTranslator().translate("catalog.opds.auth.login");
@@ -930,7 +924,7 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
             // return undefined;
         }
     } else {
-        debug("INVALID AUTH urlStr", getSafeOpdsAuthUrlForLog(urlStr));
+        debug("INVALID AUTH urlStr", urlStr);
         return undefined;
     }
 
@@ -979,7 +973,7 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
     // });
 
     win.once("ready-to-show", () => {
-        debug("OPDS AUTH win ready-to-show", getSafeOpdsAuthUrlForLog(urlStr));
+        debug("OPDS AUTH win ready-to-show", urlStr.substring(0, 500));
         win.show();
     });
 
@@ -992,28 +986,16 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
 
         if (/^https?:\/\//.test(navUrl)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
 
-            debug(
-                "willNavigate ==> EXTERNAL: ",
-                getSafeOpdsAuthUrlForLog(win.webContents.getURL()),
-                " *** ",
-                getSafeOpdsAuthUrlForLog(navUrl),
-            );
+            debug("willNavigate ==> EXTERNAL: ", win.webContents.getURL().substring(0, 500), " *** ", navUrl);
             shell.openExternal(navUrl).then(() => { /* noop */ }).catch((err: unknown) => { debug(err); }); // .finally(() => { /* noop */ })
             return;
         }
 
-        debug("willNavigate ==> noop: ", getSafeOpdsAuthUrlForLog(navUrl));
+        debug("willNavigate ==> noop: ", navUrl);
     };
 
     win.webContents.setWindowOpenHandler((details: HandlerDetails) => {
-        debug(
-            "BrowserWindow.webContents.setWindowOpenHandler (always DENY), win.webContents.id: ",
-            win.webContents.id,
-            "\n --- details.url: ",
-            getSafeOpdsAuthUrlForLog(details.url),
-            "\n === win.webContents.getURL()",
-            getSafeOpdsAuthUrlForLog(win.webContents.getURL()),
-        );
+        debug("BrowserWindow.webContents.setWindowOpenHandler (always DENY), win.webContents.id: ", win.webContents.id, "\n --- details.url: ", details.url.substring(0, 500), "\n === win.webContents.getURL()", win.webContents.getURL().substring(0, 500));
 
         // willNavigate(details.url);
 
@@ -1021,28 +1003,14 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
     });
 
     win.webContents.on("will-navigate", (details: ElectronEvent<WebContentsWillNavigateEventParams>, detailsUrl: string) => {
-        debug(
-            "BrowserWindow.webContents.on('will-navigate') (always PREVENT?), win.webContents.id: ",
-            win.webContents.id,
-            "\n --- details.url: ",
-            details.url ? getSafeOpdsAuthUrlForLog(details.url) : undefined,
-            "\n *** detailsUrl: ",
-            detailsUrl ? getSafeOpdsAuthUrlForLog(detailsUrl) : undefined,
-            "\n ~~~ urlStr: ",
-            getSafeOpdsAuthUrlForLog(urlStr),
-            "\n === win.webContents.getURL(): ",
-            getSafeOpdsAuthUrlForLog(win.webContents.getURL()),
-        );
+        debug("BrowserWindow.webContents.on('will-navigate') (always PREVENT?), win.webContents.id: ", win.webContents.id, "\n --- details.url: ", details.url?.substring(0, 500), "\n *** detailsUrl: ", detailsUrl?.substring(0, 500), "\n ~~~ urlStr: ", urlStr.substring(0, 500), "\n === win.webContents.getURL(): ", win.webContents.getURL()?.substring(0, 500));
 
         if (details.url?.startsWith(`${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`)) {
-            debug(
-                `${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/ ==> PASS: `,
-                getSafeOpdsAuthUrlForLog(details.url),
-            );
+            debug(`${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/ ==> PASS: `, details.url?.substring(0, 500));
             return;
         }
         if (details.url === win.webContents.getURL()) {
-            debug("same URL ==> PASS: ", getSafeOpdsAuthUrlForLog(details.url));
+            debug("same URL ==> PASS: ", details.url?.substring(0, 500));
             return;
         }
 
@@ -1131,15 +1099,13 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
     //     });
     // });
 
-    debug("OPDS AUTH win LOAD 1", getSafeOpdsAuthUrlForLog(urlStr));
+    debug("OPDS AUTH win LOAD 1", urlStr.substring(0, 500));
 
     // win.webContents.loadURL
     // await DO NOT AWAIT!! (race condition when urlStr is a HTTP link that immediately redirects to OPDS://AUTHORIZE)
-    win.loadURL(urlStr)
-        .then(() => { debug("loadURL() ok", getSafeOpdsAuthUrlForLog(urlStr)); })
-        .catch((err) => { debug("loadURL() nok", getSafeOpdsAuthUrlForLog(urlStr)); debug(err); });
+    win.loadURL(urlStr).then(() => { debug("loadURL() ok " + urlStr); }).catch((err) => { debug("loadURL() nok " + urlStr); debug(err); });
 
-    debug("OPDS AUTH win LOAD 2", getSafeOpdsAuthUrlForLog(urlStr));
+    debug("OPDS AUTH win LOAD 2", urlStr.substring(0, 500));
 
     if (urlExternal) {
         setTimeout(() => {
@@ -1160,12 +1126,9 @@ interface IParseRequestFromCustomProtocol<T = string> {
 function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest, authenticationType: TAuthenticationType)
     : IParseRequestFromCustomProtocol<TLabelName | TAuthName | TDigestInfo | typeof URL_OPDS_AUTH_RETRY> | undefined {
 
-    debug("opds:// request:", {
-        method: typeof req === "object" ? req.method : undefined,
-        url: typeof req === "object" && typeof req.url === "string"
-            ? getSafeOpdsAuthUrlForLog(req.url)
-            : undefined,
-    });
+    debug("########");
+    debug("opds:// request:", req);
+    debug("########");
 
     if (typeof req === "object") {
         const { method, url, uploadData } = req;
