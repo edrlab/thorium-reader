@@ -34,7 +34,6 @@ import {
     deleteAuthenticationToken,
     getAuthenticationToken,
     httpGet,
-    httpGetWithAuth,
     httpPost,
     httpSetAuthenticationToken,
     IOpdsAuthenticationToken, wipeAuthenticationTokenStorage,
@@ -43,10 +42,10 @@ import { ContentType } from "readium-desktop/utils/contentType";
 import {
     IOpdsPkceTransaction,
     OPDS_AUTHORIZATION_CODE_PKCE_TYPE,
+    OPDS_OAUTH_CLIENT_ID,
     createOpdsPkceTransaction,
     exchangeOpdsPkceAuthorizationCode,
     getSafeOpdsAuthUrlForLog,
-    loadOpdsPkceAuthorizationServerMetadata,
 } from "readium-desktop/main/network/opdsPkce";
 import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
@@ -91,11 +90,11 @@ const filename_ = "readium-desktop:main:saga:auth";
 const debug = debug_(filename_);
 debug("_");
 
-type TLinkType = "refresh" | "authenticate" | "token";
+type TLinkType = "refresh" | "authenticate";
 type TLabelName = "login" | "password";
 type TDigestInfo = "realm" | "nonce" | "qop" | "algorithm";
 type TAuthName = "id" | "access_token" | "refresh_token" | "token_type"
-    | "code" | "state" | "error" | "error_description" | "iss";
+    | "code" | "state" | "error" | "error_description";
 type TAuthenticationType = typeof OPDS_AUTHORIZATION_CODE_PKCE_TYPE
     | "http://opds-spec.org/auth/oauth/password"
     | "http://opds-spec.org/auth/oauth/password/apiapp"
@@ -117,7 +116,6 @@ const AUTHENTICATION_TYPE: TAuthenticationType[] = [
 ];
 
 const LINK_TYPE: TLinkType[] = [
-    "token",
     "refresh",
     "authenticate",
 ];
@@ -147,65 +145,16 @@ const opdsAuthFlow =
 
             let pkceTransaction: IOpdsPkceTransaction | undefined;
             if (authParsed.authenticationType === OPDS_AUTHORIZATION_CODE_PKCE_TYPE) {
-                const registeredRedirectUri = `${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`;
-                if (authParsed.pkce?.redirectUri !== registeredRedirectUri) {
-                    debug("OPDS PKCE redirect_uri does not match Thorium's registered callback URI");
-                    return;
-                }
-                if (authParsed.pkce?.codeChallengeMethodsSupported &&
-                    !authParsed.pkce.codeChallengeMethodsSupported.includes("S256")) {
-                    debug("OPDS PKCE authentication provider does not advertise S256 support");
-                    return;
-                }
-                if (!authParsed.pkce?.authorizationServer || !authParsed.pkce.issuer) {
-                    debug("OPDS PKCE authentication provider does not advertise authorization server metadata");
-                    return;
-                }
-                const pkceMetadata = yield* callTyped(() => tryCatch(
-                    () => loadOpdsPkceAuthorizationServerMetadata(
-                        {
-                            authorizationServerMetadataUrl: authParsed.pkce.authorizationServer,
-                            expectedAuthorizationUrl: authParsed.links?.authenticate?.url,
-                            expectedIssuer: authParsed.pkce.issuer,
-                            expectedTokenUrl: authParsed.links?.token?.url,
-                        },
-                        async (metadataUrl) => {
-                            const headers = new Headers();
-                            headers.set("Accept", "application/json");
-                            const response = await httpGetWithAuth(false)(metadataUrl, { headers });
-                            if (!response.isSuccess || !response.response) {
-                                throw new Error(
-                                    `OAuth authorization server metadata failed with HTTP ${response.statusCode || 0}`,
-                                );
-                            }
-                            if (response.response.url && new URL(response.response.url).href !== metadataUrl) {
-                                throw new Error("OAuth authorization server metadata redirects are not allowed");
-                            }
-                            return response.response.json();
-                        },
-                    ),
-                    filename_,
-                ));
-                if (!pkceMetadata) {
-                    debug("invalid OPDS PKCE authorization server metadata");
-                    return;
-                }
                 pkceTransaction = tryCatchSync(
                     () => createOpdsPkceTransaction({
-                        application: OPDS_AUTH_APPLICATION,
-                        applicationVersion: _APP_VERSION,
-                        authenticationDocumentId: authParsed.id || undefined,
-                        authorizationUrl: pkceMetadata.authorizationEndpoint,
-                        clientId: authParsed.pkce?.clientId,
-                        issuer: pkceMetadata.issuer,
-                        redirectUri: authParsed.pkce?.redirectUri,
-                        scope: authParsed.pkce?.scope,
-                        tokenUrl: pkceMetadata.tokenEndpoint,
+                        allowInsecureLoopback: ENABLE_DEV_TOOLS,
+                        authorizationUrl: authParsed.links?.authenticate?.url || "",
+                        tokenUrl: authParsed.links?.refresh?.url || "",
                     }),
                     filename_,
                 );
                 if (!pkceTransaction) {
-                    debug("invalid OPDS PKCE authentication configuration");
+                    debug("invalid OPDS PKCE authenticate or refresh link");
                     return;
                 }
             }
@@ -223,7 +172,7 @@ const opdsAuthFlow =
                 tokenType: "Bearer",
                 refreshUrl: pkceTransaction?.tokenUrl || authParsed?.links?.refresh?.url || undefined,
                 authenticateUrl: pkceTransaction?.authorizationUrl || authParsed?.links?.authenticate?.url || undefined,
-                clientId: pkceTransaction?.clientId,
+                clientId: pkceTransaction ? OPDS_OAUTH_CLIENT_ID : undefined,
             };
             debug("authentication credential config", authCredentials);
             yield* callTyped(httpSetAuthenticationToken, authCredentials);
@@ -330,7 +279,9 @@ const opdsAuthFlow =
                         if (err instanceof Error) {
                             debug("OPDS auth err", err.message);
 
-                            yield put(authActions.cancel.build());
+                            if (authParsed.authenticationType === OPDS_AUTHORIZATION_CODE_PKCE_TYPE) {
+                                yield put(authActions.cancel.build());
+                            }
 
                             return;
                         } else {
@@ -644,7 +595,7 @@ async function opdsSetAuthCredentials(
                                 headers,
                             });
                             const responseJson = await response.response?.json();
-                            if (!response.isSuccess && !responseJson) {
+                            if (!response.isSuccess) {
                                 throw new Error(`OAuth token endpoint failed with HTTP ${response.statusCode || 0}`);
                             }
                             return responseJson;
@@ -655,7 +606,7 @@ async function opdsSetAuthCredentials(
                     await httpSetAuthenticationToken({
                         ...authCredentials,
                         accessToken: tokenResponse.accessToken,
-                        clientId: pkceTransaction.clientId,
+                        clientId: OPDS_OAUTH_CLIENT_ID,
                         refreshToken: tokenResponse.refreshToken,
                         refreshUrl: pkceTransaction.tokenUrl,
                         tokenType,
@@ -817,15 +768,6 @@ interface IOPDSAuthDocParsed {
     qop?: string,
     realm?: string,
 
-    pkce?: {
-        authorizationServer?: string;
-        clientId?: string;
-        redirectUri?: string;
-        scope?: string;
-        issuer?: string;
-        codeChallengeMethodsSupported?: string[];
-    },
-
 }
 function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPDSAuthDocParsed | undefined {
     if (!doc || !(doc instanceof OPDSAuthenticationDoc)) {
@@ -858,8 +800,7 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
         return undefined;
     }
 
-    const authentication = doc.Authentication.find((v) => v.Type === OPDS_AUTHORIZATION_CODE_PKCE_TYPE) ||
-        doc.Authentication.find((v) => AUTHENTICATION_TYPE.includes(v.Type as any));
+    const authentication = doc.Authentication.find((v) => AUTHENTICATION_TYPE.includes(v.Type as any));
     if (!authentication) {
         debug("OPDS Authentication Document does not contain a supported authentication type.");
         return undefined;
@@ -951,28 +892,6 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
         algorithm: typeof authentication.AdditionalJSON?.algorithm === "string" ? authentication.AdditionalJSON.algorithm : undefined,
         qop: typeof authentication.AdditionalJSON?.qop === "string" ? authentication.AdditionalJSON.qop : undefined,
         realm: typeof authentication.AdditionalJSON?.realm === "string" ? authentication.AdditionalJSON.realm : "", // mapping to title in opdsAuthentication json
-        pkce: authentication.Type === OPDS_AUTHORIZATION_CODE_PKCE_TYPE ? {
-            authorizationServer: typeof authentication.AdditionalJSON?.authorization_server === "string"
-                ? authentication.AdditionalJSON.authorization_server
-                : undefined,
-            clientId: typeof authentication.AdditionalJSON?.client_id === "string"
-                ? authentication.AdditionalJSON.client_id
-                : undefined,
-            redirectUri: typeof authentication.AdditionalJSON?.redirect_uri === "string"
-                ? authentication.AdditionalJSON.redirect_uri
-                : undefined,
-            scope: typeof authentication.AdditionalJSON?.scope === "string"
-                ? authentication.AdditionalJSON.scope
-                : undefined,
-            issuer: typeof authentication.AdditionalJSON?.issuer === "string"
-                ? authentication.AdditionalJSON.issuer
-                : undefined,
-            codeChallengeMethodsSupported:
-                Array.isArray(authentication.AdditionalJSON?.code_challenge_methods_supported)
-                    ? authentication.AdditionalJSON.code_challenge_methods_supported
-                        .filter((method): method is string => typeof method === "string")
-                    : undefined,
-        } : undefined,
     };
 }
 
@@ -1343,6 +1262,9 @@ function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest, authentic
                 //     query component of the Redirection URI, unless a different Response Mode was specified.
                 if (data.error) {
                     debug("OAuth Error Response", "error:", { error: data.error, error_description: data.error_description });
+                    if (authenticationType !== OPDS_AUTHORIZATION_CODE_PKCE_TYPE) {
+                        return undefined;
+                    }
                 }
 
                 if (authenticationType === "http://opds-spec.org/auth/oauth/implicit") {

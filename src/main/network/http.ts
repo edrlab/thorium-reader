@@ -36,6 +36,7 @@ import {
     IHttpGetResult, THttpGetCallback, THttpOptions, THttpResponse,
 } from "readium-desktop/common/utils/http";
 import { decryptPersist, encryptPersist } from "readium-desktop/main/fs/persistCrypto";
+import { createOpdsPkceRefreshTokenRequest } from "readium-desktop/main/network/opdsPkce";
 import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 
 import { diMainGet, opdsAuthFilePath } from "../di";
@@ -686,11 +687,7 @@ const httpGetUnauthorizedRefresh =
             // refresh request. Keep the JSON body for legacy OPDS credentials that predate clientId.
             if (auth.clientId) {
                 (options.headers as Headers).set("Content-Type", "application/x-www-form-urlencoded");
-                options.body = new URLSearchParams({
-                    client_id: auth.clientId,
-                    grant_type: "refresh_token",
-                    refresh_token: refreshToken,
-                }).toString();
+                options.body = createOpdsPkceRefreshTokenRequest(refreshToken, auth.clientId);
             } else {
                 (options.headers as Headers).set("Content-Type", "application/json");
                 options.body = JSON.stringify({

@@ -9,22 +9,12 @@ import assert from "node:assert/strict";
 import { randomBytes } from "node:crypto";
 import { after, before, test } from "node:test";
 
-import {
-    AUTHENTICATION_TYPE,
-    createCodeChallenge,
-    startPkceTestServer,
-} from "./server.mjs";
+import { AUTHENTICATION_TYPE, CLIENT_ID, REDIRECT_URI, createCodeChallenge, startPkceTestServer } from "./server.mjs";
 
-const clientId = "http://opds-spec.org/auth/client";
-const redirectUri = "opds://authorize/";
 let app;
 
 before(async () => {
-    app = await startPkceTestServer({
-        clientId,
-        port: 0,
-        redirectUri,
-    });
+    app = await startPkceTestServer({ port: 0 });
 });
 
 after(async () => {
@@ -35,23 +25,25 @@ function newPkceTransaction() {
     const verifier = randomBytes(32).toString("base64url");
     return {
         challenge: createCodeChallenge(verifier),
-        state: randomBytes(16).toString("base64url"),
+        state: randomBytes(32).toString("base64url"),
         verifier,
     };
 }
 
-async function authorize(transaction, decision = "approve") {
-    const params = new URLSearchParams({
+function authorizationParams(transaction) {
+    return new URLSearchParams({
         response_type: "code",
-        client_id: clientId,
-        redirect_uri: redirectUri,
-        scope: "opds",
-        state: transaction.state,
+        client_id: CLIENT_ID,
+        redirect_uri: REDIRECT_URI,
         code_challenge: transaction.challenge,
         code_challenge_method: "S256",
+        state: transaction.state,
     });
-    const authorizeUrl = `${app.origin}/authorize?${params}`;
-    const pageResponse = await fetch(authorizeUrl);
+}
+
+async function authorize(transaction, decision = "approve") {
+    const params = authorizationParams(transaction);
+    const pageResponse = await fetch(`${app.origin}/authorize?${params}`);
     assert.equal(pageResponse.status, 200);
     assert.match(await pageResponse.text(), /Authorize the PKCE test client/);
 
@@ -62,128 +54,109 @@ async function authorize(transaction, decision = "approve") {
         redirect: "manual",
     });
     assert.equal(response.status, 303);
-    const location = response.headers.get("location");
-    assert.ok(location);
-    return new URL(location);
+    return new URL(response.headers.get("location"));
 }
 
-async function exchangeCode(code, verifier) {
+function exchangeCode(code, verifier, extra = {}) {
     return fetch(`${app.origin}/token`, {
         body: new URLSearchParams({
             grant_type: "authorization_code",
-            client_id: clientId,
-            redirect_uri: redirectUri,
             code,
+            redirect_uri: REDIRECT_URI,
+            client_id: CLIENT_ID,
             code_verifier: verifier,
+            ...extra,
         }),
         method: "POST",
     });
 }
 
-test("exposes the OPDS authentication document and OAuth metadata", async () => {
-    const protectedResponse = await fetch(`${app.origin}/opds/v2/catalog`);
-    assert.equal(protectedResponse.status, 401);
-    assert.match(protectedResponse.headers.get("content-type"), /^application\/opds-authentication\+json/);
-    assert.match(protectedResponse.headers.get("link"), /opds-spec\.org\/auth\/document/);
+test("advertises only the proposed OPDS PKCE fields", async () => {
+    const response = await fetch(`${app.origin}/opds/v2/catalog`);
+    assert.equal(response.status, 401);
+    assert.match(response.headers.get("content-type"), /^application\/opds-authentication\+json/);
 
-    const document = await protectedResponse.json();
+    const document = await response.json();
+    assert.deepEqual(Object.keys(document.authentication[0]).sort(), ["links", "type"]);
     assert.equal(document.authentication[0].type, AUTHENTICATION_TYPE);
-    assert.equal(document.authentication[0].client_id, clientId);
-    assert.equal(document.authentication[0].redirect_uri, redirectUri);
-    assert.deepEqual(document.authentication[0].code_challenge_methods_supported, ["S256"]);
-    assert.equal(
-        document.authentication[0].links.find((link) => link.rel === "token")?.href,
-        `${app.origin}/token`,
-    );
+    assert.deepEqual(document.authentication[0].links, [
+        { rel: "authenticate", href: `${app.origin}/authorize` },
+        { rel: "refresh", href: `${app.origin}/token` },
+    ]);
 
-    const metadataResponse = await fetch(`${app.origin}/.well-known/oauth-authorization-server`);
-    assert.equal(metadataResponse.status, 200);
-    const metadata = await metadataResponse.json();
-    assert.equal(metadata.issuer, app.origin);
-    assert.equal(metadata.authorization_endpoint, `${app.origin}/authorize`);
-    assert.equal(metadata.token_endpoint, `${app.origin}/token`);
-    assert.equal(metadata.authorization_response_iss_parameter_supported, true);
-    assert.deepEqual(metadata.code_challenge_methods_supported, ["S256"]);
+    for (const removedPath of ["/.well-known/oauth-authorization-server", "/health", "/publication.txt"]) {
+        assert.equal((await fetch(`${app.origin}${removedPath}`)).status, 404);
+    }
 });
 
-test("rejects unsupported or malformed authorization requests", async () => {
-    const response = await fetch(`${app.origin}/authorize?response_type=token`);
-    assert.equal(response.status, 400);
-    assert.equal((await response.json()).error, "invalid_request");
+test("requires the fixed client, redirect URI, and S256", async () => {
+    const transaction = newPkceTransaction();
+    const params = authorizationParams(transaction);
+
+    params.set("client_id", "other-client");
+    assert.equal((await fetch(`${app.origin}/authorize?${params}`)).status, 400);
+    params.set("client_id", CLIENT_ID);
+
+    params.set("redirect_uri", "https://attacker.example/callback");
+    assert.equal((await fetch(`${app.origin}/authorize?${params}`)).status, 400);
+    params.set("redirect_uri", REDIRECT_URI);
+
+    params.set("code_challenge_method", "plain");
+    assert.equal((await fetch(`${app.origin}/authorize?${params}`)).status, 400);
 });
 
-test("returns an OAuth access_denied callback", async () => {
+test("returns denial with the original state", async () => {
     const transaction = newPkceTransaction();
     const callback = await authorize(transaction, "deny");
-    assert.equal(callback.origin, "null");
     assert.equal(callback.protocol, "opds:");
     assert.equal(callback.searchParams.get("error"), "access_denied");
-    assert.equal(callback.searchParams.get("iss"), app.origin);
     assert.equal(callback.searchParams.get("state"), transaction.state);
+    assert.equal(callback.searchParams.has("iss"), false);
 });
 
-test("invalidates a code after a failed PKCE verification", async () => {
+test("invalidates a code after failed PKCE verification", async () => {
     const transaction = newPkceTransaction();
-    const callback = await authorize(transaction);
-    const code = callback.searchParams.get("code");
+    const code = (await authorize(transaction)).searchParams.get("code");
     assert.ok(code);
 
     const wrongVerifier = randomBytes(32).toString("base64url");
-    const failedResponse = await exchangeCode(code, wrongVerifier);
-    assert.equal(failedResponse.status, 400);
-    assert.equal((await failedResponse.json()).error, "invalid_grant");
-
-    const retryResponse = await exchangeCode(code, transaction.verifier);
-    assert.equal(retryResponse.status, 400);
-    assert.equal((await retryResponse.json()).error, "invalid_grant");
+    assert.equal((await exchangeCode(code, wrongVerifier)).status, 400);
+    assert.equal((await exchangeCode(code, transaction.verifier)).status, 400);
 });
 
-test("exchanges a valid code once and accepts the resulting bearer token", async () => {
+test("exchanges a code, protects the catalog, and refreshes at the same endpoint", async () => {
     const transaction = newPkceTransaction();
     const callback = await authorize(transaction);
     const code = callback.searchParams.get("code");
     assert.ok(code);
     assert.equal(callback.searchParams.get("state"), transaction.state);
-    assert.equal(callback.searchParams.get("id"), `${app.origin}/auth`);
-    assert.equal(callback.searchParams.get("iss"), app.origin);
+    assert.deepEqual([...callback.searchParams.keys()].sort(), ["code", "state"]);
 
-    const tokenResponse = await exchangeCode(code, transaction.verifier);
+    const secretResponse = await exchangeCode(code, transaction.verifier, { client_secret: "secret" });
+    assert.equal(secretResponse.status, 401);
+
+    const retryTransaction = newPkceTransaction();
+    const retryCode = (await authorize(retryTransaction)).searchParams.get("code");
+    assert.ok(retryCode);
+    const tokenResponse = await exchangeCode(retryCode, retryTransaction.verifier);
     assert.equal(tokenResponse.status, 200);
     assert.match(tokenResponse.headers.get("cache-control"), /no-store/);
-    const tokenDocument = await tokenResponse.json();
-    assert.equal(tokenDocument.token_type, "Bearer");
-    assert.equal(tokenDocument.scope, "opds");
-    assert.ok(tokenDocument.access_token);
-    assert.ok(tokenDocument.refresh_token);
-
-    const reuseResponse = await exchangeCode(code, transaction.verifier);
-    assert.equal(reuseResponse.status, 400);
-    assert.equal((await reuseResponse.json()).error, "invalid_grant");
+    const token = await tokenResponse.json();
+    assert.ok(token.access_token);
+    assert.ok(token.refresh_token);
+    assert.equal(token.token_type, "Bearer");
 
     const catalogResponse = await fetch(`${app.origin}/opds/v2/catalog`, {
-        headers: {
-            Authorization: `Bearer ${tokenDocument.access_token}`,
-        },
+        headers: { Authorization: `Bearer ${token.access_token}` },
     });
     assert.equal(catalogResponse.status, 200);
     assert.match(catalogResponse.headers.get("content-type"), /^application\/opds\+json/);
-    const catalog = await catalogResponse.json();
-    assert.equal(catalog.metadata.title, "Thorium PKCE Test Catalog");
-    assert.equal(catalog.publications[0].metadata.title, "PKCE authentication succeeded");
-
-    const publicationResponse = await fetch(`${app.origin}/publication.txt`, {
-        headers: {
-            Authorization: `Bearer ${tokenDocument.access_token}`,
-        },
-    });
-    assert.equal(publicationResponse.status, 200);
-    assert.match(await publicationResponse.text(), /Authorization Code \+ PKCE/);
 
     const refreshResponse = await fetch(`${app.origin}/token`, {
         body: new URLSearchParams({
             grant_type: "refresh_token",
-            client_id: clientId,
-            refresh_token: tokenDocument.refresh_token,
+            client_id: CLIENT_ID,
+            refresh_token: token.refresh_token,
         }),
         method: "POST",
     });

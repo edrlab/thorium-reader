@@ -9,49 +9,35 @@ import { createHash, randomBytes } from "node:crypto";
 
 export const OPDS_AUTHORIZATION_CODE_PKCE_TYPE =
     "http://opds-spec.org/auth/oauth/authorization-code-pkce";
+export const OPDS_OAUTH_CLIENT_ID = "http://opds-spec.org/auth/client";
+export const OPDS_OAUTH_REDIRECT_URI = "opds://authorize/";
 
 const PKCE_TRANSACTION_MAX_AGE_MS = 5 * 60 * 1000;
 const PKCE_VERIFIER_REGEXP = /^[A-Za-z0-9\-._~]{43,128}$/;
 
-function assertSecureOAuthEndpoint(value: string, name: string): URL {
+function assertSecureOAuthEndpoint(value: string, name: string, allowInsecureLoopback: boolean): URL {
     const url = new URL(value);
     const isLoopbackHttp = url.protocol === "http:" &&
         (url.hostname === "localhost" || url.hostname === "[::1]" || /^127(?:\.\d{1,3}){3}$/.test(url.hostname));
-    if (url.protocol !== "https:" && !isLoopbackHttp) {
-        throw new Error(`The PKCE ${name} must use HTTPS, except on a loopback address.`);
+    if (url.protocol !== "https:" && !(allowInsecureLoopback && isLoopbackHttp)) {
+        const exception = allowInsecureLoopback ? ", except on a loopback address" : "";
+        throw new Error(`The PKCE ${name} must use HTTPS${exception}.`);
     }
     return url;
 }
 
 export interface IOpdsPkceConfiguration {
-    authenticationDocumentId?: string;
+    allowInsecureLoopback?: boolean;
     authorizationUrl: string;
-    clientId: string;
-    redirectUri: string;
-    scope?: string;
     tokenUrl: string;
-    issuer?: string;
-    application?: string;
-    applicationVersion?: string;
-}
-
-export interface IOpdsPkceAuthorizationServerConfiguration {
-    authorizationServerMetadataUrl: string;
-    expectedAuthorizationUrl?: string;
-    expectedIssuer: string;
-    expectedTokenUrl?: string;
-}
-
-export interface IOpdsPkceAuthorizationServerMetadata {
-    authorizationEndpoint: string;
-    issuer: string;
-    tokenEndpoint: string;
 }
 
 export interface IOpdsPkceTransaction extends IOpdsPkceConfiguration {
     authorizationRequestUrl: string;
+    clientId: typeof OPDS_OAUTH_CLIENT_ID;
     codeVerifier: string;
     createdAt: number;
+    redirectUri: typeof OPDS_OAUTH_REDIRECT_URI;
     state: string;
 }
 
@@ -59,21 +45,16 @@ export interface IOpdsPkceCallback {
     code?: string;
     error?: string;
     error_description?: string;
-    id?: string;
-    iss?: string;
     state?: string;
 }
 
 export interface IOpdsPkceTokenResponse {
     accessToken: string;
-    expiresIn?: number;
     refreshToken?: string;
-    scope?: string;
     tokenType: string;
 }
 
 export type TOpdsPkceTokenPost = (url: string, body: string) => Promise<unknown>;
-export type TOpdsPkceMetadataGet = (url: string) => Promise<unknown>;
 
 export function getSafeOpdsAuthUrlForLog(value: string): string {
     try {
@@ -85,68 +66,6 @@ export function getSafeOpdsAuthUrlForLog(value: string): string {
     } catch {
         return "[invalid URL]";
     }
-}
-
-function assertMatchingEndpoint(actual: URL, expected: string | undefined, name: string) {
-    if (expected && actual.href !== assertSecureOAuthEndpoint(expected, name).href) {
-        throw new Error(`The PKCE ${name} does not match the authorization server metadata.`);
-    }
-}
-
-export async function loadOpdsPkceAuthorizationServerMetadata(
-    configuration: IOpdsPkceAuthorizationServerConfiguration,
-    getMetadata: TOpdsPkceMetadataGet,
-): Promise<IOpdsPkceAuthorizationServerMetadata> {
-    const metadataUrl = assertSecureOAuthEndpoint(
-        configuration.authorizationServerMetadataUrl,
-        "authorization server metadata URL",
-    );
-    const expectedIssuerUrl = assertSecureOAuthEndpoint(configuration.expectedIssuer, "issuer");
-    if (expectedIssuerUrl.search || expectedIssuerUrl.hash) {
-        throw new Error("The PKCE issuer must not contain a query or fragment.");
-    }
-    if (metadataUrl.origin !== expectedIssuerUrl.origin) {
-        throw new Error("The PKCE authorization server metadata URL must have the same origin as the issuer.");
-    }
-
-    const value = await getMetadata(metadataUrl.href);
-    if (!value || typeof value !== "object") {
-        throw new Error("The OAuth authorization server returned invalid metadata.");
-    }
-
-    const metadata = value as Record<string, unknown>;
-    if (typeof metadata.issuer !== "string" || metadata.issuer !== configuration.expectedIssuer) {
-        throw new Error("The OAuth authorization server metadata issuer does not match.");
-    }
-    if (metadata.authorization_response_iss_parameter_supported !== true) {
-        throw new Error("The OAuth authorization server must support the authorization response iss parameter.");
-    }
-    if (!Array.isArray(metadata.code_challenge_methods_supported) ||
-        !metadata.code_challenge_methods_supported.includes("S256")) {
-        throw new Error("The OAuth authorization server does not support PKCE S256.");
-    }
-    if (typeof metadata.authorization_endpoint !== "string" ||
-        typeof metadata.token_endpoint !== "string") {
-        throw new Error("The OAuth authorization server metadata is missing its endpoints.");
-    }
-
-    const authorizationEndpoint = assertSecureOAuthEndpoint(
-        metadata.authorization_endpoint,
-        "authorization endpoint",
-    );
-    const tokenEndpoint = assertSecureOAuthEndpoint(metadata.token_endpoint, "token endpoint");
-    assertMatchingEndpoint(
-        authorizationEndpoint,
-        configuration.expectedAuthorizationUrl,
-        "authorization endpoint",
-    );
-    assertMatchingEndpoint(tokenEndpoint, configuration.expectedTokenUrl, "token endpoint");
-
-    return {
-        authorizationEndpoint: authorizationEndpoint.href,
-        issuer: metadata.issuer,
-        tokenEndpoint: tokenEndpoint.href,
-    };
 }
 
 export function createOpdsPkceCodeChallenge(codeVerifier: string): string {
@@ -164,39 +83,36 @@ export function createOpdsPkceTransaction(
     createdAt = Date.now(),
 ): IOpdsPkceTransaction {
     if (!configuration.authorizationUrl || !configuration.tokenUrl) {
-        throw new Error("The PKCE authorization and token endpoints are required.");
-    }
-    if (!configuration.clientId || !configuration.redirectUri) {
-        throw new Error("The PKCE client_id and redirect_uri are required.");
+        throw new Error("The PKCE authenticate and refresh links are required.");
     }
 
-    const authorizationUrl = assertSecureOAuthEndpoint(configuration.authorizationUrl, "authorization endpoint");
-    assertSecureOAuthEndpoint(configuration.tokenUrl, "token endpoint");
-    new URL(configuration.redirectUri);
+    const authorizationUrl = assertSecureOAuthEndpoint(
+        configuration.authorizationUrl,
+        "authorization endpoint",
+        !!configuration.allowInsecureLoopback,
+    );
+    assertSecureOAuthEndpoint(
+        configuration.tokenUrl,
+        "token endpoint",
+        !!configuration.allowInsecureLoopback,
+    );
 
     const codeVerifier = randomBytes(32).toString("base64url");
     const state = randomBytes(32).toString("base64url");
     authorizationUrl.searchParams.set("response_type", "code");
-    authorizationUrl.searchParams.set("client_id", configuration.clientId);
-    authorizationUrl.searchParams.set("redirect_uri", configuration.redirectUri);
+    authorizationUrl.searchParams.set("client_id", OPDS_OAUTH_CLIENT_ID);
+    authorizationUrl.searchParams.set("redirect_uri", OPDS_OAUTH_REDIRECT_URI);
     authorizationUrl.searchParams.set("code_challenge", createOpdsPkceCodeChallenge(codeVerifier));
     authorizationUrl.searchParams.set("code_challenge_method", "S256");
     authorizationUrl.searchParams.set("state", state);
-    if (configuration.scope) {
-        authorizationUrl.searchParams.set("scope", configuration.scope);
-    }
-    if (configuration.application) {
-        authorizationUrl.searchParams.set("application", configuration.application);
-    }
-    if (configuration.applicationVersion) {
-        authorizationUrl.searchParams.set("application_version", configuration.applicationVersion);
-    }
 
     return {
         ...configuration,
         authorizationRequestUrl: authorizationUrl.toString(),
+        clientId: OPDS_OAUTH_CLIENT_ID,
         codeVerifier,
         createdAt,
+        redirectUri: OPDS_OAUTH_REDIRECT_URI,
         state,
     };
 }
@@ -212,21 +128,9 @@ export function validateOpdsPkceCallback(
     if (!callback.state || callback.state !== transaction.state) {
         throw new Error("The OAuth callback state does not match the PKCE transaction.");
     }
-    if (transaction.issuer) {
-        if (!callback.iss) {
-            throw new Error("The OAuth callback does not contain the expected issuer.");
-        }
-        if (callback.iss !== transaction.issuer) {
-            throw new Error("The OAuth callback issuer does not match.");
-        }
-    }
     if (callback.error) {
         const description = callback.error_description ? `: ${callback.error_description}` : "";
         throw new Error(`OAuth authorization failed (${callback.error})${description}`);
-    }
-    if (callback.id && transaction.authenticationDocumentId &&
-        callback.id !== transaction.authenticationDocumentId) {
-        throw new Error("The OAuth callback authentication document identifier does not match.");
     }
     if (!callback.code) {
         throw new Error("The OAuth callback does not contain an authorization code.");
@@ -241,10 +145,18 @@ export function createOpdsPkceTokenRequest(
 ): string {
     return new URLSearchParams({
         grant_type: "authorization_code",
-        client_id: transaction.clientId,
-        redirect_uri: transaction.redirectUri,
         code: authorizationCode,
+        redirect_uri: transaction.redirectUri,
+        client_id: transaction.clientId,
         code_verifier: transaction.codeVerifier,
+    }).toString();
+}
+
+export function createOpdsPkceRefreshTokenRequest(refreshToken: string, clientId = OPDS_OAUTH_CLIENT_ID): string {
+    return new URLSearchParams({
+        grant_type: "refresh_token",
+        refresh_token: refreshToken,
+        client_id: clientId,
     }).toString();
 }
 
@@ -266,9 +178,7 @@ export function parseOpdsPkceTokenResponse(value: unknown): IOpdsPkceTokenRespon
 
     return {
         accessToken: response.access_token,
-        expiresIn: typeof response.expires_in === "number" ? response.expires_in : undefined,
         refreshToken: typeof response.refresh_token === "string" ? response.refresh_token : undefined,
-        scope: typeof response.scope === "string" ? response.scope : undefined,
         tokenType: typeof response.token_type === "string" && response.token_type
             ? response.token_type
             : "Bearer",
