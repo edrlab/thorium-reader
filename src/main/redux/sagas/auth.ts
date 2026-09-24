@@ -171,7 +171,7 @@ const opdsAuthFlow =
                 tokenType: "Bearer",
                 refreshUrl: pkceTransaction?.tokenUrl || authParsed?.links?.refresh?.url || undefined,
                 authenticateUrl: pkceTransaction?.authorizationUrl || authParsed?.links?.authenticate?.url || undefined,
-                clientId: pkceTransaction ? OPDS_OAUTH_CLIENT_ID : undefined,
+                pkce: !!pkceTransaction,
             };
             debug("authentication credential config", authCredentials);
             yield* callTyped(httpSetAuthenticationToken, authCredentials);
@@ -600,7 +600,7 @@ async function opdsSetAuthCredentials(
                     await httpSetAuthenticationToken({
                         ...authCredentials,
                         accessToken: tokenResponse.accessToken,
-                        clientId: OPDS_OAUTH_CLIENT_ID,
+                        pkce: true,
                         refreshToken: tokenResponse.refreshToken,
                         refreshUrl: pkceTransaction.tokenUrl,
                         tokenType,

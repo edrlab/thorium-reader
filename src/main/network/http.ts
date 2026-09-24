@@ -93,7 +93,7 @@ export interface IOpdsAuthenticationToken {
     opdsAuthenticationUrl?: string; // application/opds-authentication+json
     refreshUrl?: string;
     authenticateUrl?: string;
-    clientId?: string;
+    pkce?: boolean;
     accessToken?: string;
     refreshToken?: string;
     tokenType?: string;
@@ -683,11 +683,9 @@ const httpGetUnauthorizedRefresh =
             options.headers = options.headers instanceof Headers
                 ? options.headers
                 : new Headers(options.headers || {});
-            // PKCE credentials include a public client ID and use the standard OAuth form-encoded
-            // refresh request. Keep the JSON body for legacy OPDS credentials that predate clientId.
-            if (auth.clientId) {
+            if (auth.pkce) {
                 (options.headers as Headers).set("Content-Type", "application/x-www-form-urlencoded");
-                options.body = createOpdsPkceRefreshTokenRequest(refreshToken, auth.clientId);
+                options.body = createOpdsPkceRefreshTokenRequest(refreshToken);
             } else {
                 (options.headers as Headers).set("Content-Type", "application/json");
                 options.body = JSON.stringify({
