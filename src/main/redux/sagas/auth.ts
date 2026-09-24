@@ -42,7 +42,6 @@ import { ContentType } from "readium-desktop/utils/contentType";
 import {
     IOpdsPkceTransaction,
     OPDS_AUTHORIZATION_CODE_PKCE_TYPE,
-    OPDS_OAUTH_CLIENT_ID,
     createOpdsPkceTransaction,
     exchangeOpdsPkceAuthorizationCode,
 } from "readium-desktop/main/network/opdsPkce";
