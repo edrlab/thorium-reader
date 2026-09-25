@@ -7,7 +7,6 @@
 
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import * as React from "react";
-import * as RadioGroup from "@radix-ui/react-radio-group";
 import * as ScrollableIcon from "readium-desktop/renderer/assets/icons/scroll-icon.svg";
 import * as PaginatedIcon from "readium-desktop/renderer/assets/icons/page-icon.svg";
 import {
@@ -18,6 +17,7 @@ import {
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useReaderConfig, useSaveReaderConfigDebounced } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 import { RadioGroupItem } from "readium-desktop/renderer/reader/components/ReaderSettings/ReaderSettings";
+import { RadioGroup } from "readium-desktop/renderer/common/components/RadioGroupComponent";
 import { logEvent } from "readium-desktop/renderer/common/analytics";
 
 export const ReadingDisplayLayout = ({ isFXL }: { isFXL: boolean }) => {
@@ -27,8 +27,8 @@ export const ReadingDisplayLayout = ({ isFXL }: { isFXL: boolean }) => {
     return (
         <div className={stylesSettings.section}>
             <h3>{__("reader.settings.disposition.title")}</h3>
-            <div className={stylesSettings.display_options}>
-                <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px" }} value={(layout || isFXL) ? "page_option" : "scroll_option"}
+            <div className={stylesSettings.display_options} style={{marginBottom: "20px"}}>
+                <RadioGroup aria-label={__("reader.settings.disposition.title")} orientation="horizontal" style={{ display: "flex", gap: "10px" }} value={(layout || isFXL) ? "page_option" : "scroll_option"}
                     onValueChange={(v) => {
                         const layoutValue: TReaderPreferenceAnalyticsLayoutValue =
                             v === "page_option" ? "paginated" : "scrollable";
@@ -38,7 +38,7 @@ export const ReadingDisplayLayout = ({ isFXL }: { isFXL: boolean }) => {
                 >
                     <RadioGroupItem value="scroll_option" description={`${__("reader.settings.scrolled")}`} svg={ScrollableIcon} disabled={isFXL} />
                     <RadioGroupItem value="page_option" description={`${__("reader.settings.paginated")}`} svg={PaginatedIcon} disabled={false} />
-                </RadioGroup.Root>
+                </RadioGroup>
             </div>
         </div>
     );
