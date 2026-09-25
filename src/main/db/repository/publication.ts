@@ -198,7 +198,7 @@ export class PublicationRepository {
                 return false;
             }
 
-            if (((url && f.opdsPublication?.url === url) || (type && f.opdsPublication?.type === type))
+            if (f.opdsPublication?.url === url && f.opdsPublication?.type === type
                 && ((identifier && f.opdsPublication?.identifier === identifier) || (selfLinkUrl && f.opdsPublication.selfLinkUrl === selfLinkUrl))) {
                 return true;
             }

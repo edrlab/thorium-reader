@@ -1359,9 +1359,9 @@
             "storage": "Spazio d'archiviazione"
         },
         "telemetry": {
-            "disableTelemetryMeasurements": "",
-            "disableTelemetryMeasurementsDescription": "",
-            "title": ""
+            "disableTelemetryMeasurements": "Disattiva le misurazioni di telemetria",
+            "disableTelemetryMeasurementsDescription": "Quando abilitato, Thorium non invia misurazioni di telemetria.",
+            "title": "Telemetria"
         },
         "theme": {
             "auto": "Automatico",
