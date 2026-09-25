@@ -1808,11 +1808,12 @@ export function mediaOverlaysNext(escape?: boolean) {
             findNextTextAudioPair(_mediaOverlayRoot, _mediaOverlayTextAudioPair, {prev: undefined},
                 escape ? true : false);
         if (!nextTextAudioPair) {
-            if (win.READIUM2.mediaOverlaysInteractiveLinks) {
-                // Interactive books: the end of a document is where the reader chooses
+            if (win.READIUM2.mediaOverlaysInteractiveLinks && !mediaOverlaysIsPeripheral(_mediaOverlayRoot)) {
+                // Interactive books: the end of a chapter is where the reader chooses
                 // (the choices are links), so wait there instead of turning the page.
+                // Front and back matter (a title page, a preamble, the cast) carry on.
                 if (IS_DEV) {
-                    debug("mediaOverlaysNext() - interactive links: pause at the end of the document");
+                    debug("mediaOverlaysNext() - interactive links: pause at the end of the chapter");
                 }
                 mediaOverlaysPause();
                 return;
@@ -1952,6 +1953,32 @@ export function mediaOverlaysPlaybackRate(speed: number) {
 let _mediaOverlaySkippabilityIsEnabled = true;
 export function mediaOverlaysEnableSkippability(doEnable: boolean) {
     _mediaOverlaySkippabilityIsEnabled = doEnable;
+}
+
+// The SMIL's epub:type roles that mark a document as front or back matter
+// (the reader has nothing to choose there) versus the body of the book.
+const _peripheralRoles = new Set([
+    "cover", "titlepage", "frontmatter", "backmatter", "preamble", "toc", "landmarks",
+    "colophon", "dedication", "epigraph", "acknowledgments", "copyright-page", "imprint",
+    "foreword", "preface", "afterword", "appendix", "bibliography", "glossary", "index",
+]);
+const _bodyRoles = new Set(["bodymatter", "chapter", "part", "volume", "prologue", "epilogue"]);
+
+function moHasRole(mo: MediaOverlayNode, roles: Set<string>): boolean {
+    if (mo.Role && mo.Role.some((r) => roles.has(r))) {
+        return true;
+    }
+    return !!mo.Children && mo.Children.some((child) => moHasRole(child, roles));
+}
+
+// A document whose overlay is labelled front or back matter and nowhere
+// labelled body: with interactive links enabled the readaloud flows on
+// from its end instead of waiting (there is no choice to wait for).
+export function mediaOverlaysIsPeripheral(root: MediaOverlayNode | undefined): boolean {
+    if (!root) {
+        return false;
+    }
+    return !moHasRole(root, _bodyRoles) && moHasRole(root, _peripheralRoles);
 }
 
 // Interactive books (choices as links): with this enabled, a click on a
