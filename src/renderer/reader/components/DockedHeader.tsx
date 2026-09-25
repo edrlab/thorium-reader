@@ -59,12 +59,14 @@ const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number
 SelectRef.displayName = "ComboBox";
 
 const SelectRefComponent = ({ isEpub, setSection, dockedMode, dockedModeRef, options, optionSelected, optionDisabled, section, panel }: SelectRefProps & { panel: "menu" | "settings" }) => {
+    const [__] = useTranslator();
+
     return (
         <SelectRef
             id={`reader-${panel}-nav`}
             items={options}
             selectedKey={optionSelected}
-            aria-label={options.find(({ value }) => value === section)?.name}
+            aria-label={panel === "menu" ? __("reader.navigation.openTableOfContentsTitle") : __("reader.navigation.settingsTitle")}
             disabledKeys={optionDisabled}
             svg={options.find(({ value }) => value === section)?.svg}
             triggerFocusId={panel === "menu" ? "reader-menu-docked-trigger" : "reader-settings-nav"}
