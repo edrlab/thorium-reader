@@ -265,7 +265,8 @@
         },
         "storage": {
             "recovery": {
-                "failure": ""
+                "failure": "",
+                "success": ""
             },
             "removed": "出版物文件路径被移除。",
             "updateFailed": "更新出版物文件路径失败: {{- message}}",
@@ -916,7 +917,6 @@
             "preset": {
                 "apply": "应用",
                 "applyDetails": "将您的偏好设置应用到当前出版物。",
-                "detail": "保存 /应用 /重置您的偏好设置。",
                 "reset": "重置",
                 "resetDetails": "重置您的偏好设置（默认设置）。",
                 "save": "保存",
@@ -1325,9 +1325,11 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "title": ""
             }
         },

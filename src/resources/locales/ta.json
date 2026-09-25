@@ -271,6 +271,7 @@
         "storage": {
             "recovery": {
                 "failure": "",
+                "success": "",
                 "success_one": "",
                 "success_other": ""
             },
@@ -924,7 +925,6 @@
             "preset": {
                 "apply": "இடு",
                 "applyDetails": "தற்போதைய வெளியீட்டில் உங்களுக்கு விருப்பமான உள்ளமைவைப் பயன்படுத்துங்கள்.",
-                "detail": "உங்களுக்கு விருப்பமான உள்ளமைவைச் சேமிக்கவும் / விண்ணப்பிக்கவும் / மீட்டமைக்கவும்.",
                 "reset": "மீட்டமை",
                 "resetDetails": "உங்களுக்கு விருப்பமான உள்ளமைவை மீட்டமைக்கவும் (இயல்புநிலை அமைப்புகள்).",
                 "save": "சேமி",
@@ -1333,11 +1333,13 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "description_one": "",
                     "description_other": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "recoverableCount_one": "",
                 "recoverableCount_other": "",
                 "title": ""

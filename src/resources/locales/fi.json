@@ -271,6 +271,7 @@
         "storage": {
             "recovery": {
                 "failure": "Julkaisun palauttaminen epäonnistui.",
+                "success": "",
                 "success_one": "{{- count}} julkaisu palautettu.",
                 "success_other": "{{- count}} julkaisua palautettu."
             },
@@ -924,7 +925,6 @@
             "preset": {
                 "apply": "Käytä",
                 "applyDetails": "Käytä ulkoasun valintojasi nykyiseen julkaisuun.",
-                "detail": "Tallenna / Käytä / Nollaa näyttöasetuksesi.",
                 "reset": "Nollaa",
                 "resetDetails": "Palauta oletusasetukset.",
                 "save": "Tallenna",
@@ -1333,11 +1333,13 @@
                 "description": "Tarkista tallennetut julkaisut ja etsi julkaisuja, jotka voi palauttaa turvallisesti.",
                 "dialog": {
                     "confirm": "Palauta",
+                    "description": "",
                     "description_one": "Thorium löysi levyltä {{- count}} julkaisun, joka puuttuu tietokannasta. Haluatko tuoda sen takaisin Thoriumiin?",
                     "description_other": "Thorium löysi levyltä {{- count}} julkaisua, jotka puuttuvat tietokannasta. Haluatko tuoda ne takaisin Thoriumiin?",
                     "title": "Palauta julkaisut"
                 },
                 "none": "Ei löytynyt yhtään palautettavissa olevaa julkaisua.",
+                "recoverableCount": "",
                 "recoverableCount_one": "{{- count}} julkaisu voidaan palauttaa alkuperäisen varastotunnisteen kanssa.",
                 "recoverableCount_other": "{{- count}} julkaisua voidaan palauttaa alkuperäisten varastotunnisteiden kanssa.",
                 "title": "Palautus"

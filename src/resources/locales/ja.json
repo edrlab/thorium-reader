@@ -169,7 +169,6 @@
         "deleteAnnotations": "メモを削除しますか？",
         "deleteAnnotationsText": "{{-count}} 件のメモを削除しますか？",
         "deleteBookmarks": "しおりを削除しますか？",
-        "deleteBookmarksText_other": "{{- count}} 件のしおりを削除してもよろしいですか？",
         "deleteFeed": "この図書目録を削除しますか？",
         "deletePublication": "この本を削除しますか？",
         "deletePublicationWithNotes": "",
@@ -265,7 +264,8 @@
         },
         "storage": {
             "recovery": {
-                "failure": ""
+                "failure": "",
+                "success": ""
             },
             "removed": "",
             "updateFailed": "",
@@ -916,7 +916,6 @@
             "preset": {
                 "apply": "適用",
                 "applyDetails": "現在の本に、あなたの優先設定を適用します。",
-                "detail": "あなたの優先設定を保存／適用／リセットします。",
                 "reset": "リセット",
                 "resetDetails": "あなたの優先設定（標準設定）をリセットします。",
                 "save": "保存",
@@ -1325,9 +1324,11 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "title": ""
             }
         },

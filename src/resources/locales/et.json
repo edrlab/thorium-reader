@@ -271,6 +271,7 @@
         "storage": {
             "recovery": {
                 "failure": "Väljaande taastamine ei õnnestunud.",
+                "success": "",
                 "success_one": "{{- count}} väljaanne on taastatud.",
                 "success_other": "{{- count}} väljaannet on taastatud."
             },
@@ -924,7 +925,6 @@
             "preset": {
                 "apply": "Rakenda",
                 "applyDetails": "Kasuta oma eelistatud seadistust kogu väljaandes.",
-                "detail": "Salvesta, kasuta või lähtesta oma eelistatud seadistust.",
                 "reset": "Lähtesta",
                 "resetDetails": "Lähtesta sinu tehtud seadistused (vaikimisi seadistusteks).",
                 "save": "Salvesta",
@@ -1333,11 +1333,13 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "description_one": "",
                     "description_other": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "recoverableCount_one": "",
                 "recoverableCount_other": "",
                 "title": ""

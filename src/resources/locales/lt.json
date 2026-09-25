@@ -149,12 +149,15 @@
             "descAuthor": "'{{- author}}'",
             "descCreator": ", kurią(-ias) sukūrė",
             "descList_few": "{{- count}} pastabos{{- creator}}, bus susietos su {{- author}} leidiniu '{{- title}}'",
+            "descList_many": "",
             "descList_one": "{{- count}} pastaba{{- creator}}, bus susieta su {{- author}} leidiniu '{{- title}}'",
             "descList_other": "{{- count}} pastabų{{- creator}}, bus susietos su {{- author}} leidiniu '{{- title}}'",
             "descNewer_few": "Konfliktas(-ai): {{- count}} naujesnės pastabos",
+            "descNewer_many": "",
             "descNewer_one": "Konfliktas(-ai): {{- count}} naujesnė pastaba",
             "descNewer_other": "Konfliktas(-ai): {{- count}} naujesnių pastabų",
             "descOlder_few": "Konfliktas(-ai): {{- count}} senesnės pastabos",
+            "descOlder_many": "",
             "descOlder_one": "Konfliktas(-ai): {{- count}} senesnė pastaba",
             "descOlder_other": "Konfliktas(-ai): {{- count}} senesnių pastabų",
             "descTitle": "Pastabų pavadinimas: ",
@@ -174,10 +177,12 @@
         },
         "deleteAnnotations": "Šalinti pastabas?",
         "deleteAnnotationsText_few": "Ar tikrai norite pašalinti {{- count}} pastabas?",
+        "deleteAnnotationsText_many": "",
         "deleteAnnotationsText_one": "Ar tikrai norite pašalinti {{- count}} pastabą?",
         "deleteAnnotationsText_other": "Ar tikrai norite pašalinti {{- count}} pastabų?",
         "deleteBookmarks": "Šalinti skirtukus?",
         "deleteBookmarksText_few": "Ar tikrai norite pašalinti {{- count}} skirtukus?",
+        "deleteBookmarksText_many": "",
         "deleteBookmarksText_one": "Ar tikrai norite pašalinti {{- count}} skirtuką?",
         "deleteBookmarksText_other": "Ar tikrai norite pašalinti {{- count}} skirtukų?",
         "deleteFeed": "Pašalinti katalogą?",
@@ -276,7 +281,9 @@
         "storage": {
             "recovery": {
                 "failure": "Nepavyko atkurti leidinio.",
+                "success": "",
                 "success_few": "Atkurti {{- count}} leidiniai.",
+                "success_many": "",
                 "success_one": "Atkurtas {{- count}} leidinys.",
                 "success_other": "Atkurta {{- count}} leidinių."
             },
@@ -854,6 +861,7 @@
         "picker": {
             "search": {
                 "founds_few": "{{- count}} atitikmenys",
+                "founds_many": "",
                 "founds_one": "{{- count}} atitikmuo",
                 "founds_other": "{{- count}} atitikmenų",
                 "input": "ieškomas tekstas",
@@ -931,7 +939,6 @@
             "preset": {
                 "apply": "Taikyti",
                 "applyDetails": "Taikyti pageidautiną konfigūraciją dabartiniam leidiniui.",
-                "detail": "Išsaugoti / taikyti / nustatyti pageidautiną konfigūraciją iš naujo.",
                 "reset": "Nustatyti iš naujo",
                 "resetDetails": "Nustatyti pageidautiną konfigūraciją į numatytąsias reikšmes.",
                 "save": "Išsaugoti",
@@ -1340,13 +1347,17 @@
                 "description": "Patikrinkite leidinių saugyklą, kad rastumėte leidinius, kuriuos galima saugiai atkurti.",
                 "dialog": {
                     "confirm": "Atkurti",
+                    "description": "",
                     "description_few": "Thorium diske rado {{- count}} leidinius, kurių nėra duomenų bazėje. Ar norite juos vėl importuoti į Thorium?",
+                    "description_many": "",
                     "description_one": "Thorium diske rado {{- count}} leidinį, kurio nėra duomenų bazėje. Ar norite jį vėl importuoti į Thorium?",
                     "description_other": "Thorium diske rado {{- count}} leidinių, kurių nėra duomenų bazėje. Ar norite juos vėl importuoti į Thorium?",
                     "title": "Atkurti leidinius"
                 },
                 "none": "Nerasta atkurtinų leidinių.",
+                "recoverableCount": "",
                 "recoverableCount_few": "{{- count}} leidinius galima atkurti naudojant pradinį saugyklos identifikatorių.",
+                "recoverableCount_many": "",
                 "recoverableCount_one": "{{- count}} leidinį galima atkurti naudojant pradinį saugyklos identifikatorių.",
                 "recoverableCount_other": "{{- count}} leidinių galima atkurti naudojant pradinį saugyklos identifikatorių.",
                 "title": "Atkūrimas"

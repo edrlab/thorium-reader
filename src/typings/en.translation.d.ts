@@ -2003,7 +2003,6 @@ declare namespace typed_i18n {
     readonly "preset": {
       readonly "apply": string,
       readonly "applyDetails": string,
-      readonly "detail": string,
       readonly "reset": string,
       readonly "resetDetails": string,
       readonly "save": string,
@@ -2424,7 +2423,6 @@ declare namespace typed_i18n {
   readonly "preset": {
     readonly "apply": string,
     readonly "applyDetails": string,
-    readonly "detail": string,
     readonly "reset": string,
     readonly "resetDetails": string,
     readonly "save": string,
@@ -2522,7 +2520,6 @@ declare namespace typed_i18n {
   (_: "reader.settings.preset", __?: {}): {
   readonly "apply": string,
   readonly "applyDetails": string,
-  readonly "detail": string,
   readonly "reset": string,
   readonly "resetDetails": string,
   readonly "save": string,
@@ -2531,7 +2528,6 @@ declare namespace typed_i18n {
 };
   (_: "reader.settings.preset.apply", __?: {}): string;
   (_: "reader.settings.preset.applyDetails", __?: {}): string;
-  (_: "reader.settings.preset.detail", __?: {}): string;
   (_: "reader.settings.preset.reset", __?: {}): string;
   (_: "reader.settings.preset.resetDetails", __?: {}): string;
   (_: "reader.settings.preset.save", __?: {}): string;

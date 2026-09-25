@@ -281,6 +281,7 @@
         "storage": {
             "recovery": {
                 "failure": "",
+                "success": "",
                 "success_few": "",
                 "success_many": "",
                 "success_one": "",
@@ -938,7 +939,6 @@
             "preset": {
                 "apply": "Použít",
                 "applyDetails": "Použít preferovanou konfiguraci na aktuální publikaci.",
-                "detail": "Uložit / Použít / Obnovit preferovanou konfiguraci.",
                 "reset": "Obnovit",
                 "resetDetails": "Obnovit preferovanou konfiguraci (výchozí nastavení).",
                 "save": "Uložit",
@@ -1347,6 +1347,7 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "description_few": "",
                     "description_many": "",
                     "description_one": "",
@@ -1354,6 +1355,7 @@
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "recoverableCount_few": "",
                 "recoverableCount_many": "",
                 "recoverableCount_one": "",

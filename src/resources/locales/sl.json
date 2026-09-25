@@ -281,6 +281,7 @@
         "storage": {
             "recovery": {
                 "failure": "",
+                "success": "",
                 "success_few": "",
                 "success_one": "",
                 "success_other": "",
@@ -938,7 +939,6 @@
             "preset": {
                 "apply": "Uporabi",
                 "applyDetails": "Uporabi želeno konfiguracijo za trenutno publikacijo.",
-                "detail": "Shrani / Uporabi / Ponastavi želeno konfiguracijo.",
                 "reset": "Ponastavi",
                 "resetDetails": "Ponastavi želeno konfiguracijo (privzete nastavitve).",
                 "save": "Shrani",
@@ -1347,6 +1347,7 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "description_few": "",
                     "description_one": "",
                     "description_other": "",
@@ -1354,6 +1355,7 @@
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "recoverableCount_few": "",
                 "recoverableCount_one": "",
                 "recoverableCount_other": "",
