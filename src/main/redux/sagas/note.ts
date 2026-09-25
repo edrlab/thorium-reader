@@ -255,10 +255,8 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
             }
 
             const isResourceBookmark = incommingAnnotation.motivation === "bookmarking";
-
             if (!(cssSelector || textQuoteSelector || textPositionSelector || cfiFragmentSelector || cfiSelector || isResourceBookmark)) {
-                debug(`for ${uuid} no supported selector available`);
-                continue;
+                debug(`for ${uuid} no supported selector available; import the note and preserve its original target without a locator`);
             }
 
             const annotationParsed: INoteState = {

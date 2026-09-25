@@ -6,6 +6,7 @@ import {
     convertAnnotationStateToReadiumAnnotation,
 } from "readium-desktop/common/readium/annotation/converter";
 import type {
+    ISelector,
     ICssSelector,
     IEPUBCFISelector,
     IProgressionSelector,
@@ -139,6 +140,62 @@ test("Readium annotation export preserves EPUB CFI selector vocabulary", () => {
     );
 
     expect(annotation?.target.selector).toContainEqual(epubCfiSelector);
+});
+
+test("Readium annotation export preserves an imported unsupported selector when no generated selector is available", () => {
+    const unsupportedSelector = {
+        type: "VendorSelector",
+        value: "vendor-location",
+        vendorData: {
+            version: 1,
+        },
+        refinedBy: {
+            type: "VendorRefinement",
+            checksum: "abc123",
+        },
+    } as unknown as ISelector;
+    const importedTarget = {
+        source: "chapter.xhtml",
+        meta: {
+            page: "7",
+        },
+        selector: [unsupportedSelector],
+    };
+
+    const annotation = convertAnnotationStateToReadiumAnnotation(createNote({
+        locatorExtended: undefined,
+        readiumAnnotation: {
+            import: {
+                target: importedTarget,
+            },
+        },
+    }));
+
+    expect(annotation?.target).toEqual(importedTarget);
+});
+
+test("Readium annotation export prefers generated selectors over imported selectors", () => {
+    const unsupportedSelector = {
+        type: "VendorSelector",
+        value: "vendor-location",
+    } as unknown as ISelector;
+
+    const annotation = convertAnnotationStateToReadiumAnnotation(createNote({
+        readiumAnnotation: {
+            export: {
+                selector: [epubCfiSelector],
+            },
+            import: {
+                target: {
+                    source: "legacy-chapter.xhtml",
+                    selector: [unsupportedSelector],
+                },
+            },
+        },
+    }));
+
+    expect(annotation?.target.source).toBe("chapter.xhtml");
+    expect(annotation?.target.selector).toEqual([epubCfiSelector]);
 });
 
 test("Readium bookmark import accepts a progression-only target at zero", async () => {
