@@ -29,13 +29,11 @@ import { EpubCfiResolver } from "@r2-navigator-js/electron/common/colibrio-cfi/r
 // Logger
 const debug = debug_("readium-desktop:common:readium:annotation:converter");
 
-export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnnotation["target"], debugRangeInfo: IRangeInfo | undefined, isABookmark: boolean, xmlDom: Document, href: string): Promise<MiniLocatorExtended | undefined> {
+export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnnotation["target"], debugRangeInfo: IRangeInfo | undefined, isABookmark: boolean, xmlDom: Document | undefined, href: string): Promise<MiniLocatorExtended | undefined> {
 
-    if (!target || !target.source || !xmlDom || !href) {
+    if (!target || !target.source || !href) {
         return undefined;
     }
-
-    const root = xmlDom.body;
 
     const cfiSelector = target.selector.find(isEPUBCFISelector) || target.selector.find(isLegacyCfiSelector);
     const cfiFragmentSelector = target.selector.find(isCFIFragmentSelector);
@@ -43,7 +41,51 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
     const textPositionSelector = target.selector.find(isTextPositionSelector);
     const cssSelector = target.selector.find(isCssSelector);
     const progressionSelector = target.selector.find(isProgressionSelector);
-    const progressionValue = progressionSelector?.value || undefined;
+    const progressionValue = progressionSelector?.value ?? undefined;
+
+    const createBookmarkLocatorExtended = (elementCssSelector = cssSelector?.value): MiniLocatorExtended | undefined => {
+        if (!isABookmark) {
+            return undefined;
+        }
+
+        return {
+            locator: {
+                href,
+                locations: {
+                    cssSelector: elementCssSelector || (xmlDom?.body ? "body" : undefined),
+                    progression: progressionValue,
+                },
+            },
+            selectionInfo: undefined,
+            audioPlaybackInfo: undefined,
+            paginationInfo: undefined,
+            selectionIsNew: undefined,
+            docInfo: undefined,
+            epubPage: undefined,
+            epubPageID: undefined,
+            headings: undefined,
+            secondWebViewHref: undefined,
+        };
+    };
+
+    // Resource-, progression-, and element-level targets are sufficient for a
+    // bookmark. They intentionally do not create a text selection / caret.
+    const hasRangeSelector = !!(
+        textQuoteSelector ||
+        textPositionSelector ||
+        cfiSelector ||
+        cfiFragmentSelector ||
+        cssSelector?.refinedBy
+    );
+    if (isABookmark && !hasRangeSelector) {
+        return createBookmarkLocatorExtended();
+    }
+
+    if (!xmlDom) {
+        return createBookmarkLocatorExtended();
+    }
+
+    const root = xmlDom.body;
 
     //makeRefinable
     const createMatcher = makeRefinable<ITextPositionSelector | ITextQuoteSelector | ICssSelector<any>, Node | Range, Range | Element>((selector) => {
@@ -125,7 +167,7 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
     }
     if (!ranges.length) {
         debug("No selector found !!", JSON.stringify(target.selector, null, 4));
-        return undefined;
+        return createBookmarkLocatorExtended();
     }
     debug(`${ranges.length} range(s) found !!!`);
 
@@ -146,7 +188,7 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
     }
     if (!convertedRangeArray.length) {
         debug(`No selector found but ${ranges.length} found !!`, JSON.stringify(target.selector, null, 4));
-        return undefined;
+        return createBookmarkLocatorExtended();
     }
     debug(`${convertedRangeArray.length} range(s) converted found !!!`);
     debug("dump convertedRange : ", JSON.stringify(convertedRangeArray, null, 4));
@@ -195,7 +237,7 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
     }
     if (!rangeInfo || !textInfo) {
         debug("No range found !!");
-        return undefined;
+        return createBookmarkLocatorExtended();
     }
 
     // How to define if it is a bookmark rangeInfo !?
@@ -284,6 +326,13 @@ export function convertAnnotationStateToReadiumAnnotation(note: INoteState): IRe
         debug("Convert A Note without any locator !!!", note.uuid);
     }
 
+    const importedTarget = readiumAnnotation?.import?.target;
+    const generatedSelectors = readiumAnnotation?.export?.selector;
+    const generatedMeta = (locatorExtended?.headings || locatorExtended?.epubPage) ? {
+        headings: locatorExtended?.headings ? locatorExtended.headings.map(({ txt, level }) => ({ txt, level })) : undefined,
+        page: locatorExtended?.epubPage || undefined,
+    } : undefined;
+
     return {
         "@context": "http://www.w3.org/ns/anno.jsonld",
         id: uuid ? "urn:uuid:" + uuid : "",
@@ -306,12 +355,10 @@ export function convertAnnotationStateToReadiumAnnotation(note: INoteState): IRe
             type: creator.type,
         } : undefined,
         target: {
-            source: locatorExtended?.locator.href || "",
-            meta: (locatorExtended?.headings || locatorExtended?.epubPage) ? {
-                headings: locatorExtended?.headings ? locatorExtended.headings.map(({ txt, level }) => ({ txt, level })) : undefined,
-                page: locatorExtended?.epubPage || undefined,
-            } : undefined,
-            selector: readiumAnnotation?.export?.selector || [],
+            ...importedTarget,
+            source: locatorExtended?.locator.href || importedTarget?.source || "",
+            meta: generatedMeta || importedTarget?.meta,
+            selector: generatedSelectors?.length ? generatedSelectors : importedTarget?.selector || [],
         },
         motivation: isABookmark ? "bookmarking" : "highlighting", // isABookmark = drawType === EDrawType.bookmark
     };
