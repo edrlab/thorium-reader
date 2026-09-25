@@ -78,6 +78,7 @@
         "deleteBook": "წაშლა",
         "deleteTag": "იარლიყის წაშლა",
         "description": "აღწერა",
+        "downloaded": "",
         "emptyTagList": "არ გაქვს არცერთი იარლიყიანი ელ-წიგნი.",
         "entry": {
             "continueReading": "კითხვის გაგრძელება",
@@ -269,7 +270,6 @@
         "storage": {
             "recovery": {
                 "failure": "",
-                "success": "",
                 "success_one": "",
                 "success_other": ""
             },
@@ -923,7 +923,6 @@
             "preset": {
                 "apply": "",
                 "applyDetails": "",
-                "detail": "",
                 "reset": "",
                 "resetDetails": "",
                 "save": "",
@@ -1332,13 +1331,11 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
-                    "description": "",
                     "description_one": "",
                     "description_other": "",
                     "title": ""
                 },
                 "none": "",
-                "recoverableCount": "",
                 "recoverableCount_one": "",
                 "recoverableCount_other": "",
                 "title": ""

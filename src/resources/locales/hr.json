@@ -78,6 +78,7 @@
         "deleteBook": "Izbriši",
         "deleteTag": "Izbriši oznaku",
         "description": "Opis",
+        "downloaded": "",
         "emptyTagList": "Nemate označenu e-knjigu.",
         "entry": {
             "continueReading": "Nastavi čitati",
@@ -274,7 +275,6 @@
         "storage": {
             "recovery": {
                 "failure": "",
-                "success": "",
                 "success_few": "",
                 "success_one": "",
                 "success_other": ""
@@ -930,7 +930,6 @@
             "preset": {
                 "apply": "",
                 "applyDetails": "",
-                "detail": "",
                 "reset": "",
                 "resetDetails": "",
                 "save": "",
@@ -1339,14 +1338,12 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
-                    "description": "",
                     "description_few": "",
                     "description_one": "",
                     "description_other": "",
                     "title": ""
                 },
                 "none": "",
-                "recoverableCount": "",
                 "recoverableCount_few": "",
                 "recoverableCount_one": "",
                 "recoverableCount_other": "",

@@ -2,9 +2,9 @@
     "accessibility": {
         "bookMenu": "Menu",
         "closeDialog": "Sluit",
-        "leftSlideButton": "Vorige",
+        "leftSlideButton": "Schuif naar links",
         "mainContent": "hoofdinhoud",
-        "rightSlideButton": "Volgende",
+        "rightSlideButton": "Schuif naar rechts",
         "skipLink": "Ga naar inhoud",
         "toolbar": "werkbalk"
     },
@@ -56,7 +56,7 @@
         "about": {
             "title": "Over {{- appName}}"
         },
-        "addBookToLib": "Voeg toe",
+        "addBookToLib": "Importeer",
         "addTags": "Voeg een label toe",
         "addTagsButton": "Voeg toe",
         "allBooks": "Alle publicaties",
@@ -74,10 +74,11 @@
                 "title": "Profiel titel"
             }
         },
-        "delete": "Verwijder",
+        "delete": "Wis",
         "deleteBook": "Verwijder",
         "deleteTag": "Verwijder label",
         "description": "Beschrijving",
+        "downloaded": "",
         "emptyTagList": "Je hebt geen boeken met een label.",
         "entry": {
             "continueReading": "Ga verder met lezen",
@@ -268,10 +269,9 @@
         },
         "storage": {
             "recovery": {
-                "failure": "",
-                "success": "",
-                "success_one": "",
-                "success_other": ""
+                "failure": "Het herstel van de publicatie is mislukt.",
+                "success_one": "{{- count}} publicatie hersteld.",
+                "success_other": "{{- count}} publicaties recovered."
             },
             "removed": "Publicatiemap verwijderd.",
             "updateFailed": "Het bijwerken van de publicatiemap is mislukt: {{- message}}",
@@ -293,15 +293,15 @@
         "addMenu": "Voeg OPDS feed toe",
         "breadcrumbRoot": "Catalogi",
         "color": {
-            "blue": "",
-            "gray": "",
-            "green": "",
-            "orange": "",
-            "pink": "",
-            "purple": "",
-            "red": "",
-            "title": "",
-            "yellow": ""
+            "blue": "Blauw",
+            "gray": "Grijs",
+            "green": "Groen",
+            "orange": "Oranje",
+            "pink": "Roze",
+            "purple": "Paars",
+            "red": "Rood",
+            "title": "Cataloguskleur",
+            "yellow": "Geel"
         },
         "documentation": "Officiële website OPDS",
         "empty": "Geen publicatie gevonden",
@@ -890,7 +890,7 @@
             "disposition": {
                 "title": "Indeling"
             },
-            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicators": "Pagina-einden in de marge weergeven",
             "font": "Lettertype",
             "fontSize": "Lettergrootte",
             "increaseFontSize": "Lettergrootte vergroten",
@@ -923,7 +923,6 @@
             "preset": {
                 "apply": "Pas toe",
                 "applyDetails": "Pas uw voorkeursconfiguratie toe op de huidige publicatie.",
-                "detail": "Bewaar / Pas toe / Reset uw voorkeursconfiguratie.",
                 "reset": "Stel opnieuw in",
                 "resetDetails": "Reset uw voorkeursconfiguratie (standaardinstellingen).",
                 "save": "Bewaar",
@@ -1322,26 +1321,24 @@
             },
             "recovery": {
                 "actions": {
-                    "check": "",
-                    "checkAgain": "",
-                    "recover": "",
-                    "recovering": ""
+                    "check": "Controleren op herstelbare publicaties",
+                    "checkAgain": "Opnieuw controleren",
+                    "recover": "Herstel publicaties",
+                    "recovering": "Aan het herstellen..."
                 },
-                "available": "",
-                "checking": "",
-                "description": "",
+                "available": "Er zijn een of meer publicaties op de schijf gevonden die in de database ontbreken. Herstel is mogelijk.",
+                "checking": "Opslag voor publicaties controleren...",
+                "description": "Controleer de publicatieopslag om publicaties te vinden die veilig kunnen worden hersteld.",
                 "dialog": {
-                    "confirm": "",
-                    "description": "",
-                    "description_one": "",
-                    "description_other": "",
-                    "title": ""
+                    "confirm": "Herstel",
+                    "description_one": "Thorium heeft {{- count}} publicatie op schijf gevonden die in de database ontbreekt. Wilt u deze opnieuw in Thorium importeren?",
+                    "description_other": "Thorium heeft {{- count}} publicaties op schijf gevonden die in de database ontbreken. Wilt u ze opnieuw in Thorium importeren?",
+                    "title": "Herstel publicaties"
                 },
-                "none": "",
-                "recoverableCount": "",
-                "recoverableCount_one": "",
-                "recoverableCount_other": "",
-                "title": ""
+                "none": "Er zijn geen te herstellen publicaties gevonden.",
+                "recoverableCount_one": "{{- count}} publicatie kan worden hersteld met de oorspronkelijke opslag-id.",
+                "recoverableCount_other": "{{- count}} publicaties kunnen worden hersteld met de oorspronkelijke opslag-id.",
+                "title": "Herstel"
             }
         },
         "tabs": {
@@ -1352,9 +1349,9 @@
             "storage": "Opslag"
         },
         "telemetry": {
-            "disableTelemetryMeasurements": "",
-            "disableTelemetryMeasurementsDescription": "",
-            "title": ""
+            "disableTelemetryMeasurements": "Telemetriemetingen uitschakelen",
+            "disableTelemetryMeasurementsDescription": "Indien ingeschakeld verstuurt Thorium geen telemetriemetingen.",
+            "title": "Telemetrie"
         },
         "theme": {
             "auto": "Automatisch",

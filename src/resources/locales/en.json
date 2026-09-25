@@ -78,6 +78,7 @@
         "deleteBook": "Delete",
         "deleteTag": "Delete tag",
         "description": "Description",
+        "downloaded": "Downloaded",
         "emptyTagList": "No tagged publications.",
         "entry": {
             "continueReading": "Resume reading",
@@ -269,7 +270,6 @@
         "storage": {
             "recovery": {
                 "failure": "Publication recovery failed.",
-                "success": "",
                 "success_one": "{{- count}} publication recovered.",
                 "success_other": "{{- count}} publications recovered."
             },
@@ -923,7 +923,6 @@
             "preset": {
                 "apply": "Apply",
                 "applyDetails": "Apply your preferred configuration to the current publication.",
-                "detail": "Save / Apply / Reset your preferred configuration.",
                 "reset": "Reset",
                 "resetDetails": "Reset your preferred configuration (default settings).",
                 "save": "Save",
@@ -1332,13 +1331,11 @@
                 "description": "Check publication storage to find publications that can be safely recovered.",
                 "dialog": {
                     "confirm": "Recover",
-                    "description": "",
                     "description_one": "Thorium found {{- count}} publication on disk that is missing from the database. Do you want to import it back into Thorium?",
                     "description_other": "Thorium found {{- count}} publications on disk that are missing from the database. Do you want to import them back into Thorium?",
                     "title": "Recover publications"
                 },
                 "none": "No recoverable publications were found.",
-                "recoverableCount": "",
                 "recoverableCount_one": "{{- count}} publication can be recovered with the original storage identifier.",
                 "recoverableCount_other": "{{- count}} publications can be recovered with the original storage identifier.",
                 "title": "Recovery"

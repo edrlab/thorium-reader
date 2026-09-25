@@ -19,7 +19,7 @@
             "copy": "Kopiatu",
             "cut": "Moztu",
             "paste": "Itsatsi",
-            "print": "",
+            "print": "Imprimatu",
             "redo": "Berregin",
             "selectAll": "Hautatu dena",
             "title": "Editatu",
@@ -34,7 +34,7 @@
                         "no": "Ez",
                         "yes": "Bai"
                     },
-                    "help": "",
+                    "help": "Aktibatu hau, aplikazioa ixtean irekita dauden irakurgailu-leihoak nahi badituzu, hurrengoan automatikoki irekitzeko.",
                     "message": "Saioa gorde nahi duzu?",
                     "title": "Gorde saioa"
                 }
@@ -43,7 +43,7 @@
         "update": {
             "message": "Bertsio berria eskuragarri, klik egin gehiago jakiteko.",
             "title": "{{- appName}} software-eguneratzea.",
-            "whatsnew": ""
+            "whatsnew": "Bertsio berri bat instalatu da, klik egin gehiago ikasteko"
         },
         "window": {
             "showLibrary": "Erakutsi liburutegia",
@@ -78,6 +78,7 @@
         "deleteBook": "Ezabatu",
         "deleteTag": "Ezabatu etiketa",
         "description": "Deskribapena",
+        "downloaded": "",
         "emptyTagList": "Ez duzu libururik etiketatuta.",
         "entry": {
             "continueReading": "Berrabiarazi irakurketa",
@@ -269,7 +270,6 @@
         "storage": {
             "recovery": {
                 "failure": "",
-                "success": "",
                 "success_one": "",
                 "success_other": ""
             },
@@ -923,7 +923,6 @@
             "preset": {
                 "apply": "",
                 "applyDetails": "",
-                "detail": "",
                 "reset": "",
                 "resetDetails": "",
                 "save": "",
@@ -1332,13 +1331,11 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
-                    "description": "",
                     "description_one": "",
                     "description_other": "",
                     "title": ""
                 },
                 "none": "",
-                "recoverableCount": "",
                 "recoverableCount_one": "",
                 "recoverableCount_other": "",
                 "title": ""

@@ -78,6 +78,7 @@
         "deleteBook": "도서 삭제",
         "deleteTag": "태그 삭제",
         "description": "설명",
+        "downloaded": "",
         "emptyTagList": "태그를 지정한 전자책이 없습니다.",
         "entry": {
             "continueReading": "이어서 읽기",
@@ -258,8 +259,7 @@
         },
         "storage": {
             "recovery": {
-                "failure": "",
-                "success": ""
+                "failure": ""
             },
             "removed": "",
             "updateFailed": "",
@@ -910,7 +910,6 @@
             "preset": {
                 "apply": "",
                 "applyDetails": "",
-                "detail": "",
                 "reset": "",
                 "resetDetails": "",
                 "save": "",
@@ -1319,11 +1318,9 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
-                    "description": "",
                     "title": ""
                 },
                 "none": "",
-                "recoverableCount": "",
                 "title": ""
             }
         },

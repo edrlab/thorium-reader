@@ -78,6 +78,7 @@
         "deleteBook": "Remover",
         "deleteTag": "Apagar a tag",
         "description": "Descrição",
+        "downloaded": "",
         "emptyTagList": "Você não tem livro marcado.",
         "entry": {
             "continueReading": "Retomar a leitura",
@@ -147,13 +148,10 @@
         "annotations": {
             "descAuthor": "por '{{- author}} '",
             "descCreator": "criado por",
-            "descList_many": "{{- count}} A(s) nota(s) de {{- creator}} será(ão) importada(s) em '{{- title}}' {{- author}}",
             "descList_one": "{{- count}} A nota de {{- creator}} será importada em '{{- title}}' {{- author}}",
             "descList_other": "{{- count}} A(s) nota(s) de {{- creator}} será(ão) importada(s) em '{{- title}}' {{- author}}",
-            "descNewer_many": "Conflito(s): {{- count}} nota(s) mais recente(s)",
             "descNewer_one": "Conflito: {{- count}} nota mais recente",
             "descNewer_other": "Conflito(s): {{- count}} nota(s) mais recente(s)",
-            "descOlder_many": "Conflito(s): {{- count}} nota(s) mais antiga(s)",
             "descOlder_one": "Conflito: {{- count}} nota mais antiga",
             "descOlder_other": "Conflito(s): {{- count}} nota(s) mais antiga(s)",
             "descTitle": "Título de anotações: ",
@@ -172,11 +170,9 @@
             }
         },
         "deleteAnnotations": "Excluir anotações?",
-        "deleteAnnotationsText_many": "Tem certeza de que deseja excluir {{- count}} notas(s)?",
         "deleteAnnotationsText_one": "Tem certeza de que deseja excluir {{- count}} notas?",
         "deleteAnnotationsText_other": "Tem certeza de que deseja excluir {{- count}} notas(s)?",
         "deleteBookmarks": "Excluir marcadores?",
-        "deleteBookmarksText_many": "Tem certeza de que deseja excluir {{- count}} marcadores?",
         "deleteBookmarksText_one": "Tem certeza de que deseja excluir {{- count}} marcadore?",
         "deleteBookmarksText_other": "Tem certeza de que deseja excluir {{- count}} marcadores?",
         "deleteFeed": "Deseja excluir este catálogo?",
@@ -274,8 +270,6 @@
         "storage": {
             "recovery": {
                 "failure": "",
-                "success": "",
-                "success_many": "",
                 "success_one": "",
                 "success_other": ""
             },
@@ -852,7 +846,6 @@
         },
         "picker": {
             "search": {
-                "founds_many": "{{- count}} correspondência(s)",
                 "founds_one": "{{- count}} correspondência",
                 "founds_other": "{{- count}} correspondência(s)",
                 "input": "texto para correspondência",
@@ -930,7 +923,6 @@
             "preset": {
                 "apply": "Aplicar",
                 "applyDetails": "Aplicar sua configuração preferida à publicação atual.",
-                "detail": "Salvar / Aplicar / Redefinir sua configuração preferida.",
                 "reset": "Redefinir",
                 "resetDetails": "Redefinir a configuração preferida (configurações padrão).",
                 "save": "Salvar",
@@ -1339,15 +1331,11 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
-                    "description": "",
-                    "description_many": "",
                     "description_one": "",
                     "description_other": "",
                     "title": ""
                 },
                 "none": "",
-                "recoverableCount": "",
-                "recoverableCount_many": "",
                 "recoverableCount_one": "",
                 "recoverableCount_other": "",
                 "title": ""

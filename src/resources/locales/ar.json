@@ -78,6 +78,7 @@
         "deleteBook": "حذف",
         "deleteTag": "حذف الوسم",
         "description": "الوصف",
+        "downloaded": "",
         "emptyTagList": "لا توجد منشورات موسومة.",
         "entry": {
             "continueReading": "استئناف القراءة",
@@ -289,7 +290,6 @@
         "storage": {
             "recovery": {
                 "failure": "",
-                "success": "",
                 "success_few": "",
                 "success_many": "",
                 "success_one": "",
@@ -951,7 +951,6 @@
             "preset": {
                 "apply": "تطبيق",
                 "applyDetails": "تطبيق إعداداتك المفضّلة على المنشور الحالي.",
-                "detail": "حفظ / تطبيق / إعادة ضبط إعداداتك المفضّلة.",
                 "reset": "إعادة ضبط",
                 "resetDetails": "إعادة ضبط إعداداتك المفضّلة (الإعدادات الافتراضية).",
                 "save": "حفظ",
@@ -1360,7 +1359,6 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
-                    "description": "",
                     "description_few": "",
                     "description_many": "",
                     "description_one": "",
@@ -1370,7 +1368,6 @@
                     "title": ""
                 },
                 "none": "",
-                "recoverableCount": "",
                 "recoverableCount_few": "",
                 "recoverableCount_many": "",
                 "recoverableCount_one": "",

@@ -78,6 +78,7 @@
         "deleteBook": "Supprimer",
         "deleteTag": "Supprimer le mot-clé",
         "description": "Description",
+        "downloaded": "Téléchargé",
         "emptyTagList": "Aucune publication dotée de mots-clés.",
         "entry": {
             "continueReading": "Reprendre la lecture",
@@ -147,13 +148,10 @@
         "annotations": {
             "descAuthor": "par {{- author}}",
             "descCreator": "créées par",
-            "descList_many": "{{- count}} note(s) {{- creator}} seront importées vers {{- title}} {{- author}}",
             "descList_one": "{{- count}} note {{- creator}} sera importée vers {{- title}} {{- author}}",
             "descList_other": "{{- count}} notes {{- creator}} seront importées vers {{- title}} {{- author}}",
-            "descNewer_many": "{{- count}} conflits : certaines notes associées à la publication sont plus récentes",
             "descNewer_one": "{{- count}} conflit : une note associée à la publication est plus récente",
             "descNewer_other": "{{- count}} conflits : certaines notes associées à la publication sont plus récentes",
-            "descOlder_many": "{{- count}} conflits : certaines notes associées à la publication sont plus anciennes",
             "descOlder_one": "{{- count}} conflit : une note associée à la publication est plus ancienne",
             "descOlder_other": "{{- count}} conflits : certaines notes associées à la publication sont plus anciennes",
             "descTitle": "Titre de la liste de notes : ",
@@ -172,11 +170,9 @@
             }
         },
         "deleteAnnotations": "Supprimer les notes ?",
-        "deleteAnnotationsText_many": "Voulez-vous supprimer {{- count}} notes ?",
         "deleteAnnotationsText_one": "Voulez-vous supprimer {{- count}} note ?",
         "deleteAnnotationsText_other": "Voulez-vous supprimer {{- count}} notes ?",
         "deleteBookmarks": "Supprimer les marque-pages ?",
-        "deleteBookmarksText_many": "Êtes-vous certain de vouloir supprimer {{- count}} marque-pages ?",
         "deleteBookmarksText_one": "Êtes-vous certain de vouloir supprimer {{- count}} marque-page ?",
         "deleteBookmarksText_other": "Êtes-vous certain de vouloir supprimer {{- count}} marque-pages ?",
         "deleteFeed": "Supprimer ce catalogue ?",
@@ -274,8 +270,6 @@
         "storage": {
             "recovery": {
                 "failure": "La récupération des publications a échoué.",
-                "success": "",
-                "success_many": "{{- count}} publications récupérées.",
                 "success_one": "{{- count}} publication récupérée.",
                 "success_other": "{{- count}} publications récupérées."
             },
@@ -852,7 +846,6 @@
         },
         "picker": {
             "search": {
-                "founds_many": "{{- count}} correspondance(s)",
                 "founds_one": "{{- count}} correspondance",
                 "founds_other": "{{- count}} correspondances",
                 "input": "Texte à trouver",
@@ -930,7 +923,6 @@
             "preset": {
                 "apply": "Appliquer les paramètres de lecture préférés",
                 "applyDetails": "Appliquer au livre courant les paramètres de lecture précédemment enregistrés.",
-                "detail": "Sauvegarder/Appliquer vos paramètres de lecture favoris.",
                 "reset": "Réinitialiser les paramètres de lecture préférés",
                 "resetDetails": "Effacer les paramètres de lecture précédemment appliqués, et revenir à la mise en forme et aux choix d'affichage par défaut.",
                 "save": "Enregistrer les paramètres de lecture préférés.",
@@ -1339,15 +1331,11 @@
                 "description": "Vérifiez le stockage des publications pour trouver celles qui peuvent être récupérées en toute sécurité.",
                 "dialog": {
                     "confirm": "Récupérer",
-                    "description": "",
-                    "description_many": "Thorium a trouvé {{- count}} publications sur le disque, absentes de la base de données. Voulez-vous les réimporter dans Thorium ?",
                     "description_one": "Thorium a trouvé {{- count}} publication sur le disque, absente de la base de données. Voulez-vous la réimporter dans Thorium ?",
                     "description_other": "Thorium a trouvé {{- count}} publications sur le disque, absentes de la base de données. Voulez-vous les réimporter dans Thorium ?",
                     "title": "Récupérer les publications"
                 },
                 "none": "Aucune publication récupérable n'a été trouvée.",
-                "recoverableCount": "",
-                "recoverableCount_many": "{{- count}} publications peuvent être récupérées avec leur identifiant de stockage d'origine.",
                 "recoverableCount_one": "{{- count}} publication peut être récupérée avec son identifiant de stockage d'origine.",
                 "recoverableCount_other": "{{- count}} publications peuvent être récupérées avec leur identifiant de stockage d'origine.",
                 "title": "Récupération"

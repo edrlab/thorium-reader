@@ -12,6 +12,7 @@ import { tryCatch } from "readium-desktop/utils/tryCatch";
 
 import { Metadata as R2Metadata } from "@r2-shared-js/models/metadata";
 import { Contributor } from "@r2-shared-js/models/metadata-contributor";
+import type { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
 
@@ -20,6 +21,11 @@ import { IInfo } from "./extract.type";
 // Logger
 const _filename = "readium-desktop:main/pdf/manifest";
 const debug = debug_(_filename);
+
+export interface IPdfMetadataFallback {
+    title?: string | IStringMap;
+    authors?: (string | IStringMap)[];
+}
 
 function pdfDateConverter(dateString: string): Date | undefined {
 
@@ -127,14 +133,27 @@ function pdfDateConverter(dateString: string): Date | undefined {
     return undefined;
 }
 
-export async function pdfManifest(pdfPath: string, info: IInfo): Promise<R2Publication> {
+export async function pdfManifest(
+    pdfPath: string,
+    info: IInfo | undefined,
+    metadataFallback?: IPdfMetadataFallback,
+): Promise<R2Publication> {
 
     const r2Publication = new R2Publication();
     const { name } = path.parse(pdfPath);
 
     r2Publication.Context = ["https://readium.org/webpub-manifest/context.jsonld"];
     r2Publication.Metadata = new R2Metadata();
-    r2Publication.Metadata.Title = name || ""; // required
+    r2Publication.Metadata.Title = info?.Title || metadataFallback?.title || name || ""; // required
+
+    const authorNames = info?.Author ? [info.Author] : metadataFallback?.authors;
+    if (authorNames?.length) {
+        r2Publication.Metadata.Author = authorNames.map((authorName) => {
+            const contributor = new Contributor();
+            contributor.Name = authorName;
+            return contributor;
+        });
+    }
 
     r2Publication.Metadata.RDFType = "http://schema.org/Book";
     r2Publication.Metadata.ConformsTo = [ "https://readium.org/webpub-manifest/profiles/pdf" ];
@@ -142,12 +161,7 @@ export async function pdfManifest(pdfPath: string, info: IInfo): Promise<R2Publi
     if (info) {
         debug(info);
 
-        {
-            const title = info.Title;
-            debug("title", title);
-
-            r2Publication.Metadata.Title = title || name || "";
-        }
+        debug("title", info.Title);
 
         {
             const subject = info.Subject;
@@ -158,17 +172,7 @@ export async function pdfManifest(pdfPath: string, info: IInfo): Promise<R2Publi
             }
         }
 
-        {
-            const author = info.Author;
-            debug("author", author);
-
-            if (author) {
-
-                const contributor = new Contributor();
-                contributor.Name = author;
-                r2Publication.Metadata.Author = [contributor];
-            }
-        }
+        debug("author", info.Author);
 
         // {
         //     const producer = info.Producer;

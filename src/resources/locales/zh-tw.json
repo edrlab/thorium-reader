@@ -78,6 +78,7 @@
         "deleteBook": "刪除書籍",
         "deleteTag": "刪除標籤",
         "description": "概要",
+        "downloaded": "",
         "emptyTagList": "沒有標記的出版物。",
         "entry": {
             "continueReading": "繼續閱讀",
@@ -263,8 +264,7 @@
         },
         "storage": {
             "recovery": {
-                "failure": "",
-                "success": ""
+                "failure": ""
             },
             "removed": "",
             "updateFailed": "",
@@ -915,7 +915,6 @@
             "preset": {
                 "apply": "套用",
                 "applyDetails": "將您喜歡的設定套用到目前出版品。",
-                "detail": "儲存/套用/重設您的首選配置。",
                 "reset": "重置",
                 "resetDetails": "重設您的首選配置（預設）。",
                 "save": "保存",
@@ -1324,11 +1323,9 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
-                    "description": "",
                     "title": ""
                 },
                 "none": "",
-                "recoverableCount": "",
                 "title": ""
             }
         },

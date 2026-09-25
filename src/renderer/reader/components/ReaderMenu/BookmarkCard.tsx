@@ -92,6 +92,7 @@ export const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, t
                 created: bookmark.created,
                 index: bookmark.index,
                 creator: clone(bookmark.creator),
+                readiumAnnotation: clone(bookmark.readiumAnnotation),
             },
             bookmark,
         ));

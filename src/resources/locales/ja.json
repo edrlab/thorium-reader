@@ -26,7 +26,7 @@
             "undo": "元に戻す"
         },
         "hide": "隠す {{- appName}}",
-        "quit": "終了 {{- appName}}",
+        "quit": "{{- appName}} を終了",
         "session": {
             "exit": {
                 "askBox": {
@@ -43,7 +43,7 @@
         "update": {
             "message": "新しいバージョンが利用できます。詳細はクリックしてください。",
             "title": "{{- appName}} ソフトウェアの更新。",
-            "whatsnew": ""
+            "whatsnew": "新しいバージョンがインストールされました。詳細はこちらをクリックしてください"
         },
         "window": {
             "showLibrary": "蔵書/本棚を表示",
@@ -68,16 +68,17 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
+                "description": "プロファイルの説明がありません",
                 "publications": "",
-                "screen": "",
-                "title": ""
+                "screen": "タイトルがありません",
+                "title": "プロファイルのタイトル"
             }
         },
         "delete": "削除",
         "deleteBook": "削除",
         "deleteTag": "タグを削除",
         "description": "概要",
+        "downloaded": "",
         "emptyTagList": "タグがついた本はありません。",
         "entry": {
             "continueReading": "読書にもどる",
@@ -89,27 +90,27 @@
         "importAnnotation": "メモを取りこむ",
         "lang": "言語",
         "lastRead": "最終閲覧",
-        "login": "",
-        "logout": "",
+        "login": "ログイン",
+        "logout": "ログアウト",
         "missing": "",
         "missingUnavailableDescription": "この出版物は、保存先のファイルがすでにないため開くことができません。再登録するか、設定の「保存先」から新しい保存先を加えるか、変更してください。",
         "moreInfo": "詳細情報",
         "myBooks": "わたしの本",
-        "noPublicationHelpL1": "ファイルをここにおいてください",
+        "noPublicationHelpL1": "ファイルをここにドロップしてください",
         "noPublicationHelpL2": "または、画面上部にある［{{- importTitle }}］ボタンを押してください。",
-        "noPublicationHelpL3": "LCPで保護されたファイルにも対応しています。",
+        "noPublicationHelpL3": "LCP で保護されたファイルにも対応しています。",
         "noPublicationHelpL4": "対応している拡張子：",
         "numberOfPages": "ページ数",
         "opds": {
             "auth": {
                 "cancel": "キャンセル",
-                "external": "",
-                "fallback": "",
+                "external": "ウェブ ブラウザーでログインページが開かれたら、表示される指示に従ってください。ログインが完了すると、ウェブ ブラウザーはこのアプリに戻ります。",
+                "fallback": "注：デフォルトのウェブ ブラウザーによるログインで問題が発生した場合は、アプリ内の代替方法を使用して再度お試しください。",
                 "login": "ログイン",
                 "password": "パスワード",
                 "register": "登録",
-                "retry": "",
-                "unauthorized": "",
+                "retry": "もう一度やり直してください",
+                "unauthorized": "許可されていません",
                 "unauthorizedUnsupportedType": "",
                 "username": "ユーザー名 / メールアドレス"
             },
@@ -132,7 +133,7 @@
                 "state": "状態"
             }
         },
-        "openFolder": "",
+        "openFolder": "ディレクトリを開く",
         "publisher": "出版社",
         "readBook": "本を読む",
         "released": "出版日",
@@ -161,14 +162,13 @@
             "splashscreen": {
                 "dontShow": "次回以降は表示しない",
                 "fallbackWelcomeScreen": "",
-                "state": "",
+                "state": "ステータス：{{- state}}",
                 "title": ""
             }
         },
         "deleteAnnotations": "メモを削除しますか？",
         "deleteAnnotationsText": "{{-count}} 件のメモを削除しますか？",
         "deleteBookmarks": "しおりを削除しますか？",
-        "deleteBookmarksText": "しおり、 {{- count}} つを削除しますか？",
         "deleteFeed": "この図書目録を削除しますか？",
         "deletePublication": "この本を削除しますか？",
         "deletePublicationWithNotes": "",
@@ -214,18 +214,18 @@
             "hint": "ヒント：",
             "open": "開く",
             "password": "パスワード",
-            "sentence": "この本を開くためにはLCPパスワードが必要です",
+            "sentence": "この本を開くためには LCP パスワードが必要です",
             "showPassphrase": "",
             "urlHint": "パスワードを忘れましたか？ サポートに確認してください。",
-            "whatIsLcp?": "LCPとはなんですか？",
-            "whatIsLcpInfoDetails": "LCPはLicensed Content Protectionの略です。",
-            "whatIsLcpInfoDetailsLink": "詳しくは、EDRLabのWebサイトを参照してください。"
+            "whatIsLcp?": "LCP とは何ですか？",
+            "whatIsLcpInfoDetails": "LCP は「Licensed Content Protection」の略です。",
+            "whatIsLcpInfoDetailsLink": "詳細については、こちらのリンクをクリックして EDRLab のウェブサイトをご覧ください。"
         },
         "sorting": {
-            "addSorting": "",
-            "author": "",
-            "language": "",
-            "readingState": "",
+            "addSorting": "並べ替えを追加",
+            "author": "著者",
+            "language": "言語",
+            "readingState": "読書状況",
             "sortBy": "",
             "title": ""
         }
@@ -254,7 +254,7 @@
         },
         "import": {
             "alreadyImport": "『{{- title}}』はすでに追加されています。",
-            "fail": "[{{- path}}]の追加に失敗しました：[{{- err}}]",
+            "fail": "『{{- path}}』の追加に失敗しました：{{- err}}",
             "success": "『{{- title}}』の追加が完了しました。"
         },
         "open": {
@@ -263,8 +263,7 @@
         },
         "storage": {
             "recovery": {
-                "failure": "",
-                "success": ""
+                "failure": ""
             },
             "removed": "",
             "updateFailed": "",
@@ -283,7 +282,7 @@
         "addFormApiapp": {
             "title": "図書館アカウントを追加"
         },
-        "addMenu": "OPDSフィードを追加",
+        "addMenu": "OPDS フィードを追加",
         "breadcrumbRoot": "図書目録",
         "color": {
             "blue": "",
@@ -296,7 +295,7 @@
             "title": "",
             "yellow": ""
         },
-        "documentation": "OPDSの公式Webサイト",
+        "documentation": "OPDS 公式ウェブサイト",
         "empty": "本が見つかりません",
         "firstPage": "最初",
         "informations": "数回クリックするだけで、公共の図書館や電子書店から電子出版物を検索してダウンロードできる世界を想像してみてください。それがまさにOpen Publication Distribution System（OPDS）形式の図書目録が提供するものです。OPDSを通して、いろいろな電子書籍提供元の図書目録を閲覧したり、サインアップしたり、借りたり、購入したり、自分の本棚にアクセスしたりできます。それによって電子書籍やオーディオブックをThorium Readerに直接ダウンロードでき、すぐに本を読めるようになります。\nそれでは、OPDS図書目録を見つけるにはどうすればよいでしょうか？ それは簡単です。その図書目録のアドレス（URL）を知るだけです。そして、そのアドレスを［URL］フィールドにコピーします。ひとつ注意したいこととして、随時更新されているOPDS図書目録すべてが、どこかでまとまって紹介されているわけではありません。お気に入りの図書館または書店に連絡して、OPDS図書目録のURLを尋ねる必要があります。どこから始めればよいかわからない場合は、Wikipediaにさまざまな言語のOPDS図書目録を収集しているページがいくつかあるので、役に立つかもしれません。\n［名前］フィールドは自由に使ってください。Thorium Readerでフィードを簡単に識別するためのものです。",
@@ -915,7 +914,6 @@
             "preset": {
                 "apply": "適用",
                 "applyDetails": "現在の本に、あなたの優先設定を適用します。",
-                "detail": "あなたの優先設定を保存／適用／リセットします。",
                 "reset": "リセット",
                 "resetDetails": "あなたの優先設定（標準設定）をリセットします。",
                 "save": "保存",
@@ -1324,11 +1322,9 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
-                    "description": "",
                     "title": ""
                 },
                 "none": "",
-                "recoverableCount": "",
                 "title": ""
             }
         },

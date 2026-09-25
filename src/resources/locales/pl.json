@@ -78,6 +78,7 @@
         "deleteBook": "Usuń",
         "deleteTag": "Usuń etykietę",
         "description": "Opis",
+        "downloaded": "",
         "emptyTagList": "Brak zaetykietowanych publikacji.",
         "entry": {
             "continueReading": "Wznów czytanie",
@@ -150,15 +151,12 @@
             "descList_few": "{{- count}} notatki {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
             "descList_many": "{{- count}} notatek {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
             "descList_one": "{{- count}} notatka {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
-            "descList_other": "",
             "descNewer_few": "Konflikt(y): {{- count}} nowsze notatki",
             "descNewer_many": "Konflikt(y): {{- count}} nowszych notatek",
             "descNewer_one": "Konflikt(y): {{- count}} nowsza notatka",
-            "descNewer_other": "",
             "descOlder_few": "Konflikt(y): {{- count}} starsze notatki",
             "descOlder_many": "Konflikt(y): {{- count}} starszych notatek",
             "descOlder_one": "Konflikt(y): {{- count}} starsza notatka",
-            "descOlder_other": "",
             "descTitle": "Tytuł adnotacji: ",
             "importAll": "Importuj wszystkie notatki",
             "importWithoutConflict": "Importuj notatki tylko wolne od konfliktów",
@@ -178,12 +176,10 @@
         "deleteAnnotationsText_few": "Czy na pewno chcesz usunąć {{- count}} notatki?",
         "deleteAnnotationsText_many": "Czy na pewno chcesz usunąć {{- count}} notatek?",
         "deleteAnnotationsText_one": "Czy na pewno chcesz usunąć {{- count}} notatkę?",
-        "deleteAnnotationsText_other": "",
         "deleteBookmarks": "Usunąć zakładki?",
         "deleteBookmarksText_few": "Czy na pewno chcesz usunąć {{- count}} zakładki?",
         "deleteBookmarksText_many": "Czy na pewno chcesz usunąć {{- count}} zakładek?",
         "deleteBookmarksText_one": "Czy na pewno chcesz usunąć {{- count}} zakładkę?",
-        "deleteBookmarksText_other": "",
         "deleteFeed": "Usunąć katalog?",
         "deletePublication": "Usunąć publikację?",
         "deletePublicationWithNotes": "Uwaga: ta publikacja zawiera adnotacje i/lub zakładki, one również zostaną usunięte! (jeśli chcesz je zachować, pamiętaj o wyeksportowaniu notatek przed usunięciem publikacji)",
@@ -279,11 +275,9 @@
         "storage": {
             "recovery": {
                 "failure": "",
-                "success": "",
                 "success_few": "",
                 "success_many": "",
-                "success_one": "",
-                "success_other": ""
+                "success_one": ""
             },
             "removed": "Katalog publikacji został usunięty.",
             "updateFailed": "Nie udało się zaktualizować katalogu publikacji: {{- message}}",
@@ -861,7 +855,6 @@
                 "founds_few": "{{- count}} dopasowania",
                 "founds_many": "{{- count}} dopasowań",
                 "founds_one": "{{- count}} dopasowanie",
-                "founds_other": "",
                 "input": "tekst do wyszukania",
                 "next": "Następny",
                 "notFound": "brak dopasowań",
@@ -937,7 +930,6 @@
             "preset": {
                 "apply": "Zastosuj",
                 "applyDetails": "Zastosuj preferowaną konfigurację do bieżącej publikacji.",
-                "detail": "Zapisz / Zastosuj / Resetuj preferowaną konfigurację.",
                 "reset": "Resetuj",
                 "resetDetails": "Resetuj preferowaną konfigurację (ustawienia domyślne).",
                 "save": "Zapisz",
@@ -1346,19 +1338,15 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
-                    "description": "",
                     "description_few": "",
                     "description_many": "",
                     "description_one": "",
-                    "description_other": "",
                     "title": ""
                 },
                 "none": "",
-                "recoverableCount": "",
                 "recoverableCount_few": "",
                 "recoverableCount_many": "",
                 "recoverableCount_one": "",
-                "recoverableCount_other": "",
                 "title": ""
             }
         },
