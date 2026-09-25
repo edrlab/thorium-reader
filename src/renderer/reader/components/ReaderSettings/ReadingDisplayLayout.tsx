@@ -27,7 +27,7 @@ export const ReadingDisplayLayout = ({ isFXL }: { isFXL: boolean }) => {
     return (
         <div className={stylesSettings.section}>
             <h3>{__("reader.settings.disposition.title")}</h3>
-            <div className={stylesSettings.display_options}>
+            <div className={stylesSettings.display_options} style={{marginBottom: "20px"}}>
                 <RadioGroup aria-label={__("reader.settings.disposition.title")} orientation="horizontal" style={{ display: "flex", gap: "10px" }} value={(layout || isFXL) ? "page_option" : "scroll_option"}
                     onValueChange={(v) => {
                         const layoutValue: TReaderPreferenceAnalyticsLayoutValue =

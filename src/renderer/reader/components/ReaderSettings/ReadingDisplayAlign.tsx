@@ -26,7 +26,7 @@ export const ReadingDisplayAlign = () => {
             <div>
                 <h3>{__("reader.settings.justification")}</h3>
             </div>
-            <div className={stylesSettings.display_options}>
+            <div className={stylesSettings.display_options} style={{marginBottom: "20px"}}>
                 <RadioGroup aria-label={__("reader.settings.justification")} orientation="horizontal" style={{ display: "flex", gap: "10px" }} value={align}
                     onValueChange={(v) => set({ align: v })}
                 >

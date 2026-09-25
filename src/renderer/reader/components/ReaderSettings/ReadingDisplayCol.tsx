@@ -62,7 +62,7 @@ export const ReadingDisplayCol = ({ isPdf, spreadModeEven, pdfCol }: Pick<IBaseP
             <div>
                 <h3>{__("reader.settings.column.title")}</h3>
             </div>
-            <div className={stylesSettings.display_options}>
+            <div className={stylesSettings.display_options} style={{marginBottom: "20px"}}>
                 <RadioGroup aria-label={__("reader.settings.column.title")} orientation="horizontal" style={{ display: "flex", gap: "10px" }} value={isPdf ? (pdfCol ? pdfCol : "1") : state}
                     onValueChange={(v) => {
                         if (isPdf) {
@@ -79,7 +79,7 @@ export const ReadingDisplayCol = ({ isPdf, spreadModeEven, pdfCol }: Pick<IBaseP
             </div>
             {!isPdf || pdfCol === "auto" || pdfCol === "1" /* disabled={pdfCol === "auto" || pdfCol === "1"} */
                 ? <></> :
-                <div className={stylesSettings.display_options}>
+                <div className={stylesSettings.display_options} style={{marginBottom: "20px"}}>
                     <input type="checkbox"
                         checked={!!spreadModeEven}
                         onChange={() => { createOrGetPdfEventBus().dispatch("spreadModeEven", !(!!spreadModeEven)); }}
