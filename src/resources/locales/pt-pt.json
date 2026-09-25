@@ -148,13 +148,10 @@
         "annotations": {
             "descAuthor": "por {{- author}}",
             "descCreator": "criado por",
-            "descList_many": "{{- count}} anotações de {{- creator}} serão associadas a {{- title}} {{- author}}",
             "descList_one": "{{- count}} anotação de {{- creator}} será associada a {{- title}} {{- author}}",
             "descList_other": "{{- count}} anotações de {{- creator}} serão associadas a {{- title}} {{- author}}",
-            "descNewer_many": "Conflitos: {{- count}} anotações mais recentes",
             "descNewer_one": "Conflito: {{- count}} anotação mais recente",
             "descNewer_other": "Conflitos: {{- count}} anotações mais recentes",
-            "descOlder_many": "Conflitos: {{- count}} anotações mais antigas",
             "descOlder_one": "Conflito: {{- count}} anotação mais antiga",
             "descOlder_other": "Conflitos: {{- count}} anotações mais antigas",
             "descTitle": "Título das anotações: ",
@@ -173,11 +170,9 @@
             }
         },
         "deleteAnnotations": "Eliminar anotações?",
-        "deleteAnnotationsText_many": "Quer mesmo eliminar {{- count}} anotações?",
         "deleteAnnotationsText_one": "Quer mesmo eliminar {{- count}} anotação?",
         "deleteAnnotationsText_other": "Quer mesmo eliminar {{- count}} anotações?",
         "deleteBookmarks": "Eliminar marcadores?",
-        "deleteBookmarksText_many": "Tem a certeza que quer eliminar {{- count}} marcadores?",
         "deleteBookmarksText_one": "Tem a certeza que quer eliminar {{- count}} marcador?",
         "deleteBookmarksText_other": "Tem a certeza que quer eliminar {{- count}} marcadores?",
         "deleteFeed": "Eliminar catálogo?",
@@ -276,7 +271,6 @@
         "storage": {
             "recovery": {
                 "failure": "",
-                "success_many": "",
                 "success_one": "",
                 "success_other": ""
             },
@@ -853,7 +847,6 @@
         },
         "picker": {
             "search": {
-                "founds_many": "{{- count}} correspondências",
                 "founds_one": "{{- count}} correspondência",
                 "founds_other": "{{- count}} correspondências",
                 "input": "texto a encontrar",
@@ -1339,13 +1332,11 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
-                    "description_many": "",
                     "description_one": "",
                     "description_other": "",
                     "title": ""
                 },
                 "none": "",
-                "recoverableCount_many": "",
                 "recoverableCount_one": "",
                 "recoverableCount_other": "",
                 "title": ""
