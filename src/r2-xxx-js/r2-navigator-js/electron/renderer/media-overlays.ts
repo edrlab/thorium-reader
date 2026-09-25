@@ -1324,6 +1324,42 @@ export function mediaOverlaysHandleIpcMessage(
             //     }
             // }
 
+            // A reading-location report that lands inside the text/audio pair already
+            // playing (or paused) must not restart it: the document re-scrolls after a
+            // window resize, a font size change or a layout switch, and reports its
+            // location each time. Only a report that lands in a different pair moves
+            // the playback.
+            if (!payload.userInteract &&
+                _mediaOverlayRoot && _mediaOverlayTextAudioPair &&
+                (_mediaOverlaysState === MediaOverlaysStateEnum_.PLAYING ||
+                    _mediaOverlaysState === MediaOverlaysStateEnum_.PAUSED) &&
+                activeWebView.READIUM2.link) {
+
+                const href = activeWebView.READIUM2.link.HrefDecoded || activeWebView.READIUM2.link.Href;
+                const textHref = new URL("https://dummy.com/" + href).pathname.substring(1);
+                const chain = payload.textFragmentIDChain ?
+                    payload.textFragmentIDChain.filter((id) => id) as Array<string> : undefined;
+                let located = chain && chain.length ?
+                    findDepthFirstTextAudioPair(textHref, _mediaOverlayRoot, chain, false) : undefined;
+                if (!located) {
+                    const followingElementIDs = payload.locationHashOverrideInfo?.followingElementIDs;
+                    if (followingElementIDs) {
+                        for (const id of followingElementIDs) {
+                            located = findDepthFirstTextAudioPair(textHref, _mediaOverlayRoot, [id], false);
+                            if (located) {
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (located && located === _mediaOverlayTextAudioPair) {
+                    if (IS_DEV) {
+                        debug("R2_EVENT_MEDIA_OVERLAY_CLICK - reading location inside the current text/audio pair, keep going");
+                    }
+                    return true;
+                }
+            }
+
             const wasPlaying = _mediaOverlaysState === MediaOverlaysStateEnum_.PLAYING;
             const lastClickedNotification = _lastClickedNotification;
 
