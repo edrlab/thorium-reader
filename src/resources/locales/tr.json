@@ -924,7 +924,6 @@
             "preset": {
                 "apply": "Uygula",
                 "applyDetails": "Tercih ettiğiniz yapılandırmayı mevcut esere uygulayın.",
-                "detail": "Tercih ettiğiniz yapılandırmayı Kaydedin / Uygulayın / Sıfırlayın.",
                 "reset": "Sıfırla",
                 "resetDetails": "Tercih ettiğiniz yapılandırmayı sıfırlayın (varsayılan ayarlar).",
                 "save": "Kaydet",

@@ -924,7 +924,6 @@
             "preset": {
                 "apply": "Apply",
                 "applyDetails": "Apply your preferred configuration to the current publication.",
-                "detail": "Save / Apply / Reset your preferred configuration.",
                 "reset": "Reset",
                 "resetDetails": "Reset your preferred configuration (default settings).",
                 "save": "Save",

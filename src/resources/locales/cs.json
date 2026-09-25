@@ -938,7 +938,6 @@
             "preset": {
                 "apply": "Použít",
                 "applyDetails": "Použít preferovanou konfiguraci na aktuální publikaci.",
-                "detail": "Uložit / Použít / Obnovit preferovanou konfiguraci.",
                 "reset": "Obnovit",
                 "resetDetails": "Obnovit preferovanou konfiguraci (výchozí nastavení).",
                 "save": "Uložit",

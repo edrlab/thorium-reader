@@ -924,7 +924,6 @@
             "preset": {
                 "apply": "Rakenda",
                 "applyDetails": "Kasuta oma eelistatud seadistust kogu väljaandes.",
-                "detail": "Salvesta, kasuta või lähtesta oma eelistatud seadistust.",
                 "reset": "Lähtesta",
                 "resetDetails": "Lähtesta sinu tehtud seadistused (vaikimisi seadistusteks).",
                 "save": "Salvesta",

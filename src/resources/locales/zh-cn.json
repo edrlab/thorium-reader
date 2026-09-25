@@ -916,7 +916,6 @@
             "preset": {
                 "apply": "应用",
                 "applyDetails": "将您的偏好设置应用到当前出版物。",
-                "detail": "保存 /应用 /重置您的偏好设置。",
                 "reset": "重置",
                 "resetDetails": "重置您的偏好设置（默认设置）。",
                 "save": "保存",

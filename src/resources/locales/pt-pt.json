@@ -931,7 +931,6 @@
             "preset": {
                 "apply": "Aplicar",
                 "applyDetails": "Aplicar os seus parâmetros de leitura preferidos ao livro atual.",
-                "detail": "Guardar/Aplicar/Repor os seus parâmetros de leitura preferidos.",
                 "reset": "Repor",
                 "resetDetails": "Repor os seus parâmetros de leitura preferidos (valores predefinidos).",
                 "save": "Guardar",

@@ -924,7 +924,6 @@
             "preset": {
                 "apply": "Anwenden",
                 "applyDetails": "Wenden Sie Ihre bevorzugte Konfiguration auf die aktuelle Publikation an.",
-                "detail": "Speichern / Anwenden / Zurücksetzen der gewünschten Konfiguration.",
                 "reset": "Zurücksetzen",
                 "resetDetails": "Setzen Sie Ihre bevorzugte Konfiguration auf Standardeinstellungen zurück.",
                 "save": "Speichern",

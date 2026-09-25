@@ -938,7 +938,6 @@
             "preset": {
                 "apply": "Zastosuj",
                 "applyDetails": "Zastosuj preferowaną konfigurację do bieżącej publikacji.",
-                "detail": "Zapisz / Zastosuj / Resetuj preferowaną konfigurację.",
                 "reset": "Resetuj",
                 "resetDetails": "Resetuj preferowaną konfigurację (ustawienia domyślne).",
                 "save": "Zapisz",

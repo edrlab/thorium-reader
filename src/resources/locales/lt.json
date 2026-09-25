@@ -938,7 +938,6 @@
             "preset": {
                 "apply": "Taikyti",
                 "applyDetails": "Taikyti pageidautiną konfigūraciją dabartiniam leidiniui.",
-                "detail": "Išsaugoti / taikyti / nustatyti pageidautiną konfigūraciją iš naujo.",
                 "reset": "Nustatyti iš naujo",
                 "resetDetails": "Nustatyti pageidautiną konfigūraciją į numatytąsias reikšmes.",
                 "save": "Išsaugoti",

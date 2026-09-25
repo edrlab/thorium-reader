@@ -924,7 +924,6 @@
             "preset": {
                 "apply": "Pas toe",
                 "applyDetails": "Pas uw voorkeursconfiguratie toe op de huidige publicatie.",
-                "detail": "Bewaar / Pas toe / Reset uw voorkeursconfiguratie.",
                 "reset": "Stel opnieuw in",
                 "resetDetails": "Reset uw voorkeursconfiguratie (standaardinstellingen).",
                 "save": "Bewaar",

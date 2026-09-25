@@ -924,7 +924,6 @@
             "preset": {
                 "apply": "Käytä",
                 "applyDetails": "Käytä ulkoasun valintojasi nykyiseen julkaisuun.",
-                "detail": "Tallenna / Käytä / Nollaa näyttöasetuksesi.",
                 "reset": "Nollaa",
                 "resetDetails": "Palauta oletusasetukset.",
                 "save": "Tallenna",

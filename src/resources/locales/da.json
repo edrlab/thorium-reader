@@ -924,7 +924,6 @@
             "preset": {
                 "apply": "Anvend mit foretrukne læsetema som nuværende læse-indstillinger",
                 "applyDetails": "Anvend dine foretrukne læseindstillinger med den nuværende bog.",
-                "detail": "Gem/Anvend dine foretrukne læseindstillinger.",
                 "reset": "Nulstil mit foretrukne læsetema til standard indstillingerne",
                 "resetDetails": "Nulstil din foretrukne læseindstillinger til standard-indstillingerne.",
                 "save": "Gem de nuværende læse-indstillinger som mit foretrukne læsetema",

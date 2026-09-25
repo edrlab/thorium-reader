@@ -931,7 +931,6 @@
             "preset": {
                 "apply": "Aplicar",
                 "applyDetails": "Aplicar sua configuração preferida à publicação atual.",
-                "detail": "Salvar / Aplicar / Redefinir sua configuração preferida.",
                 "reset": "Redefinir",
                 "resetDetails": "Redefinir a configuração preferida (configurações padrão).",
                 "save": "Salvar",
