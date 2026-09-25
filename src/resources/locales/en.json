@@ -241,7 +241,6 @@
             "alreadyImported": "All notes are already imported.",
             "emptyFile": "No notes available in the file.",
             "errorParsing": "Error during file parsing: ",
-            "noBelongTo": "Unable to import notes, at least one note does not belong to the publication.",
             "nothing": "There is no note ready to be imported, aborting the import",
             "success": "Import completed successfully."
         },

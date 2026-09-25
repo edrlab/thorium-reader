@@ -251,7 +251,6 @@
             "alreadyImported": "Vse opombe so že uvožene.",
             "emptyFile": "V datoteki ni na voljo nobenih opomb.",
             "errorParsing": "Napaka med razčlenjevanjem datoteke: ",
-            "noBelongTo": "Opomb ni mogoče uvoziti, vsaj ena opomba ne pripada publikaciji.",
             "nothing": "Ni opombe, pripravljene za uvoz, zato se uvoz prekine",
             "success": "Uvoz uspešno zaključen."
         },

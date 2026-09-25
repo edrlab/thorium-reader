@@ -241,7 +241,6 @@
             "alreadyImported": "Tüm notlar zaten içe aktarılmış.",
             "emptyFile": "Dosyada not mevcut değil.",
             "errorParsing": "Dosya işlenirken hata oluştu: ",
-            "noBelongTo": "Notlar içe aktarılamadı: En az bir not, Eser'e ait değil.",
             "nothing": "İçe aktarmaya hazır hiç not yok, içe aktarım durduruluyor",
             "success": "İçe aktarma başarıyla tamamlandı."
         },

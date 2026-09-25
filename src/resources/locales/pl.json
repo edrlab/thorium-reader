@@ -246,7 +246,6 @@
             "alreadyImported": "Wszystkie notatki są już zaimportowane.",
             "emptyFile": "Brak notatek w pliku.",
             "errorParsing": "Błąd podczas analizowania pliku: ",
-            "noBelongTo": "Nie można zaimportować notatek, co najmniej jedna notatka nie należy do tej publikacji.",
             "nothing": "Brak notatek gotowych do zaimportowania, przerywam import",
             "success": "Import zakończony pomyślnie."
         },

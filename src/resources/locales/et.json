@@ -241,7 +241,6 @@
             "alreadyImported": "Kõik märkmed on juba imporditud.",
             "emptyFile": "Failis pole märkmeid.",
             "errorParsing": "Viga faili töötlemisel: ",
-            "noBelongTo": "Märkmete importimine ei õnnestu - vähemalt üks märge pole väljaandega seotud.",
             "nothing": "Pole ühtegi imporditavat märget, katkestan impordi",
             "success": "Importimine õnnestus kenasti."
         },

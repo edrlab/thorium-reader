@@ -241,7 +241,6 @@
             "alreadyImported": "Alle Notizen wurden bereits importiert.",
             "emptyFile": "Keine Notizen in der Datei vorhanden.",
             "errorParsing": "Fehler beim Einlesen der Datei: ",
-            "noBelongTo": "Notizen können nicht importiert werden, mindestens eine Notiz gehört nicht zur Veröffentlichung.",
             "nothing": "Keine Notizen sind für den Import bereit. Import wird abgebrochen.",
             "success": "Import vollständig abgeschlossen."
         },

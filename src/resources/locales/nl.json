@@ -241,7 +241,6 @@
             "alreadyImported": "Alle aantekeningen zijn reeds geïmporteerd.",
             "emptyFile": "Geen aantekeningen beschikbaar in het bestand.",
             "errorParsing": "Fout tijdens het parsen van het bestand: ",
-            "noBelongTo": "Kan aantekeningen niet importeren, ten minste één aantekening behoort niet bij de publicatie.",
             "nothing": "Er is geen aantekening om geïmporteerd te worden, de import wordt afgebroken",
             "success": "Import succesvol voltooid."
         },

@@ -246,7 +246,6 @@
             "alreadyImported": "Všechny poznámky byly již importovány.",
             "emptyFile": "V souboru nejsou dostupné žádné poznámky.",
             "errorParsing": "Chyba při analýze souboru: ",
-            "noBelongTo": "Poznámky nebylo možné importovat – alespoň jedna poznámka nepatří k této publikaci.",
             "nothing": "Žádná poznámka k importu, přerušuji import",
             "success": "Import úspěšně dokončen."
         },

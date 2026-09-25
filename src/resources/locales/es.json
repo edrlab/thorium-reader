@@ -241,7 +241,6 @@
             "alreadyImported": "Ya están importadas todas las anotaciones, cancelando la importación.",
             "emptyFile": "El fichero no tiene anotaciones disponibles.",
             "errorParsing": "Error al validar el formato del fichero: ",
-            "noBelongTo": "No es posible importar las anotaciones establecidas, al menos una anotación no pertenece a la publicación.",
             "nothing": "No hay anotaciones listas para importar, cancelando la importación",
             "success": "¡Correcto!"
         },

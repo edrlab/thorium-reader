@@ -590,7 +590,6 @@ declare namespace typed_i18n {
     readonly "alreadyImported": string,
     readonly "emptyFile": string,
     readonly "errorParsing": string,
-    readonly "noBelongTo": string,
     readonly "nothing": string,
     readonly "success": string
   },
@@ -632,14 +631,12 @@ declare namespace typed_i18n {
   readonly "alreadyImported": string,
   readonly "emptyFile": string,
   readonly "errorParsing": string,
-  readonly "noBelongTo": string,
   readonly "nothing": string,
   readonly "success": string
 };
   (_: "message.annotations.alreadyImported", __?: {}): string;
   (_: "message.annotations.emptyFile", __?: {}): string;
   (_: "message.annotations.errorParsing", __?: {}): string;
-  (_: "message.annotations.noBelongTo", __?: {}): string;
   (_: "message.annotations.nothing", __?: {}): string;
   (_: "message.annotations.success", __?: {}): string;
   (_: "message.download", __?: {}): {

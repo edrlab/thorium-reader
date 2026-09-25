@@ -241,7 +241,6 @@
             "alreadyImported": "Tutte le note sono già state importate.",
             "emptyFile": "Nessuna nota disponibile nel file.",
             "errorParsing": "Errore durante l'analisi del file: ",
-            "noBelongTo": "Impossibile importare le note, almeno una nota non appartiene alla pubblicazione.",
             "nothing": "Non c'è nessuna nota pronta per essere importata, l'importazione sarà interrotta",
             "success": "Importazione completata."
         },

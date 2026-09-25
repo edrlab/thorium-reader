@@ -241,7 +241,6 @@
             "alreadyImported": "Kaikki muistiinpanot on jo tuotu.",
             "emptyFile": "Tiedostossa ei ole muistiinpanoja.",
             "errorParsing": "Virhe tiedoston jäsentämisessä: ",
-            "noBelongTo": "Muistiinpanoja ei voida tuoda, vähintään yksi muistiinpano ei kuulu julkaisuun.",
             "nothing": "Yhtään muistiinpanoa ei ole valmiina tuontiin, tuonti keskeytetty.",
             "success": "Tuonti onnistui."
         },

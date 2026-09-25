@@ -198,6 +198,26 @@ test("Readium annotation export prefers generated selectors over imported select
     expect(annotation?.target.selector).toEqual([epubCfiSelector]);
 });
 
+test("Readium annotation export preserves the imported target when its source has no locator", () => {
+    const importedTarget = {
+        source: "unresolved/chapter.xhtml",
+        meta: {
+            page: "7",
+        },
+        selector: [epubCfiSelector],
+    };
+    const annotation = convertAnnotationStateToReadiumAnnotation(createNote({
+        locatorExtended: undefined,
+        readiumAnnotation: {
+            import: {
+                target: importedTarget,
+            },
+        },
+    }));
+
+    expect(annotation?.target).toEqual(importedTarget);
+});
+
 test("Readium bookmark import accepts a progression-only target at zero", async () => {
     const progressionSelector: IProgressionSelector = {
         type: "ProgressionSelector",

@@ -241,7 +241,6 @@
             "alreadyImported": "Alle noter eksisterer i forvejen, afslutter import.",
             "emptyFile": "Ingen noter blev fundet i filen.",
             "errorParsing": "Fejl under læsning af filen: ",
-            "noBelongTo": "Fejl ved import af noter, mindst en af noterne hører ikke til denne bog.",
             "nothing": "Ingen noter kunne importeres, afslutter import",
             "success": "Import færdig."
         },
