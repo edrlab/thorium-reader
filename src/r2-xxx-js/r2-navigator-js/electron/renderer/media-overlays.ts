@@ -215,6 +215,27 @@ async function playMediaOverlays(
     }
 }
 
+// The step from one text/audio pair to the next, once the clock has
+// passed the current pair's end (or the audio ended).
+const stepPastEnd = () => {
+    if (IS_DEV) {
+        debug("ontimeupdate - mediaOverlaysNext()");
+    }
+
+    if (win.READIUM2.ttsAndMediaOverlaysManualPlayNext) {
+        mediaOverlaysPause();
+
+        // mediaOverlaysStop(true);
+        // ==>
+        // _mediaOverlayActive = stayActive ? true : false;
+        // mediaOverlaysPause();
+        // _mediaOverlayRoot = undefined;
+        // _mediaOverlayTextAudioPair = undefined;
+        // _mediaOverlayTextId = undefined;
+    } else {
+        mediaOverlaysNext();
+    }
+};
 const ontimeupdate = (ev: Event) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (_currentAudioElement && (_currentAudioElement as any).__draggable && (_currentAudioElement as any).__hidden) {
@@ -232,27 +253,53 @@ const ontimeupdate = (ev: Event) => {
         // ev.type === "timeupdate"
         // currentAudioElement.currentTime >= currentAudioElement.duration
     ) {
-
-        if (IS_DEV) {
-            debug("ontimeupdate - mediaOverlaysNext()");
+        if (_currentAudioEnd && _frameSteppedAt === _currentAudioEnd) {
+            return; // the frame tick already stepped past this pair
         }
+        _frameSteppedAt = _currentAudioEnd;
+        stepPastEnd();
+    }
+};
 
-        if (win.READIUM2.ttsAndMediaOverlaysManualPlayNext) {
-            mediaOverlaysPause();
+// THE FRAME TICK: the browser's "timeupdate" fires only about four times a
+// second, and each one moved the light along by at most one pair — fine
+// for pairs the size of a sentence, but with a pair per word the light
+// fell behind on every word shorter than a tick, and the faster the
+// playback, the further behind. While the audio plays, the same check
+// runs on every animation frame instead, so the light lands on the pair
+// the clock is in within a frame, at any playback rate. One step per pair
+// (the pair's end is the guard): the next pair installs its own end
+// synchronously when it starts playing.
+let _frameTick: number | undefined;
+let _frameSteppedAt: number | undefined;
+const frameTick = () => {
+    _frameTick = undefined;
+    if (!_currentAudioElement || _currentAudioElement.paused || _currentAudioElement.ended) {
+        return;
+    }
+    if (_currentAudioEnd &&
+        _currentAudioElement.currentTime >= (_currentAudioEnd - 0.05) &&
+        _frameSteppedAt !== _currentAudioEnd) {
 
-            // mediaOverlaysStop(true);
-            // ==>
-            // _mediaOverlayActive = stayActive ? true : false;
-            // mediaOverlaysPause();
-            // _mediaOverlayRoot = undefined;
-            // _mediaOverlayTextAudioPair = undefined;
-            // _mediaOverlayTextId = undefined;
-        } else {
-            mediaOverlaysNext();
+        _frameSteppedAt = _currentAudioEnd;
+        stepPastEnd();
+    }
+    _frameTick = win.requestAnimationFrame(frameTick);
+};
+const ensureFrameTick = (remove: boolean) => {
+    if (remove) {
+        if (typeof _frameTick !== "undefined") {
+            win.cancelAnimationFrame(_frameTick);
+            _frameTick = undefined;
         }
+        return;
+    }
+    if (typeof _frameTick === "undefined") {
+        _frameTick = win.requestAnimationFrame(frameTick);
     }
 };
 const ensureOnTimeUpdate = (remove: boolean) => {
+    ensureFrameTick(remove);
     if (_currentAudioElement) {
         if (remove) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
