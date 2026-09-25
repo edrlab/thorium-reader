@@ -42,7 +42,7 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
 
     // : Pick<ReaderConfig, "ttsEnableOverlayMode" | "mediaOverlaysEnableCaptionsMode" | "ttsAndMediaOverlaysDisableContinuousPlay" | "mediaOverlaysEnableSkippability" | "ttsEnableSentenceDetection">
     const config = useReaderConfigAll();
-    const { ttsHighlightStyle, ttsHighlightStyle_WORD, ttsHighlightColor, ttsHighlightColor_WORD, mediaOverlaysEnableCaptionsMode: moCaptions, ttsEnableOverlayMode: ttsCaptions, ttsAndMediaOverlaysDisableContinuousPlay: disableContinuousPlay, mediaOverlaysEnableSkippability: skippability, mediaOverlaysIgnoreAndUseTTS, mediaOverlaysUseTTSHighlights, ttsEnableSentenceDetection: splitTTStext } = config;
+    const { ttsHighlightStyle, ttsHighlightStyle_WORD, ttsHighlightColor, ttsHighlightColor_WORD, mediaOverlaysEnableCaptionsMode: moCaptions, ttsEnableOverlayMode: ttsCaptions, ttsAndMediaOverlaysDisableContinuousPlay: disableContinuousPlay, mediaOverlaysInteractiveLinks: interactiveLinks, mediaOverlaysEnableSkippability: skippability, mediaOverlaysIgnoreAndUseTTS, mediaOverlaysUseTTSHighlights, ttsEnableSentenceDetection: splitTTStext } = config;
     const set = useSaveReaderConfigDebounced();
 
     const ttsTogglePlayResume = (func: () => void) => {
@@ -109,6 +109,19 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
                 },
             },
         ];
+
+    if (useMO) {
+        options.push({
+            id: "interactiveLinks",
+            name: "InteractiveLinks",
+            label: `${__("reader.media-overlays.interactiveLinks")}`,
+            description: `${__("reader.media-overlays.interactiveLinksDescription")}`,
+            checked: interactiveLinks,
+            onChange: () => {
+                set({ mediaOverlaysInteractiveLinks: !interactiveLinks });
+            },
+        });
+    }
 
     if (!useMO) {
         options.push({

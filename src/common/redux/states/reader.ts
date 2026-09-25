@@ -58,6 +58,7 @@ export const readerConfigInitialState: ReaderConfig = {
     noRuby: false,
     darken: undefined,
     ttsAndMediaOverlaysDisableContinuousPlay: false,
+    mediaOverlaysInteractiveLinks: false,
 
     ttsHighlightStyle: HighlightDrawTypeBackground,
     ttsHighlightStyle_WORD: HighlightDrawTypeUnderline,

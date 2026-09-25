@@ -11,7 +11,7 @@ import { enablePageBreakMarginIndicators } from "@r2-navigator-js/electron/rende
 import { computeReadiumCssJsonMessage } from "readium-desktop/common/computeReadiumCssJsonMessage";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 
-import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysEnableCaptionsMode, mediaOverlaysEnableSkippability,
+import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysEnableCaptionsMode, mediaOverlaysEnableInteractiveLinks, mediaOverlaysEnableSkippability,
     mediaOverlaysPause, mediaOverlaysResume, readiumCssUpdate, reloadContent, ttsOverlayEnable, ttsPlay,
     ttsSentenceDetectionEnable, ttsAndMediaOverlaysManualPlayNext, ttsSkippabilityEnable, ttsStop,
     ttsHighlightStyle,
@@ -89,6 +89,10 @@ function* readerConfigChanged(action: readerActions.setConfig.TAction): SagaGene
 
     if (isNotNil(payload.ttsAndMediaOverlaysDisableContinuousPlay)) {
         ttsAndMediaOverlaysManualPlayNext(readerConfig.ttsAndMediaOverlaysDisableContinuousPlay);
+    }
+
+    if (isNotNil(payload.mediaOverlaysInteractiveLinks)) {
+        mediaOverlaysEnableInteractiveLinks(readerConfig.mediaOverlaysInteractiveLinks);
     }
 
     if (isNotNil(payload.ttsHighlightStyle) || isNotNil(payload.ttsHighlightStyle_WORD) || isNotNil(payload.ttsHighlightColor) || isNotNil(payload.ttsHighlightColor_WORD)) {
