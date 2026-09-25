@@ -78,6 +78,7 @@
         "deleteBook": "刪除書籍",
         "deleteTag": "刪除標籤",
         "description": "概要",
+        "downloaded": "",
         "emptyTagList": "沒有標記的出版物。",
         "entry": {
             "continueReading": "繼續閱讀",

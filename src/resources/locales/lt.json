@@ -78,6 +78,7 @@
         "deleteBook": "Šalinti",
         "deleteTag": "Šalinti žymę",
         "description": "Aprašymas",
+        "downloaded": "",
         "emptyTagList": "Nėra leidinių, turinčių žymių.",
         "entry": {
             "continueReading": "Skaityti toliau",

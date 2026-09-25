@@ -78,6 +78,7 @@
         "deleteBook": "Kustuta",
         "deleteTag": "Kustuta silt",
         "description": "Kirjeldus",
+        "downloaded": "",
         "emptyTagList": "Siltidega väljaandeid/teoseid ei leidu.",
         "entry": {
             "continueReading": "Jätka lugemist",

@@ -7,7 +7,10 @@
 
 import { describe, expect, it, test } from "@jest/globals";
 import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
-import { attachLocalBookshelfPublication } from "readium-desktop/renderer/library/opds/localBookshelfPublication";
+import {
+    attachLocalBookshelfPublication,
+    isOpdsPublicationDownloaded,
+} from "readium-desktop/renderer/library/opds/localBookshelfPublication";
 
 const createPublication = (
     links: Partial<
@@ -70,5 +73,35 @@ describe("attachLocalBookshelfPublication", () => {
         });
 
         expect(attachLocalBookshelfPublication(publication, importedLink, "local-publication-id")).toBe(publication);
+    });
+});
+
+describe("isOpdsPublicationDownloaded", () => {
+    test.each(["openAccessLinks", "sampleOrPreviewLinks", "buyLinks", "borrowLinks"] as const)(
+        "returns true when a %s acquisition link references a local publication",
+        (propertyName) => {
+            const publication = createPublication({
+                [propertyName]: [
+                    {
+                        url: "https://example.com/publication.epub",
+                        localBookshelfPublicationId: "local-publication-id",
+                    },
+                ],
+            });
+
+            expect(isOpdsPublicationDownloaded(publication)).toBe(true);
+        },
+    );
+
+    it("returns false when no acquisition link references a local publication", () => {
+        const publication = createPublication({
+            openAccessLinks: [
+                {
+                    url: "https://example.com/publication.epub",
+                },
+            ],
+        });
+
+        expect(isOpdsPublicationDownloaded(publication)).toBe(false);
     });
 });

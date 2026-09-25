@@ -10,6 +10,7 @@ export declare const cover_img: string;
 export declare const cover_wrapper: string;
 export declare const CSS_END_components_publications: string;
 export declare const CSS_START_components_publications: string;
+export declare const downloadedIndicator: string;
 export declare const expired: string;
 export declare const gradient: string;
 export declare const hasEnded: string;

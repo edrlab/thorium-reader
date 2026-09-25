@@ -78,6 +78,7 @@
         "deleteBook": "Ta bort",
         "deleteTag": "Ta bort tagg",
         "description": "Beskrivning",
+        "downloaded": "",
         "emptyTagList": "Inga böcker med tagg.",
         "entry": {
             "continueReading": "Fortsätt läsa",

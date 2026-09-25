@@ -78,6 +78,7 @@
         "deleteBook": "Elimina",
         "deleteTag": "Elimina tag",
         "description": "Descrizione",
+        "downloaded": "",
         "emptyTagList": "Nessuna pubblicazione taggata.",
         "entry": {
             "continueReading": "Continua a leggere",

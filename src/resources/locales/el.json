@@ -78,6 +78,7 @@
         "deleteBook": "Διαγραφή",
         "deleteTag": "Διαγραφή ετικέτας",
         "description": "Περιγραφή",
+        "downloaded": "",
         "emptyTagList": "Καμμιά δημοσίευση με ετικέτα.",
         "entry": {
             "continueReading": "Συνέχεια ανάγνωσης",

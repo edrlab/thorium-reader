@@ -78,6 +78,7 @@
         "deleteBook": "நீக்கு",
         "deleteTag": "குறிச்சொல்லை நீக்கு",
         "description": "விவரம்",
+        "downloaded": "",
         "emptyTagList": "குறிக்கப்பட்ட வெளியீடுகள் இல்லை.",
         "entry": {
             "continueReading": "மீண்டும் வாசிப்பு",

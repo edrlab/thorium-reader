@@ -78,6 +78,7 @@
         "deleteBook": "Supprimer",
         "deleteTag": "Supprimer le mot-clé",
         "description": "Description",
+        "downloaded": "Téléchargé",
         "emptyTagList": "Aucune publication dotée de mots-clés.",
         "entry": {
             "continueReading": "Reprendre la lecture",
