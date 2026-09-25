@@ -265,8 +265,7 @@
         },
         "storage": {
             "recovery": {
-                "failure": "",
-                "success": ""
+                "failure": ""
             },
             "removed": "",
             "updateFailed": "",
@@ -1325,11 +1324,9 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
-                    "description": "",
                     "title": ""
                 },
                 "none": "",
-                "recoverableCount": "",
                 "title": ""
             }
         },

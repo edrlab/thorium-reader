@@ -271,7 +271,6 @@
         "storage": {
             "recovery": {
                 "failure": "Eser kurtarma başarısız.",
-                "success": "",
                 "success_one": "{{- count}} eser kurtarıldı.",
                 "success_other": "{{- count}} eser kurtarıldı."
             },
@@ -1333,13 +1332,11 @@
                 "description": "Güvenli bir şekilde kurtarılabilecek eserleri bulmak için eser depolamasını denetleyin.",
                 "dialog": {
                     "confirm": "Kurtar",
-                    "description": "",
                     "description_one": "Toryum, diskte, veritabanında eksik olan {{- count}} eser buldu. Bunları Toryum'a tekrar içe aktarmak ister misiniz?",
                     "description_other": "Toryum, diskte, veritabanında eksik olan {{- count}} eser buldu. Bunları Toryum'a tekrar içe aktarmak ister misiniz?",
                     "title": "Eserleri kurtar"
                 },
                 "none": "Kurtarılabilir eser bulunamadı.",
-                "recoverableCount": "",
                 "recoverableCount_one": "{{- count}} eser, özgün depolama tanımlayıcısıyla kurtarılabilir.",
                 "recoverableCount_other": "{{- count}} eser, özgün depolama tanımlayıcısıyla kurtarılabilir.",
                 "title": "Kurtarma"

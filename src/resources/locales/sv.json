@@ -271,7 +271,6 @@
         "storage": {
             "recovery": {
                 "failure": "Kunde inte återskapa böcker.",
-                "success": "",
                 "success_one": "{{- count}} bok återskapad.",
                 "success_other": "{{- count}} böcker återskapade."
             },
@@ -1333,13 +1332,11 @@
                 "description": "Kontrollera lagring för att hitta böcker som kan återskapas.",
                 "dialog": {
                     "confirm": "Återskapa",
-                    "description": "",
                     "description_one": "Thorium hittade {{- count}} bok på disken som saknas i databasen. Vill du återimportera den till Thorium?",
                     "description_other": "Thorium hittade {{- count}} böcker på disken som saknas i databasen. Vill du återimportera dem till Thorium?",
                     "title": "Återskapa böcker"
                 },
                 "none": "Inga böcker som kan återskapas hittades.",
-                "recoverableCount": "",
                 "recoverableCount_one": "{{- count}} bok kan återskapas med den ursprungliga identifieraren.",
                 "recoverableCount_other": "{{- count}} böcker kan återskapas med de ursprungliga identifierarna.",
                 "title": "Återskapa"

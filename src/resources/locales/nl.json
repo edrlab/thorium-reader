@@ -271,7 +271,6 @@
         "storage": {
             "recovery": {
                 "failure": "Het herstel van de publicatie is mislukt.",
-                "success": "",
                 "success_one": "{{- count}} publicatie hersteld.",
                 "success_other": "{{- count}} publicaties recovered."
             },
@@ -1333,13 +1332,11 @@
                 "description": "Controleer de publicatieopslag om publicaties te vinden die veilig kunnen worden hersteld.",
                 "dialog": {
                     "confirm": "Herstel",
-                    "description": "",
                     "description_one": "Thorium heeft {{- count}} publicatie op schijf gevonden die in de database ontbreekt. Wilt u deze opnieuw in Thorium importeren?",
                     "description_other": "Thorium heeft {{- count}} publicaties op schijf gevonden die in de database ontbreken. Wilt u ze opnieuw in Thorium importeren?",
                     "title": "Herstel publicaties"
                 },
                 "none": "Er zijn geen te herstellen publicaties gevonden.",
-                "recoverableCount": "",
                 "recoverableCount_one": "{{- count}} publicatie kan worden hersteld met de oorspronkelijke opslag-id.",
                 "recoverableCount_other": "{{- count}} publicaties kunnen worden hersteld met de oorspronkelijke opslag-id.",
                 "title": "Herstel"
