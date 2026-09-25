@@ -40,7 +40,7 @@ import {
     LocatorExtended, getCurrentReadingLocation, handleLinkLocator, keyboardFocusRequest, locationHandleIpcMessage,
     setWebViewStyle, shiftWebview,
 } from "./location";
-import { mediaOverlaysHandleIpcMessage, mediaOverlaysUseTTSHighlights } from "./media-overlays";
+import { mediaOverlaysEnableInteractiveLinks, mediaOverlaysHandleIpcMessage, mediaOverlaysUseTTSHighlights } from "./media-overlays";
 import {
     checkTtsState, ttsAndMediaOverlaysManualPlayNext, ttsClickEnable, ttsHandleIpcMessage, ttsHighlightStyle, ttsOverlayEnable, ttsPlaybackRate,
     ttsSentenceDetectionEnable, ttsSkippabilityEnable, ttsVoices,
@@ -364,6 +364,7 @@ function createWebViewInternal(READIUM2: IReadiumElectronWebviewState, preloadSc
             ttsHighlightStyle(win.READIUM2.ttsHighlightStyle, win.READIUM2.ttsHighlightColor, win.READIUM2.ttsHighlightStyle_WORD, win.READIUM2.ttsHighlightColor_WORD);
             ttsPlaybackRate(win.READIUM2.ttsPlaybackRate);
             ttsClickEnable(win.READIUM2.ttsClickEnabled);
+            mediaOverlaysEnableInteractiveLinks(win.READIUM2.mediaOverlaysInteractiveLinks);
             ttsSentenceDetectionEnable(win.READIUM2.ttsSentenceDetectionEnabled);
             mediaOverlaysUseTTSHighlights(win.READIUM2.mediaOverlaysUseTTSHighlights);
             ttsAndMediaOverlaysManualPlayNext(win.READIUM2.ttsAndMediaOverlaysManualPlayNext);
@@ -688,6 +689,7 @@ export function installNavigatorDOM(
         ttsHighlightColor_WORD: undefined,
         ttsHighlightStyle_WORD: undefined,
         ttsClickEnabled: false,
+        mediaOverlaysInteractiveLinks: false,
         ttsOverlayEnabled: false,
         ttsPlaybackRate: 1,
         ttsAndMediaOverlaysManualPlayNext: false,

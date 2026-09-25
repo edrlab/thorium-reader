@@ -19,6 +19,7 @@ import { DEBUG_AUDIO } from "../common/audiobook";
 import {
     IEventPayload_R2_EVENT_MEDIA_OVERLAY_CLICK, IEventPayload_R2_EVENT_MEDIA_OVERLAY_HIGHLIGHT,
     IEventPayload_R2_EVENT_MEDIA_OVERLAY_STATE, R2_EVENT_MEDIA_OVERLAY_STATE, MediaOverlaysStateEnum as MediaOverlaysStateEnum_,
+    IEventPayload_R2_EVENT_MEDIA_OVERLAY_INTERACTIVE_LINKS, R2_EVENT_MEDIA_OVERLAY_INTERACTIVE_LINKS,
     IEventPayload_R2_EVENT_MEDIA_OVERLAY_STARTSTOP, R2_EVENT_MEDIA_OVERLAY_CLICK,
     R2_EVENT_MEDIA_OVERLAY_HIGHLIGHT, R2_EVENT_MEDIA_OVERLAY_STARTSTOP, IEventPayload_R2_EVENT_READING_LOCATION,
 } from "../common/events";
@@ -1771,6 +1772,15 @@ export function mediaOverlaysNext(escape?: boolean) {
             findNextTextAudioPair(_mediaOverlayRoot, _mediaOverlayTextAudioPair, {prev: undefined},
                 escape ? true : false);
         if (!nextTextAudioPair) {
+            if (win.READIUM2.mediaOverlaysInteractiveLinks) {
+                // Interactive books: the end of a document is where the reader chooses
+                // (the choices are links), so wait there instead of turning the page.
+                if (IS_DEV) {
+                    debug("mediaOverlaysNext() - interactive links: pause at the end of the document");
+                }
+                mediaOverlaysPause();
+                return;
+            }
             if (IS_DEV) {
                 debug("mediaOverlaysNext() - navLeftOrRight()");
             }
@@ -1906,4 +1916,25 @@ export function mediaOverlaysPlaybackRate(speed: number) {
 let _mediaOverlaySkippabilityIsEnabled = true;
 export function mediaOverlaysEnableSkippability(doEnable: boolean) {
     _mediaOverlaySkippabilityIsEnabled = doEnable;
+}
+
+// Interactive books (choices as links): with this enabled, a click on a
+// link while media overlays are playing or paused stops the readaloud and
+// lets the link open, instead of being swallowed.
+export function mediaOverlaysEnableInteractiveLinks(doEnable: boolean) {
+    if (!win.READIUM2) {
+        return;
+    }
+    win.READIUM2.mediaOverlaysInteractiveLinks = doEnable;
+
+    const activeWebViews = win.READIUM2.getActiveWebViews();
+    for (const activeWebView of activeWebViews) {
+        const payload: IEventPayload_R2_EVENT_MEDIA_OVERLAY_INTERACTIVE_LINKS = {
+            doEnable,
+        };
+
+        if (activeWebView.READIUM2?.DOMisReady) {
+            activeWebView.send(R2_EVENT_MEDIA_OVERLAY_INTERACTIVE_LINKS, payload).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+        }
+    }
 }

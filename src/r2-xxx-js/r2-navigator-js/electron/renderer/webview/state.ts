@@ -72,6 +72,7 @@ export interface IReadiumElectronWebviewWindowState {
     ttsSkippabilityEnabled: boolean;
     ttsSentenceDetectionEnabled: boolean;
     ttsClickEnabled: boolean;
+    mediaOverlaysInteractiveLinks: boolean;
     ttsOverlayEnabled: boolean;
     ttsPlaybackRate: number;
     ttsVoices: SpeechSynthesisVoice[] | null;
@@ -144,6 +145,7 @@ export interface IReadiumElectronBrowserWindow {
     ttsSkippabilityEnabled: boolean;
     ttsSentenceDetectionEnabled: boolean;
     ttsClickEnabled: boolean;
+    mediaOverlaysInteractiveLinks: boolean;
     ttsOverlayEnabled: boolean;
     ttsPlaybackRate: number;
     ttsVoices: SpeechSynthesisVoice[] | null;
