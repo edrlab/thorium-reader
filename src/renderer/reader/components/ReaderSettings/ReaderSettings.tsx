@@ -320,7 +320,7 @@ if (optionSelectedIsOnOptionDisabled) {
                     dockedMode ? <></> :
                     <>
                         <div className={stylesSettings.settings_tabslist}>
-                            <TabList ref={tabModeRef} aria-orientation="vertical" data-orientation="vertical">
+                            <TabList aria-label={__("reader.navigation.settingsTitle")} ref={tabModeRef} aria-orientation="vertical" data-orientation="vertical">
                                 {TabTriggers}
                             </TabList>
                             <AllowCustomContainer />

@@ -675,7 +675,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                 {
                     dockedMode ? <></> :
                         <>
-                            <TabList ref={tabModeRef} className={stylesSettings.settings_tabslist} aria-orientation="vertical" data-orientation="vertical">
+                            <TabList aria-label={__("reader.navigation.openTableOfContentsTitle")} ref={tabModeRef} className={stylesSettings.settings_tabslist} aria-orientation="vertical" data-orientation="vertical">
                                 {TabTriggers}
                             </TabList>
                             <TabTitle value={section} />

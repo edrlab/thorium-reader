@@ -115,7 +115,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
                     </VisuallyHidden.Root>
                 }
                 <Tabs selectedKey={selectedTab} onSelectionChange={(key) => setSelectedTab(key.toString())} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
-                    <TabList className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
+                    <TabList aria-label={__("header.settingsLabel")} className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
                         <Tab id="tab1">
                             <SVG ariaHidden svg={CogIcon} />
                             <span dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.general")}</span>
