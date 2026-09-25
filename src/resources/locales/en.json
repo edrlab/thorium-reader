@@ -792,6 +792,8 @@
             "captionsDescription": "Simplified text view with minimal captions styling.",
             "disableContinuousPlay": "Disable continuous play",
             "disableContinuousPlayDescription": "Do not automatically play the next item, pause immediately after the current item has finished playing.",
+            "interactiveLinks": "Enable interactive links",
+            "interactiveLinksDescription": "For interactive books whose choices are links: links in the text stay clickable while the readaloud is playing or paused, clicking one opens the link and the readaloud continues there, and at the end of a chapter the readaloud waits for your choice instead of turning the page.",
             "ignoreAndUseTTS": "Ignore pre-recorded audio, use TTS",
             "ignoreAndUseTTSDescription": "Ignore EPUB Media Overlays, read with Text To Speech instead",
             "next": "Next Readaloud",
