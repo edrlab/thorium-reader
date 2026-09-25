@@ -168,7 +168,6 @@
         "deleteAnnotations": "メモを削除しますか？",
         "deleteAnnotationsText": "{{-count}} 件のメモを削除しますか？",
         "deleteBookmarks": "しおりを削除しますか？",
-        "deleteBookmarksText_other": "{{- count}} 件のしおりを削除してもよろしいですか？",
         "deleteFeed": "この図書目録を削除しますか？",
         "deletePublication": "この本を削除しますか？",
         "deletePublicationWithNotes": "",
@@ -264,7 +263,8 @@
         },
         "storage": {
             "recovery": {
-                "failure": ""
+                "failure": "",
+                "success": ""
             },
             "removed": "",
             "updateFailed": "",
@@ -1324,9 +1324,11 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount": "",
                 "title": ""
             }
         },

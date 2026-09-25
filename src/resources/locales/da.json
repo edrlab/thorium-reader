@@ -270,6 +270,7 @@
         "storage": {
             "recovery": {
                 "failure": "Gendannelsen af bogen fejlede.",
+                "success": "",
                 "success_one": "{{- count}} bog blev gendannet.",
                 "success_other": "{{- count}} bøger blev gendannet."
             },
@@ -1332,11 +1333,13 @@
                 "description": "Kontrollér lagerplads, for at finde bøger der kan gendannes.",
                 "dialog": {
                     "confirm": "Gendan",
+                    "description": "",
                     "description_one": "Thorium fandt {{- count}} bog på enheden, der mangler i databasen. Vil du importere denne tilbage til Thorium?",
                     "description_other": "Thorium fandt {{- count}} bøger på enheden, der mangler i databasen. Vil du importere disse tilbage til Thorium?",
                     "title": "Gendan bøger"
                 },
                 "none": "Der blev ikke fundet nogen bøger, der kan gendannes.",
+                "recoverableCount": "",
                 "recoverableCount_one": "{{- count}} bog kan gendannes med dens originale lagrings ID.",
                 "recoverableCount_other": "{{- count}} bøger kan gendannes med deres originale lagrings ID.",
                 "title": "Gendannelse"

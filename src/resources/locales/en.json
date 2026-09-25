@@ -270,6 +270,7 @@
         "storage": {
             "recovery": {
                 "failure": "Publication recovery failed.",
+                "success": "{{- count}} publication(s) recovered.",
                 "success_one": "{{- count}} publication recovered.",
                 "success_other": "{{- count}} publications recovered."
             },
@@ -1332,11 +1333,13 @@
                 "description": "Check publication storage to find publications that can be safely recovered.",
                 "dialog": {
                     "confirm": "Recover",
+                    "description": "Thorium found {{- count}} publication(s) on disk that is/are missing from the database. Do you want to import it/them back into Thorium?",
                     "description_one": "Thorium found {{- count}} publication on disk that is missing from the database. Do you want to import it back into Thorium?",
                     "description_other": "Thorium found {{- count}} publications on disk that are missing from the database. Do you want to import them back into Thorium?",
                     "title": "Recover publications"
                 },
                 "none": "No recoverable publications were found.",
+                "recoverableCount": "{{- count}} publication(s) can be recovered with the original storage identifier.",
                 "recoverableCount_one": "{{- count}} publication can be recovered with the original storage identifier.",
                 "recoverableCount_other": "{{- count}} publications can be recovered with the original storage identifier.",
                 "title": "Recovery"
