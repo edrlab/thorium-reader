@@ -18,6 +18,7 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP } from "readium-desktop/common/streamerProtocol";
 import { ICustomizationManifest, ICustomizationManifestColor } from "readium-desktop/common/readium/customization/manifest";
 import { contentTypeisOpdsAuth, parseContentType } from "readium-desktop/utils/contentType";
+import { logEvent } from "readium-desktop/renderer/common/analytics";
 
 
 // Logger
@@ -99,7 +100,10 @@ function* profileActivating(id: string): SagaGenerator<void> {
     const profileActivationHistory = yield* selectTyped((state: ICommonRootState) => state.customization.history);
 
     const profileHistoryFound = profileActivationHistory.find((profileHistory) => profileHistory.id === id);
-    const welcomeScreenNeeded = !profileHistoryFound || profileHistoryFound.version !== (new Date(manifestJson.modified || manifestJson.created)).getTime();
+    const manifestVersion = (new Date(manifestJson.modified || manifestJson.created)).getTime();
+    const welcomeScreenNeeded = !profileHistoryFound || (
+        profileHistoryFound.version !== undefined && profileHistoryFound.version !== manifestVersion
+    );
 
     yield* putTyped(customizationActions.welcomeScreen.build(welcomeScreenNeeded));
 
@@ -139,7 +143,8 @@ function* profileActivating(id: string): SagaGenerator<void> {
         yield* putTyped(customizationActions.triggerOpdsAuth.build(catalogLink.href, catalogLinkOpdsAuthenticateDocumentHref));
     }
 
-    yield* putTyped(customizationActions.addHistory.build(id, (new Date(manifestJson.modified || manifestJson.created)).getTime()));
+    yield* putTyped(customizationActions.addHistory.build(id, profileHistoryFound ? profileHistoryFound.version : manifestVersion));
+    yield* callTyped(logEvent, "profile_activate");
 }
 
 

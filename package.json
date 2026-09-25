@@ -428,6 +428,7 @@
     "ajv-formats": "^3.0.1",
     "classnames": "^2.5.1",
     "color": "^5.0.3",
+    "css-selector-parser": "^3.3.0",
     "css.escape": "^1.5.1",
     "cssesc": "^3.0.0",
     "debounce": "^3.0.0",

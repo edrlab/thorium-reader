@@ -136,9 +136,6 @@ export const CustomizationProfileDialog: React.FC = () => {
                         </div>
                     </AlertDialog.Description>
                     <div className={stylesAlertModals.AlertDialogButtonContainer} style={{justifyContent: "space-between", padding: "10px 20px"}}>
-                        <AlertDialog.Cancel asChild disabled={customization.lock.state !== "IDLE"} onClick={() => { dispatch(customizationActions.activating.build("")); }}>
-                            <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
-                        </AlertDialog.Cancel>
                         {customization.welcomeScreen.enable && profileInHistoryFound ? <div style={{ display: "flex", alignItems: "center", gap: "10px"}}>
                             <input
                             type="checkbox"
