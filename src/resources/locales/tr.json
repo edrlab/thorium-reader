@@ -78,7 +78,7 @@
         "deleteBook": "Sil",
         "deleteTag": "Etiketi sil",
         "description": "Tanım",
-        "downloaded": "",
+        "downloaded": "İndirilen",
         "emptyTagList": "Etiketsiz eserler.",
         "entry": {
             "continueReading": "Okumayı duraklat",
@@ -1304,12 +1304,12 @@
                 },
                 "edit": {
                     "confirm": "Dizini düzenle",
-                    "description": "İlave depolama alanının güncellenmesi dikkat gerektirir. Toryum sizin için mevcut eserleri taşımayacaktır; bunu el ile yapmanız gerekecek. Devam etmek istiyor musunuz?",
+                    "description": "İlave depolama alanının güncellenmesi dikkat gerektirir. Thorium sizin için mevcut eserleri taşımayacaktır; bunu el ile yapmanız gerekecek. Devam etmek istiyor musunuz?",
                     "title": "İlave depolama alanını güncelle"
                 },
                 "remove": {
                     "confirm": "Dizini kaldır",
-                    "description": "İlave depolama alanının kaldırılması dikkat gerektirir. Toryum sizin için mevcut eserleri taşımayacaktır; bunu manuel olarak yapmanız gerekecek. Devam etmek istiyor musunuz?",
+                    "description": "İlave depolama alanının kaldırılması dikkat gerektirir. Thorium sizin için mevcut eserleri taşımayacaktır; bunu manuel olarak yapmanız gerekecek. Devam etmek istiyor musunuz?",
                     "title": "İlave depolama alanını kaldır"
                 }
             },
@@ -1331,8 +1331,8 @@
                 "description": "Güvenli bir şekilde kurtarılabilecek eserleri bulmak için eser depolamasını denetleyin.",
                 "dialog": {
                     "confirm": "Kurtar",
-                    "description_one": "Toryum, diskte, veritabanında eksik olan {{- count}} eser buldu. Bunları Toryum'a tekrar içe aktarmak ister misiniz?",
-                    "description_other": "Toryum, diskte, veritabanında eksik olan {{- count}} eser buldu. Bunları Toryum'a tekrar içe aktarmak ister misiniz?",
+                    "description_one": "Thorium, diskte, veritabanında eksik olan {{- count}} eser buldu. Onu Thorium'a tekrar içe aktarmak ister misiniz?",
+                    "description_other": "Thorium, diskte, veritabanında eksik olan {{- count}} eser buldu. Onları Thorium'a tekrar içe aktarmak ister misiniz?",
                     "title": "Eserleri kurtar"
                 },
                 "none": "Kurtarılabilir eser bulunamadı.",
@@ -1350,7 +1350,7 @@
         },
         "telemetry": {
             "disableTelemetryMeasurements": "Telemetri ölçümlerini devre dışı bırak",
-            "disableTelemetryMeasurementsDescription": "Etkinleştirildiğinde, Toryum telemetri ölçümlerini göndermez.",
+            "disableTelemetryMeasurementsDescription": "Etkinleştirildiğinde, Thorium telemetri ölçümlerini göndermez.",
             "title": "Uzaktan ölçüm"
         },
         "theme": {
