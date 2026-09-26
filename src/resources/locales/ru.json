@@ -78,7 +78,7 @@
         "deleteBook": "Удалить",
         "deleteTag": "Удалить тег",
         "description": "Описание",
-        "downloaded": "",
+        "downloaded": "Загружено",
         "emptyTagList": "У вас нет электронной книги с тегами.",
         "entry": {
             "continueReading": "Продолжить чтение",
