@@ -27,6 +27,9 @@ import { diMainGet } from "../di";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+import {
+    isEpubPositionListPublication, publicationHasArchiveEntryLengths,
+} from "readium-desktop/common/readium/positions";
 // import { type Store } from "redux";
 // import { RootState } from "../redux/states";
 
@@ -72,6 +75,28 @@ export class PublicationViewConverter {
         if (_pubCache[identifier]) {
             delete _pubCache[identifier];
         }
+    }
+
+    private async upgradeLegacyPositionListCache(
+        publicationDocument: PublicationDocument,
+        cachedPublication: R2Publication,
+        epubPath: string,
+    ): Promise<R2Publication> {
+        if (!isEpubPositionListPublication(cachedPublication) ||
+            publicationHasArchiveEntryLengths(cachedPublication)) {
+            return cachedPublication;
+        }
+
+        debug("Refreshing legacy manifest cache with archive entry lengths");
+        const refreshedPublication = await PublicationParsePromise(epubPath);
+        refreshedPublication.freeDestroy();
+
+        if (cachedPublication.LCP) {
+            refreshedPublication.LCP = cachedPublication.LCP;
+        }
+
+        await this.updatePublicationCache(publicationDocument, refreshedPublication);
+        return refreshedPublication;
     }
 
     public async updateLcpCache(publicationDocument: PublicationDocumentWithoutTimestampable, r2LCP: LCP) {
@@ -120,6 +145,9 @@ export class PublicationViewConverter {
         const pubFolder = await this.publicationStorage.getPublicationPath(
             publicationDocument.identifier,
         );
+        const epubPath = await this.publicationStorage.getPublicationEpubPath(
+            publicationDocument.identifier,
+        );
 
         // debug("====> unmarshallR2Publication: ", pubFolder);
 
@@ -149,12 +177,12 @@ export class PublicationViewConverter {
                 } catch (_err) {}
             }
 
-            return r2Publication;
+            return this.upgradeLegacyPositionListCache(
+                publicationDocument,
+                r2Publication,
+                epubPath,
+            );
         }
-
-        const epubPath = await this.publicationStorage.getPublicationEpubPath(
-            publicationDocument.identifier,
-        );
 
         try {
             const manifestPath = path.join(pubFolder, "manifest.json");
@@ -182,9 +210,16 @@ export class PublicationViewConverter {
                 }
             } catch (_err) {}
 
-            await this.updatePublicationCache(publicationDocument, r2Publication);
+            const upgradedPublication = await this.upgradeLegacyPositionListCache(
+                publicationDocument,
+                r2Publication,
+                epubPath,
+            );
+            if (upgradedPublication === r2Publication) {
+                await this.updatePublicationCache(publicationDocument, r2Publication);
+            }
 
-            return r2Publication;
+            return upgradedPublication;
         } catch (err) {
             debug(err, " FALLBACK: parsing publication from filesystem ...");
 

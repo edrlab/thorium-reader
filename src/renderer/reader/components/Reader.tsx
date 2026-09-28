@@ -33,6 +33,10 @@ import { IReaderPdfConfig, IReaderRootState } from "readium-desktop/common/redux
 import { ok } from "readium-desktop/common/utils/assert";
 import { formatTime } from "readium-desktop/common/utils/time";
 import {
+    createReadiumPositionList, IReadiumPositionList, isEpubPositionListPublication,
+    mapLocatorToReadiumPosition,
+} from "readium-desktop/common/readium/positions";
+import {
     _APP_NAME, _APP_VERSION, _DIST_RELATIVE_URL, _NODE_MODULE_RELATIVE_URL, _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
 import * as DoubleArrowDownIcon from "readium-desktop/renderer/assets/icons/double_arrow_down_black_24dp.svg";
@@ -319,11 +323,14 @@ class Reader extends React.Component<IProps, IState> {
     // private blackoutDebounced: () => void;
 
     private screenPreviousNextTimerDebounce: number | undefined;
+    private readiumPositionList: IReadiumPositionList | undefined;
 
     constructor(props: IProps) {
         super(props);
 
         this.screenPreviousNextTimerDebounce = undefined;
+        this.readiumPositionList = isEpubPositionListPublication(props.r2Publication) ?
+            createReadiumPositionList(props.r2Publication) : undefined;
 
         this._ttsOrMoStateTimeout = undefined;
 
@@ -1377,6 +1384,7 @@ class Reader extends React.Component<IProps, IState> {
                     disableRTLFlip={this.props.disableRTLFlip}
                     isRTLFlip={this.isRTLFlip}
                     publicationView={this.props.publicationView}
+                    readiumPositionList={this.readiumPositionList}
 
                         />
                         : <></>
@@ -3092,6 +3100,13 @@ class Reader extends React.Component<IProps, IState> {
     private handleReadingLocationChange(locatorExtended: LocatorExtended) {
 
         ok(locatorExtended, "handleReadingLocationChange loc KO");
+
+        if (this.readiumPositionList) {
+            locatorExtended.locator = mapLocatorToReadiumPosition(
+                locatorExtended.locator,
+                this.readiumPositionList,
+            );
+        }
 
         // if (this.isFixedLayout()) {
         //     this.setState({ blackoutMask: false });
