@@ -99,7 +99,7 @@ export class TagManager extends React.Component<IProps> {
 }
 
 const mapStateToProps = (state: IReaderRootState) => ({
-    tagArray: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoReader])?.publication?.tags,
+    tagArray: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoReader])?.publication?.tags ?? [],
     pubId: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoReader])?.publication?.identifier,
     publication: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoReader])?.publication,
     locale: state.i18n.locale, // refresh

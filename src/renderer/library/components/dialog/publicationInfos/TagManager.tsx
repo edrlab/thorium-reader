@@ -105,7 +105,7 @@ class TagManager extends React.Component<IProps> {
 }
 
 const mapStateToProps = (state: ILibraryRootState) => ({
-    tagArray: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication?.tags,
+    tagArray: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication?.tags ?? [],
     pubId: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication?.identifier,
     publication: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication,
     location: state.router.location,
