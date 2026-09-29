@@ -55,62 +55,85 @@ class TagManager extends React.Component<IProps> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __ } = this.props;
+        const { __, location, publication, pubId, tagArray } = this.props;
+
+        if (!__) {
+            return <></>;
+        }
 
         const setTagsCb =
-            (tagsArray: string[]) =>
-                this.props.setTags(
-                    this.props.pubId,
-                    this.props.publication as PublicationView,
-                    tagsArray,
-                );
+            (tagsArray: string[]) => {
+                if (publication && pubId) {
+                    this.props.setTags(
+                        pubId,
+                        publication,
+                        tagsArray,
+                    );
+                }
+            };
 
         const updateTagsCb =
             (index: number) =>
                 () =>
-                    deleteTag(this.props.tagArray, setTagsCb)(index);
+                    deleteTag(tagArray, setTagsCb)(index);
 
         return (
             <section className={stylePublication.publicationInfo_tagContainer}>
                 <div className={classNames(stylePublication.publicationInfo_heading,stylePublication.tag_list )}>
-                    <h3>{__("catalog.tags")} {this.props.tagArray?.length > 0 ? ":" : ""}</h3>
-                    <TagList tagArray={this.props.tagArray}>
+                    <h3>{__("catalog.tags")} {tagArray.length > 0 ? ":" : ""}</h3>
+                    <TagList tagArray={tagArray}>
                         {
                             (tag, index) =>
                                 <TagButton
                                     tag={tag}
                                     index={index}
-                                    pubId={this.props.pubId}
-                                    onClickDeleteCb={updateTagsCb}
+                                    pubId={pubId}
+                                    onClickDeleteCb={publication && pubId ? updateTagsCb : undefined}
                                     onClickLinkCb={
                                         (_tag) => () => {
-                                            this.props.link(_tag.link[0], this.props.location, _tag.name);
+                                            const tagLink = _tag.link?.[0];
+                                            if (tagLink && location) {
+                                                this.props.link(tagLink, location, _tag.name);
+                                            }
                                         }
                                     }
-                                    location={this.props.location}
+                                    location={location}
                                 >
                                 </TagButton>
                                 // <GridTagButton name={tag as string} key={index} />
                         }
                     </TagList>
                 </div>
-                <AddTag
-                    pubId={this.props.pubId}
-                    tagArray={this.props.tagArray}
-                    setTags={setTagsCb}
-                />
+                {
+                    publication && pubId
+                        ? <AddTag
+                            pubId={pubId}
+                            tagArray={tagArray}
+                            setTags={setTagsCb}
+                        />
+                        : undefined
+                }
             </section>
         );
     }
 }
 
-const mapStateToProps = (state: ILibraryRootState) => ({
-    tagArray: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication?.tags ?? [],
-    pubId: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication?.identifier,
-    publication: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication,
-    location: state.router.location,
-    locale: state.i18n.locale, // refresh
-});
+const mapStateToProps = (state: ILibraryRootState) => {
+    const publication = state.dialog.type === DialogTypeName.PublicationInfoLib
+        ? (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication
+        : undefined;
+    const opdsPublication = state.dialog.type === DialogTypeName.PublicationInfoOpds
+        ? (state.dialog.data as DialogType[DialogTypeName.PublicationInfoOpds])?.publication
+        : undefined;
+
+    return {
+        tagArray: publication?.tags ?? opdsPublication?.tags ?? [],
+        pubId: publication?.identifier,
+        publication,
+        location: state.router.location,
+        locale: state.i18n.locale, // refresh
+    };
+};
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => ({
     setTags: (pubId: string, publication: PublicationView, tagsName: string[]) => {

@@ -6,17 +6,17 @@
 // ==LICENSE-END==
 
 import { TPublication } from "readium-desktop/common/type/publication.type";
-import { IOpdsFeedView } from "readium-desktop/common/views/opds";
+import { IOpdsFeedView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 import { IReaderDialogOrDockSettingsMenuState } from "./reader";
 
-interface IPubInfoState {
-    publication?: TPublication;
+interface IPubInfoState<T extends TPublication = TPublication> {
+    publication?: T;
     coverZoom?: boolean;
 }
-interface IPubInfoStateReader extends IPubInfoState {
+interface IPubInfoStateReader extends IPubInfoState<PublicationView> {
     focusWhereAmI: boolean;
     pdfPlayerNumberOfPages: number | undefined; // super hacky :(
     divinaNumberOfPages: number | undefined; // super hacky :(
@@ -54,8 +54,8 @@ export interface DialogType {
     [DialogTypeName.FileImport]: {
         files: IFileImport[];
     };
-    [DialogTypeName.PublicationInfoOpds]: IPubInfoState;
-    [DialogTypeName.PublicationInfoLib]: IPubInfoState;
+    [DialogTypeName.PublicationInfoOpds]: IPubInfoState<IOpdsPublicationView>;
+    [DialogTypeName.PublicationInfoLib]: IPubInfoState<PublicationView>;
     [DialogTypeName.PublicationInfoReader]: IPubInfoStateReader;
     [DialogTypeName.OpdsFeedAddForm]: {};
     [DialogTypeName.OpdsFeedUpdateForm]: {
