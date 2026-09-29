@@ -691,6 +691,9 @@
         "notStarted": "Nicht begonnen",
         "onGoing": "Im Gange",
         "progression": {
+            "footerPositionOfTotal": "",
+            "positionOfTotal": "",
+            "resourceOfTotal": "",
             "title": "Fortschritt"
         },
         "read": "Fertig gelesen",

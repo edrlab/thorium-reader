@@ -1,7 +1,9 @@
 import { expect, test } from "@jest/globals";
 
 import {
+    createReadiumPositionIndex,
     createReadiumPositionList,
+    getReadiumPositionProgression,
     isEpubPositionListPublication,
     mapLocatorToReadiumPosition,
     publicationHasArchiveEntryLengths,
@@ -65,6 +67,20 @@ test("generates one-based Readium positions from archive entry lengths", () => {
     ]);
 });
 
+test("builds a lightweight position index without generating locators", () => {
+    const publication = createPublication([createLink("chapter-1.xhtml", 1024), createLink("chapter-2.xhtml", 2048)]);
+
+    const result = createReadiumPositionIndex(publication);
+
+    expect(result).toEqual({
+        resources: [
+            expect.objectContaining({ firstPosition: 1, href: "chapter-1.xhtml", positionCount: 1 }),
+            expect.objectContaining({ firstPosition: 2, href: "chapter-2.xhtml", positionCount: 2 }),
+        ],
+        total: 3,
+    });
+});
+
 test("uses effective fixed layout and falls back to one position without metadata", () => {
     const publication = createPublication(
         [
@@ -112,6 +128,37 @@ test("maps a current locator to its discrete position and continuous total progr
     );
     expect(atEnd.locations.position).toBe(4);
     expect(atEnd.locations.totalProgression).toBe(1);
+});
+
+test("resolves progression data from the continuous locator value with a discrete fallback", () => {
+    const publication = createPublication([createLink("chapter-1.xhtml", 1024), createLink("chapter-2.xhtml", 3072)]);
+    const positionIndex = createReadiumPositionIndex(publication);
+
+    expect(
+        getReadiumPositionProgression(
+            {
+                href: "https://epub.example.org/chapter-2.xhtml#paragraph",
+                locations: { position: 3, totalProgression: 0.625 },
+            },
+            positionIndex,
+        ),
+    ).toEqual({
+        firstPosition: 2,
+        lastPosition: 4,
+        position: 3,
+        totalPositions: 4,
+        totalProgression: 0.625,
+    });
+
+    expect(
+        getReadiumPositionProgression(
+            {
+                href: "chapter-2.xhtml",
+                locations: { position: 3 },
+            },
+            positionIndex,
+        )?.totalProgression,
+    ).toBe(0.5);
 });
 
 test("detects EPUB archive metadata completeness", () => {

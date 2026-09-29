@@ -715,6 +715,9 @@
         "notStarted": "لم يبدأ",
         "onGoing": "جارٍ التنفيذ",
         "progression": {
+            "footerPositionOfTotal": "",
+            "positionOfTotal": "",
+            "resourceOfTotal": "",
             "title": "التقدّم في القراءة"
         },
         "read": "انتهى",

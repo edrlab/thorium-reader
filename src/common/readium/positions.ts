@@ -23,10 +23,21 @@ export interface IReadiumPositionResource {
     positionCount: number;
 }
 
-export interface IReadiumPositionList {
+export interface IReadiumPositionIndex {
     total: number;
-    positions: Locator[];
     resources: IReadiumPositionResource[];
+}
+
+export interface IReadiumPositionList extends IReadiumPositionIndex {
+    positions: Locator[];
+}
+
+export interface IReadiumPositionProgression {
+    firstPosition: number;
+    lastPosition: number;
+    position: number;
+    totalPositions: number;
+    totalProgression: number;
 }
 
 function isFixedLayout(publication: Publication, link: Link): boolean {
@@ -60,7 +71,7 @@ export function publicationHasArchiveEntryLengths(publication: Publication): boo
     });
 }
 
-export function createReadiumPositionList(publication: Publication): IReadiumPositionList {
+export function createReadiumPositionIndex(publication: Publication): IReadiumPositionIndex {
     let nextPosition = 1;
     const resources = (publication.Spine || []).map<IReadiumPositionResource>((link) => {
         const resource: IReadiumPositionResource = {
@@ -73,7 +84,11 @@ export function createReadiumPositionList(publication: Publication): IReadiumPos
         nextPosition += resource.positionCount;
         return resource;
     });
-    const total = nextPosition - 1;
+    return { resources, total: nextPosition - 1 };
+}
+
+export function createReadiumPositionList(publication: Publication): IReadiumPositionList {
+    const { resources, total } = createReadiumPositionIndex(publication);
     const positions: Locator[] = [];
 
     for (const resource of resources) {
@@ -100,6 +115,47 @@ function clampProgression(value: number | undefined): number {
         return 0;
     }
     return Math.min(1, Math.max(0, value));
+}
+
+export function getReadiumPositionProgression(
+    locator: Locator,
+    positionIndex: IReadiumPositionIndex | undefined,
+    resourceHref: string = locator.href,
+): IReadiumPositionProgression | undefined {
+    const position = locator.locations.position;
+    if (!positionIndex || positionIndex.total <= 0 ||
+        typeof position !== "number" || !Number.isInteger(position) ||
+        position <= 0 || position > positionIndex.total) {
+        return undefined;
+    }
+
+    const matchedHref = resolveReadiumAnnotationSourceHref(
+        resourceHref,
+        positionIndex.resources.map((resource) => resource.href),
+    );
+    const resource = positionIndex.resources.find((candidate) => candidate.href === matchedHref);
+    if (!resource) {
+        return undefined;
+    }
+
+    const firstPosition = resource.firstPosition;
+    const lastPosition = firstPosition + resource.positionCount - 1;
+    if (position < firstPosition || position > lastPosition) {
+        return undefined;
+    }
+
+    const locatorTotalProgression = locator.locations.totalProgression;
+
+    return {
+        firstPosition,
+        lastPosition,
+        position,
+        totalPositions: positionIndex.total,
+        // A live locator can provide a smooth percentage inside the current position bucket.
+        // Older locators only contain a discrete position, so use the Readium fallback formula.
+        totalProgression: typeof locatorTotalProgression === "number" && Number.isFinite(locatorTotalProgression) ?
+            clampProgression(locatorTotalProgression) : (position - 1) / positionIndex.total,
+    };
 }
 
 export function mapLocatorToReadiumPosition(

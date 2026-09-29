@@ -691,6 +691,9 @@
         "notStarted": "Niet gestart",
         "onGoing": "Bezig",
         "progression": {
+            "footerPositionOfTotal": "",
+            "positionOfTotal": "",
+            "resourceOfTotal": "",
             "title": "Voortgang"
         },
         "read": "Klaar",

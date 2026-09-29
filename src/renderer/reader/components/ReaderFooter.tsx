@@ -42,6 +42,8 @@ import { connect } from "react-redux";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { logEvent } from "readium-desktop/renderer/common/analytics";
+import { formatReadiumFooterPositionProgression } from "readium-desktop/renderer/common/readiumPositionProgression";
+import { getReadiumPositionProgression } from "readium-desktop/common/readium/positions";
 import type { IReadiumPositionList } from "readium-desktop/common/readium/positions";
 
 const isFixedLayout = (link: Link, publication: R2Publication): boolean => {
@@ -458,9 +460,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                                     id={stylesReaderFooter.arrow_box}
                                                                     style={this.getStyle()}
                                                                 >
-                                                                    <span>{`[${this.getCurrentChapter(link)+1} / ${this.getTotalChapters()}] `} {
-                                                                        isPdf ? "" :
-                                                                        ` ${link.Title ? `${link.Title}${atCurrentLocation && spineTitle ? ` (${spineTitle})` : ""}` : (atCurrentLocation && spineTitle ? spineTitle : "")}`}</span>
+                                                                    <span>{this.getResourceLabel(link, atCurrentLocation, isPdf)}</span>
                                                                     {atCurrentLocation ?
                                                                         this.getProgression(link, isAudioBook).map((str, i) => {
                                                                             return !str ? <></> :
@@ -494,6 +494,13 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                 }
             </div>
         );
+    }
+
+    // Keep resource indexes one-based in the user-facing footer label.
+    private getResourceLabel(link: Link, atCurrentLocation: boolean, isPdf: boolean): string {
+        const title = isPdf ? "" :
+            (atCurrentLocation ? this.props.currentLocation.locator.title || link.Title : link.Title);
+        return `[${this.getCurrentChapter(link) + 1}/${this.getTotalChapters()}]${title ? ` ${title}` : ""}`;
     }
 
     // 0-based
@@ -583,26 +590,11 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         const fallbackGlobalProgression = totalChapters > 0 ?
             ((isPdf ? 1 : localProgression) + Math.max(0, currentChapter)) / totalChapters : 0;
 
-        let positionLabel = "";
-        const position = locations.position;
-        const totalPositions = this.props.readiumPositionList?.total || 0;
-        let positionProgression: number | undefined;
-        if (typeof position === "number" && Number.isInteger(position) &&
-            position > 0 && position <= totalPositions) {
-            positionProgression = (position - 1) / totalPositions;
-            positionLabel = `#${position}/${totalPositions}`;
-
-            const positionResource = this.props.readiumPositionList?.resources.find(
-                (resource) => resource.href === link.Href,
-            );
-            if (positionResource) {
-                const firstPosition = positionResource.firstPosition;
-                const lastPosition = firstPosition + positionResource.positionCount - 1;
-                const positionRange = firstPosition === lastPosition ?
-                    `#${firstPosition}` : `#${firstPosition}\u2013#${lastPosition}`;
-                positionLabel += ` [${positionRange}]`;
-            }
-        }
+        const readiumPositionProgression = getReadiumPositionProgression(
+            currentLocation.locator,
+            this.props.readiumPositionList,
+            link.Href,
+        );
 
         const locatorTotalProgression = typeof locations.totalProgression === "number" &&
             Number.isFinite(locations.totalProgression) ?
@@ -610,14 +602,12 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
         // Prefer the continuous locator value for a smooth user-facing percentage. If it is absent,
         // fall back to the discrete Readium position, then to the legacy equal-chapter approximation.
-        const globalProgression = locatorTotalProgression ??
-            positionProgression ?? Math.min(1, Math.max(0, fallbackGlobalProgression));
+        const globalProgression = readiumPositionProgression?.totalProgression ??
+            locatorTotalProgression ?? Math.min(1, Math.max(0, fallbackGlobalProgression));
 
-        // Keep the discrete position as current/total instead of showing a second percentage which
-        // can differ slightly from the continuous locator percentage inside a position bucket.
-        const globalProgressionLabel =
-            `${__("publication.progression.title")} ${Math.round(globalProgression * 100)}%` +
-            (positionLabel ? ` \u00b7 ${positionLabel}` : "");
+        const globalProgressionLabel = readiumPositionProgression ?
+            formatReadiumFooterPositionProgression(__, readiumPositionProgression) :
+            `${__("publication.progression.title")} ${Math.round(globalProgression * 100)}%`;
 
         if (currentLocation.paginationInfo) {
             return [
