@@ -150,8 +150,10 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             <TabPanels>
                             <TabPanel id="tab-general">
                             <div className={stylesSettings.settings_tab}>
-                                <LanguageSettings />
-                                <Themes />
+                                <section className={stylesSettings.section} style={{ gap: "10px" }}>
+                                    <LanguageSettings />
+                                    <Themes />
+                                </section>
                                 <ScreenReaderSettings />
                                 <WindowBehaviorSettings />
                                 {/* <SaveSessionSettings /> */}
@@ -177,9 +179,11 @@ export const Settings: React.FC<ISettingsProps> = () => {
                                 <ConnectionSettings />
                                 <ManageAccessToCatalogSettings />
                                 <SharedComputerSettings />
-                                <SaveCreatorSettings />
+                                <section className={stylesSettings.section} style={{ gap: "10px" }}>
+                                    <SaveCreatorSettings />
+                                    <OverloadNoteExportToHtml /> 
+                                </section>
                                 <TelemetrySettings />
-                                <OverloadNoteExportToHtml /> 
                             </div>
                         </TabPanel>
                         </TabPanels>
