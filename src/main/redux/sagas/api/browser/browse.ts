@@ -19,20 +19,16 @@ import { SagaGenerator } from "typed-redux-saga";
 import { call as callTyped } from "typed-redux-saga/macro";
 import { authenticationRequestFromLibraryWebServiceURL, convertLoansPublicationToOpdsPublicationsRawJson, getEndpointFromAuthenticationRequest, getLoansPublicationFromLibrary } from "../../apiapp";
 import isURL from "readium-desktop/common/utils/isURL";
-import { URL_PROTOCOL_APP_HANDLER_OPDS } from "readium-desktop/common/streamerProtocol";
+import { getOpdsTransportUrls, requestOpdsUrl } from "readium-desktop/main/network/opds-url";
 
 const debug = debug_("readium-desktop:main#redux/saga/api/browser");
 
 const checkUrl = (url: string) => {
     try {
-        // OR: if (url.startsWith(`${URL_PROTOCOL_APP_HANDLER_OPDS}://`))
-        if (new URL(url).protocol === `${URL_PROTOCOL_APP_HANDLER_OPDS}:`) {
-            url = url.replace(`${URL_PROTOCOL_APP_HANDLER_OPDS}://`, "http://"); // HTTP to HTTPS redirect should be handled by the server
-        }
+        return getOpdsTransportUrls(url);
     } catch (e: any) {
         throw new Error(`Not a valid URL ${e.message || e}`);
     }
-    return url;
 };
 
 export function* browse(urlRaw: string): SagaGenerator<THttpGetBrowserResultView>  {
@@ -144,9 +140,11 @@ export function* browse(urlRaw: string): SagaGenerator<THttpGetBrowserResultView
         }
     }
 
-    const url = checkUrl(urlRaw);
+    const { primaryUrl: url, httpFallbackUrl } = checkUrl(urlRaw);
     // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
-    if (!url || !isURL(url)) {
+    // A local opds:// URL is deliberately accepted even when the compile-time TLD
+    // policy rejects its localhost, private-IP, or single-label hostname.
+    if (!url || (!isURL(url) && !httpFallbackUrl)) {
         debug("isURL() NOK", url);
         return {
             url: "",
@@ -154,84 +152,98 @@ export function* browse(urlRaw: string): SagaGenerator<THttpGetBrowserResultView
             isSuccess: false,
         };
     }
-    const result = yield* callTyped(() => httpGet<IBrowserResultView>(
-        url,
-        undefined,
-        async (data) => {
+    const transformResult = async (data: IHttpGetResult<IBrowserResultView>) => {
+        // Keep network errors inspectable until the HTTPS-first OPDS transport
+        // policy has decided whether a local HTTP fallback is allowed.
+        if (data.isNetworkError) {
+            return data;
+        }
+
+        const {
+            url: _baseUrl,
+            contentType: _contentType,
+            statusMessage, isFailure,
+            isNetworkError,
+            isAbort,
+            isTimeout,
+        } = data;
+
+        const baseUrl = `${_baseUrl}`;
+        const contentType = parseContentType(_contentType);
+
+        // parse Problem details and return
+        if (contentTypeisApiProblem(contentType)) {
+            const json = await data.response.json();
             const {
-                url: _baseUrl,
-                contentType: _contentType,
-                statusMessage, isFailure,
-                isNetworkError,
-                isAbort,
-                isTimeout,
-            } = data;
+                type,
+                title,
+                status,
+                detail,
+                instance,
+            } = json as IProblemDetailsResultView;
+            data.data = {
+                problemDetails: {
+                    type: typeof type === "string" ? type : undefined,
+                    title: typeof title === "string" ? title : undefined,
+                    status: typeof status === "number" ? status : undefined,
+                    detail: typeof detail === "string" ? detail : undefined,
+                    instance: typeof instance === "string" ? instance : undefined,
+                },
+            };
+            return data;
+        }
 
-            const baseUrl = `${_baseUrl}`;
-            const contentType = parseContentType(_contentType);
+        // Web catalogs are routed by the library renderer to the system browser.
+        // Keep the successful response metadata (notably the final response URL),
+        // but do not attempt to parse the HTML body as OPDS.
+        if (contentType === ContentType.Html) {
+            return data;
+        }
 
-            // parse Problem details and return
-            if (contentTypeisApiProblem(contentType)) {
-                const json = await data.response.json();
-                const {
-                    type,
-                    title,
-                    status,
-                    detail,
-                    instance,
-                } = json as IProblemDetailsResultView;
-                data.data = {
-                    problemDetails: {
-                        type: typeof type === "string" ? type : undefined,
-                        title: typeof title === "string" ? title : undefined,
-                        status: typeof status === "number" ? status : undefined,
-                        detail: typeof detail === "string" ? detail : undefined,
-                        instance: typeof instance === "string" ? instance : undefined,
-                    },
-                };
-                return data;
-            }
+        // parse OPDS and return
+        const dataFromOpdsParser = await opdsService.opdsRequestTransformer(data as IHttpGetResult<IOpdsResultView>);
+        if (dataFromOpdsParser) {
+            data.data = {
+                opds: dataFromOpdsParser,
+            };
+            return data;
+        }
 
-            // Web catalogs are routed by the library renderer to the system browser.
-            // Keep the successful response metadata (notably the final response URL),
-            // but do not attempt to parse the HTML body as OPDS.
-            if (contentType === ContentType.Html) {
-                return data;
-            }
+        // Failed :
 
-            // parse OPDS and return
-            const dataFromOpdsParser = await opdsService.opdsRequestTransformer(data as IHttpGetResult<IOpdsResultView>);
-            if (dataFromOpdsParser) {
-                data.data = {
-                    opds: dataFromOpdsParser,
-                };
-                return data;
-            }
-
-            // Failed :
-
-            if (!data.isSuccess) {
-                // example:
-                // 'Bearer error="insufficient_access", error_description="The user represented by the token is not allowed to perform the requested action.", error_uri="https://documentation.openiddict.com/errors/ID2095"'
-                data.response?.headers.forEach((value, key) => {
-                    debug(`HTTP RESPONSE HEADER '${key}' ==> '${value}'`);
-                });
-                const wwwAuthenticate = data.response?.headers.get("WWW-Authenticate");
-                if (wwwAuthenticate) {
-                    console.log("www-authenticate:", data.response?.headers.get("WWW-Authenticate")); // case-insensitve (actual "www-authenticate")
-                    if (wwwAuthenticate.startsWith("Bearer") && wwwAuthenticate.includes("error=")) {
-                        throw new Error(`www-authenticate ERROR: ${data.statusCode}/${statusMessage} -- ${wwwAuthenticate} (${baseUrl})`);
-                    }
+        if (!data.isSuccess) {
+            // example:
+            // 'Bearer error="insufficient_access", error_description="The user represented by the token is not allowed to perform the requested action.", error_uri="https://documentation.openiddict.com/errors/ID2095"'
+            data.response?.headers.forEach((value, key) => {
+                debug(`HTTP RESPONSE HEADER '${key}' ==> '${value}'`);
+            });
+            const wwwAuthenticate = data.response?.headers.get("WWW-Authenticate");
+            if (wwwAuthenticate) {
+                console.log("www-authenticate:", data.response?.headers.get("WWW-Authenticate")); // case-insensitve (actual "www-authenticate")
+                if (wwwAuthenticate.startsWith("Bearer") && wwwAuthenticate.includes("error=")) {
+                    throw new Error(`www-authenticate ERROR: ${data.statusCode}/${statusMessage} -- ${wwwAuthenticate} (${baseUrl})`);
                 }
             }
+        }
 
-            ok(data.isSuccess, `message: ${data.statusCode}/${statusMessage} | url: ${baseUrl} | type: ${_contentType} | code: ${+isFailure}${+isNetworkError}${+isAbort}${+isTimeout}`);
+        ok(data.isSuccess, `message: ${data.statusCode}/${statusMessage} | url: ${baseUrl} | type: ${_contentType} | code: ${+isFailure}${+isNetworkError}${+isAbort}${+isTimeout}`);
 
-            debug(`unknown url content-type : ${baseUrl} - ${contentType}`);
-            throw new Error(
-                `Not a valid OPDS HTTP Content-Type for ${baseUrl} (${contentType})`,
-            );
-        },
+        debug(`unknown url content-type : ${baseUrl} - ${contentType}`);
+        throw new Error(
+            `Not a valid OPDS HTTP Content-Type for ${baseUrl} (${contentType})`,
+        );
+    };
+
+    const result = yield* callTyped(() => requestOpdsUrl<IBrowserResultView>(
+        urlRaw,
+        (requestUrl) => httpGet<IBrowserResultView>(requestUrl, undefined, transformResult),
     ));
+
+    // No fallback was available, or the local HTTP fallback also failed.
+    // Preserve the existing browse behavior, which reports network failures as errors.
+    if (result.isNetworkError) {
+        yield* callTyped(() => transformResult(result));
+    }
+
     return result;
 }
