@@ -148,9 +148,9 @@
         "annotations": {
             "descAuthor": "經由 '{{- author}}'",
             "descCreator": "創建者",
-            "descList": "{{- count}} 註解 {{- creator}} 將會被匯入到 '{{- title}}' {{- author}}",
-            "descNewer": "衝突：{{- count}} 個較新的註解",
-            "descOlder": "衝突：{{- count}} 個舊註解",
+            "descList_other": "{{- count}} 註解 {{- creator}} 將會被匯入到 '{{- title}}' {{- author}}",
+            "descNewer_other": "衝突：{{- count}} 個較新的註解",
+            "descOlder_other": "衝突：{{- count}} 個舊註解",
             "descTitle": "註解標題： ",
             "importAll": "匯入所有註解",
             "importWithoutConflict": "僅匯入無衝突的註解",
