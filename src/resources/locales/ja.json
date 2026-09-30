@@ -167,7 +167,7 @@
             }
         },
         "deleteAnnotations": "メモを削除しますか？",
-        "deleteAnnotationsText": "{{-count}} 件のメモを削除しますか？",
+        "deleteAnnotationsText_other": "{{-count}} 件のメモを削除しますか？",
         "deleteBookmarks": "しおりを削除しますか？",
         "deleteFeed": "この図書目録を削除しますか？",
         "deletePublication": "この本を削除しますか？",
@@ -263,7 +263,8 @@
         },
         "storage": {
             "recovery": {
-                "failure": ""
+                "failure": "",
+                "success_other": ""
             },
             "removed": "",
             "updateFailed": "",
@@ -838,7 +839,7 @@
         },
         "picker": {
             "search": {
-                "founds": "（一致した数：{{- count}}）",
+                "founds_other": "（一致した数：{{- count}}）",
                 "input": "検索したい語句",
                 "next": "次へ",
                 "notFound": "一致しませんでした",
@@ -1322,9 +1323,11 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description_other": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount_other": "",
                 "title": ""
             }
         },
