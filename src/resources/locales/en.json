@@ -1342,7 +1342,6 @@
             }
         },
         "tabs": {
-            "advanced": "Advanced",
             "appearance": "Appearance",
             "general": "General",
             "keyboardShortcuts": "Keyboard shortcuts",
