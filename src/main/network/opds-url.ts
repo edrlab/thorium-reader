@@ -35,11 +35,34 @@ const isPrivateIpv4Address = (hostname: string): boolean => {
         (first === 192 && second === 168);
 };
 
+/**
+ * Returns whether a host is eligible for the legacy local HTTP fallback.
+ *
+ * Recognized DNS namespaces:
+ * - `localhost` and `*.localhost` are loopback names (RFC 6761).
+ * - `*.local` is reserved for link-local Multicast DNS / mDNS (RFC 6762); it
+ *   is not treated as a general-purpose private DNS suffix.
+ * - `*.home.arpa` is reserved for residential home networks (RFC 8375).
+ * - A single-label name is treated as a local/intranet hostname by Thorium
+ *   policy, not because it belongs to an IETF-reserved private namespace.
+ *
+ * Other special-use names are deliberately excluded: `.invalid`, `.test`, and
+ * `.example` are for invalid/test/documentation use (RFC 2606 and RFC 6761),
+ * while `.onion` identifies Tor onion services (RFC 7686). Private-looking
+ * suffixes such as `.lan`, `.corp`, `.private`, `.home`, and `.internal` are
+ * likewise not accepted merely because of their suffix.
+ *
+ * Numeric hosts are accepted only when they are loopback, unspecified,
+ * link-local, carrier-grade NAT, or private-use IPv4/IPv6 address ranges.
+ */
 export const isLocalOrPrivateHostname = (hostname: string): boolean => {
     const normalizedHostname = normalizeHostname(hostname);
 
-    if (!normalizedHostname ||
-        normalizedHostname === "localhost" ||
+    if (!normalizedHostname) {
+        return false;
+    }
+
+    if (normalizedHostname === "localhost" ||
         normalizedHostname.endsWith(".localhost") ||
         normalizedHostname.endsWith(".local") ||
         normalizedHostname.endsWith(".home.arpa") ||

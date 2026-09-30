@@ -97,6 +97,17 @@ describe("OPDS URL transport policy", () => {
         expect(isLocalOrPrivateHostname(hostname)).toBe(true);
     });
 
+    it.each([
+        "",
+        "example.test",
+        "service.example",
+        "hiddenservice.onion",
+        "server.internal",
+        "example.com",
+    ])("does not infer that %s is local", (hostname) => {
+        expect(isLocalOrPrivateHostname(hostname)).toBe(false);
+    });
+
     it("uses HTTPS only when it succeeds", async () => {
         const request = jest.fn(async (url: string) => success(url));
 
