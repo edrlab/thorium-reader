@@ -88,6 +88,7 @@ export interface IOpdsNavigationLinkView {
     subtitle?: string;
     url: string;
     numberOfItems?: number;
+    properties?: IOPDSPropertiesView;
     active?: boolean;
 }
 
@@ -130,7 +131,14 @@ export interface IOpdsAuthView {
     oauthRefreshUrl: string;
 }
 
+export interface IOpdsAuthenticationLinkView {
+    url: string;
+    type?: string;
+    title?: string;
+}
+
 export interface IOPDSPropertiesView {
+    authenticate?: IOpdsAuthenticationLinkView;
     indirectAcquisitionTypes?: { top: string, child: string | undefined} | undefined;
     numberOfItems?: number | undefined;
     priceValue?: number | undefined;
