@@ -9,9 +9,9 @@ import debug_ from "debug";
 import { inject, injectable } from "inversify";
 import moment from "moment";
 import {
-    IOpdsAuthenticationLinkView, IOpdsAuthView, IOpdsCoverView, IOpdsFeedMetadataView,
-    IOpdsFeedView, IOpdsGroupView, IOpdsLinkView, IOpdsNavigationLink, IOpdsNavigationLinkView,
-    IOPDSPropertiesView, IOpdsPublicationView, IOpdsResultView, IOpdsTagView,
+    IOpdsAuthView, IOpdsCoverView, IOpdsFeedMetadataView, IOpdsFeedView, IOpdsGroupView,
+    IOpdsLinkView, IOpdsNavigationLink, IOpdsNavigationLinkView, IOPDSPropertiesView,
+    IOpdsPublicationView, IOpdsResultView, IOpdsTagView,
 } from "readium-desktop/common/views/opds";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { getOpdsFeedColor, getOpdsFeedIcon } from "readium-desktop/common/models/opds";
@@ -93,42 +93,6 @@ const supportedFileTypeLinksForPayWallAcquisition = [
     ContentType.Xml,
     ContentType.AtomXml,
 ];
-
-export const normalizeOpdsAuthenticationLink = (
-    authenticate: unknown,
-    baseUrl: string,
-): IOpdsAuthenticationLinkView | undefined => {
-    if (!authenticate || typeof authenticate !== "object" || Array.isArray(authenticate)) {
-        return undefined;
-    }
-
-    const {
-        href,
-        type,
-        title,
-    } = authenticate as { href?: unknown, type?: unknown, title?: unknown };
-
-    if (typeof href !== "string" || !href.trim() ||
-        (typeof type !== "undefined" && typeof type !== "string") ||
-        (typeof title !== "undefined" && typeof title !== "string")) {
-        return undefined;
-    }
-
-    try {
-        const authenticationLink: IOpdsAuthenticationLinkView = {
-            url: new URL(href.trim(), baseUrl).toString(),
-        };
-        if (typeof type === "string") {
-            authenticationLink.type = type;
-        }
-        if (typeof title === "string") {
-            authenticationLink.title = title;
-        }
-        return authenticationLink;
-    } catch {
-        return undefined;
-    }
-};
 
 @injectable()
 export class OpdsFeedViewConverter {
@@ -231,14 +195,10 @@ export class OpdsFeedViewConverter {
             subtitle,
             url: urlPathResolve(baseUrl, link.Href),
             numberOfItems: link.Properties && link.Properties.NumberOfItems,
-            properties: this.convertOpdsPropertiesToView(link.Properties, baseUrl),
         };
     }
 
-    public convertOpdsPropertiesToView(
-        properties: TProperties | undefined,
-        baseUrl: string,
-    ): IOPDSPropertiesView | undefined {
+    public convertOpdsPropertiesToView(properties: TProperties | undefined): IOPDSPropertiesView | undefined {
 
         if (properties) {
 
@@ -250,7 +210,6 @@ export class OpdsFeedViewConverter {
                 undefined;
 
             return {
-                authenticate: normalizeOpdsAuthenticationLink(properties.AdditionalJSON?.authenticate, baseUrl),
                 indirectAcquisitionTypes: indirectAcquisitions?.reduce<{ top: string, child: string | undefined} | undefined>((pv, cv) => {
                     if (typeof cv?.TypeAcquisition === "string") {
                         const child = cv.Children?.reduce<string | undefined>((pv_, cv_) => {
@@ -338,7 +297,7 @@ export class OpdsFeedViewConverter {
             type: ln.TypeLink,
             // length,
             // hash,
-            properties: this.convertOpdsPropertiesToView(ln.Properties, baseUrl),
+            properties: this.convertOpdsPropertiesToView(ln.Properties),
             rel: ln.Rel && ln.Rel.length > 0 ? ln.Rel[0] : undefined,
         };
     }
@@ -691,7 +650,7 @@ export class OpdsFeedViewConverter {
 
         const selfLink = new OPDSLink();
         selfLink.Title = title;
-        selfLink.Properties = Object.assign(new OPDSProperties(), lnFiltered?.Properties);
+        selfLink.Properties = new OPDSProperties();
         selfLink.Properties.NumberOfItems = nb;
         selfLink.Rel = lnFiltered?.Rel || undefined;
         selfLink.Href = lnFiltered?.Href || undefined;

@@ -90,7 +90,7 @@ export class OpdsService {
             responseUrl,
             contentType: _contentType,
         } = httpGetData;
-        const baseUrl = responseUrl || `${_baseUrl}`;
+        const baseUrl = `${_baseUrl}`;
         const contentType = parseContentType(_contentType);
 
         if (contentTypeisXml(contentType)) {
