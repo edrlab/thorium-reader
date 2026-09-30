@@ -148,9 +148,9 @@
         "annotations": {
             "descAuthor": "作者 “{{- author}}”",
             "descCreator": "创建者",
-            "descList": "{{- count}} 条笔记（由 {{- creator}} 创建）将被导入到“{{- title}}”（{{- author}} 著）中",
-            "descNewer": "冲突：{{- count}} 条较新的笔记",
-            "descOlder": "冲突：{{- count}} 条较旧的笔记",
+            "descList_other": "{{- count}} 条笔记（由 {{- creator}} 创建）将被导入到“{{- title}}”（{{- author}} 著）中",
+            "descNewer_other": "冲突：{{- count}} 条较新的笔记",
+            "descOlder_other": "冲突：{{- count}} 条较旧的笔记",
             "descTitle": "注释标题： ",
             "importAll": "导入所有笔记",
             "importWithoutConflict": "仅导入无冲突的笔记",
