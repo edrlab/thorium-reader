@@ -78,7 +78,7 @@
         "deleteBook": "Ta bort",
         "deleteTag": "Ta bort tagg",
         "description": "Beskrivning",
-        "downloaded": "",
+        "downloaded": "Nedladdad",
         "emptyTagList": "Inga böcker med tagg.",
         "entry": {
             "continueReading": "Fortsätt läsa",
@@ -1342,6 +1342,7 @@
             }
         },
         "tabs": {
+            "advanced": "Avancerat",
             "appearance": "Utseende",
             "general": "Allmänt",
             "keyboardShortcuts": "Kortkommandon",
