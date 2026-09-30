@@ -29,6 +29,7 @@ import type { IOpdsResultView } from "readium-desktop/common/views/opds";
 import { normalizeOpdsAuthenticationLink, OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { OpdsService } from "readium-desktop/main/services/opds";
 import { ContentType } from "readium-desktop/utils/contentType";
+import { OPDS_PROGRESSION_MEDIA_TYPE, OPDS_PROGRESSION_REL } from "readium-desktop/common/models/opdsProgression";
 
 const baseUrl = "https://example.org/catalog/feed.json";
 const authenticationType = "application/opds-authentication+json";
@@ -296,5 +297,67 @@ describe("OPDS authentication link hints", () => {
 
         expect(result.title).toBe(effectiveUrl);
         expect(convertOpdsFeedToView.mock.calls[0][1]).toBe(effectiveUrl);
+    });
+});
+
+describe("OPDS progression discovery", () => {
+    it("keeps only a link with both the exact progression relation and media type", () => {
+        const feed = TaJsonDeserialize(
+            {
+                metadata: { title: "Catalog" },
+                publications: [
+                    {
+                        images: [],
+                        metadata: {
+                            identifier: "publication-id",
+                            title: "Publication",
+                        },
+                        links: [
+                            {
+                                href: "missing-type",
+                                rel: OPDS_PROGRESSION_REL,
+                            },
+                            {
+                                href: "wrong-type",
+                                rel: OPDS_PROGRESSION_REL,
+                                type: "application/json",
+                            },
+                            {
+                                href: "wrong-relation",
+                                rel: "progression",
+                                type: OPDS_PROGRESSION_MEDIA_TYPE,
+                            },
+                            {
+                                rel: OPDS_PROGRESSION_REL,
+                                type: OPDS_PROGRESSION_MEDIA_TYPE,
+                            },
+                            {
+                                href: "progression",
+                                rel: OPDS_PROGRESSION_REL,
+                                type: `${OPDS_PROGRESSION_MEDIA_TYPE.toUpperCase()}; charset=utf-8`,
+                                properties: properties("auth.json", "Authenticate"),
+                            },
+                        ],
+                    },
+                ],
+            },
+            OPDSFeed,
+        );
+
+        const view = createConverter().convertOpdsFeedToView(feed, baseUrl);
+
+        expect(view.publications[0].progressionLink).toEqual({
+            properties: {
+                authenticate: {
+                    title: "Authenticate",
+                    type: authenticationType,
+                    url: "https://example.org/catalog/auth.json",
+                },
+            },
+            rel: OPDS_PROGRESSION_REL,
+            title: undefined,
+            type: `${OPDS_PROGRESSION_MEDIA_TYPE.toUpperCase()}; charset=utf-8`,
+            url: "https://example.org/catalog/progression",
+        });
     });
 });

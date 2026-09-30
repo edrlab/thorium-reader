@@ -21,10 +21,16 @@ import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import { settingsKeepLibraryWindowInBackgroundOnReaderCloseIsEnabled } from "readium-desktop/common/redux/states/settings";
 // import { comparePublisherReaderConfig } from "readium-desktop/common/publisherConfig";
-import { readerActions } from "readium-desktop/common/redux/actions";
+import { readerActions, winCommonActions } from "readium-desktop/common/redux/actions";
 import { sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
 import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { dialog } from "electron";
+import { isDeepStrictEqual } from "node:util";
+import { SenderType, type WithSender } from "readium-desktop/common/models/sync";
+import { opdsProgressionIsNewer } from "readium-desktop/common/models/opdsProgression";
+import { getOpdsProgression } from "readium-desktop/main/services/opdsProgression";
+import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
+import type { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:win:reader";
@@ -32,6 +38,15 @@ const debug = debug_(filename_);
 debug("_");
 
 const __readerWithSamePubIdGotTheLockMap = new Map<string, string>(); // K: publicationIdentifier V: windowIdentifier
+const __localProgressionSnapshotMap = new Map<string, {
+    publicationIdentifier: string;
+    hasLocator: boolean;
+    locator: MiniLocatorExtended["locator"] | undefined;
+    locatorModifiedTime: number | undefined;
+    rendererBaselineLocator: MiniLocatorExtended["locator"] | undefined;
+    meaningfulLocatorChangeTime: number | undefined;
+    retrievalStarted: boolean;
+}>();
 
 // event receive when reader window.webcontent send 'did-finish-load'
 function* winOpen(action: winActions.reader.openSucess.TAction) {
@@ -53,7 +68,18 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
 
     const readerDefaultConfig = yield* selectTyped((_state: RootState) => _state.reader.defaultConfig);
     const config = { ...readerDefaultConfig, ...(pubId ? yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "config")) : {}) };
-    const locator = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "locator"))) || undefined; // TODO: type object and not locator
+    const locator = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "locator"))) as MiniLocatorExtended | undefined; // TODO: type object and not locator
+    const locatorModifiedTime = yield* callTyped(() =>
+        diMainGet("publication-data").getFileLastModifiedTime(pubId, "locator"));
+    __localProgressionSnapshotMap.set(winId, {
+        publicationIdentifier: pubId,
+        hasLocator: typeof locator?.locator?.href === "string" && locator.locator.href.length > 0,
+        locator: locator?.locator,
+        locatorModifiedTime,
+        rendererBaselineLocator: locator?.locator,
+        meaningfulLocatorChangeTime: undefined,
+        retrievalStarted: false,
+    });
     const disableRTLFlip = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "disableRTLFlip"))) || undefined; // TODO: type object and not disableRTLFlip
     const divina = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "divina"))) || undefined; // TODO: type object and note IDivinaState
     const noteTotalCount = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "noteTotalCount"))) || undefined; // TODO: type object
@@ -154,6 +180,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
                 mediaOverlay: undefined, // reader runtime state
                 noteTotalCount: noteTotalCount,
                 pdfConfig: pdfConfig,
+                opdsProgression: {},
             } as IReaderStateReader,
             keyboard,
             theme,
@@ -168,8 +195,102 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     } as readerIpc.EventPayload);
 }
 
+function trackOpdsProgressionLocatorChange(action: readerActions.setLocator.TAction) {
+    const sender = (action as readerActions.setLocator.TAction & Partial<WithSender>).sender;
+    const winId = sender?.identifier;
+    if (sender?.type !== SenderType.Renderer || !winId) {
+        return;
+    }
+
+    const localSnapshot = __localProgressionSnapshotMap.get(winId);
+    const locator = action.payload.locator;
+    if (!localSnapshot || sender.reader_pubId !== localSnapshot.publicationIdentifier ||
+        typeof locator?.href !== "string" || !locator.href) {
+        return;
+    }
+
+    if (!localSnapshot.rendererBaselineLocator) {
+        // With no pre-open locator, the navigator's first report establishes the
+        // automatic/default position. Later movement is meaningful local activity.
+        localSnapshot.rendererBaselineLocator = locator;
+        return;
+    }
+
+    if (!isDeepStrictEqual(localSnapshot.rendererBaselineLocator, locator)) {
+        localSnapshot.meaningfulLocatorChangeTime = Date.now();
+    }
+}
+
+function* retrieveOpdsProgression(action: winCommonActions.initSuccess.TAction) {
+    const sender = action.sender;
+    const winId = sender?.identifier;
+    const pubId = sender?.reader_pubId;
+    if (sender?.type !== SenderType.Renderer || !winId || !pubId) {
+        return;
+    }
+
+    const localSnapshot = __localProgressionSnapshotMap.get(winId);
+    if (!localSnapshot || localSnapshot.retrievalStarted) {
+        return;
+    }
+    localSnapshot.retrievalStarted = true;
+
+    try {
+        const publicationDocument = yield* selectTyped((state: RootState) => state.publication.db[pubId]);
+        const progressionLink = publicationDocument?.opdsPublication?.progressionLink;
+        const isEpub = publicationDocument?.files?.some((file) =>
+            parseContentType(file.contentType) === ContentType.Epub,
+        );
+        if (!isEpub || !progressionLink?.url) {
+            return;
+        }
+
+        const locale = yield* selectTyped((state: RootState) => state.i18n.locale);
+        const progression = yield* callTyped(() => getOpdsProgression(progressionLink.url, locale));
+        if (!progression || __localProgressionSnapshotMap.get(winId) !== localSnapshot) {
+            return;
+        }
+
+        // Reader hydration can rewrite the same locator and refresh its mtime. Keep
+        // using the pre-open timestamp for that case, but honor a genuinely changed
+        // location if the user navigated while the network request was in flight.
+        const latestLocator = (yield* callTyped(() =>
+            diMainGet("publication-data").readJsonObj(pubId, "locator"))) as MiniLocatorExtended | undefined;
+        const persistedLocatorChanged = localSnapshot.hasLocator &&
+            typeof latestLocator?.locator?.href === "string" &&
+            !isDeepStrictEqual(localSnapshot.locator, latestLocator.locator);
+        const localLocatorChanged = persistedLocatorChanged ||
+            typeof localSnapshot.meaningfulLocatorChangeTime === "number";
+        const persistedModifiedTime = persistedLocatorChanged
+            ? yield* callTyped(() => diMainGet("publication-data").getFileLastModifiedTime(pubId, "locator"))
+            : undefined;
+        const localModifiedTime = localLocatorChanged
+            ? Math.max(
+                persistedModifiedTime || 0,
+                localSnapshot.meaningfulLocatorChangeTime || 0,
+            ) || undefined
+            : localSnapshot.locatorModifiedTime;
+
+        if (localLocatorChanged && typeof localModifiedTime !== "number") {
+            return;
+        }
+
+        if ((localSnapshot.hasLocator || localLocatorChanged) &&
+            !opdsProgressionIsNewer(progression.modified, localModifiedTime)) {
+            return;
+        }
+
+        yield put(readerActions.setOpdsProgression.build(winId, progression));
+    } finally {
+        if (__localProgressionSnapshotMap.get(winId) === localSnapshot) {
+            __localProgressionSnapshotMap.delete(winId);
+        }
+    }
+}
+
 function* winOpenError(action: winActions.reader.openError.TAction) {
     const { readerWindow, publicationIdentifier: pubId, windowIdentifier: winId, reason } = action.payload;
+    __localProgressionSnapshotMap.delete(winId);
     debug(`ERRROR!!! reader winId=${winId} -> pubId=${pubId} failed to open`);
 
     try {
@@ -186,6 +307,7 @@ function* winOpenError(action: winActions.reader.openError.TAction) {
 export function* winClose(windowIdentifier: string, publicationIdentifier: string) {
 
     debug(`reader windId=${windowIdentifier} -> winClose pubId=${publicationIdentifier}`);
+    __localProgressionSnapshotMap.delete(windowIdentifier);
     const readersBeforeUnregistered = yield* selectTyped((state: RootState) => state.win.session.reader);
     if (!readersBeforeUnregistered[windowIdentifier]) {
         debug("ERROR: reader not found in the session list");
@@ -320,6 +442,16 @@ export function saga() {
             winActions.reader.openError.ID,
             winOpenError,
             (e) => error(filename_ + ":winOpen", e),
+        ),
+        takeSpawnEvery(
+            winCommonActions.initSuccess.ID,
+            retrieveOpdsProgression,
+            (e) => error(filename_ + ":retrieveOpdsProgression", e),
+        ),
+        takeSpawnEvery(
+            readerActions.setLocator.ID,
+            trackOpdsProgressionLocatorChange,
+            (e) => error(filename_ + ":trackOpdsProgressionLocatorChange", e),
         ),
         // takeSpawnEvery(
         //     winActions.reader.closed.ID,

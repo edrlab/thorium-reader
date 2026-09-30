@@ -142,6 +142,8 @@ import { EDrawType, INoteState, TDrawType, TDrawView } from "readium-desktop/com
 import type { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { URL_PROTOCOL_FILEX } from "readium-desktop/common/streamerProtocol";
+import { OpdsProgressionDialog } from "./OpdsProgressionDialog";
+import { opdsProgressionToLocator } from "../opdsProgression";
 
 const debug = debug_("readium-desktop:renderer:reader:components:Reader");
 const debugPdfAnnotationsHost = debug_("readium-desktop:renderer:reader:pdf:annotations:host");
@@ -1381,6 +1383,11 @@ class Reader extends React.Component<IProps, IState> {
                         />
                         : <></>
                     }
+                <OpdsProgressionDialog
+                    document={this.props.opdsProgressionDocument}
+                    onAccept={this.goToOpdsProgression}
+                    onCancel={this.props.clearOpdsProgression}
+                />
                 </div>
             </>
         );
@@ -1814,6 +1821,17 @@ class Reader extends React.Component<IProps, IState> {
         //     this.setState({ blackoutMask: true });
         // }
         r2HandleLinkLocator(locator);
+    };
+
+    private goToOpdsProgression = () => {
+        const progression = this.props.opdsProgressionDocument?.progression;
+        if (typeof progression === "number") {
+            const locator = opdsProgressionToLocator(progression, this.props.r2Publication?.Spine);
+            if (locator) {
+                this.goToLocator(locator);
+            }
+        }
+        this.props.clearOpdsProgression();
     };
 
     private handleLinkUrl = (url: string, isFromOnPopState = false) => {
@@ -3700,6 +3718,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         notes: state.reader.note,
         creator: state.creator,
         noteTotalCount: state.reader.noteTotalCount.state,
+        opdsProgressionDocument: state.reader.opdsProgression.document,
 
         // Reader Lock Demo
         // lock: state.reader.lock,
@@ -3808,6 +3827,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         },
         addUpdatePdfAnnotationNote: (publicationIdentifier: string, newNote: Omit<INoteState, "uuid">) => {
             return dispatch(readerActions.note.addUpdate.build(publicationIdentifier, newNote));
+        },
+        clearOpdsProgression: () => {
+            dispatch(readerActions.clearOpdsProgression.build());
         },
     };
 };

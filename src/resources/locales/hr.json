@@ -697,7 +697,10 @@
         "notStarted": "",
         "onGoing": "",
         "progression": {
-            "title": "Napredak"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Napredak",
+            "useRemote": ""
         },
         "read": "",
         "remainingTime": "",

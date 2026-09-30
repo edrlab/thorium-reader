@@ -715,7 +715,10 @@
         "notStarted": "لم يبدأ",
         "onGoing": "جارٍ التنفيذ",
         "progression": {
-            "title": "التقدّم في القراءة"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "التقدّم في القراءة",
+            "useRemote": ""
         },
         "read": "انتهى",
         "remainingTime": "الاستعارة (الوقت المتبقي)",

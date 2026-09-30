@@ -697,7 +697,10 @@
         "notStarted": "",
         "onGoing": "",
         "progression": {
-            "title": ""
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "",
+            "useRemote": ""
         },
         "read": "",
         "remainingTime": "",

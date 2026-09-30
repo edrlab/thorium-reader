@@ -691,7 +691,10 @@
         "notStarted": "தொடங்கப்படவில்லை",
         "onGoing": "முன்னேற்றத்தில் உள்ளது",
         "progression": {
-            "title": "முன்னேற்றம்"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "முன்னேற்றம்",
+            "useRemote": ""
         },
         "read": "முடிந்தது",
         "remainingTime": "கடன் (மீதமுள்ள நேரம்)",

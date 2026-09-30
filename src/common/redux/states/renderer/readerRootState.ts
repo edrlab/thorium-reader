@@ -26,6 +26,7 @@ import { IImageClickState } from "readium-desktop/common/redux/states/renderer/i
 import { IBookmarkTotalCountState } from "readium-desktop/common/redux/states/renderer/bookmarkTotalCount";
 import { DockState } from "../dock";
 import { INoteState } from "./note";
+import { IOpdsProgressionState } from "./opdsProgression";
 
 export interface IReaderPdfConfig{
         scale: "page-fit" | "page-width" | number;
@@ -64,6 +65,7 @@ export interface IReaderStateReader {
     noteTotalCount: IBookmarkTotalCountState;
 
     pdfConfig: IReaderPdfConfig;
+    opdsProgression: IOpdsProgressionState;
 
 
     // got the lock
