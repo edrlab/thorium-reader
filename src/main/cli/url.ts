@@ -59,10 +59,9 @@ export const setOpenUrl = (url: string): void => {
     // OR: if (new URL(url).protocol === `${URL_PROTOCOL_APP_HANDLER_OPDS}:`)
     else if (url.startsWith(`${URL_PROTOCOL_APP_HANDLER_OPDS}://`)) {
         debug("OPEN URL WITH OPDS scheme");
-        const openUrl = url.replace(`${URL_PROTOCOL_APP_HANDLER_OPDS}://`, "http://"); // HTTP to HTTPS redirect should be handled by the server
-        debug("OPEN URL =", openUrl);
+        debug("OPEN URL =", url);
         const buf = getOpenUrlWithOpdsSchemeEventChannel();
-        buf.put(openUrl);
+        buf.put(url);
     }
     // OR: if (new URL(url).protocol === `${URL_PROTOCOL_APP_HANDLER_THORIUM}:`)
     else if (url.startsWith(`${URL_PROTOCOL_APP_HANDLER_THORIUM}://`)) {
