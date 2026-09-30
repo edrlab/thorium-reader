@@ -23,7 +23,6 @@ import { getSystemProxy, type ProxyConfig } from "readium-desktop/main/network/p
 import * as http from "node:http";
 import * as https from "node:https";
 import { URL } from "node:url";
-import type { Socket } from "node:net";
 import { LRUCache } from "lru-cache";
 import { Agent, AgentConnectOpts } from "agent-base";
 import createDebug from "debug";
@@ -84,26 +83,20 @@ const loadPacProxyAgentWithDirectFallback = (): Promise<AgentConstructor> => {
     if (pacProxyAgentWithDirectFallback === undefined) {
         pacProxyAgentWithDirectFallback = import("pac-proxy-agent").then(({ PacProxyAgent }) =>
             class PacProxyAgentWithDirectFallback extends PacProxyAgent<""> {
-                private readonly directHttpAgent: http.Agent;
-                private readonly directHttpsAgent: http.Agent;
-
                 constructor(proxy: string, opts?: ProxyAgentOptions) {
                     super(new URL(proxy), opts);
-                    this.directHttpAgent = opts?.httpAgent || new http.Agent(opts);
-                    this.directHttpsAgent = opts?.httpsAgent || new https.Agent(opts as https.AgentOptions);
                 }
 
-                async connect(req: http.ClientRequest, opts: AgentConnectOpts): Promise<http.Agent | Socket> {
+                async getResolver() {
                     try {
-                        await this.getResolver();
+                        return await super.getResolver();
                     } catch (err) {
                         // A PAC file is a proxy auto-configuration script (JavaScript) the OS points browsers at to choose a proxy
                         // per URL. macOS Auto Proxy Discovery reports http://wpad/wpad.dat even when no wpad host exists;
                         // browsers connect directly when that file cannot be fetched.
                         debug("PAC file %o could not be loaded, connecting directly: %o", this.uri.href, err);
-                        return opts.secureEndpoint ? this.directHttpsAgent : this.directHttpAgent;
+                        return async () => "DIRECT";
                     }
-                    return super.connect(req, opts);
                 }
             },
         );
