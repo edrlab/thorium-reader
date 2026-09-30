@@ -167,7 +167,9 @@
             }
         },
         "deleteAnnotations": "",
+        "deleteAnnotationsText_other": "",
         "deleteBookmarks": "",
+        "deleteBookmarksText_other": "",
         "deleteFeed": "카탈로그를 제거하겠습니까?",
         "deletePublication": "출판물을 제거하겠습니까?",
         "deletePublicationWithNotes": "",
@@ -262,7 +264,8 @@
         },
         "storage": {
             "recovery": {
-                "failure": ""
+                "failure": "",
+                "success_other": ""
             },
             "removed": "",
             "updateFailed": "",
@@ -837,7 +840,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- count}} 일치",
+                "founds_other": "{{- count}} 일치",
                 "input": "텍스트 입력",
                 "next": "다음",
                 "notFound": "일치하는 내용이 없습니다.",
@@ -1321,9 +1324,11 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description_other": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount_other": "",
                 "title": ""
             }
         },
