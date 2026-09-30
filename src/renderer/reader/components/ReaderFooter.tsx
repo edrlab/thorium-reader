@@ -42,6 +42,9 @@ import { connect } from "react-redux";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { logEvent } from "readium-desktop/renderer/common/analytics";
+import { formatReadiumFooterPositionProgression } from "readium-desktop/renderer/common/readiumPositionProgression";
+import { getReadiumPositionProgression } from "readium-desktop/common/readium/positions";
+import type { IReadiumPositionList } from "readium-desktop/common/readium/positions";
 
 const isFixedLayout = (link: Link, publication: R2Publication): boolean => {
     if (link && link.Properties) {
@@ -96,6 +99,7 @@ interface IBaseProps extends TranslatorProps {
 
     isPdf: boolean;
     publicationView: PublicationView;
+    readiumPositionList: IReadiumPositionList | undefined;
 }
 
 // IProps may typically extend:
@@ -456,9 +460,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                                     id={stylesReaderFooter.arrow_box}
                                                                     style={this.getStyle()}
                                                                 >
-                                                                    <span>{`[${this.getCurrentChapter(link)+1} / ${this.getTotalChapters()}] `} {
-                                                                        isPdf ? "" :
-                                                                        ` ${link.Title ? `${link.Title}${atCurrentLocation && spineTitle ? ` (${spineTitle})` : ""}` : (atCurrentLocation && spineTitle ? spineTitle : "")}`}</span>
+                                                                    <span>{this.getResourceLabel(link, atCurrentLocation, isPdf)}</span>
                                                                     {atCurrentLocation ?
                                                                         this.getProgression(link, isAudioBook).map((str, i) => {
                                                                             return !str ? <></> :
@@ -492,6 +494,13 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                 }
             </div>
         );
+    }
+
+    // Keep resource indexes one-based in the user-facing footer label.
+    private getResourceLabel(link: Link, atCurrentLocation: boolean, isPdf: boolean): string {
+        const title = isPdf ? "" :
+            (atCurrentLocation ? this.props.currentLocation.locator.title || link.Title : link.Title);
+        return `[${this.getCurrentChapter(link) + 1}/${this.getTotalChapters()}]${title ? ` ${title}` : ""}`;
     }
 
     // 0-based
@@ -563,34 +572,55 @@ export class ReaderFooter extends React.Component<IProps, IState> {
             return ["", ""];
         }
 
-        // can return -1 (not found)
-        const currentChapter = this.getCurrentChapter(link);
-        // can return 0!
-        const totalChapters =  this.getTotalChapters();
-
-        const globalPercent =
-            totalChapters > 0 // division by zero
-            ?
-            Math.round(
-                (((isPdf ? 1 : (currentLocation.locator.locations?.progression || 0)) + (currentChapter >= 0 ? currentChapter : 0)) / totalChapters)
-                * 100,
-            )
-            :
-            0;
-
-        if (currentLocation.paginationInfo) {
-            return [
-                `${__("reader.navigation.currentPageTotal", { current: `${(currentLocation.paginationInfo.currentColumn || 0) + 1}`, total: `${currentLocation.paginationInfo.totalColumns || 0} (${Math.round(100 * (currentLocation.locator.locations?.progression || 0))}%)` })}`,
-                `${__("publication.progression.title")} ${globalPercent}%`,
-            ];
-        } else if (isAudioBook && currentLocation.audioPlaybackInfo) {
+        if (isAudioBook && currentLocation.audioPlaybackInfo) {
             return [
                 `${formatTime(currentLocation.audioPlaybackInfo.localTime || 0)} / ${formatTime(currentLocation.audioPlaybackInfo.localDuration || 0)} (${Math.round(currentLocation.audioPlaybackInfo.localProgression * 100)}%)`,
                 `${formatTime(currentLocation.audioPlaybackInfo.globalTime || 0)} / ${formatTime(currentLocation.audioPlaybackInfo.globalDuration || 0)} (${Math.round(currentLocation.audioPlaybackInfo.globalProgression * 100)}%)`,
             ];
-        } else {
-            return [!isPdf && !isDivina && !isFixedLayout(link, r2Publication) && typeof currentLocation.locator.locations?.progression !== "undefined" ? `${Math.round(currentLocation.locator.locations.progression * 100)}%${!isAudioBook && !isDivina ? ` (${__("reader.settings.scrolled")})` : ""}` : "", `${__("publication.progression.title")} ${globalPercent}%`];
         }
+
+        // can return -1 (not found)
+        const currentChapter = this.getCurrentChapter(link);
+        // can return 0!
+        const totalChapters = this.getTotalChapters();
+        const locations = currentLocation.locator.locations;
+        const localProgression = typeof locations.progression === "number" &&
+            Number.isFinite(locations.progression) ?
+            Math.min(1, Math.max(0, locations.progression)) : 0;
+        const fallbackGlobalProgression = totalChapters > 0 ?
+            ((isPdf ? 1 : localProgression) + Math.max(0, currentChapter)) / totalChapters : 0;
+
+        const readiumPositionProgression = getReadiumPositionProgression(
+            currentLocation.locator,
+            this.props.readiumPositionList,
+            link.Href,
+        );
+
+        const locatorTotalProgression = typeof locations.totalProgression === "number" &&
+            Number.isFinite(locations.totalProgression) ?
+            Math.min(1, Math.max(0, locations.totalProgression)) : undefined;
+
+        // Prefer the continuous locator value for a smooth user-facing percentage. If it is absent,
+        // fall back to the discrete Readium position, then to the legacy equal-chapter approximation.
+        const globalProgression = readiumPositionProgression?.totalProgression ??
+            locatorTotalProgression ?? Math.min(1, Math.max(0, fallbackGlobalProgression));
+
+        const globalProgressionLabel = readiumPositionProgression ?
+            formatReadiumFooterPositionProgression(__, readiumPositionProgression) :
+            `${__("publication.progression.title")} ${Math.round(globalProgression * 100)}%`;
+
+        if (currentLocation.paginationInfo) {
+            return [
+                `${__("reader.navigation.currentPageTotal", { current: `${(currentLocation.paginationInfo.currentColumn || 0) + 1}`, total: `${currentLocation.paginationInfo.totalColumns || 0} (${Math.round(100 * localProgression)}%)` })}`,
+                globalProgressionLabel,
+            ];
+        }
+
+        const localProgressionLabel = !isPdf && !isDivina && !isFixedLayout(link, r2Publication) &&
+            typeof locations.progression !== "undefined" ?
+            `${Math.round(localProgression * 100)}% (${__("reader.settings.scrolled")})` : "";
+
+        return [localProgressionLabel, globalProgressionLabel];
     }
 
     // Get the style of the differents element of the arrow box

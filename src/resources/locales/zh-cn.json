@@ -684,6 +684,9 @@
         "notStarted": "尚未开始",
         "onGoing": "进行中",
         "progression": {
+            "footerPositionOfTotal": "",
+            "positionOfTotal": "",
+            "resourceOfTotal": "",
             "title": "进度"
         },
         "read": "完成",

@@ -691,6 +691,9 @@
         "notStarted": "Ei ole aloitettu",
         "onGoing": "Luettavana",
         "progression": {
+            "footerPositionOfTotal": "",
+            "positionOfTotal": "",
+            "resourceOfTotal": "",
             "title": "Eteneminen"
         },
         "read": "Luettu",

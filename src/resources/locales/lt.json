@@ -703,6 +703,9 @@
         "notStarted": "Nepradėtas",
         "onGoing": "Skaitomas",
         "progression": {
+            "footerPositionOfTotal": "",
+            "positionOfTotal": "",
+            "resourceOfTotal": "",
             "title": "Eiga"
         },
         "read": "Užbaigtas",

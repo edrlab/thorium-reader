@@ -691,6 +691,9 @@
         "notStarted": "Hasi gabe",
         "onGoing": "Abian",
         "progression": {
+            "footerPositionOfTotal": "",
+            "positionOfTotal": "",
+            "resourceOfTotal": "",
             "title": "Aurrerapena"
         },
         "read": "Bukatuta",

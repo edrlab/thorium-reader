@@ -691,6 +691,9 @@
         "notStarted": "Ikke læst",
         "onGoing": "I gang",
         "progression": {
+            "footerPositionOfTotal": "",
+            "positionOfTotal": "",
+            "resourceOfTotal": "",
             "title": "Læst"
         },
         "read": "Læst færdig",

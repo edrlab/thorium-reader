@@ -684,6 +684,9 @@
         "notStarted": "未讀",
         "onGoing": "正在閱讀",
         "progression": {
+            "footerPositionOfTotal": "",
+            "positionOfTotal": "",
+            "resourceOfTotal": "",
             "title": "進度"
         },
         "read": "已讀",

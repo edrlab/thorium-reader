@@ -697,6 +697,9 @@
         "notStarted": "Non Demarré",
         "onGoing": "En Cours",
         "progression": {
+            "footerPositionOfTotal": "Position {{- position}} sur {{- total}} [{{- first}}/{{- last}}] ({{- progression}} %)",
+            "positionOfTotal": "Position {{- position}} sur {{- total}} [{{- first}}/{{- last}}] - {{- progression}} % de la publication.",
+            "resourceOfTotal": "Ressources {{- resource}}/{{- total}}{{- title}} [{{- progression}} %]",
             "title": "Progression"
         },
         "read": "Terminé",
