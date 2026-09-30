@@ -148,9 +148,9 @@
         "annotations": {
             "descAuthor": "{{- author}}によるもの",
             "descCreator": "作成：",
-            "descList": "{{- count}} 件のメモ（{{- creator}}）が次の書籍に取り込まれます： 『{{- title}}』（{{- author}}）",
-            "descNewer": "競合：{{- count}} 件のより新しいメモ",
-            "descOlder": "競合：{{- count}} 件のより古いメモ",
+            "descList_other": "{{- count}} 件のメモ（{{- creator}}）が次の書籍に取り込まれます： 『{{- title}}』（{{- author}}）",
+            "descNewer_other": "競合：{{- count}} 件のより新しいメモ",
+            "descOlder_other": "競合：{{- count}} 件のより古いメモ",
             "descTitle": "メモのタイトル ",
             "importAll": "すべてのメモを取りこむ",
             "importWithoutConflict": "競合していないメモのみを取りこむ",
