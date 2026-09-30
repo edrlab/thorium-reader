@@ -169,6 +169,7 @@
         "deleteAnnotations": "メモを削除しますか？",
         "deleteAnnotationsText_other": "{{-count}} 件のメモを削除しますか？",
         "deleteBookmarks": "しおりを削除しますか？",
+        "deleteBookmarksText_other": "",
         "deleteFeed": "この図書目録を削除しますか？",
         "deletePublication": "この本を削除しますか？",
         "deletePublicationWithNotes": "",
