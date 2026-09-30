@@ -1342,6 +1342,7 @@
             }
         },
         "tabs": {
+            "advanced": "Avancerat",
             "appearance": "Utseende",
             "general": "Allmänt",
             "keyboardShortcuts": "Kortkommandon",
