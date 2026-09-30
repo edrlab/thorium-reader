@@ -23,6 +23,8 @@ import * as setLocator from "./setLocator";
 import * as setConfig from "./setConfig";
 import * as allowCustom from "./allowCustom";
 import * as bookmarkTotalCount from "./bookmarkTotalCount";
+import * as setOpdsProgression from "./setOpdsProgression";
+import * as clearOpdsProgression from "./clearOpdsProgression";
 
 export {
     openRequest,
@@ -43,4 +45,6 @@ export {
     setConfig,
     allowCustom,
     bookmarkTotalCount,
+    setOpdsProgression,
+    clearOpdsProgression,
 };

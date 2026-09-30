@@ -138,7 +138,13 @@ function* importLinkFromPath(
                 // } as Resources,
                 tags,
                 opdsPublicationStringified: pub?.opdsPublicationStringified,
-                opdsPublication: { url: link.url, type: link.type, selfLinkUrl: pub?.selfLink?.url, identifier: pub?.workIdentifier },
+                opdsPublication: {
+                    url: link.url,
+                    type: link.type,
+                    selfLinkUrl: pub?.selfLink?.url,
+                    identifier: pub?.workIdentifier,
+                    progressionLink: pub?.progressionLink,
+                },
             },
         );
 
@@ -166,7 +172,13 @@ function* importLinkFromPath(
                 //     // r2OpdsPublicationBase64: pub?.r2OpdsPublicationBase64 || "",
                 // } as Resources,
                 opdsPublicationStringified: pub?.opdsPublicationStringified,
-                opdsPublication: { url: link.url, type: link.type, selfLinkUrl: pub?.selfLink?.url, identifier: pub?.workIdentifier },
+                opdsPublication: {
+                    url: link.url,
+                    type: link.type,
+                    selfLinkUrl: pub?.selfLink?.url,
+                    identifier: pub?.workIdentifier,
+                    progressionLink: pub?.progressionLink,
+                },
             },
         );
 

@@ -81,6 +81,7 @@ export interface IOpdsPublicationView {
 
     opdsPublicationStringified?: string;
     selfLink?: IOpdsLinkView;
+    progressionLink?: IOpdsLinkView;
 }
 
 export interface IOpdsNavigationLinkView {
