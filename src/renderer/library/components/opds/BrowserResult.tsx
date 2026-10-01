@@ -23,6 +23,8 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 import PublicationCard from "../publication/PublicationCard";
 // import { ListView } from "../utils/ListView";
 import Slider from "../utils/Slider";
+import { BookshelfCarousel } from "./BookshelfCarousel";
+import { parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import Entry from "./Entry";
 import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
@@ -207,7 +209,11 @@ export class BrowserResult extends React.Component<IProps, undefined> {
             }
         }
 
+        const route = parseOpdsBrowserRoute(this.props.location.pathname);
         return <div className={stylesCatalogs.opds_browserResults} id="opds_browserResults">
+            {route?.level === 1 && this.props.bookshelf && browserData?.result?.isSuccess ?
+                <BookshelfCarousel key={`${this.props.location.key}-${browserData.time}-${this.props.bookshelf}`}
+                    catalogId={route.rootFeedIdentifier} url={this.props.bookshelf} /> : <></>}
             {content}
         </div>;
     }
@@ -218,6 +224,7 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
     const apiBrowseData = apiState(state)(BROWSE_OPDS_API_REQUEST_ID)("httpbrowser/browse");
     return {
         browserData: apiBrowseData?.data,
+        bookshelf: state.opds.browser.header.bookshelf,
         location: state.router.location,
         level: state.opds.browser.breadcrumb.length + 1,
         locale: state.i18n.locale, // refresh
