@@ -710,6 +710,8 @@ declare namespace typed_i18n {
   },
   readonly "addFormApiapp": { readonly "title": string },
   readonly "addMenu": string,
+  readonly "bookshelfTitle": string,
+  readonly "bookshelfViewAll": string,
   readonly "breadcrumbRoot": string,
   readonly "color": {
     readonly "blue": string,
@@ -769,6 +771,8 @@ declare namespace typed_i18n {
   (_: "opds.addFormApiapp", __?: {}): { readonly "title": string };
   (_: "opds.addFormApiapp.title", __?: {}): string;
   (_: "opds.addMenu", __?: {}): string;
+  (_: "opds.bookshelfTitle", __?: {}): string;
+  (_: "opds.bookshelfViewAll", __?: {}): string;
   (_: "opds.breadcrumbRoot", __?: {}): string;
   (_: "opds.color", __?: {}): {
   readonly "blue": string,
