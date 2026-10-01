@@ -25,6 +25,8 @@ import { getAppActivateEventChannel } from "../getEventChannel";
 import { createLibraryWindow } from "./browserWindow/createLibraryWindow";
 import { getCatalog } from "../catalog";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+import { destroyReadersForForcedShutdown } from "./reader";
+import type { IForcedShutdownReader } from "./opdsProgressionShutdown";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:win:library";
@@ -264,34 +266,52 @@ function* winClose(_action: winActions.library.closed.TAction) {
                 // value = messageValue.response;
             // }
 
-            yield all(
-                readersArray.map(
-                    (reader, index) => {
-                        return call(function*() {
+            if (sessionSaving) {
+                const forcedShutdownReaders: IForcedShutdownReader[] = [];
+                readersArray.forEach((reader) => {
+                    if (!reader) {
+                        return;
+                    }
+                    const readerWin = getReaderWindowFromDi(reader.identifier);
+                    forcedShutdownReaders.push({
+                        identifier: reader.identifier,
+                        publicationIdentifier: reader.publicationIdentifier,
+                        readerWindow: readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()
+                            ? readerWin
+                            : undefined,
+                    });
+                });
+                try {
+                    // Keep Redux reader entries for session restore, but flush and
+                    // clear all live main-process state before the first forced destroy.
+                    yield* callTyped(() => destroyReadersForForcedShutdown(forcedShutdownReaders));
+                } catch (err) {
+                    debug("forced reader shutdown cleanup failed", err);
+                }
+            } else {
+                yield all(
+                    readersArray.map(
+                        (reader, index) => {
+                            return call(function*() {
 
-                            if (!reader) {
-                                return;
-                            }
-                            try {
-                                const readerWin = yield* callTyped(() => getReaderWindowFromDi(reader.identifier));
-                                if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
-                                if (sessionSaving) {
-                                    // force quit the reader windows to keep session in next startup
-                                    debug("destroy reader", index);
-                                    readerWin.destroy();
-                                } else {
-                                    debug("close reader", index);
-                                    readerWin.close();
+                                if (!reader) {
+                                    return;
                                 }
+                                try {
+                                    const readerWin = yield* callTyped(() => getReaderWindowFromDi(reader.identifier));
+                                    if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
+                                        debug("close reader", index);
+                                        readerWin.close();
+                                    }
+                                } catch (_err) {
+                                    // ignore
                                 }
-                            } catch (_err) {
-                                // ignore
-                            }
 
-                        });
-                    },
-                ),
-            );
+                            });
+                        },
+                    ),
+                );
+            }
 
         }
     }

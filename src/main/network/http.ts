@@ -483,12 +483,12 @@ async function httpFetchFormattedResponse<TData = undefined>(
         if (
             options.method === "get" &&
             responseURL.href !== urlURL.href &&
+            !(urlURL.protocol === "https:" && responseURL.protocol === "http:") &&
             response.status === 401 &&
             (await getAuthenticationToken(responseURL))?.accessToken
         ) {
             return httpGetWithAuth(true)(response.url, options, callback, locale);
         }
-
         debug("Response headers :");
         debug({ ...response.headers.raw() });
         debug("###");
@@ -650,6 +650,15 @@ const httpGetUnauthorized =
 
             if (enableRefresh) {
                 if (response.statusCode === 401) {
+                    const responseUrl = response.responseUrl
+                        ? new URL(response.responseUrl)
+                        : url;
+                    if (responseUrl.origin !== url.origin) {
+                        // Redirect authentication is handled against the final
+                        // host. Do not invalidate the original host's valid
+                        // credentials when the final host remains unauthorized.
+                        return handleCallback(response, _callback);
+                    }
                     if (auth.refreshUrl && auth.refreshToken) {
                         const responseAfterRefresh = await httpGetUnauthorizedRefresh(
                             auth,
@@ -732,18 +741,300 @@ export const httpPost: typeof httpFetchFormattedResponse =
         return httpFetchFormattedResponse(...arg);
     };
 
+interface IHttpPutRedirectState {
+    activeAuthenticationOrigins: Set<string>;
+    count: number;
+}
+
+const canSendAuthenticationToUrl = (auth: IOpdsAuthenticationToken, url: URL): boolean => {
+    if (url.protocol !== "http:") {
+        return true;
+    }
+    if (!auth.opdsAuthenticationUrl) {
+        return false;
+    }
+    try {
+        return new URL(auth.opdsAuthenticationUrl).protocol !== "https:";
+    } catch {
+        return false;
+    }
+};
+
+const httpPutWithAuthInternal =
+    (
+        enableAuth: boolean,
+        redirectState: IHttpPutRedirectState,
+        authenticationOrigin?: string,
+    ): typeof httpFetchFormattedResponse =>
+        async (...arg) => {
+
+            const [_url, _options, _callback, ..._arg] = arg;
+
+            const options = _options || {};
+            options.method = "put";
+            options.redirect = "manual";
+
+            if (enableAuth) {
+                const url = _url instanceof URL ? _url : new URL(_url);
+                const auth = await getAuthenticationToken(url, options.method.toUpperCase());
+
+                if (
+                    typeof auth === "object"
+                    && auth.accessToken
+                    && canSendAuthenticationToUrl(auth, url)
+                ) {
+                    if (redirectState.activeAuthenticationOrigins.has(url.origin)) {
+                        options.headers = options.headers instanceof Headers
+                            ? options.headers
+                            : new Headers(options.headers || {});
+                        (options.headers as Headers).set(
+                            "Authorization",
+                            httpSetHeaderAuthorization(auth.tokenType || "Bearer", auth.accessToken),
+                        );
+                        return httpPutWithAuthInternal(false, redirectState, url.origin)(
+                            _url,
+                            options,
+                            _callback,
+                            ..._arg,
+                        );
+                    }
+
+                    redirectState.activeAuthenticationOrigins.add(url.origin);
+                    try {
+                        return await httpPutUnauthorized(auth, true, redirectState)(
+                            _url,
+                            options,
+                            _callback,
+                            ..._arg,
+                        );
+                    } finally {
+                        redirectState.activeAuthenticationOrigins.delete(url.origin);
+                    }
+                }
+            }
+
+            const response = await httpFetchFormattedResponse(
+                _url,
+                options,
+                undefined,
+                _arg[0],
+            );
+
+            if (
+                (response.statusCode === 307 || response.statusCode === 308) &&
+                redirectState.count < MAX_FOLLOW_REDIRECT
+            ) {
+                const location = response.response?.headers.get("Location");
+                if (location) {
+                    const currentUrl = _url instanceof URL ? _url : new URL(_url);
+                    let redirectUrl: URL;
+                    try {
+                        redirectUrl = new URL(location, response.responseUrl || currentUrl);
+                    } catch {
+                        return handleCallback(response, _callback);
+                    }
+
+                    // Never replay credentials or the PUT body across a transport downgrade.
+                    if (!(currentUrl.protocol === "https:" && redirectUrl.protocol === "http:")) {
+                        redirectState.count += 1;
+                        if (redirectUrl.origin !== currentUrl.origin) {
+                            // fetch-cookie can append jar cookies to the Headers
+                            // object passed to the first request. Clone it before
+                            // crossing origins, then let the jar add only the
+                            // destination's credentials on the next fetch.
+                            options.headers = new Headers(options.headers || {});
+                            for (const header of [
+                                "Authorization",
+                                "Cookie",
+                                "Cookie2",
+                                "Host",
+                                "Proxy-Authorization",
+                            ]) {
+                                (options.headers as Headers).delete(header);
+                            }
+                        }
+
+                        if (authenticationOrigin === redirectUrl.origin) {
+                            // Stay inside the current authentication owner so a
+                            // terminal 401 is refreshed/deleted exactly once.
+                            // Digest credentials still need the redirected URI.
+                            const redirectedAuth = await getAuthenticationToken(redirectUrl, "PUT");
+                            if (
+                                redirectedAuth?.accessToken
+                                && canSendAuthenticationToUrl(redirectedAuth, redirectUrl)
+                            ) {
+                                options.headers = options.headers instanceof Headers
+                                    ? options.headers
+                                    : new Headers(options.headers || {});
+                                (options.headers as Headers).set(
+                                    "Authorization",
+                                    httpSetHeaderAuthorization(
+                                        redirectedAuth.tokenType || "Bearer",
+                                        redirectedAuth.accessToken,
+                                    ),
+                                );
+                            }
+                            return httpPutWithAuthInternal(false, redirectState, authenticationOrigin)(
+                                redirectUrl,
+                                options,
+                                _callback,
+                                ..._arg,
+                            );
+                        }
+
+                        return httpPutWithAuthInternal(true, redirectState)(
+                            redirectUrl,
+                            options,
+                            _callback,
+                            ..._arg,
+                        );
+                    }
+                }
+            }
+
+            return handleCallback(response, _callback);
+        };
+
+const httpPutUnauthorized =
+    (
+        auth: IOpdsAuthenticationToken,
+        enableRefresh: boolean,
+        redirectState: IHttpPutRedirectState,
+    ): typeof httpFetchFormattedResponse =>
+        async (...arg) => {
+
+            const [_url, _options, _callback, ..._arg] = arg;
+
+            const url = _url instanceof URL ? _url : new URL(_url);
+            const options = _options || {};
+            const { accessToken, tokenType } = auth;
+
+            options.headers = options.headers instanceof Headers
+                ? options.headers
+                : new Headers(options.headers || {});
+            (options.headers as Headers).set(
+                "Authorization",
+                httpSetHeaderAuthorization(tokenType || "Bearer", accessToken),
+            );
+
+            const response = await httpPutWithAuthInternal(false, redirectState, url.origin)(
+                url,
+                options,
+                enableRefresh ? undefined : _callback,
+                ..._arg,
+            );
+
+            if (enableRefresh) {
+                if (response.statusCode === 401) {
+                    const responseUrl = response.responseUrl
+                        ? new URL(response.responseUrl)
+                        : url;
+                    if (responseUrl.origin !== url.origin) {
+                        // The final-host branch has already handled its own
+                        // credentials. Keep the original host token intact.
+                        return handleCallback(response, _callback);
+                    }
+                    if (auth.refreshUrl && auth.refreshToken) {
+                        const responseAfterRefresh = await httpPutUnauthorizedRefresh(
+                            auth,
+                            redirectState,
+                        )(response.url, options, _callback, ..._arg);
+                        if (responseAfterRefresh) {
+                            return responseAfterRefresh;
+                        }
+                    }
+
+                    await deleteAuthenticationToken(url.host);
+                    (options.headers as Headers).delete("Authorization");
+                    return httpPutWithAuthInternal(false, redirectState)(
+                        response.url,
+                        options,
+                        _callback,
+                        ..._arg,
+                    );
+                }
+                return handleCallback(response, _callback);
+            }
+            return response;
+        };
+
+const httpPutUnauthorizedRefresh =
+    (
+        auth: IOpdsAuthenticationToken,
+        redirectState: IHttpPutRedirectState,
+    ): typeof httpFetchFormattedResponse | undefined =>
+        async (...arg) => {
+
+            const { refreshToken, refreshUrl } = auth;
+            let refreshUrlObject: URL;
+            try {
+                refreshUrlObject = new URL(refreshUrl || "");
+            } catch {
+                return undefined;
+            }
+            if (!canSendAuthenticationToUrl(auth, refreshUrlObject)) {
+                return undefined;
+            }
+            const options: RequestInit = {};
+            options.headers = new Headers({
+                "Content-Type": "application/json",
+            });
+            options.redirect = "manual";
+            options.body = JSON.stringify({
+                refresh_token: refreshToken,
+                grant_type: "refresh_token",
+            });
+
+            const httpPostResponse = await httpPost(refreshUrlObject, options);
+            if (!httpPostResponse.isSuccess || !httpPostResponse.response) {
+                return undefined;
+            }
+
+            const jsonDataResponse: any = await httpPostResponse.response.json?.();
+            const newRefreshToken = typeof jsonDataResponse?.refresh_token === "string"
+                ? jsonDataResponse.refresh_token
+                : undefined;
+            auth.refreshToken = newRefreshToken || auth.refreshToken;
+
+            const newAccessToken = typeof jsonDataResponse?.access_token === "string"
+                ? jsonDataResponse.access_token
+                : undefined;
+            auth.accessToken = newAccessToken || auth.accessToken;
+
+            const httpPutResponse = await httpPutUnauthorized(
+                auth,
+                false,
+                redirectState,
+            )(...arg);
+            if (httpPutResponse.statusCode !== 401) {
+                await httpSetAuthenticationToken(auth);
+            }
+            return httpPutResponse;
+        };
+
+/**
+ * Authenticated HTTP PUT for OPDS resources.
+ *
+ * Keep this separate from httpPut: the latter is also used by LCP/LSD endpoints,
+ * where OPDS authentication-token lookup and refresh must not be applied.
+ */
+export const httpPutWithAuth: typeof httpFetchFormattedResponse = async (...arg) =>
+    httpPutWithAuthInternal(true, {
+        activeAuthenticationOrigins: new Set(),
+        count: 0,
+    })(...arg);
+
 export const httpPut: typeof httpFetchFormattedResponse =
     async (...arg) => {
 
-        let [, options] = arg;
+        const [url, initialOptions, callback, locale] = arg;
 
-        options = options || {};
+        const options = initialOptions || {};
         options.method = "put";
-        arg[1] = options;
 
         // do not risk showing plaintext password in console / command line shell
         // debug("Body:");
         // debug(options.body);
 
-        return httpFetchFormattedResponse(...arg);
+        return httpFetchFormattedResponse(url, options, callback, locale);
     };

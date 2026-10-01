@@ -6,11 +6,14 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { readerIpc } from "readium-desktop/common/ipc";
 import { ReaderInfo } from "readium-desktop/common/models/reader";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { deleteReaderWindowInDi, diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
+import { getAuthenticationToken } from "readium-desktop/main/network/http";
 import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
@@ -21,29 +24,81 @@ import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import { settingsKeepLibraryWindowInBackgroundOnReaderCloseIsEnabled } from "readium-desktop/common/redux/states/settings";
 // import { comparePublisherReaderConfig } from "readium-desktop/common/publisherConfig";
-import { readerActions, winCommonActions } from "readium-desktop/common/redux/actions";
+import { authActions, readerActions, winCommonActions } from "readium-desktop/common/redux/actions";
 import { sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
 import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { dialog } from "electron";
-import { isDeepStrictEqual } from "node:util";
 import { SenderType, type WithSender } from "readium-desktop/common/models/sync";
-import { opdsProgressionIsNewer } from "readium-desktop/common/models/opdsProgression";
-import { getOpdsProgression } from "readium-desktop/main/services/opdsProgression";
+import {
+    locatorToOpdsProgression,
+    OPDS_PROGRESSION_EPSILON,
+    opdsProgressionIsNewer,
+    opdsProgressionMatchesAppliedProgression,
+} from "readium-desktop/common/models/opdsProgression";
+import {
+    getOpdsProgression,
+    putOpdsProgression,
+} from "readium-desktop/main/services/opdsProgression";
+import {
+    findOpdsProgressionLockCandidate,
+    OpdsProgressionSyncCoordinator,
+    TOpdsProgressionUploadOutcome,
+} from "readium-desktop/main/services/opdsProgressionSync";
 import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 import type { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+import {
+    cleanupAndDestroyReadersForForcedShutdown,
+    type IForcedShutdownReader,
+} from "./opdsProgressionShutdown";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:win:reader";
 const debug = debug_(filename_);
 debug("_");
+const __opdsProgressionSyncCoordinator = new OpdsProgressionSyncCoordinator({
+    upload: async (url, document, locale): Promise<TOpdsProgressionUploadOutcome> => {
+        const result = await putOpdsProgression(url, document, locale);
+        switch (result.kind) {
+            case "success":
+                return {
+                    kind: "success",
+                    modified: result.document.modified,
+                    progression: result.document.progression,
+                };
+            case "network-error":
+            case "server-error":
+                debug("Progression PUT will be retried", result);
+                return "retry";
+            case "bad-request":
+            case "forbidden":
+            case "invalid-document":
+            case "invalid-response":
+            case "unauthorized":
+                debug("Progression PUT disabled for this reader session", result);
+                return "disable";
+            case "conflict":
+                debug("Progression PUT candidate is older than the server state", result);
+                return "drop";
+            case "authentication-required":
+                debug("Progression PUT requires OPDS authentication", result);
+                return {
+                    kind: "hold",
+                    authenticationUrl: result.authenticationUrl,
+                };
+        }
+    },
+});
 
 const __readerWithSamePubIdGotTheLockMap = new Map<string, string>(); // K: publicationIdentifier V: windowIdentifier
+const __closingReaderWindowIdentifiers = new Set<string>();
 const __localProgressionSnapshotMap = new Map<string, {
     publicationIdentifier: string;
     hasLocator: boolean;
-    locator: MiniLocatorExtended["locator"] | undefined;
     locatorModifiedTime: number | undefined;
-    rendererBaselineLocator: MiniLocatorExtended["locator"] | undefined;
+    progressionSpine: ReadonlyArray<{ Href?: string }> | undefined;
+    initialProgression: number | undefined;
+    latestObservedProgression: number | undefined;
+    rendererBaselineProgression: number | undefined;
     meaningfulLocatorChangeTime: number | undefined;
     retrievalStarted: boolean;
 }>();
@@ -74,9 +129,11 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     __localProgressionSnapshotMap.set(winId, {
         publicationIdentifier: pubId,
         hasLocator: typeof locator?.locator?.href === "string" && locator.locator.href.length > 0,
-        locator: locator?.locator,
         locatorModifiedTime,
-        rendererBaselineLocator: locator?.locator,
+        progressionSpine: undefined,
+        initialProgression: undefined,
+        latestObservedProgression: undefined,
+        rendererBaselineProgression: undefined,
         meaningfulLocatorChangeTime: undefined,
         retrievalStarted: false,
     });
@@ -125,6 +182,50 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     if (readerWindow.isDestroyed() || readerWindow.webContents.isDestroyed()) {
         debug("readerWindow or webcontents distroyed -> exit on winId=${winId} -> pubId=${pubId}");
         return ;
+    }
+
+    const publicationDocument = yield* selectTyped((state: RootState) => state.publication.db[pubId]);
+    const progressionLinkUrl = publicationDocument?.opdsPublication?.progressionLink?.url;
+    const isEpub = publicationDocument?.files?.some((file) =>
+        parseContentType(file.contentType) === ContentType.Epub,
+    );
+    const r2PublicationJson = readerSession.reduxState.info.publicationView.r2PublicationJson;
+    if (progressionLinkUrl && isEpub && r2PublicationJson) {
+        try {
+            const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
+            const spine = (r2Publication.Spine || []).map((link) => ({ Href: link.Href }));
+            const localSnapshot = __localProgressionSnapshotMap.get(winId);
+            if (localSnapshot) {
+                const initialProgression = locatorToOpdsProgression(locator?.locator, spine);
+                localSnapshot.progressionSpine = spine;
+                localSnapshot.initialProgression = initialProgression;
+                localSnapshot.latestObservedProgression = initialProgression;
+                localSnapshot.rendererBaselineProgression = initialProgression;
+            }
+            const deviceIdManager = diMainGet("device-id-manager");
+            const deviceId = yield* callTyped(() => deviceIdManager.getDeviceID());
+            const deviceName = yield* callTyped(() => deviceIdManager.getDeviceNAME());
+            __opdsProgressionSyncCoordinator.register({
+                device: {
+                    id: deviceId.includes(":") ? deviceId : `urn:uuid:${deviceId}`,
+                    name: deviceName,
+                },
+                initialLocator: locator?.locator,
+                locale,
+                publicationIdentifier: pubId,
+                spine,
+                url: progressionLinkUrl,
+                windowIdentifier: winId,
+            });
+        } catch (err) {
+            // Upload support is optional and must not prevent the reader opening.
+            debug("Unable to initialize OPDS progression PUT", err);
+        }
+    }
+
+    if (readerWindow.isDestroyed() || readerWindow.webContents.isDestroyed()) {
+        __opdsProgressionSyncCoordinator.discard(winId);
+        return;
     }
     webContents.send(readerIpc.CHANNEL, {
         type: readerIpc.EventType.request,
@@ -202,23 +303,36 @@ function trackOpdsProgressionLocatorChange(action: readerActions.setLocator.TAct
         return;
     }
 
-    const localSnapshot = __localProgressionSnapshotMap.get(winId);
     const locator = action.payload.locator;
-    if (!localSnapshot || sender.reader_pubId !== localSnapshot.publicationIdentifier ||
-        typeof locator?.href !== "string" || !locator.href) {
+    if (typeof locator?.href !== "string" || !locator.href) {
         return;
     }
 
-    if (!localSnapshot.rendererBaselineLocator) {
-        // With no pre-open locator, the navigator's first report establishes the
-        // automatic/default position. Later movement is meaningful local activity.
-        localSnapshot.rendererBaselineLocator = locator;
-        return;
+    const localSnapshot = __localProgressionSnapshotMap.get(winId);
+    if (localSnapshot && sender.reader_pubId === localSnapshot.publicationIdentifier) {
+        const progression = locatorToOpdsProgression(locator, localSnapshot.progressionSpine);
+        if (typeof progression === "number") {
+            localSnapshot.latestObservedProgression = progression;
+        }
+        if (
+            typeof progression === "number"
+            && typeof localSnapshot.rendererBaselineProgression !== "number"
+        ) {
+            // With no pre-open locator, the navigator's first report establishes the
+            // automatic/default position. Later movement is meaningful local activity.
+            localSnapshot.rendererBaselineProgression = progression;
+        } else if (
+            typeof progression === "number"
+            && typeof localSnapshot.rendererBaselineProgression === "number"
+            && Math.abs(progression - localSnapshot.rendererBaselineProgression) > OPDS_PROGRESSION_EPSILON
+        ) {
+            localSnapshot.meaningfulLocatorChangeTime = Date.now();
+        }
     }
 
-    if (!isDeepStrictEqual(localSnapshot.rendererBaselineLocator, locator)) {
-        localSnapshot.meaningfulLocatorChangeTime = Date.now();
-    }
+    const ownsPublicationLock = sender.reader_pubId &&
+        __readerWithSamePubIdGotTheLockMap.get(sender.reader_pubId) === winId;
+    __opdsProgressionSyncCoordinator.observeLocator(winId, locator, Boolean(ownsPublicationLock));
 }
 
 function* retrieveOpdsProgression(action: winCommonActions.initSuccess.TAction) {
@@ -235,6 +349,7 @@ function* retrieveOpdsProgression(action: winCommonActions.initSuccess.TAction) 
     }
     localSnapshot.retrievalStarted = true;
 
+    let awaitingRemoteResolution = false;
     try {
         const publicationDocument = yield* selectTyped((state: RootState) => state.publication.db[pubId]);
         const progressionLink = publicationDocument?.opdsPublication?.progressionLink;
@@ -250,15 +365,38 @@ function* retrieveOpdsProgression(action: winCommonActions.initSuccess.TAction) 
         if (!progression || __localProgressionSnapshotMap.get(winId) !== localSnapshot) {
             return;
         }
+        __opdsProgressionSyncCoordinator.recordRemoteModified(winId, progression.modified);
 
         // Reader hydration can rewrite the same locator and refresh its mtime. Keep
         // using the pre-open timestamp for that case, but honor a genuinely changed
         // location if the user navigated while the network request was in flight.
         const latestLocator = (yield* callTyped(() =>
             diMainGet("publication-data").readJsonObj(pubId, "locator"))) as MiniLocatorExtended | undefined;
-        const persistedLocatorChanged = localSnapshot.hasLocator &&
-            typeof latestLocator?.locator?.href === "string" &&
-            !isDeepStrictEqual(localSnapshot.locator, latestLocator.locator);
+        const latestProgression = locatorToOpdsProgression(
+            latestLocator?.locator,
+            localSnapshot.progressionSpine,
+        );
+        let currentProgression = localSnapshot.latestObservedProgression;
+        if (
+            typeof localSnapshot.meaningfulLocatorChangeTime !== "number" &&
+            typeof latestProgression === "number"
+        ) {
+            currentProgression = latestProgression;
+        }
+        if (opdsProgressionMatchesAppliedProgression(
+            progression.progression,
+            currentProgression,
+            localSnapshot.progressionSpine,
+        )) {
+            // A logical/future server timestamp can outlive the filesystem mtime
+            // of the local locator we just uploaded. Equal positions are already
+            // reconciled and must not prompt again on every reopen.
+            return;
+        }
+        const persistedLocatorChanged = localSnapshot.hasLocator
+            && typeof latestProgression === "number"
+            && typeof localSnapshot.initialProgression === "number"
+            && Math.abs(latestProgression - localSnapshot.initialProgression) > OPDS_PROGRESSION_EPSILON;
         const localLocatorChanged = persistedLocatorChanged ||
             typeof localSnapshot.meaningfulLocatorChangeTime === "number";
         const persistedModifiedTime = persistedLocatorChanged
@@ -280,10 +418,45 @@ function* retrieveOpdsProgression(action: winCommonActions.initSuccess.TAction) 
             return;
         }
 
+        __opdsProgressionSyncCoordinator.beginRemoteReconciliation(
+            winId,
+            progression.progression,
+        );
+        awaitingRemoteResolution = true;
         yield put(readerActions.setOpdsProgression.build(winId, progression));
     } finally {
+        if (!awaitingRemoteResolution) {
+            __opdsProgressionSyncCoordinator.completeInitialGet(winId);
+        }
         if (__localProgressionSnapshotMap.get(winId) === localSnapshot) {
             __localProgressionSnapshotMap.delete(winId);
+        }
+    }
+}
+
+function resolveOpdsProgression(action: readerActions.clearOpdsProgression.TAction) {
+    const sender = (action as readerActions.clearOpdsProgression.TAction & Partial<WithSender>).sender;
+    const winId = sender?.identifier;
+    if (sender?.type !== SenderType.Renderer || !winId) {
+        return;
+    }
+
+    __opdsProgressionSyncCoordinator.resolveRemoteReconciliation(
+        winId,
+        action.payload.accepted,
+    );
+}
+
+function* resumeOpdsProgressionAfterAuthentication() {
+    for (const authenticationUrl of __opdsProgressionSyncCoordinator.getPendingAuthenticationUrls()) {
+        try {
+            const authentication = yield* callTyped(() =>
+                getAuthenticationToken(new URL(authenticationUrl), "PUT"));
+            if (authentication?.accessToken) {
+                __opdsProgressionSyncCoordinator.resumeAfterAuthentication(authenticationUrl);
+            }
+        } catch (err) {
+            debug("Unable to resume OPDS progression after authentication", err);
         }
     }
 }
@@ -291,6 +464,7 @@ function* retrieveOpdsProgression(action: winCommonActions.initSuccess.TAction) 
 function* winOpenError(action: winActions.reader.openError.TAction) {
     const { readerWindow, publicationIdentifier: pubId, windowIdentifier: winId, reason } = action.payload;
     __localProgressionSnapshotMap.delete(winId);
+    __opdsProgressionSyncCoordinator.discard(winId);
     debug(`ERRROR!!! reader winId=${winId} -> pubId=${pubId} failed to open`);
 
     try {
@@ -304,36 +478,99 @@ function* winOpenError(action: winActions.reader.openError.TAction) {
     yield put(readerActions.closeRequest.build(winId, pubId));
 }
 
+export const closeOpdsProgressionSession = (windowIdentifier: string): Promise<void> =>
+    __opdsProgressionSyncCoordinator.close(windowIdentifier);
+
+export const destroyReadersForForcedShutdown = (
+    readers: readonly IForcedShutdownReader[],
+): Promise<void> => cleanupAndDestroyReadersForForcedShutdown(readers, {
+    clearProgressionLock: (publicationIdentifier) => {
+        __readerWithSamePubIdGotTheLockMap.delete(publicationIdentifier);
+    },
+    closeProgressionSession: closeOpdsProgressionSession,
+    deleteLocalProgressionSnapshot: (windowIdentifier) => {
+        __localProgressionSnapshotMap.delete(windowIdentifier);
+    },
+    deleteReaderWindow: deleteReaderWindowInDi,
+    getProgressionLockOwner: (publicationIdentifier) =>
+        __readerWithSamePubIdGotTheLockMap.get(publicationIdentifier),
+    markReaderClosing: (windowIdentifier) => {
+        __closingReaderWindowIdentifiers.add(windowIdentifier);
+    },
+    unmarkReaderClosing: (windowIdentifier) => {
+        __closingReaderWindowIdentifiers.delete(windowIdentifier);
+    },
+});
+
 export function* winClose(windowIdentifier: string, publicationIdentifier: string) {
 
     debug(`reader windId=${windowIdentifier} -> winClose pubId=${publicationIdentifier}`);
-    __localProgressionSnapshotMap.delete(windowIdentifier);
+    if (__closingReaderWindowIdentifiers.has(windowIdentifier)) {
+        debug(`reader winId=${windowIdentifier} close cleanup is already in progress`);
+        return;
+    }
+    __closingReaderWindowIdentifiers.add(windowIdentifier);
     const readersBeforeUnregistered = yield* selectTyped((state: RootState) => state.win.session.reader);
     if (!readersBeforeUnregistered[windowIdentifier]) {
         debug("ERROR: reader not found in the session list");
         // return; // continue to clean this broken state
     }
-    deleteReaderWindowInDi(windowIdentifier);
+
+    // Transfer ownership before the closing reader's final network flush. A
+    // different open reader must not lose movement while this PUT is in flight.
     const winIdGotTheLock = __readerWithSamePubIdGotTheLockMap.get(publicationIdentifier);
     if (windowIdentifier === winIdGotTheLock) {
-        __readerWithSamePubIdGotTheLockMap.delete(publicationIdentifier);
+        const promotedReaderIdentifier = findOpdsProgressionLockCandidate(
+            ObjectValues(readersBeforeUnregistered),
+            publicationIdentifier,
+            __closingReaderWindowIdentifiers,
+        );
+        if (promotedReaderIdentifier) {
+            __readerWithSamePubIdGotTheLockMap.set(publicationIdentifier, promotedReaderIdentifier);
+            yield put(readerActions.setTheLock.build(promotedReaderIdentifier));
+            __opdsProgressionSyncCoordinator.acquireUploadLock(promotedReaderIdentifier);
+            debug(`reader ${promotedReaderIdentifier} got the lock !!!`);
+        } else {
+            __readerWithSamePubIdGotTheLockMap.delete(publicationIdentifier);
+        }
     }
+
+    yield* callTyped(() => closeOpdsProgressionSession(windowIdentifier));
+    __localProgressionSnapshotMap.delete(windowIdentifier);
+    deleteReaderWindowInDi(windowIdentifier);
     yield put(winActions.session.unregisterReader.build(windowIdentifier));
     yield put(streamerActions.publicationCloseRequest.build(publicationIdentifier));
 
     // readers in session updated
     const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+    __closingReaderWindowIdentifiers.delete(windowIdentifier);
+
+    // Concurrent closes can invalidate the optimistic pre-flush handoff. Only
+    // retain a lock owner that survived unregistration and is not also closing.
+    const readersAfterUnregister = ObjectValues(readers);
+    const currentLockOwner = __readerWithSamePubIdGotTheLockMap.get(publicationIdentifier);
+    const currentOwnerSurvived = readersAfterUnregister.some((reader) =>
+        reader.identifier === currentLockOwner
+        && reader.publicationIdentifier === publicationIdentifier
+        && !__closingReaderWindowIdentifiers.has(reader.identifier));
+    if (!currentOwnerSurvived) {
+        const promotedReaderIdentifier = findOpdsProgressionLockCandidate(
+            readersAfterUnregister,
+            publicationIdentifier,
+            __closingReaderWindowIdentifiers,
+        );
+        if (promotedReaderIdentifier) {
+            __readerWithSamePubIdGotTheLockMap.set(publicationIdentifier, promotedReaderIdentifier);
+            yield put(readerActions.setTheLock.build(promotedReaderIdentifier));
+            __opdsProgressionSyncCoordinator.acquireUploadLock(promotedReaderIdentifier);
+            debug(`reader ${promotedReaderIdentifier} got the lock after close revalidation !!!`);
+        } else {
+            __readerWithSamePubIdGotTheLockMap.delete(publicationIdentifier);
+        }
+    }
 
     {
         const readersArray = ObjectValues(readers);
-        const readersWithSamePubId = readersArray.filter(({publicationIdentifier: pubIdFromOtherReader}) => publicationIdentifier === pubIdFromOtherReader);
-        const readerSamePubIdFirstWinId = readersWithSamePubId[0]?.identifier;
-        if (readerSamePubIdFirstWinId) {
-            __readerWithSamePubIdGotTheLockMap.set(publicationIdentifier, readerSamePubIdFirstWinId);
-            yield put(readerActions.setTheLock.build(readerSamePubIdFirstWinId));
-            debug(`reader ${readerSamePubIdFirstWinId} got the lock !!!`);
-        }
-
         const keepLibraryWindowInBackgroundOnReaderClose = yield* selectTyped((state: RootState) =>
             settingsKeepLibraryWindowInBackgroundOnReaderCloseIsEnabled(state.settings));
         if (keepLibraryWindowInBackgroundOnReaderClose) {
@@ -452,6 +689,16 @@ export function saga() {
             readerActions.setLocator.ID,
             trackOpdsProgressionLocatorChange,
             (e) => error(filename_ + ":trackOpdsProgressionLocatorChange", e),
+        ),
+        takeSpawnEvery(
+            readerActions.clearOpdsProgression.ID,
+            resolveOpdsProgression,
+            (e) => error(filename_ + ":resolveOpdsProgression", e),
+        ),
+        takeSpawnEvery(
+            authActions.done.ID,
+            resumeOpdsProgressionAfterAuthentication,
+            (e) => error(filename_ + ":resumeOpdsProgressionAfterAuthentication", e),
         ),
         // takeSpawnEvery(
         //     winActions.reader.closed.ID,

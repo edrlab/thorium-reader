@@ -5,14 +5,24 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Action } from "readium-desktop/common/models/redux";
+import { ActionWithDestination } from "readium-desktop/common/models/sync";
 
 export const ID = "READER_CLEAR_OPDS_PROGRESSION";
 
-export function build(): Action<typeof ID> {
+export interface Payload {
+    accepted: boolean;
+}
+
+export function build(
+    readerWindowIdentifier: string,
+    accepted: boolean,
+): ActionWithDestination<typeof ID, Payload> {
     return {
         type: ID,
-        payload: {},
+        payload: { accepted },
+        destination: {
+            identifier: readerWindowIdentifier,
+        },
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator
