@@ -80,6 +80,7 @@ import {
     ttsHighlightStyle,
     mediaOverlaysEnableCaptionsMode,
     mediaOverlaysEnableSkippability,
+    mediaOverlaysEnableInteractiveLinks,
     highlightsClickListen,
     mediaOverlaysUseTTSHighlights,
     enablePageBreakMarginIndicators,
@@ -3115,6 +3116,7 @@ class Reader extends React.Component<IProps, IState> {
             mediaOverlaysUseTTSHighlights(this.props.readerConfig.mediaOverlaysUseTTSHighlights);
             ttsAndMediaOverlaysManualPlayNext(this.props.readerConfig.ttsAndMediaOverlaysDisableContinuousPlay);
             ttsSkippabilityEnable(this.props.readerConfig.mediaOverlaysEnableSkippability);
+            mediaOverlaysEnableInteractiveLinks(this.props.readerConfig.mediaOverlaysInteractiveLinks);
 
             enablePageBreakMarginIndicators(this.props.readerConfig.enablePageBreakMarginIndicators);
         }

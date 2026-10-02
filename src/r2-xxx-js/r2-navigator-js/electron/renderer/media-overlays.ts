@@ -19,6 +19,7 @@ import { DEBUG_AUDIO } from "../common/audiobook";
 import {
     IEventPayload_R2_EVENT_MEDIA_OVERLAY_CLICK, IEventPayload_R2_EVENT_MEDIA_OVERLAY_HIGHLIGHT,
     IEventPayload_R2_EVENT_MEDIA_OVERLAY_STATE, R2_EVENT_MEDIA_OVERLAY_STATE, MediaOverlaysStateEnum as MediaOverlaysStateEnum_,
+    IEventPayload_R2_EVENT_MEDIA_OVERLAY_INTERACTIVE_LINKS, R2_EVENT_MEDIA_OVERLAY_INTERACTIVE_LINKS,
     IEventPayload_R2_EVENT_MEDIA_OVERLAY_STARTSTOP, R2_EVENT_MEDIA_OVERLAY_CLICK,
     R2_EVENT_MEDIA_OVERLAY_HIGHLIGHT, R2_EVENT_MEDIA_OVERLAY_STARTSTOP, IEventPayload_R2_EVENT_READING_LOCATION,
 } from "../common/events";
@@ -214,6 +215,27 @@ async function playMediaOverlays(
     }
 }
 
+// The step from one text/audio pair to the next, once the clock has
+// passed the current pair's end (or the audio ended).
+const stepPastEnd = () => {
+    if (IS_DEV) {
+        debug("ontimeupdate - mediaOverlaysNext()");
+    }
+
+    if (win.READIUM2.ttsAndMediaOverlaysManualPlayNext) {
+        mediaOverlaysPause();
+
+        // mediaOverlaysStop(true);
+        // ==>
+        // _mediaOverlayActive = stayActive ? true : false;
+        // mediaOverlaysPause();
+        // _mediaOverlayRoot = undefined;
+        // _mediaOverlayTextAudioPair = undefined;
+        // _mediaOverlayTextId = undefined;
+    } else {
+        mediaOverlaysNext();
+    }
+};
 const ontimeupdate = (ev: Event) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (_currentAudioElement && (_currentAudioElement as any).__draggable && (_currentAudioElement as any).__hidden) {
@@ -231,27 +253,53 @@ const ontimeupdate = (ev: Event) => {
         // ev.type === "timeupdate"
         // currentAudioElement.currentTime >= currentAudioElement.duration
     ) {
-
-        if (IS_DEV) {
-            debug("ontimeupdate - mediaOverlaysNext()");
+        if (_currentAudioEnd && _frameSteppedAt === _currentAudioEnd) {
+            return; // the frame tick already stepped past this pair
         }
+        _frameSteppedAt = _currentAudioEnd;
+        stepPastEnd();
+    }
+};
 
-        if (win.READIUM2.ttsAndMediaOverlaysManualPlayNext) {
-            mediaOverlaysPause();
+// THE FRAME TICK: the browser's "timeupdate" fires only about four times a
+// second, and each one moved the light along by at most one pair — fine
+// for pairs the size of a sentence, but with a pair per word the light
+// fell behind on every word shorter than a tick, and the faster the
+// playback, the further behind. While the audio plays, the same check
+// runs on every animation frame instead, so the light lands on the pair
+// the clock is in within a frame, at any playback rate. One step per pair
+// (the pair's end is the guard): the next pair installs its own end
+// synchronously when it starts playing.
+let _frameTick: number | undefined;
+let _frameSteppedAt: number | undefined;
+const frameTick = () => {
+    _frameTick = undefined;
+    if (!_currentAudioElement || _currentAudioElement.paused || _currentAudioElement.ended) {
+        return;
+    }
+    if (_currentAudioEnd &&
+        _currentAudioElement.currentTime >= (_currentAudioEnd - 0.05) &&
+        _frameSteppedAt !== _currentAudioEnd) {
 
-            // mediaOverlaysStop(true);
-            // ==>
-            // _mediaOverlayActive = stayActive ? true : false;
-            // mediaOverlaysPause();
-            // _mediaOverlayRoot = undefined;
-            // _mediaOverlayTextAudioPair = undefined;
-            // _mediaOverlayTextId = undefined;
-        } else {
-            mediaOverlaysNext();
+        _frameSteppedAt = _currentAudioEnd;
+        stepPastEnd();
+    }
+    _frameTick = win.requestAnimationFrame(frameTick);
+};
+const ensureFrameTick = (remove: boolean) => {
+    if (remove) {
+        if (typeof _frameTick !== "undefined") {
+            win.cancelAnimationFrame(_frameTick);
+            _frameTick = undefined;
         }
+        return;
+    }
+    if (typeof _frameTick === "undefined") {
+        _frameTick = win.requestAnimationFrame(frameTick);
     }
 };
 const ensureOnTimeUpdate = (remove: boolean) => {
+    ensureFrameTick(remove);
     if (_currentAudioElement) {
         if (remove) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -1323,6 +1371,42 @@ export function mediaOverlaysHandleIpcMessage(
             //     }
             // }
 
+            // A reading-location report that lands inside the text/audio pair already
+            // playing (or paused) must not restart it: the document re-scrolls after a
+            // window resize, a font size change or a layout switch, and reports its
+            // location each time. Only a report that lands in a different pair moves
+            // the playback.
+            if (!payload.userInteract &&
+                _mediaOverlayRoot && _mediaOverlayTextAudioPair &&
+                (_mediaOverlaysState === MediaOverlaysStateEnum_.PLAYING ||
+                    _mediaOverlaysState === MediaOverlaysStateEnum_.PAUSED) &&
+                activeWebView.READIUM2.link) {
+
+                const href = activeWebView.READIUM2.link.HrefDecoded || activeWebView.READIUM2.link.Href;
+                const textHref = new URL("https://dummy.com/" + href).pathname.substring(1);
+                const chain = payload.textFragmentIDChain ?
+                    payload.textFragmentIDChain.filter((id) => id) as Array<string> : undefined;
+                let located = chain && chain.length ?
+                    findDepthFirstTextAudioPair(textHref, _mediaOverlayRoot, chain, false) : undefined;
+                if (!located) {
+                    const followingElementIDs = payload.locationHashOverrideInfo?.followingElementIDs;
+                    if (followingElementIDs) {
+                        for (const id of followingElementIDs) {
+                            located = findDepthFirstTextAudioPair(textHref, _mediaOverlayRoot, [id], false);
+                            if (located) {
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (located && located === _mediaOverlayTextAudioPair) {
+                    if (IS_DEV) {
+                        debug("R2_EVENT_MEDIA_OVERLAY_CLICK - reading location inside the current text/audio pair, keep going");
+                    }
+                    return true;
+                }
+            }
+
             const wasPlaying = _mediaOverlaysState === MediaOverlaysStateEnum_.PLAYING;
             const lastClickedNotification = _lastClickedNotification;
 
@@ -1771,6 +1855,16 @@ export function mediaOverlaysNext(escape?: boolean) {
             findNextTextAudioPair(_mediaOverlayRoot, _mediaOverlayTextAudioPair, {prev: undefined},
                 escape ? true : false);
         if (!nextTextAudioPair) {
+            if (win.READIUM2.mediaOverlaysInteractiveLinks && !mediaOverlaysIsPeripheral(_mediaOverlayRoot)) {
+                // Interactive books: the end of a chapter is where the reader chooses
+                // (the choices are links), so wait there instead of turning the page.
+                // Front and back matter (a title page, a preamble, the cast) carry on.
+                if (IS_DEV) {
+                    debug("mediaOverlaysNext() - interactive links: pause at the end of the chapter");
+                }
+                mediaOverlaysPause();
+                return;
+            }
             if (IS_DEV) {
                 debug("mediaOverlaysNext() - navLeftOrRight()");
             }
@@ -1906,4 +2000,51 @@ export function mediaOverlaysPlaybackRate(speed: number) {
 let _mediaOverlaySkippabilityIsEnabled = true;
 export function mediaOverlaysEnableSkippability(doEnable: boolean) {
     _mediaOverlaySkippabilityIsEnabled = doEnable;
+}
+
+// The SMIL's epub:type roles that mark a document as front or back matter
+// (the reader has nothing to choose there) versus the body of the book.
+const _peripheralRoles = new Set([
+    "cover", "titlepage", "frontmatter", "backmatter", "preamble", "toc", "landmarks",
+    "colophon", "dedication", "epigraph", "acknowledgments", "copyright-page", "imprint",
+    "foreword", "preface", "afterword", "appendix", "bibliography", "glossary", "index",
+]);
+const _bodyRoles = new Set(["bodymatter", "chapter", "part", "volume", "prologue", "epilogue"]);
+
+function moHasRole(mo: MediaOverlayNode, roles: Set<string>): boolean {
+    if (mo.Role && mo.Role.some((r) => roles.has(r))) {
+        return true;
+    }
+    return !!mo.Children && mo.Children.some((child) => moHasRole(child, roles));
+}
+
+// A document whose overlay is labelled front or back matter and nowhere
+// labelled body: with interactive links enabled the readaloud flows on
+// from its end instead of waiting (there is no choice to wait for).
+export function mediaOverlaysIsPeripheral(root: MediaOverlayNode | undefined): boolean {
+    if (!root) {
+        return false;
+    }
+    return !moHasRole(root, _bodyRoles) && moHasRole(root, _peripheralRoles);
+}
+
+// Interactive books (choices as links): with this enabled, a click on a
+// link while media overlays are playing or paused stops the readaloud and
+// lets the link open, instead of being swallowed.
+export function mediaOverlaysEnableInteractiveLinks(doEnable: boolean) {
+    if (!win.READIUM2) {
+        return;
+    }
+    win.READIUM2.mediaOverlaysInteractiveLinks = doEnable;
+
+    const activeWebViews = win.READIUM2.getActiveWebViews();
+    for (const activeWebView of activeWebViews) {
+        const payload: IEventPayload_R2_EVENT_MEDIA_OVERLAY_INTERACTIVE_LINKS = {
+            doEnable,
+        };
+
+        if (activeWebView.READIUM2?.DOMisReady) {
+            activeWebView.send(R2_EVENT_MEDIA_OVERLAY_INTERACTIVE_LINKS, payload).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+        }
+    }
 }

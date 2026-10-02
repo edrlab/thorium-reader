@@ -86,6 +86,7 @@ export interface ReaderConfigBooleans {
     noRuby: boolean;
     darken: boolean;
     ttsAndMediaOverlaysDisableContinuousPlay: boolean;
+    mediaOverlaysInteractiveLinks: boolean;
     mediaOverlaysEnableSkippability: boolean;
     mediaOverlaysIgnoreAndUseTTS: boolean;
     mediaOverlaysUseTTSHighlights: boolean;
