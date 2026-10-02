@@ -78,6 +78,7 @@
         "deleteBook": "删除图书",
         "deleteTag": "删除标签",
         "description": "概要",
+        "downloaded": "",
         "emptyTagList": "未带标签的电子书。",
         "entry": {
             "continueReading": "继续阅读",
@@ -235,7 +236,6 @@
             "alreadyImported": "所有笔记已经导入。",
             "emptyFile": "文件中没有可用的笔记。",
             "errorParsing": "文件解析时发生错误： ",
-            "noBelongTo": "无法导入笔记，至少有一条笔记不属于此出版物。",
             "nothing": "没有可导入的笔记，导入已终止",
             "success": "导入已成功完成。"
         },
@@ -285,6 +285,17 @@
         },
         "addMenu": "添加 OPDS 订阅源",
         "breadcrumbRoot": "出版目录",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "OPDS 官方网站",
         "empty": "未找到出版物",
         "firstPage": "首页",
@@ -904,7 +915,6 @@
             "preset": {
                 "apply": "应用",
                 "applyDetails": "将您的偏好设置应用到当前出版物。",
-                "detail": "保存 /应用 /重置您的偏好设置。",
                 "reset": "重置",
                 "resetDetails": "重置您的偏好设置（默认设置）。",
                 "save": "保存",
@@ -1325,6 +1335,11 @@
             "keyboardShortcuts": "键盘快捷键",
             "profiles": "配置文件",
             "storage": ""
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
         },
         "theme": {
             "auto": "自动",

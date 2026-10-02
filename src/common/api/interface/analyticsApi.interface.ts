@@ -15,6 +15,7 @@ export interface IAnalyticsLogEventOptions {
     sessionId?: number | string;
     engagementTimeMsec?: number;
     debug?: boolean;
+    disabled?: boolean;
     validationBehavior?: TAnalyticsValidationBehavior;
 }
 

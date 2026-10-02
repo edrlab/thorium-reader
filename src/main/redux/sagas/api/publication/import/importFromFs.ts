@@ -11,6 +11,7 @@ import { acceptedExtensionObject, isAcceptedExtension } from "readium-desktop/co
 import { computeFileHash, extractCrc32OnZip } from "readium-desktop/main/tools/crc";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
+import type { IPdfMetadataFallback } from "readium-desktop/main/pdf/manifest";
 import { pdfPackager } from "readium-desktop/main/pdf/packager";
 import { lpfToAudiobookConverter } from "readium-desktop/main/w3c/lpf/toAudiobook";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
@@ -32,6 +33,7 @@ export function* importFromFsService(
     willBeImmediatelyFollowedByOpen: boolean,
     lcpHashedPassphrase?: string,
     preservedIdentifier?: string,
+    pdfMetadataFallback?: IPdfMetadataFallback,
 ): SagaGenerator<[publicationDoc: PublicationDocument, alreadyImported: boolean]> {
 
     debug("importFromFsService", filePath);
@@ -103,7 +105,7 @@ export function* importFromFsService(
 
             debug("is a PDF file need a converter");
             // convert .pdf to .webpub
-            publicationFilePath = yield* callTyped(() => pdfPackager(filePath));
+            publicationFilePath = yield* callTyped(() => pdfPackager(filePath, pdfMetadataFallback));
         }
 
         publicationDocument = yield* callTyped(

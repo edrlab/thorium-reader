@@ -11,6 +11,7 @@ import { OPDSAvailabilityEnum } from "@r2-opds-js/opds/opds2/opds2-availability"
 import { OPDSCurrencyEnum } from "@r2-opds-js/opds/opds2/opds2-price";
 
 import { Identifiable } from "../models/identifiable";
+import type { TOpdsFeedColor } from "../models/opds";
 
 // import { JsonMap } from "readium-desktop/typings/json";
 
@@ -22,6 +23,8 @@ export interface IOpdsFeedView extends Identifiable {
     authentified: boolean;
     authenticationUrl?: string;
     favorite?: boolean;
+    color: TOpdsFeedColor;
+    icon?: string;
 }
 
 export interface IOpdsCoverView {

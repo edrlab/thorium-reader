@@ -231,7 +231,7 @@ async function httpFetchRawResponse(
     url: string | URL,
     options: THttpOptions = {},
     // redirectCounter = 0,
-    locale = tryCatchSync(() => diMainGet("store").getState().i18n.locale, filename_),
+    locale = tryCatchSync(() => diMainGet("store").getState().i18n.locale, filename_) || "en", // en fallback if the request is done before the start of the redux store
 ): Promise<THttpResponse> {
 
     url = new URL(url);

@@ -78,6 +78,7 @@
         "deleteBook": "Usuń",
         "deleteTag": "Usuń etykietę",
         "description": "Opis",
+        "downloaded": "",
         "emptyTagList": "Brak zaetykietowanych publikacji.",
         "entry": {
             "continueReading": "Wznów czytanie",
@@ -250,7 +251,6 @@
             "alreadyImported": "Wszystkie notatki są już zaimportowane.",
             "emptyFile": "Brak notatek w pliku.",
             "errorParsing": "Błąd podczas analizowania pliku: ",
-            "noBelongTo": "Nie można zaimportować notatek, co najmniej jedna notatka nie należy do tej publikacji.",
             "nothing": "Brak notatek gotowych do zaimportowania, przerywam import",
             "success": "Import zakończony pomyślnie."
         },
@@ -304,6 +304,17 @@
         },
         "addMenu": "Dodaj kanał OPDS",
         "breadcrumbRoot": "Katalogi",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "Oficjalna strona OPDS",
         "empty": "Nie znaleziono publikacji",
         "firstPage": "Pierwsza",
@@ -926,7 +937,6 @@
             "preset": {
                 "apply": "Zastosuj",
                 "applyDetails": "Zastosuj preferowaną konfigurację do bieżącej publikacji.",
-                "detail": "Zapisz / Zastosuj / Resetuj preferowaną konfigurację.",
                 "reset": "Resetuj",
                 "resetDetails": "Resetuj preferowaną konfigurację (ustawienia domyślne).",
                 "save": "Zapisz",
@@ -1355,6 +1365,11 @@
             "keyboardShortcuts": "Skróty klawiszowe",
             "profiles": "Profile",
             "storage": "Przestrzeń dyskowa"
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
         },
         "theme": {
             "auto": "Automatyczny",

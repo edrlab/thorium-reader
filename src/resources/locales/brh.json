@@ -78,6 +78,7 @@
         "deleteBook": "",
         "deleteTag": "",
         "description": "",
+        "downloaded": "",
         "emptyTagList": "",
         "entry": {
             "continueReading": "",
@@ -240,7 +241,6 @@
             "alreadyImported": "",
             "emptyFile": "",
             "errorParsing": "",
-            "noBelongTo": "",
             "nothing": "",
             "success": ""
         },
@@ -292,6 +292,17 @@
         },
         "addMenu": "",
         "breadcrumbRoot": "",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "",
         "empty": "",
         "firstPage": "",
@@ -912,7 +923,6 @@
             "preset": {
                 "apply": "",
                 "applyDetails": "",
-                "detail": "",
                 "reset": "",
                 "resetDetails": "",
                 "save": "",
@@ -1337,6 +1347,11 @@
             "keyboardShortcuts": "",
             "profiles": "",
             "storage": ""
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
         },
         "theme": {
             "auto": "",

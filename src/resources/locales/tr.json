@@ -78,6 +78,7 @@
         "deleteBook": "Sil",
         "deleteTag": "Etiketi sil",
         "description": "Tanım",
+        "downloaded": "İndirilen",
         "emptyTagList": "Etiketsiz eserler.",
         "entry": {
             "continueReading": "Okumayı duraklat",
@@ -92,7 +93,7 @@
         "login": "Giriş yap",
         "logout": "Oturumu Kapat",
         "missing": "Eksik dosyalar",
-        "missingUnavailableDescription": "Bu eser, depolanan dosyaları mevcut olmadığından açılamıyor. Eseri yeniden içe aktarın veya Ayarlar'a ve ardından Depolama'ya gidip ilave depolama ekleyin veya değiştirin.",
+        "missingUnavailableDescription": "Bu eser, depolanan dosyaları kullanılamadığından açılamıyor. Eseri yeniden içe aktarın veya Ayarlar'a ve ardından Depolama'ya gidip ilave depolama ekleyin veya değiştirin.",
         "moreInfo": "Eser Ayrıntıları",
         "myBooks": "Eserlerim",
         "noPublicationHelpL1": "Dosyaları buraya bırakın",
@@ -240,7 +241,6 @@
             "alreadyImported": "Tüm notlar zaten içe aktarılmış.",
             "emptyFile": "Dosyada not mevcut değil.",
             "errorParsing": "Dosya işlenirken hata oluştu: ",
-            "noBelongTo": "Notlar içe aktarılamadı: En az bir not, Eser'e ait değil.",
             "nothing": "İçe aktarmaya hazır hiç not yok, içe aktarım durduruluyor",
             "success": "İçe aktarma başarıyla tamamlandı."
         },
@@ -250,12 +250,12 @@
             "errors": {
                 "hashMismatch": "İndirilen dosyanın bütünlük denetimi başarısız: Beklenen SHA-256 değeri {{- expected}}, alınan {{- actual}}.",
                 "httpGet": "HTTP indirme hatası: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
-                "invalidFilename": "",
-                "invalidLink": "",
-                "invalidTempDirectory": "",
-                "lengthMismatch": "",
-                "readStreamMissing": "",
-                "tooManyFilenameAttempts": ""
+                "invalidFilename": "Geçici indirme dosya adı geçersiz.",
+                "invalidLink": "İndirme bağlantısı geçersiz.",
+                "invalidTempDirectory": "Geçici indirme dizini geçersiz.",
+                "lengthMismatch": "İndirilen dosya bütünlüğü denetimi başarısız: beklenen {{- expected}} bayt, alınan {{- actual}} bayt.",
+                "readStreamMissing": "İndirme akışı kullanılamıyor.",
+                "tooManyFilenameAttempts": "Benzersiz geçici indirme dosya adı oluşturulamıyor: {{- path}}"
             }
         },
         "import": {
@@ -265,17 +265,17 @@
         },
         "open": {
             "error": "Eser yüklemesi başarısız: [{{- err}}]",
-            "folderNotFound": ""
+            "folderNotFound": "Eser dizini bulunamıyor. Yeniden içe aktarın veya Ayarlar > Depolama'dan ilave depolamayı yapılandırın."
         },
         "storage": {
             "recovery": {
-                "failure": "",
-                "success_one": "",
-                "success_other": ""
+                "failure": "Eser kurtarma başarısız.",
+                "success_one": "{{- count}} eser kurtarıldı.",
+                "success_other": "{{- count}} eser kurtarıldı."
             },
-            "removed": "",
-            "updateFailed": "",
-            "updated": ""
+            "removed": "Eser dizini kaldırıldı.",
+            "updateFailed": "Eser dizini güncellemesi başarısız: {{- message}}",
+            "updated": "Eser dizini güncellendi."
         },
         "wipeData": "Giriş verileri başarıyla temizlendi (erişim dizgecikleri ve çerezler)"
     },
@@ -292,7 +292,18 @@
         },
         "addMenu": "OPDS Beslemesi ekle",
         "breadcrumbRoot": "Kataloglar",
-        "documentation": "OPDS resmi web sitesi",
+        "color": {
+            "blue": "Mavi",
+            "gray": "Gri",
+            "green": "Yeşil",
+            "orange": "Turuncu",
+            "pink": "Pembe",
+            "purple": "Mor",
+            "red": "Kırmızı",
+            "title": "Katalog rengi",
+            "yellow": "Sarı"
+        },
+        "documentation": "OPDS resmi internet sitesi",
         "empty": "Eser bulunamadı",
         "firstPage": "İlk",
         "informations": "Sadece birkaç tıkla, kamu kütüphanelerinden ve dijital kitap satıcılarından dijital eserleri keşfedebileceğiniz ve indirebileceğiniz bir dünya hayal edin. Açık Eser Dağıtım Sistemi olarak Türkçeleştirebileceğimiz Open Publication Distribution System (OPDS) katalog biçimi, tam olarak bunu sunar. OPDS ile çeşitli e-kitap sağlayıcılarının kataloglarında gezinebilir, kaydolabilir, bir eseri ödünç alabilir, bir eseri satın alabilir veya kişisel kitaplığınızı ziyaret edebilirsiniz. Hatta anında okumak için bir e-kitap veya sesli kitabı doğrudan Thorium Reader'a indirebilirsiniz.\nPeki, bir OPDS kataloğunu nasıl bulursunuz? Gayet basit. Kataloğa yönlendiren  bir köprü bağlantısını (URL) arayıp bulun. Bu URL'yi yukarıdaki Bağlantı alanına kopyalayın. Tüm aktif OPDS katalogları için tek bir hizmet sağlama noktası olmadığını unutmayın. Tercih ettiğiniz kütüphane veya kitap satıcısıyla iletişime geçmeniz ve OPDS katalog URL'sini istemeniz gerekebilir. Nereden başlayacağınızdan emin değilseniz, Wikipedia'da çeşitli dillerde size yardımcı olabilecek birkaç OPDS katalog dizini mevcuttur.\nİsim alanı sizin için kolay bir yere yerleştirilmiştir ve Thorium Reader'a besleme tanımlamanın kolay bir yolunu sağlar.",
@@ -610,8 +621,8 @@
                 "descriptive": "Görünümün değiştirilip değiştirilemeyeceği hakkında bilgi mevcut değil"
             },
             "ways-of-reading-visual-adjustments-unmodifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Görünüm değiştirilemez",
+                "descriptive": "Okuma deneyimi basılı sürüme yakın olduğu için metin ve sayfa düzeni değiştirilemez ancak okuma sistemleri yine de yakınlaştırma seçenekleri sunabilir"
             }
         }
     },
@@ -792,8 +803,8 @@
             "speed": "Sesli Okuma oynatım hızı",
             "stop": "Sesli Okumayı Durdur",
             "title": "Sesli Okuma",
-            "useTTSHighlightsForMO": "",
-            "useTTSHighlightsForMODescription": ""
+            "useTTSHighlightsForMO": "Özel vurgulama",
+            "useTTSHighlightsForMODescription": "Kaynak stilleri devre dışı bırak"
         },
         "navigation": {
             "ZenModeExit": "Zen modundan çık",
@@ -824,8 +835,8 @@
         "notes": {
             "colors": {
                 "cyan": "Camgöbeği",
-                "darkorange": "",
-                "darkyellow": "",
+                "darkorange": "Koyu Turuncu",
+                "darkyellow": "Koyu Sarı",
                 "green": "Yeşil",
                 "orange": "Turuncu",
                 "purple": "Mor",
@@ -873,16 +884,16 @@
             },
             "customFontSelected": "Kişisel bir yazı tipi seçtiniz",
             "customizeReader": "Metin biçimlendirmesini özelleştir",
-            "defaultValue": "",
+            "defaultValue": "varsayılan değer",
             "disabled": "geçersiz",
             "display": "Görüntüleme",
             "disposition": {
                 "title": "Düzen"
             },
-            "enablePageBreakMarginIndicators": "",
+            "enablePageBreakMarginIndicators": "Sayfa geçişlerini sayfa kenar boşluğunda göster",
             "font": "Yazı tipi",
             "fontSize": "Yazı tipi boyutu",
-            "increaseFontSize": "",
+            "increaseFontSize": "Yazı tipi boyutunu artır",
             "infoCustomFont": "Adını yazarak işletim sisteminden özel yazı tipini seçin",
             "justification": "Hizalama",
             "justify": "İki yana yaslama",
@@ -912,7 +923,6 @@
             "preset": {
                 "apply": "Uygula",
                 "applyDetails": "Tercih ettiğiniz yapılandırmayı mevcut esere uygulayın.",
-                "detail": "Tercih ettiğiniz yapılandırmayı Kaydedin / Uygulayın / Sıfırlayın.",
                 "reset": "Sıfırla",
                 "resetDetails": "Tercih ettiğiniz yapılandırmayı sıfırlayın (varsayılan ayarlar).",
                 "save": "Kaydet",
@@ -920,7 +930,7 @@
                 "title": "Tercihler"
             },
             "preview": "Önizleme",
-            "reduceFontSize": "",
+            "reduceFontSize": "Yazı tipi boyutunu azalt",
             "reduceMotion": "Hareketi azalt",
             "scrolled": "Kaydırılabilir",
             "spacing": "Aralık ayarları",
@@ -1218,8 +1228,8 @@
                     "name": "Tam Ekrana Geç veya Tam Ekrandan Çık"
                 },
                 "ToggleReaderZenMode": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuma penceresinde, okuma sırasında kullanıcı arayüzünü basitleştiren zen modunu etkinleştirir veya bu moddan çıkar",
+                    "name": "Zen modunu Aç / Kapat"
                 },
                 "ToggleScreenReaderOptimize": {
                     "description": "Kütüphane penceresinde, ekran okuyucular için iyileştirilmiş desteği açar veya kapatır",
@@ -1264,71 +1274,71 @@
             "title": "Oturum kaydetmeyi etkinleştir"
         },
         "sharedComputer": {
-            "lcpAutoDeleteExpiredPublications": "",
-            "lcpAutoDeleteExpiredPublicationsDescription": "",
-            "title": ""
+            "lcpAutoDeleteExpiredPublications": "Süresi dolan eserleri ve ilintili kullanıcı verilerini otomatik olarak kaldırır",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Ödünç alma süresi dolan eserlerin otomatik olarak silinmesini sağlar (kişisel açıklayıcı notlar, okuma yer imleri vb. dahil). Bu, kütüphane veya üniversite odaları gibi 'paylaşılan bilgisayar' ortamlarında kullanışlıdır.",
+            "title": "Paylaşılan bilgisayar modu"
         },
         "storage": {
             "actions": {
-                "addDirectory": "",
-                "changeDirectory": "",
-                "removeStorageDirectory": ""
+                "addDirectory": "İlave bir depolama alanı seç",
+                "changeDirectory": "İlave depolamayı güncelle",
+                "removeStorageDirectory": "İlave depolamayı kaldır"
             },
             "beta": {
-                "availability": "",
-                "integrity": "",
-                "migration": "",
-                "summary": "",
-                "warning": ""
+                "availability": "Bu özellik yalnızca Thorium'un son sürümlerinde çalışır; harici klasör kitapları Thorium 3.4 veya önceki sürümlerde görünmez.",
+                "integrity": "Bu dizini güvenli ve erişilebilir tutun. Silmekten, erişimi kısıtlamaktan veya ağ sürücüleri gibi yavaş veya kararsız depolama birimleri kullanmaktan kaçının.",
+                "migration": "Thorium kitaplarınızı otomatik olarak aktarmaz: Ek depolama alanını güncellerseniz eserlerinizi el ile yeni konuma taşımanız gerekir. Eğer kaldırırsanız, eserlerinizi özgün depolama alanına el ile taşımanız gerekir.",
+                "summary": "Şu anda beta aşamasında olan bu özellik hakkında daha fazla bilgi edinin",
+                "warning": "Bu klasördeki dosyalarda el ile değişiklik yapmayın; bu, kitaplarınızda veya Okuyucuda sorunlara neden olabilir. Bu klasörü Thorium tarafından yönetilen güvenli bir kitaplık olarak düşünün."
             },
             "configuration": {
-                "chooseFolderDescription": "",
-                "configuredDescription": "",
-                "notConfiguredDescription": ""
+                "chooseFolderDescription": "Thorium'un ek depolama alanı olarak kullanacağı dizini seçin.",
+                "configuredDescription": "İlave depolama alanı yapılandırıldı ve yeni depolanacak eserler için kullanıma hazır.",
+                "notConfiguredDescription": "Thorium Reader'a içe aktarılacak eserler seçilen dizinde saklanacak. Daha önce içe aktarılan eserler özgün sistem depolama alanında kalacak."
             },
             "dialogs": {
                 "add": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Devam Et",
+                    "description": "Bu özellik şu anda beta aşamasındadır. Bir dizin seçerek devam etmek ve ilave bir depolama alanı yapılandırmak istiyor musunuz?",
+                    "title": "İlave bir depolama alanı seç"
                 },
                 "edit": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Dizini düzenle",
+                    "description": "İlave depolama alanının güncellenmesi dikkat gerektirir. Thorium sizin için mevcut eserleri taşımayacaktır; bunu el ile yapmanız gerekecek. Devam etmek istiyor musunuz?",
+                    "title": "İlave depolama alanını güncelle"
                 },
                 "remove": {
-                    "confirm": "",
-                    "description": "",
-                    "title": ""
+                    "confirm": "Dizini kaldır",
+                    "description": "İlave depolama alanının kaldırılması dikkat gerektirir. Thorium sizin için mevcut eserleri taşımayacaktır; bunu manuel olarak yapmanız gerekecek. Devam etmek istiyor musunuz?",
+                    "title": "İlave depolama alanını kaldır"
                 }
             },
             "locations": {
-                "defaultDescription": "",
-                "defaultInternal": "",
-                "externalStorage": "",
+                "defaultDescription": "Uygulama tarafından yönetilen eserler varsayılan olarak şu konumda depolanır:",
+                "defaultInternal": "Sistem Depolaması",
+                "externalStorage": "Harici depolama",
                 "title": "Konumlar"
             },
             "recovery": {
                 "actions": {
-                    "check": "",
-                    "checkAgain": "",
-                    "recover": "",
-                    "recovering": ""
+                    "check": "Kurtarılabilir eserleri denetle",
+                    "checkAgain": "Yeniden denetle",
+                    "recover": "Eserleri kurtar",
+                    "recovering": "Kurtarılıyor..."
                 },
-                "available": "",
-                "checking": "",
-                "description": "",
+                "available": "Diskte bir veya daha fazla eser bulundu ancak veritabanında eksik. Kurtarma mümkün.",
+                "checking": "Eser depolaması denetleniyor...",
+                "description": "Güvenli bir şekilde kurtarılabilecek eserleri bulmak için eser depolamasını denetleyin.",
                 "dialog": {
-                    "confirm": "",
-                    "description_one": "",
-                    "description_other": "",
-                    "title": ""
+                    "confirm": "Kurtar",
+                    "description_one": "Thorium, diskte, veritabanında eksik olan {{- count}} eser buldu. Onu Thorium'a tekrar içe aktarmak ister misiniz?",
+                    "description_other": "Thorium, diskte, veritabanında eksik olan {{- count}} eser buldu. Onları Thorium'a tekrar içe aktarmak ister misiniz?",
+                    "title": "Eserleri kurtar"
                 },
-                "none": "",
-                "recoverableCount_one": "",
-                "recoverableCount_other": "",
-                "title": ""
+                "none": "Kurtarılabilir eser bulunamadı.",
+                "recoverableCount_one": "{{- count}} eser, özgün depolama tanımlayıcısıyla kurtarılabilir.",
+                "recoverableCount_other": "{{- count}} eser, özgün depolama tanımlayıcısıyla kurtarılabilir.",
+                "title": "Kurtarma"
             }
         },
         "tabs": {
@@ -1337,6 +1347,11 @@
             "keyboardShortcuts": "Klavye kısayolları",
             "profiles": "Profiller",
             "storage": "Depolama"
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "Telemetri ölçümlerini devre dışı bırak",
+            "disableTelemetryMeasurementsDescription": "Etkinleştirildiğinde, Thorium telemetri ölçümlerini göndermez.",
+            "title": "Uzaktan ölçüm"
         },
         "theme": {
             "auto": "Otomatik",

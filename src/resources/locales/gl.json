@@ -78,6 +78,7 @@
         "deleteBook": "Eliminar",
         "deleteTag": "Eliminar etiqueta",
         "description": "Descrición",
+        "downloaded": "",
         "emptyTagList": "Non tes libros etiquetaxes.",
         "entry": {
             "continueReading": "Reiniciar lectura",
@@ -240,7 +241,6 @@
             "alreadyImported": "",
             "emptyFile": "",
             "errorParsing": "",
-            "noBelongTo": "",
             "nothing": "",
             "success": ""
         },
@@ -292,6 +292,17 @@
         },
         "addMenu": "Engadir catálogo OPDS",
         "breadcrumbRoot": "Catálogos",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "OPDS sitio web oficial",
         "empty": "Non se atoparon publicacións",
         "firstPage": "Primeira",
@@ -912,7 +923,6 @@
             "preset": {
                 "apply": "",
                 "applyDetails": "",
-                "detail": "",
                 "reset": "",
                 "resetDetails": "",
                 "save": "",
@@ -1337,6 +1347,11 @@
             "keyboardShortcuts": "Atallos de teclado",
             "profiles": "",
             "storage": ""
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
         },
         "theme": {
             "auto": "Automático\n",

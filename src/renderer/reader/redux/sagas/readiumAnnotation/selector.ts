@@ -55,29 +55,61 @@ export function* readiumAnnotationSelectorFromNote(note: INoteState, isLcp: bool
 
     const selector: ISelector<any>[] = [];
 
-    if (!xmlDom) {
-        return [];
-    }
-
-    const document = xmlDom;
-    const root = xmlDom.body;
-
     const { selectionInfo, locator } = locatorExtended;
     const { locations } = locator;
-    const { progression } = locations;
+    const { cssSelector, progression } = locations;
+
+    // A bookmark is a reading position, not necessarily a text range. Image-only
+    // spine items do not provide caretInfo / selectionInfo, but their resource
+    // progression and element selector are still valid annotation targets.
+    const addProgressionSelector = () => {
+        if (typeof progression === "number" && progression >= 0) {
+            const progressionSelector: IProgressionSelector = {
+                type: "ProgressionSelector",
+                value: progression,
+            };
+            debug("ProgressionSelector : ", progressionSelector);
+            selector.push(progressionSelector);
+        } else {
+            debug("ProgressionSelector SKIP : ", progression);
+        }
+    };
+
+    const addBookmarkElementSelector = () => {
+        if (note.group === "bookmark" && cssSelector) {
+            const selectorCssSelector: ICssSelector<undefined> = {
+                type: "CssSelector",
+                value: cssSelector,
+            };
+            debug("Bookmark CssSelector : ", selectorCssSelector);
+            selector.push(selectorCssSelector);
+        }
+    };
 
     // the range start/end is guaranteed in document order (internally used in navigator whenever deserialising DOM Ranges from JSON expression) ... but DOM Ranges are always ordered anyway (only the user / document selection object can be reversed)
     const rangeInfo = selectionInfo?.rangeInfo || locator.locations.caretInfo?.rangeInfo;
     if (!rangeInfo) {
         debug("ERROR!! RangeInfo not defined !!!");
         debug(rangeInfo);
+        addProgressionSelector();
+        addBookmarkElementSelector();
         return selector;
     }
+    if (!xmlDom) {
+        addProgressionSelector();
+        addBookmarkElementSelector();
+        return selector;
+    }
+
+    const document = xmlDom;
+    const root = xmlDom.body;
     const range = convertRangeInfo(xmlDom, rangeInfo);
     debug("Dump range memory found:", range);
 
     if (range.collapsed) {
         debug("RANGE COLLAPSED??! skipping...");
+        addProgressionSelector();
+        addBookmarkElementSelector();
         return selector;
     }
 
@@ -102,16 +134,7 @@ export function* readiumAnnotationSelectorFromNote(note: INoteState, isLcp: bool
         selector.push(selectorTextQuote);
     }
 
-    if (typeof progression === "number" && progression >= 0) {
-        const progressionSelector: IProgressionSelector = {
-            type: "ProgressionSelector",
-            value: progression,
-        };
-        debug("ProgressionSelector : ", progressionSelector);
-        selector.push(progressionSelector);
-    } else {
-        debug("ProgressionSelector SKIP : ", progression);
-    }
+    addProgressionSelector();
 
     const rootNode = EpubCfiUtils.createEmptyRootNode();
     EpubCfiBuilderHelper.appendTerminalDomRange(range, rootNode);

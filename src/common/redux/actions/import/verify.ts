@@ -13,11 +13,13 @@ export const ID = "IMPORT_VERIFICATION_REQUEST";
 export interface Payload {
     link: IOpdsLinkView;
     pub: IOpdsPublicationView;
+    rootFeedIdentifier?: string;
 }
 
 export function build(
     link: IOpdsLinkView,
     pub: IOpdsPublicationView,
+    rootFeedIdentifier?: string,
 ): Action<typeof ID, Payload> {
 
     return {
@@ -25,6 +27,7 @@ export function build(
         payload: {
             link,
             pub,
+            rootFeedIdentifier,
         },
     };
 }

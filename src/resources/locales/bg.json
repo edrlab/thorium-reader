@@ -78,6 +78,7 @@
         "deleteBook": "Изтрий",
         "deleteTag": "Изтрий маркер",
         "description": "Описание",
+        "downloaded": "",
         "emptyTagList": "Нямате маркирана електронна книга.",
         "entry": {
             "continueReading": "Възобнови четенето",
@@ -240,7 +241,6 @@
             "alreadyImported": "",
             "emptyFile": "",
             "errorParsing": "",
-            "noBelongTo": "",
             "nothing": "",
             "success": ""
         },
@@ -292,6 +292,17 @@
         },
         "addMenu": "Добави OPDS канал",
         "breadcrumbRoot": "Каталози",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "",
         "empty": "Няма намерени публикации",
         "firstPage": "Първа",
@@ -912,7 +923,6 @@
             "preset": {
                 "apply": "",
                 "applyDetails": "",
-                "detail": "",
                 "reset": "",
                 "resetDetails": "",
                 "save": "",
@@ -1337,6 +1347,11 @@
             "keyboardShortcuts": "",
             "profiles": "",
             "storage": ""
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
         },
         "theme": {
             "auto": "",

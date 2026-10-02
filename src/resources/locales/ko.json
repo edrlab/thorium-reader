@@ -78,6 +78,7 @@
         "deleteBook": "도서 삭제",
         "deleteTag": "태그 삭제",
         "description": "설명",
+        "downloaded": "",
         "emptyTagList": "태그를 지정한 전자책이 없습니다.",
         "entry": {
             "continueReading": "이어서 읽기",
@@ -230,7 +231,6 @@
             "alreadyImported": "",
             "emptyFile": "",
             "errorParsing": "",
-            "noBelongTo": "",
             "nothing": "",
             "success": ""
         },
@@ -280,6 +280,17 @@
         },
         "addMenu": "OPDS feed 추가",
         "breadcrumbRoot": "카탈로그",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "",
         "empty": "항목을 찾을 수 없습니다",
         "firstPage": "처음으로",
@@ -899,7 +910,6 @@
             "preset": {
                 "apply": "",
                 "applyDetails": "",
-                "detail": "",
                 "reset": "",
                 "resetDetails": "",
                 "save": "",
@@ -1320,6 +1330,11 @@
             "keyboardShortcuts": "",
             "profiles": "",
             "storage": ""
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
         },
         "theme": {
             "auto": "",

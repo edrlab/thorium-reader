@@ -32,7 +32,7 @@ const Menu = (props: React.PropsWithChildren<IBaseProps>) => {
                 </button>
             </Popover.Trigger>
             <Popover.Portal>
-                <Popover.Content sideOffset={5} align="end" alignOffset={-10} hideWhenDetached collisionPadding={collision}>
+                <Popover.Content sideOffset={5} align="end" alignOffset={-10} collisionPadding={collision}>
                     <div className={stylesDropDown.dropdown_menu}>
                         {props.children}
                     </div>

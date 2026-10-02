@@ -150,6 +150,7 @@ export function* importFromLink(
     link: IOpdsLinkView,
     willBeImmediatelyFollowedByOpen: boolean,
     pub?: IOpdsPublicationView,
+    rootFeedIdentifier?: string,
     deep: number = 0,
 ): SagaGenerator<PublicationView | undefined> {
 
@@ -157,7 +158,12 @@ export function* importFromLink(
 
     try {
 
-        const [publicationDocument, alreadyImported] = yield* callTyped(importFromLinkService, link, willBeImmediatelyFollowedByOpen, pub);
+        const [publicationDocument, alreadyImported] = yield* callTyped(
+            importFromLinkService,
+            link,
+            willBeImmediatelyFollowedByOpen,
+            pub,
+        );
 
         if (!publicationDocument) {
             throw new Error("publicationDocument not imported on db");
@@ -184,7 +190,14 @@ export function* importFromLink(
                 );
                 if (!cleanedPublicationDocument) {
                     debug("restart import process after LCP cleanup");
-                    const replacementPublicationView = yield* callTyped(importFromLink, link, willBeImmediatelyFollowedByOpen, pub, retryDeep);
+                    const replacementPublicationView = yield* callTyped(
+                        importFromLink,
+                        link,
+                        willBeImmediatelyFollowedByOpen,
+                        pub,
+                        rootFeedIdentifier,
+                        retryDeep,
+                    );
                     yield* callTyped(
                         () => restorePersonalModeReplacementUserData(replacementPublicationView?.identifier, replacementUserData),
                     );
@@ -203,7 +216,14 @@ export function* importFromLink(
                     }
                     try {
                         debug("restart import process after publication was already imported, missing, but not deleted");
-                        return yield* callTyped(importFromLink, link, willBeImmediatelyFollowedByOpen, pub, retryDeep);
+                        return yield* callTyped(
+                            importFromLink,
+                            link,
+                            willBeImmediatelyFollowedByOpen,
+                            pub,
+                            rootFeedIdentifier,
+                            retryDeep,
+                        );
                     } catch (e) {
                         debug("Error during the second import of the publication", e);
                         return undefined;

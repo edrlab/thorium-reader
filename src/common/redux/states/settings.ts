@@ -11,6 +11,7 @@ export interface ISettingsState {
     keepLibraryWindowInBackgroundOnReaderOpen: boolean; // false by default
     keepLibraryWindowInBackgroundOnReaderClose: boolean; // false by default
     oneReaderWindowPerPublication: boolean; // false by default
+    disableGoogleAnalyticsTelemetry: boolean; // false by default
     lcpAutoDeleteExpiredPublications: boolean; // false by default
     // Runtime-only command-line override. It is intentionally excluded from persisted state.
     lcpAutoDeleteExpiredPublicationsForced: boolean; // false by default
@@ -41,6 +42,9 @@ export const settingsKeepLibraryWindowInBackgroundOnReaderCloseIsEnabled = (sett
 
 export const settingsOneReaderWindowPerPublicationIsEnabled = (settings?: Partial<ISettingsState>) =>
     settings?.oneReaderWindowPerPublication === true;
+
+export const settingsGoogleAnalyticsTelemetryIsEnabled = (settings?: Partial<ISettingsState>) =>
+    settings?.disableGoogleAnalyticsTelemetry !== true;
 
 export const settingsLcpAutoDeleteExpiredPublicationsIsEnabled = (settings?: Partial<ISettingsState>) =>
     settings?.lcpAutoDeleteExpiredPublications === true ||

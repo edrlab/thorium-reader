@@ -326,6 +326,9 @@ export async function importPublicationFromFS(
     // passphrase saved for doc.id without provider
     if (lcpHashedPassphrase) {
         await lcpManager.saveSecret(newPubDocument, lcpHashedPassphrase);
+        if (r2Publication.LCP) {
+            lcpManager.queueDiscoveredPassphraseAnalytics(newPubDocument);
+        }
     }
 
     if (r2Publication.LCP) {

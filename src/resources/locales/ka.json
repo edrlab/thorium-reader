@@ -78,6 +78,7 @@
         "deleteBook": "წაშლა",
         "deleteTag": "იარლიყის წაშლა",
         "description": "აღწერა",
+        "downloaded": "",
         "emptyTagList": "არ გაქვს არცერთი იარლიყიანი ელ-წიგნი.",
         "entry": {
             "continueReading": "კითხვის გაგრძელება",
@@ -240,7 +241,6 @@
             "alreadyImported": "",
             "emptyFile": "",
             "errorParsing": "",
-            "noBelongTo": "",
             "nothing": "",
             "success": ""
         },
@@ -292,6 +292,17 @@
         },
         "addMenu": "OPDS წყაროს დამატება",
         "breadcrumbRoot": "კატალოგები",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "",
         "empty": "პუბლიკაცია არაა ნაპოვნი",
         "firstPage": "პირველი",
@@ -912,7 +923,6 @@
             "preset": {
                 "apply": "",
                 "applyDetails": "",
-                "detail": "",
                 "reset": "",
                 "resetDetails": "",
                 "save": "",
@@ -1337,6 +1347,11 @@
             "keyboardShortcuts": "",
             "profiles": "",
             "storage": ""
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
         },
         "theme": {
             "auto": "",

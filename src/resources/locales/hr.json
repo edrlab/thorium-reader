@@ -78,6 +78,7 @@
         "deleteBook": "Izbriši",
         "deleteTag": "Izbriši oznaku",
         "description": "Opis",
+        "downloaded": "",
         "emptyTagList": "Nemate označenu e-knjigu.",
         "entry": {
             "continueReading": "Nastavi čitati",
@@ -245,7 +246,6 @@
             "alreadyImported": "",
             "emptyFile": "",
             "errorParsing": "",
-            "noBelongTo": "",
             "nothing": "",
             "success": ""
         },
@@ -298,6 +298,17 @@
         },
         "addMenu": "Dodaj OPDS katalog",
         "breadcrumbRoot": "Katalozi",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "",
         "empty": "Građa nije pronađena",
         "firstPage": "Prva",
@@ -919,7 +930,6 @@
             "preset": {
                 "apply": "",
                 "applyDetails": "",
-                "detail": "",
                 "reset": "",
                 "resetDetails": "",
                 "save": "",
@@ -1346,6 +1356,11 @@
             "keyboardShortcuts": "",
             "profiles": "",
             "storage": ""
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
         },
         "theme": {
             "auto": "",

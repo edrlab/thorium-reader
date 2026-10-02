@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as enableAPIAPP from "./enableAPIAPP";
+import * as disableGoogleAnalyticsTelemetry from "./disableGoogleAnalyticsTelemetry";
 import * as keepLibraryWindowInBackgroundOnReaderClose from "./keepLibraryWindowInBackgroundOnReaderClose";
 import * as keepLibraryWindowInBackgroundOnReaderOpen from "./keepLibraryWindowInBackgroundOnReaderOpen";
 import * as libraryView from "./libraryView";
@@ -15,6 +16,7 @@ import * as minimizeLibraryToTray from "./minimizeLibraryToTray";
 import * as oneReaderWindowPerPublication from "./oneReaderWindowPerPublication";
 
 export {
+    disableGoogleAnalyticsTelemetry,
     enableAPIAPP,
     keepLibraryWindowInBackgroundOnReaderClose,
     keepLibraryWindowInBackgroundOnReaderOpen,

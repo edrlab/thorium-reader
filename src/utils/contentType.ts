@@ -37,6 +37,7 @@ export enum ContentType {
     problemDetails = "application/problem+json", // https://datatracker.ietf.org/doc/html/rfc7807#section-6.1
     ApiProblem = "application/api-problem+json",
     Zip = "application/zip", // Daisy Zipped file
+    PkixCrl = "application/pkix-crl", // RFC 5280 section 4.2.1.13 / RFC 2585 section 4.2
 
     Opf = "application/oebps-package+xml",
 }

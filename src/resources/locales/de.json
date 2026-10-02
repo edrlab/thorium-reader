@@ -78,6 +78,7 @@
         "deleteBook": "Löschen",
         "deleteTag": "Tag löschen",
         "description": "Beschreibung",
+        "downloaded": "",
         "emptyTagList": "Keine Bücher wurden mit Tags versehen.",
         "entry": {
             "continueReading": "Lesen Sie weiter",
@@ -240,7 +241,6 @@
             "alreadyImported": "Alle Notizen wurden bereits importiert.",
             "emptyFile": "Keine Notizen in der Datei vorhanden.",
             "errorParsing": "Fehler beim Einlesen der Datei: ",
-            "noBelongTo": "Notizen können nicht importiert werden, mindestens eine Notiz gehört nicht zur Veröffentlichung.",
             "nothing": "Keine Notizen sind für den Import bereit. Import wird abgebrochen.",
             "success": "Import vollständig abgeschlossen."
         },
@@ -292,6 +292,17 @@
         },
         "addMenu": "OPDS-Feed hinzufügen",
         "breadcrumbRoot": "Kataloge",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "Offizielle OPDS-Website",
         "empty": "Keine Publikation gefunden",
         "firstPage": "Erste Seite",
@@ -912,7 +923,6 @@
             "preset": {
                 "apply": "Anwenden",
                 "applyDetails": "Wenden Sie Ihre bevorzugte Konfiguration auf die aktuelle Publikation an.",
-                "detail": "Speichern / Anwenden / Zurücksetzen der gewünschten Konfiguration.",
                 "reset": "Zurücksetzen",
                 "resetDetails": "Setzen Sie Ihre bevorzugte Konfiguration auf Standardeinstellungen zurück.",
                 "save": "Speichern",
@@ -1337,6 +1347,11 @@
             "keyboardShortcuts": "Tastaturkürzel",
             "profiles": "",
             "storage": ""
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
         },
         "theme": {
             "auto": "Automatisch",

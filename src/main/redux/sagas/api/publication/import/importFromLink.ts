@@ -38,6 +38,7 @@ import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
 import { customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
 import * as fs from "node:fs";
 import { URL_PATH_PREFIX_CUSTOMPROFILEZIP } from "readium-desktop/common/streamerProtocol";
+import { downloadOpdsCoverData, selectOpdsCoverLink } from "./opdsCover";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/publication/importFromLinkService");
@@ -51,11 +52,46 @@ function* importLinkFromPath(
 
     // Import downloaded publication in catalog
     const lcpHashedPassphrase = link?.properties?.lcpHashedPassphrase;
+    const pdfMetadataFallback = pub ? {
+        title: pub.documentTitle,
+        authors: pub.authorsLangString?.map((author) => author.nameLangString),
+    } : undefined;
 
     const { b: [publicationDocument, alreadyImported] } = yield* raceTyped({
         a: delayTyped(30000),
-        b: callTyped(importFromFsService, downloadPath, willBeImmediatelyFollowedByOpen, lcpHashedPassphrase),
+        b: callTyped(
+            importFromFsService,
+            downloadPath,
+            willBeImmediatelyFollowedByOpen,
+            lcpHashedPassphrase,
+            undefined,
+            pdfMetadataFallback,
+        ),
     });
+
+    let publicationDocumentWithCover = publicationDocument;
+    const publicationIsEpub = publicationDocument?.files?.some(
+        (file) => file.contentType === ContentType.Epub,
+    );
+    const opdsCoverLink = selectOpdsCoverLink(pub);
+    if (publicationDocument && publicationIsEpub && !publicationDocument.coverFile && opdsCoverLink) {
+        try {
+            const coverData = yield* callTyped(downloadOpdsCoverData, opdsCoverLink);
+            if (coverData) {
+                const publicationStorage = diMainGet("publication-storage");
+                const coverFile = yield* callTyped(
+                    () => publicationStorage.storePublicationCoverData(publicationDocument.identifier, coverData),
+                );
+                publicationDocumentWithCover = {
+                    ...publicationDocument,
+                    coverFile,
+                    customCover: undefined,
+                };
+            }
+        } catch (e) {
+            debug("Unable to use the OPDS cover as the imported EPUB cover", opdsCoverLink.url, e);
+        }
+    }
 
     if (link.localBookshelfPublicationId) {
 
@@ -77,15 +113,15 @@ function* importLinkFromPath(
         }
     }
 
-    let returnPublicationDocument = publicationDocument;
-    if (!alreadyImported && publicationDocument) {
+    let returnPublicationDocument = publicationDocumentWithCover;
+    if (!alreadyImported && publicationDocumentWithCover) {
 
         const tags = pub?.tags?.map((v) => v.name) || [];
 
         // Merge with the original publication
         const publicationDocumentAssigned = Object.assign(
             {},
-            publicationDocument,
+            publicationDocumentWithCover,
             {
                 // resources: {
                 //     r2PublicationJson: publicationDocument.resources.r2PublicationJson,
@@ -109,12 +145,12 @@ function* importLinkFromPath(
         const publicationRepository = diMainGet("publication-repository");
         returnPublicationDocument = yield* callTyped(() => publicationRepository.save(publicationDocumentAssigned));
 
-    } else if (alreadyImported && publicationDocument) {
+    } else if (alreadyImported && publicationDocumentWithCover) {
 
         // Merge with the original publication
         const publicationDocumentAssigned = Object.assign(
             {},
-            publicationDocument,
+            publicationDocumentWithCover,
             {
                 // resources: {
                 //     r2PublicationJson: publicationDocument.resources.r2PublicationJson,

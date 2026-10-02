@@ -1,4 +1,104 @@
+@use "sass:map";
 @use '../partials/mixin' as mx;
+
+$catalog-card-colors-light: (
+    "gray": (
+        foreground: rgb(25% 25% 25%),
+        background-start: rgb(92% 92% 92%),
+        background-end: rgb(78% 78% 78%),
+    ),
+    "red": (
+        foreground: rgb(55% 5% 5%),
+        background-start: rgb(100% 85% 85%),
+        background-end: rgb(95% 65% 65%),
+    ),
+    "yellow": (
+        foreground: rgb(50% 40% 0%),
+        background-start: rgb(100% 96% 80%),
+        background-end: rgb(100% 88% 55%),
+    ),
+    "blue": (
+        foreground: rgb(5% 15% 50%),
+        background-start: rgb(82% 90% 100%),
+        background-end: rgb(55% 70% 95%),
+    ),
+    "green": (
+        foreground: rgb(5% 40% 15%),
+        background-start: rgb(82% 96% 85%),
+        background-end: rgb(55% 85% 60%),
+    ),
+    "purple": (
+        foreground: rgb(35% 10% 50%),
+        background-start: rgb(92% 85% 100%),
+        background-end: rgb(75% 60% 95%),
+    ),
+    "orange": (
+        foreground: rgb(55% 25% 0%),
+        background-start: rgb(100% 92% 80%),
+        background-end: rgb(100% 75% 45%),
+    ),
+    "pink": (
+        foreground: rgb(55% 5% 30%),
+        background-start: rgb(100% 85% 92%),
+        background-end: rgb(95% 65% 80%),
+    ),
+);
+$catalog-card-colors-dark: (
+    "gray": (
+        foreground: rgb(85% 85% 85%),
+        background-start: rgb(30% 30% 30%),
+        background-end: rgb(18% 18% 18%),
+    ),
+    "red": (
+        foreground: rgb(100% 75% 75%),
+        background-start: rgb(45% 10% 10%),
+        background-end: rgb(30% 5% 5%),
+    ),
+    "yellow": (
+        foreground: rgb(100% 92% 60%),
+        background-start: rgb(45% 38% 8%),
+        background-end: rgb(30% 25% 2%),
+    ),
+    "blue": (
+        foreground: rgb(70% 82% 100%),
+        background-start: rgb(12% 22% 50%),
+        background-end: rgb(5% 12% 32%),
+    ),
+    "green": (
+        foreground: rgb(70% 100% 78%),
+        background-start: rgb(8% 35% 15%),
+        background-end: rgb(2% 22% 8%),
+    ),
+    "purple": (
+        foreground: rgb(85% 72% 100%),
+        background-start: rgb(30% 15% 50%),
+        background-end: rgb(18% 8% 32%),
+    ),
+    "orange": (
+        foreground: rgb(100% 85% 65%),
+        background-start: rgb(50% 28% 5%),
+        background-end: rgb(32% 15% 0%),
+    ),
+    "pink": (
+        foreground: rgb(100% 75% 88%),
+        background-start: rgb(45% 10% 28%),
+        background-end: rgb(28% 5% 15%),
+    ),
+);
+
+@mixin catalog-card-color-variables($colors) {
+    --catalog-card-foreground: #{map.get($colors, foreground)};
+    --catalog-card-background-start: #{map.get($colors, background-start)};
+    --catalog-card-background-end: #{map.get($colors, background-end)};
+}
+
+@mixin catalog-card-color($color-set) {
+    @each $name, $colors in $color-set {
+        &[data-color="#{$name}"] {
+            @include catalog-card-color-variables($colors);
+        }
+    }
+}
 
 .CSS_START_components_catalogs {
     display: none;
@@ -23,13 +123,28 @@
         list-style-type: none;
         position: relative;
         transition: 200ms ease-in-out;
+
+        @include catalog-card-color-variables(map.get($catalog-card-colors-light, "gray"));
+        @include catalog-card-color($catalog-card-colors-light);
+
+        [data-theme="dark"] & {
+            @include catalog-card-color-variables(map.get($catalog-card-colors-dark, "gray"));
+            @include catalog-card-color($catalog-card-colors-dark);
+        }
+
+        [data-theme="system"] & {
+            @media (prefers-color-scheme: dark) {
+                @include catalog-card-color-variables(map.get($catalog-card-colors-dark, "gray"));
+                @include catalog-card-color($catalog-card-colors-dark);
+            }
+        }
     }
 
     .catalog_content {
         border-radius: 6px;
         border-width: 1px;
         border-style: solid;
-        border-color: var(--color-gray-300);
+        border-color: var(--catalog-card-background-end);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -49,8 +164,18 @@
             top: -8px;
             right: -10px;
             border-radius: 6px;
-            border-right: 1px solid var(--color-gray-300);
-            border-top: 1px solid var(--color-gray-300);
+            border-right: 1px solid var(--catalog-card-background-end);
+            border-top: 1px solid var(--catalog-card-background-end);
+        }
+
+        .catalog_color_band {
+            width: 100%;
+            height: 50px;
+            background: linear-gradient(135deg, var(--catalog-card-background-start), var(--catalog-card-background-end));
+            border-bottom: 1px solid var(--catalog-card-background-end);
+            position: absolute;
+            top: 2px;
+            pointer-events: none;
         }
 
         // svg {
@@ -67,11 +192,11 @@
             left: 30px;
             display: block;
 
-            svg {
+            svg,
+            .catalog_icon_image {
                 width: 30px;
                 height: 30px;
                 margin-bottom: 30px;
-                color: var(--color-brand-primary);
                 background-color: var(--color-neutral-base);
                 padding: 11px;
                 border-radius: 50%;
@@ -80,12 +205,21 @@
                 left: -10px;
             }
 
+            svg {
+                color: var(--catalog-card-foreground);
+            }
+
+            .catalog_icon_image {
+                box-sizing: content-box;
+                object-fit: contain;
+            }
+
             p {
                 position: relative;
                 padding-right: 10px;
                 top: 35px;
                 left: -10px;
-                color: var(--color-text-primary);                    
+                color: var(--catalog-card-foreground);
                 overflow-wrap: anywhere;
                 overflow: hidden;
                 display: -webkit-box;
@@ -131,6 +265,69 @@
         right: 15px;
         height: 16px;
         width: 16px;
+    }
+}
+
+.catalog_color_picker {
+    display: flex;
+    flex-wrap: wrap;
+    width: fit-content;
+    margin-top: 20px;
+    background-color: var(--color-button-hover);
+    padding: 2px;
+    gap: 1px;
+    border: 1px solid var(--color-gray-900);
+    border-radius: 6px;
+
+    &:has(input:focus) {
+        @include mx.R2_MIXIN_FOCUS_OUTLINE;
+    }
+
+    > div {
+        input {
+            position: absolute;
+            z-index: -1;
+        }
+    }
+}
+
+.catalog_color_swatch {
+    z-index: 20;
+    width: 25px;
+    height: 25px;
+    margin: 0;
+    border: 1px solid var(--color-neutral-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    cursor: pointer;
+    color: var(--catalog-card-foreground);
+    background: linear-gradient(135deg, var(--catalog-card-background-start), var(--catalog-card-background-end));
+
+    @include catalog-card-color-variables(map.get($catalog-card-colors-light, "gray"));
+    @include catalog-card-color($catalog-card-colors-light);
+
+    [data-theme="dark"] & {
+        @include catalog-card-color-variables(map.get($catalog-card-colors-dark, "gray"));
+        @include catalog-card-color($catalog-card-colors-dark);
+    }
+
+    [data-theme="system"] & {
+        @media (prefers-color-scheme: dark) {
+            @include catalog-card-color-variables(map.get($catalog-card-colors-dark, "gray"));
+            @include catalog-card-color($catalog-card-colors-dark);
+        }
+    }
+
+    &[data-selected] {
+        border: 1px solid var(--color-gray-900);
+    }
+
+    svg {
+        width: 16px;
+        height: 16px;
+        color: var(--catalog-card-foreground);
     }
 }
 

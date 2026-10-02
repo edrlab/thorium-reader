@@ -78,6 +78,7 @@
         "deleteBook": "Izbriši",
         "deleteTag": "Izbriši oznako",
         "description": "Opis",
+        "downloaded": "",
         "emptyTagList": "Ni označenih publikacij.",
         "entry": {
             "continueReading": "Nadaljuj z branjem",
@@ -250,7 +251,6 @@
             "alreadyImported": "Vse opombe so že uvožene.",
             "emptyFile": "V datoteki ni na voljo nobenih opomb.",
             "errorParsing": "Napaka med razčlenjevanjem datoteke: ",
-            "noBelongTo": "Opomb ni mogoče uvoziti, vsaj ena opomba ne pripada publikaciji.",
             "nothing": "Ni opombe, pripravljene za uvoz, zato se uvoz prekine",
             "success": "Uvoz uspešno zaključen."
         },
@@ -304,6 +304,17 @@
         },
         "addMenu": "Dodaj vir OPDS",
         "breadcrumbRoot": "Katalogi",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "Uradna spletna stran OPDS",
         "empty": "Ni najdene publikacije",
         "firstPage": "Prva",
@@ -926,7 +937,6 @@
             "preset": {
                 "apply": "Uporabi",
                 "applyDetails": "Uporabi želeno konfiguracijo za trenutno publikacijo.",
-                "detail": "Shrani / Uporabi / Ponastavi želeno konfiguracijo.",
                 "reset": "Ponastavi",
                 "resetDetails": "Ponastavi želeno konfiguracijo (privzete nastavitve).",
                 "save": "Shrani",
@@ -1355,6 +1365,11 @@
             "keyboardShortcuts": "Bližnjice tipkovnice",
             "profiles": "Profili",
             "storage": "Shranjevanje"
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
         },
         "theme": {
             "auto": "Samodejno",
