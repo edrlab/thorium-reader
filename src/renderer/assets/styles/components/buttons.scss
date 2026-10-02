@@ -4,6 +4,34 @@
   display: none;
 }
 
+@mixin button-disabled {
+  &.disabled,
+  &[disabled] {
+    opacity: 0.5;
+    cursor: default;
+    pointer-events: none;
+  }
+}
+
+@mixin button-focus($color) {
+  &:focus-within,
+  &:focus {
+    outline: $color solid 1px !important;
+    outline-offset: 2px;
+    border-radius: 5px;
+    @content;
+  }
+}
+
+@mixin button-svg($size, $color) {
+  svg {
+    width: $size;
+    height: $size;
+    fill: $color;
+    color: $color;
+  }
+}
+
 button {
   padding: 0;
   background: none;
@@ -16,6 +44,16 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 5px;
+  max-width: 100%;
+  width: fit-content;
+
+  > span {
+    margin: 0 !important;
+    overflow: hidden;
+    white-space: nowrap !important;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
 
   &:hover {
     opacity: 1;
@@ -26,55 +64,68 @@ button {
     width: 13px;
   }
 
-  &.disabled,
-  &[disabled] {
-    opacity: 0.5;
-    cursor: default;
-    pointer-events: none;
-  }
+  @include button-disabled;
 }
 
-.button_outline_accessibility button {
-  width: auto;
-  height: 40px;
-  border-radius: 5px;
-}
-
-.button_primary_form_default {
-  border-width: 2px !important;
-  font-weight: bold !important;
-}
-
-.button_primary_blue {
-  border: 1px solid var(--color-brand-primary);
+%button-base {
   height: 30px;
   border-radius: 4px;
   padding: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: 200ms linear;
+  max-width: 100%;
+  width: fit-content;
+
+  > span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+
+  @include button-disabled;
+}
+
+%button-nav-base {
+  @extend %button-base;
+
+  height: 20px;
+  border-radius: 4px;
+  padding: 5px;
+  display: flex;
+  text-decoration: none;
+  width: fit-content;
+  gap: 5px;
+  box-sizing: content-box;
+  position: relative;
+  transition: 200ms;
+
+  @include button-svg(15px, currentColor);
+}
+
+.button_primary_blue {
+  @extend %button-base;
+
+  border: 1px solid var(--color-brand-primary);
   min-width: 100px;
   background-color: var(--color-brand-primary);
   color: var(--color-neutral-base);
-  transition: 200ms linear;
-  align-items: center;
-  justify-content: center;
   display: flex;
 
-  &:focus-within, &:focus {
-    outline: var(--color-brand-primary) solid 1px !important;
-    outline-offset: 2px;
-    border-radius: 5px;
+  @include button-svg(14px, var(--color-neutral-base));
+
+  @include button-focus(var(--color-brand-primary)) {
     background-color: var(--color-brand-primary);
-    color: var(--color-neutral-base)!important;
+    color: var(--color-neutral-base) !important;
 
     svg {
-      fill: var(--color-neutral-base)!important;
-      color: var(--color-neutral-base)!important;
+      fill: var(--color-neutral-base) !important;
+      color: var(--color-neutral-base) !important;
     }
-  }
-
-
-  svg {
-    width: 14px;
-    fill: var(--color-neutral-base);
   }
 
   &:hover {
@@ -82,9 +133,25 @@ button {
     background-color: var(--color-brand-secondary);
 
     svg {
-      fill: var(--color-brand-primary)!important;
-      color: var(--color-brand-primary)!important;
+      fill: var(--color-brand-primary) !important;
+      color: var(--color-brand-primary) !important;
     }
+  }
+}
+
+.button_secondary_blue {
+  @extend %button-base;
+
+  border: 1px solid var(--color-button-border);
+  min-width: 100px;
+  background-color: var(--color-brand-secondary);
+  color: var(--color-brand-primary);
+  display: flex;
+
+  @include button-svg(12px, var(--color-brand-primary));
+
+  &:hover {
+    background-color: var(--color-neutral-base);
   }
 }
 
@@ -93,11 +160,24 @@ button {
 
   padding: 10px 15px;
 
+  svg {
+    vertical-align: -2px;
+    width: auto;
+    height: 14px;
+    transition: all 0.2s;
+    fill: var(--color-text-primary);
+  }
+
+  &.icon_end svg {
+    margin-right: 0;
+    margin-left: 8px;
+  }
+
   &_small {
     font: 14px Arial, sans-serif;
     padding: 8px 15px;
 
-    & svg {
+    svg {
       height: 14px;
       width: 14px;
       vertical-align: -2px;
@@ -111,7 +191,7 @@ button {
       background: var(--color-neutral-base);
       overflow: visible;
 
-      & input {
+      input {
         overflow: hidden;
         z-index: -1;
         position: absolute;
@@ -126,7 +206,7 @@ button {
         border: 1px solid transparent;
       }
 
-      & svg {
+      svg {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -137,46 +217,6 @@ button {
         vertical-align: 0;
       }
     }
-  }
-
-  & svg {
-    vertical-align: -2px;
-    width: auto;
-    height: 14px;
-    transition: all 0.2s;
-    fill: var(--color-text-primary);
-  }
-
-  &.icon_end {
-    & svg {
-      margin-right: 0;
-      margin-left: 8px;
-    }
-  }
-}
-/* 4. .button_secondary */
-
-.button_secondary_blue {
-  border: 1px solid var(--color-button-border);
-  height: 30px;
-  border-radius: 4px;
-  padding: 5px;
-  min-width: 100px;
-  background-color: var(--color-brand-secondary);
-  color: var(--color-brand-primary);
-  align-items: center;
-  justify-content: center;
-  display: flex;
-
-  &:hover {
-    color: var(--color-brand-primary);
-    background-color: var(--color-neutral-base)
-  }
-
-  svg {
-    width: 12px;
-    height: 12px;
-    fill: var(--color-brand-primary);
   }
 }
 
@@ -197,7 +237,7 @@ button {
   height: auto;
   transition: all 0.2s;
 
-  & svg {
+  svg {
     vertical-align: -2px;
     fill: var(--color-brand-primary-inverse);
     width: auto;
@@ -212,8 +252,7 @@ button {
   }
 }
 
-.button_transparency,
-.button_transparency_icon {
+%button-transparency-base {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -226,21 +265,19 @@ button {
   font-weight: 600;
   cursor: pointer;
 
-  & svg {
-    fill: var(--color-text-primary);
-  }
+  svg { fill: var(--color-text-primary); }
 
-  &:hover {
-    background: rgb(0 0 0 / 10%);
-  }
+  &:hover { background: rgb(0 0 0 / 10%); }
 }
 
 .button_transparency {
+  @extend %button-transparency-base;
+
   padding: 10px 15px;
   width: auto;
   height: auto;
 
-  & svg {
+  svg {
     width: 18px;
     vertical-align: -3px;
     color: var(--color-disabled);
@@ -249,12 +286,14 @@ button {
 
 .button_transparency_icon,
 .button_transparency_icon_inactive {
+  @extend %button-transparency-base;
+
   height: 30px;
   width: 30px;
   transition-duration: 0ms;
   fill: var(--color-brand-primary);
 
-  & svg {
+  svg {
     height: 20px;
     width: 20px;
     fill: var(--color-button-border);
@@ -262,75 +301,33 @@ button {
     transition: all 0.2s 0.05s;
   }
 
-  &.button_refresh:hover svg {
-    transform: scale(0.8) rotate(90deg);
-  }
-
-  &.button_small svg {
-    transform: scale(0.8);
-  }
-
-  &:hover {
-    background: rgb(0 0 0 / 10%);
-  }
-
-  &:disabled {
-    background-color: var(--color-gray-250);
-  }
+  &.button_refresh:hover svg { transform: scale(0.8) rotate(90deg); }
+  &.button_small svg { transform: scale(0.8); }
+  &:disabled { background-color: var(--color-gray-250); }
 }
 
-.button_transparency_icon_inactive {
-  fill: #767676;
-}
-
-.button_link {
-  color: var(--color-tertiary);
-  text-decoration: underline;
-  text-underline-offset: 1px;
-  cursor: pointer;
-  display: inline-block;
-}
+.button_transparency_icon_inactive { fill: #767676; }
 
 .button_nav_primary {
+  @extend %button-nav-base;
+
   border: 1px solid var(--color-button-border);
-  height: 20px;
-  border-radius: 4px;
-  padding: 5px;
   background-color: var(--color-brand-secondary);
   color: var(--color-brand-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  width: fit-content;
-  cursor: pointer;
-  gap: 5px;
-  box-sizing: content-box;
-  position: relative;
-  transition: 200ms;
 
-  &:hover {
-    background-color: var(--color-button-hover);
-  }
+  @include button-svg(15px, var(--color-brand-primary));
 
-  &:focus-within, &:focus {
-    outline: var(--color-button-border) solid 1px !important;
-    outline-offset: 2px;
-    border-radius: 5px;
+  @include button-focus(var(--color-button-border)) {
     background-color: var(--color-brand-primary);
-    color: var(--color-neutral-base)!important;
+    color: var(--color-neutral-base) !important;
 
     svg {
-      fill: var(--color-neutral-base)!important;
-      color: var(--color-neutral-base)!important;
+      fill: var(--color-neutral-base) !important;
+      color: var(--color-neutral-base) !important;
     }
   }
 
-  svg {
-    width: 15px;
-    height: 15px;
-    fill: var(--color-brand-primary);
-  }
+  &:hover { background-color: var(--color-button-hover); }
 
   input {
     position: absolute;
@@ -345,53 +342,28 @@ button {
 }
 
 .button_nav_secondary {
+  @extend %button-nav-base;
+
   border: 1px solid transparent;
-  height: 20px;
-  border-radius: 4px;
-  padding: 5px;
   background-color: transparent;
   color: var(--color-text-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  width: fit-content;
-  cursor: pointer;
-  gap: 5px;
 
-  svg {
-    width: 15px;
-    height: 15px;
-    fill: var(--color-text-primary);
-  }
+  @include button-svg(15px, var(--color-text-primary));
 
-  input {
-    display: none;
-  }
+  input { display: none; }
 }
 
 .button_nav_tertiary {
-  border: 1px solid;
-  border-color: transparent;
-  height: 15px;
-  border-radius: 4px;
-  padding: 5px;
+  @extend %button-nav-base;
+
+  border: 1px solid transparent;
   background-color: transparent;
   color: var(--color-brand-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  width: fit-content;
-  cursor: pointer;
-  gap: 5px;
   box-sizing: content-box;
-  position: relative;
-  transition: 200ms;
 
-  &:hover {
-    border-color: var(--color-brand-primary);
-  }
+  @include button-svg(15px, var(--color-brand-primary));
+
+  &:hover { border-color: var(--color-brand-primary); }
 
   &:focus-within {
     @include mx.R2_MIXIN_FOCUS_OUTLINE;
@@ -404,18 +376,11 @@ button {
   a {
     height: inherit;
 
-    &:hover svg {
-        transform: rotate(90deg);
-      }
-    }
+    &:hover svg { transform: rotate(90deg); }
+  }
 
   svg {
-    width: 15px;
-    height: 15px;
-    fill: var(--color-brand-primary);
-    color: var(--color-brand-primary);
-    transform: rotate(0);
-    transition: 200ms;
+    transform: rotate(0); transition: 200ms;
   }
 
   input {
@@ -426,6 +391,25 @@ button {
     height: 100%;
     z-index: -10;
   }
+}
+
+.button_primary_form_default {
+  border-width: 2px !important;
+  font-weight: bold !important;
+}
+
+.button_outline_accessibility button {
+  width: auto;
+  height: 40px;
+  border-radius: 5px;
+}
+
+.button_link {
+  color: var(--color-tertiary);
+  text-decoration: underline;
+  text-underline-offset: 1px;
+  cursor: pointer;
+  display: inline-block;
 }
 
 .button_catalog_infos {
@@ -449,8 +433,7 @@ button {
   }
 
   svg {
-    width: 20px;
-    fill: var(--color-brand-primary);
+    width: 20px; fill: var(--color-brand-primary);
   }
 }
 
@@ -459,7 +442,6 @@ button {
   left: -2000px;
 
   &:focus {
-    left: unset;
     left: 0;
     width: fit-content;
     top: 0;
@@ -476,23 +458,21 @@ button {
 .buttons_list {
   list-style-type: none;
   padding: 0;
+  margin: 0;
   display: flex;
   flex-flow: wrap;
-  margin: 0;
   justify-content: left;
 
-  & li {
-    width: 50%;
-  }
+  li { width: 50%; }
 
-  & .button_transparency {
+  .button_transparency {
     margin: 2px 0;
     text-decoration: none;
     width: calc(100% - 30px);
     display: flex;
     justify-content: space-between;
 
-    & span:last-child:not(:only-child) {
+    span:last-child:not(:only-child) {
       font-weight: 500;
       opacity: 0.8;
       font-size: 90%;
@@ -501,54 +481,34 @@ button {
 }
 
 .col_filter {
-  & .block_line {
+  .block_line {
     border: none;
     border-radius: 0;
     padding: 0;
   }
 
-  & .buttons_list {
+  .buttons_list {
     display: block;
-
-    & li {
-      width: auto;
-    }
+    li { width: auto; }
   }
 }
 
 @media (width >= 1200px) {
-  .buttons_list li {
-    width: 33%;
-  }
-
-  .col_filter .buttons_list li {
-    width: auto;
-  }
+  .buttons_list li { width: 33%; }
+  .col_filter .buttons_list li { width: auto; }
 }
 
 @media (width >= 1500px) {
-  .buttons_list li {
-    width: 25%;
-  }
-
-  .col_filter .buttons_list li {
-    width: auto;
-  }
+  .buttons_list li { width: 25%; }
+  .col_filter .buttons_list li { width: auto; }
 }
 
 .col_book_img {
-  & .button_primary,
-  & .button_transparency {
-    width: 100%;
-  }
+  .button_primary,
+  .button_transparency { width: 100%; }
 
-  & .button_primary {
-    margin: 8px 0;
-  }
-
-  & .button_transparency {
-    margin: 2px 0;
-  }
+  .button_primary { margin: 8px 0; }
+  .button_transparency { margin: 2px 0; }
 }
 
 .CSS_END_components_buttons {
