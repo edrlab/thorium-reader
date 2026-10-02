@@ -14,9 +14,9 @@ import * as stylesPrint from "readium-desktop/renderer/assets/styles/components/
 import classNames from "classnames";
 import debug_ from "debug";
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 import * as Popover from "@radix-ui/react-popover";
 
-// import * as ReactDOM from "react-dom";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import * as BackIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
 import * as viewMode from "readium-desktop/renderer/assets/icons/fullscreen-corners-icon.svg";
@@ -1035,30 +1035,35 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         isPdf={this.props.isPdf}
                                         isAudiobook={this.props.isAudiobook}
                                         currentLocation={this.props.currentLocation}
+                                        onClose={() => this.props.toggleMenu({ open: false })}
                                     />
                                 }
                             />
-                            {isDockedMode && this.props.menuOpen ?
-                                <div
-                                    className={containerClassName}
-                                    style={{
-                                        borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
-                                        borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-gray-100)" : "",
-                                        right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
-                                        left: (this.props.readerConfig.readerDockingMode === "left") ? "0" : "",
-                                        height: (isOnSearch) ? "calc(100dvh - 159px)" : "",
-                                        marginTop: (!isOnSearch) ? "70px" : "20px",
-                                    }}
-                                >
-                                    <ReaderMenu
-                                        {...this.props.readerMenuProps}
-                                        isDivina={this.props.isDivina}
-                                        isPdf={this.props.isPdf}
-                                        isAudiobook={this.props.isAudiobook}
-                                        currentLocation={this.props.currentLocation}
-                                    />
-                                </div>
-                                : <></>}
+                            {isDockedMode && this.props.menuOpen && appOverlayElement ?
+                                ReactDOM.createPortal(
+                                    <div
+                                        className={containerClassName}
+                                        style={{
+                                            borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
+                                            borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-gray-100)" : "",
+                                            right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
+                                            left: (this.props.readerConfig.readerDockingMode === "left") ? "0" : "",
+                                            height: (isOnSearch) ? "calc(100dvh - 159px)" : "",
+                                            marginTop: (!isOnSearch) ? "70px" : "20px",
+                                        }}
+                                    >
+                                        <ReaderMenu
+                                            {...this.props.readerMenuProps}
+                                            isDivina={this.props.isDivina}
+                                            isPdf={this.props.isPdf}
+                                            isAudiobook={this.props.isAudiobook}
+                                            currentLocation={this.props.currentLocation}
+                                            onClose={() => this.props.toggleMenu({ open: false })}
+                                        />
+                                    </div>,
+                                    appOverlayElement,
+                                )
+                                : null}
                         </li>
                         <li
                             {...(this.props.settingsOpen &&
@@ -1093,24 +1098,28 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 content={
                                     <ReaderSettings
                                         {...this.props.ReaderSettingsProps}
+                                        onClose={() => this.props.toggleSettings({ open: false })}
                                     />
                                 }
                             />
-                            {isDockedMode && this.props.settingsOpen ?
-                                <div
-                                    className={containerClassName}
-                                    style={{
-                                        borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
-                                        borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-gray-100)" : "",
-                                        right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
-                                        left: this.props.readerConfig.readerDockingMode === "left" ? "0" : "",
-                                        height: isOnSearch ? "calc(100dvh - 159px)" : "",
-                                        marginTop: !isOnSearch ? "70px" : "20px",
-                                    }}
-                                >
-                                    <ReaderSettings {...this.props.ReaderSettingsProps} />
-                                </div>
-                                : <></>}
+                            {isDockedMode && this.props.settingsOpen && appOverlayElement ?
+                                ReactDOM.createPortal(
+                                    <div
+                                        className={containerClassName}
+                                        style={{
+                                            borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
+                                            borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-gray-100)" : "",
+                                            right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
+                                            left: this.props.readerConfig.readerDockingMode === "left" ? "0" : "",
+                                            height: isOnSearch ? "calc(100dvh - 159px)" : "",
+                                            marginTop: !isOnSearch ? "70px" : "20px",
+                                        }}
+                                    >
+                                        <ReaderSettings {...this.props.ReaderSettingsProps} onClose={() => this.props.toggleSettings({ open: false })} />
+                                    </div>,
+                                    appOverlayElement,
+                                )
+                                : null}
                         </li>
                         {
                             this.props.isPdf

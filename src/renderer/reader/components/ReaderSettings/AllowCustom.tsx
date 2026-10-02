@@ -26,7 +26,7 @@ export const AllowCustom = () => {
     return (
         <>
             <input id="allow-custom" className={stylesGlobal.checkbox_custom_input} type="checkbox" checked={overridePublisherDefault} onChange={() => { set(); }} />
-            <label htmlFor="allow-custom" className={stylesGlobal.checkbox_custom_label}>
+            <label htmlFor="allow-custom" className={stylesGlobal.checkbox_custom_label} style={{display: "flex", alignItems: "center"}}>
                 <div
                     tabIndex={0}
                     role="checkbox"
@@ -46,7 +46,7 @@ export const AllowCustom = () => {
                         }
                     }}
                     className={stylesGlobal.checkbox_custom}
-                    style={{ border: overridePublisherDefault ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: overridePublisherDefault ? "var(--color-brand-primary)" : "transparent" }}>
+                    style={{ border: overridePublisherDefault ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: overridePublisherDefault ? "var(--color-brand-primary)" : "transparent", width: "12px" }}>
                     {overridePublisherDefault ?
                         <SVG ariaHidden svg={CheckIcon} />
                         :
