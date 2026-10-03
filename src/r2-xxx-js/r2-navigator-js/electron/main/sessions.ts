@@ -958,10 +958,6 @@ export async function clearSession(sess: Electron.Session, str: string): Promise
 
     const prom2 = sess.clearStorageData({
         origin: "*",
-        quotas: [
-            "temporary",
-            // "syncable",
-        ],
         storages: [
             // "cookies",
             // "filesystem",
