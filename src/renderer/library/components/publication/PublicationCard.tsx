@@ -156,7 +156,7 @@ class PublicationCard extends React.Component<IProps> {
                                    className={classNames(
                                         stylesPublications.publication_main_container,
                                     )}
-                                    title={`${publicationViewMaybeOpds.documentTitle}${authors ? ` - ${authors}` : ''}`}
+                                    title={`${publicationViewMaybeOpds.documentTitle}${authors ? ` - ${authors}` : ""}`}
                                     tabIndex={0}
                                 >
                                     <Cover
