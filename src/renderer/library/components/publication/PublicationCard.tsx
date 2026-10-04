@@ -186,7 +186,7 @@ class PublicationCard extends React.Component<IProps> {
                                     (e) =>
                                         (e.key === "Enter") && this.handleLocalBookshelfBookClick(e)
                                 }
-                                title={`${publicationViewMaybeOpds.documentTitle}${authors ? ` - ${authors}` : ''}`}
+                                title={`${publicationViewMaybeOpds.documentTitle}${authors ? ` - ${authors}` : ""}`}
                                 className={classNames(
                                             stylesPublications.publication_main_container,
                                             { [stylesPublications.expired]: hasEnded || showUnavailablePublicationState },
@@ -213,7 +213,7 @@ class PublicationCard extends React.Component<IProps> {
                             <AlertDialog.Root>
                                 <AlertDialog.Trigger asChild>
                                     <a
-                                        title={`${publicationViewMaybeOpds.documentTitle}${authors ? ` - ${authors}` : ''}`}
+                                        title={`${publicationViewMaybeOpds.documentTitle}${authors ? ` - ${authors}` : ""}`}
                                         className={classNames(
                                                     stylesPublications.publication_main_container,
                                                     { [stylesPublications.expired]: hasEnded || showUnavailablePublicationState },
