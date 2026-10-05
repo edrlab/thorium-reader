@@ -21,6 +21,8 @@ import * as styles from "readium-desktop/renderer/assets/styles/components/profi
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { decodeProfileRouteParam, resolveProfileScreenLink } from "../../customization/route";
+import { resolveProfileAssetUrl } from "../../customization/profileResourceUrl";
+import { restoreProfileStylesToBody } from "../../customization/profileScreenHtml";
 import { profileCssIsSafeAndScoped } from "../../customization/style";
 import PublicationAddButton from "../catalog/PublicationAddButton";
 import LibraryLayout from "../layout/LibraryLayout";
@@ -32,7 +34,11 @@ type TProfileScreenState =
     | { status: "ready"; html: string }
     | { status: "error" };
 
-export function prepareProfileScreenHtml(rawHtmlContent: string): string | undefined {
+export function prepareProfileScreenHtml(
+    rawHtmlContent: string,
+    screenHref: string,
+    customizationBaseUrl: string,
+): string | undefined {
     // Profile packages are controlled and signed, so the page remains in the
     // regular DOM instead of a Shadow DOM. This preserves Thorium's theme,
     // focus management, accessibility landmarks, and link handling. Isolation
@@ -47,11 +53,20 @@ export function prepareProfileScreenHtml(rawHtmlContent: string): string | undef
     });
     const parsedDocument = new DOMParser().parseFromString(sanitizedHtml, "text/html");
 
-    if (Array.from(parsedDocument.body.querySelectorAll("style")).some(
+    for (const image of Array.from(parsedDocument.body.querySelectorAll("img[src]"))) {
+        const src = image.getAttribute("src");
+        if (src) {
+            image.setAttribute("src", resolveProfileAssetUrl(src, screenHref, customizationBaseUrl));
+        }
+    }
+
+    const profileStyles = Array.from(parsedDocument.querySelectorAll("style"));
+    if (profileStyles.some(
         (style) => !profileCssIsSafeAndScoped(style.textContent || ""),
     )) {
         return undefined;
     }
+    restoreProfileStylesToBody(parsedDocument);
 
     // LibraryLayout already owns the page's main landmark.
     for (const nestedMain of Array.from(parsedDocument.body.querySelectorAll("main"))) {
@@ -115,7 +130,7 @@ const CustomizationPage = () => {
                 if (controller.signal.aborted) {
                     return;
                 }
-                const html = rawHtmlContent && prepareProfileScreenHtml(rawHtmlContent);
+                const html = rawHtmlContent && prepareProfileScreenHtml(rawHtmlContent, screenLink.href, customizationBaseUrl);
                 setScreenState(html ? { status: "ready", html } : { status: "error" });
             })
             .catch((error) => {
