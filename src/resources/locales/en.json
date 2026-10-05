@@ -327,6 +327,8 @@
         "previous": "Previous",
         "resumeBrowsing": "Resume browsing",
         "shelf": "Shelf",
+        "bookshelfTitle": "My bookshelf",
+        "bookshelfViewAll": "View all",
         "updateForm": {
             "name": "Name:",
             "title": "Edit OPDS feed",

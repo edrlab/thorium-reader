@@ -333,6 +333,8 @@
         "previous": "Précédent",
         "resumeBrowsing": "Reprendre le parcours",
         "shelf": "Étagère",
+        "bookshelfTitle": "Mon étagère",
+        "bookshelfViewAll": "Tout voir",
         "updateForm": {
             "name": "Nom :",
             "title": "Éditer un flux OPDS",
