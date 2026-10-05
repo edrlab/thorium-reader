@@ -584,9 +584,14 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                 `${__("publication.progression.title")} ${globalPercent}%`,
             ];
         } else if (isAudioBook && currentLocation.audioPlaybackInfo) {
+            const audio = currentLocation.audioPlaybackInfo;
+            const hasGlobalTime = Number.isFinite(audio.globalTime) &&
+                Number.isFinite(audio.globalDuration) && audio.globalDuration > 0 &&
+                Number.isFinite(audio.globalProgression);
             return [
                 `${formatTime(currentLocation.audioPlaybackInfo.localTime || 0)} / ${formatTime(currentLocation.audioPlaybackInfo.localDuration || 0)} (${Math.round(currentLocation.audioPlaybackInfo.localProgression * 100)}%)`,
-                `${formatTime(currentLocation.audioPlaybackInfo.globalTime || 0)} / ${formatTime(currentLocation.audioPlaybackInfo.globalDuration || 0)} (${Math.round(currentLocation.audioPlaybackInfo.globalProgression * 100)}%)`,
+                hasGlobalTime ?
+                    `${formatTime(audio.globalTime)} / ${formatTime(audio.globalDuration)} (${Math.round(audio.globalProgression * 100)}%)` : "",
             ];
         } else {
             return [!isPdf && !isDivina && !isFixedLayout(link, r2Publication) && typeof currentLocation.locator.locations?.progression !== "undefined" ? `${Math.round(currentLocation.locator.locations.progression * 100)}%${!isAudioBook && !isDivina ? ` (${__("reader.settings.scrolled")})` : ""}` : "", `${__("publication.progression.title")} ${globalPercent}%`];

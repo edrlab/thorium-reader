@@ -49,6 +49,7 @@ import {
     ensureKeyboardListenerIsInstalled, keyDownEventHandler, keyUpEventHandler,
     registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
+import { completeAudiobookProgression } from "readium-desktop/renderer/reader/audiobookProgression";
 import ReaderFooter from "readium-desktop/renderer/reader/components/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/reader/components/ReaderHeader";
 import {
@@ -3092,6 +3093,14 @@ class Reader extends React.Component<IProps, IState> {
     private handleReadingLocationChange(locatorExtended: LocatorExtended) {
 
         ok(locatorExtended, "handleReadingLocationChange loc KO");
+
+        if (locatorExtended.audioPlaybackInfo && this.props.r2Publication?.Spine) {
+            locatorExtended.audioPlaybackInfo = completeAudiobookProgression(
+                locatorExtended.audioPlaybackInfo,
+                locatorExtended.locator.href,
+                this.props.r2Publication.Spine,
+            );
+        }
 
         // if (this.isFixedLayout()) {
         //     this.setState({ blackoutMask: false });
