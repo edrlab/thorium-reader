@@ -406,11 +406,35 @@ $catalog-card-colors-dark: (
     gap: unset;
 
     .entryList_item {
-        height: 35px;
+        width: 100%;
+        min-width: 0;
+        height: auto;
+        min-height: 35px;
         border-color: transparent;
 
         a {
+            min-width: 0;
+            height: auto;
+            padding: 8px 15px;
             justify-content: unset;
+
+            span {
+                display: block;
+                max-height: none;
+                overflow: visible;
+                -webkit-line-clamp: unset;
+                line-clamp: unset;
+                overflow-wrap: anywhere;
+            }
+
+            > span:first-child {
+                min-width: 0;
+            }
+
+            .numberOfItems {
+                flex-shrink: 0;
+                white-space: nowrap;
+            }
 
             &:hover {
                 background-color: unset;
