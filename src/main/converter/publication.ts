@@ -350,6 +350,8 @@ export class PublicationViewConverter {
             isDivina,
             isPDF,
             isDaisy,
+            isEPUB: !isAudio && !isDivina && !isPDF && !isDaisy &&
+                !!document.files?.some((file) => file.ext.toLowerCase() === "epub"),
             isFixedLayoutPublication,
             lastReadTimeStamp,
             readingFinished,

@@ -28,6 +28,7 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 const publicationView = {
     identifier: "pub-1",
     isOpenable: true,
+    isEPUB: true,
     readingFinished: false,
     documentTitle: "Test publication",
     publicationTitle: "Test publication",
@@ -111,6 +112,43 @@ test("custom HTML templates retain the legacy first-tag field without changing J
     expect(Mustache.render("{{#body.tag}}Tag: {{body.tag}}{{/body.tag}}", htmlView)).toBe("Tag: review");
     expect(Mustache.render("{{#body.tags}}{{.}};{{/body.tags}}", htmlView)).toBe("review;important;");
     expect(annotation.body).not.toHaveProperty("tag");
+});
+
+test.each([false, true])("EPUB annotation sets use the W3C context for fixed layout=%s", (isFixedLayoutPublication) => {
+    const annotationSet = convertAnnotationStateArrayToReadiumAnnotationSet("en", [createNote()], {
+        ...publicationView,
+        isFixedLayoutPublication,
+    });
+    expect(annotationSet["@context"]).toBe(EPUB_ANNOTATION_CONTEXT);
+    expect(annotationSet.items[0]["@context"]).toBe(EPUB_ANNOTATION_CONTEXT);
+    expect(annotationSet.items[0].body.tags).toEqual(["tag"]);
+});
+
+test.each([
+    { isAudio: true },
+    { isPDF: true },
+    { isDivina: true },
+    { isDaisy: true },
+    {},
+])("non-EPUB annotation sets retain the legacy JSON model: %j", (format) => {
+    const annotationSet = convertAnnotationStateArrayToReadiumAnnotationSet("en", [createNote()], {
+        ...publicationView,
+        isEPUB: false,
+        ...format,
+    });
+    expect(annotationSet["@context"]).toBe(LEGACY_ANNOTATION_CONTEXT);
+    expect(annotationSet.items[0]["@context"]).toBe(LEGACY_ANNOTATION_CONTEXT);
+    expect(annotationSet.items[0].body.tag).toBe("tag");
+    expect(annotationSet.items[0].body).not.toHaveProperty("tags");
+    expect(isIReadiumAnnotationSet(annotationSet)).toBe(true);
+});
+
+test("HTML export can retain the legacy model for EPUB", () => {
+    const annotationSet = convertAnnotationStateArrayToReadiumAnnotationSet("en", [createNote()], publicationView, "HTML", LEGACY_ANNOTATION_CONTEXT);
+    expect(annotationSet["@context"]).toBe(LEGACY_ANNOTATION_CONTEXT);
+    expect(Mustache.render("{{#body.tags}}Tag: {{.}}{{/body.tags}}", {
+        body: annotationHtmlBody(annotationSet.items[0]),
+    })).toBe("Tag: tag");
 });
 
 test("Readium annotation conversion skips PDF annotations", () => {

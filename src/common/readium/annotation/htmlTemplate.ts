@@ -4,6 +4,7 @@ export function annotationHtmlBody(annotation: IReadiumAnnotation): IReadiumAnno
     return {
         ...annotation.body,
         tag: annotation.body?.tags?.[0] || annotation.body?.tag || "",
+        tags: annotation.body?.tags || (annotation.body?.tag ? [annotation.body.tag] : []),
     };
 }
 
