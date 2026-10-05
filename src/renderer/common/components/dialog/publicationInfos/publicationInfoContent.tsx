@@ -45,9 +45,6 @@ import { ICommonRootState } from "readium-desktop/common/redux/states/commonRoot
 import {
     createReadiumPositionIndex, getReadiumPositionProgression, isEpubPositionListPublication,
 } from "readium-desktop/common/readium/positions";
-import {
-    formatReadiumPositionProgression, formatReadiumResourceProgression,
-} from "readium-desktop/renderer/common/readiumPositionProgression";
 
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { PublicationInfoA11y2 } from "./PublicationInfoA11y2";
@@ -143,7 +140,6 @@ const Progression = (props: {
             r2Publication.Metadata?.Rendition?.Layout === "fixed";
 
             let txtProgression: string | undefined;
-            let txtPositionProgression: string | undefined;
             let txtPagination: string | undefined;
             let txtHeadings: JSX.Element | undefined;
 
@@ -230,33 +226,24 @@ const Progression = (props: {
             const spineIndex = typeof readiumSpineIndex === "number" && readiumSpineIndex >= 0 ?
                 readiumSpineIndex : r2Publication.Spine.findIndex((l) => l.Href === locatorExt.locator.href);
             if (spineIndex >= 0) {
-                if (readiumPositionProgression) {
-                    const localProgression = typeof locatorExt.locator.locations.progression === "number" &&
-                        Number.isFinite(locatorExt.locator.locations.progression) ?
-                        Math.min(1, Math.max(0, locatorExt.locator.locations.progression)) :
+                const localProgression = typeof locatorExt.locator.locations.progression === "number" &&
+                    Number.isFinite(locatorExt.locator.locations.progression) ?
+                    Math.min(1, Math.max(0, locatorExt.locator.locations.progression)) :
+                    readiumPositionProgression ?
                         (readiumPositionProgression.position - readiumPositionProgression.firstPosition) /
-                            (readiumPositionProgression.lastPosition - readiumPositionProgression.firstPosition + 1);
-                    txtProgression = formatReadiumResourceProgression(__, {
-                        progression: localProgression,
-                        resource: spineIndex + 1,
-                        title: locatorExt.locator.title || r2Publication.Spine[spineIndex].Title,
-                        totalResources: r2Publication.Spine.length,
-                    });
-                }
+                            (readiumPositionProgression.lastPosition - readiumPositionProgression.firstPosition + 1) : 0;
 
                 if (isFixedLayoutPublication) {
                     const pageNum = spineIndex + 1;
                     const totalPages = r2Publication.Spine.length;
 
-                    if (!readiumPositionProgression) {
-                        txtPagination = __("reader.navigation.currentPageTotal", { current: `${pageNum}`, total: `${totalPages}` });
-                        txtProgression = `${Math.round(100 * (pageNum / totalPages))}%`;
-                    }
+                    txtPagination = __("reader.navigation.currentPageTotal", { current: `${pageNum}`, total: `${totalPages}` });
+                    txtProgression = `${Math.round(100 * (pageNum / totalPages))}%`;
 
                 } else {
                     // reflow: no totalPages, potentially just currentPage which is locatorExt.epubPage
 
-                    if (!readiumPositionProgression && locatorExt.epubPage) {
+                    if (locatorExt.epubPage) {
                         let epubPage = locatorExt.epubPage;
                         if (epubPage.trim().length === 0 && locatorExt.epubPageID && r2Publication.PageList) {
                             const p = r2Publication.PageList.find((page) => {
@@ -269,10 +256,8 @@ const Progression = (props: {
                         txtPagination = __("reader.navigation.currentPage", { current: epubPage });
                     }
 
-                    if (!readiumPositionProgression) {
-                        const percent = Math.round(locatorExt.locator.locations.progression * 100);
-                        txtProgression = `${spineIndex + 1}/${r2Publication.Spine.length}${locatorExt.locator.title ? ` (${locatorExt.locator.title})` : ""} [${percent}%]`;
-                    }
+                    const percent = Math.round(localProgression * 100);
+                    txtProgression = `${spineIndex + 1}/${r2Publication.Spine.length}${locatorExt.locator.title ? ` (${locatorExt.locator.title})` : ""} [${percent}%]`;
 
                     if (locatorExt.headings && manifestUrlR2Protocol) { // focusWhereAmI
 
@@ -349,9 +334,6 @@ const Progression = (props: {
                     }
                 }
             }
-            if (readiumPositionProgression) {
-                txtPositionProgression = formatReadiumPositionProgression(__, readiumPositionProgression);
-            }
         }
 
         return (
@@ -368,9 +350,6 @@ const Progression = (props: {
                             {txtPagination}
                         </p>) : <></>)}
                     </div>
-                    {(txtPositionProgression ? (<p className={stylesBookDetailsDialog.allowUserSelect}>
-                        {txtPositionProgression}
-                    </p>) : <></>)}
                     {(txtHeadings ? (<><div style={{ lineHeight: "2em" }} className={stylesBookDetailsDialog.allowUserSelect}>
                         {txtHeadings}
                     </div></>) : <></>)}

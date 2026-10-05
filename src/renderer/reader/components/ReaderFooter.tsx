@@ -42,7 +42,6 @@ import { connect } from "react-redux";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { logEvent } from "readium-desktop/renderer/common/analytics";
-import { formatReadiumFooterPositionProgression } from "readium-desktop/renderer/common/readiumPositionProgression";
 import { getReadiumPositionProgression } from "readium-desktop/common/readium/positions";
 import type { IReadiumPositionList } from "readium-desktop/common/readium/positions";
 
@@ -460,7 +459,9 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                                     id={stylesReaderFooter.arrow_box}
                                                                     style={this.getStyle()}
                                                                 >
-                                                                    <span>{this.getResourceLabel(link, atCurrentLocation, isPdf)}</span>
+                                                                    <span>{`[${this.getCurrentChapter(link)+1} / ${this.getTotalChapters()}] `} {
+                                                                        isPdf ? "" :
+                                                                        ` ${link.Title ? `${link.Title}${atCurrentLocation && spineTitle ? ` (${spineTitle})` : ""}` : (atCurrentLocation && spineTitle ? spineTitle : "")}`}</span>
                                                                     {atCurrentLocation ?
                                                                         this.getProgression(link, isAudioBook).map((str, i) => {
                                                                             return !str ? <></> :
@@ -494,13 +495,6 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                 }
             </div>
         );
-    }
-
-    // Keep resource indexes one-based in the user-facing footer label.
-    private getResourceLabel(link: Link, atCurrentLocation: boolean, isPdf: boolean): string {
-        const title = isPdf ? "" :
-            (atCurrentLocation ? this.props.currentLocation.locator.title || link.Title : link.Title);
-        return `[${this.getCurrentChapter(link) + 1}/${this.getTotalChapters()}]${title ? ` ${title}` : ""}`;
     }
 
     // 0-based
@@ -605,9 +599,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         const globalProgression = readiumPositionProgression?.totalProgression ??
             locatorTotalProgression ?? Math.min(1, Math.max(0, fallbackGlobalProgression));
 
-        const globalProgressionLabel = readiumPositionProgression ?
-            formatReadiumFooterPositionProgression(__, readiumPositionProgression) :
-            `${__("publication.progression.title")} ${Math.round(globalProgression * 100)}%`;
+        const globalProgressionLabel = `${__("publication.progression.title")} ${Math.round(globalProgression * 100)}%`;
 
         if (currentLocation.paginationInfo) {
             return [
