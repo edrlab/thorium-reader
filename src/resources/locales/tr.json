@@ -691,9 +691,6 @@
         "notStarted": "Başlatılmadı",
         "onGoing": "Devam Ediyor",
         "progression": {
-            "footerPositionOfTotal": "",
-            "positionOfTotal": "",
-            "resourceOfTotal": "",
             "title": "İlerleme"
         },
         "read": "Bitti",

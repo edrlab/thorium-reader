@@ -679,9 +679,6 @@
         "notStarted": "",
         "onGoing": "",
         "progression": {
-            "footerPositionOfTotal": "",
-            "positionOfTotal": "",
-            "resourceOfTotal": "",
             "title": "진행"
         },
         "read": "",

@@ -703,9 +703,6 @@
         "notStarted": "Не начато",
         "onGoing": "В процессе",
         "progression": {
-            "footerPositionOfTotal": "",
-            "positionOfTotal": "",
-            "resourceOfTotal": "",
             "title": "Прогресс"
         },
         "read": "Закончено",

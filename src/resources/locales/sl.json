@@ -703,9 +703,6 @@
         "notStarted": "Ni začeto",
         "onGoing": "V teku",
         "progression": {
-            "footerPositionOfTotal": "",
-            "positionOfTotal": "",
-            "resourceOfTotal": "",
             "title": "Napredek"
         },
         "read": "Končano",

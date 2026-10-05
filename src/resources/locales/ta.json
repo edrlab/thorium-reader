@@ -691,9 +691,6 @@
         "notStarted": "தொடங்கப்படவில்லை",
         "onGoing": "முன்னேற்றத்தில் உள்ளது",
         "progression": {
-            "footerPositionOfTotal": "",
-            "positionOfTotal": "",
-            "resourceOfTotal": "",
             "title": "முன்னேற்றம்"
         },
         "read": "முடிந்தது",

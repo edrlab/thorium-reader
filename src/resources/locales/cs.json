@@ -148,17 +148,29 @@
         "annotations": {
             "descAuthor": "autor: {{- author}}",
             "descCreator": "vytvořil(a)",
+<<<<<<< Updated upstream
             "descList_few": "{{- count}} poznámek od {{- creator}} bude importováno do „{{- title}}“, {{- author}}",
             "descList_many": "",
+=======
+>>>>>>> Stashed changes
             "descList_one": "{{- count}} poznámek od {{- creator}} bude importováno do „{{- title}}“, {{- author}}",
+            "descList_few": "{{- count}} poznámek od {{- creator}} bude importováno do „{{- title}}“, {{- author}}",
             "descList_other": "{{- count}} poznámek od {{- creator}} bude importováno do „{{- title}}“, {{- author}}",
+<<<<<<< Updated upstream
             "descNewer_few": "Konflikt(y): {{- count}} novější poznámka (novější poznámky)",
             "descNewer_many": "",
+=======
+>>>>>>> Stashed changes
             "descNewer_one": "Konflikt(y): {{- count}} novější poznámka (novější poznámky)",
+            "descNewer_few": "Konflikt(y): {{- count}} novější poznámka (novější poznámky)",
             "descNewer_other": "Konflikt(y): {{- count}} novější poznámka (novější poznámky)",
+<<<<<<< Updated upstream
             "descOlder_few": "Konflikt(y): {{- count}} starší poznámka (starší poznámky)",
             "descOlder_many": "",
+=======
+>>>>>>> Stashed changes
             "descOlder_one": "Konflikt(y): {{- count}} starší poznámka (starší poznámky)",
+            "descOlder_few": "Konflikt(y): {{- count}} starší poznámka (starší poznámky)",
             "descOlder_other": "Konflikt(y): {{- count}} starší poznámka (starší poznámky)",
             "descTitle": "Anotace titulu: ",
             "importAll": "Importovat všechny poznámky",
@@ -176,14 +188,22 @@
             }
         },
         "deleteAnnotations": "Odstranit anotace?",
+<<<<<<< Updated upstream
         "deleteAnnotationsText_few": "Opravdu chcete odstranit {{- count}} poznámek?",
         "deleteAnnotationsText_many": "",
+=======
+>>>>>>> Stashed changes
         "deleteAnnotationsText_one": "Opravdu chcete odstranit {{- count}} poznámek?",
+        "deleteAnnotationsText_few": "Opravdu chcete odstranit {{- count}} poznámek?",
         "deleteAnnotationsText_other": "Opravdu chcete odstranit {{- count}} poznámek?",
         "deleteBookmarks": "Odstranit záložky?",
+<<<<<<< Updated upstream
         "deleteBookmarksText_few": "Jste si jisti, že chcete odstranit {{- count}} záložek?",
         "deleteBookmarksText_many": "",
+=======
+>>>>>>> Stashed changes
         "deleteBookmarksText_one": "Jste si jisti, že chcete odstranit {{- count}} záložek?",
+        "deleteBookmarksText_few": "Jste si jisti, že chcete odstranit {{- count}} záložek?",
         "deleteBookmarksText_other": "Jste si jisti, že chcete odstranit {{- count}} záložek?",
         "deleteFeed": "Odstranit katalog?",
         "deletePublication": "Odstranit publikaci?",
@@ -280,9 +300,13 @@
         "storage": {
             "recovery": {
                 "failure": "",
+<<<<<<< Updated upstream
                 "success_few": "",
                 "success_many": "",
+=======
+>>>>>>> Stashed changes
                 "success_one": "",
+                "success_few": "",
                 "success_other": ""
             },
             "removed": "",
@@ -703,9 +727,6 @@
         "notStarted": "",
         "onGoing": "",
         "progression": {
-            "footerPositionOfTotal": "",
-            "positionOfTotal": "",
-            "resourceOfTotal": "",
             "title": "Postup"
         },
         "read": "Dokončeno",
@@ -861,9 +882,13 @@
         },
         "picker": {
             "search": {
+<<<<<<< Updated upstream
                 "founds_few": "{{- count}} shod",
                 "founds_many": "",
+=======
+>>>>>>> Stashed changes
                 "founds_one": "{{- count}} shod",
+                "founds_few": "{{- count}} shod",
                 "founds_other": "{{- count}} shod",
                 "input": "přesná shoda",
                 "next": "Další",
@@ -1348,16 +1373,24 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+<<<<<<< Updated upstream
                     "description_few": "",
                     "description_many": "",
+=======
+>>>>>>> Stashed changes
                     "description_one": "",
+                    "description_few": "",
                     "description_other": "",
                     "title": ""
                 },
                 "none": "",
+<<<<<<< Updated upstream
                 "recoverableCount_few": "",
                 "recoverableCount_many": "",
+=======
+>>>>>>> Stashed changes
                 "recoverableCount_one": "",
+                "recoverableCount_few": "",
                 "recoverableCount_other": "",
                 "title": ""
             }

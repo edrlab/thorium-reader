@@ -683,9 +683,6 @@
         "notStarted": "まだ開いていません",
         "onGoing": "進行中",
         "progression": {
-            "footerPositionOfTotal": "",
-            "positionOfTotal": "",
-            "resourceOfTotal": "",
             "title": "進行度"
         },
         "read": "既読",

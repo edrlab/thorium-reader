@@ -697,9 +697,6 @@
         "notStarted": "No s'ha iniciat",
         "onGoing": "En curs",
         "progression": {
-            "footerPositionOfTotal": "",
-            "positionOfTotal": "",
-            "resourceOfTotal": "",
             "title": "Progrés"
         },
         "read": "Finalitzat",

@@ -691,9 +691,6 @@
         "notStarted": "Pole alustatud",
         "onGoing": "Pooleli",
         "progression": {
-            "footerPositionOfTotal": "",
-            "positionOfTotal": "",
-            "resourceOfTotal": "",
             "title": "Edenemine"
         },
         "read": "Lõpetatud",
