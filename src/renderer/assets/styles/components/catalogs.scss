@@ -561,6 +561,7 @@ $catalog-card-colors-dark: (
 }
 
 .opds_browserResults {
+    container-type: inline-size;
     overflow: auto;
     inset: 160px 20px 30px 30px;
     padding: 0;
@@ -581,6 +582,35 @@ $catalog-card-colors-dark: (
 
     .loader {
         margin: 20%;
+    }
+
+    .row {
+        margin-right: 0;
+    }
+
+    .col_filter {
+        flex-basis: clamp(220px, 40%, 300px);
+    }
+
+    .col_filter + .col {
+        min-width: 0;
+    }
+}
+
+@container (width <= 700px) {
+    .opds_browserResults .col_filter + .col {
+        .card_wrapper {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+
+            > * {
+                margin-right: 0;
+            }
+
+            .card_substitute {
+                display: none;
+            }
+        }
+
     }
 }
 
