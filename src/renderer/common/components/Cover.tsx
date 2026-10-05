@@ -41,6 +41,7 @@ interface IBaseProps {
     forwardedRef?:  React.ForwardedRef<HTMLImageElement>;
     imgRadixProp?: any;
     isPublicationUnavailable?: boolean;
+    isDownloading?: boolean;
 }
 
 // IProps may typically extend:
@@ -105,7 +106,7 @@ class Cover extends React.Component<IProps, IState> {
     public render() {
         const { publicationViewMaybeOpds } = this.props;
 
-        let needsSpinner = false;
+        let needsSpinner = !!this.props.isDownloading;
 
         const { identifier } = this.props.publicationViewMaybeOpds;
 
@@ -126,7 +127,9 @@ class Cover extends React.Component<IProps, IState> {
 
         if (this.state.imgUrl) {
             return (
-                <div className={isPublicationUnavailable ? stylesPublications.publication_missing_wrapper : ""}>
+                <div className={isPublicationUnavailable ?
+                    `${stylesPublications.cover_wrapper} ${stylesPublications.publication_missing_wrapper}` :
+                    stylesPublications.cover_wrapper}>
                     {isPublicationUnavailable ?
                     <div className={stylesPublications.publication_missing_container}>
                         <SVG ariaHidden svg={FileBroken} className={stylesPublications.publication_missing_icon} />
@@ -180,7 +183,9 @@ class Cover extends React.Component<IProps, IState> {
         const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
 
         return (
-            <div className={isPublicationUnavailable ? stylesPublications.publication_missing_wrapper : ""} style={{width: "100%"}}>
+            <div className={isPublicationUnavailable ?
+                `${stylesPublications.cover_wrapper} ${stylesPublications.publication_missing_wrapper}` :
+                stylesPublications.cover_wrapper}>
                 {isPublicationUnavailable ?
                     <div className={stylesPublications.publication_missing_container}>
                         <SVG ariaHidden svg={FileBroken} className={stylesPublications.publication_missing_icon} />
@@ -237,6 +242,7 @@ export const CoverWithForwardedRef = React.forwardRef<HTMLImageElement, IBasePro
     publicationViewMaybeOpds,
     coverType,
     isPublicationUnavailable,
+    isDownloading,
     ...props
 }, forwardedRef) => {
     const [__] = useTranslator();
@@ -249,6 +255,7 @@ export const CoverWithForwardedRef = React.forwardRef<HTMLImageElement, IBasePro
             forwardedRef={forwardedRef}
             imgRadixProp={props}
             isPublicationUnavailable={isPublicationUnavailable}
+            isDownloading={isDownloading}
         />
     );
 });

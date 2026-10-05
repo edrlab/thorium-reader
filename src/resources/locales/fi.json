@@ -78,6 +78,7 @@
         "deleteBook": "Poista",
         "deleteTag": "Poista tunniste",
         "description": "Kuvaus",
+        "downloaded": "Ladattu",
         "emptyTagList": "Tunnisteita ei ole käytössä.",
         "entry": {
             "continueReading": "Jatka lukemista",
@@ -240,7 +241,6 @@
             "alreadyImported": "Kaikki muistiinpanot on jo tuotu.",
             "emptyFile": "Tiedostossa ei ole muistiinpanoja.",
             "errorParsing": "Virhe tiedoston jäsentämisessä: ",
-            "noBelongTo": "Muistiinpanoja ei voida tuoda, vähintään yksi muistiinpano ei kuulu julkaisuun.",
             "nothing": "Yhtään muistiinpanoa ei ole valmiina tuontiin, tuonti keskeytetty.",
             "success": "Tuonti onnistui."
         },
@@ -923,7 +923,6 @@
             "preset": {
                 "apply": "Käytä",
                 "applyDetails": "Käytä ulkoasun valintojasi nykyiseen julkaisuun.",
-                "detail": "Tallenna / Käytä / Nollaa näyttöasetuksesi.",
                 "reset": "Nollaa",
                 "resetDetails": "Palauta oletusasetukset.",
                 "save": "Tallenna",
@@ -1328,8 +1327,8 @@
                     "recovering": "Palauttaa..."
                 },
                 "available": "Yksi tai useampi julkaisu löytyi levyltä, mutta ei tietokannasta. Palautus on mahdollista.",
-                "checking": "Tarkistaa julkaisuvarastoa...",
-                "description": "Tarkista julkaisuvarasto ja etsi julkaisuja, jotka voi palauttaa turvallisesti.",
+                "checking": "Tarkistaa tallennettuja julkaisuja...",
+                "description": "Tarkista tallennetut julkaisut ja etsi julkaisuja, jotka voi palauttaa turvallisesti.",
                 "dialog": {
                     "confirm": "Palauta",
                     "description_one": "Thorium löysi levyltä {{- count}} julkaisun, joka puuttuu tietokannasta. Haluatko tuoda sen takaisin Thoriumiin?",
@@ -1350,9 +1349,9 @@
             "storage": "Tallennustila"
         },
         "telemetry": {
-            "disableTelemetryMeasurements": "",
-            "disableTelemetryMeasurementsDescription": "",
-            "title": ""
+            "disableTelemetryMeasurements": "Poista etämittaus käytöstä",
+            "disableTelemetryMeasurementsDescription": "Kun tämä on valittu, Thorium ei lähetä etämittausten tuloksia",
+            "title": "Etämittaus"
         },
         "theme": {
             "auto": "Automaattinen",

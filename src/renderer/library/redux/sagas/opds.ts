@@ -6,6 +6,8 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import { shell } from "electron";
+import { replace } from "redux-first-history";
 import { catalogAnalyticsEvents } from "readium-desktop/common/analytics/catalog";
 import { TApiMethod } from "readium-desktop/common/api/api.type";
 import { apiActions } from "readium-desktop/common/redux/actions";
@@ -20,7 +22,7 @@ import { parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/rou
 import { opdsActions, routerActions } from "readium-desktop/renderer/library/redux/actions";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { TReturnPromiseOrGeneratorType } from "readium-desktop/typings/api";
-import { ContentType } from "readium-desktop/utils/contentType";
+import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call, delay, put, spawn, take } from "redux-saga/effects";
 import { race as raceTyped, select as selectTyped } from "typed-redux-saga/macro";
@@ -95,6 +97,24 @@ function* browseWatcher(action: routerActions.locationChanged.TAction) {
                 yield call(logEvent, catalogAnalyticsEvents.browse);
             });
         }
+
+        if (
+            opdsBrowseAction.payload.isSuccess &&
+            parseContentType(opdsBrowseAction.payload.contentType) === ContentType.Html
+        ) {
+            const externalUrl = opdsBrowseAction.payload.responseUrl || url;
+            try {
+                const parsedExternalUrl = new URL(externalUrl);
+                if (parsedExternalUrl.protocol !== "http:" && parsedExternalUrl.protocol !== "https:") {
+                    throw new Error(`Unsupported Web Catalog URL protocol: ${parsedExternalUrl.protocol}`);
+                }
+                yield call(() => shell.openExternal(parsedExternalUrl.toString()));
+            } finally {
+                yield put(replace("/opds"));
+            }
+            return;
+        }
+
         yield call(updateHeaderLinkWatcher, opdsBrowseAction);
     }
 }

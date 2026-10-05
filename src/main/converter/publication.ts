@@ -27,6 +27,7 @@ import { diMainGet } from "../di";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+import { applyOpdsPublicationViewFallback } from "./tools/publicationViewFallback";
 // import { type Store } from "redux";
 // import { RootState } from "../redux/states";
 
@@ -226,7 +227,7 @@ export class PublicationViewConverter {
             isOpenable,
         } = await getPublicationStorageState(document.identifier);
 
-        return {
+        return applyOpdsPublicationViewFallback({
 
             isOpenable,
             identifier: document.identifier, // preserve Identifiable identifier
@@ -240,7 +241,7 @@ export class PublicationViewConverter {
             customCover: document.customCover,
             r2PublicationJson: undefined,
             lastReadingLocation: readerStateLocator,
-        };
+        }, document.opdsPublicationView);
 
     }
 
@@ -342,13 +343,15 @@ export class PublicationViewConverter {
             isOpenable,
         } = await getPublicationStorageState(document.identifier);
 
-        return {
+        return applyOpdsPublicationViewFallback({
 
             isOpenable,
             isAudio,
             isDivina,
             isPDF,
             isDaisy,
+            isEPUB: !isAudio && !isDivina && !isPDF && !isDaisy &&
+                !!document.files?.some((file) => file.ext.toLowerCase() === "epub"),
             isFixedLayoutPublication,
             lastReadTimeStamp,
             readingFinished,
@@ -407,6 +410,6 @@ export class PublicationViewConverter {
             // r2PublicationBase64,
 
             lastReadingLocation: readerStateLocator,
-        };
+        }, document.opdsPublicationView);
     }
 }

@@ -138,8 +138,15 @@ $setting_color: var(--color-brand-primary);
     background-color: var(--color-gray-50);
     gap: 5px;
 
-    button {
-        height: 30px;
+    .react-aria-TabList {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .react-aria-Tab {
+        height: 20px;
         transition: 200ms;
         width: unset;
         display: flex;
@@ -151,8 +158,34 @@ $setting_color: var(--color-brand-primary);
         border-radius: 6px;
         font-weight: normal;
         border: 1px solid transparent;
+        cursor: pointer;
 
-        p, h3 {
+        &[data-disabled] {
+            color: var(--color-gray-300);
+            cursor: not-allowed;
+
+            svg {
+                color: var(--color-gray-300);
+                fill: var(--color-gray-300);
+            }
+        }
+
+        &[data-separator-before] {
+            margin-top: 12px;
+            position: relative;
+
+            &::before {
+                background-color: var(--color-gray-100);
+                content: "";
+                height: 2px;
+                left: 0;
+                position: absolute;
+                right: 0;
+                top: -8px;
+            }
+        }
+
+        p, span {
             font-size: 14px;
             text-overflow: ellipsis;
             overflow: hidden;
@@ -162,7 +195,7 @@ $setting_color: var(--color-brand-primary);
             margin: unset;
         }
 
-        &:hover {
+        &:hover:not([data-disabled]) {
             background-color: var(--color-neutral-base);
             border: 1px solid var(--color-button-border);
             color: var(--color-brand-primary);
@@ -173,7 +206,7 @@ $setting_color: var(--color-brand-primary);
             }
         }
 
-        &[data-state="active"]{
+        &[data-selected="true"]{
             color: $setting_color;
             background-color: $settings_bg;
             border: 1px solid var(--color-button-border);
@@ -198,8 +231,8 @@ $setting_color: var(--color-brand-primary);
         gap: 5px;
     }
 
-    button[data-value="tab-text"],
-    button[data-value="tab-spacing"] {
+    .react-aria-Tab[data-value="tab-text"],
+    .react-aria-Tab[data-value="tab-spacing"] {
         margin-left: 20%;
     }
 }
@@ -243,7 +276,7 @@ $setting_color: var(--color-brand-primary);
             background-color: var(--color-gray-400);
         }
 
-        &[data-state="active"] {
+        &[data-selected="true"] {
             color: $setting_color;
             background-color: $settings_bg;
             border-bottom: 2px solid $setting_color;
@@ -687,7 +720,13 @@ div[data-radix-popper-content-wrapper] {
         min-height: 70px;
         background-color: var(--color-gray-50);
 
-        &:hover:not([disabled]) {
+        &[data-disabled] {
+            color: var(--color-disabled);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        &:hover:not([data-disabled]) {
             border: 1px solid $setting_color;
             background-color: $settings_bg;
             cursor: pointer;
@@ -696,10 +735,18 @@ div[data-radix-popper-content-wrapper] {
     }
 
     div[role="radiogroup"] {
-        button {
+        label[data-input-type="radio"] {
             transition: 200ms linear;
 
-            &[data-state="checked"] {
+            &[data-focused],
+            &[data-focus-visible],
+            &:focus-within {
+                outline: var(--color-brand-primary) solid 2px !important;
+                outline-offset: 2px;
+                box-shadow: 0 0 0 2px var(--color-brand-primary);
+            }
+
+            &[data-selected] {
                 border: 1px solid $setting_color;
                 background-color: $settings_bg;
                 color: $setting_color;
@@ -896,6 +943,19 @@ div[data-radix-popper-content-wrapper] {
     justify-content: center;
     cursor: pointer;
     position: relative;
+
+    &[data-focused],
+    &[data-focus-visible],
+    &:focus-within {
+        outline: var(--color-brand-primary) solid 2px !important;
+        outline-offset: 2px;
+        box-shadow: 0 0 0 2px var(--color-brand-primary);
+    }
+
+    &[data-disabled] {
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
 
     &::after {
         content: "";

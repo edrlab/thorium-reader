@@ -8,7 +8,9 @@
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 
 export const EXT_THORIUM = ".thorium";
-export const EXT_ANNOTATIONS = ".annotation";
+export const EXT_ANNOTATIONS = ".annotations";
+export const EXT_ANNOTATIONS_LEGACY = ".annotation";
+export const ANNOTATIONS_JSON_FILENAME = "annotations.json";
 
 // cf src/utils/mimeTypes.ts
 export const acceptedExtensionObject = {

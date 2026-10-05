@@ -78,6 +78,7 @@
         "deleteBook": "Izbriši",
         "deleteTag": "Izbriši oznaku",
         "description": "Opis",
+        "downloaded": "",
         "emptyTagList": "Nemate označenu e-knjigu.",
         "entry": {
             "continueReading": "Nastavi čitati",
@@ -245,7 +246,6 @@
             "alreadyImported": "",
             "emptyFile": "",
             "errorParsing": "",
-            "noBelongTo": "",
             "nothing": "",
             "success": ""
         },
@@ -930,7 +930,6 @@
             "preset": {
                 "apply": "",
                 "applyDetails": "",
-                "detail": "",
                 "reset": "",
                 "resetDetails": "",
                 "save": "",

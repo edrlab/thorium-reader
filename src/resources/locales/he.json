@@ -78,6 +78,7 @@
         "deleteBook": "",
         "deleteTag": "",
         "description": "",
+        "downloaded": "",
         "emptyTagList": "",
         "entry": {
             "continueReading": "",
@@ -245,7 +246,6 @@
             "alreadyImported": "",
             "emptyFile": "",
             "errorParsing": "",
-            "noBelongTo": "",
             "nothing": "",
             "success": ""
         },
@@ -930,7 +930,6 @@
             "preset": {
                 "apply": "",
                 "applyDetails": "",
-                "detail": "",
                 "reset": "",
                 "resetDetails": "",
                 "save": "",

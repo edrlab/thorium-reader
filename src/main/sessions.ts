@@ -18,6 +18,7 @@ import { diMainGet } from "readium-desktop/main/di";
 // const debug = (..._: any[]) => {};
 const debug =  debug_("readium-desktop:main#sessions");
 debug("_");
+const DEBUG_ADVANCED = false;
 
 interface PromiseFulfilled<T> {
     status: "fulfilled";
@@ -197,16 +198,24 @@ export const initProtocols = () => {
   const protocolHandler_FILEX = (
     request: Request,
   ): Response | Promise<Response> => {
-    debug("---protocolHandler_FILEX");
-    debug(request);
+    debug(`protocolHandler_FILEX ${request.method} ${request.url}`);
+    if (DEBUG_ADVANCED) {
+      debug(request);
+    }
     const urlPath = request.url.substring(`${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/`.length);
-    debug(urlPath);
+    if (DEBUG_ADVANCED) {
+      debug(urlPath);
+    }
     const urlPathDecoded = urlPath.split("/").map((segment) => {
       return segment?.length ? tryDecodeURIComponent(segment) : "";
     }).join("/");
-    debug(urlPathDecoded);
+    if (DEBUG_ADVANCED) {
+      debug(urlPathDecoded);
+    }
     const filePathUrl = pathToFileURL(urlPathDecoded).toString();
-    debug(filePathUrl);
+    if (DEBUG_ADVANCED) {
+      debug(filePathUrl);
+    }
     return net.fetch(filePathUrl); // potential security hole: local filesystem access (mitigated by URL scheme not .registerSchemesAsPrivileged() and not .handle() or .registerXXXProtocol() directly on r2-navigator-js.getWebViewSession().protocol or any other partitioned session, unlike Electron.protocol and Electron.session.defaultSession.protocol)
   };
   session.defaultSession.protocol.handle(URL_PROTOCOL_FILEX, protocolHandler_FILEX);
@@ -215,19 +224,27 @@ export const initProtocols = () => {
   const protocolHandler_Store = async (
     request: Request,
   ): Promise<Response> => {
-    debug("---protocolHandler_Store");
-    debug(request);
+    debug(`protocolHandler_Store ${request.method} ${request.url}`);
+    if (DEBUG_ADVANCED) {
+      debug(request);
+    }
     const urlPath = request.url.substring(`${URL_PROTOCOL_STORE}://`.length);
-    debug(urlPath);
+    if (DEBUG_ADVANCED) {
+      debug(urlPath);
+    }
     // const urlPathDecoded = tryDecodeURIComponent(urlPath);
     // debug(urlPathDecoded);
     const pubStorage = diMainGet("publication-storage");
     const [pubId, fileName] = urlPath.trim().split("/");
     const pubPath = await pubStorage.getPublicationPath(pubId);
     const filePath = path.join(pubPath, fileName);
-    debug(filePath);
+    if (DEBUG_ADVANCED) {
+      debug(filePath);
+    }
     const filePathUrl = pathToFileURL(filePath).toString();
-    debug(filePathUrl);
+    if (DEBUG_ADVANCED) {
+      debug(filePathUrl);
+    }
     return net.fetch(filePathUrl); // potential security hole: local filesystem access (mitigated by URL scheme not .registerSchemesAsPrivileged() and not .handle() or .registerXXXProtocol() directly on r2-navigator-js.getWebViewSession().protocol or any other partitioned session, unlike Electron.protocol and Electron.session.defaultSession.protocol)
   };
   session.defaultSession.protocol.handle(URL_PROTOCOL_STORE, protocolHandler_Store);
@@ -237,14 +254,22 @@ export const initProtocols = () => {
   const protocolHandler_PDF = (
     request: Request,
   ): Response | Promise<Response> => {
-    debug("---protocolHandler_PDF");
-    debug(request);
+    debug(`protocolHandler_PDF ${request.method} ${request.url}`);
+    if (DEBUG_ADVANCED) {
+      debug(request);
+    }
     const urlPath = request.url.substring(`${URL_PROTOCOL_PDFJSEXTRACT}://${URL_HOST_COMMON}/`.length);
-    debug(urlPath);
+    if (DEBUG_ADVANCED) {
+      debug(urlPath);
+    }
     const urlPathDecoded = tryDecodeURIComponent(urlPath);
-    debug(urlPathDecoded);
+    if (DEBUG_ADVANCED) {
+      debug(urlPathDecoded);
+    }
     const filePathUrl = pathToFileURL(urlPathDecoded).toString();
-    debug(filePathUrl);
+    if (DEBUG_ADVANCED) {
+      debug(filePathUrl);
+    }
     return net.fetch(filePathUrl); // potential security hole: local filesystem access (mitigated by URL scheme not .registerSchemesAsPrivileged() and not .handle() or .registerXXXProtocol() directly on r2-navigator-js.getWebViewSession().protocol or any other partitioned session, unlike Electron.protocol and Electron.session.defaultSession.protocol)
   };
   pdfExtractSession.protocol.handle(URL_PROTOCOL_PDFJSEXTRACT, protocolHandler_PDF);

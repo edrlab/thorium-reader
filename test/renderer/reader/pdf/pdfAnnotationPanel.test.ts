@@ -1,5 +1,6 @@
 import { expect, jest, test } from "@jest/globals";
 
+import type { ISelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import { EDrawType } from "readium-desktop/common/redux/states/renderer/note";
 import type { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import {
@@ -533,4 +534,35 @@ test("annotation panel save payload preserves EPUB locator data when present", (
     expect(saved.locatorExtended).toEqual(source.locatorExtended);
     expect(saved.locatorExtended).not.toBe(source.locatorExtended);
     expect(saved.pdfAnnotation).toBeUndefined();
+});
+
+test("annotation panel save payload preserves imported unsupported selectors", () => {
+    const source = createPdfAnnotationNote({
+        pdfAnnotation: undefined,
+        locatorExtended: undefined,
+        readiumAnnotation: {
+            import: {
+                target: {
+                    source: "chapter.xhtml",
+                    selector: [{
+                        type: "VendorSelector",
+                        refinedBy: {
+                            type: "VendorRefinement",
+                        },
+                    } as unknown as ISelector],
+                },
+            },
+        },
+    });
+    const saved = buildAnnotationPanelSaveNote(source, {
+        color,
+        comment: "updated unresolved annotation",
+        drawType: "solid_background",
+        tags: [],
+        modified: 4000,
+    });
+
+    expect(saved.readiumAnnotation).toEqual(source.readiumAnnotation);
+    expect(saved.readiumAnnotation).not.toBe(source.readiumAnnotation);
+    expect(saved.readiumAnnotation?.import?.target.selector).not.toBe(source.readiumAnnotation?.import?.target.selector);
 });

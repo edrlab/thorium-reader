@@ -10,7 +10,7 @@ import * as path from "node:path";
 import * as fs from "node:fs";
 import { commandLineMainEntry } from "readium-desktop/main/cli";
 import { httpGetWithAuth } from "readium-desktop/main/network/http";
-import { CRL_URL, DUMMY_CRL } from "@r2-lcp-js/parser/epub/lcp-certificate";
+import { BUILD_CRL, BUILD_CRL_CACHED_AT, CRL_URL } from "@r2-lcp-js/parser/epub/lcp-certificate";
 import { setLcpNativePluginPath, setCRLGetter } from "@r2-lcp-js/parser/epub/lcp";
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {
@@ -25,6 +25,7 @@ import { app } from "electron";
 import { _APP_NAME, _APP_VERSION, _PACK_NAME } from "readium-desktop/preprocessor-directives";
 import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
 import { appendFileSyncWithRotation } from "readium-desktop/utils/log";
+import { LcpCrlCache } from "./main/services/lcpCrlCache";
 
 // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
 // import isURL from "validator/lib/isURL";
@@ -71,139 +72,37 @@ initGlobalConverters_GENERIC();
 const lcpNativePluginPath = path.normalize(path.join(__dirname, "external-assets", "lcp.node"));
 setLcpNativePluginPath(lcpNativePluginPath);
 
-interface ILcpCrlCache {
-    crlPem: string;
-    etag: string | undefined;
-    lastModified: string | undefined;
-    validatedAt: number;
-    expiresAt: number;
-    refreshPromise: Promise<void> | undefined;
-}
-
-const lcpCrlCache: ILcpCrlCache = {
-    crlPem: DUMMY_CRL,
-    etag: undefined,
-    lastModified: undefined,
-    validatedAt: 0,
-    expiresAt: 0,
-    refreshPromise: undefined,
-};
-
-const LCP_CRL_CACHE_FALLBACK_FRESHNESS_MS = 60 * 60 * 1000;
-
-const getCacheControlMaxAgeMs = (cacheControl: string | undefined): number | undefined => {
-    if (!cacheControl) {
-        return undefined;
-    }
-    let maxAgeMs: number | undefined;
-    for (const directive of cacheControl.split(",")) {
-        const [rawName, rawValue] = directive.trim().split("=", 2);
-        const name = rawName.trim().toLowerCase();
-        const value = rawValue?.trim();
-        if (name === "no-cache" || name === "no-store") {
-            return 0;
-        }
-        if (name === "max-age" && value) {
-            const seconds = Number(value.replace(/^"|"$/g, ""));
-            if (Number.isFinite(seconds) && seconds >= 0) {
-                maxAgeMs = seconds * 1000;
-            }
-        }
-    }
-    return maxAgeMs;
-};
-
-const getLcpCrlExpiresAt = (headers: { get(name: string): string | null } | undefined, validatedAt: number): number => {
-    const cacheControlMaxAgeMs = getCacheControlMaxAgeMs(headers?.get("cache-control") || undefined);
-    return validatedAt + (cacheControlMaxAgeMs ?? LCP_CRL_CACHE_FALLBACK_FRESHNESS_MS);
-};
-
-const isLcpCrlCacheExpired = () =>
-    Date.now() >= lcpCrlCache.expiresAt;
-
-const refreshLcpCrlCache = (): Promise<void> => {
-    debug("REFRESH LCP CRL REQUEST", lcpCrlCache);
-    if (typeof lcpCrlCache.refreshPromise !== "undefined") {
-        return lcpCrlCache.refreshPromise;
-    }
-
-    lcpCrlCache.refreshPromise = (async () => {
-        try {
-            const headers: Record<string, string> = {
+const lcpCrlCache = new LcpCrlCache({
+    defaultCrlPem: BUILD_CRL,
+    defaultCrlCachedAt: BUILD_CRL_CACHED_AT,
+    fetchCrl: async () => {
+        debug("LCP CRL HTTP fetch");
+        // RFC 2585 Security Considerations: CRL retrieval does not need
+        // authentication, so this uses Thorium's no-auth HTTP helper.
+        const res = await httpGetWithAuth(false)(CRL_URL, {
+            headers: {
                 Accept: ContentType.PkixCrl,
-            };
-            if (lcpCrlCache.etag) {
-                headers["If-None-Match"] = lcpCrlCache.etag;
-            }
-            if (lcpCrlCache.lastModified) {
-                headers["If-Modified-Since"] = lcpCrlCache.lastModified;
-            }
-            // RFC 2585 Security Considerations: CRL retrieval does not need
-            // authentication, so this uses Thorium's no-auth HTTP helper.
-            const res = await httpGetWithAuth(false)(CRL_URL, {
-                headers,
-                // Reject redirects so the native LCP plugin receives bytes from the
-                // configured CRL endpoint only.
-                redirect: "error",
-            });
-            if (res.statusCode === 304) {
-                lcpCrlCache.lastModified = res.response.headers?.get("last-modified") || lcpCrlCache.lastModified;
-                const validatedAt = Date.now();
-                lcpCrlCache.validatedAt = validatedAt;
-                lcpCrlCache.expiresAt = getLcpCrlExpiresAt(res.response.headers, validatedAt);
-                debug("LCP CRL HTTP cache refreshed: not modified");
-                return;
-            }
-            const mediaType = res.contentType?.split(";")[0].trim().toLowerCase();
-            // RFC 5280 section 4.2.1.13 says HTTP CRL distribution point URIs point
-            // to a single DER encoded CRL, and HTTP servers SHOULD respond with
-            // Content-Type application/pkix-crl.
-            // https://datatracker.ietf.org/doc/html/rfc5280#section-4.2.1.13
-            // RFC 2585 section 4.2 registers application/pkix-crl.
-            // https://datatracker.ietf.org/doc/html/rfc2585#section-4.2
-            // RFC 2585 Security Considerations: authentication is not necessary
-            // to retrieve certificates and CRLs.
-            // https://datatracker.ietf.org/doc/html/rfc2585#page-6
-            if (res.statusCode === 200 && mediaType === ContentType.PkixCrl) {
-                const buf = await res.response.buffer();
-                const lcplStr = "-----BEGIN X509 CRL-----\n" + buf.toString("base64") + "\n-----END X509 CRL-----";
-                lcpCrlCache.crlPem = lcplStr;
-                lcpCrlCache.etag = res.response.headers?.get("etag") || undefined; // '"295-65b0d9de8addd"' double quote is included
-                lcpCrlCache.lastModified = res.response.headers?.get("last-modified") || undefined;
-                const validatedAt = Date.now();
-                lcpCrlCache.validatedAt = validatedAt;
-                lcpCrlCache.expiresAt = getLcpCrlExpiresAt(res.response.headers, validatedAt);
-                debug("LCP CRL HTTP fetch success");
-                debug(lcplStr);
-                return;
-            }
-            debug(`LCP CRL HTTP fetch fail; keeping cached CRL (${res.statusCode} ${res.contentType})`);
-        } catch (err) {
-            debug("LCP CRL HTTP fetch error; keeping cached CRL");
-            debug(err);
+            },
+            // Reject redirects so the native LCP plugin receives bytes from the
+            // configured CRL endpoint only.
+            redirect: "error",
+        });
+        if (res.statusCode !== 200 || !res.response?.buffer) {
+            throw new Error(`LCP CRL HTTP fetch failed (${res.statusCode || res.statusMessage || "unknown error"})`);
         }
-    })().finally(() => {
-        lcpCrlCache.refreshPromise = undefined;
-    });
-
-    return lcpCrlCache.refreshPromise;
-};
-const initLcpCrlCacheValidatedAt = lcpCrlCache.validatedAt;
-refreshLcpCrlCache().then(() => {
-    debug(lcpCrlCache.validatedAt > initLcpCrlCacheValidatedAt ? "INIT LCP CRL LOADED" : "INIT LCP CRL FAILED");
-    debug(lcpCrlCache);
-}).catch((err) => {
-    debug("INIT LCP CRL FAILED");
-    debug(err);
+        const der = await res.response.buffer();
+        debug("LCP CRL HTTP fetch success");
+        return der;
+    },
+    log: (message, error) => {
+        debug(message);
+        if (typeof error !== "undefined") {
+            debug(error);
+        }
+    },
 });
-
-setCRLGetter(async (): Promise<string> => {
-    const crlPem = lcpCrlCache.crlPem;
-    if (isLcpCrlCacheExpired()) {
-        void refreshLcpCrlCache();
-    }
-    return crlPem;
-});
+lcpCrlCache.preload();
+setCRLGetter((): Promise<string> => lcpCrlCache.retrieve());
 
 app.commandLine.appendSwitch("autoplay-policy", "no-user-gesture-required");
 app.commandLine.appendSwitch("enable-speech-dispatcher");

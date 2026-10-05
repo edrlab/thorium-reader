@@ -7,7 +7,7 @@
 
 import debug_ from "debug";
 
-import { ICssSelector, IReadiumAnnotation, IReadiumAnnotationSet, isCFIFragmentSelector, isCssSelector, isEPUBCFISelector, isLegacyCfiSelector, isProgressionSelector, isTextPositionSelector, isTextQuoteSelector, ITextPositionSelector, ITextQuoteSelector } from "./annotationModel.type";
+import { LEGACY_ANNOTATION_CONTEXT, TAnnotationContext, EPUB_ANNOTATION_CONTEXT, ICssSelector, IReadiumAnnotation, IReadiumAnnotationSet, isCFIFragmentSelector, isCssSelector, isEPUBCFISelector, isLegacyCfiSelector, isProgressionSelector, isTextPositionSelector, isTextQuoteSelector, ITextPositionSelector, ITextQuoteSelector } from "./annotationModel.type";
 import { uuidv4 } from "readium-desktop/utils/uuid";
 import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -29,13 +29,11 @@ import { EpubCfiResolver } from "@r2-navigator-js/electron/common/colibrio-cfi/r
 // Logger
 const debug = debug_("readium-desktop:common:readium:annotation:converter");
 
-export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnnotation["target"], debugRangeInfo: IRangeInfo | undefined, isABookmark: boolean, xmlDom: Document, href: string): Promise<MiniLocatorExtended | undefined> {
+export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnnotation["target"], debugRangeInfo: IRangeInfo | undefined, isABookmark: boolean, xmlDom: Document | undefined, href: string): Promise<MiniLocatorExtended | undefined> {
 
-    if (!target || !target.source || !xmlDom || !href) {
+    if (!target || !target.source || !href) {
         return undefined;
     }
-
-    const root = xmlDom.body;
 
     const cfiSelector = target.selector.find(isEPUBCFISelector) || target.selector.find(isLegacyCfiSelector);
     const cfiFragmentSelector = target.selector.find(isCFIFragmentSelector);
@@ -43,7 +41,51 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
     const textPositionSelector = target.selector.find(isTextPositionSelector);
     const cssSelector = target.selector.find(isCssSelector);
     const progressionSelector = target.selector.find(isProgressionSelector);
-    const progressionValue = progressionSelector?.value || undefined;
+    const progressionValue = progressionSelector?.value ?? undefined;
+
+    const createBookmarkLocatorExtended = (elementCssSelector = cssSelector?.value): MiniLocatorExtended | undefined => {
+        if (!isABookmark) {
+            return undefined;
+        }
+
+        return {
+            locator: {
+                href,
+                locations: {
+                    cssSelector: elementCssSelector || (xmlDom?.body ? "body" : undefined),
+                    progression: progressionValue,
+                },
+            },
+            selectionInfo: undefined,
+            audioPlaybackInfo: undefined,
+            paginationInfo: undefined,
+            selectionIsNew: undefined,
+            docInfo: undefined,
+            epubPage: undefined,
+            epubPageID: undefined,
+            headings: undefined,
+            secondWebViewHref: undefined,
+        };
+    };
+
+    // Resource-, progression-, and element-level targets are sufficient for a
+    // bookmark. They intentionally do not create a text selection / caret.
+    const hasRangeSelector = !!(
+        textQuoteSelector ||
+        textPositionSelector ||
+        cfiSelector ||
+        cfiFragmentSelector ||
+        cssSelector?.refinedBy
+    );
+    if (isABookmark && !hasRangeSelector) {
+        return createBookmarkLocatorExtended();
+    }
+
+    if (!xmlDom) {
+        return createBookmarkLocatorExtended();
+    }
+
+    const root = xmlDom.body;
 
     //makeRefinable
     const createMatcher = makeRefinable<ITextPositionSelector | ITextQuoteSelector | ICssSelector<any>, Node | Range, Range | Element>((selector) => {
@@ -125,7 +167,7 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
     }
     if (!ranges.length) {
         debug("No selector found !!", JSON.stringify(target.selector, null, 4));
-        return undefined;
+        return createBookmarkLocatorExtended();
     }
     debug(`${ranges.length} range(s) found !!!`);
 
@@ -146,7 +188,7 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
     }
     if (!convertedRangeArray.length) {
         debug(`No selector found but ${ranges.length} found !!`, JSON.stringify(target.selector, null, 4));
-        return undefined;
+        return createBookmarkLocatorExtended();
     }
     debug(`${convertedRangeArray.length} range(s) converted found !!!`);
     debug("dump convertedRange : ", JSON.stringify(convertedRangeArray, null, 4));
@@ -195,7 +237,7 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
     }
     if (!rangeInfo || !textInfo) {
         debug("No range found !!");
-        return undefined;
+        return createBookmarkLocatorExtended();
     }
 
     // How to define if it is a bookmark rangeInfo !?
@@ -266,11 +308,20 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
 
 // export type INoteStateWithICacheDocument = INoteState & { __cacheDocument?: ICacheDocument | undefined };
 
-export function convertAnnotationStateToReadiumAnnotation(note: INoteState): IReadiumAnnotation | undefined {
+export function readiumAnnotationDrawType(annotation: IReadiumAnnotation): EDrawType {
+    if (annotation.motivation === "bookmarking") {
+        return EDrawType.bookmark;
+    }
+    const highlight = annotation.body?.highlight;
+    return highlight && highlight !== "solid" ? EDrawType[highlight] : EDrawType.solid_background;
+}
+
+export function convertAnnotationStateToReadiumAnnotation(note: INoteState, context: TAnnotationContext = EPUB_ANNOTATION_CONTEXT): IReadiumAnnotation | undefined {
 
     const { uuid, color, locatorExtended, tags, drawType, textualValue, creator, created, modified, readiumAnnotation } = note;
-    const highlight = (drawType === EDrawType.solid_background ? "solid" : EDrawType[drawType]) as IReadiumAnnotation["body"]["highlight"];
     const isABookmark = drawType === EDrawType.bookmark;
+    const highlight = isABookmark && context === EPUB_ANNOTATION_CONTEXT ? undefined :
+        (drawType === EDrawType.solid_background ? "solid" : EDrawType[drawType]) as IReadiumAnnotation["body"]["highlight"];
 
     // PDF annotations currently store their target in `note.pdfAnnotation`.
     // Do not serialize them as Readium annotations until there is an explicit
@@ -284,8 +335,15 @@ export function convertAnnotationStateToReadiumAnnotation(note: INoteState): IRe
         debug("Convert A Note without any locator !!!", note.uuid);
     }
 
+    const importedTarget = readiumAnnotation?.import?.target;
+    const generatedSelectors = readiumAnnotation?.export?.selector;
+    const generatedMeta = (locatorExtended?.headings || locatorExtended?.epubPage) ? {
+        headings: locatorExtended?.headings ? locatorExtended.headings.map(({ txt, level }) => ({ txt, level })) : undefined,
+        page: locatorExtended?.epubPage || undefined,
+    } : undefined;
+
     return {
-        "@context": "http://www.w3.org/ns/anno.jsonld",
+        "@context": context,
         id: uuid ? "urn:uuid:" + uuid : "",
         created: new Date(created).toISOString(),
         modified: modified ? new Date(modified).toISOString() : undefined,
@@ -295,7 +353,7 @@ export function convertAnnotationStateToReadiumAnnotation(note: INoteState): IRe
             value: textualValue || "",
             format: "text/plain",
             color: noteColorCodeToColorSet[rgbToHex(color)] || NOTE_DEFAULT_COLOR,
-            tag: (tags || [])[0] || "",
+            ...(context === LEGACY_ANNOTATION_CONTEXT ? { tag: tags?.[0] || "" } : tags?.length ? { tags: [...tags] } : {}),
             highlight,
             //   textDirection: "ltr",
             //   language: "fr",
@@ -306,25 +364,23 @@ export function convertAnnotationStateToReadiumAnnotation(note: INoteState): IRe
             type: creator.type,
         } : undefined,
         target: {
-            source: locatorExtended?.locator.href || "",
-            meta: (locatorExtended?.headings || locatorExtended?.epubPage) ? {
-                headings: locatorExtended?.headings ? locatorExtended.headings.map(({ txt, level }) => ({ txt, level })) : undefined,
-                page: locatorExtended?.epubPage || undefined,
-            } : undefined,
-            selector: readiumAnnotation?.export?.selector || [],
+            ...importedTarget,
+            source: locatorExtended?.locator.href || importedTarget?.source || "",
+            meta: generatedMeta || importedTarget?.meta,
+            selector: generatedSelectors?.length ? generatedSelectors : importedTarget?.selector || [],
         },
         motivation: isABookmark ? "bookmarking" : "highlighting", // isABookmark = drawType === EDrawType.bookmark
     };
 }
 
-export function convertAnnotationStateArrayToReadiumAnnotationSet(locale: keyof typeof availableLanguages, notes: INoteState[], publicationView: PublicationView, label?: string): IReadiumAnnotationSet {
+export function convertAnnotationStateArrayToReadiumAnnotationSet(locale: keyof typeof availableLanguages, notes: INoteState[], publicationView: PublicationView, label?: string, context: TAnnotationContext = publicationView.isEPUB ? EPUB_ANNOTATION_CONTEXT : LEGACY_ANNOTATION_CONTEXT): IReadiumAnnotationSet {
 
     const currentDate = new Date();
     const dateString: string = currentDate.toISOString();
     // const iLcp = !!publicationView.lcp;
 
     return {
-        "@context": "http://www.w3.org/ns/anno.jsonld",
+        "@context": context,
         id: "urn:uuid:" + uuidv4(),
         type: "AnnotationSet",
         generator: {
@@ -362,7 +418,7 @@ export function convertAnnotationStateArrayToReadiumAnnotationSet(locale: keyof 
             "dc:date": publicationView.publishedAt || "",
         },
         items: notes.reduce<IReadiumAnnotation[]>((items, note) => {
-            const readiumAnnotation = convertAnnotationStateToReadiumAnnotation(note);
+            const readiumAnnotation = convertAnnotationStateToReadiumAnnotation(note, context);
             if (readiumAnnotation) {
                 items.push(readiumAnnotation);
             }
