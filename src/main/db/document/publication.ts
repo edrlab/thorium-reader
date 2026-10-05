@@ -41,6 +41,7 @@ export interface PublicationDocument extends Identifiable, Timestampable {
     lcpRightsPrints?: number[];
 
     hash: string;
+    sourceFormat?: "cbz";
 
     opdsPublicationStringified?: string;
     opdsPublicationView?: IOpdsPublicationView;
