@@ -78,6 +78,7 @@
         "deleteBook": "Удалить",
         "deleteTag": "Удалить тег",
         "description": "Описание",
+        "downloaded": "Загружено",
         "emptyTagList": "У вас нет электронной книги с тегами.",
         "entry": {
             "continueReading": "Продолжить чтение",
@@ -250,7 +251,6 @@
             "alreadyImported": "Все заметки уже импортированы.",
             "emptyFile": "В этом файле нет заметок.",
             "errorParsing": "Ошибка при анализе файла: ",
-            "noBelongTo": "Невозможно импортировать заметки, по крайней мере одна заметка не принадлежит книге.",
             "nothing": "Нет ни одной готовой к импорту заметки, импорт прерван",
             "success": "Импорт успешно завершён."
         },
@@ -312,7 +312,7 @@
             "pink": "Розовый",
             "purple": "Фиолетовый",
             "red": "Красный",
-            "title": "",
+            "title": "Цвет каталога",
             "yellow": "Жёлтый"
         },
         "documentation": "Официальный сайт OPDS",
@@ -714,7 +714,7 @@
         "seeLess": "Скрыть",
         "seeMore": "Подробнее",
         "timeLeft": "Осталось",
-        "title": "Заголовок",
+        "title": "Название",
         "userKeyCheckInvalid": "Пароль неверен."
     },
     "reader": {
@@ -937,7 +937,6 @@
             "preset": {
                 "apply": "Применить",
                 "applyDetails": "Применить любимую конфигурацию к текущей публикации.",
-                "detail": "Сохранить / Применить / Сбросить текущую конфигурацию.",
                 "reset": "Сбросить",
                 "resetDetails": "Сбросить текущую конфигурацию до настроек по умолчанию.",
                 "save": "Сохранить",
@@ -1368,9 +1367,9 @@
             "storage": "Хранилище"
         },
         "telemetry": {
-            "disableTelemetryMeasurements": "",
-            "disableTelemetryMeasurementsDescription": "",
-            "title": ""
+            "disableTelemetryMeasurements": "Выключить телеметрию",
+            "disableTelemetryMeasurementsDescription": "При активации этой функции Thorium не будет отправлять данные телеметрии.",
+            "title": "Телеметрия"
         },
         "theme": {
             "auto": "Автоматическая",

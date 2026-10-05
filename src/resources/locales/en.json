@@ -78,6 +78,7 @@
         "deleteBook": "Delete",
         "deleteTag": "Delete tag",
         "description": "Description",
+        "downloaded": "Downloaded",
         "emptyTagList": "No tagged publications.",
         "entry": {
             "continueReading": "Resume reading",
@@ -240,7 +241,6 @@
             "alreadyImported": "All notes are already imported.",
             "emptyFile": "No notes available in the file.",
             "errorParsing": "Error during file parsing: ",
-            "noBelongTo": "Unable to import notes, at least one note does not belong to the publication.",
             "nothing": "There is no note ready to be imported, aborting the import",
             "success": "Import completed successfully."
         },
@@ -923,7 +923,6 @@
             "preset": {
                 "apply": "Apply",
                 "applyDetails": "Apply your preferred configuration to the current publication.",
-                "detail": "Save / Apply / Reset your preferred configuration.",
                 "reset": "Reset",
                 "resetDetails": "Reset your preferred configuration (default settings).",
                 "save": "Save",

@@ -1252,6 +1252,40 @@ test("viewer:go-to-annotation aligns a viewport marker before scrolling", () => 
     expect(scrolledElements[0].parentElement).toBeNull();
 });
 
+test("viewer:go-to-annotation aligns a viewport marker with point conversion", () => {
+    const viewport = {
+        width: 600,
+        height: 800,
+        convertToPdfPoint: (x: number, y: number) => [x, y],
+        convertToViewportPoint: jest.fn((x: number, y: number) => [x * 2, y * 2]),
+    };
+    const page = createRenderedPage(1, {
+        viewport,
+    });
+    const scrolledElements: HTMLElement[] = [];
+    mockScrollIntoView(scrolledElements);
+    const harness = createHarness([page]);
+    harness.controller.init();
+    harness.thoriumBus.dispatch("annotations:sync", {
+        annotations: [annotation("first", 1, [{ x1: 10, y1: 20, x2: 30, y2: 40 }])],
+    });
+
+    harness.thoriumBus.dispatch("viewer:go-to-annotation", {
+        id: "first",
+        page: 1,
+        rect: { x1: 100, y1: 120, x2: 140, y2: 160 },
+    });
+
+    expect(viewport.convertToViewportPoint).toHaveBeenNthCalledWith(1, 10, 20);
+    expect(viewport.convertToViewportPoint).toHaveBeenNthCalledWith(2, 30, 40);
+    expect(scrolledElements).toHaveLength(1);
+    expect(scrolledElements[0].style.left).toBe("20px");
+    expect(scrolledElements[0].style.top).toBe("40px");
+    expect(scrolledElements[0].style.width).toBe("40px");
+    expect(scrolledElements[0].style.height).toBe("40px");
+    expect(scrolledElements[0].parentElement).toBeNull();
+});
+
 test("viewer:go-to-annotation falls back to page scrolling when viewport alignment is unavailable", () => {
     const page = createRenderedPage(1, {
         viewport: {

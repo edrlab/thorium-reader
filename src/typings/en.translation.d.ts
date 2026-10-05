@@ -150,6 +150,7 @@ declare namespace typed_i18n {
   readonly "deleteBook": string,
   readonly "deleteTag": string,
   readonly "description": string,
+  readonly "downloaded": string,
   readonly "emptyTagList": string,
   readonly "entry": {
     readonly "continueReading": string,
@@ -253,6 +254,7 @@ declare namespace typed_i18n {
   (_: "catalog.deleteBook", __?: {}): string;
   (_: "catalog.deleteTag", __?: {}): string;
   (_: "catalog.description", __?: {}): string;
+  (_: "catalog.downloaded", __?: {}): string;
   (_: "catalog.emptyTagList", __?: {}): string;
   (_: "catalog.entry", __?: {}): { readonly "continueReading": string, readonly "lastAdditions": string };
   (_: "catalog.entry.continueReading", __?: {}): string;
@@ -588,7 +590,6 @@ declare namespace typed_i18n {
     readonly "alreadyImported": string,
     readonly "emptyFile": string,
     readonly "errorParsing": string,
-    readonly "noBelongTo": string,
     readonly "nothing": string,
     readonly "success": string
   },
@@ -630,14 +631,12 @@ declare namespace typed_i18n {
   readonly "alreadyImported": string,
   readonly "emptyFile": string,
   readonly "errorParsing": string,
-  readonly "noBelongTo": string,
   readonly "nothing": string,
   readonly "success": string
 };
   (_: "message.annotations.alreadyImported", __?: {}): string;
   (_: "message.annotations.emptyFile", __?: {}): string;
   (_: "message.annotations.errorParsing", __?: {}): string;
-  (_: "message.annotations.noBelongTo", __?: {}): string;
   (_: "message.annotations.nothing", __?: {}): string;
   (_: "message.annotations.success", __?: {}): string;
   (_: "message.download", __?: {}): {
@@ -2001,7 +2000,6 @@ declare namespace typed_i18n {
     readonly "preset": {
       readonly "apply": string,
       readonly "applyDetails": string,
-      readonly "detail": string,
       readonly "reset": string,
       readonly "resetDetails": string,
       readonly "save": string,
@@ -2422,7 +2420,6 @@ declare namespace typed_i18n {
   readonly "preset": {
     readonly "apply": string,
     readonly "applyDetails": string,
-    readonly "detail": string,
     readonly "reset": string,
     readonly "resetDetails": string,
     readonly "save": string,
@@ -2520,7 +2517,6 @@ declare namespace typed_i18n {
   (_: "reader.settings.preset", __?: {}): {
   readonly "apply": string,
   readonly "applyDetails": string,
-  readonly "detail": string,
   readonly "reset": string,
   readonly "resetDetails": string,
   readonly "save": string,
@@ -2529,7 +2525,6 @@ declare namespace typed_i18n {
 };
   (_: "reader.settings.preset.apply", __?: {}): string;
   (_: "reader.settings.preset.applyDetails", __?: {}): string;
-  (_: "reader.settings.preset.detail", __?: {}): string;
   (_: "reader.settings.preset.reset", __?: {}): string;
   (_: "reader.settings.preset.resetDetails", __?: {}): string;
   (_: "reader.settings.preset.save", __?: {}): string;

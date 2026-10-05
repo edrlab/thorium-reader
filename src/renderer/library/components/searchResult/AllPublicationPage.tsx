@@ -103,6 +103,7 @@ import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar2-i
 // import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import * as KeyIcon from "readium-desktop/renderer/assets/icons/key-icon.svg";
 import AboutThoriumButton from "../catalog/AboutThoriumButton";
+import { getNextPageIndex } from "./tablePagination";
 import Menu from "readium-desktop/renderer/common/components/menu/Menu";
 import CatalogMenu from "../publication/menu/CatalogMenu";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
@@ -1569,6 +1570,13 @@ type MyTableInstance<T extends object> =
         state: TableState<T> & UsePaginationState<T> & UseGlobalFiltersState<T> & UseSortByState<T> & UseFiltersState<T>;
     };
 
+type AllPublicationTableOptions =
+    TableOptions<IColumns> &
+    UseFiltersOptions<IColumns> &
+    UseGlobalFiltersOptions<IColumns> &
+    UsePaginationOptions<IColumns> &
+    UseSortByOptions<IColumns>;
+
 interface ITableCellProps_Common {
     __: I18nFunction;
     displayType: DisplayType;
@@ -2251,12 +2259,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
         hiddenColumns: initialHiddenColumns,
         // hiddenColumns: displayType === DisplayType.Grid ? ["colLanguages", "colPublishers", "colPublishedDate", "colLCP", "colDuration", "colDescription", "col_a11y_accessibilitySummary"] : [],
     };
-    const opts:
-        TableOptions<IColumns> &
-        UseFiltersOptions<IColumns> &
-        UseGlobalFiltersOptions<IColumns> &
-        UseSortByOptions<IColumns> &
-        UsePaginationOptions<IColumns> = {
+    const opts: AllPublicationTableOptions = {
 
         columns: tableColumns,
         data: tableRows,
@@ -2266,9 +2269,63 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
         globalFilter: "globalFilter",
         filterTypes: filterTypes as unknown as FilterTypes<IColumns>, // because typing 'columnIds' instead of 'columnId' in FilterType<D> ?!
         initialState: initialState as TableState<IColumns>, // again, typing woes :(
+        // Keep the current All Publications view when publication data is
+        // refreshed from a reader window. Pagination is managed below so that
+        // criteria changes still return to the first page.
+        // API: https://react-table-v7-docs.netlify.app/docs/api/usetable
+        autoResetHiddenColumns: false, // default: true; reset hiddenColumns when columns change.
+        // API: https://react-table-v7-docs.netlify.app/docs/api/usefilters
+        autoResetFilters: false, // default: true; reset column filters when data changes.
+        // API: https://react-table-v7-docs.netlify.app/docs/api/useglobalfilter
+        autoResetGlobalFilter: false, // default: true; reset global search when data changes.
+        // API: https://react-table-v7-docs.netlify.app/docs/api/usepagination
+        autoResetPage: false, // default: true; reset page on data, sort, filter, or group changes.
+        // API: https://react-table-v7-docs.netlify.app/docs/api/usesortby
+        autoResetSortBy: false, // default: true; reset sorting when data changes.
     };
     const tableInstance =
         useTable<IColumns>(opts, useFilters, useGlobalFilter, useSortBy, usePagination) as MyTableInstance<IColumns>;
+
+    const {
+        gotoPage,
+        pageCount,
+        state: {
+            filters: paginationFilters,
+            globalFilter: paginationGlobalFilter,
+            pageIndex,
+            sortBy: paginationSortBy,
+        },
+    } = tableInstance;
+    const previousPageCriteriaRef = React.useRef({
+        filters: paginationFilters,
+        globalFilter: paginationGlobalFilter,
+        sortBy: paginationSortBy,
+    });
+    React.useLayoutEffect(() => {
+        const previousCriteria = previousPageCriteriaRef.current;
+        const criteriaChanged =
+            previousCriteria.filters !== paginationFilters ||
+            previousCriteria.globalFilter !== paginationGlobalFilter ||
+            previousCriteria.sortBy !== paginationSortBy;
+
+        previousPageCriteriaRef.current = {
+            filters: paginationFilters,
+            globalFilter: paginationGlobalFilter,
+            sortBy: paginationSortBy,
+        };
+
+        const nextPageIndex = getNextPageIndex(pageIndex, pageCount, criteriaChanged);
+        if (nextPageIndex !== pageIndex) {
+            gotoPage(nextPageIndex);
+        }
+    }, [
+        gotoPage,
+        pageCount,
+        pageIndex,
+        paginationFilters,
+        paginationGlobalFilter,
+        paginationSortBy,
+    ]);
 
     const skipInitialTableStatePersistenceRef = React.useRef(true);
     React.useEffect(() => {

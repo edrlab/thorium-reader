@@ -161,8 +161,8 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         }
 
 
-        // we just check if each annotation href source belongs to the R2Publication Spine items
-        // if at least one annotation in the list doesn't match with the current spine item, then reject the set importation
+        // Resolve each annotation source independently against the publication spine.
+        // An unresolved source is preserved so the annotation can still be imported and exported.
 
         const pubView = yield* callTyped(getPublication, publicationIdentifier);
         analyticsParams = buildPublicationUserAnalyticsParams(pubView);
@@ -174,7 +174,6 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
             debug("Current Publcation (", publicationIdentifier, ") SpineItems(hrefs):", hrefFromSpineItem);
             const annotationsIncommingArraySourceHrefs = annotationsIncommingArray.map(({ target: { source } }) => source);
             debug("Incomming Annotations target.source(hrefs):", annotationsIncommingArraySourceHrefs);
-            const rejectedAnnotationSourceHrefs: string[] = [];
             annotationsIncommingArray = annotationsIncommingArray.map((annotation) => {
                 const sourceHref = annotation.target.source;
                 // The reader resource cache looks up documents by the exact spine href.
@@ -182,7 +181,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 const spineHref = resolveReadiumAnnotationSourceHref(sourceHref, hrefFromSpineItem);
 
                 if (!spineHref) {
-                    rejectedAnnotationSourceHrefs.push(sourceHref);
+                    debug(`Cannot resolve incomming annotation target.source href: "${sourceHref}"; preserve the original target`);
                     return annotation;
                 }
 
@@ -198,14 +197,6 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                     },
                 };
             });
-
-            if (rejectedAnnotationSourceHrefs.length) {
-
-                debug("Rejected incomming Annotations target.source(hrefs):", rejectedAnnotationSourceHrefs);
-                debug("ERROR: At least one annotation is rejected and not match with the current publication SpineItem, see above");
-                yield* putTyped(toastActions.openRequest.build(ToastType.Error, __("message.annotations.noBelongTo"), readerPublicationIdentifier));
-                return;
-            }
         } else {
             debug("ERROR: the publication doesn't have an r2PublicationJson value !!");
             yield* putTyped(toastActions.openRequest.build(ToastType.Error, "The publication is corrupted", readerPublicationIdentifier));
@@ -213,7 +204,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         }
 
 
-        debug("GOOD ! spineItemHref matched : publication identified, let's continue the importation");
+        debug("Annotation target.source resolution completed, let's continue the importation");
 
         // OK publication identified
         const notes = yield* callTyped(getNotesFromMainWinState, publicationIdentifier);
@@ -258,9 +249,9 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 debug(`for ${uuid} a CFI Fragment selector is available (${JSON.stringify(cfiFragmentSelector, null, 4)})`);
             }
 
-            if (!(cssSelector || textQuoteSelector || textPositionSelector || cfiFragmentSelector || cfiSelector)) {
-                debug(`for ${uuid} no selector available (cssSelector || textQuoteSelector || textPositionSelector || cfiFragmentSelector || cfiSelector)`);
-                continue;
+            const isResourceBookmark = incommingAnnotation.motivation === "bookmarking";
+            if (!(cssSelector || textQuoteSelector || textPositionSelector || cfiFragmentSelector || cfiSelector || isResourceBookmark)) {
+                debug(`for ${uuid} no supported selector available; import the note and preserve its original target without a locator`);
             }
 
             const annotationParsed: INoteState = {

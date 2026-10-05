@@ -28,6 +28,7 @@ import { findExtWithMimeType, findMimeTypeWithExtension, ADOBE_ADEPT_XML } from 
 
 import OpdsLinkProperties from "./OpdsLinkProperties";
 import { ContentType } from "readium-desktop/utils/contentType";
+import { isDownloadUrlActive } from "readium-desktop/renderer/library/opds/download";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -309,12 +310,12 @@ export class OpdsControls extends React.Component<IProps, undefined> {
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         verifyImport: (...data: Parameters<typeof importActions.verify.build>) => {
-            dispatch(dialogActions.closeRequest.build());
             dispatch(importActions.verify.build(...data));
         },
         link: (...data: Parameters<ReturnType<typeof dispatchOpdsLink>>) =>
             dispatchOpdsLink(dispatch)(...data),
         read: (pubIdentifier: string) => {
+            dispatch(dialogActions.closeRequest.build());
             dispatch(readerActions.openRequest.build(pubIdentifier));
         },
     };
@@ -324,30 +325,8 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
     return {
         breadcrumb: state.opds.browser.breadcrumb,
         location: state.router.location,
-        openAccessButtonIsDisabled: (url: string) => {
-            return !!state.download.find(
-                (tuple) => {
-                    // tuple[0] ==== Payload
-                    // tuple[1] ==== number
-                    return tuple[0].downloadUrls.find((u) => u === url);
-                    // return props.opdsPublicationView.openAccessLinks.find(
-                    //     (ln) => tuple[0].downloadUrls.find((u) => u === ln.url),
-                    // );
-                },
-            );
-        },
-        sampleButtonIsDisabled: (url: string) => {
-            return !!state.download.find(
-                (tuple) => {
-                    // tuple[0] ==== Payload
-                    // tuple[1] ==== number
-                    return tuple[0].downloadUrls.find((u) => u === url);
-                    // return props.opdsPublicationView.sampleOrPreviewLinks.find(
-                    //     (ln) => tuple[0].downloadUrls.find((u) => u === ln.url),
-                    // );
-                },
-            );
-        },
+        openAccessButtonIsDisabled: (url: string) => isDownloadUrlActive(state.download, url),
+        sampleButtonIsDisabled: (url: string) => isDownloadUrlActive(state.download, url),
         locale: state.i18n.locale, // refresh
     };
 };

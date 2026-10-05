@@ -36,6 +36,7 @@ import {
     IHttpGetResult, THttpGetCallback, THttpOptions, THttpResponse,
 } from "readium-desktop/common/utils/http";
 import { decryptPersist, encryptPersist } from "readium-desktop/main/fs/persistCrypto";
+import { createOpdsPkceRefreshTokenRequest } from "readium-desktop/main/network/opdsPkce";
 import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 
 import { diMainGet, opdsAuthFilePath } from "../di";
@@ -92,6 +93,7 @@ export interface IOpdsAuthenticationToken {
     opdsAuthenticationUrl?: string; // application/opds-authentication+json
     refreshUrl?: string;
     authenticateUrl?: string;
+    pkce?: boolean;
     accessToken?: string;
     refreshToken?: string;
     tokenType?: string;
@@ -681,12 +683,16 @@ const httpGetUnauthorizedRefresh =
             options.headers = options.headers instanceof Headers
                 ? options.headers
                 : new Headers(options.headers || {});
-            (options.headers as Headers).set("Content-Type", "application/json");
-
-            options.body = JSON.stringify({
-                refresh_token: refreshToken,
-                grant_type: "refresh_token",
-            });
+            if (auth.pkce) {
+                (options.headers as Headers).set("Content-Type", "application/x-www-form-urlencoded");
+                options.body = createOpdsPkceRefreshTokenRequest(refreshToken);
+            } else {
+                (options.headers as Headers).set("Content-Type", "application/json");
+                options.body = JSON.stringify({
+                    refresh_token: refreshToken,
+                    grant_type: "refresh_token",
+                });
+            }
 
             const httpPostResponse = await httpPost(refreshUrl, options);
             if (httpPostResponse.isSuccess) {
