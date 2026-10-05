@@ -231,6 +231,7 @@ export class PublicationViewConverter {
 
             isOpenable,
             identifier: document.identifier, // preserve Identifiable identifier
+            isCBZ: document.sourceFormat === "cbz",
 
             readingFinished,
             documentTitle: title,
@@ -350,6 +351,7 @@ export class PublicationViewConverter {
             isDivina,
             isPDF,
             isDaisy,
+            isCBZ: document.sourceFormat === "cbz",
             isEPUB: !isAudio && !isDivina && !isPDF && !isDaisy &&
                 !!document.files?.some((file) => file.ext.toLowerCase() === "epub"),
             isFixedLayoutPublication,

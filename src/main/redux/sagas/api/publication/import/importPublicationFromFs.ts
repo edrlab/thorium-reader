@@ -76,6 +76,7 @@ export async function importPublicationFromFS(
     hash?: string,
     lcpHashedPassphrase?: string,
     preservedIdentifier?: string,
+    sourceFormat?: PublicationDocument["sourceFormat"],
 ): Promise<PublicationDocument> {
 
     debug("importPublicationFromFS", filePath);
@@ -263,6 +264,7 @@ export async function importPublicationFromFS(
         tags: [],
         files: [],
         hash: hash ? hash : await extractCrc32OnZip(filePath),
+        sourceFormat,
 
         lcpRightsCopies: 0,
         lcpRightsPrints: [],

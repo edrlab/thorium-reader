@@ -117,7 +117,7 @@ export function* importFromFsService(
 
         try {
             publicationDocument = yield* callTyped(
-                () => importPublicationFromFS(publicationFilePath, willBeImmediatelyFollowedByOpen, hash, lcpHashedPassphrase, preservedIdentifier));
+                () => importPublicationFromFS(publicationFilePath, willBeImmediatelyFollowedByOpen, hash, lcpHashedPassphrase, preservedIdentifier, isCBZ ? "cbz" : undefined));
         } finally {
             if (cleanFct) {
                 yield call(() => cleanFct());
