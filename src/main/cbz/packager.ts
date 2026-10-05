@@ -22,6 +22,7 @@ import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
 
 interface IComicInfoPage {
     bookmark?: string;
+    doublePage?: boolean;
     type?: string;
 }
 
@@ -35,6 +36,7 @@ interface IComicInfo {
 }
 
 interface ICbzImage {
+    doublePage: boolean;
     epubImagePath: string;
     epubPagePath: string;
     fsPath: string;
@@ -85,8 +87,10 @@ const parseComicInfo = (comicInfoXml: Buffer | undefined): IComicInfo => {
         if (!Number.isFinite(imageIndex) || imageIndex < 0) {
             continue;
         }
+        const doublePage = pages[i].getAttribute("DoublePage")?.trim().toLowerCase();
         result.pages.set(imageIndex, {
             bookmark: pages[i].getAttribute("Bookmark") || undefined,
+            doublePage: doublePage === "true" ? true : doublePage === "false" ? false : undefined,
             type: pages[i].getAttribute("Type") || undefined,
         });
     }
@@ -170,11 +174,14 @@ const packageOpf = (title: string, comicInfo: IComicInfo, images: ICbzImage[]): 
     }).join("\n");
     const manifestPages = images.map((image, index) =>
         `        <item id="page-${index + 1}" href="pages/${path.posix.basename(image.epubPagePath)}" media-type="application/xhtml+xml" />`).join("\n");
-    const spine = images.map((_image, index) => {
+    let nextPageIsLeft = !comicInfo.rightToLeft;
+    const spine = images.map((image, index) => {
         let pageSpread = "rendition:page-spread-center";
-        if (index > 0) {
-            const isLeft = comicInfo.rightToLeft ? index % 2 === 0 : index % 2 === 1;
-            pageSpread = isLeft ? "page-spread-left" : "page-spread-right";
+        if (index === 0 || image.doublePage) {
+            nextPageIsLeft = !comicInfo.rightToLeft;
+        } else {
+            pageSpread = nextPageIsLeft ? "page-spread-left" : "page-spread-right";
+            nextPageIsLeft = !nextPageIsLeft;
         }
         return `        <itemref idref="page-${index + 1}" properties="${pageSpread}" />`;
     }).join("\n");
@@ -280,6 +287,8 @@ export async function cbzPackager(cbzPath: string): Promise<TCbzPackagerResult> 
 
             const pageInfo = comicInfo.pages.get(index);
             images.push({
+                // Explicit metadata takes precedence over the landscape-image heuristic.
+                doublePage: pageInfo?.doublePage ?? width > height,
                 epubImagePath: `${EPUB_ROOT}/images/${baseName}.${extension}`,
                 epubPagePath: `${EPUB_ROOT}/pages/${baseName}.xhtml`,
                 fsPath,

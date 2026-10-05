@@ -73,6 +73,62 @@ describe("cbzPackager", () => {
         expect(publicationFileExtensionsForDialog).toContain("cbz");
     });
 
+    it.each([false, true])("centers double pages and restarts pairing (RTL: %s)", async (rightToLeft) => {
+        const inputPath = path.join(inputDirectory, `spreads-${rightToLeft}.cbz`);
+        const landscapeSvg = Buffer.from(
+            "<svg xmlns=\u0022http://www.w3.org/2000/svg\u0022 width=\u00222400\u0022 height=\u00221600\u0022><rect width=\u00222400\u0022 height=\u00221600\u0022 /></svg>",
+        );
+        await createZip(
+            inputPath,
+            [],
+            [
+                [onePixelPng, "0.png"],
+                [onePixelPng, "1.png"],
+                [onePixelPng, "2.png"],
+                [landscapeSvg, "3.svg"],
+                [onePixelPng, "4.png"],
+                [onePixelPng, "5.png"],
+                [landscapeSvg, "6.svg"],
+                [onePixelPng, "7.png"],
+                [
+                    Buffer.from(`<ComicInfo>
+                <Manga>${rightToLeft ? "YesAndRightToLeft" : "No"}</Manga>
+                <Pages>
+                    <Page Image="2" DoublePage="True" />
+                    <Page Image="6" DoublePage="False" />
+                </Pages>
+            </ComicInfo>`),
+                    "ComicInfo.xml",
+                ],
+            ],
+        );
+        const [convertedPath, clean] = await cbzPackager(inputPath);
+        try {
+            const publication = await EpubParsePromise(convertedPath);
+            try {
+                const firstSide = rightToLeft ? "right" : "left";
+                const secondSide = rightToLeft ? "left" : "right";
+                expect(publication.Spine?.map((link) => link.Properties?.Page)).toEqual([
+                    "center",
+                    firstSide,
+                    "center",
+                    "center",
+                    firstSide,
+                    secondSide,
+                    firstSide,
+                    secondSide,
+                ]);
+            } finally {
+                publication.freeDestroy();
+            }
+            const widePage = await extractFileFromZipToBuffer(convertedPath, "EPUB/pages/page-0004.xhtml");
+            expect(widePage?.toString("utf8")).toContain("content=\u0022width=2400, height=1600\u0022");
+            expect(await extractFileFromZipToBuffer(convertedPath, "EPUB/images/page-0004.svg")).toEqual(landscapeSvg);
+        } finally {
+            clean();
+        }
+    });
+
     it("creates a spec-shaped EPUB archive", async () => {
         const mimetype = await extractFileFromZipToBuffer(epubPath, "mimetype");
         const container = await extractFileFromZipToBuffer(epubPath, "META-INF/container.xml");
