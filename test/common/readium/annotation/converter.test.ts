@@ -1,9 +1,12 @@
 import { expect, test } from "@jest/globals";
+import Mustache from "mustache";
+import { annotationHtmlBody } from "readium-desktop/common/readium/annotation/htmlTemplate";
 
 import {
     convertSelectorTargetToLocatorExtended,
     convertAnnotationStateArrayToReadiumAnnotationSet,
     convertAnnotationStateToReadiumAnnotation,
+    readiumAnnotationDrawType,
 } from "readium-desktop/common/readium/annotation/converter";
 import {
     EPUB_ANNOTATION_CONTEXT,
@@ -91,6 +94,24 @@ function createNote(overrides: Partial<INoteState> = {}): INoteState {
         ...overrides,
     };
 }
+
+test("bookmarks retain their motivation across export, import, and re-export", () => {
+    const note = createNote({ drawType: EDrawType.bookmark, group: "bookmark" });
+    const exported = convertAnnotationStateToReadiumAnnotation(note)!;
+    expect(exported.body.highlight).toBeUndefined();
+    const importedDrawType = readiumAnnotationDrawType(exported);
+    expect(importedDrawType).toBe(EDrawType.bookmark);
+    expect(convertAnnotationStateToReadiumAnnotation({ ...note, drawType: importedDrawType })?.motivation)
+        .toBe("bookmarking");
+});
+
+test("custom HTML templates retain the legacy first-tag field without changing JSON export", () => {
+    const annotation = convertAnnotationStateToReadiumAnnotation(createNote({ tags: ["review", "important"] }))!;
+    const htmlView = { body: annotationHtmlBody(annotation) };
+    expect(Mustache.render("{{#body.tag}}Tag: {{body.tag}}{{/body.tag}}", htmlView)).toBe("Tag: review");
+    expect(Mustache.render("{{#body.tags}}{{.}};{{/body.tags}}", htmlView)).toBe("review;important;");
+    expect(annotation.body).not.toHaveProperty("tag");
+});
 
 test("Readium annotation conversion skips PDF annotations", () => {
     const pdfAnnotation = createNote({

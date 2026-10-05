@@ -15,7 +15,7 @@ import { error } from "readium-desktop/main/tools/error";
 import { SagaGenerator } from "typed-redux-saga";
 import { call as callTyped, put as putTyped, take as takeTyped, delay as delayTyped, all as allTyped } from "typed-redux-saga/macro";
 import { hexToRgb } from "readium-desktop/common/rgb";
-import { isNil } from "readium-desktop/utils/nil";
+import { readiumAnnotationDrawType } from "readium-desktop/common/readium/annotation/converter";
 import { __READIUM_ANNOTATION_AJV_ERRORS, isCFIFragmentSelector, isCssSelector, isEPUBCFISelector, isFragmentSelector, isIReadiumAnnotationSet, isLegacyCfiSelector, isTextPositionSelector, isTextQuoteSelector, normalizeReadiumAnnotationTags } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import path from "node:path";
 import { getPublication } from "./api/publication/getPublication";
@@ -25,7 +25,7 @@ import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { uuidv4 } from "readium-desktop/utils/uuid";
 import { takeSpawnLatest } from "readium-desktop/common/redux/sagas/takeSpawnLatest";
 import { getTranslator } from "readium-desktop/common/services/translator";
-import { EDrawType, INoteState, NOTE_DEFAULT_COLOR, noteColorCodeToColorSet, noteColorSetToColorCode } from "readium-desktop/common/redux/states/renderer/note";
+import { INoteState, NOTE_DEFAULT_COLOR, noteColorCodeToColorSet, noteColorSetToColorCode } from "readium-desktop/common/redux/states/renderer/note";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { sqliteTableNoteDelete, sqliteTableNoteDeleteWherePubId, sqliteTableNoteInsert, sqliteTableNoteUpdate, sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
 import { publicationActions as publicationActionsFromMainAction } from "../actions";
@@ -261,7 +261,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 color: hexToRgb(noteColorSetToColorCode[incommingAnnotation.body?.color] ||
                     noteColorSetToColorCode[noteColorCodeToColorSet[incommingAnnotation.body?.color] || NOTE_DEFAULT_COLOR],
                 ),
-                drawType: EDrawType[(isNil(incommingAnnotation.body?.highlight) || incommingAnnotation.body?.highlight === "solid") ? "solid_background" : incommingAnnotation.body.highlight] || EDrawType.solid_background,
+                drawType: readiumAnnotationDrawType(incommingAnnotation),
                 tags: importedTags.length ? importedTags : [fileName],
                 modified: incommingAnnotation.modified ? tryCatchSync(() => new Date(incommingAnnotation.modified).getTime(), fileName) : undefined,
                 created: tryCatchSync(() => new Date(incommingAnnotation.created).getTime(), fileName) || currentTimestamp,

@@ -21,7 +21,7 @@ import { IReadiumAnnotation, IReadiumAnnotationSet } from "readium-desktop/commo
 import Mustache from "mustache";
 // esModuleInterop?
 
-import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/annotation/htmlTemplate";
+import { annotationHtmlBody, noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/annotation/htmlTemplate";
 import DOMPurify from "dompurify";
 import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -46,11 +46,12 @@ const __htmlMustacheViewConverterFn: (readiumAnnotation: IReadiumAnnotationSet) 
     };
     const tmpItems = [];
     for (const item of (view.items || [])) {
+        const htmlItem = { ...item, body: annotationHtmlBody(item) };
 
         try {
-            tmpItems.push({ ...item, body: { ...item.body || {}, htmlValue: DOMPurify.sanitize(await marked.parse((item.body?.value || "").replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, ""), { gfm: true })) } });
+            tmpItems.push({ ...htmlItem, body: { ...htmlItem.body, htmlValue: DOMPurify.sanitize(await marked.parse((item.body?.value || "").replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, ""), { gfm: true })) } });
         } catch (_) {
-            tmpItems.push(item);
+            tmpItems.push(htmlItem);
         }
     }
     view.items = tmpItems as IReadiumAnnotation[];

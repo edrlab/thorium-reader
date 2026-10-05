@@ -308,6 +308,14 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
 
 // export type INoteStateWithICacheDocument = INoteState & { __cacheDocument?: ICacheDocument | undefined };
 
+export function readiumAnnotationDrawType(annotation: IReadiumAnnotation): EDrawType {
+    if (annotation.motivation === "bookmarking") {
+        return EDrawType.bookmark;
+    }
+    const highlight = annotation.body?.highlight;
+    return highlight && highlight !== "solid" ? EDrawType[highlight] : EDrawType.solid_background;
+}
+
 export function convertAnnotationStateToReadiumAnnotation(note: INoteState): IReadiumAnnotation | undefined {
 
     const { uuid, color, locatorExtended, tags, drawType, textualValue, creator, created, modified, readiumAnnotation } = note;

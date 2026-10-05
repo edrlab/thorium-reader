@@ -1,3 +1,11 @@
+import type { IReadiumAnnotation } from "./annotationModel.type";
+
+export function annotationHtmlBody(annotation: IReadiumAnnotation): IReadiumAnnotation["body"] {
+    return {
+        ...annotation.body,
+        tag: annotation.body?.tags?.[0] || annotation.body?.tag || "",
+    };
+}
 
 export const noteExportHtmlMustacheTemplate = `
 <!DOCTYPE html>
