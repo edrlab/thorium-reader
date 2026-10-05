@@ -16,6 +16,83 @@ import { ReadiumElectronWebviewWindow } from "../webview/state";
 
 const win = global.window as ReadiumElectronWebviewWindow;
 
+// Virtual separator inserted into the utterance string at the offsets recorded in a
+// text node's __TTS_SEPS. One character, and it must stay one character: readaloud.ts
+// maps utterance offsets back to DOM ranges by accumulating contributed lengths, and
+// assumes a node contributes exactly __TTS_SEPS.length beyond its nodeValue.
+export const TTS_SEPARATOR = " ";
+
+// Scripts between which a word boundary is inserted. Speech engines discard a token
+// that mixes two of these outright - "<em>R</em><sub>o</sub>" is merely mispronounced,
+// but a Greek letter fused to a latin one is silently dropped. Verified on macOS with
+// Samantha, Alex and Daniel: Greek+latin and Cyrillic+latin are both dropped, and both
+// are spoken correctly once separated. Any pair in this list is separated, so a
+// Greek/Cyrillic transition is handled the same as a Greek/latin one.
+//
+// Deliberately an explicit list rather than "any script transition", and deliberately
+// without CJK:
+//
+//  - Japanese mixes Han, Hiragana and Katakana inside single words, so a generic rule
+//    would split ordinary vocabulary: "food-eat-ru" -> "food | eat-ru".
+//  - Grouping the CJK scripts and separating only CJK/latin still measures worse. With
+//    a Japanese voice, "watashi-wa iPhone wo tsukaimasu" runs 2.990s fused and 3.358s
+//    separated - the separator inserts a prosodic pause - and the latin word is spoken
+//    correctly either way, so there is no defect to fix. Mixed CJK/latin is everyday
+//    prose, unlike mixed Greek/latin which is always notation.
+//
+// If an engine is found that drops CJK/latin tokens, add the pair here on that evidence.
+const _separableScripts: Array<[string, RegExp]> = [
+    ["Latin", /\p{Script=Latin}/u],
+    ["Greek", /\p{Script=Greek}/u],
+    ["Cyrillic", /\p{Script=Cyrillic}/u],
+];
+
+function separableScript(ch: string): string | undefined {
+    for (const [name, re] of _separableScripts) {
+        if (re.test(ch)) {
+            return name;
+        }
+    }
+    return undefined;
+}
+
+// Zero-width formatting characters an author may have placed between two scripts.
+// Skipped when tracking script runs: by definition they are not meant to participate in
+// text processing, and letting one end a run would hide the boundary behind it.
+//
+// This matters because some of them do not separate the token for the speech engine
+// either. U+2060 WORD JOINER is the awkward case - an author might reasonably use one to
+// stop "delta-x" breaking across lines - and it leaves the token fused, so without this
+// the content would still be dropped and this fix would not reach it. Where the
+// character does already separate (U+FEFF, U+200B), the extra boundary is redundant but
+// harmless. A real space is not default-ignorable, so it correctly ends the run and no
+// boundary is added after it.
+const _defaultIgnorable = /\p{Default_Ignorable_Code_Point}/u;
+
+// Offsets inside txt at which two different separable scripts meet. Iterates by code
+// point (not UTF-16 unit) so that astral characters are not split, but returns offsets
+// in UTF-16 units to match DOM text node offsets. Characters outside the separable set -
+// digits, punctuation, CJK, the Mathematical Alphanumeric Symbols - never form a
+// boundary, so "10<sup>2</sup>", "x2" and "F-bold x" are untouched.
+export function scriptBoundaryOffsets(txt: string): number[] {
+    const offsets: number[] = [];
+    let prevScript: string | undefined;
+    let i = 0;
+    for (const ch of txt) {
+        if (_defaultIgnorable.test(ch)) {
+            i += ch.length;
+            continue;
+        }
+        const script = separableScript(ch);
+        if (i > 0 && prevScript && script && prevScript !== script) {
+            offsets.push(i);
+        }
+        prevScript = script;
+        i += ch.length;
+    }
+    return offsets;
+}
+
 export function combineTextNodes(textNodes: Node[], skipNormalize?: boolean): string {
     if (textNodes && textNodes.length) {
         let str = "";
@@ -34,7 +111,35 @@ export function combineTextNodes(textNodes: Node[], skipNormalize?: boolean): st
                     txt = " ";
                     str += txt;
                 } else {
-                    str += (skipNormalize ? txt : normalizeText(txt));
+                    // TTS_SEPARATOR is inserted at each offset recorded in __TTS_SEPS:
+                    // the ends of sup/sub text, and any boundary between two separable
+                    // scripts. Without them the speech engine receives a single token and
+                    // either mispronounces it or discards it:
+                    //   "10<sup>23</sup>"        -> "1023"   "one thousand twenty-three"
+                    //   "<em>R</em><sub>o</sub>" -> "Ro"     one syllable
+                    //   "10<sub>23</sub>45"      -> "102345" a wholly invented number
+                    //   "&#x394;x"               -> dropped entirely
+                    // The separators exist only in this string, never in the DOM, so they
+                    // cannot affect rendering - but the offset walkers in readaloud.ts
+                    // MUST account for them, exactly as they already do for __RUBY and
+                    // for whitespace-only nodes.
+                    //
+                    // Only applied on the skipNormalize path, which is the one readaloud
+                    // uses: normalizeText() can change the length, which would invalidate
+                    // offsets recorded against nodeValue.
+                    const t = skipNormalize ? txt : normalizeText(txt);
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    const seps: number[] | undefined = skipNormalize ? (textNode as any).__TTS_SEPS : undefined;
+                    if (seps && seps.length) {
+                        let prev = 0;
+                        for (const s of seps) {
+                            str += t.slice(prev, s) + TTS_SEPARATOR;
+                            prev = s;
+                        }
+                        str += t.slice(prev);
+                    } else {
+                        str += t;
+                    }
                 }
             }
         }
@@ -312,7 +417,11 @@ export function findTtsQueueItemIndex(
 // tslint:disable-next-line:max-line-length
 const _putInElementStackTagNames = ["h1", "h2", "h3", "h4", "h5", "h6", "p", "th", "td", "caption", "li", "blockquote", "q", "dt", "dd", "figcaption", "div", "pre"];
 // tslint:disable-next-line:max-line-length
-const _doNotProcessDeepChildTagNames = ["svg", "img", "sup", "sub", "audio", "video", "source", "button", "canvas", "del", "dialog", "embed", "form", "head", "iframe", "meter", "noscript", "object", "s", "script", "select", "style", "textarea"]; // "code", "nav", "dl", "figure", "table", "ul", "ol"
+const _doNotProcessDeepChildTagNames = ["svg", "img", "audio", "video", "source", "button", "canvas", "del", "dialog", "embed", "form", "head", "iframe", "meter", "noscript", "object", "s", "script", "select", "style", "textarea"]; // "code", "nav", "dl", "figure", "table", "ul", "ol"
+// note: "sup" and "sub" used to be listed above, which silently discarded their text
+// content (exponents, indices, ion charges, isotopes ... ). They are now processed like
+// any other inline element, with an aria-label/title override - see isSubSup below.
+// Note *references* are handled by the skippability mechanism instead (see _skippables).
 
 // https://www.w3.org/TR/epub-33/#sec-behaviors-skip-escape
 // https://www.w3.org/TR/epub-ssv-11/
@@ -321,6 +430,7 @@ const _skippables = [
     "endnote",
     "pagebreak",
     //
+    "noteref", // the reference marker itself, not just the note body
     "note",
     "rearnote",
     "sidebar",
@@ -436,6 +546,29 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
                 // isSkippable: undefined,
             };
             ttsQueue.push(current);
+        }
+
+        // Generalises the __SUBSUP flag into a list of offsets at which a separator is
+        // inserted when the utterance string is assembled, so sup/sub fencing and script
+        // boundaries compose: <em>Δ</em><sub>x</sub>y -> "Δ x y".
+        //
+        // sup/sub is detected with closest() rather than a direct parent-tag test because
+        // inline markup inside a sup/sub is common and its text still needs fencing:
+        // <sup><a href="#fn1">1</a></sup> (footnote markers), <sup><em>n</em></sup>.
+        //
+        // Whitespace-only nodes already contribute a single space, so adding separators to
+        // one would double-count against the offset walkers in readaloud.ts.
+        if (textNode.nodeValue.trim().length) {
+            const nodeLen = textNode.nodeValue.length;
+            const isSubSupText = !!textNode.parentElement?.closest("sup, sub");
+            // sup/sub text is fenced at both ends; script changes are separated in place
+            const seps = isSubSupText
+                ? [0, ...scriptBoundaryOffsets(textNode.nodeValue), nodeLen]
+                : scriptBoundaryOffsets(textNode.nodeValue);
+            if (seps.length) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (textNode as any).__TTS_SEPS = seps;
+            }
         }
 
         current.textNodes.push(textNode);
@@ -660,19 +793,53 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
                         }
                     }
 
+                    // sup/sub carry meaning in scientific and mathematical prose (x<sup>2</sup>,
+                    // v<sub>1</sub>, SO<sub>4</sub><sup>2-</sup>), so their text is spoken.
+                    // An aria-label/title on the element overrides it, which lets authors
+                    // supply better phrasing ("squared" rather than "2").
+                    const isSubSup = childTagNameLow === "sup" || childTagNameLow === "sub";
+                    let subSupNeedsDeepDive = isSubSup && !hidden;
+                    if (subSupNeedsDeepDive) {
+                        let altAttr = childElement.getAttribute("aria-label");
+                        if (!altAttr) {
+                            altAttr = childElement.getAttribute("title");
+                        }
+                        if (altAttr) {
+                            const txt = altAttr.trim();
+                            if (txt) {
+                                subSupNeedsDeepDive = false;
+                                const lang = getLanguage(childElement);
+                                const dir: string | undefined = undefined;
+                                ttsQueue.push({
+                                    combinedText: txt,
+                                    combinedTextSentences: undefined,
+                                    combinedTextSentencesRangeBegin: undefined,
+                                    combinedTextSentencesRangeEnd: undefined,
+                                    dir,
+                                    lang,
+                                    parentElement: childElement,
+                                    textNodes: [],
+                                    // isSkippable,
+                                });
+                            }
+                        }
+                    }
+
                     const isMathJax = childTagNameLow && childTagNameLow.startsWith("mjx-");
                     const isMathML = childTagNameLow === "math";
                     const processDeepChild =
                         pageBreakNeedsDeepDive ||
                         linkNeedsDeepDive ||
+                        subSupNeedsDeepDive ||
                         (
                         !isPageBreak &&
                         !isLink &&
+                        !isSubSup &&
                         !isMathJax &&
                         !isMathML &&
                         childTagNameLow && !_doNotProcessDeepChildTagNames.includes(childTagNameLow)
                         // tslint:disable-next-line:max-line-length
-                        // !childElement.matches("svg, img, sup, sub, audio, video, source, button, canvas, del, dialog, embed, form, head, iframe, meter, noscript, object, s, script, select, style, textarea")
+                        // !childElement.matches("svg, img, audio, video, source, button, canvas, del, dialog, embed, form, head, iframe, meter, noscript, object, s, script, select, style, textarea")
                         // code, nav, dl, figure, table, ul, ol
                         )
                     ;
@@ -680,7 +847,7 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
                     if (processDeepChild) {
                         processElement(childElement);
                     } else if (!hidden) {
-                        if (isPageBreak || isLink) {
+                        if (isPageBreak || isLink || isSubSup) {
                             // do nothing, already dealt with above (either shallow or deep)
                         } else if (isMathML) {
                             const altAttr = childElement.getAttribute("alttext");
