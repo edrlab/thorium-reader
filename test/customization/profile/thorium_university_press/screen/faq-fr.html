@@ -5,64 +5,226 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>FAQ — Bibliothèque Thorium University</title>
+    <style>
+        .custom-profile-screen {
+            --bg: #F2ECDD;
+            --ink: #241F16;
+            --ink-soft: #5B5443;
+            --navy: #1B2A3A;
+            --navy-text: #F2ECDD;
+            --brass: #9C6F35;
+            --brass-soft: #C39A5B;
+            --rule: #D9CEB2;
+            --focus: #1B2A3A;
+            box-sizing: border-box;
+            width: 100%;
+            min-width: 0;
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+            background: var(--bg);
+            color: var(--ink);
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .custom-profile-screen,
+        .custom-profile-screen * {
+            box-sizing: border-box;
+        }
+
+        body[data-theme="dark"] .custom-profile-screen {
+            --bg: #14181F;
+            --ink: #EBE5D6;
+            --ink-soft: #A79E8C;
+            --navy: #0D1622;
+            --navy-text: #EBE5D6;
+            --brass: #CBA063;
+            --brass-soft: #E0BC85;
+            --rule: #333A46;
+            --focus: #CBA063;
+        }
+
+        .custom-profile-screen .band {
+            padding: 3.2rem 1.5rem 2.6rem;
+            padding-top: calc(3.2rem + env(safe-area-inset-top, 0px));
+            background: var(--navy);
+            color: var(--navy-text);
+        }
+
+        .custom-profile-screen .band-inner,
+        .custom-profile-screen .faq-content-inner {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .custom-profile-screen .kicker {
+            margin: 0 0 0.6rem;
+            color: var(--brass-soft);
+            font-style: italic;
+        }
+
+        .custom-profile-screen h1 {
+            margin: 0 0 0.85rem;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .custom-profile-screen .band p {
+            max-width: 46ch;
+            margin: 0;
+            color: color-mix(in srgb, var(--navy-text) 82%, transparent);
+        }
+
+        .custom-profile-screen .faq-content {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 2.4rem 1.5rem 2rem;
+        }
+
+        .custom-profile-screen .drawer-label {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: 0.4rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 1px solid var(--rule);
+            color: var(--ink-soft);
+        }
+
+        .custom-profile-screen .drawer-label span:last-child {
+            color: var(--brass);
+            font-style: italic;
+        }
+
+        .custom-profile-screen details {
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .custom-profile-screen summary {
+            display: flex;
+            align-items: baseline;
+            gap: 0.9rem;
+            padding: 1.15rem 0;
+            cursor: pointer;
+            list-style: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .custom-profile-screen summary:focus-visible {
+            outline: 2px solid var(--focus);
+            outline-offset: 4px;
+            border-radius: 2px;
+        }
+
+        .custom-profile-screen .num {
+            flex: 0 0 auto;
+            min-width: 3.6ch;
+            padding-top: 0.28rem;
+            color: var(--brass);
+        }
+
+        .custom-profile-screen .q {
+            flex: 1 1 auto;
+            color: var(--ink);
+            font-weight: 600;
+        }
+
+        .custom-profile-screen .chev {
+            flex: 0 0 auto;
+            padding-top: 0.2rem;
+            color: var(--brass);
+            transform: rotate(0deg);
+            transition: transform 0.25s ease;
+        }
+
+        .custom-profile-screen details[open] .chev {
+            transform: rotate(90deg);
+        }
+
+        .custom-profile-screen .answer {
+            max-width: 62ch;
+            margin: 0;
+            padding: 0 0 1.3rem 4.5ch;
+            color: var(--ink-soft);
+        }
+
+        .custom-profile-screen footer {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 0 1.5rem calc(3rem + env(safe-area-inset-bottom, 0px));
+            color: var(--ink-soft);
+            font-style: italic;
+        }
+
+        @media (max-width: 480px) {
+            .custom-profile-screen .answer {
+                padding-left: 0;
+            }
+
+            .custom-profile-screen .num {
+                min-width: auto;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <h1>FAQ — Bibliothèque Thorium University</h1>
-    <p>Liste simple de questions fréquentes. Pas de JavaScript, pas de styles spécifiques.</p>
+    <header class="band">
+        <div class="band-inner">
+            <p class="kicker">Bibliothèque Thorium University</p>
+            <h1>Questions fréquentes</h1>
+            <p>Les réponses aux questions les plus courantes sur les services de la bibliothèque.</p>
+        </div>
+    </header>
 
-    <ul>
-        <li>
-            <h3>Quels sont les horaires d'ouverture ?</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam non urna vitae augue bibendum.</p>
-        </li>
+    <main class="faq-content">
+        <div class="faq-content-inner">
+            <p class="drawer-label"><span>Bibliothèque</span><span>Questions et réponses</span></p>
 
-        <li>
-            <h3>Comment emprunter un livre ?</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vel sapien nec justo cursus.</p>
-        </li>
+            <details>
+                <summary><span class="num">01</span><span class="q">Quels sont les horaires d'ouverture ?</span><span class="chev" aria-hidden="true">›</span></summary>
+                <p class="answer">La bibliothèque est ouverte du lundi au vendredi, de 9 h à 18 h. Les horaires peuvent varier pendant les vacances universitaires.</p>
+            </details>
+            <details>
+                <summary><span class="num">02</span><span class="q">Comment emprunter un livre ?</span><span class="chev" aria-hidden="true">›</span></summary>
+                <p class="answer">Présentez votre carte de bibliothèque au comptoir de prêt ou utilisez une borne libre-service. Votre compte doit être à jour.</p>
+            </details>
+            <details>
+                <summary><span class="num">03</span><span class="q">Quelle est la durée du prêt ?</span><span class="chev" aria-hidden="true">›</span></summary>
+                <p class="answer">La durée habituelle est de quatre semaines. Certains documents de référence sont consultables sur place uniquement.</p>
+            </details>
+            <details>
+                <summary><span class="num">04</span><span class="q">Comment renouveler un prêt ?</span><span class="chev" aria-hidden="true">›</span></summary>
+                <p class="answer">Renouvelez vos emprunts depuis votre compte en ligne ou auprès du personnel, à condition qu'aucune réservation ne soit en attente.</p>
+            </details>
+            <details>
+                <summary><span class="num">05</span><span class="q">Y a-t-il des pénalités en cas de retard ?</span><span class="chev" aria-hidden="true">›</span></summary>
+                <p class="answer">Les retards peuvent suspendre temporairement les emprunts. Contactez le comptoir de prêt si vous avez besoin d'aide.</p>
+            </details>
+            <details>
+                <summary><span class="num">06</span><span class="q">Comment accéder aux ressources en ligne ?</span><span class="chev" aria-hidden="true">›</span></summary>
+                <p class="answer">Connectez-vous avec vos identifiants universitaires depuis le portail de la bibliothèque pour consulter les bases de données et revues.</p>
+            </details>
+            <details>
+                <summary><span class="num">07</span><span class="q">Puis-je réserver une salle d'étude ?</span><span class="chev" aria-hidden="true">›</span></summary>
+                <p class="answer">Oui. Les salles peuvent être réservées depuis le portail de la bibliothèque, selon les disponibilités.</p>
+            </details>
+            <details>
+                <summary><span class="num">08</span><span class="q">Quelles sont les règles d'utilisation des postes informatiques ?</span><span class="chev" aria-hidden="true">›</span></summary>
+                <p class="answer">Les postes sont réservés au travail universitaire. Merci de respecter les règles d'utilisation et de vous déconnecter après votre session.</p>
+            </details>
+            <details>
+                <summary><span class="num">09</span><span class="q">Comment contacter le personnel de la bibliothèque ?</span><span class="chev" aria-hidden="true">›</span></summary>
+                <p class="answer">Adressez-vous au comptoir d'accueil ou utilisez le formulaire de contact disponible sur le site de l'université.</p>
+            </details>
+            <details>
+                <summary><span class="num">10</span><span class="q">Où trouver les documents de recherche et thèses ?</span><span class="chev" aria-hidden="true">›</span></summary>
+                <p class="answer">Consultez le catalogue en ligne ou demandez conseil au personnel des collections de recherche.</p>
+            </details>
+        </div>
+    </main>
 
-        <li>
-            <h3>Quelle est la durée du prêt ?</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus euismod, justo at volutpat.</p>
-        </li>
-
-        <li>
-            <h3>Comment renouveler un prêt ?</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed urna at sapien gravida.</p>
-        </li>
-
-        <li>
-            <h3>Y a-t-il des pénalités en cas de retard ?</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis.</p>
-        </li>
-
-        <li>
-            <h3>Comment accéder aux ressources en ligne ?</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tristique leo sed massa luctus.</p>
-        </li>
-
-        <li>
-            <h3>Puis-je réserver une salle d'étude ?</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi a arcu sit amet lacus.</p>
-        </li>
-
-        <li>
-            <h3>Quelles sont les règles d'utilisation des postes informatiques ?</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod, nibh et tincidunt.</p>
-        </li>
-
-        <li>
-            <h3>Comment contacter le personnel de la bibliothèque ?</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sit amet mi nec risus.</p>
-        </li>
-
-        <li>
-            <h3>Où trouver les documents de recherche et thèses ?</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc pulvinar, lectus non convallis.</p>
-        </li>
-    </ul>
-
+    <footer>Bibliothèque Thorium University</footer>
 </body>
 
 </html>
