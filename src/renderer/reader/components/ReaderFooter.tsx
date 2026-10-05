@@ -566,27 +566,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
             return ["", ""];
         }
 
-        // can return -1 (not found)
-        const currentChapter = this.getCurrentChapter(link);
-        // can return 0!
-        const totalChapters =  this.getTotalChapters();
-
-        const globalPercent =
-            totalChapters > 0 // division by zero
-            ?
-            Math.round(
-                (((isPdf ? 1 : (currentLocation.locator.locations?.progression || 0)) + (currentChapter >= 0 ? currentChapter : 0)) / totalChapters)
-                * 100,
-            )
-            :
-            0;
-
-        if (currentLocation.paginationInfo) {
-            return [
-                `${__("reader.navigation.currentPageTotal", { current: `${(currentLocation.paginationInfo.currentColumn || 0) + 1}`, total: `${currentLocation.paginationInfo.totalColumns || 0} (${Math.round(100 * (currentLocation.locator.locations?.progression || 0))}%)` })}`,
-                `${__("publication.progression.title")} ${globalPercent}%`,
-            ];
-        } else if (isAudioBook && currentLocation.audioPlaybackInfo) {
+        if (isAudioBook && currentLocation.audioPlaybackInfo) {
             const audio = currentLocation.audioPlaybackInfo;
             const hasGlobalTime = Number.isFinite(audio.globalTime) &&
                 Number.isFinite(audio.globalDuration) && audio.globalDuration > 0 &&
@@ -619,8 +599,8 @@ export class ReaderFooter extends React.Component<IProps, IState> {
             Number.isFinite(locations.totalProgression) ?
             Math.min(1, Math.max(0, locations.totalProgression)) : undefined;
 
-        // Prefer the continuous locator value for a smooth user-facing percentage. If it is absent,
-        // fall back to the discrete Readium position, then to the legacy equal-chapter approximation.
+        // Prefer Readium position progression, then the locator total progression,
+        // and finally the legacy equal-chapter approximation.
         const globalProgression = readiumPositionProgression?.totalProgression ??
             locatorTotalProgression ?? Math.min(1, Math.max(0, fallbackGlobalProgression));
 
