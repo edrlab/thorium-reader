@@ -148,17 +148,17 @@
         "annotations": {
             "descAuthor": "przez '{{- author}}'",
             "descCreator": "stworzony przez",
-            "descList_one": "{{- count}} notatka {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
             "descList_few": "{{- count}} notatki {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
             "descList_many": "{{- count}} notatek {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
+            "descList_one": "{{- count}} notatka {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
             "descList_other": "",
-            "descNewer_one": "Konflikt(y): {{- count}} nowsza notatka",
             "descNewer_few": "Konflikt(y): {{- count}} nowsze notatki",
             "descNewer_many": "Konflikt(y): {{- count}} nowszych notatek",
+            "descNewer_one": "Konflikt(y): {{- count}} nowsza notatka",
             "descNewer_other": "",
-            "descOlder_one": "Konflikt(y): {{- count}} starsza notatka",
             "descOlder_few": "Konflikt(y): {{- count}} starsze notatki",
             "descOlder_many": "Konflikt(y): {{- count}} starszych notatek",
+            "descOlder_one": "Konflikt(y): {{- count}} starsza notatka",
             "descOlder_other": "",
             "descTitle": "Tytuł adnotacji: ",
             "importAll": "Importuj wszystkie notatki",
@@ -176,14 +176,14 @@
             }
         },
         "deleteAnnotations": "Usunąć adnotacje?",
-        "deleteAnnotationsText_one": "Czy na pewno chcesz usunąć {{- count}} notatkę?",
         "deleteAnnotationsText_few": "Czy na pewno chcesz usunąć {{- count}} notatki?",
         "deleteAnnotationsText_many": "Czy na pewno chcesz usunąć {{- count}} notatek?",
+        "deleteAnnotationsText_one": "Czy na pewno chcesz usunąć {{- count}} notatkę?",
         "deleteAnnotationsText_other": "",
         "deleteBookmarks": "Usunąć zakładki?",
-        "deleteBookmarksText_one": "Czy na pewno chcesz usunąć {{- count}} zakładkę?",
         "deleteBookmarksText_few": "Czy na pewno chcesz usunąć {{- count}} zakładki?",
         "deleteBookmarksText_many": "Czy na pewno chcesz usunąć {{- count}} zakładek?",
+        "deleteBookmarksText_one": "Czy na pewno chcesz usunąć {{- count}} zakładkę?",
         "deleteBookmarksText_other": "",
         "deleteFeed": "Usunąć katalog?",
         "deletePublication": "Usunąć publikację?",
@@ -280,9 +280,9 @@
         "storage": {
             "recovery": {
                 "failure": "",
-                "success_one": "",
                 "success_few": "",
                 "success_many": "",
+                "success_one": "",
                 "success_other": ""
             },
             "removed": "Katalog publikacji został usunięty.",
@@ -858,9 +858,9 @@
         },
         "picker": {
             "search": {
-                "founds_one": "{{- count}} dopasowanie",
                 "founds_few": "{{- count}} dopasowania",
                 "founds_many": "{{- count}} dopasowań",
+                "founds_one": "{{- count}} dopasowanie",
                 "founds_other": "",
                 "input": "tekst do wyszukania",
                 "next": "Następny",
@@ -1345,16 +1345,16 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
-                    "description_one": "",
                     "description_few": "",
                     "description_many": "",
+                    "description_one": "",
                     "description_other": "",
                     "title": ""
                 },
                 "none": "",
-                "recoverableCount_one": "",
                 "recoverableCount_few": "",
                 "recoverableCount_many": "",
+                "recoverableCount_one": "",
                 "recoverableCount_other": "",
                 "title": ""
             }

@@ -148,14 +148,14 @@
         "annotations": {
             "descAuthor": "por '{{- author}} '",
             "descCreator": "criado por",
-            "descList_one": "{{- count}} A nota de {{- creator}} será importada em '{{- title}}' {{- author}}",
             "descList_many": "",
+            "descList_one": "{{- count}} A nota de {{- creator}} será importada em '{{- title}}' {{- author}}",
             "descList_other": "{{- count}} A(s) nota(s) de {{- creator}} será(ão) importada(s) em '{{- title}}' {{- author}}",
-            "descNewer_one": "Conflito: {{- count}} nota mais recente",
             "descNewer_many": "",
+            "descNewer_one": "Conflito: {{- count}} nota mais recente",
             "descNewer_other": "Conflito(s): {{- count}} nota(s) mais recente(s)",
-            "descOlder_one": "Conflito: {{- count}} nota mais antiga",
             "descOlder_many": "",
+            "descOlder_one": "Conflito: {{- count}} nota mais antiga",
             "descOlder_other": "Conflito(s): {{- count}} nota(s) mais antiga(s)",
             "descTitle": "Título de anotações: ",
             "importAll": "Importar todas as notas",
@@ -173,12 +173,12 @@
             }
         },
         "deleteAnnotations": "Excluir anotações?",
-        "deleteAnnotationsText_one": "Tem certeza de que deseja excluir {{- count}} notas?",
         "deleteAnnotationsText_many": "",
+        "deleteAnnotationsText_one": "Tem certeza de que deseja excluir {{- count}} notas?",
         "deleteAnnotationsText_other": "Tem certeza de que deseja excluir {{- count}} notas(s)?",
         "deleteBookmarks": "Excluir marcadores?",
-        "deleteBookmarksText_one": "Tem certeza de que deseja excluir {{- count}} marcadore?",
         "deleteBookmarksText_many": "",
+        "deleteBookmarksText_one": "Tem certeza de que deseja excluir {{- count}} marcadore?",
         "deleteBookmarksText_other": "Tem certeza de que deseja excluir {{- count}} marcadores?",
         "deleteFeed": "Deseja excluir este catálogo?",
         "deletePublication": "Deseja excluir esta publicação?",
@@ -275,8 +275,8 @@
         "storage": {
             "recovery": {
                 "failure": "",
-                "success_one": "",
                 "success_many": "",
+                "success_one": "",
                 "success_other": ""
             },
             "removed": "",
@@ -852,8 +852,8 @@
         },
         "picker": {
             "search": {
-                "founds_one": "{{- count}} correspondência",
                 "founds_many": "",
+                "founds_one": "{{- count}} correspondência",
                 "founds_other": "{{- count}} correspondência(s)",
                 "input": "texto para correspondência",
                 "next": "Próximo",
@@ -1338,14 +1338,14 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
-                    "description_one": "",
                     "description_many": "",
+                    "description_one": "",
                     "description_other": "",
                     "title": ""
                 },
                 "none": "",
-                "recoverableCount_one": "",
                 "recoverableCount_many": "",
+                "recoverableCount_one": "",
                 "recoverableCount_other": "",
                 "title": ""
             }
