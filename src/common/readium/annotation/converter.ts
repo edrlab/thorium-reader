@@ -7,7 +7,7 @@
 
 import debug_ from "debug";
 
-import { ICssSelector, IReadiumAnnotation, IReadiumAnnotationSet, isCFIFragmentSelector, isCssSelector, isEPUBCFISelector, isLegacyCfiSelector, isProgressionSelector, isTextPositionSelector, isTextQuoteSelector, ITextPositionSelector, ITextQuoteSelector } from "./annotationModel.type";
+import { LEGACY_ANNOTATION_CONTEXT, TAnnotationContext, EPUB_ANNOTATION_CONTEXT, ICssSelector, IReadiumAnnotation, IReadiumAnnotationSet, isCFIFragmentSelector, isCssSelector, isEPUBCFISelector, isLegacyCfiSelector, isProgressionSelector, isTextPositionSelector, isTextQuoteSelector, ITextPositionSelector, ITextQuoteSelector } from "./annotationModel.type";
 import { uuidv4 } from "readium-desktop/utils/uuid";
 import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -308,11 +308,20 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
 
 // export type INoteStateWithICacheDocument = INoteState & { __cacheDocument?: ICacheDocument | undefined };
 
-export function convertAnnotationStateToReadiumAnnotation(note: INoteState): IReadiumAnnotation | undefined {
+export function readiumAnnotationDrawType(annotation: IReadiumAnnotation): EDrawType {
+    if (annotation.motivation === "bookmarking") {
+        return EDrawType.bookmark;
+    }
+    const highlight = annotation.body?.highlight;
+    return highlight && highlight !== "solid" ? EDrawType[highlight] : EDrawType.solid_background;
+}
+
+export function convertAnnotationStateToReadiumAnnotation(note: INoteState, context: TAnnotationContext = EPUB_ANNOTATION_CONTEXT): IReadiumAnnotation | undefined {
 
     const { uuid, color, locatorExtended, tags, drawType, textualValue, creator, created, modified, readiumAnnotation } = note;
-    const highlight = (drawType === EDrawType.solid_background ? "solid" : EDrawType[drawType]) as IReadiumAnnotation["body"]["highlight"];
     const isABookmark = drawType === EDrawType.bookmark;
+    const highlight = isABookmark && context === EPUB_ANNOTATION_CONTEXT ? undefined :
+        (drawType === EDrawType.solid_background ? "solid" : EDrawType[drawType]) as IReadiumAnnotation["body"]["highlight"];
 
     // PDF annotations currently store their target in `note.pdfAnnotation`.
     // Do not serialize them as Readium annotations until there is an explicit
@@ -334,7 +343,7 @@ export function convertAnnotationStateToReadiumAnnotation(note: INoteState): IRe
     } : undefined;
 
     return {
-        "@context": "http://www.w3.org/ns/anno.jsonld",
+        "@context": context,
         id: uuid ? "urn:uuid:" + uuid : "",
         created: new Date(created).toISOString(),
         modified: modified ? new Date(modified).toISOString() : undefined,
@@ -344,7 +353,7 @@ export function convertAnnotationStateToReadiumAnnotation(note: INoteState): IRe
             value: textualValue || "",
             format: "text/plain",
             color: noteColorCodeToColorSet[rgbToHex(color)] || NOTE_DEFAULT_COLOR,
-            tag: (tags || [])[0] || "",
+            ...(context === LEGACY_ANNOTATION_CONTEXT ? { tag: tags?.[0] || "" } : tags?.length ? { tags: [...tags] } : {}),
             highlight,
             //   textDirection: "ltr",
             //   language: "fr",
@@ -364,14 +373,14 @@ export function convertAnnotationStateToReadiumAnnotation(note: INoteState): IRe
     };
 }
 
-export function convertAnnotationStateArrayToReadiumAnnotationSet(locale: keyof typeof availableLanguages, notes: INoteState[], publicationView: PublicationView, label?: string): IReadiumAnnotationSet {
+export function convertAnnotationStateArrayToReadiumAnnotationSet(locale: keyof typeof availableLanguages, notes: INoteState[], publicationView: PublicationView, label?: string, context: TAnnotationContext = publicationView.isEPUB ? EPUB_ANNOTATION_CONTEXT : LEGACY_ANNOTATION_CONTEXT): IReadiumAnnotationSet {
 
     const currentDate = new Date();
     const dateString: string = currentDate.toISOString();
     // const iLcp = !!publicationView.lcp;
 
     return {
-        "@context": "http://www.w3.org/ns/anno.jsonld",
+        "@context": context,
         id: "urn:uuid:" + uuidv4(),
         type: "AnnotationSet",
         generator: {
@@ -409,7 +418,7 @@ export function convertAnnotationStateArrayToReadiumAnnotationSet(locale: keyof 
             "dc:date": publicationView.publishedAt || "",
         },
         items: notes.reduce<IReadiumAnnotation[]>((items, note) => {
-            const readiumAnnotation = convertAnnotationStateToReadiumAnnotation(note);
+            const readiumAnnotation = convertAnnotationStateToReadiumAnnotation(note, context);
             if (readiumAnnotation) {
                 items.push(readiumAnnotation);
             }
