@@ -149,14 +149,14 @@
             "descAuthor": "",
             "descCreator": "",
             "descList_one": "",
-            "descList_other": "",
             "descList_two": "",
+            "descList_other": "",
             "descNewer_one": "",
-            "descNewer_other": "",
             "descNewer_two": "",
+            "descNewer_other": "",
             "descOlder_one": "",
-            "descOlder_other": "",
             "descOlder_two": "",
+            "descOlder_other": "",
             "descTitle": "",
             "importAll": "",
             "importWithoutConflict": "",
@@ -174,12 +174,12 @@
         },
         "deleteAnnotations": "",
         "deleteAnnotationsText_one": "",
-        "deleteAnnotationsText_other": "",
         "deleteAnnotationsText_two": "",
+        "deleteAnnotationsText_other": "",
         "deleteBookmarks": "",
         "deleteBookmarksText_one": "",
-        "deleteBookmarksText_other": "",
         "deleteBookmarksText_two": "",
+        "deleteBookmarksText_other": "",
         "deleteFeed": "",
         "deletePublication": "",
         "deletePublicationWithNotes": "",
@@ -276,8 +276,8 @@
             "recovery": {
                 "failure": "",
                 "success_one": "",
-                "success_other": "",
-                "success_two": ""
+                "success_two": "",
+                "success_other": ""
             },
             "removed": "",
             "updateFailed": "",
@@ -853,8 +853,8 @@
         "picker": {
             "search": {
                 "founds_one": "",
-                "founds_other": "",
                 "founds_two": "",
+                "founds_other": "",
                 "input": "",
                 "next": "",
                 "notFound": "",
@@ -1339,14 +1339,14 @@
                 "dialog": {
                     "confirm": "",
                     "description_one": "",
-                    "description_other": "",
                     "description_two": "",
+                    "description_other": "",
                     "title": ""
                 },
                 "none": "",
                 "recoverableCount_one": "",
-                "recoverableCount_other": "",
                 "recoverableCount_two": "",
+                "recoverableCount_other": "",
                 "title": ""
             }
         },

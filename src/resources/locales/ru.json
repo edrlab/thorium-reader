@@ -148,17 +148,17 @@
         "annotations": {
             "descAuthor": "автор '{{- author}}'",
             "descCreator": "создано",
+            "descList_one": "{{- count}} примечание {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
             "descList_few": "{{- count}} примечания {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
             "descList_many": "{{- count}} примечаний {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
-            "descList_one": "{{- count}} примечание {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
             "descList_other": "",
+            "descNewer_one": "Конфликт(ы): {{- count}} новейшая заметка",
             "descNewer_few": "Конфликт(ы): {{- count}} новейшие заметки",
             "descNewer_many": "Конфликт(ы): {{- count}} новейших заметок",
-            "descNewer_one": "Конфликт(ы): {{- count}} новейшая заметка",
             "descNewer_other": "",
+            "descOlder_one": "Конфликт(ы): {{- count}} наиболее старая заметка",
             "descOlder_few": "Конфликт(ы): {{- count}} наиболее старые заметки",
             "descOlder_many": "Конфликт(ы): {{- count}} наиболее старых заметок",
-            "descOlder_one": "Конфликт(ы): {{- count}} наиболее старая заметка",
             "descOlder_other": "",
             "descTitle": "Название аннотации: ",
             "importAll": "Импортировать все заметки",
@@ -176,14 +176,14 @@
             }
         },
         "deleteAnnotations": "Удалить аннотации?",
+        "deleteAnnotationsText_one": "Вы уверены, что хотите удалить {{- count}} заметку?",
         "deleteAnnotationsText_few": "Вы уверены, что хотите удалить {{- count}} заметки?",
         "deleteAnnotationsText_many": "Вы уверены, что хотите удалить {{- count}} заметок?",
-        "deleteAnnotationsText_one": "Вы уверены, что хотите удалить {{- count}} заметку?",
         "deleteAnnotationsText_other": "",
         "deleteBookmarks": "Удалить закладки?",
+        "deleteBookmarksText_one": "Вы уверены, что хотите удалить {{- count}} закладку?",
         "deleteBookmarksText_few": "Вы уверены, что хотите удалить {{- count}} закладки?",
         "deleteBookmarksText_many": "Вы уверены, что хотите удалить {{- count}} закладок?",
-        "deleteBookmarksText_one": "Вы уверены, что хотите удалить {{- count}} закладку?",
         "deleteBookmarksText_other": "",
         "deleteFeed": "Вы действительно хотите удалить этот каталог ?",
         "deletePublication": "Вы действительно хотите удалить эту книгу ?",
@@ -280,9 +280,9 @@
         "storage": {
             "recovery": {
                 "failure": "Не удалось восстановить публикацию.",
+                "success_one": "{{- count}} публикация восстановлена.",
                 "success_few": "{{- count}} публикации восстановлено.",
                 "success_many": "{{- count}} публикаций восстановлено.",
-                "success_one": "{{- count}} публикация восстановлена.",
                 "success_other": ""
             },
             "removed": "Каталог публикаций удалён.",
@@ -858,9 +858,9 @@
         },
         "picker": {
             "search": {
+                "founds_one": "{{- count}} найден",
                 "founds_few": "{{- count}} найдено",
                 "founds_many": "{{- count}} найдено",
-                "founds_one": "{{- count}} найден",
                 "founds_other": "",
                 "input": "подходящий текст",
                 "next": "Далее",
@@ -1345,16 +1345,16 @@
                 "description": "Проверьте место хранения публикаций, чтобы найти те, которые можно безопасно восстановить.",
                 "dialog": {
                     "confirm": "Восстановить",
+                    "description_one": "Thorium обнаружил на диске {{- count}} публикацию, отсутствующую в базе данных. Желаете вернуть её обратно в Thorium?",
                     "description_few": "Thorium обнаружил на диске {{- count}} публикации, отсутствующие в базе данных. Желаете вернуть их обратно в Thorium?",
                     "description_many": "Thorium обнаружил на диске {{- count}} публикации, отсутствующих в базе данных. Желаете вернуть их обратно в Thorium?",
-                    "description_one": "Thorium обнаружил на диске {{- count}} публикацию, отсутствующую в базе данных. Желаете вернуть её обратно в Thorium?",
                     "description_other": "",
                     "title": "Восстановить публикации"
                 },
                 "none": "Публикаций, которые можно восстановить, не обнаружено.",
+                "recoverableCount_one": "{{- count}} публикацию можно восстановить, используя её исходный идентификатор хранилища.",
                 "recoverableCount_few": "{{- count}} публикации можно восстановить, используя их исходный идентификатор хранилища.",
                 "recoverableCount_many": "{{- count}} публикаций можно восстановить, используя их исходный идентификатор хранилища.",
-                "recoverableCount_one": "{{- count}} публикацию можно восстановить, используя её исходный идентификатор хранилища.",
                 "recoverableCount_other": "",
                 "title": "Восстановление"
             }

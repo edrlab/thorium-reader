@@ -148,14 +148,14 @@
         "annotations": {
             "descAuthor": "",
             "descCreator": "",
-            "descList_many": "",
             "descList_one": "",
+            "descList_many": "",
             "descList_other": "",
-            "descNewer_many": "",
             "descNewer_one": "",
+            "descNewer_many": "",
             "descNewer_other": "",
-            "descOlder_many": "",
             "descOlder_one": "",
+            "descOlder_many": "",
             "descOlder_other": "",
             "descTitle": "",
             "importAll": "Importar totes les notes",
@@ -173,12 +173,12 @@
             }
         },
         "deleteAnnotations": "Eliminar les anotacions?",
-        "deleteAnnotationsText_many": "",
         "deleteAnnotationsText_one": "Esteu segurs que voleu eliminar {{- count}} nota?",
+        "deleteAnnotationsText_many": "",
         "deleteAnnotationsText_other": "Esteu segurs que voleu eliminar {{- count}} notes?",
         "deleteBookmarks": "Eliminar els preferits?",
-        "deleteBookmarksText_many": "",
         "deleteBookmarksText_one": "Esteu segurs que voleu eliminar {{- count}} preferit?",
+        "deleteBookmarksText_many": "",
         "deleteBookmarksText_other": "Esteu segurs que voleu eliminar {{- count}} preferits?",
         "deleteFeed": "Eliminar el catàleg?",
         "deletePublication": "Eliminar la publicació?",
@@ -275,8 +275,8 @@
         "storage": {
             "recovery": {
                 "failure": "",
-                "success_many": "",
                 "success_one": "",
+                "success_many": "",
                 "success_other": ""
             },
             "removed": "",
@@ -852,8 +852,8 @@
         },
         "picker": {
             "search": {
-                "founds_many": "",
                 "founds_one": "{{- count}} trobat/s",
+                "founds_many": "",
                 "founds_other": "{{- count}} trobat/s",
                 "input": "text de cerca",
                 "next": "Següent",
@@ -1338,14 +1338,14 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
-                    "description_many": "",
                     "description_one": "",
+                    "description_many": "",
                     "description_other": "",
                     "title": ""
                 },
                 "none": "",
-                "recoverableCount_many": "",
                 "recoverableCount_one": "",
+                "recoverableCount_many": "",
                 "recoverableCount_other": "",
                 "title": ""
             }
