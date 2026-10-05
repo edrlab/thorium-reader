@@ -28,6 +28,16 @@ permissions:
     repository-projects: none
     security-events: none
     statuses: none
+
+# https://docs.github.com/en/actions/reference/workflows-and-actions/dependency-caching#defaults
+# Explicit workflow-level cache directive, honored by job/step-level 'actions/cache'.
+# This GitHub Actions workflow has a trusted trigger via account-level ruleset.
+# Note that this workflow disables 'actions/setup-node' automatic caching,
+# instead 'actions/cache' is configured and invoked (restore point explicit, save via post-jobs hook)
+# in order to enable caching of NPM packages and Electron binaries.
+# The cache key is specific to this "continuous" integration and deployment (develop branch push) workflow, different from "PR" (pull request) and "release" (version tag push).
+cache-mode: write
+
 jobs:
   build_job:
     # environment:
@@ -313,9 +323,9 @@ jobs:
       id: action-cache
       with:
         path: ${{ steps.npm-config-get-cache.outputs.dir }}
-        key: npm-electron-cache-notpr-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('package-lock.json') }}
+        key: npm-electron-cache-continuous-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('package-lock.json') }}
         restore-keys: |
-          npm-electron-cache-notpr-${{ runner.os }}-${{ runner.arch }}-
+          npm-electron-cache-continuous-${{ runner.os }}-${{ runner.arch }}-
 ###########################
     - name: NPM Cache NOT HIT
       run: echo "NPM Cache NOT HIT - not restored at all, or restored with restore-keys instead of primary key"

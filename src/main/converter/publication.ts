@@ -30,6 +30,7 @@ import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locator
 import {
     isEpubPositionListPublication, publicationHasArchiveEntryLengths,
 } from "readium-desktop/common/readium/positions";
+import { applyOpdsPublicationViewFallback } from "./tools/publicationViewFallback";
 // import { type Store } from "redux";
 // import { RootState } from "../redux/states";
 
@@ -261,7 +262,7 @@ export class PublicationViewConverter {
             isOpenable,
         } = await getPublicationStorageState(document.identifier);
 
-        return {
+        return applyOpdsPublicationViewFallback({
 
             isOpenable,
             identifier: document.identifier, // preserve Identifiable identifier
@@ -275,7 +276,7 @@ export class PublicationViewConverter {
             customCover: document.customCover,
             r2PublicationJson: undefined,
             lastReadingLocation: readerStateLocator,
-        };
+        }, document.opdsPublicationView);
 
     }
 
@@ -377,7 +378,7 @@ export class PublicationViewConverter {
             isOpenable,
         } = await getPublicationStorageState(document.identifier);
 
-        return {
+        return applyOpdsPublicationViewFallback({
 
             isOpenable,
             isAudio,
@@ -442,6 +443,6 @@ export class PublicationViewConverter {
             // r2PublicationBase64,
 
             lastReadingLocation: readerStateLocator,
-        };
+        }, document.opdsPublicationView);
     }
 }
