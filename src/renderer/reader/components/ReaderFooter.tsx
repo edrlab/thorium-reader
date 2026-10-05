@@ -566,10 +566,35 @@ export class ReaderFooter extends React.Component<IProps, IState> {
             return ["", ""];
         }
 
-        if (isAudioBook && currentLocation.audioPlaybackInfo) {
+        // can return -1 (not found)
+        const currentChapter = this.getCurrentChapter(link);
+        // can return 0!
+        const totalChapters =  this.getTotalChapters();
+
+        const globalPercent =
+            totalChapters > 0 // division by zero
+            ?
+            Math.round(
+                (((isPdf ? 1 : (currentLocation.locator.locations?.progression || 0)) + (currentChapter >= 0 ? currentChapter : 0)) / totalChapters)
+                * 100,
+            )
+            :
+            0;
+
+        if (currentLocation.paginationInfo) {
+            return [
+                `${__("reader.navigation.currentPageTotal", { current: `${(currentLocation.paginationInfo.currentColumn || 0) + 1}`, total: `${currentLocation.paginationInfo.totalColumns || 0} (${Math.round(100 * (currentLocation.locator.locations?.progression || 0))}%)` })}`,
+                `${__("publication.progression.title")} ${globalPercent}%`,
+            ];
+        } else if (isAudioBook && currentLocation.audioPlaybackInfo) {
+            const audio = currentLocation.audioPlaybackInfo;
+            const hasGlobalTime = Number.isFinite(audio.globalTime) &&
+                Number.isFinite(audio.globalDuration) && audio.globalDuration > 0 &&
+                Number.isFinite(audio.globalProgression);
             return [
                 `${formatTime(currentLocation.audioPlaybackInfo.localTime || 0)} / ${formatTime(currentLocation.audioPlaybackInfo.localDuration || 0)} (${Math.round(currentLocation.audioPlaybackInfo.localProgression * 100)}%)`,
-                `${formatTime(currentLocation.audioPlaybackInfo.globalTime || 0)} / ${formatTime(currentLocation.audioPlaybackInfo.globalDuration || 0)} (${Math.round(currentLocation.audioPlaybackInfo.globalProgression * 100)}%)`,
+                hasGlobalTime ?
+                    `${formatTime(audio.globalTime)} / ${formatTime(audio.globalDuration)} (${Math.round(audio.globalProgression * 100)}%)` : "",
             ];
         }
 
