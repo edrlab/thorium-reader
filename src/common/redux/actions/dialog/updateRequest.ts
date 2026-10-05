@@ -11,10 +11,10 @@ import { Action } from "readium-desktop/common/models/redux";
 export const ID = "DIALOG_UPDATE_REQUEST";
 
 export interface Payload<T extends keyof DialogType> {
-    data: DialogType[T];
+    data: Partial<DialogType[T]>;
 }
 
-export function build<T extends keyof DialogType>(data: DialogType[T]):
+export function build<T extends keyof DialogType>(data: Partial<DialogType[T]>):
     Action<typeof ID, Payload<T>> {
 
     return {
