@@ -10,6 +10,7 @@ Profile screen documents must follow this contract:
 - Inline `<style>` rules must target `.custom-profile-screen` or a descendant. A `body[data-theme]` condition may precede that selector.
 - Do not set application typography. Thorium enforces its Nunito font and standard heading and text sizes.
 - Inline layout and color styles are allowed. Thorium sanitizes the markup before rendering it.
+- Packaged images may use relative paths in `<img src>`, `<img srcset>`, `<picture><source srcset>`, and CSS `url(...)` in inline styles or `<style>` blocks. Paths resolve against the screen's manifest `href`; leading `/` paths resolve from the package root. External URLs and fragment-only references are preserved.
 
 ## Style selector rules
 

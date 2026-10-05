@@ -21,7 +21,7 @@ import * as styles from "readium-desktop/renderer/assets/styles/components/profi
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { decodeProfileRouteParam, resolveProfileScreenLink } from "../../customization/route";
-import { resolveProfileAssetUrl } from "../../customization/profileResourceUrl";
+import { resolveProfileAssetUrl, resolveProfileCssUrls, resolveProfileSrcset } from "../../customization/profileResourceUrl";
 import { restoreProfileStylesToBody } from "../../customization/profileScreenHtml";
 import { profileCssIsSafeAndScoped } from "../../customization/style";
 import PublicationAddButton from "../catalog/PublicationAddButton";
@@ -65,6 +65,15 @@ export function prepareProfileScreenHtml(
         (style) => !profileCssIsSafeAndScoped(style.textContent || ""),
     )) {
         return undefined;
+    }
+    for (const style of profileStyles) {
+        style.textContent = resolveProfileCssUrls(style.textContent || "", screenHref, customizationBaseUrl);
+    }
+    for (const element of Array.from(parsedDocument.body.querySelectorAll("[style]"))) {
+        element.setAttribute("style", resolveProfileCssUrls(element.getAttribute("style") || "", screenHref, customizationBaseUrl));
+    }
+    for (const image of Array.from(parsedDocument.body.querySelectorAll("img[srcset], source[srcset]"))) {
+        image.setAttribute("srcset", resolveProfileSrcset(image.getAttribute("srcset") || "", screenHref, customizationBaseUrl));
     }
     restoreProfileStylesToBody(parsedDocument);
 
