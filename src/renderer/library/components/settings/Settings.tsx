@@ -87,8 +87,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
         "tab-keyboardShortcuts": __("settings.tabs.keyboardShortcuts"),
         "tab-profiles": __("settings.tabs.profiles"),
         "tab-storage": __("settings.tabs.storage"),
-        "tab-advanced": __("settings.tabs.appearance"),
-        // "tab-advanced": __("settings.tabs.advanced"),
+        "tab-advanced": __("settings.tabs.advanced"),
     }[selectedTab] || __("settings.tabs.general");
 
 
@@ -135,8 +134,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
                         </Tab>
                         <Tab id="tab-advanced">
                             <SVG ariaHidden svg={AdvancedIcon} />
-                            {/* <span dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.advanced")}</span> */}
-                            <span dir={isRTL ? "rtl" : "ltr"}>Advanced</span>
+                            <span dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.advanced")}</span>
                         </Tab>
                     </TabList>
                     <TabTitle title={tabTitle}>
