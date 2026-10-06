@@ -398,17 +398,12 @@ function* retrieveOpdsProgression(action: winCommonActions.initSuccess.TAction) 
         ) {
             currentProgression = latestProgression;
         }
-        if (opdsProgressionMatchesAppliedProgression(
+        const positionsMatch = opdsProgressionMatchesAppliedProgression(
             progression.progression,
             currentProgression,
             localSnapshot.progressionSpine,
             localSnapshot.positionList,
-        )) {
-            // A logical/future server timestamp can outlive the filesystem mtime
-            // of the local locator we just uploaded. Equal positions are already
-            // reconciled and must not prompt again on every reopen.
-            return;
-        }
+        );
         const persistedLocatorChanged = localSnapshot.hasLocator
             && typeof latestProgression === "number"
             && typeof localSnapshot.initialProgression === "number"
@@ -428,8 +423,9 @@ function* retrieveOpdsProgression(action: winCommonActions.initSuccess.TAction) 
         const missingChangeTimestamp = localLocatorChanged && typeof localModifiedTime !== "number";
         const hasLocalPosition = localSnapshot.hasLocator || localLocatorChanged;
         const remoteIsNewer = opdsProgressionIsNewer(progression.modified, localModifiedTime);
-        const offerRemotePosition = !missingChangeTimestamp && (!hasLocalPosition || remoteIsNewer);
-        const reason = missingChangeTimestamp ? "local change timestamp unavailable" :
+        const offerRemotePosition = !positionsMatch && !missingChangeTimestamp && (!hasLocalPosition || remoteIsNewer);
+        const reason = positionsMatch ? "local position already matches the position applied from remote progression" :
+            missingChangeTimestamp ? "local change timestamp unavailable" :
             !hasLocalPosition ? "no local reading position" :
             remoteIsNewer ? "remote timestamp is newer than local timestamp" :
             "remote timestamp is not newer than local timestamp";
@@ -443,9 +439,20 @@ function* retrieveOpdsProgression(action: winCommonActions.initSuccess.TAction) 
             localModified: typeof localModifiedTime === "number" && Number.isFinite(localModifiedTime) ?
                 new Date(localModifiedTime).toISOString() : undefined,
             remoteModified: progression.modified,
+            currentProgression,
+            remoteProgression: progression.progression,
+            positionsMatch,
+            remoteIsNewer,
+            localLocatorChanged,
             showDialog: offerRemotePosition,
             reason,
         }, undefined, 2));
+        if (positionsMatch) {
+            // Equal positions are already reconciled, even when a logical/future
+            // server timestamp is newer than the local locator's filesystem mtime.
+            // Log that decision above before suppressing the dialog.
+            return;
+        }
         if (missingChangeTimestamp) {
             debug("OPDS progression: suppressed because local change timestamp is unavailable", { winId });
             return;
