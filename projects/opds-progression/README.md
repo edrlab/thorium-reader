@@ -75,13 +75,39 @@ curl --request PUT 'http://127.0.0.1:4873/__test/state' \
   --data '{"empty":true}'
 ```
 
-Reset the document and request counters:
+Delay progression responses by three seconds to test initialization and navigation while retrieval is running:
+
+```sh
+curl --request PUT 'http://127.0.0.1:4873/__test/state' \
+  --header 'Content-Type: application/json' \
+  --data '{"delayMs":3000}'
+```
+
+`delayMs` accepts integers from `0` to `120000` milliseconds and defaults to `0`. Use `8000` to exceed Thorium's six-second retrieval timeout. Set it back to `0` to disable the delay.
+
+The delay applies to successful progression GET responses, including empty responses. Catalog downloads, state controls, and error responses remain immediate. Request counters update when the request arrives. Each pending response retains the document and delay captured at request time; changing or resetting state affects subsequent requests. Updating only `delayMs` preserves the document's modification timestamp.
+
+Reset the document, delay, and request counters:
 
 ```sh
 curl --request POST 'http://127.0.0.1:4873/__test/reset'
 ```
 
 Invalid, non-finite, negative, or greater-than-one progression values are rejected with `400 Bad Request`. The progression resource itself is GET-only; PUT returns `405 Method Not Allowed` because uploads are outside this MVP.
+
+## Debugging Thorium's progression flow
+
+The test server logs each incoming request and its completion to the terminal. Entries include a request ID, method, path, response status, elapsed milliseconds, and whether the response finished or the client disconnected. Incoming entries also show the `Accept` and `Range` headers. Request bodies, query strings, and authorization headers are omitted. Delayed requests can be correlated by request ID; client timeouts appear as aborted responses.
+
+Enable these existing debug namespaces when launching Thorium (Unix shell):
+
+```sh
+DEBUG='readium-desktop:main#services/opdsProgression,readium-desktop:main:redux:sagas:win:reader,readium-desktop:renderer:reader:components:Reader' npx electron .
+```
+
+Use an up-to-date built application. Main-process logs appear in the launch terminal; inspect the reader's developer console for renderer logs. The application's normal `DEBUG=*` launch also enables these messages.
+
+Search for `Progression GET` and `OPDS progression:`. The logs trace retrieval eligibility, response timing and validation, local locator changes, timestamp comparisons, prompt suppression or display, dismissal, and accepted navigation. Reader window IDs correlate the main-process decisions. Mapping logs show whether Readium weights or equal-resource fallback were used and the resulting position fields. These application messages are emitted through the `debug` logger; no new unconditional console output is added.
 
 ## Routes
 

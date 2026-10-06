@@ -21,6 +21,7 @@ const device = Object.freeze({
 
 function defaultProgressionState() {
     return {
+        delayMs: 0,
         empty: false,
         modified: new Date().toISOString(),
         progression: 0.625,
@@ -202,6 +203,7 @@ function progressionDocument(state) {
 
 function publicState(state, requests) {
     return {
+        delayMs: state.delayMs,
         empty: state.empty,
         modified: state.modified,
         progression: state.progression,
@@ -251,6 +253,13 @@ function applyStateUpdate(currentState, update) {
 
     const nextState = { ...currentState };
 
+    if (Object.prototype.hasOwnProperty.call(update, "delayMs")) {
+        if (!Number.isInteger(update.delayMs) || update.delayMs < 0 || update.delayMs > 120000) {
+            throw new Error("delayMs must be an integer between 0 and 120000");
+        }
+        nextState.delayMs = update.delayMs;
+    }
+
     if (Object.prototype.hasOwnProperty.call(update, "progression")) {
         if (
             typeof update.progression !== "number" ||
@@ -276,7 +285,7 @@ function applyStateUpdate(currentState, update) {
             throw new Error("modified must be an ISO 8601 date-time");
         }
         nextState.modified = update.modified;
-    } else if (!nextState.empty) {
+    } else if (!nextState.empty && ("progression" in update || "title" in update || "empty" in update)) {
         nextState.modified = new Date().toISOString();
     }
 
@@ -294,11 +303,40 @@ function applyStateUpdate(currentState, update) {
     return nextState;
 }
 
-export function createOpdsProgressionServer() {
+export function createOpdsProgressionServer({ log = console.log } = {}) {
     let state = defaultProgressionState();
     let requests = createRequestState();
+    let nextRequestId = 0;
 
     return createServer(async (request, response) => {
+        const requestId = ++nextRequestId;
+        const startedAt = performance.now();
+        const path = new URL(request.url || "/", "http://127.0.0.1").pathname;
+        const requestDetails = {
+            requestId,
+            method: request.method,
+            path,
+            accept: request.headers.accept,
+            range: request.headers.range,
+        };
+        log("OPDS request", requestDetails);
+        let loggedCompletion = false;
+        const logCompletion = (outcome) => {
+            if (loggedCompletion) {
+                return;
+            }
+            loggedCompletion = true;
+            log("OPDS response", {
+                requestId,
+                method: request.method,
+                path,
+                outcome,
+                statusCode: response.headersSent ? response.statusCode : undefined,
+                elapsedMs: Math.round(performance.now() - startedAt),
+            });
+        };
+        response.once("finish", () => logCompletion("finished"));
+        response.once("close", () => logCompletion(response.writableFinished ? "finished" : "aborted"));
         const url = new URL(request.url || "/", `http://${request.headers.host || "127.0.0.1"}`);
 
         try {
@@ -339,12 +377,30 @@ export function createOpdsProgressionServer() {
                     return;
                 }
 
-                if (state.empty) {
+                // Freeze the response at request time so concurrent test controls
+                // cannot change the document already being retrieved.
+                const responseState = { ...state };
+                if (responseState.delayMs > 0) {
+                    await new Promise((resolveDelay) => {
+                        const finish = () => {
+                            clearTimeout(timer);
+                            response.off("close", finish);
+                            resolveDelay();
+                        };
+                        const timer = setTimeout(finish, responseState.delayMs);
+                        response.once("close", finish);
+                    });
+                }
+                if (response.destroyed) {
+                    return;
+                }
+
+                if (responseState.empty) {
                     sendBuffer(request, response, 200, PROGRESSION_MEDIA_TYPE, Buffer.alloc(0));
                     return;
                 }
 
-                const body = Buffer.from(`${JSON.stringify(progressionDocument(state), undefined, 2)}\n`, "utf8");
+                const body = Buffer.from(`${JSON.stringify(progressionDocument(responseState), undefined, 2)}\n`, "utf8");
                 sendBuffer(request, response, 200, `${PROGRESSION_MEDIA_TYPE}; charset=utf-8`, body);
                 return;
             }
@@ -386,9 +442,9 @@ export function createOpdsProgressionServer() {
     });
 }
 
-export async function startOpdsProgressionServer(port = defaultPort) {
+export async function startOpdsProgressionServer(port = defaultPort, options = {}) {
     await access(epubPath, constants.R_OK);
-    const server = createOpdsProgressionServer();
+    const server = createOpdsProgressionServer(options);
 
     return new Promise((resolveStart, rejectStart) => {
         const onError = (error) => rejectStart(error);
