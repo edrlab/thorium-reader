@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import type { Locator } from "@r2-navigator-js/electron/common/locator";
+import { IReadiumPositionList, mapLocatorToReadiumPosition } from "readium-desktop/common/readium/positions";
 
 export interface ISpineLinkForProgression {
     Href?: string;
@@ -15,15 +16,39 @@ const LAST_RESOURCE_SAFE_PROGRESSION = 0.95;
 
 /**
  * Converts publication-wide progression into Readium's resource locator.
- * Each spine item has equal weight because OPDS Progression 1.0 does not
- * provide a content-length model.
+ * Uses the reader's Readium position weights when available, retaining equal
+ * spine weights for publications without a Readium position list.
  */
 export const opdsProgressionToLocator = (
     progression: number,
     spine: readonly ISpineLinkForProgression[] | undefined,
+    positionList?: IReadiumPositionList,
 ): Locator | undefined => {
     if (!Number.isFinite(progression) || progression < 0 || progression > 1) {
         return undefined;
+    }
+
+    if (positionList && positionList.total > 0 && positionList.resources.length) {
+        const scaledProgression = progression * positionList.total;
+        const resource = progression === 1
+            ? positionList.resources[positionList.resources.length - 1]
+            : positionList.resources.find((candidate) =>
+                scaledProgression >= candidate.firstPosition - 1 &&
+                scaledProgression < candidate.firstPosition - 1 + candidate.positionCount,
+            );
+        if (!resource?.href || resource.positionCount <= 0) {
+            return undefined;
+        }
+
+        return mapLocatorToReadiumPosition({
+            href: resource.href,
+            title: resource.title,
+            type: resource.type,
+            locations: {
+                progression: progression === 1 ? LAST_RESOURCE_SAFE_PROGRESSION :
+                    (scaledProgression - (resource.firstPosition - 1)) / resource.positionCount,
+            },
+        }, positionList);
     }
 
     const readableSpine = spine?.filter(

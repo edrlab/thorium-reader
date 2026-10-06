@@ -41,7 +41,7 @@ The server binds only to `127.0.0.1`. Stop it with `Ctrl+C`.
 6. Reopen the publication. Thorium should retrieve the newer document without delaying reader startup and offer to use the remote position.
 7. Accept the remote position. Thorium should move to the point represented by `0.625` across the publication's reading order.
 
-Useful boundary values are `0` (start), `0.5` (middle), and `1` (Thorium's safe end position). The exact resource depends on the publication reading order.
+Useful boundary values are `0` (start), `0.5` (middle), and `1` (Thorium's safe end position). For EPUBs with a Readium position list, Thorium maps the remote float using the same resource weights as its global reading progression: reflowable resources use positions derived from archive entry lengths, and fixed-layout pages use one position each. The mapping preserves offsets within a resource. Publications without a position list fall back to equal reading-order resource weights. At `1`, Thorium uses an offset of `0.95` in the last resource to avoid trailing blank columns.
 
 The progression endpoint intentionally requires this request header:
 

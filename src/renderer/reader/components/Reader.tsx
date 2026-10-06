@@ -1833,7 +1833,11 @@ class Reader extends React.Component<IProps, IState> {
     private goToOpdsProgression = () => {
         const progression = this.props.opdsProgressionDocument?.progression;
         if (typeof progression === "number") {
-            const locator = opdsProgressionToLocator(progression, this.props.r2Publication?.Spine);
+            const locator = opdsProgressionToLocator(
+                progression,
+                this.props.r2Publication?.Spine,
+                this.readiumPositionList,
+            );
             if (locator) {
                 this.goToLocator(locator);
             }
