@@ -37,22 +37,19 @@ import {
     putOpdsProgression,
 } from "readium-desktop/main/services/opdsProgression";
 import {
-    findOpdsProgressionLockCandidate,
     OpdsProgressionSyncCoordinator,
     TOpdsProgressionUploadOutcome,
 } from "readium-desktop/main/services/opdsProgressionSync";
 import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 import type { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
-import {
-    cleanupAndDestroyReadersForForcedShutdown,
-    type IForcedShutdownReader,
-} from "./opdsProgressionShutdown";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:win:reader";
 const debug = debug_(filename_);
 debug("_");
 const __opdsProgressionSyncCoordinator = new OpdsProgressionSyncCoordinator({
+    canUpload: (windowIdentifier, publicationIdentifier) =>
+        __readerWithSamePubIdGotTheLockMap.get(publicationIdentifier) === windowIdentifier,
     upload: async (url, document, locale): Promise<TOpdsProgressionUploadOutcome> => {
         const result = await putOpdsProgression(url, document, locale);
         switch (result.kind) {
@@ -87,7 +84,6 @@ const __opdsProgressionSyncCoordinator = new OpdsProgressionSyncCoordinator({
 });
 
 const __readerWithSamePubIdGotTheLockMap = new Map<string, string>(); // K: publicationIdentifier V: windowIdentifier
-const __closingReaderWindowIdentifiers = new Set<string>();
 const __localProgressionSnapshotMap = new Map<string, {
     publicationIdentifier: string;
     hasLocator: boolean;
@@ -191,6 +187,15 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
             const deviceIdManager = diMainGet("device-id-manager");
             const deviceId = yield* callTyped(() => deviceIdManager.getDeviceID());
             const deviceName = yield* callTyped(() => deviceIdManager.getDeviceNAME());
+            // Destroying a window bypasses the normal close flow. Cancel its
+            // upload timer without adding a separate shutdown/flush path.
+            readerWindow.once("closed", () => {
+                __opdsProgressionSyncCoordinator.discard(winId);
+                __localProgressionSnapshotMap.delete(winId);
+                if (__readerWithSamePubIdGotTheLockMap.get(pubId) === winId) {
+                    __readerWithSamePubIdGotTheLockMap.delete(pubId);
+                }
+            });
             __opdsProgressionSyncCoordinator.register({
                 device: {
                     id: deviceId.includes(":") ? deviceId : `urn:uuid:${deviceId}`,
@@ -472,99 +477,38 @@ function* winOpenError(action: winActions.reader.openError.TAction) {
     yield put(readerActions.closeRequest.build(winId, pubId));
 }
 
-export const closeOpdsProgressionSession = (windowIdentifier: string): Promise<void> =>
-    __opdsProgressionSyncCoordinator.close(windowIdentifier);
-
-export const destroyReadersForForcedShutdown = (
-    readers: readonly IForcedShutdownReader[],
-): Promise<void> => cleanupAndDestroyReadersForForcedShutdown(readers, {
-    clearProgressionLock: (publicationIdentifier) => {
-        __readerWithSamePubIdGotTheLockMap.delete(publicationIdentifier);
-    },
-    closeProgressionSession: closeOpdsProgressionSession,
-    deleteLocalProgressionSnapshot: (windowIdentifier) => {
-        __localProgressionSnapshotMap.delete(windowIdentifier);
-    },
-    deleteReaderWindow: deleteReaderWindowInDi,
-    getProgressionLockOwner: (publicationIdentifier) =>
-        __readerWithSamePubIdGotTheLockMap.get(publicationIdentifier),
-    markReaderClosing: (windowIdentifier) => {
-        __closingReaderWindowIdentifiers.add(windowIdentifier);
-    },
-    unmarkReaderClosing: (windowIdentifier) => {
-        __closingReaderWindowIdentifiers.delete(windowIdentifier);
-    },
-});
-
 export function* winClose(windowIdentifier: string, publicationIdentifier: string) {
 
     debug(`reader windId=${windowIdentifier} -> winClose pubId=${publicationIdentifier}`);
-    if (__closingReaderWindowIdentifiers.has(windowIdentifier)) {
-        debug(`reader winId=${windowIdentifier} close cleanup is already in progress`);
-        return;
-    }
-    __closingReaderWindowIdentifiers.add(windowIdentifier);
+    __opdsProgressionSyncCoordinator.discard(windowIdentifier);
+    __localProgressionSnapshotMap.delete(windowIdentifier);
     const readersBeforeUnregistered = yield* selectTyped((state: RootState) => state.win.session.reader);
     if (!readersBeforeUnregistered[windowIdentifier]) {
         debug("ERROR: reader not found in the session list");
         // return; // continue to clean this broken state
     }
-
-    // Transfer ownership before the closing reader's final network flush. A
-    // different open reader must not lose movement while this PUT is in flight.
+    deleteReaderWindowInDi(windowIdentifier);
     const winIdGotTheLock = __readerWithSamePubIdGotTheLockMap.get(publicationIdentifier);
     if (windowIdentifier === winIdGotTheLock) {
-        const promotedReaderIdentifier = findOpdsProgressionLockCandidate(
-            ObjectValues(readersBeforeUnregistered),
-            publicationIdentifier,
-            __closingReaderWindowIdentifiers,
-        );
-        if (promotedReaderIdentifier) {
-            __readerWithSamePubIdGotTheLockMap.set(publicationIdentifier, promotedReaderIdentifier);
-            yield put(readerActions.setTheLock.build(promotedReaderIdentifier));
-            __opdsProgressionSyncCoordinator.acquireUploadLock(promotedReaderIdentifier);
-            debug(`reader ${promotedReaderIdentifier} got the lock !!!`);
-        } else {
-            __readerWithSamePubIdGotTheLockMap.delete(publicationIdentifier);
-        }
+        __readerWithSamePubIdGotTheLockMap.delete(publicationIdentifier);
     }
-
-    yield* callTyped(() => closeOpdsProgressionSession(windowIdentifier));
-    __localProgressionSnapshotMap.delete(windowIdentifier);
-    deleteReaderWindowInDi(windowIdentifier);
     yield put(winActions.session.unregisterReader.build(windowIdentifier));
     yield put(streamerActions.publicationCloseRequest.build(publicationIdentifier));
 
     // readers in session updated
     const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
-    __closingReaderWindowIdentifiers.delete(windowIdentifier);
-
-    // Concurrent closes can invalidate the optimistic pre-flush handoff. Only
-    // retain a lock owner that survived unregistration and is not also closing.
-    const readersAfterUnregister = ObjectValues(readers);
-    const currentLockOwner = __readerWithSamePubIdGotTheLockMap.get(publicationIdentifier);
-    const currentOwnerSurvived = readersAfterUnregister.some((reader) =>
-        reader.identifier === currentLockOwner
-        && reader.publicationIdentifier === publicationIdentifier
-        && !__closingReaderWindowIdentifiers.has(reader.identifier));
-    if (!currentOwnerSurvived) {
-        const promotedReaderIdentifier = findOpdsProgressionLockCandidate(
-            readersAfterUnregister,
-            publicationIdentifier,
-            __closingReaderWindowIdentifiers,
-        );
-        if (promotedReaderIdentifier) {
-            __readerWithSamePubIdGotTheLockMap.set(publicationIdentifier, promotedReaderIdentifier);
-            yield put(readerActions.setTheLock.build(promotedReaderIdentifier));
-            __opdsProgressionSyncCoordinator.acquireUploadLock(promotedReaderIdentifier);
-            debug(`reader ${promotedReaderIdentifier} got the lock after close revalidation !!!`);
-        } else {
-            __readerWithSamePubIdGotTheLockMap.delete(publicationIdentifier);
-        }
-    }
 
     {
         const readersArray = ObjectValues(readers);
+        const readersWithSamePubId = readersArray.filter(({publicationIdentifier: pubIdFromOtherReader}) => publicationIdentifier === pubIdFromOtherReader);
+        const readerSamePubIdFirstWinId = readersWithSamePubId[0]?.identifier;
+        if (readerSamePubIdFirstWinId) {
+            __readerWithSamePubIdGotTheLockMap.set(publicationIdentifier, readerSamePubIdFirstWinId);
+            yield put(readerActions.setTheLock.build(readerSamePubIdFirstWinId));
+            __opdsProgressionSyncCoordinator.acquireUploadLock(readerSamePubIdFirstWinId);
+            debug(`reader ${readerSamePubIdFirstWinId} got the lock !!!`);
+        }
+
         const keepLibraryWindowInBackgroundOnReaderClose = yield* selectTyped((state: RootState) =>
             settingsKeepLibraryWindowInBackgroundOnReaderCloseIsEnabled(state.settings));
         if (keepLibraryWindowInBackgroundOnReaderClose) {

@@ -10,7 +10,6 @@ import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals
 import type { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 import type { TOpdsProgressionPutDocument } from "readium-desktop/main/services/opdsProgression";
 import {
-    findOpdsProgressionLockCandidate,
     OpdsProgressionSyncCoordinator,
     TOpdsProgressionUploadOutcome,
 } from "readium-desktop/main/services/opdsProgressionSync";
@@ -44,7 +43,7 @@ const successfulUpload = (modified: string, progression = 0.3): TOpdsProgression
 });
 
 interface ICreateCoordinatorOptions {
-    closeWaitMs?: number;
+    canUpload?: (windowIdentifier: string, publicationIdentifier: string) => boolean;
     initialLocator?: MiniLocatorExtended["locator"];
     now?: () => number;
     onUpload?: (
@@ -59,7 +58,7 @@ const createCoordinator = (options: ICreateCoordinatorOptions = {}) => {
     const outcomes = [...(options.outcomes || [])];
     let now = Date.parse("2026-10-01T10:00:00.000Z");
     const coordinator = new OpdsProgressionSyncCoordinator({
-        closeWaitMs: options.closeWaitMs,
+        canUpload: options.canUpload,
         now: options.now || (() => now++),
         upload: async (_url, document) => {
             uploads.push(document);
@@ -105,17 +104,57 @@ describe("OPDS progression PUT coordination", () => {
         jest.useRealTimers();
     });
 
-    it("never promotes a reader that is concurrently closing", () => {
-        const readers = [
-            { identifier: "window-a", publicationIdentifier: "publication-id" },
-            { identifier: "window-b", publicationIdentifier: "publication-id" },
-        ];
-        const closing = new Set(["window-a"]);
+    it("uploads only while the reader owns the publication lock", async () => {
+        let ownsLock = true;
+        const { coordinator, uploads } = createCoordinator({
+            canUpload: () => ownsLock,
+            initialLocator: locator("chapter-1.xhtml", 0.1),
+        });
+        coordinator.completeInitialGet("window-id");
+        coordinator.observeLocator("window-id", locator("chapter-2.xhtml", 0.2), true);
 
-        expect(findOpdsProgressionLockCandidate(readers, "publication-id", closing)).toBe("window-b");
-        closing.add("window-b");
-        expect(findOpdsProgressionLockCandidate(readers, "publication-id", closing)).toBeUndefined();
-        expect(findOpdsProgressionLockCandidate([], "publication-id", closing)).toBeUndefined();
+        // Ownership can change after movement was queued but before the debounce ends.
+        ownsLock = false;
+        await advanceTimers(5000);
+        expect(uploads).toEqual([]);
+        coordinator.observeLocator("window-id", locator("chapter-3.xhtml", 0.4), false);
+        await advanceTimers(5000);
+        expect(uploads).toEqual([]);
+
+        ownsLock = true;
+        coordinator.acquireUploadLock("window-id");
+        await advanceTimers(5000);
+        expect(uploads).toHaveLength(1);
+        expect(uploads[0].progression).toBe(0.6);
+    });
+
+    it("cancels pending uploads when the reader is discarded", async () => {
+        const { coordinator, uploads } = createCoordinator({
+            initialLocator: locator("chapter-1.xhtml", 0.1),
+        });
+        coordinator.completeInitialGet("window-id");
+        coordinator.observeLocator("window-id", locator("chapter-2.xhtml", 0.2), true);
+        coordinator.discard("window-id");
+        await advanceTimers(5000);
+        expect(uploads).toEqual([]);
+        expect(jest.getTimerCount()).toBe(0);
+    });
+
+    it("does not retry an in-flight PUT after the reader is discarded", async () => {
+        const response = deferred<TOpdsProgressionUploadOutcome>();
+        const { coordinator, uploads } = createCoordinator({
+            initialLocator: locator("chapter-1.xhtml", 0.1),
+            onUpload: () => response.promise,
+        });
+        coordinator.completeInitialGet("window-id");
+        coordinator.observeLocator("window-id", locator("chapter-2.xhtml", 0.2), true);
+        await advanceTimers(5000);
+        expect(uploads).toHaveLength(1);
+        coordinator.discard("window-id");
+        response.resolve("retry");
+        await advanceTimers(5000);
+        expect(uploads).toHaveLength(1);
+        expect(jest.getTimerCount()).toBe(0);
     });
 
     it("uses the first valid navigator position as hydration when no locator was persisted", async () => {
@@ -293,6 +332,80 @@ describe("OPDS progression PUT coordination", () => {
         expect(uploads[0].progression).toBe(0.55);
     });
 
+    it("shares pending upload state without allowing another reader's dialog to clear it", async () => {
+        const { coordinator, uploads } = createCoordinator({
+            initialLocator: locator("chapter-1.xhtml", 0.1),
+        });
+        coordinator.register({ ...registration, windowIdentifier: "window-b" });
+        coordinator.completeInitialGet("window-id");
+        coordinator.observeLocator("window-id", locator("chapter-2.xhtml", 0.2), true);
+        expect(coordinator.hasPending("window-b")).toBe(true);
+
+        coordinator.beginRemoteReconciliation("window-b", 0.8);
+        coordinator.resolveRemoteReconciliation("window-b", true);
+        coordinator.discard("window-b");
+        await advanceTimers(5000);
+        expect(uploads).toHaveLength(1);
+        expect(uploads[0].progression).toBe(0.3);
+    });
+
+    it("does not echo a remote position accepted before acquiring the lock", async () => {
+        const { coordinator, uploads } = createCoordinator({
+            initialLocator: locator("chapter-1.xhtml", 0.1),
+        });
+        coordinator.register({ ...registration, windowIdentifier: "window-b" });
+        coordinator.beginRemoteReconciliation("window-b", 0.8);
+        coordinator.resolveRemoteReconciliation("window-b", true);
+        coordinator.observeLocator("window-b", locator("chapter-4.xhtml", 0.2), false);
+        coordinator.discard("window-id");
+        coordinator.acquireUploadLock("window-b");
+        await advanceTimers(5000);
+        expect(uploads).toEqual([]);
+
+        coordinator.observeLocator("window-b", locator("chapter-4.xhtml", 0.4), true);
+        await advanceTimers(5000);
+        expect(uploads).toHaveLength(1);
+        expect(uploads[0].progression).toBe(0.85);
+    });
+
+    it("replaces the old owner's pending position when the lock changes", async () => {
+        const { coordinator, uploads } = createCoordinator({
+            initialLocator: locator("chapter-1.xhtml", 0.1),
+        });
+        coordinator.register({ ...registration, windowIdentifier: "window-b" });
+        coordinator.completeInitialGet("window-id");
+        coordinator.completeInitialGet("window-b");
+        coordinator.observeLocator("window-id", locator("chapter-2.xhtml", 0.2), true);
+        coordinator.observeLocator("window-b", locator("chapter-3.xhtml", 0.4), false);
+        coordinator.acquireUploadLock("window-b");
+        coordinator.discard("window-id");
+
+        await advanceTimers(5000);
+        expect(uploads).toHaveLength(1);
+        expect(uploads[0].progression).toBe(0.6);
+    });
+
+    it("does not retry the old owner's request after handoff during an upload", async () => {
+        const response = deferred<TOpdsProgressionUploadOutcome>();
+        const { coordinator, uploads } = createCoordinator({
+            initialLocator: locator("chapter-1.xhtml", 0.1),
+            onUpload: (document, count) =>
+                count === 1 ? response.promise : successfulUpload(document.modified, document.progression),
+        });
+        coordinator.register({ ...registration, windowIdentifier: "window-b" });
+        coordinator.completeInitialGet("window-id");
+        coordinator.completeInitialGet("window-b");
+        coordinator.observeLocator("window-id", locator("chapter-2.xhtml", 0.2), true);
+        await advanceTimers(5000);
+        coordinator.observeLocator("window-b", locator("chapter-3.xhtml", 0.4), false);
+        coordinator.acquireUploadLock("window-b");
+        coordinator.discard("window-id");
+        response.resolve("retry");
+        await advanceTimers(5000);
+
+        expect(uploads.map((document) => document.progression)).toEqual([0.3, 0.6]);
+    });
+
     it("uses one monotonic timestamp floor across readers sharing a progression resource", async () => {
         const fixedNow = Date.parse("2026-10-01T10:00:00.000Z");
         const { coordinator, uploads } = createCoordinator({
@@ -398,7 +511,7 @@ describe("OPDS progression PUT coordination", () => {
         expect(Date.parse(uploads[1].modified)).toBe(Date.parse(canonicalModified) + 1);
     });
 
-    it("serializes same-resource uploads and rebases the waiting sibling", async () => {
+    it("serializes different publications sharing an endpoint and rebases the waiting upload", async () => {
         const firstUpload = deferred<TOpdsProgressionUploadOutcome>();
         const fixedNow = Date.parse("2026-10-01T10:00:00.000Z");
         // The second candidate is preallocated fixedNow + 1 before it waits.
@@ -418,6 +531,7 @@ describe("OPDS progression PUT coordination", () => {
             ...registration,
             initialLocator: locator("chapter-1.xhtml", 0.1),
             windowIdentifier: "window-b",
+            publicationIdentifier: "another-publication",
         });
         coordinator.completeInitialGet("window-id");
         coordinator.completeInitialGet("window-b");
@@ -512,26 +626,6 @@ describe("OPDS progression PUT coordination", () => {
         expect(coordinator.hasPending("window-id")).toBe(false);
     });
 
-    it("does not loop a held authentication candidate during close", async () => {
-        const { coordinator, uploads } = createCoordinator({
-            initialLocator: locator("chapter-1.xhtml", 0.1),
-            outcomes: [
-                {
-                    kind: "hold",
-                    authenticationUrl: "https://auth.example.org/progression",
-                },
-            ],
-        });
-        coordinator.completeInitialGet("window-id");
-        coordinator.observeLocator("window-id", locator("chapter-2.xhtml", 0.2), true);
-        await advanceTimers(5000);
-
-        await coordinator.close("window-id");
-
-        expect(uploads).toHaveLength(1);
-        expect(coordinator.hasPending("window-id")).toBe(false);
-    });
-
     it("disables all later uploads after a session-fatal outcome", async () => {
         const { coordinator, uploads } = createCoordinator({
             initialLocator: locator("chapter-1.xhtml", 0.1),
@@ -547,7 +641,7 @@ describe("OPDS progression PUT coordination", () => {
         expect(uploads).toHaveLength(1);
     });
 
-    it("retries once, retains an exhausted candidate, and gives it one final close attempt", async () => {
+    it("retries once and cancels the exhausted candidate when discarded", async () => {
         const { coordinator, uploads } = createCoordinator({
             initialLocator: locator("chapter-1.xhtml", 0.1),
             outcomes: ["retry", "retry", "retry", successfulUpload("2026-10-01T10:00:00.000Z")],
@@ -568,110 +662,9 @@ describe("OPDS progression PUT coordination", () => {
         await advanceTimers(10_000);
         expect(uploads).toHaveLength(2);
 
-        await coordinator.close("window-id");
-        expect(uploads).toHaveLength(3);
-        expect(uploads[2]).toEqual(uploads[1]);
-        expect(coordinator.hasPending("window-id")).toBe(false);
-    });
-
-    it("waits for initial reconciliation before closing and drains immediately when released", async () => {
-        const { coordinator, uploads } = createCoordinator({
-            closeWaitMs: 200,
-            initialLocator: locator("chapter-1.xhtml", 0.1),
-        });
-        coordinator.observeLocator("window-id", locator("chapter-4.xhtml", 0.8), true);
-
-        let settled = false;
-        const closePromise = coordinator.close("window-id").then(() => {
-            settled = true;
-        });
-        await Promise.resolve();
-        expect(settled).toBe(false);
-        expect(uploads).toEqual([]);
-
-        coordinator.completeInitialGet("window-id");
-        await closePromise;
-
-        expect(uploads).toHaveLength(1);
-        expect(uploads[0].progression).toBe(0.95);
-        expect(settled).toBe(true);
-    });
-
-    it("waits for an explicit remote rejection before draining on close", async () => {
-        const { coordinator, uploads } = createCoordinator({
-            closeWaitMs: 200,
-            initialLocator: locator("chapter-1.xhtml", 0.1),
-        });
-        coordinator.observeLocator("window-id", locator("chapter-2.xhtml", 0.2), true);
-        coordinator.beginRemoteReconciliation("window-id", 0.8);
-
-        const closePromise = coordinator.close("window-id");
-        await Promise.resolve();
-        expect(uploads).toEqual([]);
-
-        coordinator.resolveRemoteReconciliation("window-id", false);
-        await closePromise;
-
-        expect(uploads).toHaveLength(1);
-        expect(uploads[0].progression).toBe(0.3);
-    });
-
-    it("bounds close while an initial reconciliation remains unresolved", async () => {
-        const { coordinator, uploads } = createCoordinator({
-            closeWaitMs: 200,
-            initialLocator: locator("chapter-1.xhtml", 0.1),
-        });
-        coordinator.observeLocator("window-id", locator("chapter-2.xhtml", 0.2), true);
-
-        let settled = false;
-        const closePromise = coordinator.close("window-id").then(() => {
-            settled = true;
-        });
-        await advanceTimers(199);
-        expect(settled).toBe(false);
-        await advanceTimers(1);
-        await closePromise;
-
-        expect(settled).toBe(true);
-        expect(uploads).toEqual([]);
-    });
-
-    it("closes immediately while GET is pending when there is nothing to upload", async () => {
-        const { coordinator, uploads } = createCoordinator({ closeWaitMs: 7000 });
-
-        let settled = false;
-        await coordinator.close("window-id").then(() => {
-            settled = true;
-        });
-
-        expect(settled).toBe(true);
-        expect(uploads).toEqual([]);
-        expect(jest.getTimerCount()).toBe(0);
-    });
-
-    it("drains a newer in-flight candidate and retries it synchronously during close", async () => {
-        const firstUpload = deferred<TOpdsProgressionUploadOutcome>();
-        const { coordinator, uploads } = createCoordinator({
-            initialLocator: locator("chapter-1.xhtml", 0.1),
-            onUpload: (_document, uploadNumber) => {
-                if (uploadNumber === 1) {
-                    return firstUpload.promise;
-                }
-                return uploadNumber === 2 ? "retry" : successfulUpload(_document.modified, _document.progression);
-            },
-        });
-        coordinator.completeInitialGet("window-id");
-        coordinator.observeLocator("window-id", locator("chapter-2.xhtml", 0.2), true);
-
-        const closePromise = coordinator.close("window-id");
-        expect(uploads).toHaveLength(1);
-
-        coordinator.observeLocator("window-id", locator("chapter-3.xhtml", 0.2), true);
-        firstUpload.resolve("retry");
-        await closePromise;
-
-        expect(uploads.map(({ progression }) => progression)).toEqual([0.3, 0.55, 0.55]);
-        expect(uploads[2]).toEqual(uploads[1]);
+        coordinator.discard("window-id");
+        await advanceTimers(10_000);
+        expect(uploads).toHaveLength(2);
         expect(coordinator.hasPending("window-id")).toBe(false);
     });
 });
