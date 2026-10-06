@@ -9,7 +9,7 @@ import debug_ from "debug";
 import * as fs from "node:fs";
 import * as path from "node:path";
 
-import { IStreamAndLength, IZip, Zip } from "./zip";
+import { IStreamAndLength, IZip, IZipEntryMetadata, Zip } from "./zip";
 
 // import * as filehound from "filehound";
 // import { bufferToStream } from "../stream/BufferUtils";
@@ -87,6 +87,22 @@ export class ZipExploded extends Zip {
             // debug(deepFiles);
             resolve(deepFiles);
         });
+    }
+
+    public entryMetadata(entryPath: string): IZipEntryMetadata | undefined {
+        if (!this.hasEntry(entryPath)) {
+            return undefined;
+        }
+
+        const stats = fs.lstatSync(path.join(this.dirPath, entryPath));
+        if (!stats.isFile()) {
+            return undefined;
+        }
+
+        return {
+            entryLength: stats.size,
+            isEntryCompressed: false,
+        };
     }
 
     public async entryStreamPromise(entryPath: string): Promise<IStreamAndLength> {

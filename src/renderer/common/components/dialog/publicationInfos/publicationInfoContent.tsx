@@ -42,6 +42,9 @@ import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
+import {
+    createReadiumPositionIndex, getReadiumPositionProgression, isEpubPositionListPublication,
+} from "readium-desktop/common/readium/positions";
 
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { PublicationInfoA11y2 } from "./PublicationInfoA11y2";
@@ -110,8 +113,14 @@ const Progression = (props: {
         }
     }, [focusWhereAmI]);
     const [__] = useTranslator();
+    const readiumPositionIndex = React.useMemo(() =>
+        r2Publication && isEpubPositionListPublication(r2Publication) ?
+            createReadiumPositionIndex(r2Publication) : undefined,
+    [r2Publication]);
+    const readiumPositionProgression = locatorExt?.locator ?
+        getReadiumPositionProgression(locatorExt.locator, readiumPositionIndex) : undefined;
 
-    if (typeof locatorExt?.locator?.locations?.progression === "number") {
+    if (typeof locatorExt?.locator?.locations?.progression === "number" || readiumPositionProgression) {
 
         // try/catch until the code is cleaned-up!
         // (Audiobooks, PDF, Divina, EPUB FXL and reflow ... page number vs. string types)
@@ -220,10 +229,19 @@ const Progression = (props: {
 
         } else if (r2Publication?.Spine && locatorExt.locator?.href) {
 
-            const spineIndex = r2Publication.Spine.findIndex((l) => {
-                return l.Href === locatorExt.locator.href;
-            });
+            const readiumSpineIndex = readiumPositionProgression ?
+                readiumPositionIndex?.resources.findIndex((resource) =>
+                    resource.firstPosition === readiumPositionProgression.firstPosition) : undefined;
+            const spineIndex = typeof readiumSpineIndex === "number" && readiumSpineIndex >= 0 ?
+                readiumSpineIndex : r2Publication.Spine.findIndex((l) => l.Href === locatorExt.locator.href);
             if (spineIndex >= 0) {
+                const localProgression = typeof locatorExt.locator.locations.progression === "number" &&
+                    Number.isFinite(locatorExt.locator.locations.progression) ?
+                    Math.min(1, Math.max(0, locatorExt.locator.locations.progression)) :
+                    readiumPositionProgression ?
+                        (readiumPositionProgression.position - readiumPositionProgression.firstPosition) /
+                            (readiumPositionProgression.lastPosition - readiumPositionProgression.firstPosition + 1) : 0;
+
                 if (isFixedLayoutPublication) {
                     const pageNum = spineIndex + 1;
                     const totalPages = r2Publication.Spine.length;
@@ -247,9 +265,7 @@ const Progression = (props: {
                         txtPagination = __("reader.navigation.currentPage", { current: epubPage });
                     }
 
-                    // no virtual global .position in the current implementation,
-                    // just local percentage .progression (current reading order item)
-                    const percent = Math.round(locatorExt.locator.locations.progression * 100);
+                    const percent = Math.round(localProgression * 100);
                     txtProgression = `${spineIndex + 1}/${r2Publication.Spine.length}${locatorExt.locator.title ? ` (${locatorExt.locator.title})` : ""} [${percent}%]`;
 
                     if (locatorExt.headings && manifestUrlR2Protocol && handleLinkUrl) { // focusWhereAmI
