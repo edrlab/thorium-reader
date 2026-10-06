@@ -1333,7 +1333,7 @@
             }
         },
         "tabs": {
-            "appearance": "外觀",
+            "advanced": "",
             "general": "一般",
             "keyboardShortcuts": "鍵盤快捷鍵",
             "profiles": "",

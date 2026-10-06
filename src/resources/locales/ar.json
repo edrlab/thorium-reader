@@ -1381,7 +1381,7 @@
             }
         },
         "tabs": {
-            "appearance": "المظهر",
+            "advanced": "",
             "general": "عام",
             "keyboardShortcuts": "اختصارات لوحة المفاتيح",
             "profiles": "الملفات الشخصية",

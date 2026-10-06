@@ -2,7 +2,11 @@ import { describe, expect, it } from "@jest/globals";
 
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { File } from "readium-desktop/common/models/file";
-import { buildPublicationFilesDocumentPatch } from "readium-desktop/main/tools/publicationDocument";
+import type { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
+import {
+    buildOpdsPublicationDocumentPatch,
+    buildPublicationFilesDocumentPatch,
+} from "readium-desktop/main/tools/publicationDocument";
 
 const publicationFile = (url: string, contentType: string, ext: string): File => ({
     contentType,
@@ -64,6 +68,39 @@ describe("publicationDocument", () => {
             coverFile: cover,
             customCover: undefined,
             files: [book],
+        });
+    });
+
+    it("persists the complete OPDS publication view with its acquisition identity", () => {
+        const link: IOpdsLinkView = {
+            url: "https://example.com/publication.epub",
+            type: "application/epub+zip",
+        };
+        const opdsPublication: IOpdsPublicationView = {
+            baseUrl: "https://example.com/catalog.json",
+            documentTitle: "An OPDS publication",
+            authorsLangString: [],
+            workIdentifier: "work-id",
+            numberOfPages: 0,
+            catalogLinkView: [],
+            opdsPublicationStringified: JSON.stringify({ metadata: { identifier: "work-id" } }),
+            progressionLink: { url: "https://example.com/progression", type: "application/json" },
+            selfLink: {
+                url: "https://example.com/publication.json",
+                type: "application/opds-publication+json",
+            },
+        };
+
+        expect(buildOpdsPublicationDocumentPatch(link, opdsPublication)).toEqual({
+            opdsPublicationStringified: opdsPublication.opdsPublicationStringified,
+            opdsPublicationView: opdsPublication,
+            opdsPublication: {
+                url: link.url,
+                type: link.type,
+                selfLinkUrl: opdsPublication.selfLink.url,
+                identifier: opdsPublication.workIdentifier,
+                progressionLink: opdsPublication.progressionLink,
+            },
         });
     });
 });

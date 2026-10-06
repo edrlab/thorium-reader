@@ -1354,7 +1354,7 @@
             }
         },
         "tabs": {
-            "appearance": "Aspetto",
+            "advanced": "",
             "general": "Generale",
             "keyboardShortcuts": "Scorciatoie da tastiera",
             "profiles": "Profili",

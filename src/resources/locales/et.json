@@ -1345,7 +1345,7 @@
             }
         },
         "tabs": {
-            "appearance": "Välimus",
+            "advanced": "",
             "general": "Üldseadistused",
             "keyboardShortcuts": "Klaviatuuri kiirklahvid",
             "profiles": "Profiilid",
