@@ -44,7 +44,7 @@ export const TagButton: React.FC<React.PropsWithChildren<IProps>> = (props) => {
         tagString = tag.name;
     }
 
-    if (pubId && onClickDeleteCb) {
+    if (pubId && onClickDeleteCb && typeof index === "number") {
         button = (
             <>
                 <Link
