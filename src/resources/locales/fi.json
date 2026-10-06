@@ -1342,7 +1342,7 @@
             }
         },
         "tabs": {
-            "appearance": "Ulkoasu",
+            "advanced": "",
             "general": "Yleiset",
             "keyboardShortcuts": "Pikanäppäimet",
             "profiles": "Profiilit",

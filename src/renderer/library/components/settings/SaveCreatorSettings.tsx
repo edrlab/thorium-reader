@@ -47,7 +47,7 @@ const SaveCreatorSettings: React.FC<{}> = () => {
     }, [name, type, creator, onChangeDebounced]);
 
     return (
-        <section className={stylesSettings.section} style={{ position: "relative" }}>
+        <section style={{ position: "relative" }}>
             <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.annotationCreator.creator")}</h3>
             <div className={stylesSettings.session_text} style={{ margin: "0" }}>
                 <SVG ariaHidden svg={InfoIcon} />

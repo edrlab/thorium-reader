@@ -1342,7 +1342,7 @@
             }
         },
         "tabs": {
-            "appearance": "Verschijning",
+            "advanced": "",
             "general": "Algemeen",
             "keyboardShortcuts": "Toetsenbord sneltoetsen",
             "profiles": "Profielen",

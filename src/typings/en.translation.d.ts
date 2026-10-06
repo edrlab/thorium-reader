@@ -2964,7 +2964,7 @@ declare namespace typed_i18n {
     }
   },
   readonly "tabs": {
-    readonly "appearance": string,
+    readonly "advanced": string,
     readonly "general": string,
     readonly "keyboardShortcuts": string,
     readonly "profiles": string,
@@ -3941,13 +3941,13 @@ declare namespace typed_i18n {
   (_: "settings.storage.recovery.recoverableCount", __?: {}): string;
   (_: "settings.storage.recovery.title", __?: {}): string;
   (_: "settings.tabs", __?: {}): {
-  readonly "appearance": string,
+  readonly "advanced": string,
   readonly "general": string,
   readonly "keyboardShortcuts": string,
   readonly "profiles": string,
   readonly "storage": string
 };
-  (_: "settings.tabs.appearance", __?: {}): string;
+  (_: "settings.tabs.advanced", __?: {}): string;
   (_: "settings.tabs.general", __?: {}): string;
   (_: "settings.tabs.keyboardShortcuts", __?: {}): string;
   (_: "settings.tabs.profiles", __?: {}): string;

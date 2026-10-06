@@ -1360,7 +1360,7 @@
             }
         },
         "tabs": {
-            "appearance": "Wygląd",
+            "advanced": "",
             "general": "Ogólne",
             "keyboardShortcuts": "Skróty klawiszowe",
             "profiles": "Profile",

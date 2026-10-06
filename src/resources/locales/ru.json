@@ -1360,7 +1360,7 @@
             }
         },
         "tabs": {
-            "appearance": "Внешний вид",
+            "advanced": "",
             "general": "Общие",
             "keyboardShortcuts": "Горячие клавиши",
             "profiles": "Профили",

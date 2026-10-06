@@ -1360,7 +1360,7 @@
             }
         },
         "tabs": {
-            "appearance": "Išvaizda",
+            "advanced": "",
             "general": "Bendros",
             "keyboardShortcuts": "Spartieji klavišai",
             "profiles": "Profiliai",

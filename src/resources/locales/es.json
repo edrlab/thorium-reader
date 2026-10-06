@@ -1351,7 +1351,7 @@
             }
         },
         "tabs": {
-            "appearance": "Aspecto visual",
+            "advanced": "",
             "general": "General",
             "keyboardShortcuts": "Atajos de teclado",
             "profiles": "Perfiles",
