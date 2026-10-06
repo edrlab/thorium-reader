@@ -6,7 +6,7 @@ This project is a loopback-only OPDS 2 server for manually exercising Thorium's 
 
 From the repository root:
 
-```powershell
+```sh
 node projects/opds-progression/server.mjs
 ```
 
@@ -18,7 +18,7 @@ http://127.0.0.1:4873/opds/v2/catalog.json
 
 Pass a port as the first argument to use another one:
 
-```powershell
+```sh
 node projects/opds-progression/server.mjs 5000
 ```
 
@@ -32,12 +32,10 @@ The server binds only to `127.0.0.1`. Stop it with `Ctrl+C`.
 4. Open it, navigate to a local position, and close the reader. This establishes a local locator timestamp.
 5. Set a newer remote progression while the reader is closed. Omitting `modified` makes the server use the current UTC time:
 
-    ```powershell
-    Invoke-RestMethod `
-      -Method Put `
-      -ContentType "application/json" `
-      -Uri "http://127.0.0.1:4873/__test/state" `
-      -Body '{"progression":0.625,"title":"Remote reading position"}'
+    ```sh
+    curl --request PUT 'http://127.0.0.1:4873/__test/state' \
+      --header 'Content-Type: application/json' \
+      --data '{"progression":0.625,"title":"Remote reading position"}'
     ```
 
 6. Reopen the publication. Thorium should retrieve the newer document without delaying reader startup and offer to use the remote position.
@@ -57,34 +55,30 @@ A missing header returns `406`, making incorrect MVP requests visible during man
 
 Inspect the current response state and request counters:
 
-```powershell
-Invoke-RestMethod http://127.0.0.1:4873/__test/state
+```sh
+curl 'http://127.0.0.1:4873/__test/state'
 ```
 
 Set the float, title, and optionally an explicit ISO 8601 modification time:
 
-```powershell
-Invoke-RestMethod `
-  -Method Put `
-  -ContentType "application/json" `
-  -Uri "http://127.0.0.1:4873/__test/state" `
-  -Body '{"progression":0.875,"modified":"2040-01-02T03:04:05.000Z","title":"Updated remote reading position"}'
+```sh
+curl --request PUT 'http://127.0.0.1:4873/__test/state' \
+  --header 'Content-Type: application/json' \
+  --data '{"progression":0.875,"modified":"2040-01-02T03:04:05.000Z","title":"Updated remote reading position"}'
 ```
 
 Simulate a successful `200 OK` with an empty payload:
 
-```powershell
-Invoke-RestMethod `
-  -Method Put `
-  -ContentType "application/json" `
-  -Uri "http://127.0.0.1:4873/__test/state" `
-  -Body '{"empty":true}'
+```sh
+curl --request PUT 'http://127.0.0.1:4873/__test/state' \
+  --header 'Content-Type: application/json' \
+  --data '{"empty":true}'
 ```
 
 Reset the document and request counters:
 
-```powershell
-Invoke-RestMethod -Method Post http://127.0.0.1:4873/__test/reset
+```sh
+curl --request POST 'http://127.0.0.1:4873/__test/reset'
 ```
 
 Invalid, non-finite, negative, or greater-than-one progression values are rejected with `400 Bad Request`. The progression resource itself is GET-only; PUT returns `405 Method Not Allowed` because uploads are outside this MVP.
@@ -103,7 +97,7 @@ Invalid, non-finite, negative, or greater-than-one progression values are reject
 
 Run the server tests from the repository root:
 
-```powershell
+```sh
 node --test projects/opds-progression/server.test.mjs
 ```
 
@@ -113,8 +107,8 @@ They verify the feed contract, relative-link resolution, EPUB download and byte 
 
 The checked-in `fixtures/accessible_epub_3.epub` is the unchanged release asset from the [EPUB 3 Samples project](https://github.com/IDPF/epub3-samples/releases/download/20230704/accessible_epub_3.epub). It is kept locally so the end-to-end fixture does not depend on network access.
 
-```powershell
-Get-FileHash projects/opds-progression/fixtures/accessible_epub_3.epub -Algorithm SHA256
+```sh
+sha256sum projects/opds-progression/fixtures/accessible_epub_3.epub
 ```
 
 The expected SHA-256 is `67F75B8E3CD1ABE4BB143D91D5424191D5AF3115C9D26FF029A38E19F8D16FEB`. See `fixtures/NOTICE.md` for provenance, attribution, and licensing information.
