@@ -26,6 +26,17 @@ permissions:
     repository-projects: none
     security-events: none
     statuses: none
+
+# https://docs.github.com/en/actions/reference/workflows-and-actions/dependency-caching#defaults
+# Explicit workflow-level cache directive, honored by job/step-level 'actions/cache'.
+# This GitHub Actions workflow has a trusted trigger via account-level ruleset,
+# and the key job is gated by a deploy environment requiring approval.
+# Note that this workflow disables 'actions/setup-node' automatic caching,
+# instead 'actions/cache' is configured and invoked (restore point explicit, save via post-jobs hook)
+# in order to enable caching of NPM packages and Electron binaries.
+# The cache key is specific to this "PR" (pull request) workflow, different from "continuous" integration and deployment (develop branch push) and "release" (version tag push).
+cache-mode: write
+
 jobs:
   approval_job:
 # github.event.pull_request.head.repo.fork

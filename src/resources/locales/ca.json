@@ -148,10 +148,13 @@
         "annotations": {
             "descAuthor": "",
             "descCreator": "",
+            "descList_many": "",
             "descList_one": "",
             "descList_other": "",
+            "descNewer_many": "",
             "descNewer_one": "",
             "descNewer_other": "",
+            "descOlder_many": "",
             "descOlder_one": "",
             "descOlder_other": "",
             "descTitle": "",
@@ -170,9 +173,11 @@
             }
         },
         "deleteAnnotations": "Eliminar les anotacions?",
+        "deleteAnnotationsText_many": "",
         "deleteAnnotationsText_one": "Esteu segurs que voleu eliminar {{- count}} nota?",
         "deleteAnnotationsText_other": "Esteu segurs que voleu eliminar {{- count}} notes?",
         "deleteBookmarks": "Eliminar els preferits?",
+        "deleteBookmarksText_many": "",
         "deleteBookmarksText_one": "Esteu segurs que voleu eliminar {{- count}} preferit?",
         "deleteBookmarksText_other": "Esteu segurs que voleu eliminar {{- count}} preferits?",
         "deleteFeed": "Eliminar el catàleg?",
@@ -270,6 +275,7 @@
         "storage": {
             "recovery": {
                 "failure": "",
+                "success_many": "",
                 "success_one": "",
                 "success_other": ""
             },
@@ -846,6 +852,7 @@
         },
         "picker": {
             "search": {
+                "founds_many": "",
                 "founds_one": "{{- count}} trobat/s",
                 "founds_other": "{{- count}} trobat/s",
                 "input": "text de cerca",
@@ -1331,18 +1338,20 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description_many": "",
                     "description_one": "",
                     "description_other": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount_many": "",
                 "recoverableCount_one": "",
                 "recoverableCount_other": "",
                 "title": ""
             }
         },
         "tabs": {
-            "appearance": "Aparença",
+            "advanced": "",
             "general": "General",
             "keyboardShortcuts": "Dreceres del teclat",
             "profiles": "",

@@ -42,6 +42,9 @@ import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
+import {
+    createReadiumPositionIndex, getReadiumPositionProgression, isEpubPositionListPublication,
+} from "readium-desktop/common/readium/positions";
 
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { PublicationInfoA11y2 } from "./PublicationInfoA11y2";
@@ -60,13 +63,13 @@ export interface IProps {
     pdfPlayerNumberOfPages: number | undefined; // super hacky :(
     divinaNumberOfPages: number | undefined; // super hacky :(
     divinaContinousEqualTrue: boolean;
-    readerReadingLocation: MiniLocatorExtended;
+    readerReadingLocation: MiniLocatorExtended | undefined;
     onClickLinkCb?: (tag: IOpdsContributorView) => () => void | undefined;
     closeDialogCb: () => void;
 }
 
 const Duration = (props: {
-    duration: number;
+    duration: number | undefined;
     __: I18nFunction;
 }) => {
 
@@ -94,7 +97,7 @@ const Progression = (props: {
     r2Publication: R2Publication | null,
     manifestUrlR2Protocol: string | null,
     handleLinkUrl: ((url: string) => void) | undefined;
-    locatorExt: MiniLocatorExtended,
+    locatorExt: MiniLocatorExtended | undefined,
     focusWhereAmI: boolean,
     pdfPlayerNumberOfPages: number | undefined, // super hacky :(
     divinaNumberOfPages: number | undefined, // super hacky :(
@@ -110,18 +113,30 @@ const Progression = (props: {
         }
     }, [focusWhereAmI]);
     const [__] = useTranslator();
+    const readiumPositionIndex = React.useMemo(() =>
+        r2Publication && isEpubPositionListPublication(r2Publication) ?
+            createReadiumPositionIndex(r2Publication) : undefined,
+    [r2Publication]);
+    const readiumPositionProgression = locatorExt?.locator ?
+        getReadiumPositionProgression(locatorExt.locator, readiumPositionIndex) : undefined;
 
-    if (typeof locatorExt?.locator?.locations?.progression === "number") {
+    if (typeof locatorExt?.locator?.locations?.progression === "number" || readiumPositionProgression) {
 
         // try/catch until the code is cleaned-up!
         // (Audiobooks, PDF, Divina, EPUB FXL and reflow ... page number vs. string types)
         try {
 
-            const isAudio = locatorExt.audioPlaybackInfo
+            const audioPlaybackInfo = locatorExt.audioPlaybackInfo;
+            const globalTime = audioPlaybackInfo?.globalTime;
+            const globalDuration = audioPlaybackInfo?.globalDuration;
+            const locatorPosition = locatorExt.locator.locations.position;
+            const isAudio = audioPlaybackInfo
                 // total duration can be undefined with badly-constructed publications,
                 // for example we found some LibriVox W3C LPF audiobooks missing duration property on reading order resources
-                && locatorExt.audioPlaybackInfo.globalDuration
-                && typeof locatorExt.locator.locations.position === "number"; // .progression is local to audio item in reading order playlist
+                && typeof globalTime === "number"
+                && typeof globalDuration === "number"
+                && globalDuration > 0
+                && typeof locatorPosition === "number"; // .progression is local to audio item in reading order playlist
 
             const isDivina = r2Publication && isDivinaFn(r2Publication);
             const isPdf = r2Publication && isPdfFn(r2Publication);
@@ -135,12 +150,13 @@ const Progression = (props: {
             let txtHeadings: JSX.Element | undefined;
 
         if (isAudio) {
-            const percent = Math.round(locatorExt.locator.locations.position * 100);
+            const percent = Math.round(locatorPosition * 100);
             // const p = Math.round(100 * (locatorExt.audioPlaybackInfo.globalTime / locatorExt.audioPlaybackInfo.globalDuration));
-            txtProgression = `${percent}% [${formatTime(Math.round(locatorExt.audioPlaybackInfo.globalTime))} / ${formatTime(Math.round(locatorExt.audioPlaybackInfo.globalDuration))}]`;
+            txtProgression = `${percent}% [${formatTime(Math.round(globalTime))} / ${formatTime(Math.round(globalDuration))}]`;
         } else if (isDivina) {
             // console.log("----- ".repeat(100), divinaNumberOfPages, r2Publication?.Spine?.length);
-            let totalPages = (divinaNumberOfPages && !divinaContinousEqualTrue) ? divinaNumberOfPages : (r2Publication?.Spine?.length ? r2Publication.Spine.length : undefined);
+            const spineLength = r2Publication?.Spine?.length;
+            let totalPages = (divinaNumberOfPages && !divinaContinousEqualTrue) ? divinaNumberOfPages : spineLength;
             if (typeof totalPages === "string") {
                 try {
                     totalPages = parseInt(totalPages, 10);
@@ -149,9 +165,11 @@ const Progression = (props: {
                 }
             }
 
-            let pageNum = !divinaContinousEqualTrue ?
-                (locatorExt.locator.locations.position || 0) :
-                (Math.floor(locatorExt.locator.locations.progression * r2Publication.Spine.length) - 1);
+            let pageNum = !divinaContinousEqualTrue
+                ? (locatorPosition || 0)
+                : spineLength
+                    ? (Math.floor(locatorExt.locator.locations.progression * spineLength) - 1)
+                    : undefined;
             if (typeof pageNum === "string") {
                 try {
                     pageNum = parseInt(pageNum, 10) + 1;
@@ -211,10 +229,19 @@ const Progression = (props: {
 
         } else if (r2Publication?.Spine && locatorExt.locator?.href) {
 
-            const spineIndex = r2Publication.Spine.findIndex((l) => {
-                return l.Href === locatorExt.locator.href;
-            });
+            const readiumSpineIndex = readiumPositionProgression ?
+                readiumPositionIndex?.resources.findIndex((resource) =>
+                    resource.firstPosition === readiumPositionProgression.firstPosition) : undefined;
+            const spineIndex = typeof readiumSpineIndex === "number" && readiumSpineIndex >= 0 ?
+                readiumSpineIndex : r2Publication.Spine.findIndex((l) => l.Href === locatorExt.locator.href);
             if (spineIndex >= 0) {
+                const localProgression = typeof locatorExt.locator.locations.progression === "number" &&
+                    Number.isFinite(locatorExt.locator.locations.progression) ?
+                    Math.min(1, Math.max(0, locatorExt.locator.locations.progression)) :
+                    readiumPositionProgression ?
+                        (readiumPositionProgression.position - readiumPositionProgression.firstPosition) /
+                            (readiumPositionProgression.lastPosition - readiumPositionProgression.firstPosition + 1) : 0;
+
                 if (isFixedLayoutPublication) {
                     const pageNum = spineIndex + 1;
                     const totalPages = r2Publication.Spine.length;
@@ -238,12 +265,10 @@ const Progression = (props: {
                         txtPagination = __("reader.navigation.currentPage", { current: epubPage });
                     }
 
-                    // no virtual global .position in the current implementation,
-                    // just local percentage .progression (current reading order item)
-                    const percent = Math.round(locatorExt.locator.locations.progression * 100);
+                    const percent = Math.round(localProgression * 100);
                     txtProgression = `${spineIndex + 1}/${r2Publication.Spine.length}${locatorExt.locator.title ? ` (${locatorExt.locator.title})` : ""} [${percent}%]`;
 
-                    if (locatorExt.headings && manifestUrlR2Protocol) { // focusWhereAmI
+                    if (locatorExt.headings && manifestUrlR2Protocol && handleLinkUrl) { // focusWhereAmI
 
                         let rank = 999;
                         const hs = locatorExt.headings.filter((h, _i) => {

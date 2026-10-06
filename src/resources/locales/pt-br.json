@@ -148,10 +148,13 @@
         "annotations": {
             "descAuthor": "por '{{- author}} '",
             "descCreator": "criado por",
+            "descList_many": "",
             "descList_one": "{{- count}} A nota de {{- creator}} será importada em '{{- title}}' {{- author}}",
             "descList_other": "{{- count}} A(s) nota(s) de {{- creator}} será(ão) importada(s) em '{{- title}}' {{- author}}",
+            "descNewer_many": "",
             "descNewer_one": "Conflito: {{- count}} nota mais recente",
             "descNewer_other": "Conflito(s): {{- count}} nota(s) mais recente(s)",
+            "descOlder_many": "",
             "descOlder_one": "Conflito: {{- count}} nota mais antiga",
             "descOlder_other": "Conflito(s): {{- count}} nota(s) mais antiga(s)",
             "descTitle": "Título de anotações: ",
@@ -170,9 +173,11 @@
             }
         },
         "deleteAnnotations": "Excluir anotações?",
+        "deleteAnnotationsText_many": "",
         "deleteAnnotationsText_one": "Tem certeza de que deseja excluir {{- count}} notas?",
         "deleteAnnotationsText_other": "Tem certeza de que deseja excluir {{- count}} notas(s)?",
         "deleteBookmarks": "Excluir marcadores?",
+        "deleteBookmarksText_many": "",
         "deleteBookmarksText_one": "Tem certeza de que deseja excluir {{- count}} marcadore?",
         "deleteBookmarksText_other": "Tem certeza de que deseja excluir {{- count}} marcadores?",
         "deleteFeed": "Deseja excluir este catálogo?",
@@ -270,6 +275,7 @@
         "storage": {
             "recovery": {
                 "failure": "",
+                "success_many": "",
                 "success_one": "",
                 "success_other": ""
             },
@@ -846,6 +852,7 @@
         },
         "picker": {
             "search": {
+                "founds_many": "",
                 "founds_one": "{{- count}} correspondência",
                 "founds_other": "{{- count}} correspondência(s)",
                 "input": "texto para correspondência",
@@ -1331,18 +1338,20 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
+                    "description_many": "",
                     "description_one": "",
                     "description_other": "",
                     "title": ""
                 },
                 "none": "",
+                "recoverableCount_many": "",
                 "recoverableCount_one": "",
                 "recoverableCount_other": "",
                 "title": ""
             }
         },
         "tabs": {
-            "appearance": "Aparência",
+            "advanced": "",
             "general": "Geral",
             "keyboardShortcuts": "Atalhos do teclado",
             "profiles": "Perfis",

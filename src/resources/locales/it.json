@@ -78,7 +78,7 @@
         "deleteBook": "Elimina",
         "deleteTag": "Elimina tag",
         "description": "Descrizione",
-        "downloaded": "",
+        "downloaded": "Scaricati",
         "emptyTagList": "Nessuna pubblicazione taggata.",
         "entry": {
             "continueReading": "Continua a leggere",
@@ -148,10 +148,13 @@
         "annotations": {
             "descAuthor": "di {{- author}}",
             "descCreator": "creata da",
+            "descList_many": "",
             "descList_one": "{{- count}} nota di {{- creator}} sarà associata a {{- title}} {{- author}}",
             "descList_other": "{{- count}} note di {{- creator}} saranno associate a {{- title}} {{- author}}",
+            "descNewer_many": "",
             "descNewer_one": "{{- count}} nuova versione di queste note è già associata alla pubblicazione",
             "descNewer_other": "{{- count}} nuove versioni di queste note sono già associate alla pubblicazione",
+            "descOlder_many": "",
             "descOlder_one": "{{- count}} versione precedente di queste note è già associata alla pubblicazione",
             "descOlder_other": "{{- count}} versioni precedenti di queste note sono già associate alla pubblicazione",
             "descTitle": "Titolo delle note: ",
@@ -170,9 +173,11 @@
             }
         },
         "deleteAnnotations": "Eliminare le note?",
+        "deleteAnnotationsText_many": "",
         "deleteAnnotationsText_one": "Vuoi eliminare {{- count}} nota?",
         "deleteAnnotationsText_other": "Vuoi eliminare {{- count}} note?",
         "deleteBookmarks": "Eliminare i segnalibri?",
+        "deleteBookmarksText_many": "",
         "deleteBookmarksText_one": "Sei sicuro di voler eliminare {{- count}} segnalibro?",
         "deleteBookmarksText_other": "Sei sicuro di voler eliminare {{- count}} segnalibri?",
         "deleteFeed": "Eliminare questo catalogo?",
@@ -270,6 +275,7 @@
         "storage": {
             "recovery": {
                 "failure": "Recupero delle pubblicazioni fallito.",
+                "success_many": "",
                 "success_one": "{{- count}} pubblicazione recuperata.",
                 "success_other": "{{- count}} pubblicazioni recuperate."
             },
@@ -846,6 +852,7 @@
         },
         "picker": {
             "search": {
+                "founds_many": "",
                 "founds_one": "{{- count}} risultato",
                 "founds_other": "{{- count}} risultati",
                 "input": "testo da cercare",
@@ -1331,18 +1338,20 @@
                 "description": "Verifica dello spazio d'archiviazione per reperire le pubblicazioni che possono essere recuperate.",
                 "dialog": {
                     "confirm": "Recupero",
+                    "description_many": "",
                     "description_one": "Thorium ha trovato {{- count}} pubblicazione in memoria mancante nel database. Desideri importarla nuovamente su Thorium?",
                     "description_other": "Thorium ha trovato {{- count}} pubblicazioni in memoria mancanti nel database. Desideri importarle nuovamente su Thorium?",
                     "title": "Recupera le pubblicazioni"
                 },
                 "none": "Non è stata trovata alcuna pubblicazione da recuperare.",
+                "recoverableCount_many": "",
                 "recoverableCount_one": "{{- count}} pubblicazione può essere recuperata con l'identificante originale d'archiviazione.",
                 "recoverableCount_other": "{{- count}} pubblicazioni possono essere recuperate con l'identificante originale d'archiviazione.",
                 "title": "Recupero delle pubblicazioni"
             }
         },
         "tabs": {
-            "appearance": "Aspetto",
+            "advanced": "",
             "general": "Generale",
             "keyboardShortcuts": "Scorciatoie da tastiera",
             "profiles": "Profili",

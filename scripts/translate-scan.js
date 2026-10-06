@@ -1,4 +1,4 @@
-// Changelog (2026-09-25): detect plural variants without generating duplicate or invalid keys.
+// Changelog (2026-09-30): keep generated plural variants aligned with Weblate's CLDR categories.
 //
 // Scanner algorithm:
 // 1. Extract each translation key used by the TypeScript source code.
@@ -7,15 +7,14 @@
 //    the generated locale instead of the unsuffixed base key; otherwise, emit the original key.
 //
 // Locale-sync algorithm:
-// 1. Evaluate Intl.PluralRules for integer counts from 0 through 200. This covers rules based on
-//    n, n % 10, and n % 100 while excluding plural categories that are reachable only by decimals.
+// 1. Read every cardinal category exposed by Intl.PluralRules for the locale. This is the same
+//    CLDR category set used by i18next and Weblate, including categories such as French `_many`.
 // 2. Cache the resulting suffix set for each language and expose it through overridePluralRules.
-// 3. When this file is loaded as the i18next-locales-sync config, the override prevents invalid
-//    integer-count keys such as Lithuanian `_many` and Russian `_other` from being generated.
+// 3. When this file is loaded as the i18next-locales-sync config, the override keeps generated
+//    locale keys aligned with the plural forms managed by Weblate.
 //
 // The require.main check keeps the two uses separate: executing this file runs the scanner, while
 // requiring it as a module only exports the locale-sync configuration.
-// Reference: https://github.com/mmntm/weblate-mcp/blob/6743b2189755690744592d20cac40943a053816a/src/services/weblate/translations.service.ts#L421-L449
 
 const util = require('util');
 var fs = require("fs");
@@ -25,9 +24,6 @@ var glob = require("glob");
 var jsonUtils = require("./json-utils");
 
 const pluralSuffixOrder = ["zero", "one", "two", "few", "many", "other"];
-// The referenced integer rules depend on n, n % 10, and n % 100, so this range
-// exercises every result without introducing fractional-only plural categories.
-const pluralRuleSampleMax = 200;
 const referenceLocaleLanguage = "en";
 const pluralSuffixCache = new Map();
 const referenceLocalePath = path.join(process.cwd(), "src/resources/locales/en.json");
@@ -46,10 +42,7 @@ const getPluralSuffixes = (languageCode) => {
         pluralRules = new Intl.PluralRules(referenceLocaleLanguage);
     }
 
-    const suffixes = new Set();
-    for (let count = 0; count <= pluralRuleSampleMax; count++) {
-        suffixes.add(pluralRules.select(count));
-    }
+    const suffixes = new Set(pluralRules.resolvedOptions().pluralCategories);
     const result = pluralSuffixOrder.filter((suffix) => suffixes.has(suffix));
     pluralSuffixCache.set(locale, result);
     return result;

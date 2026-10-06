@@ -28,6 +28,8 @@ export interface PublicationView extends Identifiable {
 
     // Post-check that the publication storage is valid for opening
     isOpenable: boolean;
+    isEPUB?: boolean;
+    isCBZ?: boolean;
     isAudio?: boolean;
     isDivina?: boolean;
     isPDF?: boolean;

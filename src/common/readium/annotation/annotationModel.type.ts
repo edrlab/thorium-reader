@@ -8,8 +8,13 @@
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
 
+export const EPUB_ANNOTATION_CONTEXT = "https://www.w3.org/ns/epub-anno.jsonld" as const;
+export const LEGACY_ANNOTATION_CONTEXT = "http://www.w3.org/ns/anno.jsonld" as const;
+
+export type TAnnotationContext = typeof EPUB_ANNOTATION_CONTEXT | typeof LEGACY_ANNOTATION_CONTEXT;
+
 export interface IReadiumAnnotationSet {
-    "@context": "http://www.w3.org/ns/anno.jsonld";
+    "@context": TAnnotationContext;
     id: string;
     type: "AnnotationSet";
     generator?: Generator;
@@ -20,7 +25,7 @@ export interface IReadiumAnnotationSet {
 }
 
 export interface IReadiumAnnotation {
-    "@context": "http://www.w3.org/ns/anno.jsonld";
+    "@context"?: TAnnotationContext;
     id: string;
     created: string;
     modified?: string;
@@ -34,6 +39,7 @@ export interface IReadiumAnnotation {
         type: string;
         value: string;
         tag?: string;
+        tags?: string[];
         highlight?: "solid" | "underline" | "strikethrough" | "outline" | "bookmark";
         color?: string;
         textDirection?: "ltr" | "rtl";
@@ -198,7 +204,7 @@ export const readiumAnnotationSetSchema = {
     "properties": {
         "@context": {
             "type": "string",
-            "const": "http://www.w3.org/ns/anno.jsonld",
+            "enum": [EPUB_ANNOTATION_CONTEXT, LEGACY_ANNOTATION_CONTEXT],
         },
         "id": {
             "type": "string",
@@ -290,7 +296,7 @@ export const readiumAnnotationSetSchema = {
             "properties": {
                 "@context": {
                     "type": "string",
-                    "const": "http://www.w3.org/ns/anno.jsonld",
+                    "enum": [EPUB_ANNOTATION_CONTEXT, LEGACY_ANNOTATION_CONTEXT],
                 },
                 "id": {
                     "type": "string",
@@ -341,6 +347,13 @@ export const readiumAnnotationSetSchema = {
                         },
                         "tag": {
                             "type": "string",
+                            "nullable": true,
+                        },
+                        "tags": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                            },
                             "nullable": true,
                         },
                         "highlight": {
@@ -418,7 +431,7 @@ export const readiumAnnotationSetSchema = {
                     "required": ["source", "selector"],
                 },
             },
-            "required": ["@context", "id", "created", "type", "target"],
+            "required": ["id", "created", "type", "target"],
         },
         "Selector": {
             "type": "object",
@@ -492,5 +505,13 @@ export function isIReadiumAnnotationSet(data: any): data is IReadiumAnnotationSe
     __READIUM_ANNOTATION_AJV_ERRORS = ajv.errors?.length ? JSON.stringify(ajv.errors, null, 2) : "";
 
     return valid;
+}
+
+export function normalizeReadiumAnnotationTags(body: IReadiumAnnotation["body"] | undefined): string[] {
+    const tags = body?.tags || [];
+    const legacyTag = body?.tag;
+
+    return [...tags, ...(legacyTag ? [legacyTag] : [])]
+        .filter((tag, index, allTags) => allTags.indexOf(tag) === index);
 }
 

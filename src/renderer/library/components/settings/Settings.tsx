@@ -17,7 +17,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "readium-desktop/renderer/common/components/TabsComponent";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import * as CogIcon from "readium-desktop/renderer/assets/icons/cog-icon.svg";
-import * as PaletteIcon from "readium-desktop/renderer/assets/icons/palette-icon.svg";
+import * as AdvancedIcon from "readium-desktop/renderer/assets/icons/advanced-icon.svg";
 import * as KeyReturnIcon from "readium-desktop/renderer/assets/icons/keyreturn-icon.svg";
 import * as AvatarIcon from "readium-desktop/renderer/assets/icons/avatar-icon.svg";
 import * as LibraryIcon from "readium-desktop/renderer/assets/icons/library-icon.svg";
@@ -80,14 +80,14 @@ export const Settings: React.FC<ISettingsProps> = () => {
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
     const isRTL = langStringIsRTL(locale);
 
-    const [selectedTab, setSelectedTab] = React.useState("tab1");
+    const [selectedTab, setSelectedTab] = React.useState("tab-general");
 
     const tabTitle = {
-        tab1: __("settings.tabs.general"),
-        tab2: __("settings.tabs.appearance"),
-        tab4: __("settings.tabs.keyboardShortcuts"),
-        tab5: __("settings.tabs.profiles"),
-        tab6: __("settings.tabs.storage"),
+        "tab-general": __("settings.tabs.general"),
+        "tab-keyboardShortcuts": __("settings.tabs.keyboardShortcuts"),
+        "tab-profiles": __("settings.tabs.profiles"),
+        "tab-storage": __("settings.tabs.storage"),
+        "tab-advanced": __("settings.tabs.advanced"),
     }[selectedTab] || __("settings.tabs.general");
 
 
@@ -95,7 +95,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
     // <DirectionProvider dir={isRTL ? "rtl" : "ltr"}> ... </DirectionProvider>
     return <Dialog.Root onOpenChange={(open) => {
         if (!open) {
-            setSelectedTab("tab1");
+            setSelectedTab("tab-general");
         }
     }}>
         <Dialog.Trigger asChild>
@@ -116,25 +116,25 @@ export const Settings: React.FC<ISettingsProps> = () => {
                 }
                 <Tabs selectedKey={selectedTab} onSelectionChange={(key) => setSelectedTab(key.toString())} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                     <TabList aria-label={__("header.settingsLabel")} className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
-                        <Tab id="tab1">
+                        <Tab id="tab-general">
                             <SVG ariaHidden svg={CogIcon} />
                             <span dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.general")}</span>
                         </Tab>
-                        <Tab id="tab2">
-                            <SVG ariaHidden svg={PaletteIcon} />
-                            <span dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.appearance")}</span>
-                        </Tab>
-                        <Tab id="tab4">
+                        <Tab id="tab-keyboardShortcuts">
                             <SVG ariaHidden svg={KeyReturnIcon} />
                             <span dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.keyboardShortcuts")}</span>
                         </Tab>
-                        <Tab id="tab5">
+                        <Tab id="tab-profiles">
                             <SVG ariaHidden svg={AvatarIcon} />
                             <span dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.profiles")}</span>
                         </Tab>
-                        <Tab id="tab6">
+                        <Tab id="tab-storage">
                             <SVG ariaHidden svg={LibraryIcon} />
                             <span dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.storage")}</span>
+                        </Tab>
+                        <Tab id="tab-advanced">
+                            <SVG ariaHidden svg={AdvancedIcon} />
+                            <span dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.advanced")}</span>
                         </Tab>
                     </TabList>
                     <TabTitle title={tabTitle}>
@@ -146,52 +146,48 @@ export const Settings: React.FC<ISettingsProps> = () => {
                     </TabTitle>
                     <div className={stylesSettings.settings_content} style={{ marginTop: "70px" }}>
                             <TabPanels>
-                            <TabPanel id="tab1">
+                            <TabPanel id="tab-general">
                             <div className={stylesSettings.settings_tab}>
-                                <LanguageSettings />
+                                <section className={stylesSettings.section} style={{ gap: "10px" }}>
+                                    <LanguageSettings />
+                                    <Themes />
+                                </section>
                                 <ScreenReaderSettings />
                                 <WindowBehaviorSettings />
-                                <ConnectionSettings />
-                                <SharedComputerSettings />
-                                <TelemetrySettings />
                                 {/* <SaveSessionSettings /> */}
-                                <ManageAccessToCatalogSettings />
-                                <SaveCreatorSettings />
-                                <OverloadNoteExportToHtml />
                             </div>
                         </TabPanel>
-                        <TabPanel id="tab2">
-                            <div className={stylesSettings.settings_tab}>
-                                <Themes />
-                            </div>
-                        </TabPanel>
-                        <TabPanel id="tab4">
+                        <TabPanel id="tab-keyboardShortcuts">
                             <div className={stylesSettings.settings_tab}>
                                 <KeyboardSettings />
                             </div>
                         </TabPanel>
-                        <TabPanel id="tab5">
+                        <TabPanel id="tab-profiles">
                             <div className={stylesSettings.settings_tab}>
                                 <ProfilesSettings />
                             </div>
                         </TabPanel>
-                        <TabPanel id="tab6">
+                        <TabPanel id="tab-storage">
                             <div className={stylesSettings.settings_tab}>
                                 <StorageSettings />
+                            </div>
+                        </TabPanel>
+                        <TabPanel id="tab-advanced">
+                            <div className={stylesSettings.settings_tab}>
+                                <ConnectionSettings />
+                                <ManageAccessToCatalogSettings />
+                                <SharedComputerSettings />
+                                <section className={stylesSettings.section} style={{ gap: "10px" }}>
+                                    <SaveCreatorSettings />
+                                    <OverloadNoteExportToHtml /> 
+                                </section>
+                                <TelemetrySettings />
                             </div>
                         </TabPanel>
                         </TabPanels>
                     </div>
                     <ModalControlButton />
                 </Tabs>
-
-                {/* <div className={stylesSettings.close_button_div}>
-                    <Dialog.Close asChild>
-                        <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
-                            <SVG ariaHidden={true} svg={QuitIcon} />
-                        </button>
-                    </Dialog.Close>
-                </div> */}
             </Dialog.Content>
         </Dialog.Portal>
     </Dialog.Root>;
