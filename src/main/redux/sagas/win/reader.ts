@@ -217,15 +217,9 @@ function trackOpdsProgressionLocatorChange(action: readerActions.setLocator.TAct
         return;
     }
 
-    if (!sameReadingLocator(localSnapshot.rendererBaselineLocator, locator)) {
+    const sameLocator = sameReadingLocator(localSnapshot.rendererBaselineLocator, locator);
+    if (!sameLocator) {
         localSnapshot.meaningfulLocatorChangeTime = Date.now();
-        debug("OPDS progression: locator differs from baseline", {
-            winId,
-            sameHref: localSnapshot.rendererBaselineLocator.href === locator.href,
-            baselineLocations: localSnapshot.rendererBaselineLocator.locations,
-            currentLocations: locator.locations,
-            localChangeTime: localSnapshot.meaningfulLocatorChangeTime,
-        });
     }
 }
 
@@ -274,6 +268,13 @@ function* retrieveOpdsProgression(action: winCommonActions.initSuccess.TAction) 
         const persistedLocatorChanged = localSnapshot.hasLocator &&
             typeof latestLocator?.locator?.href === "string" &&
             !sameReadingLocator(localSnapshot.locator, latestLocator.locator);
+        // This is a conservative activity heuristic, not proof of user navigation.
+        // JSON normalization ignores undefined properties, but actual metadata changes
+        // (for example, removing a populated caretInfo) still count as locator changes.
+        // A change uses the latest local timestamp rather than the pre-open timestamp;
+        // navigation or metadata rewrites during network latency can therefore suppress
+        // an otherwise newer remote position. Reader initialization time alone is not
+        // evidence that the saved reading position is newer.
         const localLocatorChanged = persistedLocatorChanged ||
             typeof localSnapshot.meaningfulLocatorChangeTime === "number";
         const persistedModifiedTime = persistedLocatorChanged
@@ -286,16 +287,33 @@ function* retrieveOpdsProgression(action: winCommonActions.initSuccess.TAction) 
             ) || undefined
             : localSnapshot.locatorModifiedTime;
 
-        debug("OPDS progression: freshness comparison", { winId, pubId,
-            persistedLocatorChanged, localLocatorChanged, localModifiedTime,
-            remoteModified: progression.modified, progression: progression.progression });
-        if (localLocatorChanged && typeof localModifiedTime !== "number") {
+        const missingChangeTimestamp = localLocatorChanged && typeof localModifiedTime !== "number";
+        const hasLocalPosition = localSnapshot.hasLocator || localLocatorChanged;
+        const remoteIsNewer = opdsProgressionIsNewer(progression.modified, localModifiedTime);
+        const offerRemotePosition = !missingChangeTimestamp && (!hasLocalPosition || remoteIsNewer);
+        const reason = missingChangeTimestamp ? "local change timestamp unavailable" :
+            !hasLocalPosition ? "no local reading position" :
+            remoteIsNewer ? "remote timestamp is newer than local timestamp" :
+            "remote timestamp is not newer than local timestamp";
+        // The remote service supplies only total progression, not a resource locator.
+        debug("OPDS progression: resume decision\n%s", JSON.stringify({
+            winId,
+            pubId,
+            preOpenedLocator: localSnapshot.locator,
+            currentLocator: latestLocator?.locator,
+            remoteLocator: { locations: { totalProgression: progression.progression } },
+            localModified: typeof localModifiedTime === "number" && Number.isFinite(localModifiedTime) ?
+                new Date(localModifiedTime).toISOString() : undefined,
+            remoteModified: progression.modified,
+            showDialog: offerRemotePosition,
+            reason,
+        }, undefined, 2));
+        if (missingChangeTimestamp) {
             debug("OPDS progression: suppressed because local change timestamp is unavailable", { winId });
             return;
         }
 
-        if ((localSnapshot.hasLocator || localLocatorChanged) &&
-            !opdsProgressionIsNewer(progression.modified, localModifiedTime)) {
+        if (hasLocalPosition && !remoteIsNewer) {
             debug("OPDS progression: suppressed because remote position is not newer", { winId });
             return;
         }
