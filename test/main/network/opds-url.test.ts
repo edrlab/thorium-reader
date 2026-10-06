@@ -91,6 +91,8 @@ describe("OPDS URL transport policy", () => {
         "172.16.0.2",
         "192.168.1.2",
         "::1",
+        "::",
+        "[::1]",
         "fd00::1",
         "fe80::1",
     ])("recognizes %s as a local or private host", (hostname) => {
@@ -104,6 +106,8 @@ describe("OPDS URL transport policy", () => {
         "hiddenservice.onion",
         "server.internal",
         "example.com",
+        "2001:4860:4860::8888",
+        "[2606:4700:4700::1111]",
     ])("does not infer that %s is local", (hostname) => {
         expect(isLocalOrPrivateHostname(hostname)).toBe(false);
     });
@@ -116,6 +120,20 @@ describe("OPDS URL transport policy", () => {
         );
         expect(request).toHaveBeenCalledTimes(1);
         expect(request).toHaveBeenCalledWith("https://localhost:8080/catalog");
+    });
+
+    it.each(["ECONNREFUSED", "ETIMEDOUT"])("does not downgrade a public IPv6 URL after %s", async (errorCode) => {
+        const url = "https://[2001:4860:4860::8888]/catalog";
+        const failure = networkFailure(url, errorCode);
+        const request = jest.fn(async () => failure);
+
+        expect(getOpdsTransportUrls("opds://[2001:4860:4860::8888]/catalog")).toEqual({
+            primaryUrl: url,
+            httpFallbackUrl: undefined,
+        });
+        await expect(requestOpdsUrl("opds://[2001:4860:4860::8888]/catalog", request)).resolves.toBe(failure);
+        expect(request).toHaveBeenCalledTimes(1);
+        expect(request).toHaveBeenCalledWith(url);
     });
 
     it("preserves an explicit HTTP request without trying HTTPS", async () => {

@@ -62,14 +62,6 @@ export const isLocalOrPrivateHostname = (hostname: string): boolean => {
         return false;
     }
 
-    if (normalizedHostname === "localhost" ||
-        normalizedHostname.endsWith(".localhost") ||
-        normalizedHostname.endsWith(".local") ||
-        normalizedHostname.endsWith(".home.arpa") ||
-        !normalizedHostname.includes(".")) {
-        return true;
-    }
-
     const ipVersion = isIP(normalizedHostname);
     if (ipVersion === 4) {
         return isPrivateIpv4Address(normalizedHostname);
@@ -88,7 +80,11 @@ export const isLocalOrPrivateHostname = (hostname: string): boolean => {
         return !!ipv4MappedAddress && isPrivateIpv4Address(ipv4MappedAddress);
     }
 
-    return false;
+    return normalizedHostname === "localhost" ||
+        normalizedHostname.endsWith(".localhost") ||
+        normalizedHostname.endsWith(".local") ||
+        normalizedHostname.endsWith(".home.arpa") ||
+        !normalizedHostname.includes(".");
 };
 
 export const getOpdsTransportUrls = (urlRaw: string): IOpdsTransportUrls => {
