@@ -9,7 +9,8 @@ import Ajv from "ajv";
 import addFormats from "ajv-formats";
 import debug_ from "debug";
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
-import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
+import { Publication } from "@r2-shared-js/models/publication";
+import { createReadiumPositionList, isEpubPositionListPublication } from "readium-desktop/common/readium/positions";
 
 import {
     IOpdsProgressionDocument,
@@ -18,9 +19,8 @@ import {
 import { availableLanguages } from "readium-desktop/common/services/translator";
 import { parseProblemDetails } from "readium-desktop/common/utils/http";
 import { IProblemDetailsResultView } from "readium-desktop/common/views/problemDetails";
-import { getOpdsAuthenticationChannel } from "readium-desktop/main/event";
 import { httpGet, httpPutWithAuth } from "readium-desktop/main/network/http";
-import { ContentType, contentTypeisOpdsAuth, parseContentType } from "readium-desktop/utils/contentType";
+import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 
 const debug = debug_("readium-desktop:main#services/opdsProgression");
 
@@ -72,7 +72,6 @@ export type TOpdsProgressionPutResult =
     | { kind: "invalid-document" }
     | ({ kind: "bad-request"; statusCode: 400 } & IOpdsProgressionPutProblemResult)
     | ({ kind: "unauthorized"; statusCode: 401 } & IOpdsProgressionPutProblemResult)
-    | { kind: "authentication-required"; statusCode: 401; authenticationUrl: string }
     | ({ kind: "forbidden"; statusCode: 403 } & IOpdsProgressionPutProblemResult)
     | ({ kind: "conflict"; statusCode: 409 } & IOpdsProgressionPutProblemResult)
     | ({ kind: "server-error"; statusCode: number } & IOpdsProgressionPutProblemResult)
@@ -99,26 +98,17 @@ const parseSerializedOpdsProgressionDocument = (
     }
 };
 
-const forwardOpdsAuthenticationDocument = async (
-    response: Parameters<typeof parseProblemDetails>[0],
-    contentType: string | undefined,
-    responseUrl: string,
-): Promise<boolean> => {
-    if (!contentTypeisOpdsAuth(parseContentType(contentType || "")) || !response) {
-        return false;
-    }
-
+export const getOpdsProgressionMapping = (json: string | object | undefined) => {
+    if (!json) { return undefined; }
     try {
-        const value = await response.json?.();
-        if (!value) {
-            return false;
-        }
-        const document = TaJsonDeserialize(value, OPDSAuthenticationDoc);
-        getOpdsAuthenticationChannel().put([document, responseUrl, false]);
-        return true;
+        const publication = TaJsonDeserialize(typeof json === "string" ? JSON.parse(json) : json, Publication);
+        return {
+            spine: publication.Spine,
+            positionList: isEpubPositionListPublication(publication) ? createReadiumPositionList(publication) : undefined,
+        };
     } catch (err) {
-        debug("Invalid OPDS authentication document from progression PUT", err);
-        return false;
+        debug("Unable to map OPDS progression", err);
+        return undefined;
     }
 };
 
@@ -228,20 +218,6 @@ export const putOpdsProgression = async (
             || result.statusCode === 403
             || result.statusCode === 409
         ) {
-            if (
-                result.statusCode === 401
-                && await forwardOpdsAuthenticationDocument(
-                    result.response,
-                    result.contentType,
-                    result.responseUrl || url,
-                )
-            ) {
-                return {
-                    kind: "authentication-required",
-                    statusCode: 401,
-                    authenticationUrl: result.responseUrl || url,
-                };
-            }
             const problem = await tryParseProblemDetails(result.response);
             switch (result.statusCode) {
                 case 400:

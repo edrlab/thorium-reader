@@ -12,15 +12,43 @@ import {
     IDictWinSessionReaderState,
 } from "readium-desktop/main/redux/states/win/session/reader";
 
+import { readerActions } from "readium-desktop/common/redux/actions";
+import { SenderType, WithSender } from "readium-desktop/common/models/sync";
+
 const initialState: IDictWinSessionReaderState = {};
 
 function winSessionReaderReducer_(
     state: IDictWinSessionReaderState = initialState,
     action: winActions.session.registerReader.TAction |
         winActions.session.unregisterReader.TAction |
-        winActions.session.setBound.TAction,
+        winActions.session.setBound.TAction | readerActions.setLocator.TAction |
+        readerActions.setOpdsProgressionState.TAction | readerActions.setOpdsProgression.TAction |
+        readerActions.setTheLock.TAction,
 ): IDictWinSessionReaderState {
     switch (action.type) {
+        case readerActions.setTheLock.ID: {
+            const id = action.destination.identifier;
+            if (!state[id]) { return state; }
+            return Object.fromEntries(Object.entries(state).map(([key, reader]) => [key,
+                reader.publicationIdentifier === state[id].publicationIdentifier ?
+                    { ...reader, reduxState: { ...reader.reduxState, lock: key === id } } : reader,
+            ]));
+        }
+        case readerActions.setLocator.ID: {
+            const sender = (action as typeof action & Partial<WithSender>).sender;
+            const id = sender?.identifier;
+            if (sender?.type !== SenderType.Renderer || !id || !state[id]) { return state; }
+            return { ...state, [id]: { ...state[id], reduxState: { ...state[id].reduxState, locator: action.payload } } };
+        }
+        case readerActions.setOpdsProgressionState.ID:
+        case readerActions.setOpdsProgression.ID: {
+            const id = action.destination.identifier;
+            if (!state[id]) { return state; }
+            const opdsProgression = action.type === readerActions.setOpdsProgressionState.ID ? action.payload.state :
+                { ...state[id].reduxState.opdsProgression, document: action.payload.document };
+            return { ...state, [id]: { ...state[id], reduxState: { ...state[id].reduxState, opdsProgression } } };
+        }
+
 
         case winActions.session.registerReader.ID: {
 

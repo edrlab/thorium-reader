@@ -15,7 +15,6 @@ jest.mock("readium-desktop/main/event", () => ({
     getOpdsAuthenticationChannel: jest.fn(),
 }));
 
-import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import { OPDS_PROGRESSION_MEDIA_TYPE } from "readium-desktop/common/models/opdsProgression";
 import type { IHttpGetResult } from "readium-desktop/common/utils/http";
 import { getOpdsAuthenticationChannel } from "readium-desktop/main/event";
@@ -214,7 +213,7 @@ describe("OPDS progression service", () => {
     });
 
     it.each(["application/opds-authentication+json", "application/vnd.opds.authentication.v1.0+json"])(
-        "forwards a 401 %s document to the authentication flow",
+        "returns a 401 %s failure without starting authentication",
         async (authenticationMediaType) => {
             const authenticationDocument = {
                 id: "https://example.org/auth",
@@ -234,16 +233,11 @@ describe("OPDS progression service", () => {
                 }),
             );
 
-            await expect(putOpdsProgression(url, validDocument)).resolves.toEqual({
-                kind: "authentication-required",
+            await expect(putOpdsProgression(url, validDocument)).resolves.toMatchObject({
+                kind: "unauthorized",
                 statusCode: 401,
-                authenticationUrl: "https://auth.example.org/progression",
             });
-            expect(authenticationChannelPutMock).toHaveBeenCalledWith([
-                expect.any(OPDSAuthenticationDoc),
-                "https://auth.example.org/progression",
-                false,
-            ]);
+            expect(authenticationChannelPutMock).not.toHaveBeenCalled();
         },
     );
 

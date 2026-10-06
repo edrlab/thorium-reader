@@ -6,40 +6,34 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
-import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { readerIpc } from "readium-desktop/common/ipc";
 import { ReaderInfo } from "readium-desktop/common/models/reader";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { deleteReaderWindowInDi, diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
-import { getAuthenticationToken } from "readium-desktop/main/network/http";
 import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, put } from "redux-saga/effects";
-import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
+import { call as callTyped, select as selectTyped, delay as delayTyped, fork as forkTyped } from "typed-redux-saga/macro";
 
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import { settingsKeepLibraryWindowInBackgroundOnReaderCloseIsEnabled } from "readium-desktop/common/redux/states/settings";
 // import { comparePublisherReaderConfig } from "readium-desktop/common/publisherConfig";
-import { authActions, readerActions, winCommonActions } from "readium-desktop/common/redux/actions";
+import { readerActions, winCommonActions } from "readium-desktop/common/redux/actions";
 import { sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
 import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { dialog } from "electron";
-import { createReadiumPositionList, isEpubPositionListPublication } from "readium-desktop/common/readium/positions";
 import { sameReadingLocator } from "readium-desktop/main/tools/readingLocator";
 import { SenderType, type WithSender } from "readium-desktop/common/models/sync";
-import { opdsProgressionIsNewer } from "readium-desktop/common/models/opdsProgression";
+import type { Task } from "redux-saga";
+import { locatorToOpdsProgression, opdsProgressionToLocator, opdsProgressionIsNewer } from "readium-desktop/common/models/opdsProgression";
 import {
     getOpdsProgression,
     putOpdsProgression,
+    getOpdsProgressionMapping,
 } from "readium-desktop/main/services/opdsProgression";
-import {
-    OpdsProgressionSyncCoordinator,
-    TOpdsProgressionUploadOutcome,
-} from "readium-desktop/main/services/opdsProgressionSync";
 import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 import type { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
@@ -47,41 +41,11 @@ import type { MiniLocatorExtended } from "readium-desktop/common/redux/states/lo
 const filename_ = "readium-desktop:main:redux:sagas:win:reader";
 const debug = debug_(filename_);
 debug("_");
-const __opdsProgressionSyncCoordinator = new OpdsProgressionSyncCoordinator({
-    canUpload: (windowIdentifier, publicationIdentifier) =>
-        __readerWithSamePubIdGotTheLockMap.get(publicationIdentifier) === windowIdentifier,
-    upload: async (url, document, locale): Promise<TOpdsProgressionUploadOutcome> => {
-        const result = await putOpdsProgression(url, document, locale);
-        switch (result.kind) {
-            case "success":
-                return {
-                    kind: "success",
-                    modified: result.document.modified,
-                    progression: result.document.progression,
-                };
-            case "network-error":
-            case "server-error":
-                debug("Progression PUT will be retried", result);
-                return "retry";
-            case "bad-request":
-            case "forbidden":
-            case "invalid-document":
-            case "invalid-response":
-            case "unauthorized":
-                debug("Progression PUT disabled for this reader session", result);
-                return "disable";
-            case "conflict":
-                debug("Progression PUT candidate is older than the server state", result);
-                return "drop";
-            case "authentication-required":
-                debug("Progression PUT requires OPDS authentication", result);
-                return {
-                    kind: "hold",
-                    authenticationUrl: result.authenticationUrl,
-                };
-        }
-    },
-});
+const __progressionDebounceTasks = new Map<string, Task>();
+export const cancelProgressionDebounce = (winId: string) => {
+    __progressionDebounceTasks.get(winId)?.cancel();
+    __progressionDebounceTasks.delete(winId);
+};
 
 const __readerWithSamePubIdGotTheLockMap = new Map<string, string>(); // K: publicationIdentifier V: windowIdentifier
 const __localProgressionSnapshotMap = new Map<string, {
@@ -173,52 +137,22 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
         return ;
     }
 
-    const publicationDocument = yield* selectTyped((state: RootState) => state.publication.db[pubId]);
-    const progressionLinkUrl = publicationDocument?.opdsPublication?.progressionLink?.url;
-    const isEpub = publicationDocument?.files?.some((file) =>
-        parseContentType(file.contentType) === ContentType.Epub,
-    );
-    const r2PublicationJson = readerSession.reduxState.info.publicationView.r2PublicationJson;
-    if (progressionLinkUrl && isEpub && r2PublicationJson) {
-        try {
-            const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
-            const positionList = isEpubPositionListPublication(r2Publication) ? createReadiumPositionList(r2Publication) : undefined;
-            const spine = (r2Publication.Spine || []).map((link) => ({ Href: link.Href }));
-            const deviceIdManager = diMainGet("device-id-manager");
-            const deviceId = yield* callTyped(() => deviceIdManager.getDeviceID());
-            const deviceName = yield* callTyped(() => deviceIdManager.getDeviceNAME());
-            // Destroying a window bypasses the normal close flow. Cancel its
-            // upload timer without adding a separate shutdown/flush path.
-            readerWindow.once("closed", () => {
-                __opdsProgressionSyncCoordinator.discard(winId);
-                __localProgressionSnapshotMap.delete(winId);
-                if (__readerWithSamePubIdGotTheLockMap.get(pubId) === winId) {
-                    __readerWithSamePubIdGotTheLockMap.delete(pubId);
-                }
-            });
-            __opdsProgressionSyncCoordinator.register({
-                device: {
-                    id: deviceId.includes(":") ? deviceId : `urn:uuid:${deviceId}`,
-                    name: deviceName,
-                },
-                initialLocator: locator?.locator,
-                locale,
-                publicationIdentifier: pubId,
-                spine,
-                positionList,
-                url: progressionLinkUrl,
-                windowIdentifier: winId,
-            });
-        } catch (err) {
-            // Upload support is optional and must not prevent the reader opening.
-            debug("Unable to initialize OPDS progression PUT", err);
+    const mapping = getOpdsProgressionMapping(readerSession.reduxState.info.publicationView.r2PublicationJson);
+    yield put(readerActions.setOpdsProgressionState.build(winId, {
+        ready: false,
+        progression: locatorToOpdsProgression(locator?.locator, mapping?.spine, mapping?.positionList),
+    }));
+    if (gotTheLock) {
+        yield put(readerActions.setTheLock.build(winId));
+    }
+    readerWindow.once("closed", () => {
+        cancelProgressionDebounce(winId);
+        __localProgressionSnapshotMap.delete(winId);
+        if (__readerWithSamePubIdGotTheLockMap.get(pubId) === winId) {
+            __readerWithSamePubIdGotTheLockMap.delete(pubId);
         }
-    }
-
-    if (readerWindow.isDestroyed() || readerWindow.webContents.isDestroyed()) {
-        __opdsProgressionSyncCoordinator.discard(winId);
-        return;
-    }
+    });
+    if (readerWindow.isDestroyed() || readerWindow.webContents.isDestroyed()) { return; }
     webContents.send(readerIpc.CHANNEL, {
         type: readerIpc.EventType.request,
         payload: {
@@ -273,7 +207,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
                 mediaOverlay: undefined, // reader runtime state
                 noteTotalCount: noteTotalCount,
                 pdfConfig: pdfConfig,
-                opdsProgression: {},
+                opdsProgression: { ready: false },
             } as IReaderStateReader,
             keyboard,
             theme,
@@ -288,16 +222,14 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     } as readerIpc.EventPayload);
 }
 
-function trackOpdsProgressionLocatorChange(action: readerActions.setLocator.TAction) {
+export function* trackOpdsProgressionLocatorChange(action: readerActions.setLocator.TAction) {
     const sender = (action as readerActions.setLocator.TAction & Partial<WithSender>).sender;
     const winId = sender?.identifier;
     if (sender?.type !== SenderType.Renderer || !winId) {
         return;
     }
 
-    const ownsPublicationLock = sender.reader_pubId &&
-        __readerWithSamePubIdGotTheLockMap.get(sender.reader_pubId) === winId;
-    __opdsProgressionSyncCoordinator.observeLocator(winId, action.payload.locator, Boolean(ownsPublicationLock));
+    yield* debounceOpdsProgression(action);
 
     const localSnapshot = __localProgressionSnapshotMap.get(winId);
     const locator = action.payload.locator;
@@ -358,7 +290,6 @@ function* retrieveOpdsProgression(action: winCommonActions.initSuccess.TAction) 
             return;
         }
 
-        __opdsProgressionSyncCoordinator.recordRemoteModified(winId, progression.modified);
 
         // Reader hydration can rewrite the same locator and refresh its mtime. Keep
         // using the pre-open timestamp for that case, but honor a genuinely changed
@@ -418,13 +349,13 @@ function* retrieveOpdsProgression(action: winCommonActions.initSuccess.TAction) 
             return;
         }
 
-        __opdsProgressionSyncCoordinator.beginRemoteReconciliation(winId, progression.progression);
         awaitingRemoteResolution = true;
         debug("OPDS progression: offering remote position", { winId, progression: progression.progression });
         yield put(readerActions.setOpdsProgression.build(winId, progression));
     } finally {
         if (!awaitingRemoteResolution) {
-            __opdsProgressionSyncCoordinator.completeInitialGet(winId);
+            const state = yield* selectTyped((root: RootState) => root.win.session.reader[winId]?.reduxState.opdsProgression);
+            yield put(readerActions.setOpdsProgressionState.build(winId, { ...state, ready: true }));
         }
         if (__localProgressionSnapshotMap.get(winId) === localSnapshot) {
             __localProgressionSnapshotMap.delete(winId);
@@ -433,37 +364,79 @@ function* retrieveOpdsProgression(action: winCommonActions.initSuccess.TAction) 
     }
 }
 
-function resolveOpdsProgression(action: readerActions.clearOpdsProgression.TAction) {
-    const sender = (action as readerActions.clearOpdsProgression.TAction & Partial<WithSender>).sender;
+export function* resolveOpdsProgression(action: readerActions.clearOpdsProgression.TAction) {
+    const sender = (action as typeof action & Partial<WithSender>).sender;
     const winId = sender?.identifier;
-    if (sender?.type !== SenderType.Renderer || !winId) {
-        return;
+    if (sender?.type !== SenderType.Renderer || !winId) { return; }
+    const reader = yield* selectTyped((root: RootState) => root.win.session.reader[winId]);
+    const state = reader?.reduxState.opdsProgression;
+    if (!state?.document) { return; }
+    let progression = state.progression;
+    if (action.payload.accepted) {
+        cancelProgressionDebounce(winId);
+        const mapping = getOpdsProgressionMapping(reader.reduxState.info.publicationView.r2PublicationJson);
+        progression = locatorToOpdsProgression(
+            opdsProgressionToLocator(state.document.progression, mapping?.spine, mapping?.positionList),
+            mapping?.spine, mapping?.positionList,
+        );
     }
-
-    __opdsProgressionSyncCoordinator.resolveRemoteReconciliation(
-        winId,
-        action.payload.accepted,
-    );
+    yield put(readerActions.setOpdsProgressionState.build(winId, {
+        ready: true, progression,
+        suppressedProgression: action.payload.accepted ? progression : undefined,
+    }));
 }
 
-function* resumeOpdsProgressionAfterAuthentication() {
-    for (const authenticationUrl of __opdsProgressionSyncCoordinator.getPendingAuthenticationUrls()) {
-        try {
-            const authentication = yield* callTyped(() =>
-                getAuthenticationToken(new URL(authenticationUrl), "PUT"));
-            if (authentication?.accessToken) {
-                __opdsProgressionSyncCoordinator.resumeAfterAuthentication(authenticationUrl);
-            }
-        } catch (err) {
-            debug("Unable to resume OPDS progression after authentication", err);
-        }
-    }
+export function* debounceOpdsProgression(action: readerActions.setLocator.TAction) {
+    const sender = (action as typeof action & Partial<WithSender>).sender;
+    const winId = sender?.identifier;
+    if (sender?.type !== SenderType.Renderer || !winId) { return; }
+    const reader = yield* selectTyped((root: RootState) => root.win.session.reader[winId]);
+    if (!reader || reader.publicationIdentifier !== sender.reader_pubId) { return; }
+    const mapping = getOpdsProgressionMapping(reader.reduxState.info.publicationView.r2PublicationJson);
+    const progression = locatorToOpdsProgression(action.payload.locator, mapping?.spine, mapping?.positionList);
+    if (typeof progression !== "number") { return; }
+    const state = reader.reduxState.opdsProgression || {};
+    const matchesRemote = typeof state.suppressedProgression === "number" &&
+        Math.abs(progression - state.suppressedProgression) <= 1e-9;
+    const changed = typeof state.progression === "number" && Math.abs(progression - state.progression) > 1e-9;
+    yield put(readerActions.setOpdsProgressionState.build(winId, {
+        ...state, progression, suppressedProgression: matchesRemote ? undefined : state.suppressedProgression,
+    }));
+    if (matchesRemote) { cancelProgressionDebounce(winId); return; }
+    if (!changed || !reader.reduxState.lock) { return; }
+    cancelProgressionDebounce(winId);
+    const task = yield* forkTyped(uploadDebouncedOpdsProgression, winId);
+    __progressionDebounceTasks.set(winId, task);
+}
+
+export function* uploadDebouncedOpdsProgression(winId: string) {
+    yield* delayTyped(5000);
+    const reader = yield* selectTyped((root: RootState) => root.win.session.reader[winId]);
+    if (!reader?.reduxState.lock || !reader.reduxState.opdsProgression?.ready ||
+        reader.reduxState.opdsProgression.document) { return; }
+    const publication = yield* selectTyped((root: RootState) => root.publication.db[reader.publicationIdentifier]);
+    const url = publication?.opdsPublication?.progressionLink?.url;
+    if (!url || !publication.files?.some((file) => parseContentType(file.contentType) === ContentType.Epub)) { return; }
+    const mapping = getOpdsProgressionMapping(reader.reduxState.info.publicationView.r2PublicationJson);
+    const progression = locatorToOpdsProgression(reader.reduxState.locator?.locator, mapping?.spine, mapping?.positionList);
+    if (typeof progression !== "number") { return; }
+    const manager = diMainGet("device-id-manager");
+    const deviceId = yield* callTyped(() => manager.getDeviceID());
+    const name = yield* callTyped(() => manager.getDeviceNAME());
+    const locale = yield* selectTyped((root: RootState) => root.i18n.locale);
+    const current = yield* selectTyped((root: RootState) => root.win.session.reader[winId]?.reduxState);
+    if (!current?.lock || !current.opdsProgression?.ready || current.opdsProgression.document) { return; }
+    const result = yield* callTyped(() => putOpdsProgression(url, {
+        device: { id: deviceId.includes(":") ? deviceId : `urn:uuid:${deviceId}`, name },
+        modified: new Date().toISOString(), progression,
+    }, locale));
+    if (result.kind !== "success") { debug("Progression PUT failed", result); }
 }
 
 function* winOpenError(action: winActions.reader.openError.TAction) {
     const { readerWindow, publicationIdentifier: pubId, windowIdentifier: winId, reason } = action.payload;
     __localProgressionSnapshotMap.delete(winId);
-    __opdsProgressionSyncCoordinator.discard(winId);
+    cancelProgressionDebounce(winId);
     debug(`ERRROR!!! reader winId=${winId} -> pubId=${pubId} failed to open`);
 
     try {
@@ -480,7 +453,7 @@ function* winOpenError(action: winActions.reader.openError.TAction) {
 export function* winClose(windowIdentifier: string, publicationIdentifier: string) {
 
     debug(`reader windId=${windowIdentifier} -> winClose pubId=${publicationIdentifier}`);
-    __opdsProgressionSyncCoordinator.discard(windowIdentifier);
+    cancelProgressionDebounce(windowIdentifier);
     __localProgressionSnapshotMap.delete(windowIdentifier);
     const readersBeforeUnregistered = yield* selectTyped((state: RootState) => state.win.session.reader);
     if (!readersBeforeUnregistered[windowIdentifier]) {
@@ -505,7 +478,6 @@ export function* winClose(windowIdentifier: string, publicationIdentifier: strin
         if (readerSamePubIdFirstWinId) {
             __readerWithSamePubIdGotTheLockMap.set(publicationIdentifier, readerSamePubIdFirstWinId);
             yield put(readerActions.setTheLock.build(readerSamePubIdFirstWinId));
-            __opdsProgressionSyncCoordinator.acquireUploadLock(readerSamePubIdFirstWinId);
             debug(`reader ${readerSamePubIdFirstWinId} got the lock !!!`);
         }
 
@@ -632,11 +604,6 @@ export function saga() {
             readerActions.clearOpdsProgression.ID,
             resolveOpdsProgression,
             (e) => error(filename_ + ":resolveOpdsProgression", e),
-        ),
-        takeSpawnEvery(
-            authActions.done.ID,
-            resumeOpdsProgressionAfterAuthentication,
-            (e) => error(filename_ + ":resumeOpdsProgressionAfterAuthentication", e),
         ),
         // takeSpawnEvery(
         //     winActions.reader.closed.ID,
