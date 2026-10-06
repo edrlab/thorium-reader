@@ -13,7 +13,7 @@ import {
     publicationAnalyticsEvents,
 } from "readium-desktop/common/analytics/publication";
 import { convertAnnotationStateArrayToReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/converter";
-import { IReadiumAnnotation, IReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import { IReadiumAnnotation, IReadiumAnnotationSet, LEGACY_ANNOTATION_CONTEXT } from "readium-desktop/common/readium/annotation/annotationModel.type";
 
 // https://github.com/janl/mustache.js/issues/797
 // export 'render' (imported as 'Mustache') was not found in 'mustache' (possible exports: default)
@@ -21,7 +21,7 @@ import { IReadiumAnnotation, IReadiumAnnotationSet } from "readium-desktop/commo
 import Mustache from "mustache";
 // esModuleInterop?
 
-import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/annotation/htmlTemplate";
+import { annotationHtmlBody, noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/annotation/htmlTemplate";
 import DOMPurify from "dompurify";
 import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -30,9 +30,10 @@ import { marked } from "readium-desktop/renderer/common/marked/marked";
 import { JsonStringifySortedKeys } from "readium-desktop/common/utils/json";
 
 import { sanitizeForFilename } from "readium-desktop/common/safe-filename";
-import { EXT_ANNOTATIONS } from "readium-desktop/common/extension";
+import { EXT_ANNOTATIONS, EXT_ANNOTATIONS_LEGACY } from "readium-desktop/common/extension";
 import { mimeTypes } from "readium-desktop/utils/mimeTypes";
 import { logEvent } from "readium-desktop/renderer/common/analytics";
+import { createDetachedAnnotationPackage } from "./detachedPackage";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:common:redux:sagas:readiumAnnotation:export");
@@ -45,11 +46,12 @@ const __htmlMustacheViewConverterFn: (readiumAnnotation: IReadiumAnnotationSet) 
     };
     const tmpItems = [];
     for (const item of (view.items || [])) {
+        const htmlItem = { ...item, body: annotationHtmlBody(item) };
 
         try {
-            tmpItems.push({ ...item, body: { ...item.body || {}, htmlValue: DOMPurify.sanitize(await marked.parse((item.body?.value || "").replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, ""), { gfm: true })) } });
+            tmpItems.push({ ...htmlItem, body: { ...htmlItem.body, htmlValue: DOMPurify.sanitize(await marked.parse((item.body?.value || "").replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, ""), { gfm: true })) } });
         } catch (_) {
-            tmpItems.push(item);
+            tmpItems.push(htmlItem);
         }
     }
     view.items = tmpItems as IReadiumAnnotation[];
@@ -70,9 +72,9 @@ ${Buffer.from(JsonStringifySortedKeys(readiumAnnotation, 2)).toString("base64")}
 -->
 `;
 };
-const downloadAnnotationFile = (data: string, filenameWithExtension: string, extension: typeof EXT_ANNOTATIONS | ".html") => {
+const downloadAnnotationFile = (data: string | ArrayBuffer, filenameWithExtension: string, extension: typeof EXT_ANNOTATIONS | typeof EXT_ANNOTATIONS_LEGACY | ".html") => {
 
-    const blob = new Blob([data], { type: extension === EXT_ANNOTATIONS ? mimeTypes.annotation : "text/html" });
+    const blob = new Blob([data], { type: extension === EXT_ANNOTATIONS ? mimeTypes.annotations : extension === EXT_ANNOTATIONS_LEGACY ? mimeTypes.annotation : "text/html" });
     const jsonObjectUrl = URL.createObjectURL(blob);
     const anchorEl = document.createElement("a");
     anchorEl.href = jsonObjectUrl;
@@ -89,21 +91,23 @@ export function* exportAnnotationSet(notes: INoteState[], publicationView: Publi
     debug("fileType:", fileType);
 
     const locale = yield* selectTyped((state: ICommonRootState) => state.i18n.locale);
-    const readiumAnnotationSet = yield* callTyped(() => convertAnnotationStateArrayToReadiumAnnotationSet(locale, notes, publicationView, annoSetTitle));
+    const readiumAnnotationSet = yield* callTyped(() => convertAnnotationStateArrayToReadiumAnnotationSet(locale, notes, publicationView, annoSetTitle, fileType === "html" ? LEGACY_ANNOTATION_CONTEXT : undefined));
 
     debug("readiumAnnotationSet generated, prepare to download it");
 
     const {htmlContent, overrideHTMLTemplate} = (yield* selectTyped((state: ICommonRootState) => state.noteExport));
     const htmlMustacheTemplateContent = overrideHTMLTemplate ? htmlContent : noteExportHtmlMustacheTemplate || noteExportHtmlMustacheTemplate;
 
-    const extension = fileType === "annotation" ? EXT_ANNOTATIONS : ".html";
-    const stringData = extension === EXT_ANNOTATIONS ?
-        JsonStringifySortedKeys(readiumAnnotationSet, 2) :
-        yield* callTyped(() => convertReadiumAnnotationSetToHtml(readiumAnnotationSet, __htmlMustacheViewConverterFn, htmlMustacheTemplateContent));
+    const extension = fileType === "annotation" ? (publicationView.isEPUB ? EXT_ANNOTATIONS : EXT_ANNOTATIONS_LEGACY) : ".html";
+    const serializedAnnotationSet = JsonStringifySortedKeys(readiumAnnotationSet, 2);
+    const fileData = extension === EXT_ANNOTATIONS ?
+        yield* callTyped(() => createDetachedAnnotationPackage(serializedAnnotationSet)) :
+        extension === EXT_ANNOTATIONS_LEGACY ? serializedAnnotationSet :
+            yield* callTyped(() => convertReadiumAnnotationSetToHtml(readiumAnnotationSet, __htmlMustacheViewConverterFn, htmlMustacheTemplateContent));
 
     const filenameWithExtension = sanitizeForFilename(annoSetTitle + extension);
 
-    downloadAnnotationFile(stringData, filenameWithExtension, extension);
+    downloadAnnotationFile(fileData, filenameWithExtension, extension);
     yield* spawnTyped(function*() {
         yield* callTyped(
             logEvent,

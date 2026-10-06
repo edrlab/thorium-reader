@@ -90,7 +90,9 @@ class PublicationCard extends React.Component<IProps> {
             !canOpenLocalPublication;
 
         let pubFormat = "EPUB";
-        if (publicationView.isAudio) {
+        if (publicationView.isCBZ) {
+            pubFormat = "CBZ";
+        } else if (publicationView.isAudio) {
             pubFormat = "Audio";
         } else if (publicationView.isDivina) {
             pubFormat = "Divina";

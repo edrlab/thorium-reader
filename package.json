@@ -285,6 +285,11 @@
         "mimeType": "application/epub+zip"
       },
       {
+        "ext": "cbz",
+        "role": "Viewer",
+        "mimeType": "application/vnd.comicbook+zip"
+      },
+      {
         "ext": "daisy",
         "role": "Viewer",
         "mimeType": "application/daisy+zip"
