@@ -36,6 +36,35 @@ test("logs incoming requests and completed responses without sensitive request d
     assert.equal(JSON.stringify(logs).includes("secret"), false);
 });
 
+test("logs only the exact OPDS progression body and omits other response bodies", async (context) => {
+    const logs = [];
+    const server = await startOpdsProgressionServer(0, { log: (event, details) => logs.push({ event, details }) });
+    context.after(async () => closeOpdsProgressionServer(server));
+    const baseUrl = `http://127.0.0.1:${server.address().port}`;
+    for (const path of ["/opds/v2/catalog.json", "/progression/accessible-epub-3", "/__test/state"]) {
+        const response = await fetch(`${baseUrl}${path}`, { headers: { Accept: PROGRESSION_MEDIA_TYPE } });
+        const body = await response.text();
+        const completed = logs.findLast((entry) => entry.event === "OPDS response");
+        assert.equal(completed.details.path, path);
+        if (path === "/progression/accessible-epub-3") {
+            assert.equal(completed.details.jsonBody, body);
+            assert.doesNotThrow(() => JSON.parse(completed.details.jsonBody));
+        } else {
+            assert.equal(Object.hasOwn(completed.details, "jsonBody"), false);
+        }
+    }
+    await fetch(`${baseUrl}/opds/v2/catalog.json`, { method: "HEAD" });
+    assert.equal(Object.hasOwn(logs.findLast((entry) => entry.event === "OPDS response").details, "jsonBody"), false);
+    await fetch(`${baseUrl}/__test/state`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ empty: true }),
+    });
+    const empty = await fetch(`${baseUrl}/progression/accessible-epub-3`, { headers: { Accept: PROGRESSION_MEDIA_TYPE } });
+    assert.equal(await empty.text(), "");
+    assert.equal(logs.findLast((entry) => entry.event === "OPDS response").details.jsonBody, "");
+});
+
 test("OPDS progression fixture server contract", async (context) => {
     const server = await startOpdsProgressionServer(0);
     context.after(async () => closeOpdsProgressionServer(server));

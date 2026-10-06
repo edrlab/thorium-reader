@@ -14,6 +14,7 @@ const epubFileName = "accessible_epub_3.epub";
 const epubPath = join(projectDirectory, "fixtures", epubFileName);
 const defaultPort = Number(process.argv[2]) || 4873;
 const publicationIdentifier = "urn:isbn:9781449328030";
+const jsonResponseBody = Symbol("jsonResponseBody");
 const device = Object.freeze({
     id: "urn:uuid:f2438195-3b7c-4ea8-a8cf-668d624c11e5",
     name: "Thorium OPDS Progression Test Server",
@@ -47,6 +48,9 @@ function sendBuffer(request, response, statusCode, contentType, body, extraHeade
     if (request.method === "HEAD") {
         response.end();
         return;
+    }
+    if (contentType.split(";", 1)[0] === PROGRESSION_MEDIA_TYPE) {
+        response[jsonResponseBody] = body.toString("utf8");
     }
     response.end(body);
 }
@@ -303,7 +307,14 @@ function applyStateUpdate(currentState, update) {
     return nextState;
 }
 
-export function createOpdsProgressionServer({ log = console.log } = {}) {
+function logRequestResponse(event, { jsonBody, ...details }) {
+    console.log(`${event} ${JSON.stringify(details)}`);
+    if (jsonBody !== undefined) {
+        console.log(jsonBody || "(empty JSON body)");
+    }
+}
+
+export function createOpdsProgressionServer({ log = logRequestResponse } = {}) {
     let state = defaultProgressionState();
     let requests = createRequestState();
     let nextRequestId = 0;
@@ -333,6 +344,7 @@ export function createOpdsProgressionServer({ log = console.log } = {}) {
                 outcome,
                 statusCode: response.headersSent ? response.statusCode : undefined,
                 elapsedMs: Math.round(performance.now() - startedAt),
+                ...(response[jsonResponseBody] !== undefined ? { jsonBody: response[jsonResponseBody] } : {}),
             });
         };
         response.once("finish", () => logCompletion("finished"));

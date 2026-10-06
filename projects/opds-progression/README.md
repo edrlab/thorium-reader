@@ -97,6 +97,8 @@ Invalid, non-finite, negative, or greater-than-one progression values are reject
 
 ## Debugging Thorium's progression flow
 
+Request and response metadata each occupy one log line. Only the OPDS progression JSON response content is printed below its response line with indentation, showing the exact payload sent to the client. Empty progression responses print `(empty JSON body)`. Other routes and HEAD responses do not log a body.
+
 The test server logs each incoming request and its completion to the terminal. Entries include a request ID, method, path, response status, elapsed milliseconds, and whether the response finished or the client disconnected. Incoming entries also show the `Accept` and `Range` headers. Request bodies, query strings, and authorization headers are omitted. Delayed requests can be correlated by request ID; client timeouts appear as aborted responses.
 
 Enable these existing debug namespaces when launching Thorium (Unix shell):
