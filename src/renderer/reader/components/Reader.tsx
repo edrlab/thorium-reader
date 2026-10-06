@@ -1393,7 +1393,7 @@ class Reader extends React.Component<IProps, IState> {
                 <OpdsProgressionDialog
                     document={this.props.opdsProgressionDocument}
                     onAccept={this.goToOpdsProgression}
-                    onCancel={this.props.clearOpdsProgression}
+                    onCancel={this.cancelOpdsProgression}
                 />
                 </div>
             </>
@@ -1830,8 +1830,18 @@ class Reader extends React.Component<IProps, IState> {
         r2HandleLinkLocator(locator);
     };
 
+    private cancelOpdsProgression = () => {
+        debug("OPDS progression: remote position dismissed, keeping local position");
+        this.props.clearOpdsProgression();
+    };
+
     private goToOpdsProgression = () => {
         const progression = this.props.opdsProgressionDocument?.progression;
+        debug("OPDS progression: remote position accepted", {
+            progression,
+            mapping: this.readiumPositionList?.total ? "Readium positions" : "equal resource fallback",
+            totalPositions: this.readiumPositionList?.total,
+        });
         if (typeof progression === "number") {
             const locator = opdsProgressionToLocator(
                 progression,
@@ -1839,7 +1849,12 @@ class Reader extends React.Component<IProps, IState> {
                 this.readiumPositionList,
             );
             if (locator) {
+                debug("OPDS progression: navigating to mapped locator", {
+                    locations: locator.locations,
+                });
                 this.goToLocator(locator);
+            } else {
+                debug("OPDS progression: navigation skipped, no usable locator");
             }
         }
         this.props.clearOpdsProgression();

@@ -25,7 +25,7 @@ import { readerActions, winCommonActions } from "readium-desktop/common/redux/ac
 import { sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
 import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { dialog } from "electron";
-import { isDeepStrictEqual } from "node:util";
+import { sameReadingLocator } from "readium-desktop/main/tools/readingLocator";
 import { SenderType, type WithSender } from "readium-desktop/common/models/sync";
 import { opdsProgressionIsNewer } from "readium-desktop/common/models/opdsProgression";
 import { getOpdsProgression } from "readium-desktop/main/services/opdsProgression";
@@ -213,11 +213,19 @@ function trackOpdsProgressionLocatorChange(action: readerActions.setLocator.TAct
         // With no pre-open locator, the navigator's first report establishes the
         // automatic/default position. Later movement is meaningful local activity.
         localSnapshot.rendererBaselineLocator = locator;
+        debug("OPDS progression: initial locator baseline", { winId, locations: locator.locations });
         return;
     }
 
-    if (!isDeepStrictEqual(localSnapshot.rendererBaselineLocator, locator)) {
+    if (!sameReadingLocator(localSnapshot.rendererBaselineLocator, locator)) {
         localSnapshot.meaningfulLocatorChangeTime = Date.now();
+        debug("OPDS progression: locator differs from baseline", {
+            winId,
+            sameHref: localSnapshot.rendererBaselineLocator.href === locator.href,
+            baselineLocations: localSnapshot.rendererBaselineLocator.locations,
+            currentLocations: locator.locations,
+            localChangeTime: localSnapshot.meaningfulLocatorChangeTime,
+        });
     }
 }
 
@@ -231,9 +239,13 @@ function* retrieveOpdsProgression(action: winCommonActions.initSuccess.TAction) 
 
     const localSnapshot = __localProgressionSnapshotMap.get(winId);
     if (!localSnapshot || localSnapshot.retrievalStarted) {
+        debug("OPDS progression: retrieval skipped", { winId, pubId, hasSnapshot: !!localSnapshot,
+            retrievalStarted: localSnapshot?.retrievalStarted });
         return;
     }
     localSnapshot.retrievalStarted = true;
+    debug("OPDS progression: retrieval started", { winId, pubId,
+        hasLocalLocator: localSnapshot.hasLocator, localModifiedTime: localSnapshot.locatorModifiedTime });
 
     try {
         const publicationDocument = yield* selectTyped((state: RootState) => state.publication.db[pubId]);
@@ -242,12 +254,15 @@ function* retrieveOpdsProgression(action: winCommonActions.initSuccess.TAction) 
             parseContentType(file.contentType) === ContentType.Epub,
         );
         if (!isEpub || !progressionLink?.url) {
+            debug("OPDS progression: publication ineligible", { winId, isEpub, hasLink: !!progressionLink?.url });
             return;
         }
 
         const locale = yield* selectTyped((state: RootState) => state.i18n.locale);
         const progression = yield* callTyped(() => getOpdsProgression(progressionLink.url, locale));
         if (!progression || __localProgressionSnapshotMap.get(winId) !== localSnapshot) {
+            debug("OPDS progression: response ignored", { winId, hasDocument: !!progression,
+                snapshotStillActive: __localProgressionSnapshotMap.get(winId) === localSnapshot });
             return;
         }
 
@@ -258,7 +273,7 @@ function* retrieveOpdsProgression(action: winCommonActions.initSuccess.TAction) 
             diMainGet("publication-data").readJsonObj(pubId, "locator"))) as MiniLocatorExtended | undefined;
         const persistedLocatorChanged = localSnapshot.hasLocator &&
             typeof latestLocator?.locator?.href === "string" &&
-            !isDeepStrictEqual(localSnapshot.locator, latestLocator.locator);
+            !sameReadingLocator(localSnapshot.locator, latestLocator.locator);
         const localLocatorChanged = persistedLocatorChanged ||
             typeof localSnapshot.meaningfulLocatorChangeTime === "number";
         const persistedModifiedTime = persistedLocatorChanged
@@ -271,19 +286,26 @@ function* retrieveOpdsProgression(action: winCommonActions.initSuccess.TAction) 
             ) || undefined
             : localSnapshot.locatorModifiedTime;
 
+        debug("OPDS progression: freshness comparison", { winId, pubId,
+            persistedLocatorChanged, localLocatorChanged, localModifiedTime,
+            remoteModified: progression.modified, progression: progression.progression });
         if (localLocatorChanged && typeof localModifiedTime !== "number") {
+            debug("OPDS progression: suppressed because local change timestamp is unavailable", { winId });
             return;
         }
 
         if ((localSnapshot.hasLocator || localLocatorChanged) &&
             !opdsProgressionIsNewer(progression.modified, localModifiedTime)) {
+            debug("OPDS progression: suppressed because remote position is not newer", { winId });
             return;
         }
 
+        debug("OPDS progression: offering remote position", { winId, progression: progression.progression });
         yield put(readerActions.setOpdsProgression.build(winId, progression));
     } finally {
         if (__localProgressionSnapshotMap.get(winId) === localSnapshot) {
             __localProgressionSnapshotMap.delete(winId);
+            debug("OPDS progression: retrieval finished, snapshot cleared", { winId });
         }
     }
 }

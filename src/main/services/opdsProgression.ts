@@ -53,6 +53,8 @@ export const getOpdsProgression = async (
     url: string,
     locale?: keyof typeof availableLanguages,
 ): Promise<IOpdsProgressionDocument | undefined> => {
+    const startedAt = Date.now();
+    debug("Progression GET started", { timeoutMs: 6000 });
     try {
         const result = await httpGet(url, {
             headers: {
@@ -60,6 +62,11 @@ export const getOpdsProgression = async (
             },
             timeout: 6000,
         }, undefined, locale);
+        debug("Progression GET response", {
+            elapsedMs: Date.now() - startedAt,
+            statusCode: result.statusCode,
+            contentType: result.contentType,
+        });
 
         if (!result.isSuccess || result.statusCode !== 200 || !result.response) {
             debug("Progression GET failed", result.statusCode, result.statusMessage);
@@ -74,12 +81,19 @@ export const getOpdsProgression = async (
 
         const payload = await result.response.text?.();
         if (!payload?.trim()) {
+            debug("Progression GET ignored: empty payload");
             return undefined;
         }
 
         const progression = parseOpdsProgressionDocument(JSON.parse(payload));
         if (!progression) {
-            debug("Progression GET returned an invalid document");
+            debug("Progression GET returned an invalid document", validate.errors);
+        } else {
+            debug("Progression GET validated", {
+                progression: progression.progression,
+                modified: progression.modified,
+                elapsedMs: Date.now() - startedAt,
+            });
         }
         return progression;
     } catch (err) {
