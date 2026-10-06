@@ -126,6 +126,7 @@ export const getOpdsProgression = async (
     url: string,
     locale?: keyof typeof availableLanguages,
 ): Promise<IOpdsProgressionDocument | undefined> => {
+    debug("Progression GET started", { timeoutMs: 6000 });
     try {
         const result = await httpGet(url, {
             headers: {
@@ -147,12 +148,15 @@ export const getOpdsProgression = async (
 
         const payload = await result.response.text?.();
         if (!payload?.trim()) {
+            debug("Progression GET ignored: empty payload");
             return undefined;
         }
 
-        const progression = parseOpdsProgressionDocument(JSON.parse(payload));
+        const parsedPayload: unknown = JSON.parse(payload);
+        debug("Progression GET parsed JSON:\n%s", JSON.stringify(parsedPayload, undefined, 2));
+        const progression = parseOpdsProgressionDocument(parsedPayload);
         if (!progression) {
-            debug("Progression GET returned an invalid document");
+            debug("Progression GET returned an invalid document", validate.errors);
         }
         return progression;
     } catch (err) {

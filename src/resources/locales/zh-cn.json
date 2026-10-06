@@ -1333,7 +1333,7 @@
             }
         },
         "tabs": {
-            "appearance": "外观",
+            "advanced": "",
             "general": "常规",
             "keyboardShortcuts": "键盘快捷键",
             "profiles": "配置文件",

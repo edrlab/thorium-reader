@@ -39,6 +39,7 @@ import { customizationWellKnownFolder } from "readium-desktop/main/customization
 import * as fs from "node:fs";
 import { URL_PATH_PREFIX_CUSTOMPROFILEZIP } from "readium-desktop/common/streamerProtocol";
 import { downloadOpdsCoverData, selectOpdsCoverLink } from "./opdsCover";
+import { buildOpdsPublicationDocumentPatch } from "readium-desktop/main/tools/publicationDocument";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/publication/importFromLinkService");
@@ -114,6 +115,7 @@ function* importLinkFromPath(
     }
 
     let returnPublicationDocument = publicationDocumentWithCover;
+    const opdsPublicationDocumentPatch = buildOpdsPublicationDocumentPatch(link, pub);
     if (!alreadyImported && publicationDocumentWithCover) {
 
         const tags = pub?.tags?.map((v) => v.name) || [];
@@ -137,14 +139,7 @@ function* importLinkFromPath(
                 //     // r2OpdsPublicationBase64: pub?.r2OpdsPublicationBase64 || "",
                 // } as Resources,
                 tags,
-                opdsPublicationStringified: pub?.opdsPublicationStringified,
-                opdsPublication: {
-                    url: link.url,
-                    type: link.type,
-                    selfLinkUrl: pub?.selfLink?.url,
-                    identifier: pub?.workIdentifier,
-                    progressionLink: pub?.progressionLink,
-                },
+                ...opdsPublicationDocumentPatch,
             },
         );
 
@@ -171,14 +166,7 @@ function* importLinkFromPath(
                 //     // r2LSDBase64: publicationDocument.resources.r2LSDBase64,
                 //     // r2OpdsPublicationBase64: pub?.r2OpdsPublicationBase64 || "",
                 // } as Resources,
-                opdsPublicationStringified: pub?.opdsPublicationStringified,
-                opdsPublication: {
-                    url: link.url,
-                    type: link.type,
-                    selfLinkUrl: pub?.selfLink?.url,
-                    identifier: pub?.workIdentifier,
-                    progressionLink: pub?.progressionLink,
-                },
+                ...opdsPublicationDocumentPatch,
             },
         );
 

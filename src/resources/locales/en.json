@@ -1345,7 +1345,7 @@
             }
         },
         "tabs": {
-            "appearance": "Appearance",
+            "advanced": "Advanced",
             "general": "General",
             "keyboardShortcuts": "Keyboard shortcuts",
             "profiles": "Profiles",

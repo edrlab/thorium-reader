@@ -1345,7 +1345,7 @@
             }
         },
         "tabs": {
-            "appearance": "Aspecto visual",
+            "advanced": "",
             "general": "General",
             "keyboardShortcuts": "Atallos de teclado",
             "profiles": "",

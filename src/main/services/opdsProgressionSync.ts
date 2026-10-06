@@ -14,6 +14,8 @@ import {
 import type { availableLanguages } from "readium-desktop/common/services/translator";
 import type { TOpdsProgressionPutDocument } from "readium-desktop/main/services/opdsProgression";
 
+import type { IReadiumPositionList } from "readium-desktop/common/readium/positions";
+
 export type TOpdsProgressionUploadOutcome =
     | { kind: "success"; modified: string; progression: number }
     | "retry"
@@ -26,6 +28,7 @@ export interface IOpdsProgressionSyncRegistration {
     initialLocator?: MiniLocatorExtended["locator"];
     locale?: keyof typeof availableLanguages;
     publicationIdentifier: string;
+    positionList?: IReadiumPositionList;
     spine: ReadonlyArray<{ Href?: string }>;
     url: string;
     windowIdentifier: string;
@@ -120,6 +123,7 @@ export class OpdsProgressionSyncCoordinator {
         const initialProgression = locatorToOpdsProgression(
             registration.initialLocator,
             registration.spine,
+            registration.positionList,
         );
         this.sessions.set(registration.windowIdentifier, {
             ...registration,
@@ -142,7 +146,7 @@ export class OpdsProgressionSyncCoordinator {
             return;
         }
 
-        const progression = locatorToOpdsProgression(locator, session.spine);
+        const progression = locatorToOpdsProgression(locator, session.spine, session.positionList);
         if (typeof progression !== "number") {
             return;
         }
@@ -193,9 +197,9 @@ export class OpdsProgressionSyncCoordinator {
             return;
         }
 
-        const appliedLocator = opdsProgressionToLocator(remoteProgression, session.spine);
+        const appliedLocator = opdsProgressionToLocator(remoteProgression, session.spine, session.positionList);
         session.reconciliation = {
-            appliedProgression: locatorToOpdsProgression(appliedLocator, session.spine),
+            appliedProgression: locatorToOpdsProgression(appliedLocator, session.spine, session.positionList),
         };
         session.getCompleted = false;
         this.clearScheduledUpload(session);

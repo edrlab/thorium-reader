@@ -2,7 +2,7 @@
     "version": 1,
     "identifier": "thorium-manifest://org.edrlab.thorium.university",
     "created": "2025-11-27T09:37:37Z",
-    "modified": "2025-12-02T7:37:37Z",
+    "modified": "2026-10-05T7:37:37Z",
     "title": "Thorium University Press",
     "description": "Thorium University Press publishes peer-reviewed books that connect authors and readers across spheres of knowledge to advance and enrich the global conversation.",
     "theme": {
@@ -72,14 +72,14 @@
       },
       {
         "rel": "catalog", 
-        "href": "https://demoreader.cantookstation.com/v1/home.opds2",
+        "href": "https://www.lirtuel.be/v1/resources.opds2?available_now_for_opds=1&nature=ebook",
         "title": {
-          "en": "DemoReader catalog"
+          "en": "E-books"
         },
         "properties": {
           "authenticate": {
              "type": "application/opds-authentication+json",
-             "href": "https://demoreader.cantookstation.com/v1/sign_in.opds2"
+             "href": "https://www.lirtuel.be/v1/sign_in.opds2"
             }
         }
       }
@@ -150,7 +150,11 @@
       }
     ],
     "images": [
-        {
+      {
+        "rel": "image",
+        "href": "./images/lirtuel-logo.png"
+      },
+      {
             "rel": "logo",
             "href": "./images/logo.svg"
         },

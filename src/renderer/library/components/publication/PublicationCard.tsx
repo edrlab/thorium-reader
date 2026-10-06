@@ -90,7 +90,9 @@ class PublicationCard extends React.Component<IProps> {
             !canOpenLocalPublication;
 
         let pubFormat = "EPUB";
-        if (publicationView.isAudio) {
+        if (publicationView.isCBZ) {
+            pubFormat = "CBZ";
+        } else if (publicationView.isAudio) {
             pubFormat = "Audio";
         } else if (publicationView.isDivina) {
             pubFormat = "Divina";
@@ -156,7 +158,7 @@ class PublicationCard extends React.Component<IProps> {
                                    className={classNames(
                                         stylesPublications.publication_main_container,
                                     )}
-                                    title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
+                                    title={`${publicationViewMaybeOpds.documentTitle}${authors ? ` - ${authors}` : ""}`}
                                     tabIndex={0}
                                 >
                                     <Cover
@@ -186,7 +188,7 @@ class PublicationCard extends React.Component<IProps> {
                                     (e) =>
                                         (e.key === "Enter") && this.handleLocalBookshelfBookClick(e)
                                 }
-                                title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
+                                title={`${publicationViewMaybeOpds.documentTitle}${authors ? ` - ${authors}` : ""}`}
                                 className={classNames(
                                             stylesPublications.publication_main_container,
                                             { [stylesPublications.expired]: hasEnded || showUnavailablePublicationState },
@@ -213,7 +215,7 @@ class PublicationCard extends React.Component<IProps> {
                             <AlertDialog.Root>
                                 <AlertDialog.Trigger asChild>
                                     <a
-                                        title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
+                                        title={`${publicationViewMaybeOpds.documentTitle}${authors ? ` - ${authors}` : ""}`}
                                         className={classNames(
                                                     stylesPublications.publication_main_container,
                                                     { [stylesPublications.expired]: hasEnded || showUnavailablePublicationState },

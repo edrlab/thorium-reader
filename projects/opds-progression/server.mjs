@@ -19,6 +19,7 @@ const epubFileName = "accessible_epub_3.epub";
 const epubPath = join(projectDirectory, "fixtures", epubFileName);
 const defaultPort = Number(process.argv[2]) || 4873;
 const publicationIdentifier = "urn:isbn:9781449328030";
+const jsonResponseBody = Symbol("jsonResponseBody");
 const defaultDevice = Object.freeze({
     id: "urn:uuid:f2438195-3b7c-4ea8-a8cf-668d624c11e5",
     name: "Thorium OPDS Progression Test Server",
@@ -27,6 +28,7 @@ const defaultDevice = Object.freeze({
 function defaultProgressionState() {
     return {
         device: defaultDevice,
+        delayMs: 0,
         empty: false,
         locked: false,
         modified: new Date().toISOString(),
@@ -59,6 +61,9 @@ function sendBuffer(request, response, statusCode, contentType, body, extraHeade
     if (request.method === "HEAD") {
         response.end();
         return;
+    }
+    if (contentType.split(";", 1)[0] === PROGRESSION_MEDIA_TYPE) {
+        response[jsonResponseBody] = body.toString("utf8");
     }
     response.end(body);
 }
@@ -246,6 +251,7 @@ function isSameProgressionDocument(left, right) {
 function publicState(state, requests) {
     return {
         device: state.device,
+        delayMs: state.delayMs,
         empty: state.empty,
         locked: state.locked,
         modified: state.modified,
@@ -437,7 +443,14 @@ function applyStateUpdate(currentState, update) {
     const nextState = { ...currentState };
     const changesDocument = hasOwn(update, "progression") || hasOwn(update, "title") || hasOwn(update, "device");
 
-    if (hasOwn(update, "progression")) {
+    if (Object.prototype.hasOwnProperty.call(update, "delayMs")) {
+        if (!Number.isInteger(update.delayMs) || update.delayMs < 0 || update.delayMs > 120000) {
+            throw new Error("delayMs must be an integer between 0 and 120000");
+        }
+        nextState.delayMs = update.delayMs;
+    }
+
+    if (Object.prototype.hasOwnProperty.call(update, "progression")) {
         if (
             typeof update.progression !== "number" ||
             !Number.isFinite(update.progression) ||
@@ -491,11 +504,48 @@ function applyStateUpdate(currentState, update) {
     return nextState;
 }
 
-export function createOpdsProgressionServer() {
+function logRequestResponse(event, { jsonBody, ...details }) {
+    console.log(`${event} ${JSON.stringify(details)}`);
+    if (jsonBody !== undefined) {
+        console.log(jsonBody || "(empty JSON body)");
+    }
+}
+
+export function createOpdsProgressionServer({ log = logRequestResponse } = {}) {
     let state = defaultProgressionState();
     let requests = createRequestState();
+    let nextRequestId = 0;
 
     return createServer(async (request, response) => {
+        const requestId = ++nextRequestId;
+        const startedAt = performance.now();
+        const path = new URL(request.url || "/", "http://127.0.0.1").pathname;
+        const requestDetails = {
+            requestId,
+            method: request.method,
+            path,
+            accept: request.headers.accept,
+            range: request.headers.range,
+        };
+        log("OPDS request", requestDetails);
+        let loggedCompletion = false;
+        const logCompletion = (outcome) => {
+            if (loggedCompletion) {
+                return;
+            }
+            loggedCompletion = true;
+            log("OPDS response", {
+                requestId,
+                method: request.method,
+                path,
+                outcome,
+                statusCode: response.headersSent ? response.statusCode : undefined,
+                elapsedMs: Math.round(performance.now() - startedAt),
+                ...(response[jsonResponseBody] !== undefined ? { jsonBody: response[jsonResponseBody] } : {}),
+            });
+        };
+        response.once("finish", () => logCompletion("finished"));
+        response.once("close", () => logCompletion(response.writableFinished ? "finished" : "aborted"));
         const url = new URL(request.url || "/", `http://${request.headers.host || "127.0.0.1"}`);
 
         try {
@@ -537,12 +587,31 @@ export function createOpdsProgressionServer() {
                         return;
                     }
 
-                    if (state.empty) {
+                // Freeze the response at request time so concurrent test controls
+                // cannot change the document already being retrieved.
+                const responseState = { ...state };
+                if (responseState.delayMs > 0) {
+                    await new Promise((resolveDelay) => {
+                        const finish = () => {
+                            clearTimeout(timer);
+                            response.off("close", finish);
+                            resolveDelay();
+                        };
+                        const timer = setTimeout(finish, responseState.delayMs);
+                        response.once("close", finish);
+                    });
+                }
+                if (response.destroyed) {
+                    return;
+                }
+
+
+                    if (responseState.empty) {
                         sendBuffer(request, response, 200, PROGRESSION_MEDIA_TYPE, Buffer.alloc(0));
                         return;
                     }
 
-                    const body = Buffer.from(`${JSON.stringify(progressionDocument(state), undefined, 2)}\n`, "utf8");
+                    const body = Buffer.from(`${JSON.stringify(progressionDocument(responseState), undefined, 2)}\n`, "utf8");
                     sendBuffer(request, response, 200, `${PROGRESSION_MEDIA_TYPE}; charset=utf-8`, body);
                     return;
                 }
@@ -681,9 +750,9 @@ export function createOpdsProgressionServer() {
     });
 }
 
-export async function startOpdsProgressionServer(port = defaultPort) {
+export async function startOpdsProgressionServer(port = defaultPort, options = {}) {
     await access(epubPath, constants.R_OK);
-    const server = createOpdsProgressionServer();
+    const server = createOpdsProgressionServer(options);
 
     return new Promise((resolveStart, rejectStart) => {
         const onError = (error) => rejectStart(error);

@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { performance } from "node:perf_hooks";
+import { setTimeout as sleep } from "node:timers/promises";
 
 import {
     closeOpdsProgressionServer,
@@ -14,6 +16,59 @@ import {
 const INVALID_PAYLOAD_PROBLEM_TYPE = "https://registry.opds.io/error#progression-invalid-payload";
 const LOCKED_PROBLEM_TYPE = "https://registry.opds.io/error#progression-locked";
 const STALE_PROBLEM_TYPE = "https://registry.opds.io/error#progression-date";
+
+test("logs incoming requests and completed responses without sensitive request data", async (context) => {
+    const logs = [];
+    const server = await startOpdsProgressionServer(0, { log: (event, details) => logs.push({ event, details }) });
+    context.after(async () => closeOpdsProgressionServer(server));
+    const baseUrl = `http://127.0.0.1:${server.address().port}`;
+    const response = await fetch(`${baseUrl}/missing?token=secret-query`, {
+        headers: { Authorization: "Bearer secret-header", Accept: "application/json" },
+    });
+    await response.text();
+    assert.equal(response.status, 404);
+    assert.equal(logs.length, 2);
+    const [incoming, completed] = logs;
+    assert.equal(incoming.event, "OPDS request");
+    assert.equal(incoming.details.method, "GET");
+    assert.equal(incoming.details.path, "/missing");
+    assert.equal(incoming.details.accept, "application/json");
+    assert.equal(completed.event, "OPDS response");
+    assert.equal(completed.details.requestId, incoming.details.requestId);
+    assert.equal(completed.details.statusCode, 404);
+    assert.equal(completed.details.outcome, "finished");
+    assert.ok(completed.details.elapsedMs >= 0);
+    assert.equal(JSON.stringify(logs).includes("secret"), false);
+});
+
+test("logs only the exact OPDS progression body and omits other response bodies", async (context) => {
+    const logs = [];
+    const server = await startOpdsProgressionServer(0, { log: (event, details) => logs.push({ event, details }) });
+    context.after(async () => closeOpdsProgressionServer(server));
+    const baseUrl = `http://127.0.0.1:${server.address().port}`;
+    for (const path of ["/opds/v2/catalog.json", "/progression/accessible-epub-3", "/__test/state"]) {
+        const response = await fetch(`${baseUrl}${path}`, { headers: { Accept: PROGRESSION_MEDIA_TYPE } });
+        const body = await response.text();
+        const completed = logs.findLast((entry) => entry.event === "OPDS response");
+        assert.equal(completed.details.path, path);
+        if (path === "/progression/accessible-epub-3") {
+            assert.equal(completed.details.jsonBody, body);
+            assert.doesNotThrow(() => JSON.parse(completed.details.jsonBody));
+        } else {
+            assert.equal(Object.hasOwn(completed.details, "jsonBody"), false);
+        }
+    }
+    await fetch(`${baseUrl}/opds/v2/catalog.json`, { method: "HEAD" });
+    assert.equal(Object.hasOwn(logs.findLast((entry) => entry.event === "OPDS response").details, "jsonBody"), false);
+    await fetch(`${baseUrl}/__test/state`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ empty: true }),
+    });
+    const empty = await fetch(`${baseUrl}/progression/accessible-epub-3`, { headers: { Accept: PROGRESSION_MEDIA_TYPE } });
+    assert.equal(await empty.text(), "");
+    assert.equal(logs.findLast((entry) => entry.event === "OPDS response").details.jsonBody, "");
+});
 
 test("OPDS progression fixture server contract", async (context) => {
     const server = await startOpdsProgressionServer(0);
@@ -391,6 +446,61 @@ test("OPDS progression fixture server contract", async (context) => {
         assert.equal(await response.text(), "");
     });
 
+    await context.test("delays progression while controls stay responsive and preserves the request snapshot", async () => {
+        const update = async (value) => fetch(`${baseUrl}/__test/state`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(value),
+        });
+        const modified = "2040-01-02T03:04:05.000Z";
+        await update({ progression: 0.4, modified });
+        const configured = await (await update({ delayMs: 250 })).json();
+        assert.equal(configured.delayMs, 250);
+        assert.equal(configured.modified, modified);
+        let completed = false;
+        const start = performance.now();
+        const pending = fetch(`${baseUrl}/progression/accessible-epub-3`, {
+            headers: { Accept: PROGRESSION_MEDIA_TYPE },
+        }).then((response) => { completed = true; return response; });
+        // Synchronize on receipt, rather than assuming the fetch has started.
+        let observed;
+        for (let attempt = 0; attempt < 100; attempt++) {
+            observed = await (await fetch(`${baseUrl}/__test/state`)).json();
+            if (observed.requests.progressionGetCount > configured.requests.progressionGetCount) {
+                break;
+            }
+            await sleep(5);
+        }
+        assert.ok(observed.requests.progressionGetCount > configured.requests.progressionGetCount);
+        assert.equal(completed, false);
+        await update({ progression: 0.8, delayMs: 0 });
+        const document = await (await pending).json();
+        assert.ok(performance.now() - start >= 230);
+        assert.equal(document.progression, 0.4);
+        assert.equal(document.modified, modified);
+
+        await update({ empty: true, delayMs: 50 });
+        const emptyStart = performance.now();
+        const empty = await fetch(`${baseUrl}/progression/accessible-epub-3`, {
+            headers: { Accept: PROGRESSION_MEDIA_TYPE },
+        });
+        assert.equal(await empty.text(), "");
+        assert.ok(performance.now() - emptyStart >= 40);
+    });
+
+    await context.test("rejects invalid delays without changing state", async () => {
+        for (const delayMs of [-1, 0.5, "100", null, 120001]) {
+            const response = await fetch(`${baseUrl}/__test/state`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ delayMs }),
+            });
+            assert.equal(response.status, 400);
+        }
+        const state = await (await fetch(`${baseUrl}/__test/state`)).json();
+        assert.equal(state.delayMs, 50);
+    });
+
     await context.test("advertises GET and PUT and can reset all state and telemetry", async () => {
         const postResponse = await fetch(progressionUrl, { method: "POST" });
         assert.equal(postResponse.status, 405);
@@ -402,6 +512,7 @@ test("OPDS progression fixture server contract", async (context) => {
         const state = await resetResponse.json();
         assert.equal(state.empty, false);
         assert.equal(state.locked, false);
+        assert.equal(state.delayMs, 0);
         assert.equal(state.progression, 0.625);
         assert.deepEqual(state.device, {
             id: "urn:uuid:f2438195-3b7c-4ea8-a8cf-668d624c11e5",
