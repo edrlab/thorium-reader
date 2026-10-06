@@ -10,7 +10,6 @@ import { describe, expect, it } from "@jest/globals";
 import {
     locatorToOpdsProgression,
     opdsProgressionIsNewer,
-    opdsProgressionMatchesAppliedProgression,
     opdsProgressionToLocator,
 } from "readium-desktop/common/models/opdsProgression";
 
@@ -143,16 +142,5 @@ describe("OPDS total progression mapping", () => {
                 spine,
             ),
         ).toBe(1);
-    });
-
-    it("recognizes an already-applied future-dated remote position on reopen", () => {
-        const remoteModified = "2040-01-01T00:00:00.001Z";
-        const localModifiedTime = Date.parse("2026-10-01T10:00:00.000Z");
-        const persistedSafeEnd = locatorToOpdsProgression(opdsProgressionToLocator(1, spine), spine);
-
-        expect(opdsProgressionIsNewer(remoteModified, localModifiedTime)).toBe(true);
-        expect(opdsProgressionMatchesAppliedProgression(1, persistedSafeEnd, spine)).toBe(true);
-        expect(opdsProgressionMatchesAppliedProgression(1, 1, spine)).toBe(true);
-        expect(opdsProgressionMatchesAppliedProgression(0.75, 0.5, spine)).toBe(false);
     });
 });

@@ -47,7 +47,6 @@ export interface IProgressionLocator {
 }
 
 const LAST_RESOURCE_SAFE_PROGRESSION = 0.95;
-export const OPDS_PROGRESSION_EPSILON = 1e-9;
 
 const getReadableSpine = (
     spine: readonly ISpineLinkForProgression[] | undefined,
@@ -158,34 +157,6 @@ export const locatorToOpdsProgression = (
     }
 
     return (spineIndex + resourceProgression) / readableSpine.length;
-};
-
-/**
- * Compares a local scalar with the position Thorium actually applies for a
- * remote progression. This accounts for the safe 0.95 locator used when a
- * remote document points exactly to the end of the publication.
- */
-export const opdsProgressionMatchesAppliedProgression = (
-    remoteProgression: number,
-    localProgression: number | undefined,
-    spine: readonly ISpineLinkForProgression[] | undefined,
-    positionList?: IReadiumPositionList,
-): boolean => {
-    if (!Number.isFinite(remoteProgression) || remoteProgression < 0 || remoteProgression > 1 ||
-        typeof localProgression !== "number" || !Number.isFinite(localProgression)) {
-        return false;
-    }
-    if (Math.abs(remoteProgression - localProgression) <= OPDS_PROGRESSION_EPSILON) {
-        return true;
-    }
-
-    const appliedProgression = locatorToOpdsProgression(
-        opdsProgressionToLocator(remoteProgression, spine, positionList),
-        spine,
-        positionList,
-    );
-    return typeof appliedProgression === "number" &&
-        Math.abs(appliedProgression - localProgression) <= OPDS_PROGRESSION_EPSILON;
 };
 
 export const opdsProgressionIsNewer = (
