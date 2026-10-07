@@ -218,6 +218,42 @@ describe("authenticated HTTP PUT", () => {
         ).toBe("Bearer new-access-token");
     });
 
+    it("refreshes PKCE credentials with form encoding and retries PUT", async () => {
+        await httpSetAuthenticationToken({
+            accessToken: "expired-token",
+            opdsAuthenticationUrl: "https://example.org/authentication",
+            refreshToken: "refresh & token",
+            refreshUrl: "https://example.org/token",
+            pkce: true,
+        });
+        fetchWithCookieMock
+            .mockResolvedValueOnce(response(401))
+            .mockResolvedValueOnce(response(200, { access_token: "fresh-token", refresh_token: "rotated-token" }))
+            .mockResolvedValueOnce(response(200));
+
+        expect((await httpPutWithAuth(url, { body: "progression" })).statusCode).toBe(200);
+        const options = fetchWithCookieMock.mock.calls[1][1];
+        expect(options?.method).toBe("post");
+        expect((options?.headers as { get: (key: string) => string | null }).get("Content-Type")).toBe(
+            "application/x-www-form-urlencoded",
+        );
+        const form = new URLSearchParams(String(options?.body));
+        expect(form.get("grant_type")).toBe("refresh_token");
+        expect(form.get("refresh_token")).toBe("refresh & token");
+        expect(form.get("client_id")).toBeTruthy();
+        expect(form.has("code_verifier")).toBe(false);
+        const retry = fetchWithCookieMock.mock.calls[2][1];
+        expect(retry?.method).toBe("put");
+        expect(retry?.body).toBe("progression");
+        expect((retry?.headers as { get: (key: string) => string | null }).get("Authorization")).toBe(
+            "Bearer fresh-token",
+        );
+        await expect(getAuthenticationToken(new URL(url), "PUT")).resolves.toMatchObject({
+            accessToken: "fresh-token",
+            refreshToken: "rotated-token",
+        });
+    });
+
     it("does not follow a refresh-token POST redirect", async () => {
         const refreshUrl = "https://example.org/token";
         const insecureRefreshUrl = "http://example.org/token";

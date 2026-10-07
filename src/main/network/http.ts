@@ -845,14 +845,19 @@ const httpPutUnauthorizedRefresh =
                 return undefined;
             }
             const options: RequestInit = {};
-            options.headers = new Headers({
-                "Content-Type": "application/json",
-            });
+            const headers = new Headers();
+            options.headers = headers;
             options.redirect = "manual";
-            options.body = JSON.stringify({
-                refresh_token: refreshToken,
-                grant_type: "refresh_token",
-            });
+            if (auth.pkce) {
+                headers.set("Content-Type", "application/x-www-form-urlencoded");
+                options.body = createOpdsPkceRefreshTokenRequest(refreshToken);
+            } else {
+                headers.set("Content-Type", "application/json");
+                options.body = JSON.stringify({
+                    refresh_token: refreshToken,
+                    grant_type: "refresh_token",
+                });
+            }
 
             const httpPostResponse = await httpPost(refreshUrlObject, options);
             if (!httpPostResponse.isSuccess || !httpPostResponse.response) {
