@@ -404,7 +404,10 @@ const renderLinkTree = (currentLocation: MiniLocatorExtended, isRTLfn: (_link: I
 //     );
 // };
 
-export const computeProgression = (spineItemLinks: Link[], locator: Locator) => {
+export const computeProgression = (spineItemLinks: Link[], locator: {
+    href: Locator["href"];
+    locations?: Pick<NonNullable<Locator["locations"]>, "progression">;
+}) => {
 
     let percent = 100;
     if (spineItemLinks.length && locator.href) {
