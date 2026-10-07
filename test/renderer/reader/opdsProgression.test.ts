@@ -7,7 +7,7 @@
 
 import { describe, expect, it } from "@jest/globals";
 
-import { opdsProgressionToLocator } from "readium-desktop/renderer/reader/opdsProgression";
+import { locatorToOpdsProgression, opdsProgressionToLocator } from "readium-desktop/renderer/reader/opdsProgression";
 import { createReadiumPositionList, mapLocatorToReadiumPosition } from "readium-desktop/common/readium/positions";
 import { Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
@@ -38,6 +38,14 @@ const spine = [
 ];
 
 describe("OPDS total progression navigation", () => {
+    it("uses the same weighted percentage for remote resume and PUT uploads", () => {
+        const publication = weightedPublication();
+        const positions = createReadiumPositionList(publication);
+        const locator = opdsProgressionToLocator(0.45, publication.Spine, positions);
+        expect(locatorToOpdsProgression(locator, publication.Spine, positions)).toBeCloseTo(0.45);
+        const endLocator = opdsProgressionToLocator(1, publication.Spine, positions);
+        expect(locatorToOpdsProgression(endLocator, publication.Spine, positions)).toBeCloseTo(0.99);
+    });
     it.each([
         [0, "chapter-1.xhtml", 0, 1],
         [0.1, "chapter-2.xhtml", 0, 2],
