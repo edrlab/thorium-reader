@@ -738,20 +738,6 @@ export const httpPost: typeof httpFetchFormattedResponse =
         return httpFetchFormattedResponse(...arg);
     };
 
-const canSendAuthenticationToUrl = (auth: IOpdsAuthenticationToken, url: URL): boolean => {
-    if (url.protocol !== "http:") {
-        return true;
-    }
-    if (!auth.opdsAuthenticationUrl) {
-        return false;
-    }
-    try {
-        return new URL(auth.opdsAuthenticationUrl).protocol !== "https:";
-    } catch {
-        return false;
-    }
-};
-
 const httpPutWithAuthInternal =
     (enableAuth: boolean): typeof httpFetchFormattedResponse =>
         async (...arg) => {
@@ -762,7 +748,7 @@ const httpPutWithAuthInternal =
 
             if (enableAuth) {
                 const auth = await getAuthenticationToken(url, "PUT");
-                if (auth?.accessToken && canSendAuthenticationToUrl(auth, url)) {
+                if (auth?.accessToken) {
                     return httpPutUnauthorized(auth, true)(url, options, _callback, ..._arg);
                 }
             }
@@ -856,9 +842,6 @@ const httpPutUnauthorizedRefresh =
             try {
                 refreshUrlObject = new URL(refreshUrl || "");
             } catch {
-                return undefined;
-            }
-            if (!canSendAuthenticationToUrl(auth, refreshUrlObject)) {
                 return undefined;
             }
             const options: RequestInit = {};

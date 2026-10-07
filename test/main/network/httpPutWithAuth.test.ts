@@ -158,21 +158,16 @@ describe("authenticated HTTP PUT", () => {
         expect((legacyOptions?.headers as { get: (key: string) => string | null }).get("Authorization")).toBeNull();
     });
 
-    it("does not send credentials sourced from HTTPS on an initial HTTP request", async () => {
-        const insecureUrl = "http://example.org/publications/1/progression";
-        fetchWithCookieMock.mockResolvedValueOnce(response(200, {}, insecureUrl));
+    it.each(["http:", "https:"])("uses stored credentials for a %s PUT like GET", async (protocol) => {
+        const requestUrl = new URL(url);
+        requestUrl.protocol = protocol;
+        fetchWithCookieMock.mockResolvedValueOnce(response(200, {}, requestUrl.href));
 
-        const result = await httpPutWithAuth(insecureUrl, { body: "progression" });
-
-        expect(result.statusCode).toBe(200);
-        expect(fetchWithCookieMock).toHaveBeenCalledTimes(1);
+        expect((await httpPutWithAuth(requestUrl, { body: "progression" })).statusCode).toBe(200);
         const headers = fetchWithCookieMock.mock.calls[0][1]?.headers as {
             get: (key: string) => string | null;
         };
-        expect(headers.get("Authorization")).toBeNull();
-        await expect(getAuthenticationToken(new URL(url), "PUT")).resolves.toMatchObject({
-            accessToken: "old-access-token",
-        });
+        expect(headers.get("Authorization")).toBe("Bearer old-access-token");
     });
 
     it("refreshes an expired token and retries the PUT", async () => {
@@ -221,27 +216,6 @@ describe("authenticated HTTP PUT", () => {
                 }
             ).get("Authorization"),
         ).toBe("Bearer new-access-token");
-    });
-
-    it("does not send a refresh token from HTTPS provenance to an HTTP endpoint", async () => {
-        await httpSetAuthenticationToken({
-            accessToken: "expired-access-token",
-            opdsAuthenticationUrl: "https://example.org/authentication",
-            refreshToken: "must-not-leak",
-            refreshUrl: "http://example.org/token",
-            tokenType: "Bearer",
-        });
-        fetchWithCookieMock.mockResolvedValueOnce(response(401)).mockResolvedValueOnce(response(200));
-
-        const result = await httpPutWithAuth(url, { body: "progression" });
-
-        expect(result.statusCode).toBe(200);
-        expect(fetchWithCookieMock).toHaveBeenCalledTimes(2);
-        expect(fetchWithCookieMock.mock.calls.map(([requestUrl]) => String(requestUrl))).toEqual([url, url]);
-        expect(fetchWithCookieMock.mock.calls.map(([, options]) => options?.method)).toEqual(["put", "put"]);
-        expect(
-            fetchWithCookieMock.mock.calls.some(([, options]) => String(options?.body).includes("must-not-leak")),
-        ).toBe(false);
     });
 
     it("does not follow a refresh-token POST redirect", async () => {
