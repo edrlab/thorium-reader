@@ -16,6 +16,7 @@
 // @__ts-ignore TS1479
 import timeoutSignal from "timeout-signal";
 
+import { LRUCache } from "lru-cache";
 import debug_ from "debug";
 import * as fs from "node:fs";
 import * as http from "node:http";
@@ -229,6 +230,11 @@ export const wipeAuthenticationTokenStorage = async () => {
     return await fs.promises.writeFile(opdsAuthFilePath, encrypted);
 };
 
+const _proxyAgentCache = new LRUCache<string, ProxyAgent>({
+    max: 20,
+    dispose: (agent) => agent.destroy(),
+});
+
 async function httpFetchRawResponse(
     url: string | URL,
     options: THttpOptions = {},
@@ -254,7 +260,6 @@ async function httpFetchRawResponse(
     //
     // options.redirect = "manual"; // handle cookies
 
-
     // https://github.com/node-fetch/node-fetch#custom-agent
     // httpAgent doesn't works // err: Protocol "http:" not supported. Expected "https:
     // https://github.com/edrlab/thorium-reader/issues/1323#issuecomment-911772951
@@ -264,28 +269,42 @@ async function httpFetchRawResponse(
         DEFAULT_AUTO_SELECT_FAMILY_ATTEMPT_TIMEOUT,
     );
 
-    const httpAgentOptions: http.AgentOptions = {
-        timeout: requestTimeout,
-        autoSelectFamilyAttemptTimeout,
-    };
+    const cacheKey = `${requestTimeout}`;
+    debug("ProxyAgent cache key: %o", cacheKey);
 
-    const httpsAgentOptions: https.AgentOptions = {
-        ...httpAgentOptions,
-        rejectUnauthorized: !__TH__IS_DEV__,
-    };
+    let proxyAgent = _proxyAgentCache.get(cacheKey);
+    if (!proxyAgent) {
+        debug("Cache miss for ProxyAgent: %o", cacheKey);
 
-    const httpsAgent = new https.Agent(httpsAgentOptions);
-    const httpAgent = new http.Agent(httpAgentOptions);
+        const httpAgentOptions: http.AgentOptions = {
+            timeout: requestTimeout,
+            autoSelectFamilyAttemptTimeout,
+        };
 
-    const proxyAgent = new ProxyAgent({
-        ...httpsAgentOptions,
-        httpAgent: httpAgent,
-        httpsAgent: httpsAgent,
-        // getProxyForUrl: (url) => {
-        //     debug("need to proxify this URL: ", url);
-        //     return "http://127.0.0.1:8888"
-        // }
-    });
+        const httpsAgentOptions: https.AgentOptions = {
+            ...httpAgentOptions,
+            rejectUnauthorized: !__TH__IS_DEV__,
+        };
+
+        const httpsAgent = new https.Agent(httpsAgentOptions);
+        const httpAgent = new http.Agent(httpAgentOptions);
+
+        proxyAgent = new ProxyAgent({
+            ...httpsAgentOptions,
+            httpAgent: httpAgent,
+            httpsAgent: httpsAgent,
+            // getProxyForUrl: (url) => {
+            //     debug("need to proxify this URL: ", url);
+            //     return "http://127.0.0.1:8888"
+            // }
+        });
+
+        proxyAgent.options.ca = TLS_CERTIFICATES;
+
+        _proxyAgentCache.set(cacheKey, proxyAgent);
+    } else {
+        debug("Cache hit for ProxyAgent: %o", cacheKey);
+    }
 
     // seems already implemented in the ProxyAgent package:
     // https://github.com/TooTallNate/proxy-agents/blob/70023c12abe0d014004af6309ff7d0fdbaa60875/packages/proxy-agent/src/index.ts#L122
@@ -298,7 +317,6 @@ async function httpFetchRawResponse(
     //     }
     // };
 
-    proxyAgent.options.ca = TLS_CERTIFICATES;
     options.agent = proxyAgent;
 
     // if (!options.agent && /^https:\/\//.test(url.toString())) {
