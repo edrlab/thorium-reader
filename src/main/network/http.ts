@@ -485,6 +485,7 @@ async function httpFetchFormattedResponse<TData = undefined>(
         if (
             options.method === "get" &&
             responseURL.href !== urlURL.href &&
+            !(urlURL.protocol === "https:" && responseURL.protocol === "http:") &&
             response.status === 401 &&
             (await getAuthenticationToken(responseURL))?.accessToken
         ) {
@@ -652,6 +653,15 @@ const httpGetUnauthorized =
 
             if (enableRefresh) {
                 if (response.statusCode === 401) {
+                    const responseUrl = response.responseUrl
+                        ? new URL(response.responseUrl)
+                        : url;
+                    if (responseUrl.origin !== url.origin) {
+                        // Redirect authentication is handled against the final
+                        // host. Do not invalidate the original host's valid
+                        // credentials when the final host remains unauthorized.
+                        return handleCallback(response, _callback);
+                    }
                     if (auth.refreshUrl && auth.refreshToken) {
                         const responseAfterRefresh = await httpGetUnauthorizedRefresh(
                             auth,
