@@ -703,7 +703,10 @@
         "notStarted": "Nepradėtas",
         "onGoing": "Skaitomas",
         "progression": {
-            "title": "Eiga"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Eiga",
+            "useRemote": ""
         },
         "read": "Užbaigtas",
         "remainingTime": "Paskolinta (liko dienų)",

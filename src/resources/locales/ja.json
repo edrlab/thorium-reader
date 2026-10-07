@@ -683,7 +683,10 @@
         "notStarted": "まだ開いていません",
         "onGoing": "進行中",
         "progression": {
-            "title": "進行度"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "進行度",
+            "useRemote": ""
         },
         "read": "既読",
         "remainingTime": "借受中（残り日数）",

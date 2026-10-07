@@ -277,6 +277,7 @@ export class PublicationViewConverter {
             customCover: document.customCover,
             r2PublicationJson: undefined,
             lastReadingLocation: readerStateLocator,
+            progressionLink: document.opdsPublication?.progressionLink,
         }, document.opdsPublicationView);
 
     }
@@ -447,6 +448,7 @@ export class PublicationViewConverter {
             // r2PublicationBase64,
 
             lastReadingLocation: readerStateLocator,
+            progressionLink: document.opdsPublication?.progressionLink,
         }, document.opdsPublicationView);
     }
 }

@@ -697,7 +697,10 @@
         "notStarted": "Не начато",
         "onGoing": "В процессе",
         "progression": {
-            "title": "Прогресс"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Прогресс",
+            "useRemote": ""
         },
         "read": "Закончено",
         "remainingTime": "Абонемент (оставшиеся дни)",

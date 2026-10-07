@@ -691,7 +691,10 @@
         "notStarted": "Başlatılmadı",
         "onGoing": "Devam Ediyor",
         "progression": {
-            "title": "İlerleme"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "İlerleme",
+            "useRemote": ""
         },
         "read": "Bitti",
         "remainingTime": "Ödünç alım (kalan süre)",

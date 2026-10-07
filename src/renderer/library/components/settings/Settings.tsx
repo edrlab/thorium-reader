@@ -179,7 +179,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
                                 <SharedComputerSettings />
                                 <section className={stylesSettings.section} style={{ gap: "10px" }}>
                                     <SaveCreatorSettings />
-                                    <OverloadNoteExportToHtml /> 
+                                    <OverloadNoteExportToHtml />
                                 </section>
                                 <TelemetrySettings />
                             </div>

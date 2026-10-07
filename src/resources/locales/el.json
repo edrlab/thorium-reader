@@ -691,7 +691,10 @@
         "notStarted": "Δεν έχει αρχίσει",
         "onGoing": "Σε εξέλιξη",
         "progression": {
-            "title": "Εξέλιξη"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Εξέλιξη",
+            "useRemote": ""
         },
         "read": "Ολοκληρώθηκε",
         "remainingTime": "Δανεισμός (υπολείπεται χρόνος)",

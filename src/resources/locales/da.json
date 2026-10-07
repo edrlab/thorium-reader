@@ -691,7 +691,10 @@
         "notStarted": "Ikke læst",
         "onGoing": "I gang",
         "progression": {
-            "title": "Læst"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Læst",
+            "useRemote": ""
         },
         "read": "Læst færdig",
         "remainingTime": "Lån (dage tilbage)",

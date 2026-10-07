@@ -703,7 +703,10 @@
         "notStarted": "Nie rozpoczęta",
         "onGoing": "W trakcie czytania",
         "progression": {
-            "title": "Postęp"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Postęp",
+            "useRemote": ""
         },
         "read": "Przeczytana",
         "remainingTime": "Wypożyczenie (pozostały czas)",

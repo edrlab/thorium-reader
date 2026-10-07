@@ -84,6 +84,7 @@ describe("publicationDocument", () => {
             numberOfPages: 0,
             catalogLinkView: [],
             opdsPublicationStringified: JSON.stringify({ metadata: { identifier: "work-id" } }),
+            progressionLink: { url: "https://example.com/progression", type: "application/json" },
             selfLink: {
                 url: "https://example.com/publication.json",
                 type: "application/opds-publication+json",
@@ -98,6 +99,7 @@ describe("publicationDocument", () => {
                 type: link.type,
                 selfLinkUrl: opdsPublication.selfLink.url,
                 identifier: opdsPublication.workIdentifier,
+                progressionLink: opdsPublication.progressionLink,
             },
         });
     });
