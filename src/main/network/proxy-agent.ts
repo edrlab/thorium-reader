@@ -78,11 +78,37 @@ type GetProxyForUrlCallback = (
 //     socks: async () => (await import("socks-proxy-agent")).SocksProxyAgent,
 //     // pac: async () => (await import("pac-proxy-agent")).PacProxyAgent,
 // } as const;
+let pacProxyAgentWithDirectFallback: Promise<AgentConstructor> | undefined;
+const loadPacProxyAgentWithDirectFallback = (): Promise<AgentConstructor> => {
+    if (pacProxyAgentWithDirectFallback === undefined) {
+        pacProxyAgentWithDirectFallback = import("pac-proxy-agent").then(({ PacProxyAgent }) =>
+            class PacProxyAgentWithDirectFallback extends PacProxyAgent<""> {
+                constructor(proxy: string, opts?: ProxyAgentOptions) {
+                    super(new URL(proxy), opts);
+                }
+
+                async getResolver() {
+                    try {
+                        return await super.getResolver();
+                    } catch (err) {
+                        // A PAC file is a proxy auto-configuration script (JavaScript) the OS points browsers at to choose a proxy
+                        // per URL. macOS Auto Proxy Discovery reports http://wpad/wpad.dat even when no wpad host exists;
+                        // browsers connect directly when that file cannot be fetched.
+                        debug("PAC file %o could not be loaded, connecting directly: %o", this.uri.href, err);
+                        return async () => "DIRECT";
+                    }
+                }
+            },
+        );
+    }
+    return pacProxyAgentWithDirectFallback;
+};
+
 const wellKnownAgents = {
     http: HttpProxyAgent,
     https: HttpsProxyAgent,
     socks: SocksProxyAgent,
-    pac: async () => (await import("pac-proxy-agent")).PacProxyAgent,
+    pac: loadPacProxyAgentWithDirectFallback,
 } as const;
 
 // ---- LAZY vs. NOT LAZY
