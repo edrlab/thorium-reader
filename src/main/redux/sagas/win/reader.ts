@@ -382,7 +382,7 @@ export function* resolveOpdsProgression(action: readerActions.clearOpdsProgressi
     }
     yield put(readerActions.setOpdsProgressionState.build(winId, {
         ready: true, progression,
-        suppressedProgression: action.payload.accepted ? progression : undefined,
+        pendingRemoteResumeProgression: action.payload.accepted ? progression : undefined,
     }));
 }
 
@@ -396,11 +396,11 @@ export function* debounceOpdsProgression(action: readerActions.setLocator.TActio
     const progression = locatorToOpdsProgression(action.payload.locator, mapping?.spine, mapping?.positionList);
     if (typeof progression !== "number") { return; }
     const state = reader.reduxState.opdsProgression || {};
-    const matchesRemote = typeof state.suppressedProgression === "number" &&
-        Math.abs(progression - state.suppressedProgression) <= 1e-9;
+    const matchesRemote = typeof state.pendingRemoteResumeProgression === "number" &&
+        Math.abs(progression - state.pendingRemoteResumeProgression) <= 1e-9;
     const changed = typeof state.progression === "number" && Math.abs(progression - state.progression) > 1e-9;
     yield put(readerActions.setOpdsProgressionState.build(winId, {
-        ...state, progression, suppressedProgression: matchesRemote ? undefined : state.suppressedProgression,
+        ...state, progression, pendingRemoteResumeProgression: matchesRemote ? undefined : state.pendingRemoteResumeProgression,
     }));
     if (matchesRemote) { cancelProgressionDebounce(winId); return; }
     if (!changed || !reader.reduxState.lock) { return; }

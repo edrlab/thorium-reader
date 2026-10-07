@@ -12,7 +12,7 @@ export interface IOpdsProgressionState {
     ready?: boolean;
     // Last observed value distinguishes navigation from locator metadata updates.
     progression?: number;
-    // Ignore the locator event caused by accepting remote resume.
-    suppressedProgression?: number;
+    // Accepted remote position whose locator event should not trigger an upload.
+    pendingRemoteResumeProgression?: number;
     document?: IOpdsProgressionDocument;
 }
