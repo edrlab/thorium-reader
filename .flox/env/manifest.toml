@@ -1,4 +1,4 @@
-schema-version = "1.10.0"
+schema-version = "1.18.0"
 
 # flox config --set-bool set_prompt false
 # ==> .zshrc
