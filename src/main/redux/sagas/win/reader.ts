@@ -48,6 +48,29 @@ export const cancelProgressionDebounce = (winId: string) => {
 };
 
 const __readerWithSamePubIdGotTheLockMap = new Map<string, string>(); // K: publicationIdentifier V: windowIdentifier
+export const acquireReaderPublicationLock = (publicationIdentifier: string, windowIdentifier: string): boolean => {
+    if (!publicationIdentifier || __readerWithSamePubIdGotTheLockMap.has(publicationIdentifier)) { return false; }
+    __readerWithSamePubIdGotTheLockMap.set(publicationIdentifier, windowIdentifier);
+    return true;
+};
+
+export const updateReaderPublicationLockAfterClose = (
+    publicationIdentifier: string,
+    closedWindowIdentifier: string,
+    readers: RootState["win"]["session"]["reader"],
+): string | undefined => {
+    const owner = __readerWithSamePubIdGotTheLockMap.get(publicationIdentifier);
+    if (owner && owner !== closedWindowIdentifier && readers[owner]?.publicationIdentifier === publicationIdentifier) {
+        return undefined;
+    }
+    const nextOwner = Object.values(readers).find((reader) => reader.publicationIdentifier === publicationIdentifier)?.identifier;
+    if (nextOwner) {
+        __readerWithSamePubIdGotTheLockMap.set(publicationIdentifier, nextOwner);
+    } else {
+        __readerWithSamePubIdGotTheLockMap.delete(publicationIdentifier);
+    }
+    return nextOwner;
+};
 const __localProgressionSnapshotMap = new Map<string, {
     publicationIdentifier: string;
     hasLocator: boolean;
@@ -115,18 +138,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     }
 
 
-    let gotTheLock = false;
-    const winIdGotTheLock = pubId
-        ? __readerWithSamePubIdGotTheLockMap.get(pubId)
-        : true;
-    if (winIdGotTheLock) {
-        gotTheLock = false;
-        debug(`reader ${winId} did not get the lock`);
-    } else {
-        __readerWithSamePubIdGotTheLockMap.set(pubId, winId);
-        gotTheLock = true;
-        debug(`reader ${winId} got the lock !!!`);
-    }
+    const gotTheLock = acquireReaderPublicationLock(pubId, winId);
 
     const notes = pubId
         ? yield* callTyped(() => sqliteTableSelectAllNotesWherePubId(pubId))
@@ -142,9 +154,6 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
         ready: false,
         progression: locatorToOpdsProgression(locator?.locator, mapping?.spine, mapping?.positionList),
     }));
-    if (gotTheLock) {
-        yield put(readerActions.setTheLock.build(winId));
-    }
     readerWindow.once("closed", () => {
         cancelProgressionDebounce(winId);
         __localProgressionSnapshotMap.delete(winId);
@@ -403,7 +412,7 @@ export function* debounceOpdsProgression(action: readerActions.setLocator.TActio
         ...state, progression, pendingRemoteResumeProgression: matchesRemote ? undefined : state.pendingRemoteResumeProgression,
     }));
     if (matchesRemote) { cancelProgressionDebounce(winId); return; }
-    if (!changed || !reader.reduxState.lock) { return; }
+    if (!changed || __readerWithSamePubIdGotTheLockMap.get(reader.publicationIdentifier) !== winId) { return; }
     cancelProgressionDebounce(winId);
     const task = yield* forkTyped(uploadDebouncedOpdsProgression, winId);
     __progressionDebounceTasks.set(winId, task);
@@ -412,7 +421,7 @@ export function* debounceOpdsProgression(action: readerActions.setLocator.TActio
 export function* uploadDebouncedOpdsProgression(winId: string) {
     yield* delayTyped(5000);
     const reader = yield* selectTyped((root: RootState) => root.win.session.reader[winId]);
-    if (!reader?.reduxState.lock || !reader.reduxState.opdsProgression?.ready ||
+    if (!reader || __readerWithSamePubIdGotTheLockMap.get(reader.publicationIdentifier) !== winId || !reader.reduxState.opdsProgression?.ready ||
         reader.reduxState.opdsProgression.document) { return; }
     const publication = yield* selectTyped((root: RootState) => root.publication.db[reader.publicationIdentifier]);
     const url = publication?.opdsPublication?.progressionLink?.url;
@@ -425,7 +434,7 @@ export function* uploadDebouncedOpdsProgression(winId: string) {
     const name = yield* callTyped(() => manager.getDeviceNAME());
     const locale = yield* selectTyped((root: RootState) => root.i18n.locale);
     const current = yield* selectTyped((root: RootState) => root.win.session.reader[winId]?.reduxState);
-    if (!current?.lock || !current.opdsProgression?.ready || current.opdsProgression.document) { return; }
+    if (__readerWithSamePubIdGotTheLockMap.get(reader.publicationIdentifier) !== winId || !current?.opdsProgression?.ready || current.opdsProgression.document) { return; }
     const result = yield* callTyped(() => putOpdsProgression(url, {
         device: { id: deviceId.includes(":") ? deviceId : `urn:uuid:${deviceId}`, name },
         modified: new Date().toISOString(), progression,
@@ -461,10 +470,6 @@ export function* winClose(windowIdentifier: string, publicationIdentifier: strin
         // return; // continue to clean this broken state
     }
     deleteReaderWindowInDi(windowIdentifier);
-    const winIdGotTheLock = __readerWithSamePubIdGotTheLockMap.get(publicationIdentifier);
-    if (windowIdentifier === winIdGotTheLock) {
-        __readerWithSamePubIdGotTheLockMap.delete(publicationIdentifier);
-    }
     yield put(winActions.session.unregisterReader.build(windowIdentifier));
     yield put(streamerActions.publicationCloseRequest.build(publicationIdentifier));
 
@@ -473,10 +478,8 @@ export function* winClose(windowIdentifier: string, publicationIdentifier: strin
 
     {
         const readersArray = ObjectValues(readers);
-        const readersWithSamePubId = readersArray.filter(({publicationIdentifier: pubIdFromOtherReader}) => publicationIdentifier === pubIdFromOtherReader);
-        const readerSamePubIdFirstWinId = readersWithSamePubId[0]?.identifier;
+        const readerSamePubIdFirstWinId = updateReaderPublicationLockAfterClose(publicationIdentifier, windowIdentifier, readers);
         if (readerSamePubIdFirstWinId) {
-            __readerWithSamePubIdGotTheLockMap.set(publicationIdentifier, readerSamePubIdFirstWinId);
             yield put(readerActions.setTheLock.build(readerSamePubIdFirstWinId));
             debug(`reader ${readerSamePubIdFirstWinId} got the lock !!!`);
         }

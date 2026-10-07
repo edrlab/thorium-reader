@@ -32,6 +32,8 @@ import {
     cancelProgressionDebounce,
     debounceOpdsProgression,
     resolveOpdsProgression,
+    acquireReaderPublicationLock,
+    updateReaderPublicationLockAfterClose,
 } from "readium-desktop/main/redux/sagas/win/reader";
 
 const putMock = jest.mocked(putOpdsProgression);
@@ -60,6 +62,7 @@ const advance = (ms: number) => jest.advanceTimersByTimeAsync(ms);
 
 describe("reader OPDS PUT debounce", () => {
     beforeEach(() => {
+        acquireReaderPublicationLock("publication", "reader");
         jest.useFakeTimers();
         putMock.mockReset().mockResolvedValue({ kind: "network-error", isTimeout: false });
         state = {
@@ -91,6 +94,7 @@ describe("reader OPDS PUT debounce", () => {
     });
     afterEach(() => {
         cancelProgressionDebounce("reader");
+        updateReaderPublicationLockAfterClose("publication", "reader", {});
         jest.useRealTimers();
     });
 
@@ -112,7 +116,7 @@ describe("reader OPDS PUT debounce", () => {
         const task = move(0.3);
         const reader = state.win.session.reader.reader.reduxState;
         if (block === "lock") {
-            reader.lock = false;
+            updateReaderPublicationLockAfterClose("publication", "reader", {});
         }
         if (block === "GET") {
             reader.opdsProgression.ready = false;
@@ -188,15 +192,37 @@ describe("reader OPDS PUT debounce", () => {
         expect(putMock).toHaveBeenCalledTimes(1);
     });
 
-    it("stores locator and exclusive lock ownership in reader Redux state", () => {
+    it("preserves ownership when a non-owner closes, even if another reader registered first", async () => {
         const readers = state.win.session.reader;
-        const initial = {
-            ...readers,
-            other: { ...readers.reader, reduxState: { ...readers.reader.reduxState } },
+        const remaining = {
+            other: { ...readers.reader, identifier: "other" },
+            reader: { ...readers.reader, identifier: "reader" },
         } as IDictWinSessionReaderState;
-        const next = winSessionReaderReducer(initial, readerActions.setTheLock.build("other"));
-        expect(next.reader.reduxState.lock).toBe(false);
-        expect(next.other.reduxState.lock).toBe(true);
-        expect(next.reader.reduxState.locator.locator.locations.progression).toBe(0.1);
+        expect(updateReaderPublicationLockAfterClose("publication", "closing", remaining)).toBeUndefined();
+        state.win.session.reader.reader.reduxState.lock = false;
+        move(0.3);
+        await advance(5000);
+        expect(putMock).toHaveBeenCalledTimes(1);
+    });
+
+    it("transfers ownership after the owner closes and blocks its pending PUT", async () => {
+        const task = move(0.3);
+        const remaining = {
+            other: { ...state.win.session.reader.reader, identifier: "other" },
+        } as IDictWinSessionReaderState;
+        expect(updateReaderPublicationLockAfterClose("publication", "reader", remaining)).toBe("other");
+        await advance(5000);
+        await task.toPromise();
+        expect(putMock).not.toHaveBeenCalled();
+        expect(acquireReaderPublicationLock("publication", "reader")).toBe(false);
+    });
+
+    it("releases ownership when the final window closes", () => {
+        expect(updateReaderPublicationLockAfterClose("publication", "reader", {})).toBeUndefined();
+        expect(acquireReaderPublicationLock("publication", "new-reader")).toBe(true);
+    });
+
+    it("does not overwrite a valid owner when a second reader opens", () => {
+        expect(acquireReaderPublicationLock("publication", "other")).toBe(false);
     });
 });

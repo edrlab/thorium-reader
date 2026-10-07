@@ -22,18 +22,9 @@ function winSessionReaderReducer_(
     action: winActions.session.registerReader.TAction |
         winActions.session.unregisterReader.TAction |
         winActions.session.setBound.TAction | readerActions.setLocator.TAction |
-        readerActions.setOpdsProgressionState.TAction | readerActions.setOpdsProgression.TAction |
-        readerActions.setTheLock.TAction,
+        readerActions.setOpdsProgressionState.TAction | readerActions.setOpdsProgression.TAction,
 ): IDictWinSessionReaderState {
     switch (action.type) {
-        case readerActions.setTheLock.ID: {
-            const id = action.destination.identifier;
-            if (!state[id]) { return state; }
-            return Object.fromEntries(Object.entries(state).map(([key, reader]) => [key,
-                reader.publicationIdentifier === state[id].publicationIdentifier ?
-                    { ...reader, reduxState: { ...reader.reduxState, lock: key === id } } : reader,
-            ]));
-        }
         case readerActions.setLocator.ID: {
             const sender = (action as typeof action & Partial<WithSender>).sender;
             const id = sender?.identifier;
