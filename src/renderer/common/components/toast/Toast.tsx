@@ -7,7 +7,7 @@
 
 import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.scss";
 
-import { clipboard } from "electron";
+// import { clipboard } from "electron";
 import classNames from "classnames";
 import * as React from "react";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -97,8 +97,9 @@ export class Toast extends React.Component<IProps, IState> {
     public componentDidMount() {
         this.triggerTimer(false);
 
-        // https://www.electronjs.org/docs/latest/tutorial/notifications
         if (this.props.displaySystemNotification) {
+            // https://developer.mozilla.org/en-US/docs/Web/API/Notification
+            // https://www.electronjs.org/docs/latest/tutorial/notifications
             new Notification(capitalizedAppName, {
                 body: this.props.message,
             });
@@ -170,18 +171,23 @@ export class Toast extends React.Component<IProps, IState> {
                         this.cancelTimer(true);
                     }}
                     onClick={() => {
-                        const clipBoardType = "clipboard";
                         try {
-                            clipboard.writeText(this.props.message, clipBoardType);
+                            console.log("TOAST onClick => clipboard.writeText...");
 
-                            // https://www.electronjs.org/docs/latest/tutorial/notifications
-                            new Notification(capitalizedAppName, {
-                                body: `${__("app.edit.copy")} [${this.props.message}]`,
-                            });
+                            // navigator.clipboard.write([new ClipboardItem({ "text/plain": this.props.message })]).then((_res) => { /* no-op */ }).catch((err) => { console.log(err); });
+                            navigator.clipboard.writeText(this.props.message).then((_res) => { /* no-op */ }).catch((err) => { console.log(err); });
+
+                            if (this.props.displaySystemNotification) {
+                                // https://developer.mozilla.org/en-US/docs/Web/API/Notification
+                                // https://www.electronjs.org/docs/latest/tutorial/notifications
+                                new Notification(capitalizedAppName, {
+                                    body: `${__("app.edit.copy")} [${this.props.message}]`,
+                                });
+                            }
                             // this.triggerTimer(true);
                             // this.handleClose();
-                        } catch (_e) {
-                            // ignore
+                        } catch (e) {
+                            console.log(e);
                         }
                     }
                 }>{ this.props.message }</p>
