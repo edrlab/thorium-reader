@@ -1832,7 +1832,7 @@ class Reader extends React.Component<IProps, IState> {
 
     private cancelOpdsProgression = () => {
         debug("OPDS progression: remote position dismissed, keeping local position");
-        this.props.clearOpdsProgression(this.props.winId, false);
+        this.props.clearOpdsProgression();
     };
 
     private goToOpdsProgression = () => {
@@ -1849,16 +1849,15 @@ class Reader extends React.Component<IProps, IState> {
                 this.readiumPositionList,
             );
             if (locator) {
-                // Resolve the reconciliation gate before navigation can emit its
-                // locator event, so main can suppress this programmatic move.
-                this.props.clearOpdsProgression(this.props.winId, true);
-                debug("OPDS progression: navigating to mapped locator", { locations: locator.locations });
+                debug("OPDS progression: navigating to mapped locator", {
+                    locations: locator.locations,
+                });
                 this.goToLocator(locator);
-                return;
+            } else {
+                debug("OPDS progression: navigation skipped, no usable locator");
             }
         }
-        // If the remote location cannot be represented, preserve local state.
-        this.props.clearOpdsProgression(this.props.winId, false);
+        this.props.clearOpdsProgression();
     };
 
     private handleLinkUrl = (url: string, isFromOnPopState = false) => {
@@ -3868,8 +3867,8 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         addUpdatePdfAnnotationNote: (publicationIdentifier: string, newNote: Omit<INoteState, "uuid">) => {
             return dispatch(readerActions.note.addUpdate.build(publicationIdentifier, newNote));
         },
-        clearOpdsProgression: (winId: string, accepted: boolean) => {
-            dispatch(readerActions.clearOpdsProgression.build(winId, accepted));
+        clearOpdsProgression: () => {
+            dispatch(readerActions.clearOpdsProgression.build());
         },
     };
 };

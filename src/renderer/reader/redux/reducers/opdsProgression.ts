@@ -10,7 +10,7 @@ import type { Reducer } from "redux";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import type { IOpdsProgressionState } from "readium-desktop/common/redux/states/renderer/opdsProgression";
 
-type TAction = readerActions.setOpdsProgression.TAction | readerActions.clearOpdsProgression.TAction | readerActions.setOpdsProgressionState.TAction;
+type TAction = readerActions.setOpdsProgression.TAction | readerActions.clearOpdsProgression.TAction;
 
 export const opdsProgressionReducer: Reducer<IOpdsProgressionState, TAction> = (
     state = {},
@@ -18,11 +18,9 @@ export const opdsProgressionReducer: Reducer<IOpdsProgressionState, TAction> = (
 ) => {
     switch (action.type) {
         case readerActions.setOpdsProgression.ID:
-            return { ...state, document: action.payload.document };
+            return { document: action.payload.document };
         case readerActions.clearOpdsProgression.ID:
-            return { ...state, document: undefined };
-        case readerActions.setOpdsProgressionState.ID:
-            return action.payload.state;
+            return {};
         default:
             return state;
     }

@@ -24,7 +24,6 @@ import * as setConfig from "./setConfig";
 import * as allowCustom from "./allowCustom";
 import * as bookmarkTotalCount from "./bookmarkTotalCount";
 import * as setOpdsProgression from "./setOpdsProgression";
-import * as setOpdsProgressionState from "./setOpdsProgressionState";
 import * as clearOpdsProgression from "./clearOpdsProgression";
 
 export {
@@ -48,5 +47,4 @@ export {
     bookmarkTotalCount,
     setOpdsProgression,
     clearOpdsProgression,
-    setOpdsProgressionState,
 };

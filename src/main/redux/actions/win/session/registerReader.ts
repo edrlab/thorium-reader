@@ -57,7 +57,6 @@ export function build(
             config: readerConfigInitialState,
             disableRTLFlip,
             locator: locatorInitialState,
-            opdsProgression: {},
         },
         // ...reduxStateReader,
         ...{

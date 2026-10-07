@@ -76,5 +76,5 @@ export interface IReaderStateReader {
 }
 
 export type IReaderStateReaderPersistence = Pick<IReaderStateReader, "config" | "locator" | "divina" | "disableRTLFlip" | "allowCustomConfig" | "noteTotalCount" | "pdfConfig">;
-export type IReaderStateReaderSession = Partial<IReaderStateReaderPersistence> & Pick<IReaderStateReader, "lock" | "info" | "note" | "opdsProgression">;
+export type IReaderStateReaderSession = Partial<IReaderStateReaderPersistence> & Pick<IReaderStateReader, "lock" | "info" | "note">;
 export type IReaderStateReaderHydration = IRendererCommonRootStateHydration & { reader: IReaderStateReaderSession };

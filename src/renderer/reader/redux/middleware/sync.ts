@@ -70,7 +70,6 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     customizationActions.addHistory.ID,
 
     readerActions.setLocator.ID,
-    readerActions.clearOpdsProgression.ID,
     readerActions.setConfig.ID,
     readerActions.disableRTLFlip.ID,
     readerActions.divina.setReadingMode.ID,
