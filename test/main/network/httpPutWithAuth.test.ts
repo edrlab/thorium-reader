@@ -7,6 +7,7 @@
 
 import { afterAll, beforeAll, beforeEach, describe, expect, it, jest } from "@jest/globals";
 import * as fs from "node:fs";
+import fetchCookie from "fetch-cookie";
 
 jest.mock("timeout-signal", () => ({
     __esModule: true,
@@ -104,6 +105,7 @@ const response = (
         body: undefined,
         headers: {
             get: (key: string) => headers.get(key.toLowerCase()) || null,
+            has: (key: string) => headers.has(key.toLowerCase()),
             raw: () => Object.fromEntries([...headers].map(([key, headerValue]) => [key, [headerValue]])),
         },
         json: async () => value,
@@ -275,216 +277,85 @@ describe("authenticated HTTP PUT", () => {
         );
     });
 
-    it("retries a redirected PUT with credentials stored for the final host", async () => {
-        const finalUrl = "https://progress.example.org/publications/1/progression";
-        const progressionMediaType = "application/opds-progression+json";
-        await wipeAuthenticationTokenStorage();
+    it("uses the final host credentials after fetch-cookie follows a redirect", async () => {
+        const destination = "https://other.example.org/progression";
         await httpSetAuthenticationToken({
-            accessToken: "redirect-access-token",
-            opdsAuthenticationUrl: "https://progress.example.org/authentication",
-            tokenType: "Bearer",
+            accessToken: "destination-token",
+            opdsAuthenticationUrl: "https://other.example.org/authentication",
         });
-        const observedCookies: Array<string | null> = [];
         fetchWithCookieMock
-            .mockImplementationOnce(async (_requestUrl, options) => {
-                const headers = options?.headers as { get: (key: string) => string | null };
-                observedCookies.push(headers.get("Cookie"));
-                return response(307, {}, url, { Location: finalUrl });
-            })
-            .mockImplementationOnce(async (_requestUrl, options) => {
-                const headers = options?.headers as { get: (key: string) => string | null };
-                observedCookies.push(headers.get("Cookie"));
-                return response(200, {}, finalUrl);
-            });
-
-        const result = await httpPutWithAuth(url, {
-            body: "progression",
-            headers: {
-                Accept: progressionMediaType,
-                Cookie: "source-session=must-not-leak",
-                "Content-Type": progressionMediaType,
-            },
-        });
-
+            .mockResolvedValueOnce(response(401, {}, destination))
+            .mockResolvedValueOnce(response(200, {}, destination));
+        const result = await httpPutWithAuth(url, { body: "progression" });
         expect(result.statusCode).toBe(200);
         expect(fetchWithCookieMock).toHaveBeenCalledTimes(2);
-        expect(String(fetchWithCookieMock.mock.calls[0][0])).toBe(url);
-        expect(String(fetchWithCookieMock.mock.calls[1][0])).toBe(finalUrl);
-        const redirectedOptions = fetchWithCookieMock.mock.calls[1][1];
-        const redirectedHeaders = redirectedOptions?.headers as {
-            get: (key: string) => string | null;
-        };
-        expect(redirectedOptions?.method).toBe("put");
-        expect(redirectedOptions?.body).toBe("progression");
-        expect(redirectedHeaders.get("Accept")).toBe(progressionMediaType);
-        expect(redirectedHeaders.get("Cookie")).toBeNull();
-        expect(redirectedHeaders.get("Content-Type")).toBe(progressionMediaType);
-        expect(redirectedHeaders.get("Authorization")).toBe("Bearer redirect-access-token");
-        expect(observedCookies).toEqual(["source-session=must-not-leak", null]);
-    });
-
-    it("does not add OPDS credentials to a redirected legacy PUT", async () => {
-        const finalUrl = "https://progress.example.org/publications/1/progression";
-        await wipeAuthenticationTokenStorage();
-        await httpSetAuthenticationToken({
-            accessToken: "must-not-leak",
-            opdsAuthenticationUrl: "https://progress.example.org/authentication",
-            tokenType: "Bearer",
-        });
-        fetchWithCookieMock.mockResolvedValueOnce(response(401, {}, finalUrl));
-
-        const result = await httpPut(url, { body: "legacy" });
-
-        expect(result.statusCode).toBe(401);
-        expect(fetchWithCookieMock).toHaveBeenCalledTimes(1);
-        const headers = fetchWithCookieMock.mock.calls[0][1]?.headers as {
-            get: (key: string) => string | null;
-        };
-        expect(headers.get("Authorization")).toBeNull();
-    });
-
-    it("keeps original-host credentials when redirected-host authentication fails", async () => {
-        const finalUrl = "https://progress.example.org/publications/1/progression";
-        await httpSetAuthenticationToken({
-            accessToken: "final-expired-token",
-            opdsAuthenticationUrl: "https://progress.example.org/authentication",
-            tokenType: "Bearer",
-        });
-        fetchWithCookieMock
-            .mockResolvedValueOnce(response(307, {}, url, { Location: finalUrl }))
-            .mockResolvedValueOnce(response(401, {}, finalUrl))
-            .mockResolvedValueOnce(response(401, {}, finalUrl));
-
-        const result = await httpPutWithAuth(url, { body: "progression" });
-
-        expect(result.statusCode).toBe(401);
-        expect(fetchWithCookieMock).toHaveBeenCalledTimes(3);
-        expect(fetchWithCookieMock.mock.calls.map(([requestUrl]) => String(requestUrl))).toEqual([
-            url,
-            finalUrl,
-            finalUrl,
-        ]);
+        expect(fetchWithCookieMock.mock.calls[0][1]?.redirect).toBeUndefined();
+        expect(String(fetchWithCookieMock.mock.calls[1][0])).toBe(destination);
+        const options = fetchWithCookieMock.mock.calls[1][1];
+        expect(options?.method).toBe("put");
+        expect(options?.body).toBe("progression");
+        expect((options?.headers as { get: (key: string) => string | null }).get("Authorization")).toBe(
+            "Bearer destination-token",
+        );
         await expect(getAuthenticationToken(new URL(url), "PUT")).resolves.toMatchObject({
             accessToken: "old-access-token",
         });
-        await expect(getAuthenticationToken(new URL(finalUrl), "PUT")).resolves.toBeUndefined();
     });
 
-    it("handles a redirect chain that returns to an earlier authentication owner only once", async () => {
-        const middleUrl = "https://middle.example.org/publications/1/progression";
-        const finalUrl = "https://example.org/publications/1/progression-final";
-        const observedRequests: Array<{ authorization: string | null; url: string }> = [];
-        const observe = (
-            requestUrl: Parameters<typeof fetchWithCookie>[0],
-            options: Parameters<typeof fetchWithCookie>[1],
-        ) => {
-            const headers = options?.headers as { get: (key: string) => string | null };
-            observedRequests.push({
-                authorization: headers.get("Authorization"),
-                url: String(requestUrl),
-            });
-        };
-        fetchWithCookieMock
-            .mockImplementationOnce(async (requestUrl, options) => {
-                observe(requestUrl, options);
-                return response(307, {}, url, { Location: middleUrl });
-            })
-            .mockImplementationOnce(async (requestUrl, options) => {
-                observe(requestUrl, options);
-                return response(307, {}, middleUrl, { Location: finalUrl });
-            })
-            .mockImplementationOnce(async (requestUrl, options) => {
-                observe(requestUrl, options);
-                return response(401, {}, finalUrl);
-            })
-            .mockImplementationOnce(async (requestUrl, options) => {
-                observe(requestUrl, options);
-                return response(401, {}, finalUrl);
-            });
-
-        const result = await httpPutWithAuth(url, { body: "progression" });
-
-        expect(result.statusCode).toBe(401);
-        expect(observedRequests).toEqual([
-            { authorization: "Bearer old-access-token", url },
-            { authorization: null, url: middleUrl },
-            { authorization: "Bearer old-access-token", url: finalUrl },
-            { authorization: null, url: finalUrl },
-        ]);
-        await expect(getAuthenticationToken(new URL(url), "PUT")).resolves.toBeUndefined();
-    });
-
-    it("does not follow an authenticated PUT redirect from HTTPS to HTTP", async () => {
-        const downgradeUrl = "http://example.org/publications/1/progression";
-        fetchWithCookieMock.mockResolvedValueOnce(response(307, {}, url, { Location: downgradeUrl }));
-
-        const result = await httpPutWithAuth(url, { body: "progression" });
-
-        expect(result.statusCode).toBe(307);
-        expect(fetchWithCookieMock).toHaveBeenCalledTimes(1);
-        expect(String(fetchWithCookieMock.mock.calls[0][0])).toBe(url);
-    });
-
-    it("does not replay an authenticated PUT body after a 303 redirect", async () => {
-        const redirectUrl = "https://example.org/authentication-result";
-        fetchWithCookieMock.mockResolvedValueOnce(response(303, {}, url, { Location: redirectUrl }));
-
-        const result = await httpPutWithAuth(url, { body: "progression" });
-
-        expect(result.statusCode).toBe(303);
-        expect(fetchWithCookieMock).toHaveBeenCalledTimes(1);
-        expect(String(fetchWithCookieMock.mock.calls[0][0])).toBe(url);
-    });
-
-    it("bounds redirect loops even when every hop has stored credentials", async () => {
-        const alternateUrl = "https://example.org/publications/1/progression-alternate";
-        fetchWithCookieMock.mockImplementation(async (requestUrl) => {
-            const currentUrl = String(requestUrl);
-            const nextUrl = currentUrl === url ? alternateUrl : url;
-            return response(307, {}, currentUrl, { Location: nextUrl });
+    it("preserves original credentials when the final host rejects authentication", async () => {
+        const destination = "https://other.example.org/progression";
+        await httpSetAuthenticationToken({
+            accessToken: "destination-token",
+            opdsAuthenticationUrl: "https://other.example.org/authentication",
         });
-
-        const result = await httpPutWithAuth(url, { body: "progression" });
-
-        expect(result.statusCode).toBe(307);
-        // Twenty redirects means the initial request plus twenty followed hops.
-        expect(fetchWithCookieMock).toHaveBeenCalledTimes(21);
+        fetchWithCookieMock
+            .mockResolvedValueOnce(response(401, {}, destination))
+            .mockResolvedValueOnce(response(401, {}, destination))
+            .mockResolvedValueOnce(response(401, {}, destination));
+        expect((await httpPutWithAuth(url, { body: "progression" })).statusCode).toBe(401);
+        expect(fetchWithCookieMock).toHaveBeenCalledTimes(3);
+        await expect(getAuthenticationToken(new URL(url), "PUT")).resolves.toMatchObject({
+            accessToken: "old-access-token",
+        });
     });
 
-    it("handles a same-origin redirected 401 once without restarting the original PUT", async () => {
-        const finalUrl = "https://example.org/publications/1/progression-final";
-        const observedRequests: Array<{ authorization: string | null; url: string }> = [];
-        const observe = (
-            requestUrl: Parameters<typeof fetchWithCookie>[0],
-            options: Parameters<typeof fetchWithCookie>[1],
-        ) => {
-            const headers = options?.headers as { get: (key: string) => string | null };
-            observedRequests.push({
-                authorization: headers.get("Authorization"),
-                url: String(requestUrl),
-            });
-        };
-        fetchWithCookieMock
-            .mockImplementationOnce(async (requestUrl, options) => {
-                observe(requestUrl, options);
-                return response(307, {}, url, { Location: finalUrl });
-            })
-            .mockImplementationOnce(async (requestUrl, options) => {
-                observe(requestUrl, options);
-                return response(401, {}, finalUrl);
-            })
-            .mockImplementationOnce(async (requestUrl, options) => {
-                observe(requestUrl, options);
-                return response(401, {}, finalUrl);
-            });
+    it("keeps legacy PUT independent of final-host OPDS authentication", async () => {
+        const destination = "https://other.example.org/progression";
+        await httpSetAuthenticationToken({
+            accessToken: "destination-token",
+            opdsAuthenticationUrl: "https://other.example.org/authentication",
+        });
+        fetchWithCookieMock.mockResolvedValueOnce(response(401, {}, destination));
+        expect((await httpPut(url, { body: "legacy" })).statusCode).toBe(401);
+        expect(fetchWithCookieMock).toHaveBeenCalledTimes(1);
+    });
 
-        const result = await httpPutWithAuth(url, { body: "progression" });
+    it.each([307, 308])("delegates %p redirects to fetch-cookie preserving PUT and body", async (status) => {
+        const destination = "https://example.org/progression-final";
+        const transport = jest
+            .fn<typeof fetchWithCookie>()
+            .mockResolvedValueOnce(response(status, {}, url, { Location: destination }))
+            .mockResolvedValueOnce(response(200, {}, destination));
+        const wrapped = fetchCookie(transport as unknown as typeof fetch);
+        fetchWithCookieMock.mockImplementation(wrapped as unknown as typeof fetchWithCookie);
 
-        expect(result.statusCode).toBe(401);
-        expect(observedRequests).toEqual([
-            { authorization: "Bearer old-access-token", url },
-            { authorization: "Bearer old-access-token", url: finalUrl },
-            { authorization: null, url: finalUrl },
-        ]);
+        expect((await httpPutWithAuth(url, { body: "progression" })).statusCode).toBe(200);
+        expect(transport).toHaveBeenCalledTimes(2);
+        expect(String(transport.mock.calls[1][0])).toBe(destination);
+        expect(transport.mock.calls[1][1]).toMatchObject({ method: "put", body: "progression" });
+    });
+
+    it("delegates 303 redirects to fetch-cookie which switches to GET", async () => {
+        const destination = "https://example.org/result";
+        const transport = jest
+            .fn<typeof fetchWithCookie>()
+            .mockResolvedValueOnce(response(303, {}, url, { Location: destination }))
+            .mockResolvedValueOnce(response(200, {}, destination));
+        const wrapped = fetchCookie(transport as unknown as typeof fetch);
+        fetchWithCookieMock.mockImplementation(wrapped as unknown as typeof fetchWithCookie);
+
+        expect((await httpPutWithAuth(url, { body: "progression" })).statusCode).toBe(200);
+        expect(transport.mock.calls[1][1]?.method).toBe("GET");
+        expect(transport.mock.calls[1][1]?.body).toBeUndefined();
     });
 });
