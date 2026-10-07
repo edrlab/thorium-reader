@@ -148,7 +148,7 @@ import type { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { URL_PROTOCOL_FILEX } from "readium-desktop/common/streamerProtocol";
 import { OpdsProgressionDialog } from "./OpdsProgressionDialog";
-import { opdsProgressionToLocator } from "../opdsProgression";
+import { opdsProgressionToLocator } from "readium-desktop/common/models/opdsProgression";
 
 const debug = debug_("readium-desktop:renderer:reader:components:Reader");
 const debugPdfAnnotationsHost = debug_("readium-desktop:renderer:reader:pdf:annotations:host");
