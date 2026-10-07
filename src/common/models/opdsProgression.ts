@@ -5,6 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import type { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
+import type { Link } from "@r2-shared-js/models/publication-link";
+
 import { IReadiumPositionList, mapLocatorToReadiumPosition } from "readium-desktop/common/readium/positions";
 
 export const OPDS_PROGRESSION_REL = "http://opds-spec.org/progression";
@@ -23,36 +26,13 @@ export interface IOpdsProgressionDocument {
     references?: string[];
 }
 
-export interface ISpineLinkForProgression {
-    Href?: string;
-}
-
-export interface ILocatorForProgression {
-    href?: string;
-    locations?: {
-        progression?: number;
-        totalProgression?: number;
-    };
-}
-
-export interface IProgressionLocator {
-    href: string;
-    title?: string;
-    type?: string;
-    locations: {
-        progression: number;
-        totalProgression?: number;
-        position?: number;
-    };
-}
-
 const LAST_RESOURCE_SAFE_PROGRESSION = 0.95;
 
 const getReadableSpine = (
-    spine: readonly ISpineLinkForProgression[] | undefined,
-): Array<ISpineLinkForProgression & { Href: string }> | undefined => {
+    spine: readonly Partial<Pick<Link, "Href">>[] | undefined,
+): Array<Pick<Link, "Href">> | undefined => {
     const readableSpine = spine?.filter(
-        (link): link is ISpineLinkForProgression & { Href: string } =>
+        (link): link is Pick<Link, "Href"> =>
             typeof link.Href === "string" && link.Href.length > 0,
     );
 
@@ -65,9 +45,9 @@ const getReadableSpine = (
  */
 export const opdsProgressionToLocator = (
     progression: number,
-    spine: readonly ISpineLinkForProgression[] | undefined,
+    spine: readonly Partial<Pick<Link, "Href">>[] | undefined,
     positionList?: IReadiumPositionList,
-): IProgressionLocator | undefined => {
+): R2Locator | undefined => {
     if (!Number.isFinite(progression) || progression < 0 || progression > 1) {
         return undefined;
     }
@@ -125,8 +105,8 @@ export const opdsProgressionToLocator = (
  * resource weight model as {@link opdsProgressionToLocator}.
  */
 export const locatorToOpdsProgression = (
-    locator: ILocatorForProgression | undefined,
-    spine: readonly ISpineLinkForProgression[] | undefined,
+    locator: R2Locator | undefined,
+    spine: readonly Partial<Pick<Link, "Href">>[] | undefined,
     positionList?: IReadiumPositionList,
 ): number | undefined => {
     const href = locator?.href;

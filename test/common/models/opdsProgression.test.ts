@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import type { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
+
 import { describe, expect, it } from "@jest/globals";
 
 import {
@@ -88,7 +90,7 @@ describe("OPDS total progression mapping", () => {
             { href: "chapter-1.xhtml", locations: { progression: Number.POSITIVE_INFINITY } },
             { href: "missing.xhtml", locations: { progression: 0.5 } },
         ])("rejects an invalid or unmatched locator %#", (locator) => {
-            expect(locatorToOpdsProgression(locator, spine)).toBeUndefined();
+            expect(locatorToOpdsProgression(locator as R2Locator | undefined, spine)).toBeUndefined();
         });
     });
 
