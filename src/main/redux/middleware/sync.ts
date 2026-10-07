@@ -94,6 +94,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     readerActions.setTheLock.ID,
     readerActions.setOpdsProgression.ID,
+    readerActions.setOpdsProgressionState.ID,
 
     lcpActions.publicationFileLock.ID,
 

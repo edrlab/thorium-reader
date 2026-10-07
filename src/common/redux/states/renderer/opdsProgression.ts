@@ -8,5 +8,11 @@
 import type { IOpdsProgressionDocument } from "readium-desktop/common/models/opdsProgression";
 
 export interface IOpdsProgressionState {
+    // PUT is allowed after initial retrieval and the resume decision finish.
+    ready?: boolean;
+    // Last observed value distinguishes navigation from locator metadata updates.
+    progression?: number;
+    // Accepted remote position whose locator event should not trigger an upload.
+    pendingRemoteResumeProgression?: number;
     document?: IOpdsProgressionDocument;
 }
