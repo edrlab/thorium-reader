@@ -46,6 +46,7 @@ import { digestAuthentication, parseDigestString} from "readium-desktop/utils/di
 import { ProxyAgent } from "./proxy-agent";
 import { availableLanguages } from "readium-desktop/common/services/translator";
 import { opdsActions } from "readium-desktop/common/redux/actions";
+import { getHttpNetworkErrorCode, getHttpNetworkErrorKind } from "./http-error";
 
 // https://github.com/edrlab/thorium-reader/issues/3566#issuecomment-4501072922
 // https://github.com/electron/electron/issues/45674#issuecomment-3474002008
@@ -533,6 +534,7 @@ async function httpFetchFormattedResponse<TData = undefined>(
     } catch (err: any) {
 
         const errStr = err.toString();
+        const networkErrorCode = getHttpNetworkErrorCode(err);
 
         debug("### HTTP FETCH ERROR ###");
         // debug(errStr);
@@ -547,6 +549,8 @@ async function httpFetchFormattedResponse<TData = undefined>(
                 isTimeout: true,
                 isFailure: true,
                 isSuccess: false,
+                networkErrorCode,
+                networkErrorKind: getHttpNetworkErrorKind(networkErrorCode, true),
                 url,
                 statusMessage: errStr,
             };
@@ -566,6 +570,8 @@ async function httpFetchFormattedResponse<TData = undefined>(
                 isTimeout: false,
                 isFailure: true,
                 isSuccess: false,
+                networkErrorCode,
+                networkErrorKind: getHttpNetworkErrorKind(networkErrorCode, false),
                 url,
                 statusMessage: errStr,
             };

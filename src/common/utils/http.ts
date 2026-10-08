@@ -23,6 +23,13 @@ import { IProblemDetailsResultView } from "../views/problemDetails";
 export type THttpOptions = RequestInit & { maxRedirect?: number, timeout?: number, abortController?: AbortController };
 export type THttpResponse = Response;
 
+export type THttpNetworkErrorKind =
+    "tls-certificate" |
+    "connection" |
+    "dns" |
+    "timeout" |
+    "unknown";
+
 export interface IHttpGetResult<TData> {
     readonly url: string | URL;
     readonly isFailure: boolean;
@@ -30,6 +37,8 @@ export interface IHttpGetResult<TData> {
     readonly isNetworkError?: boolean;
     readonly isTimeout?: boolean;
     readonly isAbort?: boolean;
+    readonly networkErrorCode?: string;
+    readonly networkErrorKind?: THttpNetworkErrorKind;
     readonly timeoutConnect?: boolean;
     readonly responseUrl?: string;
     readonly statusCode?: number;

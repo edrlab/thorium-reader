@@ -21,6 +21,7 @@ import { contentTypeisOpdsAuth, parseContentType } from "readium-desktop/utils/c
 import { SagaGenerator } from "typed-redux-saga";
 import { call as callTyped, spawn as spawnTyped, put as putTyped } from "typed-redux-saga/macro";
 import { opdsActions } from "readium-desktop/common/redux/actions";
+import { requestOpdsUrl } from "readium-desktop/main/network/opds-url";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/opds/feed");
@@ -113,13 +114,19 @@ export function* addFeed(
                     return;
                 }
 
-                const response = yield* callTyped(() => httpGetWithAuth(false)(data.url));
+                const response = yield* callTyped(() => requestOpdsUrl(
+                    data.url,
+                    (requestUrl) => httpGetWithAuth(false)(requestUrl),
+                ));
                 const opdsFeedJson:any = yield* callTyped(() => response.response.json());
                 const opdsFeed = TaJsonDeserialize(
                     opdsFeedJson,
                     OPDSFeed,
                 );
-                const opdsFeedView = opdsFeedViewConverter.convertOpdsFeedToView(opdsFeed, data.url);
+                const opdsFeedView = opdsFeedViewConverter.convertOpdsFeedToView(
+                    opdsFeed,
+                    response.responseUrl || `${response.url}`,
+                );
                 if (opdsFeedView) {
                     const bookshelf = opdsFeedView.links?.bookshelf[0];
                     if (bookshelf) {
