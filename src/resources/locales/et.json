@@ -1274,8 +1274,8 @@
             "title": "Lülita sessioonide salvestamine sisse"
         },
         "sharedComputer": {
-            "lcpAutoDeleteExpiredPublications": "",
-            "lcpAutoDeleteExpiredPublicationsDescription": "",
+            "lcpAutoDeleteExpiredPublications": "Eemalda automaatselt aegunud väljaanded ja nendega seotud kasutajaandmed",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Tagab, et aegunud laenutused kustutatakse automaatselt (sealhulgas isiklikud märkmed, lugemise järjehoidjad jne). See on kasulik „ühiskasutuses arvutite“ puhul, nagu raamatukogud või ülikoolide ühised ruumid.",
             "title": "Ühiskasutusrežiim"
         },
         "storage": {
@@ -1331,27 +1331,27 @@
                 "description": "Kontrolli väljaannete andmeruumi tuvastamaks kas midagi saab turvaliselt taastada.",
                 "dialog": {
                     "confirm": "Taasta",
-                    "description_one": "",
-                    "description_other": "",
-                    "title": ""
+                    "description_one": "Thorium leidis andmekandjalt {{- count}} väljaande, mis puudub andmebaasist. Tahaksid sa selle uuesti Thoriumisse importida?",
+                    "description_other": "Thorium leidis andmekandjalt {{- count}} väljaannet, mis puuduvad andmebaasist. Tahaksid sa need uuesti Thoriumisse importida?",
+                    "title": "Taasta väljaanded"
                 },
-                "none": "",
-                "recoverableCount_one": "",
-                "recoverableCount_other": "",
-                "title": ""
+                "none": "Taastatavaid väljaandeid ei leidu.",
+                "recoverableCount_one": "{{- count}} väljaanne on taastatava algse salvestusruumi tunnuse alusel.",
+                "recoverableCount_other": "{{- count}} väljaannet on taastatava algse salvestusruumi tunnuse alusel.",
+                "title": "Taastamine"
             }
         },
         "tabs": {
-            "advanced": "",
+            "advanced": "Täiendavad seadistused",
             "general": "Üldseadistused",
             "keyboardShortcuts": "Klaviatuuri kiirklahvid",
             "profiles": "Profiilid",
-            "storage": ""
+            "storage": "Andmeruum"
         },
         "telemetry": {
-            "disableTelemetryMeasurements": "",
-            "disableTelemetryMeasurementsDescription": "",
-            "title": ""
+            "disableTelemetryMeasurements": "Lülita telemeetria välja",
+            "disableTelemetryMeasurementsDescription": "Sisselülitamisel ei edastata arendajale rakenduse kohta kogutud andmeid.",
+            "title": "Telemeetria"
         },
         "theme": {
             "auto": "Automaatne",
