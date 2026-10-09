@@ -42,6 +42,7 @@ import { DockedHeader } from "readium-desktop/renderer/reader/components/DockedH
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderSettingsProps {
+    onClose: () => void;
     // handleSettingsClick: (open: boolean) => void;
 
     // tabValue: string;
@@ -107,7 +108,7 @@ export const RadioGroupItem = (props: IRadioGroupItemProps) => {
 
 export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     // const { open } = props;
-    const { handleDivinaReadingMode, divinaReadingMode, divinaReadingModeSupported } = props;
+    const { handleDivinaReadingMode, divinaReadingMode, divinaReadingModeSupported, onClose} = props;
     // const { tabValue, setTabValue } = props;
     const { isDivina, isPdf } = props;
     const isEpub = !isDivina && !isPdf;
@@ -317,7 +318,7 @@ if (optionSelectedIsOnOptionDisabled) {
 
     return (
         <div style={{minHeight: "inherit"}}>
-            { dockedMode ? <DockedHeader dockedMode={dockedMode} dockingMode={dockingMode} isEpub={isEpub} setSection={setSection} dockedModeRef={dockedModeRef} options={options} optionSelected={optionSelected} optionDisabled={optionDisabled} section={section} allowCustomContainer={AllowCustomContainer} panel={"settings"} /> : <></>}
+            { dockedMode ? <DockedHeader dockedMode={dockedMode} dockingMode={dockingMode} isEpub={isEpub} setSection={setSection} dockedModeRef={dockedModeRef} options={options} optionSelected={optionSelected} optionDisabled={optionDisabled} section={section} allowCustomContainer={AllowCustomContainer} panel={"settings"} onClose={onClose} /> : <></>}
             <Tabs selectedKey={section} onSelectionChange={(key) => dockedMode ? undefined : setSection(key.toString())} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                 {
                     dockedMode ? <></> :
@@ -374,7 +375,7 @@ if (optionSelectedIsOnOptionDisabled) {
                     </TabPanelOrRegion>
                     </TabPanelsOrFragment>
                 </div>
-                <ModalControlButtons dockedMode={dockedMode} />
+                <ModalControlButtons dockedMode={dockedMode} onClose={onClose} />
             </Tabs>
         </div>
     );

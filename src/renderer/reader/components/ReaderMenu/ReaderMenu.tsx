@@ -59,6 +59,7 @@ interface IBaseProps extends IReaderMenuProps {
     isPdf: boolean;
     isAudiobook: boolean;
     pdfNumberOfPages: number;
+    onClose: () => void;
     // handleMenuClick: (open: boolean) => void;
 }
 
@@ -464,7 +465,7 @@ const TabTitle = ({ value }: { value: string }) => {
 
 export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const { /* toggleMenu */ pdfToc, isDivina, isPdf, isAudiobook, focusMainAreaLandmarkAndCloseMenu,
-        pdfNumberOfPages, currentLocation, goToLocator, goToPdfAnnotation /*openedSection: tabValue, setOpenedSection: setTabValue*/ } = props;
+        pdfNumberOfPages, currentLocation, goToLocator, goToPdfAnnotation, onClose /*openedSection: tabValue, setOpenedSection: setTabValue*/ } = props;
     const isEpub = !isDivina && !isPdf && !isAudiobook;
     const { /*doFocus, annotationUUID,*/ handleLinkClick /*, resetAnnotationUUID*/ } = props;
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
@@ -673,7 +674,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
             }}>
                 {__("reader.navigation.openTableOfContentsTitle")}
             </h1>
-            {dockedMode ? <DockedHeader dockedMode={dockedMode} dockingMode={dockingMode} isEpub={isEpub} setSection={setSection} dockedModeRef={dockedModeRef} options={options} optionSelected={optionSelected} section={section} panel={"menu"} /> : <></>}
+            {dockedMode ? <DockedHeader dockedMode={dockedMode} dockingMode={dockingMode} isEpub={isEpub} setSection={setSection} dockedModeRef={dockedModeRef} options={options} optionSelected={optionSelected} section={section} panel={"menu"} onClose={onClose} /> : <></>}
             <Tabs selectedKey={section} onSelectionChange={(key) => dockedMode ? undefined : setSection(key.toString())} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                 {
                     dockedMode ? <></> :
@@ -755,7 +756,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     </TabPanelOrRegion>
                     </TabPanelsOrFragment>
                 </div>
-                <ModalControlButtons dockedMode={dockedMode} />
+                <ModalControlButtons dockedMode={dockedMode} onClose={onClose} />
             </Tabs>
         </div>
     );

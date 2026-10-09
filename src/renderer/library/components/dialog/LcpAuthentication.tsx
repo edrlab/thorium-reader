@@ -12,7 +12,6 @@ import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/componen
 
 import { shell } from "electron";
 import * as React from "react";
-import * as Dialog from "@radix-ui/react-dialog";
 import { connect } from "react-redux";
 import debounce from "debounce";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
@@ -40,6 +39,7 @@ import { lcpActions } from "readium-desktop/common/redux/actions";
 import classNames from "classnames";
 import { dialogActions } from "readium-desktop/common/redux/actions";
 import { logEvent } from "readium-desktop/renderer/common/analytics";
+import { DialogRAC } from "readium-desktop/renderer/common/components/DialogComponent";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -95,22 +95,24 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
         const { __ } = this.props;
         const { showPassword } = this.state;
         const inputType = showPassword ? "text" : "password";
-        return <Dialog.Root defaultOpen={true} onOpenChange={(open) => { if (open === false) { this.props.closeDialog(); } }}>
-            <Dialog.Portal>
-                <div className={stylesModals.modal_dialog_overlay}></div>
-                <Dialog.Content className={stylesModals.modal_dialog} style={{maxWidth: "600px"}} onOpenAutoFocus={(e) => {
-                    e.preventDefault();
-                    this.focusRef.current?.focus();
-                }} aria-describedby={__("library.lcp.sentence")}>
+        return <DialogRAC
+            isOpen={this.props.open}
+            title={__("library.lcp.sentence")}
+            overlayClassName={stylesModals.modal_dialog_overlay}
+            contentStyle={{maxWidth: "600px"}}
+            onOpenChange={(open) => { if (open === false) { this.props.closeDialog(); } }}
+            content={
+                <>
                     <div className={stylesModals.modal_dialog_header}>
-                        <Dialog.Title>
+                        <h2>
                             {__("library.lcp.sentence")}
-                        </Dialog.Title>
+                        </h2>
                     </div>
                     <form className={stylesModals.modal_dialog_body}
                     onSubmit={(e) => {
                         e.preventDefault();
                         this.submit();
+                        this.props.closeDialog();
                     }}
                     >
                         <p>
@@ -127,6 +129,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                                 type={inputType}
                                 onChange={this.onPasswordChange}
                                 ref={this.focusRef}
+                                autoFocus
                                 className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                             />
                             <button
@@ -185,19 +188,15 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                             </div>
                         </details>
                         <div className={stylesModals.modal_dialog_footer}>
-                            <Dialog.Close asChild>
-                                <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
-                            </Dialog.Close>
-                            <Dialog.Close asChild>
-                                <button type="submit" className={stylesButtons.button_primary_blue} onClick={this.submit}>
-                                    <SVG ariaHidden svg={LockIcon} />
-                                    {__("library.lcp.open")}</button>
-                            </Dialog.Close>
+                            <button type="button" className={stylesButtons.button_secondary_blue} onClick={this.props.closeDialog}>{__("dialog.cancel")}</button>
+                            <button type="submit" className={stylesButtons.button_primary_blue}>
+                                <SVG ariaHidden svg={LockIcon} />
+                                {__("library.lcp.open")}</button>
                         </div>
                     </form>
-                </Dialog.Content>
-            </Dialog.Portal>
-        </Dialog.Root>;
+                </>
+            }
+        />;
     }
 
     private onPasswordChange = (e: TChangeEventOnInput) => {

@@ -18,7 +18,6 @@ import { publicationInfoReaderLibGetPublicationApiCall } from "readium-desktop/r
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as Dialog from "@radix-ui/react-dialog";
 import classNames from "classnames";
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";
@@ -102,7 +101,7 @@ function formatRanges(ranges: number[]) {
     return result.join(", ");
 }
 
-export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { pdfPageRange: [start: number, end: number], pdfThumbnailImageCacheArray: string[] }) => {
+export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray, onClose }: { pdfPageRange: [start: number, end: number], pdfThumbnailImageCacheArray: string[], onClose?: () => void }) => {
 
     const [getV, setV] = React.useState(pdfPageRange[1] ? `${pdfPageRange[0]}-${pdfPageRange[1]}` : "1");
     const [__] = useTranslator();
@@ -173,11 +172,9 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
         <form className={stylesPrint.print_dialog_form}>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <h2>{__("reader.print.title")}</h2>
-                <Dialog.Close asChild>
-                    <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
-                        <SVG ariaHidden={true} svg={QuitIcon} />
-                    </button>
-                </Dialog.Close>
+                <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")} onClick={onClose}>
+                    <SVG ariaHidden={true} svg={QuitIcon} />
+                </button>
             </div>
             {
                 isLcpWithPrintRights ?
@@ -282,8 +279,8 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                 : <></>}
 
             <div className={stylesPrint.print_dialog_actions_buttons}>
-                <Dialog.Close className={stylesButtons.button_secondary_blue} aria-label={__("dialog.cancel")}>{__("dialog.cancel")}</Dialog.Close>
-                <Dialog.Close
+                <button type="button" className={stylesButtons.button_secondary_blue} aria-label={__("dialog.cancel")} onClick={onClose}>{__("dialog.cancel")}</button>
+                <button
                     type="submit"
                     className={stylesButtons.button_primary_blue}
                     aria-label={__("reader.print.print")}
@@ -293,11 +290,12 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                         // createOrGetPdfEventBus().dispatch("print", pagesToPrint);
 
                         dispatch(readerActions.print.build(publicationIdentifier, pagesToPrint)); // send to main process
+                        onClose?.();
                     }}
                 >
                     <SVG ariaHidden svg={PrinterIcon} />
                     {__("reader.print.print")}
-                </Dialog.Close>
+                </button>
             </div>
         </form>
     </>;
