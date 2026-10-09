@@ -33,6 +33,10 @@ import { IReaderPdfConfig, IReaderRootState } from "readium-desktop/common/redux
 import { ok } from "readium-desktop/common/utils/assert";
 import { formatTime } from "readium-desktop/common/utils/time";
 import {
+    createReadiumPositionList, IReadiumPositionList, isEpubPositionListPublication,
+    mapLocatorToReadiumPosition,
+} from "readium-desktop/common/readium/positions";
+import {
     _APP_NAME, _APP_VERSION, _DIST_RELATIVE_URL, _NODE_MODULE_RELATIVE_URL, _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
 import * as DoubleArrowDownIcon from "readium-desktop/renderer/assets/icons/double_arrow_down_black_24dp.svg";
@@ -51,6 +55,7 @@ import {
 } from "readium-desktop/renderer/common/keyboard";
 import ReaderFooter from "readium-desktop/renderer/reader/components/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/reader/components/ReaderHeader";
+import { normalizeLocatorProgressionForPublication } from "readium-desktop/renderer/reader/locatorProgression";
 import {
     TKeyboardEventOnAnchor, TMouseEventOnAnchor,
     TMouseEventOnSpan,
@@ -225,8 +230,10 @@ const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substri
 
 const isDivinaLocation = (data: any): data is { pageIndex: number | undefined, nbOfPages: number | undefined, locator: R2Locator } => {
 
-    // isDivinaLocationduck typing hack with totalProgression injection!!
-    const isDivina = typeof data === "object"
+    // This is only a structural check. EPUB locators can now expose the same position and
+    // totalProgression fields, so applying Divina-specific mutations here would corrupt their
+    // resource-local progression.
+    return typeof data === "object"
         // && typeof data.pageIndex === "number"
         // && typeof data.nbOfPages === "number"
         && typeof data.locator === "object"
@@ -238,10 +245,6 @@ const isDivinaLocation = (data: any): data is { pageIndex: number | undefined, n
         && ((data.locator as R2Locator).locations as any).totalProgression >= 0
         && ((data.locator as R2Locator).locations as any).totalProgression <= 1
         ;
-    if (isDivina) {
-        (data.locator as R2Locator).locations.progression = ((data.locator as R2Locator).locations as any).totalProgression;
-    }
-    return isDivina;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -319,11 +322,14 @@ class Reader extends React.Component<IProps, IState> {
     // private blackoutDebounced: () => void;
 
     private screenPreviousNextTimerDebounce: number | undefined;
+    private readiumPositionList: IReadiumPositionList | undefined;
 
     constructor(props: IProps) {
         super(props);
 
         this.screenPreviousNextTimerDebounce = undefined;
+        this.readiumPositionList = isEpubPositionListPublication(props.r2Publication) ?
+            createReadiumPositionList(props.r2Publication) : undefined;
 
         this._ttsOrMoStateTimeout = undefined;
 
@@ -1377,6 +1383,7 @@ class Reader extends React.Component<IProps, IState> {
                     disableRTLFlip={this.props.disableRTLFlip}
                     isRTLFlip={this.isRTLFlip}
                     publicationView={this.props.publicationView}
+                    readiumPositionList={this.readiumPositionList}
 
                         />
                         : <></>
@@ -3093,6 +3100,18 @@ class Reader extends React.Component<IProps, IState> {
 
         ok(locatorExtended, "handleReadingLocationChange loc KO");
 
+        locatorExtended.locator = normalizeLocatorProgressionForPublication(
+            locatorExtended.locator,
+            this.props.isDivina,
+        );
+
+        if (this.readiumPositionList) {
+            locatorExtended.locator = mapLocatorToReadiumPosition(
+                locatorExtended.locator,
+                this.readiumPositionList,
+            );
+        }
+
         // if (this.isFixedLayout()) {
         //     this.setState({ blackoutMask: false });
         // }
@@ -3122,7 +3141,8 @@ class Reader extends React.Component<IProps, IState> {
 
         this.saveReadingLocation(miniLocatorExtended);
 
-        const l = (this.props.isDivina || isDivinaLocation(locatorExtended)) ? locatorExtended : (this.props.isPdf ? locatorExtended : (getCurrentReadingLocation() || locatorExtended));
+        const l = (this.props.isDivina || this.readiumPositionList) ? locatorExtended :
+            (this.props.isPdf ? locatorExtended : (getCurrentReadingLocation() || locatorExtended));
         this.setState({ currentLocation: l });
 
         if (locatorExtended?.locator?.href && window.history.length === 1 && !window.history.state) {

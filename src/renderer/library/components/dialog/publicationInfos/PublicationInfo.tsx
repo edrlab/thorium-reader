@@ -193,6 +193,8 @@ const PublicationInfoWithRadixContent = (props: {publicationViewMaybeOpds: TPubl
         return <Loader></Loader>;
     }
 
+    const publicationViewMaybeOpds = props.publicationViewMaybeOpds;
+
     let controlsComponent = () => (<></>);
 
     if (props.isOpds) {
@@ -207,10 +209,10 @@ const PublicationInfoWithRadixContent = (props: {publicationViewMaybeOpds: TPubl
 
     return (
         <PublicationInfoContent
-            publicationViewMaybeOpds={props.publicationViewMaybeOpds}
+            publicationViewMaybeOpds={publicationViewMaybeOpds}
             r2Publication={null}
             manifestUrlR2Protocol={null}
-            handleLinkUrl={null}
+            handleLinkUrl={undefined}
             // toggleCoverZoomCb={() => setCoverZoom(!coverZoom)}
             ControlComponent={controlsComponent}
             TagManagerComponent={TagManager}
@@ -218,16 +220,19 @@ const PublicationInfoWithRadixContent = (props: {publicationViewMaybeOpds: TPubl
             onClickLinkCb={
                 (_link) => () => {
                     const textObj = _link.nameLangString;
-                    const pubLangs = props.publicationViewMaybeOpds.languages;
+                    const pubLangs = publicationViewMaybeOpds.languages;
                     const pubLang = pubLangs ? pubLangs[0] : undefined; // TODO: OPF xml:lang on title meta is actually the lang, not the declared pub lang(s)!
                     const textObj_ = pubLang && typeof textObj === "string" ? { [pubLang]: textObj } : textObj;
-                    return link(_link.link[0], location, convertMultiLangStringToString(textObj_, locale));
+                    const contributorLink = _link.link?.[0];
+                    return contributorLink
+                        ? link(contributorLink, location, convertMultiLangStringToString(textObj_, locale))
+                        : undefined;
                 }
             }
             focusWhereAmI={false}
             pdfPlayerNumberOfPages={undefined}
             divinaNumberOfPages={undefined}
-            divinaContinousEqualTrue={undefined}
+            divinaContinousEqualTrue={false}
             readerReadingLocation={undefined}
             closeDialogCb={props.closeDialog}
         >

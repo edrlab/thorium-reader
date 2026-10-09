@@ -1758,7 +1758,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
             const lcp = publicationView.lcp ? "LCP" : "";
 
-            const format = publicationView.isAudio ? "Audio" : publicationView.isDivina ? "Divina" : publicationView.isPDF ? "PDF" : publicationView.isDaisy ? "DAISY" : publicationView.isFixedLayoutPublication ? "EPUB (FXL)" : "EPUB";
+            const format = publicationView.isCBZ ? "CBZ" : publicationView.isAudio ? "Audio" : publicationView.isDivina ? "Divina" : publicationView.isPDF ? "PDF" : publicationView.isDaisy ? "DAISY" : publicationView.isFixedLayoutPublication ? "EPUB (FXL)" : "EPUB";
 
             const duration = (publicationView.duration ? formatTime(publicationView.duration) : "") + (publicationView.nbOfTracks ? ` (${__("publication.audio.tracks")}: ${publicationView.nbOfTracks})` : "");
 
@@ -2512,7 +2512,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
     const tagsOptions = tags.map((v, i) => ({ id: i, value: i, name: v }));
 
-    const formats = ["Audio", "Divina", "PDF", "DAISY", "EPUB (FXL)", "EPUB"].map((f, i) => ({
+    const formats = ["Audio", "Divina", "PDF", "DAISY", "EPUB (FXL)", "EPUB", "CBZ"].map((f, i) => ({
         id: i,
         value: i,
         name: f,

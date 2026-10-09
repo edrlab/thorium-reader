@@ -16,6 +16,7 @@
 // @__ts-ignore TS1479
 import timeoutSignal from "timeout-signal";
 
+import { LRUCache } from "lru-cache";
 import debug_ from "debug";
 import * as fs from "node:fs";
 import * as http from "node:http";
@@ -36,6 +37,7 @@ import {
     IHttpGetResult, THttpGetCallback, THttpOptions, THttpResponse,
 } from "readium-desktop/common/utils/http";
 import { decryptPersist, encryptPersist } from "readium-desktop/main/fs/persistCrypto";
+import { createOpdsPkceRefreshTokenRequest } from "readium-desktop/main/network/opdsPkce";
 import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 
 import { diMainGet, opdsAuthFilePath } from "../di";
@@ -92,6 +94,7 @@ export interface IOpdsAuthenticationToken {
     opdsAuthenticationUrl?: string; // application/opds-authentication+json
     refreshUrl?: string;
     authenticateUrl?: string;
+    pkce?: boolean;
     accessToken?: string;
     refreshToken?: string;
     tokenType?: string;
@@ -227,6 +230,11 @@ export const wipeAuthenticationTokenStorage = async () => {
     return await fs.promises.writeFile(opdsAuthFilePath, encrypted);
 };
 
+const _proxyAgentCache = new LRUCache<string, ProxyAgent>({
+    max: 20,
+    dispose: (agent) => agent.destroy(),
+});
+
 async function httpFetchRawResponse(
     url: string | URL,
     options: THttpOptions = {},
@@ -252,7 +260,6 @@ async function httpFetchRawResponse(
     //
     // options.redirect = "manual"; // handle cookies
 
-
     // https://github.com/node-fetch/node-fetch#custom-agent
     // httpAgent doesn't works // err: Protocol "http:" not supported. Expected "https:
     // https://github.com/edrlab/thorium-reader/issues/1323#issuecomment-911772951
@@ -262,28 +269,42 @@ async function httpFetchRawResponse(
         DEFAULT_AUTO_SELECT_FAMILY_ATTEMPT_TIMEOUT,
     );
 
-    const httpAgentOptions: http.AgentOptions = {
-        timeout: requestTimeout,
-        autoSelectFamilyAttemptTimeout,
-    };
+    const cacheKey = `${requestTimeout}`;
+    debug("ProxyAgent cache key: %o", cacheKey);
 
-    const httpsAgentOptions: https.AgentOptions = {
-        ...httpAgentOptions,
-        rejectUnauthorized: !__TH__IS_DEV__,
-    };
+    let proxyAgent = _proxyAgentCache.get(cacheKey);
+    if (!proxyAgent) {
+        debug("Cache miss for ProxyAgent: %o", cacheKey);
 
-    const httpsAgent = new https.Agent(httpsAgentOptions);
-    const httpAgent = new http.Agent(httpAgentOptions);
+        const httpAgentOptions: http.AgentOptions = {
+            timeout: requestTimeout,
+            autoSelectFamilyAttemptTimeout,
+        };
 
-    const proxyAgent = new ProxyAgent({
-        ...httpsAgentOptions,
-        httpAgent: httpAgent,
-        httpsAgent: httpsAgent,
-        // getProxyForUrl: (url) => {
-        //     debug("need to proxify this URL: ", url);
-        //     return "http://127.0.0.1:8888"
-        // }
-    });
+        const httpsAgentOptions: https.AgentOptions = {
+            ...httpAgentOptions,
+            rejectUnauthorized: !__TH__IS_DEV__,
+        };
+
+        const httpsAgent = new https.Agent(httpsAgentOptions);
+        const httpAgent = new http.Agent(httpAgentOptions);
+
+        proxyAgent = new ProxyAgent({
+            ...httpsAgentOptions,
+            httpAgent: httpAgent,
+            httpsAgent: httpsAgent,
+            // getProxyForUrl: (url) => {
+            //     debug("need to proxify this URL: ", url);
+            //     return "http://127.0.0.1:8888"
+            // }
+        });
+
+        proxyAgent.options.ca = TLS_CERTIFICATES;
+
+        _proxyAgentCache.set(cacheKey, proxyAgent);
+    } else {
+        debug("Cache hit for ProxyAgent: %o", cacheKey);
+    }
 
     // seems already implemented in the ProxyAgent package:
     // https://github.com/TooTallNate/proxy-agents/blob/70023c12abe0d014004af6309ff7d0fdbaa60875/packages/proxy-agent/src/index.ts#L122
@@ -296,7 +317,6 @@ async function httpFetchRawResponse(
     //     }
     // };
 
-    proxyAgent.options.ca = TLS_CERTIFICATES;
     options.agent = proxyAgent;
 
     // if (!options.agent && /^https:\/\//.test(url.toString())) {
@@ -483,6 +503,7 @@ async function httpFetchFormattedResponse<TData = undefined>(
         if (
             options.method === "get" &&
             responseURL.href !== urlURL.href &&
+            !(urlURL.protocol === "https:" && responseURL.protocol === "http:") &&
             response.status === 401 &&
             (await getAuthenticationToken(responseURL))?.accessToken
         ) {
@@ -650,6 +671,15 @@ const httpGetUnauthorized =
 
             if (enableRefresh) {
                 if (response.statusCode === 401) {
+                    const responseUrl = response.responseUrl
+                        ? new URL(response.responseUrl)
+                        : url;
+                    if (responseUrl.origin !== url.origin) {
+                        // Redirect authentication is handled against the final
+                        // host. Do not invalidate the original host's valid
+                        // credentials when the final host remains unauthorized.
+                        return handleCallback(response, _callback);
+                    }
                     if (auth.refreshUrl && auth.refreshToken) {
                         const responseAfterRefresh = await httpGetUnauthorizedRefresh(
                             auth,
@@ -681,12 +711,16 @@ const httpGetUnauthorizedRefresh =
             options.headers = options.headers instanceof Headers
                 ? options.headers
                 : new Headers(options.headers || {});
-            (options.headers as Headers).set("Content-Type", "application/json");
-
-            options.body = JSON.stringify({
-                refresh_token: refreshToken,
-                grant_type: "refresh_token",
-            });
+            if (auth.pkce) {
+                (options.headers as Headers).set("Content-Type", "application/x-www-form-urlencoded");
+                options.body = createOpdsPkceRefreshTokenRequest(refreshToken);
+            } else {
+                (options.headers as Headers).set("Content-Type", "application/json");
+                options.body = JSON.stringify({
+                    refresh_token: refreshToken,
+                    grant_type: "refresh_token",
+                });
+            }
 
             const httpPostResponse = await httpPost(refreshUrl, options);
             if (httpPostResponse.isSuccess) {
@@ -732,18 +766,172 @@ export const httpPost: typeof httpFetchFormattedResponse =
         return httpFetchFormattedResponse(...arg);
     };
 
+const httpPutWithAuthInternal =
+    (enableAuth: boolean): typeof httpFetchFormattedResponse =>
+        async (...arg) => {
+            const [_url, _options, _callback, ..._arg] = arg;
+            const url = _url instanceof URL ? _url : new URL(_url);
+            const options = _options || {};
+            options.method = "put";
+
+            if (enableAuth) {
+                const auth = await getAuthenticationToken(url, "PUT");
+                if (auth?.accessToken) {
+                    return httpPutUnauthorized(auth, true)(url, options, _callback, ..._arg);
+                }
+            }
+
+            // Like GET, fetch-cookie follows redirects and returns the final response.
+            const response = await httpFetchFormattedResponse(url, options, undefined, _arg[0]);
+            const responseUrl = response.responseUrl ? new URL(response.responseUrl) : url;
+            if (response.statusCode === 401 && responseUrl.href !== url.href &&
+                !(url.protocol === "https:" && responseUrl.protocol === "http:") &&
+                (await getAuthenticationToken(responseUrl, "PUT"))?.accessToken) {
+                options.headers = new Headers(options.headers || {});
+                if (responseUrl.origin !== url.origin) {
+                    for (const header of ["Authorization", "Cookie", "Cookie2", "Host", "Proxy-Authorization"]) {
+                        (options.headers as Headers).delete(header);
+                    }
+                }
+                return httpPutWithAuthInternal(true)(responseUrl, options, _callback, ..._arg);
+            }
+            return handleCallback(response, _callback);
+        };
+
+const httpPutUnauthorized =
+    (
+        auth: IOpdsAuthenticationToken,
+        enableRefresh: boolean,
+    ): typeof httpFetchFormattedResponse =>
+        async (...arg) => {
+
+            const [_url, _options, _callback, ..._arg] = arg;
+
+            const url = _url instanceof URL ? _url : new URL(_url);
+            const options = _options || {};
+            const { accessToken, tokenType } = auth;
+
+            options.headers = options.headers instanceof Headers
+                ? options.headers
+                : new Headers(options.headers || {});
+            (options.headers as Headers).set(
+                "Authorization",
+                httpSetHeaderAuthorization(tokenType || "Bearer", accessToken),
+            );
+
+            const response = await httpPutWithAuthInternal(false)(
+                url,
+                options,
+                enableRefresh ? undefined : _callback,
+                ..._arg,
+            );
+
+            if (enableRefresh) {
+                if (response.statusCode === 401) {
+                    const responseUrl = response.responseUrl
+                        ? new URL(response.responseUrl)
+                        : url;
+                    if (responseUrl.origin !== url.origin) {
+                        // The final-host branch has already handled its own
+                        // credentials. Keep the original host token intact.
+                        return handleCallback(response, _callback);
+                    }
+                    if (auth.refreshUrl && auth.refreshToken) {
+                        const responseAfterRefresh = await httpPutUnauthorizedRefresh(
+                            auth,
+                        )(response.url, options, _callback, ..._arg);
+                        if (responseAfterRefresh) {
+                            return responseAfterRefresh;
+                        }
+                    }
+
+                    await deleteAuthenticationToken(url.host);
+                    (options.headers as Headers).delete("Authorization");
+                    return httpPutWithAuthInternal(false)(
+                        response.url,
+                        options,
+                        _callback,
+                        ..._arg,
+                    );
+                }
+                return handleCallback(response, _callback);
+            }
+            return response;
+        };
+
+const httpPutUnauthorizedRefresh =
+    (
+        auth: IOpdsAuthenticationToken,
+    ): typeof httpFetchFormattedResponse | undefined =>
+        async (...arg) => {
+
+            const { refreshToken, refreshUrl } = auth;
+            let refreshUrlObject: URL;
+            try {
+                refreshUrlObject = new URL(refreshUrl || "");
+            } catch {
+                return undefined;
+            }
+            const options: RequestInit = {};
+            const headers = new Headers();
+            options.headers = headers;
+            options.redirect = "manual";
+            if (auth.pkce) {
+                headers.set("Content-Type", "application/x-www-form-urlencoded");
+                options.body = createOpdsPkceRefreshTokenRequest(refreshToken);
+            } else {
+                headers.set("Content-Type", "application/json");
+                options.body = JSON.stringify({
+                    refresh_token: refreshToken,
+                    grant_type: "refresh_token",
+                });
+            }
+
+            const httpPostResponse = await httpPost(refreshUrlObject, options);
+            if (!httpPostResponse.isSuccess || !httpPostResponse.response) {
+                return undefined;
+            }
+
+            const jsonDataResponse: any = await httpPostResponse.response.json?.();
+            const newRefreshToken = typeof jsonDataResponse?.refresh_token === "string"
+                ? jsonDataResponse.refresh_token
+                : undefined;
+            auth.refreshToken = newRefreshToken || auth.refreshToken;
+
+            const newAccessToken = typeof jsonDataResponse?.access_token === "string"
+                ? jsonDataResponse.access_token
+                : undefined;
+            auth.accessToken = newAccessToken || auth.accessToken;
+
+            const httpPutResponse = await httpPutUnauthorized(
+                auth,
+                false,
+            )(...arg);
+            if (httpPutResponse.statusCode !== 401) {
+                await httpSetAuthenticationToken(auth);
+            }
+            return httpPutResponse;
+        };
+
+/**
+ * Authenticated HTTP PUT for OPDS resources.
+ *
+ * Keep this separate from httpPut: the latter is also used by LCP/LSD endpoints,
+ * where OPDS authentication-token lookup and refresh must not be applied.
+ */
+export const httpPutWithAuth: typeof httpFetchFormattedResponse = httpPutWithAuthInternal(true);
+
 export const httpPut: typeof httpFetchFormattedResponse =
     async (...arg) => {
 
-        let [, options] = arg;
+        const [url, initialOptions, callback, locale] = arg;
 
-        options = options || {};
+        const options = initialOptions || {};
         options.method = "put";
-        arg[1] = options;
 
         // do not risk showing plaintext password in console / command line shell
         // debug("Body:");
         // debug(options.body);
 
-        return httpFetchFormattedResponse(...arg);
+        return httpFetchFormattedResponse(url, options, callback, locale);
     };

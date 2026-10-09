@@ -1360,7 +1360,7 @@
             }
         },
         "tabs": {
-            "appearance": "Izgled",
+            "advanced": "",
             "general": "Splošno",
             "keyboardShortcuts": "Bližnjice tipkovnice",
             "profiles": "Profili",

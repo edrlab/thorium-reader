@@ -1342,7 +1342,7 @@
             }
         },
         "tabs": {
-            "appearance": "Utseende",
+            "advanced": "Avancerad",
             "general": "Allmänt",
             "keyboardShortcuts": "Kortkommandon",
             "profiles": "Profiler",

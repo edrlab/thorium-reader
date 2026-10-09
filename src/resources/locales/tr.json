@@ -1342,7 +1342,7 @@
             }
         },
         "tabs": {
-            "appearance": "Görünüm",
+            "advanced": "",
             "general": "Genel",
             "keyboardShortcuts": "Klavye kısayolları",
             "profiles": "Profiller",

@@ -1342,7 +1342,7 @@
             }
         },
         "tabs": {
-            "appearance": "Εμφάνιση",
+            "advanced": "",
             "general": "Γενικά",
             "keyboardShortcuts": "Συντομεύσεις πληκτρολογίου",
             "profiles": "Προφίλ",

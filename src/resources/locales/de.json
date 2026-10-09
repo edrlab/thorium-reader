@@ -1342,7 +1342,7 @@
             }
         },
         "tabs": {
-            "appearance": "Erscheinungsbild",
+            "advanced": "",
             "general": "Allgemein",
             "keyboardShortcuts": "Tastaturkürzel",
             "profiles": "",

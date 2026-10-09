@@ -19,7 +19,7 @@ import { Metadata } from "@r2-shared-js/models/metadata";
 import { BelongsTo } from "@r2-shared-js/models/metadata-belongsto";
 import { Contributor } from "@r2-shared-js/models/metadata-contributor";
 import {
-    LayoutEnum, OrientationEnum, OverflowEnum, PageEnum, Properties, SpreadEnum,
+    ArchiveProperties, LayoutEnum, OrientationEnum, OverflowEnum, PageEnum, Properties, SpreadEnum,
 } from "@r2-shared-js/models/metadata-properties";
 import { Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
@@ -853,6 +853,19 @@ const addLinkData = async (
     if (rootfile) {
         await addRelAndPropertiesToLink(publication, linkItem, item, opf);
     }
+
+    const hrefDecoded = linkItem.HrefDecoded;
+    const archiveMetadata = hrefDecoded ? zip.entryMetadata(hrefDecoded) : undefined;
+    if (archiveMetadata) {
+        if (!linkItem.Properties) {
+            linkItem.Properties = new Properties();
+        }
+        const archive = new ArchiveProperties();
+        archive.EntryLength = archiveMetadata.entryLength;
+        archive.IsEntryCompressed = archiveMetadata.isEntryCompressed;
+        linkItem.Properties.Archive = archive;
+    }
+
     await addMediaOverlay(linkItem, item, opf, zip);
 };
 

@@ -1342,7 +1342,7 @@
             }
         },
         "tabs": {
-            "appearance": "Udseende",
+            "advanced": "",
             "general": "Generelt",
             "keyboardShortcuts": "Tastaturgenveje",
             "profiles": "Profiler",
