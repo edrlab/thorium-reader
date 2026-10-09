@@ -660,7 +660,7 @@ jobs:
 # https://github.com/actions/upload-artifact/commits/v7.0.1
 # https://github.com/actions/upload-artifact/commits/043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
 # https://github.com/actions/upload-artifact/compare/v7.0.1...043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
       with:
         name: artifact-${{ matrix.release_tag }}-${{ github.run_id }}
         retention-days: 1
@@ -679,7 +679,7 @@ jobs:
 # https://github.com/actions/upload-artifact/commits/v7.0.1
 # https://github.com/actions/upload-artifact/commits/043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
 # https://github.com/actions/upload-artifact/compare/v7.0.1...043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
       with:
         name: artifact-${{ matrix.release_tag }}-${{ github.run_id }}
         retention-days: 1
@@ -709,7 +709,7 @@ jobs:
 # https://github.com/actions/upload-artifact/commits/v7.0.1
 # https://github.com/actions/upload-artifact/commits/043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
 # https://github.com/actions/upload-artifact/compare/v7.0.1...043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
       with:
         name: artifact-${{ matrix.release_tag }}-${{ github.run_id }}
         retention-days: 1
