@@ -9,6 +9,7 @@ import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import DOMPurify from "dompurify";
 import classNames from "classnames";
 import * as React from "react";
@@ -24,7 +25,7 @@ import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locator
 
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
-import Cover, { CoverWithForwardedRef } from "../../Cover";
+import Cover from "../../Cover";
 import { FormatContributorWithLink } from "./FormatContributorWithLink";
 import { FormatPublicationLanguage } from "./formatPublicationLanguage";
 import { FormatPublisherDate } from "./formatPublisherDate";
@@ -38,6 +39,7 @@ import SVG from "../../SVG";
 import * as OnGoingBookIcon from "readium-desktop/renderer/assets/icons/ongoingBook-icon.svg";
 import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
+import * as BackIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
@@ -47,7 +49,6 @@ import {
 
 // import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { PublicationInfoA11y2 } from "./PublicationInfoA11y2";
-import {DialogRAC} from "readium-desktop/renderer/common/components/DialogComponent";
 
 
 export interface IProps {
@@ -417,50 +418,83 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
     const pubTitleStr = (pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "");
     const pubTitleStrSanitized = DOMPurify.sanitize(pubTitleStr).replace(/font-size:/g, "font-sizexx:");
 
-    const [openCoverDialog, setOpenCoverDialog] = React.useState(false);
+    const [showCover, setShowCover] = React.useState(false);
+    const contentRef = React.useRef<HTMLDivElement>(null);
+    const coverTriggerRef = React.useRef<HTMLButtonElement>(null);
+    const backButtonRef = React.useRef<HTMLButtonElement>(null);
+    const scrollPositions = React.useRef<Array<{ element: HTMLElement; top: number; left: number }>>([]);
     const [__] = useTranslator();
 
+    const openCover = () => {
+        scrollPositions.current = [];
+        let element = contentRef.current?.parentElement;
+        while (element) {
+            scrollPositions.current.push({ element, top: element.scrollTop, left: element.scrollLeft });
+            if (element.getAttribute("role") === "dialog") {
+                break;
+            }
+            element = element.parentElement;
+        }
+        setShowCover(true);
+    };
+
+    React.useLayoutEffect(() => {
+        if (showCover) {
+            backButtonRef.current?.focus({ preventScroll: true });
+            scrollPositions.current.forEach(({ element }) => { element.scrollTop = 0; });
+            const dialog = contentRef.current?.closest<HTMLElement>("[role='dialog']");
+            const onKeyDown = (event: KeyboardEvent) => {
+                if (event.key === "Escape") {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    setShowCover(false);
+                }
+            };
+            dialog?.addEventListener("keydown", onKeyDown, true);
+            return () => dialog?.removeEventListener("keydown", onKeyDown, true);
+        }
+        if (scrollPositions.current.length) {
+            scrollPositions.current.forEach(({ element, top, left }) => {
+                element.scrollTop = top;
+                element.scrollLeft = left;
+            });
+            coverTriggerRef.current?.focus({ preventScroll: true });
+            scrollPositions.current = [];
+        }
+        return undefined;
+    }, [showCover]);
+
     return (
-        <>
-            <div className={stylePublication.publicationInfo_container}>
+        <div ref={contentRef}>
+            {showCover && <div className={stylesModals.modal_dialog_body_cover}>
+                <button
+                    ref={backButtonRef}
+                    type="button"
+                    className={stylesButtons.button_transparency_icon}
+                    aria-label={__("catalog.bookInfo")}
+                    title={__("catalog.bookInfo")}
+                    onClick={() => setShowCover(false)}
+                >
+                    <SVG ariaHidden svg={BackIcon} />
+                </button>
+                <Cover
+                    publicationViewMaybeOpds={publicationViewMaybeOpds}
+                    coverType="cover"
+                    imgRadixProp={{ alt: __("publication.cover.img"), role: "img" }}
+                />
+            </div>}
+            <div className={stylePublication.publicationInfo_container} style={showCover ? { display: "none" } : undefined}>
                 <div className={stylePublication.publicationInfo_leftSide}>
                     <div className={stylePublication.publicationInfo_leftSide_coverWrapper}>
-                        <DialogRAC
-                            isOpen={openCoverDialog}
-                            title={__("catalog.bookInfo")}
-                            onOpenChange={(open: any) => {
-                                setOpenCoverDialog(open);
-                            }}
-                            trigger={
-                                <CoverWithForwardedRef
-                                    publicationViewMaybeOpds={props.publicationViewMaybeOpds}
-                                    coverType="cover"
-                                    onKeyUp={
-                                        (e) => {
-                                            if (e.key === "Enter") {
-                                                setOpenCoverDialog(true);
-                                            }
-                                        }
-                                    }
-                                />
-                            }
-                            content={
-                                <div className={stylesModals.modal_dialog_body_cover}>
-                                    <Cover
-                                        publicationViewMaybeOpds={props.publicationViewMaybeOpds}
-                                        coverType="cover"
-                                        onClick={() => setOpenCoverDialog(false)}
-                                        onKeyUp={
-                                            (e) => {
-                                                if (e.key === "Enter") {
-                                                    setOpenCoverDialog(false);
-                                                }
-                                            }
-                                        }
-                                    />
-                                </div>
-                            }
-                        />
+                        <button
+                            ref={coverTriggerRef}
+                            type="button"
+                            aria-label={__("publication.cover.img")}
+                            onClick={openCover}
+                            style={{ display: "block", width: "100%", height: "auto", padding: 0, border: 0, background: "transparent", cursor: "pointer" }}
+                        >
+                            <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} coverType="cover" />
+                        </button>
                     </div>
                     <div className={stylePublication.publicationInfo_leftSide_buttonsWrapper}>
                         {ControlComponent ? <ControlComponent /> : <></>}
@@ -567,6 +601,6 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                     />
                 </div>
             </div>
-        </>
+        </div>
     );
 };

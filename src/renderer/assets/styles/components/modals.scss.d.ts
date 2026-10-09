@@ -14,6 +14,7 @@ export declare const modal_dialog: string;
 export declare const modal_dialog_body: string;
 export declare const modal_dialog_body_centered: string;
 export declare const modal_dialog_body_cover: string;
+export declare const modal_dialog_content: string;
 export declare const modal_dialog_footer: string;
 export declare const modal_dialog_full: string;
 export declare const modal_dialog_full_full: string;

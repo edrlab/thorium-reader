@@ -77,7 +77,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
     const isRTL = langStringIsRTL(locale);
 
-    const [selectedTab, setSelectedTab] = React.useState("tab1");
+    const [selectedTab, setSelectedTab] = React.useState("tab-general");
     const [isOpen, setIsOpen] = React.useState(false);
 
     const tabTitle = {
@@ -98,7 +98,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
         onOpenChange={(open) => {
             setIsOpen(open);
             if (!open) {
-                setSelectedTab("tab1");
+                setSelectedTab("tab-general");
             }
         }}
         trigger={

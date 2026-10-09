@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
-import { Dialog as RACDialog, Modal as RACModal, type ModalOverlayProps } from "react-aria-components";
+import { Dialog as RACDialog, Modal as RACModal, ModalOverlay as RACModalOverlay, type ModalOverlayProps } from "react-aria-components";
 
 export interface DialogProps extends Omit<ModalOverlayProps, "children" | "isOpen" | "onOpenChange"> {
     children?: React.ReactNode;
@@ -32,7 +32,7 @@ export function DialogRAC({
     isOpen,
     onClose,
     onOpenChange,
-    overlayClassName,
+    overlayClassName = stylesModals.modal_dialog_overlay,
     title,
     trigger,
     ...props
@@ -46,7 +46,7 @@ export function DialogRAC({
     return (
         <>
             {trigger && React.cloneElement(trigger, { onClick: open })}
-            <RACModal
+            <RACModalOverlay
                 {...props}
                 isOpen={isOpen}
                 isDismissable={props.isDismissable ?? true}
@@ -59,10 +59,12 @@ export function DialogRAC({
                 }}
                 className={overlayClassName}
             >
-                    <RACDialog ref={contentRef} aria-label={title} className={contentClassName} style={contentStyle}>
-                    {content ?? children}
-                </RACDialog>
-            </RACModal>
+                <RACModal className={contentClassName} style={contentStyle}>
+                    <RACDialog ref={contentRef} aria-label={title} className={stylesModals.modal_dialog_content}>
+                        {content ?? children}
+                    </RACDialog>
+                </RACModal>
+            </RACModalOverlay>
         </>
     );
 }
