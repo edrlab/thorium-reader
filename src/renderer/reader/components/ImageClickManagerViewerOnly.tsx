@@ -72,9 +72,9 @@ const Controls = () => {
 }
         `}</style>
             <div style={{ bottom: "20px", right: "50%", left: "50%" }} className="imgViewerControls">
-                <button title={__("reader.imgViewer.zoomIn")} onClick={() => zoomIn()}><SVG svg={PlusIcon} /></button>
-                <button title={__("reader.imgViewer.zoomOut")} onClick={() => zoomOut()}><SVG svg={MinusIcon} /></button>
-                <button title={__("reader.imgViewer.zoomReset")} onClick={() => resetTransform()}><SVG svg={ResetIcon} /></button>
+                <button title={__("reader.imgViewer.zoomIn")} onClick={() => { zoomIn().then(() => { /* NOOP */ }).catch((_err) => { /* NOOP */ }); } }><SVG svg={PlusIcon} /></button>
+                <button title={__("reader.imgViewer.zoomOut")} onClick={() => { zoomOut().then(() => { /* NOOP */ }).catch((_err) => { /* NOOP */ }); } }><SVG svg={MinusIcon} /></button>
+                <button title={__("reader.imgViewer.zoomReset")} onClick={() => { resetTransform().then(() => { /* NOOP */ }).catch((_err) => { /* NOOP */ }); } }><SVG svg={ResetIcon} /></button>
             </div>
         </>
     );
