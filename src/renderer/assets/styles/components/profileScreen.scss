@@ -1,0 +1,57 @@
+.profile_screen {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  color: var(--color-text-primary);
+  font-family: Nunito, sans-serif !important;
+  font-size: 12px !important;
+  line-height: 1.5;
+
+  &,
+  & * {
+    font-family: Nunito, sans-serif !important;
+  }
+
+  & * {
+    font-size: 12px !important;
+  }
+
+  h1 {
+    font-size: 24px !important;
+  }
+
+  h2 {
+    font-size: 20px !important;
+  }
+
+  h3 {
+    font-size: 16px !important;
+  }
+
+  h4,
+  button,
+  label {
+    font-size: 14px !important;
+  }
+
+  img,
+  table {
+    max-width: 100%;
+  }
+}
+
+.loading {
+  width: 28px;
+  height: 28px;
+  margin: 40px auto;
+  border: 3px solid var(--color-gray-250);
+  border-top-color: var(--color-brand-primary);
+  border-radius: 50%;
+  animation: profile-screen-loading 800ms linear infinite;
+}
+
+@keyframes profile-screen-loading {
+  to {
+    transform: rotate(360deg);
+  }
+}

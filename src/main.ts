@@ -9,13 +9,14 @@ import debug_ from "debug";
 import * as path from "node:path";
 import * as fs from "node:fs";
 import { commandLineMainEntry } from "readium-desktop/main/cli";
-import { httpGet } from "readium-desktop/main/network/http";
-import { CRL_URL, DUMMY_CRL } from "@r2-lcp-js/parser/epub/lcp-certificate";
+import { httpGetWithAuth } from "readium-desktop/main/network/http";
+import { BUILD_CRL, BUILD_CRL_CACHED_AT, CRL_URL } from "@r2-lcp-js/parser/epub/lcp-certificate";
 import { setLcpNativePluginPath, setCRLGetter } from "@r2-lcp-js/parser/epub/lcp";
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
 } from "@r2-shared-js/init-globals";
+import { ContentType } from "readium-desktop/utils/contentType";
 
 import { initSessions as initSessionsNoHTTP } from "./main/streamer/streamerNoHttp";
 import { createStoreFromDi } from "./main/di";
@@ -24,6 +25,7 @@ import { app } from "electron";
 import { _APP_NAME, _APP_VERSION, _PACK_NAME } from "readium-desktop/preprocessor-directives";
 import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
 import { appendFileSyncWithRotation } from "readium-desktop/utils/log";
+import { LcpCrlCache } from "./main/services/lcpCrlCache";
 
 // isURL() excludes the file: and data: URL protocols; the compile-time TLD policy decides whether localhost / non-TLD hosts are accepted (note that ftp: is accepted)
 // import isURL from "validator/lib/isURL";
@@ -70,23 +72,37 @@ initGlobalConverters_GENERIC();
 const lcpNativePluginPath = path.normalize(path.join(__dirname, "external-assets", "lcp.node"));
 setLcpNativePluginPath(lcpNativePluginPath);
 
-setCRLGetter(async (): Promise<string> => {
-    try {
-        const res = await httpGet(CRL_URL);
-        if (res.isSuccess) {
-            const buf = await res.response.buffer();
-            const lcplStr = "-----BEGIN X509 CRL-----\n" + buf.toString("base64") + "\n-----END X509 CRL-----";
-            debug("LCP CRL HTTP fetch success");
-            debug(lcplStr);
-            return lcplStr;
+const lcpCrlCache = new LcpCrlCache({
+    defaultCrlPem: BUILD_CRL,
+    defaultCrlCachedAt: BUILD_CRL_CACHED_AT,
+    fetchCrl: async () => {
+        debug("LCP CRL HTTP fetch");
+        // RFC 2585 Security Considerations: CRL retrieval does not need
+        // authentication, so this uses Thorium's no-auth HTTP helper.
+        const res = await httpGetWithAuth(false)(CRL_URL, {
+            headers: {
+                Accept: ContentType.PkixCrl,
+            },
+            // Reject redirects so the native LCP plugin receives bytes from the
+            // configured CRL endpoint only.
+            redirect: "error",
+        });
+        if (res.statusCode !== 200 || !res.response?.buffer) {
+            throw new Error(`LCP CRL HTTP fetch failed (${res.statusCode || res.statusMessage || "unknown error"})`);
         }
-        debug("LCP CRL HTTP fetch fail => DUMMY_CRL");
-    } catch (err) {
-        debug("LCP CRL HTTP fetch error => DUMMY_CRL");
-        debug(err);
-    }
-    return DUMMY_CRL;
+        const der = await res.response.buffer();
+        debug("LCP CRL HTTP fetch success");
+        return der;
+    },
+    log: (message, error) => {
+        debug(message);
+        if (typeof error !== "undefined") {
+            debug(error);
+        }
+    },
 });
+lcpCrlCache.preload();
+setCRLGetter((): Promise<string> => lcpCrlCache.retrieve());
 
 app.commandLine.appendSwitch("autoplay-policy", "no-user-gesture-required");
 app.commandLine.appendSwitch("enable-speech-dispatcher");

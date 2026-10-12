@@ -14,10 +14,10 @@ import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import * as Tabs from "@radix-ui/react-tabs";
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from "readium-desktop/renderer/common/components/TabsComponent";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import * as CogIcon from "readium-desktop/renderer/assets/icons/cog-icon.svg";
-import * as PaletteIcon from "readium-desktop/renderer/assets/icons/palette-icon.svg";
+import * as AdvancedIcon from "readium-desktop/renderer/assets/icons/advanced-icon.svg";
 import * as KeyReturnIcon from "readium-desktop/renderer/assets/icons/keyreturn-icon.svg";
 import * as AvatarIcon from "readium-desktop/renderer/assets/icons/avatar-icon.svg";
 import * as LibraryIcon from "readium-desktop/renderer/assets/icons/library-icon.svg";
@@ -38,6 +38,7 @@ import ManageAccessToCatalogSettings from "./ManageAccessToCatalogSettings";
 import SaveCreatorSettings from "./SaveCreatorSettings";
 import OverloadNoteExportToHtml from "./OverloadNoteExportToHtml";
 import SharedComputerSettings from "./SharedComputerSettings";
+import TelemetrySettings from "./TelemetrySettings";
 import WindowBehaviorSettings from "./WindowBehaviorSettings";
 import Themes from "./ThemesSettings";
 import ConnectionSettings from "./ConnexionSettings";
@@ -79,16 +80,24 @@ export const Settings: React.FC<ISettingsProps> = () => {
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
     const isRTL = langStringIsRTL(locale);
 
-    const [tabTitle, setTabTitle] = React.useState(__("settings.tabs.general"));
+    const [selectedTab, setSelectedTab] = React.useState("tab-general");
 
-    React.useEffect(() => {
-        setTabTitle(__("settings.tabs.general"));
-    }, [__, locale]);
+    const tabTitle = {
+        "tab-general": __("settings.tabs.general"),
+        "tab-keyboardShortcuts": __("settings.tabs.keyboardShortcuts"),
+        "tab-profiles": __("settings.tabs.profiles"),
+        "tab-storage": __("settings.tabs.storage"),
+        "tab-advanced": __("settings.tabs.advanced"),
+    }[selectedTab] || __("settings.tabs.general");
 
 
     // https://github.com/edrlab/thorium-reader/discussions/3177#discussioncomment-14752676
     // <DirectionProvider dir={isRTL ? "rtl" : "ltr"}> ... </DirectionProvider>
-    return <Dialog.Root>
+    return <Dialog.Root onOpenChange={(open) => {
+        if (!open) {
+            setSelectedTab("tab-general");
+        }
+    }}>
         <Dialog.Trigger asChild>
             <button title={__("header.settings")} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                 <SVG ariaHidden svg={GearIcon} />
@@ -105,29 +114,29 @@ export const Settings: React.FC<ISettingsProps> = () => {
                         <Dialog.Title asChild><h1>{__("header.settings")}</h1></Dialog.Title>
                     </VisuallyHidden.Root>
                 }
-                <Tabs.Root defaultValue="tab1" data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
-                    <Tabs.List className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
-                        <Tabs.Trigger value="tab1" onFocus={() => setTabTitle(__("settings.tabs.general"))}>
+                <Tabs selectedKey={selectedTab} onSelectionChange={(key) => setSelectedTab(key.toString())} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
+                    <TabList aria-label={__("header.settingsLabel")} className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
+                        <Tab id="tab-general">
                             <SVG ariaHidden svg={CogIcon} />
-                            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.general")}</h3>
-                        </Tabs.Trigger>
-                        <Tabs.Trigger value="tab2" onFocus={() => setTabTitle(__("settings.tabs.appearance"))}>
-                            <SVG ariaHidden svg={PaletteIcon} />
-                            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.appearance")}</h3>
-                        </Tabs.Trigger>
-                        <Tabs.Trigger value="tab4" onFocus={() => setTabTitle(__("settings.tabs.keyboardShortcuts"))}>
+                            <span dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.general")}</span>
+                        </Tab>
+                        <Tab id="tab-keyboardShortcuts">
                             <SVG ariaHidden svg={KeyReturnIcon} />
-                            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.keyboardShortcuts")}</h3>
-                        </Tabs.Trigger>
-                        <Tabs.Trigger value="tab5" onFocus={() => setTabTitle(__("settings.tabs.profiles"))}>
+                            <span dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.keyboardShortcuts")}</span>
+                        </Tab>
+                        <Tab id="tab-profiles">
                             <SVG ariaHidden svg={AvatarIcon} />
-                            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.profiles")}</h3>
-                        </Tabs.Trigger>
-                        <Tabs.Trigger value="tab6" onFocus={() => setTabTitle(__("settings.tabs.storage"))}>
+                            <span dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.profiles")}</span>
+                        </Tab>
+                        <Tab id="tab-storage">
                             <SVG ariaHidden svg={LibraryIcon} />
-                            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.storage")}</h3>
-                        </Tabs.Trigger>
-                    </Tabs.List>
+                            <span dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.storage")}</span>
+                        </Tab>
+                        <Tab id="tab-advanced">
+                            <SVG ariaHidden svg={AdvancedIcon} />
+                            <span dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.advanced")}</span>
+                        </Tab>
+                    </TabList>
                     <TabTitle title={tabTitle}>
                         {
                             tabTitle === __("settings.tabs.keyboardShortcuts") ?
@@ -136,50 +145,49 @@ export const Settings: React.FC<ISettingsProps> = () => {
                         }
                     </TabTitle>
                     <div className={stylesSettings.settings_content} style={{ marginTop: "70px" }}>
-                        <Tabs.Content value="tab1" tabIndex={-1}>
+                            <TabPanels>
+                            <TabPanel id="tab-general">
                             <div className={stylesSettings.settings_tab}>
-                                <LanguageSettings />
+                                <section className={stylesSettings.section} style={{ gap: "10px" }}>
+                                    <LanguageSettings />
+                                    <Themes />
+                                </section>
                                 <ScreenReaderSettings />
                                 <WindowBehaviorSettings />
-                                <ConnectionSettings />
-                                <SharedComputerSettings />
                                 {/* <SaveSessionSettings /> */}
-                                <ManageAccessToCatalogSettings />
-                                <SaveCreatorSettings />
-                                <OverloadNoteExportToHtml />
                             </div>
-                        </Tabs.Content>
-                        <Tabs.Content value="tab2" tabIndex={-1}>
-                            <div className={stylesSettings.settings_tab}>
-                                <Themes />
-                            </div>
-                        </Tabs.Content>
-                        <Tabs.Content value="tab4" tabIndex={-1}>
+                        </TabPanel>
+                        <TabPanel id="tab-keyboardShortcuts">
                             <div className={stylesSettings.settings_tab}>
                                 <KeyboardSettings />
                             </div>
-                        </Tabs.Content>
-                        <Tabs.Content value="tab5" tabIndex={-1}>
+                        </TabPanel>
+                        <TabPanel id="tab-profiles">
                             <div className={stylesSettings.settings_tab}>
                                 <ProfilesSettings />
                             </div>
-                        </Tabs.Content>
-                        <Tabs.Content value="tab6" tabIndex={-1}>
+                        </TabPanel>
+                        <TabPanel id="tab-storage">
                             <div className={stylesSettings.settings_tab}>
                                 <StorageSettings />
                             </div>
-                        </Tabs.Content>
+                        </TabPanel>
+                        <TabPanel id="tab-advanced">
+                            <div className={stylesSettings.settings_tab}>
+                                <ConnectionSettings />
+                                <ManageAccessToCatalogSettings />
+                                <SharedComputerSettings />
+                                <section className={stylesSettings.section} style={{ gap: "10px" }}>
+                                    <SaveCreatorSettings />
+                                    <OverloadNoteExportToHtml /> 
+                                </section>
+                                <TelemetrySettings />
+                            </div>
+                        </TabPanel>
+                        </TabPanels>
                     </div>
                     <ModalControlButton />
-                </Tabs.Root>
-
-                {/* <div className={stylesSettings.close_button_div}>
-                    <Dialog.Close asChild>
-                        <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
-                            <SVG ariaHidden={true} svg={QuitIcon} />
-                        </button>
-                    </Dialog.Close>
-                </div> */}
+                </Tabs>
             </Dialog.Content>
         </Dialog.Portal>
     </Dialog.Root>;

@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, jest } from "@jest/globals";
+import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 
 jest.mock("electron", () => ({
     app: {
@@ -80,6 +80,24 @@ type TLcpManagerForPublicationArchiveReplacement = {
     };
 };
 
+type TLcpSecrets = Record<string, { passphrase?: string; provider?: string }>;
+
+type TLcpManagerForSecrets = {
+    getAllSecrets: () => Promise<TLcpSecrets>;
+    getSecrets: (doc: { identifier: string; lcp?: { provider?: string } }) => Promise<string[]>;
+    persistSecrets: (allSecrets: TLcpSecrets) => Promise<void>;
+    saveGenericSecret: (lcpHashedPassphrase: string) => Promise<void>;
+}
+type TLcpManagerForSecretAnalytics = {
+    consumeDiscoveredPassphraseAnalytics: (
+        publicationDocument: { identifier: string; lcp?: { provider?: string } },
+        unlockPublicationRes: string | number | null | undefined,
+    ) => "valid" | "invalid" | "discovered" | undefined;
+    queueDiscoveredPassphraseAnalytics: (
+        publicationDocument: { identifier: string; lcp?: { provider?: string } },
+    ) => void;
+};
+
 const link = (partial: TPublicationLink): TPublicationLink => ({
     Href: "https://example.org/book.epub",
     ...partial,
@@ -109,6 +127,65 @@ const httpGetMock = httpGet as jest.MockedFunction<typeof httpGet>;
 beforeEach(() => {
     jest.clearAllMocks();
 });
+
+describe("LcpManager secrets", () => {
+    it("returns publication, provider, then generic fallback secrets without duplicates", async () => {
+        const manager = Object.create(LcpManager.prototype) as TLcpManagerForSecrets;
+        manager.getAllSecrets = jest.fn(async () => ({
+            "publication-1": { passphrase: "publication-passphrase" },
+            "publication-2": { passphrase: "provider-passphrase", provider: "provider-a" },
+            "publication-3": { passphrase: "not-generic-no-provider" },
+            "publication-4": { passphrase: "other-provider-passphrase", provider: "provider-b" },
+            "__THORIUM_LCP_GENERIC_SECRET__:generic-passphrase": { passphrase: "generic-passphrase" },
+            "__THORIUM_LCP_GENERIC_SECRET__:provider-passphrase": { passphrase: "provider-passphrase" },
+        }));
+
+        await expect(manager.getSecrets({
+            identifier: "publication-1",
+            lcp: {
+                provider: "provider-a",
+            },
+        })).resolves.toEqual([
+            "publication-passphrase",
+            "provider-passphrase",
+            "generic-passphrase",
+        ]);
+    });
+
+    it("stores catalog passphrases once under a generic vault key", async () => {
+        let persistedSecrets: TLcpSecrets = {
+            "publication-1": { passphrase: "publication-passphrase", provider: "provider-a" },
+        };
+
+        const manager = Object.create(LcpManager.prototype) as TLcpManagerForSecrets;
+        manager.getAllSecrets = jest.fn(async () => persistedSecrets);
+        manager.persistSecrets = jest.fn(async (allSecrets: TLcpSecrets) => {
+            persistedSecrets = allSecrets;
+        });
+
+        await manager.saveGenericSecret("catalog-passphrase-hash");
+        await manager.saveGenericSecret("catalog-passphrase-hash");
+
+        expect(persistedSecrets["publication-1"]).toEqual({
+            passphrase: "publication-passphrase",
+            provider: "provider-a",
+        });
+
+        const genericEntries = Object.entries(persistedSecrets).filter(([id, val]) =>
+            id.startsWith("__THORIUM_LCP_GENERIC_SECRET__:") &&
+            val.passphrase === "catalog-passphrase-hash",
+        );
+        expect(genericEntries).toHaveLength(1);
+        expect(genericEntries[0][1]).toEqual({ passphrase: "catalog-passphrase-hash" });
+    });
+});
+
+afterEach(() => {
+    jest.restoreAllMocks();
+});
+
+const secretAnalyticsManager = (): TLcpManagerForSecretAnalytics =>
+    new LcpManager() as unknown as TLcpManagerForSecretAnalytics;
 
 describe("LcpManager.lcpPublicationLinkResourceChanged", () => {
     it("detects changed publication link hash", () => {
@@ -145,6 +222,70 @@ describe("LcpManager.lcpPublicationLinkResourceChanged", () => {
 
     it("does not treat missing previous link as replaceable", () => {
         expect(resourceChanged(undefined, link({ Href: "https://cdn.example.org/book.epub" }))).toBe(false);
+    });
+});
+
+describe("LcpManager cached passphrase analytics", () => {
+    it("consumes a queued discovered passphrase event once after a successful check", () => {
+        const manager = secretAnalyticsManager();
+        const publicationDocument = {
+            identifier: "publication-1",
+        };
+
+        manager.queueDiscoveredPassphraseAnalytics(publicationDocument);
+
+        expect(manager.consumeDiscoveredPassphraseAnalytics(publicationDocument, undefined)).toBe("discovered");
+        expect(manager.consumeDiscoveredPassphraseAnalytics(publicationDocument, undefined)).toBeUndefined();
+    });
+
+    it("does not report unqueued cached passphrase checks", () => {
+        const manager = secretAnalyticsManager();
+        const publicationDocument = {
+            identifier: "publication-1",
+        };
+
+        expect(manager.consumeDiscoveredPassphraseAnalytics(
+            publicationDocument,
+            undefined,
+        )).toBeUndefined();
+    });
+
+    it("reports a queued discovered passphrase as invalid after a failed check", () => {
+        const manager = secretAnalyticsManager();
+        const publicationDocument = {
+            identifier: "publication-1",
+        };
+
+        manager.queueDiscoveredPassphraseAnalytics(publicationDocument);
+
+        expect(manager.consumeDiscoveredPassphraseAnalytics(publicationDocument, 141)).toBe("invalid");
+    });
+
+    it("clears queued discovered analytics when no secret was checked", () => {
+        const manager = secretAnalyticsManager();
+        const publicationDocument = {
+            identifier: "publication-1",
+        };
+
+        manager.queueDiscoveredPassphraseAnalytics(publicationDocument);
+
+        expect(manager.consumeDiscoveredPassphraseAnalytics(publicationDocument, null)).toBeUndefined();
+        expect(manager.consumeDiscoveredPassphraseAnalytics(publicationDocument, undefined)).toBeUndefined();
+    });
+
+    it("does not consume a queued discovered passphrase for another publication", () => {
+        const manager = secretAnalyticsManager();
+
+        manager.queueDiscoveredPassphraseAnalytics({
+            identifier: "publication-1",
+        });
+
+        expect(manager.consumeDiscoveredPassphraseAnalytics(
+            {
+                identifier: "publication-2",
+            },
+            undefined,
+        )).toBeUndefined();
     });
 });
 

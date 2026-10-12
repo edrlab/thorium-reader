@@ -20,7 +20,7 @@
             "cut": "Вырезать",
             "paste": "Вставить",
             "print": "Печать",
-            "redo": "Восстановить",
+            "redo": "Повторить",
             "selectAll": "Выбрать все",
             "title": "Редактировать",
             "undo": "Отменить"
@@ -78,6 +78,7 @@
         "deleteBook": "Удалить",
         "deleteTag": "Удалить тег",
         "description": "Описание",
+        "downloaded": "Загружено",
         "emptyTagList": "У вас нет электронной книги с тегами.",
         "entry": {
             "continueReading": "Продолжить чтение",
@@ -150,15 +151,12 @@
             "descList_few": "{{- count}} примечания {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
             "descList_many": "{{- count}} примечаний {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
             "descList_one": "{{- count}} примечание {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
-            "descList_other": "",
             "descNewer_few": "Конфликт(ы): {{- count}} новейшие заметки",
             "descNewer_many": "Конфликт(ы): {{- count}} новейших заметок",
             "descNewer_one": "Конфликт(ы): {{- count}} новейшая заметка",
-            "descNewer_other": "",
             "descOlder_few": "Конфликт(ы): {{- count}} наиболее старые заметки",
             "descOlder_many": "Конфликт(ы): {{- count}} наиболее старых заметок",
             "descOlder_one": "Конфликт(ы): {{- count}} наиболее старая заметка",
-            "descOlder_other": "",
             "descTitle": "Название аннотации: ",
             "importAll": "Импортировать все заметки",
             "importWithoutConflict": "Импортировать только заметки без конфликтов",
@@ -178,12 +176,10 @@
         "deleteAnnotationsText_few": "Вы уверены, что хотите удалить {{- count}} заметки?",
         "deleteAnnotationsText_many": "Вы уверены, что хотите удалить {{- count}} заметок?",
         "deleteAnnotationsText_one": "Вы уверены, что хотите удалить {{- count}} заметку?",
-        "deleteAnnotationsText_other": "",
         "deleteBookmarks": "Удалить закладки?",
         "deleteBookmarksText_few": "Вы уверены, что хотите удалить {{- count}} закладки?",
         "deleteBookmarksText_many": "Вы уверены, что хотите удалить {{- count}} закладок?",
         "deleteBookmarksText_one": "Вы уверены, что хотите удалить {{- count}} закладку?",
-        "deleteBookmarksText_other": "",
         "deleteFeed": "Вы действительно хотите удалить этот каталог ?",
         "deletePublication": "Вы действительно хотите удалить эту книгу ?",
         "deletePublicationWithNotes": "Внимание: эта книга содержит аннотации и/или закладки, они также будут удалены! (Если вы хотите их сохранить, обязательно экспортируйте заметки перед удалением книги)",
@@ -250,7 +246,6 @@
             "alreadyImported": "Все заметки уже импортированы.",
             "emptyFile": "В этом файле нет заметок.",
             "errorParsing": "Ошибка при анализе файла: ",
-            "noBelongTo": "Невозможно импортировать заметки, по крайней мере одна заметка не принадлежит книге.",
             "nothing": "Нет ни одной готовой к импорту заметки, импорт прерван",
             "success": "Импорт успешно завершён."
         },
@@ -279,11 +274,10 @@
         },
         "storage": {
             "recovery": {
-                "failure": "",
-                "success_few": "",
-                "success_many": "",
-                "success_one": "",
-                "success_other": ""
+                "failure": "Не удалось восстановить публикацию.",
+                "success_few": "{{- count}} публикации восстановлено.",
+                "success_many": "{{- count}} публикаций восстановлено.",
+                "success_one": "{{- count}} публикация восстановлена."
             },
             "removed": "Каталог публикаций удалён.",
             "updateFailed": "Не удалось обновить каталог публикаций: {{- message}}",
@@ -304,6 +298,17 @@
         },
         "addMenu": "Добавить OPDS каталог",
         "breadcrumbRoot": "Каталоги",
+        "color": {
+            "blue": "Синий",
+            "gray": "Серый",
+            "green": "Зелёный",
+            "orange": "Оранжевый",
+            "pink": "Розовый",
+            "purple": "Фиолетовый",
+            "red": "Красный",
+            "title": "Цвет каталога",
+            "yellow": "Жёлтый"
+        },
         "documentation": "Официальный сайт OPDS",
         "empty": "Книга не найдена",
         "firstPage": "Первая",
@@ -703,7 +708,7 @@
         "seeLess": "Скрыть",
         "seeMore": "Подробнее",
         "timeLeft": "Осталось",
-        "title": "Заголовок",
+        "title": "Название",
         "userKeyCheckInvalid": "Пароль неверен."
     },
     "reader": {
@@ -850,7 +855,6 @@
                 "founds_few": "{{- count}} найдено",
                 "founds_many": "{{- count}} найдено",
                 "founds_one": "{{- count}} найден",
-                "founds_other": "",
                 "input": "подходящий текст",
                 "next": "Далее",
                 "notFound": "нет совпадений",
@@ -926,7 +930,6 @@
             "preset": {
                 "apply": "Применить",
                 "applyDetails": "Применить любимую конфигурацию к текущей публикации.",
-                "detail": "Сохранить / Применить / Сбросить текущую конфигурацию.",
                 "reset": "Сбросить",
                 "resetDetails": "Сбросить текущую конфигурацию до настроек по умолчанию.",
                 "save": "Сохранить",
@@ -1325,36 +1328,39 @@
             },
             "recovery": {
                 "actions": {
-                    "check": "",
-                    "checkAgain": "",
-                    "recover": "",
-                    "recovering": ""
+                    "check": "Поиск публикаций, подлежащих восстановлению",
+                    "checkAgain": "Повторите поиск",
+                    "recover": "Восстановить публикации",
+                    "recovering": "Восстановление..."
                 },
-                "available": "",
-                "checking": "",
-                "description": "",
+                "available": "На диске была обнаружена одна или несколько публикаций, но они отсутствуют в базе данных. Восстановление возможно.",
+                "checking": "Проверка хранилища публикаций...",
+                "description": "Проверьте место хранения публикаций, чтобы найти те, которые можно безопасно восстановить.",
                 "dialog": {
-                    "confirm": "",
-                    "description_few": "",
-                    "description_many": "",
-                    "description_one": "",
-                    "description_other": "",
-                    "title": ""
+                    "confirm": "Восстановить",
+                    "description_few": "Thorium обнаружил на диске {{- count}} публикации, отсутствующие в базе данных. Желаете вернуть их обратно в Thorium?",
+                    "description_many": "Thorium обнаружил на диске {{- count}} публикации, отсутствующих в базе данных. Желаете вернуть их обратно в Thorium?",
+                    "description_one": "Thorium обнаружил на диске {{- count}} публикацию, отсутствующую в базе данных. Желаете вернуть её обратно в Thorium?",
+                    "title": "Восстановить публикации"
                 },
-                "none": "",
-                "recoverableCount_few": "",
-                "recoverableCount_many": "",
-                "recoverableCount_one": "",
-                "recoverableCount_other": "",
-                "title": ""
+                "none": "Публикаций, которые можно восстановить, не обнаружено.",
+                "recoverableCount_few": "{{- count}} публикации можно восстановить, используя их исходный идентификатор хранилища.",
+                "recoverableCount_many": "{{- count}} публикаций можно восстановить, используя их исходный идентификатор хранилища.",
+                "recoverableCount_one": "{{- count}} публикацию можно восстановить, используя её исходный идентификатор хранилища.",
+                "title": "Восстановление"
             }
         },
         "tabs": {
-            "appearance": "Внешний вид",
+            "advanced": "Расширенные",
             "general": "Общие",
             "keyboardShortcuts": "Горячие клавиши",
             "profiles": "Профили",
             "storage": "Хранилище"
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "Выключить телеметрию",
+            "disableTelemetryMeasurementsDescription": "При активации этой функции Thorium не будет отправлять данные телеметрии.",
+            "title": "Телеметрия"
         },
         "theme": {
             "auto": "Автоматическая",

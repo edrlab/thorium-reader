@@ -631,19 +631,19 @@ export class PdfAnnotationController {
 
     private createNavigationMarker(target: TPdfAnnotationNavigationTarget, pageElement: HTMLElement) {
         const pageView = this.getPageView(target.page);
-        const viewportRect = pageView?.viewport?.convertToViewportRectangle ? pageView.viewport.convertToViewportRectangle([
-            target.rect.x1,
-            target.rect.y1,
-            target.rect.x2,
-            target.rect.y2,
-        ]) : [];
-        if (!pageView?.viewport?.convertToViewportRectangle) {
-            const p1 = pageView.viewport.convertToViewportPoint(target.rect.x1, target.rect.y1);
-            viewportRect.push(p1[0]);
-            viewportRect.push(p1[1]);
-            const p2 = pageView.viewport.convertToViewportPoint(target.rect.x2, target.rect.y2);
-            viewportRect.push(p2[0]);
-            viewportRect.push(p2[1]);
+        const viewport = pageView?.viewport;
+        let viewportRect: number[] = [];
+        if (typeof viewport?.convertToViewportRectangle === "function") {
+            viewportRect = viewport.convertToViewportRectangle([
+                target.rect.x1,
+                target.rect.y1,
+                target.rect.x2,
+                target.rect.y2,
+            ]);
+        } else if (typeof viewport?.convertToViewportPoint === "function") {
+            const p1 = viewport.convertToViewportPoint(target.rect.x1, target.rect.y1);
+            const p2 = viewport.convertToViewportPoint(target.rect.x2, target.rect.y2);
+            viewportRect = [p1[0], p1[1], p2[0], p2[1]];
         }
         if (!Array.isArray(viewportRect) || viewportRect.length < 4) {
             console.error(DEBUG_PREFIX, "viewer:go-to-annotation skipped rect alignment: missing viewport conversion", {

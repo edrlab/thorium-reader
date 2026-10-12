@@ -89,10 +89,12 @@ export function* noteUpdateExportSelectorFromLocatorExtended(note: INoteState) {
 export function* noteUpdateLocatorExtendedFromImportSelector(note: INoteState) {
 
     try {
+        const importTarget = note.readiumAnnotation?.import?.target;
         if ((yield* selectTyped((state: IReaderRootState) => state.reader.lock)) &&
-            !note.locatorExtended && note.readiumAnnotation?.import?.target?.selector.length && note.readiumAnnotation?.import?.target?.source) {
+            !note.locatorExtended && importTarget?.source &&
+            (importTarget.selector.length || note.group === "bookmark")) {
 
-            const { target } = note.readiumAnnotation.import;
+            const target = importTarget;
 
             debug("SelectorTarget from noteParserState", JSON.stringify(target, null, 2));
 
@@ -440,7 +442,8 @@ function* readerStart() {
     // const annotationsUuids = annotations.map(([_, annotationState]) => ({ uuid: annotationState.uuid }));
     yield* putTyped(readerLocalActionHighlights.handler.pop.build(noteUUID));
 
-    const notesHighlighted = notes.map((note): IHighlightHandlerState => {
+    const notesWithLocator = notes.filter((note): note is INoteState & { locatorExtended: MiniLocatorExtended } => !!note.locatorExtended);
+    const notesHighlighted = notesWithLocator.map((note): IHighlightHandlerState => {
 
         return {
             uuid: note.uuid,

@@ -14,6 +14,7 @@ import { inject, injectable } from "inversify";
 import moment from "moment";
 import * as path from "node:path";
 import { pipeline } from "node:stream/promises";
+import type { TLcpPassphraseAnalyticsValue } from "readium-desktop/common/analytics/lcp";
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
@@ -68,13 +69,20 @@ import { RequesetToCloseAllReadersWithTheSamePubId } from "../redux/sagas/reader
 const debug = debug_("readium-desktop:main#services/lcp");
 
 const CONFIGREPOSITORY_LCP_SECRETS = "CONFIGREPOSITORY_LCP_SECRETS";
+const LCP_GENERIC_SECRET_ID_PREFIX = "__THORIUM_LCP_GENERIC_SECRET__:";
 
-// object map with keys = PublicationDocument.identifier,
+// object map with keys = PublicationDocument.identifier, or a generated generic key,
 // and values = object tuple of single passphrase + provider (cached here to avoid costly lookup in Publication DB)
 // this way, we can query all passphrases associated with a particular publication,
 // or alternatively query all passphrases known for a given LCP provider
 // (as in practice passphrases are sometimes shared between different publications from the same provider)
 type TLCPSecrets = Record<string, { passphrase?: string, provider?: string }>;
+
+const getGenericSecretId = (lcpHashedPassphrase: string): string =>
+    `${LCP_GENERIC_SECRET_ID_PREFIX}${lcpHashedPassphrase}`;
+
+const isGenericSecretId = (id: string): boolean =>
+    id.startsWith(LCP_GENERIC_SECRET_ID_PREFIX);
 
 interface ICheckPublicationLicenseUpdateResult {
     publicationDocument: PublicationDocument;
@@ -117,6 +125,7 @@ export class LcpManager {
     private readonly lsdManager!: LSDManager;
 
     private translator = getTranslator();
+    private readonly discoveredPassphraseAnalytics = new Set<string>();
 
     public async absorbDBToJson() {
         await this.getAllSecrets();
@@ -153,15 +162,28 @@ export class LcpManager {
 
         const allSecrets = await this.getAllSecrets();
         const ids = Object.keys(allSecrets);
-        for (const id of ids) {
+        const addSecret = (id: string) => {
             const val = allSecrets[id];
             if (val.passphrase && !secrets.includes(val.passphrase)) {
-                const provider = doc.lcp?.provider;
+                secrets.push(val.passphrase);
+            }
+        };
 
-                if (doc.identifier === id ||
-                    provider && val.provider && provider === val.provider) {
-                    secrets.push(val.passphrase);
+        addSecret(doc.identifier);
+
+        const provider = doc.lcp?.provider;
+        if (provider) {
+            for (const id of ids) {
+                const val = allSecrets[id];
+                if (val.provider && provider === val.provider) {
+                    addSecret(id);
                 }
+            }
+        }
+
+        for (const id of ids) {
+            if (isGenericSecretId(id)) {
+                addSecret(id);
             }
         }
 
@@ -173,6 +195,49 @@ export class LcpManager {
         // );
         // const secrets = lcpSecretDocs.map((doc) => doc.secret).filter((secret) => secret);
         // return secrets;
+    }
+
+    private async persistSecrets(allSecrets: TLCPSecrets): Promise<void> {
+        const str = JSON.stringify(allSecrets);
+        const encrypted = encryptPersist(str, CONFIGREPOSITORY_LCP_SECRETS, lcpHashesFilePath);
+        if (!encrypted) {
+            throw new Error("encryptPersist???! CONFIGREPOSITORY_LCP_SECRETS");
+        }
+        await fs.promises.writeFile(lcpHashesFilePath, encrypted);
+    }
+
+    public async saveGenericSecret(lcpHashedPassphrase: string) {
+        debug("LCP saveGenericSecret ...");
+
+        const allSecrets = await this.getAllSecrets();
+        allSecrets[getGenericSecretId(lcpHashedPassphrase)] = {
+            passphrase: lcpHashedPassphrase,
+        };
+
+        debug("LCP saveGenericSecret: ", allSecrets);
+
+        await this.persistSecrets(allSecrets);
+    }
+
+    public queueDiscoveredPassphraseAnalytics(doc: PublicationDocument) {
+        this.discoveredPassphraseAnalytics.add(doc.identifier);
+    }
+
+    public consumeDiscoveredPassphraseAnalytics(
+        doc: PublicationDocument,
+        unlockPublicationRes: string | number | null | undefined,
+    ): TLcpPassphraseAnalyticsValue | undefined {
+
+        if (!this.discoveredPassphraseAnalytics.has(doc.identifier)) {
+            return undefined;
+        }
+
+        this.discoveredPassphraseAnalytics.delete(doc.identifier);
+        if (unlockPublicationRes === null) {
+            return undefined;
+        }
+
+        return typeof unlockPublicationRes === "undefined" ? "discovered" : "invalid";
     }
 
     public async saveSecret(doc: PublicationDocument, lcpHashedPassphrase: string) {
@@ -194,12 +259,7 @@ export class LcpManager {
 
         debug("LCP saveSecret: ", allSecrets);
 
-        const str = JSON.stringify(allSecrets);
-        const encrypted = encryptPersist(str, CONFIGREPOSITORY_LCP_SECRETS, lcpHashesFilePath);
-        if (!encrypted) {
-            throw new Error("encryptPersist???! CONFIGREPOSITORY_LCP_SECRETS");
-        }
-        await fs.promises.writeFile(lcpHashesFilePath, encrypted);
+        await this.persistSecrets(allSecrets);
     }
 
     private async injectLcplIntoZip_(epubPath: string, lcpStr: string) {

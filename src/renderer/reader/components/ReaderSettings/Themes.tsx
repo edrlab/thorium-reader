@@ -8,7 +8,6 @@
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 
 import * as React from "react";
-import * as RadioGroup from "@radix-ui/react-radio-group";
 import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import {
     buildReaderPreferenceAnalyticsParams,
@@ -17,7 +16,7 @@ import {
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { TTheme } from "readium-desktop/common/models/reader";
 import { useReaderConfig, useSaveReaderConfigDebounced } from "readium-desktop/renderer/common/hooks/useReaderConfig";
-import { RadioGroupItem } from "readium-desktop/renderer/reader/components/ReaderSettings/ReaderSettings";
+import { Radio, RadioGroup } from "readium-desktop/renderer/common/components/RadioGroupComponent";
 import { logEvent } from "readium-desktop/renderer/common/analytics";
 
 export const Theme = ({ dockedMode }: { dockedMode: boolean }) => {
@@ -91,7 +90,7 @@ export const Theme = ({ dockedMode }: { dockedMode: boolean }) => {
     return (
         <section className={stylesSettings.section}>
             <h3>{__("reader.settings.theme.title")}</h3>
-            <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: dockedMode ? "10px" : "20px", marginTop: "5px", flexWrap: "wrap" }}
+            <RadioGroup aria-label={__("reader.settings.theme.title")} orientation="horizontal" style={{ display: "flex", gap: dockedMode ? "10px" : "20px", marginTop: "5px", flexWrap: "wrap" }}
                 value={themeOptions.find((theme) => theme.id === defaultKey).value}
                 onValueChange={(option) => {
                     set({ theme: option as TTheme });
@@ -99,7 +98,8 @@ export const Theme = ({ dockedMode }: { dockedMode: boolean }) => {
                 }}
             >
                 {themeOptions.map((theme) =>
-                    <RadioGroupItem
+                    <Radio
+                        data-input-type="radio"
                         key={theme.value}
                         value={theme.value}
                         description={theme.name}
@@ -129,7 +129,7 @@ export const Theme = ({ dockedMode }: { dockedMode: boolean }) => {
                 style={{backgroundColor: "#2D2D2D", color: "#fff" }}
                 svg={defaultKey === 3 ? CheckIcon : null}
                 /> */}
-            </RadioGroup.Root>
+            </RadioGroup>
         </section>
     );
 };

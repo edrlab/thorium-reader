@@ -1,3 +1,12 @@
+import type { IReadiumAnnotation } from "./annotationModel.type";
+
+export function annotationHtmlBody(annotation: IReadiumAnnotation): IReadiumAnnotation["body"] {
+    return {
+        ...annotation.body,
+        tag: annotation.body?.tags?.[0] || annotation.body?.tag || "",
+        tags: annotation.body?.tags || (annotation.body?.tag ? [annotation.body.tag] : []),
+    };
+}
 
 export const noteExportHtmlMustacheTemplate = `
 <!DOCTYPE html>
@@ -79,7 +88,7 @@ export const noteExportHtmlMustacheTemplate = `
                     {{/body.value}}
                     <!-- Annotation Metadata -->
                     <p class="annotationmetadata">
-                        {{#body.tag}} | Tag: {{body.tag}}{{/body.tag}}
+                        {{#body.tags}} | Tag: {{.}}{{/body.tags}}
                         {{#body.color}} | Color: {{body.color}}{{/body.color}}
                         {{#body.highlight}} | Highlight type: {{body.highlight}}{{/body.highlight}};
                         {{#body.textDirection}}TextDirection:  | {{body.textDirection}}{{/body.textDirection}}

@@ -19,7 +19,7 @@ import { JsonElementType, JsonObject, JsonProperty } from "ta-json-x";
 
 // import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 
-import { DUMMY_CRL } from "./lcp-certificate";
+import { BUILD_CRL } from "./lcp-certificate";
 import { Encryption } from "./lcp-encryption";
 import { Link } from "./lcp-link";
 import { Rights } from "./lcp-rights";
@@ -232,7 +232,7 @@ export class LCP {
         this.init();
 
         if (this._usesNativeNodePlugin) {
-            const crlPem = _getCRLPem ? await _getCRLPem() : DUMMY_CRL;
+            const crlPem = _getCRLPem ? await _getCRLPem() : BUILD_CRL;
 
             // always generates USER_KEY_CHECK_INVALID = 141
             const sha256DummyPassphrase = "0".repeat(64);
@@ -290,7 +290,7 @@ export class LCP {
         }
 
         if (this._usesNativeNodePlugin) {
-            const crlPem = _getCRLPem ? await _getCRLPem() : DUMMY_CRL;
+            const crlPem = _getCRLPem ? await _getCRLPem() : BUILD_CRL;
 
             return new Promise<void>((resolve, reject) => {
 
@@ -492,7 +492,7 @@ export class LCP {
     //             // // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
     //             // reject(err);
     //             debug(err);
-    //             resolve(DUMMY_CRL);
+    //             resolve(BUILD_CRL);
     //         };
 
     //         const success = async (response: request.RequestResponse) => {

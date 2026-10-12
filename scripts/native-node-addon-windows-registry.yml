@@ -28,6 +28,16 @@ permissions:
     repository-projects: none
     security-events: none
     statuses: none
+
+# https://docs.github.com/en/actions/reference/workflows-and-actions/dependency-caching#defaults
+# Explicit workflow-level cache directive, honored by job/step-level 'actions/cache'.
+# This GitHub Actions workflow has a trusted trigger via account-level ruleset.
+# Note that this workflow disables 'actions/setup-node' automatic caching,
+# instead 'actions/cache' is configured and invoked (both restore and save points explicit, instead of save via post-jobs hook)
+# in order to enable caching of NPM packages and Electron binaries.
+# The cache key is specific to this workflow, different from "continuous" integration and deployment (develop branch push) and "PR" (pull request) and "release" (version tag push).
+cache-mode: write
+
 jobs:
   build_job:
     timeout-minutes: 30
@@ -282,7 +292,7 @@ jobs:
       run: >
         npm ci --min-release-age=3 --ignore-scripts --foreground-scripts --allow-git=root &&
         cd node_modules/electron &&
-        DEBUG=@electron/get* force_no_cache=true node install.js &&
+        DEBUG=@electron/get* force_no_cache=false electron_config_cache="$(npm config get cache)" node install.js &&
         cd -
       shell: bash
 ###########################

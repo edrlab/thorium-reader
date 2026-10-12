@@ -16,10 +16,75 @@ const AES_BLOCK_SIZE = 16;
 export const OPDS_AUTH_ENCRYPTION_IV_BUFFER = Buffer.from(uuidv4()).slice(0, AES_BLOCK_SIZE);
 export const OPDS_AUTH_ENCRYPTION_IV_HEX = OPDS_AUTH_ENCRYPTION_IV_BUFFER.toString("hex");
 
+// https://github.com/edrlab/thorium-reader-website/blob/59c09aa5af6f4cc86ef87333f6f80b0057116216/docs/badge-page.md?plain=1#L33
+
+export const opdsFeedColors = [
+    "gray",
+    "red",
+    "yellow",
+    "blue",
+    "green",
+    "purple",
+    "orange",
+    "pink",
+] as const;
+
+export type TOpdsFeedColor = typeof opdsFeedColors[number];
+
+export const OPDS_FEED_DEFAULT_COLOR: TOpdsFeedColor = "gray";
+
+export const isOpdsFeedColor = (value: unknown): value is TOpdsFeedColor =>
+    typeof value === "string" && (opdsFeedColors as readonly string[]).includes(value);
+
+export const getOpdsFeedColor = (value: unknown): TOpdsFeedColor =>
+    isOpdsFeedColor(value) ? value : OPDS_FEED_DEFAULT_COLOR;
+
+export const OPDS_FEED_ICON_DATA_URL_PREFIX = "data:image/png;base64,";
+export const OPDS_FEED_ICON_SVG_DATA_URL_PREFIX = "data:image/svg+xml;base64,";
+const OPDS_FEED_ICON_DATA_URL_PREFIXES = [
+    OPDS_FEED_ICON_DATA_URL_PREFIX,
+    OPDS_FEED_ICON_SVG_DATA_URL_PREFIX,
+];
+
+export const isOpdsFeedIconUrl = (value: unknown): value is string => {
+    if (typeof value !== "string" || !value.trim()) {
+        return false;
+    }
+
+    try {
+        const url = new URL(value);
+        return url.protocol === "http:" || url.protocol === "https:";
+    } catch {
+        return false;
+    }
+};
+
+export const getOpdsFeedIconUrl = (value: unknown): string | undefined =>
+    isOpdsFeedIconUrl(value) ? value : undefined;
+
+export const isOpdsFeedIconDataUrl = (value: unknown): value is string => {
+    if (typeof value !== "string") {
+        return false;
+    }
+
+    const prefix = OPDS_FEED_ICON_DATA_URL_PREFIXES.find((p) => value.startsWith(p));
+    if (!prefix) {
+        return false;
+    }
+
+    const data = value.slice(prefix.length);
+    return !!data && /^[A-Za-z0-9+/]+={0,2}$/.test(data);
+};
+
+export const getOpdsFeedIcon = (value: unknown): string | undefined =>
+    isOpdsFeedIconDataUrl(value) ? value : undefined;
+
 export interface OpdsFeed {
     identifier?: string;
     title: string;
     url: string;
     authenticationUrl?: string;
     favorite?: boolean;
+    color?: TOpdsFeedColor;
+    icon?: string;
 }

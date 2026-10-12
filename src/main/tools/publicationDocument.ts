@@ -7,12 +7,19 @@
 
 import { CustomCover, RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { File } from "readium-desktop/common/models/file";
+import type { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
+import type { PublicationDocument } from "readium-desktop/main/db/document/publication";
 
 export interface IPublicationFilesDocumentPatch {
     coverFile?: File;
     customCover?: CustomCover;
     files: File[];
 }
+
+export type TOpdsPublicationDocumentPatch = Pick<
+    PublicationDocument,
+    "opdsPublication" | "opdsPublicationStringified" | "opdsPublicationView"
+>;
 
 export const pickRandomCustomCover = (): CustomCover =>
     RandomCustomCovers[Math.floor(Math.random() * RandomCustomCovers.length)];
@@ -39,3 +46,17 @@ export const buildPublicationFilesDocumentPatch = (
         files,
     };
 };
+
+export const buildOpdsPublicationDocumentPatch = (
+    link: IOpdsLinkView,
+    publication?: IOpdsPublicationView,
+): TOpdsPublicationDocumentPatch => ({
+    opdsPublicationStringified: publication?.opdsPublicationStringified,
+    opdsPublicationView: publication,
+    opdsPublication: {
+        url: link.url,
+        type: link.type,
+        selfLinkUrl: publication?.selfLink?.url,
+        identifier: publication?.workIdentifier,
+    },
+});

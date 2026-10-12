@@ -192,6 +192,13 @@ export function* browse(urlRaw: string): SagaGenerator<THttpGetBrowserResultView
                 return data;
             }
 
+            // Web catalogs are routed by the library renderer to the system browser.
+            // Keep the successful response metadata (notably the final response URL),
+            // but do not attempt to parse the HTML body as OPDS.
+            if (contentType === ContentType.Html) {
+                return data;
+            }
+
             // parse OPDS and return
             const dataFromOpdsParser = await opdsService.opdsRequestTransformer(data as IHttpGetResult<IOpdsResultView>);
             if (dataFromOpdsParser) {

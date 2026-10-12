@@ -25,17 +25,18 @@ extends Omit<TSelectReactAriaProps<T>, "children"> {
   items?: Iterable<T>;
   svg?: ISVGProps;
   refButEl?: React.Ref<HTMLButtonElement>;
+  triggerFocusId?: string;
 }
 
 export function Select<T extends object>(
-  { label, description, errorMessage, children, svg, refButEl, items, ...props }: MySelectProps<T>,
+  { label, description, errorMessage, children, svg, refButEl, items, triggerFocusId, ...props }: MySelectProps<T>,
 ) {
   return (
     <SelectReactAria {...props} className={StylesCombobox.react_aria_ComboBox}>
       <Label className={StylesCombobox.react_aria_Label}>{label}</Label>
       <Group className={classNames(StylesCombobox.my_combobox_container)} >
         {svg ? <SVG ariaHidden svg={svg} /> : <></>}
-        <Button ref={refButEl} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+        <Button ref={refButEl} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" data-focus-id={triggerFocusId}>
           <SelectValue />
           <SVG ariaHidden svg={ChevronDown} className={StylesCombobox.react_aria_Button} />
         </Button>

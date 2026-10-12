@@ -7,7 +7,6 @@
 
 import debug_ from "debug";
 import { dialog } from "electron";
-import * as fs from "node:fs";
 import { buildPublicationUserAnalyticsParams, publicationAnalyticsEvents } from "readium-desktop/common/analytics/publication";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { annotationActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
@@ -16,8 +15,8 @@ import { error } from "readium-desktop/main/tools/error";
 import { SagaGenerator } from "typed-redux-saga";
 import { call as callTyped, put as putTyped, take as takeTyped, delay as delayTyped, all as allTyped } from "typed-redux-saga/macro";
 import { hexToRgb } from "readium-desktop/common/rgb";
-import { isNil } from "readium-desktop/utils/nil";
-import { __READIUM_ANNOTATION_AJV_ERRORS, isCFIFragmentSelector, isCssSelector, isEPUBCFISelector, isFragmentSelector, isIReadiumAnnotationSet, isLegacyCfiSelector, isTextPositionSelector, isTextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import { readiumAnnotationDrawType } from "readium-desktop/common/readium/annotation/converter";
+import { __READIUM_ANNOTATION_AJV_ERRORS, isCFIFragmentSelector, isCssSelector, isEPUBCFISelector, isFragmentSelector, isIReadiumAnnotationSet, isLegacyCfiSelector, isTextPositionSelector, isTextQuoteSelector, normalizeReadiumAnnotationTags } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import path from "node:path";
 import { getPublication } from "./api/publication/getPublication";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
@@ -26,14 +25,15 @@ import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { uuidv4 } from "readium-desktop/utils/uuid";
 import { takeSpawnLatest } from "readium-desktop/common/redux/sagas/takeSpawnLatest";
 import { getTranslator } from "readium-desktop/common/services/translator";
-import { EDrawType, INoteState, NOTE_DEFAULT_COLOR, noteColorCodeToColorSet, noteColorSetToColorCode } from "readium-desktop/common/redux/states/renderer/note";
+import { INoteState, NOTE_DEFAULT_COLOR, noteColorCodeToColorSet, noteColorSetToColorCode } from "readium-desktop/common/redux/states/renderer/note";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { sqliteTableNoteDelete, sqliteTableNoteDeleteWherePubId, sqliteTableNoteInsert, sqliteTableNoteUpdate, sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
 import { publicationActions as publicationActionsFromMainAction } from "../actions";
-import { EXT_ANNOTATIONS } from "readium-desktop/common/extension";
+import { EXT_ANNOTATIONS, EXT_ANNOTATIONS_LEGACY } from "readium-desktop/common/extension";
 import { resolveReadiumAnnotationSourceHref } from "readium-desktop/common/readium/annotation/sourceHref";
 import { spawnPublicationAnalyticsEvent } from "./analyticsPublication";
 import { TAnalyticsEventParams } from "src/common/api/interface/analyticsApi.interface";
+import { readAnnotationSetFile } from "readium-desktop/main/w3c/annotations/read";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:annotationsImporter";
@@ -116,11 +116,14 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
     try {
 
         debug("Open ShowOpenDialog and ask to user the filePath");
-        const res = yield* callTyped(() => dialog.showOpenDialog(win, { filters: [{ extensions: [EXT_ANNOTATIONS.substring(1)], name: __("reader.marks.annotationsReadium") + " [" + EXT_ANNOTATIONS + "]" }], properties: ["openFile"] }));
+        const res = yield* callTyped(() => dialog.showOpenDialog(win, { filters: [{ extensions: [EXT_ANNOTATIONS.substring(1), EXT_ANNOTATIONS_LEGACY.substring(1)], name: __("reader.marks.annotationsReadium") + ` [${EXT_ANNOTATIONS}, ${EXT_ANNOTATIONS_LEGACY}]` }], properties: ["openFile"] }));
 
-        if (!res.canceled) {
-            filePath = res.filePaths[0] || "";
-
+        if (res.canceled) {
+            return;
+        }
+        filePath = res.filePaths[0] || "";
+        if (!filePath) {
+            return;
         }
     } catch (e) {
         debug("Error!!! to open a file, exit", e);
@@ -129,12 +132,12 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
     }
 
     debug("FilePath=", filePath);
-    const fileName = path.basename(filePath).slice(0, -1 * EXT_ANNOTATIONS.length);
+    const fileName = path.basename(filePath, path.extname(filePath));
 
     try {
 
         // read filePath
-        const dataString = yield* callTyped(() => fs.promises.readFile(filePath, { encoding: "utf8" }));
+        const dataString = yield* callTyped(() => readAnnotationSetFile(filePath));
         const readiumAnnotationFormat = JSON.parse(dataString);
         debug("filePath size=", dataString.length);
         debug("filePath serialized and ready to pass the type checker");
@@ -158,8 +161,8 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         }
 
 
-        // we just check if each annotation href source belongs to the R2Publication Spine items
-        // if at least one annotation in the list doesn't match with the current spine item, then reject the set importation
+        // Resolve each annotation source independently against the publication spine.
+        // An unresolved source is preserved so the annotation can still be imported and exported.
 
         const pubView = yield* callTyped(getPublication, publicationIdentifier);
         analyticsParams = buildPublicationUserAnalyticsParams(pubView);
@@ -171,7 +174,6 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
             debug("Current Publcation (", publicationIdentifier, ") SpineItems(hrefs):", hrefFromSpineItem);
             const annotationsIncommingArraySourceHrefs = annotationsIncommingArray.map(({ target: { source } }) => source);
             debug("Incomming Annotations target.source(hrefs):", annotationsIncommingArraySourceHrefs);
-            const rejectedAnnotationSourceHrefs: string[] = [];
             annotationsIncommingArray = annotationsIncommingArray.map((annotation) => {
                 const sourceHref = annotation.target.source;
                 // The reader resource cache looks up documents by the exact spine href.
@@ -179,7 +181,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 const spineHref = resolveReadiumAnnotationSourceHref(sourceHref, hrefFromSpineItem);
 
                 if (!spineHref) {
-                    rejectedAnnotationSourceHrefs.push(sourceHref);
+                    debug(`Cannot resolve incomming annotation target.source href: "${sourceHref}"; preserve the original target`);
                     return annotation;
                 }
 
@@ -195,14 +197,6 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                     },
                 };
             });
-
-            if (rejectedAnnotationSourceHrefs.length) {
-
-                debug("Rejected incomming Annotations target.source(hrefs):", rejectedAnnotationSourceHrefs);
-                debug("ERROR: At least one annotation is rejected and not match with the current publication SpineItem, see above");
-                yield* putTyped(toastActions.openRequest.build(ToastType.Error, __("message.annotations.noBelongTo"), readerPublicationIdentifier));
-                return;
-            }
         } else {
             debug("ERROR: the publication doesn't have an r2PublicationJson value !!");
             yield* putTyped(toastActions.openRequest.build(ToastType.Error, "The publication is corrupted", readerPublicationIdentifier));
@@ -210,7 +204,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         }
 
 
-        debug("GOOD ! spineItemHref matched : publication identified, let's continue the importation");
+        debug("Annotation target.source resolution completed, let's continue the importation");
 
         // OK publication identified
         const notes = yield* callTyped(getNotesFromMainWinState, publicationIdentifier);
@@ -225,6 +219,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         // loop on each annotation to check conflicts and import it
         for (const incommingAnnotation of annotationsIncommingArray) {
             const creator = incommingAnnotation.creator;
+            const importedTags = normalizeReadiumAnnotationTags(incommingAnnotation.body);
 
             const uuid = incommingAnnotation.id.split("urn:uuid:")[1] || uuidv4(); // TODO : may not be an uuid format and maybe we should hash the uuid to get a unique identifier based on the original uuid
 
@@ -254,9 +249,9 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 debug(`for ${uuid} a CFI Fragment selector is available (${JSON.stringify(cfiFragmentSelector, null, 4)})`);
             }
 
-            if (!(cssSelector || textQuoteSelector || textPositionSelector || cfiFragmentSelector || cfiSelector)) {
-                debug(`for ${uuid} no selector available (cssSelector || textQuoteSelector || textPositionSelector || cfiFragmentSelector || cfiSelector)`);
-                continue;
+            const isResourceBookmark = incommingAnnotation.motivation === "bookmarking";
+            if (!(cssSelector || textQuoteSelector || textPositionSelector || cfiFragmentSelector || cfiSelector || isResourceBookmark)) {
+                debug(`for ${uuid} no supported selector available; import the note and preserve its original target without a locator`);
             }
 
             const annotationParsed: INoteState = {
@@ -266,9 +261,8 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 color: hexToRgb(noteColorSetToColorCode[incommingAnnotation.body?.color] ||
                     noteColorSetToColorCode[noteColorCodeToColorSet[incommingAnnotation.body?.color] || NOTE_DEFAULT_COLOR],
                 ),
-                drawType: EDrawType[(isNil(incommingAnnotation.body?.highlight) || incommingAnnotation.body?.highlight === "solid") ? "solid_background" : incommingAnnotation.body.highlight] || EDrawType.solid_background,
-                // TODO need to ask to user if the incomming tag is kept or the fileName is used
-                tags: [fileName], // incommingAnnotation.body?.tag ? [incommingAnnotation.body?.tag] : [],
+                drawType: readiumAnnotationDrawType(incommingAnnotation),
+                tags: importedTags.length ? importedTags : [fileName],
                 modified: incommingAnnotation.modified ? tryCatchSync(() => new Date(incommingAnnotation.modified).getTime(), fileName) : undefined,
                 created: tryCatchSync(() => new Date(incommingAnnotation.created).getTime(), fileName) || currentTimestamp,
                 creator: creator?.id ? {

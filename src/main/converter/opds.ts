@@ -9,13 +9,15 @@ import debug_ from "debug";
 import { inject, injectable } from "inversify";
 import moment from "moment";
 import {
-    IOpdsAuthView, IOpdsCoverView, IOpdsFeedMetadataView, IOpdsFeedView, IOpdsGroupView,
-    IOpdsLinkView, IOpdsNavigationLink, IOpdsNavigationLinkView, IOPDSPropertiesView,
-    IOpdsPublicationView, IOpdsResultView, IOpdsTagView,
+    IOpdsAuthenticationLinkView, IOpdsAuthView, IOpdsCoverView, IOpdsFeedMetadataView,
+    IOpdsFeedView, IOpdsGroupView, IOpdsLinkView, IOpdsNavigationLink, IOpdsNavigationLinkView,
+    IOPDSPropertiesView, IOpdsPublicationView, IOpdsResultView, IOpdsTagView,
 } from "readium-desktop/common/views/opds";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
+import { getOpdsFeedColor, getOpdsFeedIcon } from "readium-desktop/common/models/opds";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { ContentType } from "readium-desktop/utils/contentType";
+import { normalizeLcpHashedPassphrase } from "readium-desktop/utils/lcp";
 
 import { IWithAdditionalJSON, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
@@ -90,6 +92,42 @@ const supportedFileTypeLinksForPayWallAcquisition = [
     ContentType.Xml,
     ContentType.AtomXml,
 ];
+
+export const normalizeOpdsAuthenticationLink = (
+    authenticate: unknown,
+    baseUrl: string,
+): IOpdsAuthenticationLinkView | undefined => {
+    if (!authenticate || typeof authenticate !== "object" || Array.isArray(authenticate)) {
+        return undefined;
+    }
+
+    const {
+        href,
+        type,
+        title,
+    } = authenticate as { href?: unknown, type?: unknown, title?: unknown };
+
+    if (typeof href !== "string" || !href.trim() ||
+        (typeof type !== "undefined" && typeof type !== "string") ||
+        (typeof title !== "undefined" && typeof title !== "string")) {
+        return undefined;
+    }
+
+    try {
+        const authenticationLink: IOpdsAuthenticationLinkView = {
+            url: new URL(href.trim(), baseUrl).toString(),
+        };
+        if (typeof type === "string") {
+            authenticationLink.type = type;
+        }
+        if (typeof title === "string") {
+            authenticationLink.title = title;
+        }
+        return authenticationLink;
+    } catch {
+        return undefined;
+    }
+};
 
 @injectable()
 export class OpdsFeedViewConverter {
@@ -176,6 +214,8 @@ export class OpdsFeedViewConverter {
             authentified: authentified,
             authenticationUrl: document.authenticationUrl,
             favorite: document.favorite || false,
+            color: getOpdsFeedColor(document.color),
+            icon: getOpdsFeedIcon(document.icon),
             // feedHasAuthentication: authentified || await feedHasAuthenticationFunction(),
         };
     }
@@ -190,55 +230,18 @@ export class OpdsFeedViewConverter {
             subtitle,
             url: urlPathResolve(baseUrl, link.Href),
             numberOfItems: link.Properties && link.Properties.NumberOfItems,
+            properties: this.convertOpdsPropertiesToView(link.Properties, baseUrl),
         };
     }
 
-    public convertOpdsPropertiesToView(properties: TProperties | undefined): IOPDSPropertiesView | undefined {
+    public convertOpdsPropertiesToView(
+        properties: TProperties | undefined,
+        baseUrl: string,
+    ): IOPDSPropertiesView | undefined {
 
         if (properties) {
 
-            const key = "lcp_hashed_passphrase";
-            const lcpHashedPassphraseObj = properties.AdditionalJSON ? properties.AdditionalJSON[key] : undefined;
-            let lcpHashedPassphrase: string;
-            if (typeof lcpHashedPassphraseObj === "string") {
-                const lcpHashedPassphraseHexOrB64 = lcpHashedPassphraseObj as string;
-                let isHex = false;
-                try {
-                    const low1 = lcpHashedPassphraseHexOrB64.toLowerCase();
-                    const buff = Buffer.from(low1, "hex");
-                    const str = buff.toString("hex");
-                    const low2 = str.toLowerCase();
-                    isHex = low1 === low2;
-                    if (!isHex) {
-                        debug(`OPDS lcp_hashed_passphrase should be HEX! (${lcpHashedPassphraseHexOrB64}) ${low1} !== ${low2}`);
-                    } else {
-                        debug(`OPDS lcp_hashed_passphrase is HEX: ${lcpHashedPassphraseHexOrB64}`);
-                    }
-                } catch (err) {
-                    debug(err); // ignore
-                }
-                if (isHex) {
-                    lcpHashedPassphrase = lcpHashedPassphraseHexOrB64;
-                } else {
-                    let isBase64 = false;
-                    try {
-                        const buff = Buffer.from(lcpHashedPassphraseHexOrB64, "base64");
-                        const str = buff.toString("hex");
-                        const b64 = Buffer.from(str, "hex").toString("base64");
-                        isBase64 = lcpHashedPassphraseHexOrB64 === b64;
-                        if (!isBase64) {
-                            debug(`OPDS lcp_hashed_passphrase is not BASE64?! (${lcpHashedPassphraseHexOrB64}) ${lcpHashedPassphraseHexOrB64} !== ${b64}`);
-                        } else {
-                            debug(`OPDS lcp_hashed_passphrase is BASE64! (${lcpHashedPassphraseHexOrB64})`);
-                        }
-                    } catch (err) {
-                        debug(err); // ignore
-                    }
-                    if (isBase64) {
-                        lcpHashedPassphrase = Buffer.from(lcpHashedPassphraseHexOrB64, "base64").toString("hex");
-                    }
-                }
-            }
+            const lcpHashedPassphrase = normalizeLcpHashedPassphrase(properties.AdditionalJSON?.lcp_hashed_passphrase);
 
             const indirectAcquisitions = properties.IndirectAcquisitions ?
                 (Array.isArray(properties.IndirectAcquisitions) ?
@@ -246,6 +249,7 @@ export class OpdsFeedViewConverter {
                 undefined;
 
             return {
+                authenticate: normalizeOpdsAuthenticationLink(properties.AdditionalJSON?.authenticate, baseUrl),
                 indirectAcquisitionTypes: indirectAcquisitions?.reduce<{ top: string, child: string | undefined} | undefined>((pv, cv) => {
                     if (typeof cv?.TypeAcquisition === "string") {
                         const child = cv.Children?.reduce<string | undefined>((pv_, cv_) => {
@@ -333,7 +337,7 @@ export class OpdsFeedViewConverter {
             type: ln.TypeLink,
             // length,
             // hash,
-            properties: this.convertOpdsPropertiesToView(ln.Properties),
+            properties: this.convertOpdsPropertiesToView(ln.Properties, baseUrl),
             rel: ln.Rel && ln.Rel.length > 0 ? ln.Rel[0] : undefined,
         };
     }
@@ -673,7 +677,7 @@ export class OpdsFeedViewConverter {
 
         const selfLink = new OPDSLink();
         selfLink.Title = title;
-        selfLink.Properties = new OPDSProperties();
+        selfLink.Properties = Object.assign(new OPDSProperties(), lnFiltered?.Properties);
         selfLink.Properties.NumberOfItems = nb;
         selfLink.Rel = lnFiltered?.Rel || undefined;
         selfLink.Href = lnFiltered?.Href || undefined;
