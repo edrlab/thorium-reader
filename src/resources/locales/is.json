@@ -78,6 +78,7 @@
         "deleteBook": "Eyða",
         "deleteTag": "Eyða merki",
         "description": "Lýsing",
+        "downloaded": "",
         "emptyTagList": "Engar merktar bækur.",
         "entry": {
             "continueReading": "Halda áfram",
@@ -267,6 +268,11 @@
             "folderNotFound": "Mappa bókarinnar fannst ekki. Bættu bókinni við aftur eða stilltu viðbótargeymslu í Stillingar > Geymsla."
         },
         "storage": {
+            "recovery": {
+                "failure": "",
+                "success_one": "",
+                "success_other": ""
+            },
             "removed": "Mappa bókarinnar fjarlægð.",
             "updateFailed": "Ekki tókst að uppfæra möppu bókarinnar: {{- message}}",
             "updated": "Mappa bókarinnar uppfærð."
@@ -286,6 +292,17 @@
         },
         "addMenu": "Bæta við OPDS-veitu",
         "breadcrumbRoot": "Safnskrár",
+        "color": {
+            "blue": "",
+            "gray": "",
+            "green": "",
+            "orange": "",
+            "pink": "",
+            "purple": "",
+            "red": "",
+            "title": "",
+            "yellow": ""
+        },
         "documentation": "Opinber vefur OPDS",
         "empty": "Engin bók fannst",
         "firstPage": "Fyrsta",
@@ -873,6 +890,7 @@
             "disposition": {
                 "title": "Uppsetning"
             },
+            "enablePageBreakMarginIndicators": "",
             "font": "Leturgerð",
             "fontSize": "Leturstærð",
             "increaseFontSize": "Stækka letur",
@@ -1300,13 +1318,40 @@
                 "defaultInternal": "Kerfisgeymsla",
                 "externalStorage": "Ytri geymsla",
                 "title": "Geymslustaðir"
+            },
+            "recovery": {
+                "actions": {
+                    "check": "",
+                    "checkAgain": "",
+                    "recover": "",
+                    "recovering": ""
+                },
+                "available": "",
+                "checking": "",
+                "description": "",
+                "dialog": {
+                    "confirm": "",
+                    "description_one": "",
+                    "description_other": "",
+                    "title": ""
+                },
+                "none": "",
+                "recoverableCount_one": "",
+                "recoverableCount_other": "",
+                "title": ""
             }
         },
         "tabs": {
+            "advanced": "",
             "general": "Almennt",
             "keyboardShortcuts": "Flýtilyklar",
             "profiles": "Snið",
             "storage": "Geymsla"
+        },
+        "telemetry": {
+            "disableTelemetryMeasurements": "",
+            "disableTelemetryMeasurementsDescription": "",
+            "title": ""
         },
         "theme": {
             "auto": "Sjálfvirkt",
