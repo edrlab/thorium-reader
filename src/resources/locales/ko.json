@@ -148,6 +148,9 @@
         "annotations": {
             "descAuthor": "",
             "descCreator": "",
+            "descList_other": "",
+            "descNewer_other": "",
+            "descOlder_other": "",
             "descTitle": "",
             "importAll": "",
             "importWithoutConflict": "",
