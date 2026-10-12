@@ -387,7 +387,6 @@ function* readerPrint(action: readerActions.print.TAction) {
 function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction) {
 
     const { publicationIdentifier, clipboardData } = action.payload;
-    const clipBoardType = "clipboard";
 
     let textToCopy = clipboardData.txt;
 
@@ -405,7 +404,16 @@ function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction) {
         typeof publicationDocument.lcp.rights.copy === "undefined" ||
         publicationDocument.lcp.rights.copy < 0) {
 
-        clipboard.writeText(textToCopy, clipBoardType);
+        try {
+            console.log("not LCP copy => clipboard.writeText...");
+
+            // yield* callTyped(() => clipboard.write([new ClipboardItem({ "text/plain": textToCopy })]));
+            yield* callTyped(() => clipboard.writeText(textToCopy));
+        } catch (_err) {
+            yield* putTyped(toastActions.openRequest.build(ToastType.Error,
+                "CLIPBOARD WRITE ERROR?",
+                publicationIdentifier));
+        }
         return ;
     }
 
@@ -431,11 +439,20 @@ function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction) {
     );
     yield* callTyped(() => publicationRepository.save(newPublicationDocument));
 
-    clipboard.writeText(`${textToCopy}`, clipBoardType);
+    try {
+        console.log("LCP copy => clipboard.writeText...");
 
-    yield* putTyped(toastActions.openRequest.build(ToastType.Success,
-        `LCP [${translator.translate("app.edit.copy")}] ${newPublicationDocument.lcpRightsCopies} / ${publicationDocument.lcp.rights.copy}`,
-        publicationIdentifier));
+        // yield* callTyped(() => clipboard.write([new ClipboardItem({ "text/plain": textToCopy })]));
+        yield* callTyped(() => clipboard.writeText(textToCopy));
+
+        yield* putTyped(toastActions.openRequest.build(ToastType.Success,
+            `LCP [${translator.translate("app.edit.copy")}] ${newPublicationDocument.lcpRightsCopies} / ${publicationDocument.lcp.rights.copy}`,
+            publicationIdentifier));
+    } catch (_err) {
+        yield* putTyped(toastActions.openRequest.build(ToastType.Error,
+            "CLIPBOARD WRITE ERROR?",
+            publicationIdentifier));
+    }
 }
 
 export function saga() {
