@@ -21,22 +21,21 @@ const Menu = (props: React.PropsWithChildren<IBaseProps>) => {
 
     const [triggerOpen, setTriggerOpen] = React.useState(false);
 
-    const arrowHeight = 12;
+    const collisionValue = location.hash === "#/home" ? 10 : 280;
+    const collision: Partial<Record<"top", number>> = props.noCollisionPadding ? undefined : {top : collisionValue};
 
     return (
-        <Popover.Root modal onOpenChange={setTriggerOpen}>
+        <Popover.Root modal onOpenChange={() => setTriggerOpen(!triggerOpen)}>
             <Popover.Trigger asChild>
                 <button className={classNames(stylesDropDown.dropdown_trigger, triggerOpen ? "popover_open" : "")}>
                     {props.button}
                 </button>
             </Popover.Trigger>
             <Popover.Portal>
-                <Popover.Content sideOffset={arrowHeight + 5} align="end" alignOffset={-10}
-                    collisionPadding={props.noCollisionPadding ? 0 : 10}>
+                <Popover.Content sideOffset={5} align="end" alignOffset={-10} collisionPadding={collision}>
                     <div className={stylesDropDown.dropdown_menu}>
                         {props.children}
                     </div>
-                    <Popover.Arrow width={20} height={arrowHeight} className={stylesDropDown.PopoverArrow} aria-hidden />
                 </Popover.Content>
             </Popover.Portal>
         </Popover.Root>
