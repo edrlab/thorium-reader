@@ -63,7 +63,7 @@ async function click(element: Element) {
     await React.act(async () => {
         element.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, button: 0 }));
         element.dispatchEvent(new MouseEvent("mouseup", { bubbles: true, button: 0 }));
-        element.dispatchEvent(new MouseEvent("click", { bubbles: true, button: 0 }));
+        element.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true, button: 0 }));
         await settle();
     });
     await React.act(settle);
@@ -169,7 +169,7 @@ test("nested dialogs close independently and return focus to their parent", asyn
     expect(document.activeElement).toBe(trigger);
 });
 
-test("existing popovers stay within the dialog and Escape closes only the popover", async () => {
+test("RAC popovers stay within the dialog and Escape closes only the popover", async () => {
     await React.act(async () => root.render(<Dialog.Root triggerless defaultOpen>
         <Dialog.Portal><Dialog.Content>
             <Dialog.Title>Settings</Dialog.Title>
@@ -188,6 +188,65 @@ test("existing popovers stay within the dialog and Escape closes only the popove
     await escape();
     expect(document.querySelector("[data-option]")).toBeNull();
     expect(document.querySelector('.react-aria-Dialog[role="dialog"]')).toBeTruthy();
+});
+
+test("popover close preserves submit handlers that prevent default and restores focus", async () => {
+    const onSave = jest.fn((event: React.MouseEvent) => event.preventDefault());
+    await React.act(async () => root.render(<Popover.Root modal>
+        <Popover.Trigger asChild><button data-trigger>Options</button></Popover.Trigger>
+        <Popover.Portal><Popover.Content>
+            <form><Popover.Close type="submit" onClick={onSave}>Save</Popover.Close></form>
+        </Popover.Content></Popover.Portal>
+    </Popover.Root>));
+    const trigger = document.querySelector<HTMLButtonElement>("[data-trigger]")!;
+    trigger.focus();
+    await click(trigger);
+    expect(trigger.getAttribute("aria-expanded")).toBe("true");
+    await click(document.querySelector("form button")!);
+    expect(onSave).toHaveBeenCalledTimes(1);
+    expect(document.querySelector("form")).toBeNull();
+    expect(document.activeElement).toBe(trigger);
+});
+
+test("controlled toolbar popovers use list items as anchors without toggling their checkbox", async () => {
+    const onChange = jest.fn();
+    const view = (open: boolean) => <Popover.Root modal open={open} onOpenChange={onChange}>
+        <Popover.Trigger asChild><li><input type="checkbox" aria-label="Bookmark" /></li></Popover.Trigger>
+        <Popover.Portal><Popover.Content><button data-edit>Edit bookmark</button></Popover.Content></Popover.Portal>
+    </Popover.Root>;
+    await React.act(async () => root.render(view(false)));
+    await click(document.querySelector("input")!);
+    expect(onChange).not.toHaveBeenCalled();
+    await React.act(async () => root.render(view(true)));
+    await React.act(settle);
+    expect(document.querySelector("[data-edit]")).toBeTruthy();
+    document.querySelector<HTMLButtonElement>("[data-edit]")!.focus();
+    await escape();
+    expect(onChange).toHaveBeenLastCalledWith(false);
+});
+
+test("popover preserves per-edge collision space and closes when its anchor detaches", async () => {
+    await React.act(async () => root.render(<Popover.Root modal>
+        <Popover.Trigger asChild><button data-trigger>Options</button></Popover.Trigger>
+        <Popover.Portal><Popover.Content collisionPadding={{ top: 180, bottom: 100 }} hideWhenDetached>
+            <button data-option>Option</button>
+        </Popover.Content></Popover.Portal>
+    </Popover.Root>));
+    await click(document.querySelector("[data-trigger]")!);
+    const boundary = Array.from(document.body.children).find((element) =>
+        (element as HTMLElement).style.visibility === "hidden") as HTMLElement;
+    expect(boundary.style.top).toBe("180px");
+    expect(boundary.style.left).toBe("0px");
+    const trigger = document.querySelector("[data-trigger]")!;
+    const parent = trigger.parentElement!;
+    await React.act(async () => {
+        trigger.remove();
+        await settle();
+    });
+    expect(document.querySelector("[data-option]")).toBeNull();
+    expect(boundary.isConnected).toBe(false);
+    // Restore React's owned DOM before unmounting the test tree.
+    parent.appendChild(trigger);
 });
 
 test("controlled dialogs open programmatically and preserve deliberate focus on close", async () => {
