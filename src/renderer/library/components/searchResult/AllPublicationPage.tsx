@@ -92,9 +92,9 @@ import {
 import { ipcRenderer } from "electron";
 import PublicationCard from "../publication/PublicationCard";
 import classNames from "classnames";
-import * as Popover from "@radix-ui/react-popover";
+import * as Popover from "readium-desktop/renderer/common/components/Popover";
 
-// import { PublicationInfoLibWithRadix, PublicationInfoLibWithRadixContent, PublicationInfoLibWithRadixTrigger } from "../dialog/publicationInfos/PublicationInfo";
+// import { PublicationInfoLibWithRAC, PublicationInfoLibWithRACContent, PublicationInfoLibWithRACTrigger } from "../dialog/publicationInfos/PublicationInfo";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";

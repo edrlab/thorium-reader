@@ -19,7 +19,7 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 
 import classNames from "classnames";
 import * as React from "react";
-import * as Popover from "@radix-ui/react-popover";
+import * as Popover from "readium-desktop/renderer/common/components/Popover";
 import {Button, OverlayArrow, Tooltip, TooltipTrigger} from "react-aria-components";
 import FocusLock from "react-focus-lock";
 import { connect } from "react-redux";

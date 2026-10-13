@@ -9,7 +9,7 @@ import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/compo
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
 import * as React from "react";
-import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import * as AlertDialog from "readium-desktop/renderer/common/components/AlertDialog";
 import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
@@ -32,8 +32,7 @@ const DeleteOpdsFeedConfirm = (props: { feed: IOpdsFeedView, trigger: React.Reac
             <AlertDialog.Trigger asChild>
                 {props.trigger}
             </AlertDialog.Trigger>
-            <AlertDialog.Portal>
-                <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay}/>
+            <AlertDialog.Portal className={stylesAlertModals.AlertDialogOverlay}>
                 <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
                     <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("dialog.deleteFeed")}</AlertDialog.Title>
                     <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>

@@ -14,8 +14,8 @@ import * as stylesPrint from "readium-desktop/renderer/assets/styles/components/
 import classNames from "classnames";
 import debug_ from "debug";
 import * as React from "react";
-import * as Popover from "@radix-ui/react-popover";
-import * as Dialog from "@radix-ui/react-dialog";
+import * as Popover from "readium-desktop/renderer/common/components/Popover";
+import * as Dialog from "readium-desktop/renderer/common/components/Dialog";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
 // import * as ReactDOM from "react-dom";
@@ -66,7 +66,7 @@ import { ReaderMenu } from "./ReaderMenu/ReaderMenu";
 import { connect } from "react-redux";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
-import { PublicationInfoReaderWithRadix, PublicationInfoReaderWithRadixContent, PublicationInfoReaderWithRadixTrigger } from "./dialog/publicationInfos/PublicationInfo";
+import { PublicationInfoReaderWithRAC, PublicationInfoReaderWithRACContent, PublicationInfoReaderWithRACTrigger } from "./dialog/publicationInfos/PublicationInfo";
 import {ReaderSettings}  from "readium-desktop/renderer/reader/components/ReaderSettings/ReaderSettings";
 import {ReadingAudio} from "readium-desktop/renderer/reader/components/ReadingAudio";
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
@@ -424,9 +424,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
     //     // }, 600);
     // }
 
-
-    private __closeNavPanel = false;
-
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 
@@ -582,8 +579,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             </button>
                         </li>
                         <li>
-                            <PublicationInfoReaderWithRadix handlePublicationInfo={this.props.handlePublicationInfo}>
-                                <PublicationInfoReaderWithRadixTrigger asChild>
+                            <PublicationInfoReaderWithRAC handlePublicationInfo={this.props.handlePublicationInfo}>
+                                <PublicationInfoReaderWithRACTrigger asChild>
                                     <button
                                         className={stylesReader.menu_button}
                                         ref={this.infoMenuButtonRef}
@@ -592,9 +589,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     >
                                         <SVG ariaHidden={true} svg={InfosIcon} />
                                     </button>
-                                </PublicationInfoReaderWithRadixTrigger>
-                                <PublicationInfoReaderWithRadixContent />
-                            </PublicationInfoReaderWithRadix>
+                                </PublicationInfoReaderWithRACTrigger>
+                                <PublicationInfoReaderWithRACContent />
+                            </PublicationInfoReaderWithRAC>
                         </li>
                     </ul>
                     {
@@ -873,7 +870,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     {...(this.props.pdfPrintOpen &&
                                         { style: { backgroundColor: "var(--color-brand-primary)" } })}
                                 >
-                                    <Dialog.Root open={this.props.pdfPrintOpen} onOpenChange={(open) => {
+                                    <Dialog.Root isOpen={this.props.pdfPrintOpen} onOpenChange={(open) => {
                                         this.props.setShortcutEnable(!open);
                                         this.props.setPdfPrintOpen(open);
                                     }}>
@@ -994,7 +991,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             {/* { this.props.menuOpen ? */}
 
                             <Dialog.Root
-                                open={this.props.menuOpen}
+                                isOpen={this.props.menuOpen}
                                 onOpenChange={(open) => {
                                     console.log("MENU DialogOnOpenChange", open);
                                     // this.props.handleMenuClick(open);
@@ -1004,7 +1001,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         // if (!this.props.isDivina  && !this.props.isPdf) {
                                         //     stealFocusDisable(true);
                                         // }
-                                        this.__closeNavPanel = false;
                                     } else {
                                         // if (!this.props.isDivina  && !this.props.isPdf) {
                                         //     stealFocusDisable(false);
@@ -1073,12 +1069,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 //     }
                                                 //     console.log("MenuModal onInteractOutside");
                                                 // }}
-                                                onCloseAutoFocus={(e) => {
-                                                    if (this.__closeNavPanel) {
-                                                        e.preventDefault();
-                                                    }
-                                                    console.log("MenuModal onCloseAutoFocus");
-                                                }}
                                                 className={containerClassName}
                                                 style={{
                                                     borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
@@ -1092,12 +1082,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             >
                                                 <ReaderMenu
                                                     {...this.props.readerMenuProps}
-                                                    handleLinkClick={(event, url, closeNavPanel) => {
-                                                        this.props.readerMenuProps.handleLinkClick(event, url, closeNavPanel);
-                                                        if (closeNavPanel) {
-                                                            this.__closeNavPanel = true;
-                                                        }
-                                                    }}
                                                     isDivina={this.props.isDivina}
                                                     isPdf={this.props.isPdf}
                                                     isAudiobook={this.props.isAudiobook}
@@ -1115,7 +1099,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 { style: { backgroundColor: "var(--color-brand-primary)" } })}
                         >
                             <Dialog.Root
-                                open={this.props.settingsOpen}
+                                isOpen={this.props.settingsOpen}
                                 onOpenChange={(open) => {
                                     console.log("SETTINGS DialogOnOpenChange", open);
                                     this.props.toggleSettings({ open });
@@ -1124,7 +1108,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     //     if (!this.props.isDivina  && !this.props.isPdf) {
                                     //         stealFocusDisable(true);
                                     //     }
-                                    //     // this.__closeNavPanel = false;
                                     // } else {
                                     //     if (!this.props.isDivina  && !this.props.isPdf) {
                                     //         stealFocusDisable(false);

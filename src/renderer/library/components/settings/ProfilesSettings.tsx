@@ -18,7 +18,7 @@ import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { customizationActions } from "readium-desktop/common/redux/actions";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
-import * as Popover from "@radix-ui/react-popover";
+import * as Popover from "readium-desktop/renderer/common/components/Popover";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import moment from "moment";
 import * as ThoriumIcon from "readium-desktop/renderer/assets/icons/thorium.svg";

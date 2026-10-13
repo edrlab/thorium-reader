@@ -21,7 +21,7 @@ import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import * as BookOpenIcon from "readium-desktop/renderer/assets/icons/bookOpen-icon.svg";
 import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar-icon.svg";
 import * as AvatarIcon from "readium-desktop/renderer/assets/icons/avatar-icon.svg";
-import * as Popover from "@radix-ui/react-popover";
+import * as Popover from "readium-desktop/renderer/common/components/Popover";
 import { AnnotationEdit } from "../AnnotationEdit";
 
 import { IReaderMenuProps } from "../options-values";

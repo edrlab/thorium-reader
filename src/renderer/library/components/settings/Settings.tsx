@@ -13,7 +13,7 @@ import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 // import {I18nProvider} from 'react-aria';
 
 import * as React from "react";
-import * as Dialog from "@radix-ui/react-dialog";
+import * as Dialog from "readium-desktop/renderer/common/components/Dialog";
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "readium-desktop/renderer/common/components/TabsComponent";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import * as CogIcon from "readium-desktop/renderer/assets/icons/cog-icon.svg";
@@ -104,8 +104,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
                 <h3 dir={isRTL ? "rtl" : "ltr"} aria-label={__("header.settingsLabel")}>{__("header.settings")}</h3>
             </button>
         </Dialog.Trigger>
-        <Dialog.Portal>
-            <div className={stylesModals.modal_dialog_overlay}></div>
+        <Dialog.Portal className={stylesModals.modal_dialog_overlay}>
             <Dialog.Content style={{ overflowY: "hidden" }} className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined}>
                 {
                     // FALSE this to test sourcemaps:

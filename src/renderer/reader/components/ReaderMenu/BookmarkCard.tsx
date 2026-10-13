@@ -23,7 +23,7 @@ import * as BookOpenIcon from "readium-desktop/renderer/assets/icons/bookOpen-ic
 import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar-icon.svg";
 import * as AvatarIcon from "readium-desktop/renderer/assets/icons/avatar-icon.svg";
 
-import * as Popover from "@radix-ui/react-popover";
+import * as Popover from "readium-desktop/renderer/common/components/Popover";
 import { IReaderMenuProps } from "../options-values";
 
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";

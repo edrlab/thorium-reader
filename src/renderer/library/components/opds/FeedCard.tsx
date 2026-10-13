@@ -21,7 +21,7 @@ import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/rou
 import { DisplayType, IRouterLocationState } from "../../routing";
 import DeleteOpdsFeedConfirm from "../dialog/DeleteOpdsFeedConfirm";
 import OpdsFeedUpdateForm from "../dialog/OpdsFeedUpdateForm";
-import * as Popover from "@radix-ui/react-popover";
+import * as Popover from "readium-desktop/renderer/common/components/Popover";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { authActions, customizationActions } from "readium-desktop/common/redux/actions";

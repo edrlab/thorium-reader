@@ -30,8 +30,8 @@ import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg
 import * as OptionsIcon from "readium-desktop/renderer/assets/icons/filter2-icon.svg";
 import * as SortIcon from "readium-desktop/renderer/assets/icons/sort-icon.svg";
 
-import * as Popover from "@radix-ui/react-popover";
-import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import * as Popover from "readium-desktop/renderer/common/components/Popover";
+import * as AlertDialog from "readium-desktop/renderer/common/components/AlertDialog";
 import { ListBox, ListBoxItem  } from "react-aria-components";
 import type { Selection } from "react-aria-components";
 
@@ -360,8 +360,7 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
                         <AlertDialog.Trigger className={stylesBookmarks.bookmarks_filter_trigger_button} disabled={!bookmarkListFiltered.length} title={__("dialog.deleteBookmarks")} aria-label={__("dialog.deleteBookmarks")}>
                             <SVG svg={TrashIcon} ariaHidden />
                         </AlertDialog.Trigger>
-                        <AlertDialog.Portal>
-                            <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay} />
+                        <AlertDialog.Portal className={stylesAlertModals.AlertDialogOverlay}>
                             <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
                                 <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("dialog.deleteBookmarks")}</AlertDialog.Title>
                                 <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>

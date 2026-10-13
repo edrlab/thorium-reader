@@ -13,7 +13,7 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
-import * as Popover from "@radix-ui/react-popover";
+import * as Popover from "readium-desktop/renderer/common/components/Popover";
 // import * as PenIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";

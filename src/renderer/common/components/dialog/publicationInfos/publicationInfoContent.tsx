@@ -34,7 +34,7 @@ import { convertMultiLangStringToLangString } from "readium-desktop/common/langu
 import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 // import PublicationInfoA11y from "./publicationInfoA11y";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import * as Dialog from "@radix-ui/react-dialog";
+import * as Dialog from "readium-desktop/renderer/common/components/Dialog";
 import SVG from "../../SVG";
 import * as OnGoingBookIcon from "readium-desktop/renderer/assets/icons/ongoingBook-icon.svg";
 import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";
@@ -424,7 +424,7 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
             <div className={stylePublication.publicationInfo_container}>
                 <div className={stylePublication.publicationInfo_leftSide}>
                     <div className={stylePublication.publicationInfo_leftSide_coverWrapper}>
-                        <Dialog.Root open={openCoverDialog} onOpenChange={(open) => {
+                        <Dialog.Root isOpen={openCoverDialog} onOpenChange={(open) => {
                             setOpenCoverDialog(open);
                         }}>
                             <Dialog.Trigger asChild>
@@ -441,7 +441,6 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                                 />
                             </Dialog.Trigger>
                             <Dialog.Portal>
-                                {/* <div className={stylesModals.modal_dialog_overlay}></div> */}
                                 <Dialog.Content className={stylesModals.modal_dialog} aria-describedby={undefined}>
                                     <VisuallyHidden.Root>
                                         <Dialog.Title>{__("catalog.bookInfo")}</Dialog.Title>

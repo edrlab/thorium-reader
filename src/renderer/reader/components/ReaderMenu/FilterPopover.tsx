@@ -16,7 +16,7 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/filter3-icon.svg";
 
-import * as Popover from "@radix-ui/react-popover";
+import * as Popover from "readium-desktop/renderer/common/components/Popover";
 import { TagGroup, TagList, Tag, Label, Selection } from "react-aria-components";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 

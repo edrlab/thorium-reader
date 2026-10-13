@@ -12,7 +12,7 @@ import * as stylesBookmarks from "readium-desktop/renderer/assets/styles/compone
 import * as React from "react";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 
-import * as Popover from "@radix-ui/react-popover";
+import * as Popover from "readium-desktop/renderer/common/components/Popover";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import * as SaveIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
