@@ -185,7 +185,10 @@ export const Settings: React.FC<ISettingsProps> = () => {
                         </TabPanel>
                         </TabPanels>
                     </div>
-                    <ModalControlButton onClose={() => setIsOpen(false)} />
+                    <ModalControlButton onClose={() => {
+                        setIsOpen(false);
+                        setSelectedTab("tab-general");
+                    }} />
                 </Tabs>
             </>
         }

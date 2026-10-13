@@ -169,10 +169,17 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray, onCl
     });
 
     return <>
-        <form className={stylesPrint.print_dialog_form}>
+        <form className={stylesPrint.print_dialog_form} onSubmit={(event) => {
+            event.preventDefault();
+            if (!pagesToPrint.length) {
+                return;
+            }
+            dispatch(readerActions.print.build(publicationIdentifier, pagesToPrint));
+            onClose?.();
+        }}>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <h2>{__("reader.print.title")}</h2>
-                <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")} onClick={onClose}>
+                <button type="button" data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")} onClick={onClose}>
                     <SVG ariaHidden={true} svg={QuitIcon} />
                 </button>
             </div>
@@ -285,13 +292,6 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray, onCl
                     className={stylesButtons.button_primary_blue}
                     aria-label={__("reader.print.print")}
                     disabled={!pagesToPrint.length}
-                    onClick={(_e) => {
-                        // e.preventDefault();
-                        // createOrGetPdfEventBus().dispatch("print", pagesToPrint);
-
-                        dispatch(readerActions.print.build(publicationIdentifier, pagesToPrint)); // send to main process
-                        onClose?.();
-                    }}
                 >
                     <SVG ariaHidden svg={PrinterIcon} />
                     {__("reader.print.print")}

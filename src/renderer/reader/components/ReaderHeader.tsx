@@ -1017,10 +1017,18 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 trigger={
                                     <button
                                         aria-pressed={this.props.menuOpen}
+                                        aria-haspopup={isDockedMode ? false : "dialog"}
+                                        aria-expanded={this.props.menuOpen}
                                         aria-label={__("reader.navigation.openTableOfContentsTitle")}
                                         className={stylesReader.menu_button}
                                         ref={this.navigationMenuButtonRef}
                                         title={__("reader.navigation.openTableOfContentsTitle")}
+                                        onClick={(event) => {
+                                            if (isDockedMode) {
+                                                event.preventDefault();
+                                                this.props.toggleMenu({ open: !this.props.menuOpen });
+                                            }
+                                        }}
                                     >
                                         <SVG ariaHidden={true} svg={TOCIcon} className={this.props.menuOpen ? stylesReaderHeader.active_svg : ""} />
                                     </button>
@@ -1088,9 +1096,17 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 trigger={
                                     <button
                                         aria-pressed={this.props.settingsOpen}
+                                        aria-haspopup={isDockedMode ? false : "dialog"}
+                                        aria-expanded={this.props.settingsOpen}
                                         aria-label={__("reader.navigation.settingsTitle")}
                                         className={stylesReader.menu_button}
                                         title={__("reader.navigation.settingsTitle")}
+                                        onClick={(event) => {
+                                            if (isDockedMode) {
+                                                event.preventDefault();
+                                                this.props.toggleSettings({ open: !this.props.settingsOpen });
+                                            }
+                                        }}
                                     >
                                         <SVG ariaHidden={true} svg={SettingsIcon} className={this.props.settingsOpen ? stylesReaderHeader.active_svg : ""} />
                                     </button>

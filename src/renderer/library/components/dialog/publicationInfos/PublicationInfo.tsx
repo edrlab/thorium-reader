@@ -77,8 +77,15 @@ export const PublicationInfoLibWithRadix: React.FC<React.PropsWithChildren<{publ
 
 export const PublicationInfoLibWithRadixTrigger: React.FC<React.PropsWithChildren<{asChild?: boolean}>> = ({ children }) => {
     const context = React.useContext(PublicationInfoLibContext);
-    const trigger = React.Children.only(children) as React.ReactElement<{onClick?: React.MouseEventHandler}>;
-    return React.cloneElement(trigger, { onClick: (event) => { trigger.props.onClick?.(event); context.openDialog(); } });
+    const trigger = React.Children.only(children) as React.ReactElement<React.ButtonHTMLAttributes<HTMLButtonElement>>;
+    return React.cloneElement(trigger, {
+        "aria-haspopup": "dialog",
+        "aria-expanded": context.open,
+        onClick: (event) => {
+            trigger.props.onClick?.(event);
+            if (!event.defaultPrevented) { context.openDialog(); }
+        },
+    });
 };
 PublicationInfoLibWithRadixTrigger.displayName = "PublicationInfoLibWithRadixTrigger";
 export const PublicationInfoLibWithRadixContent = React.forwardRef<HTMLDivElement, IProps>(
@@ -147,8 +154,15 @@ export const PublicationInfoOpdsWithRadix: React.FC<React.PropsWithChildren<{opd
 };
 export const PublicationInfoOpdsWithRadixTrigger: React.FC<React.PropsWithChildren<{asChild?: boolean}>> = ({ children }) => {
     const context = React.useContext(PublicationInfoOpdsContext);
-    const trigger = React.Children.only(children) as React.ReactElement<{onClick?: React.MouseEventHandler}>;
-    return React.cloneElement(trigger, { onClick: (event) => { trigger.props.onClick?.(event); context.openDialog(); } });
+    const trigger = React.Children.only(children) as React.ReactElement<React.ButtonHTMLAttributes<HTMLButtonElement>>;
+    return React.cloneElement(trigger, {
+        "aria-haspopup": "dialog",
+        "aria-expanded": context.open,
+        onClick: (event) => {
+            trigger.props.onClick?.(event);
+            if (!event.defaultPrevented) { context.openDialog(); }
+        },
+    });
 };
 PublicationInfoOpdsWithRadixTrigger.displayName = "PublicationInfoOpdsWithRadixTrigger";
 export const PublicationInfoOpdsWithRadixContent = React.forwardRef<HTMLDivElement, IProps>(

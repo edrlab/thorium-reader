@@ -20,7 +20,7 @@ export interface DialogProps extends Omit<ModalOverlayProps, "children" | "isOpe
     onClose?: () => void;
     onOpenChange?: (isOpen: boolean) => void;
     title?: string;
-    trigger?: React.ReactElement;
+    trigger?: React.ReactElement<React.ButtonHTMLAttributes<HTMLButtonElement>>;
 }
 
 export function DialogRAC({
@@ -37,7 +37,12 @@ export function DialogRAC({
     trigger,
     ...props
 }: DialogProps) {
-    const open = () => onOpenChange?.(true);
+    const open: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+        trigger?.props.onClick?.(event);
+        if (!event.defaultPrevented) {
+            onOpenChange?.(true);
+        }
+    };
     const close = () => {
         onClose?.();
         onOpenChange?.(false);
@@ -45,7 +50,11 @@ export function DialogRAC({
 
     return (
         <>
-            {trigger && React.cloneElement(trigger, { onClick: open })}
+            {trigger && React.cloneElement(trigger, {
+                onClick: open,
+                "aria-haspopup": trigger.props["aria-haspopup"] ?? "dialog",
+                "aria-expanded": trigger.props["aria-expanded"] ?? isOpen,
+            })}
             <RACModalOverlay
                 {...props}
                 isOpen={isOpen}

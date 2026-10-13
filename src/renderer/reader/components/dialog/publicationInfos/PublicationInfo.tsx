@@ -43,8 +43,16 @@ export const PublicationInfoReaderWithRadix: React.FC<React.PropsWithChildren<{ 
 
 export const PublicationInfoReaderWithRadixTrigger: React.FC<React.PropsWithChildren<{asChild?: boolean}>> = ({ children }) => {
     const { openDialog } = React.useContext(context);
-    const trigger = React.Children.only(children) as React.ReactElement<{onClick?: React.MouseEventHandler}>;
-    return React.cloneElement(trigger, { onClick: (event) => { trigger.props.onClick?.(event); openDialog(true); } });
+    const open = useSelector((state: IReaderRootState) => state.dialog.open && state.dialog.type === DialogTypeName.PublicationInfoReader);
+    const trigger = React.Children.only(children) as React.ReactElement<React.ButtonHTMLAttributes<HTMLButtonElement>>;
+    return React.cloneElement(trigger, {
+        "aria-haspopup": "dialog",
+        "aria-expanded": open,
+        onClick: (event) => {
+            trigger.props.onClick?.(event);
+            if (!event.defaultPrevented) { openDialog(true); }
+        },
+    });
 };
 PublicationInfoReaderWithRadixTrigger.displayName = "PublicationInfoReaderWithRadixTrigger";
 export const PublicationInfoReaderWithRadixContent = React.forwardRef<HTMLDivElement>(
