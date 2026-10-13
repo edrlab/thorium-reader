@@ -6,10 +6,15 @@ import type { Root } from "react-dom/client";
 let Dialog: typeof import("readium-desktop/renderer/common/components/Dialog");
 let AlertDialog: typeof import("readium-desktop/renderer/common/components/AlertDialog");
 let Popover: typeof import("readium-desktop/renderer/common/components/Popover");
+let Menu: typeof import("readium-desktop/renderer/common/components/menu/Menu").default;
 let root: Root;
 let host: HTMLDivElement;
 let dom: JSDOM;
 const globals = new Map<string, PropertyDescriptor | undefined>();
+
+jest.mock("readium-desktop/renderer/assets/styles/components/dropdown.scss", () => ({
+    dropdown_menu: "dropdown_menu", dropdown_trigger: "dropdown_trigger", PopoverArrow: "PopoverArrow",
+}));
 
 beforeAll(() => {
     dom = new JSDOM("<!doctype html><html><body></body></html>", { pretendToBeVisual: true, url: "http://localhost" });
@@ -27,6 +32,7 @@ beforeAll(() => {
         HTMLFieldSetElement: dom.window.HTMLFieldSetElement,
         HTMLIFrameElement: dom.window.HTMLIFrameElement,
         DocumentFragment: dom.window.DocumentFragment,
+        location: dom.window.location,
     };
     for (const [key, value] of Object.entries(extraGlobals)) {
         globals.set(key, Object.getOwnPropertyDescriptor(globalThis, key));
@@ -36,6 +42,7 @@ beforeAll(() => {
     Dialog = require("readium-desktop/renderer/common/components/Dialog");
     AlertDialog = require("readium-desktop/renderer/common/components/AlertDialog");
     Popover = require("readium-desktop/renderer/common/components/Popover");
+    Menu = require("readium-desktop/renderer/common/components/menu/Menu").default;
 });
 
 beforeEach(() => {
@@ -228,6 +235,57 @@ test("popover arrows preserve RAC centering while rotating the SVG toward the tr
         expect(svg.style.transform).toBe(rotations[placement]);
         expect(svg.style.display).toBe("block");
         expect(svg.style.fill).toBe("blue");
+    }
+});
+
+test("popover focuses the first enabled action and returns focus to its trigger", async () => {
+    await React.act(async () => root.render(<Popover.Root modal>
+        <Popover.Trigger asChild><button data-trigger>Menu</button></Popover.Trigger>
+        <Popover.Portal><Popover.Content>
+            <button disabled>Unavailable</button><button data-first>About publication</button><button>Delete</button>
+        </Popover.Content></Popover.Portal>
+    </Popover.Root>));
+    const trigger = document.querySelector<HTMLButtonElement>("[data-trigger]")!;
+    trigger.focus();
+    await click(trigger);
+    expect(document.activeElement).toBe(document.querySelector("[data-first]"));
+    await escape();
+    expect(document.activeElement).toBe(trigger);
+});
+
+test("a menu above its trigger reserves space for the bottom arrow", async () => {
+    const height = jest.spyOn(document.documentElement, "clientHeight", "get").mockReturnValue(600);
+    const width = jest.spyOn(document.documentElement, "clientWidth", "get").mockReturnValue(1000);
+    const offsetParent = jest.spyOn(HTMLElement.prototype, "offsetParent", "get").mockReturnValue(document.documentElement);
+    const rect = jest.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockImplementation(function (this: HTMLElement) {
+        const isPopover = this.classList.contains("react-aria-Popover");
+        const isTrigger = this.classList.contains("dropdown_trigger");
+        return { x: 0, y: isTrigger ? 550 : 0, top: isTrigger ? 550 : 0, left: 0,
+            width: isPopover ? 182 : 30, height: isPopover ? 242 : 30,
+            right: isPopover ? 182 : 30, bottom: isTrigger ? 580 : isPopover ? 242 : 30, toJSON: () => ({}) };
+    });
+    const offsetWidth = jest.spyOn(HTMLElement.prototype, "offsetWidth", "get").mockImplementation(function (this: HTMLElement) {
+        return this.classList.contains("react-aria-Popover") ? 182 : 30;
+    });
+    const offsetHeight = jest.spyOn(HTMLElement.prototype, "offsetHeight", "get").mockImplementation(function (this: HTMLElement) {
+        return this.classList.contains("react-aria-Popover") ? 242 : 30;
+    });
+    try {
+        await React.act(async () => root.render(<Menu button={<span>Menu</span>} noCollisionPadding>
+            <button data-first>About publication</button>
+        </Menu>));
+        const trigger = document.querySelector<HTMLButtonElement>(".dropdown_trigger")!;
+        trigger.focus();
+        await click(trigger);
+        const popover = document.querySelector<HTMLElement>(".react-aria-Popover")!;
+        expect(popover.getAttribute("data-placement")).toBe("top");
+        const gap = Number.parseFloat(popover.style.bottom) - (600 - 550);
+        const arrow = popover.querySelector("svg")!;
+        expect(gap).toBe(17);
+        expect(gap).toBeGreaterThan(Number(arrow.getAttribute("height")));
+        expect(document.activeElement).toBe(document.querySelector("[data-first]"));
+    } finally {
+        height.mockRestore(); width.mockRestore(); offsetParent.mockRestore(); rect.mockRestore(); offsetWidth.mockRestore(); offsetHeight.mockRestore();
     }
 });
 

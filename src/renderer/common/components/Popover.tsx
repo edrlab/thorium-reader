@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { Popover, PopoverProps, OverlayArrow, Pressable } from "react-aria-components";
-import { mergeProps } from "react-aria";
+import { FocusScope, mergeProps } from "react-aria";
 import { useOverlayTriggerState } from "react-stately";
 import { DialogPortalContext } from "./Dialog";
 
@@ -142,7 +142,7 @@ export const Content = React.forwardRef<HTMLElement, ContentProps>(({
         boundaryElement={insetBoundary ?? collisionBoundary ?? undefined}
         containerPadding={typeof collisionPadding === "number" ? collisionPadding : 0} shouldFlip={avoidCollisions}
         aria-label={props["aria-label"] ?? trigger?.getAttribute("aria-label") ?? trigger?.getAttribute("title") ?? trigger?.textContent ?? undefined}>
-        {children}
+        <FocusScope autoFocus>{children}</FocusScope>
     </Popover>;
 });
 Content.displayName = "PopoverContent";
