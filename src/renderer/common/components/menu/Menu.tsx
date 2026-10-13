@@ -21,8 +21,6 @@ const Menu = (props: React.PropsWithChildren<IBaseProps>) => {
 
     const [triggerOpen, setTriggerOpen] = React.useState(false);
 
-    const collisionValue = location.hash === "#/home" ? 10 : 280;
-    const collision: Partial<Record<"top", number>> = props.noCollisionPadding ? undefined : {top : collisionValue};
     const arrowHeight = 12;
 
     return (
@@ -33,7 +31,8 @@ const Menu = (props: React.PropsWithChildren<IBaseProps>) => {
                 </button>
             </Popover.Trigger>
             <Popover.Portal>
-                <Popover.Content sideOffset={arrowHeight + 5} align="end" alignOffset={-10} collisionPadding={collision}>
+                <Popover.Content sideOffset={arrowHeight + 5} align="end" alignOffset={-10}
+                    collisionPadding={props.noCollisionPadding ? 0 : 10}>
                     <div className={stylesDropDown.dropdown_menu}>
                         {props.children}
                     </div>

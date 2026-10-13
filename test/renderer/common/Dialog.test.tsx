@@ -271,7 +271,7 @@ test("a menu above its trigger reserves space for the bottom arrow", async () =>
         return this.classList.contains("react-aria-Popover") ? 242 : 30;
     });
     try {
-        await React.act(async () => root.render(<Menu button={<span>Menu</span>} noCollisionPadding>
+        await React.act(async () => root.render(<Menu button={<span>Menu</span>}>
             <button data-first>About publication</button>
         </Menu>));
         const trigger = document.querySelector<HTMLButtonElement>(".dropdown_trigger")!;

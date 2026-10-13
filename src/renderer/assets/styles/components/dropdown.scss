@@ -41,9 +41,6 @@
 
   &_menu {
     height: fit-content;
-    max-height: inherit;
-    box-sizing: border-box;
-    overflow: hidden auto;
     width: 180px;
     display: flex;
     flex-direction: column;
@@ -67,7 +64,6 @@
     }
 
     & > * {
-      flex-shrink: 0;
       text-decoration: none;
       color:  var(--color-brand-primary);
       // padding: 0.7rem;
