@@ -284,13 +284,12 @@ const Progression = (props: {
                         // WARNING: .reverse() is in-place same-array mutation! (not a new array)
                         // ...but we're chaining with .filter() so that locatorExt.headings is not modified
 
-                            let k = 0;
                             const summary = hs.reduce<React.ReactElement[]>((arr, h, i) => {
                                 return arr.concat(
-                                    <div style={{ display: "flex", gap: "5px",overflow: "hidden", textWrap: "nowrap", paddingRight: "2px"}}>
-                                        <span key={`_h${k++}`}>{i === 0 ? " " : " / "}</span>
-                                        <span key={`_h${k++}`} style={{ fontWeight: "bold" }}>h{h.level} </span>
-                                        <span key={`_h${k++}`} style={{overflow: "hidden", textOverflow: "ellipsis"}}>{h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`}</span>
+                                    <div key={`_h${h.level}`} style={{ display: "flex", gap: "5px",overflow: "hidden", textWrap: "nowrap", paddingRight: "2px"}}>
+                                        <span>{i === 0 ? " " : " / "}</span>
+                                        <span style={{ fontWeight: "bold" }}>h{h.level} </span>
+                                        <span style={{overflow: "hidden", textOverflow: "ellipsis"}}>{h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`}</span>
                                     </div>,
                                 );
                             }, []);
