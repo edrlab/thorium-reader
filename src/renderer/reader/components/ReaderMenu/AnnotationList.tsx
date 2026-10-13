@@ -32,8 +32,8 @@ import * as UnderLineIcon from "readium-desktop/renderer/assets/icons/underline-
 import * as TextStrikeThroughtIcon from "readium-desktop/renderer/assets/icons/TextStrikethrough-icon.svg";
 import * as TextOutlineIcon from "readium-desktop/renderer/assets/icons/TextOutline-icon.svg";
 
-import * as Popover from "@radix-ui/react-popover";
-import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import * as Popover from "readium-desktop/renderer/common/components/Popover";
+import * as AlertDialog from "readium-desktop/renderer/common/components/AlertDialog";
 import { ListBox, ListBoxItem  } from "react-aria-components";
 import type { Selection } from "react-aria-components";
 
@@ -359,8 +359,7 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
                         <AlertDialog.Trigger className={stylesAnnotations.annotations_filter_trigger_button} disabled={!deletableAnnotationListFiltered.length} title={__("dialog.deleteAnnotations")} aria-label={__("dialog.deleteAnnotations")}>
                             <SVG svg={TrashIcon} ariaHidden />
                         </AlertDialog.Trigger>
-                        <AlertDialog.Portal>
-                            <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay} />
+                        <AlertDialog.Portal className={stylesAlertModals.AlertDialogOverlay}>
                             <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
                                 <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("dialog.deleteAnnotations")}</AlertDialog.Title>
                                 <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>

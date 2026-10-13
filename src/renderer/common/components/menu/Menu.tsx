@@ -8,7 +8,7 @@
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 
 import * as React from "react";
-import * as Popover from "@radix-ui/react-popover";
+import * as Popover from "readium-desktop/renderer/common/components/Popover";
 import classNames from "classnames";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
