@@ -190,6 +190,47 @@ test("RAC popovers stay within the dialog and Escape closes only the popover", a
     expect(document.querySelector('.react-aria-Dialog[role="dialog"]')).toBeTruthy();
 });
 
+test("a dialog opened from a menu stays above the popover and closes independently", async () => {
+    await React.act(async () => root.render(<Popover.Root modal>
+        <Popover.Trigger asChild><button data-menu-trigger>Menu</button></Popover.Trigger>
+        <Popover.Portal><Popover.Content>
+            <Dialog.Root>
+                <Dialog.Trigger asChild><button data-info-trigger>About publication</button></Dialog.Trigger>
+                <Dialog.Portal><Dialog.Content><Dialog.Title>About publication</Dialog.Title></Dialog.Content></Dialog.Portal>
+            </Dialog.Root>
+        </Popover.Content></Popover.Portal>
+    </Popover.Root>));
+    await click(document.querySelector("[data-menu-trigger]")!);
+    const popover = document.querySelector<HTMLElement>(".react-aria-Popover")!;
+    await click(document.querySelector("[data-info-trigger]")!);
+    const dialogOverlay = document.querySelector<HTMLElement>(".thorium-dialog-overlay")!;
+    expect(Number(popover.style.zIndex)).toBeLessThan(Number(dialogOverlay.style.zIndex));
+    expect(document.activeElement?.closest(".react-aria-Dialog")).toBeTruthy();
+    await escape();
+    expect(document.querySelector(".thorium-dialog-overlay")).toBeNull();
+    expect(document.querySelector("[data-info-trigger]")).toBeTruthy();
+});
+
+test("popover arrows preserve RAC centering while rotating the SVG toward the trigger", async () => {
+    const rotations = { top: "", bottom: "rotate(180deg)", left: "rotate(-90deg)", right: "rotate(90deg)" };
+    for (const placement of ["top", "bottom", "left", "right"] as const) {
+        await React.act(async () => root.render(<Popover.Root key={placement} modal>
+            <Popover.Trigger asChild><button data-arrow-trigger>Open</button></Popover.Trigger>
+            <Popover.Portal><Popover.Content side={placement} avoidCollisions={false}>
+                <button>Option</button><Popover.Arrow style={{ fill: "blue" }} />
+            </Popover.Content></Popover.Portal>
+        </Popover.Root>));
+        await click(document.querySelector("[data-arrow-trigger]")!);
+        const arrow = document.querySelector<HTMLElement>(".react-aria-OverlayArrow")!;
+        const svg = arrow.querySelector("svg")!;
+        expect(arrow.style.transform).toBe(placement === "top" || placement === "bottom" ? "translateX(-50%)" : "translateY(-50%)");
+        expect(arrow.style[placement]).toBe("100%");
+        expect(svg.style.transform).toBe(rotations[placement]);
+        expect(svg.style.display).toBe("block");
+        expect(svg.style.fill).toBe("blue");
+    }
+});
+
 test("popover close preserves submit handlers that prevent default and restores focus", async () => {
     const onSave = jest.fn((event: React.MouseEvent) => event.preventDefault());
     await React.act(async () => root.render(<Popover.Root modal>

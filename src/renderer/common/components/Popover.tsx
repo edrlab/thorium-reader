@@ -84,7 +84,7 @@ interface ContentProps extends Omit<PopoverProps, "children"> {
 
 export const Content = React.forwardRef<HTMLElement, ContentProps>(({
     side = "bottom", align = "center", sideOffset = 0, alignOffset = 0, collisionBoundary,
-    collisionPadding = 0, avoidCollisions = true, hideWhenDetached, children, ...props
+    collisionPadding = 0, avoidCollisions = true, hideWhenDetached, children, style, ...props
 }, ref) => {
     const { state, triggerRef, modal } = React.useContext(Context)!;
     const container = React.useContext(PortalContext);
@@ -136,6 +136,7 @@ export const Content = React.forwardRef<HTMLElement, ContentProps>(({
         : side === "top" || side === "bottom" ? `${side} ${align}`
             : `${side} ${align === "start" ? "top" : "bottom"}`;
     return <Popover {...props} ref={ref} triggerRef={triggerRef} isOpen={state.isOpen} onOpenChange={state.setOpen}
+        style={(renderProps) => ({ zIndex: 101, ...(typeof style === "function" ? style(renderProps) : style) })}
         isNonModal={!modal} UNSTABLE_portalContainer={container}
         placement={placement} offset={sideOffset} crossOffset={alignOffset}
         boundaryElement={insetBoundary ?? collisionBoundary ?? undefined}
@@ -146,12 +147,13 @@ export const Content = React.forwardRef<HTMLElement, ContentProps>(({
 });
 Content.displayName = "PopoverContent";
 
-export function Arrow({ width = 10, height = 5, ...props }: React.SVGProps<SVGSVGElement>) {
-    return <OverlayArrow style={({ placement }) => ({
-        transform: placement === "bottom" ? "rotate(180deg)" : placement === "left" ? "rotate(-90deg)" : placement === "right" ? "rotate(90deg)" : undefined,
-    })}>
-        <svg {...props} width={width} height={height} viewBox="0 0 30 10" preserveAspectRatio="none" aria-hidden="true">
+export function Arrow({ width = 10, height = 5, style, ...props }: React.SVGProps<SVGSVGElement>) {
+    return <OverlayArrow>
+        {({ placement }) => <svg {...props} width={width} height={height} viewBox="0 0 30 10" preserveAspectRatio="none" aria-hidden="true"
+            style={{ display: "block", ...style,
+                transform: placement === "bottom" ? "rotate(180deg)" : placement === "left" ? "rotate(-90deg)" : placement === "right" ? "rotate(90deg)" : undefined,
+            }}>
             <polygon points="0,0 30,0 15,10" />
-        </svg>
+        </svg>}
     </OverlayArrow>;
 }
