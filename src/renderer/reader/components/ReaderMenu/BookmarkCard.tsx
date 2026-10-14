@@ -13,7 +13,7 @@ import * as stylesBookmarks from "readium-desktop/renderer/assets/styles/compone
 import * as stylesMarkdown from "readium-desktop/renderer/assets/styles/github-markdown.scss";
 import classNames from "classnames";
 import * as React from "react";
-import { OVERLAY_Z_INDEX, PopoverArrow, ViewportBoundary } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
 import { FocusScope } from "react-aria";
 import { DialogTrigger, Pressable, Popover, Dialog as PopoverDialog, Button } from "react-aria-components";
 import FocusLock from "react-focus-lock";
@@ -155,14 +155,12 @@ export const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, t
                         }
                         // dispatch(readerLocalActionAnnotations.focus.build(annotation));
                     }}
-
                     // does not work on button (works on 'a' link)
                     // onDoubleClick={(_e) => {
                     //     e.preventDefault();
                     //     goToLocator(annotation.locatorExtended.locator, false);
                     //     dispatch(readerLocalActionAnnotations.focus.build(annotation));
                     // }}
-
                     // not necessary (onClick works)
                     // onKeyUp=
                     // {
@@ -205,7 +203,6 @@ export const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, t
                         {tag ? <div className={stylesTags.tags_wrapper} aria-label={__("catalog.tags")}>
                             <div className={stylesTags.tag}>
                                 <a onClick={() => setTagFilter(tag)}
-
                                     onKeyDown={(e) => {
                                         // if (e.code === "Space") {
                                         if (e.key === " " || e.altKey || e.ctrlKey) {
@@ -249,7 +246,6 @@ export const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, t
                     <div>
                         <SVG ariaHidden svg={AvatarIcon} />
                         <a onClick={() => setCreatorFilter(creatorName)}
-
                             onKeyDown={(e) => {
                                 // if (e.code === "Space") {
                                 if (e.key === " " || e.altKey || e.ctrlKey) {
@@ -324,37 +320,31 @@ export const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, t
                             <SVG ariaHidden={true} svg={DeleteIcon} />
                         </button>
                     </Pressable>
-                    <ViewportBoundary top={180} bottom={100}>
-                        {(boundaryElement) => (
-                            <Popover
-                                boundaryElement={boundaryElement}
-                                placement="bottom"
-                                offset={5}
-                                crossOffset={-10}
-                                containerPadding={0}
-                                className={stylesPopoverDialog.delete_item}
-                                style={{ zIndex: OVERLAY_Z_INDEX }}
-                            >
-                                <PopoverDialog>
-                                    <FocusScope autoFocus>
-                                        <Button
-                                            slot="close"
-                                            onPress={() => {
-                                                triggerEdition(false);
-                                                dispatch(readerActions.note.remove.build(bookmark));
-                                                logEvent(readerAnalyticsEvents.bookmarkToggle);
-                                            }}
-                                            render={(buttonProps) => <button {...buttonProps} title={__("reader.marks.delete")} />}
-                                        >
-                                            <SVG ariaHidden={true} svg={DeleteIcon} />
-                                            {__("reader.marks.delete")}
-                                        </Button>
-                                        <PopoverArrow className={stylesDropDown.PopoverArrow} aria-hidden />
-                                    </FocusScope>
-                                </PopoverDialog>
-                            </Popover>
-                        )}
-                    </ViewportBoundary>
+                    <Popover
+                        placement="bottom"
+                        offset={5}
+                        crossOffset={-10}
+                        className={stylesPopoverDialog.delete_item}
+                        style={{ zIndex: OVERLAY_Z_INDEX }}
+                    >
+                        <PopoverDialog>
+                            <FocusScope autoFocus>
+                                <Button
+                                    slot="close"
+                                    onPress={() => {
+                                        triggerEdition(false);
+                                        dispatch(readerActions.note.remove.build(bookmark));
+                                        logEvent(readerAnalyticsEvents.bookmarkToggle);
+                                    }}
+                                    render={(buttonProps) => <button {...buttonProps} title={__("reader.marks.delete")} />}
+                                >
+                                    <SVG ariaHidden={true} svg={DeleteIcon} />
+                                    {__("reader.marks.delete")}
+                                </Button>
+                                <PopoverArrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                            </FocusScope>
+                        </PopoverDialog>
+                    </Popover>
                 </DialogTrigger>
                 }
             </div>
