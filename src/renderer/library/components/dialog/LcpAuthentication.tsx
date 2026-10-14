@@ -12,7 +12,7 @@ import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/componen
 
 import { shell } from "electron";
 import * as React from "react";
-import * as Dialog from "@radix-ui/react-dialog";
+import * as Dialog from "readium-desktop/renderer/common/components/Dialog";
 import { connect } from "react-redux";
 import debounce from "debounce";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
@@ -95,13 +95,9 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
         const { __ } = this.props;
         const { showPassword } = this.state;
         const inputType = showPassword ? "text" : "password";
-        return <Dialog.Root defaultOpen={true} onOpenChange={(open) => { if (open === false) { this.props.closeDialog(); } }}>
-            <Dialog.Portal>
-                <div className={stylesModals.modal_dialog_overlay}></div>
-                <Dialog.Content className={stylesModals.modal_dialog} style={{maxWidth: "600px"}} onOpenAutoFocus={(e) => {
-                    e.preventDefault();
-                    this.focusRef.current?.focus();
-                }} aria-describedby={__("library.lcp.sentence")}>
+        return <Dialog.Root triggerless defaultOpen={true} onOpenChange={(open) => { if (open === false) { this.props.closeDialog(); } }}>
+            <Dialog.Portal className={stylesModals.modal_dialog_overlay}>
+                <Dialog.Content className={stylesModals.modal_dialog} style={{maxWidth: "600px"}}>
                     <div className={stylesModals.modal_dialog_header}>
                         <Dialog.Title>
                             {__("library.lcp.sentence")}
@@ -123,6 +119,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                             <label htmlFor="passphrase" style={{fontSize: "14px"}}>{__("library.lcp.password")}</label>
                             <input
                                 id="passphrase"
+                                autoFocus
                                 aria-label={__("library.lcp.password")}
                                 type={inputType}
                                 onChange={this.onPasswordChange}

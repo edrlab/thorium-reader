@@ -1,7 +1,7 @@
 {
   "lockfile-version": 1,
   "manifest": {
-    "schema-version": "1.10.0",
+    "schema-version": "1.18.0",
     "install": {
       "jq": {
         "pkg-path": "jq",

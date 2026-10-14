@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import * as AlertDialog from "readium-desktop/renderer/common/components/AlertDialog";
 import * as React from "react";
 
 import type { IOpdsProgressionDocument } from "readium-desktop/common/models/opdsProgression";
@@ -29,15 +29,15 @@ export const OpdsProgressionDialog: React.FC<IOpdsProgressionDialogProps> = ({
 
     return (
         <AlertDialog.Root
-            open={Boolean(document)}
+            triggerless
+            isOpen={Boolean(document)}
             onOpenChange={(open) => {
                 if (!open && document) {
                     onCancel();
                 }
             }}
         >
-            <AlertDialog.Portal>
-                <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay} />
+            <AlertDialog.Portal className={stylesAlertModals.AlertDialogOverlay}>
                 <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
                     <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>
                         {__("publication.progression.remoteTitle")}
@@ -52,16 +52,14 @@ export const OpdsProgressionDialog: React.FC<IOpdsProgressionDialogProps> = ({
                         {document?.title ? ` ${document.title}` : ""}
                     </AlertDialog.Description>
                     <div className={stylesAlertModals.AlertDialogButtonContainer}>
-                        <AlertDialog.Cancel asChild onClick={onCancel}>
+                        <AlertDialog.Cancel asChild>
                             <button className={stylesButtons.button_secondary_blue}>
                                 {__("dialog.cancel")}
                             </button>
                         </AlertDialog.Cancel>
-                        <AlertDialog.Action asChild onClick={onAccept}>
-                            <button className={stylesButtons.button_primary_blue}>
-                                {__("publication.progression.useRemote")}
-                            </button>
-                        </AlertDialog.Action>
+                        <button className={stylesButtons.button_primary_blue} onClick={onAccept}>
+                            {__("publication.progression.useRemote")}
+                        </button>
                     </div>
                 </AlertDialog.Content>
             </AlertDialog.Portal>

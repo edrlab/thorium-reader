@@ -9,11 +9,11 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 
 import * as React from "react";
+import { Button } from "react-aria-components";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
-import * as Popover from "@radix-ui/react-popover";
 // import * as PenIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
@@ -25,7 +25,7 @@ import * as TextOutlineIcon from "readium-desktop/renderer/assets/icons/TextOutl
 import * as TagIcon from "readium-desktop/renderer/assets/icons/tag-icon.svg";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import classNames from "classnames";
-// import { TextArea } from "react-aria-components";
+// import { Button, TextArea } from "react-aria-components";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
@@ -241,7 +241,14 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
         <div className={stylesAnnotations.annotation_form_textarea_buttons}>
             {displayFromReaderMenu
                 ? <button className={stylesButtons.button_secondary_blue} aria-label={__("dialog.cancel")} onClick={cancel} type="button">{__("dialog.cancel")}</button>
-                : <Popover.Close className={stylesButtons.button_secondary_blue} aria-label={__("dialog.cancel")} onClick={cancel}>{__("dialog.cancel")}</Popover.Close>
+                : <Button
+                    slot="close"
+                    className={stylesButtons.button_secondary_blue}
+                    aria-label={__("dialog.cancel")}
+                    onPress={cancel}
+                >
+                    {__("dialog.cancel")}
+                </Button>
             }
             {displayFromReaderMenu
                 ? <button type="submit"
@@ -260,13 +267,12 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                     {__("reader.annotations.saveNote")}
                 </button>
                 :
-                <Popover.Close
-                    type="submit"
+                <Button
+                    slot="close"
+                    type="button"
                     className={stylesButtons.button_primary_blue}
                     aria-label={__("reader.annotations.saveNote")}
-                    onClick={(e) => {
-                        e.preventDefault();
-
+                    onPress={() => {
                         const textareaValue = textAreaRef?.current?.value || "";
                         const textareaNormalize = textareaValue.trim(); // also see trimNormaliseWhitespaceAndCollapse()
                         save(hexToRgb(colorSelected), textareaNormalize, drawTypeSelected, tag ? [tag] : []);
@@ -275,7 +281,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                 >
                     <SVG ariaHidden svg={SaveIcon} />
                     {__("reader.annotations.saveNote")}
-                </Popover.Close>
+                </Button>
             }
         </div>
         {/* </div> */}

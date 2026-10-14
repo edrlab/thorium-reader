@@ -40,10 +40,16 @@ export async function getWindowsSystemProxy(): Promise<WindowsProxySettings | un
     const proxyServer = getValue(proxyValues, "ProxyServer");
     const autoConfigURL = getValue(proxyValues, "AutoConfigURL");
 
-    if ((!proxyServer || !proxyServer.data) && (!autoConfigURL || !autoConfigURL.data)) return undefined;
+    if (!proxyServer?.data && !autoConfigURL?.data) return undefined;
 
-    // const proxyEnabled = getValue(proxyValues, "ProxyEnable");
-    // if ((!proxyEnabled || !proxyEnabled.data || (proxyEnabled.data !== "1" && proxyEnabled.data !== 1)) && (!autoConfigURL || !autoConfigURL.data)) return undefined;
+    const isPac = !!autoConfigURL?.data;
+
+    const proxyEnabled = getValue(proxyValues, "ProxyEnable");
+    if (typeof proxyEnabled?.data !== "undefined" &&
+        (proxyEnabled.data === "0" || proxyEnabled.data === 0)
+        // && proxyServer?.data
+        // && !isPac
+    ) return undefined;
 
     // ProxyOverride is a ;-separated list of hosts not to proxy
     const proxyOverride = getValue(proxyValues, "ProxyOverride")?.data;
@@ -52,7 +58,6 @@ export async function getWindowsSystemProxy(): Promise<WindowsProxySettings | un
             ? ["localhost", "127.0.0.1", "::1"]
             : [host]);
 
-    const isPac = !!autoConfigURL?.data;
     let proxyConfigString =
         isPac ? autoConfigURL.data as string // TODO?: && autoconfig
         : proxyServer?.data ? proxyServer.data as string

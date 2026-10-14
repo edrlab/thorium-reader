@@ -78,7 +78,7 @@
         "deleteBook": "Slet",
         "deleteTag": "Slet tag",
         "description": "Beskrivelse",
-        "downloaded": "",
+        "downloaded": "Downloadet",
         "emptyTagList": "Du har ingen taggede bøger.",
         "entry": {
             "continueReading": "Genoptag læsning",
@@ -1354,7 +1354,7 @@
             }
         },
         "tabs": {
-            "advanced": "",
+            "advanced": "Avanceret",
             "general": "Generelt",
             "keyboardShortcuts": "Tastaturgenveje",
             "profiles": "Profiler",

@@ -135,7 +135,17 @@ export class LcpManager {
     public async getAllSecrets(): Promise<TLCPSecrets> {
         debug("LCP getAllSecrets ...");
 
-        const buff = await tryCatch(() => fs.promises.readFile(lcpHashesFilePath), "getAllSecrets fs.promises.readFile?");
+        const buff = await tryCatch(async () => {
+            try {
+                return await fs.promises.readFile(lcpHashesFilePath);
+            } catch (e) {
+                // The vault does not exist until the first passphrase is saved.
+                if ((e as NodeJS.ErrnoException).code === "ENOENT") {
+                    return undefined;
+                }
+                throw e;
+            }
+        }, "getAllSecrets fs.promises.readFile?");
         if (buff) {
             debug("LCP getAllSecrets from JSON", buff.length);
 
@@ -164,7 +174,7 @@ export class LcpManager {
         const ids = Object.keys(allSecrets);
         const addSecret = (id: string) => {
             const val = allSecrets[id];
-            if (val.passphrase && !secrets.includes(val.passphrase)) {
+            if (val?.passphrase && !secrets.includes(val.passphrase)) {
                 secrets.push(val.passphrase);
             }
         };

@@ -14,9 +14,11 @@ import * as stylesPrint from "readium-desktop/renderer/assets/styles/components/
 import classNames from "classnames";
 import debug_ from "debug";
 import * as React from "react";
-import * as Popover from "@radix-ui/react-popover";
-import * as Dialog from "@radix-ui/react-dialog";
-import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { FocusScope } from "react-aria";
+import { useOverlayTriggerState } from "react-stately";
+import { OverlayTriggerStateContext, DialogTrigger, Pressable, Popover, Dialog as PopoverDialog, VisuallyHidden } from "react-aria-components";
+import * as Dialog from "readium-desktop/renderer/common/components/Dialog";
 
 // import * as ReactDOM from "react-dom";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
@@ -66,7 +68,7 @@ import { ReaderMenu } from "./ReaderMenu/ReaderMenu";
 import { connect } from "react-redux";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
-import { PublicationInfoReaderWithRadix, PublicationInfoReaderWithRadixContent, PublicationInfoReaderWithRadixTrigger } from "./dialog/publicationInfos/PublicationInfo";
+import { PublicationInfoReaderWithRAC, PublicationInfoReaderWithRACContent, PublicationInfoReaderWithRACTrigger } from "./dialog/publicationInfos/PublicationInfo";
 import {ReaderSettings}  from "readium-desktop/renderer/reader/components/ReaderSettings/ReaderSettings";
 import {ReadingAudio} from "readium-desktop/renderer/reader/components/ReadingAudio";
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
@@ -211,6 +213,7 @@ interface IState {
 }
 
 export class ReaderHeader extends React.Component<IProps, IState> {
+
 
     private enableFullscreenRef: React.RefObject<HTMLButtonElement>;
     private disableFullscreenRef: React.RefObject<HTMLButtonElement>;
@@ -424,9 +427,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
     //     // }, 600);
     // }
 
-
-    private __closeNavPanel = false;
-
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 
@@ -553,9 +553,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             }
         };
 
-
-        const appOverlayElement = document.getElementById("app-overlay");
-
         return (
             <nav
                 className={classNames(stylesReaderHeader.toolbar_navigation,
@@ -582,8 +579,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             </button>
                         </li>
                         <li>
-                            <PublicationInfoReaderWithRadix handlePublicationInfo={this.props.handlePublicationInfo}>
-                                <PublicationInfoReaderWithRadixTrigger asChild>
+                            <PublicationInfoReaderWithRAC handlePublicationInfo={this.props.handlePublicationInfo}>
+                                <PublicationInfoReaderWithRACTrigger asChild>
                                     <button
                                         className={stylesReader.menu_button}
                                         ref={this.infoMenuButtonRef}
@@ -592,9 +589,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     >
                                         <SVG ariaHidden={true} svg={InfosIcon} />
                                     </button>
-                                </PublicationInfoReaderWithRadixTrigger>
-                                <PublicationInfoReaderWithRadixContent />
-                            </PublicationInfoReaderWithRadix>
+                                </PublicationInfoReaderWithRACTrigger>
+                                <PublicationInfoReaderWithRACContent />
+                            </PublicationInfoReaderWithRAC>
                         </li>
                     </ul>
                     {
@@ -791,70 +788,97 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
                                             }
                                             <li>
-                                                <Popover.Root modal open={this.state.ttsPopoverOpen} onOpenChange={(open) => this.setState({ ttsPopoverOpen: open })}>
-                                                    <Popover.Trigger asChild>
-                                                        <button className={stylesReader.menu_button} style={{ backgroundColor: this.state.ttsPopoverOpen ? "var(--color-brand-primary)" : "" }} aria-label={__("reader.tts.options")} title={__("reader.tts.options")}>
-                                                            <SVG ariaHidden svg={HeadphoneIcon} className={this.state.ttsPopoverOpen ? stylesReaderHeader.active_svg : ""} />
+                                                <DialogTrigger isOpen={this.state.ttsPopoverOpen} onOpenChange={(open) => this.setState({ ttsPopoverOpen: open })}>
+                                                    <Pressable>
+                                                        <button
+                                                            className={stylesReader.menu_button}
+                                                            style={{ backgroundColor: this.state.ttsPopoverOpen ? "var(--color-brand-primary)" : "" }}
+                                                            aria-label={__("reader.tts.options")}
+                                                            title={__("reader.tts.options")}
+                                                        >
+                                                            <SVG
+                                                                ariaHidden
+                                                                svg={HeadphoneIcon}
+                                                                className={this.state.ttsPopoverOpen ? stylesReaderHeader.active_svg : ""}
+                                                            />
                                                         </button>
-                                                    </Popover.Trigger>
-                                                    <Popover.Portal container={appOverlayElement}>
-                                                        <Popover.Content style={{ zIndex: 100 }}>
-                                                            <div className={stylesReaderHeader.Tts_popover_container}>
-                                                                <div style={{ paddingRight: 25 /* , borderRight: "1px solid var(--color-gray-250)" */ }}>
-                                                                    <div className={stylesReader.ttsSelectRate} style={{ paddingLeft: 8 }}>
-                                                                        <ComboBox
-                                                                            label={useMO ?
-                                                                            __("reader.media-overlays.speed")
-                                                                            : __("reader.tts.speed")}
-                                                                            aria-label={useMO ?
-                                                                                __("reader.media-overlays.speed")
-                                                                                : __("reader.tts.speed")}
-                                                                            defaultItems={playbackRate}
-                                                                            // defaultSelectedKey={2}
-                                                                            selectedKey={
-                                                                                playbackRate.find((rate) => rate.value === (useMO ? parseFloat(this.props.mediaOverlaysPlaybackRate || "1.0") : parseFloat(this.props.ttsPlaybackRate || "1.0")))?.id || playbackRate.find((rate) => rate.value === 1)?.id || 1
-                                                                            }
-                                                                            onSelectionChange={(ev) => {
-                                                                                const v = playbackRate.find((option) => option.id === ev)?.value;
-                                                                                if (v !== undefined) {
-                                                                                    if (useMO) {
-                                                                                        this.props.handleMediaOverlaysPlaybackRate(
-                                                                                            v.toString(),
-                                                                                        );
-                                                                                    } else {
-                                                                                        this.props.handleTTSPlaybackRate(
-                                                                                            v.toString(),
-                                                                                        );
-                                                                                    }
+                                                    </Pressable>
+                                                    <Popover placement="bottom" offset={0} crossOffset={0} containerPadding={0} style={{ zIndex: OVERLAY_Z_INDEX }}>
+                                                        <PopoverDialog>
+                                                            <FocusScope autoFocus>
+                                                                <div className={stylesReaderHeader.Tts_popover_container}>
+                                                                    <div
+                                                                        style={{
+                                                                            paddingRight: 25 /* , borderRight: "1px solid var(--color-gray-250)" */,
+                                                                        }}
+                                                                    >
+                                                                        <div className={stylesReader.ttsSelectRate} style={{ paddingLeft: 8 }}>
+                                                                            <ComboBox
+                                                                                label={useMO ? __("reader.media-overlays.speed") : __("reader.tts.speed")}
+                                                                                aria-label={useMO ? __("reader.media-overlays.speed") : __("reader.tts.speed")}
+                                                                                defaultItems={playbackRate}
+                                                                                // defaultSelectedKey={2}
+                                                                                selectedKey={
+                                                                                    playbackRate.find(
+                                                                                        (rate) =>
+                                                                                            rate.value ===
+                                                                                            (useMO
+                                                                                                ? parseFloat(this.props.mediaOverlaysPlaybackRate || "1.0")
+                                                                                                : parseFloat(this.props.ttsPlaybackRate || "1.0")),
+                                                                                    )?.id ||
+                                                                                    playbackRate.find((rate) => rate.value === 1)?.id ||
+                                                                                    1
                                                                                 }
-                                                                            }}>
-                                                                            {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-                                                                        </ComboBox>
+                                                                                onSelectionChange={(ev) => {
+                                                                                    const v = playbackRate.find((option) => option.id === ev)?.value;
+                                                                                    if (v !== undefined) {
+                                                                                        if (useMO) {
+                                                                                            this.props.handleMediaOverlaysPlaybackRate(v.toString());
+                                                                                        } else {
+                                                                                            this.props.handleTTSPlaybackRate(v.toString());
+                                                                                        }
+                                                                                    }
+                                                                                }}
+                                                                            >
+                                                                                {(item) => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                                                                            </ComboBox>
+                                                                        </div>
+                                                                        {
+                                                                            /* EPUB3 Media Overlays can play TTS too */ (true || !useMO) && (
+                                                                                <VoiceSelection
+                                                                                    languages={this.state.languages}
+                                                                                    selectedLanguage={this.state.selectedLanguage}
+                                                                                    setSelectedLanguage={(newLanguageSelected) => {
+                                                                                        this.setNewVoiceLanguage(newLanguageSelected)
+                                                                                            .then((_v) => {
+                                                                                                /* noop */
+                                                                                            })
+                                                                                            .catch((_err) => {
+                                                                                                /* debug(err); */
+                                                                                            });
+                                                                                    }}
+
+                                                                                    voicesGroupByRegion={this.state.voicesGroupByRegion}
+                                                                                    selectedVoice={this.state.selectedVoice}
+                                                                                    setSelectedVoice={(newVoiceSelected) => {
+                                                                                        this.setNewVoiceVoice(newVoiceSelected);
+                                                                                    }}
+                                                                                />
+                                                                            )
+                                                                        }
                                                                     </div>
-                                                                    {/* EPUB3 Media Overlays can play TTS too */ (true || !useMO) && (
-                                                                        <VoiceSelection
-
-                                                                            languages={this.state.languages}
-                                                                            selectedLanguage={this.state.selectedLanguage}
-                                                                            setSelectedLanguage={(newLanguageSelected) => {
-
-                                                                                this.setNewVoiceLanguage(newLanguageSelected).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
-                                                                            }}
-
-                                                                            voicesGroupByRegion={this.state.voicesGroupByRegion}
-                                                                            selectedVoice={this.state.selectedVoice}
-                                                                            setSelectedVoice={(newVoiceSelected) => {
-                                                                                this.setNewVoiceVoice(newVoiceSelected);
-                                                                            }}
-                                                                        />
-                                                                    )}
+                                                                    <ReadingAudio
+                                                                        useMO={useMO}
+                                                                        ttsState={this.props.ttsState}
+                                                                        ttsPause={this.props.handleTTSPause}
+                                                                        ttsResume={this.props.handleTTSResume}
+                                                                    />
                                                                 </div>
-                                                                <ReadingAudio useMO={useMO} ttsState={this.props.ttsState} ttsPause={this.props.handleTTSPause} ttsResume={this.props.handleTTSResume} />
-                                                            </div>
-                                                            <Popover.Arrow className={stylesReaderHeader.popover_arrow} />
-                                                        </Popover.Content>
-                                                    </Popover.Portal>
-                                                </Popover.Root>
+                                                                <PopoverArrow className={stylesReaderHeader.popover_arrow} />
+                                                            </FocusScope>
+                                                        </PopoverDialog>
+                                                    </Popover>
+                                                </DialogTrigger>
                                             </li>
                                         </>
                                 }
@@ -873,7 +897,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     {...(this.props.pdfPrintOpen &&
                                         { style: { backgroundColor: "var(--color-brand-primary)" } })}
                                 >
-                                    <Dialog.Root open={this.props.pdfPrintOpen} onOpenChange={(open) => {
+                                    <Dialog.Root isOpen={this.props.pdfPrintOpen} onOpenChange={(open) => {
                                         this.props.setShortcutEnable(!open);
                                         this.props.setPdfPrintOpen(open);
                                     }}>
@@ -888,13 +912,17 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 <SVG ariaHidden svg={PrinterIcon} className={this.props.pdfPrintOpen ? stylesReaderHeader.active_svg : ""} />
                                             </button>
                                         </Dialog.Trigger>
-                                        <Dialog.Portal container={appOverlayElement}>
-                                            <Dialog.Content style={{ zIndex: 101, height: "fit-content" }}
-                                            className={classNames(stylesPopoverDialog.modal_dialog_reader, stylesPrint.modal_dialog_print)}
-                                            // onPointerDownOutside={(e) => { e.preventDefault(); console.log("annotationPopover onPointerDownOutside"); }}
-                                            // onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}
+                                        <Dialog.Portal>
+                                            <Dialog.Content
+                                                style={{ zIndex: OVERLAY_Z_INDEX, height: "fit-content" }}
+                                                className={classNames(stylesPopoverDialog.modal_dialog_reader, stylesPrint.modal_dialog_print)}
+                                                // onPointerDownOutside={(e) => { e.preventDefault(); console.log("annotationPopover onPointerDownOutside"); }}
+                                                // onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}
                                             >
-                                                <PrintContainer pdfPageRange={[1, this.props.pdfPlayerNumberOfPages]} pdfThumbnailImageCacheArray={this.props.pdfThumbnailImageCacheArray} />
+                                                <PrintContainer
+                                                    pdfPageRange={[1, this.props.pdfPlayerNumberOfPages]}
+                                                    pdfThumbnailImageCacheArray={this.props.pdfThumbnailImageCacheArray}
+                                                />
                                             </Dialog.Content>
                                         </Dialog.Portal>
                                     </Dialog.Root>
@@ -909,81 +937,14 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
                         <BookmarkButton shortcutEnable={this.props.shortcutEnable} isOnSearch={this.props.isOnSearch} />
 
-                        <Popover.Root modal open={annotationPopoverOpen} onOpenChange={(open) => {
-                            if (!open) {
-                                setTimeout(closeAnnotationPopover, 1); // trigger input onChange before the popover trigger
-                            }
-                        }}>
-                            <Popover.Trigger asChild>
-                                <li
-                                    {...(annotationPopoverOpen &&
-                                        { style: { backgroundColor: "var(--color-brand-primary)" } })}
-                                >
-                                    <input
-                                        disabled={this.props.isDivina || isAudioBook}
-                                        id="annotationButton"
-                                        aria-label={__("reader.navigation.annotationTitle")}
-                                        className={stylesReader.bookmarkButton}
-                                        type="checkbox"
-                                        checked={annotationPopoverOpen}
-                                        onKeyUp={(e) => {
-                                            if (e.key === "Enter") {
-                                                if (annotationPopoverOpen) {
-                                                    closeAnnotationPopover();
-                                                } else {
-                                                    this.triggerAnnotation(false);
-                                                }
-                                            }
-                                        }}
-                                        onChange={() => {
-                                            if (annotationPopoverOpen) {
-                                                closeAnnotationPopover();
-                                            } else {
-                                                this.triggerAnnotation(false);
-                                            }
-                                        }}
-                                    />
-                                    {
-                                        // "htmlFor" is necessary as input is NOT located suitably for mouse hit testing
-                                    }
-                                    <label
-                                        htmlFor="annotationButton"
-                                        aria-hidden="true"
-                                        className={stylesReader.menu_button}
-                                        id="annotationLabel"
-                                        title={__("reader.navigation.annotationTitle")}
-                                    >
-                                        <SVG ariaHidden svg={AnnotationsIcon} className={classNames(stylesReaderHeader.annotationsIcon, annotationPopoverOpen ? stylesReaderHeader.active_svg : "")} />
-                                    </label>
-                                </li>
-                            </Popover.Trigger>
-                            <Popover.Portal>
-                                <Popover.Content sideOffset={this.props.isOnSearch ? 50 : 18} align="end" style={{ zIndex: 101 }}
-                                // onPointerDownOutside={(e) => { e.preventDefault(); console.log("annotationPopover onPointerDownOutside"); }}
-                                // onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}
-                                >
-                                    <AnnotationEdit
-                                        save={(color: IColor, comment: string, drawType: TDrawType, tags: string[]) => {
-                                            if (this.props.isPdf) {
-                                                this.props.savePdfAnnotation?.(color, comment, drawType, tags);
-                                            } else {
-                                                this.props.saveAnnotation(this.props.isAnnotationModeEnabledFromKeyboard, color, comment, drawType, tags);
-                                            }
-                                        }}
-                                        cancel={closeAnnotationPopover}
-                                        dockedMode={isDockedMode}
-                                        uuid=""
-                                        color={this.props.readerConfig.annotation_defaultColor}
-                                        drawType={this.props.readerConfig.annotation_defaultDrawType}
-                                        tags={[]}
-                                        comment=""
-                                        locatorExtended={this.props.isPdf ? undefined : this.props.annotationLocatorExtended}
-                                        selectionText={this.props.isPdf ? this.props.pdfAnnotationDraft?.quote : undefined}
-                                    />
-                                    <Popover.Arrow style={{ fill: "var(--color-gray-50" }} width={15} height={10} />
-                                </Popover.Content>
-                            </Popover.Portal>
-                        </Popover.Root>
+                        <AnnotationButton
+                            readerProps={this.props}
+                            annotationPopoverOpen={annotationPopoverOpen}
+                            closeAnnotationPopover={closeAnnotationPopover}
+                            triggerAnnotation={() => this.triggerAnnotation(false)}
+                            isAudioBook={isAudioBook}
+                            isDockedMode={isDockedMode}
+                        />
 
 
                         <li
@@ -994,7 +955,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             {/* { this.props.menuOpen ? */}
 
                             <Dialog.Root
-                                open={this.props.menuOpen}
+                                isOpen={this.props.menuOpen}
                                 onOpenChange={(open) => {
                                     console.log("MENU DialogOnOpenChange", open);
                                     // this.props.handleMenuClick(open);
@@ -1004,7 +965,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         // if (!this.props.isDivina  && !this.props.isPdf) {
                                         //     stealFocusDisable(true);
                                         // }
-                                        this.__closeNavPanel = false;
                                     } else {
                                         // if (!this.props.isDivina  && !this.props.isPdf) {
                                         //     stealFocusDisable(false);
@@ -1025,88 +985,77 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         <SVG ariaHidden={true} svg={TOCIcon} className={this.props.menuOpen ? stylesReaderHeader.active_svg : ""} />
                                     </button>
                                 </Dialog.Trigger>
-                                <Dialog.Portal container={appOverlayElement}>
-                                                <VisuallyHidden.Root>
-                                                    <Dialog.Title asChild>
-                                                        <h1>
-                                                            {__("reader.navigation.openTableOfContentsTitle")}
-                                                        </h1>
-                                                    </Dialog.Title>
-                                                </VisuallyHidden.Root>
-                                    {
-                                        isDockedMode ?
-                                            <div
-                                                className={containerClassName}
-                                                style={{
-                                                    borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
-                                                    borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-gray-100)" : "",
-                                                    right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
-                                                    left: (this.props.readerConfig.readerDockingMode === "left") ? "0" : "",
-                                                    height: (isOnSearch) ? "calc(100dvh - 159px)" : "",
-                                                    marginTop: (!isOnSearch) ? "70px" : "20px",
-                                                }}
-                                            >
-                                                <ReaderMenu
-                                                    {...this.props.readerMenuProps}
-                                                    isDivina={this.props.isDivina}
-                                                    isPdf={this.props.isPdf}
-                                                    isAudiobook={this.props.isAudiobook}
-                                                    currentLocation={this.props.currentLocation}
-                                                    // focusNaviguationMenu={this.focusNaviguationMenuButton}
-                                                    // handleMenuClick={this.props.handleMenuClick}
-                                                />
-                                            </div>
-                                        :
-                                            <Dialog.Content
-                                                // onFocusOutside={(e) => {
-                                                // console.log(e);
-                                                // }}
-                                                // onPointerDownOutside={(e) => {
-                                                //     if (this.props.readerPopoverDialogContext.dockedMode) {
-                                                //         e.preventDefault();
-                                                //     }
-                                                //     console.log("MenuModal onPointerDownOutside");
-                                                // }}
-                                                // onInteractOutside={(e) => {
-                                                //     if (this.props.readerPopoverDialogContext.dockedMode) {
-                                                //         e.preventDefault();
-                                                //     }
-                                                //     console.log("MenuModal onInteractOutside");
-                                                // }}
-                                                onCloseAutoFocus={(e) => {
-                                                    if (this.__closeNavPanel) {
-                                                        e.preventDefault();
-                                                    }
-                                                    console.log("MenuModal onCloseAutoFocus");
-                                                }}
-                                                className={containerClassName}
-                                                style={{
-                                                    borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
-                                                    borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-gray-100)" : "",
-                                                    right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
-                                                    left: /*(isDockedMode && this.props.readerConfig.readerDockingMode === "left") ? "0" :*/ "",
-                                                    height: /*(isDockedMode && isOnSearch) ? "calc(100dvh - 159px)" :*/ "",
-                                                    marginTop: /*(isDockedMode && !isOnSearch) ? "70px" :*/ "0px",
-                                                }}
-                                                aria-describedby={undefined}
-                                            >
-                                                <ReaderMenu
-                                                    {...this.props.readerMenuProps}
-                                                    handleLinkClick={(event, url, closeNavPanel) => {
-                                                        this.props.readerMenuProps.handleLinkClick(event, url, closeNavPanel);
-                                                        if (closeNavPanel) {
-                                                            this.__closeNavPanel = true;
-                                                        }
-                                                    }}
-                                                    isDivina={this.props.isDivina}
-                                                    isPdf={this.props.isPdf}
-                                                    isAudiobook={this.props.isAudiobook}
-                                                    currentLocation={this.props.currentLocation}
-                                                    // focusNaviguationMenu={this.focusNaviguationMenuButton}
-                                                    // handleMenuClick={this.props.handleMenuClick}
-                                                />
-                                            </Dialog.Content>
-                                    }
+                                <Dialog.Portal>
+                                    <VisuallyHidden>
+                                        <Dialog.Title asChild>
+                                            <h1>{__("reader.navigation.openTableOfContentsTitle")}</h1>
+                                        </Dialog.Title>
+                                    </VisuallyHidden>
+                                    {isDockedMode ? (
+                                        <div
+                                            className={containerClassName}
+                                            style={{
+                                                borderLeft:
+                                                    this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
+                                                borderRight:
+                                                    this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-gray-100)" : "",
+                                                right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
+                                                left: this.props.readerConfig.readerDockingMode === "left" ? "0" : "",
+                                                height: isOnSearch ? "calc(100dvh - 159px)" : "",
+                                                marginTop: !isOnSearch ? "70px" : "20px",
+                                            }}
+                                        >
+                                            <ReaderMenu
+                                                {...this.props.readerMenuProps}
+                                                isDivina={this.props.isDivina}
+                                                isPdf={this.props.isPdf}
+                                                isAudiobook={this.props.isAudiobook}
+                                                currentLocation={this.props.currentLocation}
+                                                // focusNaviguationMenu={this.focusNaviguationMenuButton}
+                                                // handleMenuClick={this.props.handleMenuClick}
+                                            />
+                                        </div>
+                                    ) : (
+                                        <Dialog.Content
+                                            // onFocusOutside={(e) => {
+                                            // console.log(e);
+                                            // }}
+                                            // onPointerDownOutside={(e) => {
+                                            //     if (this.props.readerPopoverDialogContext.dockedMode) {
+                                            //         e.preventDefault();
+                                            //     }
+                                            //     console.log("MenuModal onPointerDownOutside");
+                                            // }}
+                                            // onInteractOutside={(e) => {
+                                            //     if (this.props.readerPopoverDialogContext.dockedMode) {
+                                            //         e.preventDefault();
+                                            //     }
+                                            //     console.log("MenuModal onInteractOutside");
+                                            // }}
+                                            className={containerClassName}
+                                            style={{
+                                                borderLeft:
+                                                    this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
+                                                borderRight:
+                                                    this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-gray-100)" : "",
+                                                right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
+                                                left: /*(isDockedMode && this.props.readerConfig.readerDockingMode === "left") ? "0" :*/ "",
+                                                height: /*(isDockedMode && isOnSearch) ? "calc(100dvh - 159px)" :*/ "",
+                                                marginTop: /*(isDockedMode && !isOnSearch) ? "70px" :*/ "0px",
+                                            }}
+                                            aria-describedby={undefined}
+                                        >
+                                            <ReaderMenu
+                                                {...this.props.readerMenuProps}
+                                                isDivina={this.props.isDivina}
+                                                isPdf={this.props.isPdf}
+                                                isAudiobook={this.props.isAudiobook}
+                                                currentLocation={this.props.currentLocation}
+                                                // focusNaviguationMenu={this.focusNaviguationMenuButton}
+                                                // handleMenuClick={this.props.handleMenuClick}
+                                            />
+                                        </Dialog.Content>
+                                    )}
                                 </Dialog.Portal>
                             </Dialog.Root>
                         </li>
@@ -1115,7 +1064,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 { style: { backgroundColor: "var(--color-brand-primary)" } })}
                         >
                             <Dialog.Root
-                                open={this.props.settingsOpen}
+                                isOpen={this.props.settingsOpen}
                                 onOpenChange={(open) => {
                                     console.log("SETTINGS DialogOnOpenChange", open);
                                     this.props.toggleSettings({ open });
@@ -1124,7 +1073,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     //     if (!this.props.isDivina  && !this.props.isPdf) {
                                     //         stealFocusDisable(true);
                                     //     }
-                                    //     // this.__closeNavPanel = false;
                                     // } else {
                                     //     if (!this.props.isDivina  && !this.props.isPdf) {
                                     //         stealFocusDisable(false);
@@ -1145,16 +1093,20 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         <SVG ariaHidden={true} svg={SettingsIcon} className={this.props.settingsOpen ? stylesReaderHeader.active_svg : ""} />
                                     </button>
                                 </Dialog.Trigger>
-                                <Dialog.Portal container={appOverlayElement}>
-                                            {/* <VisuallyHidden.Root> */}
-                                                <Dialog.Title asChild style={{width: "0", height: "0", "margin": "0"}}><h1>{__("reader.navigation.settingsTitle")}</h1></Dialog.Title>
-                                            {/* </VisuallyHidden.Root> */}
-                                    {isDockedMode ?
+                                <Dialog.Portal>
+                                    <VisuallyHidden>
+                                        <Dialog.Title asChild>
+                                            <h1>{__("reader.navigation.settingsTitle")}</h1>
+                                        </Dialog.Title>
+                                    </VisuallyHidden>
+                                    {isDockedMode ? (
                                         <div
                                             className={containerClassName}
                                             style={{
-                                                borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
-                                                borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-gray-100)" : "",
+                                                borderLeft:
+                                                    this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
+                                                borderRight:
+                                                    this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-gray-100)" : "",
                                                 right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
                                                 left: this.props.readerConfig.readerDockingMode === "left" ? "0" : "",
                                                 height: isOnSearch ? "calc(100dvh - 159px)" : "",
@@ -1168,14 +1120,16 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 // handleSettingsClick={this.props.handleSettingsClick}
                                             />
                                         </div>
-                                    :
+                                    ) : (
                                         <Dialog.Content
                                             // onPointerDownOutside={(e) => { e.preventDefault(); console.log("settingsModal onPointerDownOutside"); }}
                                             // onInteractOutside={(e) => { e.preventDefault(); console.log("SettingsModal onInteractOutside"); }}
                                             className={containerClassName}
                                             style={{
-                                                borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
-                                                borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-gray-100)" : "",
+                                                borderLeft:
+                                                    this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
+                                                borderRight:
+                                                    this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-gray-100)" : "",
                                                 right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
                                                 left: /*isDockedMode && this.props.readerConfig.readerDockingMode === "left" ? "0" :*/ "",
                                                 height: /*isDockedMode && isOnSearch ? "calc(100dvh - 159px)" :*/ "",
@@ -1190,8 +1144,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 // handleSettingsClick={this.props.handleSettingsClick}
                                             />
                                         </Dialog.Content>
-
-                                    }
+                                    )}
                                 </Dialog.Portal>
                             </Dialog.Root>
                         </li>
@@ -1651,3 +1604,122 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(ReaderHeader));
+
+
+function AnnotationButton({
+    readerProps: props,
+    annotationPopoverOpen,
+    closeAnnotationPopover,
+    triggerAnnotation,
+    isAudioBook,
+    isDockedMode,
+}: {
+    readerProps: IProps;
+    annotationPopoverOpen: boolean;
+    closeAnnotationPopover: () => void;
+    triggerAnnotation: () => void;
+    isAudioBook: boolean;
+    isDockedMode: boolean;
+}) {
+    const { __ } = props;
+    const annotationPopoverTriggerRef = React.useRef<HTMLLIElement>(null);
+    const annotationPopoverState = useOverlayTriggerState({
+        isOpen: annotationPopoverOpen,
+        onOpenChange: (open) => {
+            if (!open) {
+                setTimeout(closeAnnotationPopover, 1); // Let the toolbar input finish updating before closing.
+            }
+        },
+    });
+    return (
+        <OverlayTriggerStateContext.Provider value={annotationPopoverState}>
+            <li
+                ref={annotationPopoverTriggerRef}
+                {...(annotationPopoverOpen && { style: { backgroundColor: "var(--color-brand-primary)" } })}
+            >
+                <input
+                    disabled={props.isDivina || isAudioBook}
+                    id="annotationButton"
+                    aria-label={__("reader.navigation.annotationTitle")}
+                    className={stylesReader.bookmarkButton}
+                    type="checkbox"
+                    checked={annotationPopoverOpen}
+                    onKeyUp={(e) => {
+                        if (e.key === "Enter") {
+                            if (annotationPopoverOpen) {
+                                closeAnnotationPopover();
+                            } else {
+                                triggerAnnotation();
+                            }
+                        }
+                    }}
+                    onChange={() => {
+                        if (annotationPopoverOpen) {
+                            closeAnnotationPopover();
+                        } else {
+                            triggerAnnotation();
+                        }
+                    }}
+                />
+                {
+                    // "htmlFor" is necessary as input is NOT located suitably for mouse hit testing
+                }
+                <label
+                    htmlFor="annotationButton"
+                    aria-hidden="true"
+                    className={stylesReader.menu_button}
+                    id="annotationLabel"
+                    title={__("reader.navigation.annotationTitle")}
+                >
+                    <SVG
+                        ariaHidden
+                        svg={AnnotationsIcon}
+                        className={classNames(
+                            stylesReaderHeader.annotationsIcon,
+                            annotationPopoverOpen ? stylesReaderHeader.active_svg : "",
+                        )}
+                    />
+                </label>
+            </li>
+            <Popover
+                triggerRef={annotationPopoverTriggerRef}
+
+                placement="bottom end"
+                offset={props.isOnSearch ? 50 : 18}
+                crossOffset={0}
+                containerPadding={0}
+                style={{ zIndex: OVERLAY_Z_INDEX }}
+            >
+                <PopoverDialog aria-label={__("reader.navigation.annotationTitle")}>
+                    <FocusScope autoFocus>
+                        <AnnotationEdit
+                            save={(color: IColor, comment: string, drawType: TDrawType, tags: string[]) => {
+                                if (props.isPdf) {
+                                    props.savePdfAnnotation?.(color, comment, drawType, tags);
+                                } else {
+                                    props.saveAnnotation(
+                                        props.isAnnotationModeEnabledFromKeyboard,
+                                        color,
+                                        comment,
+                                        drawType,
+                                        tags,
+                                    );
+                                }
+                            }}
+                            cancel={closeAnnotationPopover}
+                            dockedMode={isDockedMode}
+                            uuid=""
+                            color={props.readerConfig.annotation_defaultColor}
+                            drawType={props.readerConfig.annotation_defaultDrawType}
+                            tags={[]}
+                            comment=""
+                            locatorExtended={props.isPdf ? undefined : props.annotationLocatorExtended}
+                            selectionText={props.isPdf ? props.pdfAnnotationDraft?.quote : undefined}
+                        />
+                        <PopoverArrow style={{ fill: "var(--color-gray-50" }} width={15} height={10} />
+                    </FocusScope>
+                </PopoverDialog>
+            </Popover>
+        </OverlayTriggerStateContext.Provider>
+    );
+}
