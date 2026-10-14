@@ -698,6 +698,15 @@
         },
         "read": "Lõpetatud",
         "remainingTime": "Laenutus (jäänud aeg)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Pikenda laenutust",
         "returnButton": "Tagasta",
         "returnedLcp": "See LCP-litsentsiga kaitsutud väljaanne on tagastatud.",

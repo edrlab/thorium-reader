@@ -698,6 +698,15 @@
         },
         "read": "Luettu",
         "remainingTime": "Laina (aikaa jäljellä)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Uudista",
         "returnButton": "Palauta",
         "returnedLcp": "Tämä LCP-suojattu julkaisu on palautettu.",

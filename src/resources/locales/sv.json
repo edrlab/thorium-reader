@@ -698,6 +698,15 @@
         },
         "read": "Läst",
         "remainingTime": "Lån (återstående tid)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Låna om",
         "returnButton": "Lämna tillbaka",
         "returnedLcp": "Den här LCP-skyddade boken är återlämnad.",

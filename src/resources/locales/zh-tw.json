@@ -691,6 +691,15 @@
         },
         "read": "已讀",
         "remainingTime": "借出（剩餘天數）",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "更新",
         "returnButton": "歸還",
         "returnedLcp": "該受 LCP 保護的書籍已被歸還。",

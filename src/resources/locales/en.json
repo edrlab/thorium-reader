@@ -699,13 +699,13 @@
         "read": "Finished",
         "remainingTime": "Loan (remaining time)",
         "remoteProgression": {
-            "checking": "Enabled — checking service…",
+            "checking": "Enabled and checking service...",
             "disabled": "Not enabled for this publication.",
             "empty": "No saved remote progress.",
             "position": "Remote progress: {{percent}}% ({{device}}).",
-            "ready": "Enabled — ready to retrieve reading progress.",
-            "title": "Reading progress sync",
-            "unavailable": "Enabled — service unavailable or response invalid."
+            "ready": "Enabled and ready.",
+            "title": "Reading progress sync:",
+            "unavailable": "Enabled but service unavailable."
         },
         "renewButton": "Renew",
         "returnButton": "Return",

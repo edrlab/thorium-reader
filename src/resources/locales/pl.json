@@ -710,6 +710,15 @@
         },
         "read": "Przeczytana",
         "remainingTime": "Wypożyczenie (pozostały czas)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Odnów",
         "returnButton": "Zwróć",
         "returnedLcp": "Ta publikacja chroniona przez LCP została zwrócona.",

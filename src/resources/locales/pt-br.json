@@ -704,6 +704,15 @@
         },
         "read": "Finalizado",
         "remainingTime": "Empréstimos (dias restantes)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Renovar",
         "returnButton": "Retornar",
         "returnedLcp": "Publicação protegida por LCP devolvida.",

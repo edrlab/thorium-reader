@@ -722,6 +722,15 @@
         },
         "read": "انتهى",
         "remainingTime": "الاستعارة (الوقت المتبقي)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "تجديد",
         "returnButton": "إرجاع",
         "returnedLcp": "تم إرجاع هذا المنشور المحمي بـ LCP.",

@@ -698,6 +698,15 @@
         },
         "read": "Ολοκληρώθηκε",
         "remainingTime": "Δανεισμός (υπολείπεται χρόνος)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Ανανέωση",
         "returnButton": "Επιστροφή",
         "returnedLcp": "Αυτή η προστατευμένη LCP δημοσίευση έχει επιστραφεί.",

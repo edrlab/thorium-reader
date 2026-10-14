@@ -29,7 +29,7 @@ export const OpdsProgressionInfo: React.FC<{ url?: string }> = ({ url }) => {
         : __("publication.remoteProgression.ready");
 
     return <p role="status">
-        <strong>{__("publication.remoteProgression.title")}: </strong>
+        <strong>{__("publication.remoteProgression.title")} </strong>
         {message}
         {document ? <> {__("publication.remoteProgression.position", {
             percent: Math.round(document.progression * 100),

@@ -698,6 +698,15 @@
         },
         "read": "முடிந்தது",
         "remainingTime": "கடன் (மீதமுள்ள நேரம்)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "புதுப்பித்தல்",
         "returnButton": "திரும்ப",
         "returnedLcp": "இந்த எல்.சி.பி-பாதுகாக்கப்பட்ட வெளியீடு திரும்பப் பெறப்படுகிறது.",

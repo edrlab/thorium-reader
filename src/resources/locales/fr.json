@@ -705,13 +705,13 @@
         "read": "Terminé",
         "remainingTime": "Prêt (temps restant)",
         "remoteProgression": {
-            "checking": "Activée — vérification du service…",
+            "checking": "Activée, vérification du service en cours...",
             "disabled": "Non activée pour cette publication.",
             "empty": "Aucune progression distante enregistrée.",
             "position": "Progression distante : {{percent}} % ({{device}}).",
-            "ready": "Activée — prête à récupérer la progression.",
-            "title": "Synchronisation de la progression",
-            "unavailable": "Activée — service indisponible ou réponse invalide."
+            "ready": "Activée et prête.",
+            "title": "Synchronisation de la progression :",
+            "unavailable": "Activée, mais service indisponible."
         },
         "renewButton": "Renouveler",
         "returnButton": "Retourner",
