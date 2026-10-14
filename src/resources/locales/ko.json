@@ -679,7 +679,10 @@
         "notStarted": "",
         "onGoing": "",
         "progression": {
-            "title": "진행"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "진행",
+            "useRemote": ""
         },
         "read": "",
         "remainingTime": "",

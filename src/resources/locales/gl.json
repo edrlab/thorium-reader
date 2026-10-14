@@ -691,7 +691,10 @@
         "notStarted": "Non iniciado",
         "onGoing": "En curso",
         "progression": {
-            "title": "Progreso"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Progreso",
+            "useRemote": ""
         },
         "read": "Finalizado",
         "remainingTime": "",

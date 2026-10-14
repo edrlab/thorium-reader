@@ -703,7 +703,10 @@
         "notStarted": "Ni začeto",
         "onGoing": "V teku",
         "progression": {
-            "title": "Napredek"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Napredek",
+            "useRemote": ""
         },
         "read": "Končano",
         "remainingTime": "Izposoja (preostali čas)",

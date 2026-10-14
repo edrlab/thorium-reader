@@ -703,7 +703,10 @@
         "notStarted": "",
         "onGoing": "",
         "progression": {
-            "title": "Postup"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Postup",
+            "useRemote": ""
         },
         "read": "Dokončeno",
         "remainingTime": "Zápůjčka (zbývající čas)",

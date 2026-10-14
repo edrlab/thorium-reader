@@ -691,7 +691,10 @@
         "notStarted": "Hasi gabe",
         "onGoing": "Abian",
         "progression": {
-            "title": "Aurrerapena"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Aurrerapena",
+            "useRemote": ""
         },
         "read": "Bukatuta",
         "remainingTime": "",

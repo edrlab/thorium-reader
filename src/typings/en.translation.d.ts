@@ -1667,7 +1667,12 @@ declare namespace typed_i18n {
   readonly "markAsRead": string,
   readonly "notStarted": string,
   readonly "onGoing": string,
-  readonly "progression": { readonly "title": string },
+  readonly "progression": {
+    readonly "remoteDescription": string,
+    readonly "remoteTitle": string,
+    readonly "title": string,
+    readonly "useRemote": string
+  },
   readonly "read": string,
   readonly "remainingTime": string,
   readonly "renewButton": string,
@@ -1781,8 +1786,16 @@ declare namespace typed_i18n {
   (_: "publication.markAsRead", __?: {}): string;
   (_: "publication.notStarted", __?: {}): string;
   (_: "publication.onGoing", __?: {}): string;
-  (_: "publication.progression", __?: {}): { readonly "title": string };
+  (_: "publication.progression", __?: {}): {
+  readonly "remoteDescription": string,
+  readonly "remoteTitle": string,
+  readonly "title": string,
+  readonly "useRemote": string
+};
+  (_: "publication.progression.remoteDescription", __?: {}): string;
+  (_: "publication.progression.remoteTitle", __?: {}): string;
   (_: "publication.progression.title", __?: {}): string;
+  (_: "publication.progression.useRemote", __?: {}): string;
   (_: "publication.read", __?: {}): string;
   (_: "publication.remainingTime", __?: {}): string;
   (_: "publication.renewButton", __?: {}): string;

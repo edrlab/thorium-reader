@@ -691,7 +691,10 @@
         "notStarted": "Pole alustatud",
         "onGoing": "Pooleli",
         "progression": {
-            "title": "Edenemine"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Edenemine",
+            "useRemote": ""
         },
         "read": "Lõpetatud",
         "remainingTime": "Laenutus (jäänud aeg)",

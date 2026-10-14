@@ -691,7 +691,10 @@
         "notStarted": "Niet gestart",
         "onGoing": "Bezig",
         "progression": {
-            "title": "Voortgang"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Voortgang",
+            "useRemote": ""
         },
         "read": "Klaar",
         "remainingTime": "Uitlening (resterende tijd)",

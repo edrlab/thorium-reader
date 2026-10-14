@@ -691,7 +691,10 @@
         "notStarted": "Ei ole aloitettu",
         "onGoing": "Luettavana",
         "progression": {
-            "title": "Eteneminen"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Eteneminen",
+            "useRemote": ""
         },
         "read": "Luettu",
         "remainingTime": "Laina (aikaa jäljellä)",

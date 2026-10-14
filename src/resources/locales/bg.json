@@ -691,7 +691,10 @@
         "notStarted": "",
         "onGoing": "",
         "progression": {
-            "title": "Напредък"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Напредък",
+            "useRemote": ""
         },
         "read": "",
         "remainingTime": "",

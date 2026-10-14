@@ -691,7 +691,10 @@
         "notStarted": "",
         "onGoing": "",
         "progression": {
-            "title": "პროგრესია"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "პროგრესია",
+            "useRemote": ""
         },
         "read": "",
         "remainingTime": "",

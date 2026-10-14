@@ -13,6 +13,7 @@ import { JsonMap } from "readium-desktop/typings/json";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 import { Identifiable } from "../models/identifiable";
+import type { IOpdsLinkView } from "./opds";
 
 export interface CoverView {
     coverUrl?: string;
@@ -81,6 +82,10 @@ export interface PublicationView extends Identifiable {
     // r2PublicationBase64: string;
 
     lastReadingLocation?: MiniLocatorExtended;
+
+    // Present only when this publication was imported from an OPDS acquisition
+    // that advertised an OPDS Progression service.
+    progressionLink?: IOpdsLinkView;
 }
 
 export const canOpenPublication = (

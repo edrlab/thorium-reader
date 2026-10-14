@@ -93,6 +93,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     // annotationActions.importConfirmOrAbort.ID,
 
     readerActions.setTheLock.ID,
+    readerActions.setOpdsProgression.ID,
 
     lcpActions.publicationFileLock.ID,
 

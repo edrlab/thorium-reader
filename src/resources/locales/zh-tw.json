@@ -684,7 +684,10 @@
         "notStarted": "未讀",
         "onGoing": "正在閱讀",
         "progression": {
-            "title": "進度"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "進度",
+            "useRemote": ""
         },
         "read": "已讀",
         "remainingTime": "借出（剩餘天數）",

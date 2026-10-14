@@ -697,7 +697,10 @@
         "notStarted": "Não iniciado",
         "onGoing": "Iniciado",
         "progression": {
-            "title": "Progressão"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Progressão",
+            "useRemote": ""
         },
         "read": "Concluído",
         "remainingTime": "Empréstimo (restante)",

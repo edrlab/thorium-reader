@@ -697,7 +697,10 @@
         "notStarted": "No s'ha iniciat",
         "onGoing": "En curs",
         "progression": {
-            "title": "Progrés"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Progrés",
+            "useRemote": ""
         },
         "read": "Finalitzat",
         "remainingTime": "Préstecs (dies restants)",

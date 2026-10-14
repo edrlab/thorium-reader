@@ -17,6 +17,7 @@ import { convertMultiLangStringToString } from "readium-desktop/common/language-
 import { getOpdsFeedColor, getOpdsFeedIcon } from "readium-desktop/common/models/opds";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { ContentType } from "readium-desktop/utils/contentType";
+import { OPDS_PROGRESSION_MEDIA_TYPE, OPDS_PROGRESSION_REL } from "readium-desktop/common/models/opdsProgression";
 import { normalizeLcpHashedPassphrase } from "readium-desktop/utils/lcp";
 
 import { IWithAdditionalJSON, TaJsonSerialize } from "@r2-lcp-js/serializable";
@@ -458,6 +459,18 @@ export class OpdsFeedViewConverter {
         });
         const selfLinkUrl = selfLinkView.length === 1 ? selfLinkView[0].url : undefined;
 
+        // OPDS Progression discovery requires both an exact relation and media type.
+        // The generic link filter intentionally accepts links without a type, so use
+        // a strict predicate here before applying the regular URL/property conversion.
+        const progressionSourceLink = r2OpdsPublication.Links?.find((link) =>
+            typeof link.Href === "string" && link.Href.length > 0 &&
+            link.Rel?.includes(OPDS_PROGRESSION_REL) &&
+            link.TypeLink?.replace(/\s/g, "").split(";", 1)[0].toLowerCase() === OPDS_PROGRESSION_MEDIA_TYPE,
+        );
+        const progressionLink = progressionSourceLink
+            ? this.convertLinkToView(progressionSourceLink, baseUrl)
+            : undefined;
+
 
         const attachLocalBookshelfPubId = (opdsLinkView: IOpdsLinkView) => {
             const { url, type } = opdsLinkView;
@@ -586,6 +599,7 @@ export class OpdsFeedViewConverter {
 
             opdsPublicationStringified: JSON.stringify(TaJsonSerialize(r2OpdsPublication)), // NOTE: This is not a idempotent json serialization from the original json , strict comparaison between json response request will not be equal to this !
             selfLink: selfLinkView.length === 1 ? selfLinkView[0] : undefined,
+            progressionLink,
         };
     }
     public convertOpdsAuthToView(r2OpdsAuth: OPDSAuthenticationDoc, baseUrl: string): IOpdsResultView {

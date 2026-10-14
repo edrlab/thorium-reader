@@ -691,7 +691,10 @@
         "notStarted": "Ej påbörjad",
         "onGoing": "Läser just nu",
         "progression": {
-            "title": "Läsposition"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Läsposition",
+            "useRemote": ""
         },
         "read": "Läst",
         "remainingTime": "Lån (återstående tid)",

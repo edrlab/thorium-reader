@@ -691,7 +691,10 @@
         "notStarted": "Not Started",
         "onGoing": "In Progress",
         "progression": {
-            "title": "Progression"
+            "remoteDescription": "A newer reading position from {{- device}} is available at {{- progression}}%.",
+            "remoteTitle": "Resume from another device?",
+            "title": "Progression",
+            "useRemote": "Go to position"
         },
         "read": "Finished",
         "remainingTime": "Loan (remaining time)",
