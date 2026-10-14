@@ -18,7 +18,7 @@ import { publicationInfoReaderLibGetPublicationApiCall } from "readium-desktop/r
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as Dialog from "@radix-ui/react-dialog";
+import * as Dialog from "readium-desktop/renderer/common/components/Dialog";
 import classNames from "classnames";
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";
@@ -172,7 +172,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
     return <>
         <form className={stylesPrint.print_dialog_form}>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <h2>{__("reader.print.title")}</h2>
+                <Dialog.Title>{__("reader.print.title")}</Dialog.Title>
                 <Dialog.Close asChild>
                     <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
                         <SVG ariaHidden={true} svg={QuitIcon} />

@@ -51,6 +51,7 @@ jest.mock("readium-desktop/main/streamer/streamerNoHttp", () => ({
 
 import { LcpManager } from "readium-desktop/main/services/lcp";
 import { httpGet } from "readium-desktop/main/network/http";
+import * as fs from "node:fs";
 
 type TPublicationLink = {
     Hash?: string;
@@ -129,6 +130,29 @@ beforeEach(() => {
 });
 
 describe("LcpManager secrets", () => {
+    it("returns an empty vault when the secrets file does not exist", async () => {
+        jest.spyOn(fs.promises, "readFile").mockRejectedValue(
+            Object.assign(new Error("missing vault"), { code: "ENOENT" }),
+        );
+        const manager = Object.create(LcpManager.prototype) as TLcpManagerForSecrets;
+
+        await expect(manager.getAllSecrets()).resolves.toEqual({});
+        await expect(manager.getSecrets({ identifier: "publication-1" })).resolves.toEqual([]);
+    });
+
+    it("uses provider and generic secrets when the publication has no saved passphrase", async () => {
+        const manager = Object.create(LcpManager.prototype) as TLcpManagerForSecrets;
+        manager.getAllSecrets = jest.fn(async () => ({
+            "publication-2": { passphrase: "provider-passphrase", provider: "provider-a" },
+            "__THORIUM_LCP_GENERIC_SECRET__:generic-passphrase": { passphrase: "generic-passphrase" },
+        }));
+
+        await expect(manager.getSecrets({
+            identifier: "publication-1",
+            lcp: { provider: "provider-a" },
+        })).resolves.toEqual(["provider-passphrase", "generic-passphrase"]);
+    });
+
     it("returns publication, provider, then generic fallback secrets without duplicates", async () => {
         const manager = Object.create(LcpManager.prototype) as TLcpManagerForSecrets;
         manager.getAllSecrets = jest.fn(async () => ({

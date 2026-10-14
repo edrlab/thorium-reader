@@ -12,7 +12,7 @@ import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/componen
 
 import { shell } from "electron";
 import * as React from "react";
-import * as Dialog from "@radix-ui/react-dialog";
+import * as Dialog from "readium-desktop/renderer/common/components/Dialog";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as AddIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 import * as StarIcon from "readium-desktop/renderer/assets/icons/star-icon.svg";
@@ -91,8 +91,7 @@ export const OpdsFeedAddFormDialog = () => {
                 <span>{__("opds.addMenu")}</span>
             </button>
         </Dialog.Trigger>
-        <Dialog.Portal>
-            <div className={stylesModals.modal_dialog_overlay}></div>
+        <Dialog.Portal className={stylesModals.modal_dialog_overlay}>
             <Dialog.Content className={stylesModals.modal_dialog} aria-describedby={undefined}>
                 <div className={stylesModals.modal_dialog_header}>
                     <Dialog.Title>

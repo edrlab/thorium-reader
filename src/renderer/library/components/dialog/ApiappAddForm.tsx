@@ -12,7 +12,7 @@ import { ICommonRootState } from "readium-desktop/common/redux/states/commonRoot
 import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import { shell } from "electron";
 import * as React from "react";
-import * as Dialog from "@radix-ui/react-dialog";
+import * as Dialog from "readium-desktop/renderer/common/components/Dialog";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
@@ -226,8 +226,7 @@ export const ApiappAddFormDialog = () => {
                 <span>{__("opds.addFormApiapp.title")}</span>
             </button>
         </Dialog.Trigger>
-        <Dialog.Portal>
-            <div className={stylesModals.modal_dialog_overlay}></div>
+        <Dialog.Portal className={stylesModals.modal_dialog_overlay}>
             <Dialog.Content className={stylesModals.modal_dialog} aria-describedby={undefined}>
                 <div className={stylesModals.modal_dialog_header}>
                     <Dialog.Title>

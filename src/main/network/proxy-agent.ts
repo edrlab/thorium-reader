@@ -19,6 +19,7 @@
 // https://gist.github.com/Aditi-1400/09a915398a90e23691784b6810263781
 
 import { getSystemProxy, type ProxyConfig } from "readium-desktop/main/network/proxy-discovery/os-proxy";
+import { FindProxyForURL } from "pac-resolver";
 
 import * as http from "node:http";
 import * as https from "node:https";
@@ -66,6 +67,43 @@ type GetProxyForUrlCallback = (
     req: http.ClientRequest
 ) => Promise<string>;
 
+let _pacProxyAgentWithDirectFallback: Promise<AgentConstructor> | undefined;
+const loadPacProxyAgentWithDirectFallback = (): Promise<AgentConstructor> => {
+    // Expected non - Promise value in a boolean conditional
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    if (!_pacProxyAgentWithDirectFallback) {
+        _pacProxyAgentWithDirectFallback = import("pac-proxy-agent").then(({ PacProxyAgent }) =>
+            class PacProxyAgentWithDirectFallback extends PacProxyAgent<string> {
+                constructor(proxy: string, opts?: ProxyAgentOptions) {
+                    super(proxy, opts);
+                }
+
+                async getResolver(): Promise<FindProxyForURL> {
+                    try {
+                        debug("PAC proxy URL ...", this.uri.href);
+                        return await super.getResolver();
+                    } catch (err) {
+                        // on MacOS when "Auto Proxy Discovery" is enabled, by default `http://wpad/wpad.dat` is the configured PAC proxy URL endpoint,
+                        // which fails if the `wpad` host isn't reachable (run `scutil --proxy` in the command line to check).
+                        // ... we fallback to DIRECT connect
+                        debug("PAC proxy URL error (connecting directly):", this.uri.href, err);
+
+                        // return async () => "DIRECT";
+                        // ...we actually return `undefined` to let the lib resolve "DIRECT" (which is an internal implementation detail)
+                        // ...we cache `this.resolverPromise` to avoid repeated calls to `this.loadPacFile()`
+                        // (the application will need to be restarted in order to check the failed URL host again, which is consistent with `getSystemProxy()` which is cached too)
+                        // Note that `this.resolver` and `this.resolverHash` remain undefined.
+                        // https://github.com/TooTallNate/proxy-agents/blob/4813885d3f4e2ff837878ceffdba656a71dc31f0/packages/pac-proxy-agent/src/index.ts#L249-L254
+                        this.resolverPromise = (async (): Promise<FindProxyForURL | undefined> => undefined) as unknown as Promise<FindProxyForURL>;
+                        return this.resolverPromise;
+                    }
+                }
+            },
+        );
+    }
+    return _pacProxyAgentWithDirectFallback;
+};
+
 // ---- LAZY vs. NOT LAZY
 // /**
 //  * Shorthands for built-in supported types.
@@ -82,7 +120,8 @@ const wellKnownAgents = {
     http: HttpProxyAgent,
     https: HttpsProxyAgent,
     socks: SocksProxyAgent,
-    pac: async () => (await import("pac-proxy-agent")).PacProxyAgent,
+    // pac: async () => (await import("pac-proxy-agent")).PacProxyAgent,
+    pac: loadPacProxyAgentWithDirectFallback,
 } as const;
 
 // ---- LAZY vs. NOT LAZY
@@ -344,9 +383,13 @@ export class ProxyAgent extends Agent {
         debug("Proxy URL: %o", proxy);
 
         // attempt to get a cached `http.Agent` instance first
-        const cacheKey = `${protocol}+${proxy}`;
+        const cacheKey = `${protocol}_${proxy}_${this.connectOpts?.timeout}`;
+        debug("Proxy cache key: %o", cacheKey);
+
         let agent = this.cache.get(cacheKey);
         if (!agent) {
+            debug("Cache miss for proxy URL: %o", proxy);
+
             const proxyUrl = new URL(proxy);
             const proxyProto = proxyUrl.protocol.replace(":", "");
             if (!isValidProtocol(proxyProto)) {
