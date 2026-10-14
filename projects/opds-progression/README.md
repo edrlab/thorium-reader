@@ -1,6 +1,6 @@
 # OPDS Progression MVP test server
 
-This project is a loopback-only OPDS 2 server for manually exercising Thorium's GET-only progression MVP. It serves the published **Accessible EPUB 3** sample and a mutable progression document that contains only the total `progression` float—there is deliberately no `references` property.
+This project is a loopback-only OPDS 2 server for manually exercising Thorium's OPDS Progression GET and PUT MVP. It serves the published **Accessible EPUB 3** sample and keeps one mutable progression document in memory. Both retrieved and uploaded documents use only the publication-wide `progression` float; `references` are deliberately unsupported.
 
 ## Start the server
 
@@ -28,38 +28,65 @@ The server binds only to `127.0.0.1`. Stop it with `Ctrl+C`.
 
 1. Start the server.
 2. Add `http://127.0.0.1:4873/opds/v2/catalog.json` as an OPDS catalog in Thorium.
-3. Download **Accessible EPUB 3** from the catalog.
-4. Open it, navigate to a local position, and close the reader. This establishes a local locator timestamp.
-5. Set a newer remote progression while the reader is closed. Omitting `modified` makes the server use the current UTC time:
+3. Download and open **Accessible EPUB 3**.
+4. Resolve the initial **Resume from another device?** prompt: cancel it to keep the local position, or choose **Go to position** and then navigate elsewhere.
+5. Navigate to a new reading position. After Thorium's upload debounce, inspect the server state:
 
     ```sh
-    curl --request PUT 'http://127.0.0.1:4873/__test/state' \
-      --header 'Content-Type: application/json' \
-      --data '{"progression":0.625,"title":"Remote reading position"}'
+    curl 'http://127.0.0.1:4873/__test/state'
     ```
 
-6. Reopen the publication. Thorium should retrieve the newer document without delaying reader startup and offer to use the remote position.
-7. Accept the remote position. Thorium should move to the point represented by `0.625` across the publication's reading order.
+6. Verify `requests.progressionPutCount` increased and `requests.lastPutBody` contains `modified`, `device`, and a `progression` float, with no `references`.
+7. Close and reopen the publication. The GET route returns the document persisted by PUT.
+
+Each valid locator event from a reader starts a five-second trailing debounce for its publication. Events from multiple reader windows showing the same publication share that debounce; the latest event supplies the progression sent by PUT. Different publications debounce independently. Uploads do not depend on reader locks, session snapshots, or completion of GET/the resume dialog. A received position still uploads if its reader closes during the wait. There is no upload queue or automatic retry. Failures are logged; a later locator event can trigger another PUT. Upload timestamps use the current local time; a server document with a newer timestamp can reject the PUT with `409`.
 
 Useful boundary values are `0` (start), `0.5` (middle), and `1` (Thorium's safe end position). For EPUBs with a Readium position list, Thorium maps the remote float using the same resource weights as its global reading progression: reflowable resources use positions derived from archive entry lengths, and fixed-layout pages use one position each. The mapping preserves offsets within a resource. Publications without a position list fall back to equal reading-order resource weights. At `1`, Thorium uses an offset of `0.95` in the last resource to avoid trailing blank columns.
 
-The progression endpoint intentionally requires this request header:
+GET and PUT require this response media type:
 
 ```http
 Accept: application/opds-progression+json
 ```
 
-A missing header returns `406`, making incorrect MVP requests visible during manual testing.
+PUT additionally requires:
 
-## State controls
+```http
+Content-Type: application/opds-progression+json
+```
 
-Inspect the current response state and request counters:
+A missing or incorrect `Accept` returns `406`; an incorrect PUT `Content-Type` returns `415`. Error responses use `application/problem+json`.
+
+## Direct PUT example
+
+Clear the stored document so that the next valid upload creates it with `201 Created`:
+
+```sh
+curl --request PUT 'http://127.0.0.1:4873/__test/state' \
+  --header 'Content-Type: application/json' \
+  --data '{"empty":true}'
+```
+
+Upload a complete float-only progression document (replace the example timestamp with a value newer than the stored document):
+
+```sh
+curl --request PUT 'http://127.0.0.1:4873/progression/accessible-epub-3' \
+  --header 'Accept: application/opds-progression+json' \
+  --header 'Content-Type: application/opds-progression+json' \
+  --data '{"modified":"2026-10-06T12:00:00.000Z","device":{"id":"urn:uuid:4f6da6f7-b592-483d-ac7c-42b80fbeb6dc","name":"Manual Thorium test"},"progression":0.625}'
+```
+
+The first upload into empty state returns `201`; a newer upload replacing an existing document returns `200`. The successful response is the stored progression document.
+
+## State controls and failure simulation
+
+Inspect the document, behavior flags, request counters, headers, last PUT body, timestamp, and status:
 
 ```sh
 curl 'http://127.0.0.1:4873/__test/state'
 ```
 
-Set the float, title, and optionally an explicit ISO 8601 modification time:
+Set the remote float, title, and optionally an explicit ISO 8601 modification time. Omitting `modified` while changing document data uses the current UTC time:
 
 ```sh
 curl --request PUT 'http://127.0.0.1:4873/__test/state' \
@@ -67,12 +94,28 @@ curl --request PUT 'http://127.0.0.1:4873/__test/state' \
   --data '{"progression":0.875,"modified":"2040-01-02T03:04:05.000Z","title":"Updated remote reading position"}'
 ```
 
-Simulate a successful `200 OK` with an empty payload:
+Simulate a successful `200 OK` GET with an empty payload:
 
 ```sh
 curl --request PUT 'http://127.0.0.1:4873/__test/state' \
   --header 'Content-Type: application/json' \
   --data '{"empty":true}'
+```
+
+Lock uploads to exercise the standardized `403 Forbidden` response:
+
+```sh
+curl --request PUT 'http://127.0.0.1:4873/__test/state' \
+  --header 'Content-Type: application/json' \
+  --data '{"locked":true}'
+```
+
+Unlock with `{"locked":false}`. To exercise `409 Conflict`, configure a remote `modified` timestamp newer than the timestamp Thorium will upload. Invalid JSON, missing required fields, invalid device data, out-of-range floats, and any `references` property return the standardized `400 Bad Request` Problem Details object.
+
+Reset the document, lock flag, and all request telemetry:
+
+```sh
+curl --request POST 'http://127.0.0.1:4873/__test/reset'
 ```
 
 Delay progression responses by three seconds to test initialization and navigation while retrieval is running:
@@ -86,14 +129,6 @@ curl --request PUT 'http://127.0.0.1:4873/__test/state' \
 `delayMs` accepts integers from `0` to `120000` milliseconds and defaults to `0`. Use `8000` to exceed Thorium's six-second retrieval timeout. Set it back to `0` to disable the delay.
 
 The delay applies to successful progression GET responses, including empty responses. Catalog downloads, state controls, and error responses remain immediate. Request counters update when the request arrives. Each pending response retains the document and delay captured at request time; changing or resetting state affects subsequent requests. Updating only `delayMs` preserves the document's modification timestamp.
-
-Reset the document, delay, and request counters:
-
-```sh
-curl --request POST 'http://127.0.0.1:4873/__test/reset'
-```
-
-Invalid, non-finite, negative, or greater-than-one progression values are rejected with `400 Bad Request`. The progression resource itself is GET-only; PUT returns `405 Method Not Allowed` because uploads are outside this MVP.
 
 ## Debugging Thorium's progression flow
 
@@ -113,13 +148,13 @@ Search for `Progression GET` and `OPDS progression:`. The logs trace retrieval e
 
 ## Routes
 
-| Method        | Route                            | Purpose                                                           |
-| ------------- | -------------------------------- | ----------------------------------------------------------------- |
-| `GET`, `HEAD` | `/opds/v2/catalog.json`          | OPDS 2 catalog with relative acquisition and progression links    |
-| `GET`, `HEAD` | `/assets/accessible_epub_3.epub` | Offline EPUB download with byte-range support                     |
-| `GET`         | `/progression/accessible-epub-3` | Float-only OPDS Progression document or configured empty response |
-| `GET`, `PUT`  | `/__test/state`                  | Inspect or mutate in-memory test state                            |
-| `POST`        | `/__test/reset`                  | Restore defaults and clear request counters                       |
+| Method        | Route                            | Purpose                                                               |
+| ------------- | -------------------------------- | --------------------------------------------------------------------- |
+| `GET`, `HEAD` | `/opds/v2/catalog.json`          | OPDS 2 catalog with relative acquisition and progression links        |
+| `GET`, `HEAD` | `/assets/accessible_epub_3.epub` | Offline EPUB download with byte-range support                         |
+| `GET`, `PUT`  | `/progression/accessible-epub-3` | Retrieve, create, or replace the float-only OPDS Progression document |
+| `GET`, `PUT`  | `/__test/state`                  | Inspect or mutate in-memory document, flags, and telemetry            |
+| `POST`        | `/__test/reset`                  | Restore defaults and clear request telemetry                          |
 
 ## Contract tests
 
@@ -129,7 +164,7 @@ Run the server tests from the repository root:
 node --test projects/opds-progression/server.test.mjs
 ```
 
-They verify the feed contract, relative-link resolution, EPUB download and byte ranges, the required `Accept` header, float-only response shape, state mutation, empty payloads, validation, reset behavior, and the GET-only progression endpoint.
+They verify the feed contract, relative-link resolution, EPUB downloads and ranges, GET and PUT media types, required document fields, the float-only constraint, device persistence, `201` creation, `200` replacement, standardized `400`/`403`/`409` Problem Details, telemetry, empty retrieval, reset behavior, and the `Allow: GET, PUT` contract.
 
 ## EPUB fixture
 

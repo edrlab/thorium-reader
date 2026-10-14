@@ -9,14 +9,26 @@ import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 
 jest.mock("readium-desktop/main/network/http", () => ({
     httpGet: jest.fn(),
+    httpPutWithAuth: jest.fn(),
+}));
+jest.mock("readium-desktop/main/event", () => ({
+    getOpdsAuthenticationChannel: jest.fn(),
 }));
 
 import { OPDS_PROGRESSION_MEDIA_TYPE } from "readium-desktop/common/models/opdsProgression";
 import type { IHttpGetResult } from "readium-desktop/common/utils/http";
-import { httpGet } from "readium-desktop/main/network/http";
-import { getOpdsProgression, parseOpdsProgressionDocument } from "readium-desktop/main/services/opdsProgression";
+import { getOpdsAuthenticationChannel } from "readium-desktop/main/event";
+import { httpGet, httpPutWithAuth } from "readium-desktop/main/network/http";
+import {
+    getOpdsProgression,
+    parseOpdsProgressionDocument,
+    putOpdsProgression,
+} from "readium-desktop/main/services/opdsProgression";
 
 const httpGetMock = jest.mocked(httpGet);
+const httpPutWithAuthMock = jest.mocked(httpPutWithAuth);
+const getOpdsAuthenticationChannelMock = jest.mocked(getOpdsAuthenticationChannel);
+const authenticationChannelPutMock = jest.fn();
 const url = "https://example.org/publications/1/progression";
 const validDocument = {
     modified: "2026-09-30T10:00:00Z",
@@ -43,6 +55,11 @@ const result = (payload: string, overrides: Partial<IHttpGetResult<undefined>> =
 describe("OPDS progression service", () => {
     beforeEach(() => {
         httpGetMock.mockReset();
+        httpPutWithAuthMock.mockReset();
+        authenticationChannelPutMock.mockReset();
+        getOpdsAuthenticationChannelMock.mockReturnValue({
+            put: authenticationChannelPutMock,
+        } as unknown as ReturnType<typeof getOpdsAuthenticationChannel>);
     });
 
     it("requests and returns a valid progression document", async () => {
@@ -94,5 +111,177 @@ describe("OPDS progression service", () => {
         await expect(getOpdsProgression(url)).resolves.toBeUndefined();
         await expect(getOpdsProgression(url)).resolves.toBeUndefined();
         await expect(getOpdsProgression(url)).resolves.toBeUndefined();
+    });
+
+    it("uploads only the required float progression fields", async () => {
+        httpPutWithAuthMock.mockResolvedValue(
+            result(JSON.stringify(validDocument), {
+                statusCode: 201,
+            }),
+        );
+
+        const input = {
+            ...validDocument,
+            title: "Must not be uploaded",
+            references: ["chapter.xhtml#fragment"],
+        };
+        await expect(putOpdsProgression(url, input, "en")).resolves.toEqual({
+            kind: "success",
+            statusCode: 201,
+            document: validDocument,
+        });
+
+        expect(httpPutWithAuthMock).toHaveBeenCalledWith(
+            url,
+            {
+                body: JSON.stringify(validDocument),
+                headers: {
+                    Accept: OPDS_PROGRESSION_MEDIA_TYPE,
+                    "Content-Type": OPDS_PROGRESSION_MEDIA_TYPE,
+                },
+                timeout: 6000,
+            },
+            undefined,
+            "en",
+        );
+    });
+
+    it("rejects an invalid outbound document before sending it", async () => {
+        await expect(
+            putOpdsProgression(url, {
+                ...validDocument,
+                progression: 2,
+            }),
+        ).resolves.toEqual({ kind: "invalid-document" });
+        expect(httpPutWithAuthMock).not.toHaveBeenCalled();
+    });
+
+    it.each([200, 201] as const)("rejects an invalid %i response document", async (statusCode) => {
+        httpPutWithAuthMock.mockResolvedValue(
+            result(
+                JSON.stringify({
+                    ...validDocument,
+                    progression: 2,
+                }),
+                { statusCode },
+            ),
+        );
+
+        await expect(putOpdsProgression(url, validDocument)).resolves.toEqual({
+            kind: "invalid-response",
+            statusCode,
+        });
+    });
+
+    it("classifies malformed success JSON as an invalid response", async () => {
+        httpPutWithAuthMock.mockResolvedValue(result("{"));
+        await expect(putOpdsProgression(url, validDocument)).resolves.toEqual({
+            kind: "invalid-response",
+            statusCode: 200,
+        });
+    });
+
+    it.each([
+        [400, "bad-request"],
+        [401, "unauthorized"],
+        [403, "forbidden"],
+        [409, "conflict"],
+    ] as const)("returns the %i Problem Details outcome", async (statusCode, kind) => {
+        const problem = {
+            type: "https://example.org/problems/progression",
+            title: "Progression rejected",
+            status: statusCode,
+            detail: "Test detail",
+        };
+        httpPutWithAuthMock.mockResolvedValue(
+            result("", {
+                contentType: "application/problem+json",
+                isFailure: true,
+                isSuccess: false,
+                response: {
+                    json: async () => problem,
+                },
+                statusCode,
+            }),
+        );
+
+        await expect(putOpdsProgression(url, validDocument)).resolves.toEqual({
+            kind,
+            statusCode,
+            problem,
+        });
+    });
+
+    it.each(["application/opds-authentication+json", "application/vnd.opds.authentication.v1.0+json"])(
+        "returns a 401 %s failure without starting authentication",
+        async (authenticationMediaType) => {
+            const authenticationDocument = {
+                id: "https://example.org/auth",
+                title: "Sign in",
+                authentication: [] as Array<Record<string, unknown>>,
+            };
+            httpPutWithAuthMock.mockResolvedValue(
+                result("", {
+                    contentType: authenticationMediaType,
+                    isFailure: true,
+                    isSuccess: false,
+                    response: {
+                        json: async () => authenticationDocument,
+                    },
+                    responseUrl: "https://auth.example.org/progression",
+                    statusCode: 401,
+                }),
+            );
+
+            await expect(putOpdsProgression(url, validDocument)).resolves.toMatchObject({
+                kind: "unauthorized",
+                statusCode: 401,
+            });
+            expect(authenticationChannelPutMock).not.toHaveBeenCalled();
+        },
+    );
+
+    it("distinguishes retryable server and network failures", async () => {
+        const problem = {
+            title: "Temporarily unavailable",
+            status: 503,
+        };
+        httpPutWithAuthMock
+            .mockResolvedValueOnce(
+                result("", {
+                    isFailure: true,
+                    isSuccess: false,
+                    response: { json: async () => problem },
+                    statusCode: 503,
+                }),
+            )
+            .mockResolvedValueOnce(
+                result("", {
+                    isFailure: true,
+                    isNetworkError: true,
+                    isSuccess: false,
+                    isTimeout: true,
+                    response: undefined,
+                    statusCode: undefined,
+                }),
+            );
+
+        await expect(putOpdsProgression(url, validDocument)).resolves.toEqual({
+            kind: "server-error",
+            statusCode: 503,
+            problem,
+        });
+        await expect(putOpdsProgression(url, validDocument)).resolves.toEqual({
+            kind: "network-error",
+            isTimeout: true,
+        });
+    });
+
+    it("does not surface transport exceptions", async () => {
+        httpPutWithAuthMock.mockRejectedValue(new Error("offline"));
+        await expect(putOpdsProgression(url, validDocument)).resolves.toEqual({
+            kind: "network-error",
+            isTimeout: false,
+        });
     });
 });

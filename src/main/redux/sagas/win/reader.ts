@@ -25,6 +25,7 @@ import { readerActions, winCommonActions } from "readium-desktop/common/redux/ac
 import { sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
 import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { dialog } from "electron";
+import { debounceOpdsProgression } from "readium-desktop/main/redux/sagas/opdsProgression";
 import { sameReadingLocator } from "readium-desktop/main/tools/readingLocator";
 import { SenderType, type WithSender } from "readium-desktop/common/models/sync";
 import { opdsProgressionIsNewer } from "readium-desktop/common/models/opdsProgression";
@@ -195,12 +196,14 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     } as readerIpc.EventPayload);
 }
 
-function trackOpdsProgressionLocatorChange(action: readerActions.setLocator.TAction) {
+function* trackOpdsProgressionLocatorChange(action: readerActions.setLocator.TAction) {
     const sender = (action as readerActions.setLocator.TAction & Partial<WithSender>).sender;
     const winId = sender?.identifier;
     if (sender?.type !== SenderType.Renderer || !winId) {
         return;
     }
+
+    yield* debounceOpdsProgression(action);
 
     const localSnapshot = __localProgressionSnapshotMap.get(winId);
     const locator = action.payload.locator;

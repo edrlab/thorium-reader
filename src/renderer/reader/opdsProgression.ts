@@ -5,4 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export { opdsProgressionToLocator } from "readium-desktop/common/models/opdsProgression";
+export {
+    locatorToOpdsProgression,
+    opdsProgressionToLocator,
+} from "readium-desktop/common/models/opdsProgression";

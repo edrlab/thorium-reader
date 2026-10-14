@@ -100,6 +100,45 @@ export const opdsProgressionToLocator = (
     };
 };
 
+/**
+ * Converts a resource locator into publication-wide progression using the same
+ * resource weight model as {@link opdsProgressionToLocator}.
+ */
+export const locatorToOpdsProgression = (
+    locator: R2Locator | undefined,
+    spine: readonly Partial<Pick<Link, "Href">>[] | undefined,
+    positionList?: IReadiumPositionList,
+): number | undefined => {
+    const href = locator?.href;
+    const resourceProgression = locator?.locations?.progression;
+    if (typeof href !== "string" || !href ||
+        typeof resourceProgression !== "number" ||
+        !Number.isFinite(resourceProgression) ||
+        resourceProgression < 0 || resourceProgression > 1) {
+        return undefined;
+    }
+
+    if (positionList && positionList.total > 0 && positionList.resources.length) {
+        if (!positionList.resources.some((resource) => resource.href === href)) {
+            return undefined;
+        }
+        return mapLocatorToReadiumPosition({ href, locations: { progression: resourceProgression } }, positionList)
+            .locations.totalProgression;
+    }
+
+    const readableSpine = getReadableSpine(spine);
+    if (!readableSpine) {
+        return undefined;
+    }
+
+    const spineIndex = readableSpine.findIndex((link) => link.Href === href);
+    if (spineIndex < 0) {
+        return undefined;
+    }
+
+    return (spineIndex + resourceProgression) / readableSpine.length;
+};
+
 export const opdsProgressionIsNewer = (
     remoteModified: string,
     localModifiedTime: number | undefined,

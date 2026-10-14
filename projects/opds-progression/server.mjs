@@ -8,6 +8,11 @@ export const OPDS_MEDIA_TYPE = "application/opds+json";
 export const EPUB_MEDIA_TYPE = "application/epub+zip";
 export const PROGRESSION_MEDIA_TYPE = "application/opds-progression+json";
 export const PROGRESSION_RELATION = "http://opds-spec.org/progression";
+export const PROBLEM_MEDIA_TYPE = "application/problem+json";
+
+const INVALID_PAYLOAD_PROBLEM_TYPE = "https://registry.opds.io/error#progression-invalid-payload";
+const LOCKED_PROBLEM_TYPE = "https://registry.opds.io/error#progression-locked";
+const STALE_PROBLEM_TYPE = "https://registry.opds.io/error#progression-date";
 
 const projectDirectory = dirname(fileURLToPath(import.meta.url));
 const epubFileName = "accessible_epub_3.epub";
@@ -15,15 +20,17 @@ const epubPath = join(projectDirectory, "fixtures", epubFileName);
 const defaultPort = Number(process.argv[2]) || 4873;
 const publicationIdentifier = "urn:isbn:9781449328030";
 const jsonResponseBody = Symbol("jsonResponseBody");
-const device = Object.freeze({
+const defaultDevice = Object.freeze({
     id: "urn:uuid:f2438195-3b7c-4ea8-a8cf-668d624c11e5",
     name: "Thorium OPDS Progression Test Server",
 });
 
 function defaultProgressionState() {
     return {
+        device: defaultDevice,
         delayMs: 0,
         empty: false,
+        locked: false,
         modified: new Date().toISOString(),
         progression: 0.625,
         title: "Remote reading position",
@@ -34,7 +41,13 @@ function createRequestState() {
     return {
         lastAccept: undefined,
         lastRequestAt: undefined,
+        lastPutAccept: undefined,
+        lastPutAt: undefined,
+        lastPutBody: undefined,
+        lastPutContentType: undefined,
+        lastPutStatus: undefined,
         progressionGetCount: 0,
+        progressionPutCount: 0,
     };
 }
 
@@ -58,6 +71,22 @@ function sendBuffer(request, response, statusCode, contentType, body, extraHeade
 function sendJson(request, response, statusCode, value, extraHeaders = {}) {
     const body = Buffer.from(`${JSON.stringify(value, undefined, 2)}\n`, "utf8");
     sendBuffer(request, response, statusCode, "application/json; charset=utf-8", body, extraHeaders);
+}
+
+function sendProblem(request, response, statusCode, type, title, detail, extraHeaders = {}) {
+    const body = Buffer.from(
+        `${JSON.stringify(
+            {
+                type,
+                title,
+                ...(detail ? { detail } : {}),
+            },
+            undefined,
+            2,
+        )}\n`,
+        "utf8",
+    );
+    sendBuffer(request, response, statusCode, `${PROBLEM_MEDIA_TYPE}; charset=utf-8`, body, extraHeaders);
 }
 
 function sendText(request, response, statusCode, text, extraHeaders = {}) {
@@ -196,26 +225,48 @@ function acceptsProgression(request) {
         .includes(PROGRESSION_MEDIA_TYPE);
 }
 
+function hasProgressionContentType(request) {
+    return (request.headers["content-type"] || "").split(";", 1)[0].trim().toLowerCase() === PROGRESSION_MEDIA_TYPE;
+}
+
 function progressionDocument(state) {
     return {
         ...(state.title ? { title: state.title } : {}),
         modified: state.modified,
-        device,
+        device: state.device,
         progression: state.progression,
     };
 }
 
+function isSameProgressionDocument(left, right) {
+    return (
+        left.modified === right.modified &&
+        left.progression === right.progression &&
+        left.title === right.title &&
+        left.device.id === right.device.id &&
+        left.device.name === right.device.name
+    );
+}
+
 function publicState(state, requests) {
     return {
+        device: state.device,
         delayMs: state.delayMs,
         empty: state.empty,
+        locked: state.locked,
         modified: state.modified,
         progression: state.progression,
         title: state.title,
         requests: {
             lastAccept: requests.lastAccept,
             lastRequestAt: requests.lastRequestAt,
+            lastPutAccept: requests.lastPutAccept,
+            lastPutAt: requests.lastPutAt,
+            lastPutBody: requests.lastPutBody,
+            lastPutContentType: requests.lastPutContentType,
+            lastPutStatus: requests.lastPutStatus,
             progressionGetCount: requests.progressionGetCount,
+            progressionPutCount: requests.progressionPutCount,
         },
     };
 }
@@ -224,17 +275,25 @@ function readJsonBody(request, maximumBytes = 16 * 1024) {
     return new Promise((resolveBody, rejectBody) => {
         const chunks = [];
         let length = 0;
+        let tooLarge = false;
 
         request.on("data", (chunk) => {
+            if (tooLarge) {
+                return;
+            }
             length += chunk.length;
             if (length > maximumBytes) {
-                rejectBody(new Error("Request body is too large"));
-                request.destroy();
+                tooLarge = true;
+                chunks.length = 0;
                 return;
             }
             chunks.push(chunk);
         });
         request.on("end", () => {
+            if (tooLarge) {
+                rejectBody(new Error("Request body is too large"));
+                return;
+            }
             try {
                 const text = Buffer.concat(chunks).toString("utf8");
                 resolveBody(text ? JSON.parse(text) : {});
@@ -246,16 +305,143 @@ function readJsonBody(request, maximumBytes = 16 * 1024) {
     });
 }
 
+const RFC3339_DATE_TIME_PATTERN =
+    /^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])[Tt]([01]\d|2[0-3]):([0-5]\d):([0-5]\d|60)(?:\.(\d+))?([Zz]|([+-])([01]\d|2[0-3]):([0-5]\d))$/;
+
 function isValidModified(value) {
-    return typeof value === "string" && value.length > 0 && Number.isFinite(Date.parse(value));
+    if (typeof value !== "string") {
+        return false;
+    }
+
+    const match = RFC3339_DATE_TIME_PATTERN.exec(value);
+    if (!match) {
+        return false;
+    }
+
+    const year = Number(match[1]);
+    const month = Number(match[2]);
+    const day = Number(match[3]);
+    const isLeapYear = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+    const daysInMonth = [31, isLeapYear ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    if (day > daysInMonth[month - 1]) {
+        return false;
+    }
+
+    if (Number(match[6]) < 60) {
+        return true;
+    }
+    // Match ajv-formats' RFC 3339 leap-second validation, which is also used
+    // by Thorium's progression document parser.
+    const offsetDirection = match[9] === "-" ? -1 : 1;
+    const utcMinute = Number(match[5]) - Number(match[11] || 0) * offsetDirection;
+    const utcHour = Number(match[4]) - Number(match[10] || 0) * offsetDirection - (utcMinute < 0 ? 1 : 0);
+    return (utcHour === 23 || utcHour === -1) && (utcMinute === 59 || utcMinute === -1);
+}
+
+function compareModified(left, right) {
+    const parseInstant = (value) => {
+        const match = RFC3339_DATE_TIME_PATTERN.exec(value);
+        if (!match) {
+            throw new Error("Cannot compare an invalid modified timestamp");
+        }
+        const date = new Date(0);
+        date.setUTCFullYear(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+        date.setUTCHours(Number(match[4]), Number(match[5]), Number(match[6]), 0);
+        const offsetDirection = match[9] === "-" ? -1 : 1;
+        const offsetSeconds = match[9] ? offsetDirection * (Number(match[10]) * 60 * 60 + Number(match[11]) * 60) : 0;
+        return {
+            fraction: match[7] || "",
+            leapSecond: Number(match[6]) === 60,
+            seconds: BigInt(date.getTime() / 1000 - offsetSeconds),
+        };
+    };
+
+    const leftInstant = parseInstant(left);
+    const rightInstant = parseInstant(right);
+    if (leftInstant.seconds !== rightInstant.seconds) {
+        return leftInstant.seconds < rightInstant.seconds ? -1 : 1;
+    }
+    if (leftInstant.leapSecond !== rightInstant.leapSecond) {
+        return leftInstant.leapSecond ? -1 : 1;
+    }
+    const fractionLength = Math.max(leftInstant.fraction.length, rightInstant.fraction.length);
+    const leftFraction = leftInstant.fraction.padEnd(fractionLength, "0");
+    const rightFraction = rightInstant.fraction.padEnd(fractionLength, "0");
+    if (leftFraction === rightFraction) {
+        return 0;
+    }
+    return leftFraction < rightFraction ? -1 : 1;
+}
+
+function isObject(value) {
+    return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function hasOwn(value, key) {
+    return Object.prototype.hasOwnProperty.call(value, key);
+}
+
+function validateDevice(value) {
+    if (!isObject(value)) {
+        throw new Error("device must be an object");
+    }
+    if (typeof value.id !== "string" || !value.id.trim()) {
+        throw new Error("device.id must be a non-empty URI");
+    }
+    try {
+        new URL(value.id);
+    } catch {
+        throw new Error("device.id must be a valid URI");
+    }
+    if (typeof value.name !== "string" || !value.name.trim()) {
+        throw new Error("device.name must be a non-empty string");
+    }
+
+    return {
+        id: value.id,
+        name: value.name,
+    };
+}
+
+function validateProgressionDocument(value) {
+    if (!isObject(value)) {
+        throw new Error("The progression document must be a JSON object");
+    }
+    if (hasOwn(value, "references")) {
+        throw new Error("references are not supported by this float-only MVP");
+    }
+    if (!isValidModified(value.modified)) {
+        throw new Error("modified must be an ISO 8601 date-time");
+    }
+    const device = validateDevice(value.device);
+    if (
+        typeof value.progression !== "number" ||
+        !Number.isFinite(value.progression) ||
+        value.progression < 0 ||
+        value.progression > 1
+    ) {
+        throw new Error("progression must be a finite number between 0 and 1");
+    }
+    if (hasOwn(value, "title") && typeof value.title !== "string") {
+        throw new Error("title must be a string when present");
+    }
+
+    return {
+        device,
+        empty: false,
+        modified: value.modified,
+        progression: value.progression,
+        title: value.title,
+    };
 }
 
 function applyStateUpdate(currentState, update) {
-    if (!update || typeof update !== "object" || Array.isArray(update)) {
+    if (!isObject(update)) {
         throw new Error("State update must be a JSON object");
     }
 
     const nextState = { ...currentState };
+    const changesDocument = hasOwn(update, "progression") || hasOwn(update, "title") || hasOwn(update, "device");
 
     if (Object.prototype.hasOwnProperty.call(update, "delayMs")) {
         if (!Number.isInteger(update.delayMs) || update.delayMs < 0 || update.delayMs > 120000) {
@@ -277,23 +463,34 @@ function applyStateUpdate(currentState, update) {
         nextState.empty = false;
     }
 
-    if (Object.prototype.hasOwnProperty.call(update, "empty")) {
+    if (hasOwn(update, "empty")) {
         if (typeof update.empty !== "boolean") {
             throw new Error("empty must be a boolean");
         }
         nextState.empty = update.empty;
     }
 
-    if (Object.prototype.hasOwnProperty.call(update, "modified")) {
+    if (hasOwn(update, "locked")) {
+        if (typeof update.locked !== "boolean") {
+            throw new Error("locked must be a boolean");
+        }
+        nextState.locked = update.locked;
+    }
+
+    if (hasOwn(update, "device")) {
+        nextState.device = validateDevice(update.device);
+    }
+
+    if (hasOwn(update, "modified")) {
         if (!isValidModified(update.modified)) {
             throw new Error("modified must be an ISO 8601 date-time");
         }
         nextState.modified = update.modified;
-    } else if (!nextState.empty && ("progression" in update || "title" in update || "empty" in update)) {
+    } else if (changesDocument && !nextState.empty) {
         nextState.modified = new Date().toISOString();
     }
 
-    if (Object.prototype.hasOwnProperty.call(update, "title")) {
+    if (hasOwn(update, "title")) {
         if (
             update.title !== undefined &&
             update.title !== null &&
@@ -373,21 +570,22 @@ export function createOpdsProgressionServer({ log = logRequestResponse } = {}) {
             }
 
             if (url.pathname === "/progression/accessible-epub-3") {
-                if (request.method !== "GET") {
-                    sendText(request, response, 405, "Only GET is supported by this retrieval MVP.\n", {
-                        Allow: "GET",
-                    });
-                    return;
-                }
+                if (request.method === "GET") {
+                    requests.progressionGetCount += 1;
+                    requests.lastAccept = request.headers.accept;
+                    requests.lastRequestAt = new Date().toISOString();
 
-                requests.progressionGetCount += 1;
-                requests.lastAccept = request.headers.accept;
-                requests.lastRequestAt = new Date().toISOString();
-
-                if (!acceptsProgression(request)) {
-                    sendText(request, response, 406, `Send Accept: ${PROGRESSION_MEDIA_TYPE}\n`);
-                    return;
-                }
+                    if (!acceptsProgression(request)) {
+                        sendProblem(
+                            request,
+                            response,
+                            406,
+                            "about:blank",
+                            "Not Acceptable",
+                            `Send Accept: ${PROGRESSION_MEDIA_TYPE}`,
+                        );
+                        return;
+                    }
 
                 // Freeze the response at request time so concurrent test controls
                 // cannot change the document already being retrieved.
@@ -407,13 +605,111 @@ export function createOpdsProgressionServer({ log = logRequestResponse } = {}) {
                     return;
                 }
 
-                if (responseState.empty) {
-                    sendBuffer(request, response, 200, PROGRESSION_MEDIA_TYPE, Buffer.alloc(0));
+
+                    if (responseState.empty) {
+                        sendBuffer(request, response, 200, PROGRESSION_MEDIA_TYPE, Buffer.alloc(0));
+                        return;
+                    }
+
+                    const body = Buffer.from(`${JSON.stringify(progressionDocument(responseState), undefined, 2)}\n`, "utf8");
+                    sendBuffer(request, response, 200, `${PROGRESSION_MEDIA_TYPE}; charset=utf-8`, body);
                     return;
                 }
 
-                const body = Buffer.from(`${JSON.stringify(progressionDocument(responseState), undefined, 2)}\n`, "utf8");
-                sendBuffer(request, response, 200, `${PROGRESSION_MEDIA_TYPE}; charset=utf-8`, body);
+                if (request.method === "PUT") {
+                    requests.progressionPutCount += 1;
+                    requests.lastPutAccept = request.headers.accept;
+                    requests.lastPutAt = new Date().toISOString();
+                    requests.lastPutBody = undefined;
+                    requests.lastPutContentType = request.headers["content-type"];
+
+                    if (!acceptsProgression(request)) {
+                        requests.lastPutStatus = 406;
+                        request.resume();
+                        sendProblem(
+                            request,
+                            response,
+                            406,
+                            "about:blank",
+                            "Not Acceptable",
+                            `Send Accept: ${PROGRESSION_MEDIA_TYPE}`,
+                        );
+                        return;
+                    }
+
+                    if (!hasProgressionContentType(request)) {
+                        requests.lastPutStatus = 415;
+                        request.resume();
+                        sendProblem(
+                            request,
+                            response,
+                            415,
+                            INVALID_PAYLOAD_PROBLEM_TYPE,
+                            "Unsupported Media Type",
+                            `Send Content-Type: ${PROGRESSION_MEDIA_TYPE}`,
+                        );
+                        return;
+                    }
+
+                    let candidate;
+                    try {
+                        requests.lastPutBody = await readJsonBody(request);
+                        candidate = validateProgressionDocument(requests.lastPutBody);
+                    } catch (error) {
+                        requests.lastPutStatus = 400;
+                        sendProblem(
+                            request,
+                            response,
+                            400,
+                            INVALID_PAYLOAD_PROBLEM_TYPE,
+                            "Progression could not be updated due to an invalid payload.",
+                            error instanceof Error ? error.message : "Invalid progression document",
+                        );
+                        return;
+                    }
+
+                    if (state.locked) {
+                        requests.lastPutStatus = 403;
+                        sendProblem(
+                            request,
+                            response,
+                            403,
+                            LOCKED_PROBLEM_TYPE,
+                            "Progression can no longer be updated for this publication.",
+                        );
+                        return;
+                    }
+
+                    if (
+                        !state.empty &&
+                        compareModified(candidate.modified, state.modified) <= 0 &&
+                        !isSameProgressionDocument(candidate, state)
+                    ) {
+                        requests.lastPutStatus = 409;
+                        sendProblem(
+                            request,
+                            response,
+                            409,
+                            STALE_PROBLEM_TYPE,
+                            "A more recent progression point is already available.",
+                        );
+                        return;
+                    }
+
+                    const statusCode = state.empty ? 201 : 200;
+                    state = {
+                        ...candidate,
+                        locked: state.locked,
+                    };
+                    requests.lastPutStatus = statusCode;
+                    const body = Buffer.from(`${JSON.stringify(progressionDocument(state), undefined, 2)}\n`, "utf8");
+                    sendBuffer(request, response, statusCode, `${PROGRESSION_MEDIA_TYPE}; charset=utf-8`, body);
+                    return;
+                }
+
+                sendProblem(request, response, 405, "about:blank", "Method Not Allowed", undefined, {
+                    Allow: "GET, PUT",
+                });
                 return;
             }
 
