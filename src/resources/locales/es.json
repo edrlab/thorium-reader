@@ -704,6 +704,15 @@
         },
         "read": "Finalizado",
         "remainingTime": "Préstamo (tiempo restante)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Renovar",
         "returnButton": "Devolver",
         "returnedLcp": "Este libro no se puede leer porque la licencia LCP se ha devuelto.",

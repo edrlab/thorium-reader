@@ -690,6 +690,15 @@
         },
         "read": "既読",
         "remainingTime": "借受中（残り日数）",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "更新",
         "returnButton": "返却",
         "returnedLcp": "このLCPライセンスは返却されました。",

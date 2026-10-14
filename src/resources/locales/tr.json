@@ -698,6 +698,15 @@
         },
         "read": "Bitti",
         "remainingTime": "Ödünç alım (kalan süre)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Yenile",
         "returnButton": "İade et",
         "returnedLcp": "Bu LCP-korumalı eser iade edildi.",

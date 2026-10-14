@@ -21,6 +21,7 @@ import { getOpdsAuthenticationChannel } from "readium-desktop/main/event";
 import { httpGet, httpPutWithAuth } from "readium-desktop/main/network/http";
 import {
     getOpdsProgression,
+    getOpdsProgressionServiceStatus,
     parseOpdsProgressionDocument,
     putOpdsProgression,
 } from "readium-desktop/main/services/opdsProgression";
@@ -75,6 +76,33 @@ describe("OPDS progression service", () => {
             undefined,
             "en",
         );
+    });
+
+    it("reports a ready service with validated remote progress, including zero", async () => {
+        const document = { ...validDocument, progression: 0 };
+        httpGetMock.mockResolvedValue(result(JSON.stringify(document)));
+        await expect(getOpdsProgressionServiceStatus(url)).resolves.toEqual({
+            status: "ready", document,
+        });
+    });
+
+    it.each([200, 204])("reports a ready service without saved progress for an empty %s response", async (statusCode) => {
+        httpGetMock.mockResolvedValue(result("", { statusCode }));
+        await expect(getOpdsProgressionServiceStatus(url)).resolves.toEqual({ status: "ready" });
+        await expect(getOpdsProgression(url)).resolves.toBeUndefined();
+    });
+
+    it("does not report failed, invalid, or timed-out services as ready", async () => {
+        httpGetMock
+            .mockResolvedValueOnce(result("", { isSuccess: false, statusCode: 401 }))
+            .mockResolvedValueOnce(result("", { isSuccess: false, statusCode: 500 }))
+            .mockResolvedValueOnce(result(JSON.stringify(validDocument), { contentType: "text/html" }))
+            .mockResolvedValueOnce(result("{"))
+            .mockResolvedValueOnce(result(JSON.stringify({ ...validDocument, progression: 2 })))
+            .mockRejectedValueOnce(new Error("timeout"));
+        for (let i = 0; i < 6; i++) {
+            await expect(getOpdsProgressionServiceStatus(url)).resolves.toEqual({ status: "unavailable" });
+        }
     });
 
     it("accepts an empty 200 response as no known progression", async () => {

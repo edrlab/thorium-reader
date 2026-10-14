@@ -698,6 +698,15 @@
         },
         "read": "Klaar",
         "remainingTime": "Uitlening (resterende tijd)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Vernieuw",
         "returnButton": "Lever in",
         "returnedLcp": "Dit boek kan niet gelezen worden omdat de LCP licentie is ingeleverd.",

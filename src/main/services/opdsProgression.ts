@@ -14,6 +14,7 @@ import { createReadiumPositionList, isEpubPositionListPublication } from "readiu
 
 import {
     IOpdsProgressionDocument,
+    TOpdsProgressionServiceStatus,
     OPDS_PROGRESSION_MEDIA_TYPE,
 } from "readium-desktop/common/models/opdsProgression";
 import { availableLanguages } from "readium-desktop/common/services/translator";
@@ -112,10 +113,10 @@ export const getOpdsProgressionMapping = (json: string | object | undefined) => 
     }
 };
 
-export const getOpdsProgression = async (
+export const getOpdsProgressionServiceStatus = async (
     url: string,
     locale?: keyof typeof availableLanguages,
-): Promise<IOpdsProgressionDocument | undefined> => {
+): Promise<TOpdsProgressionServiceStatus> => {
     debug("Progression GET started", { timeoutMs: 6000 });
     try {
         const result = await httpGet(url, {
@@ -125,21 +126,25 @@ export const getOpdsProgression = async (
             timeout: 6000,
         }, undefined, locale);
 
+        if (result.isSuccess && result.statusCode === 204) {
+            return { status: "ready" };
+        }
+
         if (!result.isSuccess || result.statusCode !== 200 || !result.response) {
             debug("Progression GET failed", result.statusCode, result.statusMessage);
-            return undefined;
+            return { status: "unavailable" };
         }
 
         const contentType = parseContentType(result.contentType || "");
         if (contentType !== ContentType.OpdsProgression && contentType !== ContentType.Json) {
             debug("Progression GET returned an unsupported content type", result.contentType);
-            return undefined;
+            return { status: "unavailable" };
         }
 
         const payload = await result.response.text?.();
         if (!payload?.trim()) {
-            debug("Progression GET ignored: empty payload");
-            return undefined;
+            debug("Progression GET: no saved progression");
+            return { status: "ready" };
         }
 
         const parsedPayload: unknown = JSON.parse(payload);
@@ -148,12 +153,21 @@ export const getOpdsProgression = async (
         if (!progression) {
             debug("Progression GET returned an invalid document", validate.errors);
         }
-        return progression;
+        return progression ? { status: "ready", document: progression } : { status: "unavailable" };
     } catch (err) {
         // Progression retrieval is optional and must never prevent reading.
         debug("Progression GET error", err);
-        return undefined;
+        return { status: "unavailable" };
     }
+};
+
+// Preserve the reader's optional-document contract.
+export const getOpdsProgression = async (
+    url: string,
+    locale?: keyof typeof availableLanguages,
+): Promise<IOpdsProgressionDocument | undefined> => {
+    const result = await getOpdsProgressionServiceStatus(url, locale);
+    return result.status === "ready" ? result.document : undefined;
 };
 
 export const putOpdsProgression = async (

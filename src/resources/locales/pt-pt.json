@@ -704,6 +704,15 @@
         },
         "read": "Concluído",
         "remainingTime": "Empréstimo (restante)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Renovar",
         "returnButton": "Devolver",
         "returnedLcp": "Este documento, protegido por PCL, foi devolvido.",

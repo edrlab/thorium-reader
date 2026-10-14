@@ -710,6 +710,15 @@
         },
         "read": "Закончено",
         "remainingTime": "Абонемент (оставшиеся дни)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Продлить",
         "returnButton": "Вернуть",
         "returnedLcp": "Эту книгу невозможно прочитать, поскольку была возвращена лицензия LCP.",

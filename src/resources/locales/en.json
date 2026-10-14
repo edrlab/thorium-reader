@@ -698,6 +698,15 @@
         },
         "read": "Finished",
         "remainingTime": "Loan (remaining time)",
+        "remoteProgression": {
+            "checking": "Enabled and checking service...",
+            "disabled": "Not enabled for this publication.",
+            "empty": "No saved remote progress.",
+            "position": "Remote progress: {{percent}}% ({{device}}).",
+            "ready": "Enabled and ready.",
+            "title": "Reading progress sync:",
+            "unavailable": "Enabled but service unavailable."
+        },
         "renewButton": "Renew",
         "returnButton": "Return",
         "returnedLcp": "This LCP-protected publication is returned.",

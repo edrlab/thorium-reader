@@ -691,10 +691,22 @@
         "notStarted": "Óbyrjað",
         "onGoing": "Í gangi",
         "progression": {
-            "title": "Framvinda"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Framvinda",
+            "useRemote": ""
         },
         "read": "Lokið",
         "remainingTime": "Lánstími eftir",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Endurnýja",
         "returnButton": "Skila",
         "returnedLcp": "LCP-varinni bók hefur verið skilað.",
