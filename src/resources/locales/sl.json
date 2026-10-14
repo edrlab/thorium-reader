@@ -710,6 +710,15 @@
         },
         "read": "Končano",
         "remainingTime": "Izposoja (preostali čas)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Podaljšaj",
         "returnButton": "Vrni",
         "returnedLcp": "Ta publikacija, zaščitena z LCP, je vrnjena.",

@@ -698,6 +698,15 @@
         },
         "read": "",
         "remainingTime": "",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "",
         "returnButton": "",
         "returnedLcp": "",

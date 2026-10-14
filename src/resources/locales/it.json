@@ -704,6 +704,15 @@
         },
         "read": "Finito",
         "remainingTime": "Prestito (tempo rimanente)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Rinnova",
         "returnButton": "Restituisci",
         "returnedLcp": "Questa pubblicazione protetta da licenza LCP è stata restituita.",

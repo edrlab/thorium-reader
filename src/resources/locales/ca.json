@@ -704,6 +704,15 @@
         },
         "read": "Finalitzat",
         "remainingTime": "Préstecs (dies restants)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Renovar",
         "returnButton": "Tornar",
         "returnedLcp": "Aquest llibre no es pot llegir perquè la llicència LCP s'ha retornat.",

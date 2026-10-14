@@ -710,6 +710,15 @@
         },
         "read": "Dokončeno",
         "remainingTime": "Zápůjčka (zbývající čas)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Obnovit",
         "returnButton": "Vrátit",
         "returnedLcp": "Tato publikace chráněná protokolem LCP byla vrácena.",

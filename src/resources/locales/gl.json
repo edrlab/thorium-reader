@@ -698,6 +698,15 @@
         },
         "read": "Finalizado",
         "remainingTime": "",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Renovar",
         "returnButton": "Devolver",
         "returnedLcp": "Este libro non se pode ler porque a licenza LCP devolveuse.",

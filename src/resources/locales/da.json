@@ -698,6 +698,15 @@
         },
         "read": "Læst færdig",
         "remainingTime": "Lån (dage tilbage)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Forny",
         "returnButton": "Aflevér",
         "returnedLcp": "Denne bog kan ikke åbnes, da LCP-licensen er leveret tilbage.",

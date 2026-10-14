@@ -698,6 +698,15 @@
         },
         "read": "Fertig gelesen",
         "remainingTime": "Ausleihe (verbleibende Tage)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Verlängern",
         "returnButton": "Zurückgeben",
         "returnedLcp": "Diese LCP-geschützte Veröffentlichung wird zurückgegeben.",

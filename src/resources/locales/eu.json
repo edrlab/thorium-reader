@@ -698,6 +698,15 @@
         },
         "read": "Bukatuta",
         "remainingTime": "",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Berritu",
         "returnButton": "Itzuli",
         "returnedLcp": "Liburu hau ezin da irakurri LCP lizentzia itzuli delako.",

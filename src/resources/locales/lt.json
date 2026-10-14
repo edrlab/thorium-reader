@@ -710,6 +710,15 @@
         },
         "read": "Užbaigtas",
         "remainingTime": "Paskolinta (liko dienų)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Atnaujinti",
         "returnButton": "Grąžinti",
         "returnedLcp": "Šis LCP apsaugotas leidinys yra grąžintas.",
