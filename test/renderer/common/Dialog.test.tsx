@@ -17,7 +17,6 @@ let FocusScope: typeof import("react-aria").FocusScope;
 let PopoverArrow: typeof import("readium-desktop/renderer/common/components/overlayHelpers").PopoverArrow;
 let CloseOnAnchorRemoval: typeof import("readium-desktop/renderer/common/components/overlayHelpers").CloseOnAnchorRemoval;
 let OVERLAY_Z_INDEX: typeof import("readium-desktop/renderer/common/components/overlayHelpers").OVERLAY_Z_INDEX;
-let ViewportBoundary: typeof import("readium-desktop/renderer/common/components/overlayHelpers").ViewportBoundary;
 let root: Root;
 let host: HTMLDivElement;
 let dom: JSDOM;
@@ -85,7 +84,6 @@ beforeAll(() => {
     ({
         PopoverArrow,
         CloseOnAnchorRemoval,
-        ViewportBoundary,
         OVERLAY_Z_INDEX,
     } = require("readium-desktop/renderer/common/components/overlayHelpers"));
     AlertDialog = require("readium-desktop/renderer/common/components/AlertDialog");
@@ -272,7 +270,7 @@ test("default-portalled popovers preserve their parent dialog and close independ
                             <Pressable>
                                 <button data-popover-trigger>Options</button>
                             </Pressable>
-                            <Popover placement="bottom" offset={0} crossOffset={0} containerPadding={0} style={{ zIndex: OVERLAY_Z_INDEX }}>
+                            <Popover placement="bottom" offset={0} crossOffset={0} style={{ zIndex: OVERLAY_Z_INDEX }}>
                                 <PopoverDialog>
                                     <FocusScope autoFocus>
                                         <button data-option>Option</button>
@@ -316,7 +314,7 @@ test("a dialog opened from a menu stays above the popover and closes independent
                 <Pressable>
                     <button data-menu-trigger>Menu</button>
                 </Pressable>
-                <Popover placement="bottom" offset={0} crossOffset={0} containerPadding={0} style={{ zIndex: OVERLAY_Z_INDEX }}>
+                <Popover placement="bottom" offset={0} crossOffset={0} style={{ zIndex: OVERLAY_Z_INDEX }}>
                     <PopoverDialog>
                         <FocusScope autoFocus>
                             <Dialog.Root>
@@ -360,7 +358,6 @@ test("popover arrows preserve RAC centering while rotating the SVG toward the tr
                         placement={placement}
                         offset={0}
                         crossOffset={0}
-                        containerPadding={0}
                         shouldFlip={false}
                         style={{ zIndex: OVERLAY_Z_INDEX }}
                     >
@@ -395,7 +392,7 @@ test("native close buttons run their action once and restore focus", async () =>
                 <Pressable>
                     <button data-trigger>Options</button>
                 </Pressable>
-                <Popover placement="bottom" offset={0} crossOffset={0} containerPadding={0} style={{ zIndex: OVERLAY_Z_INDEX }}>
+                <Popover placement="bottom" offset={0} crossOffset={0} style={{ zIndex: OVERLAY_Z_INDEX }}>
                     <PopoverDialog>
                         <FocusScope autoFocus>
                             <form>
@@ -457,41 +454,30 @@ test("controlled toolbar popovers use list items as anchors without toggling the
     expect(onChange).toHaveBeenLastCalledWith(false);
 });
 
-test("popover preserves per-edge collision space and closes when its anchor detaches", async () => {
+test("default viewport popovers close when their anchor detaches", async () => {
     await React.act(async () =>
         root.render(
             <DialogTrigger>
                 <Pressable>
                     <button data-trigger>Options</button>
                 </Pressable>
-                <ViewportBoundary top={180} bottom={100}>
-                    {(boundaryElement) => (
-                        <Popover
-                            boundaryElement={boundaryElement}
-                            placement="bottom"
-                            offset={0}
-                            crossOffset={0}
-                            containerPadding={0}
-                            style={{ zIndex: OVERLAY_Z_INDEX }}
-                        >
-                            <PopoverDialog>
-                                <FocusScope autoFocus>
-                                    <CloseOnAnchorRemoval />
-                                    <button data-option>Option</button>
-                                </FocusScope>
-                            </PopoverDialog>
-                        </Popover>
-                    )}
-                </ViewportBoundary>
+                <Popover
+                    placement="bottom"
+                    offset={0}
+                    crossOffset={0}
+                    style={{ zIndex: OVERLAY_Z_INDEX }}
+                >
+                    <PopoverDialog>
+                        <FocusScope autoFocus>
+                            <CloseOnAnchorRemoval />
+                            <button data-option>Option</button>
+                        </FocusScope>
+                    </PopoverDialog>
+                </Popover>
             </DialogTrigger>,
         ),
     );
     await click(document.querySelector("[data-trigger]")!);
-    const boundary = Array.from(document.body.children).find(
-        (element) => (element as HTMLElement).style.visibility === "hidden",
-    ) as HTMLElement;
-    expect(boundary.style.top).toBe("180px");
-    expect(boundary.style.left).toBe("0px");
     const trigger = document.querySelector("[data-trigger]")!;
     const parent = trigger.parentElement!;
     await React.act(async () => {
@@ -499,7 +485,6 @@ test("popover preserves per-edge collision space and closes when its anchor deta
         await settle();
     });
     expect(document.querySelector("[data-option]")).toBeNull();
-    expect(boundary.style.bottom).toBe("100px");
     // Restore React's owned DOM before unmounting the test tree.
     parent.appendChild(trigger);
 });

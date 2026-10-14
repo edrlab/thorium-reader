@@ -8,7 +8,7 @@
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 
 import * as React from "react";
-import { OVERLAY_Z_INDEX, ViewportBoundary } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { OVERLAY_Z_INDEX } from "readium-desktop/renderer/common/components/overlayHelpers";
 import { FocusScope } from "react-aria";
 import { DialogTrigger, Pressable, Popover, Dialog as PopoverDialog } from "react-aria-components";
 import classNames from "classnames";
@@ -23,8 +23,6 @@ const Menu = (props: React.PropsWithChildren<IBaseProps>) => {
 
     const [triggerOpen, setTriggerOpen] = React.useState(false);
 
-    const collisionValue = location.hash === "#/home" ? 10 : 280;
-
     return (
         <DialogTrigger onOpenChange={setTriggerOpen}>
             <Pressable>
@@ -32,24 +30,19 @@ const Menu = (props: React.PropsWithChildren<IBaseProps>) => {
                     {props.button}
                 </button>
             </Pressable>
-            <ViewportBoundary top={props.noCollisionPadding ? 0 : collisionValue}>
-                {(boundaryElement) => (
-                    <Popover
-                        boundaryElement={boundaryElement}
-                        placement="bottom end"
-                        offset={5}
-                        crossOffset={-10}
-                        containerPadding={0}
-                        style={{ zIndex: OVERLAY_Z_INDEX }}
-                    >
-                        <PopoverDialog>
-                            <FocusScope autoFocus>
-                                <div className={stylesDropDown.dropdown_menu}>{props.children}</div>
-                            </FocusScope>
-                        </PopoverDialog>
-                    </Popover>
-                )}
-            </ViewportBoundary>
+            <Popover
+                placement="bottom end"
+                offset={5}
+                crossOffset={-10}
+                containerPadding={props.noCollisionPadding ? 0 : 12}
+                style={{ zIndex: OVERLAY_Z_INDEX }}
+            >
+                <PopoverDialog>
+                    <FocusScope autoFocus>
+                        <div className={stylesDropDown.dropdown_menu}>{props.children}</div>
+                    </FocusScope>
+                </PopoverDialog>
+            </Popover>
         </DialogTrigger>
     );
 };

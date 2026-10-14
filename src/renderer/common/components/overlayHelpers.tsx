@@ -6,46 +6,10 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { createPortal } from "react-dom";
 import { OverlayArrow, OverlayTriggerStateContext, PopoverContext, useSlottedContext } from "react-aria-components";
 
 // Default portals share a layer; later-mounted overlays appear above their parents.
 export const OVERLAY_Z_INDEX = 102;
-
-/** A CSS-sized viewport rectangle for overlays that must leave room for toolbars. */
-export function ViewportBoundary({
-    top = 0,
-    bottom = 0,
-    children,
-}: {
-    top?: number;
-    bottom?: number;
-    children: (boundary: HTMLElement | undefined) => React.ReactNode;
-}) {
-    const [boundary, setBoundary] = React.useState<HTMLDivElement>();
-    return (
-        <>
-            {createPortal(
-                <div
-                    ref={setBoundary}
-                    aria-hidden="true"
-                    data-overlay-boundary
-                    style={{
-                        position: "fixed",
-                        visibility: "hidden",
-                        pointerEvents: "none",
-                        top,
-                        bottom,
-                        left: 0,
-                        right: 0,
-                    }}
-                />,
-                document.body,
-            )}
-            {children(boundary)}
-        </>
-    );
-}
 
 /** Mounted inside a native popover only while open, for virtualized/scrolled lists. */
 export function CloseOnAnchorRemoval(): undefined {

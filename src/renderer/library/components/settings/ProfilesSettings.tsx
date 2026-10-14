@@ -10,7 +10,7 @@ import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/com
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import * as React from "react";
-import { OVERLAY_Z_INDEX, PopoverArrow, ViewportBoundary } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
 import { FocusScope } from "react-aria";
 import { DialogTrigger, Pressable, Popover, Dialog as PopoverDialog, Button } from "react-aria-components";
 import SVG from "readium-desktop/renderer/common/components/SVG";
@@ -105,36 +105,30 @@ const Profiles = () => {
                                                 <SVG ariaHidden={true} svg={DeleteIcon} />
                                             </button>
                                         </Pressable>
-                                        <ViewportBoundary top={180} bottom={100}>
-                                            {(boundaryElement) => (
-                                                <Popover
-                                                    boundaryElement={boundaryElement}
-                                                    placement="bottom"
-                                                    offset={5}
-                                                    crossOffset={-10}
-                                                    containerPadding={0}
-                                                    className={stylesPopoverDialog.delete_item}
-                                                    style={{ zIndex: OVERLAY_Z_INDEX }}
-                                                >
-                                                    <PopoverDialog>
-                                                        <FocusScope autoFocus>
-                                                            <Button
-                                                                slot="close"
-                                                                dir={isRTL ? "rtl" : "ltr"}
-                                                                onPress={() => {
-                                                                    dispatch(customizationActions.deleteProfile.build(profile.fileName));
-                                                                }}
-                                                                render={(buttonProps) => <button {...buttonProps} title={__("catalog.delete")} />}
-                                                            >
-                                                                <SVG ariaHidden={true} svg={DeleteIcon} />
-                                                                {__("reader.marks.delete")}
-                                                            </Button>
-                                                            <PopoverArrow className={stylesDropDown.PopoverArrow} aria-hidden />
-                                                        </FocusScope>
-                                                    </PopoverDialog>
-                                                </Popover>
-                                            )}
-                                        </ViewportBoundary>
+                                        <Popover
+                                            placement="bottom"
+                                            offset={5}
+                                            crossOffset={-10}
+                                            className={stylesPopoverDialog.delete_item}
+                                            style={{ zIndex: OVERLAY_Z_INDEX }}
+                                        >
+                                            <PopoverDialog>
+                                                <FocusScope autoFocus>
+                                                    <Button
+                                                        slot="close"
+                                                        dir={isRTL ? "rtl" : "ltr"}
+                                                        onPress={() => {
+                                                            dispatch(customizationActions.deleteProfile.build(profile.fileName));
+                                                        }}
+                                                        render={(buttonProps) => <button {...buttonProps} title={__("catalog.delete")} />}
+                                                    >
+                                                        <SVG ariaHidden={true} svg={DeleteIcon} />
+                                                        {__("reader.marks.delete")}
+                                                    </Button>
+                                                    <PopoverArrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                                                </FocusScope>
+                                            </PopoverDialog>
+                                        </Popover>
                                     </DialogTrigger>
                                 </div>
                             </div>
