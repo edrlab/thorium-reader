@@ -1675,6 +1675,15 @@ declare namespace typed_i18n {
   },
   readonly "read": string,
   readonly "remainingTime": string,
+  readonly "remoteProgression": {
+    readonly "checking": string,
+    readonly "disabled": string,
+    readonly "empty": string,
+    readonly "position": string,
+    readonly "ready": string,
+    readonly "title": string,
+    readonly "unavailable": string
+  },
   readonly "renewButton": string,
   readonly "returnButton": string,
   readonly "returnedLcp": string,
@@ -1798,6 +1807,22 @@ declare namespace typed_i18n {
   (_: "publication.progression.useRemote", __?: {}): string;
   (_: "publication.read", __?: {}): string;
   (_: "publication.remainingTime", __?: {}): string;
+  (_: "publication.remoteProgression", __?: {}): {
+  readonly "checking": string,
+  readonly "disabled": string,
+  readonly "empty": string,
+  readonly "position": string,
+  readonly "ready": string,
+  readonly "title": string,
+  readonly "unavailable": string
+};
+  (_: "publication.remoteProgression.checking", __?: {}): string;
+  (_: "publication.remoteProgression.disabled", __?: {}): string;
+  (_: "publication.remoteProgression.empty", __?: {}): string;
+  (_: "publication.remoteProgression.position", __?: {}): string;
+  (_: "publication.remoteProgression.ready", __?: {}): string;
+  (_: "publication.remoteProgression.title", __?: {}): string;
+  (_: "publication.remoteProgression.unavailable", __?: {}): string;
   (_: "publication.renewButton", __?: {}): string;
   (_: "publication.returnButton", __?: {}): string;
   (_: "publication.returnedLcp", __?: {}): string;
