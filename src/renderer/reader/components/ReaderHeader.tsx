@@ -1094,11 +1094,11 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     </button>
                                 </Dialog.Trigger>
                                 <Dialog.Portal>
-                                    {/* <VisuallyHidden> */}
-                                    <Dialog.Title asChild style={{ width: "0", height: "0", margin: "0" }}>
-                                        <h1>{__("reader.navigation.settingsTitle")}</h1>
-                                    </Dialog.Title>
-                                    {/* </VisuallyHidden> */}
+                                    <VisuallyHidden>
+                                        <Dialog.Title asChild>
+                                            <h1>{__("reader.navigation.settingsTitle")}</h1>
+                                        </Dialog.Title>
+                                    </VisuallyHidden>
                                     {isDockedMode ? (
                                         <div
                                             className={containerClassName}
