@@ -63,10 +63,9 @@ export const PublicationInfoReaderWithRACTrigger = Dialog.Trigger;
 PublicationInfoReaderWithRACTrigger.displayName = Dialog.Trigger.displayName;
 export const PublicationInfoReaderWithRACContent = React.forwardRef<HTMLElement>(
     ({ ...props }, forwardRef) => {
-        const appOverlayElement = React.useMemo(() => document.getElementById("app-overlay"), []);
         const [__] = useTranslator();
         return (
-            <Dialog.Portal container={appOverlayElement} className={stylesModals.modal_dialog_overlay}>
+            <Dialog.Portal className={stylesModals.modal_dialog_overlay}>
                 <Dialog.Content className={stylesModals.modal_dialog} {...props} ref={forwardRef} aria-describedby={undefined}>
                     <VisuallyHidden>
                         <Dialog.Title>{__("catalog.bookInfo")}</Dialog.Title>
@@ -75,7 +74,11 @@ export const PublicationInfoReaderWithRACContent = React.forwardRef<HTMLElement>
                         {/* <Dialog.Title className="DialogTitle">{__("catalog.bookInfo")}</Dialog.Title> */}
                         <h1>{__("catalog.bookInfo")}</h1>
                         <Dialog.Close asChild>
-                            <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
+                            <button
+                                data-css-override=""
+                                className={stylesButtons.button_transparency_icon}
+                                aria-label={__("accessibility.closeDialog")}
+                            >
                                 <SVG ariaHidden={true} svg={QuitIcon} />
                             </button>
                         </Dialog.Close>

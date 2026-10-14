@@ -9,6 +9,9 @@ import * as React from "react";
 import { createPortal } from "react-dom";
 import { OverlayArrow, OverlayTriggerStateContext, PopoverContext, useSlottedContext } from "react-aria-components";
 
+// Default portals share a layer; later-mounted overlays appear above their parents.
+export const OVERLAY_Z_INDEX = 102;
+
 /** A CSS-sized viewport rectangle for overlays that must leave room for toolbars. */
 export function ViewportBoundary({
     top = 0,

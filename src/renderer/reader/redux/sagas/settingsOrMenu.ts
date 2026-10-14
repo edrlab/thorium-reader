@@ -51,11 +51,8 @@ function* toggleSettingsOrMenu(action: readerLocalActionToggleMenu.TAction | rea
         if (element) {
             focusElement(element);
         } else {
-            const target = document.getElementById("app-overlay");
-            if (!target) {
-                debug("CRITICAL ERROR !!! no `app-overlay` id found !!!");
-                return;
-            }
+            // Native overlays are appended to the document body.
+            const target = document.body;
 
 
             _observer = new MutationObserver((records: MutationRecord[], observer) => {

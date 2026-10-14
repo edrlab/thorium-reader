@@ -10,6 +10,7 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import * as React from "react";
+import { OVERLAY_Z_INDEX } from "./overlayHelpers";
 import { Button, ComboBox as ComboBoxReactAria, Input, Label, ListBox, ListBoxItem, Popover, ValidationResult, Group } from "react-aria-components";
 import { FieldError, Text } from "react-aria-components";
 import SVG, { ISVGProps } from "./SVG";
@@ -85,7 +86,7 @@ export function ComboBox<T extends object>(
             </Group>
             {description ? <Text slot="description">{description}</Text> : <></>}
             <FieldError>{errorMessage}</FieldError>
-            <Popover className={StylesCombobox.react_aria_Popover}>
+            <Popover className={StylesCombobox.react_aria_Popover} style={{ zIndex: OVERLAY_Z_INDEX + 1 }}>
                 <ListBox className={StylesCombobox.react_aria_ListBox}>
                     {children}
                 </ListBox>
