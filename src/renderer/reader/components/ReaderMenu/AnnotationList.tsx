@@ -15,9 +15,8 @@ import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/compo
 import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
 import classNames from "classnames";
 import * as React from "react";
-import { PopoverArrow, CloseOnAnchorRemoval } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { OVERLAY_Z_INDEX, PopoverArrow, CloseOnAnchorRemoval } from "readium-desktop/renderer/common/components/overlayHelpers";
 import { FocusScope } from "react-aria";
-import { DialogPortalContext } from "readium-desktop/renderer/common/components/Dialog";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
 import * as SaveIcon from "readium-desktop/renderer/assets/icons/export-icon.svg";
@@ -250,83 +249,78 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
                                 <SVG svg={SortIcon} />
                             </button>
                         </Pressable>
-                        <DialogPortalContext.Consumer>
-                            {(portalContainer) => (
-                                <Popover
-                                    UNSTABLE_portalContainer={portalContainer}
-                                    placement="bottom end"
-                                    offset={5}
-                                    crossOffset={-10}
-                                    containerPadding={0}
-                                    className={stylesAnnotations.annotations_sorting_container}
-                                    style={{ zIndex: 101, maxHeight: Math.round(window.innerHeight / 2) }}
-                                    boundaryElement={popoverBoundary ?? undefined}
-                                >
-                                    <PopoverDialog>
-                                        <FocusScope autoFocus>
-                                            <CloseOnAnchorRemoval />
-                                            <PopoverArrow
-                                                className={stylesDropDown.PopoverArrow}
-                                                aria-hidden
-                                                style={{ fill: "var(--color-gray-50" }}
-                                            />
-                                            <ListBox
-                                                selectedKeys={sortType}
-                                                onSelectionChange={setSortType}
-                                                selectionMode="multiple"
-                                                selectionBehavior="replace"
-                                                aria-label={__("reader.annotations.sorting.sortingOptions")}
-                                            >
-                                                <ListBoxItem
-                                                    id="progression"
-                                                    key="progression"
-                                                    aria-label="progression"
-                                                    className={({ isFocused, isSelected }) =>
-                                                        classNames(
-                                                            StylesCombobox.my_item,
-                                                            isFocused ? StylesCombobox.focused : "",
-                                                            isSelected ? StylesCombobox.selected : "",
-                                                        )
-                                                    }
-                                                    style={{ marginBottom: "5px" }}
-                                                >
-                                                    {__("reader.annotations.sorting.progression")}
-                                                </ListBoxItem>
-                                                <ListBoxItem
-                                                    id="lastCreated"
-                                                    key="lastCreated"
-                                                    aria-label="lastCreated"
-                                                    className={({ isFocused, isSelected }) =>
-                                                        classNames(
-                                                            StylesCombobox.my_item,
-                                                            isFocused ? StylesCombobox.focused : "",
-                                                            isSelected ? StylesCombobox.selected : "",
-                                                        )
-                                                    }
-                                                    style={{ marginBottom: "5px" }}
-                                                >
-                                                    {__("reader.annotations.sorting.lastcreated")}
-                                                </ListBoxItem>
-                                                <ListBoxItem
-                                                    id="lastModified"
-                                                    key="lastModified"
-                                                    aria-label="lastModified"
-                                                    className={({ isFocused, isSelected }) =>
-                                                        classNames(
-                                                            StylesCombobox.my_item,
-                                                            isFocused ? StylesCombobox.focused : "",
-                                                            isSelected ? StylesCombobox.selected : "",
-                                                        )
-                                                    }
-                                                >
-                                                    {__("reader.annotations.sorting.lastmodified")}
-                                                </ListBoxItem>
-                                            </ListBox>
-                                        </FocusScope>
-                                    </PopoverDialog>
-                                </Popover>
-                            )}
-                        </DialogPortalContext.Consumer>
+                        <Popover
+                            placement="bottom end"
+                            offset={5}
+                            crossOffset={-10}
+                            containerPadding={0}
+                            className={stylesAnnotations.annotations_sorting_container}
+                            style={{ zIndex: OVERLAY_Z_INDEX, maxHeight: Math.round(window.innerHeight / 2) }}
+                            boundaryElement={popoverBoundary ?? undefined}
+                        >
+                            <PopoverDialog>
+                                <FocusScope autoFocus>
+                                    <CloseOnAnchorRemoval />
+                                    <PopoverArrow
+                                        className={stylesDropDown.PopoverArrow}
+                                        aria-hidden
+                                        style={{ fill: "var(--color-gray-50" }}
+                                    />
+                                    <ListBox
+                                        selectedKeys={sortType}
+                                        onSelectionChange={setSortType}
+                                        selectionMode="multiple"
+                                        selectionBehavior="replace"
+                                        aria-label={__("reader.annotations.sorting.sortingOptions")}
+                                    >
+                                        <ListBoxItem
+                                            id="progression"
+                                            key="progression"
+                                            aria-label="progression"
+                                            className={({ isFocused, isSelected }) =>
+                                                classNames(
+                                                    StylesCombobox.my_item,
+                                                    isFocused ? StylesCombobox.focused : "",
+                                                    isSelected ? StylesCombobox.selected : "",
+                                                )
+                                            }
+                                            style={{ marginBottom: "5px" }}
+                                        >
+                                            {__("reader.annotations.sorting.progression")}
+                                        </ListBoxItem>
+                                        <ListBoxItem
+                                            id="lastCreated"
+                                            key="lastCreated"
+                                            aria-label="lastCreated"
+                                            className={({ isFocused, isSelected }) =>
+                                                classNames(
+                                                    StylesCombobox.my_item,
+                                                    isFocused ? StylesCombobox.focused : "",
+                                                    isSelected ? StylesCombobox.selected : "",
+                                                )
+                                            }
+                                            style={{ marginBottom: "5px" }}
+                                        >
+                                            {__("reader.annotations.sorting.lastcreated")}
+                                        </ListBoxItem>
+                                        <ListBoxItem
+                                            id="lastModified"
+                                            key="lastModified"
+                                            aria-label="lastModified"
+                                            className={({ isFocused, isSelected }) =>
+                                                classNames(
+                                                    StylesCombobox.my_item,
+                                                    isFocused ? StylesCombobox.focused : "",
+                                                    isSelected ? StylesCombobox.selected : "",
+                                                )
+                                            }
+                                        >
+                                            {__("reader.annotations.sorting.lastmodified")}
+                                        </ListBoxItem>
+                                    </ListBox>
+                                </FocusScope>
+                            </PopoverDialog>
+                        </Popover>
                     </DialogTrigger>
                     <FilterPopover
                         filterOpen={filterOpen}
@@ -368,81 +362,74 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
                                 <SVG svg={SaveIcon} />
                             </button>
                         </Pressable>
-                        <DialogPortalContext.Consumer>
-                            {(portalContainer) => (
-                                <Popover
-                                    UNSTABLE_portalContainer={portalContainer}
-                                    placement="bottom end"
-                                    offset={5}
-                                    crossOffset={-10}
-                                    containerPadding={0}
-                                    className={stylesAnnotations.annotations_sorting_container}
-                                    style={{ zIndex: 101, maxHeight: Math.round(window.innerHeight / 2), padding: "15px 0" }}
-                                    boundaryElement={popoverBoundary ?? undefined}
-                                >
-                                    <PopoverDialog>
-                                        <FocusScope autoFocus>
-                                            <CloseOnAnchorRemoval />
-                                            <PopoverArrow
-                                                className={stylesDropDown.PopoverArrow}
-                                                aria-hidden
-                                                style={{ fill: "var(--color-gray-50" }}
+                        <Popover
+                            placement="bottom end"
+                            offset={5}
+                            crossOffset={-10}
+                            containerPadding={0}
+                            className={stylesAnnotations.annotations_sorting_container}
+                            style={{ zIndex: OVERLAY_Z_INDEX, maxHeight: Math.round(window.innerHeight / 2), padding: "15px 0" }}
+                            boundaryElement={popoverBoundary ?? undefined}
+                        >
+                            <PopoverDialog>
+                                <FocusScope autoFocus>
+                                    <CloseOnAnchorRemoval />
+                                    <PopoverArrow
+                                        className={stylesDropDown.PopoverArrow}
+                                        aria-hidden
+                                        style={{ fill: "var(--color-gray-50" }}
+                                    />
+                                    <div className={stylesAnnotations.annotationsTitle_form_container}>
+                                        <p>{__("reader.annotations.annotationsExport.description")}</p>
+                                        <div className={stylesInputs.form_group}>
+                                            <label htmlFor="annotationsTitle">{__("reader.annotations.annotationsExport.title")}</label>
+                                            <input
+                                                type="text"
+                                                defaultValue={annoSetTitle}
+                                                name="annotationsTitle"
+                                                id="annotationsTitle"
+                                                ref={annotationTitleRef}
+                                                className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                                             />
-                                            <div className={stylesAnnotations.annotationsTitle_form_container}>
-                                                <p>{__("reader.annotations.annotationsExport.description")}</p>
-                                                <div className={stylesInputs.form_group}>
-                                                    <label htmlFor="annotationsTitle">
-                                                        {__("reader.annotations.annotationsExport.title")}
-                                                    </label>
-                                                    <input
-                                                        type="text"
-                                                        defaultValue={annoSetTitle}
-                                                        name="annotationsTitle"
-                                                        id="annotationsTitle"
-                                                        ref={annotationTitleRef}
-                                                        className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
-                                                    />
-                                                </div>
-                                                <div className={stylesInputs.form_group}>
-                                                    <label htmlFor="file_type">{__("catalog.format")}</label>
-                                                    <select defaultValue="annotation" ref={selectFileTypeRef} name="file_type">
-                                                        <option value="annotation">{__("reader.marks.annotationsReadium")}</option>
-                                                        <option value="html">HTML</option>
-                                                    </select>
-                                                </div>
+                                        </div>
+                                        <div className={stylesInputs.form_group}>
+                                            <label htmlFor="file_type">{__("catalog.format")}</label>
+                                            <select defaultValue="annotation" ref={selectFileTypeRef} name="file_type">
+                                                <option value="annotation">{__("reader.marks.annotationsReadium")}</option>
+                                                <option value="html">HTML</option>
+                                            </select>
+                                        </div>
 
-                                                <Button
-                                                    slot="close"
-                                                    aria-label={__("reader.annotations.export")}
-                                                    onPress={() => {
-                                                        const fileType = selectFileTypeRef.current?.value || "annotation";
-                                                        getSaga()
-                                                            .run(
-                                                                exportAnnotationSet,
-                                                                annotationListFiltered,
-                                                                publicationView,
-                                                                annotationTitleRef?.current?.value || annoSetTitle,
-                                                                fileType,
-                                                            )
-                                                            .toPromise()
-                                                            .then((_v) => {
-                                                                /* noop */
-                                                            })
-                                                            .catch((_err) => {
-                                                                /* debug(err); */
-                                                            });
-                                                    }}
-                                                    className={stylesButtons.button_primary_blue}
-                                                >
-                                                    <SVG svg={SaveIcon} />
-                                                    {__("reader.annotations.export")}
-                                                </Button>
-                                            </div>
-                                        </FocusScope>
-                                    </PopoverDialog>
-                                </Popover>
-                            )}
-                        </DialogPortalContext.Consumer>
+                                        <Button
+                                            slot="close"
+                                            aria-label={__("reader.annotations.export")}
+                                            onPress={() => {
+                                                const fileType = selectFileTypeRef.current?.value || "annotation";
+                                                getSaga()
+                                                    .run(
+                                                        exportAnnotationSet,
+                                                        annotationListFiltered,
+                                                        publicationView,
+                                                        annotationTitleRef?.current?.value || annoSetTitle,
+                                                        fileType,
+                                                    )
+                                                    .toPromise()
+                                                    .then((_v) => {
+                                                        /* noop */
+                                                    })
+                                                    .catch((_err) => {
+                                                        /* debug(err); */
+                                                    });
+                                            }}
+                                            className={stylesButtons.button_primary_blue}
+                                        >
+                                            <SVG svg={SaveIcon} />
+                                            {__("reader.annotations.export")}
+                                        </Button>
+                                    </div>
+                                </FocusScope>
+                            </PopoverDialog>
+                        </Popover>
                     </DialogTrigger>
                     </> : <></>}
                     <AlertDialog.Root>
@@ -489,224 +476,217 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
                         >
                             <SVG ariaHidden svg={OptionsIcon} />
                         </Button>
-                        <DialogPortalContext.Consumer>
-                            {(portalContainer) => (
-                                <Popover
-                                    UNSTABLE_portalContainer={portalContainer}
-                                    placement="bottom"
-                                    offset={5}
-                                    crossOffset={-10}
-                                    containerPadding={0}
-                                    className={stylesAnnotations.annotations_filter_container}
-                                    boundaryElement={popoverBoundary ?? undefined}
-                                    style={{ zIndex: 101 }}
-                                >
-                                    <PopoverDialog>
-                                        <FocusScope autoFocus>
-                                            <CloseOnAnchorRemoval />
-                                            <div className={stylesAnnotations.annotations_checkbox}>
-                                                <input
-                                                    type="checkbox"
-                                                    id="advancedAnnotations"
-                                                    className={stylesGlobal.checkbox_custom_input}
-                                                    name="advancedAnnotations"
-                                                    checked={serialAnnotator}
-                                                    onChange={advancedAnnotationsOnChange}
-                                                />
-                                                <label htmlFor="advancedAnnotations" className={stylesGlobal.checkbox_custom_label}>
-                                                    <div
-                                                        tabIndex={0}
-                                                        role="checkbox"
-                                                        aria-checked={serialAnnotator}
-                                                        aria-label={__("reader.annotations.advancedMode")}
-                                                        onKeyDown={(e) => {
-                                                            // if (e.code === "Space") {
-                                                            if (e.key === " ") {
-                                                                e.preventDefault(); // prevent scroll
-                                                            }
-                                                        }}
-                                                        onKeyUp={(e) => {
-                                                            // if (e.code === "Space") {
-                                                            if (e.key === " ") {
-                                                                e.preventDefault();
-                                                                advancedAnnotationsOnChange();
-                                                            }
-                                                        }}
-                                                        className={stylesGlobal.checkbox_custom}
-                                                        style={{
-                                                            border: serialAnnotator
-                                                                ? "2px solid transparent"
-                                                                : "2px solid var(--color-text-primary)",
-                                                            backgroundColor: serialAnnotator
-                                                                ? "var(--color-brand-primary)"
-                                                                : "transparent",
-                                                        }}
-                                                    >
-                                                        {serialAnnotator ? <SVG ariaHidden svg={CheckIcon} /> : <></>}
-                                                    </div>
-                                                    <span aria-hidden>{__("reader.annotations.advancedMode")}</span>
-                                                </label>
+                        <Popover
+                            placement="bottom"
+                            offset={5}
+                            crossOffset={-10}
+                            containerPadding={0}
+                            className={stylesAnnotations.annotations_filter_container}
+                            boundaryElement={popoverBoundary ?? undefined}
+                            style={{ zIndex: OVERLAY_Z_INDEX }}
+                        >
+                            <PopoverDialog>
+                                <FocusScope autoFocus>
+                                    <CloseOnAnchorRemoval />
+                                    <div className={stylesAnnotations.annotations_checkbox}>
+                                        <input
+                                            type="checkbox"
+                                            id="advancedAnnotations"
+                                            className={stylesGlobal.checkbox_custom_input}
+                                            name="advancedAnnotations"
+                                            checked={serialAnnotator}
+                                            onChange={advancedAnnotationsOnChange}
+                                        />
+                                        <label htmlFor="advancedAnnotations" className={stylesGlobal.checkbox_custom_label}>
+                                            <div
+                                                tabIndex={0}
+                                                role="checkbox"
+                                                aria-checked={serialAnnotator}
+                                                aria-label={__("reader.annotations.advancedMode")}
+                                                onKeyDown={(e) => {
+                                                    // if (e.code === "Space") {
+                                                    if (e.key === " ") {
+                                                        e.preventDefault(); // prevent scroll
+                                                    }
+                                                }}
+                                                onKeyUp={(e) => {
+                                                    // if (e.code === "Space") {
+                                                    if (e.key === " ") {
+                                                        e.preventDefault();
+                                                        advancedAnnotationsOnChange();
+                                                    }
+                                                }}
+                                                className={stylesGlobal.checkbox_custom}
+                                                style={{
+                                                    border: serialAnnotator
+                                                        ? "2px solid transparent"
+                                                        : "2px solid var(--color-text-primary)",
+                                                    backgroundColor: serialAnnotator ? "var(--color-brand-primary)" : "transparent",
+                                                }}
+                                            >
+                                                {serialAnnotator ? <SVG ariaHidden svg={CheckIcon} /> : <></>}
                                             </div>
-                                            {/* : <></>} */}
-                                            <div className={stylesAnnotations.annotations_checkbox}>
-                                                <input
-                                                    type="checkbox"
-                                                    id="quickAnnotations"
-                                                    name="quickAnnotations"
-                                                    className={stylesGlobal.checkbox_custom_input}
-                                                    checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
-                                                    onChange={quickAnnotationsOnChange}
-                                                />
-                                                <label htmlFor="quickAnnotations" className={stylesGlobal.checkbox_custom_label}>
-                                                    <div
-                                                        tabIndex={0}
-                                                        role="checkbox"
-                                                        aria-checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
-                                                        aria-label={__("reader.annotations.quickAnnotations")}
-                                                        onKeyDown={(e) => {
-                                                            // if (e.code === "Space") {
-                                                            if (e.key === " ") {
-                                                                e.preventDefault(); // prevent scroll
-                                                            }
-                                                        }}
-                                                        onKeyUp={(e) => {
-                                                            // if (e.code === "Space") {
-                                                            if (e.key === " ") {
-                                                                e.preventDefault();
-                                                                quickAnnotationsOnChange();
-                                                            }
-                                                        }}
-                                                        className={stylesGlobal.checkbox_custom}
-                                                        style={{
-                                                            border: readerConfig.annotation_popoverNotOpenOnNoteTaking
-                                                                ? "2px solid transparent"
-                                                                : "2px solid var(--color-text-primary)",
-                                                            backgroundColor: readerConfig.annotation_popoverNotOpenOnNoteTaking
-                                                                ? "var(--color-brand-primary)"
-                                                                : "transparent",
-                                                        }}
-                                                    >
-                                                        {readerConfig.annotation_popoverNotOpenOnNoteTaking ? (
-                                                            <SVG ariaHidden svg={CheckIcon} />
-                                                        ) : (
-                                                            <></>
-                                                        )}{" "}
-                                                    </div>
-                                                    <span aria-hidden>{__("reader.annotations.quickAnnotations")}</span>
-                                                </label>
+                                            <span aria-hidden>{__("reader.annotations.advancedMode")}</span>
+                                        </label>
+                                    </div>
+                                    {/* : <></>} */}
+                                    <div className={stylesAnnotations.annotations_checkbox}>
+                                        <input
+                                            type="checkbox"
+                                            id="quickAnnotations"
+                                            name="quickAnnotations"
+                                            className={stylesGlobal.checkbox_custom_input}
+                                            checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
+                                            onChange={quickAnnotationsOnChange}
+                                        />
+                                        <label htmlFor="quickAnnotations" className={stylesGlobal.checkbox_custom_label}>
+                                            <div
+                                                tabIndex={0}
+                                                role="checkbox"
+                                                aria-checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
+                                                aria-label={__("reader.annotations.quickAnnotations")}
+                                                onKeyDown={(e) => {
+                                                    // if (e.code === "Space") {
+                                                    if (e.key === " ") {
+                                                        e.preventDefault(); // prevent scroll
+                                                    }
+                                                }}
+                                                onKeyUp={(e) => {
+                                                    // if (e.code === "Space") {
+                                                    if (e.key === " ") {
+                                                        e.preventDefault();
+                                                        quickAnnotationsOnChange();
+                                                    }
+                                                }}
+                                                className={stylesGlobal.checkbox_custom}
+                                                style={{
+                                                    border: readerConfig.annotation_popoverNotOpenOnNoteTaking
+                                                        ? "2px solid transparent"
+                                                        : "2px solid var(--color-text-primary)",
+                                                    backgroundColor: readerConfig.annotation_popoverNotOpenOnNoteTaking
+                                                        ? "var(--color-brand-primary)"
+                                                        : "transparent",
+                                                }}
+                                            >
+                                                {readerConfig.annotation_popoverNotOpenOnNoteTaking ? (
+                                                    <SVG ariaHidden svg={CheckIcon} />
+                                                ) : (
+                                                    <></>
+                                                )}{" "}
                                             </div>
-                                            {!isPdf ? (
-                                                <div className={stylesAnnotations.annotations_checkbox}>
-                                                    <input
-                                                        type="checkbox"
-                                                        id="marginAnnotations"
-                                                        name="marginAnnotations"
-                                                        className={stylesGlobal.checkbox_custom_input}
-                                                        checked={readerConfig.annotation_defaultDrawView === "margin"}
-                                                        onChange={marginAnnotationsOnChange}
-                                                    />
-                                                    <label htmlFor="marginAnnotations" className={stylesGlobal.checkbox_custom_label}>
-                                                        <div
-                                                            tabIndex={0}
-                                                            role="checkbox"
-                                                            aria-checked={readerConfig.annotation_defaultDrawView === "margin"}
-                                                            aria-label={__("reader.annotations.toggleMarginMarks")}
-                                                            onKeyDown={(e) => {
-                                                                // if (e.code === "Space") {
-                                                                if (e.key === " ") {
-                                                                    e.preventDefault(); // prevent scroll
-                                                                }
-                                                            }}
-                                                            onKeyUp={(e) => {
-                                                                // if (e.code === "Space") {
-                                                                if (e.key === " ") {
-                                                                    e.preventDefault();
-                                                                    marginAnnotationsOnChange();
-                                                                }
-                                                            }}
-                                                            className={stylesGlobal.checkbox_custom}
-                                                            style={{
-                                                                border:
-                                                                    readerConfig.annotation_defaultDrawView === "margin"
-                                                                        ? "2px solid transparent"
-                                                                        : "2px solid var(--color-text-primary)",
-                                                                backgroundColor:
-                                                                    readerConfig.annotation_defaultDrawView === "margin"
-                                                                        ? "var(--color-brand-primary)"
-                                                                        : "transparent",
-                                                            }}
-                                                        >
-                                                            {readerConfig.annotation_defaultDrawView === "margin" ? (
-                                                                <SVG ariaHidden svg={CheckIcon} />
-                                                            ) : (
-                                                                <></>
-                                                            )}
-                                                        </div>
-                                                        <span aria-hidden>{__("reader.annotations.toggleMarginMarks")}</span>
-                                                    </label>
-                                                </div>
-                                            ) : (
-                                                <></>
-                                            )}
-                                            <div className={stylesAnnotations.annotations_checkbox}>
-                                                <input
-                                                    type="checkbox"
-                                                    id="hideAnnotation"
-                                                    name="hideAnnotation"
-                                                    className={stylesGlobal.checkbox_custom_input}
-                                                    checked={readerConfig.annotation_defaultDrawView === "hide"}
-                                                    onChange={hideAnnotationOnChange}
-                                                />
-                                                <label htmlFor="hideAnnotation" className={stylesGlobal.checkbox_custom_label}>
-                                                    <div
-                                                        tabIndex={0}
-                                                        role="checkbox"
-                                                        aria-checked={readerConfig.annotation_defaultDrawView === "hide"}
-                                                        aria-label={__("reader.annotations.hide")}
-                                                        onKeyDown={(e) => {
-                                                            // if (e.code === "Space") {
-                                                            if (e.key === " ") {
-                                                                e.preventDefault(); // prevent scroll
-                                                            }
-                                                        }}
-                                                        onKeyUp={(e) => {
-                                                            // if (e.code === "Space") {
-                                                            if (e.key === " ") {
-                                                                e.preventDefault();
-                                                                hideAnnotationOnChange();
-                                                            }
-                                                        }}
-                                                        className={stylesGlobal.checkbox_custom}
-                                                        style={{
-                                                            border:
-                                                                readerConfig.annotation_defaultDrawView === "hide"
-                                                                    ? "2px solid transparent"
-                                                                    : "2px solid var(--color-text-primary)",
-                                                            backgroundColor:
-                                                                readerConfig.annotation_defaultDrawView === "hide"
-                                                                    ? "var(--color-brand-primary)"
-                                                                    : "transparent",
-                                                        }}
-                                                    >
-                                                        {readerConfig.annotation_defaultDrawView === "hide" ? (
-                                                            <SVG ariaHidden svg={CheckIcon} />
-                                                        ) : (
-                                                            <></>
-                                                        )}
-                                                    </div>
-                                                    <span aria-hidden>{__("reader.annotations.hide")}</span>
-                                                </label>
-                                            </div>
-                                            <PopoverArrow
-                                                className={stylesDropDown.PopoverArrow}
-                                                aria-hidden
-                                                style={{ fill: "var(--color-gray-50" }}
+                                            <span aria-hidden>{__("reader.annotations.quickAnnotations")}</span>
+                                        </label>
+                                    </div>
+                                    {!isPdf ? (
+                                        <div className={stylesAnnotations.annotations_checkbox}>
+                                            <input
+                                                type="checkbox"
+                                                id="marginAnnotations"
+                                                name="marginAnnotations"
+                                                className={stylesGlobal.checkbox_custom_input}
+                                                checked={readerConfig.annotation_defaultDrawView === "margin"}
+                                                onChange={marginAnnotationsOnChange}
                                             />
-                                        </FocusScope>
-                                    </PopoverDialog>
-                                </Popover>
-                            )}
-                        </DialogPortalContext.Consumer>
+                                            <label htmlFor="marginAnnotations" className={stylesGlobal.checkbox_custom_label}>
+                                                <div
+                                                    tabIndex={0}
+                                                    role="checkbox"
+                                                    aria-checked={readerConfig.annotation_defaultDrawView === "margin"}
+                                                    aria-label={__("reader.annotations.toggleMarginMarks")}
+                                                    onKeyDown={(e) => {
+                                                        // if (e.code === "Space") {
+                                                        if (e.key === " ") {
+                                                            e.preventDefault(); // prevent scroll
+                                                        }
+                                                    }}
+                                                    onKeyUp={(e) => {
+                                                        // if (e.code === "Space") {
+                                                        if (e.key === " ") {
+                                                            e.preventDefault();
+                                                            marginAnnotationsOnChange();
+                                                        }
+                                                    }}
+                                                    className={stylesGlobal.checkbox_custom}
+                                                    style={{
+                                                        border:
+                                                            readerConfig.annotation_defaultDrawView === "margin"
+                                                                ? "2px solid transparent"
+                                                                : "2px solid var(--color-text-primary)",
+                                                        backgroundColor:
+                                                            readerConfig.annotation_defaultDrawView === "margin"
+                                                                ? "var(--color-brand-primary)"
+                                                                : "transparent",
+                                                    }}
+                                                >
+                                                    {readerConfig.annotation_defaultDrawView === "margin" ? (
+                                                        <SVG ariaHidden svg={CheckIcon} />
+                                                    ) : (
+                                                        <></>
+                                                    )}
+                                                </div>
+                                                <span aria-hidden>{__("reader.annotations.toggleMarginMarks")}</span>
+                                            </label>
+                                        </div>
+                                    ) : (
+                                        <></>
+                                    )}
+                                    <div className={stylesAnnotations.annotations_checkbox}>
+                                        <input
+                                            type="checkbox"
+                                            id="hideAnnotation"
+                                            name="hideAnnotation"
+                                            className={stylesGlobal.checkbox_custom_input}
+                                            checked={readerConfig.annotation_defaultDrawView === "hide"}
+                                            onChange={hideAnnotationOnChange}
+                                        />
+                                        <label htmlFor="hideAnnotation" className={stylesGlobal.checkbox_custom_label}>
+                                            <div
+                                                tabIndex={0}
+                                                role="checkbox"
+                                                aria-checked={readerConfig.annotation_defaultDrawView === "hide"}
+                                                aria-label={__("reader.annotations.hide")}
+                                                onKeyDown={(e) => {
+                                                    // if (e.code === "Space") {
+                                                    if (e.key === " ") {
+                                                        e.preventDefault(); // prevent scroll
+                                                    }
+                                                }}
+                                                onKeyUp={(e) => {
+                                                    // if (e.code === "Space") {
+                                                    if (e.key === " ") {
+                                                        e.preventDefault();
+                                                        hideAnnotationOnChange();
+                                                    }
+                                                }}
+                                                className={stylesGlobal.checkbox_custom}
+                                                style={{
+                                                    border:
+                                                        readerConfig.annotation_defaultDrawView === "hide"
+                                                            ? "2px solid transparent"
+                                                            : "2px solid var(--color-text-primary)",
+                                                    backgroundColor:
+                                                        readerConfig.annotation_defaultDrawView === "hide"
+                                                            ? "var(--color-brand-primary)"
+                                                            : "transparent",
+                                                }}
+                                            >
+                                                {readerConfig.annotation_defaultDrawView === "hide" ? (
+                                                    <SVG ariaHidden svg={CheckIcon} />
+                                                ) : (
+                                                    <></>
+                                                )}
+                                            </div>
+                                            <span aria-hidden>{__("reader.annotations.hide")}</span>
+                                        </label>
+                                    </div>
+                                    <PopoverArrow
+                                        className={stylesDropDown.PopoverArrow}
+                                        aria-hidden
+                                        style={{ fill: "var(--color-gray-50" }}
+                                    />
+                                </FocusScope>
+                            </PopoverDialog>
+                        </Popover>
                     </DialogTrigger>
                 </div>
             </div>

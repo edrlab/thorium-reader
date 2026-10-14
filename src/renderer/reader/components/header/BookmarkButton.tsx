@@ -7,11 +7,10 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
 import { FocusScope } from "react-aria";
 import { useOverlayTriggerState } from "react-stately";
 import { OverlayTriggerStateContext, Popover, Dialog as PopoverDialog } from "react-aria-components";
-import { DialogPortalContext } from "readium-desktop/renderer/common/components/Dialog";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/components/readerHeader.scss";
 
@@ -479,38 +478,34 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                     />
                 </label>
             </li>
-            <DialogPortalContext.Consumer>
-                {(portalContainer) => (
-                    <Popover
-                        triggerRef={bookmarkPopoverTriggerRef}
-                        UNSTABLE_portalContainer={portalContainer}
-                        placement="bottom end"
-                        offset={isOnSearch ? 50 : 18}
-                        crossOffset={0}
-                        containerPadding={0}
-                        style={{ zIndex: 101, width: "420px" }}
-                    >
-                        <PopoverDialog aria-label={__("reader.navigation.bookmarkTitle")}>
-                            <FocusScope autoFocus>
-                                <BookmarkEdit
-                                    locatorExtended={locatorExtended}
-                                    name={""}
-                                    save={(name, color, tag) => {
-                                        toggleBookmark(name, color, tag);
+            <Popover
+                triggerRef={bookmarkPopoverTriggerRef}
 
-                                        setTimeout(() => {
-                                            keyboardFocusRequest(true);
-                                        }, 200);
-                                    }}
-                                    color={noteDefaultColor}
-                                    tags={[]}
-                                />
-                                <PopoverArrow style={{ fill: "var(--color-gray-50" }} width={15} height={10} />
-                            </FocusScope>
-                        </PopoverDialog>
-                    </Popover>
-                )}
-            </DialogPortalContext.Consumer>
+                placement="bottom end"
+                offset={isOnSearch ? 50 : 18}
+                crossOffset={0}
+                containerPadding={0}
+                style={{ zIndex: OVERLAY_Z_INDEX, width: "420px" }}
+            >
+                <PopoverDialog aria-label={__("reader.navigation.bookmarkTitle")}>
+                    <FocusScope autoFocus>
+                        <BookmarkEdit
+                            locatorExtended={locatorExtended}
+                            name={""}
+                            save={(name, color, tag) => {
+                                toggleBookmark(name, color, tag);
+
+                                setTimeout(() => {
+                                    keyboardFocusRequest(true);
+                                }, 200);
+                            }}
+                            color={noteDefaultColor}
+                            tags={[]}
+                        />
+                        <PopoverArrow style={{ fill: "var(--color-gray-50" }} width={15} height={10} />
+                    </FocusScope>
+                </PopoverDialog>
+            </Popover>
         </OverlayTriggerStateContext.Provider>
     </>;
 

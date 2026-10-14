@@ -10,9 +10,8 @@ import * as stylesDropDown from "readium-desktop/renderer/assets/styles/componen
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 
 import * as React from "react";
-import { PopoverArrow, ViewportBoundary } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { OVERLAY_Z_INDEX, PopoverArrow, ViewportBoundary } from "readium-desktop/renderer/common/components/overlayHelpers";
 import { FocusScope } from "react-aria";
-import { DialogPortalContext } from "readium-desktop/renderer/common/components/Dialog";
 import { DialogTrigger, Pressable, Popover, Dialog as PopoverDialog, Button } from "react-aria-components";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
@@ -170,43 +169,36 @@ const FeedAuthentified = ({ feed, logout, loadFeeds, __ }: { feed: IOpdsFeedView
                     <SVG ariaHidden={true} svg={AvatarIcon} />
                 </button>
             </Pressable>
-            <DialogPortalContext.Consumer>
-                {(portalContainer) => (
-                    <ViewportBoundary top={180} bottom={100}>
-                        {(boundaryElement) => (
-                            <Popover
-                                UNSTABLE_portalContainer={portalContainer}
-                                boundaryElement={boundaryElement}
-                                placement="bottom"
-                                offset={5}
-                                crossOffset={-10}
-                                containerPadding={0}
-                                className={stylesPopoverDialog.delete_item}
-                                style={{ zIndex: 101 }}
-                            >
-                                <PopoverDialog>
-                                    <FocusScope autoFocus>
-                                        <Button
-                                            slot="close"
-                                            onPress={() => {
-                                                logout(feed.url);
-                                                setTimeout(() => loadFeeds(), 100);
-                                            }}
-                                            render={(buttonProps) => (
-                                                <button {...buttonProps} title={__("catalog.logout")} />
-                                            )}
-                                        >
-                                            <SVG ariaHidden={true} svg={AvatarIcon} />
-                                            {__("catalog.logout")}
-                                        </Button>
-                                        <PopoverArrow className={stylesDropDown.PopoverArrow} aria-hidden />
-                                    </FocusScope>
-                                </PopoverDialog>
-                            </Popover>
-                        )}
-                    </ViewportBoundary>
+            <ViewportBoundary top={180} bottom={100}>
+                {(boundaryElement) => (
+                    <Popover
+                        boundaryElement={boundaryElement}
+                        placement="bottom"
+                        offset={5}
+                        crossOffset={-10}
+                        containerPadding={0}
+                        className={stylesPopoverDialog.delete_item}
+                        style={{ zIndex: OVERLAY_Z_INDEX }}
+                    >
+                        <PopoverDialog>
+                            <FocusScope autoFocus>
+                                <Button
+                                    slot="close"
+                                    onPress={() => {
+                                        logout(feed.url);
+                                        setTimeout(() => loadFeeds(), 100);
+                                    }}
+                                    render={(buttonProps) => <button {...buttonProps} title={__("catalog.logout")} />}
+                                >
+                                    <SVG ariaHidden={true} svg={AvatarIcon} />
+                                    {__("catalog.logout")}
+                                </Button>
+                                <PopoverArrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                            </FocusScope>
+                        </PopoverDialog>
+                    </Popover>
                 )}
-            </DialogPortalContext.Consumer>
+            </ViewportBoundary>
         </DialogTrigger>
     );
 };
@@ -219,43 +211,36 @@ const FeedAuthentification = ({ feed, triggerAuth, __ }: { feed: IOpdsFeedView, 
                     <SVG ariaHidden={true} svg={AvatarIcon} />
                 </button>
             </Pressable>
-            <DialogPortalContext.Consumer>
-                {(portalContainer) => (
-                    <ViewportBoundary top={180} bottom={100}>
-                        {(boundaryElement) => (
-                            <Popover
-                                UNSTABLE_portalContainer={portalContainer}
-                                boundaryElement={boundaryElement}
-                                placement="bottom"
-                                offset={5}
-                                crossOffset={-10}
-                                containerPadding={0}
-                                className={stylesPopoverDialog.delete_item}
-                                style={{ zIndex: 101 }}
-                            >
-                                <PopoverDialog>
-                                    <FocusScope autoFocus>
-                                        <Button
-                                            slot="close"
-                                            onPress={() => {
-                                                triggerAuth(feed.url, feed.authenticationUrl);
-                                                // setTimeout(() => loadFeeds(), 100);
-                                            }}
-                                            render={(buttonProps) => (
-                                                <button {...buttonProps} title={__("catalog.login")} />
-                                            )}
-                                        >
-                                            <SVG ariaHidden={true} svg={AvatarIcon} />
-                                            {__("catalog.login")}
-                                        </Button>
-                                        <PopoverArrow className={stylesDropDown.PopoverArrow} aria-hidden />
-                                    </FocusScope>
-                                </PopoverDialog>
-                            </Popover>
-                        )}
-                    </ViewportBoundary>
+            <ViewportBoundary top={180} bottom={100}>
+                {(boundaryElement) => (
+                    <Popover
+                        boundaryElement={boundaryElement}
+                        placement="bottom"
+                        offset={5}
+                        crossOffset={-10}
+                        containerPadding={0}
+                        className={stylesPopoverDialog.delete_item}
+                        style={{ zIndex: OVERLAY_Z_INDEX }}
+                    >
+                        <PopoverDialog>
+                            <FocusScope autoFocus>
+                                <Button
+                                    slot="close"
+                                    onPress={() => {
+                                        triggerAuth(feed.url, feed.authenticationUrl);
+                                        // setTimeout(() => loadFeeds(), 100);
+                                    }}
+                                    render={(buttonProps) => <button {...buttonProps} title={__("catalog.login")} />}
+                                >
+                                    <SVG ariaHidden={true} svg={AvatarIcon} />
+                                    {__("catalog.login")}
+                                </Button>
+                                <PopoverArrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                            </FocusScope>
+                        </PopoverDialog>
+                    </Popover>
                 )}
-            </DialogPortalContext.Consumer>
+            </ViewportBoundary>
         </DialogTrigger>
     );
 };

@@ -9,9 +9,8 @@ import * as stylesTags from "readium-desktop/renderer/assets/styles/components/t
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 
 import * as React from "react";
-import { PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
 import { FocusScope } from "react-aria";
-import { DialogPortalContext } from "readium-desktop/renderer/common/components/Dialog";
 import { DialogTrigger, Pressable, Popover, Dialog as PopoverDialog, Button } from "react-aria-components";
 import { IOpdsTagView } from "readium-desktop/common/views/opds";
 import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
@@ -88,36 +87,31 @@ export const TagButton: React.FC<React.PropsWithChildren<IProps>> = (props) => {
                             <SVG ariaHidden={true} svg={EditIcon} />
                         </button>
                     </Pressable>
-                    <DialogPortalContext.Consumer>
-                        {(portalContainer) => (
-                            <Popover
-                                UNSTABLE_portalContainer={portalContainer}
-                                placement="bottom"
-                                offset={5}
-                                crossOffset={0}
-                                containerPadding={0}
-                                className={stylesTags.Popover_delete_tag}
-                                style={{ zIndex: 101 }}
-                            >
-                                <PopoverDialog>
-                                    <FocusScope autoFocus>
-                                        <Button
-                                            slot="close"
-                                            onPress={
-                                                // () => this.deleteTag(index)
-                                                onClickDeleteCb(index)
-                                            }
-                                            render={(buttonProps) => <button {...buttonProps} title={__("catalog.deleteTag")} />}
-                                        >
-                                            <SVG ariaHidden={true} svg={TrashIcon} />
-                                            {__("catalog.delete")}
-                                        </Button>
-                                        <PopoverArrow className={stylesDropDown.PopoverArrow} aria-hidden />
-                                    </FocusScope>
-                                </PopoverDialog>
-                            </Popover>
-                        )}
-                    </DialogPortalContext.Consumer>
+                    <Popover
+                        placement="bottom"
+                        offset={5}
+                        crossOffset={0}
+                        containerPadding={0}
+                        className={stylesTags.Popover_delete_tag}
+                        style={{ zIndex: OVERLAY_Z_INDEX }}
+                    >
+                        <PopoverDialog>
+                            <FocusScope autoFocus>
+                                <Button
+                                    slot="close"
+                                    onPress={
+                                        // () => this.deleteTag(index)
+                                        onClickDeleteCb(index)
+                                    }
+                                    render={(buttonProps) => <button {...buttonProps} title={__("catalog.deleteTag")} />}
+                                >
+                                    <SVG ariaHidden={true} svg={TrashIcon} />
+                                    {__("catalog.delete")}
+                                </Button>
+                                <PopoverArrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                            </FocusScope>
+                        </PopoverDialog>
+                    </Popover>
                 </DialogTrigger>
             </>
         );

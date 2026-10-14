@@ -8,9 +8,8 @@
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 
 import * as React from "react";
-import { ViewportBoundary } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { OVERLAY_Z_INDEX, ViewportBoundary } from "readium-desktop/renderer/common/components/overlayHelpers";
 import { FocusScope } from "react-aria";
-import { DialogPortalContext } from "readium-desktop/renderer/common/components/Dialog";
 import { DialogTrigger, Pressable, Popover, Dialog as PopoverDialog } from "react-aria-components";
 import classNames from "classnames";
 
@@ -33,29 +32,24 @@ const Menu = (props: React.PropsWithChildren<IBaseProps>) => {
                     {props.button}
                 </button>
             </Pressable>
-            <DialogPortalContext.Consumer>
-                {(portalContainer) => (
-                    <ViewportBoundary top={props.noCollisionPadding ? 0 : collisionValue}>
-                        {(boundaryElement) => (
-                            <Popover
-                                UNSTABLE_portalContainer={portalContainer}
-                                boundaryElement={boundaryElement}
-                                placement="bottom end"
-                                offset={5}
-                                crossOffset={-10}
-                                containerPadding={0}
-                                style={{ zIndex: 101 }}
-                            >
-                                <PopoverDialog>
-                                    <FocusScope autoFocus>
-                                        <div className={stylesDropDown.dropdown_menu}>{props.children}</div>
-                                    </FocusScope>
-                                </PopoverDialog>
-                            </Popover>
-                        )}
-                    </ViewportBoundary>
+            <ViewportBoundary top={props.noCollisionPadding ? 0 : collisionValue}>
+                {(boundaryElement) => (
+                    <Popover
+                        boundaryElement={boundaryElement}
+                        placement="bottom end"
+                        offset={5}
+                        crossOffset={-10}
+                        containerPadding={0}
+                        style={{ zIndex: OVERLAY_Z_INDEX }}
+                    >
+                        <PopoverDialog>
+                            <FocusScope autoFocus>
+                                <div className={stylesDropDown.dropdown_menu}>{props.children}</div>
+                            </FocusScope>
+                        </PopoverDialog>
+                    </Popover>
                 )}
-            </DialogPortalContext.Consumer>
+            </ViewportBoundary>
         </DialogTrigger>
     );
 };

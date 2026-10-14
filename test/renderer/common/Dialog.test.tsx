@@ -14,9 +14,9 @@ let OverlayTriggerStateContext: typeof import("react-aria-components").OverlayTr
 let useOverlayTriggerState: typeof import("react-stately").useOverlayTriggerState;
 let Button: typeof import("react-aria-components").Button;
 let FocusScope: typeof import("react-aria").FocusScope;
-let DialogPortalContext: typeof import("readium-desktop/renderer/common/components/Dialog").DialogPortalContext;
 let PopoverArrow: typeof import("readium-desktop/renderer/common/components/overlayHelpers").PopoverArrow;
 let CloseOnAnchorRemoval: typeof import("readium-desktop/renderer/common/components/overlayHelpers").CloseOnAnchorRemoval;
+let OVERLAY_Z_INDEX: typeof import("readium-desktop/renderer/common/components/overlayHelpers").OVERLAY_Z_INDEX;
 let ViewportBoundary: typeof import("readium-desktop/renderer/common/components/overlayHelpers").ViewportBoundary;
 let root: Root;
 let host: HTMLDivElement;
@@ -82,11 +82,11 @@ beforeAll(() => {
     } = require("react-aria-components"));
     ({ useOverlayTriggerState } = require("react-stately"));
     ({ FocusScope } = require("react-aria"));
-    ({ DialogPortalContext } = Dialog);
     ({
         PopoverArrow,
         CloseOnAnchorRemoval,
         ViewportBoundary,
+        OVERLAY_Z_INDEX,
     } = require("readium-desktop/renderer/common/components/overlayHelpers"));
     AlertDialog = require("readium-desktop/renderer/common/components/AlertDialog");
 });
@@ -130,17 +130,15 @@ async function escape() {
     await React.act(settle);
 }
 
-test("opens, labels, dismisses, and restores focus in a custom portal", async () => {
+test("opens, labels, dismisses, and restores focus using the default portal", async () => {
     const onClose = jest.fn();
-    const portal = document.createElement("div");
-    document.body.appendChild(portal);
     await React.act(async () =>
         root.render(
             <Dialog.Root>
                 <Dialog.Trigger asChild>
                     <button>Open</button>
                 </Dialog.Trigger>
-                <Dialog.Portal container={portal}>
+                <Dialog.Portal>
                     <Dialog.Content>
                         <Dialog.Title>Book details</Dialog.Title>
                         <Dialog.Close asChild onClick={onClose}>
@@ -154,20 +152,19 @@ test("opens, labels, dismisses, and restores focus in a custom portal", async ()
     const trigger = host.querySelector("button")!;
     trigger.focus();
     await click(trigger);
-    const dialog = portal.querySelector("[role=\"dialog\"]")!;
+    const dialog = document.querySelector("[role=\"dialog\"]")!;
     expect(dialog).toBeTruthy();
     expect(document.getElementById(dialog.getAttribute("aria-labelledby")!)?.textContent).toBe("Book details");
     await click(dialog.querySelector("button")!);
     expect(onClose).toHaveBeenCalledTimes(1);
-    expect(portal.querySelector("[role=\"dialog\"]")).toBeNull();
+    expect(document.querySelector("[role=\"dialog\"]")).toBeNull();
     expect(document.activeElement).toBe(trigger);
     await click(trigger);
     await escape();
-    expect(portal.querySelector("[role=\"dialog\"]")).toBeNull();
+    expect(document.querySelector("[role=\"dialog\"]")).toBeNull();
     await click(trigger);
-    await click(portal.querySelector(".thorium-dialog-overlay")!);
-    expect(portal.querySelector("[role=\"dialog\"]")).toBeNull();
-    portal.remove();
+    await click(document.querySelector(".thorium-dialog-overlay")!);
+    expect(document.querySelector("[role=\"dialog\"]")).toBeNull();
 });
 
 test("confirmation focuses cancel, ignores outside clicks, and runs the action once", async () => {
@@ -264,7 +261,7 @@ test("nested dialogs close independently and return focus to their parent", asyn
     expect(document.activeElement).toBe(trigger);
 });
 
-test("RAC popovers stay within the dialog and Escape closes only the popover", async () => {
+test("default-portalled popovers preserve their parent dialog and close independently", async () => {
     await React.act(async () =>
         root.render(
             <Dialog.Root triggerless defaultOpen>
@@ -275,39 +272,41 @@ test("RAC popovers stay within the dialog and Escape closes only the popover", a
                             <Pressable>
                                 <button data-popover-trigger>Options</button>
                             </Pressable>
-                            <DialogPortalContext.Consumer>
-                                {(portalContainer) => (
-                                    <Popover
-                                            UNSTABLE_portalContainer={portalContainer}
-                                            placement="bottom"
-                                            offset={0}
-                                            crossOffset={0}
-                                            containerPadding={0}
-                                            style={{ zIndex: 101 }}
-                                        >
-                                            <PopoverDialog>
-                                                <FocusScope autoFocus>
-                                                    <button data-option>Option</button>
-                                                </FocusScope>
-                                            </PopoverDialog>
-                                        </Popover>
-                                )}
-                            </DialogPortalContext.Consumer>
+                            <Popover placement="bottom" offset={0} crossOffset={0} containerPadding={0} style={{ zIndex: OVERLAY_Z_INDEX }}>
+                                <PopoverDialog>
+                                    <FocusScope autoFocus>
+                                        <button data-option>Option</button>
+                                    </FocusScope>
+                                </PopoverDialog>
+                            </Popover>
                         </DialogTrigger>
                     </Dialog.Content>
                 </Dialog.Portal>
             </Dialog.Root>,
         ),
     );
-    await click(document.querySelector("[data-popover-trigger]")!);
+    const trigger = document.querySelector<HTMLButtonElement>("[data-popover-trigger]")!;
+    await React.act(async () => trigger.focus());
+    await click(trigger);
     const option = document.querySelector<HTMLButtonElement>("[data-option]")!;
-    expect(option.closest(".react-aria-Modal")).toBeTruthy();
+    expect(option.closest(".react-aria-Modal")).toBeNull();
+    const parentOverlay = document.querySelector<HTMLElement>(".thorium-dialog-overlay")!;
+    const popover = option.closest<HTMLElement>(".react-aria-Popover")!;
+    expect(popover.style.zIndex).toBe(parentOverlay.style.zIndex);
+    expect(parentOverlay.compareDocumentPosition(popover) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(document.querySelectorAll("[role=\"dialog\"]")).toHaveLength(2);
     await click(option);
     expect(document.querySelector(".react-aria-Dialog[role=\"dialog\"]")).toBeTruthy();
     option.focus();
     await escape();
     expect(document.querySelector("[data-option]")).toBeNull();
     expect(document.querySelector(".react-aria-Dialog[role=\"dialog\"]")).toBeTruthy();
+    expect(document.activeElement).toBe(trigger);
+    await click(trigger);
+    await click(parentOverlay);
+    expect(document.querySelector("[data-option]")).toBeNull();
+    expect(parentOverlay.isConnected).toBe(true);
+    expect(document.activeElement).toBe(trigger);
 });
 
 test("a dialog opened from a menu stays above the popover and closes independently", async () => {
@@ -317,33 +316,22 @@ test("a dialog opened from a menu stays above the popover and closes independent
                 <Pressable>
                     <button data-menu-trigger>Menu</button>
                 </Pressable>
-                <DialogPortalContext.Consumer>
-                    {(portalContainer) => (
-                        <Popover
-                                UNSTABLE_portalContainer={portalContainer}
-                                placement="bottom"
-                                offset={0}
-                                crossOffset={0}
-                                containerPadding={0}
-                                style={{ zIndex: 101 }}
-                            >
-                                <PopoverDialog>
-                                    <FocusScope autoFocus>
-                                        <Dialog.Root>
-                                            <Dialog.Trigger asChild>
-                                                <button data-info-trigger>About publication</button>
-                                            </Dialog.Trigger>
-                                            <Dialog.Portal>
-                                                <Dialog.Content>
-                                                    <Dialog.Title>About publication</Dialog.Title>
-                                                </Dialog.Content>
-                                            </Dialog.Portal>
-                                        </Dialog.Root>
-                                    </FocusScope>
-                                </PopoverDialog>
-                            </Popover>
-                    )}
-                </DialogPortalContext.Consumer>
+                <Popover placement="bottom" offset={0} crossOffset={0} containerPadding={0} style={{ zIndex: OVERLAY_Z_INDEX }}>
+                    <PopoverDialog>
+                        <FocusScope autoFocus>
+                            <Dialog.Root>
+                                <Dialog.Trigger asChild>
+                                    <button data-info-trigger>About publication</button>
+                                </Dialog.Trigger>
+                                <Dialog.Portal>
+                                    <Dialog.Content>
+                                        <Dialog.Title>About publication</Dialog.Title>
+                                    </Dialog.Content>
+                                </Dialog.Portal>
+                            </Dialog.Root>
+                        </FocusScope>
+                    </PopoverDialog>
+                </Popover>
             </DialogTrigger>,
         ),
     );
@@ -351,7 +339,8 @@ test("a dialog opened from a menu stays above the popover and closes independent
     const popover = document.querySelector<HTMLElement>(".react-aria-Popover")!;
     await click(document.querySelector("[data-info-trigger]")!);
     const dialogOverlay = document.querySelector<HTMLElement>(".thorium-dialog-overlay")!;
-    expect(Number(popover.style.zIndex)).toBeLessThan(Number(dialogOverlay.style.zIndex));
+    expect(Number(popover.style.zIndex)).toBe(Number(dialogOverlay.style.zIndex));
+    expect(popover.compareDocumentPosition(dialogOverlay) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(document.activeElement?.closest(".react-aria-Dialog")).toBeTruthy();
     await escape();
     expect(document.querySelector(".thorium-dialog-overlay")).toBeNull();
@@ -367,26 +356,21 @@ test("popover arrows preserve RAC centering while rotating the SVG toward the tr
                     <Pressable>
                         <button data-arrow-trigger>Open</button>
                     </Pressable>
-                    <DialogPortalContext.Consumer>
-                        {(portalContainer) => (
-                            <Popover
-                                    UNSTABLE_portalContainer={portalContainer}
-                                    placement={placement}
-                                    offset={0}
-                                    crossOffset={0}
-                                    containerPadding={0}
-                                    shouldFlip={false}
-                                    style={{ zIndex: 101 }}
-                                >
-                                    <PopoverDialog>
-                                        <FocusScope autoFocus>
-                                            <button>Option</button>
-                                            <PopoverArrow style={{ fill: "blue" }} />
-                                        </FocusScope>
-                                    </PopoverDialog>
-                                </Popover>
-                        )}
-                    </DialogPortalContext.Consumer>
+                    <Popover
+                        placement={placement}
+                        offset={0}
+                        crossOffset={0}
+                        containerPadding={0}
+                        shouldFlip={false}
+                        style={{ zIndex: OVERLAY_Z_INDEX }}
+                    >
+                        <PopoverDialog>
+                            <FocusScope autoFocus>
+                                <button>Option</button>
+                                <PopoverArrow style={{ fill: "blue" }} />
+                            </FocusScope>
+                        </PopoverDialog>
+                    </Popover>
                 </DialogTrigger>,
             ),
         );
@@ -411,28 +395,17 @@ test("native close buttons run their action once and restore focus", async () =>
                 <Pressable>
                     <button data-trigger>Options</button>
                 </Pressable>
-                <DialogPortalContext.Consumer>
-                    {(portalContainer) => (
-                        <Popover
-                                UNSTABLE_portalContainer={portalContainer}
-                                placement="bottom"
-                                offset={0}
-                                crossOffset={0}
-                                containerPadding={0}
-                                style={{ zIndex: 101 }}
-                            >
-                                <PopoverDialog>
-                                    <FocusScope autoFocus>
-                                        <form>
-                                            <Button slot="close" type="button" onPress={onSave}>
-                                                Save
-                                            </Button>
-                                        </form>
-                                    </FocusScope>
-                                </PopoverDialog>
-                            </Popover>
-                    )}
-                </DialogPortalContext.Consumer>
+                <Popover placement="bottom" offset={0} crossOffset={0} containerPadding={0} style={{ zIndex: OVERLAY_Z_INDEX }}>
+                    <PopoverDialog>
+                        <FocusScope autoFocus>
+                            <form>
+                                <Button slot="close" type="button" onPress={onSave}>
+                                    Save
+                                </Button>
+                            </form>
+                        </FocusScope>
+                    </PopoverDialog>
+                </Popover>
             </DialogTrigger>,
         ),
     );
@@ -491,30 +464,25 @@ test("popover preserves per-edge collision space and closes when its anchor deta
                 <Pressable>
                     <button data-trigger>Options</button>
                 </Pressable>
-                <DialogPortalContext.Consumer>
-                    {(portalContainer) => (
-                        <ViewportBoundary top={180} bottom={100}>
-                                {(boundaryElement) => (
-                                    <Popover
-                                        UNSTABLE_portalContainer={portalContainer}
-                                        boundaryElement={boundaryElement}
-                                        placement="bottom"
-                                        offset={0}
-                                        crossOffset={0}
-                                        containerPadding={0}
-                                        style={{ zIndex: 101 }}
-                                    >
-                                        <PopoverDialog>
-                                            <FocusScope autoFocus>
-                                                <CloseOnAnchorRemoval />
-                                                <button data-option>Option</button>
-                                            </FocusScope>
-                                        </PopoverDialog>
-                                    </Popover>
-                                )}
-                            </ViewportBoundary>
+                <ViewportBoundary top={180} bottom={100}>
+                    {(boundaryElement) => (
+                        <Popover
+                            boundaryElement={boundaryElement}
+                            placement="bottom"
+                            offset={0}
+                            crossOffset={0}
+                            containerPadding={0}
+                            style={{ zIndex: OVERLAY_Z_INDEX }}
+                        >
+                            <PopoverDialog>
+                                <FocusScope autoFocus>
+                                    <CloseOnAnchorRemoval />
+                                    <button data-option>Option</button>
+                                </FocusScope>
+                            </PopoverDialog>
+                        </Popover>
                     )}
-                </DialogPortalContext.Consumer>
+                </ViewportBoundary>
             </DialogTrigger>,
         ),
     );
@@ -572,7 +540,7 @@ test("native popovers support keyboard opening, tab navigation, and focus restor
         root.render(
             <DialogTrigger>
                 <Button data-keyboard-trigger>Options</Button>
-                <Popover style={{ zIndex: 101 }}>
+                <Popover style={{ zIndex: OVERLAY_Z_INDEX }}>
                     <PopoverDialog>
                         <FocusScope autoFocus>
                             <button data-first>First</button>

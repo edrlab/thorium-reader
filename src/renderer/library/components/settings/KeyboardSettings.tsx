@@ -19,9 +19,8 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 
 import classNames from "classnames";
 import * as React from "react";
-import { PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
 import { FocusScope } from "react-aria";
-import { DialogPortalContext } from "readium-desktop/renderer/common/components/Dialog";
 import { DialogTrigger, Pressable, Popover, Dialog as PopoverDialog, Button, OverlayArrow, Tooltip, TooltipTrigger } from "react-aria-components";
 import FocusLock from "react-focus-lock";
 import { connect } from "react-redux";
@@ -121,42 +120,31 @@ export const AdvancedTrigger = () => {
                     />
                 </button>
             </Pressable>
-            <DialogPortalContext.Consumer>
-                {(portalContainer) => (
-                    <Popover
-                        UNSTABLE_portalContainer={portalContainer}
-                        placement="bottom"
-                        offset={5}
-                        crossOffset={0}
-                        containerPadding={0}
-                        className={stylesDropDown.PopoverContent}
-                        style={{ zIndex: 101 }}
-                    >
-                        <PopoverDialog>
-                            <FocusScope autoFocus>
-                                <div className={stylesDropDown.dropdown_menu}>
-                                    <button
-                                        dir={isRTL ? "rtl" : "ltr"}
-                                        onClick={() => onClickKeyboardShortcutsReload(true)}
-                                    >
-                                        {__("settings.keyboard.resetDefaults")}
-                                    </button>
-                                    <button dir={isRTL ? "rtl" : "ltr"} onClick={() => onClickKeyboardShortcutsShow()}>
-                                        {__("settings.keyboard.editUserJson")}
-                                    </button>
-                                    <button
-                                        dir={isRTL ? "rtl" : "ltr"}
-                                        onClick={() => onClickKeyboardShortcutsReload(false)}
-                                    >
-                                        {__("settings.keyboard.loadUserJson")}
-                                    </button>
-                                </div>
-                                <PopoverArrow className={stylesDropDown.PopoverArrow} aria-hidden />
-                            </FocusScope>
-                        </PopoverDialog>
-                    </Popover>
-                )}
-            </DialogPortalContext.Consumer>
+            <Popover
+                placement="bottom"
+                offset={5}
+                crossOffset={0}
+                containerPadding={0}
+                className={stylesDropDown.PopoverContent}
+                style={{ zIndex: OVERLAY_Z_INDEX }}
+            >
+                <PopoverDialog>
+                    <FocusScope autoFocus>
+                        <div className={stylesDropDown.dropdown_menu}>
+                            <button dir={isRTL ? "rtl" : "ltr"} onClick={() => onClickKeyboardShortcutsReload(true)}>
+                                {__("settings.keyboard.resetDefaults")}
+                            </button>
+                            <button dir={isRTL ? "rtl" : "ltr"} onClick={() => onClickKeyboardShortcutsShow()}>
+                                {__("settings.keyboard.editUserJson")}
+                            </button>
+                            <button dir={isRTL ? "rtl" : "ltr"} onClick={() => onClickKeyboardShortcutsReload(false)}>
+                                {__("settings.keyboard.loadUserJson")}
+                            </button>
+                        </div>
+                        <PopoverArrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                    </FocusScope>
+                </PopoverDialog>
+            </Popover>
         </DialogTrigger>
     );
 };
