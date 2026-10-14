@@ -27,7 +27,6 @@ interface DialogContextValue {
 }
 const Context = React.createContext<DialogContextValue>({ modal: true, alert: false, titleId: "", descriptionId: "" });
 export const DialogPortalContext = React.createContext<HTMLElement | undefined>(undefined);
-export const DialogPopoverContext = React.createContext<(() => () => void) | undefined>(undefined);
 
 /** Shared dialog composition for library and reader renderers, backed by RAC. */
 export function Root({ modal = true, alert = false, triggerless = false, ...props }: RootProps) {
@@ -68,21 +67,16 @@ export function Portal({ children, container, className }: PortalProps) {
     const { modal, alert, overlayProps } = React.useContext(Context);
     const state = React.useContext(OverlayTriggerStateContext);
     const [portalContainer, setPortalContainer] = React.useState<HTMLDivElement>();
-    const [popoverCount, setPopoverCount] = React.useState(0);
-    const registerPopover = React.useCallback(() => {
-        setPopoverCount((count) => count + 1);
-        return () => setPopoverCount((count) => count - 1);
-    }, []);
     // Docked reader panels are ordinary persistent panels, without modal focus or dismissal.
     if (!modal) {
         return state?.isOpen ? <Overlay portalContainer={container} disableFocusManagement>{children}</Overlay> : undefined;
     }
-    return <ModalOverlay {...overlayProps} isDismissable={!alert} isKeyboardDismissDisabled={popoverCount > 0} UNSTABLE_portalContainer={container}
+    return <ModalOverlay {...overlayProps} isDismissable={!alert} UNSTABLE_portalContainer={container}
         className={className ?? "thorium-dialog-overlay"}
         style={className ? undefined : { position: "fixed", inset: 0, zIndex: 102 }}>
         <Modal ref={setPortalContainer} style={{ display: "contents" }}>
             <DialogPortalContext.Provider value={portalContainer}>
-                <DialogPopoverContext.Provider value={registerPopover}>{children}</DialogPopoverContext.Provider>
+                {children}
             </DialogPortalContext.Provider>
         </Modal>
     </ModalOverlay>;

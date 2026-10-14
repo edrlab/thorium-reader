@@ -36,7 +36,6 @@ const Menu = (props: React.PropsWithChildren<IBaseProps>) => {
                     <div className={stylesDropDown.dropdown_menu}>
                         {props.children}
                     </div>
-                    <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
                 </Popover.Content>
             </Popover.Portal>
         </Popover.Root>
