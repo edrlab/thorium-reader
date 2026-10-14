@@ -3,11 +3,14 @@ import * as React from "react";
 import { afterAll, afterEach, beforeAll, beforeEach, expect, jest, test } from "@jest/globals";
 import { JSDOM } from "jsdom";
 import type { Root } from "react-dom/client";
+import type { Selection } from "react-aria-components";
 
 let Dialog: typeof import("readium-desktop/renderer/common/components/Dialog");
 let AlertDialog: typeof import("readium-desktop/renderer/common/components/AlertDialog");
 let DialogTrigger: typeof import("react-aria-components").DialogTrigger;
 let Pressable: typeof import("react-aria-components").Pressable;
+let ListBox: typeof import("react-aria-components").ListBox;
+let ListBoxItem: typeof import("react-aria-components").ListBoxItem;
 let Popover: typeof import("react-aria-components").Popover;
 let PopoverDialog: typeof import("react-aria-components").Dialog;
 let OverlayTriggerStateContext: typeof import("react-aria-components").OverlayTriggerStateContext;
@@ -55,6 +58,7 @@ beforeAll(() => {
     }
     const extraGlobals = {
         IS_REACT_ACT_ENVIRONMENT: true,
+        CSS: { escape: require("css.escape") as (value: string) => string },
         ResizeObserver: class {
             observe() {}
             unobserve() {}
@@ -75,6 +79,8 @@ beforeAll(() => {
         DialogTrigger,
         Pressable,
         Popover,
+        ListBox,
+        ListBoxItem,
         Dialog: PopoverDialog,
         Button,
         OverlayTriggerStateContext,
@@ -558,3 +564,86 @@ test("native popovers support keyboard opening, tab navigation, and focus restor
     expect(document.querySelector("[data-first]")).toBeNull();
     expect(document.activeElement).toBe(trigger);
 });
+
+for (const initialKey of ["lastCreated", undefined]) {
+    test(
+        "sorting popovers focus " +
+            (initialKey ? "the selected option" : "the first option without changing the sort") +
+            " and dismiss independently",
+        async () => {
+            const onSelectionChange = jest.fn();
+            function SortingPopover() {
+                const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
+                    new Set(initialKey ? [initialKey] : []),
+                );
+                return (
+                    <Dialog.Root triggerless defaultOpen>
+                        <Dialog.Portal>
+                            <Dialog.Content>
+                                <Dialog.Title>Annotations</Dialog.Title>
+                                <DialogTrigger>
+                                    <Pressable>
+                                        <button data-sort-trigger>Sort</button>
+                                    </Pressable>
+                                    <Popover style={{ zIndex: OVERLAY_Z_INDEX }}>
+                                        <PopoverDialog>
+                                            <FocusScope autoFocus>
+                                                <ListBox
+                                                    autoFocus="first"
+                                                    escapeKeyBehavior="none"
+                                                    selectedKeys={selectedKeys}
+                                                    onSelectionChange={(keys) => {
+                                                        setSelectedKeys(keys);
+                                                        onSelectionChange(keys);
+                                                    }}
+                                                    selectionMode="multiple"
+                                                    selectionBehavior="replace"
+                                                    aria-label="Sort"
+                                                >
+                                                    <ListBoxItem id="progression">Progression</ListBoxItem>
+                                                    <ListBoxItem id="lastCreated">Last created</ListBoxItem>
+                                                    <ListBoxItem id="lastModified">Last modified</ListBoxItem>
+                                                </ListBox>
+                                            </FocusScope>
+                                        </PopoverDialog>
+                                    </Popover>
+                                </DialogTrigger>
+                            </Dialog.Content>
+                        </Dialog.Portal>
+                    </Dialog.Root>
+                );
+            }
+            await React.act(async () => root.render(<SortingPopover />));
+            const trigger = document.querySelector<HTMLButtonElement>("[data-sort-trigger]")!;
+            await React.act(async () => trigger.focus());
+            await React.act(async () => {
+                trigger.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", code: "Enter", bubbles: true }));
+                trigger.dispatchEvent(new KeyboardEvent("keyup", { key: "Enter", code: "Enter", bubbles: true }));
+                await settle();
+            });
+            await React.act(settle);
+            const options = Array.from(document.querySelectorAll<HTMLElement>("[role=\"option\"]"));
+            expect(document.activeElement).toBe(options[initialKey ? 1 : 0]);
+            expect(onSelectionChange).not.toHaveBeenCalled();
+            await React.act(async () => {
+                document.activeElement?.dispatchEvent(
+                    new KeyboardEvent("keydown", {
+                        key: "ArrowDown",
+                        code: "ArrowDown",
+                        bubbles: true,
+                        cancelable: true,
+                    }),
+                );
+                await settle();
+            });
+            expect(document.activeElement).toBe(options[initialKey ? 2 : 1]);
+            expect(document.activeElement?.getAttribute("aria-selected")).toBe("true");
+            onSelectionChange.mockClear();
+            await escape();
+            expect(onSelectionChange).not.toHaveBeenCalled();
+            expect(document.querySelector("[role=\"listbox\"]")).toBeNull();
+            expect(document.querySelector(".react-aria-Dialog[role=\"dialog\"]")).toBeTruthy();
+            expect(document.activeElement).toBe(trigger);
+        },
+    );
+}

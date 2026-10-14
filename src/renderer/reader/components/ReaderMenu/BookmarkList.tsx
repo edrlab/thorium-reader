@@ -256,6 +256,8 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
                                         style={{ fill: "var(--color-gray-50" }}
                                     />
                                     <ListBox
+                                        autoFocus="first"
+                                        escapeKeyBehavior="none"
                                         selectedKeys={sortType}
                                         onSelectionChange={setSortType}
                                         selectionMode="multiple"

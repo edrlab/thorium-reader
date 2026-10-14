@@ -267,6 +267,8 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
                                         style={{ fill: "var(--color-gray-50" }}
                                     />
                                     <ListBox
+                                        autoFocus="first"
+                                        escapeKeyBehavior="none"
                                         selectedKeys={sortType}
                                         onSelectionChange={setSortType}
                                         selectionMode="multiple"
