@@ -26,7 +26,7 @@ import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-
 
 import { TransformWrapper, TransformComponent, useControls } from "react-zoom-pan-pinch";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { VisuallyHidden } from "react-aria-components";
 
 const Controls = () => {
     const { zoomIn, zoomOut, resetTransform } = useControls();

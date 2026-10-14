@@ -46,7 +46,7 @@ import {
     createReadiumPositionIndex, getReadiumPositionProgression, isEpubPositionListPublication,
 } from "readium-desktop/common/readium/positions";
 
-import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+import { VisuallyHidden } from "react-aria-components";
 import { PublicationInfoA11y2 } from "./PublicationInfoA11y2";
 
 
@@ -442,9 +442,9 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                             </Dialog.Trigger>
                             <Dialog.Portal>
                                 <Dialog.Content className={stylesModals.modal_dialog} aria-describedby={undefined}>
-                                    <VisuallyHidden.Root>
+                                    <VisuallyHidden>
                                         <Dialog.Title>{__("catalog.bookInfo")}</Dialog.Title>
-                                    </VisuallyHidden.Root>
+                                    </VisuallyHidden>
                                     <div className={stylesModals.modal_dialog_body_cover}>
                                         <Cover
                                             publicationViewMaybeOpds={props.publicationViewMaybeOpds}
