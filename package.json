@@ -420,7 +420,6 @@
     "@flatten-js/core": "^1.6.14",
     "@floating-ui/dom": "^1.8.0",
     "@github/paste-markdown": "^1.5.3",
-    "@radix-ui/react-visually-hidden": "^1.2.12",
     "@react-hook/resize-observer": "^2.0.2",
     "@readium/speech": "^0.1.1",
     "@redux-saga/core": "^1.5.1",

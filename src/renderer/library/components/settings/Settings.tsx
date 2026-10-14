@@ -43,7 +43,7 @@ import WindowBehaviorSettings from "./WindowBehaviorSettings";
 import Themes from "./ThemesSettings";
 import ConnectionSettings from "./ConnexionSettings";
 
-import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+import { VisuallyHidden } from "react-aria-components";
 
 // import { TagGroup, TagList, Tag, Label } from "react-aria-components";
 
@@ -109,9 +109,9 @@ export const Settings: React.FC<ISettingsProps> = () => {
                 {
                     // FALSE this to test sourcemaps:
                     true &&
-                    <VisuallyHidden.Root>
+                    <VisuallyHidden>
                         <Dialog.Title asChild><h1>{__("header.settings")}</h1></Dialog.Title>
-                    </VisuallyHidden.Root>
+                    </VisuallyHidden>
                 }
                 <Tabs selectedKey={selectedTab} onSelectionChange={(key) => setSelectedTab(key.toString())} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                     <TabList aria-label={__("header.settingsLabel")} className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">

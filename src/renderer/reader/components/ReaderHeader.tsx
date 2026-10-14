@@ -16,7 +16,7 @@ import debug_ from "debug";
 import * as React from "react";
 import * as Popover from "readium-desktop/renderer/common/components/Popover";
 import * as Dialog from "readium-desktop/renderer/common/components/Dialog";
-import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+import { VisuallyHidden } from "react-aria-components";
 
 // import * as ReactDOM from "react-dom";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
@@ -1022,13 +1022,13 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     </button>
                                 </Dialog.Trigger>
                                 <Dialog.Portal container={appOverlayElement}>
-                                                <VisuallyHidden.Root>
+                                                <VisuallyHidden>
                                                     <Dialog.Title asChild>
                                                         <h1>
                                                             {__("reader.navigation.openTableOfContentsTitle")}
                                                         </h1>
                                                     </Dialog.Title>
-                                                </VisuallyHidden.Root>
+                                                </VisuallyHidden>
                                     {
                                         isDockedMode ?
                                             <div
@@ -1129,9 +1129,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     </button>
                                 </Dialog.Trigger>
                                 <Dialog.Portal container={appOverlayElement}>
-                                            {/* <VisuallyHidden.Root> */}
+                                            {/* <VisuallyHidden> */}
                                                 <Dialog.Title asChild style={{width: "0", height: "0", "margin": "0"}}><h1>{__("reader.navigation.settingsTitle")}</h1></Dialog.Title>
-                                            {/* </VisuallyHidden.Root> */}
+                                            {/* </VisuallyHidden> */}
                                     {isDockedMode ?
                                         <div
                                             className={containerClassName}

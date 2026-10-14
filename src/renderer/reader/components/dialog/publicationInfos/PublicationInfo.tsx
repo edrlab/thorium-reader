@@ -9,7 +9,7 @@ import * as stylesModals from "readium-desktop/renderer/assets/styles/components
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
 import * as Dialog from "readium-desktop/renderer/common/components/Dialog";
-import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+import { VisuallyHidden } from "react-aria-components";
 import debug_ from "debug";
 import * as React from "react";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
@@ -68,9 +68,9 @@ export const PublicationInfoReaderWithRACContent = React.forwardRef<HTMLElement>
         return (
             <Dialog.Portal container={appOverlayElement} className={stylesModals.modal_dialog_overlay}>
                 <Dialog.Content className={stylesModals.modal_dialog} {...props} ref={forwardRef} aria-describedby={undefined}>
-                    <VisuallyHidden.Root>
+                    <VisuallyHidden>
                         <Dialog.Title>{__("catalog.bookInfo")}</Dialog.Title>
-                    </VisuallyHidden.Root>
+                    </VisuallyHidden>
                     <div className={stylesModals.modal_dialog_header}>
                         {/* <Dialog.Title className="DialogTitle">{__("catalog.bookInfo")}</Dialog.Title> */}
                         <h1>{__("catalog.bookInfo")}</h1>
