@@ -34,7 +34,7 @@ import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locator
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
-import * as Tooltip from "@radix-ui/react-tooltip";
+import { Focusable, OverlayArrow, Tooltip, TooltipTrigger } from "react-aria-components";
 import * as ValidatedIcon from "readium-desktop/renderer/assets/icons/validated-icon.svg";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { publicationActions } from "readium-desktop/common/redux/actions";
@@ -369,119 +369,121 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                             _chunkIndex++;
                                             _chunkIndexMapped = index;
                                             return (
-                                                <Tooltip.Provider key={`chunk${index}`}>
-                                                    <Tooltip.Root>
-                                                        <Tooltip.Trigger asChild>
-                                                            <span
-                                                                data-index={_chunkIndexMapped}
-                                                                onClick={(e) => {
-                                                                    // e.preventDefault();
-                                                                    // e.stopPropagation();
-                                                                    const isDockedMode = this.props.readerConfig.readerDockingMode !== "full";
-                                                                    if (isDivina) {
-                                                                        // alert(link?.Href);
-                                                                        // alert(this.props.divinaContinousEqualTrue);
-                                                                        if (this.props.divinaContinousEqualTrue) {
-                                                                            this.props.handleLinkClick(e, link.Href, !isDockedMode);
-                                                                        } else {
-                                                                            this.props.handleLinkClick(e, link.Href, !isDockedMode);
-
-                                                                            // const loc = {
-                                                                            //     // href: index.toString(),
-                                                                            //     href: String(this.props.r2Publication?.Spine?.findIndex((lnk) => lnk.Href === link?.Href)),
-                                                                            //     // progression generate in divina pagechange event
-                                                                            // };
-                                                                            // // alert(loc.href);
-                                                                            // this.props.goToLocator(loc as any, !isDockedMode);
-                                                                        }
-                                                                    } else if (isPdf) {
-                                                                        // let href = link.Href;
-                                                                        // try {
-                                                                        //     const n = parseInt(href, 10);
-                                                                        //     href = Number.isInteger(n) ? String(n) : "1"; // NaN
-                                                                        // } catch (_e) {
-                                                                        //     href = "1";
-                                                                        // }
-                                                                        // alert(`${link.Href} - ${href}`);
-                                                                        // alert(link.Href);
-                                                                        const loc: R2Locator = {
-                                                                            href: link.Href,
-                                                                            locations: {
-                                                                                progression: 0,
-                                                                            },
-                                                                        };
-                                                                        this.props.goToLocator(loc, !isDockedMode);
+                                                <TooltipTrigger key={`chunk${index}`} delay={700} closeDelay={0}>
+                                                    <Focusable excludeFromTabOrder>
+                                                        <span
+                                                            role="button"
+                                                            data-index={_chunkIndexMapped}
+                                                            onClick={(e) => {
+                                                                // e.preventDefault();
+                                                                // e.stopPropagation();
+                                                                const isDockedMode = this.props.readerConfig.readerDockingMode !== "full";
+                                                                if (isDivina) {
+                                                                    // alert(link?.Href);
+                                                                    // alert(this.props.divinaContinousEqualTrue);
+                                                                    if (this.props.divinaContinousEqualTrue) {
+                                                                        this.props.handleLinkClick(e, link.Href, !isDockedMode);
                                                                     } else {
-                                                                        const el = e.nativeEvent.target as HTMLElement;
-                                                                        const deltaX = e.nativeEvent.offsetX;
-                                                                        let element = el;
-                                                                        let w: number | undefined;
-                                                                        while (element && element.classList) {
-                                                                            if (
-                                                                                element.classList.contains("progressChunkSpineItem")
-                                                                            ) {
-                                                                                w = element.offsetWidth;
-                                                                                break;
-                                                                            }
-                                                                            element = element.parentNode as HTMLElement;
-                                                                        }
-                                                                        if (!w) {
-                                                                            w = element.offsetWidth;
-                                                                        }
-                                                                        const percent = deltaX / w;
-                                                                        const loc: R2Locator = {
-                                                                            href: link.Href,
-                                                                            locations: {
-                                                                                progression: percent,
-                                                                            },
-                                                                        };
-                                                                        this.props.goToLocator(loc, !isDockedMode);
-                                                                        // this.props.handleLinkClick(e, link.Href);
-                                                                    }
-                                                                }}
+                                                                        this.props.handleLinkClick(e, link.Href, !isDockedMode);
 
-                                                                className={
-                                                                    classNames(
-                                                                        stylesReaderFooter.progressChunkSpineItem,
-                                                                        atCurrentLocation ? stylesReaderFooter.currentSpineItem : undefined)
+                                                                        // const loc = {
+                                                                        //     // href: index.toString(),
+                                                                        //     href: String(this.props.r2Publication?.Spine?.findIndex((lnk) => lnk.Href === link?.Href)),
+                                                                        //     // progression generate in divina pagechange event
+                                                                        // };
+                                                                        // // alert(loc.href);
+                                                                        // this.props.goToLocator(loc as any, !isDockedMode);
+                                                                    }
+                                                                } else if (isPdf) {
+                                                                    // let href = link.Href;
+                                                                    // try {
+                                                                    //     const n = parseInt(href, 10);
+                                                                    //     href = Number.isInteger(n) ? String(n) : "1"; // NaN
+                                                                    // } catch (_e) {
+                                                                    //     href = "1";
+                                                                    // }
+                                                                    // alert(`${link.Href} - ${href}`);
+                                                                    // alert(link.Href);
+                                                                    const loc: R2Locator = {
+                                                                        href: link.Href,
+                                                                        locations: {
+                                                                            progression: 0,
+                                                                        },
+                                                                    };
+                                                                    this.props.goToLocator(loc, !isDockedMode);
+                                                                } else {
+                                                                    const el = e.nativeEvent.target as HTMLElement;
+                                                                    const deltaX = e.nativeEvent.offsetX;
+                                                                    let element = el;
+                                                                    let w: number | undefined;
+                                                                    while (element && element.classList) {
+                                                                        if (
+                                                                            element.classList.contains("progressChunkSpineItem")
+                                                                        ) {
+                                                                            w = element.offsetWidth;
+                                                                            break;
+                                                                        }
+                                                                        element = element.parentNode as HTMLElement;
+                                                                    }
+                                                                    if (!w) {
+                                                                        w = element.offsetWidth;
+                                                                    }
+                                                                    const percent = deltaX / w;
+                                                                    const loc: R2Locator = {
+                                                                        href: link.Href,
+                                                                        locations: {
+                                                                            progression: percent,
+                                                                        },
+                                                                    };
+                                                                    this.props.goToLocator(loc, !isDockedMode);
+                                                                    // this.props.handleLinkClick(e, link.Href);
                                                                 }
-                                                            >
+                                                            }}
+
+                                                            className={
+                                                                classNames(
+                                                                    stylesReaderFooter.progressChunkSpineItem,
+                                                                    atCurrentLocation ? stylesReaderFooter.currentSpineItem : undefined)
+                                                            }
+                                                        >
                                                             {
                                                                 atCurrentLocation
                                                                     ? <span style={this.getProgressionStyle()}></span>
                                                                     : afterCurrentLocation ? <></> : <span></span>
                                                             }
                                                         </span>
-                                                    </Tooltip.Trigger>
-                                                    <Tooltip.Portal>
-                                                            <Tooltip.Content className={stylesReaderFooter.tooltip_content}>
-                                                                <div
-                                                                    id={stylesReaderFooter.arrow_box}
-                                                                    style={this.getStyle()}
-                                                                >
-                                                                    <span>{`[${this.getCurrentChapter(link)+1} / ${this.getTotalChapters()}] `} {
-                                                                        isPdf ? "" :
-                                                                        ` ${link.Title ? `${link.Title}${atCurrentLocation && spineTitle ? ` (${spineTitle})` : ""}` : (atCurrentLocation && spineTitle ? spineTitle : "")}`}</span>
-                                                                    {atCurrentLocation ?
-                                                                        this.getProgression(link, isAudioBook).map((str, i) => {
-                                                                            return !str ? <></> :
-                                                                            i === 0 ?
-                                                                            <p key={`p${i}`}>{str}</p>
-                                                                            :
-                                                                            <p style={{fontSize:"revert"}} key={`p${i}`}>{str}</p>;
-                                                                        })
-                                                                        : <></>
-                                                                    }
-                                                                    {/* <span
-                                                                        style={this.getStyle()}
-                                                                        className={stylesReaderFooter.after}
-                                                                    /> */}
-                                                                </div>
-                                                                <Tooltip.Arrow width={15} height={10} />
-                                                            </Tooltip.Content>
-                                                        </Tooltip.Portal>
-                                                    </Tooltip.Root>
-                                                </Tooltip.Provider>
+                                                    </Focusable>
+                                                    <Tooltip placement="bottom" offset={0} className={stylesReaderFooter.tooltip_content}>
+                                                        <div
+                                                            id={stylesReaderFooter.arrow_box}
+                                                            style={this.getStyle()}
+                                                        >
+                                                            <span>{`[${this.getCurrentChapter(link)+1} / ${this.getTotalChapters()}] `} {
+                                                                isPdf ? "" :
+                                                                ` ${link.Title ? `${link.Title}${atCurrentLocation && spineTitle ? ` (${spineTitle})` : ""}` : (atCurrentLocation && spineTitle ? spineTitle : "")}`}</span>
+                                                            {atCurrentLocation ?
+                                                                this.getProgression(link, isAudioBook).map((str, i) => {
+                                                                    return !str ? <></> :
+                                                                    i === 0 ?
+                                                                    <p key={`p${i}`}>{str}</p>
+                                                                    :
+                                                                    <p style={{fontSize:"revert"}} key={`p${i}`}>{str}</p>;
+                                                                })
+                                                                : <></>
+                                                            }
+                                                            {/* <span
+                                                                style={this.getStyle()}
+                                                                className={stylesReaderFooter.after}
+                                                            /> */}
+                                                        </div>
+                                                        <OverlayArrow>
+                                                            {({ placement }) => <svg width={15} height={10} viewBox="0 0 30 10" preserveAspectRatio="none" aria-hidden="true"
+                                                                style={{ display: "block", transform: placement === "bottom" ? "rotate(180deg)" : "rotate(0deg)" }}>
+                                                                <polygon points="0,0 30,0 15,10" />
+                                                            </svg>}
+                                                        </OverlayArrow>
+                                                    </Tooltip>
+                                                </TooltipTrigger>
                                             );
                                         })}
                                 </div>
