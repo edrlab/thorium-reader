@@ -704,6 +704,15 @@
         },
         "read": "Terminé",
         "remainingTime": "Prêt (temps restant)",
+        "remoteProgression": {
+            "checking": "Activée — vérification du service…",
+            "disabled": "Non activée pour cette publication.",
+            "empty": "Aucune progression distante enregistrée.",
+            "position": "Progression distante : {{percent}} % ({{device}}).",
+            "ready": "Activée — prête à récupérer la progression.",
+            "title": "Synchronisation de la progression",
+            "unavailable": "Activée — service indisponible ou réponse invalide."
+        },
         "renewButton": "Renouveler",
         "returnButton": "Retourner",
         "returnedLcp": "Ce livre ne peut être lu car la licence LCP a été retournée.",

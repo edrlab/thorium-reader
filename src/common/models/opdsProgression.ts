@@ -26,6 +26,11 @@ export interface IOpdsProgressionDocument {
     references?: string[];
 }
 
+// A GET check confirms retrieval only; it does not probe PUT permissions.
+export type TOpdsProgressionServiceStatus =
+    | { status: "ready"; document?: IOpdsProgressionDocument }
+    | { status: "unavailable" };
+
 const LAST_RESOURCE_SAFE_PROGRESSION = 0.95;
 
 const getReadableSpine = (

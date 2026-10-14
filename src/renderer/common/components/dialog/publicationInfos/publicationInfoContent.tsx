@@ -28,6 +28,7 @@ import Cover, { CoverWithForwardedRef } from "../../Cover";
 import { FormatContributorWithLink } from "./FormatContributorWithLink";
 import { FormatPublicationLanguage } from "./formatPublicationLanguage";
 import { FormatPublisherDate } from "./formatPublisherDate";
+import { OpdsProgressionInfo } from "./OpdsProgressionInfo";
 import LcpInfo from "./LcpInfo";
 import PublicationInfoDescription from "./PublicationInfoDescription";
 import { convertMultiLangStringToLangString } from "readium-desktop/common/language-string";
@@ -554,6 +555,8 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                     {(publicationViewMaybeOpds.lcp ? <section className={stylePublication.publicationInfo_lcpInfo_content}>
                         <LcpInfo publicationLcp={publicationViewMaybeOpds} />
                     </section> : <></>)}
+                    <OpdsProgressionInfo key={`${locale}:${publicationViewMaybeOpds.progressionLink?.url || ""}`}
+                        url={publicationViewMaybeOpds.progressionLink?.url} />
                     <TagManagerComponent />
                     <Progression
                         closeDialogCb={closeDialogCb}
