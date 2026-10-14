@@ -8,13 +8,14 @@
 // import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 
 // SEE PACKAGE.JSON:
-// ar bg brh ca cs da de el en es et eu fi fr gl he hr it ja ka ko lt nl pl pt-br pt-pt ru sl sv ta tr zh-cn zh-tw
-// 33 languages
-// minus 6 incomplete ones (see `__TH__IS_DEV__ || __TH__IS_CI__` in this source file)
-// ==> 27 supported locales in PROD (see `appx` in `package.json`)
+// ar bg bn brh ca cs da de el en es et eu fi fr gl he hr is it ja ka ko lt nl pl pt-br pt-pt ru sl sv ta tr zh-cn zh-tw
+// 35 languages
+// minus 7 incomplete ones (see `__TH__IS_DEV__ || __TH__IS_CI__` in this source file)
+// ==> 28 supported locales in PROD (see `appx` in `package.json`)
 import arCatalog from "readium-desktop/resources/locales/ar.json";
 import bgCatalog from "readium-desktop/resources/locales/bg.json";
-import brhCatalog from "readium-desktop/resources/locales/brh.json";
+// import bnCatalog from "readium-desktop/resources/locales/bn.json";
+// import brhCatalog from "readium-desktop/resources/locales/brh.json";
 import caCatalog from "readium-desktop/resources/locales/ca.json";
 import csCatalog from "readium-desktop/resources/locales/cs.json";
 import daCatalog from "readium-desktop/resources/locales/da.json";
@@ -30,6 +31,7 @@ import glCatalog from "readium-desktop/resources/locales/gl.json";
 import heCatalog from "readium-desktop/resources/locales/he.json";
 import hrCatalog from "readium-desktop/resources/locales/hr.json";
 import itCatalog from "readium-desktop/resources/locales/it.json";
+import isCatalog from "readium-desktop/resources/locales/is.json";
 import jaCatalog from "readium-desktop/resources/locales/ja.json";
 import kaCatalog from "readium-desktop/resources/locales/ka.json";
 import koCatalog from "readium-desktop/resources/locales/ko.json";
@@ -117,6 +119,9 @@ i18nextInstance.init({
         "gl": {
             translation: glCatalog,
         },
+        "is" : {
+            translation: isCatalog,
+        },
         "it" : {
             translation: itCatalog,
         },
@@ -164,9 +169,12 @@ i18nextInstance.init({
             "bg": {
                 translation: bgCatalog,
             },
-            "brh": {
-                translation: brhCatalog,
-            },
+            // "bn": {
+            //     translation: bnCatalog,
+            // },
+            // "brh": {
+            //     translation: brhCatalog,
+            // },
             "he": {
                 translation: heCatalog,
             },
@@ -224,6 +232,7 @@ export const availableLanguages = {
     "fi": "Suomi (Finnish)",
     "fr": "Français (French)",
     "gl": "Galician",
+    "is": "íslenska (Icelandic)",
     "it": "Italiano (Italian)",
     "ja": "日本語 (Japanese)",
     "lt": "Lietuvių (Lithuanian)",
@@ -241,7 +250,8 @@ export const availableLanguages = {
     ...(__TH__IS_DEV__ || __TH__IS_CI__ ?
     {
         "bg": "български (Bulgarian)",
-        "brh": "براہوئی (Brahui)",
+//        "bn": "বাংলা (Bengali)",
+//        "brh": "براہوئی (Brahui)",
         "he": "עִבְרִית (Hebrew)",
         "hr": "Hrvatski (Croatian)",
         "ka": "ქართული (Georgian)",

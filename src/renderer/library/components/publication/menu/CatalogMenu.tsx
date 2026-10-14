@@ -10,7 +10,7 @@ import * as React from "react";
 import { PublicationView, canOpenPublication } from "readium-desktop/common/views/publication";
 import PublicationExportButton from "./PublicationExportButton";
 import DeletePublicationConfirm from "../../dialog/DeletePublicationConfirm";
-import { PublicationInfoLibWithRadix, PublicationInfoLibWithRadixContent, PublicationInfoLibWithRadixTrigger } from "../../dialog/publicationInfos/PublicationInfo";
+import { PublicationInfoLibWithRAC, PublicationInfoLibWithRACContent, PublicationInfoLibWithRACTrigger } from "../../dialog/publicationInfos/PublicationInfo";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as SaveIcon from "readium-desktop/renderer/assets/icons/export-icon.svg";
@@ -142,20 +142,20 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
             </>
         :
         <>
-            <PublicationInfoLibWithRadix
+            <PublicationInfoLibWithRAC
                 publicationView={props.publicationView}
             >
-                <PublicationInfoLibWithRadixTrigger asChild>
+                <PublicationInfoLibWithRACTrigger asChild>
                     <button
                         className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                     >
                         <SVG ariaHidden svg={InfoIcon} />
                         <p>{__("catalog.bookInfo")}</p>
                     </button>
-                </PublicationInfoLibWithRadixTrigger>
-                <PublicationInfoLibWithRadixContent
+                </PublicationInfoLibWithRACTrigger>
+                <PublicationInfoLibWithRACContent
                 />
-            </PublicationInfoLibWithRadix>
+            </PublicationInfoLibWithRAC>
             <div style={{ borderBottom: "1px solid var(--color-brand-primary)" }}></div>
             {props.publicationView.lastReadTimeStamp ?
                 <button

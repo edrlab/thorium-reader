@@ -8,6 +8,7 @@
 import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
 
 import * as React from "react";
+import { OVERLAY_Z_INDEX } from "./overlayHelpers";
 import { Button, Select as SelectReactAria, Label, ListBox, ListBoxItem, Popover, ValidationResult, Group, SelectValue } from "react-aria-components";
 import { FieldError, Text } from "react-aria-components";
 import SVG, { ISVGProps } from "./SVG";
@@ -43,7 +44,7 @@ export function Select<T extends object>(
       </Group>
       {description && <Text slot="description">{description}</Text>}
       <FieldError>{errorMessage}</FieldError>
-      <Popover className={StylesCombobox.react_aria_Popover}>
+      <Popover className={StylesCombobox.react_aria_Popover} style={{ zIndex: OVERLAY_Z_INDEX + 1 }}>
         <ListBox className={StylesCombobox.react_aria_ListBox} items={items}>
           {children}
         </ListBox>

@@ -272,9 +272,14 @@
             }
 
             svg {
-                width: 12px;
-                height: 12px;
+                flex: 0 0 24px;
+                width: 24px;
+                height: 24px;
                 margin-left: 2px;
+            }
+
+            &::after {
+                content: none;
             }
 
             &:first-of-type {

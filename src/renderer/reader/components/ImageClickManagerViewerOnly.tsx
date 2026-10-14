@@ -16,7 +16,7 @@ import * as MinusIcon from "readium-desktop/renderer/assets/icons/Minus-Bold.svg
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
-import * as Dialog from "@radix-ui/react-dialog";
+import * as Dialog from "readium-desktop/renderer/common/components/Dialog";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { readerLocalActionSetImageClick } from "../redux/actions";
 import classNames from "classnames";
@@ -26,7 +26,7 @@ import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-
 
 import { TransformWrapper, TransformComponent, useControls } from "react-zoom-pan-pinch";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { VisuallyHidden } from "react-aria-components";
 
 const Controls = () => {
     const { zoomIn, zoomOut, resetTransform } = useControls();
@@ -72,9 +72,9 @@ const Controls = () => {
 }
         `}</style>
             <div style={{ bottom: "20px", right: "50%", left: "50%" }} className="imgViewerControls">
-                <button title={__("reader.imgViewer.zoomIn")} onClick={() => zoomIn()}><SVG svg={PlusIcon} /></button>
-                <button title={__("reader.imgViewer.zoomOut")} onClick={() => zoomOut()}><SVG svg={MinusIcon} /></button>
-                <button title={__("reader.imgViewer.zoomReset")} onClick={() => resetTransform()}><SVG svg={ResetIcon} /></button>
+                <button title={__("reader.imgViewer.zoomIn")} onClick={() => { zoomIn().then(() => { /* NOOP */ }).catch((_err) => { /* NOOP */ }); } }><SVG svg={PlusIcon} /></button>
+                <button title={__("reader.imgViewer.zoomOut")} onClick={() => { zoomOut().then(() => { /* NOOP */ }).catch((_err) => { /* NOOP */ }); } }><SVG svg={MinusIcon} /></button>
+                <button title={__("reader.imgViewer.zoomReset")} onClick={() => { resetTransform().then(() => { /* NOOP */ }).catch((_err) => { /* NOOP */ }); } }><SVG svg={ResetIcon} /></button>
             </div>
         </>
     );
@@ -98,17 +98,16 @@ export const ImageClickManagerImgViewerOnly: React.FC = () => {
 
     return (<>
 
-        <Dialog.Root open={open} onOpenChange={(openState: boolean) => {
+        <Dialog.Root triggerless isOpen={open} onOpenChange={(openState: boolean) => {
             if (openState == false) {
                 dispatch(readerLocalActionSetImageClick.build());
             }
         }}
         >
-            <Dialog.Portal>
-                <div className={stylesModals.modal_dialog_overlay}></div>
+            <Dialog.Portal className={stylesModals.modal_dialog_overlay}>
                 <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined} style={{ minWidth: "85%", minHeight: "85%", padding: "5px 10px", width: "unset", maxWidth: "calc(100% - 100px)", maxHeight: "calc(100% - 100px)" }} >
                     <VisuallyHidden>
-                        <Dialog.DialogTitle>{__("reader.imgViewer.title")}</Dialog.DialogTitle>
+                        <Dialog.Title>{__("reader.imgViewer.title")}</Dialog.Title>
                     </VisuallyHidden>
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "end" }}>
                         <Dialog.Close asChild>
