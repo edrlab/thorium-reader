@@ -9,11 +9,14 @@ import * as stylesTags from "readium-desktop/renderer/assets/styles/components/t
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 
 import * as React from "react";
+import { PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { FocusScope } from "react-aria";
+import { DialogPortalContext } from "readium-desktop/renderer/common/components/Dialog";
+import { DialogTrigger, Pressable, Popover, Dialog as PopoverDialog, Button } from "react-aria-components";
 import { IOpdsTagView } from "readium-desktop/common/views/opds";
 import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as Popover from "readium-desktop/renderer/common/components/Popover";
 import { Link } from "react-router-dom";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 // import { DisplayType } from "readium-desktop/renderer/library/routing";
@@ -79,30 +82,43 @@ export const TagButton: React.FC<React.PropsWithChildren<IProps>> = (props) => {
                 >
                     {tag as string}
                 </Link>
-                <Popover.Root modal>
-                    <Popover.Trigger asChild>
+                <DialogTrigger>
+                    <Pressable>
                         <button>
                             <SVG ariaHidden={true} svg={EditIcon} />
                         </button>
-                    </Popover.Trigger>
-                    <Popover.Portal>
-                        <Popover.Content sideOffset={5} className={stylesTags.Popover_delete_tag}>
-                            <Popover.Close asChild>
-                                <button
-                                    onClick={
-                                        // () => this.deleteTag(index)
-                                        onClickDeleteCb(index)
-                                    }
-                                    title={__("catalog.deleteTag")}
-                                >
-                                    <SVG ariaHidden={true} svg={TrashIcon} />
-                                    {__("catalog.delete")}
-                                </button>
-                            </Popover.Close>
-                            <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
-                        </Popover.Content>
-                    </Popover.Portal>
-                </Popover.Root>
+                    </Pressable>
+                    <DialogPortalContext.Consumer>
+                        {(portalContainer) => (
+                            <Popover
+                                UNSTABLE_portalContainer={portalContainer}
+                                placement="bottom"
+                                offset={5}
+                                crossOffset={0}
+                                containerPadding={0}
+                                className={stylesTags.Popover_delete_tag}
+                                style={{ zIndex: 101 }}
+                            >
+                                <PopoverDialog>
+                                    <FocusScope autoFocus>
+                                        <Button
+                                            slot="close"
+                                            onPress={
+                                                // () => this.deleteTag(index)
+                                                onClickDeleteCb(index)
+                                            }
+                                            render={(buttonProps) => <button {...buttonProps} title={__("catalog.deleteTag")} />}
+                                        >
+                                            <SVG ariaHidden={true} svg={TrashIcon} />
+                                            {__("catalog.delete")}
+                                        </Button>
+                                        <PopoverArrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                                    </FocusScope>
+                                </PopoverDialog>
+                            </Popover>
+                        )}
+                    </DialogPortalContext.Consumer>
+                </DialogTrigger>
             </>
         );
     } else if (typeof tag === "object" && tag?.link?.length && onClickLinkCb) {

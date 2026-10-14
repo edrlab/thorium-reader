@@ -12,6 +12,10 @@ import * as stylesTags from "readium-desktop/renderer/assets/styles/components/t
 import * as stylesMarkdown from "readium-desktop/renderer/assets/styles/github-markdown.scss";
 import classNames from "classnames";
 import * as React from "react";
+import { PopoverArrow, ViewportBoundary } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { FocusScope } from "react-aria";
+import { DialogPortalContext } from "readium-desktop/renderer/common/components/Dialog";
+import { DialogTrigger, Pressable, Popover, Dialog as PopoverDialog, Button } from "react-aria-components";
 import FocusLock from "react-focus-lock";
 
 import SVG from "readium-desktop/renderer/common/components/SVG";
@@ -21,7 +25,6 @@ import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import * as BookOpenIcon from "readium-desktop/renderer/assets/icons/bookOpen-icon.svg";
 import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar-icon.svg";
 import * as AvatarIcon from "readium-desktop/renderer/assets/icons/avatar-icon.svg";
-import * as Popover from "readium-desktop/renderer/common/components/Popover";
 import { AnnotationEdit } from "../AnnotationEdit";
 
 import { IReaderMenuProps } from "../options-values";
@@ -318,31 +321,50 @@ export const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolea
                     <SVG ariaHidden={true} svg={DeleteIcon} />
                     { !dockedMode ? __("reader.marks.delete") : undefined}
                 </button> :
-                canDeleteAnnotation ? <Popover.Root modal>
-                    <Popover.Trigger asChild>
-                        <button
-                        title={__("reader.marks.delete")}
-                        >
+                canDeleteAnnotation ? <DialogTrigger>
+                    <Pressable>
+                        <button title={__("reader.marks.delete")}>
                             <SVG ariaHidden={true} svg={DeleteIcon} />
                         </button>
-                    </Popover.Trigger>
-                    <Popover.Portal>
-                        <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesPopoverDialog.delete_item}>
-                            <Popover.Close
-                                onClick={() => {
-                                    triggerEdition(false);
-                                    dispatch(readerActions.note.remove.build(annotation));
-                                }}
-                                title={__("reader.marks.delete")}
-                            >
-                                <SVG ariaHidden={true} svg={DeleteIcon} />
-                                {__("reader.marks.delete")}
-                            </Popover.Close>
-                            <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
-                        </Popover.Content>
-                    </Popover.Portal>
-
-                </Popover.Root> : <></>
+                    </Pressable>
+                    <DialogPortalContext.Consumer>
+                        {(portalContainer) => (
+                            <ViewportBoundary top={180} bottom={100}>
+                                {(boundaryElement) => (
+                                    <Popover
+                                        UNSTABLE_portalContainer={portalContainer}
+                                        boundaryElement={boundaryElement}
+                                        placement="bottom"
+                                        offset={5}
+                                        crossOffset={-10}
+                                        containerPadding={0}
+                                        className={stylesPopoverDialog.delete_item}
+                                        style={{ zIndex: 101 }}
+                                    >
+                                        <PopoverDialog>
+                                            <FocusScope autoFocus>
+                                                <Button
+                                                    slot="close"
+                                                    onPress={() => {
+                                                        triggerEdition(false);
+                                                        dispatch(readerActions.note.remove.build(annotation));
+                                                    }}
+                                                    render={(buttonProps) => (
+                                                        <button {...buttonProps} title={__("reader.marks.delete")} />
+                                                    )}
+                                                >
+                                                    <SVG ariaHidden={true} svg={DeleteIcon} />
+                                                    {__("reader.marks.delete")}
+                                                </Button>
+                                                <PopoverArrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                                            </FocusScope>
+                                        </PopoverDialog>
+                                    </Popover>
+                                )}
+                            </ViewportBoundary>
+                        )}
+                    </DialogPortalContext.Consumer>
+                </DialogTrigger> : <></>
                 }
             </div> : <></> }
         </div>
