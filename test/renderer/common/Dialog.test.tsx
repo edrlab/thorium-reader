@@ -647,3 +647,36 @@ for (const initialKey of ["lastCreated", undefined]) {
         },
     );
 }
+
+
+jest.mock("readium-desktop/renderer/assets/styles/components/alert.modals.scss", () => ({}));
+jest.mock("readium-desktop/renderer/assets/styles/components/buttons.scss", () => ({}));
+jest.mock("readium-desktop/renderer/common/hooks/useTranslator", () => ({
+    useTranslator: () => [(key: string) => key],
+}));
+
+test.each(["accept", "cancel"])("OPDS resume prompt opens without a trigger and handles %s", async (action) => {
+    const { OpdsProgressionDialog } = require("readium-desktop/renderer/reader/components/OpdsProgressionDialog");
+    const accepted = jest.fn();
+    const cancelled = jest.fn();
+    function ResumePrompt() {
+        const [document, setDocument] = React.useState<import("readium-desktop/common/models/opdsProgression").IOpdsProgressionDocument | undefined>({
+            modified: "2026-10-14T10:00:00Z",
+            device: { id: "urn:uuid:test", name: "Test reader" },
+            progression: 0.75,
+        });
+        return <OpdsProgressionDialog document={document}
+            onAccept={() => { accepted(); setDocument(undefined); }}
+            onCancel={() => { cancelled(); setDocument(undefined); }} />;
+    }
+    await React.act(async () => { root.render(<ResumePrompt />); await settle(); });
+    await React.act(settle);
+    const dialog = document.querySelector('[role="alertdialog"]')!;
+    expect(dialog).toBeTruthy();
+    const buttons = dialog.querySelectorAll("button");
+    expect(document.activeElement).toBe(buttons[0]);
+    await click(buttons[action === "accept" ? 1 : 0]);
+    expect(accepted).toHaveBeenCalledTimes(action === "accept" ? 1 : 0);
+    expect(cancelled).toHaveBeenCalledTimes(action === "cancel" ? 1 : 0);
+    expect(document.querySelector('[role="alertdialog"]')).toBeNull();
+});
