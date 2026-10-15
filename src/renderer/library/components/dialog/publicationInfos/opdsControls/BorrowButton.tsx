@@ -10,13 +10,14 @@ import { useDispatch } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { dialogActions } from "readium-desktop/common/redux/actions";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
+import { THttpGetBrowserResultView } from "readium-desktop/common/views/browser";
 import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 
 export const BorrowButton: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement> & {
     link: IOpdsLinkView;
-    navigate: () => void;
+    navigate: (response?: THttpGetBrowserResultView) => void;
 }> = ({ link, navigate, disabled, ...props }) => {
     const dispatch = useDispatch();
     const [__] = useTranslator();
@@ -32,15 +33,15 @@ export const BorrowButton: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement
         const result = response.data.result;
         const contentType = parseContentType(result?.contentType);
         // Authentication documents must still reach the OPDS browser, including on HTTP 401.
-        if (!response.data.error && result?.data?.opds?.auth) {
-            navigate();
+        if (!response.data.error && (result?.data?.opds?.auth || contentType === ContentType.Opds2Auth)) {
+            navigate(result);
         } else if (!response.data.error && result?.isSuccess) {
             const publication = result.data?.opds?.publications?.[0];
-            if (contentType === ContentType.Opds2Pub && publication) {
+            if (publication && (contentType === ContentType.Opds2Pub || result.data.opds.isPublication)) {
                 dispatch(dialogActions.updateRequest.build<DialogTypeName.PublicationInfoOpds>({ publication }));
             } else if (contentType !== ContentType.Opds2Pub &&
                 (result.data?.opds || contentType === ContentType.Html)) {
-                navigate();
+                navigate(result);
             } else {
                 setFailed(true);
             }

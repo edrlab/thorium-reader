@@ -29,6 +29,7 @@ import { race as raceTyped, select as selectTyped } from "typed-redux-saga/macro
 import { IOpdsHeaderState } from "readium-desktop/common/redux/states/renderer/opds";
 import { logEvent } from "readium-desktop/renderer/common/analytics";
 import { BROWSE_OPDS_API_REQUEST_ID } from "readium-desktop/renderer/library/opds/constants";
+import { takeBrowseResponse } from "readium-desktop/renderer/library/opds/browseResponse";
 
 export const SEARCH_OPDS_API_REQUEST_ID = "searchOpdsApiResult";
 export const SEARCH_TERM = "{searchTerms}";
@@ -41,7 +42,7 @@ const debug = debug_("readium-desktop:renderer:redux:saga:opds");
 // does not subscribe to location changes like React Redux’s connect does for state changes.
 // Instead, re-renders after location changes propagate out from the <Router> component.
 // This means that withRouter does not re-render on route transitions unless its parent component re-renders.
-function* browseWatcher(action: routerActions.locationChanged.TAction) {
+export function* browseWatcher(action: routerActions.locationChanged.TAction) {
     const path = action.payload.location.pathname;
 
     // reset on each opds navigation, already set up previously but only when accessing the opds flow not on the catalog list.
@@ -81,10 +82,19 @@ function* browseWatcher(action: routerActions.locationChanged.TAction) {
 
         const url = parsedResult.url;
         debug("opds browse url=", url);
-        const { b: opdsBrowseAction } = yield* raceTyped({
-            a: delay(20000),
-            b: call(opdsBrowse, url, BROWSE_OPDS_API_REQUEST_ID),
-        });
+        const response = takeBrowseResponse(path);
+        let opdsBrowseAction: apiActions.result.TAction<THttpGetBrowserResultView>;
+        if (response) {
+            opdsBrowseAction = apiActions.result.build({
+                requestId: BROWSE_OPDS_API_REQUEST_ID, moduleId: "httpbrowser", methodId: "browse",
+            }, response);
+            yield put(opdsBrowseAction);
+        } else {
+            ({ b: opdsBrowseAction } = yield* raceTyped({
+                a: delay(20000),
+                b: call(opdsBrowse, url, BROWSE_OPDS_API_REQUEST_ID),
+            }));
+        }
 
         if (!opdsBrowseAction) {
             debug("browseWatcher timeout?", url);

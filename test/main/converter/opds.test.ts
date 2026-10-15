@@ -294,7 +294,24 @@ describe("OPDS authentication link hints", () => {
             url: "https://example.org/original.json",
         } as unknown as IHttpGetResult<IOpdsResultView>);
 
+        expect(result.isPublication).toBeUndefined();
         expect(result.title).toBe(effectiveUrl);
         expect(convertOpdsFeedToView.mock.calls[0][1]).toBe(effectiveUrl);
+    });
+});
+
+describe("OPDS publication responses", () => {
+    it.each([ContentType.Opds2, ContentType.Opds2Pub])("identifies a standalone publication served as %s", async (contentType) => {
+        const service = new OpdsService();
+        Object.assign(service, { opdsFeedViewConverter: createConverter() });
+        const result = await service.opdsRequestTransformer({
+            contentType, isFailure: false, isSuccess: true, url: baseUrl, responseUrl: baseUrl,
+            response: { json: async () => ({ metadata: { title: "Held publication" }, links: [{
+                href: "booking", rel: "http://opds-spec.org/acquisition/borrow", type: ContentType.Opds2Pub,
+                properties: { availability: { state: "reserved" } },
+            }] }) },
+        } as unknown as IHttpGetResult<IOpdsResultView>);
+        expect(result.isPublication).toBe(true);
+        expect(result.publications[0].borrowLinks[0].properties.availabilityState).toBe("reserved");
     });
 });

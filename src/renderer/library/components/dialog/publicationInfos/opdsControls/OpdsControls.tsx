@@ -200,11 +200,12 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 <BorrowButton
                                     link={ln}
                                     className={buyList.length > 0 ? stylesButtons.button_secondary : stylesButtons.button_primary}
-                                    navigate={() => {
+                                    navigate={(response) => {
                                         this.props.link(
                                                 ln,
                                                 this.props.location,
                                                 `${__("opds.menu.goLoanBook")} (${opdsPublicationView.documentTitle})`,
+                                                response,
                                             );
                                     }}
                                     disabled={ln.properties?.indirectAcquisitionTypes?.top === findMimeTypeWithExtension(ADOBE_ADEPT_XML)}
