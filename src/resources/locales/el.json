@@ -291,6 +291,10 @@
             "title": "Προσθήκη λογαριασμού βιβλιοθήκης"
         },
         "addMenu": "Προσθήκη τροφοδοσίας OPDS",
+        "bookshelfEmpty": "",
+        "bookshelfEmptyDescription": "",
+        "bookshelfTitle": "",
+        "bookshelfViewAll": "",
         "breadcrumbRoot": "Κατάλογοι",
         "color": {
             "blue": "Μπλε",

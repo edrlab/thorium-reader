@@ -291,6 +291,10 @@
             "title": "Engade conta de biblioteca"
         },
         "addMenu": "Engadir catálogo OPDS",
+        "bookshelfEmpty": "",
+        "bookshelfEmptyDescription": "",
+        "bookshelfTitle": "",
+        "bookshelfViewAll": "",
         "breadcrumbRoot": "Catálogos",
         "color": {
             "blue": "",

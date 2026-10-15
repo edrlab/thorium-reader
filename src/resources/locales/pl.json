@@ -303,6 +303,10 @@
             "title": "Dodaj konto biblioteczne"
         },
         "addMenu": "Dodaj kanał OPDS",
+        "bookshelfEmpty": "",
+        "bookshelfEmptyDescription": "",
+        "bookshelfTitle": "",
+        "bookshelfViewAll": "",
         "breadcrumbRoot": "Katalogi",
         "color": {
             "blue": "",

@@ -291,6 +291,10 @@
             "title": "Liburutegiko kontua gehitu"
         },
         "addMenu": "OPDS katalogoa gehitzea",
+        "bookshelfEmpty": "",
+        "bookshelfEmptyDescription": "",
+        "bookshelfTitle": "",
+        "bookshelfViewAll": "",
         "breadcrumbRoot": "Katalogoak",
         "color": {
             "blue": "",

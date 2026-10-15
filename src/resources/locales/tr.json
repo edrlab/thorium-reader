@@ -291,6 +291,10 @@
             "title": "Kütüphane hesabı ekle"
         },
         "addMenu": "OPDS Beslemesi ekle",
+        "bookshelfEmpty": "",
+        "bookshelfEmptyDescription": "",
+        "bookshelfTitle": "",
+        "bookshelfViewAll": "",
         "breadcrumbRoot": "Kataloglar",
         "color": {
             "blue": "Mavi",

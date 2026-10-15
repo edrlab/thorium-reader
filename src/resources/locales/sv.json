@@ -291,6 +291,10 @@
             "title": "Lägg till bibliotek"
         },
         "addMenu": "Lägg till ett OPDS-flöde",
+        "bookshelfEmpty": "",
+        "bookshelfEmptyDescription": "",
+        "bookshelfTitle": "",
+        "bookshelfViewAll": "",
         "breadcrumbRoot": "Kataloger",
         "color": {
             "blue": "Blå",

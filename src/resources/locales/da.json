@@ -291,6 +291,10 @@
             "title": "Tilføj en bibliotekskonto"
         },
         "addMenu": "Tilføj OPDS feed",
+        "bookshelfEmpty": "",
+        "bookshelfEmptyDescription": "",
+        "bookshelfTitle": "",
+        "bookshelfViewAll": "",
         "breadcrumbRoot": "Kataloger",
         "color": {
             "blue": "Blå",

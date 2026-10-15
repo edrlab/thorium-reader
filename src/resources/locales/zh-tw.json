@@ -284,6 +284,10 @@
             "title": "新增圖書館帳號"
         },
         "addMenu": "添加 OPDS 訂閱來源",
+        "bookshelfEmpty": "",
+        "bookshelfEmptyDescription": "",
+        "bookshelfTitle": "",
+        "bookshelfViewAll": "",
         "breadcrumbRoot": "出版目錄",
         "color": {
             "blue": "",

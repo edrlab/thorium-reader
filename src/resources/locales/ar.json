@@ -315,6 +315,10 @@
             "title": "إضافة حساب مكتبة"
         },
         "addMenu": "إضافة مصدر OPDS",
+        "bookshelfEmpty": "",
+        "bookshelfEmptyDescription": "",
+        "bookshelfTitle": "",
+        "bookshelfViewAll": "",
         "breadcrumbRoot": "الفهارس",
         "color": {
             "blue": "",

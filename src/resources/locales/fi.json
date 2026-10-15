@@ -291,6 +291,10 @@
             "title": "Lisää kirjastotili"
         },
         "addMenu": "Lisää OPDS-syöte",
+        "bookshelfEmpty": "",
+        "bookshelfEmptyDescription": "",
+        "bookshelfTitle": "",
+        "bookshelfViewAll": "",
         "breadcrumbRoot": "Luettelot",
         "color": {
             "blue": "Sininen",

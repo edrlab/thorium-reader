@@ -291,6 +291,10 @@
             "title": ""
         },
         "addMenu": "OPDS წყაროს დამატება",
+        "bookshelfEmpty": "",
+        "bookshelfEmptyDescription": "",
+        "bookshelfTitle": "",
+        "bookshelfViewAll": "",
         "breadcrumbRoot": "კატალოგები",
         "color": {
             "blue": "",

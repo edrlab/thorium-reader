@@ -303,6 +303,10 @@
             "title": "Pridėti bibliotekos paskyrą"
         },
         "addMenu": "Pridėti OPDS sklaidos kanalą",
+        "bookshelfEmpty": "",
+        "bookshelfEmptyDescription": "",
+        "bookshelfTitle": "",
+        "bookshelfViewAll": "",
         "breadcrumbRoot": "Katalogai",
         "color": {
             "blue": "Mėlyna",

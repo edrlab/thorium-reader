@@ -291,6 +291,10 @@
             "title": "Bibliotheks-Account hinzufügen"
         },
         "addMenu": "OPDS-Feed hinzufügen",
+        "bookshelfEmpty": "",
+        "bookshelfEmptyDescription": "",
+        "bookshelfTitle": "",
+        "bookshelfViewAll": "",
         "breadcrumbRoot": "Kataloge",
         "color": {
             "blue": "",

@@ -20,10 +20,10 @@ import { BROWSE_OPDS_API_REQUEST_ID } from "readium-desktop/renderer/library/opd
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 // import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
 
-import PublicationCard from "../publication/PublicationCard";
 // import { ListView } from "../utils/ListView";
-import Slider from "../utils/Slider";
-import Entry from "./Entry";
+import { BookshelfCarousel } from "./BookshelfCarousel";
+import { parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
+import { PublicationGroup } from "./PublicationGroup";
 import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
 import MessageOpdBrowserResult from "./MessageOpdBrowserResult";
@@ -158,32 +158,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
 
                             {
                                 opds.groups?.map((group, i) =>
-                                    <section key={i}>
-                                        { group.publications?.length > 1 ?
-                                        <div className={stylesGlobal.heading_link}>
-                                            <Entry level={this.props.level} entry={group.selfLink}></Entry>
-                                        </div>
-                                        : <></>}
-                                        {
-                                            group.navigation ?
-                                            <EntryList entries={group.navigation} />
-                                            : <></>
-                                        }
-                                        {
-                                            group.publications?.length > 1 ?
-                                                    <Slider
-                                                        resetSliderPosition={false}
-                                                        content={group.publications.map((pub) =>
-                                                            <PublicationCard
-                                                                key={`opds-group-${i}-${pub.workIdentifier}`}
-                                                                publicationViewMaybeOpds={pub}
-                                                                isOpds={true}
-                                                            />,
-                                                        )}
-                                                    />
-                                                : <></>
-                                        }
-                                    </section>,
+                                    <PublicationGroup key={i} group={group} level={this.props.level} />,
                                 )
                             }
                         </>
@@ -207,7 +182,11 @@ export class BrowserResult extends React.Component<IProps, undefined> {
             }
         }
 
+        const route = parseOpdsBrowserRoute(this.props.location.pathname);
         return <div className={stylesCatalogs.opds_browserResults} id="opds_browserResults">
+            {route?.level === 1 && this.props.bookshelf && browserData?.result?.isSuccess ?
+                <BookshelfCarousel key={`${this.props.location.key}-${browserData.time}-${this.props.bookshelf}`}
+                    catalogId={route.rootFeedIdentifier} url={this.props.bookshelf} /> : <></>}
             {content}
         </div>;
     }
@@ -218,6 +197,7 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
     const apiBrowseData = apiState(state)(BROWSE_OPDS_API_REQUEST_ID)("httpbrowser/browse");
     return {
         browserData: apiBrowseData?.data,
+        bookshelf: state.opds.browser.header.bookshelf,
         location: state.router.location,
         level: state.opds.browser.breadcrumb.length + 1,
         locale: state.i18n.locale, // refresh

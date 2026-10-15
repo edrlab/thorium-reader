@@ -297,6 +297,10 @@
             "title": "Ajouter une bibliothèque"
         },
         "addMenu": "Ajouter un catalogue OPDS",
+        "bookshelfEmpty": "Votre étagère est vide.",
+        "bookshelfEmptyDescription": "Les livres que vous réservez ou empruntez apparaîtront ici.",
+        "bookshelfTitle": "Mon étagère",
+        "bookshelfViewAll": "Tout voir",
         "breadcrumbRoot": "Mes catalogues",
         "color": {
             "blue": "Bleu",

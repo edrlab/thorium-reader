@@ -297,6 +297,10 @@
             "title": "Dodaj korisnički račun knjižnice"
         },
         "addMenu": "Dodaj OPDS katalog",
+        "bookshelfEmpty": "",
+        "bookshelfEmptyDescription": "",
+        "bookshelfTitle": "",
+        "bookshelfViewAll": "",
         "breadcrumbRoot": "Katalozi",
         "color": {
             "blue": "",

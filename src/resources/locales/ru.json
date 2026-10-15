@@ -303,6 +303,10 @@
             "title": "Добавить учетную запись библиотеки"
         },
         "addMenu": "Добавить OPDS каталог",
+        "bookshelfEmpty": "",
+        "bookshelfEmptyDescription": "",
+        "bookshelfTitle": "",
+        "bookshelfViewAll": "",
         "breadcrumbRoot": "Каталоги",
         "color": {
             "blue": "Синий",

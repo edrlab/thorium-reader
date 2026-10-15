@@ -283,6 +283,10 @@
             "title": "図書館アカウントを追加"
         },
         "addMenu": "OPDS フィードを追加",
+        "bookshelfEmpty": "",
+        "bookshelfEmptyDescription": "",
+        "bookshelfTitle": "",
+        "bookshelfViewAll": "",
         "breadcrumbRoot": "図書目録",
         "color": {
             "blue": "",

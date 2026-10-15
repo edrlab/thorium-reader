@@ -291,6 +291,10 @@
             "title": "Bibliotheekaccount toevoegen"
         },
         "addMenu": "Voeg OPDS feed toe",
+        "bookshelfEmpty": "",
+        "bookshelfEmptyDescription": "",
+        "bookshelfTitle": "",
+        "bookshelfViewAll": "",
         "breadcrumbRoot": "Catalogi",
         "color": {
             "blue": "Blauw",

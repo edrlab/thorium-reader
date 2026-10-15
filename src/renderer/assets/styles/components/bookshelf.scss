@@ -1,0 +1,13 @@
+.bookshelf_content {
+    // Reserve the publication card height and its vertical margins in every state.
+    height: 404px;
+}
+
+.bookshelf_status {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}

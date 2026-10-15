@@ -279,6 +279,10 @@
             "title": "라이브러리 계정 추가"
         },
         "addMenu": "OPDS feed 추가",
+        "bookshelfEmpty": "",
+        "bookshelfEmptyDescription": "",
+        "bookshelfTitle": "",
+        "bookshelfViewAll": "",
         "breadcrumbRoot": "카탈로그",
         "color": {
             "blue": "",
