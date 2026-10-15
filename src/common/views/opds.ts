@@ -141,6 +141,7 @@ export interface IOpdsAuthenticationLinkView {
 }
 
 export interface IOPDSPropertiesView {
+    cancellable?: boolean;
     authenticate?: IOpdsAuthenticationLinkView;
     indirectAcquisitionTypes?: { top: string, child: string | undefined} | undefined;
     numberOfItems?: number | undefined;

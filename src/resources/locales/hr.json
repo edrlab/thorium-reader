@@ -317,6 +317,8 @@
         "menu": {
             "aboutBook": "O ovoj knjizi",
             "addExtract": "Uvezi izvadak",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Kupi knjigu",
             "goLoanBook": "Posudi knjigu",
             "goRevokeLoanBook": "Prekini posudbu",

@@ -311,6 +311,8 @@
         "menu": {
             "aboutBook": "",
             "addExtract": "",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "",
             "goLoanBook": "",
             "goRevokeLoanBook": "",

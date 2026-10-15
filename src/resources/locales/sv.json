@@ -311,6 +311,8 @@
         "menu": {
             "aboutBook": "Om boken",
             "addExtract": "Importera utdrag",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Köp den här boken",
             "goLoanBook": "Låna den här boken",
             "goRevokeLoanBook": "Återkalla lånet",

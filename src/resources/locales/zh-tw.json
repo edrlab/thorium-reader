@@ -304,6 +304,8 @@
         "menu": {
             "aboutBook": "關於此書",
             "addExtract": "匯入摘錄",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "購買此書",
             "goLoanBook": "借閱此書",
             "goRevokeLoanBook": "歸還此書",

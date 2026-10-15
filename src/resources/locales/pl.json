@@ -323,6 +323,8 @@
         "menu": {
             "aboutBook": "O publikacji",
             "addExtract": "Importuj fragment",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Kup publikację",
             "goLoanBook": "Wypożycz publikację",
             "goRevokeLoanBook": "Anuluj wypożyczenie",

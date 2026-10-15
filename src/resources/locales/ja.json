@@ -303,6 +303,8 @@
         "menu": {
             "aboutBook": "本の情報",
             "addExtract": "抜粋して取りこむ",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "本を購入する",
             "goLoanBook": "本を借りる",
             "goRevokeLoanBook": "返却する",

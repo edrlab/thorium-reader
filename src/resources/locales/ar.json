@@ -335,6 +335,8 @@
         "menu": {
             "aboutBook": "حول المنشور",
             "addExtract": "استيراد مقطع",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "شراء المنشور",
             "goLoanBook": "استعارة المنشور",
             "goRevokeLoanBook": "إلغاء الاستعارة",

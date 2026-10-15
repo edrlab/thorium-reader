@@ -64,7 +64,7 @@ test("refreshes the open dialog with the reserved publication without navigating
     expect(mockBrowse).toHaveBeenCalledWith(url);
     expect(host.querySelector("button").disabled).toBe(true);
     const publication = { documentTitle: "Held book", borrowLinks: [
-        { url, properties: { availabilityState: "reserved" } },
+        { url, properties: { availabilityState: "reserved", cancellable: true } },
     ] } as IOpdsPublicationView;
     respond({ url, contentType: link.type + "; charset=utf-8", isSuccess: true, isFailure: false,
         data: { opds: { title: "", publications: [publication] } } });
@@ -117,7 +117,7 @@ test.each(["application/opds+json", "application/atom+xml", "text/html", "applic
 test("refreshes a parsed publication served with a feed media type", () => {
     click();
     const publication = { documentTitle: "Reserved book", borrowLinks: [
-        { url, properties: { availabilityState: "reserved" } },
+        { url, properties: { availabilityState: "reserved", cancellable: true } },
     ] } as IOpdsPublicationView;
     respond({ url, contentType: "application/opds+json", isSuccess: true, isFailure: false,
         data: { opds: { title: "Reserved book", isPublication: true, publications: [publication] } } });

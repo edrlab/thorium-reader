@@ -311,6 +311,8 @@
         "menu": {
             "aboutBook": "Σχετικά με αυτήν τη δημοσίευση",
             "addExtract": "Εισαγωγή αποσπάσματος",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Αγορά δημοσίευσης",
             "goLoanBook": "Δανεισμός δημοσίευσης",
             "goRevokeLoanBook": "Ανάκληση δανεισμού",

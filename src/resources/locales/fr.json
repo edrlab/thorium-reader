@@ -317,6 +317,8 @@
         "menu": {
             "aboutBook": "À propos",
             "addExtract": "Ajouter l'extrait",
+            "cancelHold": "Annuler la réservation",
+            "cancelHoldError": "Impossible d’annuler cette réservation. Veuillez réessayer.",
             "goBuyBook": "Acheter le livre",
             "goLoanBook": "Emprunter le livre",
             "goRevokeLoanBook": "Mettre fin à l'emprunt",

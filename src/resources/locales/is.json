@@ -311,6 +311,8 @@
         "menu": {
             "aboutBook": "Um bókina",
             "addExtract": "Bæta við sýnishorni",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Kaupa bók",
             "goLoanBook": "Fá bók að láni",
             "goRevokeLoanBook": "Afturkalla lán",
