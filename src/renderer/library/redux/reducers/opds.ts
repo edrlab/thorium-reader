@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import { type Reducer } from "redux";
-import { authActions } from "readium-desktop/common/redux/actions";
 
 import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/breadcrumbItem";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
@@ -63,12 +62,9 @@ export const opdsBreadcrumbReducer = opdsBreadcrumbReducer_ as Reducer<ReturnTyp
 
 function opdsHeaderLinkReducer_(
     state: IOpdsHeaderState = {},
-    action: headerLinksUpdate.TAction | authActions.logout.TAction | authActions.wipeData.TAction,
+    action: headerLinksUpdate.TAction,
 ): IOpdsHeaderState {
     switch (action.type) {
-        case authActions.logout.ID:
-        case authActions.wipeData.ID:
-            return { ...state, bookshelf: undefined };
         case headerLinksUpdate.ID:
             const stateNew: IOpdsHeaderState = {};
             for (const key of ObjectKeys(action.payload)) {

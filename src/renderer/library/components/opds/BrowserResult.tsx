@@ -20,12 +20,10 @@ import { BROWSE_OPDS_API_REQUEST_ID } from "readium-desktop/renderer/library/opd
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 // import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
 
-import PublicationCard from "../publication/PublicationCard";
 // import { ListView } from "../utils/ListView";
-import Slider from "../utils/Slider";
 import { BookshelfCarousel } from "./BookshelfCarousel";
 import { parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
-import Entry from "./Entry";
+import { PublicationGroup } from "./PublicationGroup";
 import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
 import MessageOpdBrowserResult from "./MessageOpdBrowserResult";
@@ -160,32 +158,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
 
                             {
                                 opds.groups?.map((group, i) =>
-                                    <section key={i}>
-                                        { group.publications?.length > 1 ?
-                                        <div className={stylesGlobal.heading_link}>
-                                            <Entry level={this.props.level} entry={group.selfLink}></Entry>
-                                        </div>
-                                        : <></>}
-                                        {
-                                            group.navigation ?
-                                            <EntryList entries={group.navigation} />
-                                            : <></>
-                                        }
-                                        {
-                                            group.publications?.length > 1 ?
-                                                    <Slider
-                                                        resetSliderPosition={false}
-                                                        content={group.publications.map((pub) =>
-                                                            <PublicationCard
-                                                                key={`opds-group-${i}-${pub.workIdentifier}`}
-                                                                publicationViewMaybeOpds={pub}
-                                                                isOpds={true}
-                                                            />,
-                                                        )}
-                                                    />
-                                                : <></>
-                                        }
-                                    </section>,
+                                    <PublicationGroup key={i} group={group} level={this.props.level} />,
                                 )
                             }
                         </>

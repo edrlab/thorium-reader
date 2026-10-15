@@ -6,16 +6,16 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { Link } from "react-router-dom";
-import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
+import { useDispatch } from "react-redux";
+import { IOpdsFeedView, IOpdsGroupView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
+import { authActions, customizationActions, opdsActions } from "readium-desktop/common/redux/actions";
+import { subscribeToAction } from "readium-desktop/renderer/common/redux/middleware/actionSubscriber";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import Loader from "readium-desktop/renderer/common/components/Loader";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
-import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import PublicationCard from "../publication/PublicationCard";
-import Slider from "../utils/Slider";
+import * as stylesBookshelf from "readium-desktop/renderer/assets/styles/components/bookshelf.scss";
+import { PublicationGroup } from "./PublicationGroup";
 
 interface IProps {
     catalogId: string;
@@ -24,22 +24,48 @@ interface IProps {
 
 export const BookshelfCarousel: React.FC<IProps> = ({ catalogId, url }) => {
     const [__] = useTranslator();
-    const headingId = React.useId();
+    const dispatch = useDispatch();
     const [attempt, setAttempt] = React.useState(0);
-    const [status, setStatus] = React.useState<"hidden" | "loading" | "ready" | "error">("hidden");
+    const [status, setStatus] = React.useState<"signedOut" | "loading" | "ready" | "error">("loading");
+    const [feed, setFeed] = React.useState<IOpdsFeedView>();
     const [publications, setPublications] = React.useState<IOpdsPublicationView[]>([]);
 
     React.useEffect(() => {
         let active = true;
-        let authenticated = false;
-        setStatus("hidden");
+        let currentFeed: IOpdsFeedView;
+        setStatus("loading");
+        setFeed(undefined);
         setPublications([]);
+        const signedOut = () => {
+            active = false;
+            setPublications([]);
+            setFeed((previous) => previous ? { ...previous, authentified: false } : undefined);
+            setStatus("signedOut");
+        };
+        const refresh = () => {
+            active = false;
+            setAttempt((previous) => previous + 1);
+        };
+        const unsubscribe = [
+            subscribeToAction(authActions.logout.ID, (action) => {
+                if (!currentFeed || (action as authActions.logout.TAction).payload.feedUrl === currentFeed.url) {
+                    signedOut();
+                }
+            }),
+            subscribeToAction(authActions.wipeData.ID, signedOut),
+            subscribeToAction(authActions.done.ID, refresh),
+            subscribeToAction(opdsActions.refresh.ID, refresh),
+        ];
         const load = async () => {
             // A bookshelf relation alone does not establish an authenticated session.
             const feeds = await apiAction("opds/findAllFeeds");
-            if (!active || !feeds.some((feed) => feed.identifier === catalogId && feed.authentified)) return;
-            authenticated = true;
-            setStatus("loading");
+            if (!active) return;
+            currentFeed = feeds.find((candidate) => candidate.identifier === catalogId);
+            setFeed(currentFeed);
+            if (!currentFeed?.authentified) {
+                setStatus("signedOut");
+                return;
+            }
             // apiAction allocates an independent request ID and cleans up the API result.
             const result = await apiAction("httpbrowser/browse", url);
             if (!active) return;
@@ -55,33 +81,38 @@ export const BookshelfCarousel: React.FC<IProps> = ({ catalogId, url }) => {
             setStatus("ready");
         };
         load().catch(() => {
-            if (active && authenticated) setStatus("error");
+            if (active) setStatus("error");
         });
         // Ignore responses after logout, navigation, refresh, or a retry.
-        return () => { active = false; };
+        return () => {
+            active = false;
+            unsubscribe.forEach((stop) => stop());
+        };
     }, [catalogId, url, attempt]);
 
-    if (status === "hidden") return <></>;
-
-    return <section aria-labelledby={headingId} aria-busy={status === "loading"}>
-        <div className={stylesGlobal.heading_link}>
-            <h3 id={headingId}>{__("opds.bookshelfTitle")}</h3>
-            <Link to={buildOpdsBrowserRoute(catalogId, __("opds.shelf"), url, 3)}>
-                {__("opds.bookshelfViewAll")}
-            </Link>
+    const group: IOpdsGroupView = {
+        selfLink: { title: __("opds.bookshelfTitle"), url },
+        publications,
+    };
+    const placeholder = status === "loading" ? <div className={stylesBookshelf.bookshelf_status}><Loader /></div>
+        : status === "signedOut" && feed?.authenticationUrl ?
+        <div className={stylesBookshelf.bookshelf_status}>
+            <button className={stylesButtons.button_primary} onClick={() => {
+                dispatch(customizationActions.triggerOpdsAuth.build(feed.url, feed.authenticationUrl));
+            }}>
+                {__("catalog.login")}
+            </button>
         </div>
-        {status === "loading" ? <Loader /> : status === "error" ?
-            <div role="status">
-                <p>{__("opds.network.error")}</p>
-                <button className={stylesButtons.button_secondary_blue} onClick={() => setAttempt(attempt + 1)}>
-                    {__("catalog.opds.auth.retry")}
-                </button>
-            </div>
-            : publications.length ?
-                <Slider resetSliderPosition={true} content={publications.map((publication, index) =>
-                    <PublicationCard key={`${publication.workIdentifier || publication.documentTitle}-${index}`}
-                        publicationViewMaybeOpds={publication} isOpds={true} />,
-                )} />
-                : <p role="status">{__("opds.empty")}</p>}
-    </section>;
+        : status === "error" ?
+        <div className={stylesBookshelf.bookshelf_status} role="status">
+            <p>{__("opds.network.error")}</p>
+            <button className={stylesButtons.button_secondary_blue} onClick={() => setAttempt((previous) => previous + 1)}>
+                {__("catalog.opds.auth.retry")}
+            </button>
+        </div>
+        : <div className={stylesBookshelf.bookshelf_status}><p role="status">{__("opds.empty")}</p></div>;
+
+    return <PublicationGroup group={group} level={3} alwaysVisible={true}
+        busy={status === "loading"} contentClassName={stylesBookshelf.bookshelf_content}
+        placeholder={placeholder} />;
 };
