@@ -299,6 +299,8 @@
         "menu": {
             "aboutBook": "상세 정보",
             "addExtract": "미리보기",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "책 구매",
             "goLoanBook": "책 대여",
             "goRevokeLoanBook": "반납하기",

@@ -311,6 +311,8 @@
         "menu": {
             "aboutBook": "Über dieses Buch",
             "addExtract": "Zur Bibliothek hinzufügen",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Dieses Buch kaufen",
             "goLoanBook": "Dieses Buch ausleihen",
             "goRevokeLoanBook": "Ausleihe widerrufen",

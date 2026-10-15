@@ -323,6 +323,8 @@
         "menu": {
             "aboutBook": "Об этой книге",
             "addExtract": "Добавить и извлечь",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Купить эту книгу",
             "goLoanBook": "Арендовать книгу",
             "goRevokeLoanBook": "Отозвать абонемент",

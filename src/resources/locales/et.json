@@ -311,6 +311,8 @@
         "menu": {
             "aboutBook": "Väljaande teave",
             "addExtract": "Impordi näide",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Osta väljaanne",
             "goLoanBook": "Laenuta väljaanne",
             "goRevokeLoanBook": "Tühista laenutus",

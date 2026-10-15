@@ -311,6 +311,8 @@
         "menu": {
             "aboutBook": "Acerca deste libro",
             "addExtract": "Importar mostra",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Mercar este libro",
             "goLoanBook": "Pedir prestado este libro",
             "goRevokeLoanBook": "Cancelar préstamo",

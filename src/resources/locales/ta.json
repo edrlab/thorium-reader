@@ -311,6 +311,8 @@
         "menu": {
             "aboutBook": "வெளியீடு பற்றி",
             "addExtract": "இறக்குமதி சாறு",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "வெளியீடு வாங்கவும்",
             "goLoanBook": "கடன் வெளியீடு",
             "goRevokeLoanBook": "கடனைத் திரும்பப் பெறுங்கள்",

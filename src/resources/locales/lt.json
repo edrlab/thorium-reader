@@ -323,6 +323,8 @@
         "menu": {
             "aboutBook": "Apie leidinį",
             "addExtract": "Importuoti ištrauką",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Pirkti šį leidinį",
             "goLoanBook": "Pasiskolinti leidinį",
             "goRevokeLoanBook": "Atšaukti pasiskolinimą",
