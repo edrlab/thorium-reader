@@ -9,6 +9,12 @@ jest.mock("readium-desktop/renderer/assets/styles/global.scss", () => ({}));
 jest.mock("readium-desktop/renderer/assets/icons/cart-icon.svg", () => ({}));
 jest.mock("readium-desktop/renderer/assets/icons/borrow-icon.svg", () => ({}));
 jest.mock("readium-desktop/renderer/assets/icons/import.svg", () => ({}));
+jest.mock("react-redux", () => ({
+    ...jest.requireActual<typeof import("react-redux")>("react-redux"),
+    useDispatch: () => jest.fn(),
+}));
+jest.mock("readium-desktop/renderer/common/hooks/useApi", () => ({ useApi: () => [undefined, jest.fn()] }));
+jest.mock("readium-desktop/renderer/common/hooks/useTranslator", () => ({ useTranslator: () => [(key: string) => key] }));
 jest.mock(
     "readium-desktop/renderer/common/components/SVG",
     () =>
@@ -77,4 +83,13 @@ test.each([OPDSAvailabilityEnum.Available, OPDSAvailabilityEnum.Ready, undefined
 
 test("keeps Borrow when properties are absent", () => {
     expect(render({ borrowLinks: [{ url: "https://example.com/borrow" }] })).toContain("opds.menu.goLoanBook");
+});
+
+test("keeps cancellation available for a reserved hold while hiding Borrow", () => {
+    const html = render({ borrowLinks: [{
+        ...link(OPDSAvailabilityEnum.Reserved),
+        properties: { availabilityState: OPDSAvailabilityEnum.Reserved, cancellable: true },
+    }] });
+    expect(html).not.toContain("opds.menu.goLoanBook");
+    expect(html).toContain("opds.menu.cancelHold");
 });

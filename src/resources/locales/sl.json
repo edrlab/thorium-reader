@@ -323,6 +323,8 @@
         "menu": {
             "aboutBook": "O publikaciji",
             "addExtract": "Uvozi izvleček",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Kupi publikacijo",
             "goLoanBook": "Izposodi publikacijo",
             "goRevokeLoanBook": "Preklic izposoje",

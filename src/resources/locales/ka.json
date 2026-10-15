@@ -311,6 +311,8 @@
         "menu": {
             "aboutBook": "ამ წიგნის შესახებ",
             "addExtract": "ამონარიდის შემოტანა",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "წიგნის შესყიდვა",
             "goLoanBook": "წიგნის სესხება",
             "goRevokeLoanBook": "სესხის ანულირება",

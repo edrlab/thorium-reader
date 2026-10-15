@@ -317,6 +317,8 @@
         "menu": {
             "aboutBook": "Sobre aquest llibre",
             "addExtract": "Importar mostra",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Comprar aquest llibre",
             "goLoanBook": "Demanar prestat aquest llibre",
             "goRevokeLoanBook": "Cancel·lar préstamo",

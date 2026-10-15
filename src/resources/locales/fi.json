@@ -311,6 +311,8 @@
         "menu": {
             "aboutBook": "Tietoja tästä kirjasta",
             "addExtract": "Tuo näyte",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Osta kirja",
             "goLoanBook": "Lainaa kirja",
             "goRevokeLoanBook": "Peruuta laina",

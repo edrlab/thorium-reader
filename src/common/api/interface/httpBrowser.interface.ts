@@ -11,6 +11,7 @@ import { SagaGenerator } from "typed-redux-saga";
 export interface IHttpBrowserApi {
     browse: (
         url: string,
+        method?: "GET" | "DELETE",
     ) => SagaGenerator<THttpGetBrowserResultView>;
 }
 

@@ -311,6 +311,8 @@
         "menu": {
             "aboutBook": "Eser hakkında",
             "addExtract": "Özeti içe aktar",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Eser satın al",
             "goLoanBook": "Eser ödünç al",
             "goRevokeLoanBook": "Ödünç alımı sonlandır",

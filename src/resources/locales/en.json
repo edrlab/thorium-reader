@@ -311,6 +311,8 @@
         "menu": {
             "aboutBook": "About publication",
             "addExtract": "Import extract",
+            "cancelHold": "Cancel hold",
+            "cancelHoldError": "Unable to cancel this hold. Please try again.",
             "goBuyBook": "Buy publication",
             "goLoanBook": "Borrow publication",
             "goRevokeLoanBook": "Revoke loan",

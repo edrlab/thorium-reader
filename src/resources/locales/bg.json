@@ -311,6 +311,8 @@
         "menu": {
             "aboutBook": "Относно тази книга",
             "addExtract": "Добави откъс",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Купи тази книга",
             "goLoanBook": "Заеми тази книга",
             "goRevokeLoanBook": "Откажи заемането",

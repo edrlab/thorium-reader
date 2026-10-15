@@ -317,6 +317,8 @@
         "menu": {
             "aboutBook": "Sobre o documento",
             "addExtract": "Importar excerto",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Comprar documento",
             "goLoanBook": "Emprestar documento",
             "goRevokeLoanBook": "Revogar empréstimo",

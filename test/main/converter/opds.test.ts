@@ -294,7 +294,54 @@ describe("OPDS authentication link hints", () => {
             url: "https://example.org/original.json",
         } as unknown as IHttpGetResult<IOpdsResultView>);
 
+        expect(result.isPublication).toBeUndefined();
         expect(result.title).toBe(effectiveUrl);
         expect(convertOpdsFeedToView.mock.calls[0][1]).toBe(effectiveUrl);
+    });
+});
+
+describe("OPDS publication responses", () => {
+    it.each([ContentType.Opds2, ContentType.Opds2Pub])("identifies a standalone publication served as %s", async (contentType) => {
+        const service = new OpdsService();
+        Object.assign(service, { opdsFeedViewConverter: createConverter() });
+        const result = await service.opdsRequestTransformer({
+            contentType, isFailure: false, isSuccess: true, url: baseUrl, responseUrl: baseUrl,
+            response: { json: async () => ({ metadata: { title: "Held publication" }, links: [{
+                href: "booking", rel: "http://opds-spec.org/acquisition/borrow", type: ContentType.Opds2Pub,
+                properties: { availability: { state: "reserved" } },
+            }] }) },
+        } as unknown as IHttpGetResult<IOpdsResultView>);
+        expect(result.isPublication).toBe(true);
+        expect(result.publications[0].borrowLinks[0].properties.availabilityState).toBe("reserved");
+    });
+});
+
+describe("OPDS hold cancellation properties", () => {
+    it.each([
+        [{ cancellable: true }, true],
+        [{ actions: { cancellable: true } }, true],
+        [{ cancellable: false, actions: { cancellable: true } }, true],
+        [{ cancellable: true, actions: { cancellable: false } }, true],
+        [{ actions: { cancellable: false } }, false],
+        [{ actions: { cancellable: "true" } }, false],
+        [{ actions: "cancellable" }, false],
+        [{ actions: [] }, false],
+        [{ actions: null }, false],
+        [{}, false],
+    ])("normalizes standard and CantookStation cancellation flags: %p", (flags, expected) => {
+        const link = TaJsonDeserialize({
+            type: "application/opds-publication+json",
+            rel: "http://opds-spec.org/acquisition/borrow",
+            href: "https://banq.pretnumerique.ca/v1/bookings/hold.opds2",
+            properties: {
+                availability: { state: "reserved" },
+                holds: { position: 52, total: 52 },
+                ...flags,
+            },
+        }, OPDSLink);
+        const result = createConverter().convertOpdsPropertiesToView(link.Properties, baseUrl);
+        expect(result.cancellable).toBe(expected);
+        expect(result.availabilityState).toBe("reserved");
+        expect(result.holdPosition).toBe(52);
     });
 });

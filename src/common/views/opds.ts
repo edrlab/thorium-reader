@@ -100,6 +100,8 @@ export interface IOpdsFeedMetadataView {
 }
 
 export interface IOpdsResultView {
+    // Preserve the parsed document kind when a server uses a feed media type for a publication.
+    isPublication?: boolean;
     title: string;
     metadata?: IOpdsFeedMetadataView;
     navigation?: IOpdsNavigationLinkView[];
@@ -139,6 +141,7 @@ export interface IOpdsAuthenticationLinkView {
 }
 
 export interface IOPDSPropertiesView {
+    cancellable?: boolean;
     authenticate?: IOpdsAuthenticationLinkView;
     indirectAcquisitionTypes?: { top: string, child: string | undefined} | undefined;
     numberOfItems?: number | undefined;

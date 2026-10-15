@@ -323,6 +323,8 @@
         "menu": {
             "aboutBook": "O publikaci",
             "addExtract": "Importovat úryvek",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Koupit publikaci",
             "goLoanBook": "Zapůjčit si publikaci",
             "goRevokeLoanBook": "Zrušit půjčku",

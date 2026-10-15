@@ -311,6 +311,8 @@
         "menu": {
             "aboutBook": "Liburu honi buruz",
             "addExtract": "Inportatu laburpena",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Erosi liburu hau",
             "goLoanBook": "Eskatu maileguan liburu hau",
             "goRevokeLoanBook": "Utzi mailegua",

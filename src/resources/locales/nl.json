@@ -311,6 +311,8 @@
         "menu": {
             "aboutBook": "Over dit boek",
             "addExtract": "Voeg de samenvatting toe",
+            "cancelHold": "",
+            "cancelHoldError": "",
             "goBuyBook": "Koop dit boek",
             "goLoanBook": "Leen dit boek",
             "goRevokeLoanBook": "Uitlening intrekken",
