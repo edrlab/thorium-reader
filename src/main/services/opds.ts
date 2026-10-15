@@ -290,6 +290,7 @@ export class OpdsService {
             );
             const pubView = this.opdsFeedViewConverter.convertOpdsPublicationToView(r2OpdsPublication, baseUrl);
             return {
+                isPublication: true,
                 title: pubView.documentTitle,
                 publications: [pubView],
             };
