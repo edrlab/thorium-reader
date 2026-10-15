@@ -316,7 +316,8 @@
             "goBuyBook": "Eser satın al",
             "goLoanBook": "Eser ödünç al",
             "goRevokeLoanBook": "Ödünç alımı sonlandır",
-            "goSubBook": "Abone ol"
+            "goSubBook": "Abone ol",
+            "placeHold": ""
         },
         "network": {
             "error": "Beslemeye erişim hatası",

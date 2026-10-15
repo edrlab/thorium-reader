@@ -322,7 +322,8 @@
             "goBuyBook": "Kupi knjigu",
             "goLoanBook": "Posudi knjigu",
             "goRevokeLoanBook": "Prekini posudbu",
-            "goSubBook": "Pretplati se"
+            "goSubBook": "Pretplati se",
+            "placeHold": ""
         },
         "network": {
             "error": "Greška pri otvaranju kataloga",

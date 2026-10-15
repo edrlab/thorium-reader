@@ -328,7 +328,8 @@
             "goBuyBook": "Pirkti šį leidinį",
             "goLoanBook": "Pasiskolinti leidinį",
             "goRevokeLoanBook": "Atšaukti pasiskolinimą",
-            "goSubBook": "Prenumeruoti"
+            "goSubBook": "Prenumeruoti",
+            "placeHold": ""
         },
         "network": {
             "error": "Nepavyko pasiekti sklaidos kanalo",

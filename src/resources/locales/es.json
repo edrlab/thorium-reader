@@ -322,7 +322,8 @@
             "goBuyBook": "Comprar este libro",
             "goLoanBook": "Pedir prestado este libro",
             "goRevokeLoanBook": "Cancelar préstamo",
-            "goSubBook": "Suscribirse"
+            "goSubBook": "Suscribirse",
+            "placeHold": ""
         },
         "network": {
             "error": "Se ha producido un error",

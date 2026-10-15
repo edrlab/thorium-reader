@@ -316,7 +316,8 @@
             "goBuyBook": "Erosi liburu hau",
             "goLoanBook": "Eskatu maileguan liburu hau",
             "goRevokeLoanBook": "Utzi mailegua",
-            "goSubBook": "Harpidetu"
+            "goSubBook": "Harpidetu",
+            "placeHold": ""
         },
         "network": {
             "error": "Ezin da OPDS katalogora sartu",

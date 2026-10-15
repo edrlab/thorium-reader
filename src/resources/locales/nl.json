@@ -316,7 +316,8 @@
             "goBuyBook": "Koop dit boek",
             "goLoanBook": "Leen dit boek",
             "goRevokeLoanBook": "Uitlening intrekken",
-            "goSubBook": "Abonneer"
+            "goSubBook": "Abonneer",
+            "placeHold": ""
         },
         "network": {
             "error": "Het is niet mogelijk om toegang te krijgen tot de OPDS feed",

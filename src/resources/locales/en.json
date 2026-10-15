@@ -316,7 +316,8 @@
             "goBuyBook": "Buy publication",
             "goLoanBook": "Borrow publication",
             "goRevokeLoanBook": "Revoke loan",
-            "goSubBook": "Subscribe"
+            "goSubBook": "Subscribe",
+            "placeHold": "Place hold"
         },
         "network": {
             "error": "Error accessing feed",

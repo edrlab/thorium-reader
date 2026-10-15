@@ -322,7 +322,8 @@
             "goBuyBook": "Comprar este livro",
             "goLoanBook": "Emprestar publicação",
             "goRevokeLoanBook": "Revogar empréstimo",
-            "goSubBook": "Subscrever"
+            "goSubBook": "Subscrever",
+            "placeHold": ""
         },
         "network": {
             "error": "Incapaz de acessar a origem OPDS",

@@ -309,7 +309,8 @@
             "goBuyBook": "購買此書",
             "goLoanBook": "借閱此書",
             "goRevokeLoanBook": "歸還此書",
-            "goSubBook": "訂閱"
+            "goSubBook": "訂閱",
+            "placeHold": ""
         },
         "network": {
             "error": "存取訂閱源時出錯",

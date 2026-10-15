@@ -316,7 +316,8 @@
             "goBuyBook": "",
             "goLoanBook": "",
             "goRevokeLoanBook": "",
-            "goSubBook": ""
+            "goSubBook": "",
+            "placeHold": ""
         },
         "network": {
             "error": "",
