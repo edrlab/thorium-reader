@@ -1118,8 +1118,12 @@ div[data-radix-popper-content-wrapper] {
         gap: 10px;
 
         p,
-        h5 {
+        h3 {
             margin: 0;
+        }
+
+        h3 {
+            font-size: 0.83em;
         }
     }
 }
