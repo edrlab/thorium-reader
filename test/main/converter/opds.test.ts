@@ -298,3 +298,34 @@ describe("OPDS authentication link hints", () => {
         expect(convertOpdsFeedToView.mock.calls[0][1]).toBe(effectiveUrl);
     });
 });
+
+
+describe("OPDS hold cancellation properties", () => {
+    it.each([
+        [{ cancellable: true }, true],
+        [{ actions: { cancellable: true } }, true],
+        [{ cancellable: false, actions: { cancellable: true } }, true],
+        [{ cancellable: true, actions: { cancellable: false } }, true],
+        [{ actions: { cancellable: false } }, false],
+        [{ actions: { cancellable: "true" } }, false],
+        [{ actions: "cancellable" }, false],
+        [{ actions: [] }, false],
+        [{ actions: null }, false],
+        [{}, false],
+    ])("normalizes standard and CantookStation cancellation flags: %p", (flags, expected) => {
+        const link = TaJsonDeserialize({
+            type: "application/opds-publication+json",
+            rel: "http://opds-spec.org/acquisition/borrow",
+            href: "https://banq.pretnumerique.ca/v1/bookings/hold.opds2",
+            properties: {
+                availability: { state: "reserved" },
+                holds: { position: 52, total: 52 },
+                ...flags,
+            },
+        }, OPDSLink);
+        const result = createConverter().convertOpdsPropertiesToView(link.Properties, baseUrl);
+        expect(result.cancellable).toBe(expected);
+        expect(result.availabilityState).toBe("reserved");
+        expect(result.holdPosition).toBe(52);
+    });
+});

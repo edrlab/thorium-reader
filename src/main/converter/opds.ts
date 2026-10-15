@@ -249,8 +249,13 @@ export class OpdsFeedViewConverter {
                     properties.IndirectAcquisitions : [properties.IndirectAcquisitions]) :
                 undefined;
 
+            // CantookStation workaround: some catalogs nest cancellable under properties.actions.
+            const actions = properties.AdditionalJSON?.actions;
+            const cancellableAction = actions && typeof actions === "object" && !Array.isArray(actions)
+                && actions.cancellable === true;
+
             return {
-                cancellable: properties.AdditionalJSON?.cancellable === true,
+                cancellable: properties.AdditionalJSON?.cancellable === true || !!cancellableAction,
                 authenticate: normalizeOpdsAuthenticationLink(properties.AdditionalJSON?.authenticate, baseUrl),
                 indirectAcquisitionTypes: indirectAcquisitions?.reduce<{ top: string, child: string | undefined} | undefined>((pv, cv) => {
                     if (typeof cv?.TypeAcquisition === "string") {
