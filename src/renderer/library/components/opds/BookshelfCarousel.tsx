@@ -110,7 +110,10 @@ export const BookshelfCarousel: React.FC<IProps> = ({ catalogId, url }) => {
                 {__("catalog.opds.auth.retry")}
             </button>
         </div>
-        : <div className={stylesBookshelf.bookshelf_status}><p role="status">{__("opds.empty")}</p></div>;
+        : <div className={stylesBookshelf.bookshelf_status} role="status">
+            <p>{__("opds.bookshelfEmpty")}</p>
+            <p>{__("opds.bookshelfEmptyDescription")}</p>
+        </div>;
 
     return <PublicationGroup group={group} level={3} alwaysVisible={true}
         busy={status === "loading"} contentClassName={stylesBookshelf.bookshelf_content}

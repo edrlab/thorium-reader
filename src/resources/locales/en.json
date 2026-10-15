@@ -327,6 +327,8 @@
         "previous": "Previous",
         "resumeBrowsing": "Resume browsing",
         "shelf": "Shelf",
+        "bookshelfEmpty": "Your bookshelf is empty.",
+        "bookshelfEmptyDescription": "Books you reserve, buy, or borrow will appear here.",
         "bookshelfTitle": "My bookshelf",
         "bookshelfViewAll": "View all",
         "updateForm": {

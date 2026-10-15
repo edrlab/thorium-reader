@@ -25,12 +25,13 @@ interface IProps {
 export const PublicationGroup: React.FC<IProps> = ({
     group, level, alwaysVisible = false, busy, contentClassName, placeholder,
 }) => {
-    const showPublications = group.publications?.length > (alwaysVisible ? 0 : 1);
+    const showPublications = group.publications?.length > 0;
 
     return <section aria-label={group.selfLink.title} aria-busy={busy}>
         {alwaysVisible || showPublications ?
             <div className={stylesGlobal.heading_link}>
-                <Entry level={level} entry={group.selfLink} />
+                {group.selfLink.url ? <Entry level={level} entry={group.selfLink} />
+                    : <h3>{group.selfLink.title}</h3>}
             </div> : <></>}
         {group.navigation ? <EntryList entries={group.navigation} /> : <></>}
         <div className={contentClassName}>

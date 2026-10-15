@@ -7,6 +7,7 @@ import { JSDOM } from "jsdom";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { BookshelfCarousel } from "readium-desktop/renderer/library/components/opds/BookshelfCarousel";
 import { PublicationGroup } from "readium-desktop/renderer/library/components/opds/PublicationGroup";
+import { BrowserResult } from "readium-desktop/renderer/library/components/opds/BrowserResult";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { IOpdsGroupView } from "readium-desktop/common/views/opds";
 import { authActions, customizationActions, opdsActions } from "readium-desktop/common/redux/actions";
@@ -17,11 +18,14 @@ jest.mock("readium-desktop/renderer/library/routing", () => ({ routes: {} }));
 jest.mock("readium-desktop/common/services/translator", () => ({}));
 jest.mock("readium-desktop/renderer/common/hooks/useTranslator", () => ({ useTranslator: () => [(key: string) => key] }));
 jest.mock("readium-desktop/renderer/assets/styles/global.scss", () => ({}));
+jest.mock("readium-desktop/renderer/assets/styles/components/columns.scss", () => ({}));
+jest.mock("readium-desktop/renderer/assets/styles/components/catalogs.scss", () => ({}));
+jest.mock("readium-desktop/renderer/common/components/hoc/translator", () => ({ withTranslator: (component: any) => component }));
 jest.mock("readium-desktop/renderer/assets/styles/components/buttons.scss", () => ({}));
 jest.mock("readium-desktop/renderer/assets/styles/components/bookshelf.scss", () => ({
     bookshelf_content: "bookshelf_content", bookshelf_status: "bookshelf_status",
 }));
-jest.mock("react-redux", () => ({ useDispatch: () => mockDispatch }));
+jest.mock("react-redux", () => ({ useDispatch: () => mockDispatch, connect: () => (component: any) => component }));
 jest.mock("readium-desktop/renderer/common/redux/middleware/actionSubscriber", () => ({
     subscribeToAction: (id: string, callback: (action: any) => void) => {
         actionSubscribers.set(id, callback);
@@ -33,6 +37,9 @@ jest.mock("readium-desktop/renderer/library/components/opds/Entry", () => ({ ent
     <a href={buildOpdsBrowserRoute("catalog", entry.title, entry.url, level)}>{entry.title}</a>);
 jest.mock("readium-desktop/renderer/library/components/opds/EntryList", () => ({ entries }: any) =>
     <nav>{entries.map((entry: any) => <a key={entry.url} href={entry.url}>{entry.title}</a>)}</nav>);
+jest.mock("readium-desktop/renderer/library/components/opds/EntryPublicationList", () => ({ opdsPublicationView }: any) =>
+    <ul>{opdsPublicationView.map((publication: any) => <li key={publication.documentTitle}>{publication.documentTitle}</li>)}</ul>);
+jest.mock("readium-desktop/renderer/library/components/opds/MessageOpdBrowserResult", () => ({ title }: any) => <p>{title}</p>);
 jest.mock("readium-desktop/renderer/common/components/Loader", () => () => <p>Loading</p>);
 jest.mock("readium-desktop/renderer/library/components/utils/Slider", () => ({ content, resetSliderPosition }: any) =>
     <ul data-reset-position={resetSliderPosition}>{content}</ul>);
@@ -49,12 +56,15 @@ const unauthenticatedFeed = {
 let dom: JSDOM;
 let container: HTMLDivElement;
 let root: Root;
+let navigatorDescriptor: PropertyDescriptor | undefined;
 
 beforeEach(() => {
     dom = new JSDOM("<!doctype html><html><body></body></html>");
     (globalThis as any).window = dom.window;
     (globalThis as any).document = dom.window.document;
     (globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
+    navigatorDescriptor = Object.getOwnPropertyDescriptor(globalThis, "navigator");
+    Object.defineProperty(globalThis, "navigator", { configurable: true, value: { onLine: true } });
     container = document.createElement("div");
     document.body.append(container);
     root = createRoot(container);
@@ -68,11 +78,52 @@ afterEach(async () => {
     delete (globalThis as any).window;
     delete (globalThis as any).document;
     delete (globalThis as any).IS_REACT_ACT_ENVIRONMENT;
+    if (navigatorDescriptor) {
+        Object.defineProperty(globalThis, "navigator", navigatorDescriptor);
+    } else {
+        delete (globalThis as any).navigator;
+    }
 });
 
 async function render(catalogId = "catalog", url = "https://catalog.test/shelf") {
     await act(async () => root.render(<BookshelfCarousel catalogId={catalogId} url={url} />));
 }
+
+test.each([undefined, ""])("does not create a browse link for a group without a self URL (%s)", async (url) => {
+    const group = {
+        selfLink: { title: "Loans", url },
+        publications: [{ documentTitle: "Borrowed book" }],
+    } as IOpdsGroupView;
+    const props = {
+        __: (key: string) => key,
+        browserData: { result: { isSuccess: true, data: { opds: { groups: [group] } } } },
+        location: { pathname: buildOpdsBrowserRoute("catalog", "My bookshelf", "https://catalog.test/shelf", 3) },
+        level: 4,
+    } as unknown as React.ComponentProps<typeof BrowserResult>;
+    await act(async () => root.render(<BrowserResult {...props} />));
+    expect(container.querySelector("a")).toBeNull();
+    expect(container.querySelector("h3")?.textContent).toBe("Loans");
+    expect(container.textContent).toContain("Borrowed book");
+    expect(request).not.toHaveBeenCalled();
+});
+
+test.each<[boolean, number]>([[false, 1], [true, 1], [false, 3], [true, 3]])(
+    "renders a bookshelf feed opened directly (grouped: %s, level: %s)", async (grouped, level) => {
+        const publications = [{ documentTitle: "Borrowed book" }];
+        const props = {
+            __: (key: string) => key,
+            browserData: { result: { isSuccess: true, data: { opds: grouped ? {
+                groups: [{ selfLink: { title: "Loans", url: "https://catalog.test/loans" }, publications }],
+            } : { publications } } } },
+            location: { pathname: buildOpdsBrowserRoute("catalog", "My bookshelf", "https://catalog.test/shelf", level) },
+            level: level + 1,
+        } as unknown as React.ComponentProps<typeof BrowserResult>;
+        await act(async () => root.render(<BrowserResult {...props} />));
+        expect(container.textContent).toContain("Borrowed book");
+        expect(container.querySelectorAll("li")).toHaveLength(1);
+        expect(request).not.toHaveBeenCalled();
+    },
+);
 
 test("keeps the shelf visible and opens authentication without fetching publications when signed out", async () => {
     request.mockResolvedValue([unauthenticatedFeed]);
@@ -96,7 +147,7 @@ test("keeps an empty shelf without a sign-in button when authentication is unava
     request.mockResolvedValue([{ identifier: "catalog", authentified: false }]);
     await render();
     expect(container.querySelector(".bookshelf_content")).not.toBeNull();
-    expect(container.textContent).toContain("opds.empty");
+    expect(container.textContent).toContain("opds.bookshelfEmpty");
     expect(container.querySelector("button")).toBeNull();
     expect(request).toHaveBeenCalledTimes(1);
 });
@@ -153,7 +204,7 @@ test("ignores an old shelf response after switching catalogs", async () => {
     await render();
     await render("other", "https://other.test/shelf");
     await act(async () => finish({ isSuccess: true, data: { opds: { publications: [{ documentTitle: "Old user's book" }] } } }));
-    expect(container.textContent).toContain("opds.empty");
+    expect(container.textContent).toContain("opds.bookshelfEmpty");
     expect(container.textContent).not.toContain("Old user's book");
 });
 
@@ -208,6 +259,8 @@ test("retries a failed request and displays an empty shelf", async () => {
     await render();
     expect(container.textContent).toContain("opds.network.error");
     await act(async () => container.querySelector("button")?.click());
-    expect(container.textContent).toContain("opds.empty");
+    expect(container.textContent).toContain("opds.bookshelfEmpty");
+    expect(container.textContent).toContain("opds.bookshelfEmptyDescription");
+    expect(container.querySelector("ul")).toBeNull();
     expect(container.textContent).not.toContain("opds.network.error");
 });
