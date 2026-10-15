@@ -82,6 +82,7 @@ import {
     getAuthenticationToken,
     httpPut,
     httpPutWithAuth,
+    httpDeleteWithAuth,
     httpSetAuthenticationToken,
     wipeAuthenticationTokenStorage,
 } from "readium-desktop/main/network/http";
@@ -140,6 +141,31 @@ describe("authenticated HTTP PUT", () => {
     afterAll(() => {
         readFileSpy.mockRestore();
         writeFileSpy.mockRestore();
+    });
+
+    it("sends an authenticated DELETE and preserves the response", async () => {
+        const publication = { metadata: { title: "Cancelled hold" }, links: [] as unknown[] };
+        fetchWithCookieMock.mockResolvedValueOnce(response(200, publication));
+        const result = await httpDeleteWithAuth(url);
+        expect(fetchWithCookieMock.mock.calls[0][1]?.method).toBe("delete");
+        expect((fetchWithCookieMock.mock.calls[0][1]?.headers as { get: (key: string) => string }).get("Authorization"))
+            .toBe("Bearer old-access-token");
+        expect(await result.response.json()).toEqual(publication);
+    });
+
+    it("retains DELETE when refreshing an expired token", async () => {
+        await httpSetAuthenticationToken({ accessToken: "expired", opdsAuthenticationUrl: "https://example.org/authentication",
+            refreshToken: "refresh", refreshUrl: "https://example.org/token", tokenType: "Bearer" });
+        fetchWithCookieMock.mockResolvedValueOnce(response(401))
+            .mockResolvedValueOnce(response(200, { access_token: "new-token" }))
+            .mockResolvedValueOnce(response(200));
+        expect((await httpDeleteWithAuth(url)).isSuccess).toBe(true);
+        expect(fetchWithCookieMock.mock.calls[2][1]?.method).toBe("delete");
+    });
+
+    it("reports a failed cancellation", async () => {
+        fetchWithCookieMock.mockResolvedValueOnce(response(500));
+        expect((await httpDeleteWithAuth(url)).isFailure).toBe(true);
     });
 
     it("adds OPDS authentication without changing legacy httpPut", async () => {

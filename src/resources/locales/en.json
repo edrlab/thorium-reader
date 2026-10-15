@@ -312,6 +312,8 @@
             "aboutBook": "About publication",
             "addExtract": "Import extract",
             "goBuyBook": "Buy publication",
+            "cancelHold": "Cancel hold",
+            "cancelHoldError": "Unable to cancel this hold. Please try again.",
             "goLoanBook": "Borrow publication",
             "goRevokeLoanBook": "Revoke loan",
             "goSubBook": "Subscribe"

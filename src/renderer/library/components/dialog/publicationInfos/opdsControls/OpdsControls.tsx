@@ -26,6 +26,8 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 import { TDispatch } from "readium-desktop/typings/redux";
 import { findExtWithMimeType, findMimeTypeWithExtension, ADOBE_ADEPT_XML } from "readium-desktop/utils/mimeTypes";
 
+import { isCancellableHold } from "readium-desktop/renderer/library/opds/holds";
+import { CancelHold } from "./CancelHold";
 import OpdsLinkProperties from "./OpdsLinkProperties";
 import { ContentType } from "readium-desktop/utils/contentType";
 import { isDownloadUrlActive } from "readium-desktop/renderer/library/opds/download";
@@ -211,6 +213,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                     {__("opds.menu.goLoanBook")}
                                 </button>
                                 {ln.localBookshelfPublicationId ? <button className={stylesButtons.button_secondary} onClick={() => this.props.read(ln.localBookshelfPublicationId)}>{__("catalog.readBook")}</button> : <></>}
+                                {isCancellableHold(ln) ? <CancelHold key={ln.url} url={ln.url} /> : undefined}
                                 <OpdsLinkProperties properties={ln.properties} />
                             </div>,
                     )

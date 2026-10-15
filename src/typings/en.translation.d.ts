@@ -730,6 +730,8 @@ declare namespace typed_i18n {
   readonly "menu": {
     readonly "aboutBook": string,
     readonly "addExtract": string,
+    readonly "cancelHold": string,
+    readonly "cancelHoldError": string,
     readonly "goBuyBook": string,
     readonly "goLoanBook": string,
     readonly "goRevokeLoanBook": string,
@@ -797,6 +799,8 @@ declare namespace typed_i18n {
   (_: "opds.menu", __?: {}): {
   readonly "aboutBook": string,
   readonly "addExtract": string,
+  readonly "cancelHold": string,
+  readonly "cancelHoldError": string,
   readonly "goBuyBook": string,
   readonly "goLoanBook": string,
   readonly "goRevokeLoanBook": string,
@@ -804,6 +808,8 @@ declare namespace typed_i18n {
 };
   (_: "opds.menu.aboutBook", __?: {}): string;
   (_: "opds.menu.addExtract", __?: {}): string;
+  (_: "opds.menu.cancelHold", __?: {}): string;
+  (_: "opds.menu.cancelHoldError", __?: {}): string;
   (_: "opds.menu.goBuyBook", __?: {}): string;
   (_: "opds.menu.goLoanBook", __?: {}): string;
   (_: "opds.menu.goRevokeLoanBook", __?: {}): string;

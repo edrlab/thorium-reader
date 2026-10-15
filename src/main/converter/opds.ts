@@ -250,6 +250,7 @@ export class OpdsFeedViewConverter {
                 undefined;
 
             return {
+                cancellable: properties.AdditionalJSON?.cancellable === true,
                 authenticate: normalizeOpdsAuthenticationLink(properties.AdditionalJSON?.authenticate, baseUrl),
                 indirectAcquisitionTypes: indirectAcquisitions?.reduce<{ top: string, child: string | undefined} | undefined>((pv, cv) => {
                     if (typeof cv?.TypeAcquisition === "string") {

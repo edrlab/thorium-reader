@@ -318,6 +318,8 @@
             "aboutBook": "À propos",
             "addExtract": "Ajouter l'extrait",
             "goBuyBook": "Acheter le livre",
+            "cancelHold": "Annuler la réservation",
+            "cancelHoldError": "Impossible d’annuler cette réservation. Veuillez réessayer.",
             "goLoanBook": "Emprunter le livre",
             "goRevokeLoanBook": "Mettre fin à l'emprunt",
             "goSubBook": "Aller sur la page d'abonnement"
