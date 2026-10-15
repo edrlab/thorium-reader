@@ -30,3 +30,21 @@ test.each([undefined, "GET", "DELETE"] as const)("browse uses %s and transforms 
 test("rejects non-HTTP DELETE URLs", async () => {
     await expect(runSaga({ onError: () => undefined }, browse, "apiapp://loans", "DELETE").toPromise()).rejects.toThrow();
 });
+
+
+test.each([[200, "0"], [204, undefined], [500, "0"]] as const)(
+    "does not parse an empty %s response", async (statusCode, length) => {
+        mockTransform.mockClear();
+        const json = jest.fn<() => Promise<unknown>>();
+        jest.mocked(httpDeleteWithAuth).mockImplementation(async (_url, _options, callback) => callback({
+            url, statusCode, contentType: ContentType.Opds2,
+            isSuccess: statusCode < 400, isFailure: statusCode >= 400,
+            response: { json, headers: { get: () => length } as any },
+        }));
+        const result = await runSaga({}, browse, url, "DELETE").toPromise();
+        expect(mockTransform).not.toHaveBeenCalled();
+        expect(json).not.toHaveBeenCalled();
+        expect(result.data.emptyResponse).toBe(true);
+        expect(result.isSuccess).toBe(statusCode < 400);
+    },
+);

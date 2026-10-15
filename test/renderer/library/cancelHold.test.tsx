@@ -6,7 +6,7 @@ import { afterAll, afterEach, beforeAll, beforeEach, expect, jest, test } from "
 import { ApiResponse } from "readium-desktop/common/redux/states/api";
 import { THttpGetBrowserResultView } from "readium-desktop/common/views/browser";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
-import { dialogActions } from "readium-desktop/common/redux/actions";
+import { apiActions, dialogActions } from "readium-desktop/common/redux/actions";
 
 let mockResponse: ApiResponse<THttpGetBrowserResultView>;
 const mockCancel = jest.fn();
@@ -22,7 +22,7 @@ let host: HTMLDivElement;
 let dom: JSDOM;
 const globals = new Map<string, PropertyDescriptor | undefined>();
 const url = "https://example.org/holds/1";
-const render = () => act(() => root.render(<CancelHold url={url} />));
+const render = () => act(() => root.render(<CancelHold url={url} catalogUrl="https://example.org/catalog" />));
 const click = () => act(() => host.querySelector("button").click());
 const respond = (result: THttpGetBrowserResultView, error = false) => {
     mockResponse = { data: { time: 1, error, result }, lastSuccess: undefined, lastTime: 1 };
@@ -72,4 +72,21 @@ test.each(["http", "api", "missing publication"])("retains the hold and allows r
     click();
     expect(mockCancel).toHaveBeenCalledTimes(2);
     expect(host.querySelector('[role="alert"]')).toBeNull();
+});
+
+
+test("closes the hold dialog and refreshes the catalog after empty success", () => {
+    click();
+    respond({ url, isSuccess: true, isFailure: false, data: { emptyResponse: true } });
+    expect(mockDispatch).toHaveBeenCalledWith(dialogActions.closeRequest.build());
+    expect(mockDispatch).toHaveBeenCalledWith(apiActions.request.build(
+        "browseOpdsApiResult", "httpbrowser", "browse", ["https://example.org/catalog"],
+    ));
+    expect(host.querySelector('[role="alert"]')).toBeNull();
+});
+test("retains the hold after an empty failed response", () => {
+    click();
+    respond({ url, isSuccess: false, isFailure: true, data: { emptyResponse: true } });
+    expect(mockDispatch).not.toHaveBeenCalled();
+    expect(host.querySelector('[role="alert"]')).not.toBeNull();
 });

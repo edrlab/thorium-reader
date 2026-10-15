@@ -176,6 +176,13 @@ export function* browse(urlRaw: string, method: "GET" | "DELETE" = "GET"): SagaG
             const baseUrl = `${_baseUrl}`;
             const contentType = parseContentType(_contentType);
 
+            // CantookStation can acknowledge cancellation with an empty 200 OPDS response.
+            // Empty bodies (including 204 responses) must not be parsed as JSON.
+            if (data.statusCode === 204 || data.response?.headers?.get("content-length") === "0") {
+                data.data = { emptyResponse: true };
+                return data;
+            }
+
             // parse Problem details and return
             if (contentTypeisApiProblem(contentType)) {
                 const json = await data.response.json();

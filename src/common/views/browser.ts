@@ -10,6 +10,7 @@ import { IOpdsResultView } from "./opds";
 import { IProblemDetailsResultView } from "./problemDetails";
 
 export interface IBrowserResultView {
+    emptyResponse?: boolean;
     opds?: IOpdsResultView;
     problemDetails?: IProblemDetailsResultView;
 }
