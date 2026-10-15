@@ -128,7 +128,7 @@ const SettingsRecovery = (props: {
 
             <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }} dir={isRTL ? "rtl" : "ltr"}>
                 <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                    <h4>{__("settings.storage.recovery.title")}</h4>
+                    <h3 style={{ margin: 0 }}>{__("settings.storage.recovery.title")}</h3>
                     {!isRecoveryChecked && !isRecoveryLoading ? (
                         <p style={{ margin: 0 }}>
                             {__("settings.storage.recovery.description")}

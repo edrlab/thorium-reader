@@ -88,7 +88,7 @@ const Profiles = () => {
                                         }}
                                     >
                                         <div>
-                                            <h5>{profileTitle}</h5>
+                                            <h3>{profileTitle}</h3>
                                             <p>{profileDescription}</p>
                                             <div style={{ fontSize: "12px" }}>
                                                 {/* <span>Filename: {profile.fileName}</span><br/>
@@ -172,7 +172,7 @@ const Profiles = () => {
                             }}
                         >
                             <div>
-                                <h5 dir={isRTL ? "rtl" : "ltr"}>{__("settings.profiles.thorium.title")}</h5>
+                                <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.profiles.thorium.title")}</h3>
                                 <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.profiles.thorium.description")}</p>
                             </div>
                         </div>
