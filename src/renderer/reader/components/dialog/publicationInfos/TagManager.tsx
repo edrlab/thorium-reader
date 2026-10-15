@@ -56,13 +56,17 @@ export class TagManager extends React.Component<IProps> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __ } = this.props;
+        const { __, publication, pubId, tagArray } = this.props;
+
+        if (!__ || !publication || !pubId) {
+            return <></>;
+        }
 
         const setTagsCb =
             (tagsArray: string[]) =>
                 this.props.setTags(
-                    this.props.pubId,
-                    this.props.publication as PublicationView,
+                    pubId,
+                    publication,
                     tagsArray,
                 );
 
@@ -75,13 +79,13 @@ export class TagManager extends React.Component<IProps> {
         return (
             <section className={stylePublication.publicationInfo_tagContainer}>
                 <div className={classNames(stylePublication.publicationInfo_heading,stylePublication.tag_list )}>
-                    <h4>{__("catalog.tags")} {this.props.tagArray.length > 0 ? ":" : ""}</h4>
-                    <TagList tagArray={this.props.tagArray}>
+                    <h4>{__("catalog.tags")} {tagArray.length > 0 ? ":" : ""}</h4>
+                    <TagList tagArray={tagArray}>
                         {
                             (tag) =>
                                 <TagReaderButton
                                     tag={tag}
-                                    pubId={this.props.pubId}
+                                    pubId={pubId}
                                     onClickDeleteCb={ updateTagsCb }
                                 >
                                 </TagReaderButton>
@@ -89,8 +93,8 @@ export class TagManager extends React.Component<IProps> {
                     </TagList>
                 </div>
                 <AddTag
-                    pubId={this.props.pubId}
-                    tagArray={this.props.tagArray}
+                    pubId={pubId}
+                    tagArray={tagArray}
                     setTags={setTagsCb}
                 />
             </section>
@@ -99,7 +103,7 @@ export class TagManager extends React.Component<IProps> {
 }
 
 const mapStateToProps = (state: IReaderRootState) => ({
-    tagArray: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoReader])?.publication?.tags,
+    tagArray: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoReader])?.publication?.tags ?? [],
     pubId: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoReader])?.publication?.identifier,
     publication: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoReader])?.publication,
     locale: state.i18n.locale, // refresh
@@ -109,7 +113,7 @@ const mapDispatchToProps = (dispatch: TDispatch) => ({
     setTags: (pubId: string, publication: PublicationView, tagsName: string[]) => {
         apiDispatch(dispatch)()("publication/updateTags")(pubId, tagsName);
         dispatch(
-            dialogActions.updateRequest.build<DialogTypeName.PublicationInfoLib>(
+            dialogActions.updateRequest.build<DialogTypeName.PublicationInfoReader>(
                 {
                     publication: {
                         ...publication,

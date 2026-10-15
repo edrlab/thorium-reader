@@ -695,10 +695,22 @@
         "notStarted": "தொடங்கப்படவில்லை",
         "onGoing": "முன்னேற்றத்தில் உள்ளது",
         "progression": {
-            "title": "முன்னேற்றம்"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "முன்னேற்றம்",
+            "useRemote": ""
         },
         "read": "முடிந்தது",
         "remainingTime": "கடன் (மீதமுள்ள நேரம்)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "புதுப்பித்தல்",
         "returnButton": "திரும்ப",
         "returnedLcp": "இந்த எல்.சி.பி-பாதுகாக்கப்பட்ட வெளியீடு திரும்பப் பெறப்படுகிறது.",
@@ -1346,7 +1358,7 @@
             }
         },
         "tabs": {
-            "appearance": "தோற்றம்",
+            "advanced": "",
             "general": "பொது",
             "keyboardShortcuts": "விசைப்பலகை குறுக்குவழிகள்",
             "profiles": "",

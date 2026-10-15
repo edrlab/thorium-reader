@@ -695,10 +695,22 @@
         "notStarted": "",
         "onGoing": "",
         "progression": {
-            "title": "პროგრესია"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "პროგრესია",
+            "useRemote": ""
         },
         "read": "",
         "remainingTime": "",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "განახლება",
         "returnButton": "დაბრუნება",
         "returnedLcp": "ამ წიგნის წაკითხვა შეუძლებელია რადგან LCP ლიცენზია დაბრუნებულია.",
@@ -1346,7 +1358,7 @@
             }
         },
         "tabs": {
-            "appearance": "",
+            "advanced": "",
             "general": "",
             "keyboardShortcuts": "",
             "profiles": "",

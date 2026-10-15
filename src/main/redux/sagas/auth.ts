@@ -39,6 +39,12 @@ import {
     IOpdsAuthenticationToken, wipeAuthenticationTokenStorage,
 } from "readium-desktop/main/network/http";
 import { ContentType } from "readium-desktop/utils/contentType";
+import {
+    IOpdsPkceTransaction,
+    OPDS_AUTHORIZATION_CODE_PKCE_TYPE,
+    createOpdsPkceTransaction,
+    exchangeOpdsPkceAuthorizationCode,
+} from "readium-desktop/main/network/opdsPkce";
 import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, cancel, delay, join, put, race, spawn } from "redux-saga/effects";
@@ -85,8 +91,10 @@ debug("_");
 type TLinkType = "refresh" | "authenticate";
 type TLabelName = "login" | "password";
 type TDigestInfo = "realm" | "nonce" | "qop" | "algorithm";
-type TAuthName = "id" | "access_token" | "refresh_token" | "token_type";
-type TAuthenticationType = "http://opds-spec.org/auth/oauth/password"
+type TAuthName = "id" | "access_token" | "refresh_token" | "token_type"
+    | "code" | "state" | "error" | "error_description";
+type TAuthenticationType = typeof OPDS_AUTHORIZATION_CODE_PKCE_TYPE
+    | "http://opds-spec.org/auth/oauth/password"
     | "http://opds-spec.org/auth/oauth/password/apiapp"
     | "http://opds-spec.org/auth/oauth/implicit"
     | "http://opds-spec.org/auth/basic"
@@ -95,6 +103,7 @@ type TAuthenticationType = "http://opds-spec.org/auth/oauth/password"
     | "http://librarysimplified.org/authtype/SAML-2.0";
 
 const AUTHENTICATION_TYPE: TAuthenticationType[] = [
+    OPDS_AUTHORIZATION_CODE_PKCE_TYPE,
     "http://opds-spec.org/auth/oauth/password",
     "http://opds-spec.org/auth/oauth/password/apiapp",
     "http://opds-spec.org/auth/oauth/implicit",
@@ -132,7 +141,23 @@ const opdsAuthFlow =
             }
             debug("authentication doc parsed", authParsed);
 
-            const browserUrl = getHtmlAuthenticationUrl(authParsed);
+            let pkceTransaction: IOpdsPkceTransaction | undefined;
+            if (authParsed.authenticationType === OPDS_AUTHORIZATION_CODE_PKCE_TYPE) {
+                pkceTransaction = tryCatchSync(
+                    () => createOpdsPkceTransaction({
+                        allowInsecureLoopback: ENABLE_DEV_TOOLS,
+                        authorizationUrl: authParsed.links?.authenticate?.url || "",
+                        tokenUrl: authParsed.links?.refresh?.url || "",
+                    }),
+                    filename_,
+                );
+                if (!pkceTransaction) {
+                    debug("invalid OPDS PKCE authenticate or refresh link");
+                    return;
+                }
+            }
+
+            const browserUrl = getHtmlAuthenticationUrl(authParsed, pkceTransaction);
             if (!browserUrl) {
                 debug("no valid authentication html url");
                 return;
@@ -143,8 +168,9 @@ const opdsAuthFlow =
                 id: authParsed?.id || undefined,
                 opdsAuthenticationUrl: baseUrl,
                 tokenType: "Bearer",
-                refreshUrl: authParsed?.links?.refresh?.url || undefined,
-                authenticateUrl: authParsed?.links?.authenticate?.url || undefined,
+                refreshUrl: pkceTransaction?.tokenUrl || authParsed?.links?.refresh?.url || undefined,
+                authenticateUrl: pkceTransaction?.authorizationUrl || authParsed?.links?.authenticate?.url || undefined,
+                pkce: !!pkceTransaction,
             };
             debug("authentication credential config", authCredentials);
             yield* callTyped(httpSetAuthenticationToken, authCredentials);
@@ -155,7 +181,7 @@ const opdsAuthFlow =
                 // yield delay(1000);
 
                 return {
-                    request: parseRequestFromCustomProtocol(parsedRequest.request),
+                    request: parseRequestFromCustomProtocol(parsedRequest.request, authParsed.authenticationType),
                     callback: parsedRequest.callback,
                 };
             });
@@ -236,6 +262,7 @@ const opdsAuthFlow =
                             opdsCustomProtocolRequestParsed,
                             authCredentials,
                             authParsed.authenticationType,
+                            pkceTransaction,
                         );
 
                         callback({
@@ -244,6 +271,10 @@ const opdsAuthFlow =
 
                         if (err instanceof Error) {
                             debug("OPDS auth err", err.message);
+
+                            if (authParsed.authenticationType === OPDS_AUTHORIZATION_CODE_PKCE_TYPE) {
+                                yield put(authActions.cancel.build());
+                            }
 
                             return;
                         } else {
@@ -386,6 +417,7 @@ async function opdsSetAuthCredentials(
     opdsCustomProtocolRequestParsed: IParseRequestFromCustomProtocol<TLabelName | TAuthName | TDigestInfo>,
     authCredentials: IOpdsAuthenticationToken,
     authenticationType: TAuthenticationType,
+    pkceTransaction?: IOpdsPkceTransaction,
 ): Promise<[undefined, Error]> {
 
     if (!opdsCustomProtocolRequestParsed) {
@@ -538,6 +570,46 @@ async function opdsSetAuthCredentials(
 
         if (method === "GET") {
 
+            if (authenticationType === OPDS_AUTHORIZATION_CODE_PKCE_TYPE) {
+                if (!pkceTransaction) {
+                    return [, new Error("missing PKCE authentication transaction")];
+                }
+
+                try {
+                    const tokenResponse = await exchangeOpdsPkceAuthorizationCode(
+                        pkceTransaction,
+                        data,
+                        async (tokenUrl, body) => {
+                            const headers = new Headers();
+                            headers.set("Accept", "application/json");
+                            headers.set("Content-Type", ContentType.FormUrlEncoded);
+                            const response = await httpPost<unknown>(tokenUrl, {
+                                body,
+                                headers,
+                            });
+                            const responseJson = await response.response?.json();
+                            if (!response.isSuccess) {
+                                throw new Error(`OAuth token endpoint failed with HTTP ${response.statusCode || 0}`);
+                            }
+                            return responseJson;
+                        },
+                    );
+                    const tokenType = tokenResponse.tokenType.charAt(0).toUpperCase() +
+                        tokenResponse.tokenType.slice(1);
+                    await httpSetAuthenticationToken({
+                        ...authCredentials,
+                        accessToken: tokenResponse.accessToken,
+                        pkce: true,
+                        refreshToken: tokenResponse.refreshToken,
+                        refreshUrl: pkceTransaction.tokenUrl,
+                        tokenType,
+                    });
+                    return [, undefined];
+                } catch (error) {
+                    return [, error instanceof Error ? error : new Error(String(error))];
+                }
+            }
+
             const newCredentials = {
                 ...authCredentials,
                 id: data.id || searchParams?.get("id") || authCredentials.id || undefined,
@@ -571,9 +643,13 @@ const _implicitAuthData = { authenticationDocumentId: "", nonce: "" };
 const setAndGetImplicitNonceForImplicitAuthentication = () => (_implicitAuthData.nonce = nanoid(16), _implicitAuthData.nonce);
 const getImplicitAuthData = () => _implicitAuthData;
 
-function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
+function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed, pkceTransaction?: IOpdsPkceTransaction) {
     let browserUrl: string;
     switch (auth.authenticationType) {
+        case OPDS_AUTHORIZATION_CODE_PKCE_TYPE: {
+            browserUrl = pkceTransaction?.authorizationRequestUrl || "";
+            break;
+        }
         case "http://opds-spec.org/auth/oauth/implicit": {
             try {
                 if (!auth.links?.authenticate?.url) {
@@ -718,12 +794,15 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
     }
 
     const authentication = doc.Authentication.find((v) => AUTHENTICATION_TYPE.includes(v.Type as any));
+    if (!authentication) {
+        debug("OPDS Authentication Document does not contain a supported authentication type.");
+        return undefined;
+    }
 
     const links = Array.isArray(authentication.Links)
         ? authentication.Links.reduce((pv, cv) => {
 
-            const rel = (cv.Rel || [])
-                .reduce((pvRel, cvRel) => pvRel || LINK_TYPE.find((v) => v === cvRel) || "", "") as TLinkType;
+            const rel = (cv.Rel || []).find((rel) => LINK_TYPE.find((v) => v === rel));
 
             if (
                 rel
@@ -1043,8 +1122,8 @@ interface IParseRequestFromCustomProtocol<T = string> {
         [key in T & string]?: string;
     };
 }
-function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest)
-    : IParseRequestFromCustomProtocol<TLabelName | TDigestInfo | typeof URL_OPDS_AUTH_RETRY> | undefined {
+function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest, authenticationType: TAuthenticationType)
+    : IParseRequestFromCustomProtocol<TLabelName | TAuthName | TDigestInfo | typeof URL_OPDS_AUTH_RETRY> | undefined {
 
     debug("########");
     debug("opds:// request:", req);
@@ -1145,26 +1224,30 @@ function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest)
                 //     query component of the Redirection URI, unless a different Response Mode was specified.
                 if (data.error) {
                     debug("OAuth Error Response", "error:", { error: data.error, error_description: data.error_description });
-                    return undefined;
+                    if (authenticationType !== OPDS_AUTHORIZATION_CODE_PKCE_TYPE) {
+                        return undefined;
+                    }
                 }
 
-                const implicitAuthData = getImplicitAuthData();
+                if (authenticationType === "http://opds-spec.org/auth/oauth/implicit") {
+                    const implicitAuthData = getImplicitAuthData();
 
-                if (data.id && implicitAuthData.authenticationDocumentId && data.id !== implicitAuthData.authenticationDocumentId) {
-                    debug("OAuth 2.0 implicit grant flow ID mismatch!", "expected (auth doc):", implicitAuthData.authenticationDocumentId, "actual (URL query param):", data.id);
-                    return undefined;
-                    // see https://github.com/edrlab/thorium-reader/pull/2510
-                } else {
-                    debug("OAuth 2.0 implicit grant flow ID match or missing (URL query param and/or auth doc) ==> pass.", "expected (auth doc):", implicitAuthData.authenticationDocumentId, "actual (URL query param):", data.id);
-                }
+                    if (data.id && implicitAuthData.authenticationDocumentId && data.id !== implicitAuthData.authenticationDocumentId) {
+                        debug("OAuth 2.0 implicit grant flow ID mismatch!", "expected (auth doc):", implicitAuthData.authenticationDocumentId, "actual (URL query param):", data.id);
+                        return undefined;
+                        // see https://github.com/edrlab/thorium-reader/pull/2510
+                    } else {
+                        debug("OAuth 2.0 implicit grant flow ID match or missing (URL query param and/or auth doc) ==> pass.", "expected (auth doc):", implicitAuthData.authenticationDocumentId, "actual (URL query param):", data.id);
+                    }
 
-                 if (data.state && implicitAuthData.nonce && data.state !== implicitAuthData.nonce) {
-                    debug("OAuth 2.0 implicit grant flow NONCE mismatch!", "expected (auth doc):", implicitAuthData.nonce, "actual (URL query param):", data.state);
-                    return undefined;
-                    // https://auth0.com/docs/secure/attack-protection/state-parameters
-                    // https://github.com/edrlab/thorium-reader/issues/2506
-                } else {
-                    debug("OAuth 2.0 implicit grant flow NONCE match or missing (URL query param and/or auth doc) ==> pass.", "expected (auth doc):", implicitAuthData.nonce, "actual (URL query param):", data.state);
+                    if (data.state && implicitAuthData.nonce && data.state !== implicitAuthData.nonce) {
+                        debug("OAuth 2.0 implicit grant flow NONCE mismatch!", "expected (auth doc):", implicitAuthData.nonce, "actual (URL query param):", data.state);
+                        return undefined;
+                        // https://auth0.com/docs/secure/attack-protection/state-parameters
+                        // https://github.com/edrlab/thorium-reader/issues/2506
+                    } else {
+                        debug("OAuth 2.0 implicit grant flow NONCE match or missing (URL query param and/or auth doc) ==> pass.", "expected (auth doc):", implicitAuthData.nonce, "actual (URL query param):", data.state);
+                    }
                 }
 
                 return {

@@ -78,7 +78,7 @@
         "deleteBook": "Slet",
         "deleteTag": "Slet tag",
         "description": "Beskrivelse",
-        "downloaded": "",
+        "downloaded": "Downloadet",
         "emptyTagList": "Du har ingen taggede bøger.",
         "entry": {
             "continueReading": "Genoptag læsning",
@@ -695,10 +695,22 @@
         "notStarted": "Ikke læst",
         "onGoing": "I gang",
         "progression": {
-            "title": "Læst"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Læst",
+            "useRemote": ""
         },
         "read": "Læst færdig",
         "remainingTime": "Lån (dage tilbage)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Forny",
         "returnButton": "Aflevér",
         "returnedLcp": "Denne bog kan ikke åbnes, da LCP-licensen er leveret tilbage.",
@@ -1346,7 +1358,7 @@
             }
         },
         "tabs": {
-            "appearance": "Udseende",
+            "advanced": "Avanceret",
             "general": "Generelt",
             "keyboardShortcuts": "Tastaturgenveje",
             "profiles": "Profiler",

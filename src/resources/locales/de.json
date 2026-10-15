@@ -695,10 +695,22 @@
         "notStarted": "Nicht begonnen",
         "onGoing": "Im Gange",
         "progression": {
-            "title": "Fortschritt"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Fortschritt",
+            "useRemote": ""
         },
         "read": "Fertig gelesen",
         "remainingTime": "Ausleihe (verbleibende Tage)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Verlängern",
         "returnButton": "Zurückgeben",
         "returnedLcp": "Diese LCP-geschützte Veröffentlichung wird zurückgegeben.",
@@ -1346,7 +1358,7 @@
             }
         },
         "tabs": {
-            "appearance": "Erscheinungsbild",
+            "advanced": "",
             "general": "Allgemein",
             "keyboardShortcuts": "Tastaturkürzel",
             "profiles": "",

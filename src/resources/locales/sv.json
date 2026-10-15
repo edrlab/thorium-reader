@@ -695,10 +695,22 @@
         "notStarted": "Ej påbörjad",
         "onGoing": "Läser just nu",
         "progression": {
-            "title": "Läsposition"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Läsposition",
+            "useRemote": ""
         },
         "read": "Läst",
         "remainingTime": "Lån (återstående tid)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Låna om",
         "returnButton": "Lämna tillbaka",
         "returnedLcp": "Den här LCP-skyddade boken är återlämnad.",
@@ -1346,7 +1358,7 @@
             }
         },
         "tabs": {
-            "appearance": "Utseende",
+            "advanced": "Avancerad",
             "general": "Allmänt",
             "keyboardShortcuts": "Kortkommandon",
             "profiles": "Profiler",

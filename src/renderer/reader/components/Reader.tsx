@@ -33,6 +33,10 @@ import { IReaderPdfConfig, IReaderRootState } from "readium-desktop/common/redux
 import { ok } from "readium-desktop/common/utils/assert";
 import { formatTime } from "readium-desktop/common/utils/time";
 import {
+    createReadiumPositionList, IReadiumPositionList, isEpubPositionListPublication,
+    mapLocatorToReadiumPosition,
+} from "readium-desktop/common/readium/positions";
+import {
     _APP_NAME, _APP_VERSION, _DIST_RELATIVE_URL, _NODE_MODULE_RELATIVE_URL, _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
 import * as DoubleArrowDownIcon from "readium-desktop/renderer/assets/icons/double_arrow_down_black_24dp.svg";
@@ -51,6 +55,7 @@ import {
 } from "readium-desktop/renderer/common/keyboard";
 import ReaderFooter from "readium-desktop/renderer/reader/components/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/reader/components/ReaderHeader";
+import { normalizeLocatorProgressionForPublication } from "readium-desktop/renderer/reader/locatorProgression";
 import {
     TKeyboardEventOnAnchor, TMouseEventOnAnchor,
     TMouseEventOnSpan,
@@ -142,6 +147,8 @@ import { EDrawType, INoteState, TDrawType, TDrawView } from "readium-desktop/com
 import type { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { URL_PROTOCOL_FILEX } from "readium-desktop/common/streamerProtocol";
+import { OpdsProgressionDialog } from "./OpdsProgressionDialog";
+import { opdsProgressionToLocator } from "readium-desktop/common/models/opdsProgression";
 
 const debug = debug_("readium-desktop:renderer:reader:components:Reader");
 const debugPdfAnnotationsHost = debug_("readium-desktop:renderer:reader:pdf:annotations:host");
@@ -225,8 +232,10 @@ const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substri
 
 const isDivinaLocation = (data: any): data is { pageIndex: number | undefined, nbOfPages: number | undefined, locator: R2Locator } => {
 
-    // isDivinaLocationduck typing hack with totalProgression injection!!
-    const isDivina = typeof data === "object"
+    // This is only a structural check. EPUB locators can now expose the same position and
+    // totalProgression fields, so applying Divina-specific mutations here would corrupt their
+    // resource-local progression.
+    return typeof data === "object"
         // && typeof data.pageIndex === "number"
         // && typeof data.nbOfPages === "number"
         && typeof data.locator === "object"
@@ -238,10 +247,6 @@ const isDivinaLocation = (data: any): data is { pageIndex: number | undefined, n
         && ((data.locator as R2Locator).locations as any).totalProgression >= 0
         && ((data.locator as R2Locator).locations as any).totalProgression <= 1
         ;
-    if (isDivina) {
-        (data.locator as R2Locator).locations.progression = ((data.locator as R2Locator).locations as any).totalProgression;
-    }
-    return isDivina;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -319,11 +324,14 @@ class Reader extends React.Component<IProps, IState> {
     // private blackoutDebounced: () => void;
 
     private screenPreviousNextTimerDebounce: number | undefined;
+    private readiumPositionList: IReadiumPositionList | undefined;
 
     constructor(props: IProps) {
         super(props);
 
         this.screenPreviousNextTimerDebounce = undefined;
+        this.readiumPositionList = isEpubPositionListPublication(props.r2Publication) ?
+            createReadiumPositionList(props.r2Publication) : undefined;
 
         this._ttsOrMoStateTimeout = undefined;
 
@@ -1377,10 +1385,16 @@ class Reader extends React.Component<IProps, IState> {
                     disableRTLFlip={this.props.disableRTLFlip}
                     isRTLFlip={this.isRTLFlip}
                     publicationView={this.props.publicationView}
+                    readiumPositionList={this.readiumPositionList}
 
                         />
                         : <></>
                     }
+                <OpdsProgressionDialog
+                    document={this.props.opdsProgressionDocument}
+                    onAccept={this.goToOpdsProgression}
+                    onCancel={this.cancelOpdsProgression}
+                />
                 </div>
             </>
         );
@@ -1814,6 +1828,36 @@ class Reader extends React.Component<IProps, IState> {
         //     this.setState({ blackoutMask: true });
         // }
         r2HandleLinkLocator(locator);
+    };
+
+    private cancelOpdsProgression = () => {
+        debug("OPDS progression: remote position dismissed, keeping local position");
+        this.props.clearOpdsProgression();
+    };
+
+    private goToOpdsProgression = () => {
+        const progression = this.props.opdsProgressionDocument?.progression;
+        debug("OPDS progression: remote position accepted", {
+            progression,
+            mapping: this.readiumPositionList?.total ? "Readium positions" : "equal resource fallback",
+            totalPositions: this.readiumPositionList?.total,
+        });
+        if (typeof progression === "number") {
+            const locator = opdsProgressionToLocator(
+                progression,
+                this.props.r2Publication?.Spine,
+                this.readiumPositionList,
+            );
+            if (locator) {
+                debug("OPDS progression: navigating to mapped locator", {
+                    locations: locator.locations,
+                });
+                this.goToLocator(locator);
+            } else {
+                debug("OPDS progression: navigation skipped, no usable locator");
+            }
+        }
+        this.props.clearOpdsProgression();
     };
 
     private handleLinkUrl = (url: string, isFromOnPopState = false) => {
@@ -3093,6 +3137,18 @@ class Reader extends React.Component<IProps, IState> {
 
         ok(locatorExtended, "handleReadingLocationChange loc KO");
 
+        locatorExtended.locator = normalizeLocatorProgressionForPublication(
+            locatorExtended.locator,
+            this.props.isDivina,
+        );
+
+        if (this.readiumPositionList) {
+            locatorExtended.locator = mapLocatorToReadiumPosition(
+                locatorExtended.locator,
+                this.readiumPositionList,
+            );
+        }
+
         // if (this.isFixedLayout()) {
         //     this.setState({ blackoutMask: false });
         // }
@@ -3122,7 +3178,8 @@ class Reader extends React.Component<IProps, IState> {
 
         this.saveReadingLocation(miniLocatorExtended);
 
-        const l = (this.props.isDivina || isDivinaLocation(locatorExtended)) ? locatorExtended : (this.props.isPdf ? locatorExtended : (getCurrentReadingLocation() || locatorExtended));
+        const l = (this.props.isDivina || this.readiumPositionList) ? locatorExtended :
+            (this.props.isPdf ? locatorExtended : (getCurrentReadingLocation() || locatorExtended));
         this.setState({ currentLocation: l });
 
         if (locatorExtended?.locator?.href && window.history.length === 1 && !window.history.state) {
@@ -3700,6 +3757,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         notes: state.reader.note,
         creator: state.creator,
         noteTotalCount: state.reader.noteTotalCount.state,
+        opdsProgressionDocument: state.reader.opdsProgression.document,
 
         // Reader Lock Demo
         // lock: state.reader.lock,
@@ -3808,6 +3866,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         },
         addUpdatePdfAnnotationNote: (publicationIdentifier: string, newNote: Omit<INoteState, "uuid">) => {
             return dispatch(readerActions.note.addUpdate.build(publicationIdentifier, newNote));
+        },
+        clearOpdsProgression: () => {
+            dispatch(readerActions.clearOpdsProgression.build());
         },
     };
 };

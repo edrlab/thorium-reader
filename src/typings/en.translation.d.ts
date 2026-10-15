@@ -1675,9 +1675,23 @@ declare namespace typed_i18n {
   readonly "markAsRead": string,
   readonly "notStarted": string,
   readonly "onGoing": string,
-  readonly "progression": { readonly "title": string },
+  readonly "progression": {
+    readonly "remoteDescription": string,
+    readonly "remoteTitle": string,
+    readonly "title": string,
+    readonly "useRemote": string
+  },
   readonly "read": string,
   readonly "remainingTime": string,
+  readonly "remoteProgression": {
+    readonly "checking": string,
+    readonly "disabled": string,
+    readonly "empty": string,
+    readonly "position": string,
+    readonly "ready": string,
+    readonly "title": string,
+    readonly "unavailable": string
+  },
   readonly "renewButton": string,
   readonly "returnButton": string,
   readonly "returnedLcp": string,
@@ -1789,10 +1803,34 @@ declare namespace typed_i18n {
   (_: "publication.markAsRead", __?: {}): string;
   (_: "publication.notStarted", __?: {}): string;
   (_: "publication.onGoing", __?: {}): string;
-  (_: "publication.progression", __?: {}): { readonly "title": string };
+  (_: "publication.progression", __?: {}): {
+  readonly "remoteDescription": string,
+  readonly "remoteTitle": string,
+  readonly "title": string,
+  readonly "useRemote": string
+};
+  (_: "publication.progression.remoteDescription", __?: {}): string;
+  (_: "publication.progression.remoteTitle", __?: {}): string;
   (_: "publication.progression.title", __?: {}): string;
+  (_: "publication.progression.useRemote", __?: {}): string;
   (_: "publication.read", __?: {}): string;
   (_: "publication.remainingTime", __?: {}): string;
+  (_: "publication.remoteProgression", __?: {}): {
+  readonly "checking": string,
+  readonly "disabled": string,
+  readonly "empty": string,
+  readonly "position": string,
+  readonly "ready": string,
+  readonly "title": string,
+  readonly "unavailable": string
+};
+  (_: "publication.remoteProgression.checking", __?: {}): string;
+  (_: "publication.remoteProgression.disabled", __?: {}): string;
+  (_: "publication.remoteProgression.empty", __?: {}): string;
+  (_: "publication.remoteProgression.position", __?: {}): string;
+  (_: "publication.remoteProgression.ready", __?: {}): string;
+  (_: "publication.remoteProgression.title", __?: {}): string;
+  (_: "publication.remoteProgression.unavailable", __?: {}): string;
   (_: "publication.renewButton", __?: {}): string;
   (_: "publication.returnButton", __?: {}): string;
   (_: "publication.returnedLcp", __?: {}): string;
@@ -2972,7 +3010,7 @@ declare namespace typed_i18n {
     }
   },
   readonly "tabs": {
-    readonly "appearance": string,
+    readonly "advanced": string,
     readonly "general": string,
     readonly "keyboardShortcuts": string,
     readonly "profiles": string,
@@ -3949,13 +3987,13 @@ declare namespace typed_i18n {
   (_: "settings.storage.recovery.recoverableCount", __?: {}): string;
   (_: "settings.storage.recovery.title", __?: {}): string;
   (_: "settings.tabs", __?: {}): {
-  readonly "appearance": string,
+  readonly "advanced": string,
   readonly "general": string,
   readonly "keyboardShortcuts": string,
   readonly "profiles": string,
   readonly "storage": string
 };
-  (_: "settings.tabs.appearance", __?: {}): string;
+  (_: "settings.tabs.advanced", __?: {}): string;
   (_: "settings.tabs.general", __?: {}): string;
   (_: "settings.tabs.keyboardShortcuts", __?: {}): string;
   (_: "settings.tabs.profiles", __?: {}): string;

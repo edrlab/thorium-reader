@@ -13,7 +13,7 @@ import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 // import {I18nProvider} from 'react-aria';
 
 import * as React from "react";
-import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import * as AlertDialog from "readium-desktop/renderer/common/components/AlertDialog";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import classNames from "classnames";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
@@ -37,9 +37,8 @@ const StorageConfirmDialog = (props: {
     const [__] = useTranslator();
 
     return (
-        <AlertDialog.Root open={props.open} onOpenChange={props.onOpenChange}>
-            <AlertDialog.Portal>
-                <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay} />
+        <AlertDialog.Root triggerless isOpen={props.open} onOpenChange={props.onOpenChange}>
+            <AlertDialog.Portal className={stylesAlertModals.AlertDialogOverlay}>
                 <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
                     <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>
                         {props.title}

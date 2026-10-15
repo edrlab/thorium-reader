@@ -16,6 +16,10 @@ export interface Locator {
     href: string;
 
     // tslint:disable-next-line:max-line-length
+    // https://github.com/readium/architecture/blob/f90b440dc3aa63c59981e3e46a7db7b8a545c613/schema/locator.schema.json#L12
+    type?: string;
+
+    // tslint:disable-next-line:max-line-length
     // https://github.com/readium/architecture/blob/f90b440dc3aa63c59981e3e46a7db7b8a545c613/schema/locator.schema.json#L16
     title?: string;
 
@@ -27,10 +31,6 @@ export interface Locator {
     // https://github.com/readium/architecture/blob/f90b440dc3aa63c59981e3e46a7db7b8a545c613/schema/locator.schema.json#L20
     locations: LocatorLocations;
 
-    // TODO
-    // tslint:disable-next-line:max-line-length
-    // https://github.com/readium/architecture/blob/f90b440dc3aa63c59981e3e46a7db7b8a545c613/schema/locator.schema.json#L12
-    // type: string;
 }
 
 export interface LocatorText {
@@ -68,6 +68,10 @@ export interface LocatorLocations {
     // tslint:disable-next-line:max-line-length
     // https://github.com/readium/architecture/blob/f90b440dc3aa63c59981e3e46a7db7b8a545c613/schema/locator.schema.json#L27
     progression?: number;
+
+    // tslint:disable-next-line:max-line-length
+    // https://github.com/readium/architecture/blob/f90b440dc3aa63c59981e3e46a7db7b8a545c613/schema/locator.schema.json
+    totalProgression?: number;
 
     // different from selectionInfo in LocatorExtended which is for actual DOM selection (this is for bookmark/annotations/search referencing of precise character ranges, to avoid fallback to lowest common denominator cssSelector, which atom / granularity is DOM element that causes content "jumps" to previous page in CSS columns paginated mode)
     caretInfo?: ISelectionInfo;

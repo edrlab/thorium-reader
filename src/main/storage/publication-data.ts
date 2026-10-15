@@ -330,6 +330,27 @@ export class PublicationData {
         return file.jsonObj;
     }
 
+    public async getFileLastModifiedTime(
+        pubId: string,
+        type: TFileTypePubData,
+    ): Promise<number | undefined> {
+        if (this._lock) return undefined;
+        assertUUIDv4(pubId);
+
+        const file = await this.open("read", pubId, type);
+        if (!file) {
+            return undefined;
+        }
+
+        try {
+            await file.mutex;
+            const stats = await fs.promises.stat(file.filePath);
+            return stats.mtimeMs;
+        } catch {
+            return undefined;
+        }
+    }
+
     public async close(pubId: string) {
         if (this._lock) return;
 

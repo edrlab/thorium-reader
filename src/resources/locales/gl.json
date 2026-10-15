@@ -695,10 +695,22 @@
         "notStarted": "Non iniciado",
         "onGoing": "En curso",
         "progression": {
-            "title": "Progreso"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Progreso",
+            "useRemote": ""
         },
         "read": "Finalizado",
         "remainingTime": "",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Renovar",
         "returnButton": "Devolver",
         "returnedLcp": "Este libro non se pode ler porque a licenza LCP devolveuse.",
@@ -1346,7 +1358,7 @@
             }
         },
         "tabs": {
-            "appearance": "Aspecto visual",
+            "advanced": "",
             "general": "General",
             "keyboardShortcuts": "Atallos de teclado",
             "profiles": "",

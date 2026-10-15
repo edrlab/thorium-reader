@@ -9,7 +9,7 @@ import * as React from "react";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 // import { annotationActions } from "readium-desktop/common/redux/actions";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import * as AlertDialog from "readium-desktop/renderer/common/components/AlertDialog";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
@@ -94,13 +94,12 @@ export const CustomizationProfileDialog: React.FC = () => {
 
 
     return (
-        <AlertDialog.Root open={open} onOpenChange={(_requestOpen) => {
+        <AlertDialog.Root triggerless isOpen={open} onOpenChange={(_requestOpen) => {
         }}>
             {/* <AlertDialog.Trigger asChild>
                 {props.children}
             </AlertDialog.Trigger> */}
-            <AlertDialog.Portal>
-                <AlertDialog.Overlay className={stylesModals.modal_dialog_overlay} />
+            <AlertDialog.Portal className={stylesModals.modal_dialog_overlay}>
                 <AlertDialog.Content className={stylesModals.modal_dialog}>
                     <AlertDialog.Title className={stylesModals.modal_dialog_header}>
                         {__("dialog.customization.splashscreen.title")}
@@ -136,9 +135,6 @@ export const CustomizationProfileDialog: React.FC = () => {
                         </div>
                     </AlertDialog.Description>
                     <div className={stylesAlertModals.AlertDialogButtonContainer} style={{justifyContent: "space-between", padding: "10px 20px"}}>
-                        <AlertDialog.Cancel asChild disabled={customization.lock.state !== "IDLE"} onClick={() => { dispatch(customizationActions.activating.build("")); }}>
-                            <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
-                        </AlertDialog.Cancel>
                         {customization.welcomeScreen.enable && profileInHistoryFound ? <div style={{ display: "flex", alignItems: "center", gap: "10px"}}>
                             <input
                             type="checkbox"

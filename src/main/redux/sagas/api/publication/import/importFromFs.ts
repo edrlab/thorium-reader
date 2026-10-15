@@ -13,6 +13,7 @@ import { PublicationDocument } from "readium-desktop/main/db/document/publicatio
 import { diMainGet } from "readium-desktop/main/di";
 import type { IPdfMetadataFallback } from "readium-desktop/main/pdf/manifest";
 import { pdfPackager } from "readium-desktop/main/pdf/packager";
+import { cbzPackager } from "readium-desktop/main/cbz/packager";
 import { lpfToAudiobookConverter } from "readium-desktop/main/w3c/lpf/toAudiobook";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call } from "redux-saga/effects";
@@ -42,11 +43,12 @@ export function* importFromFsService(
     const isLCPLicense = isAcceptedExtension("lcpLicence", ext); // || (ext === ".part" && isLcpFile);
     const isLPF = isAcceptedExtension("w3cAudiobook", ext);
     const isPDF = isAcceptedExtension("pdf", ext);
+    const isCBZ = isAcceptedExtension("cbz", ext);
     const isOPF = isAcceptedExtension("opf", ext);
     const isNccHTML = filePath.replace(/\\/g, "/").toLowerCase().endsWith("/" + acceptedExtensionObject.nccHtml);
 
     debug("extension", ext);
-    debug("lcp/lpf/pdf/isOPF/isNccHTML", isLCPLicense, isLPF, isPDF, isOPF, isNccHTML);
+    debug("lcp/lpf/pdf/cbz/isOPF/isNccHTML", isLCPLicense, isLPF, isPDF, isCBZ, isOPF, isNccHTML);
     // debug(typeof ReadableStream === "undefined" || typeof Promise.allSettled === "undefined");
 
     if (!acceptedExtensionArray.includes(ext.toLowerCase()) && !isNccHTML) {
@@ -106,13 +108,20 @@ export function* importFromFsService(
             debug("is a PDF file need a converter");
             // convert .pdf to .webpub
             publicationFilePath = yield* callTyped(() => pdfPackager(filePath, pdfMetadataFallback));
+        } else if (isCBZ) {
+
+            debug("is a CBZ file need a converter");
+            // convert .cbz to a fixed-layout .epub
+            [publicationFilePath, cleanFct] = yield* callTyped(() => cbzPackager(filePath));
         }
 
-        publicationDocument = yield* callTyped(
-            () => importPublicationFromFS(publicationFilePath, willBeImmediatelyFollowedByOpen, hash, lcpHashedPassphrase, preservedIdentifier));
-
-        if (cleanFct) {
-            yield call(() => cleanFct());
+        try {
+            publicationDocument = yield* callTyped(
+                () => importPublicationFromFS(publicationFilePath, willBeImmediatelyFollowedByOpen, hash, lcpHashedPassphrase, preservedIdentifier, isCBZ ? "cbz" : undefined));
+        } finally {
+            if (cleanFct) {
+                yield call(() => cleanFct());
+            }
         }
     }
 

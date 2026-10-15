@@ -10,6 +10,9 @@ import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/com
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import * as React from "react";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { FocusScope } from "react-aria";
+import { DialogTrigger, Pressable, Popover, Dialog as PopoverDialog, Button } from "react-aria-components";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import classNames from "classnames";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
@@ -18,7 +21,6 @@ import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { customizationActions } from "readium-desktop/common/redux/actions";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
-import * as Popover from "@radix-ui/react-popover";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import moment from "moment";
 import * as ThoriumIcon from "readium-desktop/renderer/assets/icons/thorium.svg";
@@ -86,7 +88,7 @@ const Profiles = () => {
                                         }}
                                     >
                                         <div>
-                                            <h5>{profileTitle}</h5>
+                                            <h3>{profileTitle}</h3>
                                             <p>{profileDescription}</p>
                                             <div style={{ fontSize: "12px" }}>
                                                 {/* <span>Filename: {profile.fileName}</span><br/>
@@ -97,30 +99,37 @@ const Profiles = () => {
                                     </div>
                                 </label>
                                 <div className={stylesSettings.delete_profile_button} style={{ display: "flex", flexDirection: "row-reverse", width: "100%", margin: "-5px", zIndex: "10" }}>
-                                    <Popover.Root modal>
-                                        <Popover.Trigger asChild>
-                                            <button
-                                                style={{ width: "16px", height: "16px" }}
-                                                title={__("catalog.delete")}
-                                            >
+                                    <DialogTrigger>
+                                        <Pressable>
+                                            <button style={{ width: "16px", height: "16px" }} title={__("catalog.delete")}>
                                                 <SVG ariaHidden={true} svg={DeleteIcon} />
                                             </button>
-                                        </Popover.Trigger>
-                                        <Popover.Portal>
-                                            <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesPopoverDialog.delete_item}>
-                                                <Popover.Close dir={isRTL ? "rtl" : "ltr"}
-                                                    onClick={() => {
-                                                        dispatch(customizationActions.deleteProfile.build(profile.fileName));
-                                                    }}
-                                                    title={__("catalog.delete")}
-                                                >
-                                                    <SVG ariaHidden={true} svg={DeleteIcon} />
-                                                    {__("reader.marks.delete")}
-                                                </Popover.Close>
-                                                <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
-                                            </Popover.Content>
-                                        </Popover.Portal>
-                                    </Popover.Root>
+                                        </Pressable>
+                                        <Popover
+                                            placement="bottom"
+                                            offset={5}
+                                            crossOffset={-10}
+                                            className={stylesPopoverDialog.delete_item}
+                                            style={{ zIndex: OVERLAY_Z_INDEX }}
+                                        >
+                                            <PopoverDialog>
+                                                <FocusScope autoFocus>
+                                                    <Button
+                                                        slot="close"
+                                                        dir={isRTL ? "rtl" : "ltr"}
+                                                        onPress={() => {
+                                                            dispatch(customizationActions.deleteProfile.build(profile.fileName));
+                                                        }}
+                                                        render={(buttonProps) => <button {...buttonProps} title={__("catalog.delete")} />}
+                                                    >
+                                                        <SVG ariaHidden={true} svg={DeleteIcon} />
+                                                        {__("reader.marks.delete")}
+                                                    </Button>
+                                                    <PopoverArrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                                                </FocusScope>
+                                            </PopoverDialog>
+                                        </Popover>
+                                    </DialogTrigger>
                                 </div>
                             </div>
                         );
@@ -163,7 +172,7 @@ const Profiles = () => {
                             }}
                         >
                             <div>
-                                <h5 dir={isRTL ? "rtl" : "ltr"}>{__("settings.profiles.thorium.title")}</h5>
+                                <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.profiles.thorium.title")}</h3>
                                 <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.profiles.thorium.description")}</p>
                             </div>
                         </div>

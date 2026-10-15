@@ -695,10 +695,22 @@
         "notStarted": "Δεν έχει αρχίσει",
         "onGoing": "Σε εξέλιξη",
         "progression": {
-            "title": "Εξέλιξη"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Εξέλιξη",
+            "useRemote": ""
         },
         "read": "Ολοκληρώθηκε",
         "remainingTime": "Δανεισμός (υπολείπεται χρόνος)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Ανανέωση",
         "returnButton": "Επιστροφή",
         "returnedLcp": "Αυτή η προστατευμένη LCP δημοσίευση έχει επιστραφεί.",
@@ -1346,7 +1358,7 @@
             }
         },
         "tabs": {
-            "appearance": "Εμφάνιση",
+            "advanced": "",
             "general": "Γενικά",
             "keyboardShortcuts": "Συντομεύσεις πληκτρολογίου",
             "profiles": "Προφίλ",

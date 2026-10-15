@@ -688,10 +688,22 @@
         "notStarted": "尚未开始",
         "onGoing": "进行中",
         "progression": {
-            "title": "进度"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "进度",
+            "useRemote": ""
         },
         "read": "完成",
         "remainingTime": "借阅（剩余时间）",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "更新",
         "returnButton": "归还",
         "returnedLcp": "此书无法阅读，因为LCP许可证已被归还。",
@@ -1334,7 +1346,7 @@
             }
         },
         "tabs": {
-            "appearance": "外观",
+            "advanced": "",
             "general": "常规",
             "keyboardShortcuts": "键盘快捷键",
             "profiles": "配置文件",

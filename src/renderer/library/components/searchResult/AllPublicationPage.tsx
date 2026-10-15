@@ -70,6 +70,9 @@ import DOMPurify from "dompurify";
 import moment from "moment";
 import { availableLanguages, I18nFunction } from "readium-desktop/common/services/translator";
 import * as React from "react";
+import { OVERLAY_Z_INDEX, PopoverArrow, CloseOnAnchorRemoval } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { FocusScope } from "react-aria";
+import { DialogTrigger, Button, Popover, Dialog as PopoverDialog, Pressable } from "react-aria-components";
 import { connect } from "react-redux";
 import { PublicationView, canOpenPublication } from "readium-desktop/common/views/publication";
 import {
@@ -92,9 +95,8 @@ import {
 import { ipcRenderer } from "electron";
 import PublicationCard from "../publication/PublicationCard";
 import classNames from "classnames";
-import * as Popover from "@radix-ui/react-popover";
 
-// import { PublicationInfoLibWithRadix, PublicationInfoLibWithRadixContent, PublicationInfoLibWithRadixTrigger } from "../dialog/publicationInfos/PublicationInfo";
+// import { PublicationInfoLibWithRAC, PublicationInfoLibWithRACContent, PublicationInfoLibWithRACTrigger } from "../dialog/publicationInfos/PublicationInfo";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
@@ -1092,22 +1094,23 @@ const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_Generic
         }}>
         <p dangerouslySetInnerHTML={{ __html: dangerousInnerHTML_DescriptionSanitized }}></p>
         {props.value ?
-            <Popover.Root modal onOpenChange={() => setIsOpen(!isOpen)}>
-                <Popover.Trigger style={{maxWidth: "15px"}}>
-                    {isOpen ?
-                    <SVG ariaHidden svg={CloseIcon} />
-                    :
-                    <SVG ariaHidden svg={ChevronDown} />
-                    }
-                </Popover.Trigger>
-                <Popover.Portal>
-                    <Popover.Content /* collisionPadding={{top : 280}} */ avoidCollisions sideOffset={5} align="end" alignOffset={-10} hideWhenDetached>
-                        <p className={stylesDropDown.dropdown_description}
-                            dangerouslySetInnerHTML={{ __html: dangerousInnerHTML_DescriptionSanitized }}></p>
-                        <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
-                    </Popover.Content>
-                </Popover.Portal>
-            </Popover.Root>
+            <DialogTrigger onOpenChange={setIsOpen}>
+                <Button style={{ maxWidth: "15px" }}>
+                    {isOpen ? <SVG ariaHidden svg={CloseIcon} /> : <SVG ariaHidden svg={ChevronDown} />}
+                </Button>
+                <Popover placement="bottom end" offset={5} crossOffset={-10} containerPadding={0} style={{ zIndex: OVERLAY_Z_INDEX }}>
+                    <PopoverDialog>
+                        <FocusScope autoFocus>
+                            <CloseOnAnchorRemoval />
+                            <p
+                                className={stylesDropDown.dropdown_description}
+                                dangerouslySetInnerHTML={{ __html: dangerousInnerHTML_DescriptionSanitized }}
+                            ></p>
+                            <PopoverArrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                        </FocusScope>
+                    </PopoverDialog>
+                </Popover>
+            </DialogTrigger>
             : ""}
     </div>);
 };
@@ -1758,7 +1761,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
             const lcp = publicationView.lcp ? "LCP" : "";
 
-            const format = publicationView.isAudio ? "Audio" : publicationView.isDivina ? "Divina" : publicationView.isPDF ? "PDF" : publicationView.isDaisy ? "DAISY" : publicationView.isFixedLayoutPublication ? "EPUB (FXL)" : "EPUB";
+            const format = publicationView.isCBZ ? "CBZ" : publicationView.isAudio ? "Audio" : publicationView.isDivina ? "Divina" : publicationView.isPDF ? "PDF" : publicationView.isDaisy ? "DAISY" : publicationView.isFixedLayoutPublication ? "EPUB (FXL)" : "EPUB";
 
             const duration = (publicationView.duration ? formatTime(publicationView.duration) : "") + (publicationView.nbOfTracks ? ` (${__("publication.audio.tracks")}: ${publicationView.nbOfTracks})` : "");
 
@@ -2512,7 +2515,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
     const tagsOptions = tags.map((v, i) => ({ id: i, value: i, name: v }));
 
-    const formats = ["Audio", "Divina", "PDF", "DAISY", "EPUB (FXL)", "EPUB"].map((f, i) => ({
+    const formats = ["Audio", "Divina", "PDF", "DAISY", "EPUB (FXL)", "EPUB", "CBZ"].map((f, i) => ({
         id: i,
         value: i,
         name: f,
@@ -2561,41 +2564,101 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     };
 
     const FilterPopover = (
-        <Popover.Root modal>
-            <Popover.Trigger asChild className={stylesPublication.allBooks_header_filter_trigger}
-                title={__("library.filter.addFilters")}>
-                <button onClick={() => setFilterPopoverOpen(!filterPopoverOpen)}>
+        <DialogTrigger>
+            <Pressable>
+                <button
+                    className={stylesPublication.allBooks_header_filter_trigger}
+                    title={__("library.filter.addFilters")}
+                    onClick={() => setFilterPopoverOpen(!filterPopoverOpen)}
+                >
                     <SVG ariaHidden={true} svg={FilterIcon} />
                 </button>
-            </Popover.Trigger>
-            <Popover.Portal>
-                <Popover.Content avoidCollisions sideOffset={5} align="end" alignOffset={-10} className={stylesAnnotations.annotation_form} style={{ paddingTop: "20px" }}>
-                    <FilterComponent tableInstance={tableInstance} target={__("catalog.format")} targetColName={"colFormat"} targetList={formats} selection={selectedFormat} setSelection={setSelectedFormat} activeFiltersArray={activeFiltersArray} setActiveFiltersArray={setActiveFiltersArray} />
-                    <FilterComponent tableInstance={tableInstance} target={__("catalog.lang")} targetColName={"colLanguages"} targetList={languages} selection={selectedLanguage} setSelection={setSelectedLanguage} activeFiltersArray={activeFiltersArray} setActiveFiltersArray={setActiveFiltersArray} />
-                    <FilterComponent tableInstance={tableInstance} target={__("publication.progression.title")} targetColName={"colReadingState"} targetList={readingStates} selection={selectedReadingState} setSelection={setSelectedReadingState} activeFiltersArray={activeFiltersArray} setActiveFiltersArray={setActiveFiltersArray} />
-                    <FilterComponent tableInstance={tableInstance} target={__("catalog.tags")} targetColName={"colTags"} targetList={tagsOptions} selection={selectedTag} setSelection={setSelectedTag} activeFiltersArray={activeFiltersArray} setActiveFiltersArray={setActiveFiltersArray} />
-                    <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
-                </Popover.Content>
-            </Popover.Portal>
-        </Popover.Root>
+            </Pressable>
+            <Popover
+                placement="bottom end"
+                offset={5}
+                crossOffset={-10}
+                containerPadding={0}
+                className={stylesAnnotations.annotation_form}
+                style={{ zIndex: OVERLAY_Z_INDEX, paddingTop: "20px" }}
+            >
+                <PopoverDialog>
+                    <FocusScope autoFocus>
+                        <FilterComponent
+                            tableInstance={tableInstance}
+                            target={__("catalog.format")}
+                            targetColName={"colFormat"}
+                            targetList={formats}
+                            selection={selectedFormat}
+                            setSelection={setSelectedFormat}
+                            activeFiltersArray={activeFiltersArray}
+                            setActiveFiltersArray={setActiveFiltersArray}
+                        />
+                        <FilterComponent
+                            tableInstance={tableInstance}
+                            target={__("catalog.lang")}
+                            targetColName={"colLanguages"}
+                            targetList={languages}
+                            selection={selectedLanguage}
+                            setSelection={setSelectedLanguage}
+                            activeFiltersArray={activeFiltersArray}
+                            setActiveFiltersArray={setActiveFiltersArray}
+                        />
+                        <FilterComponent
+                            tableInstance={tableInstance}
+                            target={__("publication.progression.title")}
+                            targetColName={"colReadingState"}
+                            targetList={readingStates}
+                            selection={selectedReadingState}
+                            setSelection={setSelectedReadingState}
+                            activeFiltersArray={activeFiltersArray}
+                            setActiveFiltersArray={setActiveFiltersArray}
+                        />
+                        <FilterComponent
+                            tableInstance={tableInstance}
+                            target={__("catalog.tags")}
+                            targetColName={"colTags"}
+                            targetList={tagsOptions}
+                            selection={selectedTag}
+                            setSelection={setSelectedTag}
+                            activeFiltersArray={activeFiltersArray}
+                            setActiveFiltersArray={setActiveFiltersArray}
+                        />
+                        <PopoverArrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                    </FocusScope>
+                </PopoverDialog>
+            </Popover>
+        </DialogTrigger>
     );
 
     const SortingPopover = (
-        <Popover.Root modal>
-            <Popover.Trigger asChild className={stylesPublication.allBooks_header_filter_trigger}
-                title={__("library.sorting.addSorting")}>
-                <button onClick={() => setFilterPopoverOpen(!filterPopoverOpen)}>
+        <DialogTrigger>
+            <Pressable>
+                <button
+                    className={stylesPublication.allBooks_header_filter_trigger}
+                    title={__("library.sorting.addSorting")}
+                    onClick={() => setFilterPopoverOpen(!filterPopoverOpen)}
+                >
                     <SVG ariaHidden={true} svg={SortIcon} />
                     {/* <span className={stylesPublication.notification_bubble}></span> */}
                 </button>
-            </Popover.Trigger>
-            <Popover.Portal>
-                <Popover.Content avoidCollisions sideOffset={5} align="end" alignOffset={-10} className={stylesAnnotations.annotation_form} style={{ width: "200px" }}>
-                    <SortComponent tableInstance={tableInstance} />
-                    <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
-                </Popover.Content>
-            </Popover.Portal>
-        </Popover.Root>
+            </Pressable>
+            <Popover
+                placement="bottom end"
+                offset={5}
+                crossOffset={-10}
+                containerPadding={0}
+                className={stylesAnnotations.annotation_form}
+                style={{ zIndex: OVERLAY_Z_INDEX, width: "200px" }}
+            >
+                <PopoverDialog>
+                    <FocusScope autoFocus>
+                        <SortComponent tableInstance={tableInstance} />
+                        <PopoverArrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                    </FocusScope>
+                </PopoverDialog>
+            </Popover>
+        </DialogTrigger>
     );
 
     const LibraryNavigation = (
@@ -2670,35 +2733,42 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
 
     const SelectTableHeaders = (
-        <Popover.Root modal open={selectedFilterHeaderOpen} onOpenChange={setSelectedFilterHeaderOpen}>
-            <Popover.Trigger asChild className={stylesPublication.allBooks_header_filter_trigger}
-                title={__("catalog.selectTableHeaders")}>
-                <button>
+        <DialogTrigger isOpen={selectedFilterHeaderOpen} onOpenChange={setSelectedFilterHeaderOpen}>
+            <Pressable>
+                <button
+                    className={stylesPublication.allBooks_header_filter_trigger}
+                    title={__("catalog.selectTableHeaders")}
+                >
                     <SVG ariaHidden={true} svg={EyeOpenIcon} />
                 </button>
-            </Popover.Trigger>
-            <Popover.Portal>
-                <Popover.Content avoidCollisions sideOffset={5} align="end" alignOffset={-10} className={stylesAnnotations.annotation_form} style={{ paddingTop: "20px" }}>
-                    {editableColumnsArray.map((col) => (
-                        <div key={col.id} style={{ marginBottom: "10px", display: "flex", alignItems: "center" }}>
-                            <input
-                                type="checkbox"
-                                id={col.id}
-                                {...col.getToggleHiddenProps()}
-                            />
-                            <label htmlFor={col.id} style={{ marginLeft: "8px", cursor: "pointer" }}>
-                                {typeof col.Header === "string"
-                                    ? col.Header
-                                    // : typeof col.Header === "function"
-                                    // ? (col.Header as unknown as (() => string))()
-                                    : col.id.replace("col", "")}
-                            </label>
-                        </div>
-                    ))}
-                    <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
-                </Popover.Content>
-            </Popover.Portal>
-        </Popover.Root>
+            </Pressable>
+            <Popover
+                placement="bottom end"
+                offset={5}
+                crossOffset={-10}
+                containerPadding={0}
+                className={stylesAnnotations.annotation_form}
+                style={{ zIndex: OVERLAY_Z_INDEX, paddingTop: "20px" }}
+            >
+                <PopoverDialog>
+                    <FocusScope autoFocus>
+                        {editableColumnsArray.map((col) => (
+                            <div key={col.id} style={{ marginBottom: "10px", display: "flex", alignItems: "center" }}>
+                                <input type="checkbox" id={col.id} {...col.getToggleHiddenProps()} />
+                                <label htmlFor={col.id} style={{ marginLeft: "8px", cursor: "pointer" }}>
+                                    {typeof col.Header === "string"
+                                        ? col.Header
+                                        : // : typeof col.Header === "function"
+                                          // ? (col.Header as unknown as (() => string))()
+                                          col.id.replace("col", "")}
+                                </label>
+                            </div>
+                        ))}
+                        <PopoverArrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                    </FocusScope>
+                </PopoverDialog>
+            </Popover>
+        </DialogTrigger>
     );
 
     return (

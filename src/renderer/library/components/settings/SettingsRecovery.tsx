@@ -10,7 +10,7 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 
 import * as React from "react";
-import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import * as AlertDialog from "readium-desktop/renderer/common/components/AlertDialog";
 import classNames from "classnames";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
@@ -31,9 +31,8 @@ const SettingsRecoveryConfirmDialog = (props: {
     const [__] = useTranslator();
 
     return (
-        <AlertDialog.Root open={props.open} onOpenChange={props.onOpenChange}>
-            <AlertDialog.Portal>
-                <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay} />
+        <AlertDialog.Root triggerless isOpen={props.open} onOpenChange={props.onOpenChange}>
+            <AlertDialog.Portal className={stylesAlertModals.AlertDialogOverlay}>
                 <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
                     <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>
                         {props.title}
@@ -129,7 +128,7 @@ const SettingsRecovery = (props: {
 
             <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }} dir={isRTL ? "rtl" : "ltr"}>
                 <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                    <h4>{__("settings.storage.recovery.title")}</h4>
+                    <h3 style={{ margin: 0 }}>{__("settings.storage.recovery.title")}</h3>
                     {!isRecoveryChecked && !isRecoveryLoading ? (
                         <p style={{ margin: 0 }}>
                             {__("settings.storage.recovery.description")}

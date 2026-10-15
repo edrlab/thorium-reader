@@ -683,10 +683,22 @@
         "notStarted": "",
         "onGoing": "",
         "progression": {
-            "title": "진행"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "진행",
+            "useRemote": ""
         },
         "read": "",
         "remainingTime": "",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "갱신",
         "returnButton": "반납",
         "returnedLcp": "LCP 라이선스가 반납되어 이 책을 읽을 수 없습니다.",
@@ -1329,7 +1341,7 @@
             }
         },
         "tabs": {
-            "appearance": "",
+            "advanced": "",
             "general": "",
             "keyboardShortcuts": "",
             "profiles": "",

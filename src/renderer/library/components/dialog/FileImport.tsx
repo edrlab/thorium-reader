@@ -16,7 +16,7 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import * as AlertDialog from "readium-desktop/renderer/common/components/AlertDialog";
 import classNames from "classnames";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { dialogActions } from "readium-desktop/common/redux/actions";
@@ -47,9 +47,8 @@ class FileImport extends React.Component<IProps, undefined> {
 
         const { files } = this.props;
 
-        return <AlertDialog.Root defaultOpen={true} onOpenChange={(b) => !b ? this.props.closeDialog() : undefined}>
-            <AlertDialog.Portal>
-                <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay}/>
+        return <AlertDialog.Root triggerless defaultOpen={true} onOpenChange={(b) => !b ? this.props.closeDialog() : undefined}>
+            <AlertDialog.Portal className={stylesAlertModals.AlertDialogOverlay}>
                 <AlertDialog.Content className={stylesAlertModals.AlertDialogContent} style={{overflowY: "scroll"}}>
                     <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>
                         {(files?.length > 0) ?

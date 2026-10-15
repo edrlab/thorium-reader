@@ -1,10 +1,19 @@
 import { expect, test } from "@jest/globals";
+import Mustache from "mustache";
+import { annotationHtmlBody } from "readium-desktop/common/readium/annotation/htmlTemplate";
 
 import {
     convertSelectorTargetToLocatorExtended,
     convertAnnotationStateArrayToReadiumAnnotationSet,
     convertAnnotationStateToReadiumAnnotation,
+    readiumAnnotationDrawType,
 } from "readium-desktop/common/readium/annotation/converter";
+import {
+    EPUB_ANNOTATION_CONTEXT,
+    isIReadiumAnnotationSet,
+    LEGACY_ANNOTATION_CONTEXT,
+    normalizeReadiumAnnotationTags,
+} from "readium-desktop/common/readium/annotation/annotationModel.type";
 import type {
     ISelector,
     ICssSelector,
@@ -19,6 +28,7 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 const publicationView = {
     identifier: "pub-1",
     isOpenable: true,
+    isEPUB: true,
     readingFinished: false,
     documentTitle: "Test publication",
     publicationTitle: "Test publication",
@@ -85,6 +95,61 @@ function createNote(overrides: Partial<INoteState> = {}): INoteState {
         ...overrides,
     };
 }
+
+test("bookmarks retain their motivation across export, import, and re-export", () => {
+    const note = createNote({ drawType: EDrawType.bookmark, group: "bookmark" });
+    const exported = convertAnnotationStateToReadiumAnnotation(note)!;
+    expect(exported.body.highlight).toBeUndefined();
+    const importedDrawType = readiumAnnotationDrawType(exported);
+    expect(importedDrawType).toBe(EDrawType.bookmark);
+    expect(convertAnnotationStateToReadiumAnnotation({ ...note, drawType: importedDrawType })?.motivation)
+        .toBe("bookmarking");
+});
+
+test("custom HTML templates retain the legacy first-tag field without changing JSON export", () => {
+    const annotation = convertAnnotationStateToReadiumAnnotation(createNote({ tags: ["review", "important"] }))!;
+    const htmlView = { body: annotationHtmlBody(annotation) };
+    expect(Mustache.render("{{#body.tag}}Tag: {{body.tag}}{{/body.tag}}", htmlView)).toBe("Tag: review");
+    expect(Mustache.render("{{#body.tags}}{{.}};{{/body.tags}}", htmlView)).toBe("review;important;");
+    expect(annotation.body).not.toHaveProperty("tag");
+});
+
+test.each([false, true])("EPUB annotation sets use the W3C context for fixed layout=%s", (isFixedLayoutPublication) => {
+    const annotationSet = convertAnnotationStateArrayToReadiumAnnotationSet("en", [createNote()], {
+        ...publicationView,
+        isFixedLayoutPublication,
+    });
+    expect(annotationSet["@context"]).toBe(EPUB_ANNOTATION_CONTEXT);
+    expect(annotationSet.items[0]["@context"]).toBe(EPUB_ANNOTATION_CONTEXT);
+    expect(annotationSet.items[0].body.tags).toEqual(["tag"]);
+});
+
+test.each([
+    { isAudio: true },
+    { isPDF: true },
+    { isDivina: true },
+    { isDaisy: true },
+    {},
+])("non-EPUB annotation sets retain the legacy JSON model: %j", (format) => {
+    const annotationSet = convertAnnotationStateArrayToReadiumAnnotationSet("en", [createNote()], {
+        ...publicationView,
+        isEPUB: false,
+        ...format,
+    });
+    expect(annotationSet["@context"]).toBe(LEGACY_ANNOTATION_CONTEXT);
+    expect(annotationSet.items[0]["@context"]).toBe(LEGACY_ANNOTATION_CONTEXT);
+    expect(annotationSet.items[0].body.tag).toBe("tag");
+    expect(annotationSet.items[0].body).not.toHaveProperty("tags");
+    expect(isIReadiumAnnotationSet(annotationSet)).toBe(true);
+});
+
+test("HTML export can retain the legacy model for EPUB", () => {
+    const annotationSet = convertAnnotationStateArrayToReadiumAnnotationSet("en", [createNote()], publicationView, "HTML", LEGACY_ANNOTATION_CONTEXT);
+    expect(annotationSet["@context"]).toBe(LEGACY_ANNOTATION_CONTEXT);
+    expect(Mustache.render("{{#body.tags}}Tag: {{.}}{{/body.tags}}", {
+        body: annotationHtmlBody(annotationSet.items[0]),
+    })).toBe("Tag: tag");
+});
 
 test("Readium annotation conversion skips PDF annotations", () => {
     const pdfAnnotation = createNote({
@@ -297,4 +362,56 @@ test("Readium bookmark import preserves a non-text element selector", async () =
         },
     });
     expect(locatorExtended?.selectionInfo).toBeUndefined();
+});
+
+test("EPUB annotation export uses the W3C context and preserves all tags", () => {
+    const annotation = convertAnnotationStateToReadiumAnnotation(createNote({
+        tags: ["review", "important"],
+    }));
+
+    expect(annotation?.["@context"]).toBe(EPUB_ANNOTATION_CONTEXT);
+    expect(annotation?.body.tags).toEqual(["review", "important"]);
+    expect(annotation?.body).not.toHaveProperty("tag");
+});
+
+test("EPUB annotation export omits tags when the note has none", () => {
+    const annotation = convertAnnotationStateToReadiumAnnotation(createNote({ tags: [] }));
+
+    expect(annotation?.body).not.toHaveProperty("tags");
+});
+
+test("EPUB annotation sets validate with the W3C context", () => {
+    const annotationSet = convertAnnotationStateArrayToReadiumAnnotationSet(
+        "en",
+        [createNote()],
+        publicationView,
+        "Export",
+    );
+
+    expect(annotationSet["@context"]).toBe(EPUB_ANNOTATION_CONTEXT);
+    expect(isIReadiumAnnotationSet(annotationSet)).toBe(true);
+});
+
+test("legacy annotation sets remain valid for import", () => {
+    const annotationSet = convertAnnotationStateArrayToReadiumAnnotationSet(
+        "en",
+        [createNote()],
+        publicationView,
+        "Legacy export",
+    );
+    annotationSet["@context"] = LEGACY_ANNOTATION_CONTEXT;
+    annotationSet.items[0]["@context"] = LEGACY_ANNOTATION_CONTEXT;
+    annotationSet.items[0].body.tag = annotationSet.items[0].body.tags?.[0];
+    delete annotationSet.items[0].body.tags;
+
+    expect(isIReadiumAnnotationSet(annotationSet)).toBe(true);
+});
+
+test("annotation import merges current and legacy tags without duplicates", () => {
+    expect(normalizeReadiumAnnotationTags({
+        type: "TextualBody",
+        value: "Note",
+        tags: ["review", "important"],
+        tag: "review",
+    })).toEqual(["review", "important"]);
 });

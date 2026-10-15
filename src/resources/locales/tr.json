@@ -695,10 +695,22 @@
         "notStarted": "Başlatılmadı",
         "onGoing": "Devam Ediyor",
         "progression": {
-            "title": "İlerleme"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "İlerleme",
+            "useRemote": ""
         },
         "read": "Bitti",
         "remainingTime": "Ödünç alım (kalan süre)",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Yenile",
         "returnButton": "İade et",
         "returnedLcp": "Bu LCP-korumalı eser iade edildi.",
@@ -1346,7 +1358,7 @@
             }
         },
         "tabs": {
-            "appearance": "Görünüm",
+            "advanced": "Gelişmiş",
             "general": "Genel",
             "keyboardShortcuts": "Klavye kısayolları",
             "profiles": "Profiller",

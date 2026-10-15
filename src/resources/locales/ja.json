@@ -687,10 +687,22 @@
         "notStarted": "まだ開いていません",
         "onGoing": "進行中",
         "progression": {
-            "title": "進行度"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "進行度",
+            "useRemote": ""
         },
         "read": "既読",
         "remainingTime": "借受中（残り日数）",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "更新",
         "returnButton": "返却",
         "returnedLcp": "このLCPライセンスは返却されました。",
@@ -1333,7 +1345,7 @@
             }
         },
         "tabs": {
-            "appearance": "外観",
+            "advanced": "",
             "general": "一般",
             "keyboardShortcuts": "キーボード ショートカット",
             "profiles": "",

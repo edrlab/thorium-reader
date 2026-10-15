@@ -9,7 +9,6 @@ import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app
 import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/components/readerHeader.scss";
 
 import * as React from "react";
-// import * as Popover from "@radix-ui/react-popover";
 import { connect } from "react-redux";
 import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";

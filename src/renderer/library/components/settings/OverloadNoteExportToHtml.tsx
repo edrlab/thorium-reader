@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
@@ -57,7 +56,7 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
 
     return (<>
 
-        <section className={stylesSettings.section} style={{ position: "relative" }}>
+        <section style={{ position: "relative" }}>
 
             <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.note.export.overrideHTMLTemplate")}</h3>
             <input type="checkbox" className={stylesGlobal.checkbox_custom_input} name="enableCheckbox" />

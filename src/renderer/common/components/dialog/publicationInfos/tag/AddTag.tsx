@@ -49,7 +49,13 @@ class AddTag extends React.Component<IProps, IState> {
 
         const { __, tagArray: tagArrayPublication, tags: allTagsLocally } = this.props;
 
-        const tagsOptions = allTagsLocally.filter((name) => !(tagArrayPublication || []).includes(name as any)).map((v, i) => ({ id: i, value: i, name: v }));
+        if (!__) {
+            return <></>;
+        }
+
+        const tagsOptions = (allTagsLocally ?? []).filter(
+            (name) => !(tagArrayPublication ?? []).includes(name as any),
+        ).map((v, i) => ({ id: i, value: i, name: v }));
 
         return (
             this.props.pubId

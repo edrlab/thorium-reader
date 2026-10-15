@@ -6,8 +6,15 @@
 // ==LICENSE-END==
 
 import { TAnalyticsEventParams } from "readium-desktop/common/api/interface/analyticsApi.interface";
+import { ICustomizationManifest } from "readium-desktop/common/readium/customization/manifest";
+import { isProfileCatalogPathname } from "readium-desktop/renderer/library/customization/route";
 
-export type TLibraryPageTitle = "Home" | "Bookshelf" | "Catalog";
+export type TLibraryPageTitle = "Home" | "Bookshelf" | "Catalog" | "Profile Page" | "Profile Catalog";
+
+export interface ILibraryPageView {
+    pageTitle: TLibraryPageTitle;
+    routeKey: string;
+}
 
 export type TLibraryPageViewParams = TAnalyticsEventParams & {
     page_title: TLibraryPageTitle;
@@ -16,27 +23,47 @@ export type TLibraryPageViewParams = TAnalyticsEventParams & {
 
 const PAGE_LOCATION_ORIGIN = "https://desktop.thoriumreader.com/analytics";
 
-export const libraryPageTitleFromPathname = (pathname: string): TLibraryPageTitle | undefined => {
+export const libraryPageViewFromPathname = (
+    pathname: string,
+    customizationManifest?: ICustomizationManifest,
+): ILibraryPageView | undefined => {
     const normalizedPathname = pathname.replace(/\/+$/, "") || "/";
 
     if (normalizedPathname === "/" || normalizedPathname === "/home") {
-        return "Home";
+        return { pageTitle: "Home", routeKey: "Home" };
     }
 
     if (normalizedPathname === "/library") {
-        return "Bookshelf";
+        return { pageTitle: "Bookshelf", routeKey: "Bookshelf" };
+    }
+
+    if (/^\/profile\/[^/]+$/.test(normalizedPathname)) {
+        return { pageTitle: "Profile Page", routeKey: normalizedPathname };
     }
 
     if (normalizedPathname === "/opds" || normalizedPathname.startsWith("/opds/")) {
-        return "Catalog";
+        if (isProfileCatalogPathname(normalizedPathname, customizationManifest)) {
+            const rootIdentifier = normalizedPathname.split("/")[2];
+            return {
+                pageTitle: "Profile Catalog",
+                routeKey: `Profile Catalog:${rootIdentifier}`,
+            };
+        }
+        return { pageTitle: "Catalog", routeKey: "Catalog" };
     }
 
     return undefined;
 };
 
+export const libraryPageTitleFromPathname = (
+    pathname: string,
+    customizationManifest?: ICustomizationManifest,
+): TLibraryPageTitle | undefined =>
+    libraryPageViewFromPathname(pathname, customizationManifest)?.pageTitle;
+
 export const buildLibraryPageViewParams = (
     pageTitle: TLibraryPageTitle,
 ): TLibraryPageViewParams => ({
     page_title: pageTitle,
-    page_location: `${PAGE_LOCATION_ORIGIN}/${pageTitle}`,
+    page_location: `${PAGE_LOCATION_ORIGIN}/${encodeURIComponent(pageTitle)}`,
 });

@@ -39,7 +39,7 @@ import { getAndStartCustomizationWellKnownFileWatchingEventChannel } from "./get
 // import { ICustomizationProfileError, ICustomizationProfileProvisioned, ICustomizationProfileProvisionedWithError } from "readium-desktop/common/redux/states/customization";
 import { URL_HOST_CUSTOMPROFILE, URL_HOST_OPDS_AUTH, URL_DOMAIN_APP_HANDLER_THORIUM_READER, URL_PROTOCOL_APP_HANDLER_THORIUM, URL_PROTOCOL_APP_HANDLER_THORIUM_READER, URL_PROTOCOL_APP_HANDLER_THORIUM_READER_DESKTOP, URL_PROTOCOL_OPDS } from "readium-desktop/common/streamerProtocol";
 import { EXT_THORIUM } from "readium-desktop/common/extension";
-import { getLibraryWindowFromDi } from "readium-desktop/main/di";
+import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
 import { getTranslator } from "readium-desktop/common/services/translator";
 
 import * as path from "node:path";
@@ -426,10 +426,6 @@ export function saga() {
                                 u.searchParams.get("passphrase"),
                                 u.searchParams.get("hashed_passphrase"),
                             );
-                            if (lcpHashedPassphrase) {
-                                // TODO: persist the hashed passphrase
-                                debug("LCP HASHED PASSPHRASE", lcpHashedPassphrase);
-                            }
                             feedIcon = yield* callTyped(() => downloadOpdsFeedIcon(
                                 getOpdsFeedIconUrl(u.searchParams.get("icon")),
                             ));
@@ -443,6 +439,11 @@ export function saga() {
 
                             if (!/^https?:\/\//.test(theUrl)) {
                                 throw new Error("HTTP!! " + theUrl + " ------- " + url);
+                            }
+
+                            if (lcpHashedPassphrase) {
+                                const lcpManager = diMainGet("lcp-manager");
+                                yield* callTyped(() => lcpManager.saveGenericSecret(lcpHashedPassphrase));
                             }
                         }
 

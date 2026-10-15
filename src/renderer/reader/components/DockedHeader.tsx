@@ -9,7 +9,7 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 
 import * as React from "react";
-import * as Dialog from "@radix-ui/react-dialog";
+import * as Dialog from "readium-desktop/renderer/common/components/Dialog";
 
 import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";

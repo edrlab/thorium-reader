@@ -36,7 +36,7 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { Locator } from "@r2-shared-js/models/locator";
+import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { readerLocalActionLocatorHrefChanged } from "../../redux/actions";
 import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
@@ -404,7 +404,10 @@ const renderLinkTree = (currentLocation: MiniLocatorExtended, isRTLfn: (_link: I
 //     );
 // };
 
-export const computeProgression = (spineItemLinks: Link[], locator: Locator) => {
+export const computeProgression = (spineItemLinks: Link[], locator: {
+    href: R2Locator["href"];
+    locations?: Pick<NonNullable<R2Locator["locations"]>, "progression">;
+}) => {
 
     let percent = 100;
     if (spineItemLinks.length && locator.href) {

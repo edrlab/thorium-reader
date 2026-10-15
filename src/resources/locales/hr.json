@@ -148,14 +148,14 @@
         "annotations": {
             "descAuthor": "",
             "descCreator": "",
-            "descList_few": "",
             "descList_one": "",
+            "descList_few": "",
             "descList_other": "",
-            "descNewer_few": "",
             "descNewer_one": "",
+            "descNewer_few": "",
             "descNewer_other": "",
-            "descOlder_few": "",
             "descOlder_one": "",
+            "descOlder_few": "",
             "descOlder_other": "",
             "descTitle": "",
             "importAll": "",
@@ -173,12 +173,12 @@
             }
         },
         "deleteAnnotations": "",
-        "deleteAnnotationsText_few": "",
         "deleteAnnotationsText_one": "",
+        "deleteAnnotationsText_few": "",
         "deleteAnnotationsText_other": "",
         "deleteBookmarks": "",
-        "deleteBookmarksText_few": "",
         "deleteBookmarksText_one": "",
+        "deleteBookmarksText_few": "",
         "deleteBookmarksText_other": "",
         "deleteFeed": "Želiš li stvarno izbrisati ovaj katalog ?",
         "deletePublication": "Želiš li stvarno izbrisati ovu građu ?",
@@ -275,8 +275,8 @@
         "storage": {
             "recovery": {
                 "failure": "",
-                "success_few": "",
                 "success_one": "",
+                "success_few": "",
                 "success_other": ""
             },
             "removed": "",
@@ -701,10 +701,22 @@
         "notStarted": "",
         "onGoing": "",
         "progression": {
-            "title": "Napredak"
+            "remoteDescription": "",
+            "remoteTitle": "",
+            "title": "Napredak",
+            "useRemote": ""
         },
         "read": "",
         "remainingTime": "",
+        "remoteProgression": {
+            "checking": "",
+            "disabled": "",
+            "empty": "",
+            "position": "",
+            "ready": "",
+            "title": "",
+            "unavailable": ""
+        },
         "renewButton": "Obnovi",
         "returnButton": "Vrati",
         "returnedLcp": "Ova knjiga se ne može čitati jer je LCP licenca vraćena.",
@@ -856,8 +868,8 @@
         },
         "picker": {
             "search": {
-                "founds_few": "{{- count}} podudaranje(a)",
                 "founds_one": "{{- count}} podudaranje(a)",
+                "founds_few": "{{- count}} podudaranje(a)",
                 "founds_other": "{{- count}} podudaranje(a)",
                 "input": "tekst za pretragu",
                 "next": "Sljedeće",
@@ -1342,20 +1354,20 @@
                 "description": "",
                 "dialog": {
                     "confirm": "",
-                    "description_few": "",
                     "description_one": "",
+                    "description_few": "",
                     "description_other": "",
                     "title": ""
                 },
                 "none": "",
-                "recoverableCount_few": "",
                 "recoverableCount_one": "",
+                "recoverableCount_few": "",
                 "recoverableCount_other": "",
                 "title": ""
             }
         },
         "tabs": {
-            "appearance": "",
+            "advanced": "",
             "general": "",
             "keyboardShortcuts": "",
             "profiles": "",

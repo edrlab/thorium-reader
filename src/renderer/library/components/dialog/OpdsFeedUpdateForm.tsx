@@ -11,7 +11,7 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 
 import * as React from "react";
-import * as Dialog from "@radix-ui/react-dialog";
+import * as Dialog from "readium-desktop/renderer/common/components/Dialog";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as StarIcon from "readium-desktop/renderer/assets/icons/star-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
@@ -70,8 +70,7 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
             <Dialog.Trigger asChild>
                 {this.props.trigger}
             </Dialog.Trigger>
-            <Dialog.Portal>
-                <div className={stylesModals.modal_dialog_overlay}></div>
+            <Dialog.Portal className={stylesModals.modal_dialog_overlay}>
                 <Dialog.Content className={stylesModals.modal_dialog} aria-describedby={undefined}>
                     <div className={stylesModals.modal_dialog_header}>
                         <Dialog.Title>

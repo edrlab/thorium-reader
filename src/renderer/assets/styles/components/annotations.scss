@@ -134,6 +134,11 @@
     background-color: var(--color-brand-secondary);
     color: var(--color-brand-primary);
 
+    &[data-focus-visible] {
+      outline: var(--color-brand-primary) solid 2px !important;
+      outline-offset: 2px;
+    }
+
     &[data-selected],
     &:has(input:checked),
     &[data-state="checked"] {
