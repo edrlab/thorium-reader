@@ -196,7 +196,8 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                     ? orderLinks(opdsPublicationView.borrowLinks).map(
                         (ln, idx) =>
                             <div key={`borrowControl-${idx}`} style={ln.properties && Object.keys(ln.properties).length ? boxStyle : {}}>
-                                <button
+                                {ln.properties?.availabilityState !== "unavailable"
+                                    && ln.properties?.availabilityState !== "reserved" && <button
                                     className={buyList.length > 0 ? stylesButtons.button_secondary : stylesButtons.button_primary}
                                     onClick={() => {
                                         this.props.link(
@@ -209,7 +210,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 >
                                     <SVG ariaHidden svg={BorrowIcon} />
                                     {__("opds.menu.goLoanBook")}
-                                </button>
+                                </button>}
                                 {ln.localBookshelfPublicationId ? <button className={stylesButtons.button_secondary} onClick={() => this.props.read(ln.localBookshelfPublicationId)}>{__("catalog.readBook")}</button> : <></>}
                                 <OpdsLinkProperties properties={ln.properties} />
                             </div>,
