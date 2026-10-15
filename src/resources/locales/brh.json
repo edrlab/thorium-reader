@@ -291,6 +291,10 @@
             "title": ""
         },
         "addMenu": "",
+        "bookshelfEmpty": "",
+        "bookshelfEmptyDescription": "",
+        "bookshelfTitle": "",
+        "bookshelfViewAll": "",
         "breadcrumbRoot": "",
         "color": {
             "blue": "",

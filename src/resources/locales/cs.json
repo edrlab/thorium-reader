@@ -303,6 +303,10 @@
             "title": "Přidat účet knihovny"
         },
         "addMenu": "Přidat OPDS feed",
+        "bookshelfEmpty": "",
+        "bookshelfEmptyDescription": "",
+        "bookshelfTitle": "",
+        "bookshelfViewAll": "",
         "breadcrumbRoot": "Katalogy",
         "color": {
             "blue": "",

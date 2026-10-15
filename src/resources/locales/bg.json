@@ -291,6 +291,10 @@
             "title": "Добавяне на библиотечен акаунт"
         },
         "addMenu": "Добави OPDS канал",
+        "bookshelfEmpty": "",
+        "bookshelfEmptyDescription": "",
+        "bookshelfTitle": "",
+        "bookshelfViewAll": "",
         "breadcrumbRoot": "Каталози",
         "color": {
             "blue": "",

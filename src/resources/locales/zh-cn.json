@@ -284,6 +284,10 @@
             "title": "添加图书馆账户"
         },
         "addMenu": "添加 OPDS 订阅源",
+        "bookshelfEmpty": "",
+        "bookshelfEmptyDescription": "",
+        "bookshelfTitle": "",
+        "bookshelfViewAll": "",
         "breadcrumbRoot": "出版目录",
         "color": {
             "blue": "",

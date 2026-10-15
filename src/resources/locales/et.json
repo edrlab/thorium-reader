@@ -291,6 +291,10 @@
             "title": "Lisa raamatukogu kasutajakonto"
         },
         "addMenu": "Lisa OPDS-voog",
+        "bookshelfEmpty": "",
+        "bookshelfEmptyDescription": "",
+        "bookshelfTitle": "",
+        "bookshelfViewAll": "",
         "breadcrumbRoot": "Minu kataloogid",
         "color": {
             "blue": "Sinine",

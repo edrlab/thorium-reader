@@ -291,6 +291,10 @@
             "title": "நூலகக் கணக்கைச் சேர்க்கவும்"
         },
         "addMenu": "OPDS ஊட்டத்தைச் சேர்க்கவும்",
+        "bookshelfEmpty": "",
+        "bookshelfEmptyDescription": "",
+        "bookshelfTitle": "",
+        "bookshelfViewAll": "",
         "breadcrumbRoot": "பட்டியல்கள்",
         "color": {
             "blue": "",

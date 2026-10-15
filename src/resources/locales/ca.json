@@ -297,6 +297,10 @@
             "title": "Afegeix un compte de biblioteca"
         },
         "addMenu": "Afegir catàleg OPDS",
+        "bookshelfEmpty": "",
+        "bookshelfEmptyDescription": "",
+        "bookshelfTitle": "",
+        "bookshelfViewAll": "",
         "breadcrumbRoot": "Catàlegs",
         "color": {
             "blue": "",

@@ -297,6 +297,10 @@
             "title": "Aggiungi una biblioteca"
         },
         "addMenu": "Aggiungi un catalogo OPDS",
+        "bookshelfEmpty": "",
+        "bookshelfEmptyDescription": "",
+        "bookshelfTitle": "",
+        "bookshelfViewAll": "",
         "breadcrumbRoot": "Cataloghi",
         "color": {
             "blue": "Blu",

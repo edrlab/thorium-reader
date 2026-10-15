@@ -297,6 +297,10 @@
             "title": "Ajouter une bibliothèque"
         },
         "addMenu": "Ajouter un catalogue OPDS",
+        "bookshelfEmpty": "Votre étagère est vide.",
+        "bookshelfEmptyDescription": "Les livres que vous réservez, achetez ou empruntez apparaîtront ici.",
+        "bookshelfTitle": "Mon étagère",
+        "bookshelfViewAll": "Tout voir",
         "breadcrumbRoot": "Mes catalogues",
         "color": {
             "blue": "Bleu",
@@ -333,10 +337,6 @@
         "previous": "Précédent",
         "resumeBrowsing": "Reprendre le parcours",
         "shelf": "Étagère",
-        "bookshelfEmpty": "Votre étagère est vide.",
-        "bookshelfEmptyDescription": "Les livres que vous réservez, achetez ou empruntez apparaîtront ici.",
-        "bookshelfTitle": "Mon étagère",
-        "bookshelfViewAll": "Tout voir",
         "updateForm": {
             "name": "Nom :",
             "title": "Éditer un flux OPDS",

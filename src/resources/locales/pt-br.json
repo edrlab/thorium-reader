@@ -297,6 +297,10 @@
             "title": "Adicionar conta de biblioteca"
         },
         "addMenu": "Adicionar origem OPDS",
+        "bookshelfEmpty": "",
+        "bookshelfEmptyDescription": "",
+        "bookshelfTitle": "",
+        "bookshelfViewAll": "",
         "breadcrumbRoot": "Catálogos",
         "color": {
             "blue": "",
