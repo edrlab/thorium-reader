@@ -23,7 +23,7 @@ let host: HTMLDivElement;
 let dom: JSDOM;
 const globals = new Map<string, PropertyDescriptor | undefined>();
 const url = "https://example.org/holds/1";
-const render = () => act(() => root.render(<BorrowButton link={link} navigate={() => mockNavigate()}>Borrow</BorrowButton>));
+const render = () => act(() => root.render(<BorrowButton link={link} navigate={(response) => mockNavigate(response)}>Borrow</BorrowButton>));
 const click = () => act(() => host.querySelector("button").click());
 const respond = (result: THttpGetBrowserResultView, error = false) => {
     mockResponse = { data: { time: 1, error, result }, lastSuccess: undefined, lastTime: 1 };
@@ -91,6 +91,7 @@ test("passes authentication challenges to existing navigation even on HTTP failu
     respond({ url, isSuccess: false, isFailure: true,
         data: { opds: { title: "Authenticate", auth: {} as never } } });
     expect(mockNavigate).toHaveBeenCalledTimes(1);
+    expect(mockNavigate).toHaveBeenCalledWith(mockResponse.data.result);
     expect(mockDispatch).not.toHaveBeenCalled();
 });
 
@@ -99,6 +100,7 @@ test.each(["application/opds+json", "text/html"])("preserves navigation for a %s
     respond({ url, contentType, isSuccess: true, isFailure: false,
         data: { opds: { title: "Feed", publications: [{ documentTitle: "Feed entry" } as IOpdsPublicationView] } } });
     expect(mockNavigate).toHaveBeenCalledTimes(1);
+    expect(mockNavigate).toHaveBeenCalledWith(mockResponse.data.result);
     expect(mockDispatch).not.toHaveBeenCalled();
 });
 
@@ -111,3 +113,15 @@ test.each(["application/opds+json", "application/atom+xml", "text/html", "applic
         expect(mockBrowse).not.toHaveBeenCalled();
     },
 );
+
+test("refreshes a parsed publication served with a feed media type", () => {
+    click();
+    const publication = { documentTitle: "Reserved book", borrowLinks: [
+        { url, properties: { availabilityState: "reserved", cancellable: true } },
+    ] } as IOpdsPublicationView;
+    respond({ url, contentType: "application/opds+json", isSuccess: true, isFailure: false,
+        data: { opds: { title: "Reserved book", isPublication: true, publications: [publication] } } });
+    expect(mockDispatch).toHaveBeenCalledWith(dialogActions.updateRequest.build({ publication }));
+    expect(mockNavigate).not.toHaveBeenCalled();
+    expect(mockBrowse).toHaveBeenCalledTimes(1);
+});
