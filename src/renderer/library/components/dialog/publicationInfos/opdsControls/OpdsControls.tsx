@@ -28,6 +28,7 @@ import { findExtWithMimeType, findMimeTypeWithExtension, ADOBE_ADEPT_XML } from 
 
 import { isCancellableHold } from "readium-desktop/renderer/library/opds/holds";
 import { CancelHold } from "./CancelHold";
+import { BorrowButton } from "./BorrowButton";
 import OpdsLinkProperties from "./OpdsLinkProperties";
 import { ContentType } from "readium-desktop/utils/contentType";
 import { isDownloadUrlActive } from "readium-desktop/renderer/library/opds/download";
@@ -198,9 +199,10 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                     ? orderLinks(opdsPublicationView.borrowLinks).map(
                         (ln, idx) =>
                             <div key={`borrowControl-${idx}`} style={ln.properties && Object.keys(ln.properties).length ? boxStyle : {}}>
-                                <button
+                                <BorrowButton
+                                    link={ln}
                                     className={buyList.length > 0 ? stylesButtons.button_secondary : stylesButtons.button_primary}
-                                    onClick={() => {
+                                    navigate={() => {
                                         this.props.link(
                                                 ln,
                                                 this.props.location,
@@ -211,7 +213,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 >
                                     <SVG ariaHidden svg={BorrowIcon} />
                                     {__("opds.menu.goLoanBook")}
-                                </button>
+                                </BorrowButton>
                                 {ln.localBookshelfPublicationId ? <button className={stylesButtons.button_secondary} onClick={() => this.props.read(ln.localBookshelfPublicationId)}>{__("catalog.readBook")}</button> : <></>}
                                 {isCancellableHold(ln) ? <CancelHold key={ln.url} url={ln.url} catalogUrl={parseOpdsBrowserRoute(this.props.location.pathname)?.url} /> : undefined}
                                 <OpdsLinkProperties properties={ln.properties} />
