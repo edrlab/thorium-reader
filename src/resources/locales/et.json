@@ -316,7 +316,8 @@
             "goBuyBook": "Osta väljaanne",
             "goLoanBook": "Laenuta väljaanne",
             "goRevokeLoanBook": "Tühista laenutus",
-            "goSubBook": "Telli"
+            "goSubBook": "Telli",
+            "placeHold": ""
         },
         "network": {
             "error": "Viga ligipääsul andmevoole",

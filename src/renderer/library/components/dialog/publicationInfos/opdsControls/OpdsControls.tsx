@@ -199,22 +199,21 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                     ? orderLinks(opdsPublicationView.borrowLinks).map(
                         (ln, idx) =>
                             <div key={`borrowControl-${idx}`} style={ln.properties && Object.keys(ln.properties).length ? boxStyle : {}}>
-                                {ln.properties?.availabilityState !== "unavailable"
-                                    && ln.properties?.availabilityState !== "reserved" && <BorrowButton
+                                {ln.properties?.availabilityState !== "reserved" && <BorrowButton
                                     link={ln}
                                     className={buyList.length > 0 ? stylesButtons.button_secondary : stylesButtons.button_primary}
                                     navigate={(response) => {
                                         this.props.link(
                                                 ln,
                                                 this.props.location,
-                                                `${__("opds.menu.goLoanBook")} (${opdsPublicationView.documentTitle})`,
+                                                `${ln.properties?.availabilityState === "unavailable" ? __("opds.menu.placeHold") : __("opds.menu.goLoanBook")} (${opdsPublicationView.documentTitle})`,
                                                 response,
                                             );
                                     }}
                                     disabled={ln.properties?.indirectAcquisitionTypes?.top === findMimeTypeWithExtension(ADOBE_ADEPT_XML)}
                                 >
                                     <SVG ariaHidden svg={BorrowIcon} />
-                                    {__("opds.menu.goLoanBook")}
+                                    {ln.properties?.availabilityState === "unavailable" ? __("opds.menu.placeHold") : __("opds.menu.goLoanBook")}
                                 </BorrowButton>}
                                 {ln.localBookshelfPublicationId ? <button className={stylesButtons.button_secondary} onClick={() => this.props.read(ln.localBookshelfPublicationId)}>{__("catalog.readBook")}</button> : <></>}
                                 {isCancellableHold(ln) ? <CancelHold key={ln.url} url={ln.url} catalogUrl={parseOpdsBrowserRoute(this.props.location.pathname)?.url} /> : undefined}

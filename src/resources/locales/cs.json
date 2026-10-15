@@ -328,7 +328,8 @@
             "goBuyBook": "Koupit publikaci",
             "goLoanBook": "Zapůjčit si publikaci",
             "goRevokeLoanBook": "Zrušit půjčku",
-            "goSubBook": "Odebírat"
+            "goSubBook": "Odebírat",
+            "placeHold": ""
         },
         "network": {
             "error": "Chyba při přístupu k feedu",

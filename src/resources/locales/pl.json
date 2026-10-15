@@ -328,7 +328,8 @@
             "goBuyBook": "Kup publikację",
             "goLoanBook": "Wypożycz publikację",
             "goRevokeLoanBook": "Anuluj wypożyczenie",
-            "goSubBook": "Subskrybuj"
+            "goSubBook": "Subskrybuj",
+            "placeHold": ""
         },
         "network": {
             "error": "Błąd dostępu do kanału",

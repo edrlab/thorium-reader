@@ -316,7 +316,8 @@
             "goBuyBook": "Köp den här boken",
             "goLoanBook": "Låna den här boken",
             "goRevokeLoanBook": "Återkalla lånet",
-            "goSubBook": "Prenumerera"
+            "goSubBook": "Prenumerera",
+            "placeHold": ""
         },
         "network": {
             "error": "Kunde inte nå OPDS-flödet",

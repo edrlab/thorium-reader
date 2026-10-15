@@ -316,7 +316,8 @@
             "goBuyBook": "Køb denne bog",
             "goLoanBook": "Lån denne bog",
             "goRevokeLoanBook": "Tilbagekald lån",
-            "goSubBook": "Abonnér"
+            "goSubBook": "Abonnér",
+            "placeHold": ""
         },
         "network": {
             "error": "Fejl ved hentning af feed",

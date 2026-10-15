@@ -340,7 +340,8 @@
             "goBuyBook": "شراء المنشور",
             "goLoanBook": "استعارة المنشور",
             "goRevokeLoanBook": "إلغاء الاستعارة",
-            "goSubBook": "اشتراك"
+            "goSubBook": "اشتراك",
+            "placeHold": ""
         },
         "network": {
             "error": "خطأ في الوصول إلى المصدر",

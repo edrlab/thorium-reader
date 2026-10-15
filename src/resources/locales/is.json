@@ -316,7 +316,8 @@
             "goBuyBook": "Kaupa bók",
             "goLoanBook": "Fá bók að láni",
             "goRevokeLoanBook": "Afturkalla lán",
-            "goSubBook": "Gerast áskrifandi"
+            "goSubBook": "Gerast áskrifandi",
+            "placeHold": ""
         },
         "network": {
             "error": "Villa við að opna veitu",

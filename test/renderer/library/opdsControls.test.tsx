@@ -65,6 +65,7 @@ test.each([OPDSAvailabilityEnum.Unavailable, OPDSAvailabilityEnum.Reserved])(
             revokeLoanLinks: [link(state)],
         });
         expect(html).not.toContain("opds.menu.goLoanBook");
+        expect(html.includes("opds.menu.placeHold")).toBe(state === OPDSAvailabilityEnum.Unavailable);
         expect(html).toContain("link properties");
         expect(html).toContain("opds.menu.goRevokeLoanBook");
         expect(html).toContain("catalog.addBookToLib");
@@ -91,5 +92,6 @@ test("keeps cancellation available for a reserved hold while hiding Borrow", () 
         properties: { availabilityState: OPDSAvailabilityEnum.Reserved, cancellable: true },
     }] });
     expect(html).not.toContain("opds.menu.goLoanBook");
+    expect(html).not.toContain("opds.menu.placeHold");
     expect(html).toContain("opds.menu.cancelHold");
 });

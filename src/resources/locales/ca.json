@@ -322,7 +322,8 @@
             "goBuyBook": "Comprar aquest llibre",
             "goLoanBook": "Demanar prestat aquest llibre",
             "goRevokeLoanBook": "Cancel·lar préstamo",
-            "goSubBook": "Subscriure's"
+            "goSubBook": "Subscriure's",
+            "placeHold": ""
         },
         "network": {
             "error": "No es pot accedir al catàleg OPDS",

@@ -328,7 +328,8 @@
             "goBuyBook": "Kupi publikacijo",
             "goLoanBook": "Izposodi publikacijo",
             "goRevokeLoanBook": "Preklic izposoje",
-            "goSubBook": "Naroči se"
+            "goSubBook": "Naroči se",
+            "placeHold": ""
         },
         "network": {
             "error": "Napaka pri dostopu do vira",

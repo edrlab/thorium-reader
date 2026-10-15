@@ -735,7 +735,8 @@ declare namespace typed_i18n {
     readonly "goBuyBook": string,
     readonly "goLoanBook": string,
     readonly "goRevokeLoanBook": string,
-    readonly "goSubBook": string
+    readonly "goSubBook": string,
+    readonly "placeHold": string
   },
   readonly "network": {
     readonly "error": string,
@@ -804,7 +805,8 @@ declare namespace typed_i18n {
   readonly "goBuyBook": string,
   readonly "goLoanBook": string,
   readonly "goRevokeLoanBook": string,
-  readonly "goSubBook": string
+  readonly "goSubBook": string,
+  readonly "placeHold": string
 };
   (_: "opds.menu.aboutBook", __?: {}): string;
   (_: "opds.menu.addExtract", __?: {}): string;
@@ -814,6 +816,7 @@ declare namespace typed_i18n {
   (_: "opds.menu.goLoanBook", __?: {}): string;
   (_: "opds.menu.goRevokeLoanBook", __?: {}): string;
   (_: "opds.menu.goSubBook", __?: {}): string;
+  (_: "opds.menu.placeHold", __?: {}): string;
   (_: "opds.network", __?: {}): {
   readonly "error": string,
   readonly "noInternet": string,

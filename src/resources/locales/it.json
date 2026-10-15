@@ -322,7 +322,8 @@
             "goBuyBook": "Compra questo libro",
             "goLoanBook": "Prendi in prestito la pubblicazione",
             "goRevokeLoanBook": "Termina il prestito",
-            "goSubBook": "Iscriviti"
+            "goSubBook": "Iscriviti",
+            "placeHold": ""
         },
         "network": {
             "error": "Impossibile accedere al feed OPDS",
