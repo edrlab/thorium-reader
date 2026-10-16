@@ -30,7 +30,6 @@ import * as ChevronRight from "readium-desktop/renderer/assets/icons/chevron-rig
 interface IBaseProps extends TranslatorProps {
     pageLinks?: IOpdsResultView["links"];
     pageInfo?: IOpdsResultView["metadata"];
-    opdsGroupsFound?: boolean;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -41,11 +40,8 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 }
 
 class PageNavigation extends React.Component<IProps, undefined> {
-    private fixedElementRef: React.RefObject<HTMLDivElement>;
-
     constructor(props: IProps) {
         super(props);
-        this.fixedElementRef = React.createRef<HTMLDivElement>();
 
         this.onKeyboardPageNavigationPrevious = this.onKeyboardPageNavigationPrevious.bind(this);
         this.onKeyboardPageNavigationNext = this.onKeyboardPageNavigationNext.bind(this);
@@ -54,13 +50,10 @@ class PageNavigation extends React.Component<IProps, undefined> {
     public componentDidMount() {
         ensureKeyboardListenerIsInstalled();
         this.registerAllKeyboardListeners();
-        this.adjustElementPosition();
-        window.addEventListener("resize", this.adjustElementPosition);
     }
 
     public componentWillUnmount() {
         this.unregisterAllKeyboardListeners();
-        window.removeEventListener("resize", this.adjustElementPosition);
     }
 
     public componentDidUpdate(oldProps: IProps) {
@@ -70,28 +63,18 @@ class PageNavigation extends React.Component<IProps, undefined> {
         }
     }
 
-    public  adjustElementPosition = () => {
-        const element = this.fixedElementRef.current;
-        const container = document.getElementById("opds_browserResults");
-        const cardWrapper = document.getElementById("card_wrapper");
-        if (cardWrapper.scrollHeight >container.clientHeight || this.props.opdsGroupsFound) {
-          element.style.position = "unset";
-        } else {
-          element.style.position = "fixed";
-          element.style.bottom = "20px";
-          element.style.left = "50%";
-        }
-      };
-
     public render() {
         const { pageLinks, pageInfo, __ } = this.props;
 
         const buildRoute = buildOpdsBrowserRouteWithLink(this.props.location.pathname);
 
-
+        if (![pageLinks?.first, pageLinks?.previous, pageLinks?.next, pageLinks?.last]
+            .some((links) => links?.[0]?.url)) {
+            return <></>;
+        }
 
         return (
-            <div className={stylesPublication.opds_publication_wrapper} ref={this.fixedElementRef} style={{ width: "unset" }}>
+            <div className={stylesPublication.opds_publication_wrapper}>
                 {/* <button className={stylesButtons.button_primary_blue} onClick={() => console.log(pageLinks)}>Log "pageLinks"</button> */}
                 {/* <p className={stylesPublication.allBooks_header_pagination_title}>{__("catalog.numberOfPages")}</p> */}
                 <div className={stylesPublication.allBooks_header_pagination_container}>

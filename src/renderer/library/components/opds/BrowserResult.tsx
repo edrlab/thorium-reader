@@ -128,7 +128,6 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                                         opdsPublicationView={opds.publications}
                                         links={opds.links}
                                         pageInfo={opds.metadata}
-                                        opdsGroupsFound={opds.groups ? true : false}
                                     />
                                 </div>
                             </div>
@@ -151,7 +150,6 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                                     opdsPublicationView={opds.publications}
                                     links={opds.links}
                                     pageInfo={opds.metadata}
-                                    opdsGroupsFound={opds.groups ? true : false}
                                 />
                                 : <></>
                             }
