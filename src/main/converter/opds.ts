@@ -590,6 +590,7 @@ export class OpdsFeedViewConverter {
 
             // legacy vs. modern a11y metadata structure
             a11y_accessMode: r2OpdsPublication.Metadata.Accessibility?.AccessMode || r2OpdsPublication.Metadata.AccessMode, // string[]
+            a11y_exemption: r2OpdsPublication.Metadata.Accessibility?.Exemption,
             a11y_accessibilityFeature: r2OpdsPublication.Metadata.Accessibility?.Feature || r2OpdsPublication.Metadata.AccessibilityFeature, // string[]
             a11y_accessibilityHazard: r2OpdsPublication.Metadata.Accessibility?.Hazard || r2OpdsPublication.Metadata.AccessibilityHazard, // string[]
 

@@ -66,6 +66,7 @@ export interface IOpdsPublicationView {
     duration?: number;
     nbOfTracks?: number;
 
+    a11y_exemption?: string[];
     a11y_accessMode?: string[];
     a11y_accessibilityFeature?: string[];
     a11y_accessibilityHazard?: string[];

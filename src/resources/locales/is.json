@@ -515,6 +515,13 @@
                 "descriptive": "Ekki er vitað hvort bókin felur í sér hættur"
             }
         },
+        "legal-considerations": {
+            "legal-considerations-exempt": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "legal-considerations-title": ""
+        },
         "navigation": {
             "navigation-index": {
                 "compact": "Atriðaskrá",

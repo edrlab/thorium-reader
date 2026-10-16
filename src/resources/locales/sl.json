@@ -527,6 +527,13 @@
                 "descriptive": "Prisotnost nevarnosti ni znana"
             }
         },
+        "legal-considerations": {
+            "legal-considerations-exempt": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "legal-considerations-title": ""
+        },
         "navigation": {
             "navigation-index": {
                 "compact": "Stvarno kazalo",
