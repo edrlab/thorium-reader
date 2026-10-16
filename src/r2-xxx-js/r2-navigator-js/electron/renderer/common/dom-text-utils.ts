@@ -16,6 +16,12 @@ import { ReadiumElectronWebviewWindow } from "../webview/state";
 
 const win = global.window as ReadiumElectronWebviewWindow;
 
+// Virtual separator fencing the text of a sup/sub element on both sides when building
+// the utterance. One character, and it must stay one character: readaloud.ts maps
+// utterance offsets back to DOM ranges by accumulating contributed lengths, and assumes
+// a tagged node contributes exactly SUBSUP_SEPARATOR.length * 2 beyond its nodeValue.
+export const SUBSUP_SEPARATOR = " ";
+
 export function combineTextNodes(textNodes: Node[], skipNormalize?: boolean): string {
     if (textNodes && textNodes.length) {
         let str = "";
@@ -34,7 +40,28 @@ export function combineTextNodes(textNodes: Node[], skipNormalize?: boolean): st
                     txt = " ";
                     str += txt;
                 } else {
+                    // Text inside sup/sub is fenced by a separator on BOTH sides, so it
+                    // fuses with neither what precedes nor what follows it:
+                    //   "10<sup>23</sup>"        must not become "1023"  ("one thousand
+                    //                            twenty-three")
+                    //   "<em>R</em><sub>o</sub>" must not become "Ro"
+                    //   "10<sub>23</sub>45"      must not become "10 2345" ("two thousand
+                    //                            three hundred forty-five")
+                    //   "<sub>theta</sub>x"      must not become "thetax", which speech
+                    //                            engines drop entirely
+                    // The separators exist only in this string, never in the DOM, so they
+                    // cannot affect rendering - but the offset walkers in readaloud.ts
+                    // MUST account for both (see SUBSUP_SEPARATOR there), exactly as they
+                    // already do for __RUBY and for whitespace-only nodes.
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    const isSubSup = (textNode as any).__SUBSUP;
+                    if (isSubSup) {
+                        str += SUBSUP_SEPARATOR;
+                    }
                     str += (skipNormalize ? txt : normalizeText(txt));
+                    if (isSubSup) {
+                        str += SUBSUP_SEPARATOR;
+                    }
                 }
             }
         }
@@ -312,7 +339,11 @@ export function findTtsQueueItemIndex(
 // tslint:disable-next-line:max-line-length
 const _putInElementStackTagNames = ["h1", "h2", "h3", "h4", "h5", "h6", "p", "th", "td", "caption", "li", "blockquote", "q", "dt", "dd", "figcaption", "div", "pre"];
 // tslint:disable-next-line:max-line-length
-const _doNotProcessDeepChildTagNames = ["svg", "img", "sup", "sub", "audio", "video", "source", "button", "canvas", "del", "dialog", "embed", "form", "head", "iframe", "meter", "noscript", "object", "s", "script", "select", "style", "textarea"]; // "code", "nav", "dl", "figure", "table", "ul", "ol"
+const _doNotProcessDeepChildTagNames = ["svg", "img", "audio", "video", "source", "button", "canvas", "del", "dialog", "embed", "form", "head", "iframe", "meter", "noscript", "object", "s", "script", "select", "style", "textarea"]; // "code", "nav", "dl", "figure", "table", "ul", "ol"
+// note: "sup" and "sub" used to be listed above, which silently discarded their text
+// content (exponents, indices, ion charges, isotopes ... ). They are now processed like
+// any other inline element, with an aria-label/title override - see isSubSup below.
+// Note *references* are handled by the skippability mechanism instead (see _skippables).
 
 // https://www.w3.org/TR/epub-33/#sec-behaviors-skip-escape
 // https://www.w3.org/TR/epub-ssv-11/
@@ -321,6 +352,7 @@ const _skippables = [
     "endnote",
     "pagebreak",
     //
+    "noteref", // the reference marker itself, not just the note body
     "note",
     "rearnote",
     "sidebar",
@@ -436,6 +468,17 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
                 // isSkippable: undefined,
             };
             ttsQueue.push(current);
+        }
+
+        // Same idea as the __RUBY tagging above, but closest() rather than a direct
+        // parent-tag test, because inline markup inside a sup/sub is common and the text
+        // still needs fencing: <sup><a href="#fn1">1</a></sup> (footnote markers),
+        // <sup><em>n</em></sup>. With a direct parent test those read as fused again.
+        // Whitespace-only nodes already contribute a single space, so tagging one would
+        // double-count against the offset walkers in readaloud.ts.
+        if (textNode.nodeValue.trim().length && textNode.parentElement?.closest("sup, sub")) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (textNode as any).__SUBSUP = true;
         }
 
         current.textNodes.push(textNode);
@@ -660,19 +703,53 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
                         }
                     }
 
+                    // sup/sub carry meaning in scientific and mathematical prose (x<sup>2</sup>,
+                    // v<sub>1</sub>, SO<sub>4</sub><sup>2-</sup>), so their text is spoken.
+                    // An aria-label/title on the element overrides it, which lets authors
+                    // supply better phrasing ("squared" rather than "2").
+                    const isSubSup = childTagNameLow === "sup" || childTagNameLow === "sub";
+                    let subSupNeedsDeepDive = isSubSup && !hidden;
+                    if (subSupNeedsDeepDive) {
+                        let altAttr = childElement.getAttribute("aria-label");
+                        if (!altAttr) {
+                            altAttr = childElement.getAttribute("title");
+                        }
+                        if (altAttr) {
+                            const txt = altAttr.trim();
+                            if (txt) {
+                                subSupNeedsDeepDive = false;
+                                const lang = getLanguage(childElement);
+                                const dir: string | undefined = undefined;
+                                ttsQueue.push({
+                                    combinedText: txt,
+                                    combinedTextSentences: undefined,
+                                    combinedTextSentencesRangeBegin: undefined,
+                                    combinedTextSentencesRangeEnd: undefined,
+                                    dir,
+                                    lang,
+                                    parentElement: childElement,
+                                    textNodes: [],
+                                    // isSkippable,
+                                });
+                            }
+                        }
+                    }
+
                     const isMathJax = childTagNameLow && childTagNameLow.startsWith("mjx-");
                     const isMathML = childTagNameLow === "math";
                     const processDeepChild =
                         pageBreakNeedsDeepDive ||
                         linkNeedsDeepDive ||
+                        subSupNeedsDeepDive ||
                         (
                         !isPageBreak &&
                         !isLink &&
+                        !isSubSup &&
                         !isMathJax &&
                         !isMathML &&
                         childTagNameLow && !_doNotProcessDeepChildTagNames.includes(childTagNameLow)
                         // tslint:disable-next-line:max-line-length
-                        // !childElement.matches("svg, img, sup, sub, audio, video, source, button, canvas, del, dialog, embed, form, head, iframe, meter, noscript, object, s, script, select, style, textarea")
+                        // !childElement.matches("svg, img, audio, video, source, button, canvas, del, dialog, embed, form, head, iframe, meter, noscript, object, s, script, select, style, textarea")
                         // code, nav, dl, figure, table, ul, ol
                         )
                     ;
@@ -680,7 +757,7 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
                     if (processDeepChild) {
                         processElement(childElement);
                     } else if (!hidden) {
-                        if (isPageBreak || isLink) {
+                        if (isPageBreak || isLink || isSubSup) {
                             // do nothing, already dealt with above (either shallow or deep)
                         } else if (isMathML) {
                             const altAttr = childElement.getAttribute("alttext");
