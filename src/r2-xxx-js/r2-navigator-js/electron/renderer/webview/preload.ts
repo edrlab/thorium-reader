@@ -27,6 +27,7 @@ import {
     IEventPayload_R2_EVENT_FXL_CONFIGURE, IEventPayload_R2_EVENT_HIGHLIGHT_CREATE,
     IEventPayload_R2_EVENT_HIGHLIGHT_REMOVE, IEventPayload_R2_EVENT_HIGHLIGHT_REMOVE_ALL, IEventPayload_R2_EVENT_LINK,
     IEventPayload_R2_EVENT_LOCATOR_VISIBLE, IEventPayload_R2_EVENT_MEDIA_OVERLAY_CLICK,
+    IEventPayload_R2_EVENT_MEDIA_OVERLAY_INTERACTIVE_LINKS, R2_EVENT_MEDIA_OVERLAY_INTERACTIVE_LINKS,
     IEventPayload_R2_EVENT_MEDIA_OVERLAY_HIGHLIGHT, IEventPayload_R2_EVENT_MEDIA_OVERLAY_STARTSTOP,
     IEventPayload_R2_EVENT_MEDIA_OVERLAY_STATE,
     IEventPayload_R2_EVENT_PAGE_TURN, IEventPayload_R2_EVENT_READING_LOCATION,
@@ -192,6 +193,7 @@ win.READIUM2 = {
     ttsHighlightColor_WORD: undefined,
     ttsHighlightStyle_WORD: undefined,
     ttsClickEnabled: false,
+    mediaOverlaysInteractiveLinks: false,
     ttsOverlayEnabled: false,
     ttsPlaybackRate: 1,
     ttsAndMediaOverlaysManualPlayNext: false,
@@ -3026,12 +3028,22 @@ function loaded(forced: boolean) {
     win.document.addEventListener("click", (ev: MouseEvent) => {
         debug(`!AUX __CLICK: ${ev.button} ...`);
         if (win.document.documentElement.classList.contains(R2_MO_CLASS_PAUSED) || win.document.documentElement.classList.contains(R2_MO_CLASS_PLAYING)) {
-            debug("!AUX __CLICK skip because MO playing/paused");
+            // Interactive books (choices as links): with "Enable interactive links" enabled,
+            // a click on a link is let through. The navigator interrupts the readaloud
+            // (staying active) when it loads the link target, and the readaloud
+            // resumes there once the new document reports its reading location.
+            const linkTarget = win.READIUM2.mediaOverlaysInteractiveLinks && ev.target && (ev.target as Element).closest ?
+                (ev.target as Element).closest("a[href]") : null;
+            if (linkTarget) {
+                debug("!AUX __CLICK MO playing/paused, interactive links: let the link through");
+            } else {
+                debug("!AUX __CLICK skip because MO playing/paused");
 
-            ev.preventDefault();
-            ev.stopPropagation();
+                ev.preventDefault();
+                ev.stopPropagation();
 
-            return;
+                return;
+            }
         }
 
         if (win.document.documentElement.classList.contains(CLASS_HIGHLIGHT_CURSOR2)) {
@@ -5477,6 +5489,10 @@ if (!win.READIUM2.isAudio) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ipcRenderer.on(R2_EVENT_TTS_CLICK_ENABLE, (_event: any, payload: IEventPayload_R2_EVENT_TTS_CLICK_ENABLE) => {
         win.READIUM2.ttsClickEnabled = payload.doEnable;
+    });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ipcRenderer.on(R2_EVENT_MEDIA_OVERLAY_INTERACTIVE_LINKS, (_event: any, payload: IEventPayload_R2_EVENT_MEDIA_OVERLAY_INTERACTIVE_LINKS) => {
+        win.READIUM2.mediaOverlaysInteractiveLinks = payload.doEnable;
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ipcRenderer.on(R2_EVENT_TTS_OVERLAY_ENABLE, (_event: any, payload: IEventPayload_R2_EVENT_TTS_OVERLAY_ENABLE) => {
