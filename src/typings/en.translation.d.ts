@@ -1016,6 +1016,13 @@ declare namespace typed_i18n {
       readonly "descriptive": string
     }
   },
+  readonly "legal-considerations": {
+    readonly "legal-considerations-exempt": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "legal-considerations-title": string
+  },
   readonly "navigation": {
     readonly "navigation-index": {
       readonly "compact": string,
@@ -1426,6 +1433,17 @@ declare namespace typed_i18n {
   (_: "publ-a11y-display-guide.hazards.hazards-unknown", __?: {}): { readonly "compact": string, readonly "descriptive": string };
   (_: "publ-a11y-display-guide.hazards.hazards-unknown.compact", __?: {}): string;
   (_: "publ-a11y-display-guide.hazards.hazards-unknown.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.legal-considerations", __?: {}): {
+  readonly "legal-considerations-exempt": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "legal-considerations-title": string
+};
+  (_: "publ-a11y-display-guide.legal-considerations.legal-considerations-exempt", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.legal-considerations.legal-considerations-exempt.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.legal-considerations.legal-considerations-exempt.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.legal-considerations.legal-considerations-title", __?: {}): string;
   (_: "publ-a11y-display-guide.navigation", __?: {}): {
   readonly "navigation-index": {
     readonly "compact": string,

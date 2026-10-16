@@ -515,6 +515,13 @@
                 "descriptive": "ஆபத்துகளின் பரிசுகள் தெரியவில்லை"
             }
         },
+        "legal-considerations": {
+            "legal-considerations-exempt": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "legal-considerations-title": ""
+        },
         "navigation": {
             "navigation-index": {
                 "compact": "குறியெண்",

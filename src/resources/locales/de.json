@@ -515,6 +515,13 @@
                 "descriptive": "Es ist nicht bekannt, ob Gefahren bestehen"
             }
         },
+        "legal-considerations": {
+            "legal-considerations-exempt": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "legal-considerations-title": ""
+        },
         "navigation": {
             "navigation-index": {
                 "compact": "Index",

@@ -1317,6 +1317,18 @@ export const addOtherMetadata = (publication: Publication, rootfile: Rootfile | 
                     publication.Metadata.Accessibility.Certification.CertifiedBy = [];
                 }
                 publication.Metadata.Accessibility.Certification.CertifiedBy.push(val);
+            } else if (metaTag.Name === "a11y:exemption" || metaTag.Property === "a11y:exemption") {
+                const val = (metaTag.Property ? metaTag.Data : metaTag.Content)?.trim();
+                if (!val) {
+                    return; // continue
+                }
+                if (!publication.Metadata.Accessibility) {
+                    publication.Metadata.Accessibility = {} as AccessibilityMetadata;
+                }
+                if (!publication.Metadata.Accessibility.Exemption) {
+                    publication.Metadata.Accessibility.Exemption = [];
+                }
+                publication.Metadata.Accessibility.Exemption.push(val);
             } else if (metaTag.Name === "a11y:certifierCredential" || // may be link in EPUB3
                 metaTag.Property === "a11y:certifierCredential") {
                 let val = metaTag.Property ? metaTag.Data : metaTag.Content;

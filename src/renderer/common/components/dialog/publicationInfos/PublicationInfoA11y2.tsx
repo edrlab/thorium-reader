@@ -60,6 +60,7 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
 
     const is_fixed_layout = publicationViewMaybeOpds.isFixedLayoutPublication;
     const {
+        a11y_exemption,
         a11y_accessMode,
         a11y_accessModeSufficient: a11y_accessModeSufficient_array_array,
         a11y_accessibilityFeature,
@@ -232,11 +233,11 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
 
     const enableAdditionnals = (page_break_markers || aria || audio_descriptions || braille || full_ruby_annotations || high_contrast_between_foreground_and_background_audio || high_contrast_between_text_and_background || large_print || ruby_annotations || sign_language || tactile_graphic || tactile_object || text_to_speech_hinting);
 
-    const enableSummaryDetail = dangerousInnerHTML_AccessibilitySummarySanitized || enableAdditionnals || enableConformance || enableHazard || enableRichContent;
+    const enableLegal = a11y_exemption?.some(value => [
+        "eaa-disproportionate-burden", "eaa-fundamental-alteration", "eaa-microenterprise",
+    ].includes(value.trim()));
 
-    // https://www.w3.org/community/reports/publishingcg/CG-FINAL-epub-techniques-20250422#legal-considerations
-    // https://github.com/w3c/publ-a11y/issues/350
-    // a11y:exemption metadata not implemented on models parsing https://github.com/readium/r2-shared-js/blob/3dbce230c09c00042b38d5dbc9ffba6f2420992e/src/models/metadata.ts#L99 https://github.com/readium/webpub-manifest/blob/4c73f7323f9241e61bb919ecae2656a491ba15f6/schema/a11y.schema.json#L18-L25
+    const enableSummaryDetail = enableLegal || dangerousInnerHTML_AccessibilitySummarySanitized || enableAdditionnals || enableConformance || enableHazard || enableRichContent;
 
     const [__] = useTranslator();
 
@@ -514,6 +515,14 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                             }
                         </ul></>
                     : <></>}
+                {enableLegal ? <>
+                    <h5 className="publicationInfoA11y2-title">{__("publ-a11y-display-guide.legal-considerations.legal-considerations-title")}</h5>
+                    <ul className={stylePublication.accessibility_infos_left}>
+                        <li className="publicationInfoA11y2-icon" title={__("publ-a11y-display-guide.legal-considerations.legal-considerations-exempt.descriptive")}>
+                            {__("publ-a11y-display-guide.legal-considerations.legal-considerations-exempt.compact")}
+                        </li>
+                    </ul>
+                </> : <></>}
                 {enableAdditionnals
                     ? <>
                         <h5 className="publicationInfoA11y2-title">{__("publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-title")}</h5>
