@@ -21,7 +21,7 @@ import { BrowserWindow, HandlerDetails, Event as ElectronEvent, WebContentsWillN
 import { Headers } from "node-fetch";
 
 import { ToastType } from "readium-desktop/common/models/toast";
-import { authActions, historyActions, toastActions } from "readium-desktop/common/redux/actions";
+import { authActions, historyActions, opdsActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading, takeSpawnLeadingChannel } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
@@ -400,6 +400,7 @@ export function saga() {
                 } else {
                     debug("LOGOUT from:", feedUrl);
                 }
+                yield put(opdsActions.refresh.build());
             },
             (e) => debug("opds LOGOUT", e),
         ),

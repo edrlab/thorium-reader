@@ -136,7 +136,7 @@ export const FeedCard: React.FC<IFeedCardProps> = (props) => {
                 className={stylesCatalogs.button_favorites}>
                 <SVG svg={StarIcon} ariaHidden className={feed.favorite ? stylesCatalogs.catalog_favorite_icon_true : stylesCatalogs.catalog_favorite_icon_false} />
             </button>
-            {feed.authentified ? <FeedAuthentified feed={feed} logout={logout} loadFeeds={loadFeeds} __={__} />
+            {feed.authentified ? <FeedAuthentified feed={feed} logout={logout} __={__} />
                 : feed.authenticationUrl ? <FeedAuthentification feed={feed} triggerAuth={triggerAuth} __={__} /> : <></>}
             <OpdsFeedUpdateForm trigger={(
                 <button
@@ -161,7 +161,7 @@ export const FeedCard: React.FC<IFeedCardProps> = (props) => {
     );
 };
 
-const FeedAuthentified = ({ feed, logout, loadFeeds, __ }: { feed: IOpdsFeedView, logout: (url: string) => void, loadFeeds: () => void, __: I18nFunction }) => {
+const FeedAuthentified = ({ feed, logout, __ }: { feed: IOpdsFeedView, logout: (url: string) => void, __: I18nFunction }) => {
     return (
         <DialogTrigger>
             <Pressable>
@@ -182,7 +182,6 @@ const FeedAuthentified = ({ feed, logout, loadFeeds, __ }: { feed: IOpdsFeedView
                             slot="close"
                             onPress={() => {
                                 logout(feed.url);
-                                setTimeout(() => loadFeeds(), 100);
                             }}
                             render={(buttonProps) => <button {...buttonProps} title={__("catalog.logout")} />}
                         >
@@ -218,7 +217,6 @@ const FeedAuthentification = ({ feed, triggerAuth, __ }: { feed: IOpdsFeedView, 
                             slot="close"
                             onPress={() => {
                                 triggerAuth(feed.url, feed.authenticationUrl);
-                                // setTimeout(() => loadFeeds(), 100);
                             }}
                             render={(buttonProps) => <button {...buttonProps} title={__("catalog.login")} />}
                         >
