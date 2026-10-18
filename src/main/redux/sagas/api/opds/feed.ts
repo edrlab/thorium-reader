@@ -100,6 +100,15 @@ export function* addFeed(
     const opdsFeeds = yield* callTyped(() => opdsFeedRepository.findAll());
     const found = opdsFeeds.find((o) => o.url === data.url);
     if (found) {
+        if (data.authenticationUrl && found.authenticationUrl !== data.authenticationUrl) {
+            yield* callTyped(() => opdsFeedRepository.delete(found.identifier));
+            const updated = yield* callTyped(() => opdsFeedRepository.save({
+                ...found,
+                authenticationUrl: data.authenticationUrl,
+            }));
+            yield* putTyped(opdsActions.refresh.build());
+            return yield* callTyped(() => opdsFeedViewConverter.convertDocumentToView(updated));
+        }
         return yield* callTyped(() => opdsFeedViewConverter.convertDocumentToView(found));
     }
 

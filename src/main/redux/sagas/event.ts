@@ -6,6 +6,7 @@
 // ==LICENSE-END=
 
 import debug_ from "debug";
+import { getCatalogUrls } from "readium-desktop/main/catalogUrls";
 import {
     OPDS_FEED_ICON_DATA_URL_PREFIX,
     OPDS_FEED_ICON_SVG_DATA_URL_PREFIX,
@@ -407,6 +408,7 @@ export function saga() {
                         let title = url;
                         let feedColor: TOpdsFeedColor = OPDS_FEED_DEFAULT_COLOR;
                         let feedIcon: string | undefined;
+                        let authenticationUrl: string | undefined;
                         let lcpHashedPassphrase: string | undefined;
 
                         // https://www.thoriumreader.com/en/badge/catalog/
@@ -419,9 +421,10 @@ export function saga() {
                             url.startsWith(`${URL_PROTOCOL_APP_HANDLER_THORIUM_READER_DESKTOP}:/add/catalog`) // single slash!
                         ) {
                             const u = new URL(url);
-                            theUrl = u.searchParams.get("main");
+                            const catalogUrls = getCatalogUrls(u.searchParams);
+                            theUrl = catalogUrls.url;
+                            authenticationUrl = catalogUrls.authenticationUrl;
                             title = u.searchParams.get("title") || theUrl;
-                            // const bookshelf = u.searchParams.get("bookshelf");
                             lcpHashedPassphrase = getLcpHashedPassphrase(
                                 u.searchParams.get("passphrase"),
                                 u.searchParams.get("hashed_passphrase"),
@@ -447,7 +450,7 @@ export function saga() {
                             }
                         }
 
-                        const feed = yield* callTyped(addFeed, { title, url: theUrl, color: feedColor, icon: feedIcon }, "deeplink" as TCatalogAddAnalyticsOrigin);
+                        const feed = yield* callTyped(addFeed, { title, url: theUrl, authenticationUrl, color: feedColor, icon: feedIcon }, "deeplink" as TCatalogAddAnalyticsOrigin);
                         if (feed) {
 
                             yield* callTyped(appActivate);
