@@ -126,7 +126,7 @@
                 "availableUntil": "Tarihine kadar",
                 "copyAvalaible": "Mevcut",
                 "copyTotal": "Kopyalar",
-                "holdPosition": "Konumu koru",
+                "holdPosition": "Bekleme konumu",
                 "holdTotal": "Ayrılmış",
                 "numberOfItems": "Öğe sayısı",
                 "priveValue": "Fiyat",
@@ -311,13 +311,13 @@
         "menu": {
             "aboutBook": "Eser hakkında",
             "addExtract": "Özeti içe aktar",
-            "cancelHold": "",
-            "cancelHoldError": "",
+            "cancelHold": "Ayırtma işlemini iptal et",
+            "cancelHoldError": "Bu ayırtma işlemi iptal edilemiyor. Lütfen tekrar deneyin.",
             "goBuyBook": "Eser satın al",
             "goLoanBook": "Eser ödünç al",
             "goRevokeLoanBook": "Ödünç alımı sonlandır",
             "goSubBook": "Abone ol",
-            "placeHold": ""
+            "placeHold": "Ayırt"
         },
         "network": {
             "error": "Beslemeye erişim hatası",
