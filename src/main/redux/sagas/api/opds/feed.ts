@@ -218,10 +218,7 @@ export function* addFeed(
     }
     if (found) {
         if (data.authenticationUrl && found.authenticationUrl !== data.authenticationUrl) {
-            const updated = yield* callTyped(() => opdsFeedRepository.save({
-                ...found,
-                authenticationUrl: data.authenticationUrl,
-            }));
+            const updated = yield* callTyped(() => opdsFeedRepository.update(found.identifier, { authenticationUrl: data.authenticationUrl }));
             yield* putTyped(opdsActions.refresh.build());
             return yield* callTyped(() => opdsFeedViewConverter.convertDocumentToView(updated));
         }
@@ -262,10 +259,7 @@ export function* addFeed(
                                 const opdsFeeds = yield* callTyped(() => opdsFeedRepository.findAll());
                                 const found = opdsFeeds.find((o) => o.url === data.url);
                                 if (found) {
-                                    yield* callTyped(() => opdsFeedRepository.save({
-                                        ...found,
-                                        authenticationUrl: bookshelf.url,
-                                    }));
+                                    yield* callTyped(() => opdsFeedRepository.update(found.identifier, { authenticationUrl: bookshelf.url }));
 
                                     yield* putTyped(opdsActions.refresh.build());
                                     break;
@@ -303,7 +297,7 @@ export function* updateFeed(
     }
     const isAddingFavorite = data.favorite === true && previous.favorite !== true;
 
-    const doc = yield* callTyped(() => opdsFeedRepository.save({ ...previous, ...data, identifier }));
+    const doc = yield* callTyped(() => opdsFeedRepository.update(identifier, data));
     const view = yield* callTyped(() => opdsFeedViewConverter.convertDocumentToView(doc));
 
     yield* spawnTyped(function*() {
@@ -326,12 +320,12 @@ export function* setFeedFavorite(
     const opdsFeedRepository = diMainGet("opds-feed-repository");
     const feed = yield* callTyped(() => opdsFeedRepository.get(identifier));
 
+    if (!feed) {
+        throw new Error(`OPDS feed not found: ${identifier}`);
+    }
     if (favorite !== feed.favorite) {
 
-        const doc = yield* callTyped(() => opdsFeedRepository.save({
-            ...feed,
-            favorite,
-        }));
+        const doc = yield* callTyped(() => opdsFeedRepository.update(identifier, { favorite }));
         if (doc && favorite) {
             yield* spawnTyped(function*() {
                 yield* callTyped(() => logCatalogEvent(catalogAnalyticsEvents.favorite));

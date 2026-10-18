@@ -47,6 +47,7 @@ describe("feed updates", () => {
             get: jest.fn(async () => previous),
             delete: jest.fn(async () => undefined),
             save: jest.fn(async (feed: OpdsFeed) => feed),
+            update: jest.fn(async (_identifier: string, patch: Partial<OpdsFeed>) => ({ ...previous, ...patch })),
         };
         const converter = { convertDocumentToView: (doc: OpdsFeed) => ({ ...doc }) };
         jest.mocked(diMainGet).mockImplementation((key) =>
@@ -55,7 +56,7 @@ describe("feed updates", () => {
         const result = await runSaga({}, updateFeed, "requested-feed", data).toPromise();
 
         expect(repository.delete).not.toHaveBeenCalled();
-        expect(repository.save).toHaveBeenCalledWith({ ...previous, ...data });
+        expect(repository.update).toHaveBeenCalledWith("requested-feed", data);
         expect(result).toEqual({ ...previous, ...data });
         expect(logCatalogEvent).toHaveBeenCalledWith(catalogAnalyticsEvents.edit);
         if (logsFavorite) {
@@ -138,6 +139,12 @@ describe("feed authentication discovery", () => {
                 }
                 return doc;
             },
+            update: async (identifier: string, patch: Partial<OpdsFeed>) => {
+                const index = documents.findIndex((doc) => doc.identifier === identifier);
+                if (index < 0) throw new Error("Deleted feed");
+                documents[index] = { ...documents[index], ...patch };
+                return documents[index];
+            },
             delete: async (identifier: string) => {
                 documents.splice(documents.findIndex((doc) => doc.identifier === identifier), 1);
             },
@@ -180,5 +187,103 @@ describe("feed authentication discovery", () => {
         expect(documents[0].authenticationUrl).toBe(authenticationUrl);
         expect(documents[0].icon).toBe("data:image/svg+xml;base64," + svg.toString("base64"));
         expect(dispatched).toContainEqual({ type: "refresh" });
+    });
+});
+
+
+describe("concurrent repository operations", () => {
+    const setup = () => {
+        type State = { opds: { catalog: OpdsFeedDocument[] } };
+        const store = createStore((state: State = { opds: { catalog: [] } }, action): State => ({
+            opds: { catalog: opdsDbReducers(state.opds.catalog, action as never) },
+        }));
+        const repository = new OpdsFeedRepository();
+        const converter = { convertDocumentToView: (doc: OpdsFeed) => ({ ...doc }) };
+        jest.mocked(diMainGet).mockImplementation((key) =>
+            (key === "store" ? store : key === "opds-feed-repository" ? repository : converter) as never);
+        return repository;
+    };
+
+    it.each([false, true])("deduplicates overlapping adds (explicit identifiers: %s)", async (explicitIdentifiers) => {
+        const repository = setup();
+        const [first, second] = await Promise.all([
+            repository.save({ title: "First", url: "https://example.org/feed", favorite: true,
+                identifier: explicitIdentifiers ? "first-id" : undefined }),
+            repository.save({ title: "Second", url: "https://example.org/feed", authenticationUrl: "https://example.org/auth",
+                identifier: explicitIdentifiers ? "second-id" : undefined }),
+        ]);
+        expect(first.identifier).toBe(second.identifier);
+        expect(await repository.findAll()).toEqual([expect.objectContaining({
+            title: "First", favorite: true, authenticationUrl: "https://example.org/auth",
+        })]);
+    });
+
+    it("preserves independent fields in overlapping updates", async () => {
+        const repository = setup();
+        const feed = await repository.save({ title: "Original", url: "https://example.org/feed" });
+        await Promise.all([
+            repository.update(feed.identifier, { title: "Edited" }),
+            repository.update(feed.identifier, { favorite: true }),
+            repository.update(feed.identifier, { authenticationUrl: "https://example.org/auth" }),
+        ]);
+        expect(await repository.get(feed.identifier)).toMatchObject({
+            title: "Edited", favorite: true, authenticationUrl: "https://example.org/auth",
+        });
+    });
+
+    it.each([false, true])("rejects stale updates after deletion (migrated: %s)", async (migrated) => {
+        const repository = setup();
+        const feed = await repository.save({ title: "Original", url: "https://example.org/feed",
+            ...{ migratedFrom1_6Database: migrated } });
+        const stale = await repository.get(feed.identifier);
+        const results = await Promise.allSettled([
+            repository.delete(feed.identifier),
+            repository.update(stale.identifier, { title: "Late edit" }),
+        ]);
+        expect(results[1]).toMatchObject({ status: "rejected", reason: expect.any(Error) });
+        expect(await repository.findAll()).toEqual([]);
+    });
+
+    it("deduplicates API adds that both observed an empty catalog", async () => {
+        const repository = setup();
+        const feed = { title: "Catalog", url: "https://example.org/feed", authenticationUrl: "https://example.org/auth" };
+        const [first, second] = await Promise.all([
+            runSaga({}, addFeed, feed).toPromise(),
+            runSaga({}, addFeed, { ...feed, title: "Second request" }).toPromise(),
+        ]);
+        expect(first.identifier).toBe(second.identifier);
+        expect(await repository.findAll()).toHaveLength(1);
+    });
+
+    it("preserves an edit and favorite change whose API reads overlap", async () => {
+        const repository = setup();
+        const feed = await repository.save({ title: "Original", url: "https://example.org/feed" });
+        await Promise.all([
+            runSaga({}, updateFeed, feed.identifier, { title: "Edited", url: feed.url }).toPromise(),
+            runSaga({}, setFeedFavorite, feed.identifier, true).toPromise(),
+        ]);
+        expect(await repository.get(feed.identifier)).toMatchObject({ title: "Edited", favorite: true });
+    });
+
+    it.each([false, true])("does not resurrect a feed deleted while its API read is pending (migrated: %s)", async (migrated) => {
+        const repository = setup();
+        const feed = await repository.save({ title: "Original", url: "https://example.org/feed",
+            ...{ migratedFrom1_6Database: migrated } });
+        const task = runSaga({ onError: () => undefined }, updateFeed, feed.identifier,
+            { title: "Late edit", url: feed.url });
+        // get() has captured a snapshot but has not yet returned to the saga.
+        await repository.delete(feed.identifier);
+        await expect(task.toPromise()).rejects.toThrow("OPDS feed not found");
+        expect(await repository.findAll()).toEqual([]);
+    });
+
+    it("keeps deletion when it follows an overlapping update", async () => {
+        const repository = setup();
+        const feed = await repository.save({ title: "Original", url: "https://example.org/feed" });
+        await Promise.all([
+            repository.update(feed.identifier, { favorite: true }),
+            repository.delete(feed.identifier),
+        ]);
+        expect(await repository.findAll()).toEqual([]);
     });
 });

@@ -14,6 +14,7 @@ const repository = {
     findAll: jest.fn(async () => [existing]),
     delete: jest.fn(async () => undefined),
     save: jest.fn(async (value: unknown) => value),
+    update: jest.fn(async (_identifier: string, patch: object) => ({ ...existing, ...patch })),
 };
 beforeEach(() => {
     jest.clearAllMocks();
@@ -37,6 +38,6 @@ it("updates the bookshelf on an equivalent catalog while preserving metadata", a
     const result = await runSaga({ dispatch: (action) => actions.push(action) }, addFeed,
         { url: "http://example.com/feed", title: "Badge title", authenticationUrl }, "deeplink").toPromise();
     expect(result).toEqual({ ...existing, authenticationUrl });
-    expect(repository.save).toHaveBeenCalledWith({ ...existing, authenticationUrl });
+    expect(repository.update).toHaveBeenCalledWith(existing.identifier, { authenticationUrl });
     expect(actions).toHaveLength(1);
 });
