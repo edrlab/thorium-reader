@@ -43,7 +43,7 @@ import { diSymbolTable } from "../diSymbolTable";
 import { type Store } from "redux";
 import { RootState } from "../redux/states";
 import { PublicationRepository } from "../db/repository/publication";
-import { getAuthenticationToken } from "../network/http";
+import { isOpdsAuthenticated } from "readium-desktop/main/services/opdsAuthenticated";
 
 // Logger
 const debug = debug_("readium-desktop:main/converter/opds");
@@ -172,12 +172,11 @@ export class OpdsFeedViewConverter {
             debug(e);
         }
         if (catalogLinkUrl) {
-            const authToken = await getAuthenticationToken(catalogLinkUrl);
-            if (authToken?.accessToken) {
+            if (await isOpdsAuthenticated(catalogLinkUrl, document.authenticationUrl)) {
                 debug("catalog authentified: ", catalogLinkUrl.host);
                 authentified = true;
             } else {
-                debug("catalog NOT authentified: ", catalogLinkUrl.host, authToken);
+                debug("catalog NOT authentified: ", catalogLinkUrl.host);
             }
         } else {
             debug("No catalogLinkUrl found, return");
