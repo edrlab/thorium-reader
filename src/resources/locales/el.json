@@ -340,6 +340,13 @@
         },
         "next": "Επόμενο",
         "previous": "Προηγούμενο",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "prompt": "",
+            "title": ""
+        },
         "resumeBrowsing": "Συνέχιση περιήγησης",
         "shelf": "Ράφι",
         "updateForm": {

@@ -352,6 +352,13 @@
         },
         "next": "Naslednja",
         "previous": "Prejšnja",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "prompt": "",
+            "title": ""
+        },
         "resumeBrowsing": "Nadaljuj z brskanjem",
         "shelf": "Polica",
         "updateForm": {

@@ -352,6 +352,13 @@
         },
         "next": "Следующая",
         "previous": "Предыдущая",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "prompt": "",
+            "title": ""
+        },
         "resumeBrowsing": "Продолжить просмотр",
         "shelf": "Полка",
         "updateForm": {

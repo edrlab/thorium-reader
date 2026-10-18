@@ -12,9 +12,11 @@ import { getUrlWithSearchLinks } from "./getUrlWithSearchLinks";
 
 import { getProgressionServiceStatus } from "./getProgressionServiceStatus";
 import { getUserProfile } from "./getUserProfile";
+import { searchRegistry } from "./searchRegistry";
 
 export const opdsApi: IOpdsApi = {
     getUserProfile,
+    searchRegistry,
     getProgressionServiceStatus,
     getFeed,
     addFeed,

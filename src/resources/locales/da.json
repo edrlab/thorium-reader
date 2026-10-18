@@ -340,6 +340,13 @@
         },
         "next": "Næste",
         "previous": "Forrige",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "prompt": "",
+            "title": ""
+        },
         "resumeBrowsing": "Genoptag browsing",
         "shelf": "Boghylde",
         "updateForm": {

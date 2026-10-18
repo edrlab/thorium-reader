@@ -352,6 +352,13 @@
         },
         "next": "Další",
         "previous": "Předchozí",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "prompt": "",
+            "title": ""
+        },
         "resumeBrowsing": "Pokračovat v prohlížení",
         "shelf": "Polička",
         "updateForm": {

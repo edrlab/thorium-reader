@@ -340,6 +340,13 @@
         },
         "next": "அடுத்தது",
         "previous": "முந்தைய",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "prompt": "",
+            "title": ""
+        },
         "resumeBrowsing": "",
         "shelf": "அலமாரி",
         "updateForm": {

@@ -346,6 +346,13 @@
         },
         "next": "Siguiente",
         "previous": "Anterior",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "prompt": "",
+            "title": ""
+        },
         "resumeBrowsing": "Retomar el recorrido",
         "shelf": "Estante",
         "updateForm": {

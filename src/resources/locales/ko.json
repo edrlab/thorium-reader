@@ -328,6 +328,13 @@
         },
         "next": "다음",
         "previous": "이전",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "prompt": "",
+            "title": ""
+        },
         "resumeBrowsing": "",
         "shelf": "내서재",
         "updateForm": {

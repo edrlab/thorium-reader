@@ -340,6 +340,13 @@
         },
         "next": "Nästa",
         "previous": "Föregående",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "prompt": "",
+            "title": ""
+        },
         "resumeBrowsing": "Fortsätt bläddra",
         "shelf": "Hylla",
         "updateForm": {

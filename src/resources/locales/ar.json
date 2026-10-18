@@ -364,6 +364,13 @@
         },
         "next": "التالي",
         "previous": "السابق",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "prompt": "",
+            "title": ""
+        },
         "resumeBrowsing": "استئناف التصفح",
         "shelf": "الرف",
         "updateForm": {

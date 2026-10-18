@@ -340,6 +340,13 @@
         },
         "next": "Sonraki",
         "previous": "Önceki",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "prompt": "",
+            "title": ""
+        },
         "resumeBrowsing": "Göz atmaya kaldığınız yerden devam edin",
         "shelf": "Raf",
         "updateForm": {

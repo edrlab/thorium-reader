@@ -346,6 +346,13 @@
         },
         "next": "Naprijed",
         "previous": "Natrag",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "prompt": "",
+            "title": ""
+        },
         "resumeBrowsing": "",
         "shelf": "Polica",
         "updateForm": {

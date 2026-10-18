@@ -346,6 +346,13 @@
         },
         "next": "Successivo",
         "previous": "Precedente",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "prompt": "",
+            "title": ""
+        },
         "resumeBrowsing": "Riprendi la navigazione",
         "shelf": "Scaffale",
         "updateForm": {

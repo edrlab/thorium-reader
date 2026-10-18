@@ -340,6 +340,13 @@
         },
         "next": "Следващ",
         "previous": "Предишен",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "prompt": "",
+            "title": ""
+        },
         "resumeBrowsing": "",
         "shelf": "Лавица",
         "updateForm": {

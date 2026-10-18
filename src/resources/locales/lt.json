@@ -352,6 +352,13 @@
         },
         "next": "Tolesnis",
         "previous": "Ankstesnis",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "prompt": "",
+            "title": ""
+        },
         "resumeBrowsing": "Tęsti naršymą",
         "shelf": "Lentyna",
         "updateForm": {

@@ -346,6 +346,13 @@
         },
         "next": "",
         "previous": "",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "prompt": "",
+            "title": ""
+        },
         "resumeBrowsing": "",
         "shelf": "",
         "updateForm": {

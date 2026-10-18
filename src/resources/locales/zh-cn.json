@@ -333,6 +333,13 @@
         },
         "next": "下一个",
         "previous": "上一个",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "prompt": "",
+            "title": ""
+        },
         "resumeBrowsing": "继续浏览",
         "shelf": "书架",
         "updateForm": {

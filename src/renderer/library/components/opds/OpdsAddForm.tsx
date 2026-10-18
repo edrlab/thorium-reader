@@ -10,6 +10,7 @@ import { Location as HistoryLocation } from "history";
 import * as React from "react";
 import { OpdsFeedAddFormDialog } from "../dialog/OpdsFeedAddForm";
 import { ApiappAddFormDialog } from "../dialog/ApiappAddForm";
+import { RegistryAddFormDialog } from "../dialog/RegistryAddForm";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { resolveDisplayType } from "../../routing";
@@ -130,6 +131,7 @@ const OpdsAddForm: React.FC<IProps> = ({feedsResult}) => {
             }
             <div style={{display: "flex", alignItems: "center", gap: "10px"}}>
                 <OpdsFeedAddFormDialog/>
+                <RegistryAddFormDialog/>
                 <ApiappAddFormDialog/>
             </div>
         </section>

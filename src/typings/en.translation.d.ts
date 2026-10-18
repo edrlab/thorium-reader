@@ -781,6 +781,13 @@ declare namespace typed_i18n {
   },
   readonly "next": string,
   readonly "previous": string,
+  readonly "registry": {
+    readonly "empty": string,
+    readonly "error": string,
+    readonly "loading": string,
+    readonly "prompt": string,
+    readonly "title": string
+  },
   readonly "resumeBrowsing": string,
   readonly "shelf": string,
   readonly "updateForm": {
@@ -864,6 +871,18 @@ declare namespace typed_i18n {
   (_: "opds.network.reject", __?: {}): string;
   (_: "opds.network.timeout", __?: {}): string;
   (_: "opds.next", __?: {}): string; (_: "opds.previous", __?: {}): string;
+  (_: "opds.registry", __?: {}): {
+  readonly "empty": string,
+  readonly "error": string,
+  readonly "loading": string,
+  readonly "prompt": string,
+  readonly "title": string
+};
+  (_: "opds.registry.empty", __?: {}): string;
+  (_: "opds.registry.error", __?: {}): string;
+  (_: "opds.registry.loading", __?: {}): string;
+  (_: "opds.registry.prompt", __?: {}): string;
+  (_: "opds.registry.title", __?: {}): string;
   (_: "opds.resumeBrowsing", __?: {}): string;
   (_: "opds.shelf", __?: {}): string;
   (_: "opds.updateForm", __?: {}): {

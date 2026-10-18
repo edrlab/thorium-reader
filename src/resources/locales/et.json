@@ -340,6 +340,13 @@
         },
         "next": "Järgmine",
         "previous": "Eelmine",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "prompt": "",
+            "title": ""
+        },
         "resumeBrowsing": "Jätka sirvimist",
         "shelf": "Raamaturiiul",
         "updateForm": {

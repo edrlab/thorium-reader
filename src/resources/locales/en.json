@@ -340,6 +340,13 @@
         },
         "next": "Next",
         "previous": "Previous",
+        "registry": {
+            "empty": "No catalogs found.",
+            "error": "Unable to search the registry. Please try again.",
+            "loading": "Searching catalogs…",
+            "prompt": "Name, country or region",
+            "title": "Search catalogs"
+        },
         "resumeBrowsing": "Resume browsing",
         "shelf": "Shelf",
         "updateForm": {

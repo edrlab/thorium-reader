@@ -340,6 +340,13 @@
         },
         "next": "Hurrengoa",
         "previous": "Aurrekoa",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "prompt": "",
+            "title": ""
+        },
         "resumeBrowsing": "",
         "shelf": "Apala",
         "updateForm": {
