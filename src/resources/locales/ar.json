@@ -142,7 +142,19 @@
         "sort": "فرز حسب",
         "tag": "الوسم",
         "tags": "الوسوم",
-        "update": "تحرير"
+        "update": "تحرير",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
@@ -352,6 +364,13 @@
         },
         "next": "التالي",
         "previous": "السابق",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "prompt": "",
+            "title": ""
+        },
         "resumeBrowsing": "استئناف التصفح",
         "shelf": "الرف",
         "updateForm": {

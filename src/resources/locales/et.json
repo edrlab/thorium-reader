@@ -142,7 +142,19 @@
         "sort": "Järjestus",
         "tag": "Silt",
         "tags": "Sildid",
-        "update": "Muuda"
+        "update": "Muuda",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
@@ -328,6 +340,13 @@
         },
         "next": "Järgmine",
         "previous": "Eelmine",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "prompt": "",
+            "title": ""
+        },
         "resumeBrowsing": "Jätka sirvimist",
         "shelf": "Raamaturiiul",
         "updateForm": {

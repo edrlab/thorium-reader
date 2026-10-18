@@ -142,7 +142,19 @@
         "sort": "정렬 기준",
         "tag": "",
         "tags": "태그",
-        "update": "편집"
+        "update": "편집",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
@@ -316,6 +328,13 @@
         },
         "next": "다음",
         "previous": "이전",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "prompt": "",
+            "title": ""
+        },
         "resumeBrowsing": "",
         "shelf": "내서재",
         "updateForm": {

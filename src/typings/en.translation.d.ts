@@ -214,7 +214,19 @@ declare namespace typed_i18n {
   readonly "sort": string,
   readonly "tag": string,
   readonly "tags": string,
-  readonly "update": string
+  readonly "update": string,
+  readonly "userProfile": {
+    readonly "available": string,
+    readonly "bookshelf": string,
+    readonly "edit": string,
+    readonly "holds": string,
+    readonly "loading": string,
+    readonly "loans": string,
+    readonly "title": string,
+    readonly "total": string,
+    readonly "unavailable": string,
+    readonly "used": string
+  }
 };
   (_: "catalog.AddToFavorites", __?: {}): string;
   (_: "catalog.about", __?: {}): { readonly "title": string };
@@ -378,6 +390,28 @@ declare namespace typed_i18n {
   (_: "catalog.sort", __?: {}): string; (_: "catalog.tag", __?: {}): string;
   (_: "catalog.tags", __?: {}): string;
   (_: "catalog.update", __?: {}): string;
+  (_: "catalog.userProfile", __?: {}): {
+  readonly "available": string,
+  readonly "bookshelf": string,
+  readonly "edit": string,
+  readonly "holds": string,
+  readonly "loading": string,
+  readonly "loans": string,
+  readonly "title": string,
+  readonly "total": string,
+  readonly "unavailable": string,
+  readonly "used": string
+};
+  (_: "catalog.userProfile.available", __?: {}): string;
+  (_: "catalog.userProfile.bookshelf", __?: {}): string;
+  (_: "catalog.userProfile.edit", __?: {}): string;
+  (_: "catalog.userProfile.holds", __?: {}): string;
+  (_: "catalog.userProfile.loading", __?: {}): string;
+  (_: "catalog.userProfile.loans", __?: {}): string;
+  (_: "catalog.userProfile.title", __?: {}): string;
+  (_: "catalog.userProfile.total", __?: {}): string;
+  (_: "catalog.userProfile.unavailable", __?: {}): string;
+  (_: "catalog.userProfile.used", __?: {}): string;
   (_: "dialog", __?: {}): {
   readonly "annotations": {
     readonly "descAuthor": string,
@@ -747,6 +781,13 @@ declare namespace typed_i18n {
   },
   readonly "next": string,
   readonly "previous": string,
+  readonly "registry": {
+    readonly "empty": string,
+    readonly "error": string,
+    readonly "loading": string,
+    readonly "prompt": string,
+    readonly "title": string
+  },
   readonly "resumeBrowsing": string,
   readonly "shelf": string,
   readonly "updateForm": {
@@ -830,6 +871,18 @@ declare namespace typed_i18n {
   (_: "opds.network.reject", __?: {}): string;
   (_: "opds.network.timeout", __?: {}): string;
   (_: "opds.next", __?: {}): string; (_: "opds.previous", __?: {}): string;
+  (_: "opds.registry", __?: {}): {
+  readonly "empty": string,
+  readonly "error": string,
+  readonly "loading": string,
+  readonly "prompt": string,
+  readonly "title": string
+};
+  (_: "opds.registry.empty", __?: {}): string;
+  (_: "opds.registry.error", __?: {}): string;
+  (_: "opds.registry.loading", __?: {}): string;
+  (_: "opds.registry.prompt", __?: {}): string;
+  (_: "opds.registry.title", __?: {}): string;
   (_: "opds.resumeBrowsing", __?: {}): string;
   (_: "opds.shelf", __?: {}): string;
   (_: "opds.updateForm", __?: {}): {

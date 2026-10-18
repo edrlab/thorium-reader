@@ -61,6 +61,18 @@ const createConverter = () => {
 };
 
 describe("OPDS authentication link hints", () => {
+    it("exposes authenticate and both shelf relation forms for login discovery", () => {
+        const feed = TaJsonDeserialize({ metadata: { title: "Catalog" }, links: [
+            { rel: "authenticate", href: "auth.json", type: authenticationType },
+            { rel: "http://opds-spec.org/shelf", href: "loans.json", type: "application/opds+json" },
+            { rel: "shelf", href: "shelf.json", type: "application/opds+json" },
+        ] }, OPDSFeed);
+        const result = createConverter().convertOpdsFeedToView(feed, baseUrl);
+        expect(result.links.authenticate.map((link) => link.url)).toEqual(["https://example.org/catalog/auth.json"]);
+        expect(result.links.bookshelf.map((link) => link.url)).toEqual([
+            "https://example.org/catalog/loans.json", "https://example.org/catalog/shelf.json",
+        ]);
+    });
     it("normalizes absolute and relative authentication document links", () => {
         expect(
             normalizeOpdsAuthenticationLink(

@@ -29,7 +29,12 @@ import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { authActions, customizationActions } from "readium-desktop/common/redux/actions";
 import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import { I18nFunction } from "readium-desktop/common/services/translator";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import * as AccountDialog from "readium-desktop/renderer/common/components/Dialog";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+import { UserProfile } from "./UserProfile";
 
 interface IFeedCardProps {
     feed: IOpdsFeedView;
@@ -162,38 +167,41 @@ export const FeedCard: React.FC<IFeedCardProps> = (props) => {
 };
 
 const FeedAuthentified = ({ feed, logout, __ }: { feed: IOpdsFeedView, logout: (url: string) => void, __: I18nFunction }) => {
-    return (
-        <DialogTrigger>
-            <Pressable>
-                <button className={stylesCatalogs.button_login} title={__("catalog.logout")}>
-                    <SVG ariaHidden={true} svg={AvatarIcon} />
-                </button>
-            </Pressable>
-            <Popover
-                placement="bottom"
-                offset={5}
-                crossOffset={-10}
-                className={stylesPopoverDialog.delete_item}
-                style={{ zIndex: OVERLAY_Z_INDEX }}
-            >
-                <PopoverDialog>
-                    <FocusScope autoFocus>
-                        <Button
-                            slot="close"
-                            onPress={() => {
-                                logout(feed.url);
-                            }}
-                            render={(buttonProps) => <button {...buttonProps} title={__("catalog.logout")} />}
-                        >
-                            <SVG ariaHidden={true} svg={AvatarIcon} />
-                            {__("catalog.logout")}
-                        </Button>
-                        <PopoverArrow className={stylesDropDown.PopoverArrow} aria-hidden />
-                    </FocusScope>
-                </PopoverDialog>
-            </Popover>
-        </DialogTrigger>
-    );
+    const navigate = useNavigate();
+    const [bookshelf, setBookshelf] = React.useState<string | undefined>();
+    return <AccountDialog.Root>
+        <AccountDialog.Trigger asChild>
+            <button className={stylesCatalogs.button_login} title={__("catalog.userProfile.title")} aria-label={__("catalog.userProfile.title")}>
+                <SVG ariaHidden={true} svg={AvatarIcon} />
+            </button>
+        </AccountDialog.Trigger>
+        <AccountDialog.Portal className={stylesModals.modal_dialog_overlay}>
+            <AccountDialog.Content className={stylesModals.modal_dialog} aria-describedby={undefined} style={{ width: "560px", minHeight: "unset" }}>
+                <div className={stylesModals.modal_dialog_header}>
+                    <AccountDialog.Title>{__("catalog.userProfile.title")}</AccountDialog.Title>
+                    <AccountDialog.Close asChild>
+                        <button className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
+                            <SVG ariaHidden={true} svg={QuitIcon} />
+                        </button>
+                    </AccountDialog.Close>
+                </div>
+                <div className={stylesModals.modal_dialog_body} style={{ justifyContent: "flex-start" }}>
+                    <h3 style={{ overflowWrap: "anywhere" }}>{feed.title}</h3>
+                    <UserProfile identifier={feed.identifier} __={__} onBookshelf={setBookshelf} />
+                </div>
+                <div className={stylesModals.modal_dialog_footer} style={{ gap: "12px" }}>
+                    {bookshelf && <AccountDialog.Close asChild>
+                        <button className={stylesButtons.button_primary_blue} onClick={() => navigate(buildOpdsBrowserRoute(feed.identifier, __("opds.shelf"), bookshelf))}>
+                            {__("catalog.userProfile.bookshelf")}
+                        </button>
+                    </AccountDialog.Close>}
+                    <AccountDialog.Close asChild>
+                        <button className={stylesButtons.button_secondary_blue} onClick={() => logout(feed.url)}>{__("catalog.logout")}</button>
+                    </AccountDialog.Close>
+                </div>
+            </AccountDialog.Content>
+        </AccountDialog.Portal>
+    </AccountDialog.Root>;
 };
 
 const FeedAuthentification = ({ feed, triggerAuth, __ }: { feed: IOpdsFeedView, triggerAuth: (feedUrl: string, authenticationUrl: string) => void, __: I18nFunction }) => {

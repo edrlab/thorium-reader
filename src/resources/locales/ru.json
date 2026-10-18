@@ -142,7 +142,19 @@
         "sort": "Сортировать по",
         "tag": "Тег",
         "tags": "Теги",
-        "update": "Изменить"
+        "update": "Изменить",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
@@ -340,6 +352,13 @@
         },
         "next": "Следующая",
         "previous": "Предыдущая",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "prompt": "",
+            "title": ""
+        },
         "resumeBrowsing": "Продолжить просмотр",
         "shelf": "Полка",
         "updateForm": {
@@ -706,21 +725,21 @@
         "notStarted": "Не начато",
         "onGoing": "В процессе",
         "progression": {
-            "remoteDescription": "",
-            "remoteTitle": "",
+            "remoteDescription": "Новая позиция чтения с {{- device}} доступна по {{- progression}}%.",
+            "remoteTitle": "Продолжить с другого устройства?",
             "title": "Прогресс",
-            "useRemote": ""
+            "useRemote": "Перейти к позиции"
         },
         "read": "Закончено",
         "remainingTime": "Абонемент (оставшиеся дни)",
         "remoteProgression": {
-            "checking": "",
-            "disabled": "",
-            "empty": "",
-            "position": "",
-            "ready": "",
-            "title": "",
-            "unavailable": ""
+            "checking": "Служба включена и проверяется...",
+            "disabled": "Для данной публикации эта функция недоступна.",
+            "empty": "Удаленный прогресс не сохранён.",
+            "position": "Удаленный прогресс: {{percent}}% ({{device}}).",
+            "ready": "Включено и готово.",
+            "title": "Синхронизация прогресса чтения:",
+            "unavailable": "Сервис включён, но недоступен."
         },
         "renewButton": "Продлить",
         "returnButton": "Вернуть",

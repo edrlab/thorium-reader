@@ -142,7 +142,19 @@
         "sort": "排序方式",
         "tag": "標籤",
         "tags": "標籤",
-        "update": "編輯"
+        "update": "編輯",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
@@ -321,6 +333,13 @@
         },
         "next": "下一個",
         "previous": "上一個",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "prompt": "",
+            "title": ""
+        },
         "resumeBrowsing": "",
         "shelf": "書架",
         "updateForm": {

@@ -142,7 +142,19 @@
         "sort": "Sortiraj po",
         "tag": "",
         "tags": "Oznake",
-        "update": "Uredi"
+        "update": "Uredi",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
@@ -334,6 +346,13 @@
         },
         "next": "Naprijed",
         "previous": "Natrag",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "prompt": "",
+            "title": ""
+        },
         "resumeBrowsing": "",
         "shelf": "Polica",
         "updateForm": {

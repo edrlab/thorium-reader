@@ -21,9 +21,120 @@ import { contentTypeisOpdsAuth, parseContentType } from "readium-desktop/utils/c
 import { SagaGenerator } from "typed-redux-saga";
 import { call as callTyped, spawn as spawnTyped, put as putTyped } from "typed-redux-saga/macro";
 import { opdsActions } from "readium-desktop/common/redux/actions";
+import { findDeeplinkCatalog } from "readium-desktop/main/services/opdsCatalogUrl";
+import { nativeImage } from "electron";
+import { imageSize } from "image-size";
+import { OPDS_FEED_ICON_DATA_URL_PREFIX, OPDS_FEED_ICON_SVG_DATA_URL_PREFIX } from "readium-desktop/common/models/opds";
+import { getOpdsFeedIconUrl } from "readium-desktop/common/models/opds";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/opds/feed");
+
+const OPDS_FEED_ICON_REQUEST_TIMEOUT = 2000;
+const OPDS_FEED_ICON_MAX_BYTES = 1024 * 1024;
+const OPDS_FEED_ICON_SIZE = 128;
+
+const isSvgImage = (buffer: Buffer, contentType: string | undefined): boolean =>
+    (contentType?.toLowerCase().includes("image/svg+xml") || buffer.toString(
+        "utf8",
+        0,
+        Math.min(buffer.length, 4096),
+    ).toLowerCase().includes("<svg"));
+
+const getOpdsFeedIconImageSize = (iconBuffer: Buffer, iconUrl: string): { width: number; height: number } | undefined => {
+    try {
+        return imageSize(iconBuffer);
+    } catch (e) {
+        debug("OPDS feed icon size parsing failed", iconUrl, e);
+        return undefined;
+    }
+};
+
+const getOpdsFeedSvgIconDataUrl = (iconBuffer: Buffer, iconUrl: string): string | undefined => {
+    const size = getOpdsFeedIconImageSize(iconBuffer, iconUrl);
+    if (!size?.width || !size.height) {
+        debug("OPDS feed SVG icon has invalid dimensions", iconUrl, size);
+        return undefined;
+    }
+    if (size.width !== size.height) {
+        debug("OPDS feed SVG icon is not square", iconUrl, size);
+        return undefined;
+    }
+
+    return `${OPDS_FEED_ICON_SVG_DATA_URL_PREFIX}${iconBuffer.toString("base64")}`;
+};
+
+const normalizeOpdsFeedIcon = (iconImage: Electron.NativeImage, iconUrl: string): string | undefined => {
+    const size = iconImage.getSize();
+    if (!size.width || !size.height) {
+        debug("OPDS feed icon has invalid dimensions", iconUrl, size);
+    } else if (size.width !== size.height) {
+        debug("OPDS feed icon is not square, resizing to common square size", iconUrl, size);
+    }
+
+    const resizedImage = iconImage.resize({
+        height: OPDS_FEED_ICON_SIZE,
+        quality: "best",
+        width: OPDS_FEED_ICON_SIZE,
+    });
+    const resizedSize = resizedImage.getSize();
+    if (resizedImage.isEmpty() || resizedSize.width !== OPDS_FEED_ICON_SIZE || resizedSize.height !== OPDS_FEED_ICON_SIZE) {
+        debug("OPDS feed icon resize failed", iconUrl, resizedSize);
+        return undefined;
+    }
+
+    const iconDataUrl = resizedImage.toDataURL({ scaleFactor: 1 });
+    if (!iconDataUrl.startsWith(OPDS_FEED_ICON_DATA_URL_PREFIX)) {
+        debug("OPDS feed icon PNG data URL conversion failed", iconUrl);
+        return undefined;
+    }
+
+    return iconDataUrl;
+};
+
+export const downloadOpdsFeedIcon = async (iconUrl: string | undefined): Promise<string | undefined> => {
+    if (!iconUrl) {
+        return undefined;
+    }
+
+    try {
+        const response = await httpGetWithAuth(false)(iconUrl, {
+            headers: {
+                accept: "image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.1",
+            },
+            size: OPDS_FEED_ICON_MAX_BYTES,
+            timeout: OPDS_FEED_ICON_REQUEST_TIMEOUT,
+        });
+        if (!response.isSuccess || !response.response?.buffer) {
+            debug("OPDS feed icon download failed", iconUrl, response.statusCode, response.statusMessage);
+            return undefined;
+        }
+
+        const iconBuffer = await response.response.buffer();
+        if (!iconBuffer.length || iconBuffer.length > OPDS_FEED_ICON_MAX_BYTES) {
+            debug("OPDS feed icon invalid size", iconUrl, iconBuffer.length);
+            return undefined;
+        }
+
+        if (isSvgImage(iconBuffer, response.contentType)) {
+            // https://www.electronjs.org/docs/latest/api/native-image#nativeimagecreatefromdataurldataurl
+            // SVG cannot be converted to PNG
+            return getOpdsFeedSvgIconDataUrl(iconBuffer, iconUrl);
+        }
+
+        const iconImage = nativeImage.createFromBuffer(iconBuffer);
+        if (iconImage.isEmpty()) {
+            debug("OPDS feed icon could not be decoded", iconUrl);
+            return undefined;
+        }
+
+        return normalizeOpdsFeedIcon(iconImage, iconUrl);
+    } catch (e) {
+        debug("OPDS feed icon download error", iconUrl, e);
+        return undefined;
+    }
+};
+
 
 const getCatalogAddAnalyticsOrigin = (
     data: OpdsFeed,
@@ -91,6 +202,7 @@ export function* deleteFeed(identifier: string) {
 export function* addFeed(
     data: OpdsFeed,
     origin?: TCatalogAddAnalyticsOrigin,
+    iconUrl?: string,
 ): SagaGenerator<IOpdsFeedView> {
 
     const opdsFeedRepository = diMainGet("opds-feed-repository");
@@ -98,11 +210,30 @@ export function* addFeed(
 
     // ensures no duplicates (same URL ... but may be different titles)
     const opdsFeeds = yield* callTyped(() => opdsFeedRepository.findAll());
-    const found = opdsFeeds.find((o) => o.url === data.url);
+    let found = opdsFeeds.find((o) => o.url === data.url);
+    if (!found && origin === "deeplink") {
+        const resolved = yield* callTyped(() => findDeeplinkCatalog(data.url, opdsFeeds));
+        found = resolved.feed;
+        data = { ...data, url: resolved.url };
+    }
     if (found) {
+        if (data.authenticationUrl && found.authenticationUrl !== data.authenticationUrl) {
+            yield* callTyped(() => opdsFeedRepository.delete(found.identifier));
+            const updated = yield* callTyped(() => opdsFeedRepository.save({
+                ...found,
+                authenticationUrl: data.authenticationUrl,
+            }));
+            yield* putTyped(opdsActions.refresh.build());
+            return yield* callTyped(() => opdsFeedViewConverter.convertDocumentToView(updated));
+        }
         return yield* callTyped(() => opdsFeedViewConverter.convertDocumentToView(found));
     }
 
+    const icon = data.icon || (yield* callTyped(() => downloadOpdsFeedIcon(getOpdsFeedIconUrl(iconUrl))));
+    const doc = yield* callTyped(() => opdsFeedRepository.save({ ...data, icon }));
+    const view = yield* callTyped(() => opdsFeedViewConverter.convertDocumentToView(doc));
+
+    // Discovery updates the saved feed, so it must start after the initial save.
     if (!data.authenticationUrl) {
 
         yield* spawnTyped(function* () {
@@ -121,24 +252,29 @@ export function* addFeed(
                 );
                 const opdsFeedView = opdsFeedViewConverter.convertOpdsFeedToView(opdsFeed, data.url);
                 if (opdsFeedView) {
-                    const bookshelf = opdsFeedView.links?.bookshelf[0];
-                    if (bookshelf) {
-                        const responseBookshelf = yield* callTyped(() => httpGetWithAuth(false)(bookshelf.url));
-                        const mimeType = parseContentType(responseBookshelf.contentType);
-                        if (contentTypeisOpdsAuth(mimeType)) {
-                            // link url found
+                    const candidates = [...(opdsFeedView.links?.authenticate || []), ...(opdsFeedView.links?.bookshelf || [])];
+                    for (const bookshelf of candidates) {
+                        try {
+                            const responseBookshelf = yield* callTyped(() => httpGetWithAuth(false)(bookshelf.url));
+                            const mimeType = parseContentType(responseBookshelf.contentType);
+                            if (contentTypeisOpdsAuth(mimeType)) {
+                                // link url found
 
-                            const opdsFeeds = yield* callTyped(() => opdsFeedRepository.findAll());
-                            const found = opdsFeeds.find((o) => o.url === data.url);
-                            if (found) {
-                                yield* callTyped(() => opdsFeedRepository.delete(found.identifier));
-                                yield* callTyped(() => opdsFeedRepository.save({
-                                    ...found,
-                                    authenticationUrl: bookshelf.url,
-                                }));
+                                const opdsFeeds = yield* callTyped(() => opdsFeedRepository.findAll());
+                                const found = opdsFeeds.find((o) => o.url === data.url);
+                                if (found) {
+                                    yield* callTyped(() => opdsFeedRepository.delete(found.identifier));
+                                    yield* callTyped(() => opdsFeedRepository.save({
+                                        ...found,
+                                        authenticationUrl: bookshelf.url,
+                                    }));
 
-                                yield* putTyped(opdsActions.refresh.build());
+                                    yield* putTyped(opdsActions.refresh.build());
+                                    break;
+                                }
                             }
+                        } catch (e) {
+                            debug(e);
                         }
                     }
                 }
@@ -148,8 +284,6 @@ export function* addFeed(
         });
     }
 
-    const doc = yield* callTyped(() => opdsFeedRepository.save(data));
-    const view = yield* callTyped(() => opdsFeedViewConverter.convertDocumentToView(doc));
     yield* spawnTyped(function*() {
         yield* callTyped(() => logCatalogAdd(getCatalogAddAnalyticsOrigin(data, origin)));
     });

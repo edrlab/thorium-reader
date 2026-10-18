@@ -142,7 +142,19 @@
         "sort": "Ordina per",
         "tag": "Tag",
         "tags": "Tags",
-        "update": "Modifica"
+        "update": "Modifica",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
@@ -334,6 +346,13 @@
         },
         "next": "Successivo",
         "previous": "Precedente",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "prompt": "",
+            "title": ""
+        },
         "resumeBrowsing": "Riprendi la navigazione",
         "shelf": "Scaffale",
         "updateForm": {

@@ -43,7 +43,7 @@ import { diSymbolTable } from "../diSymbolTable";
 import { type Store } from "redux";
 import { RootState } from "../redux/states";
 import { PublicationRepository } from "../db/repository/publication";
-import { getAuthenticationToken } from "../network/http";
+import { isOpdsAuthenticated } from "readium-desktop/main/services/opdsAuthenticated";
 
 // Logger
 const debug = debug_("readium-desktop:main/converter/opds");
@@ -172,12 +172,11 @@ export class OpdsFeedViewConverter {
             debug(e);
         }
         if (catalogLinkUrl) {
-            const authToken = await getAuthenticationToken(catalogLinkUrl);
-            if (authToken?.accessToken) {
+            if (await isOpdsAuthenticated(catalogLinkUrl, document.authenticationUrl)) {
                 debug("catalog authentified: ", catalogLinkUrl.host);
                 authentified = true;
             } else {
-                debug("catalog NOT authentified: ", catalogLinkUrl.host, authToken);
+                debug("catalog NOT authentified: ", catalogLinkUrl.host);
             }
         } else {
             debug("No catalogLinkUrl found, return");
@@ -767,7 +766,10 @@ export class OpdsFeedViewConverter {
                 start: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "start" }),
                 up: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "up" }),
                 search: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "search" }),
-                bookshelf: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "http://opds-spec.org/shelf" }),
+                authenticate: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "authenticate" }),
+                bookshelf: r2OpdsFeed.Links.filter((link) => link.Href &&
+                    (link.Rel?.includes("http://opds-spec.org/shelf") || link.Rel?.includes("shelf")))
+                    .map((link) => this.convertLinkToView(link, baseUrl)),
                 text: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { type: [ContentType.Html] }),
                 self: this.convertFilterLinksToView(baseUrl, r2OpdsFeed.Links, { rel: "self" }),
             }

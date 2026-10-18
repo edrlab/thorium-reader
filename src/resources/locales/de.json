@@ -142,7 +142,19 @@
         "sort": "Sortieren nach",
         "tag": "Tag",
         "tags": "Tags",
-        "update": "Bearbeiten"
+        "update": "Bearbeiten",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
@@ -328,6 +340,13 @@
         },
         "next": "Nächster",
         "previous": "Vorheriger",
+        "registry": {
+            "empty": "",
+            "error": "",
+            "loading": "",
+            "prompt": "",
+            "title": ""
+        },
         "resumeBrowsing": "Weiter stöbern",
         "shelf": "Bücherregal",
         "updateForm": {
