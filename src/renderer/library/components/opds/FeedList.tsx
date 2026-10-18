@@ -60,10 +60,11 @@ class FeedList extends React.Component<IProps, IState> {
             "opds/setFeedFavorite",
         ], this.loadFeeds);
 
-        this.unsubscribeAction = subscribeToAction(opdsActions.refresh.ID, (_action) => {
+        this.unsubscribeAction = subscribeToAction(opdsActions.refresh.ID, (action) => {
             // console.log("Refresh opds feed list requested by the action ID=", opdsActions.refresh.ID);
 
-            this.loadFeeds().then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
+            const { cachedAuthentication } = (action as opdsActions.refresh.TAction).payload || {};
+            this.loadFeeds(!cachedAuthentication).then((_v) => { /* noop */ }).catch((_err) => { /* debug(err); */ });
         });
     }
 
@@ -108,9 +109,9 @@ class FeedList extends React.Component<IProps, IState> {
     //     event.preventDefault();
     //     this.props.openDeleteDialog(feed);
     // }
-    private async loadFeeds() {
+    private async loadFeeds(refreshAuthentication = true) {
         try {
-            const feedsResult = await apiAction("opds/findAllFeeds");
+            const feedsResult = await apiAction("opds/findAllFeeds", refreshAuthentication);
 
             this.setState({ feedsResult });
             if (this.props.setFeedsResult) {

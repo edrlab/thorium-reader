@@ -340,7 +340,7 @@ export function* setFeedFavorite(
     }
 }
 
-export function* findAllFeeds(): SagaGenerator<IOpdsFeedView[]> {
+export function* findAllFeeds(refreshAuthentication = true): SagaGenerator<IOpdsFeedView[]> {
 
     const opdsFeedRepository = diMainGet("opds-feed-repository");
     const opdsFeedViewConverter = diMainGet("opds-feed-view-converter");
@@ -349,7 +349,7 @@ export function* findAllFeeds(): SagaGenerator<IOpdsFeedView[]> {
     const docs = yield* callTyped(() => opdsFeedRepository.findAll());
     const res: IOpdsFeedView[] = [];
     for (const doc of docs) {
-        res.push(yield* callTyped(() => opdsFeedViewConverter.convertDocumentToView(doc)));
+        res.push(yield* callTyped(() => opdsFeedViewConverter.convertDocumentToView(doc, true, refreshAuthentication)));
     }
 
     // OPDS feed ordering deterministic sorting

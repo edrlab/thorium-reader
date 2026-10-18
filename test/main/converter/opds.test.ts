@@ -17,6 +17,9 @@ jest.mock("inversify", () => ({
 jest.mock("readium-desktop/main/network/http", () => ({
     getAuthenticationToken: jest.fn(),
 }));
+jest.mock("readium-desktop/main/services/opdsAuthenticated", () => ({
+    isOpdsAuthenticated: jest.fn(),
+}));
 jest.mock("readium-desktop/main/db/repository/publication", () => ({
     PublicationRepository: class PublicationRepository {},
 }));
@@ -29,6 +32,8 @@ import type { IOpdsResultView } from "readium-desktop/common/views/opds";
 import { normalizeOpdsAuthenticationLink, OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { OpdsService } from "readium-desktop/main/services/opds";
 import { ContentType } from "readium-desktop/utils/contentType";
+import { isOpdsAuthenticated } from "readium-desktop/main/services/opdsAuthenticated";
+import { opdsActions } from "readium-desktop/common/redux/actions";
 
 const baseUrl = "https://example.org/catalog/feed.json";
 const authenticationType = "application/opds-authentication+json";
@@ -59,6 +64,50 @@ const createConverter = () => {
     });
     return converter;
 };
+
+describe("background feed authentication", () => {
+    it("returns before checking authentication, deduplicates checks and refreshes only on changes", async () => {
+        const converter = createConverter();
+        const dispatch = jest.fn();
+        Object.assign(converter, { store: { dispatch } });
+        const document = { identifier: "feed", title: "Catalog", url: baseUrl, createdAt: 0, updatedAt: 0 };
+        let resolveAuthentication: (value: boolean) => void;
+        jest.mocked(isOpdsAuthenticated).mockImplementation(() => new Promise<boolean>((resolve) => {
+            resolveAuthentication = resolve;
+        }));
+
+        expect((await converter.convertDocumentToView(document, true)).authentified).toBeUndefined();
+        expect(isOpdsAuthenticated).not.toHaveBeenCalled();
+        await converter.convertDocumentToView(document, true);
+        await new Promise<void>((resolve) => setImmediate(resolve));
+        expect(isOpdsAuthenticated).toHaveBeenCalledTimes(1);
+        const foreground = converter.convertDocumentToView(document);
+        expect(isOpdsAuthenticated).toHaveBeenCalledTimes(1);
+        resolveAuthentication(true);
+        expect((await foreground).authentified).toBe(true);
+        await new Promise<void>((resolve) => setImmediate(resolve));
+        expect(dispatch).toHaveBeenCalledWith(opdsActions.refresh.build(true));
+
+        expect((await converter.convertDocumentToView(document, true, false)).authentified).toBe(true);
+        await new Promise<void>((resolve) => setImmediate(resolve));
+        expect(isOpdsAuthenticated).toHaveBeenCalledTimes(1);
+
+        expect((await converter.convertDocumentToView(document, true)).authentified).toBe(true);
+        await new Promise<void>((resolve) => setImmediate(resolve));
+        resolveAuthentication(true);
+        await new Promise<void>((resolve) => setImmediate(resolve));
+        expect(dispatch).toHaveBeenCalledTimes(1);
+
+        await converter.convertDocumentToView(document, true);
+        await new Promise<void>((resolve) => setImmediate(resolve));
+        resolveAuthentication(false);
+        await new Promise<void>((resolve) => setImmediate(resolve));
+        expect(dispatch).toHaveBeenCalledTimes(2);
+        expect((await converter.convertDocumentToView(document, true)).authentified).toBeUndefined();
+        jest.mocked(isOpdsAuthenticated).mockResolvedValue(false);
+        await new Promise<void>((resolve) => setImmediate(resolve));
+    });
+});
 
 describe("OPDS authentication link hints", () => {
     it("exposes authenticate and both shelf relation forms for login discovery", () => {

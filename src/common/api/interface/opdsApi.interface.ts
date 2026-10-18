@@ -33,6 +33,7 @@ export interface IOpdsApi {
         identifier: string,
     ) => SagaGenerator<void>;
     findAllFeeds: (
+        refreshAuthentication?: boolean,
     ) => SagaGenerator<IOpdsFeedView[]>;
     addFeed: (
         data: OpdsFeed,
