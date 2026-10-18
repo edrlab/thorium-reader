@@ -21,6 +21,7 @@ import { contentTypeisOpdsAuth, parseContentType } from "readium-desktop/utils/c
 import { SagaGenerator } from "typed-redux-saga";
 import { call as callTyped, spawn as spawnTyped, put as putTyped } from "typed-redux-saga/macro";
 import { opdsActions } from "readium-desktop/common/redux/actions";
+import { findDeeplinkCatalog } from "readium-desktop/main/services/opdsCatalogUrl";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/opds/feed");
@@ -98,7 +99,12 @@ export function* addFeed(
 
     // ensures no duplicates (same URL ... but may be different titles)
     const opdsFeeds = yield* callTyped(() => opdsFeedRepository.findAll());
-    const found = opdsFeeds.find((o) => o.url === data.url);
+    let found = opdsFeeds.find((o) => o.url === data.url);
+    if (!found && origin === "deeplink") {
+        const resolved = yield* callTyped(() => findDeeplinkCatalog(data.url, opdsFeeds));
+        found = resolved.feed;
+        data = { ...data, url: resolved.url };
+    }
     if (found) {
         if (data.authenticationUrl && found.authenticationUrl !== data.authenticationUrl) {
             yield* callTyped(() => opdsFeedRepository.delete(found.identifier));
