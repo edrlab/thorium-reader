@@ -142,7 +142,19 @@
         "sort": "Ordenar por",
         "tag": "Etiquetar",
         "tags": "Etiquetas",
-        "update": "Editar"
+        "update": "Editar",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {

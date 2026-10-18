@@ -142,7 +142,19 @@
         "sort": "Raða eftir",
         "tag": "Merki",
         "tags": "Merki",
-        "update": "Breyta"
+        "update": "Breyta",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {

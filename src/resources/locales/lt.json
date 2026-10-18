@@ -142,7 +142,19 @@
         "sort": "Rikiuoti pagal",
         "tag": "Žymė",
         "tags": "Žymės",
-        "update": "Keisti"
+        "update": "Keisti",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {

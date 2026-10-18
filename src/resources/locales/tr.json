@@ -142,7 +142,19 @@
         "sort": "Şuna göre sırala:",
         "tag": "Etiket",
         "tags": "Etiketler",
-        "update": "Düzenle"
+        "update": "Düzenle",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {

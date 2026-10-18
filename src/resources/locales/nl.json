@@ -142,7 +142,19 @@
         "sort": "Sorteer op",
         "tag": "Label",
         "tags": "Labels",
-        "update": "Wijzig"
+        "update": "Wijzig",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {

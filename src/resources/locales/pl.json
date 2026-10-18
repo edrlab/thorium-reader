@@ -142,7 +142,19 @@
         "sort": "Sortuj według",
         "tag": "Etykieta",
         "tags": "Etykiety",
-        "update": "Edytuj"
+        "update": "Edytuj",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {

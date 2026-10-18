@@ -142,7 +142,19 @@
         "sort": "Lajittele",
         "tag": "Tunniste",
         "tags": "Tunnisteet",
-        "update": "Muokkaa"
+        "update": "Muokkaa",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {

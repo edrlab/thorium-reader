@@ -142,7 +142,19 @@
         "sort": "Ταξινόμηση με",
         "tag": "Ετικέτα",
         "tags": "Ετικέτες",
-        "update": "Επεξεργασία"
+        "update": "Επεξεργασία",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {

@@ -142,7 +142,19 @@
         "sort": "வரிசைப்படுத்தவும்",
         "tag": "குறிச்சொல்",
         "tags": "குறிச்சொற்கள்",
-        "update": "தொகு"
+        "update": "தொகு",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {

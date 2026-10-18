@@ -142,7 +142,19 @@
         "sort": "Sortér efter",
         "tag": "Tag",
         "tags": "Tags",
-        "update": "Rediger"
+        "update": "Rediger",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {

@@ -142,7 +142,19 @@
         "sort": "Třídit",
         "tag": "Štítek",
         "tags": "Štítky",
-        "update": "Upravit"
+        "update": "Upravit",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {

@@ -142,7 +142,19 @@
         "sort": "Сортирай по",
         "tag": "",
         "tags": "Маркери",
-        "update": "Редактирай"
+        "update": "Редактирай",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {

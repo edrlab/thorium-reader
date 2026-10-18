@@ -142,7 +142,19 @@
         "sort": "Сортировать по",
         "tag": "Тег",
         "tags": "Теги",
-        "update": "Изменить"
+        "update": "Изменить",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {

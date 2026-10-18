@@ -142,7 +142,19 @@
         "sort": "並び替え",
         "tag": "タグ",
         "tags": "タグ",
-        "update": "編集"
+        "update": "編集",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {

@@ -142,7 +142,19 @@
         "sort": "排序方式",
         "tag": "标签",
         "tags": "标签",
-        "update": "编辑"
+        "update": "编辑",
+        "userProfile": {
+            "available": "",
+            "bookshelf": "",
+            "edit": "",
+            "holds": "",
+            "loading": "",
+            "loans": "",
+            "title": "",
+            "total": "",
+            "unavailable": "",
+            "used": ""
+        }
     },
     "dialog": {
         "annotations": {
