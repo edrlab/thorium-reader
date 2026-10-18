@@ -7,10 +7,15 @@
 
 import { describe, expect, it, jest } from "@jest/globals";
 import { runSaga } from "redux-saga";
+import { createStore } from "redux";
 import { OpdsFeed } from "readium-desktop/common/models/opds";
 
 jest.mock("typed-redux-saga/macro", () => jest.requireActual("typed-redux-saga"));
 jest.mock("electron", () => ({ nativeImage: {} }));
+jest.mock("inversify", () => ({ injectable: () => (target: unknown) => target }));
+jest.mock("readium-desktop/main/redux/actions", () => ({
+    opdsActions: jest.requireActual("readium-desktop/main/redux/actions/opds"),
+}));
 jest.mock("@r2-lcp-js/serializable", () => ({ TaJsonDeserialize: (value: unknown) => value }));
 jest.mock("@r2-opds-js/opds/opds2/opds2", () => ({ OPDSFeed: class {} }));
 jest.mock("readium-desktop/main/di", () => ({ diMainGet: jest.fn() }));
@@ -20,9 +25,99 @@ jest.mock("readium-desktop/common/redux/actions", () => ({
     opdsActions: { refresh: { build: () => ({ type: "refresh" }) } },
 }));
 
-import { addFeed } from "readium-desktop/main/redux/sagas/api/opds/feed";
+import { addFeed, setFeedFavorite, updateFeed } from "readium-desktop/main/redux/sagas/api/opds/feed";
 import { diMainGet } from "readium-desktop/main/di";
 import { httpGetWithAuth } from "readium-desktop/main/network/http";
+import { logCatalogEvent } from "readium-desktop/main/analytics/catalog";
+import { catalogAnalyticsEvents } from "readium-desktop/common/analytics/catalog";
+import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
+import { opdsDbReducers } from "readium-desktop/main/redux/reducers/opds/db";
+import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
+
+describe("feed updates", () => {
+    it.each([
+        [false, true, true],
+        [true, true, false],
+        [true, false, false],
+    ])("updates a feed with previous favorite %s and requested favorite %s", async (previousFavorite, favorite, logsFavorite) => {
+        jest.mocked(logCatalogEvent).mockClear();
+        const data: OpdsFeed = { title: "Updated feed", url: "https://example.org/catalog", favorite };
+        const previous = { ...data, favorite: previousFavorite, identifier: "requested-feed", createdAt: 1 };
+        const repository = {
+            get: jest.fn(async () => previous),
+            delete: jest.fn(async () => undefined),
+            save: jest.fn(async (feed: OpdsFeed) => feed),
+        };
+        const converter = { convertDocumentToView: (doc: OpdsFeed) => ({ ...doc }) };
+        jest.mocked(diMainGet).mockImplementation((key) =>
+            (key === "opds-feed-repository" ? repository : converter) as never);
+
+        const result = await runSaga({}, updateFeed, "requested-feed", data).toPromise();
+
+        expect(repository.delete).not.toHaveBeenCalled();
+        expect(repository.save).toHaveBeenCalledWith({ ...previous, ...data });
+        expect(result).toEqual({ ...previous, ...data });
+        expect(logCatalogEvent).toHaveBeenCalledWith(catalogAnalyticsEvents.edit);
+        if (logsFavorite) {
+            expect(logCatalogEvent).toHaveBeenCalledWith(catalogAnalyticsEvents.favorite);
+        } else {
+            expect(logCatalogEvent).not.toHaveBeenCalledWith(catalogAnalyticsEvents.favorite);
+        }
+    });
+
+    it("rejects a deleted feed without recreating it", async () => {
+        const repository = {
+            get: async (): Promise<undefined> => undefined,
+            save: jest.fn(),
+        };
+        jest.mocked(diMainGet).mockReturnValue(repository as never);
+        await expect(runSaga({ onError: () => undefined }, updateFeed, "deleted-feed", {
+            title: "Deleted", url: "https://example.org/catalog",
+        }).toPromise()).rejects.toThrow("OPDS feed not found: deleted-feed");
+        expect(repository.save).not.toHaveBeenCalled();
+    });
+
+    it.each([false, true])("keeps the identifier and never hides a feed during repeated edits (migrated: %s)", async (migrated) => {
+        type State = { opds: { catalog: OpdsFeedDocument[] } };
+        const store = createStore((state: State = { opds: { catalog: [] } }, action): State => ({
+            opds: { catalog: opdsDbReducers(state.opds.catalog, action as never) },
+        }));
+        const repository = new OpdsFeedRepository();
+        const converter = { convertDocumentToView: (doc: OpdsFeed) => ({ ...doc }) };
+        jest.mocked(diMainGet).mockImplementation((key) =>
+            (key === "store" ? store : key === "opds-feed-repository" ? repository : converter) as never);
+        const initial = await repository.save({
+            title: "Original", url: "https://example.org/catalog", identifier: "stable-id",
+            ...{ migratedFrom1_6Database: migrated, createdAt: 1 },
+        });
+        const snapshots: unknown[] = [];
+        const unsubscribe = store.subscribe(() => snapshots.push(store.getState().opds.catalog));
+        for (const title of ["First edit", "Second edit"]) {
+            await runSaga({}, updateFeed, initial.identifier, {
+                title, url: "https://example.org/edited", favorite: true,
+                identifier: "must-not-replace-the-requested-identifier",
+            }).toPromise();
+            expect(await repository.get(initial.identifier)).toMatchObject({
+                identifier: initial.identifier, title, createdAt: 1,
+            });
+        }
+        await runSaga({}, setFeedFavorite, initial.identifier, false).toPromise();
+        const authenticationUrl = "https://example.org/auth";
+        await runSaga({ dispatch: () => undefined }, addFeed, {
+            title: "Ignored", url: "https://example.org/edited", authenticationUrl,
+        }).toPromise();
+        expect(await repository.get(initial.identifier)).toMatchObject({
+            title: "Second edit", favorite: false, authenticationUrl, createdAt: 1,
+        });
+        unsubscribe();
+        expect(snapshots).toHaveLength(4);
+        for (const snapshot of snapshots) {
+            expect(snapshot).toEqual([expect.objectContaining({
+                identifier: initial.identifier, migratedFrom1_6Database: migrated,
+            })]);
+        }
+    });
+});
 
 describe("feed authentication discovery", () => {
     it("persists the discovered authentication URL after a slow icon download", async () => {
@@ -35,7 +130,12 @@ describe("feed authentication discovery", () => {
             findAll: async () => [...documents],
             save: async (feed: OpdsFeed) => {
                 const doc = { ...feed, identifier: feed.identifier || "saved-feed" };
-                documents.push(doc);
+                const idx = documents.findIndex((entry) => entry.identifier === doc.identifier);
+                if (idx >= 0) {
+                    documents[idx] = doc;
+                } else {
+                    documents.push(doc);
+                }
                 return doc;
             },
             delete: async (identifier: string) => {

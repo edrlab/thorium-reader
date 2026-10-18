@@ -218,7 +218,6 @@ export function* addFeed(
     }
     if (found) {
         if (data.authenticationUrl && found.authenticationUrl !== data.authenticationUrl) {
-            yield* callTyped(() => opdsFeedRepository.delete(found.identifier));
             const updated = yield* callTyped(() => opdsFeedRepository.save({
                 ...found,
                 authenticationUrl: data.authenticationUrl,
@@ -263,7 +262,6 @@ export function* addFeed(
                                 const opdsFeeds = yield* callTyped(() => opdsFeedRepository.findAll());
                                 const found = opdsFeeds.find((o) => o.url === data.url);
                                 if (found) {
-                                    yield* callTyped(() => opdsFeedRepository.delete(found.identifier));
                                     yield* callTyped(() => opdsFeedRepository.save({
                                         ...found,
                                         authenticationUrl: bookshelf.url,
@@ -300,10 +298,12 @@ export function* updateFeed(
     const opdsFeedViewConverter = diMainGet("opds-feed-view-converter");
 
     const previous = yield* callTyped(() => opdsFeedRepository.get(identifier));
+    if (!previous) {
+        throw new Error(`OPDS feed not found: ${identifier}`);
+    }
     const isAddingFavorite = data.favorite === true && previous.favorite !== true;
 
-    yield* callTyped(() => opdsFeedRepository.delete(identifier));
-    const doc = yield* callTyped(() => opdsFeedRepository.save(data));
+    const doc = yield* callTyped(() => opdsFeedRepository.save({ ...previous, ...data, identifier }));
     const view = yield* callTyped(() => opdsFeedViewConverter.convertDocumentToView(doc));
 
     yield* spawnTyped(function*() {
@@ -328,7 +328,6 @@ export function* setFeedFavorite(
 
     if (favorite !== feed.favorite) {
 
-        yield* callTyped(() => opdsFeedRepository.delete(identifier));
         const doc = yield* callTyped(() => opdsFeedRepository.save({
             ...feed,
             favorite,
