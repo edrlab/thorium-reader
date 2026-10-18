@@ -13,11 +13,13 @@ import {
 import { TOpdsProgressionServiceStatus } from "readium-desktop/common/models/opdsProgression";
 import { availableLanguages } from "readium-desktop/common/services/translator";
 import { SagaGenerator } from "typed-redux-saga";
+import type { IOpdsUserProfile } from "readium-desktop/common/models/opdsUserProfile";
 
 // quite useless
 export type TOpdsLinkSearch = Required<Pick<IOpdsLinkView, "url">>;
 
 export interface IOpdsApi {
+    getUserProfile: (identifier: string) => SagaGenerator<IOpdsUserProfile | undefined>;
     getProgressionServiceStatus: (
         url: string,
         locale?: keyof typeof availableLanguages,
@@ -48,6 +50,7 @@ export interface IOpdsApi {
 }
 
 export interface IOpdsModuleApi {
+    "opds/getUserProfile": IOpdsApi["getUserProfile"];
     "opds/getProgressionServiceStatus": IOpdsApi["getProgressionServiceStatus"];
     "opds/getFeed": IOpdsApi["getFeed"];
     "opds/deleteFeed": IOpdsApi["deleteFeed"];

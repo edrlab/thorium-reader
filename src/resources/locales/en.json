@@ -142,7 +142,19 @@
         "sort": "Sort by",
         "tag": "Tag",
         "tags": "Tags",
-        "update": "Edit"
+        "update": "Edit",
+        "userProfile": {
+            "available": "Available: {{count}}",
+            "bookshelf": "Open bookshelf",
+            "edit": "Edit profile",
+            "holds": "Holds",
+            "loading": "Loading account…",
+            "loans": "Loans",
+            "title": "Account",
+            "total": "Limit: {{count}}",
+            "unavailable": "Profile information is unavailable.",
+            "used": "{{used}} of {{total}} used"
+        }
     },
     "dialog": {
         "annotations": {

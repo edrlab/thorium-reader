@@ -11,8 +11,10 @@ import { getFeed, addFeed, findAllFeeds, deleteFeed, setFeedFavorite, updateFeed
 import { getUrlWithSearchLinks } from "./getUrlWithSearchLinks";
 
 import { getProgressionServiceStatus } from "./getProgressionServiceStatus";
+import { getUserProfile } from "./getUserProfile";
 
 export const opdsApi: IOpdsApi = {
+    getUserProfile,
     getProgressionServiceStatus,
     getFeed,
     addFeed,
