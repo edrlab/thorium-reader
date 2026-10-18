@@ -184,6 +184,7 @@ export interface IOpdsLinkView {
 }
 
 export interface IOpdsNavigationLink {
+    authenticate?: IOpdsLinkView[];
     next: IOpdsLinkView[];
     previous: IOpdsLinkView[];
     first: IOpdsLinkView[];

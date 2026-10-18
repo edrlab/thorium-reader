@@ -130,24 +130,29 @@ export function* addFeed(
                 );
                 const opdsFeedView = opdsFeedViewConverter.convertOpdsFeedToView(opdsFeed, data.url);
                 if (opdsFeedView) {
-                    const bookshelf = opdsFeedView.links?.bookshelf[0];
-                    if (bookshelf) {
-                        const responseBookshelf = yield* callTyped(() => httpGetWithAuth(false)(bookshelf.url));
-                        const mimeType = parseContentType(responseBookshelf.contentType);
-                        if (contentTypeisOpdsAuth(mimeType)) {
-                            // link url found
+                    const candidates = [...(opdsFeedView.links?.authenticate || []), ...(opdsFeedView.links?.bookshelf || [])];
+                    for (const bookshelf of candidates) {
+                        try {
+                            const responseBookshelf = yield* callTyped(() => httpGetWithAuth(false)(bookshelf.url));
+                            const mimeType = parseContentType(responseBookshelf.contentType);
+                            if (contentTypeisOpdsAuth(mimeType)) {
+                                // link url found
 
-                            const opdsFeeds = yield* callTyped(() => opdsFeedRepository.findAll());
-                            const found = opdsFeeds.find((o) => o.url === data.url);
-                            if (found) {
-                                yield* callTyped(() => opdsFeedRepository.delete(found.identifier));
-                                yield* callTyped(() => opdsFeedRepository.save({
-                                    ...found,
-                                    authenticationUrl: bookshelf.url,
-                                }));
+                                const opdsFeeds = yield* callTyped(() => opdsFeedRepository.findAll());
+                                const found = opdsFeeds.find((o) => o.url === data.url);
+                                if (found) {
+                                    yield* callTyped(() => opdsFeedRepository.delete(found.identifier));
+                                    yield* callTyped(() => opdsFeedRepository.save({
+                                        ...found,
+                                        authenticationUrl: bookshelf.url,
+                                    }));
 
-                                yield* putTyped(opdsActions.refresh.build());
+                                    yield* putTyped(opdsActions.refresh.build());
+                                    break;
+                                }
                             }
+                        } catch (e) {
+                            debug(e);
                         }
                     }
                 }
