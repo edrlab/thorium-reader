@@ -18,6 +18,9 @@ describe("toast window routing", () => {
     it("honors the originating window when the same book has two readers", () => {
         expect(getToastDestination(build(ToastType.Error, "Failed", "book-1", "reader-2"), "library", readers)).toBe("reader-2");
     });
+    it("falls back after an explicitly targeted reader closes", () => {
+        expect(getToastDestination(build(ToastType.Error, "Failed", "book-1", "closed-reader"), "library", readers)).toBe("reader-1");
+    });
     it("falls back to the library after the publication reader closes", () => {
         expect(getToastDestination(build(ToastType.Error, "Failed", "closed-book"), "library", readers)).toBe("library");
     });

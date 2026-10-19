@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { CodeError } from "readium-desktop/common/codeError.class";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
@@ -14,7 +15,7 @@ import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { error } from "readium-desktop/main/tools/error";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { call, cancelled, put } from "redux-saga/effects";
+import { call, cancelled, put, setContext } from "redux-saga/effects";
 import { SagaGenerator } from "typed-redux-saga";
 
 // Logger
@@ -37,6 +38,10 @@ export function* processRequest(requestAction: apiActions.request.TAction): Saga
         debug(api.moduleId, api.methodId, requestAction.payload);
 
         const apiModule = yield call(() => diMainGet(getSymbolName(api.moduleId)));
+        yield setContext({
+            toastWindowIdentifier: (requestAction as unknown as Partial<ActionWithSender>).sender?.identifier,
+            apiNotificationOwner: (apiModule as any)[api.methodId],
+        });
 
         const result = yield call(
             () => (apiModule as any)[api.methodId](...(requestAction.payload || [])),

@@ -408,3 +408,34 @@ describe("LCP operation error notifications", () => {
         expect(dispatch).toHaveBeenLastCalledWith(expect.objectContaining({ payload: { publicationFileLocks: { "publication-1": false } } }));
     });
 });
+
+
+describe("LCP persistence notifications", () => {
+    it.each([
+        ["renewPublicationLicense", "renew", "lsdRenew"],
+        ["returnPublication", "return", "lsdReturn"],
+    ] as const)("does not report success before %s persists its update", async (method, rel, request) => {
+        const dispatch = jest.fn();
+        const failure = new Error("Disk full");
+        const document = { identifier: "publication-1" };
+        const status = { Links: [{ HasRel: (value: string) => value === rel, Type: "application/vnd.readium.license.status.v1.0+json" }] };
+        const publication = { LCP: { LSD: status } };
+        const rollback = jest.fn(async (): Promise<void> => undefined);
+        const manager = Object.assign(Object.create(LcpManager.prototype) as object, {
+            store: { getState: () => ({ lcp: { publicationFileLocks: {} } }), dispatch },
+            translator: { translate: (key: string) => key },
+            publicationViewConverter: { unmarshallR2Publication: async () => publication },
+            checkPublicationLicenseUpdate_: async () => ({ publicationDocument: document, r2Publication: publication }),
+            lsdManager: { [request]: async () => status },
+            processStatusDocument: async () => ({ r2Publication: publication }),
+            publicationStorage: { getPublicationEpubPath: async () => "book.epub" },
+            updateDocumentLcp: async (): Promise<void> => undefined,
+            publicationRepository: { save: async () => { throw failure; } },
+            rollbackPublicationFilesReplacement: rollback,
+        }) as unknown as LcpManager;
+        await expect(manager[method](document as Parameters<LcpManager[typeof method]>[0])).rejects.toBe(failure);
+        expect(dispatch.mock.calls.map(([action]) => (action as { type: string }).type)).not.toContain("TOAST_OPEN_REQUEST");
+        expect(rollback).toHaveBeenCalledTimes(1);
+        expect(dispatch).toHaveBeenLastCalledWith(expect.objectContaining({ payload: { publicationFileLocks: { "publication-1": false } } }));
+    });
+});

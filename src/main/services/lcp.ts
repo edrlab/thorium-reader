@@ -706,10 +706,6 @@ export class LcpManager {
 
                     const newEndDate = r2Publication.LCP && r2Publication.LCP.Rights && r2Publication.LCP.Rights.End ?
                         r2Publication.LCP.Rights.End.toISOString() : "";
-                    this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
-                        `LCP [${this.translator.translate("publication.renewButton")}] ${newEndDate}`,
-                        undefined, windowIdentifier,
-                    ));
 
                     const epubPath = await this.publicationStorage.getPublicationEpubPath(
                         publicationDocument.identifier,
@@ -726,6 +722,10 @@ export class LcpManager {
 
                         newPubDocument = await this.publicationRepository.save(newPublicationDocument);
                         await this.finalizePublicationFilesReplacement(publicationFilesReplacement);
+                        this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
+                            `LCP [${this.translator.translate("publication.renewButton")}] ${newEndDate}`,
+                            undefined, windowIdentifier,
+                        ));
                     } catch (err) {
                         await this.rollbackPublicationFilesReplacement(publicationFilesReplacement);
                         throw err;
@@ -836,10 +836,6 @@ export class LcpManager {
 
                     const newEndDate = r2Publication.LCP && r2Publication.LCP.Rights && r2Publication.LCP.Rights.End ?
                         r2Publication.LCP.Rights.End.toISOString() : "";
-                    this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
-                        `LCP [${this.translator.translate("publication.returnButton")}] ${newEndDate}`,
-                        undefined, windowIdentifier,
-                    ));
 
                     const epubPath = await this.publicationStorage.getPublicationEpubPath(
                         publicationDocument.identifier,
@@ -856,6 +852,10 @@ export class LcpManager {
 
                         newPubDocument = await this.publicationRepository.save(newPublicationDocument);
                         await this.finalizePublicationFilesReplacement(publicationFilesReplacement);
+                        this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
+                            `LCP [${this.translator.translate("publication.returnButton")}] ${newEndDate}`,
+                            undefined, windowIdentifier,
+                        ));
                     } catch (err) {
                         await this.rollbackPublicationFilesReplacement(publicationFilesReplacement);
                         throw err;

@@ -190,7 +190,7 @@ export const reduxSyncMiddleware: Middleware
                             )
                         ) {
 
-                            if ((action as ActionWithDestination)?.destination?.identifier && (action as ActionWithDestination)?.destination?.identifier !== id) {
+                            if (!isToast && (action as ActionWithDestination)?.destination?.identifier && (action as ActionWithDestination)?.destination?.identifier !== id) {
                                 // if the action has a reader destination, do not send to other browserWin Instance
                                 return  ;
                             }

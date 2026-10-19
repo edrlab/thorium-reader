@@ -275,6 +275,29 @@
             "fail": "Importing [{{- path}}] failed: [{{- err}}]",
             "success": "Importing [{{- title}}] completed."
         },
+        "notifications": {
+            "annotationImportFailed": "Unable to import annotations. Check that the file is a valid annotation export.",
+            "annotationPublicationUnavailable": "Unable to import annotations because the publication is unavailable. Try re-importing the publication.",
+            "annotationStopPlayback": "Stop read aloud or audio playback before creating an annotation.",
+            "authenticationFailed": "Unable to sign in to this catalog. Check your connection and try again.",
+            "catalogLinkFailed": "Unable to add this catalog. Check the link and your connection.",
+            "catalogUpdateFailed": "Unable to update this catalog. Check its settings and try again.",
+            "copyLimit": "The copy allowance for this publication has been exhausted.",
+            "deleteFailed": "Unable to delete this publication. Try again.",
+            "exportFailed": "Unable to export this publication. Check the destination folder and available disk space.",
+            "openFileFailed": "Unable to open this file. Check that it is available and uses a supported format.",
+            "openLinkFailed": "Unable to open this publication link. Check the link and try again.",
+            "printLimit": "The print allowance for this publication has been exhausted.",
+            "profileActivationFailed": "Unable to activate this profile. Check the profile package or contact its provider.",
+            "profileProvisionFailed": "Unable to install this profile. Check the profile package or contact its provider.",
+            "profileTimeout": "Profile installation timed out. Check your connection and try again.",
+            "publicationUnavailable": "This publication is unavailable. Try re-importing it.",
+            "recoveryPartialFailure": "Recovered {{- recovered}} publications; {{- failed}} publications could not be recovered.",
+            "renewFailed": "Unable to renew this loan. Try again or contact your library.",
+            "returnFailed": "Unable to return this loan. Try again or contact your library.",
+            "storageRefreshFailed": "The storage setting was saved, but the library could not be refreshed. Try refreshing the library.",
+            "tagsFailed": "Unable to save the publication tags. Try again."
+        },
         "open": {
             "error": "Loading publication failed: [{{- err}}]",
             "folderNotFound": "The publication directory cannot be found. Re-import it, or configure the additional storage in Settings > Storage."
@@ -289,25 +312,7 @@
             "updateFailed": "Failed to update publication directory: {{- message}}",
             "updated": "Publication directory updated."
         },
-        "wipeData": "Login data was cleared (access tokens and cookies)",
-        "notifications": {
-            "annotationImportFailed": "Unable to import annotations. Check that the file is a valid annotation export.",
-            "annotationPublicationUnavailable": "Unable to import annotations because the publication is unavailable. Try re-importing the publication.",
-            "annotationStopPlayback": "Stop read aloud or audio playback before creating an annotation.",
-            "authenticationFailed": "Unable to sign in to this catalog. Check your connection and try again.",
-            "catalogLinkFailed": "Unable to add this catalog. Check the link and your connection.",
-            "copyLimit": "The copy allowance for this publication has been exhausted.",
-            "openFileFailed": "Unable to open this file. Check that it is available and uses a supported format.",
-            "openLinkFailed": "Unable to open this publication link. Check the link and try again.",
-            "printLimit": "The print allowance for this publication has been exhausted.",
-            "profileActivationFailed": "Unable to activate this profile. Check the profile package or contact its provider.",
-            "profileProvisionFailed": "Unable to install this profile. Check the profile package or contact its provider.",
-            "profileTimeout": "Profile installation timed out. Check your connection and try again.",
-            "recoveryPartialFailure": "Recovered {{- recovered}} publications; {{- failed}} publications could not be recovered.",
-            "renewFailed": "Unable to renew this loan. Try again or contact your library.",
-            "returnFailed": "Unable to return this loan. Try again or contact your library.",
-            "storageRefreshFailed": "The storage setting was saved, but the library could not be refreshed. Try refreshing the library."
-        }
+        "wipeData": "Login data was cleared (access tokens and cookies)"
     },
     "opds": {
         "addForm": {
