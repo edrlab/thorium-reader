@@ -1,0 +1,9 @@
+{
+  "method": "Actual NVDA speech diagnostic output; startup-error utterances only",
+  "speech": [
+    "Speaking [LangChangeCommand ('en_GB'), 'Failed to initialize the reader', 'dialog', 'CRITICAL ERRROR!!! winId=6d683b19-f697-46e9-a3b9-0dc9418c0b1d; pubId=77ac4faf-02c3-4b25-bdb4-be48d7d23a58; Failed to initialize the reader; it will now close. [timeout]', CancellableSpeech (still valid)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'OK', 'button', CancellableSpeech (still valid)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'Failed to initialize the reader', 'dialog', 'CRITICAL ERRROR!!! winId=109e4bcb-7d00-4de4-8cea-5f2e2c08193f; pubId=77ac4faf-02c3-4b25-bdb4-be48d7d23a58; Failed to initialize the reader; it will now close. [timeout]', CancellableSpeech (still valid)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'OK', 'button', CancellableSpeech (still valid)]"
+  ]
+}

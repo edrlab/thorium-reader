@@ -28,8 +28,11 @@ const coverageFile = "docs/accessibility/evidence/runtime-component-coverage.jso
 const runtime = fs.existsSync(coverageFile) ? JSON.parse(fs.readFileSync(coverageFile, "utf8")) : {};
 const continuationFile = "docs/accessibility/evidence/continuation-coverage.json";
 const continuation = fs.existsSync(continuationFile) ? JSON.parse(fs.readFileSync(continuationFile, "utf8")) : {};
-const header = ["file", "static_review", "interesting_JSX_nodes", "finding_IDs", "runtime_evidence", "conformance", "coverage_kind", "runtime_observations", "runtime_limitations", "remediation_status", "remediation_evidence", "remaining_finding_IDs"];
+const nativeFile = "docs/accessibility/native-nvda-validation.json";
+const native = fs.existsSync(nativeFile) ? JSON.parse(fs.readFileSync(nativeFile, "utf8")) : undefined;
+const header = ["file", "static_review", "interesting_JSX_nodes", "finding_IDs", "runtime_evidence", "conformance", "coverage_kind", "runtime_observations", "runtime_limitations", "remediation_status", "remediation_evidence", "remaining_finding_IDs", "native_finding_IDs", "native_NVDA_status", "native_NVDA_evidence", "native_NVDA_observations", "native_NVDA_limitations"];
 const rows = inventory.files.map(file => {
+    const nativeChecks = (native?.checks || []).filter(check => check.files.includes(file.file));
     const fixes = Object.entries(remediation?.findings || {}).filter(([, finding]) => finding.files.includes(file.file));
     const ids = [...new Set([...Object.entries(issues).filter(([suffix]) => file.file.endsWith(suffix)).flatMap(([,ids]) => ids.match(/\bA\d{2}\b/g) || []), ...fixes.map(([id]) => id)])];
     const fixEvidence = [...new Set(fixes.flatMap(([,finding]) => finding.evidence))];
@@ -43,6 +46,11 @@ const rows = inventory.files.map(file => {
     continuation[file.file]?.limitations || "Representative application states only; all branches and native AT not verified",
     fixes.length ? fixes.map(([id, finding]) => `${id}: ${finding.status} (batch ${finding.batch}); ${finding.observation}`).join(" | ") : "No remediation yet; historical evidence retained",
     fixEvidence.join("; "), remaining.join(" "),
+    nativeChecks.filter(check => /^N\d+$/.test(check.id)).map(check => check.id).join(" "),
+    nativeChecks.length ? [...new Set(nativeChecks.map(check => check.status))].join("; ") : "Not evaluated in native NVDA",
+    [...new Set(nativeChecks.flatMap(check => check.evidence))].join("; "),
+    nativeChecks.map(check => `${check.id}: ${check.observation}`).join(" | "),
+    nativeChecks.length ? nativeChecks.map(check => `${check.id}: ${check.limitations}`).join(" | ") : (native?.limitations || "Native screen-reader validation remains outstanding; earlier renderer captures are not NVDA tests"),
     ];
 });
 fs.writeFileSync("docs/accessibility/component-matrix.csv", [header, ...rows].map(row =>

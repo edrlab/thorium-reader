@@ -1,0 +1,13 @@
+{
+  "kind": "Native UIA startup blocker after fresh-window retry",
+  "window": {
+    "app": "process:C:\\Users\\plero\\.codex\\worktrees\\8a0b\\thorium-reader\\node_modules\\electron\\dist\\electron.exe",
+    "id": 6097634,
+    "title": "Thorium"
+  },
+  "accessibility": {
+    "document_text": "￼",
+    "focused_element": "15 dialogue Failed to initialize the reader Secondary Actions: Raise",
+    "tree": "Window: \"Thorium\", App: electron.exe.\n\t0 window (disabled) Thorium Secondary Actions: Raise\n\t\t15 dialogue Failed to initialize the reader Secondary Actions: Raise\n\t\t\t16 image MainInstructionIcon ID: MainIcon\n\t\t\t17 text CRITICAL ERRROR!!! winId=109e4bcb-7d00-4de4-8cea-5f2e2c08193f; pubId=77ac4faf-02c3-4b25-bdb4-be48d7d23a58; Failed to initialize the reader; it will now close. [timeout] ID: ContentText\n\t\t\t18 button OK ID: CommandButton_1\n\t\t\t19 title bar (settable, string) Value: Failed to initialize the reader\n\t\t\t\t20 button Close\n\t\t1 pane (disabled)\n\t\t2 region Thorium\n\t\t\t3 region\n\t\t\t\t4 region\n\t\t\t\t\t5 region\n\t\t\t\t\t\t6 region\n\t\t\t\t\t\t\t7 menu bar\n\t\t\t\t\t\t\t\t21 button DEV\n\t\t\t\t\t\t\t12 region\n\t\t\t\t\t\t\t\t13 region\n\t\t\t\t\t\t\t\t\t22 document Thorium Value: http://localhost:8191/index_reader.html ID: RootWebArea\n\t\t\t\t\t\t\t\t14 region\n\t\t15 dialogue Failed to initialize the reader Secondary Actions: Raise\n\t\t\t16 image MainInstructionIcon ID: MainIcon\n\t\t\t17 text CRITICAL ERRROR!!! winId=109e4bcb-7d00-4de4-8cea-5f2e2c08193f; pubId=77ac4faf-02c3-4b25-bdb4-be48d7d23a58; Failed to initialize the reader; it will now close. [timeout] ID: ContentText\n\t\t\t18 button OK ID: CommandButton_1\n\t\t\t19 title bar (settable, string) Value: Failed to initialize the reader\n\t\t\t\t20 button Close\n\nDocument text: ```\n￼\n```"
+  }
+}

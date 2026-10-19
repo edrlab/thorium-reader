@@ -1,0 +1,21 @@
+{
+  "downloadPage": "https://www.nvaccess.org/download-nvda/",
+  "downloadUrl": "https://www.nvaccess.org/download/nvdaLauncher",
+  "version": "2026.2",
+  "bytes": 64530776,
+  "signatureStatus": "Valid",
+  "signer": "CN=NV Access Limited, O=NV Access Limited, L=Camp Mountain, S=Queensland, C=AU",
+  "sha256": "F3F8D29974A88D687B3C4809BE192219EC579C5BDABCDA5AAF53635288BCA824",
+  "sourceRevision": "c3467cd61399c9639837a6f0ace075beb07e0335",
+  "branch": "codex/a11y-native-nvda-validation",
+  "setupStatus": "Resolved: native NVDA available. N01 naming repair verified; broader Reader audit remains pending after earlier review timeouts.",
+  "explicitUserApproval": "Yes, create and run portable NVDA",
+  "nativeValidationCompleted": false,
+  "diagnosticLoggingCleanup": "Verified portable NVDA running with --replace --minimal --disable-addons --no-logging and the separate audit config. Speech diagnostic logging ended; the full prior log remains ignored under dist/.",
+  "previousSetupStatus": "Not executed: automatic approval review timed out on initial attempt, retry, explicit-user-approved retry and supported native launcher action. Workspace-sandbox launch failed with Illegal System DLL Relocation. User requested recording the blocker and stopping.",
+  "nativeValidationStatus": "Partial: N01 repaired and verified with native NVDA and five actual local card names; broader Reader scenarios remain pending.",
+  "portableCreated": true,
+  "screenReaderStarted": true,
+  "operatingSystem": "Windows 11 25H2 (10.0.26200.9711) AMD64; reported by NVDA startup log",
+  "synthesizer": "Windows OneCore; en_GB speech"
+}

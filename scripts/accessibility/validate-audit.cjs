@@ -31,6 +31,25 @@ assert.equal(new Set(matrix.map(r => r.file)).size, inventoryCount);
 assert.equal(matrix.filter(r => r.coverage_kind === 'inactive').length, 3);
 assert.equal(matrix.filter(r => r.coverage_kind === 'untested' || r.runtime_evidence === 'Not exercised').length, 0);
 for (const row of matrix) assert.ok(fs.existsSync(row.file), row.file);
+const nativeFile = path.join(root, 'native-nvda-validation.json');
+if (fs.existsSync(nativeFile)) {
+    const native = JSON.parse(fs.readFileSync(nativeFile, 'utf8'));
+    assert.equal(native.recordedNativeChecks, native.checks.length);
+    assert.equal(native.completedNativeScenarios, native.checks.filter(check => check.complete).length);
+    assert.ok(fs.existsSync(path.join(root, native.environmentEvidence)));
+    for (const check of native.checks) {
+        assert.equal(native.screenReader.started, true, 'NVDA checks require an actual NVDA session');
+        assert.ok(check.files.length && check.evidence.length && check.observation && check.limitations, check.id);
+        for (const file of check.files) assert.ok(matrix.some(row => row.file === file), file);
+        for (const evidence of check.evidence) assert.ok(fs.existsSync(path.join(root, evidence)), evidence);
+    }
+    for (const row of matrix) {
+        const checks = native.checks.filter(check => check.files.includes(row.file));
+        assert.equal(row.native_finding_IDs, checks.filter(check => /^N\d+$/.test(check.id)).map(check => check.id).join(' '), row.file);
+        assert.equal(row.native_NVDA_status, checks.length ? [...new Set(checks.map(check => check.status))].join('; ') : 'Not evaluated in native NVDA', row.file);
+        for (const evidence of row.native_NVDA_evidence.split('; ').filter(Boolean)) assert.ok(fs.existsSync(path.join(root, evidence)), evidence);
+    }
+}
 const continuation = csv('continuation-47.csv');
 assert.equal(continuation.length, 47);
 for (const row of continuation) for (const evidence of row.evidence.split('; ')) assert.ok(fs.existsSync(evidence.startsWith('src/') ? evidence : path.join(root, evidence)), evidence);

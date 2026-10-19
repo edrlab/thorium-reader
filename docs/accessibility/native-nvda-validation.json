@@ -1,0 +1,245 @@
+{
+  "date": "2026-10-19",
+  "sourceRevision": "c3467cd61399c9639837a6f0ace075beb07e0335",
+  "branch": "codex/a11y-native-nvda-validation",
+  "status": "partial native validation; N01 repaired and verified; remaining Reader scenarios pending",
+  "screenReader": {
+    "name": "NVDA",
+    "version": "2026.2 AMD64",
+    "distribution": "Official portable copy",
+    "started": true,
+    "synthesizer": "Windows OneCore",
+    "speechLanguage": "en_GB",
+    "addons": "Disabled",
+    "configuration": "Separate workspace-local audit config"
+  },
+  "startup": "npm run start:dev:quick",
+  "environmentEvidence": "evidence/native-nvda/environment.json",
+  "completedNativeScenarios": 4,
+  "checks": [
+    {
+      "id": "library-navigation",
+      "complete": true,
+      "status": "Passed for sampled navigation controls",
+      "files": [
+        "src/renderer/library/components/layout/LibraryHeader.tsx",
+        "src/renderer/library/components/layout/LibraryLayout.tsx"
+      ],
+      "evidence": [
+        "evidence/native-nvda/library-tab-01.json",
+        "evidence/native-nvda/library-tab-02.json",
+        "evidence/native-nvda/library-report-focus.json",
+        "evidence/native-nvda/library-tab-catalogs.json",
+        "evidence/native-nvda/library-tab-settings.json",
+        "evidence/native-nvda/library-import-focus.json"
+      ],
+      "observation": "Tab reaches Home, All publications, Catalogs, Application Settings and Import publication. NVDA announces the navigation/list context, control names and Home checked state. NVDA+Tab confirms All publications is focused.",
+      "limitations": "Sampled default-English Home navigation only. Skip-link activation, heading/landmark quick navigation, route changes, all navigation branches and full focus order are not established."
+    },
+    {
+      "id": "library-settings-profiles",
+      "complete": true,
+      "status": "Passed for sampled Settings/profile controls",
+      "files": [
+        "src/renderer/library/components/settings/Settings.tsx",
+        "src/renderer/library/components/settings/ProfilesSettings.tsx"
+      ],
+      "evidence": [
+        "evidence/native-nvda/library-settings-open.json",
+        "evidence/native-nvda/library-settings-tab.json",
+        "evidence/native-nvda/library-settings-keyboard-tab.json",
+        "evidence/native-nvda/library-settings-profiles-tab.json",
+        "evidence/native-nvda/library-profile-radio.json",
+        "evidence/native-nvda/library-settings-dismiss.json",
+        "evidence/native-nvda/library-settings-dismiss-repeat.json"
+      ],
+      "observation": "Enter opens Settings; NVDA reads its title, General/Keyboard shortcuts/Profiles tabs and language combo. Tab and Right Arrow announce selected tab positions. Thorium vanilla is announced as a checked radio, 1 of 1. Two Escapes were issued before the Settings trigger was announced collapsed again.",
+      "limitations": "Only existing vanilla profile checked; no profile change. First Escape alone did not produce dismissal evidence; possible NVDA focus-mode interaction was not independently proven. Duplicate selected-tab speech was observed. No acoustic assessment or blanket pass for all Settings controls."
+    },
+    {
+      "id": "library-publication-menu",
+      "complete": true,
+      "status": "Passed for sampled publication-menu behavior",
+      "files": [
+        "src/renderer/library/components/publication/PublicationCard.tsx",
+        "src/renderer/common/components/menu/Menu.tsx"
+      ],
+      "evidence": [
+        "evidence/native-nvda/library-pdf-menu-focus.json",
+        "evidence/native-nvda/library-book-menu-open.json",
+        "evidence/native-nvda/library-book-menu-dismiss.json",
+        "evidence/native-nvda/library-epub-link-focus.json"
+      ],
+      "observation": "NVDA announces Menu (Untitled) as a collapsed button, Enter opens its named dialog and reads its actions, and Escape returns to the named collapsed trigger. The Accessible EPUB 3 link includes title and author.",
+      "limitations": "Menu actions were read without invoking deletion, loan changes or export. One existing PDF menu and one EPUB link sampled; does not establish every menu or dialog branch."
+    },
+    {
+      "id": "N01",
+      "complete": true,
+      "status": "Fixed in sampled local cards; native NVDA verified",
+      "files": [
+        "src/renderer/library/components/publication/PublicationCard.tsx",
+        "src/renderer/common/components/Cover.tsx"
+      ],
+      "evidence": [
+        "evidence/native-nvda/library-pdf-link-focus.json",
+        "evidence/native-nvda/library-tab-02.json",
+        "evidence/native-nvda/library-pdf-menu-focus.json",
+        "evidence/native-nvda/n01-fix/library-card-names.json",
+        "evidence/native-nvda/n01-fix/library-cards.png",
+        "evidence/native-nvda/n01-fix/pdf-native-tab.json",
+        "evidence/native-nvda/n01-fix/pdf-native-focus-query.json",
+        "evidence/native-nvda/n01-fix/epub-menu-backward.json",
+        "evidence/native-nvda/n01-fix/epub-native-tab.json",
+        "evidence/native-nvda/n01-fix/build-summary.txt"
+      ],
+      "observation": "Publication controls receive an explicit aria-label built from the same localized title shown on the card, followed by authors. The tooltip uses that same label. Applied to available local, unavailable local and catalog card branches. Five existing local cards expose the expected Chromium AX names. Native NVDA Tab announces Untitled, link; NVDA+Tab confirms Untitled, link, focused. Backward Tab announces Accessible EPUB 3 - Matt Garrish, link and retains its adjacent menu name.",
+      "criteria": [
+        "2.5.3 Label in Name"
+      ],
+      "limitations": "Fixed and dynamically verified for five existing local cards in English, including the original PDF and an EPUB with author. Catalog and unavailable branches share the source repair but were not dynamically exercised here. All locale, cover and AT variants are not certified. NVDA speech-output logs were inspected; no acoustic assessment. The shared Cover implementation was not changed. Broader Reader native validation remains pending.",
+      "baselineStatus": "Naming defect reproduced in sampled PDF link",
+      "baselineObservation": "The visible PDF title is Untitled, but native NVDA focus and browse speech call its opening link To get missing image descriptions, open the context menu. UIA exposes Untitled as its description, not its name. PublicationCard hides its visible title with aria-hidden and relies on title fallback; the decorative cover is exposed with empty alt and presentation role. The adjacent menu remains correctly named."
+    },
+    {
+      "id": "reader-document-identification",
+      "complete": false,
+      "status": "Limited native observation; further Reader checks blocked",
+      "files": [
+        "src/renderer/reader/components/Reader.tsx"
+      ],
+      "evidence": [
+        "evidence/native-nvda/reader-report-focus.json",
+        "evidence/native-nvda/reader-initialization-timeout.json",
+        "evidence/native-nvda/reader-retry-timeout.json",
+        "evidence/native-nvda/reader-startup-speech.json"
+      ],
+      "observation": "After a full npm run start:dev:quick restart, Accessible EPUB 3 loads in the Reader and the EPUB webview is present. NVDA+Tab announces Thorium - Accessible EPUB 3, document, focused, read only. Before restart, two fresh Reader attempts timed out and NVDA announced the native error dialog and OK button.",
+      "limitations": "Document identification only. No EPUB/PDF reading navigation, Settings sliders, search/status, TOC, editors, print or webview focus transition is passed. Subsequent native input and recovery captures timed out in automatic approval review."
+    }
+  ],
+  "limitations": "Partial native NVDA coverage. Only referenced controls/states were exercised; other component branches, EPUB/PDF browse/focus reading, sliders, search/status announcements, profile artwork and full format/theme/locale coverage remain unverified. Two Reader initialization timeouts preceded a successful application restart. Repeated automatic approval-review timeouts then blocked further Reader input. No application-wide WCAG pass.",
+  "plannedScenarios": [
+    {
+      "id": "library-navigation",
+      "scope": "Library skip link, landmark and heading navigation, route buttons and selected state",
+      "criteria": [
+        "1.3.1",
+        "2.1.1",
+        "2.4.1",
+        "2.4.3",
+        "4.1.2"
+      ]
+    },
+    {
+      "id": "library-publications",
+      "scope": "Book link and contextual menu names, expanded state, dismissal and focus restoration",
+      "criteria": [
+        "2.1.1",
+        "2.4.3",
+        "4.1.2"
+      ]
+    },
+    {
+      "id": "library-settings",
+      "scope": "Settings dialog and tabs, language suggestions, profile radio names and checked state",
+      "criteria": [
+        "2.1.1",
+        "2.4.3",
+        "3.1.1",
+        "4.1.2"
+      ]
+    },
+    {
+      "id": "library-profile-images",
+      "scope": "Isolated signed profiles: decorative omission, informative alternatives, branding and welcome-checkbox state",
+      "criteria": [
+        "1.1.1",
+        "3.1.2",
+        "4.1.2"
+      ]
+    },
+    {
+      "id": "library-status",
+      "scope": "Operation status and toast announcements; no duplicate or missing messages",
+      "criteria": [
+        "4.1.3"
+      ]
+    },
+    {
+      "id": "reader-epub",
+      "scope": "Host to EPUB webview transition, browse/focus modes, heading reading and return to controls",
+      "criteria": [
+        "1.3.1",
+        "2.1.1",
+        "2.4.3",
+        "4.1.2"
+      ]
+    },
+    {
+      "id": "reader-navigation",
+      "scope": "TOC tree, chapter navigation, expanded nodes, docked/modal relationships and dismissal",
+      "criteria": [
+        "1.3.1",
+        "2.1.1",
+        "2.4.3",
+        "4.1.2"
+      ]
+    },
+    {
+      "id": "reader-sliders",
+      "scope": "Font and spacing names, meaningful values, keyboard changes and read-back",
+      "criteria": [
+        "2.1.1",
+        "4.1.2"
+      ]
+    },
+    {
+      "id": "reader-search",
+      "scope": "Search input, result count/no matches, result navigation and leaving the input",
+      "criteria": [
+        "2.1.1",
+        "2.1.2",
+        "4.1.2",
+        "4.1.3"
+      ]
+    },
+    {
+      "id": "reader-editors",
+      "scope": "Bookmark/annotation editor names, filter disclosure controls, cancel and restore; no saved user-content changes",
+      "criteria": [
+        "2.1.1",
+        "2.4.3",
+        "4.1.2"
+      ]
+    },
+    {
+      "id": "reader-pdf",
+      "scope": "PDF webview reading, page changes, TOC and return to host; document tagging considered separately",
+      "criteria": [
+        "1.3.1",
+        "2.1.1",
+        "2.4.3",
+        "4.1.2"
+      ]
+    },
+    {
+      "id": "reader-print",
+      "scope": "Pages field, named long preview region and keyboard scrolling; do not submit a print job",
+      "criteria": [
+        "2.1.1",
+        "4.1.2"
+      ]
+    }
+  ],
+  "method": "Native SendInput through the computer-use skill, with real NVDA speech.speech.speak diagnostic records. Speech output was inspected as text; acoustic listening, pronunciation and timing intelligibility were not assessed. No simulated screen-reader output or fixture controls are counted.",
+  "recordedNativeChecks": 5,
+  "startupHistory": [
+    "Initial launcher execution blocked by approval timeouts and sandbox DLL relocation.",
+    "User started the temporary standalone runner.",
+    "Portable copy creation later succeeded (exit 0); isolated logging session started.",
+    "Two EPUB Reader windows timed out before a full development-app restart.",
+    "Restarted Reader loaded EPUB successfully; NVDA document identification captured.",
+    "Repeated approval-review timeouts prevented the remaining native checks."
+  ]
+}

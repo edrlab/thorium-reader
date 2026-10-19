@@ -1,0 +1,26 @@
+{
+  "label": "library-profile-radio",
+  "key": "Tab",
+  "at": "2026-10-19T19:47:47.895Z",
+  "window": {
+    "app": "process:C:\\Users\\plero\\.codex\\worktrees\\8a0b\\thorium-reader\\node_modules\\electron\\dist\\electron.exe",
+    "id": 6358956,
+    "title": "Thorium"
+  },
+  "focused": "0 window Thorium Secondary Actions: Raise",
+  "accessibility": {
+    "document_text": "Dismiss\nSettings\nGeneral\nKeyboard shortcuts\nProfiles\nStorage\nAdvanced\nProfiles\nSwitch profiles to customize the app with a partner vendor’s branding and colors. Each profile offers a tailored experience.\nThorium vanilla\nThorium vanilla\nThe Thorium Vanilla profile is the original one, designed by EDRLab.\nClose",
+    "focused_element": "0 window Thorium Secondary Actions: Raise",
+    "tree": "Window: \"Thorium\", App: electron.exe.\n\t0 window Thorium Secondary Actions: Raise\n\t\t1 pane (disabled)\n\t\t2 region Thorium\n\t\t\t3 region\n\t\t\t\t4 region\n\t\t\t\t\t5 region\n\t\t\t\t\t\t6 region\n\t\t\t\t\t\t\t7 menu bar\n\t\t\t\t\t\t\t\t8 button DEV\n\t\t\t\t\t\t\t9 region\n\t\t\t\t\t\t\t\t10 region\n\t\t\t\t\t\t\t\t\t11 document Thorium Value: http://localhost:8090/index_library.html ID: RootWebArea\n\t\t\t\t\t\t\t\t\t\t71 group ID: body_element\n\t\t\t\t\t\t\t\t\t\t\t72 button Dismiss ID: react-aria7616012100-:ri:\n\t\t\t\t\t\t\t\t\t\t\t73 dialogue Settings Secondary Actions: Raise ID: react-aria7616012100-:r3:\n\t\t\t\t\t\t\t\t\t\t\t\t74 heading Settings ID: :r0:\n\t\t\t\t\t\t\t\t\t\t\t\t75 tab Application Settings ID: react-aria7616012100-:rm:\n\t\t\t\t\t\t\t\t\t\t\t\t\t76 tab item (selectable) General ID: react-aria7616012100-:rm:-tab-tab-general\n\t\t\t\t\t\t\t\t\t\t\t\t\t77 tab item (selectable) Keyboard shortcuts ID: react-aria7616012100-:rm:-tab-tab-keyboardShortcuts\n\t\t\t\t\t\t\t\t\t\t\t\t\t78 tab item (selectable) Profiles ID: react-aria7616012100-:rm:-tab-tab-profiles\n\t\t\t\t\t\t\t\t\t\t\t\t\t79 tab item (selectable) Storage ID: react-aria7616012100-:rm:-tab-tab-storage\n\t\t\t\t\t\t\t\t\t\t\t\t\t80 tab item (selectable) Advanced ID: react-aria7616012100-:rm:-tab-tab-advanced\n\t\t\t\t\t\t\t\t\t\t\t\t81 heading Profiles\n\t\t\t\t\t\t\t\t\t\t\t\t347 tab panel Profiles ID: react-aria7616012100-:rm:-tabpanel-tab-profiles\n\t\t\t\t\t\t\t\t\t\t\t\t\t348 text Switch profiles to customize the app with a partner vendor’s branding and colors. Each profile offers a tailored experience.\n\t\t\t\t\t\t\t\t\t\t\t\t\t349 radio group (settable, string) Profiles\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t350 radio button (selectable, settable, string) Thorium vanilla ID: :r7i:-vanilla\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t351 heading Thorium vanilla\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t352 text The Thorium Vanilla profile is the original one, designed by EDRLab.\n\t\t\t\t\t\t\t\t\t\t\t\t100 button Close\n\t\t\t\t\t\t\t\t70 region\n\nDocument text: ```\nDismiss\nSettings\nGeneral\nKeyboard shortcuts\nProfiles\nStorage\nAdvanced\nProfiles\nSwitch profiles to customize the app with a partner vendor’s branding and colors. Each profile offers a tailored experience.\nThorium vanilla\nThorium vanilla\nThe Thorium Vanilla profile is the original one, designed by EDRLab.\nClose\n```"
+  },
+  "speech": [
+    "Input: kb(desktop):tab",
+    "Speaking [LangChangeCommand ('en_GB'), 'Profiles', 'property page', CancellableSpeech (still valid)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'Profiles', 'grouping', CancellableSpeech (still valid)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'Thorium vanilla', 'radio button', 'checked', '1 of 1', CancellableSpeech (still valid)]"
+  ],
+  "method": "Native sky SendInput; real NVDA debug speech output; no acoustic listening",
+  "logStart": 37833,
+  "logEnd": 38457,
+  "snapshotTiming": "UIA/screenshot captured immediately after input; asynchronous layout can lag. Speech collected separately after 850 ms; focus claims rely on NVDA speech, not the helper window-level focus field."
+}

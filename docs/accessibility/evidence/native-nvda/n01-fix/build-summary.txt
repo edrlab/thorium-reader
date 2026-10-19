@@ -1,0 +1,11 @@
+N01: explicit publication control names
+Changed application file: src/renderer/library/components/publication/PublicationCard.tsx
+Full TypeScript: tsc6 --noEmit --project tsconfig-cli.json --pretty false (exit 0)
+Changed-file ESLint with repository configuration (exit 0)
+Library Webpack build with runtime scope checker (exit 0)
+renderer index app (webpack 5.111.1) compiled successfully in 9392 ms
+Actual application: five Library card names match their visible titles and Chromium AX names
+Native NVDA 2026.2 AMD64: PDF Untitled and EPUB Accessible EPUB 3 - Matt Garrish names verified through native keyboard input and real speech diagnostic output
+Adjacent EPUB menu remains named and collapsed
+Catalog/unavailable card branches repaired in source; not dynamically exercised in this retest
+No Reader reload or publication-content change

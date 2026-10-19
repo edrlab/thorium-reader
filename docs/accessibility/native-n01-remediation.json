@@ -1,0 +1,26 @@
+{
+  "finding": "N01",
+  "status": "fixed",
+  "implementationFiles": ["src/renderer/library/components/publication/PublicationCard.tsx"],
+  "contextFiles": ["src/renderer/common/components/Cover.tsx"],
+  "source": "Working-tree fix based on c3467cd61399c9639837a6f0ace075beb07e0335",
+  "observation": "Publication controls receive an explicit aria-label built from the same localized title shown on the card, followed by authors. The tooltip uses that same label. Applied to available local, unavailable local and catalog card branches. Five existing local cards expose the expected Chromium AX names. Native NVDA Tab announces Untitled, link; NVDA+Tab confirms Untitled, link, focused. Backward Tab announces Accessible EPUB 3 - Matt Garrish, link and retains its adjacent menu name.",
+  "limitations": "Fixed and dynamically verified for five existing local cards in English, including the original PDF and an EPUB with author. Catalog and unavailable branches share the source repair but were not dynamically exercised here. All locale, cover and AT variants are not certified. NVDA speech-output logs were inspected; no acoustic assessment. The shared Cover implementation was not changed. Broader Reader native validation remains pending.",
+  "evidence": [
+    "evidence/native-nvda/n01-fix/library-card-names.json",
+    "evidence/native-nvda/n01-fix/library-cards.png",
+    "evidence/native-nvda/n01-fix/pdf-native-tab.json",
+    "evidence/native-nvda/n01-fix/pdf-native-focus-query.json",
+    "evidence/native-nvda/n01-fix/epub-menu-backward.json",
+    "evidence/native-nvda/n01-fix/epub-native-tab.json",
+    "evidence/native-nvda/n01-fix/build-summary.txt"
+  ],
+  "validation": {
+    "typescript": "passed",
+    "changedFileESLint": "passed",
+    "libraryWebpackAndScopeChecker": "passed",
+    "actualLibraryCardNames": 5,
+    "nativePublicationNameCases": 2,
+    "focusPreparation": "CDP focused the neighboring EPUB menu as setup only; subsequent Tab, Shift+Tab and NVDA+Tab inputs were native. This is a naming regression test, not a complete keyboard-flow audit."
+  }
+}

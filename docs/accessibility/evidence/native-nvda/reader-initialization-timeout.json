@@ -1,0 +1,12 @@
+{
+  "kind": "Native UIA startup blocker; not a completed Reader screen-reader scenario",
+  "window": {
+    "app": "process:C:\\Users\\plero\\.codex\\worktrees\\8a0b\\thorium-reader\\node_modules\\electron\\dist\\electron.exe",
+    "id": 38603164,
+    "title": "Thorium"
+  },
+  "accessibility": {
+    "focused_element": "15 dialogue Failed to initialize the reader Secondary Actions: Raise",
+    "tree": "Window: \"Thorium\", App: electron.exe.\n\t0 window (disabled) Thorium Secondary Actions: Raise\n\t\t15 dialogue Failed to initialize the reader Secondary Actions: Raise\n\t\t\t16 image MainInstructionIcon ID: MainIcon\n\t\t\t17 text CRITICAL ERRROR!!! winId=6d683b19-f697-46e9-a3b9-0dc9418c0b1d; pubId=77ac4faf-02c3-4b25-bdb4-be48d7d23a58; Failed to initialize the reader; it will now close. [timeout] ID: ContentText\n\t\t\t18 button OK ID: CommandButton_1\n\t\t\t19 title bar (settable, string) Value: Failed to initialize the reader\n\t\t\t\t20 button Close\n\t\t1 pane (disabled)\n\t\t2 region Thorium\n\t\t\t3 region\n\t\t\t\t4 region\n\t\t\t\t\t5 region\n\t\t\t\t\t\t6 region\n\t\t\t\t\t\t\t7 menu bar\n\t\t\t\t\t\t\t\t8 button File\n\t\t\t\t\t\t\t\t9 button Edit ID: view_1\n\t\t\t\t\t\t\t\t10 button View ID: view_2\n\t\t\t\t\t\t\t\t11 button Window ID: view_3\n\t\t\t\t\t\t\t12 region\n\t\t\t\t\t\t\t\t13 region\n\t\t\t\t\t\t\t\t14 region\n\t\t15 dialogue Failed to initialize the reader Secondary Actions: Raise\n\t\t\t16 image MainInstructionIcon ID: MainIcon\n\t\t\t17 text CRITICAL ERRROR!!! winId=6d683b19-f697-46e9-a3b9-0dc9418c0b1d; pubId=77ac4faf-02c3-4b25-bdb4-be48d7d23a58; Failed to initialize the reader; it will now close. [timeout] ID: ContentText\n\t\t\t18 button OK ID: CommandButton_1\n\t\t\t19 title bar (settable, string) Value: Failed to initialize the reader\n\t\t\t\t20 button Close\n\nThe focused UI element is 15 dialogue Failed to initialize the reader Secondary Actions: Raise."
+  }
+}
