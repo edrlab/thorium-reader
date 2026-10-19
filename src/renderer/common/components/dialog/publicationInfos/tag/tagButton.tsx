@@ -89,7 +89,7 @@ export const TagButton: React.FC<React.PropsWithChildren<IProps>> = (props) => {
                     </Pressable>
                     <Popover
                         placement="bottom"
-                        offset={5}
+                        offset={10}
                         crossOffset={0}
                         containerPadding={0}
                         className={stylesTags.Popover_delete_tag}
