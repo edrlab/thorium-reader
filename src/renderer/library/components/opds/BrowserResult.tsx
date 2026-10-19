@@ -157,7 +157,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                             {
                                 opds.groups?.map((group, i) =>
                                     <section key={i}>
-                                        { group.publications?.length > 1 ?
+                                        { group.publications?.length > 0 ?
                                         <div className={stylesGlobal.heading_link}>
                                             <Entry level={this.props.level} entry={group.selfLink}></Entry>
                                         </div>
@@ -168,7 +168,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                                             : <></>
                                         }
                                         {
-                                            group.publications?.length > 1 ?
+                                            group.publications?.length > 0 ?
                                                     <Slider
                                                         resetSliderPosition={false}
                                                         content={group.publications.map((pub) =>
