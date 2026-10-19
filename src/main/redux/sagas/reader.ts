@@ -381,7 +381,7 @@ function* readerPrint(action: readerActions.print.TAction) {
             publicationIdentifier, (action as unknown as ActionWithSender).sender?.identifier));
     } else {
         yield* putTyped(toastActions.openRequest.build(ToastType.Error,
-            `LCP [${translator.translate("app.edit.print")}] ${publicationDocument.lcpRightsPrints.length} / ${publicationDocument.lcp.rights.print}`,
+            translator.translate("message.notifications.printLimit"),
             publicationIdentifier, (action as unknown as ActionWithSender).sender?.identifier));
     }
 }

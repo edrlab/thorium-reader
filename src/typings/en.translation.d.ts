@@ -646,6 +646,24 @@ declare namespace typed_i18n {
     readonly "fail": string,
     readonly "success": string
   },
+  readonly "notifications": {
+    readonly "annotationImportFailed": string,
+    readonly "annotationPublicationUnavailable": string,
+    readonly "annotationStopPlayback": string,
+    readonly "authenticationFailed": string,
+    readonly "catalogLinkFailed": string,
+    readonly "copyLimit": string,
+    readonly "openFileFailed": string,
+    readonly "openLinkFailed": string,
+    readonly "printLimit": string,
+    readonly "profileActivationFailed": string,
+    readonly "profileProvisionFailed": string,
+    readonly "profileTimeout": string,
+    readonly "recoveryPartialFailure": string,
+    readonly "renewFailed": string,
+    readonly "returnFailed": string,
+    readonly "storageRefreshFailed": string
+  },
   readonly "open": {
     readonly "error": string,
     readonly "folderNotFound": string
@@ -715,6 +733,40 @@ declare namespace typed_i18n {
   (_: "message.import.alreadyImport", __?: {}): string;
   (_: "message.import.fail", __?: {}): string;
   (_: "message.import.success", __?: {}): string;
+  (_: "message.notifications", __?: {}): {
+  readonly "annotationImportFailed": string,
+  readonly "annotationPublicationUnavailable": string,
+  readonly "annotationStopPlayback": string,
+  readonly "authenticationFailed": string,
+  readonly "catalogLinkFailed": string,
+  readonly "copyLimit": string,
+  readonly "openFileFailed": string,
+  readonly "openLinkFailed": string,
+  readonly "printLimit": string,
+  readonly "profileActivationFailed": string,
+  readonly "profileProvisionFailed": string,
+  readonly "profileTimeout": string,
+  readonly "recoveryPartialFailure": string,
+  readonly "renewFailed": string,
+  readonly "returnFailed": string,
+  readonly "storageRefreshFailed": string
+};
+  (_: "message.notifications.annotationImportFailed", __?: {}): string;
+  (_: "message.notifications.annotationPublicationUnavailable", __?: {}): string;
+  (_: "message.notifications.annotationStopPlayback", __?: {}): string;
+  (_: "message.notifications.authenticationFailed", __?: {}): string;
+  (_: "message.notifications.catalogLinkFailed", __?: {}): string;
+  (_: "message.notifications.copyLimit", __?: {}): string;
+  (_: "message.notifications.openFileFailed", __?: {}): string;
+  (_: "message.notifications.openLinkFailed", __?: {}): string;
+  (_: "message.notifications.printLimit", __?: {}): string;
+  (_: "message.notifications.profileActivationFailed", __?: {}): string;
+  (_: "message.notifications.profileProvisionFailed", __?: {}): string;
+  (_: "message.notifications.profileTimeout", __?: {}): string;
+  (_: "message.notifications.recoveryPartialFailure", __?: {}): string;
+  (_: "message.notifications.renewFailed", __?: {}): string;
+  (_: "message.notifications.returnFailed", __?: {}): string;
+  (_: "message.notifications.storageRefreshFailed", __?: {}): string;
   (_: "message.open", __?: {}): { readonly "error": string, readonly "folderNotFound": string };
   (_: "message.open.error", __?: {}): string;
   (_: "message.open.folderNotFound", __?: {}): string;

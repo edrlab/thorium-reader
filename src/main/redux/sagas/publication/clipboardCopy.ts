@@ -48,7 +48,7 @@ export function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction
     const lcpRightsCopiesRemain = publicationDocument.lcp.rights.copy - lcpRightsCopies;
     if (lcpRightsCopiesRemain <= 0) {
         yield* putTyped(toastActions.openRequest.build(ToastType.Error,
-            `LCP [${translator.translate("app.edit.copy")}] ${publicationDocument.lcpRightsCopies} / ${publicationDocument.lcp.rights.copy}`,
+            translator.translate("message.notifications.copyLimit"),
             publicationIdentifier, windowIdentifier));
         return;
     }

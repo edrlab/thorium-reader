@@ -11,6 +11,7 @@ import isURL from "readium-desktop/common/utils/isURL";
 import { httpGet } from "readium-desktop/main/network/http";
 import { diMainGet } from "readium-desktop/main/di";
 import debug_ from "debug";
+import { getTranslator } from "readium-desktop/common/services/translator";
 import { call as callTyped, put as putTyped } from "typed-redux-saga/macro";
 import { contentTypeisOpdsAuth, parseContentType } from "readium-desktop/utils/contentType";
 
@@ -42,7 +43,7 @@ export function* triggerCatalogOpdsAuthentication(action: customizationActions.t
         yield* putTyped(opdsActions.refresh.build());
     } catch (e) {
         debug("OPDS authentication failed", e);
-        yield* putTyped(toastActions.openRequest.build(ToastType.Error, String(e)));
+        yield* putTyped(toastActions.openRequest.build(ToastType.Error, getTranslator().translate("message.notifications.authenticationFailed")));
     }
 }
 

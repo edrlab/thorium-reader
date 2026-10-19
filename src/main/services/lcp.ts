@@ -631,7 +631,7 @@ export class LcpManager {
                 if (!renewLink) {
                     debug("!renewLink");
                     this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
-                        `LCP [${this.translator.translate("publication.renewButton")}] 👎`,
+                        this.translator.translate("message.notifications.renewFailed"),
                         undefined, windowIdentifier,
                     ));
                     return newPubDocument;
@@ -649,7 +649,7 @@ export class LcpManager {
                     }
                     debug(`renewLink.Type: ${renewLink.Type}`);
                     this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
-                        `LCP [${this.translator.translate("publication.renewButton")}] 👎`,
+                        this.translator.translate("message.notifications.renewFailed"),
                         undefined, windowIdentifier,
                     ));
                     return newPubDocument;
@@ -671,7 +671,7 @@ export class LcpManager {
                     debug(err);
 
                     this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
-                        `LCP [${this.translator.translate("publication.renewButton")}]: ${err}`,
+                        this.translator.translate("message.notifications.renewFailed"),
                         undefined, windowIdentifier,
                     ));
                     return newPubDocument;
@@ -732,7 +732,7 @@ export class LcpManager {
                     }
                 } else {
                     this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
-                        `LCP [${this.translator.translate("publication.renewButton")}] 👎`,
+                        this.translator.translate("message.notifications.renewFailed"),
                         undefined, windowIdentifier,
                     ));
                 }
@@ -770,7 +770,7 @@ export class LcpManager {
                 if (!returnLink) {
                     debug("!returnLink");
                     this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
-                        `LCP [${this.translator.translate("publication.returnButton")}] 👎`,
+                        this.translator.translate("message.notifications.returnFailed"),
                         undefined, windowIdentifier,
                     ));
                     return newPubDocument;
@@ -788,7 +788,7 @@ export class LcpManager {
                     }
                     debug(`returnLink.Type: ${returnLink.Type}`);
                     this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
-                        `LCP [${this.translator.translate("publication.returnButton")}] 👎`,
+                        this.translator.translate("message.notifications.returnFailed"),
                         undefined, windowIdentifier,
                     ));
                     return newPubDocument;
@@ -801,7 +801,7 @@ export class LcpManager {
                 } catch (err) {
                     debug(err);
                     this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
-                        `LCP [${this.translator.translate("publication.returnButton")}]: ${err}`,
+                        this.translator.translate("message.notifications.returnFailed"),
                         undefined, windowIdentifier,
                     ));
                     return newPubDocument;
@@ -862,7 +862,7 @@ export class LcpManager {
                     }
                 } else {
                     this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
-                        `LCP [${this.translator.translate("publication.returnButton")}] 👎`,
+                        this.translator.translate("message.notifications.returnFailed"),
                         undefined, windowIdentifier,
                     ));
                 }
