@@ -238,6 +238,12 @@ export function* init() {
     yield call(() => {
         const store = diMainGet("store");
         const locale = store.getState().i18n.locale as keyof typeof availableLanguages | "";
+        if (locale !== "") {
+            // Redux restores the chosen locale, but the main-process translator
+            // starts fresh and must receive it on every launch.
+            store.dispatch(i18nActions.setLocale.build(locale));
+            return;
+        }
         if (locale === "") {
 
             const isAnAvailableLanguage = (a: string): a is keyof typeof availableLanguages => a in availableLanguages;
