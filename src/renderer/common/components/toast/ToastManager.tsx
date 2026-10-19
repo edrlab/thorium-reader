@@ -15,6 +15,7 @@ import { ToastState } from "readium-desktop/common/redux/states/toast";
 import { uuidv4 } from "readium-desktop/utils/uuid";
 
 import Toast from "./Toast";
+import { addToastToQueue } from "./toastQueue";
 import { TranslatorProps, withTranslator } from "../hoc/translator";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -48,15 +49,12 @@ export class ToastManager extends React.Component<IProps, IState> {
 
     public componentDidUpdate(oldProps: IProps) {
         const { toast } = this.props;
-        if (toast !== oldProps.toast && toast.open && toast.data?.trim()
-            && (!toast.publicationIdentifier || !this.props.pubId || toast.publicationIdentifier === this.props.pubId)) {
+        if (toast !== oldProps.toast) {
             const id = uuidv4();
-            this.setState((prevState) => ({
-                toastList: {
-                    ...prevState.toastList,
-                    [id]: toast,
-                },
-            }));
+            this.setState((prevState) => {
+                const toastList = addToastToQueue(prevState.toastList, id, toast, this.props.pubId);
+                return toastList === prevState.toastList ? undefined : { toastList };
+            });
         }
     }
 
