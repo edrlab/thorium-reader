@@ -101,6 +101,7 @@
     "_NOT_NEEDED_package:all": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder -mwl --x64 --publish never",
     "cli:help": "electron . --help",
     "cli": "cross-env DEBUG=* NODE_ENV=development electron --remote-debugging-port=9223 --remote-allow-origins=\"*\" .",
+    "test:i18n-scan": "node --test test/scripts/translation-keys.test.cjs",
     "i18n-sort": "node ./scripts/locales-sort.js",
     "i18n-scan_": "node ./scripts/translate-scan.js \"src/resources/locales/temp.json\" && sync-i18n --files 'src/resources/locales/*.json' --primary temp --languages ar bg bn brh ca cs da de el en es et eu fi fr gl he hr is it ja ka ko lt nl pl pt-br pt-pt ru sl sv ta tr zh-cn zh-tw --space \"    \" --finalnewline --newkeysempty && rimraf \"src/resources/locales/temp.json\"",
     "i18n-check_": "sync-i18n --files 'src/resources/locales/*.json' --primary en --languages ar bg bn brh ca cs da de el es et eu fi fr gl he hr is it ja ka ko lt nl pl pt-br pt-pt ru sl sv ta tr zh-cn zh-tw --space \"    \" --finalnewline --newkeysempty",
