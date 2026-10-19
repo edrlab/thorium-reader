@@ -2,8 +2,9 @@
   "batch": 2,
   "branch": "codex/a11y-batch-2-keyboard-semantics",
   "parentCommit": "adb0838e7",
-  "implementationState": "In progress; validated initial keyboard/semantics subset on top of pushed batch 1",
-  "inventory": "docs/accessibility/evidence/batch-2/static-inventory.json",
+  "publishedInitialCommit": "0ed29902babf4238d366e9d846f06d4bfe72e354",
+  "implementationState": "Initial eight findings committed and pushed; remaining four findings implemented and dynamically validated as an uncommitted continuation",
+  "inventory": "docs/accessibility/evidence/batch-2-continuation/static-inventory.json",
   "findings": {
     "A05": {
       "status": "fixed",
@@ -98,20 +99,99 @@
         "evidence/batch-2/reader-description-collapsed.json"
       ],
       "observation": "Description disclosure is exposed, reports aria-expanded and controls the unique description wrapper ID. Enter/Space expands/collapses in both runtime fixtures."
+    },
+    "A12": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/common/components/toast/Toast.tsx",
+        "src/renderer/common/components/toast/ToastManager.tsx"
+      ],
+      "evidence": [
+        "evidence/batch-2-continuation/library-notification-collapsed.json",
+        "evidence/batch-2-continuation/library-notification-expanded-copied.json",
+        "evidence/batch-2-continuation/library-notification-copy-failed.json",
+        "evidence/batch-2-continuation/library-notification-fr.json",
+        "evidence/batch-2-continuation/library-notification-stack.json",
+        "evidence/batch-2-continuation/reader-notification-expanded-copied.json",
+        "evidence/batch-2-continuation/reader-notification-copy-failed.json",
+        "evidence/batch-2-continuation/library-live-notification.json"
+      ],
+      "observation": "Notifications have native Details, Copy notification and Close buttons. Details exposes expanded/controls state; copy success/failure is a polite status. Visible messages persist until dismissed, including beyond the old five-second timeout with no focus and after blur. Keyboard copy tests record the complete message through a temporary clipboard stub; OS clipboard preserved. Both renderer fixtures and a real Library notification tested. Native screen-reader listening remains unverified."
+    },
+    "A22": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/library/components/layout/LibraryHeader.tsx",
+        "src/renderer/reader/components/ReaderHeader.tsx"
+      ],
+      "evidence": [
+        "evidence/batch-2-continuation/library-library-navigation.json",
+        "evidence/batch-2-continuation/library-live-valid-navigation.json",
+        "evidence/batch-2-continuation/reader-epub-valid-navigation.json",
+        "evidence/batch-2-continuation/reader-pdf-valid-navigation.json"
+      ],
+      "observation": "Library navigation list now directly contains list items, with Settings kept at the bottom. Reader toolbar uses a div for the group layout and valid ul/li groups; its decorative separator is a hidden presentation list item. Static structure and live EPUB/PDF/Library checks pass. Audiobook and Divina conditional branches source-reviewed only."
+    },
+    "A23": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/common/components/Dialog.tsx",
+        "src/renderer/reader/components/ReaderHeader.tsx",
+        "src/renderer/reader/components/ReaderSettings/ReaderSettings.tsx",
+        "src/renderer/reader/components/ReaderMenu/ReaderMenu.tsx",
+        "src/renderer/reader/components/DockedHeader.tsx"
+      ],
+      "evidence": [
+        "evidence/batch-2-continuation/reader-panel-left.json",
+        "evidence/batch-2-continuation/reader-panel-right.json",
+        "evidence/batch-2-continuation/reader-panel-modal.json",
+        "evidence/batch-2-continuation/reader-panel-mode-switch.json",
+        "evidence/batch-2-continuation/reader-live-navigation-left.json",
+        "evidence/batch-2-continuation/reader-live-navigation-right.json",
+        "evidence/batch-2-continuation/reader-live-navigation-modal.json",
+        "evidence/batch-2-continuation/reader-live-settings-left.json",
+        "evidence/batch-2-continuation/reader-live-settings-right.json",
+        "evidence/batch-2-continuation/reader-live-settings-modal.json"
+      ],
+      "observation": "Docked roots have their own overlay state, stable panel ID and named region. Trigger aria-controls resolves to the displayed region; closed triggers omit controls and report expanded=false. Modal composition retains React Aria behavior. Both Navigation and Reader settings verified live on both dock sides and as modal; reopened modal retains Tab focus and Escape restores the header trigger."
+    },
+    "A24": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/reader/components/ReaderMenu/FilterPopover.tsx"
+      ],
+      "evidence": [
+        "evidence/batch-2-continuation/reader-filters-selected.json",
+        "evidence/batch-2-continuation/reader-filters-empty.json",
+        "evidence/batch-2-continuation/reader-live-filter-actions.json"
+      ],
+      "observation": "All/None native buttons are siblings of summary inside each details, with filter-specific accessible names. Enter/Space disclosure and bulk selection are independent for tag/color/type/creator in populated fixtures. Empty tag/creator actions are disabled. Live color filter actions tested on empty annotation list and initial selection restored; no note saved or deleted."
     }
   },
-  "remainingPlannedFindings": [
-    "A12",
-    "A22",
-    "A23",
-    "A24"
+  "remainingPlannedFindings": [],
+  "validationRuns": [
+    {
+      "directory": "evidence/batch-2",
+      "fixtureScenarios": 10,
+      "applicationScenarios": 5
+    },
+    {
+      "directory": "evidence/batch-2-continuation",
+      "fixtureScenarios": 10,
+      "applicationScenarios": 6
+    },
+    {
+      "directory": "evidence/batch-2-regression",
+      "fixtureScenarios": 10,
+      "applicationScenarios": 0
+    }
   ],
   "validation": {
-    "fixtureScenarios": 10,
-    "applicationScenarios": 5,
-    "fixtureStates": 14,
-    "applicationStates": 5,
+    "fixtureScenarios": 30,
+    "applicationScenarios": 11,
+    "fixtureStates": 43,
+    "applicationStates": 16,
     "allScenariosPassed": true
   },
-  "limitations": "Synthetic service boundaries used for downloads, profile activation, OPDS pagination and APIAPP response. Live local-catalog refresh, carousel, profile inspection, skip headings and TTS preview tested. No native screen-reader listening or full conformance assertion. Remaining notification, list, panel and filter-disclosure work is open. This batch is uncommitted."
+  "limitations": "Service-boundary stubs documented per finding; no OS clipboard mutation or real lending/loan/download transaction. No native screen-reader listening or full conformance assertion. A17 content review, A15/A16/A27 risks, A26 reflow/zoom, A31 target size and other format-specific assessments remain. Continuation is uncommitted; original and published evidence preserved."
 }

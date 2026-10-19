@@ -1,0 +1,27 @@
+- main:
+  - 'heading "Component fixture: filter-controls-empty" [level=1]'
+  - button "Filter Options" [expanded]:
+    - img
+- button "Dismiss"
+- dialog "Filter Options":
+  - group:
+    - text: Filter by Tag ‹
+    - 'button "All: Filter by Tag" [disabled]': All
+    - 'button "None: Filter by Tag" [disabled]': None
+  - group:
+    - text: Filter by Color ‹
+    - 'button "All: Filter by Color"': All
+    - 'button "None: Filter by Color"': None
+    - grid "Filter by Color Filter by Color":
+      - row "Yellow" [selected]
+      - row "Green" [selected]
+  - group:
+    - text: Filter by Type ‹
+    - 'button "All: Filter by Type"': All
+    - 'button "None: Filter by Type"': None
+    - grid "Filter by Type Filter by Type":
+      - row "Underline" [selected]:
+        - gridcell:
+          - img
+  - group: Filter by Creator ‹
+- button "Dismiss"

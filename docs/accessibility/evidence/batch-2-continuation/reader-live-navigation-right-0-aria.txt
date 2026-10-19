@@ -1,0 +1,46 @@
+- heading "toolbar" [level=2]
+- button "Skip to content"
+- navigation "toolbar":
+  - list:
+    - listitem:
+      - button "Close this reading window (back to bookshelf)"
+    - listitem:
+      - button "Information"
+  - list:
+    - listitem:
+      - button "Activate Text To Speech (TTS)"
+    - listitem:
+      - button "TTS options"
+  - list:
+    - listitem:
+      - button "Search publication"
+    - listitem:
+      - checkbox "Bookmark (Add)"
+    - listitem:
+      - checkbox "Annotation"
+    - listitem:
+      - button "Navigation" [expanded] [pressed]
+    - listitem:
+      - button "Reader settings"
+    - listitem:
+      - button "Zen mode"
+- main "main content":
+  - heading "main content" [level=2]
+  - iframe
+  - navigation "Navigation":
+    - button "Go backward"
+    - button "Go forward"
+- navigation "Navigation history":
+  - button "Jump back in navigation history" [disabled]
+  - button "Jump forward in navigation history" [disabled]
+- heading "Navigation" [level=1]
+- region "Navigation":
+  - heading "Navigation" [level=1]
+  - group:
+    - button "Search Navigation": Search
+  - button "Dock panel to the left"
+  - button "Dock panel to the right" [disabled]
+  - button "Show panel as a modal popup"
+  - button "Close"
+  - region:
+    - region "Search"

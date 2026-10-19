@@ -12,9 +12,41 @@ import { FontSize } from 'readium-desktop/renderer/reader/components/ReaderSetti
 import { ReadingSpacing } from 'readium-desktop/renderer/reader/components/ReaderSettings/ReadingSpacing';
 import { ReadingAudio } from 'readium-desktop/renderer/reader/components/ReadingAudio';
 import Description from 'readium-desktop/renderer/common/components/dialog/publicationInfos/PublicationInfoDescription';
+import ToastManager from 'readium-desktop/renderer/common/components/toast/ToastManager';
+import * as Dialog from 'readium-desktop/renderer/common/components/Dialog';
+import FilterPopover from 'readium-desktop/renderer/reader/components/ReaderMenu/FilterPopover';
+import * as FilterIcon from 'readium-desktop/renderer/assets/icons/filter3-icon.svg';
+import type { Selection } from 'react-aria-components';
 const reader = (p: string) => 'src/renderer/reader/components/' + p;
 const cases: Record<string, AuditCase> = {};
 const add = (id: string, files: string[], render: () => React.ReactNode, state?: (s: any) => void) => cases[id] = { files, render, state };
+function Filters({ empty = false }) {
+    const [open, setOpen] = React.useState(false);
+    const [tags, setTags] = React.useState<Selection>('all');
+    const [colors, setColors] = React.useState<Selection>('all');
+    const [draw, setDraw] = React.useState<Selection>('all');
+    const [creators, setCreators] = React.useState<Selection>('all');
+    const change = (key: string, setter: (s: Selection) => void) => (s: Selection) => { record('filter', key, s === 'all' ? s : [...s]); setter(s); };
+    return <FilterPopover filterOpen={open} setFilterOpen={setOpen} nbOfFilters={0}
+        tagArrayFilter={tags} setTagArrayFilter={change('tags', setTags)} selectTagOption={empty ? [] : [{ name: 'Research' }, { name: 'To read' }]}
+        colorArrayFilter={colors} setColorArrayFilter={change('colors', setColors)} colorSet={[{ name: 'Yellow', hex: '#ffff00' }, { name: 'Green', hex: '#00ff00' }]}
+        drawTypeArrayFilter={draw} setDrawTypeArrayFilter={change('draw', setDraw)} selectDrawtypesOptions={[{ name: 'underline', textValue: 'Underline', svg: FilterIcon }]}
+        creatorArrayFilter={creators} setCreatorArrayFilter={change('creators', setCreators)} selectCreatorOptions={empty ? [] : [{ name: 'Audit creator' }]} />;
+}
+function Panel({ initialMode }: { initialMode: string }) {
+    const [open, setOpen] = React.useState(false);
+    const [mode, setMode] = React.useState(initialMode);
+    const content = <><Dialog.Title>Audit panel</Dialog.Title><button onClick={() => setMode('left')}>Dock left</button><button onClick={() => setMode('right')}>Dock right</button><button onClick={() => setMode('modal')}>Show modal</button><Dialog.Close>Close panel</Dialog.Close></>;
+    return <Dialog.Root modal={mode === 'modal'} isOpen={open} onOpenChange={setOpen}>
+        <Dialog.Trigger>Open audit panel</Dialog.Trigger>
+        <Dialog.Portal>{mode === 'modal' ? <Dialog.Content>{content}</Dialog.Content> : <Dialog.DockedContent style={{ border: '2px solid blue', padding: 20, width: 350, marginLeft: mode === 'right' ? 'auto' : 0 }}>{content}</Dialog.DockedContent>}</Dialog.Portal>
+    </Dialog.Root>;
+}
+add('filter-controls', [reader('ReaderMenu/FilterPopover.tsx')], () => <Filters />);
+add('filter-controls-empty', [reader('ReaderMenu/FilterPopover.tsx')], () => <Filters empty />);
+for (const mode of ['left', 'right', 'modal']) add('panel-' + mode, ['src/renderer/common/components/Dialog.tsx'], () => <Panel initialMode={mode} />);
+add('toast', ['src/renderer/common/components/toast/Toast.tsx', 'src/renderer/common/components/toast/ToastManager.tsx'], () => <ToastManager />);
+cases.toast.after = () => (window as any).auditStore.dispatch({ type: 'AUDIT_SET', payload: { toast: { type: 'success', data: 'Audit notification. ' + 'Detailed notification text. '.repeat(14) } } });
 add('font-settings', [reader('ReaderSettings/FontSize.tsx')], () => <FontSize />);
 add('spacing-settings', [reader('ReaderSettings/Slider.tsx'), reader('ReaderSettings/ReadingSpacing.tsx')], () => <ReadingSpacing />);
 function Card({ bookmark = false }) {

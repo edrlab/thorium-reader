@@ -1,0 +1,7 @@
+- main:
+  - 'heading "Component fixture: toast" [level=1]'
+  - alert: Audit notification. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text.
+  - button "Details" [expanded]
+  - button "Copy notification"
+  - status: Could not copy notification
+  - button "Close"

@@ -1,0 +1,227 @@
+{
+  "id": "toast",
+  "runtime": "reader",
+  "files": [
+    "src/renderer/common/components/toast/Toast.tsx",
+    "src/renderer/common/components/toast/ToastManager.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T12:53:47.746Z",
+  "lang": "en",
+  "errors": [],
+  "actions": [
+    [
+      "dispatch",
+      {
+        "type": "AUDIT_SET",
+        "payload": {
+          "toast": {
+            "type": "success",
+            "data": "Audit notification. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. "
+          }
+        }
+      }
+    ]
+  ],
+  "text": "Component fixture: toast\n\nAudit notification. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text.\n\nDetails\nCopy notification\nNotification copied",
+  "html": "<div id=\"audit-root\"><main><h1>Component fixture: toast</h1><div class=\"toasts_wrapper\"><div class=\"toast\"><p id=\"toast-message-f4956046-d399-4916-afe2-affb860e89d8\" aria-live=\"assertive\" aria-relevant=\"all\" role=\"alert\" class=\"toast_open\">Audit notification. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. </p><div class=\"actions\"><button type=\"button\" class=\"button_secondary_blue\" aria-expanded=\"true\" aria-controls=\"toast-message-f4956046-d399-4916-afe2-affb860e89d8\">Details</button><button type=\"button\" class=\"button_secondary_blue\">Copy notification</button></div><div role=\"status\" class=\"copyStatus\">Notification copied</div><button type=\"button\" class=\"closeButton\" aria-label=\"Close\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-close-24px\"></use></svg></button></div></div></main></div>",
+  "dimensions": {
+    "width": 1184,
+    "height": 835,
+    "scrollWidth": 1184
+  },
+  "focus": "<button type=\"button\" class=\"button_secondary_blue\">Copy notification</button>",
+  "controls": [
+    {
+      "html": "<p id=\"toast-message-f4956046-d399-4916-afe2-affb860e89d8\" aria-live=\"assertive\" aria-relevant=\"all\" role=\"alert\" class=\"toast_open\">Audit notification. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. </p>",
+      "rect": {
+        "x": 33,
+        "y": 625,
+        "width": 352,
+        "height": 84,
+        "top": 625,
+        "right": 385,
+        "bottom": 709,
+        "left": 33
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"button\" class=\"button_secondary_blue\" aria-expanded=\"true\" aria-controls=\"toast-message-f4956046-d399-4916-afe2-affb860e89d8\">Details</button>",
+      "rect": {
+        "x": 33,
+        "y": 719,
+        "width": 100,
+        "height": 32,
+        "top": 719,
+        "right": 133,
+        "bottom": 751,
+        "left": 33
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"button\" class=\"button_secondary_blue\">Copy notification</button>",
+      "rect": {
+        "x": 141,
+        "y": 719,
+        "width": 121.515625,
+        "height": 32,
+        "top": 719,
+        "right": 262.515625,
+        "bottom": 751,
+        "left": 141
+      },
+      "visible": true
+    },
+    {
+      "html": "<div role=\"status\" class=\"copyStatus\">Notification copied</div>",
+      "rect": {
+        "x": 33,
+        "y": 756,
+        "width": 352,
+        "height": 14,
+        "top": 756,
+        "right": 385,
+        "bottom": 770,
+        "left": 33
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"button\" class=\"closeButton\" aria-label=\"Close\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-close-24px\"></use></svg></button>",
+      "rect": {
+        "x": 366,
+        "y": 609,
+        "width": 35,
+        "height": 35,
+        "top": 609,
+        "right": 401,
+        "bottom": 644,
+        "left": 366
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [],
+    "incomplete": [],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 3
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 2
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 3
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 2
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 2
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 3
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 2
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 2
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 3
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 3
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 1
+      },
+      {
+        "id": "button-name",
+        "nodes": 3
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 1
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "duplicate-id-aria",
+        "nodes": 1
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 1
+      },
+      {
+        "id": "heading-order",
+        "nodes": 1
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-main-is-top-level",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-no-duplicate-main",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-unique",
+        "nodes": 1
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 3
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 11
+      },
+      {
+        "id": "target-size",
+        "nodes": 3
+      }
+    ]
+  },
+  "evidencePrefix": "batch-2-continuation/reader-notification-expanded-copied"
+}

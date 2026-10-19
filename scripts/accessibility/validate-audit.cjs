@@ -67,11 +67,16 @@ for (const remediation of remediations) {
     }
     assert.equal(batchStates.filter(r => r.coverage_kind === 'component-fixture').length, remediation.validation.fixtureStates);
     assert.equal(batchStates.filter(r => r.coverage_kind === 'application').length, remediation.validation.applicationStates);
-    for (const name of ['fixture-checks', 'application-checks']) {
-        const checks = JSON.parse(fs.readFileSync(path.join(root, `evidence/batch-${remediation.batch}/${name}.json`)));
-        assert.ok(checks.tests.every(test => test.status === 'passed'), name);
-        assert.equal(checks.tests.length, name === 'fixture-checks' ? remediation.validation.fixtureScenarios : remediation.validation.applicationScenarios);
+    const runs = remediation.validationRuns || [{ directory: `evidence/batch-${remediation.batch}`, fixtureScenarios: remediation.validation.fixtureScenarios, applicationScenarios: remediation.validation.applicationScenarios }];
+    for (const run of runs) for (const name of ['fixture-checks', 'application-checks']) {
+        const expected = name === 'fixture-checks' ? run.fixtureScenarios : run.applicationScenarios;
+        if (!expected) continue;
+        const checks = JSON.parse(fs.readFileSync(path.join(root, run.directory, name + '.json')));
+        assert.ok(checks.tests.every(test => test.status === 'passed'), run.directory + '/' + name);
+        assert.equal(checks.tests.length, expected);
     }
+    assert.equal(runs.reduce((n, r) => n + r.fixtureScenarios, 0), remediation.validation.fixtureScenarios);
+    assert.equal(runs.reduce((n, r) => n + r.applicationScenarios, 0), remediation.validation.applicationScenarios);
 }
 const latestFindings = Object.assign({}, ...remediations.map(r => r.findings));
 for (const row of matrix) {

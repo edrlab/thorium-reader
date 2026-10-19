@@ -1,0 +1,9 @@
+- main:
+  - 'heading "Component fixture: panel-right" [level=1]'
+  - button "Open audit panel" [expanded]
+- region "Audit panel":
+  - heading "Audit panel" [level=2]
+  - button "Dock left"
+  - button "Dock right"
+  - button "Show modal"
+  - button "Close panel"

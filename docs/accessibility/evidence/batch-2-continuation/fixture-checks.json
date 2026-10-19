@@ -1,0 +1,96 @@
+{
+  "batch": 2,
+  "phase": "continuation",
+  "tests": [
+    {
+      "id": "library-notification-keyboard-copy-and-no-reading-timeout",
+      "status": "passed",
+      "findings": [
+        "A12"
+      ],
+      "evidence": [
+        "batch-2-continuation/library-notification-collapsed.json",
+        "batch-2-continuation/library-notification-expanded-copied.json",
+        "batch-2-continuation/library-notification-copy-failed.json"
+      ],
+      "limitation": "Clipboard service temporarily stubbed and restored. Full text/feedback tested without changing OS clipboard. Unfocused and blurred message persists beyond prior five-second timeout."
+    },
+    {
+      "id": "reader-notification-keyboard-copy-and-no-reading-timeout",
+      "status": "passed",
+      "findings": [
+        "A12"
+      ],
+      "evidence": [
+        "batch-2-continuation/reader-notification-collapsed.json",
+        "batch-2-continuation/reader-notification-expanded-copied.json",
+        "batch-2-continuation/reader-notification-copy-failed.json"
+      ],
+      "limitation": "Clipboard service temporarily stubbed and restored. Full text/feedback tested without changing OS clipboard. Unfocused and blurred message persists beyond prior five-second timeout."
+    },
+    {
+      "id": "notification-stack-independent-dismissal",
+      "status": "passed",
+      "findings": [
+        "A12"
+      ],
+      "evidence": "batch-2-continuation/library-notification-stack.json"
+    },
+    {
+      "id": "panel-left-relationship-and-close",
+      "status": "passed",
+      "findings": [
+        "A23"
+      ],
+      "evidence": "batch-2-continuation/reader-panel-left.json"
+    },
+    {
+      "id": "panel-right-relationship-and-close",
+      "status": "passed",
+      "findings": [
+        "A23"
+      ],
+      "evidence": "batch-2-continuation/reader-panel-right.json"
+    },
+    {
+      "id": "panel-modal-relationship-and-close",
+      "status": "passed",
+      "findings": [
+        "A23"
+      ],
+      "evidence": "batch-2-continuation/reader-panel-modal.json"
+    },
+    {
+      "id": "panel-switch-docked-modal-docked",
+      "status": "passed",
+      "findings": [
+        "A23"
+      ],
+      "evidence": "batch-2-continuation/reader-panel-mode-switch.json"
+    },
+    {
+      "id": "filter-all-none-independent-of-disclosure",
+      "status": "passed",
+      "findings": [
+        "A24"
+      ],
+      "evidence": "batch-2-continuation/reader-filters-selected.json"
+    },
+    {
+      "id": "empty-filter-actions-disabled",
+      "status": "passed",
+      "findings": [
+        "A24"
+      ],
+      "evidence": "batch-2-continuation/reader-filters-empty.json"
+    },
+    {
+      "id": "library-navigation-valid-list",
+      "status": "passed",
+      "findings": [
+        "A22"
+      ],
+      "evidence": "batch-2-continuation/library-library-navigation.json"
+    }
+  ]
+}

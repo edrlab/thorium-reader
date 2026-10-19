@@ -1,0 +1,618 @@
+{
+  "id": "audio-preview",
+  "runtime": "reader",
+  "files": [
+    "src/renderer/reader/components/ReadingAudio.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T12:58:55.229Z",
+  "lang": "en",
+  "errors": [],
+  "actions": [],
+  "text": "Component fixture: audio-preview\nCaptions / clean view\nSkippability\nDisable continuous play\nSplit TTS text\nTTS highlight style\n\nMain colour\n\nWord colour\n\nTTS highlight style preview\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nec purus sodales, rhoncus nisl ac, fringilla metus. Sed eu dignissim dui. Curabitur venenatis sollicitudin ultrices. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aenean laoreet justo vitae mauris fermentum, eget ultrices augue placerat. Proin massa est, gravida feugiat ipsum feugiat, dapibus porttitor felis.",
+  "html": "<div id=\"audit-root\"><main><h1>Component fixture: audio-preview</h1><div style=\"display: grid; padding-right: 25px;\"><div style=\"padding: 10px 0px;\"><input id=\"captions\" type=\"checkbox\" name=\"Captions\" class=\"checkbox_custom_input\"><label for=\"captions\" class=\"checkbox_custom_label\"><div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Captions / clean view\" title=\"Simplified text view with minimal captions styling.\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div><span aria-hidden=\"true\">Captions / clean view</span></label></div><div style=\"padding: 10px 0px;\"><input id=\"skippability\" type=\"checkbox\" name=\"Skippability\" class=\"checkbox_custom_input\" checked=\"\"><label for=\"skippability\" class=\"checkbox_custom_label\"><div tabindex=\"0\" role=\"checkbox\" aria-checked=\"true\" aria-label=\"Skippability\" title=\"Jump over / ignore auxiliary content such as pagebreaks, footnotes/endnotes, etc.\" class=\"checkbox_custom\" style=\"border: 2px solid transparent; background-color: var(--color-brand-primary);\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 13\"><use xlink:href=\"#singlecheck-icon\"></use></svg></div><span aria-hidden=\"true\">Skippability</span></label></div><div style=\"padding: 10px 0px;\"><input id=\"disableContinuousPlay\" type=\"checkbox\" name=\"DisableContinuousPlay\" class=\"checkbox_custom_input\"><label for=\"disableContinuousPlay\" class=\"checkbox_custom_label\"><div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Disable continuous play\" title=\"Do not automatically play the next item, pause immediately after the current item has finished playing.\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div><span aria-hidden=\"true\">Disable continuous play</span></label></div><div style=\"padding: 10px 0px;\"><input id=\"splitTTStext\" type=\"checkbox\" name=\"splitTTStext\" class=\"checkbox_custom_input\" checked=\"\"><label for=\"splitTTStext\" class=\"checkbox_custom_label\"><div tabindex=\"0\" role=\"checkbox\" aria-checked=\"true\" aria-label=\"Split TTS text\" title=\"Break long paragraphs into sentences.\" class=\"checkbox_custom\" style=\"border: 2px solid transparent; background-color: var(--color-brand-primary);\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 13\"><use xlink:href=\"#singlecheck-icon\"></use></svg></div><span aria-hidden=\"true\">Split TTS text</span></label></div></div><div style=\"border: 2px dotted var(--color-gray-250); border-radius: 1em; padding: 6px;\"><div class=\"ttsSelectRate\"><template><div class=\"my_combobox_container R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" role=\"group\"></div></template><div class=\"react_aria_ComboBox\" data-rac=\"\"><label class=\"react_aria_Label\" id=\"react-aria7839083358-:r6:\" for=\"react-aria7839083358-:r5:\" dir=\"ltr\">TTS highlight style</label><div class=\"my_combobox_container R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" role=\"group\"><input type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria7839083358-:r5:\" aria-labelledby=\"react-aria7839083358-:r6:\" role=\"combobox\" aria-expanded=\"false\" class=\"react_aria_Input R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" value=\"Solid Background, Word Underline\" title=\"\"><button id=\"react-aria7839083358-:r1:\" class=\"react_aria_Button\" data-rac=\"\" type=\"button\" tabindex=\"-1\" data-react-aria-pressable=\"true\" aria-label=\"Show suggestions\" aria-labelledby=\"react-aria7839083358-:r1: react-aria7839083358-:r6:\" aria-haspopup=\"listbox\" aria-expanded=\"false\" style=\"width: unset;\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg></button></div></div></div><div role=\"radiogroup\"><p style=\"margin-bottom: 4px; padding-bottom: 0px; font-weight: bold; font-size: 120%;\">Main colour</p><div class=\"colorPicker\" role=\"radiogroup\" style=\"width: fit-content;\"><div><input type=\"radio\" id=\"ttscolorpick#000000\" name=\"ttscolorpick\" aria-label=\"None\" value=\"#000000\"><label aria-hidden=\"true\" title=\"None\" for=\"ttscolorpick#000000\" style=\"background-image: linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(71, 71, 71) 50%, rgb(0, 0, 0) 100%); background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;\"></label></div><div><input type=\"radio\" id=\"ttscolorpick#F8F874\" name=\"ttscolorpick\" aria-label=\"Dark Yellow\" value=\"#F8F874\" checked=\"\"><label aria-hidden=\"true\" title=\"Dark Yellow\" for=\"ttscolorpick#F8F874\" style=\"background-color: rgb(248, 248, 116); border: 1px solid var(--color-gray-900);\"><svg aria-hidden=\"true\" viewBox=\"0 0 15 7\"><use xlink:href=\"#doubleCheck-icon\"></use></svg></label></div><div><input type=\"radio\" id=\"ttscolorpick#FF9300\" name=\"ttscolorpick\" aria-label=\"Dark Orange\" value=\"#FF9300\"><label aria-hidden=\"true\" title=\"Dark Orange\" for=\"ttscolorpick#FF9300\" style=\"background-color: rgb(255, 147, 0);\"></label></div><div><input type=\"radio\" id=\"ttscolorpick#EB9694\" name=\"ttscolorpick\" aria-label=\"Red\" value=\"#EB9694\"><label aria-hidden=\"true\" title=\"Red\" for=\"ttscolorpick#EB9694\" style=\"background-color: rgb(235, 150, 148);\"></label></div><div><input type=\"radio\" id=\"ttscolorpick#FAD0C3\" name=\"ttscolorpick\" aria-label=\"Orange\" value=\"#FAD0C3\"><label aria-hidden=\"true\" title=\"Orange\" for=\"ttscolorpick#FAD0C3\" style=\"background-color: rgb(250, 208, 195);\"></label></div><div><input type=\"radio\" id=\"ttscolorpick#FEF3BD\" name=\"ttscolorpick\" aria-label=\"Yellow\" value=\"#FEF3BD\"><label aria-hidden=\"true\" title=\"Yellow\" for=\"ttscolorpick#FEF3BD\" style=\"background-color: rgb(254, 243, 189);\"></label></div><div><input type=\"radio\" id=\"ttscolorpick#C1EAC5\" name=\"ttscolorpick\" aria-label=\"Green\" value=\"#C1EAC5\"><label aria-hidden=\"true\" title=\"Green\" for=\"ttscolorpick#C1EAC5\" style=\"background-color: rgb(193, 234, 197);\"></label></div><div><input type=\"radio\" id=\"ttscolorpick#BED3F3\" name=\"ttscolorpick\" aria-label=\"Cyan\" value=\"#BED3F3\"><label aria-hidden=\"true\" title=\"Cyan\" for=\"ttscolorpick#BED3F3\" style=\"background-color: rgb(190, 211, 243);\"></label></div><div><input type=\"radio\" id=\"ttscolorpick#D4C4FB\" name=\"ttscolorpick\" aria-label=\"Purple\" value=\"#D4C4FB\"><label aria-hidden=\"true\" title=\"Purple\" for=\"ttscolorpick#D4C4FB\" style=\"background-color: rgb(212, 196, 251);\"></label></div></div><p style=\"margin-bottom: 4px; padding-bottom: 0px; font-weight: bold; font-size: 120%;\">Word colour</p><div class=\"colorPicker\" role=\"radiogroup\" style=\"width: fit-content;\"><div><input type=\"radio\" id=\"ttscolorpickword#000000\" name=\"ttscolorpickword\" aria-label=\"None\" value=\"#000000\"><label aria-hidden=\"true\" title=\"None\" for=\"ttscolorpickword#000000\" style=\"background-image: linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(71, 71, 71) 50%, rgb(0, 0, 0) 100%); background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;\"></label></div><div><input type=\"radio\" id=\"ttscolorpickword#F8F874\" name=\"ttscolorpickword\" aria-label=\"Dark Yellow\" value=\"#F8F874\"><label aria-hidden=\"true\" title=\"Dark Yellow\" for=\"ttscolorpickword#F8F874\" style=\"background-color: rgb(248, 248, 116);\"></label></div><div><input type=\"radio\" id=\"ttscolorpickword#FF9300\" name=\"ttscolorpickword\" aria-label=\"Dark Orange\" value=\"#FF9300\" checked=\"\"><label aria-hidden=\"true\" title=\"Dark Orange\" for=\"ttscolorpickword#FF9300\" style=\"background-color: rgb(255, 147, 0); border: 1px solid var(--color-gray-900);\"><svg aria-hidden=\"true\" viewBox=\"0 0 15 7\"><use xlink:href=\"#doubleCheck-icon\"></use></svg></label></div><div><input type=\"radio\" id=\"ttscolorpickword#EB9694\" name=\"ttscolorpickword\" aria-label=\"Red\" value=\"#EB9694\"><label aria-hidden=\"true\" title=\"Red\" for=\"ttscolorpickword#EB9694\" style=\"background-color: rgb(235, 150, 148);\"></label></div><div><input type=\"radio\" id=\"ttscolorpickword#FAD0C3\" name=\"ttscolorpickword\" aria-label=\"Orange\" value=\"#FAD0C3\"><label aria-hidden=\"true\" title=\"Orange\" for=\"ttscolorpickword#FAD0C3\" style=\"background-color: rgb(250, 208, 195);\"></label></div><div><input type=\"radio\" id=\"ttscolorpickword#FEF3BD\" name=\"ttscolorpickword\" aria-label=\"Yellow\" value=\"#FEF3BD\"><label aria-hidden=\"true\" title=\"Yellow\" for=\"ttscolorpickword#FEF3BD\" style=\"background-color: rgb(254, 243, 189);\"></label></div><div><input type=\"radio\" id=\"ttscolorpickword#C1EAC5\" name=\"ttscolorpickword\" aria-label=\"Green\" value=\"#C1EAC5\"><label aria-hidden=\"true\" title=\"Green\" for=\"ttscolorpickword#C1EAC5\" style=\"background-color: rgb(193, 234, 197);\"></label></div><div><input type=\"radio\" id=\"ttscolorpickword#BED3F3\" name=\"ttscolorpickword\" aria-label=\"Cyan\" value=\"#BED3F3\"><label aria-hidden=\"true\" title=\"Cyan\" for=\"ttscolorpickword#BED3F3\" style=\"background-color: rgb(190, 211, 243);\"></label></div><div><input type=\"radio\" id=\"ttscolorpickword#D4C4FB\" name=\"ttscolorpickword\" aria-label=\"Purple\" value=\"#D4C4FB\"><label aria-hidden=\"true\" title=\"Purple\" for=\"ttscolorpickword#D4C4FB\" style=\"background-color: rgb(212, 196, 251);\"></label></div></div></div></div><div style=\"flex-basis: 100%; height: 0px;\"></div><details open=\"\"><summary style=\"cursor: pointer;\">TTS highlight style preview</summary><div style=\"background: white; color: black; font-family: serif; margin-top: 6px; padding: 6px 50px; line-height: 2em;\"><p style=\"font-size: 1.5em;\"><span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nec purus sodales, rhoncus nisl ac, fringilla metus.</span> <span style=\"background: rgb(248, 248, 116); text-decoration-thickness: 3px; outline-width: 3px; text-underline-offset: 3px; color: black;\">Sed eu dignissim dui. <span style=\"text-decoration-line: underline; text-decoration-color: rgb(255, 147, 0); text-decoration-thickness: 3px; outline-width: 3px; text-underline-offset: 3px; color: black;\">Curabitur</span> venenatis sollicitudin ultrices. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</span> <span>Aenean laoreet justo vitae mauris fermentum, eget ultrices augue placerat. Proin massa est, gravida feugiat ipsum feugiat, dapibus porttitor felis.</span></p></div></details></main></div>",
+  "dimensions": {
+    "width": 1184,
+    "height": 835,
+    "scrollWidth": 1184
+  },
+  "focus": "<summary style=\"cursor: pointer;\">TTS highlight style preview</summary>",
+  "controls": [
+    {
+      "html": "<input id=\"captions\" type=\"checkbox\" name=\"Captions\" class=\"checkbox_custom_input\">",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "visible": false
+    },
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Captions / clean view\" title=\"Simplified text view with minimal captions styling.\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+      "rect": {
+        "x": 0,
+        "y": 71.15625,
+        "width": 16,
+        "height": 16,
+        "top": 71.15625,
+        "right": 16,
+        "bottom": 87.15625,
+        "left": 0
+      },
+      "visible": true
+    },
+    {
+      "html": "<input id=\"skippability\" type=\"checkbox\" name=\"Skippability\" class=\"checkbox_custom_input\" checked=\"\">",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "visible": false
+    },
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"true\" aria-label=\"Skippability\" title=\"Jump over / ignore auxiliary content such as pagebreaks, footnotes/endnotes, etc.\" class=\"checkbox_custom\" style=\"border: 2px solid transparent; background-color: var(--color-brand-primary);\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 13\"><use xlink:href=\"#singlecheck-icon\"></use></svg></div>",
+      "rect": {
+        "x": 0,
+        "y": 118.15625,
+        "width": 16,
+        "height": 16,
+        "top": 118.15625,
+        "right": 16,
+        "bottom": 134.15625,
+        "left": 0
+      },
+      "visible": true
+    },
+    {
+      "html": "<input id=\"disableContinuousPlay\" type=\"checkbox\" name=\"DisableContinuousPlay\" class=\"checkbox_custom_input\">",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "visible": false
+    },
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Disable continuous play\" title=\"Do not automatically play the next item, pause immediately after the current item has finished playing.\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+      "rect": {
+        "x": 0,
+        "y": 165.15625,
+        "width": 16,
+        "height": 16,
+        "top": 165.15625,
+        "right": 16,
+        "bottom": 181.15625,
+        "left": 0
+      },
+      "visible": true
+    },
+    {
+      "html": "<input id=\"splitTTStext\" type=\"checkbox\" name=\"splitTTStext\" class=\"checkbox_custom_input\" checked=\"\">",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "visible": false
+    },
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"true\" aria-label=\"Split TTS text\" title=\"Break long paragraphs into sentences.\" class=\"checkbox_custom\" style=\"border: 2px solid transparent; background-color: var(--color-brand-primary);\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 13\"><use xlink:href=\"#singlecheck-icon\"></use></svg></div>",
+      "rect": {
+        "x": 0,
+        "y": 212.15625,
+        "width": 16,
+        "height": 16,
+        "top": 212.15625,
+        "right": 16,
+        "bottom": 228.15625,
+        "left": 0
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria7839083358-:r5:\" aria-labelledby=\"react-aria7839083358-:r6:\" role=\"combobox\" aria-expanded=\"false\" class=\"react_aria_Input R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" value=\"Solid Background, Word Underline\" title=\"\">",
+      "rect": {
+        "x": 11,
+        "y": 290.15625,
+        "width": 355,
+        "height": 24,
+        "top": 290.15625,
+        "right": 366,
+        "bottom": 314.15625,
+        "left": 11
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"react-aria7839083358-:r1:\" class=\"react_aria_Button\" data-rac=\"\" type=\"button\" tabindex=\"-1\" data-react-aria-pressable=\"true\" aria-label=\"Show suggestions\" aria-labelledby=\"react-aria7839083358-:r1: react-aria7839083358-:r6:\" aria-haspopup=\"listbox\" aria-expanded=\"false\" style=\"width: unset;\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg></button>",
+      "rect": {
+        "x": 340.578125,
+        "y": 290.71875,
+        "width": 20,
+        "height": 22.859375,
+        "top": 290.71875,
+        "right": 360.578125,
+        "bottom": 313.578125,
+        "left": 340.578125
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"ttscolorpick#000000\" name=\"ttscolorpick\" aria-label=\"None\" value=\"#000000\">",
+      "rect": {
+        "x": 16,
+        "y": 372.546875,
+        "width": 13,
+        "height": 13,
+        "top": 372.546875,
+        "right": 29,
+        "bottom": 385.546875,
+        "left": 16
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"ttscolorpick#F8F874\" name=\"ttscolorpick\" aria-label=\"Dark Yellow\" value=\"#F8F874\" checked=\"\">",
+      "rect": {
+        "x": 44,
+        "y": 372.546875,
+        "width": 13,
+        "height": 13,
+        "top": 372.546875,
+        "right": 57,
+        "bottom": 385.546875,
+        "left": 44
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"ttscolorpick#FF9300\" name=\"ttscolorpick\" aria-label=\"Dark Orange\" value=\"#FF9300\">",
+      "rect": {
+        "x": 72,
+        "y": 372.546875,
+        "width": 13,
+        "height": 13,
+        "top": 372.546875,
+        "right": 85,
+        "bottom": 385.546875,
+        "left": 72
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"ttscolorpick#EB9694\" name=\"ttscolorpick\" aria-label=\"Red\" value=\"#EB9694\">",
+      "rect": {
+        "x": 100,
+        "y": 372.546875,
+        "width": 13,
+        "height": 13,
+        "top": 372.546875,
+        "right": 113,
+        "bottom": 385.546875,
+        "left": 100
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"ttscolorpick#FAD0C3\" name=\"ttscolorpick\" aria-label=\"Orange\" value=\"#FAD0C3\">",
+      "rect": {
+        "x": 128,
+        "y": 372.546875,
+        "width": 13,
+        "height": 13,
+        "top": 372.546875,
+        "right": 141,
+        "bottom": 385.546875,
+        "left": 128
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"ttscolorpick#FEF3BD\" name=\"ttscolorpick\" aria-label=\"Yellow\" value=\"#FEF3BD\">",
+      "rect": {
+        "x": 156,
+        "y": 372.546875,
+        "width": 13,
+        "height": 13,
+        "top": 372.546875,
+        "right": 169,
+        "bottom": 385.546875,
+        "left": 156
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"ttscolorpick#C1EAC5\" name=\"ttscolorpick\" aria-label=\"Green\" value=\"#C1EAC5\">",
+      "rect": {
+        "x": 184,
+        "y": 372.546875,
+        "width": 13,
+        "height": 13,
+        "top": 372.546875,
+        "right": 197,
+        "bottom": 385.546875,
+        "left": 184
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"ttscolorpick#BED3F3\" name=\"ttscolorpick\" aria-label=\"Cyan\" value=\"#BED3F3\">",
+      "rect": {
+        "x": 212,
+        "y": 372.546875,
+        "width": 13,
+        "height": 13,
+        "top": 372.546875,
+        "right": 225,
+        "bottom": 385.546875,
+        "left": 212
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"ttscolorpick#D4C4FB\" name=\"ttscolorpick\" aria-label=\"Purple\" value=\"#D4C4FB\">",
+      "rect": {
+        "x": 240,
+        "y": 372.546875,
+        "width": 13,
+        "height": 13,
+        "top": 372.546875,
+        "right": 253,
+        "bottom": 385.546875,
+        "left": 240
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"ttscolorpickword#000000\" name=\"ttscolorpickword\" aria-label=\"None\" value=\"#000000\">",
+      "rect": {
+        "x": 16,
+        "y": 439.9375,
+        "width": 13,
+        "height": 13,
+        "top": 439.9375,
+        "right": 29,
+        "bottom": 452.9375,
+        "left": 16
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"ttscolorpickword#F8F874\" name=\"ttscolorpickword\" aria-label=\"Dark Yellow\" value=\"#F8F874\">",
+      "rect": {
+        "x": 44,
+        "y": 439.9375,
+        "width": 13,
+        "height": 13,
+        "top": 439.9375,
+        "right": 57,
+        "bottom": 452.9375,
+        "left": 44
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"ttscolorpickword#FF9300\" name=\"ttscolorpickword\" aria-label=\"Dark Orange\" value=\"#FF9300\" checked=\"\">",
+      "rect": {
+        "x": 72,
+        "y": 439.9375,
+        "width": 13,
+        "height": 13,
+        "top": 439.9375,
+        "right": 85,
+        "bottom": 452.9375,
+        "left": 72
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"ttscolorpickword#EB9694\" name=\"ttscolorpickword\" aria-label=\"Red\" value=\"#EB9694\">",
+      "rect": {
+        "x": 100,
+        "y": 439.9375,
+        "width": 13,
+        "height": 13,
+        "top": 439.9375,
+        "right": 113,
+        "bottom": 452.9375,
+        "left": 100
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"ttscolorpickword#FAD0C3\" name=\"ttscolorpickword\" aria-label=\"Orange\" value=\"#FAD0C3\">",
+      "rect": {
+        "x": 128,
+        "y": 439.9375,
+        "width": 13,
+        "height": 13,
+        "top": 439.9375,
+        "right": 141,
+        "bottom": 452.9375,
+        "left": 128
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"ttscolorpickword#FEF3BD\" name=\"ttscolorpickword\" aria-label=\"Yellow\" value=\"#FEF3BD\">",
+      "rect": {
+        "x": 156,
+        "y": 439.9375,
+        "width": 13,
+        "height": 13,
+        "top": 439.9375,
+        "right": 169,
+        "bottom": 452.9375,
+        "left": 156
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"ttscolorpickword#C1EAC5\" name=\"ttscolorpickword\" aria-label=\"Green\" value=\"#C1EAC5\">",
+      "rect": {
+        "x": 184,
+        "y": 439.9375,
+        "width": 13,
+        "height": 13,
+        "top": 439.9375,
+        "right": 197,
+        "bottom": 452.9375,
+        "left": 184
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"ttscolorpickword#BED3F3\" name=\"ttscolorpickword\" aria-label=\"Cyan\" value=\"#BED3F3\">",
+      "rect": {
+        "x": 212,
+        "y": 439.9375,
+        "width": 13,
+        "height": 13,
+        "top": 439.9375,
+        "right": 225,
+        "bottom": 452.9375,
+        "left": 212
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"ttscolorpickword#D4C4FB\" name=\"ttscolorpickword\" aria-label=\"Purple\" value=\"#D4C4FB\">",
+      "rect": {
+        "x": 240,
+        "y": 439.9375,
+        "width": 13,
+        "height": 13,
+        "top": 439.9375,
+        "right": 253,
+        "bottom": 452.9375,
+        "left": 240
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [],
+    "incomplete": [
+      {
+        "id": "target-size",
+        "impact": "serious",
+        "tags": [
+          "cat.sensory-and-visual-cues",
+          "wcag22aa",
+          "wcag258"
+        ],
+        "description": "Ensure touch targets have sufficient size and space",
+        "help": "All touch targets must be 24px large, or leave sufficient space",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/target-size?application=axeAPI",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "target-size",
+                "data": {
+                  "minSize": 24,
+                  "width": 20,
+                  "height": 22.9
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element with negative tabindex has insufficient size (20px by 22.9px, should be at least 24px by 24px). Is this a target?"
+              },
+              {
+                "id": "target-offset",
+                "data": {
+                  "closestOffset": 20,
+                  "minOffset": 24
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<input type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria7839083358...\" aria-labelledby=\"react-aria7839083358...\" role=\"combobox\" aria-expanded=\"false\" class=\"react_aria_Input R2_...\" data-rac=\"\" title=\"\" ...>",
+                    "target": [
+                      "#react-aria7839083358-\\:r5\\:"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element with negative tabindex has insufficient space to its closest neighbors. Safe clickable space has a diameter of 20px instead of at least 24px. Is this a target?"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<button id=\"react-aria7839083358...\" class=\"react_aria_Button\" data-rac=\"\" type=\"button\" tabindex=\"-1\" data-react-aria-pres...=\"true\" aria-label=\"Show suggestions\" aria-labelledby=\"react-aria7839083358...\" aria-haspopup=\"listbox\" aria-expanded=\"false\" style=\"width: unset;\">",
+            "target": [
+              "#react-aria7839083358-\\:r1\\:"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element with negative tabindex has insufficient size (20px by 22.9px, should be at least 24px by 24px). Is this a target?\n  Element with negative tabindex has insufficient space to its closest neighbors. Safe clickable space has a diameter of 20px instead of at least 24px. Is this a target?"
+          }
+        ]
+      }
+    ],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 24
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 9
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 24
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 9
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 26
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 24
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 9
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 9
+      },
+      {
+        "id": "aria-toggle-field-name",
+        "nodes": 4
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 24
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 24
+      },
+      {
+        "id": "autocomplete-valid",
+        "nodes": 1
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 22
+      },
+      {
+        "id": "button-name",
+        "nodes": 1
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 14
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "duplicate-id-aria",
+        "nodes": 25
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 1
+      },
+      {
+        "id": "form-field-multiple-labels",
+        "nodes": 19
+      },
+      {
+        "id": "heading-order",
+        "nodes": 1
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "label-title-only",
+        "nodes": 19
+      },
+      {
+        "id": "label",
+        "nodes": 19
+      },
+      {
+        "id": "landmark-main-is-top-level",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-no-duplicate-main",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-unique",
+        "nodes": 1
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 24
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 73
+      },
+      {
+        "id": "summary-name",
+        "nodes": 1
+      },
+      {
+        "id": "tabindex",
+        "nodes": 6
+      },
+      {
+        "id": "target-size",
+        "nodes": 24
+      }
+    ]
+  },
+  "evidencePrefix": "batch-2-regression/reader-tts-preview-expanded"
+}

@@ -1,0 +1,299 @@
+{
+  "id": "profiles",
+  "runtime": "library",
+  "files": [
+    "src/renderer/library/components/settings/ProfilesSettings.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T12:58:50.967Z",
+  "lang": "en",
+  "errors": [],
+  "actions": [
+    [
+      "dispatch",
+      {
+        "type": "CUSTOMIZATION_ACTIVATE_PROFILE_ID",
+        "payload": {
+          "id": "audit-two"
+        }
+      }
+    ],
+    [
+      "dispatch",
+      {
+        "type": "CUSTOMIZATION_ACTIVATE_PROFILE_ID",
+        "payload": {
+          "id": ""
+        }
+      }
+    ],
+    [
+      "dispatch",
+      {
+        "type": "CUSTOMIZATION_ACTIVATE_PROFILE_ID",
+        "payload": {
+          "id": "audit-two"
+        }
+      }
+    ],
+    [
+      "dispatch",
+      {
+        "type": "CUSTOMIZATION_ACTIVATE_PROFILE_ID",
+        "payload": {
+          "id": "audit-one"
+        }
+      }
+    ]
+  ],
+  "text": "Component fixture: profiles\n\nSwitch profiles to customize the app with a partner vendor’s branding and colors. Each profile offers a tailored experience.\n\nAudit profile 1\n\nLocal profile fixture 1\n\nVersion: 2026-01-01T00:00:00.000Z\nAudit profile 2\n\nLocal profile fixture 2\n\nVersion: 2026-01-01T00:00:00.000Z\nThorium vanilla\n\nThe Thorium Vanilla profile is the original one, designed by EDRLab.",
+  "html": "<div id=\"audit-root\"><main><h1>Component fixture: profiles</h1><div class=\"settings_tab\"><div class=\"session_text\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg><p dir=\"ltr\">Switch profiles to customize the app with a partner vendor’s branding and colors. Each profile offers a tailored experience.</p></div><div class=\"profile_selection_form\" role=\"radiogroup\" aria-label=\"Profiles\"><div class=\"profile_selection_input profile_selection_input_checked\"><input type=\"radio\" id=\":r5:-0\" name=\":r5:\" aria-label=\"Audit profile 1\" value=\"audit-one\" checked=\"\"><label for=\":r5:-0\" class=\"profile_selection_label\"><div class=\"profile_selection_description\"><div><h3>Audit profile 1</h3><p>Local profile fixture 1</p><div style=\"font-size: 12px;\"><span>Version: 2026-01-01T00:00:00.000Z</span></div></div></div></label><div class=\"delete_profile_button\" style=\"display: flex; flex-direction: row-reverse; width: 100%; margin: -5px; z-index: 10;\"><button title=\"Delete\" aria-expanded=\"false\" id=\"react-aria3471844875-:r7:\" data-react-aria-pressable=\"true\" tabindex=\"0\" style=\"width: 16px; height: 16px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg></button></div></div><div class=\"profile_selection_input\"><input type=\"radio\" id=\":r5:-1\" name=\":r5:\" aria-label=\"Audit profile 2\" value=\"audit-two\"><label for=\":r5:-1\" class=\"profile_selection_label\"><div class=\"profile_selection_description\"><div><h3>Audit profile 2</h3><p>Local profile fixture 2</p><div style=\"font-size: 12px;\"><span>Version: 2026-01-01T00:00:00.000Z</span></div></div></div></label><div class=\"delete_profile_button\" style=\"display: flex; flex-direction: row-reverse; width: 100%; margin: -5px; z-index: 10;\"><button title=\"Delete\" aria-expanded=\"false\" id=\"react-aria3471844875-:r9:\" data-react-aria-pressable=\"true\" tabindex=\"0\" style=\"width: 16px; height: 16px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg></button></div></div><div class=\"profile_selection_input\"><input type=\"radio\" id=\":r5:-vanilla\" name=\":r5:\" aria-label=\"Thorium vanilla\" value=\"Thorium vanilla\"><label for=\":r5:-vanilla\" class=\"profile_selection_label\"><svg aria-hidden=\"true\" viewBox=\"0 0 256 256\"><use xlink:href=\"#thorium\"></use></svg><div class=\"profile_selection_description\"><div><h3 dir=\"ltr\">Thorium vanilla</h3><p dir=\"ltr\">The Thorium Vanilla profile is the original one, designed by EDRLab.</p></div></div></label></div></div></div></main></div>",
+  "dimensions": {
+    "width": 1184,
+    "height": 835,
+    "scrollWidth": 1184
+  },
+  "focus": "<input type=\"radio\" id=\":r5:-0\" name=\":r5:\" aria-label=\"Audit profile 1\" value=\"audit-one\" checked=\"\">",
+  "controls": [
+    {
+      "html": "<input type=\"radio\" id=\":r5:-0\" name=\":r5:\" aria-label=\"Audit profile 1\" value=\"audit-one\" checked=\"\">",
+      "rect": {
+        "x": 592.5,
+        "y": 152.078125,
+        "width": 1,
+        "height": 1,
+        "top": 152.078125,
+        "right": 593.5,
+        "bottom": 153.078125,
+        "left": 592.5
+      },
+      "visible": true
+    },
+    {
+      "html": "<button title=\"Delete\" aria-expanded=\"false\" id=\"react-aria3471844875-:r7:\" data-react-aria-pressable=\"true\" tabindex=\"0\" style=\"width: 16px; height: 16px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg></button>",
+      "rect": {
+        "x": 1134,
+        "y": 165.078125,
+        "width": 16,
+        "height": 16,
+        "top": 165.078125,
+        "right": 1150,
+        "bottom": 181.078125,
+        "left": 1134
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\":r5:-1\" name=\":r5:\" aria-label=\"Audit profile 2\" value=\"audit-two\">",
+      "rect": {
+        "x": 591.5,
+        "y": 240.078125,
+        "width": 1,
+        "height": 1,
+        "top": 240.078125,
+        "right": 592.5,
+        "bottom": 241.078125,
+        "left": 591.5
+      },
+      "visible": true
+    },
+    {
+      "html": "<button title=\"Delete\" aria-expanded=\"false\" id=\"react-aria3471844875-:r9:\" data-react-aria-pressable=\"true\" tabindex=\"0\" style=\"width: 16px; height: 16px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg></button>",
+      "rect": {
+        "x": 1133,
+        "y": 253.078125,
+        "width": 16,
+        "height": 16,
+        "top": 253.078125,
+        "right": 1149,
+        "bottom": 269.078125,
+        "left": 1133
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\":r5:-vanilla\" name=\":r5:\" aria-label=\"Thorium vanilla\" value=\"Thorium vanilla\">",
+      "rect": {
+        "x": 591.5,
+        "y": 341.078125,
+        "width": 1,
+        "height": 1,
+        "top": 341.078125,
+        "right": 592.5,
+        "bottom": 342.078125,
+        "left": 591.5
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [
+      {
+        "id": "heading-order",
+        "impact": "moderate",
+        "tags": [
+          "cat.semantics",
+          "best-practice"
+        ],
+        "description": "Ensure the order of headings is semantically correct",
+        "help": "Heading levels should only increase by one",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/heading-order?application=axeAPI",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "heading-order",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "Heading order invalid"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "moderate",
+            "html": "<h3>Audit profile 1</h3>",
+            "target": [
+              "label[for=\":r5:-0\"] > .profile_selection_description > div > h3"
+            ],
+            "failureSummary": "Fix any of the following:\n  Heading order invalid"
+          }
+        ]
+      }
+    ],
+    "incomplete": [],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 6
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 1
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 6
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 5
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 6
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 1
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 1
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 6
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 6
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 7
+      },
+      {
+        "id": "button-name",
+        "nodes": 2
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 10
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "duplicate-id-aria",
+        "nodes": 3
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 4
+      },
+      {
+        "id": "form-field-multiple-labels",
+        "nodes": 3
+      },
+      {
+        "id": "heading-order",
+        "nodes": 3
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "label-title-only",
+        "nodes": 3
+      },
+      {
+        "id": "label",
+        "nodes": 3
+      },
+      {
+        "id": "landmark-main-is-top-level",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-no-duplicate-main",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-unique",
+        "nodes": 1
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 5
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 36
+      },
+      {
+        "id": "tabindex",
+        "nodes": 2
+      },
+      {
+        "id": "target-size",
+        "nodes": 5
+      }
+    ]
+  },
+  "evidencePrefix": "batch-2-regression/library-profiles"
+}

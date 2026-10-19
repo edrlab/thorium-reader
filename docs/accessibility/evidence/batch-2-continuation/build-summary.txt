@@ -1,0 +1,30 @@
+Batch 2 continuation validation: A12, A22, A23, A24
+Published initial subset: 0ed29902babf4238d366e9d846f06d4bfe72e354 on origin/codex/a11y-batch-2-keyboard-semantics
+Continuation: uncommitted; original and published evidence unchanged
+TypeScript: full project tsc6 --noEmit --project tsconfig-cli.json --pretty false (exit 0)
+ESLint: ESLINT_USE_FLAT_CONFIG=false; changed renderer TSX sources (exit 0)
+Stylelint: header.scss, readerHeader.scss, toasts.scss (exit 0)
+Translations: npm run i18n-typed (exit 0)
+Continuation fixtures: 10 passed, including keyboard copy success/failure and unfocused/blurred retention beyond old five-second expiry
+Continuation live scenarios: 6 passed, including left/right/modal for both Reader panels, live notification and EPUB/PDF toolbar lists
+Earlier batch 2 fixture regression: 10 passed; separate evidence/batch-2-regression output
+Final Library geometry: fixture and live compact row heights rechecked after full Library reload
+Clipboard service stubbed/restored; OS clipboard untouched
+Screen-reader optimization, navigation section, docking modes and live filter selection restored
+No native screen-reader listening; no notes saved/deleted; no authenticated transactions
+Development bundles with runtime scope checking:
+renderer pdf webview index (webpack 5.111.1) compiled successfully in 2028 ms
+renderer pdf extract webview index (webpack 5.111.1) compiled successfully in 1338 ms
+renderer webview preload (webpack 5.111.1) compiled successfully in 4405 ms
+[2] main (webpack 5.111.1) compiled successfully in 21108 ms
+[0] renderer index app (webpack 5.111.1) compiled successfully in 24434 ms
+[1] renderer index reader (webpack 5.111.1) compiled successfully in 25139 ms
+[1] renderer index reader (webpack 5.111.1) compiled successfully in 874 ms
+[0] renderer index app (webpack 5.111.1) compiled successfully in 1051 ms
+[0] renderer index app (webpack 5.111.1) compiled successfully in 1001 ms
+Fixture builds:
+renderer index app:
+  renderer index app compiled in 16429 ms
+
+renderer index reader:
+  renderer index reader compiled in 16094 ms

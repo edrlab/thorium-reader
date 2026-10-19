@@ -1,0 +1,22 @@
+- main:
+  - 'heading "Component fixture: apiapp-add" [level=1]'
+  - button "Add library account" [expanded]
+- button "Dismiss"
+- dialog "Add library account":
+  - heading "Add library account" [level=2]
+  - button "Close"
+  - text: Search
+  - searchbox "Search": Audit
+  - button "Search"
+  - list:
+    - listitem:
+      - button "Audit library 1 Local address 1":
+        - strong: Audit library 1
+        - text: Local address 1
+    - listitem:
+      - button "Audit library 2 Local address 2" [pressed]:
+        - strong: Audit library 2
+        - text: Local address 2
+  - button "How does it work?"
+  - button "Cancel"
+  - button "Add"

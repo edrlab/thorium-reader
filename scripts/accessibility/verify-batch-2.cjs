@@ -1,5 +1,5 @@
 // Keyboard and semantics checks against real components in isolated Electron runtimes.
-process.env.THORIUM_AUDIT_EVIDENCE_SUBDIR = 'batch-2';
+process.env.THORIUM_AUDIT_EVIDENCE_SUBDIR ||= 'batch-2';
 const fs = require('node:fs');
 const path = require('node:path');
 const assert = require('node:assert/strict');

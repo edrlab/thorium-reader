@@ -1,0 +1,94 @@
+- heading "toolbar" [level=2]
+- button "Skip to content"
+- navigation "toolbar":
+  - list:
+    - listitem:
+      - button "Close this reading window (back to bookshelf)"
+    - listitem:
+      - button "Information"
+  - list:
+    - listitem:
+      - button "Activate Text To Speech (TTS)"
+    - listitem:
+      - button "TTS options"
+  - list:
+    - listitem:
+      - button "Search publication"
+    - listitem:
+      - checkbox "Bookmark (Add)"
+    - listitem:
+      - checkbox "Annotation"
+    - listitem:
+      - button "Navigation" [expanded] [pressed]
+    - listitem:
+      - button "Reader settings"
+    - listitem:
+      - button "Zen mode"
+- main "main content":
+  - heading "main content" [level=2]
+  - iframe
+  - navigation "Navigation":
+    - button "Go backward"
+    - button "Go forward"
+- navigation "Navigation history":
+  - button "Jump back in navigation history" [disabled]
+  - button "Jump forward in navigation history" [disabled]
+- heading "Navigation" [level=1]
+- region "Navigation":
+  - heading "Navigation" [level=1]
+  - group:
+    - button "Annotations Navigation": Annotations
+  - button "Dock panel to the left"
+  - button "Dock panel to the right" [disabled]
+  - button "Show panel as a modal popup"
+  - button "Close"
+  - region:
+    - region "Annotations":
+      - button "Sorting Options":
+        - img
+      - button "Filter Options" [expanded]:
+        - img
+        - paragraph: "6"
+      - button "Import notes":
+        - img
+      - button "Export notes" [disabled]:
+        - img
+      - button "Delete annotations?" [disabled]
+      - button "Annotation Options"
+      - list
+- button "Dismiss"
+- dialog "Filter Options":
+  - group:
+    - text: Filter by Tag ‹
+    - 'button "All: Filter by Tag" [disabled]': All
+    - 'button "None: Filter by Tag" [disabled]': None
+  - group:
+    - text: Filter by Color ‹
+    - 'button "All: Filter by Color"': All
+    - 'button "None: Filter by Color"': None
+    - grid "Filter by Color Filter by Color":
+      - row "Red" [selected]
+      - row "Orange" [selected]
+      - row "Yellow" [selected]
+      - row "Green" [selected]
+      - row "Cyan" [selected]
+      - row "Purple" [selected]
+  - group:
+    - text: Filter by Type ‹
+    - 'button "All: Filter by Type"': All
+    - 'button "None: Filter by Type"': None
+    - grid "Filter by Type Filter by Type":
+      - row "Solid background":
+        - gridcell:
+          - img
+      - row "Underline":
+        - gridcell:
+          - img
+      - row "Strikethrough":
+        - gridcell:
+          - img
+      - row "Outline":
+        - gridcell:
+          - img
+  - group: Filter by Creator ‹
+- button "Dismiss"

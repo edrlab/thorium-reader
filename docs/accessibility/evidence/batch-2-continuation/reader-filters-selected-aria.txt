@@ -1,0 +1,38 @@
+- main:
+  - 'heading "Component fixture: filter-controls" [level=1]'
+  - button "Filter Options" [expanded]:
+    - img
+- button "Dismiss"
+- dialog "Filter Options":
+  - group:
+    - text: Filter by Tag ‹
+    - 'button "All: Filter by Tag"': All
+    - 'button "None: Filter by Tag"': None
+    - grid "Filter by Tag Filter by Tag":
+      - row "Research" [selected]:
+        - gridcell "Research"
+      - row "To read" [selected]:
+        - gridcell "To read"
+  - group:
+    - text: Filter by Color ‹
+    - 'button "All: Filter by Color"': All
+    - 'button "None: Filter by Color"': None
+    - grid "Filter by Color Filter by Color":
+      - row "Yellow" [selected]
+      - row "Green" [selected]
+  - group:
+    - text: Filter by Type ‹
+    - 'button "All: Filter by Type"': All
+    - 'button "None: Filter by Type"': None
+    - grid "Filter by Type Filter by Type":
+      - row "Underline" [selected]:
+        - gridcell:
+          - img
+  - group:
+    - text: Filter by Creator ‹
+    - 'button "All: Filter by Creator"': All
+    - 'button "None: Filter by Creator"': None
+    - grid "Filter by Creator Filter by Creator":
+      - row "Audit creator" [selected]:
+        - gridcell "Audit creator"
+- button "Dismiss"

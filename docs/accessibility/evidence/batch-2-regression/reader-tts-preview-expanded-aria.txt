@@ -1,0 +1,36 @@
+- main:
+  - 'heading "Component fixture: audio-preview" [level=1]'
+  - checkbox "Captions / clean view"
+  - checkbox "Skippability" [checked]
+  - checkbox "Disable continuous play"
+  - checkbox "Split TTS text" [checked]
+  - text: TTS highlight style
+  - group:
+    - combobox "TTS highlight style": Solid Background, Word Underline
+    - button "Show suggestions TTS highlight style"
+  - radiogroup:
+    - paragraph: Main colour
+    - radiogroup:
+      - radio "None"
+      - radio "Dark Yellow" [checked]
+      - radio "Dark Orange"
+      - radio "Red"
+      - radio "Orange"
+      - radio "Yellow"
+      - radio "Green"
+      - radio "Cyan"
+      - radio "Purple"
+    - paragraph: Word colour
+    - radiogroup:
+      - radio "None"
+      - radio "Dark Yellow"
+      - radio "Dark Orange" [checked]
+      - radio "Red"
+      - radio "Orange"
+      - radio "Yellow"
+      - radio "Green"
+      - radio "Cyan"
+      - radio "Purple"
+  - group:
+    - text: TTS highlight style preview ‹
+    - paragraph: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nec purus sodales, rhoncus nisl ac, fringilla metus. Sed eu dignissim dui. Curabitur venenatis sollicitudin ultrices. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aenean laoreet justo vitae mauris fermentum, eget ultrices augue placerat. Proin massa est, gravida feugiat ipsum feugiat, dapibus porttitor felis.

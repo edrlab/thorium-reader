@@ -1,0 +1,436 @@
+{
+  "id": "filter-controls",
+  "runtime": "reader",
+  "files": [
+    "src/renderer/reader/components/ReaderMenu/FilterPopover.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T12:54:00.183Z",
+  "lang": "en",
+  "errors": [],
+  "actions": [
+    [
+      "filter",
+      "tags",
+      []
+    ],
+    [
+      "filter",
+      "tags",
+      "all"
+    ],
+    [
+      "filter",
+      "colors",
+      []
+    ],
+    [
+      "filter",
+      "colors",
+      "all"
+    ],
+    [
+      "filter",
+      "draw",
+      []
+    ],
+    [
+      "filter",
+      "draw",
+      "all"
+    ],
+    [
+      "filter",
+      "creators",
+      []
+    ],
+    [
+      "filter",
+      "creators",
+      "all"
+    ]
+  ],
+  "text": "Component fixture: filter-controls\nFilter by Tag\nAll\nNone\nResearch\nTo read\nFilter by Color\nAll\nNone\nFilter by Type\nAll\nNone\nFilter by Creator\nAll\nNone\nAudit creator",
+  "html": "<div id=\"audit-root\" inert=\"\"><main><h1>Component fixture: filter-controls</h1><button type=\"button\" aria-label=\"Filter Options\" class=\"annotations_filter_trigger_button\" title=\"Filter Options\" aria-expanded=\"true\" id=\"react-aria7894260364-:rn:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria7894260364-:rm:\"><svg viewBox=\"0 0 18 17\"><use xlink:href=\"#filter3-icon\"></use></svg></button></main></div>\n<span data-focus-scope-start=\"true\" hidden=\"\" inert=\"\"></span>\n<div data-testid=\"underlay\" inert=\"\" style=\"position: fixed; inset: 0px;\"></div>\n<div style=\"display: contents;\"><div dir=\"ltr\" class=\"annotations_filter_container\" data-rac=\"\" aria-labelledby=\"react-aria7894260364-:rn:\" data-trigger=\"DialogTrigger\" style=\"position: absolute; z-index: 102; max-height: 740px; --trigger-anchor-point: 15px 0px; --trigger-width: 30px; left: 0px; top: 95px;\" data-placement=\"bottom\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><button id=\"react-aria7894260364-:ro:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button></div><section id=\"react-aria7894260364-:rm:\" class=\"react-aria-Dialog\" data-rac=\"\" aria-labelledby=\"react-aria7894260364-:rn:\" role=\"dialog\" tabindex=\"-1\"><span data-focus-scope-start=\"true\" hidden=\"\"></span><div class=\"react-aria-OverlayArrow\" data-rac=\"\" data-placement=\"bottom\" style=\"position: absolute; transform: translateX(-50%); bottom: 100%; left: 15px;\"><svg class=\"PopoverArrow\" aria-hidden=\"true\" width=\"10\" height=\"5\" viewBox=\"0 0 30 10\" preserveAspectRatio=\"none\" style=\"display: block; fill: var(--color-gray-50; transform: rotate(180deg);\"><polygon points=\"0,0 30,0 15,10\"></polygon></svg></div><template><details open=\"\" id=\"annotationListTagDetails\"><summary class=\"annotations_filter_tagGroup\" tabindex=\"0\" style=\"pointer-events: auto; opacity: 1;\"></summary><div style=\"display: flex; gap: 10px; margin-right: 10px;\"><button type=\"button\" aria-label=\"All: Filter by Tag\" class=\"button_primary_blue\" style=\"width: fit-content; min-width: unset;\">All</button><button type=\"button\" aria-label=\"None: Filter by Tag\" class=\"button_secondary_blue\" style=\"width: fit-content; min-width: unset;\">None</button></div></details></template><div class=\"react-aria-TagGroup\" style=\"margin-bottom: 20px;\"><details id=\"annotationListTagDetails\" open=\"\"><summary class=\"annotations_filter_tagGroup\" tabindex=\"0\" style=\"pointer-events: auto; opacity: 1;\"><span class=\"react-aria-Label\" id=\"react-aria7894260364-:rs:\" style=\"font-size: 13px;\">Filter by Tag</span></summary><div style=\"display: flex; gap: 10px; margin-right: 10px;\"><button type=\"button\" aria-label=\"All: Filter by Tag\" class=\"button_primary_blue\" style=\"width: fit-content; min-width: unset;\">All</button><button type=\"button\" aria-label=\"None: Filter by Tag\" class=\"button_secondary_blue\" style=\"width: fit-content; min-width: unset;\">None</button></div><div class=\"annotations_filter_taglist\" data-rac=\"\" aria-label=\"Filter by Tag\" id=\"react-aria7894260364-:rr:\" role=\"grid\" aria-multiselectable=\"true\" tabindex=\"0\" aria-atomic=\"false\" aria-relevant=\"additions\" aria-live=\"off\" aria-labelledby=\"react-aria7894260364-:rr: react-aria7894260364-:rs:\" data-collection=\"react-aria7894260364-:r10:\" style=\"margin: 20px 0px;\"><div class=\"annotations_filter_tag\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria7894260364-:r10:\" data-key=\"Research\" data-react-aria-pressable=\"true\" id=\"react-aria7894260364-:rr:-Research\" role=\"row\" aria-label=\"Research\" aria-selected=\"true\" data-selection-mode=\"multiple\" data-selected=\"true\"><div role=\"gridcell\" aria-colindex=\"1\" style=\"display: contents;\">Research</div></div><div class=\"annotations_filter_tag\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria7894260364-:r10:\" data-key=\"To read\" data-react-aria-pressable=\"true\" id=\"react-aria7894260364-:rr:-Toread\" role=\"row\" aria-label=\"To read\" aria-selected=\"true\" data-selection-mode=\"multiple\" data-selected=\"true\"><div role=\"gridcell\" aria-colindex=\"1\" style=\"display: contents;\">To read</div></div></div></details></div><template><details open=\"\" id=\"annotationListColorDetails\"><summary class=\"annotations_filter_tagGroup\"></summary><div style=\"display: flex; gap: 10px; margin-right: 10px;\"><button type=\"button\" aria-label=\"All: Filter by Color\" class=\"button_primary_blue\" style=\"width: fit-content; min-width: unset;\">All</button><button type=\"button\" aria-label=\"None: Filter by Color\" class=\"button_secondary_blue\" style=\"width: fit-content; min-width: unset;\">None</button></div></details></template><div class=\"react-aria-TagGroup\" style=\"margin-bottom: 20px;\"><details id=\"annotationListColorDetails\" open=\"\"><summary class=\"annotations_filter_tagGroup\"><span class=\"react-aria-Label\" id=\"react-aria7894260364-:r13:\" style=\"font-size: 13px;\">Filter by Color</span></summary><div style=\"display: flex; gap: 10px; margin-right: 10px;\"><button type=\"button\" aria-label=\"All: Filter by Color\" class=\"button_primary_blue\" style=\"width: fit-content; min-width: unset;\">All</button><button type=\"button\" aria-label=\"None: Filter by Color\" class=\"button_secondary_blue\" style=\"width: fit-content; min-width: unset;\">None</button></div><div class=\"annotations_filter_taglist\" data-rac=\"\" aria-label=\"Filter by Color\" id=\"react-aria7894260364-:r12:\" role=\"grid\" aria-multiselectable=\"true\" tabindex=\"0\" aria-atomic=\"false\" aria-relevant=\"additions\" aria-live=\"off\" aria-labelledby=\"react-aria7894260364-:r12: react-aria7894260364-:r13:\" data-collection=\"react-aria7894260364-:r17:\"><div class=\"annotations_filter_color\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria7894260364-:r17:\" data-key=\"#ffff00\" data-react-aria-pressable=\"true\" id=\"react-aria7894260364-:r12:-#ffff00\" role=\"row\" aria-label=\"Yellow\" aria-selected=\"true\" data-selection-mode=\"multiple\" title=\"Yellow\" style=\"background-color: rgb(255, 255, 0); outline-color: rgb(255, 255, 0);\" data-selected=\"true\"><div role=\"gridcell\" aria-colindex=\"1\" style=\"display: contents;\"></div></div><div class=\"annotations_filter_color\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria7894260364-:r17:\" data-key=\"#00ff00\" data-react-aria-pressable=\"true\" id=\"react-aria7894260364-:r12:-#00ff00\" role=\"row\" aria-label=\"Green\" aria-selected=\"true\" data-selection-mode=\"multiple\" title=\"Green\" style=\"background-color: rgb(0, 255, 0); outline-color: rgb(0, 255, 0);\" data-selected=\"true\"><div role=\"gridcell\" aria-colindex=\"1\" style=\"display: contents;\"></div></div></div></details></div><template><details open=\"\" id=\"annotationListDrawDetails\"><summary class=\"annotations_filter_tagGroup\"></summary><div style=\"display: flex; gap: 10px; margin-right: 10px;\"><button type=\"button\" aria-label=\"All: Filter by Type\" class=\"button_primary_blue\" style=\"width: fit-content; min-width: unset;\">All</button><button type=\"button\" aria-label=\"None: Filter by Type\" class=\"button_secondary_blue\" style=\"width: fit-content; min-width: unset;\">None</button></div></details></template><div class=\"react-aria-TagGroup\" style=\"margin-bottom: 20px;\"><details id=\"annotationListDrawDetails\" open=\"\"><summary class=\"annotations_filter_tagGroup\"><span class=\"react-aria-Label\" id=\"react-aria7894260364-:r1a:\" style=\"font-size: 13px;\">Filter by Type</span></summary><div style=\"display: flex; gap: 10px; margin-right: 10px;\"><button type=\"button\" aria-label=\"All: Filter by Type\" class=\"button_primary_blue\" style=\"width: fit-content; min-width: unset;\">All</button><button type=\"button\" aria-label=\"None: Filter by Type\" class=\"button_secondary_blue\" style=\"width: fit-content; min-width: unset;\">None</button></div><div class=\"annotations_filter_taglist\" data-rac=\"\" aria-label=\"Filter by Type\" id=\"react-aria7894260364-:r19:\" role=\"grid\" aria-multiselectable=\"true\" tabindex=\"0\" aria-atomic=\"false\" aria-relevant=\"additions\" aria-live=\"off\" aria-labelledby=\"react-aria7894260364-:r19: react-aria7894260364-:r1a:\" data-collection=\"react-aria7894260364-:r1e:\"><div class=\"annotations_filter_drawtype\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria7894260364-:r1e:\" data-key=\"underline\" data-react-aria-pressable=\"true\" id=\"react-aria7894260364-:r19:-underline\" role=\"row\" aria-label=\"Underline\" aria-selected=\"true\" data-selection-mode=\"multiple\" data-selected=\"true\"><div role=\"gridcell\" aria-colindex=\"1\" style=\"display: contents;\"><svg viewBox=\"0 0 18 17\"><use xlink:href=\"#filter3-icon\"></use></svg></div></div></div></details></div><template><details id=\"annotationListCreator\" open=\"\"><summary class=\"annotations_filter_tagGroup\" tabindex=\"0\" style=\"pointer-events: auto; opacity: 1;\"></summary><div style=\"display: flex; gap: 10px; margin-right: 10px;\"><button type=\"button\" aria-label=\"All: Filter by Creator\" class=\"button_primary_blue\" style=\"width: fit-content; min-width: unset;\">All</button><button type=\"button\" aria-label=\"None: Filter by Creator\" class=\"button_secondary_blue\" style=\"width: fit-content; min-width: unset;\">None</button></div></details></template><div class=\"react-aria-TagGroup\" style=\"margin-bottom: 20px;\"><details id=\"annotationListCreator\" open=\"\"><summary class=\"annotations_filter_tagGroup\" tabindex=\"0\" style=\"pointer-events: auto; opacity: 1;\"><span class=\"react-aria-Label\" id=\"react-aria7894260364-:r1h:\" style=\"font-size: 13px;\">Filter by Creator</span></summary><div style=\"display: flex; gap: 10px; margin-right: 10px;\"><button type=\"button\" aria-label=\"All: Filter by Creator\" class=\"button_primary_blue\" style=\"width: fit-content; min-width: unset;\">All</button><button type=\"button\" aria-label=\"None: Filter by Creator\" class=\"button_secondary_blue\" style=\"width: fit-content; min-width: unset;\">None</button></div><div class=\"annotations_filter_taglist\" data-rac=\"\" aria-label=\"Filter by Creator\" id=\"react-aria7894260364-:r1g:\" role=\"grid\" aria-multiselectable=\"true\" tabindex=\"0\" aria-atomic=\"false\" aria-relevant=\"additions\" aria-live=\"off\" aria-labelledby=\"react-aria7894260364-:r1g: react-aria7894260364-:r1h:\" data-collection=\"react-aria7894260364-:r1l:\" style=\"margin: 20px 0px;\"><div class=\"annotations_filter_tag\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria7894260364-:r1l:\" data-key=\"Audit creator\" data-react-aria-pressable=\"true\" id=\"react-aria7894260364-:r1g:-Auditcreator\" role=\"row\" aria-label=\"Audit creator\" aria-selected=\"true\" data-selection-mode=\"multiple\" data-selected=\"true\"><div role=\"gridcell\" aria-colindex=\"1\" style=\"display: contents;\">Audit creator</div></div></div></details></div><span data-focus-scope-end=\"true\" hidden=\"\"></span></section><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><button id=\"react-aria7894260364-:r1n:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button></div></div></div>\n<span data-focus-scope-end=\"true\" hidden=\"\" inert=\"\"></span>",
+  "dimensions": {
+    "width": 1184,
+    "height": 835,
+    "scrollWidth": 1184
+  },
+  "focus": "<button type=\"button\" aria-label=\"All: Filter by Creator\" class=\"button_primary_blue\" style=\"width: fit-content; min-width: unset;\">All</button>",
+  "controls": [
+    {
+      "html": "<button type=\"button\" aria-label=\"Filter Options\" class=\"annotations_filter_trigger_button\" title=\"Filter Options\" aria-expanded=\"true\" id=\"react-aria7894260364-:rn:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria7894260364-:rm:\"><svg viewBox=\"0 0 18 17\"><use xlink:href=\"#filter3-icon\"></use></svg></button>",
+      "rect": {
+        "x": 0,
+        "y": 60.15625,
+        "width": 30,
+        "height": 30,
+        "top": 60.15625,
+        "right": 30,
+        "bottom": 90.15625,
+        "left": 0
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"react-aria7894260364-:ro:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button>",
+      "rect": {
+        "x": 14,
+        "y": 109,
+        "width": 1,
+        "height": 1,
+        "top": 109,
+        "right": 15,
+        "bottom": 110,
+        "left": 14
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"button\" aria-label=\"All: Filter by Tag\" class=\"button_primary_blue\" style=\"width: fit-content; min-width: unset;\">All</button>",
+      "rect": {
+        "x": 15,
+        "y": 155,
+        "width": 27.5625,
+        "height": 30,
+        "top": 155,
+        "right": 42.5625,
+        "bottom": 185,
+        "left": 15
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"button\" aria-label=\"None: Filter by Tag\" class=\"button_secondary_blue\" style=\"width: fit-content; min-width: unset;\">None</button>",
+      "rect": {
+        "x": 52.5625,
+        "y": 155,
+        "width": 45.46875,
+        "height": 30,
+        "top": 155,
+        "right": 98.03125,
+        "bottom": 185,
+        "left": 52.5625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"button\" aria-label=\"All: Filter by Color\" class=\"button_primary_blue\" style=\"width: fit-content; min-width: unset;\">All</button>",
+      "rect": {
+        "x": 15,
+        "y": 291,
+        "width": 27.5625,
+        "height": 30,
+        "top": 291,
+        "right": 42.5625,
+        "bottom": 321,
+        "left": 15
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"button\" aria-label=\"None: Filter by Color\" class=\"button_secondary_blue\" style=\"width: fit-content; min-width: unset;\">None</button>",
+      "rect": {
+        "x": 52.5625,
+        "y": 291,
+        "width": 45.46875,
+        "height": 30,
+        "top": 291,
+        "right": 98.03125,
+        "bottom": 321,
+        "left": 52.5625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"button\" aria-label=\"All: Filter by Type\" class=\"button_primary_blue\" style=\"width: fit-content; min-width: unset;\">All</button>",
+      "rect": {
+        "x": 15,
+        "y": 430,
+        "width": 27.5625,
+        "height": 30,
+        "top": 430,
+        "right": 42.5625,
+        "bottom": 460,
+        "left": 15
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"button\" aria-label=\"None: Filter by Type\" class=\"button_secondary_blue\" style=\"width: fit-content; min-width: unset;\">None</button>",
+      "rect": {
+        "x": 52.5625,
+        "y": 430,
+        "width": 45.46875,
+        "height": 30,
+        "top": 430,
+        "right": 98.03125,
+        "bottom": 460,
+        "left": 52.5625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"button\" aria-label=\"All: Filter by Creator\" class=\"button_primary_blue\" style=\"width: fit-content; min-width: unset;\">All</button>",
+      "rect": {
+        "x": 15,
+        "y": 575,
+        "width": 27.5625,
+        "height": 30,
+        "top": 575,
+        "right": 42.5625,
+        "bottom": 605,
+        "left": 15
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"button\" aria-label=\"None: Filter by Creator\" class=\"button_secondary_blue\" style=\"width: fit-content; min-width: unset;\">None</button>",
+      "rect": {
+        "x": 52.5625,
+        "y": 575,
+        "width": 45.46875,
+        "height": 30,
+        "top": 575,
+        "right": 98.03125,
+        "bottom": 605,
+        "left": 52.5625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"react-aria7894260364-:r1n:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button>",
+      "rect": {
+        "x": 14,
+        "y": 665,
+        "width": 1,
+        "height": 1,
+        "top": 665,
+        "right": 15,
+        "bottom": 666,
+        "left": 14
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [
+      {
+        "id": "landmark-one-main",
+        "impact": "moderate",
+        "tags": [
+          "cat.semantics",
+          "best-practice"
+        ],
+        "description": "Ensure the document has a main landmark",
+        "help": "Document should have one main landmark",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=axeAPI",
+        "nodes": [
+          {
+            "any": [],
+            "all": [
+              {
+                "id": "page-has-main",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "Document does not have a main landmark"
+              }
+            ],
+            "none": [],
+            "impact": "moderate",
+            "html": "<html lang=\"en\" style=\"overflow: hidden;\">",
+            "target": [
+              "html"
+            ],
+            "failureSummary": "Fix all of the following:\n  Document does not have a main landmark"
+          }
+        ]
+      },
+      {
+        "id": "page-has-heading-one",
+        "impact": "moderate",
+        "tags": [
+          "cat.semantics",
+          "best-practice"
+        ],
+        "description": "Ensure that the page, or at least one of its frames contains a level-one heading",
+        "help": "Page should contain a level-one heading",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=axeAPI",
+        "nodes": [
+          {
+            "any": [],
+            "all": [
+              {
+                "id": "page-has-heading-one",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "Page must have a level-one heading"
+              }
+            ],
+            "none": [],
+            "impact": "moderate",
+            "html": "<html lang=\"en\" style=\"overflow: hidden;\">",
+            "target": [
+              "html"
+            ],
+            "failureSummary": "Fix all of the following:\n  Page must have a level-one heading"
+          }
+        ]
+      }
+    ],
+    "incomplete": [
+      {
+        "id": "aria-prohibited-attr",
+        "impact": "serious",
+        "tags": [
+          "cat.aria",
+          "wcag2a",
+          "wcag412",
+          "EN-301-549",
+          "EN-9.4.1.2",
+          "RGAAv4",
+          "RGAA-7.1.1"
+        ],
+        "description": "Ensure ARIA attributes are not prohibited for an element's role",
+        "help": "Elements must only use permitted ARIA attributes",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-prohibited-attr?application=axeAPI",
+        "nodes": [
+          {
+            "any": [],
+            "all": [],
+            "none": [
+              {
+                "id": "aria-prohibited-attr",
+                "data": {
+                  "role": null,
+                  "nodeName": "div",
+                  "messageKey": "noRoleSingular",
+                  "prohibited": [
+                    "aria-labelledby"
+                  ]
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "aria-labelledby attribute is not well supported on a div with no valid role attribute."
+              }
+            ],
+            "impact": "serious",
+            "html": "<div dir=\"ltr\" class=\"annotations_filter_c...\" data-rac=\"\" aria-labelledby=\"react-aria7894260364...\" data-trigger=\"DialogTrigger\" style=\"position: absolute; ...\" data-placement=\"bottom\">",
+            "target": [
+              ".annotations_filter_container"
+            ],
+            "failureSummary": "Fix all of the following:\n  aria-labelledby attribute is not well supported on a div with no valid role attribute."
+          }
+        ]
+      }
+    ],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 28
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 17
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 28
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 17
+      },
+      {
+        "id": "aria-dialog-name",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 2
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 27
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 17
+      },
+      {
+        "id": "aria-required-children",
+        "nodes": 10
+      },
+      {
+        "id": "aria-required-parent",
+        "nodes": 12
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 17
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 28
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 28
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 4
+      },
+      {
+        "id": "button-name",
+        "nodes": 10
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "duplicate-id-aria",
+        "nodes": 10
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 14
+      },
+      {
+        "id": "region",
+        "nodes": 54
+      },
+      {
+        "id": "summary-name",
+        "nodes": 4
+      },
+      {
+        "id": "tabindex",
+        "nodes": 15
+      },
+      {
+        "id": "target-size",
+        "nodes": 14
+      }
+    ]
+  },
+  "evidencePrefix": "batch-2-continuation/reader-filters-selected"
+}

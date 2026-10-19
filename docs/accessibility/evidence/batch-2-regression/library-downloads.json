@@ -1,0 +1,238 @@
+{
+  "id": "downloads",
+  "runtime": "library",
+  "files": [
+    "src/renderer/library/components/DownloadsPanel.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T12:58:46.273Z",
+  "lang": "en",
+  "errors": [],
+  "actions": [
+    [
+      "dispatch",
+      {
+        "type": "DOWNLOAD_ABORT",
+        "payload": {
+          "id": 1
+        },
+        "error": true
+      }
+    ],
+    [
+      "dispatch",
+      {
+        "type": "DOWNLOAD_ABORT",
+        "payload": {
+          "id": 2
+        },
+        "error": true
+      }
+    ]
+  ],
+  "text": "Component fixture: downloads\nDownloads\n42%Audit book download10 MB1024 Kb/s\n? %Queued audit book20 MB0 Kb/s",
+  "html": "<div id=\"audit-root\"><main><h1>Component fixture: downloads</h1><div class=\"downloadsPanel\" aria-live=\"polite\" role=\"alert\"><div>Downloads</div><ul><li><span class=\"title\"><button type=\"button\" aria-label=\"Cancel download: Audit book download\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></span><span class=\"percent\">42%</span><progress aria-label=\"Download progress: Audit book download\" max=\"100\" value=\"42\">42</progress><span class=\"title\">Audit book download</span><span class=\"title\">10 MB</span><span class=\"title\">1024 Kb/s</span></li><li><span class=\"title\"><button type=\"button\" aria-label=\"Cancel download: Queued audit book\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></span><span class=\"percent\">? %</span><progress aria-label=\"Download progress: Queued audit book\">...</progress><span class=\"title\">Queued audit book</span><span class=\"title\">20 MB</span><span class=\"title\">0 Kb/s</span></li></ul></div></main></div>",
+  "dimensions": {
+    "width": 1184,
+    "height": 835,
+    "scrollWidth": 1184
+  },
+  "focus": "<button type=\"button\" aria-label=\"Cancel download: Queued audit book\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button>",
+  "controls": [
+    {
+      "html": "<div class=\"downloadsPanel\" aria-live=\"polite\" role=\"alert\"><div>Downloads</div><ul><li><span class=\"title\"><button type=\"button\" aria-label=\"Cancel download: Audit book download\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></span><span class=\"percent\">42%</span><progress aria-label=\"Download progress: Audit book download\" max=\"100\" value=\"42\">42</progress><span class=\"title\">Audit book download</span><span class=\"title\">10 MB</span><span class=\"title\">1024 Kb/s</span></li><li><span class=\"title\"><button type=\"button\" aria-label=\"Cancel download: Queued audit book\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></span><span class=\"percent\">? %</span><progress aria-label=\"Download progress: Queued audit book\">...</progress><span class=\"title\">Queued audit book</span><span class=\"title\">20 MB</span><span class=\"title\">0 Kb/s</span></li></ul></div>",
+      "rect": {
+        "x": 20,
+        "y": 701,
+        "width": 1144,
+        "height": 134,
+        "top": 701,
+        "right": 1164,
+        "bottom": 835,
+        "left": 20
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"button\" aria-label=\"Cancel download: Audit book download\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button>",
+      "rect": {
+        "x": 75,
+        "y": 742,
+        "width": 24,
+        "height": 30,
+        "top": 742,
+        "right": 99,
+        "bottom": 772,
+        "left": 75
+      },
+      "visible": true
+    },
+    {
+      "html": "<progress aria-label=\"Download progress: Audit book download\" max=\"100\" value=\"42\">42</progress>",
+      "rect": {
+        "x": 153,
+        "y": 745.390625,
+        "width": 120,
+        "height": 20,
+        "top": 745.390625,
+        "right": 273,
+        "bottom": 765.390625,
+        "left": 153
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"button\" aria-label=\"Cancel download: Queued audit book\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button>",
+      "rect": {
+        "x": 75,
+        "y": 778,
+        "width": 24,
+        "height": 30,
+        "top": 778,
+        "right": 99,
+        "bottom": 808,
+        "left": 75
+      },
+      "visible": true
+    },
+    {
+      "html": "<progress aria-label=\"Download progress: Queued audit book\">...</progress>",
+      "rect": {
+        "x": 153,
+        "y": 781.390625,
+        "width": 120,
+        "height": 20,
+        "top": 781.390625,
+        "right": 273,
+        "bottom": 801.390625,
+        "left": 153
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [],
+    "incomplete": [],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 5
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 1
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 5
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 3
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 5
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 1
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 1
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 5
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 5
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 1
+      },
+      {
+        "id": "button-name",
+        "nodes": 2
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 10
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 1
+      },
+      {
+        "id": "heading-order",
+        "nodes": 1
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-main-is-top-level",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-no-duplicate-main",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-unique",
+        "nodes": 1
+      },
+      {
+        "id": "list",
+        "nodes": 1
+      },
+      {
+        "id": "listitem",
+        "nodes": 2
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 4
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 22
+      },
+      {
+        "id": "target-size",
+        "nodes": 2
+      }
+    ]
+  },
+  "evidencePrefix": "batch-2-regression/library-downloads"
+}

@@ -1,0 +1,10 @@
+- main:
+  - 'heading "Component fixture: panel-modal" [level=1]'
+  - button "Open audit panel" [expanded]
+- button "Dismiss"
+- dialog "Audit panel":
+  - heading "Audit panel" [level=2]
+  - button "Dock left"
+  - button "Dock right"
+  - button "Show modal"
+  - button "Close panel"

@@ -14,7 +14,8 @@ import { ToastType } from "readium-desktop/common/models/toast";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as ChevronDownIcon from "readium-desktop/renderer/assets/icons/chevron-down.svg";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import { uuidv4 } from "readium-desktop/utils/uuid";
 import { TranslatorProps, withTranslator } from "../hoc/translator";
 import { connect } from "react-redux";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
@@ -45,12 +46,12 @@ interface IState {
     willLeave: boolean;
     toRemove: boolean;
     opened: boolean;
+    copyFeedback?: "copied" | "failed";
 }
 
 export class Toast extends React.Component<IProps, IState> {
     private ref: React.RefObject<HTMLDivElement>;
-    private timer: number | undefined;
-    private ignoreTimer: boolean | undefined;
+    private messageId = `toast-message-${uuidv4()}`;
     private fallbackTimer: number | undefined;
     private isRemoving = false;
 
@@ -69,44 +70,20 @@ export class Toast extends React.Component<IProps, IState> {
         this.handleClose = this.handleClose.bind(this);
     }
 
-    public cancelTimer(ignoreTimer: boolean) {
-        if (this.timer) {
-            window.clearTimeout(this.timer);
-            this.timer = undefined;
-        }
-        if (this.fallbackTimer) {
-            window.clearTimeout(this.fallbackTimer);
-            this.fallbackTimer = undefined;
-        }
-        if (ignoreTimer) {
-            this.ignoreTimer = true;
-        }
-    }
-    public triggerTimer(fast: boolean) {
-        this.cancelTimer(false);
-        if (this.ignoreTimer) {
-            return;
-        }
-
-        this.timer = window.setTimeout(() => {
-            this.timer = undefined;
-            this.handleClose();
-        }, fast ? 500 : 5000);
-    }
-
     public componentDidMount() {
-        this.triggerTimer(false);
+        // Visible notifications remain available until explicitly dismissed.
 
         // https://www.electronjs.org/docs/latest/tutorial/notifications
         if (this.props.displaySystemNotification) {
             new Notification(capitalizedAppName, {
                 body: this.props.message,
             });
+            this.props.close(this.props.id);
         }
     }
 
     public componentWillUnmount() {
-        this.cancelTimer(false);
+        if (this.fallbackTimer) window.clearTimeout(this.fallbackTimer);
     }
 
     public render(): React.ReactElement<{}> {
@@ -134,22 +111,6 @@ export class Toast extends React.Component<IProps, IState> {
             <div
                 onTransitionEnd={this.handleTransitionEnd}
                 ref={this.ref}
-                onMouseMove={() => {
-                    this.cancelTimer(false);
-                }}
-                onClick={() => {
-                    this.cancelTimer(true);
-                    this.setState({ opened : !this.state.opened });
-                }}
-                onMouseOut={() => {
-                    this.triggerTimer(true);
-
-                }}
-                onBlur={() => {
-                    this.ignoreTimer = false;
-                    this.setState({ opened : false });
-                    this.triggerTimer(true);
-                }}
                 className={classNames(
                     stylesToasts.toast,
                     willLeave && stylesToasts.leave,
@@ -157,60 +118,54 @@ export class Toast extends React.Component<IProps, IState> {
                     typeClassName,
                 )}
             >
-                {
-                // icon && <SVG className={styles.icon} svg={icon} />
-                }
                 <p
+                    id={this.messageId}
                     aria-live="assertive"
                     aria-relevant="all"
                     role="alert"
-                    tabIndex={0}
-                    className={ this.state.opened ? stylesToasts.toast_open : ""}
-                    onFocus={() => {
-                        this.cancelTimer(true);
-                    }}
-                    onClick={() => {
-                        const clipBoardType = "clipboard";
-                        try {
-                            clipboard.writeText(this.props.message, clipBoardType);
-
-                            // https://www.electronjs.org/docs/latest/tutorial/notifications
-                            new Notification(capitalizedAppName, {
-                                body: `${__("app.edit.copy")} [${this.props.message}]`,
-                            });
-                            // this.triggerTimer(true);
-                            // this.handleClose();
-                        } catch (_e) {
-                            // ignore
-                        }
-                    }
-                }>{ this.props.message }</p>
-                {/*
-                    onBlur={() => {
-                        this.triggerTimer(true);
-                    }}
-                */}
+                    className={this.state.opened ? stylesToasts.toast_open : ""}
+                >{this.props.message}</p>
+                <div className={stylesToasts.actions}>
+                    <button
+                        type="button"
+                        className={stylesButtons.button_secondary_blue}
+                        aria-expanded={this.state.opened}
+                        aria-controls={this.messageId}
+                        onClick={() => this.setState(state => ({ opened: !state.opened }))}
+                    >{__("accessibility.notificationDetails")}</button>
+                    <button
+                        type="button"
+                        className={stylesButtons.button_secondary_blue}
+                        onClick={this.copyMessage}
+                    >{__("accessibility.copyNotification")}</button>
+                </div>
+                <div role="status" className={stylesToasts.copyStatus}>
+                    {this.state.copyFeedback === "copied" ? __("accessibility.notificationCopied") :
+                        this.state.copyFeedback === "failed" ? __("accessibility.notificationCopyFailed") : ""}
+                </div>
                 <button
-                    onFocus={() => {
-                        this.cancelTimer(true);
-                    }}
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        this.handleClose();
-                    }}
+                    type="button"
+                    onClick={this.handleClose}
                     className={stylesToasts.closeButton}
-                    title={this.props.__("accessibility.closeDialog")}
+                    aria-label={__("accessibility.closeDialog")}
                 >
-                    {this.state.opened ?
-                    <SVG ariaHidden={true} svg={ChevronDownIcon}/>
-                    :
-                    <SVG ariaHidden={true} svg={QuitIcon}/>}
+                    <SVG ariaHidden svg={QuitIcon} />
                 </button>
             </div>
         );
     }
 
+    private copyMessage = () => {
+        try {
+            clipboard.writeText(this.props.message, "clipboard");
+            this.setState({ copyFeedback: "copied" });
+        } catch (_e) {
+            this.setState({ copyFeedback: "failed" });
+        }
+    };
+
     private handleClose() {
+        if (this.state.willLeave) return;
         this.setState({ willLeave: true, opened: false });
         this.fallbackTimer = window.setTimeout(() => {
             if (!this.state.toRemove) {
@@ -221,7 +176,7 @@ export class Toast extends React.Component<IProps, IState> {
     }
 
     private handleTransitionEnd() {
-        if (this.isRemoving) return;
+        if (this.isRemoving || !this.state.willLeave) return;
         if (this.fallbackTimer) {
             window.clearTimeout(this.fallbackTimer);
             this.fallbackTimer = undefined;

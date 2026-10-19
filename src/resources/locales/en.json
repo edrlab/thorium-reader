@@ -1,5 +1,9 @@
 {
     "accessibility": {
+        "notificationDetails": "Details",
+        "copyNotification": "Copy notification",
+        "notificationCopied": "Notification copied",
+        "notificationCopyFailed": "Could not copy notification",
         "cancelDownload": "Cancel download: {{- title}}",
         "annotationNote": "Annotation note",
         "bookMenu": "Menu",

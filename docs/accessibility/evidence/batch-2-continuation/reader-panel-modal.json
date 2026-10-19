@@ -1,0 +1,318 @@
+{
+  "id": "panel-modal",
+  "runtime": "reader",
+  "files": [
+    "src/renderer/common/components/Dialog.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T12:53:58.628Z",
+  "lang": "en",
+  "errors": [],
+  "actions": [],
+  "text": "Component fixture: panel-modal\nOpen audit panel\nAudit panel\nDock left\nDock right\nShow modal\nClose panel",
+  "html": "<div id=\"audit-root\" inert=\"\"><main><h1>Component fixture: panel-modal</h1><button type=\"button\" aria-expanded=\"true\" id=\"react-aria7894260364-:ra:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria7894260364-:r9:\">Open audit panel</button></main></div>\n<span data-focus-scope-start=\"true\" hidden=\"\" inert=\"\"></span>\n<div class=\"thorium-dialog-overlay\" data-rac=\"\" style=\"position: fixed; inset: 0px; z-index: 102; --visual-viewport-width: 1184px; --visual-viewport-height: 835px; --page-width: 1184px; --page-height: 834.84375px;\"><div class=\"react-aria-Modal\" data-rac=\"\" style=\"display: contents;\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><button id=\"react-aria7894260364-:rb:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button></div><section id=\"react-aria7894260364-:r9:\" class=\"react-aria-Dialog\" data-rac=\"\" aria-labelledby=\":r6:\" role=\"dialog\" tabindex=\"-1\"><h2 id=\":r6:\">Audit panel</h2><button>Dock left</button><button>Dock right</button><button>Show modal</button><button type=\"button\" data-react-aria-pressable=\"true\" tabindex=\"0\">Close panel</button></section></div></div>\n<span data-focus-scope-end=\"true\" hidden=\"\" inert=\"\"></span>",
+  "dimensions": {
+    "width": 1184,
+    "height": 835,
+    "scrollWidth": 1184
+  },
+  "focus": "<section id=\"react-aria7894260364-:r9:\" class=\"react-aria-Dialog\" data-rac=\"\" aria-labelledby=\":r6:\" role=\"dialog\" tabindex=\"-1\"><h2 id=\":r6:\">Audit panel</h2><button>Dock left</button><button>Dock right</button><button>Show modal</button><button type=\"button\" data-react-aria-pressable=\"true\" tabindex=\"0\">Close panel</button></section>",
+  "controls": [
+    {
+      "html": "<button type=\"button\" aria-expanded=\"true\" id=\"react-aria7894260364-:ra:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria7894260364-:r9:\">Open audit panel</button>",
+      "rect": {
+        "x": 0,
+        "y": 60.15625,
+        "width": 106.640625,
+        "height": 16,
+        "top": 60.15625,
+        "right": 106.640625,
+        "bottom": 76.15625,
+        "left": 0
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"react-aria7894260364-:rb:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button>",
+      "rect": {
+        "x": -1,
+        "y": -1,
+        "width": 1,
+        "height": 1,
+        "top": -1,
+        "right": 0,
+        "bottom": 0,
+        "left": -1
+      },
+      "visible": true
+    },
+    {
+      "html": "<button>Dock left</button>",
+      "rect": {
+        "x": 0,
+        "y": 56.1875,
+        "width": 54.46875,
+        "height": 16,
+        "top": 56.1875,
+        "right": 54.46875,
+        "bottom": 72.1875,
+        "left": 0
+      },
+      "visible": true
+    },
+    {
+      "html": "<button>Dock right</button>",
+      "rect": {
+        "x": 0,
+        "y": 72.1875,
+        "width": 63.03125,
+        "height": 16,
+        "top": 72.1875,
+        "right": 63.03125,
+        "bottom": 88.1875,
+        "left": 0
+      },
+      "visible": true
+    },
+    {
+      "html": "<button>Show modal</button>",
+      "rect": {
+        "x": 0,
+        "y": 88.1875,
+        "width": 77.046875,
+        "height": 16,
+        "top": 88.1875,
+        "right": 77.046875,
+        "bottom": 104.1875,
+        "left": 0
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"button\" data-react-aria-pressable=\"true\" tabindex=\"0\">Close panel</button>",
+      "rect": {
+        "x": 0,
+        "y": 104.1875,
+        "width": 73.9375,
+        "height": 16,
+        "top": 104.1875,
+        "right": 73.9375,
+        "bottom": 120.1875,
+        "left": 0
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [
+      {
+        "id": "target-size",
+        "impact": "serious",
+        "tags": [
+          "cat.sensory-and-visual-cues",
+          "wcag22aa",
+          "wcag258"
+        ],
+        "description": "Ensure touch targets have sufficient size and space",
+        "help": "All touch targets must be 24px large, or leave sufficient space",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/target-size?application=axeAPI",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "target-size",
+                "data": {
+                  "minSize": 24,
+                  "width": 54.5,
+                  "height": 16
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Target has insufficient size (54.5px by 16px, should be at least 24px by 24px)"
+              },
+              {
+                "id": "target-offset",
+                "data": {
+                  "closestOffset": 9.2,
+                  "minOffset": 24
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<button>Dock right</button>",
+                    "target": [
+                      "button:nth-child(3)"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 9.2px instead of at least 24px."
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<button>Dock left</button>",
+            "target": [
+              "#react-aria7894260364-\\:r9\\: > button:nth-child(2)"
+            ],
+            "failureSummary": "Fix any of the following:\n  Target has insufficient size (54.5px by 16px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 9.2px instead of at least 24px."
+          },
+          {
+            "any": [
+              {
+                "id": "target-size",
+                "data": {
+                  "minSize": 24,
+                  "width": 63,
+                  "height": 16
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Target has insufficient size (63px by 16px, should be at least 24px by 24px)"
+              },
+              {
+                "id": "target-offset",
+                "data": {
+                  "closestOffset": 9.2,
+                  "minOffset": 24
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<button>Dock left</button>",
+                    "target": [
+                      "#react-aria7894260364-\\:r9\\: > button:nth-child(2)"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 9.2px instead of at least 24px."
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<button>Dock right</button>",
+            "target": [
+              "button:nth-child(3)"
+            ],
+            "failureSummary": "Fix any of the following:\n  Target has insufficient size (63px by 16px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 9.2px instead of at least 24px."
+          }
+        ]
+      }
+    ],
+    "incomplete": [],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 2
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 1
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 2
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 1
+      },
+      {
+        "id": "aria-dialog-name",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 1
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 2
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 1
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 1
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 2
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 2
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 3
+      },
+      {
+        "id": "button-name",
+        "nodes": 5
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 3
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "duplicate-id-aria",
+        "nodes": 2
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 1
+      },
+      {
+        "id": "heading-order",
+        "nodes": 1
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 5
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 10
+      },
+      {
+        "id": "tabindex",
+        "nodes": 3
+      },
+      {
+        "id": "target-size",
+        "nodes": 3
+      }
+    ]
+  },
+  "evidencePrefix": "batch-2-continuation/reader-panel-modal"
+}

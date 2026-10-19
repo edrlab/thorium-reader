@@ -1,0 +1,71 @@
+{
+  "batch": 2,
+  "phase": "continuation",
+  "startup": "npm run start:dev:quick",
+  "tests": [
+    {
+      "id": "live-navigation-docked-and-modal",
+      "status": "passed",
+      "findings": [
+        "A23"
+      ],
+      "evidence": [
+        "batch-2-continuation/reader-live-navigation-left.json",
+        "batch-2-continuation/reader-live-navigation-right.json",
+        "batch-2-continuation/reader-live-navigation-modal.json"
+      ],
+      "limitation": "Both dock sides and modal relationships verified. Docked trigger can retain focus outside panel. Modal Tab containment and Escape restoration tested after reopening from header trigger."
+    },
+    {
+      "id": "live-reader-settings-docked-and-modal",
+      "status": "passed",
+      "findings": [
+        "A23"
+      ],
+      "evidence": [
+        "batch-2-continuation/reader-live-settings-left.json",
+        "batch-2-continuation/reader-live-settings-right.json",
+        "batch-2-continuation/reader-live-settings-modal.json"
+      ],
+      "limitation": "Both dock sides and modal relationships verified. Docked trigger can retain focus outside panel. Modal Tab containment and Escape restoration tested after reopening from header trigger."
+    },
+    {
+      "id": "live-annotation-filter-disclosures-and-actions",
+      "status": "passed",
+      "findings": [
+        "A24"
+      ],
+      "evidence": "batch-2-continuation/reader-live-filter-actions.json",
+      "limitation": "Live empty annotation list; color actions/disclosure exercised. Tag/type/creator populated branches validated in fixtures. No note saved or deleted."
+    },
+    {
+      "id": "live-library-and-epub-navigation-lists",
+      "status": "passed",
+      "findings": [
+        "A22"
+      ],
+      "evidence": [
+        "batch-2-continuation/library-live-valid-navigation.json",
+        "batch-2-continuation/reader-epub-valid-navigation.json"
+      ]
+    },
+    {
+      "id": "live-pdf-toolbar-valid-list",
+      "status": "passed",
+      "findings": [
+        "A22"
+      ],
+      "evidence": "batch-2-continuation/reader-pdf-valid-navigation.json",
+      "limitation": "Existing PDF toolbar inspected; audiobook and Divina branches source-reviewed only."
+    },
+    {
+      "id": "live-notification-keyboard-persistence-and-restoration",
+      "status": "passed",
+      "findings": [
+        "A12"
+      ],
+      "evidence": "batch-2-continuation/library-live-notification.json",
+      "limitation": "Real shortcut produced notification. Screen-reader optimization toggled then restored. Clipboard service stubbed/restored; OS clipboard unchanged. No native screen-reader listening."
+    }
+  ]
+}

@@ -1,0 +1,323 @@
+{
+  "id": "opds-navigation",
+  "runtime": "library",
+  "files": [
+    "src/renderer/library/components/opds/Entry.tsx",
+    "src/renderer/library/components/opds/EntryList.tsx",
+    "src/renderer/library/components/opds/PageNavigation.tsx",
+    "src/renderer/library/components/opds/SearchForm.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T12:58:48.840Z",
+  "lang": "en",
+  "errors": [],
+  "actions": [
+    [
+      "dispatch",
+      {
+        "type": "@@router/CALL_HISTORY_METHOD",
+        "payload": {
+          "method": "push",
+          "args": [
+            {
+              "pathname": "/opds/audit/browse/1/QXVkaXQgY2F0YWxvZw/aHR0cHM6Ly9hdWRpdC5pbnZhbGlkL2ZpcnN0",
+              "search": "",
+              "hash": ""
+            },
+            null
+          ]
+        }
+      }
+    ],
+    [
+      "dispatch",
+      {
+        "type": "@@router/CALL_HISTORY_METHOD",
+        "payload": {
+          "method": "push",
+          "args": [
+            {
+              "pathname": "/opds/audit/browse/1/QXVkaXQgY2F0YWxvZw/aHR0cHM6Ly9hdWRpdC5pbnZhbGlkL3ByZXY",
+              "search": "",
+              "hash": ""
+            },
+            null
+          ]
+        }
+      }
+    ],
+    [
+      "dispatch",
+      {
+        "type": "@@router/CALL_HISTORY_METHOD",
+        "payload": {
+          "method": "push",
+          "args": [
+            {
+              "pathname": "/opds/audit/browse/1/QXVkaXQgY2F0YWxvZw/aHR0cHM6Ly9hdWRpdC5pbnZhbGlkL25leHQ",
+              "search": "",
+              "hash": ""
+            },
+            null
+          ]
+        }
+      }
+    ],
+    [
+      "dispatch",
+      {
+        "type": "@@router/CALL_HISTORY_METHOD",
+        "payload": {
+          "method": "push",
+          "args": [
+            {
+              "pathname": "/opds/audit/browse/1/QXVkaXQgY2F0YWxvZw/aHR0cHM6Ly9hdWRpdC5pbnZhbGlkL2xhc3Q",
+              "search": "",
+              "hash": ""
+            },
+            null
+          ]
+        }
+      }
+    ]
+  ],
+  "text": "Component fixture: opds-navigation\nSearch\nAudit category\n\nBooks in the category\n(5)\n2 / 4",
+  "html": "<div id=\"audit-root\"><main><h1>Component fixture: opds-navigation</h1><form class=\"form_group form_group_allPubSearch\" role=\"search\"><label id=\"globalSearchLabel\" for=\"globalSearchInput\">Search</label><i><svg aria-hidden=\"true\" viewBox=\"0 0 20 14\"><use xlink:href=\"#search-icon\"></use></svg></i><input type=\"search\" id=\"menu_search\" aria-label=\"Search\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\"></form><section><ul class=\"entryList_ul\"><li class=\"entryList_item\"><a class=\"button_transparency\" href=\"/opds/audit/browse/1/QXVkaXQgY2F0ZWdvcnk/aHR0cHM6Ly9hdWRpdC5pbnZhbGlkL2NhdGVnb3J5\"><span><span title=\"Books in the category\">Audit category</span><span title=\"Books in the category\" aria-label=\"Books in the category\"><br>Books in the category</span></span><span class=\"numberOfItems\">(5)</span></a></li></ul></section><div class=\"opds_publication_wrapper\"><div class=\"allBooks_header_pagination_container\"><button type=\"button\" class=\"allBooks_header_pagination_arrow\" aria-label=\"First\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#arrowFirst-icon\"></use></svg></button><button type=\"button\" class=\"allBooks_header_pagination_arrow\" aria-label=\"Previous\" style=\"transform: rotate(180deg);\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 16\"><use xlink:href=\"#chevron-right\"></use></svg></button><span class=\"allBooks_header_pagination_opds_currentPage\">2  / 4</span><button type=\"button\" class=\"allBooks_header_pagination_arrow\" aria-label=\"Next\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 16\"><use xlink:href=\"#chevron-right\"></use></svg></button><button type=\"button\" class=\"allBooks_header_pagination_arrow\" aria-label=\"Last\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#arrowLast-icon\"></use></svg></button></div></div></main></div>",
+  "dimensions": {
+    "width": 1184,
+    "height": 835,
+    "scrollWidth": 1184
+  },
+  "focus": "<button type=\"button\" class=\"allBooks_header_pagination_arrow\" aria-label=\"Last\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#arrowLast-icon\"></use></svg></button>",
+  "controls": [
+    {
+      "html": "<input type=\"search\" id=\"menu_search\" aria-label=\"Search\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\">",
+      "rect": {
+        "x": 33,
+        "y": 65.65625,
+        "width": 265,
+        "height": 25,
+        "top": 65.65625,
+        "right": 298,
+        "bottom": 90.65625,
+        "left": 33
+      },
+      "visible": true
+    },
+    {
+      "html": "<a class=\"button_transparency\" href=\"/opds/audit/browse/1/QXVkaXQgY2F0ZWdvcnk/aHR0cHM6Ly9hdWRpdC5pbnZhbGlkL2NhdGVnb3J5\"><span><span title=\"Books in the category\">Audit category</span><span title=\"Books in the category\" aria-label=\"Books in the category\"><br>Books in the category</span></span><span class=\"numberOfItems\">(5)</span></a>",
+      "rect": {
+        "x": 1,
+        "y": 114.65625,
+        "width": 250,
+        "height": 55,
+        "top": 114.65625,
+        "right": 251,
+        "bottom": 169.65625,
+        "left": 1
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"button\" class=\"allBooks_header_pagination_arrow\" aria-label=\"First\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#arrowFirst-icon\"></use></svg></button>",
+      "rect": {
+        "x": 489,
+        "y": 198.15625,
+        "width": 30,
+        "height": 32,
+        "top": 198.15625,
+        "right": 519,
+        "bottom": 230.15625,
+        "left": 489
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"button\" class=\"allBooks_header_pagination_arrow\" aria-label=\"Previous\" style=\"transform: rotate(180deg);\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 16\"><use xlink:href=\"#chevron-right\"></use></svg></button>",
+      "rect": {
+        "x": 519,
+        "y": 198.15625,
+        "width": 30,
+        "height": 32,
+        "top": 198.15625,
+        "right": 549,
+        "bottom": 230.15625,
+        "left": 519
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"button\" class=\"allBooks_header_pagination_arrow\" aria-label=\"Next\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 16\"><use xlink:href=\"#chevron-right\"></use></svg></button>",
+      "rect": {
+        "x": 635,
+        "y": 198.15625,
+        "width": 30,
+        "height": 32,
+        "top": 198.15625,
+        "right": 665,
+        "bottom": 230.15625,
+        "left": 635
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"button\" class=\"allBooks_header_pagination_arrow\" aria-label=\"Last\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#arrowLast-icon\"></use></svg></button>",
+      "rect": {
+        "x": 665,
+        "y": 198.15625,
+        "width": 30,
+        "height": 32,
+        "top": 198.15625,
+        "right": 695,
+        "bottom": 230.15625,
+        "left": 665
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [],
+    "incomplete": [],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 6
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 1
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 6
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 6
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 6
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 1
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 1
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 6
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 6
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 2
+      },
+      {
+        "id": "button-name",
+        "nodes": 4
+      },
+      {
+        "id": "bypass",
+        "nodes": 1
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 7
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 1
+      },
+      {
+        "id": "form-field-multiple-labels",
+        "nodes": 1
+      },
+      {
+        "id": "heading-order",
+        "nodes": 1
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "label-title-only",
+        "nodes": 1
+      },
+      {
+        "id": "label",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-main-is-top-level",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-no-duplicate-main",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-unique",
+        "nodes": 2
+      },
+      {
+        "id": "link-name",
+        "nodes": 1
+      },
+      {
+        "id": "list",
+        "nodes": 1
+      },
+      {
+        "id": "listitem",
+        "nodes": 1
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 4
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 23
+      },
+      {
+        "id": "target-size",
+        "nodes": 6
+      }
+    ]
+  },
+  "evidencePrefix": "batch-2-regression/library-opds-navigation"
+}

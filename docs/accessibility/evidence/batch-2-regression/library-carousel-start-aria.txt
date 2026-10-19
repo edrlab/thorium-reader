@@ -1,0 +1,21 @@
+- main:
+  - 'heading "Component fixture: carousel" [level=1]'
+  - button "Slide to the left" [disabled]
+  - list:
+    - listitem:
+      - button "Audit book 1"
+    - listitem:
+      - button "Audit book 2"
+    - listitem:
+      - button "Audit book 3"
+    - listitem:
+      - button "Audit book 4"
+    - listitem:
+      - button "Audit book 5"
+    - listitem:
+      - button "Audit book 6"
+    - listitem:
+      - button "Audit book 7"
+    - listitem:
+      - button "Audit book 8"
+  - button "Slide to the right"

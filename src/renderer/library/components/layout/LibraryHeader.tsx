@@ -89,7 +89,7 @@ const Header = () => {
         );
 
         return (
-            <li className={classNames(...styleClasses, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} key={index} style={{ height: "inherit" }}>
+            <li className={classNames(...styleClasses, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} key={index} style={{ height: "auto", flexShrink: 0 }}>
                 <Link
                     to={nextLocation}
                     state={{ displayType: resolveDisplayType(nextLocation.state, savedDisplayTypeSetting) }}
@@ -120,7 +120,7 @@ const Header = () => {
                             e.currentTarget.click();
                         }
                     }}
-                    style={{ height: "inherit" }}
+                    style={{ height: "auto" }}
                 >
                     {typeof item.svg === "string" ? <img alt="" aria-hidden width={"20px"} height={"20px"} src={item.svg}></img> : <SVG ariaHidden svg={item.svg} />}
                     <h3>{item.label}</h3>
@@ -274,47 +274,45 @@ const Header = () => {
             }
             <h1 className={stylesHeader.appName} aria-label="Thorium"></h1>
             <ul style={{ paddingTop: "10px", height: customizationEnable ? "calc(100% - 180px)" : "" }}>
-                <div>
-                    {
-                        headerNav.map(
-                            (item, index, array) => {
+                {
+                    headerNav.map(
+                        (item, index, array) => {
 
-                                const pathname = location.pathname;
+                            const pathname = location.pathname;
 
-                                let active = item.exactMatch && pathname === item.route;
-                                if (item.exactMatch) {
-                                    return buildNavItem(item, index, active);
+                            let active = item.exactMatch && pathname === item.route;
+                            if (item.exactMatch) {
+                                return buildNavItem(item, index, active);
+                            }
+                            const itemsFound = array.filter(({ matchRoutes }) => !!matchRoutes.find((route) => route.split("/")[1] === pathname.split("/")[1]));
+                            // console.log("ITEMS FOUND=", itemsFound);
+                            if (!itemsFound) {
+                                console.error("No Route Found !!!", pathname);
+                            } else if (itemsFound.length === 1) {
+                                if (itemsFound[0].label === item.label) {
+                                    active = true;
                                 }
-                                const itemsFound = array.filter(({ matchRoutes }) => !!matchRoutes.find((route) => route.split("/")[1] === pathname.split("/")[1]));
-                                // console.log("ITEMS FOUND=", itemsFound);
-                                if (!itemsFound) {
-                                    console.error("No Route Found !!!", pathname);
-                                } else if (itemsFound.length === 1) {
-                                    if (itemsFound[0].label === item.label) {
+                            } else {
+                                const items2Found = array.filter(({ matchRoutes }) => !!matchRoutes.find((route) => route.split("/")[1] === pathname.split("/")[1] && route.split("/")[2] === pathname.split("/")[2]));
+                                if (items2Found?.length === 0) {
+                                    if (item.matchRoutes.find((route) => route.split("/")[1] === pathname.split("/")[1] && route.split("/")[2] === undefined)) {
+                                        active = true;
+                                    }
+                                } else if (items2Found.length === 1) {
+                                    if (items2Found[0].label === item.label) {
                                         active = true;
                                     }
                                 } else {
-                                    const items2Found = array.filter(({ matchRoutes }) => !!matchRoutes.find((route) => route.split("/")[1] === pathname.split("/")[1] && route.split("/")[2] === pathname.split("/")[2]));
-                                    if (items2Found?.length === 0) {
-                                        if (item.matchRoutes.find((route) => route.split("/")[1] === pathname.split("/")[1] && route.split("/")[2] === undefined)) {
-                                            active = true;
-                                        }
-                                    } else if (items2Found.length === 1) {
-                                        if (items2Found[0].label === item.label) {
-                                            active = true;
-                                        }
-                                    } else {
-                                        if (items2Found[0].label === item.label) {
-                                            active = true;
-                                        }
+                                    if (items2Found[0].label === item.label) {
+                                        active = true;
                                     }
                                 }
-                                // console.log("ITEM", item.label, "ACTIVE=", active);
-                                return buildNavItem(item, index, active);
-                            },
-                        )
-                    }
-                </div>
+                            }
+                            // console.log("ITEM", item.label, "ACTIVE=", active);
+                            return buildNavItem(item, index, active);
+                        },
+                    )
+                }
                 <li /* style={{position: "absolute", bottom: "10px" }} */>
                     <Settings />
                 </li>
