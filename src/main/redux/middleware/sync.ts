@@ -25,6 +25,7 @@ import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/m
 import { UnknownAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 
 import { RootState } from "../states";
+import { getToastDestination } from "./toastDestination";
 
 const debug = debug_("readium-desktop:sync");
 
@@ -168,8 +169,19 @@ export const reduxSyncMiddleware: Middleware
                     }
                 }
 
+                const isToast = (action as ActionWithSender).type === toastActions.openRequest.ID
+                    || (action as ActionWithSender).type === toastActions.closeRequest.ID;
+                const toastDestination = isToast ? getToastDestination(
+                    action as toastActions.openRequest.TAction & Partial<ActionWithSender>,
+                    libId,
+                    Object.values(readers).filter((reader) => browserWin.has(reader.identifier)),
+                ) : undefined;
+
                 browserWin.forEach(
                     (win, id) => {
+                        if (isToast && id !== toastDestination) {
+                            return;
+                        }
 
                         if (
                             !(

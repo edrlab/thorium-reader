@@ -48,7 +48,8 @@ export class ToastManager extends React.Component<IProps, IState> {
 
     public componentDidUpdate(oldProps: IProps) {
         const { toast } = this.props;
-        if (toast !== oldProps.toast) {
+        if (toast !== oldProps.toast && toast.open && toast.data?.trim()
+            && (!toast.publicationIdentifier || !this.props.pubId || toast.publicationIdentifier === this.props.pubId)) {
             const id = uuidv4();
             this.setState((prevState) => ({
                 toastList: {
@@ -67,7 +68,7 @@ export class ToastManager extends React.Component<IProps, IState> {
             <div className={stylesToasts.toasts_wrapper}>
                 {Object.keys(toastList).map((id) => {
                     const toast = toastList[id];
-                    if (toast && (!toast.publicationIdentifier || toast.publicationIdentifier === pubId)) {
+                    if (toast && (!toast.publicationIdentifier || !pubId || toast.publicationIdentifier === pubId)) {
                         return (
                             <Toast
                                 key={id}

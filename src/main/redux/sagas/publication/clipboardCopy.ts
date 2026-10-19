@@ -7,6 +7,7 @@
 
 import debug_ from "debug";
 import { clipboard } from "electron";
+import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { getTranslator } from "readium-desktop/common/services/translator";
@@ -19,6 +20,7 @@ const debug = debug_("readium-desktop:main:saga:clipboardCopy");
 export function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction) {
 
     const { publicationIdentifier, clipboardData } = action.payload;
+    const windowIdentifier = (action as unknown as ActionWithSender).sender?.identifier;
     const clipBoardType = "clipboard";
 
     let textToCopy = clipboardData.txt;
@@ -47,7 +49,7 @@ export function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction
     if (lcpRightsCopiesRemain <= 0) {
         yield* putTyped(toastActions.openRequest.build(ToastType.Error,
             `LCP [${translator.translate("app.edit.copy")}] ${publicationDocument.lcpRightsCopies} / ${publicationDocument.lcp.rights.copy}`,
-            publicationIdentifier));
+            publicationIdentifier, windowIdentifier));
         return;
     }
     const nCharsToCopy = textToCopy.length > lcpRightsCopiesRemain ?
@@ -68,5 +70,5 @@ export function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction
 
     yield* putTyped(toastActions.openRequest.build(ToastType.Success,
         `LCP [${translator.translate("app.edit.copy")}] ${newPublicationDocument.lcpRightsCopies} / ${publicationDocument.lcp.rights.copy}`,
-        publicationIdentifier));
+        publicationIdentifier, windowIdentifier));
 }
