@@ -392,13 +392,13 @@ describe("LCP operation error notifications", () => {
         const dispatch = jest.fn();
         const document = { identifier: "publication-1" };
         const publication = { LCP: { LSD: { Links: [{ HasRel: (value: string) => value === rel, Type: "application/vnd.readium.license.status.v1.0+json" }] } } };
-        const manager = Object.assign(Object.create(LcpManager.prototype) as LcpManager, {
+        const manager = Object.assign(Object.create(LcpManager.prototype) as object, {
             store: { getState: () => ({ lcp: { publicationFileLocks: {} } }), dispatch },
             translator: { translate: (key: string) => key },
             publicationViewConverter: { unmarshallR2Publication: async () => publication },
             checkPublicationLicenseUpdate_: async () => ({ publicationDocument: document, r2Publication: publication }),
             lsdManager: { [request]: async () => { throw new Error("Service unavailable"); } },
-        });
+        }) as unknown as LcpManager;
 
         await expect(manager[method](document as Parameters<LcpManager[typeof method]>[0])).resolves.toBe(document);
         const toasts = dispatch.mock.calls.map(([action]) => action as { type: string; payload: { type?: string } })

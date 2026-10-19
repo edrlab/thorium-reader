@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { clipboard } from "electron";
+import { readerClipboardCopy } from "./publication/clipboardCopy";
 import { Action } from "readium-desktop/common/models/redux";
 import { ActionWithDestination, ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -384,59 +384,6 @@ function* readerPrint(action: readerActions.print.TAction) {
     }
 }
 
-function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction) {
-
-    const { publicationIdentifier, clipboardData } = action.payload;
-    const clipBoardType = "clipboard";
-
-    let textToCopy = clipboardData.txt;
-
-    const publicationRepository = diMainGet("publication-repository");
-    const translator = getTranslator();
-    const publicationDocument = yield* callTyped(() => publicationRepository.get(
-        publicationIdentifier,
-    ));
-
-    debug("LCP RIGHTS", JSON.stringify(publicationDocument.lcp?.rights, null, 4));
-
-    if (!publicationDocument.lcp ||
-        !publicationDocument.lcp.rights ||
-        publicationDocument.lcp.rights.copy === null ||
-        typeof publicationDocument.lcp.rights.copy === "undefined" ||
-        publicationDocument.lcp.rights.copy < 0) {
-
-        clipboard.writeText(textToCopy, clipBoardType);
-        return ;
-    }
-
-    const lcpRightsCopies = publicationDocument.lcpRightsCopies ?
-        publicationDocument.lcpRightsCopies : 0;
-    const lcpRightsCopiesRemain = publicationDocument.lcp.rights.copy - lcpRightsCopies;
-    if (lcpRightsCopiesRemain <= 0) {
-        yield* putTyped(toastActions.openRequest.build(ToastType.Error,
-            `LCP [${translator.translate("app.edit.copy")}] ${publicationDocument.lcpRightsCopies} / ${publicationDocument.lcp.rights.copy}`,
-            publicationIdentifier));
-    }
-    const nCharsToCopy = textToCopy.length > lcpRightsCopiesRemain ?
-        lcpRightsCopiesRemain : textToCopy.length;
-    if (nCharsToCopy < textToCopy.length) {
-        textToCopy = textToCopy.substr(0, nCharsToCopy);
-    }
-    const newPublicationDocument: PublicationDocument = Object.assign(
-        {},
-        publicationDocument,
-        {
-            lcpRightsCopies: lcpRightsCopies + nCharsToCopy,
-        },
-    );
-    yield* callTyped(() => publicationRepository.save(newPublicationDocument));
-
-    clipboard.writeText(`${textToCopy}`, clipBoardType);
-
-    yield* putTyped(toastActions.openRequest.build(ToastType.Success,
-        `LCP [${translator.translate("app.edit.copy")}] ${newPublicationDocument.lcpRightsCopies} / ${publicationDocument.lcp.rights.copy}`,
-        publicationIdentifier));
-}
 
 export function saga() {
     return all([
