@@ -1,10 +1,11 @@
-const { app, BrowserWindow, session } = require('electron');
+const { app, BrowserWindow, session, protocol } = require('electron');
 const path = require('node:path');
 const fs = require('node:fs');
 app.setPath('userData', path.resolve('dist/accessibility-fixtures/profile'));
 app.commandLine.appendSwitch('remote-debugging-port', '9224');
 app.commandLine.appendSwitch('remote-allow-origins', '*');
 app.whenReady().then(() => {
+    protocol.handle('thoriumhttps', () => new Response('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="150"><rect width="200" height="150" fill="navy"/><circle cx="100" cy="75" r="40" fill="white"/></svg>', { headers: { 'Content-Type': 'image/svg+xml' } }));
     session.defaultSession.webRequest.onBeforeRequest((details, done) => {
         // Fixture inputs and assets only: no live catalog, lending, or authentication services.
         done({ cancel: /^https?:/.test(details.url) && !/^http:\/\/127\.0\.0\.1:9224\//.test(details.url) });

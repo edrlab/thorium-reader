@@ -1,0 +1,81 @@
+- heading "toolbar"
+- button "Skip to content"
+- navigation "toolbar":
+  - list:
+    - list:
+      - listitem:
+        - button "Close this reading window (back to bookshelf)"
+      - listitem:
+        - button "Information" [disabled]
+    - list:
+      - listitem:
+        - button "Activate Text To Speech (TTS)"
+      - listitem:
+        - button "TTS options"
+    - list:
+      - listitem:
+        - button "Search publication"
+      - listitem:
+        - checkbox "Bookmark (Add)"
+      - listitem:
+        - checkbox "Annotation"
+      - listitem:
+        - button "Navigation"
+      - listitem:
+        - button "Reader settings" [expanded] [pressed]
+      - listitem:
+        - button "Zen mode"
+- main "main content":
+  - heading "main content"
+  - iframe
+  - navigation "Navigation":
+    - button "Go backward"
+    - button "Go forward"
+- navigation "Navigation history":
+  - button "Jump back in navigation history" [disabled]
+  - button "Jump forward in navigation history" [disabled]
+- button "Dismiss"
+- heading "Reader settings" [level=1]
+- dialog "Reader settings":
+  - tablist "Reader settings":
+    - tab "Display"
+    - tab "Text"
+    - tab "Spacing" [selected]
+    - tab "Preferences"
+  - checkbox "Customize text formatting" [checked]
+  - heading "Spacing" [level=2]
+  - tabpanel "Spacing":
+    - heading "Margin" [level=3]
+    - paragraph: "1"
+    - button "Reset Margin"
+    - button "Decrease Margin"
+    - slider "Margin": "3"
+    - button "Increase Margin"
+    - heading "Word spacing" [level=3]
+    - paragraph: Default
+    - button "Reset Word spacing"
+    - button "Decrease Word spacing"
+    - slider "Word spacing": "0"
+    - button "Increase Word spacing"
+    - heading "Letter spacing" [level=3]
+    - paragraph: Default
+    - button "Reset Letter spacing"
+    - button "Decrease Letter spacing"
+    - slider "Letter spacing": "0"
+    - button "Increase Letter spacing"
+    - heading "Paragraph spacing" [level=3]
+    - paragraph: Default
+    - button "Reset Paragraph spacing"
+    - button "Decrease Paragraph spacing"
+    - slider "Paragraph spacing": "0"
+    - button "Increase Paragraph spacing"
+    - heading "Line spacing" [level=3]
+    - paragraph: Default
+    - button "Reset Line spacing"
+    - button "Decrease Line spacing"
+    - slider "Line spacing": "0"
+    - button "Increase Line spacing"
+  - button "Dock panel to the left"
+  - button "Dock panel to the right"
+  - button "Show panel as a modal popup" [disabled]
+  - button "Close"

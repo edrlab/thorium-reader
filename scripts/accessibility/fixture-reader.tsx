@@ -8,9 +8,13 @@ import { BookmarkCard } from 'readium-desktop/renderer/reader/components/ReaderM
 import { DivinaSetReadingMode } from 'readium-desktop/renderer/reader/components/ReaderSettings/DivinaSetReadingMode';
 import { PublicationInfoReaderWithRAC, PublicationInfoReaderWithRACTrigger, PublicationInfoReaderWithRACContent } from 'readium-desktop/renderer/reader/components/dialog/publicationInfos/PublicationInfo';
 import LoaderSearch from 'readium-desktop/renderer/reader/components/picker/LoaderSearch';
+import { FontSize } from 'readium-desktop/renderer/reader/components/ReaderSettings/FontSize';
+import { ReadingSpacing } from 'readium-desktop/renderer/reader/components/ReaderSettings/ReadingSpacing';
 const reader = (p: string) => 'src/renderer/reader/components/' + p;
 const cases: Record<string, AuditCase> = {};
 const add = (id: string, files: string[], render: () => React.ReactNode, state?: (s: any) => void) => cases[id] = { files, render, state };
+add('font-settings', [reader('ReaderSettings/FontSize.tsx')], () => <FontSize />);
+add('spacing-settings', [reader('ReaderSettings/Slider.tsx'), reader('ReaderSettings/ReadingSpacing.tsx')], () => <ReadingSpacing />);
 function Card({ bookmark = false }) {
     const [edited, setEdited] = React.useState(false);
     const props = { isEdited: edited, triggerEdition: setEdited, isSelected: false, goToLocator: record, goToPdfAnnotation: record, setTagFilter: record, setCreatorFilter: record };

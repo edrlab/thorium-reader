@@ -31,6 +31,8 @@ import OpdsMenu from 'readium-desktop/renderer/library/components/publication/me
 import AuthSettings from 'readium-desktop/renderer/library/components/settings/AuthSettings';
 import SaveSession from 'readium-desktop/renderer/library/components/settings/SaveSessionSettings';
 import { buildOpdsBrowserRoute } from 'readium-desktop/renderer/library/opds/route';
+import OverloadNoteExportToHtml from 'readium-desktop/renderer/library/components/settings/OverloadNoteExportToHtml';
+import { FeedCard } from 'readium-desktop/renderer/library/components/opds/FeedCard';
 
 const common = (p: string) => 'src/renderer/common/components/' + p;
 const lib = (p: string) => 'src/renderer/library/components/' + p;
@@ -38,6 +40,8 @@ const cases: Record<string, AuditCase> = {};
 const add = (id: string, files: string[], render: () => React.ReactNode, state?: (s: any) => void, after?: () => void) => cases[id] = { files, render, state, after };
 const patch = (payload: any) => (window as any).auditStore.dispatch({ type: 'AUDIT_SET', payload });
 const button = (text: string) => <button>{text}</button>;
+add('template-editor', [lib('settings/OverloadNoteExportToHtml.tsx')], () => <OverloadNoteExportToHtml />, s => { s.noteExport.overrideHTMLTemplate = true; });
+add('catalog-favorites', [lib('opds/FeedCard.tsx')], () => <ul><FeedCard feed={feed} location={{ pathname: '/' }} /><FeedCard feed={{ ...feed, identifier: 'audit-favorite', title: 'Favorite audit catalog', favorite: true }} location={{ pathname: '/' }} /></ul>);
 add('import-annotations-conflicts', [common('ImportAnnotationsDialog.tsx')], () => <ImportAnnotationsDialog winId="audit" publicationView={publication}>{button('Import annotations')}</ImportAnnotationsDialog>, s => s.importAnnotations = { ...s.importAnnotations, open: true, winId: 'audit', title: 'Audit annotation set', annotationsList: [note], annotationsConflictListOlder: [note], annotationsConflictListNewer: [note], about: { 'dc:title': 'Audit source', 'dc:creator': ['Audit creator'] } });
 add('loading', [common('Loader.tsx'), lib('LoaderMainLoad.tsx')], () => <><Loader /><LoaderMainLoad /></>, s => s.load.state = true);
 add('welcome-profile', [common('customizationProfileDialog.tsx')], () => <CustomizationProfileDialog />, s => { s.customization.activate = { id: 'audit-profile' }; s.customization.welcomeScreen.enable = true; s.customization.history = [{ id: 'audit-profile', version: Date.parse('2026-01-01') }]; s.customization.manifest = { identifier: 'audit-profile', created: '2026-01-01', images: [{ rel: 'welcome-screen', href: 'cover.svg' }], links: [{ rel: 'welcome-screen', href: 'welcome.html', type: 'text/html', language: 'en' }] }; });

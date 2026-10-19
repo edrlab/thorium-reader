@@ -1,0 +1,18 @@
+Batch 1 validation
+TypeScript: tsc6 --noEmit --project tsconfig-cli.json --pretty false (exit 0)
+ESLint: ESLINT_USE_FLAT_CONFIG=false; changed renderer TS/TSX files (exit 0)
+Translation typings: npm run i18n-typed (exit 0)
+Fixture regression scenarios: 11 passed
+Live application scenarios: 6 passed
+renderer pdf webview index (webpack 5.111.1) compiled successfully in 1947 ms
+renderer pdf extract webview index (webpack 5.111.1) compiled successfully in 1144 ms
+renderer webview preload (webpack 5.111.1) compiled successfully in 3610 ms
+[2] main (webpack 5.111.1) compiled successfully in 10423 ms
+[0] renderer index app (webpack 5.111.1) compiled successfully in 13572 ms
+[1] renderer index reader (webpack 5.111.1) compiled successfully in 14203 ms
+[1] renderer index reader (webpack 5.111.1) compiled successfully in 495 ms
+renderer index app:
+  renderer index app compiled in 15852 ms
+
+renderer index reader:
+  renderer index reader compiled in 15474 ms

@@ -1,0 +1,6 @@
+- main:
+  - 'heading "Component fixture: template-editor" [level=1]'
+  - heading "Notes export (annotations and bookmarks)" [level=3]
+  - checkbox "Customize the HTML template" [checked]
+  - textbox "Notes export (annotations and bookmarks)"
+  - button "Load default template"

@@ -1,20 +1,22 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { chromium } = require('@playwright/test');
-const out = path.resolve('docs/accessibility/evidence/continuation');
+const subdir = process.env.THORIUM_AUDIT_EVIDENCE_SUBDIR || 'continuation';
+if (!/^[a-z0-9-]+$/.test(subdir)) throw new Error('Invalid audit evidence subdirectory');
+const out = path.resolve('docs/accessibility/evidence', subdir);
 fs.mkdirSync(out, { recursive: true });
 async function capture(page, id) {
     if (!await page.evaluate(() => !!window.axe)) await page.addScriptTag({ path: require.resolve('axe-core') });
     const result = await page.evaluate(async () => {
         const axe = await window.axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'] } });
         const active = document.activeElement;
-        return { ...window.auditCurrent, timestamp: new Date().toISOString(), errors: window.auditErrors, actions: window.auditActions,
+        return { ...window.auditCurrent, timestamp: new Date().toISOString(), lang: document.documentElement.lang, errors: window.auditErrors, actions: window.auditActions,
             text: document.body.innerText, html: [...document.body.children].filter(e => e.tagName !== 'svg' && e.tagName !== 'SCRIPT').map(e => e.outerHTML).join('\n'), dimensions: { width: innerWidth, height: innerHeight, scrollWidth: document.documentElement.scrollWidth },
             focus: active?.outerHTML, controls: [...document.querySelectorAll('button,a,input,textarea,select,progress,[role="checkbox"],[role="radio"],[role="status"],[role="alert"]')].map(e => ({ html: e.outerHTML, rect: e.getBoundingClientRect().toJSON(), visible: e.getBoundingClientRect().width > 0 && e.getBoundingClientRect().height > 0 })),
             axe: { version: axe.testEngine.version, violations: axe.violations, incomplete: axe.incomplete, passes: axe.passes.map(p => ({ id: p.id, nodes: p.nodes.length })) } };
     });
     const prefix = `${result.runtime}-${id}`;
-    result.evidencePrefix = `continuation/${prefix}`;
+    result.evidencePrefix = `${subdir}/${prefix}`;
     fs.writeFileSync(path.join(out, `${prefix}.json`), JSON.stringify(result, null, 2) + '\n');
     fs.writeFileSync(path.join(out, `${prefix}-aria.txt`), await page.locator('body').ariaSnapshot());
     const session = await page.context().newCDPSession(page);

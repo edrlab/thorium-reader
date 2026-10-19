@@ -1,0 +1,166 @@
+{
+  "batch": 1,
+  "branch": "codex/a11y-batch-1-names-labels",
+  "auditBaseline": "1fcc4fa782cf0b24441128903f40b48fd476bba5",
+  "implementationState": "Batch 1 source changes relative to auditBaseline; see branch history",
+  "inventory": "docs/accessibility/evidence/batch-1/static-inventory.json",
+  "findings": {
+    "A01": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/reader/components/ReaderSettings/FontSize.tsx",
+        "src/renderer/reader/components/ReaderSettings/Slider.tsx",
+        "src/renderer/reader/components/ReaderSettings/ReadingSpacing.tsx"
+      ],
+      "evidence": [
+        "evidence/batch-1/reader-font-settings.json",
+        "evidence/batch-1/reader-spacing-settings.json",
+        "evidence/batch-1/reader-settings-text.json",
+        "evidence/batch-1/reader-settings-spacing.json"
+      ],
+      "observation": "Unique React IDs connect all six range inputs to visible setting names; verified in fixtures and live modal settings."
+    },
+    "A02": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/reader/components/ReaderSettings/Slider.tsx",
+        "src/renderer/reader/components/ReaderSettings/ReadingSpacing.tsx"
+      ],
+      "evidence": [
+        "evidence/batch-1/reader-spacing-settings.json",
+        "evidence/batch-1/reader-spacing-settings-fr.json",
+        "evidence/batch-1/reader-settings-spacing.json"
+      ],
+      "observation": "All ten spacing adjustment buttons have localized action/setting names. Repeated keyboard activation keeps index and displayed value synchronized."
+    },
+    "A03": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/reader/components/AnnotationEdit.tsx",
+        "src/renderer/reader/components/BookmarkEdit.tsx",
+        "src/renderer/reader/components/ReaderMenu/AnnotationCard.tsx",
+        "src/renderer/reader/components/ReaderMenu/BookmarkCard.tsx"
+      ],
+      "evidence": [
+        "evidence/batch-1/reader-annotation-card-editing.json",
+        "evidence/batch-1/reader-bookmark-card-editing.json",
+        "evidence/batch-1/reader-bookmark-editor.json"
+      ],
+      "observation": "Visible labels name both inline textareas; live bookmark creation popup is labelled and cancelled without saving. Escape returns Edit focus in inline fixtures. Annotation popup uses the same labelled textarea but was not separately exercised live."
+    },
+    "A04": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/library/components/dialog/ApiappAddForm.tsx"
+      ],
+      "evidence": [
+        "evidence/batch-1/library-apiapp-add.json"
+      ],
+      "observation": "Visible search label now targets the actual input ID; computed Search name verified. A09 option ownership remains."
+    },
+    "A08": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/library/components/settings/OverloadNoteExportToHtml.tsx"
+      ],
+      "evidence": [
+        "evidence/batch-1/library-template-editor.json"
+      ],
+      "observation": "Template textarea references the visible heading with a unique ID; no label rule failure in enabled-editor fixture."
+    },
+    "A13": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/reader/components/ReaderSettings/FontSize.tsx",
+        "src/renderer/reader/components/ReaderSettings/Slider.tsx",
+        "src/renderer/reader/components/ReaderSettings/ReadingSpacing.tsx"
+      ],
+      "evidence": [
+        "evidence/batch-1/reader-font-settings.json",
+        "evidence/batch-1/reader-spacing-settings.json",
+        "evidence/batch-1/reader-settings-text.json",
+        "evidence/batch-1/reader-settings-spacing.json"
+      ],
+      "observation": "Font uses native 75..400 limits and percentage valuetext; spacing exposes actual configured values/units and localized Default instead of announcing bare option indices."
+    },
+    "A17": {
+      "status": "partial",
+      "files": [
+        "src/renderer/common/components/customizationProfileDialog.tsx",
+        "src/renderer/library/components/layout/LibraryHeader.tsx"
+      ],
+      "evidence": [
+        "evidence/batch-1/library-welcome-profile-decorative.json",
+        "evidence/batch-1/library-welcome-profile-titled-fr.json"
+      ],
+      "observation": "Welcome images use localized manifest image.title as alt, or empty alt for decorative untitled images. Decorative navigation icons now have empty alt and aria-hidden; that string-icon branch was not reached live. Profile owners must supply titles for informative images; alternative quality is not certified."
+    },
+    "A18": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/common/components/DocumentLanguage.tsx",
+        "src/renderer/library/components/App.tsx",
+        "src/renderer/reader/components/App.tsx",
+        "src/renderer/library/index_library.ejs",
+        "src/renderer/reader/index_reader.ejs"
+      ],
+      "evidence": [
+        "evidence/batch-1/reader-baseline.json",
+        "evidence/batch-1/reader-locale-fr.json",
+        "evidence/batch-1/reader-spacing-settings-fr.json"
+      ],
+      "observation": "Both host templates start with lang=en. Shared Redux locale observer follows live English->French->English changes in Library and Reader. PDF viewer/document-language assessment remains outside this batch."
+    },
+    "A19": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/library/components/opds/FeedCard.tsx"
+      ],
+      "evidence": [
+        "evidence/batch-1/library-catalog-favorites.json",
+        "evidence/batch-1/library-catalogs.json"
+      ],
+      "observation": "Favorite buttons have stable localized catalog-specific names and aria-pressed. True/false states verified in fixtures and existing catalog states inspected live without mutation."
+    },
+    "A20": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/library/components/searchResult/AllPublicationPage.tsx"
+      ],
+      "evidence": [
+        "evidence/batch-1/library-table-description-popover.json",
+        "evidence/batch-1/library-table-descriptions.json"
+      ],
+      "observation": "Description/accessibility expanders and their popovers are named with column heading and publication title. Live Enter opens the named dialog; Escape restores trigger focus."
+    },
+    "A28": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/common/components/dialog/publicationInfos/tag/tagButton.tsx"
+      ],
+      "evidence": [
+        "evidence/batch-1/library-tag-delete-popover.json",
+        "evidence/batch-1/library-editable-tags.json"
+      ],
+      "observation": "Tag pencil buttons and dialogs have localized tag-specific names. Chromium AX confirms Edit tag: Research; Escape restores trigger. A31 target size remains."
+    },
+    "A30": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/library/components/DownloadsPanel.tsx"
+      ],
+      "evidence": [
+        "evidence/batch-1/library-downloads.json"
+      ],
+      "observation": "Both determinate and indeterminate native progressbars expose their download title as the computed Chromium AX name. A05 cancel keyboard access remains."
+    }
+  },
+  "validation": {
+    "fixtureScenarios": 11,
+    "applicationScenarios": 6,
+    "fixtureStates": 13,
+    "applicationStates": 8,
+    "allScenariosPassed": true
+  },
+  "limitations": "Scopes recorded per finding. Native screen-reader listening, full locale coverage, remaining keyboard/semantics/layout/status findings and real authenticated lending flows are not certified. Original audit evidence is retained unchanged."
+}

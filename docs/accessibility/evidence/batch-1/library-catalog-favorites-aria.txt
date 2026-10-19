@@ -1,0 +1,17 @@
+- main:
+  - 'heading "Component fixture: catalog-favorites" [level=1]'
+  - list:
+    - listitem:
+      - link "Audit catalog":
+        - /url: /opds/audit-feed/browse/1/QXVkaXQgY2F0YWxvZw/aHR0cHM6Ly9hdWRpdC5pbnZhbGlkL2NhdGFsb2c
+        - paragraph: Audit catalog
+      - 'button "Favorite catalog: Audit catalog"'
+      - button "Edit"
+      - button "Delete"
+    - listitem:
+      - link "Favorite audit catalog":
+        - /url: /opds/audit-favorite/browse/1/RmF2b3JpdGUgYXVkaXQgY2F0YWxvZw/aHR0cHM6Ly9hdWRpdC5pbnZhbGlkL2NhdGFsb2c
+        - paragraph: Favorite audit catalog
+      - 'button "Favorite catalog: Favorite audit catalog" [pressed]'
+      - button "Edit"
+      - button "Delete"

@@ -22,8 +22,11 @@ const files = walk(path.join(root, 'evidence'));
 assert.equal(files.filter(f => /[\\/]failure-/.test(f)).length, 0, 'Unresolved fixture capture failure');
 for (const file of files.filter(f => f.endsWith('.json'))) JSON.parse(fs.readFileSync(file));
 const matrix = csv('component-matrix.csv');
-assert.equal(matrix.length, 148);
-assert.equal(new Set(matrix.map(r => r.file)).size, 148);
+const remediationPath = path.join(root, 'remediation-batch-1.json');
+const remediation = fs.existsSync(remediationPath) ? JSON.parse(fs.readFileSync(remediationPath)) : undefined;
+const inventoryCount = JSON.parse(fs.readFileSync(remediation?.inventory || path.join(root, 'evidence/static-inventory.json'))).files.length;
+assert.equal(matrix.length, inventoryCount);
+assert.equal(new Set(matrix.map(r => r.file)).size, inventoryCount);
 assert.equal(matrix.filter(r => r.coverage_kind === 'inactive').length, 3);
 assert.equal(matrix.filter(r => r.coverage_kind === 'untested' || r.runtime_evidence === 'Not exercised').length, 0);
 for (const row of matrix) assert.ok(fs.existsSync(row.file), row.file);
@@ -49,6 +52,23 @@ const keyboard = JSON.parse(fs.readFileSync(path.join(root, 'evidence/continuati
 assert.equal(keyboard.length, 25); assert.equal(keyboard.filter(r => r.error).length, 0);
 assert.equal(JSON.parse(fs.readFileSync(path.join(root, 'evidence/continuation/additional-checks.json'))).errors.length, 0);
 assert.equal(csv('wcag-criteria.csv').length, 55);
+if (remediation) {
+    for (const finding of Object.values(remediation.findings)) {
+        for (const file of finding.files) assert.ok(matrix.some(r => r.file === file), file);
+        for (const evidence of finding.evidence) assert.ok(fs.existsSync(path.join(root, evidence)), evidence);
+    }
+    const batchStates = csv('batch-1-state-results.csv');
+    assert.equal(batchStates.length, remediation.validation.fixtureStates + remediation.validation.applicationStates);
+    for (const row of batchStates) {
+        const data = JSON.parse(fs.readFileSync(path.join(root, row.raw_evidence)));
+        assert.ok(fs.existsSync(path.join(root, row.screenshot)), row.screenshot);
+        if (data.kind === 'component-fixture') assert.equal(data.errors.length, 0, row.state);
+    }
+    for (const name of ['fixture-checks', 'application-checks']) {
+        const checks = JSON.parse(fs.readFileSync(path.join(root, `evidence/batch-1/${name}.json`)));
+        assert.ok(checks.tests.every(test => test.status === 'passed'), name);
+    }
+}
 const report = fs.readFileSync(path.join(root, 'audit-2026-10-19.md'), 'utf8');
 for (const match of report.matchAll(/\]\(([^)]+)\)/g)) {
     if (/^(https?:|#)/.test(match[1])) continue;

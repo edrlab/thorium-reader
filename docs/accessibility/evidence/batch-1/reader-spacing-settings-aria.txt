@@ -1,0 +1,32 @@
+- main:
+  - 'heading "Component fixture: spacing-settings" [level=1]'
+  - heading "Margin" [level=3]
+  - paragraph: "1.25"
+  - button "Reset Margin"
+  - button "Decrease Margin"
+  - slider "Margin": "4"
+  - button "Increase Margin"
+  - heading "Word spacing" [level=3]
+  - paragraph: 0.0675rem
+  - button "Reset Word spacing"
+  - button "Decrease Word spacing"
+  - slider "Word spacing": "1"
+  - button "Increase Word spacing"
+  - heading "Letter spacing" [level=3]
+  - paragraph: 0.0675rem
+  - button "Reset Letter spacing"
+  - button "Decrease Letter spacing"
+  - slider "Letter spacing": "1"
+  - button "Increase Letter spacing"
+  - heading "Paragraph spacing" [level=3]
+  - paragraph: 0.5rem
+  - button "Reset Paragraph spacing"
+  - button "Decrease Paragraph spacing"
+  - slider "Paragraph spacing": "1"
+  - button "Increase Paragraph spacing"
+  - heading "Line spacing" [level=3]
+  - paragraph: "1"
+  - button "Reset Line spacing"
+  - button "Decrease Line spacing"
+  - slider "Line spacing": "1"
+  - button "Increase Line spacing"

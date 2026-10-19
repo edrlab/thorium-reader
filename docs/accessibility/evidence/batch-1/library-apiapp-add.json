@@ -1,0 +1,263 @@
+{
+  "id": "apiapp-add",
+  "runtime": "library",
+  "files": [
+    "src/renderer/library/components/dialog/ApiappAddForm.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T12:17:13.476Z",
+  "lang": "en",
+  "errors": [],
+  "actions": [],
+  "text": "Component fixture: apiapp-add\nAdd library account\nAdd library account\nSearch\nSearch\nHow does it work?\nCancel\nAdd",
+  "html": "<div id=\"audit-root\" inert=\"\"><main><h1>Component fixture: apiapp-add</h1><button class=\"button_nav_primary\" aria-expanded=\"true\" id=\"react-aria8247525027-:r3:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria8247525027-:r2:\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 11\"><use xlink:href=\"#library-icon\"></use></svg><span>Add library account</span></button></main></div>\n<span data-focus-scope-start=\"true\" hidden=\"\" inert=\"\"></span>\n<div class=\"modal_dialog_overlay\" data-rac=\"\" style=\"position: fixed; inset: 0px; z-index: 102; --visual-viewport-width: 1184px; --visual-viewport-height: 835px; --page-width: 1184px; --page-height: 834.84375px;\"><div class=\"react-aria-Modal\" data-rac=\"\" style=\"display: contents;\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><button id=\"react-aria8247525027-:r4:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button></div><section id=\"react-aria8247525027-:r2:\" class=\"modal_dialog\" data-rac=\"\" aria-labelledby=\":r0:\" role=\"dialog\" tabindex=\"-1\"><div class=\"modal_dialog_header\"><h2 id=\":r0:\">Add library account</h2><div><button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-close-24px\"></use></svg></button></div></div><form class=\"modal_dialog_body\"><div><div class=\"modal_dialog_body\"><div class=\"form_group_wrapper\"><div class=\"form_group form_group_catalog\" style=\"margin-bottom: 0px;\"><label for=\"apiapp_search\">Search</label><input class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" type=\"search\" id=\"apiapp_search\"></div><button class=\"button_nav_primary\" title=\"Search\" style=\"height: 24px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 17\"><use xlink:href=\"#magnifying_glass\"></use></svg>Search</button></div><div></div><div><button dir=\"ltr\" class=\"button_catalog_infos\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#outline-info-24px\"></use></svg>How does it work?<svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg></button></div></div></div><div class=\"modal_dialog_footer\"><button class=\"button_secondary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\">Cancel</button><button type=\"submit\" class=\"button_primary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#add-alone\"></use></svg>Add</button></div></form></section></div></div>\n<span data-focus-scope-end=\"true\" hidden=\"\" inert=\"\"></span>",
+  "dimensions": {
+    "width": 1184,
+    "height": 835,
+    "scrollWidth": 1184
+  },
+  "focus": "<section id=\"react-aria8247525027-:r2:\" class=\"modal_dialog\" data-rac=\"\" aria-labelledby=\":r0:\" role=\"dialog\" tabindex=\"-1\"><div class=\"modal_dialog_header\"><h2 id=\":r0:\">Add library account</h2><div><button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-close-24px\"></use></svg></button></div></div><form class=\"modal_dialog_body\"><div><div class=\"modal_dialog_body\"><div class=\"form_group_wrapper\"><div class=\"form_group form_group_catalog\" style=\"margin-bottom: 0px;\"><label for=\"apiapp_search\">Search</label><input class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" type=\"search\" id=\"apiapp_search\"></div><button class=\"button_nav_primary\" title=\"Search\" style=\"height: 24px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 17\"><use xlink:href=\"#magnifying_glass\"></use></svg>Search</button></div><div></div><div><button dir=\"ltr\" class=\"button_catalog_infos\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#outline-info-24px\"></use></svg>How does it work?<svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg></button></div></div></div><div class=\"modal_dialog_footer\"><button class=\"button_secondary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\">Cancel</button><button type=\"submit\" class=\"button_primary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#add-alone\"></use></svg>Add</button></div></form></section>",
+  "controls": [
+    {
+      "html": "<button class=\"button_nav_primary\" aria-expanded=\"true\" id=\"react-aria8247525027-:r3:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria8247525027-:r2:\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 11\"><use xlink:href=\"#library-icon\"></use></svg><span>Add library account</span></button>",
+      "rect": {
+        "x": 0,
+        "y": 60.15625,
+        "width": 151.84375,
+        "height": 32,
+        "top": 60.15625,
+        "right": 151.84375,
+        "bottom": 92.15625,
+        "left": 0
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"react-aria8247525027-:r4:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button>",
+      "rect": {
+        "x": 591.5,
+        "y": 417,
+        "width": 1,
+        "height": 1,
+        "top": 417,
+        "right": 592.5,
+        "bottom": 418,
+        "left": 591.5
+      },
+      "visible": true
+    },
+    {
+      "html": "<button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-close-24px\"></use></svg></button>",
+      "rect": {
+        "x": 929,
+        "y": 228,
+        "width": 30,
+        "height": 30,
+        "top": 228,
+        "right": 959,
+        "bottom": 258,
+        "left": 929
+      },
+      "visible": true
+    },
+    {
+      "html": "<input class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" type=\"search\" id=\"apiapp_search\">",
+      "rect": {
+        "x": 278,
+        "y": 314.5,
+        "width": 531,
+        "height": 25,
+        "top": 314.5,
+        "right": 809,
+        "bottom": 339.5,
+        "left": 278
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"button_nav_primary\" title=\"Search\" style=\"height: 24px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 17\"><use xlink:href=\"#magnifying_glass\"></use></svg>Search</button>",
+      "rect": {
+        "x": 827,
+        "y": 309,
+        "width": 112,
+        "height": 36,
+        "top": 309,
+        "right": 939,
+        "bottom": 345,
+        "left": 827
+      },
+      "visible": true
+    },
+    {
+      "html": "<button dir=\"ltr\" class=\"button_catalog_infos\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#outline-info-24px\"></use></svg>How does it work?<svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg></button>",
+      "rect": {
+        "x": 245,
+        "y": 355,
+        "width": 174.390625,
+        "height": 30,
+        "top": 355,
+        "right": 419.390625,
+        "bottom": 385,
+        "left": 245
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"button_secondary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\">Cancel</button>",
+      "rect": {
+        "x": 789,
+        "y": 567,
+        "width": 70,
+        "height": 30,
+        "top": 567,
+        "right": 859,
+        "bottom": 597,
+        "left": 789
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"submit\" class=\"button_primary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#add-alone\"></use></svg>Add</button>",
+      "rect": {
+        "x": 869,
+        "y": 567,
+        "width": 70,
+        "height": 30,
+        "top": 567,
+        "right": 939,
+        "bottom": 597,
+        "left": 869
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [],
+    "incomplete": [],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 3
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 1
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 3
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 1
+      },
+      {
+        "id": "aria-dialog-name",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 7
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 3
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 1
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 1
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 3
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 3
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 3
+      },
+      {
+        "id": "button-name",
+        "nodes": 6
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 1
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "duplicate-id-aria",
+        "nodes": 3
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 1
+      },
+      {
+        "id": "form-field-multiple-labels",
+        "nodes": 1
+      },
+      {
+        "id": "heading-order",
+        "nodes": 1
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "label-title-only",
+        "nodes": 1
+      },
+      {
+        "id": "label",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 6
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 23
+      },
+      {
+        "id": "tabindex",
+        "nodes": 5
+      },
+      {
+        "id": "target-size",
+        "nodes": 7
+      }
+    ]
+  },
+  "evidencePrefix": "batch-1/library-apiapp-add"
+}

@@ -1,0 +1,70 @@
+{
+  "batch": 1,
+  "startup": "npm run start:dev:quick",
+  "tests": [
+    {
+      "id": "both-host-languages",
+      "status": "passed",
+      "findings": [
+        "A18"
+      ],
+      "evidence": "batch-1/reader-baseline.json"
+    },
+    {
+      "id": "reader-settings-labels",
+      "status": "passed",
+      "findings": [
+        "A01",
+        "A02",
+        "A13"
+      ],
+      "evidence": [
+        "batch-1/reader-settings-text.json",
+        "batch-1/reader-settings-spacing.json"
+      ],
+      "limitation": "Settings values were not changed in the live user profile."
+    },
+    {
+      "id": "live-bookmark-popover-label",
+      "status": "passed",
+      "findings": [
+        "A03"
+      ],
+      "evidence": "batch-1/reader-bookmark-editor.json",
+      "limitation": "Cancelled without saving a bookmark."
+    },
+    {
+      "id": "live-catalog-favorite-names",
+      "status": "passed",
+      "findings": [
+        "A19"
+      ],
+      "evidence": "batch-1/library-catalogs.json",
+      "limitation": "Favorite states inspected without mutation."
+    },
+    {
+      "id": "live-table-description-names",
+      "status": "passed",
+      "findings": [
+        "A20"
+      ],
+      "evidence": [
+        "batch-1/library-table-description-popover.json",
+        "batch-1/library-table-descriptions.json"
+      ]
+    },
+    {
+      "id": "live-locale-switch-propagates-and-restores",
+      "status": "passed",
+      "findings": [
+        "A18"
+      ],
+      "evidence": "batch-1/reader-locale-fr.json",
+      "languagesObserved": [
+        "en",
+        "fr",
+        "en"
+      ]
+    }
+  ]
+}

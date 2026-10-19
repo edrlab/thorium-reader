@@ -1,0 +1,32 @@
+- main:
+  - 'heading "Component fixture: spacing-settings" [level=1]'
+  - heading "Marge" [level=3]
+  - paragraph: "1"
+  - button "Réinitialiser Marge"
+  - button "Diminuer Marge"
+  - slider "Marge": "3"
+  - button "Augmenter Marge"
+  - heading "Espacement des mots" [level=3]
+  - paragraph: Défaut
+  - button "Réinitialiser Espacement des mots"
+  - button "Diminuer Espacement des mots"
+  - slider "Espacement des mots": "0"
+  - button "Augmenter Espacement des mots"
+  - heading "Espacement des lettres" [level=3]
+  - paragraph: Défaut
+  - button "Réinitialiser Espacement des lettres"
+  - button "Diminuer Espacement des lettres"
+  - slider "Espacement des lettres": "0"
+  - button "Augmenter Espacement des lettres"
+  - heading "Espacement des paragraphes" [level=3]
+  - paragraph: Défaut
+  - button "Réinitialiser Espacement des paragraphes"
+  - button "Diminuer Espacement des paragraphes"
+  - slider "Espacement des paragraphes": "0"
+  - button "Augmenter Espacement des paragraphes"
+  - heading "Espacement des lignes" [level=3]
+  - paragraph: Défaut
+  - button "Réinitialiser Espacement des lignes"
+  - button "Diminuer Espacement des lignes"
+  - slider "Espacement des lignes": "0"
+  - button "Augmenter Espacement des lignes"

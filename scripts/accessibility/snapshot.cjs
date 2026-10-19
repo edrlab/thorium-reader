@@ -5,7 +5,9 @@ const { chromium } = require("@playwright/test");
 
 (async () => {
     const label = (process.argv[2] || "snapshot").replace(/[^a-z0-9_-]/gi, "-");
-    const output = path.resolve("docs/accessibility/evidence");
+    const subdir = process.env.THORIUM_AUDIT_EVIDENCE_SUBDIR || "";
+    if (subdir && !/^[a-z0-9-]+$/.test(subdir)) throw new Error("Invalid audit evidence subdirectory");
+    const output = path.resolve("docs/accessibility/evidence", subdir);
     fs.mkdirSync(output, { recursive: true });
     const browser = await chromium.connectOverCDP("http://127.0.0.1:9223");
     try {
@@ -38,7 +40,7 @@ const { chromium } = require("@playwright/test");
             fs.writeFileSync(path.join(output, `${prefix}.png`), Buffer.from(screenshot.data, "base64"));
             await session.detach();
             fs.writeFileSync(path.join(output, `${prefix}-aria.txt`), await page.locator("body").ariaSnapshot());
-            results.pages.push({ ...info, evidencePrefix: prefix, axe });
+            results.pages.push({ ...info, evidencePrefix: `${subdir ? subdir + "/" : ""}${prefix}`, axe });
             console.log(JSON.stringify({ label, url: info.url, lang: info.lang, violations: axe.violations.map(v => ({ id: v.id, impact: v.impact, nodes: v.nodes.length })), incomplete: axe.incomplete.map(v => v.id) }));
         }
         fs.writeFileSync(path.join(output, `${label}.json`), JSON.stringify(results, null, 2) + "\n");

@@ -1,0 +1,229 @@
+{
+  "id": "welcome-profile",
+  "runtime": "library",
+  "files": [
+    "src/renderer/common/components/customizationProfileDialog.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T12:17:16.208Z",
+  "lang": "en",
+  "errors": [],
+  "actions": [],
+  "text": "Component fixture: welcome-profile\nProvisionning and activating customization profile\n\nAudit profile\n\nWelcome to the audit profile.\n\nHelp\n\nDon't show again\nYes",
+  "html": "<div id=\"audit-root\" inert=\"\"><main><h1>Component fixture: welcome-profile</h1></main></div>\n<span data-focus-scope-start=\"true\" hidden=\"\" inert=\"\"></span>\n<div class=\"modal_dialog_overlay\" data-rac=\"\" style=\"position: fixed; inset: 0px; z-index: 102; --visual-viewport-width: 1184px; --visual-viewport-height: 835px; --page-width: 1184px; --page-height: 834.84375px;\"><div class=\"react-aria-Modal\" data-rac=\"\" style=\"display: contents;\"><section class=\"modal_dialog\" data-rac=\"\" aria-labelledby=\":r12:\" aria-describedby=\":r13:\" role=\"alertdialog\" tabindex=\"-1\"><h2 class=\"modal_dialog_header\" id=\":r12:\">Provisionning and activating customization profile<button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></h2><p class=\"modal_dialog_body\" id=\":r13:\" style=\"display: flex; gap: 20px; flex-direction: row; justify-content: normal;\"><img alt=\"\" src=\"thoriumhttps://0.0.0.0/custom-profile-zip/YXVkaXQtcHJvZmlsZQ%3D%3D/Y292ZXIuc3Zn\" style=\"max-width: 250px; max-height: 500px; object-fit: contain;\"><div style=\"position: relative; width: 100%; height: 100%;\"><div><h1>Audit profile</h1><p>Welcome to the audit profile.</p><a href=\"#help\">Help</a></div></div></p><div class=\"AlertDialogButtonContainer\" style=\"justify-content: space-between; padding: 10px 20px;\"><div style=\"display: flex; align-items: center; gap: 10px;\"><input type=\"checkbox\" id=\"wizardCheckbox\" name=\"wizardCheckbox\" class=\"checkbox_custom_input\" checked=\"\"><label for=\"wizardCheckbox\" class=\"checkbox_custom_label\"><div tabindex=\"0\" role=\"checkbox\" aria-checked=\"true\" aria-label=\"Don't show again\" class=\"checkbox_custom\" style=\"border: 2px solid transparent; background-color: var(--color-brand-primary);\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 13\"><use xlink:href=\"#singlecheck-icon\"></use></svg></div><span aria-hidden=\"true\">Don't show again</span></label></div><button class=\"button_primary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\" style=\"display: block;\">Yes</button></div></section></div></div>\n<span data-focus-scope-end=\"true\" hidden=\"\" inert=\"\"></span>",
+  "dimensions": {
+    "width": 1184,
+    "height": 835,
+    "scrollWidth": 1184
+  },
+  "focus": "<section class=\"modal_dialog\" data-rac=\"\" aria-labelledby=\":r12:\" aria-describedby=\":r13:\" role=\"alertdialog\" tabindex=\"-1\"><h2 class=\"modal_dialog_header\" id=\":r12:\">Provisionning and activating customization profile<button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></h2><p class=\"modal_dialog_body\" id=\":r13:\" style=\"display: flex; gap: 20px; flex-direction: row; justify-content: normal;\"><img alt=\"\" src=\"thoriumhttps://0.0.0.0/custom-profile-zip/YXVkaXQtcHJvZmlsZQ%3D%3D/Y292ZXIuc3Zn\" style=\"max-width: 250px; max-height: 500px; object-fit: contain;\"><div style=\"position: relative; width: 100%; height: 100%;\"><div><h1>Audit profile</h1><p>Welcome to the audit profile.</p><a href=\"#help\">Help</a></div></div></p><div class=\"AlertDialogButtonContainer\" style=\"justify-content: space-between; padding: 10px 20px;\"><div style=\"display: flex; align-items: center; gap: 10px;\"><input type=\"checkbox\" id=\"wizardCheckbox\" name=\"wizardCheckbox\" class=\"checkbox_custom_input\" checked=\"\"><label for=\"wizardCheckbox\" class=\"checkbox_custom_label\"><div tabindex=\"0\" role=\"checkbox\" aria-checked=\"true\" aria-label=\"Don't show again\" class=\"checkbox_custom\" style=\"border: 2px solid transparent; background-color: var(--color-brand-primary);\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 13\"><use xlink:href=\"#singlecheck-icon\"></use></svg></div><span aria-hidden=\"true\">Don't show again</span></label></div><button class=\"button_primary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\" style=\"display: block;\">Yes</button></div></section>",
+  "controls": [
+    {
+      "html": "<button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button>",
+      "rect": {
+        "x": 929,
+        "y": 228,
+        "width": 30,
+        "height": 30,
+        "top": 228,
+        "right": 959,
+        "bottom": 258,
+        "left": 929
+      },
+      "visible": true
+    },
+    {
+      "html": "<a href=\"#help\">Help</a>",
+      "rect": {
+        "x": 445,
+        "y": 377.15625,
+        "width": 24.6875,
+        "height": 14,
+        "top": 377.15625,
+        "right": 469.6875,
+        "bottom": 391.15625,
+        "left": 445
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"checkbox\" id=\"wizardCheckbox\" name=\"wizardCheckbox\" class=\"checkbox_custom_input\" checked=\"\">",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "visible": false
+    },
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"true\" aria-label=\"Don't show again\" class=\"checkbox_custom\" style=\"border: 2px solid transparent; background-color: var(--color-brand-primary);\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 13\"><use xlink:href=\"#singlecheck-icon\"></use></svg></div>",
+      "rect": {
+        "x": 225,
+        "y": 579.5,
+        "width": 16,
+        "height": 16,
+        "top": 579.5,
+        "right": 241,
+        "bottom": 595.5,
+        "left": 225
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"button_primary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\" style=\"display: block;\">Yes</button>",
+      "rect": {
+        "x": 859,
+        "y": 577,
+        "width": 100,
+        "height": 30,
+        "top": 577,
+        "right": 959,
+        "bottom": 607,
+        "left": 859
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [],
+    "incomplete": [],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 3
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 2
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 3
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 2
+      },
+      {
+        "id": "aria-dialog-name",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 4
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 3
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 2
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 2
+      },
+      {
+        "id": "aria-toggle-field-name",
+        "nodes": 1
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 3
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 3
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 3
+      },
+      {
+        "id": "button-name",
+        "nodes": 2
+      },
+      {
+        "id": "bypass",
+        "nodes": 1
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "duplicate-id-aria",
+        "nodes": 3
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 2
+      },
+      {
+        "id": "heading-order",
+        "nodes": 2
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "image-alt",
+        "nodes": 1
+      },
+      {
+        "id": "image-redundant-alt",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "link-name",
+        "nodes": 1
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 3
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "presentation-role-conflict",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 17
+      },
+      {
+        "id": "tabindex",
+        "nodes": 4
+      },
+      {
+        "id": "target-size",
+        "nodes": 4
+      }
+    ]
+  },
+  "evidencePrefix": "batch-1/library-welcome-profile-decorative"
+}

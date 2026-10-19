@@ -1,0 +1,193 @@
+- log
+- log
+- region "toolbar":
+  - heading "toolbar"
+  - button "Skip to content"
+  - navigation "Bookshelf menu":
+    - heading "Thorium" [level=1]
+    - list:
+      - listitem:
+        - button "Home":
+          - heading "Home" [level=3]
+      - listitem:
+        - button "All publications" [pressed]:
+          - heading "All publications" [level=3]
+      - listitem:
+        - button "Catalogs":
+          - heading "Catalogs" [level=3]
+      - listitem:
+        - button "Application Settings":
+          - heading "Application Settings" [level=3]: Settings
+  - main "main content":
+    - navigation "Menu":
+      - paragraph: View mode
+      - button "Grid":
+        - heading "Grid" [level=3]
+      - button "Table" [pressed]:
+        - heading "Table" [level=3]
+      - button "Import publication"
+    - heading "main content"
+    - heading "All publications" [level=2]
+    - text: Search (5)
+    - searchbox "Search (5)"
+    - button "Select columns to display"
+    - text: Number of pages
+    - button "First" [disabled]
+    - button "Previous" [disabled]
+    - 'combobox "Current page: 1/1"':
+      - option "1 / 1" [selected]
+    - button "Next" [disabled]
+    - button "Last" [disabled]
+    - table:
+      - rowgroup:
+        - row "Search Title (unsorted) Author (unsorted) Progression (unsorted) Loan (remaining time) (unsorted) Language (unsorted) Tags (unsorted) Format (unsorted) Last Read (unsorted) Publisher (unsorted) Published on (unsorted) DRM (unsorted) Duration (unsorted) Description (unsorted) Accessibility (unsorted) Actions":
+          - columnheader "Search":
+            - checkbox "Search"
+          - columnheader "Title (unsorted)":
+            - button "Title (unsorted)": Title
+          - columnheader "Author (unsorted)":
+            - button "Author (unsorted)": Author
+          - columnheader "Progression (unsorted)":
+            - button "Progression (unsorted)": Progression
+          - columnheader "Loan (remaining time) (unsorted)":
+            - button "Loan (remaining time) (unsorted)": Loan (remaining time)
+          - columnheader "Language (unsorted)":
+            - button "Language (unsorted)": Language
+          - columnheader "Tags (unsorted)":
+            - button "Tags (unsorted)": Tags
+          - columnheader "Format (unsorted)":
+            - button "Format (unsorted)": Format
+          - columnheader "Last Read (unsorted)":
+            - button "Last Read (unsorted)": Last Read
+          - columnheader "Publisher (unsorted)":
+            - button "Publisher (unsorted)": Publisher
+          - columnheader "Published on (unsorted)":
+            - button "Published on (unsorted)": Published on
+          - columnheader "DRM (unsorted)":
+            - button "DRM (unsorted)": DRM
+          - columnheader "Duration (unsorted)":
+            - button "Duration (unsorted)": Duration
+          - columnheader "Description (unsorted)":
+            - button "Description (unsorted)": Description
+          - columnheader "Accessibility (unsorted)":
+            - button "Accessibility (unsorted)": Accessibility
+          - columnheader "Actions":
+            - heading "Actions" [level=4]
+      - rowgroup:
+        - row:
+          - cell "La toile de l'Araignée"
+          - cell "La toile de l'Araignée"
+          - cell "MALDONADO Isabella DEAVER Jeffery":
+            - list:
+              - listitem: MALDONADO Isabella
+              - listitem: DEAVER Jeffery
+          - cell "In Progress"
+          - cell "17 days"
+          - cell "Français (French) (fr-FR)"
+          - cell "Thriller / suspense fiction":
+            - paragraph: Thriller / suspense fiction
+          - cell "EPUB"
+          - cell "Oct 15, 2026, 5:27 PM"
+          - cell "Dark Alley"
+          - cell "May 7, 2025"
+          - cell "LCP"
+          - cell
+          - cell:
+            - paragraph: Quand une vague de meurtres secoue la Californie du Sud, un duo improbable doit démêler les mystères qui entourent un tueur insaisissable. Carmen Sanchez est un agent de la Sécurité intérieure déterminé et respectueux des règles. Mais quand sa sœur se fait attaquer, elle fait le lien avec une série d’homicides en cours en Californie du Sud et comprend qu’une enquête conventionnelle ne suffira pas pour arrêter ce tueur impitoyable.Sans personne vers qui se tourner, Sanchez sollicite l’aide du professeur Jake Heron, un expert en sécurité brillant et excentrique qui, contrairement à elle, considère les règles comme de simples suggestions. Ils ont un passé houleux, mais il a une dette envers elle dont elle compte bien profiter. Alors que depuis soixante-douze heures, les victimes s’accumulent, Sanchez et Heron se lancent sur les traces d’un agresseur qui semble n’avoir aucun mobile ni correspondre à aucun profil criminel classique.Le compte à rebours a débuté, et s’ils veulent mettre fin au carnage du fin stratège qu’on appelle l’Araignée, les deux enquêteurs devront dénouer chacun des fils de sa toile et remporter la plus sanglante des parties d’échecs…
+            - 'button "Description: La toile de l''Araignée"'
+          - cell:
+            - paragraph
+          - cell "Actions (La toile de l'Araignée)":
+            - button "Actions (La toile de l'Araignée)":
+              - img "Actions (La toile de l'Araignée)"
+        - row "Untitled Untitled In Progress PDF Oct 19, 2026, 1:19 PM Feb 12, 2013 Actions (Untitled)":
+          - cell "Untitled"
+          - cell "Untitled"
+          - cell
+          - cell "In Progress"
+          - cell
+          - cell
+          - cell
+          - cell "PDF"
+          - cell "Oct 19, 2026, 1:19 PM"
+          - cell
+          - cell "Feb 12, 2013"
+          - cell
+          - cell
+          - cell:
+            - paragraph
+          - cell:
+            - paragraph
+          - cell "Actions (Untitled)":
+            - button "Actions (Untitled)":
+              - img "Actions (Untitled)"
+        - 'row "Accessible EPUB 3 Accessible EPUB 3 Matt Garrish In Progress English (en) EPUB Oct 19, 2026, 2:20 PM O’Reilly Media, Inc. Feb 20, 2012 This EPUB Publication meets the requirements of the EPUB Accessibility specification with conformance to WCAG 2.0 Level AA. The publication is screen reader friendly. Accessibility: Accessible EPUB 3 Actions (Accessible EPUB 3)"':
+          - cell "Accessible EPUB 3"
+          - cell "Accessible EPUB 3"
+          - cell "Matt Garrish"
+          - cell "In Progress"
+          - cell
+          - cell "English (en)"
+          - cell
+          - cell "EPUB"
+          - cell "Oct 19, 2026, 2:20 PM"
+          - cell "O’Reilly Media, Inc."
+          - cell "Feb 20, 2012"
+          - cell
+          - cell
+          - cell:
+            - paragraph
+          - 'cell "This EPUB Publication meets the requirements of the EPUB Accessibility specification with conformance to WCAG 2.0 Level AA. The publication is screen reader friendly. Accessibility: Accessible EPUB 3"':
+            - paragraph: This EPUB Publication meets the requirements of the EPUB Accessibility specification with conformance to WCAG 2.0 Level AA. The publication is screen reader friendly.
+            - 'button "Accessibility: Accessible EPUB 3"'
+          - cell "Actions (Accessible EPUB 3)":
+            - button "Actions (Accessible EPUB 3)":
+              - img "Actions (Accessible EPUB 3)"
+        - row:
+          - cell "La Proie"
+          - cell "La Proie"
+          - cell "Yrsa Sigurðardóttir"
+          - cell "In Progress"
+          - cell "20 days"
+          - cell "Français (French) (fr)"
+          - cell "Crime & mystery fiction":
+            - paragraph: Crime & mystery fiction
+          - cell "EPUB"
+          - cell "Oct 19, 2026, 10:34 AM"
+          - cell "Actes Sud"
+          - cell "Dec 8, 2025"
+          - cell "LCP"
+          - cell
+          - cell:
+            - paragraph: "Après une soirée arrosée à Reykjavík, un groupe d’amis part en randonnée dans la réserve naturelle de Lónsöræfi. En plein hiver, au cœur des vents glacials, ils s’évanouissent. Quand les secours atteignent enfin leur campement déserté, une seule certitude s’impose : quelque chose les a poussés à fuir dans la panique, presque nus, vers la blancheur hostile. Au même moment, la station radar isolée de Stokksnes devient le théâtre d’évènements troublants. Le technicien de garde croit devenir fou – l’interphone, qui n’est plus raccordé depuis des années, sonne subitement dans la nuit. À l’autre bout, une voix d’enfant. Mais en allant inspecter, il n’y a personne. Et la neige immaculée ne ment pas… Paysages qui dévorent, et présences que l’on ne sait nommer, \"La Proie\" est un thriller glaçant redoutable où l’Islande, magnifique et farouche, révèle ce que la nuit emporte… et ce qu’elle rend."
+            - 'button "Description: La Proie"'
+          - 'cell "Cette publication respecte le niveau WCAG 2.0 AA. Accessibility: La Proie"':
+            - paragraph: Cette publication respecte le niveau WCAG 2.0 AA.
+            - 'button "Accessibility: La Proie"'
+          - cell "Actions (La Proie)":
+            - button "Actions (La Proie)":
+              - img "Actions (La Proie)"
+        - row "The Waste Land The Waste Land T.S. Eliot Not Started Licensed English (en-US) EPUB Sep 1, 2011 LCP Actions (The Waste Land)":
+          - cell "The Waste Land"
+          - cell "The Waste Land"
+          - cell "T.S. Eliot"
+          - cell "Not Started"
+          - cell "Licensed"
+          - cell "English (en-US)"
+          - cell
+          - cell "EPUB"
+          - cell
+          - cell
+          - cell "Sep 1, 2011"
+          - cell "LCP"
+          - cell
+          - cell:
+            - paragraph
+          - cell:
+            - paragraph
+          - cell "Actions (The Waste Land)":
+            - button "Actions (The Waste Land)":
+              - img "Actions (The Waste Land)"
+    - paragraph: v3.5.2-beta.1
+    - link "About Thorium (online)":
+      - /url: ""

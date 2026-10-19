@@ -142,6 +142,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                         `${selectionPreview.slice(0, 200)}...` :
                         selectionPreview)
                     : ""}</p>
+            <label htmlFor={`${uuid}_edit`}>{__("accessibility.annotationNote")}</label>
             <textarea
                 id={`${uuid}_edit`}
                 name="addNote"

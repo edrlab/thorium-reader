@@ -1,0 +1,12 @@
+- main:
+  - 'heading "Component fixture: editable-tags" [level=1]'
+  - link "Research":
+    - /url: /library?focus=tags&value=Research
+  - 'button "Edit tag: Research" [expanded]'
+  - link "To read":
+    - /url: /library?focus=tags&value=To%20read
+  - 'button "Edit tag: To read"'
+- button "Dismiss"
+- 'dialog "Edit tag: Research"':
+  - button "Delete"
+- button "Dismiss"

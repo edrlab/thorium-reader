@@ -1,5 +1,7 @@
 const fs = require("node:fs");
-const inventory = JSON.parse(fs.readFileSync("docs/accessibility/evidence/static-inventory.json", "utf8"));
+const remediationPath = "docs/accessibility/remediation-batch-1.json";
+const remediation = fs.existsSync(remediationPath) ? JSON.parse(fs.readFileSync(remediationPath, "utf8")) : undefined;
+const inventory = JSON.parse(fs.readFileSync(remediation?.inventory || "docs/accessibility/evidence/static-inventory.json", "utf8"));
 const issues = {
     "FontSize.tsx": "A01 A13", "ReaderSettings/Slider.tsx": "A01 A02 A13", "ReadingSpacing.tsx": "A01 A02 A13",
     "AnnotationEdit.tsx": "A03", "BookmarkEdit.tsx": "A03", "ApiappAddForm.tsx": "A04 A09",
@@ -21,15 +23,23 @@ const coverageFile = "docs/accessibility/evidence/runtime-component-coverage.jso
 const runtime = fs.existsSync(coverageFile) ? JSON.parse(fs.readFileSync(coverageFile, "utf8")) : {};
 const continuationFile = "docs/accessibility/evidence/continuation-coverage.json";
 const continuation = fs.existsSync(continuationFile) ? JSON.parse(fs.readFileSync(continuationFile, "utf8")) : {};
-const header = ["file", "static_review", "interesting_JSX_nodes", "finding_IDs", "runtime_evidence", "conformance", "coverage_kind", "runtime_observations", "runtime_limitations"];
-const rows = inventory.files.map(file => [
+const header = ["file", "static_review", "interesting_JSX_nodes", "finding_IDs", "runtime_evidence", "conformance", "coverage_kind", "runtime_observations", "runtime_limitations", "remediation_status", "remediation_evidence", "remaining_finding_IDs"];
+const rows = inventory.files.map(file => {
+    const fixes = Object.entries(remediation?.findings || {}).filter(([, finding]) => finding.files.includes(file.file));
+    const ids = [...new Set([...Object.entries(issues).filter(([suffix]) => file.file.endsWith(suffix)).flatMap(([,ids]) => ids.match(/\bA\d{2}\b/g) || []), ...fixes.map(([id]) => id)])];
+    const fixEvidence = [...new Set(fixes.flatMap(([,finding]) => finding.evidence))];
+    const remaining = ids.filter(id => !["A11", "A14"].includes(id) && remediation?.findings[id]?.status !== "fixed");
+    return [
     file.file, "Structural control review; no full conformance assertion", file.nodes.length,
-    [...new Set(Object.entries(issues).filter(([suffix]) => file.file.endsWith(suffix)).flatMap(([,ids]) => ids.split(" ")))].join(" "),
-    runtime[file.file] || "Not exercised", continuation[file.file]?.kind === "inactive" ? "Inactive source; no visual runtime surface" : "Not determined; sampled states do not establish conformance",
-    continuation[file.file]?.kind || (runtime[file.file] ? "application" : "untested"),
-    continuation[file.file]?.observation || "See referenced application captures and report findings",
+    ids.join(" "),
+    [runtime[file.file] || (fixes.length ? "Post-fix coverage" : "Not exercised"), ...(fixes.length ? ["Batch 1: " + fixEvidence.join("; ")] : [])].join(". "), continuation[file.file]?.kind === "inactive" ? "Inactive source; no visual runtime surface" : "Not determined; sampled states do not establish conformance",
+    continuation[file.file]?.kind || (runtime[file.file] ? "application" : fixes.length ? "application+fixture" : "untested"),
+    continuation[file.file]?.observation ? "Baseline audit: " + continuation[file.file].observation : "See referenced application captures and report findings",
     continuation[file.file]?.limitations || "Representative application states only; all branches and native AT not verified",
-]);
+    fixes.length ? fixes.map(([id, finding]) => `${id}: ${finding.status}; ${finding.observation}`).join(" | ") : "No batch 1 remediation; historical evidence retained",
+    fixEvidence.join("; "), remaining.join(" "),
+    ];
+});
 fs.writeFileSync("docs/accessibility/component-matrix.csv", [header, ...rows].map(row =>
     row.map(value => '"' + String(value).replaceAll('"', '""') + '"').join(","),
 ).join("\n") + "\n");

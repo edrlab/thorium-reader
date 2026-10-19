@@ -1,0 +1,513 @@
+{
+  "id": "annotation-card",
+  "runtime": "reader",
+  "files": [
+    "src/renderer/reader/components/ReaderMenu/AnnotationCard.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T12:17:11.875Z",
+  "lang": "en",
+  "errors": [],
+  "actions": [],
+  "text": "Component fixture: annotation-card\n\nSelected passage\n\nAnnotation note28/1500\nColor\nHighlight\nTag\nCancel\nSave\n\n19/10/2026\n\n100%\n\nAudit creator\n\nDelete",
+  "html": "<div id=\"audit-root\"><main><h1>Component fixture: annotation-card</h1><ul><li class=\"annotations_line\" aria-label=\"Yellow Note\" style=\"border-left: 4px solid rgb(254, 243, 189);\"><div class=\"annotation_container\"><div data-focus-guard=\"true\" tabindex=\"0\" style=\"width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;\"></div><div data-focus-lock-disabled=\"false\"><form class=\"annotation_edit_form\"><div class=\"\"><p>Selected passage</p><label for=\"audit-note_edit\">Annotation note</label><textarea id=\"audit-note_edit\" name=\"addNote\" wrap=\"hard\" class=\"annotation_edit_form_textarea\" maxlength=\"1500\" style=\"height: 37px;\">Audit note **with emphasis**</textarea><span style=\"font-size: 10px; color: var(--color-gray-400); width: 420px; text-align: end;\">28/1500</span></div><div class=\"annotation_actions\"><div class=\"annotation_actions_container\"><h4>Color</h4><div class=\"colorPicker\" role=\"radiogroup\"><div><input type=\"radio\" id=\"audit-note_color-#EB9694\" name=\"colorpicker\" aria-label=\"Red\" value=\"#EB9694\"><label aria-hidden=\"true\" title=\"Red\" for=\"audit-note_color-#EB9694\" style=\"background-color: rgb(235, 150, 148);\"></label></div><div><input type=\"radio\" id=\"audit-note_color-#FAD0C3\" name=\"colorpicker\" aria-label=\"Orange\" value=\"#FAD0C3\"><label aria-hidden=\"true\" title=\"Orange\" for=\"audit-note_color-#FAD0C3\" style=\"background-color: rgb(250, 208, 195);\"></label></div><div><input type=\"radio\" id=\"audit-note_color-#FEF3BD\" name=\"colorpicker\" aria-label=\"Yellow\" value=\"#FEF3BD\" checked=\"\"><label aria-hidden=\"true\" title=\"Yellow\" for=\"audit-note_color-#FEF3BD\" style=\"background-color: rgb(254, 243, 189); border: 1px solid var(--color-gray-900);\"><svg aria-hidden=\"true\" viewBox=\"0 0 15 7\"><use xlink:href=\"#doubleCheck-icon\"></use></svg></label></div><div><input type=\"radio\" id=\"audit-note_color-#C1EAC5\" name=\"colorpicker\" aria-label=\"Green\" value=\"#C1EAC5\"><label aria-hidden=\"true\" title=\"Green\" for=\"audit-note_color-#C1EAC5\" style=\"background-color: rgb(193, 234, 197);\"></label></div><div><input type=\"radio\" id=\"audit-note_color-#BED3F3\" name=\"colorpicker\" aria-label=\"Cyan\" value=\"#BED3F3\"><label aria-hidden=\"true\" title=\"Cyan\" for=\"audit-note_color-#BED3F3\" style=\"background-color: rgb(190, 211, 243);\"></label></div><div><input type=\"radio\" id=\"audit-note_color-#D4C4FB\" name=\"colorpicker\" aria-label=\"Purple\" value=\"#D4C4FB\"><label aria-hidden=\"true\" title=\"Purple\" for=\"audit-note_color-#D4C4FB\" style=\"background-color: rgb(212, 196, 251);\"></label></div></div></div><div class=\"annotation_actions_container\"><h4>Highlight</h4><div role=\"radiogroup\" class=\"stylePicker\"><div><input type=\"radio\" id=\"audit-note_drawtype-solid_background\" name=\"drawtype\" aria-label=\"Highlight Solid background\" value=\"solid_background\" checked=\"\"><label aria-hidden=\"true\" for=\"audit-note_drawtype-solid_background\" title=\"Solid background\" class=\"drawType_active\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 18\"><use xlink:href=\"#highlight-icon\"></use></svg></label></div><div><input type=\"radio\" id=\"audit-note_drawtype-underline\" name=\"drawtype\" aria-label=\"Highlight Underline\" value=\"underline\"><label aria-hidden=\"true\" for=\"audit-note_drawtype-underline\" title=\"Underline\" class=\"\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 16\"><use xlink:href=\"#underline-icon\"></use></svg></label></div><div><input type=\"radio\" id=\"audit-note_drawtype-strikethrough\" name=\"drawtype\" aria-label=\"Highlight Strikethrough\" value=\"strikethrough\"><label aria-hidden=\"true\" for=\"audit-note_drawtype-strikethrough\" title=\"Strikethrough\" class=\"\"><svg aria-hidden=\"true\" viewBox=\"0 0 20 21\"><use xlink:href=\"#TextStrikethrough-icon\"></use></svg></label></div><div><input type=\"radio\" id=\"audit-note_drawtype-outline\" name=\"drawtype\" aria-label=\"Highlight Outline\" value=\"outline\"><label aria-hidden=\"true\" for=\"audit-note_drawtype-outline\" title=\"Outline\" class=\"\"><svg aria-hidden=\"true\" viewBox=\"0 0 20 21\"><use xlink:href=\"#TextOutline-icon\"></use></svg></label></div></div></div><div class=\"annotation_actions_container\" style=\"width: 95%;\"><h4>Tag</h4><template><div class=\"my_combobox_container R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" role=\"group\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 8\"><use xlink:href=\"#tag-icon\"></use></svg></div></template><div class=\"react_aria_ComboBox\" data-rac=\"\"><div class=\"my_combobox_container R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" role=\"group\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 8\"><use xlink:href=\"#tag-icon\"></use></svg><input aria-label=\"Tag\" type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" placeholder=\"Add tag\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria8891995776-:rr:\" role=\"combobox\" aria-expanded=\"false\" class=\"react_aria_Input R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" value=\"Research\" title=\"\"></div></div></div></div><div class=\"annotation_form_textarea_buttons\"><button class=\"button_secondary_blue\" aria-label=\"Cancel\" type=\"button\">Cancel</button><button type=\"submit\" class=\"button_primary_blue\" aria-label=\"Save\"><svg aria-hidden=\"true\" viewBox=\"0 0 8 8\"><use xlink:href=\"#floppydisk-icon\"></use></svg>Save</button></div></form></div><div data-focus-guard=\"true\" tabindex=\"0\" style=\"width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;\"></div></div><div class=\"annotation_edit\"><div><div aria-label=\"Modification date\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#calendar-icon\"></use></svg><p>19/10/2026</p></div><div aria-label=\"Progression\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 13\"><use xlink:href=\"#bookOpen-icon\"></use></svg><p>100% </p></div><div><svg aria-hidden=\"true\" viewBox=\"0 0 12 11\"><use xlink:href=\"#avatar-icon\"></use></svg><a tabindex=\"0\"><p title=\"Audit creator\" style=\"overflow: hidden; text-overflow: ellipsis; padding: 0px;\">Audit creator</p></a></div></div><div class=\"annotation_actions_buttons\"><button id=\"audit-note_edit_button\" title=\"Edit\" disabled=\"\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button><button title=\"Delete\" class=\"delete_item_edition\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg>Delete</button></div></div></li></ul></main></div>",
+  "dimensions": {
+    "width": 1184,
+    "height": 835,
+    "scrollWidth": 1184
+  },
+  "focus": "<textarea id=\"audit-note_edit\" name=\"addNote\" wrap=\"hard\" class=\"annotation_edit_form_textarea\" maxlength=\"1500\" style=\"height: 37px;\">Audit note **with emphasis**</textarea>",
+  "controls": [
+    {
+      "html": "<textarea id=\"audit-note_edit\" name=\"addNote\" wrap=\"hard\" class=\"annotation_edit_form_textarea\" maxlength=\"1500\" style=\"height: 37px;\">Audit note **with emphasis**</textarea>",
+      "rect": {
+        "x": 54,
+        "y": 133.15625,
+        "width": 1070,
+        "height": 43,
+        "top": 133.15625,
+        "right": 1124,
+        "bottom": 176.15625,
+        "left": 54
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"audit-note_color-#EB9694\" name=\"colorpicker\" aria-label=\"Red\" value=\"#EB9694\">",
+      "rect": {
+        "x": 62,
+        "y": 267.375,
+        "width": 13,
+        "height": 13,
+        "top": 267.375,
+        "right": 75,
+        "bottom": 280.375,
+        "left": 62
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"audit-note_color-#FAD0C3\" name=\"colorpicker\" aria-label=\"Orange\" value=\"#FAD0C3\">",
+      "rect": {
+        "x": 90,
+        "y": 267.375,
+        "width": 13,
+        "height": 13,
+        "top": 267.375,
+        "right": 103,
+        "bottom": 280.375,
+        "left": 90
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"audit-note_color-#FEF3BD\" name=\"colorpicker\" aria-label=\"Yellow\" value=\"#FEF3BD\" checked=\"\">",
+      "rect": {
+        "x": 118,
+        "y": 267.375,
+        "width": 13,
+        "height": 13,
+        "top": 267.375,
+        "right": 131,
+        "bottom": 280.375,
+        "left": 118
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"audit-note_color-#C1EAC5\" name=\"colorpicker\" aria-label=\"Green\" value=\"#C1EAC5\">",
+      "rect": {
+        "x": 146,
+        "y": 267.375,
+        "width": 13,
+        "height": 13,
+        "top": 267.375,
+        "right": 159,
+        "bottom": 280.375,
+        "left": 146
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"audit-note_color-#BED3F3\" name=\"colorpicker\" aria-label=\"Cyan\" value=\"#BED3F3\">",
+      "rect": {
+        "x": 174,
+        "y": 267.375,
+        "width": 13,
+        "height": 13,
+        "top": 267.375,
+        "right": 187,
+        "bottom": 280.375,
+        "left": 174
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"audit-note_color-#D4C4FB\" name=\"colorpicker\" aria-label=\"Purple\" value=\"#D4C4FB\">",
+      "rect": {
+        "x": 202,
+        "y": 267.375,
+        "width": 13,
+        "height": 13,
+        "top": 267.375,
+        "right": 215,
+        "bottom": 280.375,
+        "left": 202
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"audit-note_drawtype-solid_background\" name=\"drawtype\" aria-label=\"Highlight Solid background\" value=\"solid_background\" checked=\"\">",
+      "rect": {
+        "x": 264,
+        "y": 267.375,
+        "width": 13,
+        "height": 13,
+        "top": 267.375,
+        "right": 277,
+        "bottom": 280.375,
+        "left": 264
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"audit-note_drawtype-underline\" name=\"drawtype\" aria-label=\"Highlight Underline\" value=\"underline\">",
+      "rect": {
+        "x": 301,
+        "y": 267.375,
+        "width": 13,
+        "height": 13,
+        "top": 267.375,
+        "right": 314,
+        "bottom": 280.375,
+        "left": 301
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"audit-note_drawtype-strikethrough\" name=\"drawtype\" aria-label=\"Highlight Strikethrough\" value=\"strikethrough\">",
+      "rect": {
+        "x": 338,
+        "y": 267.375,
+        "width": 13,
+        "height": 13,
+        "top": 267.375,
+        "right": 351,
+        "bottom": 280.375,
+        "left": 338
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"audit-note_drawtype-outline\" name=\"drawtype\" aria-label=\"Highlight Outline\" value=\"outline\">",
+      "rect": {
+        "x": 375,
+        "y": 267.375,
+        "width": 13,
+        "height": 13,
+        "top": 267.375,
+        "right": 388,
+        "bottom": 280.375,
+        "left": 375
+      },
+      "visible": true
+    },
+    {
+      "html": "<input aria-label=\"Tag\" type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" placeholder=\"Add tag\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria8891995776-:rr:\" role=\"combobox\" aria-expanded=\"false\" class=\"react_aria_Input R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" value=\"Research\" title=\"\">",
+      "rect": {
+        "x": 76.265625,
+        "y": 380.59375,
+        "width": 956.25,
+        "height": 24,
+        "top": 380.59375,
+        "right": 1032.515625,
+        "bottom": 404.59375,
+        "left": 76.265625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"button_secondary_blue\" aria-label=\"Cancel\" type=\"button\">Cancel</button>",
+      "rect": {
+        "x": 54,
+        "y": 432.59375,
+        "width": 55.59375,
+        "height": 25,
+        "top": 432.59375,
+        "right": 109.59375,
+        "bottom": 457.59375,
+        "left": 54
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"submit\" class=\"button_primary_blue\" aria-label=\"Save\"><svg aria-hidden=\"true\" viewBox=\"0 0 8 8\"><use xlink:href=\"#floppydisk-icon\"></use></svg>Save</button>",
+      "rect": {
+        "x": 114.59375,
+        "y": 432.59375,
+        "width": 61.921875,
+        "height": 25,
+        "top": 432.59375,
+        "right": 176.515625,
+        "bottom": 457.59375,
+        "left": 114.59375
+      },
+      "visible": true
+    },
+    {
+      "html": "<a tabindex=\"0\"><p title=\"Audit creator\" style=\"overflow: hidden; text-overflow: ellipsis; padding: 0px;\">Audit creator</p></a>",
+      "rect": {
+        "x": 236.765625,
+        "y": 472.59375,
+        "width": 68.046875,
+        "height": 24,
+        "top": 472.59375,
+        "right": 304.8125,
+        "bottom": 496.59375,
+        "left": 236.765625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"audit-note_edit_button\" title=\"Edit\" disabled=\"\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 1068.53125,
+        "y": 470.59375,
+        "width": 28,
+        "height": 28,
+        "top": 470.59375,
+        "right": 1096.53125,
+        "bottom": 498.59375,
+        "left": 1068.53125
+      },
+      "visible": true
+    },
+    {
+      "html": "<button title=\"Delete\" class=\"delete_item_edition\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg>Delete</button>",
+      "rect": {
+        "x": 1101.53125,
+        "y": 469.59375,
+        "width": 75.46875,
+        "height": 30,
+        "top": 469.59375,
+        "right": 1177,
+        "bottom": 499.59375,
+        "left": 1101.53125
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [
+      {
+        "id": "heading-order",
+        "impact": "moderate",
+        "tags": [
+          "cat.semantics",
+          "best-practice"
+        ],
+        "description": "Ensure the order of headings is semantically correct",
+        "help": "Heading levels should only increase by one",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/heading-order?application=axeAPI",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "heading-order",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "Heading order invalid"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "moderate",
+            "html": "<h4>Color</h4>",
+            "target": [
+              ".annotation_actions_container:nth-child(1) > h4"
+            ],
+            "failureSummary": "Fix any of the following:\n  Heading order invalid"
+          }
+        ]
+      }
+    ],
+    "incomplete": [
+      {
+        "id": "aria-prohibited-attr",
+        "impact": "serious",
+        "tags": [
+          "cat.aria",
+          "wcag2a",
+          "wcag412",
+          "EN-301-549",
+          "EN-9.4.1.2",
+          "RGAAv4",
+          "RGAA-7.1.1"
+        ],
+        "description": "Ensure ARIA attributes are not prohibited for an element's role",
+        "help": "Elements must only use permitted ARIA attributes",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-prohibited-attr?application=axeAPI",
+        "nodes": [
+          {
+            "any": [],
+            "all": [],
+            "none": [
+              {
+                "id": "aria-prohibited-attr",
+                "data": {
+                  "role": null,
+                  "nodeName": "div",
+                  "messageKey": "noRoleSingular",
+                  "prohibited": [
+                    "aria-label"
+                  ]
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "aria-label attribute is not well supported on a div with no valid role attribute."
+              }
+            ],
+            "impact": "serious",
+            "html": "<div aria-label=\"Modification date\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#calendar-icon\"></use></svg><p>19/10/2026</p></div>",
+            "target": [
+              "div[aria-label=\"Modification date\"]"
+            ],
+            "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+          },
+          {
+            "any": [],
+            "all": [],
+            "none": [
+              {
+                "id": "aria-prohibited-attr",
+                "data": {
+                  "role": null,
+                  "nodeName": "div",
+                  "messageKey": "noRoleSingular",
+                  "prohibited": [
+                    "aria-label"
+                  ]
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "aria-label attribute is not well supported on a div with no valid role attribute."
+              }
+            ],
+            "impact": "serious",
+            "html": "<div aria-label=\"Progression\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 13\"><use xlink:href=\"#bookOpen-icon\"></use></svg><p>100% </p></div>",
+            "target": [
+              "div[aria-label=\"Progression\"]"
+            ],
+            "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+          }
+        ]
+      }
+    ],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 16
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 4
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 16
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 4
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 18
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 14
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 4
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 4
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 16
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 16
+      },
+      {
+        "id": "autocomplete-valid",
+        "nodes": 1
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 8
+      },
+      {
+        "id": "button-name",
+        "nodes": 4
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 15
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "duplicate-id-aria",
+        "nodes": 11
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 4
+      },
+      {
+        "id": "form-field-multiple-labels",
+        "nodes": 12
+      },
+      {
+        "id": "heading-order",
+        "nodes": 3
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "label-title-only",
+        "nodes": 12
+      },
+      {
+        "id": "label",
+        "nodes": 12
+      },
+      {
+        "id": "landmark-main-is-top-level",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-no-duplicate-main",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-unique",
+        "nodes": 1
+      },
+      {
+        "id": "list",
+        "nodes": 1
+      },
+      {
+        "id": "listitem",
+        "nodes": 1
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 14
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 62
+      },
+      {
+        "id": "tabindex",
+        "nodes": 4
+      },
+      {
+        "id": "target-size",
+        "nodes": 14
+      }
+    ]
+  },
+  "evidencePrefix": "batch-1/reader-annotation-card-editing"
+}

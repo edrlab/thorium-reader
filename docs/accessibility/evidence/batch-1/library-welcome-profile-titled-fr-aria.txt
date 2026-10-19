@@ -1,0 +1,14 @@
+- main:
+  - 'heading "Component fixture: welcome-profile" [level=1]'
+- alertdialog "Préparation et activation du profil de personnalisation Fermer":
+  - heading "Préparation et activation du profil de personnalisation Fermer" [level=2]:
+    - text: Préparation et activation du profil de personnalisation
+    - button "Fermer"
+  - paragraph:
+    - img "Illustration du profil de test"
+    - heading "Audit profile" [level=1]
+    - paragraph: Welcome to the audit profile.
+    - link "Help":
+      - /url: "#help"
+  - checkbox "Ne plus afficher" [checked]
+  - button "Oui"

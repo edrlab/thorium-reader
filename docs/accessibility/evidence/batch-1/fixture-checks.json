@@ -1,0 +1,110 @@
+{
+  "batch": 1,
+  "baseline": "1fcc4fa782cf0b24441128903f40b48fd476bba5",
+  "tests": [
+    {
+      "id": "font-range-name-and-values",
+      "status": "passed",
+      "findings": [
+        "A01",
+        "A13"
+      ],
+      "evidence": "batch-1/reader-font-settings.json"
+    },
+    {
+      "id": "spacing-labels-and-repeated-adjustment",
+      "status": "passed",
+      "findings": [
+        "A01",
+        "A02",
+        "A13"
+      ],
+      "evidence": "batch-1/reader-spacing-settings.json"
+    },
+    {
+      "id": "localized-names-and-live-document-language",
+      "status": "passed",
+      "findings": [
+        "A01",
+        "A02",
+        "A18"
+      ],
+      "evidence": "batch-1/reader-spacing-settings-fr.json"
+    },
+    {
+      "id": "annotation-card-editor-label",
+      "status": "passed",
+      "findings": [
+        "A03"
+      ],
+      "evidence": "batch-1/reader-annotation-card-editing.json"
+    },
+    {
+      "id": "bookmark-card-editor-label",
+      "status": "passed",
+      "findings": [
+        "A03"
+      ],
+      "evidence": "batch-1/reader-bookmark-card-editing.json"
+    },
+    {
+      "id": "apiapp-search-label",
+      "status": "passed",
+      "findings": [
+        "A04"
+      ],
+      "evidence": "batch-1/library-apiapp-add.json"
+    },
+    {
+      "id": "export-template-label",
+      "status": "passed",
+      "findings": [
+        "A08"
+      ],
+      "evidence": "batch-1/library-template-editor.json"
+    },
+    {
+      "id": "favorite-name-and-pressed-state",
+      "status": "passed",
+      "findings": [
+        "A19"
+      ],
+      "evidence": "batch-1/library-catalog-favorites.json",
+      "limitation": "Both states rendered; no catalog favorite mutated."
+    },
+    {
+      "id": "tag-trigger-and-dialog-name",
+      "status": "passed",
+      "findings": [
+        "A28"
+      ],
+      "evidence": [
+        "batch-1/library-tag-delete-popover.json",
+        "batch-1/library-editable-tags.json"
+      ],
+      "limitation": "A31 target-size finding remains."
+    },
+    {
+      "id": "download-progress-names",
+      "status": "passed",
+      "findings": [
+        "A30"
+      ],
+      "evidence": "batch-1/library-downloads.json",
+      "limitation": "A05 cancellation keyboard defect remains for batch 2."
+    },
+    {
+      "id": "welcome-image-alternative-contract",
+      "status": "passed",
+      "findings": [
+        "A17",
+        "A18"
+      ],
+      "evidence": [
+        "batch-1/library-welcome-profile-decorative.json",
+        "batch-1/library-welcome-profile-titled-fr.json"
+      ],
+      "limitation": "Untitled images treated as decorative; informative image authors must supply a localized manifest title."
+    }
+  ]
+}

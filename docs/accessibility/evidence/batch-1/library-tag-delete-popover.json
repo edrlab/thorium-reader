@@ -1,0 +1,326 @@
+{
+  "id": "editable-tags",
+  "runtime": "library",
+  "files": [
+    "src/renderer/common/components/dialog/publicationInfos/tag/tagButton.tsx",
+    "src/renderer/common/components/dialog/publicationInfos/tag/tagList.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T12:17:14.942Z",
+  "lang": "en",
+  "errors": [],
+  "actions": [],
+  "text": "Component fixture: editable-tags\nResearch\nTo read\nDelete",
+  "html": "<div id=\"audit-root\" inert=\"\"><main><h1>Component fixture: editable-tags</h1><div class=\"tags_wrapper\"><div class=\"tag no_hover\"><a href=\"/library?focus=tags&amp;value=Research\">Research</a><button aria-label=\"Edit tag: Research\" aria-expanded=\"true\" id=\"react-aria8247525027-:rp:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria8247525027-:ro:\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div><div class=\"tag no_hover\"><a href=\"/library?focus=tags&amp;value=To%20read\">To read</a><button aria-label=\"Edit tag: To read\" aria-expanded=\"false\" id=\"react-aria8247525027-:rr:\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></main></div>\n<span data-focus-scope-start=\"true\" hidden=\"\" inert=\"\"></span>\n<div data-testid=\"underlay\" inert=\"\" style=\"position: fixed; inset: 0px;\"></div>\n<div style=\"display: contents;\"><div dir=\"ltr\" class=\"Popover_delete_tag\" data-rac=\"\" aria-labelledby=\"react-aria8247525027-:rp:\" data-trigger=\"DialogTrigger\" style=\"position: absolute; z-index: 102; max-height: 755px; --trigger-anchor-point: 30px 0px; --trigger-width: 11px; left: 34.3594px; top: 80px;\" data-placement=\"bottom\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><button id=\"react-aria8247525027-:rs:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button></div><section id=\"react-aria8247525027-:ro:\" class=\"react-aria-Dialog\" data-rac=\"\" aria-label=\"Edit tag: Research\" role=\"dialog\" tabindex=\"-1\"><span data-focus-scope-start=\"true\" hidden=\"\"></span><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria8247525027-:rv:\" slot=\"close\" title=\"Delete tag\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg>Delete</button><div class=\"react-aria-OverlayArrow\" data-rac=\"\" data-placement=\"bottom\" style=\"position: absolute; transform: translateX(-50%); bottom: 100%; left: 30px;\"><svg class=\"PopoverArrow\" aria-hidden=\"true\" width=\"10\" height=\"5\" viewBox=\"0 0 30 10\" preserveAspectRatio=\"none\" style=\"display: block; transform: rotate(180deg);\"><polygon points=\"0,0 30,0 15,10\"></polygon></svg></div><span data-focus-scope-end=\"true\" hidden=\"\"></span></section><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><button id=\"react-aria8247525027-:r11:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button></div></div></div>\n<span data-focus-scope-end=\"true\" hidden=\"\" inert=\"\"></span>",
+  "dimensions": {
+    "width": 1184,
+    "height": 835,
+    "scrollWidth": 1184
+  },
+  "focus": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria8247525027-:rv:\" slot=\"close\" title=\"Delete tag\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg>Delete</button>",
+  "controls": [
+    {
+      "html": "<a href=\"/library?focus=tags&amp;value=Research\">Research</a>",
+      "rect": {
+        "x": 7,
+        "y": 63.15625,
+        "width": 51.359375,
+        "height": 14,
+        "top": 63.15625,
+        "right": 58.359375,
+        "bottom": 77.15625,
+        "left": 7
+      },
+      "visible": true
+    },
+    {
+      "html": "<button aria-label=\"Edit tag: Research\" aria-expanded=\"true\" id=\"react-aria8247525027-:rp:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria8247525027-:ro:\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 63.359375,
+        "y": 64.65625,
+        "width": 11,
+        "height": 11,
+        "top": 64.65625,
+        "right": 74.359375,
+        "bottom": 75.65625,
+        "left": 63.359375
+      },
+      "visible": true
+    },
+    {
+      "html": "<a href=\"/library?focus=tags&amp;value=To%20read\">To read</a>",
+      "rect": {
+        "x": 98.359375,
+        "y": 63.15625,
+        "width": 40.03125,
+        "height": 14,
+        "top": 63.15625,
+        "right": 138.390625,
+        "bottom": 77.15625,
+        "left": 98.359375
+      },
+      "visible": true
+    },
+    {
+      "html": "<button aria-label=\"Edit tag: To read\" aria-expanded=\"false\" id=\"react-aria8247525027-:rr:\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 143.390625,
+        "y": 64.65625,
+        "width": 11,
+        "height": 11,
+        "top": 64.65625,
+        "right": 154.390625,
+        "bottom": 75.65625,
+        "left": 143.390625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"react-aria8247525027-:rs:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button>",
+      "rect": {
+        "x": 34.359375,
+        "y": 80,
+        "width": 10,
+        "height": 10,
+        "top": 80,
+        "right": 44.359375,
+        "bottom": 90,
+        "left": 34.359375
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria8247525027-:rv:\" slot=\"close\" title=\"Delete tag\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg>Delete</button>",
+      "rect": {
+        "x": 35.359375,
+        "y": 81,
+        "width": 67.46875,
+        "height": 28,
+        "top": 81,
+        "right": 102.828125,
+        "bottom": 109,
+        "left": 35.359375
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"react-aria8247525027-:r11:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button>",
+      "rect": {
+        "x": 34.359375,
+        "y": 108,
+        "width": 10,
+        "height": 10,
+        "top": 108,
+        "right": 44.359375,
+        "bottom": 118,
+        "left": 34.359375
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [],
+    "incomplete": [
+      {
+        "id": "aria-prohibited-attr",
+        "impact": "serious",
+        "tags": [
+          "cat.aria",
+          "wcag2a",
+          "wcag412",
+          "EN-301-549",
+          "EN-9.4.1.2",
+          "RGAAv4",
+          "RGAA-7.1.1"
+        ],
+        "description": "Ensure ARIA attributes are not prohibited for an element's role",
+        "help": "Elements must only use permitted ARIA attributes",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-prohibited-attr?application=axeAPI",
+        "nodes": [
+          {
+            "any": [],
+            "all": [],
+            "none": [
+              {
+                "id": "aria-prohibited-attr",
+                "data": {
+                  "role": null,
+                  "nodeName": "div",
+                  "messageKey": "noRoleSingular",
+                  "prohibited": [
+                    "aria-labelledby"
+                  ]
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "aria-labelledby attribute is not well supported on a div with no valid role attribute."
+              }
+            ],
+            "impact": "serious",
+            "html": "<div dir=\"ltr\" class=\"Popover_delete_tag\" data-rac=\"\" aria-labelledby=\"react-aria8247525027-:rp:\" data-trigger=\"DialogTrigger\" style=\"position: absolute; z-index: 102; max-height: 755px; --trigger-anchor-point: 30px 0px; --trigger-width: 11px; left: 34.3594px; top: 80px;\" ...>",
+            "target": [
+              ".Popover_delete_tag"
+            ],
+            "failureSummary": "Fix all of the following:\n  aria-labelledby attribute is not well supported on a div with no valid role attribute."
+          }
+        ]
+      },
+      {
+        "id": "bypass",
+        "impact": "serious",
+        "tags": [
+          "cat.keyboard",
+          "wcag2a",
+          "wcag241",
+          "section508",
+          "section508.22.o",
+          "TTv5",
+          "TT9.a",
+          "EN-301-549",
+          "EN-9.2.4.1",
+          "RGAAv4",
+          "RGAA-12.7.1"
+        ],
+        "description": "Ensure each page has at least one mechanism for a user to bypass navigation and jump straight to the content",
+        "help": "Page must have means to bypass repeated blocks",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/bypass?application=axeAPI",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "internal-link-present",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "No valid skip link found"
+              },
+              {
+                "id": "header-present",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Page does not have a heading"
+              },
+              {
+                "id": "landmark",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Page does not have a landmark region"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<html lang=\"en\" style=\"overflow: hidden;\">",
+            "target": [
+              "html"
+            ],
+            "failureSummary": "Fix any of the following:\n  No valid skip link found\n  Page does not have a heading\n  Page does not have a landmark region"
+          }
+        ]
+      }
+    ],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 4
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 1
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 4
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 1
+      },
+      {
+        "id": "aria-dialog-name",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 5
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 3
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 1
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 1
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 4
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 4
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 4
+      },
+      {
+        "id": "button-name",
+        "nodes": 3
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "duplicate-id-aria",
+        "nodes": 2
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 3
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 9
+      },
+      {
+        "id": "tabindex",
+        "nodes": 4
+      },
+      {
+        "id": "target-size",
+        "nodes": 3
+      }
+    ]
+  },
+  "evidencePrefix": "batch-1/library-tag-delete-popover"
+}

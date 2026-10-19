@@ -1,0 +1,13 @@
+- main:
+  - 'heading "Component fixture: downloads" [level=1]'
+  - alert:
+    - text: Downloads
+    - list:
+      - listitem:
+        - text: 42%
+        - 'progressbar "Download progress: Audit book download"': "42"
+        - text: Audit book download 10 MB 1024 Kb/s
+      - listitem:
+        - text: "? %"
+        - 'progressbar "Download progress: Queued audit book"': ...
+        - text: Queued audit book 20 MB 0 Kb/s

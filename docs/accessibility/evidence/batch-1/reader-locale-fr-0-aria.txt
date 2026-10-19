@@ -1,0 +1,36 @@
+- heading "Barre d'outils"
+- button "Aller directement au contenu"
+- navigation "Barre d'outils":
+  - list:
+    - list:
+      - listitem:
+        - button "Retour à la bibliothèque"
+      - listitem:
+        - button "Informations"
+    - list:
+      - listitem:
+        - button "Activer la synthèse vocale"
+      - listitem:
+        - button "Options synthèse vocale"
+    - list:
+      - listitem:
+        - button "Recherche dans la publication"
+      - listitem:
+        - checkbox "Marque-page (Ajouter)"
+      - listitem:
+        - checkbox "Annotation"
+      - listitem:
+        - button "Navigation"
+      - listitem:
+        - button "Préférences du lecteur"
+      - listitem:
+        - button "Mode Zen"
+- main "Contenu principal":
+  - heading "Contenu principal"
+  - iframe
+  - navigation "Navigation":
+    - button "Reculer"
+    - button "Avancer"
+- navigation "Historique de navigation":
+  - button "Retourner en arrière dans l'historique de la navigation" [disabled]
+  - button "Avancer dans l'historique de la navigation" [disabled]

@@ -1,0 +1,453 @@
+{
+  "id": "spacing-settings",
+  "runtime": "reader",
+  "files": [
+    "src/renderer/reader/components/ReaderSettings/Slider.tsx",
+    "src/renderer/reader/components/ReaderSettings/ReadingSpacing.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T12:17:10.715Z",
+  "lang": "en",
+  "errors": [],
+  "actions": [],
+  "text": "Component fixture: spacing-settings\nMargin\n\n1.25\n\nWord spacing\n\n0.0675rem\n\nLetter spacing\n\n0.0675rem\n\nParagraph spacing\n\n0.5rem\n\nLine spacing\n\n1",
+  "html": "<div id=\"audit-root\"><main><h1>Component fixture: spacing-settings</h1><div class=\"settings_tab_container_reading_spacing\"><section class=\"section\"><div class=\"spacing_heading\"><h3 id=\":r1:\">Margin</h3><p>1.25</p></div><div class=\"size_range\"><button class=\"reset_button\" title=\"Reset Margin\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#clock-reverse-icon\"></use></svg></button><button class=\"scale_button\" aria-label=\"Decrease Margin\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button><input id=\":r1:-range\" type=\"range\" aria-labelledby=\":r1:\" min=\"0\" max=\"7\" aria-valuetext=\"1.25\" class=\"\" value=\"4\"><button class=\"scale_button\" aria-label=\"Increase Margin\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg></button></div></section><section class=\"section\"><div class=\"spacing_heading\"><h3 id=\":r2:\">Word spacing</h3><p>0.0675rem</p></div><div class=\"size_range\"><button class=\"reset_button\" title=\"Reset Word spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#clock-reverse-icon\"></use></svg></button><button class=\"scale_button\" aria-label=\"Decrease Word spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button><input id=\":r2:-range\" type=\"range\" aria-labelledby=\":r2:\" min=\"0\" max=\"9\" aria-valuetext=\"0.0675rem\" class=\"\" value=\"1\"><button class=\"scale_button\" aria-label=\"Increase Word spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg></button></div></section><section class=\"section\"><div class=\"spacing_heading\"><h3 id=\":r3:\">Letter spacing</h3><p>0.0675rem</p></div><div class=\"size_range\"><button class=\"reset_button\" title=\"Reset Letter spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#clock-reverse-icon\"></use></svg></button><button class=\"scale_button\" aria-label=\"Decrease Letter spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button><input id=\":r3:-range\" type=\"range\" aria-labelledby=\":r3:\" min=\"0\" max=\"8\" aria-valuetext=\"0.0675rem\" class=\"\" value=\"1\"><button class=\"scale_button\" aria-label=\"Increase Letter spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg></button></div></section><section class=\"section\"><div class=\"spacing_heading\"><h3 id=\":r4:\">Paragraph spacing</h3><p>0.5rem</p></div><div class=\"size_range\"><button class=\"reset_button\" title=\"Reset Paragraph spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#clock-reverse-icon\"></use></svg></button><button class=\"scale_button\" aria-label=\"Decrease Paragraph spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button><input id=\":r4:-range\" type=\"range\" aria-labelledby=\":r4:\" min=\"0\" max=\"7\" aria-valuetext=\"0.5rem\" class=\"\" value=\"1\"><button class=\"scale_button\" aria-label=\"Increase Paragraph spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg></button></div></section><section class=\"section\"><div class=\"spacing_heading\"><h3 id=\":r5:\">Line spacing</h3><p>1</p></div><div class=\"size_range\"><button class=\"reset_button\" title=\"Reset Line spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#clock-reverse-icon\"></use></svg></button><button class=\"scale_button\" aria-label=\"Decrease Line spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button><input id=\":r5:-range\" type=\"range\" aria-labelledby=\":r5:\" min=\"0\" max=\"8\" aria-valuetext=\"1\" class=\"\" value=\"1\"><button class=\"scale_button\" aria-label=\"Increase Line spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg></button></div></section></div></main></div>",
+  "dimensions": {
+    "width": 1184,
+    "height": 835,
+    "scrollWidth": 1184
+  },
+  "focus": "<button class=\"scale_button\" aria-label=\"Decrease Line spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button>",
+  "controls": [
+    {
+      "html": "<button class=\"reset_button\" title=\"Reset Margin\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#clock-reverse-icon\"></use></svg></button>",
+      "rect": {
+        "x": 0,
+        "y": 109.15625,
+        "width": 32,
+        "height": 32,
+        "top": 109.15625,
+        "right": 32,
+        "bottom": 141.15625,
+        "left": 0
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Decrease Margin\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button>",
+      "rect": {
+        "x": 33.54999923706055,
+        "y": 110.20625305175781,
+        "width": 29.89999771118164,
+        "height": 29.899993896484375,
+        "top": 110.20625305175781,
+        "right": 63.44999694824219,
+        "bottom": 140.1062469482422,
+        "left": 33.54999923706055
+      },
+      "visible": true
+    },
+    {
+      "html": "<input id=\":r1:-range\" type=\"range\" aria-labelledby=\":r1:\" min=\"0\" max=\"7\" aria-valuetext=\"1.25\" class=\"\" value=\"4\">",
+      "rect": {
+        "x": 67,
+        "y": 122.65625,
+        "width": 150,
+        "height": 5,
+        "top": 122.65625,
+        "right": 217,
+        "bottom": 127.65625,
+        "left": 67
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Increase Margin\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg></button>",
+      "rect": {
+        "x": 220.5500030517578,
+        "y": 110.20625305175781,
+        "width": 29.899993896484375,
+        "height": 29.899993896484375,
+        "top": 110.20625305175781,
+        "right": 250.4499969482422,
+        "bottom": 140.1062469482422,
+        "left": 220.5500030517578
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"reset_button\" title=\"Reset Word spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#clock-reverse-icon\"></use></svg></button>",
+      "rect": {
+        "x": 592,
+        "y": 109.15625,
+        "width": 32,
+        "height": 32,
+        "top": 109.15625,
+        "right": 624,
+        "bottom": 141.15625,
+        "left": 592
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Decrease Word spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button>",
+      "rect": {
+        "x": 625.5499877929688,
+        "y": 110.20625305175781,
+        "width": 29.9000244140625,
+        "height": 29.899993896484375,
+        "top": 110.20625305175781,
+        "right": 655.4500122070312,
+        "bottom": 140.1062469482422,
+        "left": 625.5499877929688
+      },
+      "visible": true
+    },
+    {
+      "html": "<input id=\":r2:-range\" type=\"range\" aria-labelledby=\":r2:\" min=\"0\" max=\"9\" aria-valuetext=\"0.0675rem\" class=\"\" value=\"1\">",
+      "rect": {
+        "x": 659,
+        "y": 122.65625,
+        "width": 150,
+        "height": 5,
+        "top": 122.65625,
+        "right": 809,
+        "bottom": 127.65625,
+        "left": 659
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Increase Word spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg></button>",
+      "rect": {
+        "x": 812.5499877929688,
+        "y": 110.20625305175781,
+        "width": 29.9000244140625,
+        "height": 29.899993896484375,
+        "top": 110.20625305175781,
+        "right": 842.4500122070312,
+        "bottom": 140.1062469482422,
+        "left": 812.5499877929688
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"reset_button\" title=\"Reset Letter spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#clock-reverse-icon\"></use></svg></button>",
+      "rect": {
+        "x": 0,
+        "y": 209.15625,
+        "width": 32,
+        "height": 32,
+        "top": 209.15625,
+        "right": 32,
+        "bottom": 241.15625,
+        "left": 0
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Decrease Letter spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button>",
+      "rect": {
+        "x": 33.54999923706055,
+        "y": 210.2062530517578,
+        "width": 29.89999771118164,
+        "height": 29.899993896484375,
+        "top": 210.2062530517578,
+        "right": 63.44999694824219,
+        "bottom": 240.1062469482422,
+        "left": 33.54999923706055
+      },
+      "visible": true
+    },
+    {
+      "html": "<input id=\":r3:-range\" type=\"range\" aria-labelledby=\":r3:\" min=\"0\" max=\"8\" aria-valuetext=\"0.0675rem\" class=\"\" value=\"1\">",
+      "rect": {
+        "x": 67,
+        "y": 222.65625,
+        "width": 150,
+        "height": 5,
+        "top": 222.65625,
+        "right": 217,
+        "bottom": 227.65625,
+        "left": 67
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Increase Letter spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg></button>",
+      "rect": {
+        "x": 220.5500030517578,
+        "y": 210.2062530517578,
+        "width": 29.899993896484375,
+        "height": 29.899993896484375,
+        "top": 210.2062530517578,
+        "right": 250.4499969482422,
+        "bottom": 240.1062469482422,
+        "left": 220.5500030517578
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"reset_button\" title=\"Reset Paragraph spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#clock-reverse-icon\"></use></svg></button>",
+      "rect": {
+        "x": 592,
+        "y": 209.15625,
+        "width": 32,
+        "height": 32,
+        "top": 209.15625,
+        "right": 624,
+        "bottom": 241.15625,
+        "left": 592
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Decrease Paragraph spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button>",
+      "rect": {
+        "x": 625.5499877929688,
+        "y": 210.2062530517578,
+        "width": 29.9000244140625,
+        "height": 29.899993896484375,
+        "top": 210.2062530517578,
+        "right": 655.4500122070312,
+        "bottom": 240.1062469482422,
+        "left": 625.5499877929688
+      },
+      "visible": true
+    },
+    {
+      "html": "<input id=\":r4:-range\" type=\"range\" aria-labelledby=\":r4:\" min=\"0\" max=\"7\" aria-valuetext=\"0.5rem\" class=\"\" value=\"1\">",
+      "rect": {
+        "x": 659,
+        "y": 222.65625,
+        "width": 150,
+        "height": 5,
+        "top": 222.65625,
+        "right": 809,
+        "bottom": 227.65625,
+        "left": 659
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Increase Paragraph spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg></button>",
+      "rect": {
+        "x": 812.5499877929688,
+        "y": 210.2062530517578,
+        "width": 29.9000244140625,
+        "height": 29.899993896484375,
+        "top": 210.2062530517578,
+        "right": 842.4500122070312,
+        "bottom": 240.1062469482422,
+        "left": 812.5499877929688
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"reset_button\" title=\"Reset Line spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#clock-reverse-icon\"></use></svg></button>",
+      "rect": {
+        "x": 0,
+        "y": 309.15625,
+        "width": 32,
+        "height": 32,
+        "top": 309.15625,
+        "right": 32,
+        "bottom": 341.15625,
+        "left": 0
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Decrease Line spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button>",
+      "rect": {
+        "x": 33.54999923706055,
+        "y": 310.20623779296875,
+        "width": 29.89999771118164,
+        "height": 29.9000244140625,
+        "top": 310.20623779296875,
+        "right": 63.44999694824219,
+        "bottom": 340.10626220703125,
+        "left": 33.54999923706055
+      },
+      "visible": true
+    },
+    {
+      "html": "<input id=\":r5:-range\" type=\"range\" aria-labelledby=\":r5:\" min=\"0\" max=\"8\" aria-valuetext=\"1\" class=\"\" value=\"1\">",
+      "rect": {
+        "x": 67,
+        "y": 322.65625,
+        "width": 150,
+        "height": 5,
+        "top": 322.65625,
+        "right": 217,
+        "bottom": 327.65625,
+        "left": 67
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Increase Line spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg></button>",
+      "rect": {
+        "x": 220.5500030517578,
+        "y": 310.20623779296875,
+        "width": 29.899993896484375,
+        "height": 29.9000244140625,
+        "top": 310.20623779296875,
+        "right": 250.4499969482422,
+        "bottom": 340.10626220703125,
+        "left": 220.5500030517578
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [
+      {
+        "id": "heading-order",
+        "impact": "moderate",
+        "tags": [
+          "cat.semantics",
+          "best-practice"
+        ],
+        "description": "Ensure the order of headings is semantically correct",
+        "help": "Heading levels should only increase by one",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/heading-order?application=axeAPI",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "heading-order",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "Heading order invalid"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "moderate",
+            "html": "<h3 id=\":r1:\">Margin</h3>",
+            "target": [
+              "#\\:r1\\:"
+            ],
+            "failureSummary": "Fix any of the following:\n  Heading order invalid"
+          }
+        ]
+      }
+    ],
+    "incomplete": [],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 15
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 15
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 16
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 15
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 15
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 15
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 1
+      },
+      {
+        "id": "button-name",
+        "nodes": 15
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 11
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "duplicate-id-aria",
+        "nodes": 5
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 6
+      },
+      {
+        "id": "form-field-multiple-labels",
+        "nodes": 5
+      },
+      {
+        "id": "heading-order",
+        "nodes": 5
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "label-title-only",
+        "nodes": 5
+      },
+      {
+        "id": "label",
+        "nodes": 5
+      },
+      {
+        "id": "landmark-main-is-top-level",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-no-duplicate-main",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-unique",
+        "nodes": 1
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 20
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 49
+      },
+      {
+        "id": "target-size",
+        "nodes": 20
+      }
+    ]
+  },
+  "evidencePrefix": "batch-1/reader-spacing-settings"
+}

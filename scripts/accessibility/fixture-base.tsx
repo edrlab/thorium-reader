@@ -6,6 +6,7 @@ import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { TranslatorContext } from 'readium-desktop/renderer/common/translator.context';
 import { translator } from 'readium-desktop/common/services/translator';
 import 'readium-desktop/renderer/assets/styles/global.scss';
+import { DocumentLanguage } from 'readium-desktop/renderer/common/components/DocumentLanguage';
 
 export const __ = translator.translate;
 export const record = (...value: any[]) => (window as any).auditActions.push(value);
@@ -44,6 +45,10 @@ export function install(runtime: string, reducer: any, cases: Record<string, Aud
         return [];
     };
     (window as any).auditCases = Object.entries(cases).map(([id, c]) => ({ id, files: c.files }));
+    (window as any).auditSetLocale = async (locale: string) => {
+        await translator.setLocale(locale as any);
+        (window as any).auditStore.dispatch({ type: 'AUDIT_SET', payload: { i18n: { locale } } });
+    };
     (window as any).auditMount = async (id: string) => {
         const c = cases[id];
         if (!c) throw new Error(`Unknown audit case ${id}`);
@@ -66,8 +71,9 @@ export function install(runtime: string, reducer: any, cases: Record<string, Aud
         (window as any).auditStore = store;
         (window as any).auditActions.length = 0;
         errors.length = 0;
+        await translator.setLocale('en');
         (window as any).auditCurrent = { id, runtime, files: c.files, kind: 'component-fixture', services: 'synthetic; no sagas or live API' };
-        root.render(<Provider store={store}><TranslatorContext.Provider value={translator}><MemoryRouter initialEntries={[id === 'customization-screen' ? '/audit/' + btoa('screen.html').replace(/=/g, '') : '/']}><main><h1>Component fixture: {id}</h1>{id === 'customization-screen' ? <Routes><Route path="/audit/:screenId" element={c.render()} /></Routes> : c.render()}</main></MemoryRouter></TranslatorContext.Provider></Provider>);
+        root.render(<Provider store={store}><DocumentLanguage /><TranslatorContext.Provider value={translator}><MemoryRouter initialEntries={[id === 'customization-screen' ? '/audit/' + btoa('screen.html').replace(/=/g, '') : '/']}><main><h1>Component fixture: {id}</h1>{id === 'customization-screen' ? <Routes><Route path="/audit/:screenId" element={c.render()} /></Routes> : c.render()}</main></MemoryRouter></TranslatorContext.Provider></Provider>);
         await new Promise(resolve => setTimeout(resolve, 80));
         c.after?.();
     };

@@ -1,0 +1,287 @@
+{
+  "id": "editable-tags",
+  "runtime": "library",
+  "files": [
+    "src/renderer/common/components/dialog/publicationInfos/tag/tagButton.tsx",
+    "src/renderer/common/components/dialog/publicationInfos/tag/tagList.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T12:17:15.144Z",
+  "lang": "en",
+  "errors": [],
+  "actions": [],
+  "text": "Component fixture: editable-tags\nResearch\nTo read",
+  "html": "<div id=\"audit-root\"><main><h1>Component fixture: editable-tags</h1><div class=\"tags_wrapper\"><div class=\"tag no_hover\"><a href=\"/library?focus=tags&amp;value=Research\">Research</a><button aria-label=\"Edit tag: Research\" aria-expanded=\"false\" id=\"react-aria8247525027-:rp:\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div><div class=\"tag no_hover\"><a href=\"/library?focus=tags&amp;value=To%20read\">To read</a><button aria-label=\"Edit tag: To read\" aria-expanded=\"false\" id=\"react-aria8247525027-:rr:\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></main></div>",
+  "dimensions": {
+    "width": 1184,
+    "height": 835,
+    "scrollWidth": 1184
+  },
+  "focus": "<button aria-label=\"Edit tag: Research\" aria-expanded=\"false\" id=\"react-aria8247525027-:rp:\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+  "controls": [
+    {
+      "html": "<a href=\"/library?focus=tags&amp;value=Research\">Research</a>",
+      "rect": {
+        "x": 7,
+        "y": 63.15625,
+        "width": 51.359375,
+        "height": 14,
+        "top": 63.15625,
+        "right": 58.359375,
+        "bottom": 77.15625,
+        "left": 7
+      },
+      "visible": true
+    },
+    {
+      "html": "<button aria-label=\"Edit tag: Research\" aria-expanded=\"false\" id=\"react-aria8247525027-:rp:\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 63.359375,
+        "y": 64.65625,
+        "width": 11,
+        "height": 11,
+        "top": 64.65625,
+        "right": 74.359375,
+        "bottom": 75.65625,
+        "left": 63.359375
+      },
+      "visible": true
+    },
+    {
+      "html": "<a href=\"/library?focus=tags&amp;value=To%20read\">To read</a>",
+      "rect": {
+        "x": 98.359375,
+        "y": 63.15625,
+        "width": 40.03125,
+        "height": 14,
+        "top": 63.15625,
+        "right": 138.390625,
+        "bottom": 77.15625,
+        "left": 98.359375
+      },
+      "visible": true
+    },
+    {
+      "html": "<button aria-label=\"Edit tag: To read\" aria-expanded=\"false\" id=\"react-aria8247525027-:rr:\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 143.390625,
+        "y": 64.65625,
+        "width": 11,
+        "height": 11,
+        "top": 64.65625,
+        "right": 154.390625,
+        "bottom": 75.65625,
+        "left": 143.390625
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [
+      {
+        "id": "target-size",
+        "impact": "serious",
+        "tags": [
+          "cat.sensory-and-visual-cues",
+          "wcag22aa",
+          "wcag258"
+        ],
+        "description": "Ensure touch targets have sufficient size and space",
+        "help": "All touch targets must be 24px large, or leave sufficient space",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/target-size?application=axeAPI",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "target-size",
+                "data": {
+                  "minSize": 24,
+                  "width": 11,
+                  "height": 11
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Target has insufficient size (11px by 11px, should be at least 24px by 24px)"
+              },
+              {
+                "id": "target-offset",
+                "data": {
+                  "closestOffset": 21,
+                  "minOffset": 24
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<a href=\"/library?focus=tags&amp;value=Research\">Research</a>",
+                    "target": [
+                      ".tag.no_hover:nth-child(1) > a"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 21px instead of at least 24px."
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<button aria-label=\"Edit tag: Research\" aria-expanded=\"false\" id=\"react-aria8247525027-:rp:\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+            "target": [
+              "#react-aria8247525027-\\:rp\\:"
+            ],
+            "failureSummary": "Fix any of the following:\n  Target has insufficient size (11px by 11px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 21px instead of at least 24px."
+          },
+          {
+            "any": [
+              {
+                "id": "target-size",
+                "data": {
+                  "minSize": 24,
+                  "width": 11,
+                  "height": 11
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Target has insufficient size (11px by 11px, should be at least 24px by 24px)"
+              },
+              {
+                "id": "target-offset",
+                "data": {
+                  "closestOffset": 21,
+                  "minOffset": 24
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<a href=\"/library?focus=tags&amp;value=To%20read\">To read</a>",
+                    "target": [
+                      ".tag.no_hover:nth-child(2) > a"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 21px instead of at least 24px."
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<button aria-label=\"Edit tag: To read\" aria-expanded=\"false\" id=\"react-aria8247525027-:rr:\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+            "target": [
+              "#react-aria8247525027-\\:rr\\:"
+            ],
+            "failureSummary": "Fix any of the following:\n  Target has insufficient size (11px by 11px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 21px instead of at least 24px."
+          }
+        ]
+      }
+    ],
+    "incomplete": [],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 2
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 2
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 3
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 2
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 2
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 2
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 2
+      },
+      {
+        "id": "button-name",
+        "nodes": 2
+      },
+      {
+        "id": "bypass",
+        "nodes": 1
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 3
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 1
+      },
+      {
+        "id": "heading-order",
+        "nodes": 1
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-main-is-top-level",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-no-duplicate-main",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-unique",
+        "nodes": 1
+      },
+      {
+        "id": "link-name",
+        "nodes": 2
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 2
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 10
+      },
+      {
+        "id": "tabindex",
+        "nodes": 2
+      },
+      {
+        "id": "target-size",
+        "nodes": 2
+      }
+    ]
+  },
+  "evidencePrefix": "batch-1/library-editable-tags"
+}

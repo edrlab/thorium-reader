@@ -1,0 +1,7 @@
+- main:
+  - 'heading "Component fixture: font-settings" [level=1]'
+  - heading "Font size (100%)" [level=3]
+  - button "Reset Font size"
+  - button "Reduce font size"
+  - slider "Font size": "100"
+  - button "Increase font size"
