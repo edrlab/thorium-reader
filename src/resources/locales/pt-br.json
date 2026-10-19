@@ -257,7 +257,6 @@
         "annotations": {
             "alreadyImported": "Todas as notas já estão importadas.",
             "emptyFile": "Não há notas disponíveis no arquivo.",
-            "errorParsing": "Erro durante a análise do arquivo: ",
             "nothing": "Não há nota pronta para ser importada, abortando a importação",
             "success": "Importação concluída com sucesso."
         },
@@ -279,6 +278,29 @@
             "alreadyImport": "{{- title}} já foi importado.",
             "fail": "A importação de {{- path}} falhou: [{{- err}}]",
             "success": "A importação de {{- title}} terminou."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Erro na abertura da publicação: {{- err}}",
@@ -350,7 +372,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "Retornar à navegação",

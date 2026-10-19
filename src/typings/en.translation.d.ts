@@ -623,7 +623,6 @@ declare namespace typed_i18n {
   readonly "annotations": {
     readonly "alreadyImported": string,
     readonly "emptyFile": string,
-    readonly "errorParsing": string,
     readonly "nothing": string,
     readonly "success": string
   },
@@ -687,13 +686,11 @@ declare namespace typed_i18n {
   (_: "message.annotations", __?: {}): {
   readonly "alreadyImported": string,
   readonly "emptyFile": string,
-  readonly "errorParsing": string,
   readonly "nothing": string,
   readonly "success": string
 };
   (_: "message.annotations.alreadyImported", __?: {}): string;
   (_: "message.annotations.emptyFile", __?: {}): string;
-  (_: "message.annotations.errorParsing", __?: {}): string;
   (_: "message.annotations.nothing", __?: {}): string;
   (_: "message.annotations.success", __?: {}): string;
   (_: "message.download", __?: {}): {
@@ -852,7 +849,6 @@ declare namespace typed_i18n {
     readonly "empty": string,
     readonly "error": string,
     readonly "loading": string,
-    readonly "prompt": string,
     readonly "title": string
   },
   readonly "resumeBrowsing": string,
@@ -942,13 +938,11 @@ declare namespace typed_i18n {
   readonly "empty": string,
   readonly "error": string,
   readonly "loading": string,
-  readonly "prompt": string,
   readonly "title": string
 };
   (_: "opds.registry.empty", __?: {}): string;
   (_: "opds.registry.error", __?: {}): string;
   (_: "opds.registry.loading", __?: {}): string;
-  (_: "opds.registry.prompt", __?: {}): string;
   (_: "opds.registry.title", __?: {}): string;
   (_: "opds.resumeBrowsing", __?: {}): string;
   (_: "opds.shelf", __?: {}): string;

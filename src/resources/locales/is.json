@@ -252,7 +252,6 @@
         "annotations": {
             "alreadyImported": "Allar glósur hafa þegar verið fluttar inn.",
             "emptyFile": "Engar glósur eru í skránni.",
-            "errorParsing": "Villa við lestur skráar: ",
             "nothing": "Engin glósa er tilbúin til innflutnings. Hætt er við.",
             "success": "Innflutningi lokið."
         },
@@ -274,6 +273,29 @@
             "alreadyImport": "[{{- title}}] hefur þegar verið bætt við.",
             "fail": "Ekki tókst að bæta [{{- path}}] við: [{{- err}}]",
             "success": "[{{- title}}] hefur verið bætt við."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Ekki tókst að opna bókina: [{{- err}}]",
@@ -344,7 +366,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "Halda áfram að skoða",

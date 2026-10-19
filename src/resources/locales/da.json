@@ -252,7 +252,6 @@
         "annotations": {
             "alreadyImported": "Alle noter eksisterer i forvejen, afslutter import.",
             "emptyFile": "Ingen noter blev fundet i filen.",
-            "errorParsing": "Fejl under læsning af filen: ",
             "nothing": "Ingen noter kunne importeres, afslutter import",
             "success": "Import færdig."
         },
@@ -274,6 +273,29 @@
             "alreadyImport": "{{- title}} er allerede importeret.",
             "fail": "Import af {{- path}} fejlede. {{- err}}",
             "success": "{{- title}} er nu importeret."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Bogen kan ikke åbnes: {{- err}}",
@@ -344,7 +366,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "Genoptag browsing",

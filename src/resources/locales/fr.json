@@ -257,7 +257,6 @@
         "annotations": {
             "alreadyImported": "Toutes les notes sont déjà importées, importation annulée.",
             "emptyFile": "Aucune note n'est disponible dans ce fichier.",
-            "errorParsing": "Erreur lors de la lecture du fichier : ",
             "nothing": "Aucune note disponible, ajout annulé",
             "success": "Importation réussie."
         },
@@ -373,7 +372,6 @@
             "empty": "Aucun catalogue trouvé.",
             "error": "Impossible de rechercher dans le registre. Veuillez réessayer.",
             "loading": "Recherche de catalogues…",
-            "prompt": "Nom, pays ou région",
             "title": "Rechercher des catalogues"
         },
         "resumeBrowsing": "Reprendre le parcours",

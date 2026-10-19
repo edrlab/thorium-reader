@@ -272,7 +272,6 @@
         "annotations": {
             "alreadyImported": "تم استيراد جميع الملاحظات مسبقاً.",
             "emptyFile": "لا توجد ملاحظات جاهزة للاستيراد، سيتم إلغاء العملية.",
-            "errorParsing": "حدث خطأ أثناء تحليل الملف: ",
             "nothing": "لا توجد أي ملاحظة جاهزة للاستيراد، جاري إلغاء عملية الاستيراد",
             "success": "اكتمل الاستيراد بنجاح."
         },
@@ -294,6 +293,29 @@
             "alreadyImport": "تم استيراد [{{- title}}] مسبقًا.",
             "fail": "فشل استيراد [{{- path}}]: [{{- err}}]",
             "success": "اكتمل استيراد [{{- title}}]."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "فشل تحميل المنشور: [{{- err}}]",
@@ -368,7 +390,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "استئناف التصفح",
