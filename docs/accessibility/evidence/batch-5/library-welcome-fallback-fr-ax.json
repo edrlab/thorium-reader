@@ -1,0 +1,2089 @@
+{
+  "nodes": [
+    {
+      "nodeId": "4611",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "RootWebArea"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 144
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Thorium",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label",
+            "superseded": true
+          },
+          {
+            "type": "relatedElement",
+            "value": {
+              "type": "computedString",
+              "value": "Thorium"
+            },
+            "nativeSource": "title"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "focusable",
+          "value": {
+            "type": "booleanOrUndefined",
+            "value": true
+          }
+        },
+        {
+          "name": "focused",
+          "value": {
+            "type": "booleanOrUndefined",
+            "value": true
+          }
+        },
+        {
+          "name": "url",
+          "value": {
+            "type": "string",
+            "value": "http://localhost:8090/index_library.html"
+          }
+        }
+      ],
+      "childIds": [
+        "4630"
+      ],
+      "backendDOMNodeId": 4611,
+      "frameId": "DB493FCECD216510AB37036BF187DB3E"
+    },
+    {
+      "nodeId": "4630",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "uninteresting",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "4611",
+      "childIds": [
+        "4667"
+      ],
+      "backendDOMNodeId": 4630
+    },
+    {
+      "nodeId": "4667",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "generic"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 88
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "4630",
+      "childIds": [
+        "5383",
+        "4617",
+        "4612",
+        "4991",
+        "4993",
+        "6349"
+      ],
+      "backendDOMNodeId": 4667
+    },
+    {
+      "nodeId": "5383",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "generic"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 88
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "4667",
+      "childIds": [
+        "5381",
+        "5382"
+      ],
+      "backendDOMNodeId": 5383
+    },
+    {
+      "nodeId": "4617",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "inertElement",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "4667",
+      "childIds": [],
+      "backendDOMNodeId": 4617
+    },
+    {
+      "nodeId": "4612",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "inertElement",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "4667",
+      "childIds": [
+        "5094"
+      ],
+      "backendDOMNodeId": 4612
+    },
+    {
+      "nodeId": "5094",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "inertElement",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "4612",
+      "childIds": [],
+      "backendDOMNodeId": 5094
+    },
+    {
+      "nodeId": "4991",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "inertElement",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "4667",
+      "childIds": [
+        "4995"
+      ],
+      "backendDOMNodeId": 4991
+    },
+    {
+      "nodeId": "4995",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "inertElement",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "4991",
+      "childIds": [],
+      "backendDOMNodeId": 4995
+    },
+    {
+      "nodeId": "4993",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "inertElement",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "4667",
+      "childIds": [],
+      "backendDOMNodeId": 4993
+    },
+    {
+      "nodeId": "6349",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "generic"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 88
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "4667",
+      "childIds": [
+        "6346"
+      ],
+      "backendDOMNodeId": 6349
+    },
+    {
+      "nodeId": "5381",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "log"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 117
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          },
+          {
+            "type": "attribute",
+            "attribute": "title"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "live",
+          "value": {
+            "type": "token",
+            "value": "assertive"
+          }
+        },
+        {
+          "name": "atomic",
+          "value": {
+            "type": "boolean",
+            "value": false
+          }
+        },
+        {
+          "name": "relevant",
+          "value": {
+            "type": "tokenList",
+            "value": "additions"
+          }
+        }
+      ],
+      "parentId": "5383",
+      "childIds": [],
+      "backendDOMNodeId": 5381
+    },
+    {
+      "nodeId": "5382",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "log"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 117
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          },
+          {
+            "type": "attribute",
+            "attribute": "title"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "live",
+          "value": {
+            "type": "token",
+            "value": "polite"
+          }
+        },
+        {
+          "name": "atomic",
+          "value": {
+            "type": "boolean",
+            "value": false
+          }
+        },
+        {
+          "name": "relevant",
+          "value": {
+            "type": "tokenList",
+            "value": "additions"
+          }
+        }
+      ],
+      "parentId": "5383",
+      "childIds": [],
+      "backendDOMNodeId": 5382
+    },
+    {
+      "nodeId": "6346",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "alertdialog"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 3
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Préparation et activation du profil de personnalisation Fermer",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "value": {
+              "type": "computedString",
+              "value": "Préparation et activation du profil de personnalisation Fermer"
+            },
+            "attribute": "aria-labelledby",
+            "attributeValue": {
+              "type": "idrefList",
+              "value": ":r5:",
+              "relatedNodes": [
+                {
+                  "backendDOMNodeId": 6343,
+                  "idref": ":r5:",
+                  "text": "Préparation et activation du profil de personnalisation Fermer"
+                }
+              ]
+            }
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label",
+            "superseded": true
+          },
+          {
+            "type": "attribute",
+            "attribute": "title",
+            "superseded": true
+          }
+        ]
+      },
+      "description": {
+        "type": "computedString",
+        "value": "Two people choosing books from a shelf Thorium University Press apporte les idées universitaires au monde. Nous publions des ouvrages évalués par des pairs qui relient auteurs et lecteurs à travers les domaines du savoir afin de faire progresser et d’enrichir le dialogue mondial. Nous adhérons aux plus hauts standards de recherche, d’inclusivité et de diversité dans nos publications. Conformément à l’engagement de Thorium University à servir la nation et le monde, nous publions pour les chercheurs, les étudiants et les lecteurs engagés partout dans le monde. Pour plus d’informations, rendez-vous sur notre site web."
+      },
+      "properties": [
+        {
+          "name": "focusable",
+          "value": {
+            "type": "booleanOrUndefined",
+            "value": true
+          }
+        },
+        {
+          "name": "focused",
+          "value": {
+            "type": "booleanOrUndefined",
+            "value": true
+          }
+        },
+        {
+          "name": "modal",
+          "value": {
+            "type": "boolean",
+            "value": false
+          }
+        },
+        {
+          "name": "describedby",
+          "value": {
+            "type": "idrefList",
+            "value": ":r6:",
+            "relatedNodes": [
+              {
+                "backendDOMNodeId": 6344,
+                "idref": ":r6:"
+              }
+            ]
+          }
+        },
+        {
+          "name": "labelledby",
+          "value": {
+            "type": "nodeList",
+            "relatedNodes": [
+              {
+                "backendDOMNodeId": 6343,
+                "idref": ":r5:",
+                "text": "Préparation et activation du profil de personnalisation Fermer"
+              }
+            ]
+          }
+        }
+      ],
+      "parentId": "6349",
+      "childIds": [
+        "6343",
+        "6344",
+        "6345"
+      ],
+      "backendDOMNodeId": 6346
+    },
+    {
+      "nodeId": "6343",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "heading"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 96
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Préparation et activation du profil de personnalisation Fermer",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          },
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "Préparation et activation du profil de personnalisation Fermer"
+            }
+          },
+          {
+            "type": "attribute",
+            "attribute": "title",
+            "superseded": true
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "level",
+          "value": {
+            "type": "integer",
+            "value": 2
+          }
+        }
+      ],
+      "parentId": "6346",
+      "childIds": [
+        "6361",
+        "6334"
+      ],
+      "backendDOMNodeId": 6343
+    },
+    {
+      "nodeId": "6344",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "paragraph"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 133
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "6346",
+      "childIds": [
+        "6388",
+        "6341"
+      ],
+      "backendDOMNodeId": 6344
+    },
+    {
+      "nodeId": "6345",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "uninteresting",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "6346",
+      "childIds": [
+        "6390",
+        "6342"
+      ],
+      "backendDOMNodeId": 6345
+    },
+    {
+      "nodeId": "6390",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "uninteresting",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "6345",
+      "childIds": [
+        "6387"
+      ],
+      "backendDOMNodeId": 6390
+    },
+    {
+      "nodeId": "6387",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "LabelText"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 104
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          },
+          {
+            "type": "attribute",
+            "attribute": "title"
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "6390",
+      "childIds": [
+        "6384",
+        "6385"
+      ],
+      "backendDOMNodeId": 6387
+    },
+    {
+      "nodeId": "6342",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "button"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 9
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Oui",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          },
+          {
+            "type": "relatedElement",
+            "nativeSource": "label"
+          },
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "Oui"
+            }
+          },
+          {
+            "type": "attribute",
+            "attribute": "title",
+            "superseded": true
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "invalid",
+          "value": {
+            "type": "token",
+            "value": "false"
+          }
+        },
+        {
+          "name": "focusable",
+          "value": {
+            "type": "booleanOrUndefined",
+            "value": true
+          }
+        }
+      ],
+      "parentId": "6345",
+      "childIds": [
+        "6363"
+      ],
+      "backendDOMNodeId": 6342
+    },
+    {
+      "nodeId": "6361",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "StaticText"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 158
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Préparation et activation du profil de personnalisation",
+        "sources": [
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "Préparation et activation du profil de personnalisation"
+            }
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "6343",
+      "childIds": [
+        "-1000004626"
+      ],
+      "backendDOMNodeId": 6361
+    },
+    {
+      "nodeId": "6334",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "button"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 9
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Fermer",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "value": {
+              "type": "computedString",
+              "value": "Fermer"
+            },
+            "attribute": "aria-label",
+            "attributeValue": {
+              "type": "string",
+              "value": "Fermer"
+            }
+          },
+          {
+            "type": "relatedElement",
+            "superseded": true,
+            "nativeSource": "label"
+          },
+          {
+            "type": "contents",
+            "superseded": true
+          },
+          {
+            "type": "attribute",
+            "attribute": "title",
+            "superseded": true
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "invalid",
+          "value": {
+            "type": "token",
+            "value": "false"
+          }
+        },
+        {
+          "name": "focusable",
+          "value": {
+            "type": "booleanOrUndefined",
+            "value": true
+          }
+        }
+      ],
+      "parentId": "6343",
+      "childIds": [
+        "6333"
+      ],
+      "backendDOMNodeId": 6334
+    },
+    {
+      "nodeId": "6388",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "image"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 99
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Two people choosing books from a shelf",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          },
+          {
+            "type": "attribute",
+            "value": {
+              "type": "computedString",
+              "value": "Two people choosing books from a shelf"
+            },
+            "attribute": "alt",
+            "attributeValue": {
+              "type": "string",
+              "value": "Two people choosing books from a shelf"
+            }
+          },
+          {
+            "type": "attribute",
+            "attribute": "title",
+            "superseded": true
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "url",
+          "value": {
+            "type": "string",
+            "value": "thoriumhttps://0.0.0.0/custom-profile-zip/dGhvcml1bS1tYW5pZmVzdDovL29yZy5lZHJsYWIuYXVkaXQuYTE3LmZhbGxiYWNrLWZy/Li93ZWxjb21lLXNjcmVlbi93ZWxjb21lLXNjcmVlbi5zdmc%3D"
+          }
+        }
+      ],
+      "parentId": "6344",
+      "childIds": [],
+      "backendDOMNodeId": 6388
+    },
+    {
+      "nodeId": "6341",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "generic"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 88
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "6344",
+      "childIds": [
+        "6389"
+      ],
+      "backendDOMNodeId": 6341
+    },
+    {
+      "nodeId": "6384",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "checkbox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 14
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Ne plus afficher",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "value": {
+              "type": "computedString",
+              "value": "Ne plus afficher"
+            },
+            "attribute": "aria-label",
+            "attributeValue": {
+              "type": "string",
+              "value": "Ne plus afficher"
+            }
+          },
+          {
+            "type": "contents",
+            "superseded": true
+          },
+          {
+            "type": "attribute",
+            "attribute": "title",
+            "superseded": true
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "focusable",
+          "value": {
+            "type": "booleanOrUndefined",
+            "value": true
+          }
+        },
+        {
+          "name": "checked",
+          "value": {
+            "type": "tristate",
+            "value": "false"
+          }
+        }
+      ],
+      "parentId": "6387",
+      "childIds": [],
+      "backendDOMNodeId": 6384
+    },
+    {
+      "nodeId": "6385",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "ariaHiddenElement",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "6387",
+      "childIds": [
+        "6399"
+      ],
+      "backendDOMNodeId": 6385
+    },
+    {
+      "nodeId": "6399",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "ariaHiddenSubtree",
+          "value": {
+            "type": "idref",
+            "relatedNodes": [
+              {
+                "backendDOMNodeId": 6385
+              }
+            ]
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "6385",
+      "childIds": [],
+      "backendDOMNodeId": 6399
+    },
+    {
+      "nodeId": "6363",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "StaticText"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 158
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Oui",
+        "sources": [
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "Oui"
+            }
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "6342",
+      "childIds": [
+        "-1000004643"
+      ],
+      "backendDOMNodeId": 6363
+    },
+    {
+      "nodeId": "-1000004626",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Préparation et activation du profil de personnalisation"
+      },
+      "properties": [],
+      "parentId": "6361",
+      "childIds": []
+    },
+    {
+      "nodeId": "6333",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "ariaHiddenElement",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "6334",
+      "childIds": [
+        "6332"
+      ],
+      "backendDOMNodeId": 6333
+    },
+    {
+      "nodeId": "6332",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "ariaHiddenSubtree",
+          "value": {
+            "type": "idref",
+            "relatedNodes": [
+              {
+                "backendDOMNodeId": 6333
+              }
+            ]
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "6333",
+      "childIds": [],
+      "backendDOMNodeId": 6332
+    },
+    {
+      "nodeId": "6389",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "uninteresting",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "6341",
+      "childIds": [
+        "6376"
+      ],
+      "backendDOMNodeId": 6389
+    },
+    {
+      "nodeId": "6376",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "uninteresting",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "6389",
+      "childIds": [
+        "6377",
+        "6379",
+        "6380",
+        "6381",
+        "6382"
+      ],
+      "backendDOMNodeId": 6376
+    },
+    {
+      "nodeId": "6377",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "heading"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 96
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Thorium University Press apporte les idées universitaires au monde.",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          },
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "Thorium University Press apporte les idées universitaires au monde."
+            }
+          },
+          {
+            "type": "attribute",
+            "attribute": "title",
+            "superseded": true
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "level",
+          "value": {
+            "type": "integer",
+            "value": 1
+          }
+        }
+      ],
+      "parentId": "6376",
+      "childIds": [
+        "6391",
+        "6392"
+      ],
+      "backendDOMNodeId": 6377
+    },
+    {
+      "nodeId": "6379",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "paragraph"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 133
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "6376",
+      "childIds": [
+        "6393"
+      ],
+      "backendDOMNodeId": 6379
+    },
+    {
+      "nodeId": "6380",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "paragraph"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 133
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "6376",
+      "childIds": [
+        "6394"
+      ],
+      "backendDOMNodeId": 6380
+    },
+    {
+      "nodeId": "6381",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "paragraph"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 133
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "6376",
+      "childIds": [
+        "6395"
+      ],
+      "backendDOMNodeId": 6381
+    },
+    {
+      "nodeId": "6382",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "paragraph"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 133
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "6376",
+      "childIds": [
+        "6396",
+        "6383",
+        "6398"
+      ],
+      "backendDOMNodeId": 6382
+    },
+    {
+      "nodeId": "-1000004643",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Oui"
+      },
+      "properties": [],
+      "parentId": "6363",
+      "childIds": []
+    },
+    {
+      "nodeId": "6391",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "StaticText"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 158
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Thorium University Press",
+        "sources": [
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "Thorium University Press"
+            }
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "6377",
+      "childIds": [
+        "-1000004627"
+      ],
+      "backendDOMNodeId": 6391
+    },
+    {
+      "nodeId": "6392",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "StaticText"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 158
+      },
+      "name": {
+        "type": "computedString",
+        "value": " apporte les idées universitaires au monde.",
+        "sources": [
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": " apporte les idées universitaires au monde."
+            }
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "6377",
+      "childIds": [
+        "-1000004628",
+        "-1000004629"
+      ],
+      "backendDOMNodeId": 6392
+    },
+    {
+      "nodeId": "6393",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "StaticText"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 158
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Nous publions des ouvrages évalués par des pairs qui relient auteurs et lecteurs à travers les domaines du savoir afin de faire progresser et d’enrichir le dialogue mondial.",
+        "sources": [
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "Nous publions des ouvrages évalués par des pairs qui relient auteurs et lecteurs à travers les domaines du savoir afin de faire progresser et d’enrichir le dialogue mondial."
+            }
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "6379",
+      "childIds": [
+        "-1000004630",
+        "-1000004631",
+        "-1000004632",
+        "-1000004633"
+      ],
+      "backendDOMNodeId": 6393
+    },
+    {
+      "nodeId": "6394",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "StaticText"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 158
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Nous adhérons aux plus hauts standards de recherche, d’inclusivité et de diversité dans nos publications.",
+        "sources": [
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "Nous adhérons aux plus hauts standards de recherche, d’inclusivité et de diversité dans nos publications."
+            }
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "6380",
+      "childIds": [
+        "-1000004634",
+        "-1000004635"
+      ],
+      "backendDOMNodeId": 6394
+    },
+    {
+      "nodeId": "6395",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "StaticText"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 158
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Conformément à l’engagement de Thorium University à servir la nation et le monde, nous publions pour les chercheurs, les étudiants et les lecteurs engagés partout dans le monde.",
+        "sources": [
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "Conformément à l’engagement de Thorium University à servir la nation et le monde, nous publions pour les chercheurs, les étudiants et les lecteurs engagés partout dans le monde."
+            }
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "6381",
+      "childIds": [
+        "-1000004636",
+        "-1000004637",
+        "-1000004638",
+        "-1000004639"
+      ],
+      "backendDOMNodeId": 6395
+    },
+    {
+      "nodeId": "6396",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "StaticText"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 158
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Pour plus d’informations, rendez-vous sur ",
+        "sources": [
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "Pour plus d’informations, rendez-vous sur "
+            }
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "6382",
+      "childIds": [
+        "-1000004640"
+      ],
+      "backendDOMNodeId": 6396
+    },
+    {
+      "nodeId": "6383",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "link"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 110
+      },
+      "name": {
+        "type": "computedString",
+        "value": "notre site web",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          },
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "notre site web"
+            }
+          },
+          {
+            "type": "attribute",
+            "attribute": "title",
+            "superseded": true
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "focusable",
+          "value": {
+            "type": "booleanOrUndefined",
+            "value": true
+          }
+        },
+        {
+          "name": "url",
+          "value": {
+            "type": "string",
+            "value": "https://edrlab.org/"
+          }
+        }
+      ],
+      "parentId": "6382",
+      "childIds": [
+        "6397"
+      ],
+      "backendDOMNodeId": 6383
+    },
+    {
+      "nodeId": "6398",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "StaticText"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 158
+      },
+      "name": {
+        "type": "computedString",
+        "value": ".",
+        "sources": [
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "."
+            }
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "6382",
+      "childIds": [
+        "-1000004642"
+      ],
+      "backendDOMNodeId": 6398
+    },
+    {
+      "nodeId": "-1000004627",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Thorium University Press"
+      },
+      "properties": [],
+      "parentId": "6391",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000004628",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "apporte les idées "
+      },
+      "properties": [],
+      "parentId": "6392",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000004629",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "universitaires au monde."
+      },
+      "properties": [],
+      "parentId": "6392",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000004630",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Nous publions des ouvrages évalués par des pairs qui "
+      },
+      "properties": [],
+      "parentId": "6393",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000004631",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "relient auteurs et lecteurs à travers les domaines du "
+      },
+      "properties": [],
+      "parentId": "6393",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000004632",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "savoir afin de faire progresser et d’enrichir le dialogue "
+      },
+      "properties": [],
+      "parentId": "6393",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000004633",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "mondial."
+      },
+      "properties": [],
+      "parentId": "6393",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000004634",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Nous adhérons aux plus hauts standards de recherche, "
+      },
+      "properties": [],
+      "parentId": "6394",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000004635",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "d’inclusivité et de diversité dans nos publications."
+      },
+      "properties": [],
+      "parentId": "6394",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000004636",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Conformément à l’engagement de Thorium University à "
+      },
+      "properties": [],
+      "parentId": "6395",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000004637",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "servir la nation et le monde, nous publions pour les "
+      },
+      "properties": [],
+      "parentId": "6395",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000004638",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "chercheurs, les étudiants et les lecteurs engagés partout "
+      },
+      "properties": [],
+      "parentId": "6395",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000004639",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "dans le monde."
+      },
+      "properties": [],
+      "parentId": "6395",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000004640",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Pour plus d’informations, rendez-vous sur "
+      },
+      "properties": [],
+      "parentId": "6396",
+      "childIds": []
+    },
+    {
+      "nodeId": "6397",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "StaticText"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 158
+      },
+      "name": {
+        "type": "computedString",
+        "value": "notre site web",
+        "sources": [
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "notre site web"
+            }
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "6383",
+      "childIds": [
+        "-1000004641"
+      ],
+      "backendDOMNodeId": 6397
+    },
+    {
+      "nodeId": "-1000004642",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "."
+      },
+      "properties": [],
+      "parentId": "6398",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000004641",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "notre site web"
+      },
+      "properties": [],
+      "parentId": "6397",
+      "childIds": []
+    }
+  ]
+}

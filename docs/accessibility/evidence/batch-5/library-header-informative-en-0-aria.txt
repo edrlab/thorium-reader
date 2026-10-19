@@ -1,0 +1,38 @@
+- log: 33 options available.
+- log
+- region "toolbar":
+  - heading "toolbar" [level=2]
+  - button "Skip to content"
+  - navigation "Bookshelf menu":
+    - img "Thorium University Press logo"
+    - heading "Thorium" [level=1]
+    - list:
+      - listitem:
+        - button "Home" [pressed]:
+          - heading "Home" [level=3]
+      - listitem:
+        - button "All publications":
+          - heading "All publications" [level=3]
+      - listitem:
+        - button "Catalogs":
+          - heading "Catalogs" [level=3]
+      - listitem:
+        - button "FAQ":
+          - heading "FAQ" [level=3]
+      - listitem:
+        - button "Help":
+          - heading "Help" [level=3]
+      - listitem:
+        - button "Application Settings":
+          - heading "Application Settings" [level=3]: Settings
+  - main "main content":
+    - button "Import publication"
+    - heading "main content" [level=2]
+    - paragraph:
+      - strong: Drop files here
+    - paragraph: or use the "Import publication" button above.
+    - group: "Supported extensions:"
+    - paragraph: v3.5.2-beta.1
+    - link "About Thorium (online)":
+      - /url: ""
+- status

@@ -1,0 +1,441 @@
+{
+  "label": "library-header-decorative-en",
+  "cdpPort": 9225,
+  "timestamp": "2026-10-19T14:25:38.572Z",
+  "axeVersion": "4.13.0",
+  "targets": [
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9225/devtools/page/DB493FCECD216510AB37036BF187DB3E",
+      "id": "DB493FCECD216510AB37036BF187DB3E",
+      "title": "Thorium",
+      "type": "page",
+      "url": "http://localhost:8090/index_library.html",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9225/devtools/page/DB493FCECD216510AB37036BF187DB3E"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9225/devtools/page/D2E13E54EEFE94AD9B6B30480E4E6F6D",
+      "id": "D2E13E54EEFE94AD9B6B30480E4E6F6D",
+      "title": "Service Worker chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/background.bundle.js",
+      "type": "service_worker",
+      "url": "chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/background.bundle.js",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9225/devtools/page/D2E13E54EEFE94AD9B6B30480E4E6F6D"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9225/devtools/page/0C9C226ADF259CC4595708914BEEBC59",
+      "id": "0C9C226ADF259CC4595708914BEEBC59",
+      "title": "Service Worker chrome-extension://bkalkabplpgilnljkppcjnjhaejcablk/build/background.js",
+      "type": "service_worker",
+      "url": "chrome-extension://bkalkabplpgilnljkppcjnjhaejcablk/build/background.js",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9225/devtools/page/0C9C226ADF259CC4595708914BEEBC59"
+    }
+  ],
+  "pages": [
+    {
+      "title": "Thorium",
+      "url": "http://localhost:8090/index_library.html",
+      "lang": "en",
+      "dimensions": {
+        "width": 1008,
+        "height": 703,
+        "scrollWidth": 1008
+      },
+      "focus": "<body id=\"body_element\" data-theme=\"system\"><svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" style=\"position: absolute; width: 0; height: 0\" aria-hidden=\"true\" id=\"__SVG_SPRITE_NODE__\"><symbol xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 14 12\" fill=\"none\" id=\"home-icon\">\n<path d=\"M13.125 10.2655H12.4688V5.42837C12.4685 5.27735 12.4371 5.12801 12.3765 4.98968C12.3159 4.85136 12.2274 4.72702 12.1166 4.62446L7.7443 0.497199L7.73555 0.488996C7.53461 0.30511 7.2721 0.203125 6.99973 0.203125C6.72735 0.203125 6.46484 0.30511 6.26391 0.488996L6.25461 0.497199L1.88344 4.62446C1.77259 4.72702 1.68409 4.85136 1.62349 4.98968C1.56289 5.12801 1.53149 5.27735 1.53125 5.42837V10.2655H0.875C0.700952 10.2655 0.534032 10.3346 0.410961 10.4577C0.28789 10.5808 0.21875 10.7477 0.21875 10.9217C0.21875 11.0958 0.28789 11.2627 0.410961 11.3858C0.534032 11.5088 0.700952 11.578 0.875 11.578H13.125C13.299 11.578 13.466 11.5088 13.589 11.3858C13.7121 11.2627 13.7812 11.0958 13.7812 10.9217C13.7812 10.7477 13.7121 10.5808 13.589 10.4577C13.466 10.3346 13.299 10.2655 13.125 10.2655ZM2.84375 5.52298L7 1.59915L11.1562 5.52298V10.2655H8.96875V7.85923C8.96875 7.7156 8.94046 7.5",
+      "dialogs": [],
+      "sliders": [],
+      "evidencePrefix": "batch-5/library-header-decorative-en-0",
+      "axe": {
+        "violations": [
+          {
+            "id": "heading-order",
+            "impact": "moderate",
+            "tags": [
+              "cat.semantics",
+              "best-practice"
+            ],
+            "description": "Ensure the order of headings is semantically correct",
+            "help": "Heading levels should only increase by one",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/heading-order?application=axeAPI",
+            "nodes": [
+              {
+                "any": [
+                  {
+                    "id": "heading-order",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "moderate",
+                    "message": "Heading order invalid"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "moderate",
+                "html": "<h3>Home</h3>",
+                "target": [
+                  "a[title=\"Home\"] > h3"
+                ],
+                "failureSummary": "Fix any of the following:\n  Heading order invalid"
+              }
+            ]
+          },
+          {
+            "id": "landmark-main-is-top-level",
+            "impact": "moderate",
+            "tags": [
+              "cat.semantics",
+              "best-practice"
+            ],
+            "description": "Ensure the main landmark is at top level",
+            "help": "Main landmark should not be contained in another landmark",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/landmark-main-is-top-level?application=axeAPI",
+            "nodes": [
+              {
+                "any": [
+                  {
+                    "id": "landmark-is-top-level",
+                    "data": {
+                      "role": "main"
+                    },
+                    "relatedNodes": [],
+                    "impact": "moderate",
+                    "message": "The main landmark is contained in another landmark."
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "moderate",
+                "html": "<main id=\"main\" aria-label=\"main content\" class=\"main\">",
+                "target": [
+                  "#main"
+                ],
+                "failureSummary": "Fix any of the following:\n  The main landmark is contained in another landmark."
+              }
+            ]
+          }
+        ],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "tags": [
+              "cat.color",
+              "wcag2aa",
+              "wcag143",
+              "TTv5",
+              "TT13.c",
+              "EN-301-549",
+              "EN-9.1.4.3",
+              "ACT",
+              "RGAAv4",
+              "RGAA-3.2.1"
+            ],
+            "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "any": [
+                  {
+                    "id": "color-contrast",
+                    "data": {
+                      "contrastRatio": 0,
+                      "fontSize": "22.5pt (30px)",
+                      "fontWeight": "bold",
+                      "messageKey": "imgNode",
+                      "expectedContrastRatio": "3:1"
+                    },
+                    "relatedNodes": [
+                      {
+                        "html": "<svg aria-hidden=\"true\" viewBox=\"0 0 385 371\"><use xlink:href=\"#emptylibrary-background-icon\"></use></svg>",
+                        "target": [
+                          "svg[viewBox=\"0 0 385 371\"]"
+                        ]
+                      }
+                    ],
+                    "impact": "serious",
+                    "message": "Element's background color could not be determined because element contains an image node"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "serious",
+                "html": "<strong>Drop files here</strong>",
+                "target": [
+                  "strong"
+                ],
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "any": [
+                  {
+                    "id": "color-contrast",
+                    "data": {
+                      "contrastRatio": 0,
+                      "fontSize": "12.0pt (16px)",
+                      "fontWeight": "normal",
+                      "messageKey": "imgNode",
+                      "expectedContrastRatio": "4.5:1"
+                    },
+                    "relatedNodes": [
+                      {
+                        "html": "<svg aria-hidden=\"true\" viewBox=\"0 0 385 371\"><use xlink:href=\"#emptylibrary-background-icon\"></use></svg>",
+                        "target": [
+                          "svg[viewBox=\"0 0 385 371\"]"
+                        ]
+                      }
+                    ],
+                    "impact": "serious",
+                    "message": "Element's background color could not be determined because element contains an image node"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "serious",
+                "html": "<p>or use the \"Import publication\" button above.</p>",
+                "target": [
+                  "p:nth-child(2)"
+                ],
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "any": [
+                  {
+                    "id": "color-contrast",
+                    "data": {
+                      "contrastRatio": 0,
+                      "fontSize": "9.8pt (13px)",
+                      "fontWeight": "normal",
+                      "messageKey": "imgNode",
+                      "expectedContrastRatio": "4.5:1"
+                    },
+                    "relatedNodes": [
+                      {
+                        "html": "<svg aria-hidden=\"true\" viewBox=\"0 0 385 371\"><use xlink:href=\"#emptylibrary-background-icon\"></use></svg>",
+                        "target": [
+                          "svg[viewBox=\"0 0 385 371\"]"
+                        ]
+                      }
+                    ],
+                    "impact": "serious",
+                    "message": "Element's background color could not be determined because element contains an image node"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "serious",
+                "html": "<summary><svg aria-hidden=\"true\" viewBox=\"0 0 12 13\"><use xlink:href=\"#documents-icon\"></use></svg>Supported extensions:<svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-up\"></use></svg></summary>",
+                "target": [
+                  "summary"
+                ],
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              }
+            ]
+          }
+        ],
+        "passes": [
+          {
+            "id": "aria-allowed-attr",
+            "nodes": 13
+          },
+          {
+            "id": "aria-allowed-role",
+            "nodes": 11
+          },
+          {
+            "id": "aria-conditional-attr",
+            "nodes": 13
+          },
+          {
+            "id": "aria-deprecated-role",
+            "nodes": 11
+          },
+          {
+            "id": "aria-hidden-body",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-focus",
+            "nodes": 16
+          },
+          {
+            "id": "aria-prohibited-attr",
+            "nodes": 13
+          },
+          {
+            "id": "aria-required-attr",
+            "nodes": 11
+          },
+          {
+            "id": "aria-roles",
+            "nodes": 11
+          },
+          {
+            "id": "aria-valid-attr-value",
+            "nodes": 13
+          },
+          {
+            "id": "aria-valid-attr",
+            "nodes": 13
+          },
+          {
+            "id": "avoid-inline-spacing",
+            "nodes": 17
+          },
+          {
+            "id": "button-name",
+            "nodes": 3
+          },
+          {
+            "id": "bypass",
+            "nodes": 1
+          },
+          {
+            "id": "color-contrast",
+            "nodes": 10
+          },
+          {
+            "id": "document-title",
+            "nodes": 1
+          },
+          {
+            "id": "empty-heading",
+            "nodes": 9
+          },
+          {
+            "id": "heading-order",
+            "nodes": 8
+          },
+          {
+            "id": "html-has-lang",
+            "nodes": 1
+          },
+          {
+            "id": "html-lang-valid",
+            "nodes": 1
+          },
+          {
+            "id": "image-alt",
+            "nodes": 1
+          },
+          {
+            "id": "image-redundant-alt",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-no-duplicate-main",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-one-main",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-unique",
+            "nodes": 3
+          },
+          {
+            "id": "link-name",
+            "nodes": 6
+          },
+          {
+            "id": "list",
+            "nodes": 1
+          },
+          {
+            "id": "listitem",
+            "nodes": 6
+          },
+          {
+            "id": "meta-viewport-large",
+            "nodes": 1
+          },
+          {
+            "id": "meta-viewport",
+            "nodes": 1
+          },
+          {
+            "id": "nested-interactive",
+            "nodes": 10
+          },
+          {
+            "id": "page-has-heading-one",
+            "nodes": 1
+          },
+          {
+            "id": "region",
+            "nodes": 49
+          },
+          {
+            "id": "summary-name",
+            "nodes": 1
+          },
+          {
+            "id": "tabindex",
+            "nodes": 5
+          },
+          {
+            "id": "target-size",
+            "nodes": 10
+          }
+        ],
+        "inapplicable": [
+          "accesskeys",
+          "area-alt",
+          "aria-braille-equivalent",
+          "aria-command-name",
+          "aria-dialog-name",
+          "aria-input-field-name",
+          "aria-meter-name",
+          "aria-progressbar-name",
+          "aria-required-children",
+          "aria-required-parent",
+          "aria-tab-name",
+          "aria-text",
+          "aria-toggle-field-name",
+          "aria-tooltip-name",
+          "aria-treeitem-name",
+          "autocomplete-valid",
+          "blink",
+          "definition-list",
+          "dlitem",
+          "duplicate-id-aria",
+          "empty-table-header",
+          "form-field-multiple-labels",
+          "frame-focusable-content",
+          "frame-tested",
+          "frame-title-unique",
+          "frame-title",
+          "html-xml-lang-mismatch",
+          "input-button-name",
+          "input-image-alt",
+          "label-title-only",
+          "label",
+          "landmark-banner-is-top-level",
+          "landmark-contentinfo-is-top-level",
+          "landmark-no-duplicate-banner",
+          "landmark-no-duplicate-contentinfo",
+          "link-in-text-block",
+          "marquee",
+          "meta-refresh",
+          "object-alt",
+          "presentation-role-conflict",
+          "role-img-alt",
+          "scope-attr-valid",
+          "scrollable-region-focusable",
+          "select-name",
+          "server-side-image-map",
+          "skip-link",
+          "svg-img-alt",
+          "table-duplicate-name",
+          "td-headers-attr",
+          "th-has-data-cells",
+          "valid-lang",
+          "video-caption",
+          "no-autoplay-audio"
+        ]
+      }
+    }
+  ]
+}

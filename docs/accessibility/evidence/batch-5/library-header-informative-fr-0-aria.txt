@@ -1,0 +1,38 @@
+- log: 33 options available.
+- log
+- region "Barre d'outils":
+  - heading "Barre d'outils" [level=2]
+  - button "Aller directement au contenu"
+  - navigation "Menu Principal":
+    - img "Logo de Thorium University Press"
+    - heading "Thorium" [level=1]
+    - list:
+      - listitem:
+        - button "Accueil" [pressed]:
+          - heading "Accueil" [level=3]
+      - listitem:
+        - button "Mes livres":
+          - heading "Mes livres" [level=3]
+      - listitem:
+        - button "Catalogues":
+          - heading "Catalogues" [level=3]
+      - listitem:
+        - button "FAQ":
+          - heading "FAQ" [level=3]
+      - listitem:
+        - button "Help":
+          - heading "Help" [level=3]
+      - listitem:
+        - button "Préférences de l'application":
+          - heading "Préférences de l'application" [level=3]: Préférences
+  - main "Contenu principal":
+    - button "Ajouter un livre"
+    - heading "Contenu principal" [level=2]
+    - paragraph:
+      - strong: Déposez les fichiers ici
+    - paragraph: Ou bien utilisez le bouton "Ajouter un livre" ci-dessus.
+    - group: "Extensions prises en charge :"
+    - paragraph: v3.5.2-beta.1
+    - link "À propos de Thorium (en ligne)":
+      - /url: ""
+- status

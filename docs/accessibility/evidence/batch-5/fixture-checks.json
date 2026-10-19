@@ -1,0 +1,5 @@
+{
+  "batch": 5,
+  "tests": [],
+  "note": "All A17 scenarios use the actual application. Profile variants are signed packages activated in isolated user data, not renderer fixtures."
+}

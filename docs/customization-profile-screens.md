@@ -56,3 +56,13 @@ The browser first parses the stylesheet into CSSOM rules and gives Thorium a `se
 An empty selector list, a parser exception, an unsafe selector in a list, an unknown CSS rule shape, or an unsupported global at-rule causes validation to fail closed. `css-selector-parser` only provides the AST; the containment checks in `selectorCssParser.ts` remain the Thorium security policy.
 
 Thorium addresses each screen with an internal `/profile/:screenId` route. The identifier is derived from the manifest `href`; a route can only load the localized `rel: "screen"` resource it resolves to in the active manifest.
+
+## Image alternatives
+
+For an informative `images` entry with `rel: "welcome-screen"`, provide a `title` that conveys the image's information or purpose. It becomes the image's text alternative, rather than a tooltip. A language map supplies translated alternatives; the selected language, including a fallback language, is exposed on the image. A plain string can use the entry's `language` field. Describe meaningful content, not the filename or merely “welcome image”. Put lengthy descriptions, instructions and essential text in the accompanying accessible welcome HTML.
+
+Use `"title": ""` explicitly for decorative welcome artwork that adds no information beyond that HTML. The bundled University Press illustration is decorative: it adds a reading motif beside a complete textual introduction. Legacy entries without a title retain an empty alternative for compatibility; an absent title is not evidence that an arbitrary image is decorative. Profile authors must review their content.
+
+For `rel: "logo"`, Thorium uses the image title, or the profile title when no image title is supplied, to identify the profile. An explicit empty image title makes a redundant logo decorative. Library navigation icons duplicate their visible labels and remain hidden from accessibility APIs.
+
+Images authored inside welcome or profile-screen HTML need their own `alt` attributes. Use meaningful alternatives for informative images and `alt=""` for decorative images; sanitization does not determine image meaning or establish WCAG conformance.

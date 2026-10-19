@@ -1,0 +1,129 @@
+{
+  "batch": 5,
+  "startup": "npm run start:dev:quick; isolated Electron user-data-dir on port 9225",
+  "tests": [
+    {
+      "id": "default-library-navigation-icons",
+      "status": "passed",
+      "findings": [
+        "A17"
+      ],
+      "evidence": [
+        "batch-5/library-default-navigation.json"
+      ],
+      "limitation": "Existing default library inspected, without profile activation or language changes. Five visible publication menu controls retained."
+    },
+    {
+      "id": "profile-decorative-en",
+      "status": "passed",
+      "findings": [
+        "A17"
+      ],
+      "evidence": [
+        "batch-5/library-welcome-decorative-en.json",
+        "batch-5/library-header-decorative-en.json"
+      ],
+      "imageNames": {
+        "welcome": [],
+        "header": [
+          "Thorium University Press"
+        ]
+      },
+      "limitation": "Real signed package and profile activation in empty workspace-local user data. Uses the bundled SVG/HTML; informative titles are explicit test variants. No publications or catalog links in the packages. No native screen-reader listening."
+    },
+    {
+      "id": "profile-decorative-fr",
+      "status": "passed",
+      "findings": [
+        "A17"
+      ],
+      "evidence": [
+        "batch-5/library-welcome-decorative-fr.json",
+        "batch-5/library-header-decorative-fr.json"
+      ],
+      "imageNames": {
+        "welcome": [],
+        "header": [
+          "Thorium University Press"
+        ]
+      },
+      "limitation": "Real signed package and profile activation in empty workspace-local user data. Uses the bundled SVG/HTML; informative titles are explicit test variants. No publications or catalog links in the packages. No native screen-reader listening."
+    },
+    {
+      "id": "profile-informative-en",
+      "status": "passed",
+      "findings": [
+        "A17"
+      ],
+      "evidence": [
+        "batch-5/library-welcome-informative-en.json",
+        "batch-5/library-header-informative-en.json"
+      ],
+      "imageNames": {
+        "welcome": [
+          "Two people choosing books from a shelf"
+        ],
+        "header": [
+          "Thorium University Press logo"
+        ]
+      },
+      "limitation": "Real signed package and profile activation in empty workspace-local user data. Uses the bundled SVG/HTML; informative titles are explicit test variants. No publications or catalog links in the packages. No native screen-reader listening."
+    },
+    {
+      "id": "profile-informative-fr",
+      "status": "passed",
+      "findings": [
+        "A17"
+      ],
+      "evidence": [
+        "batch-5/library-welcome-informative-fr.json",
+        "batch-5/library-header-informative-fr.json"
+      ],
+      "imageNames": {
+        "welcome": [
+          "Deux personnes choisissent des livres dans une bibliothèque"
+        ],
+        "header": [
+          "Logo de Thorium University Press"
+        ]
+      },
+      "limitation": "Real signed package and profile activation in empty workspace-local user data. Uses the bundled SVG/HTML; informative titles are explicit test variants. No publications or catalog links in the packages. No native screen-reader listening."
+    },
+    {
+      "id": "profile-fallback-fr",
+      "status": "passed",
+      "findings": [
+        "A17"
+      ],
+      "evidence": [
+        "batch-5/library-welcome-fallback-fr.json",
+        "batch-5/library-header-fallback-fr.json"
+      ],
+      "imageNames": {
+        "welcome": [
+          "Two people choosing books from a shelf"
+        ],
+        "header": [
+          "Thorium University Press logo"
+        ]
+      },
+      "limitation": "Real signed package and profile activation in empty workspace-local user data. Uses the bundled SVG/HTML; informative titles are explicit test variants. No publications or catalog links in the packages. No native screen-reader listening."
+    },
+    {
+      "id": "profile-no-art-en",
+      "status": "passed",
+      "findings": [
+        "A17"
+      ],
+      "evidence": [
+        "batch-5/library-welcome-no-art-en.json",
+        "batch-5/library-header-no-art-en.json"
+      ],
+      "imageNames": {
+        "welcome": [],
+        "header": []
+      },
+      "limitation": "Real signed package and profile activation in empty workspace-local user data. Uses the bundled SVG/HTML; informative titles are explicit test variants. No publications or catalog links in the packages. No native screen-reader listening."
+    }
+  ]
+}

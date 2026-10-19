@@ -46,7 +46,7 @@ fs.writeFileSync(root + 'batch-4-state-results.csv', csv([['state', 'coverage_ki
 })]));
 for (const finding of Object.values(findings)) for (const file of finding.evidence) if (!fs.existsSync(root + file)) throw new Error('Missing capture: ' + file);
 const summary = {
-    batch: 4, branch: 'codex/a11y-batch-4-status-navigation-print', parentCommit: '1515e70058bfdbbf25dbe3f3125c883d2f42cab6', implementationState: 'A15/A16/A27 implemented and dynamically validated; uncommitted on batch 4 branch',
+    batch: 4, branch: 'codex/a11y-batch-4-status-navigation-print', parentCommit: '1515e70058bfdbbf25dbe3f3125c883d2f42cab6', publishedCommit: '1501efa87e4b10ffac801ccb87fe39b0317e3787', implementationState: 'A15/A16/A27 committed and pushed to origin/codex/a11y-batch-4-status-navigation-print',
     inventory: 'docs/accessibility/evidence/batch-4/static-inventory.json', findings,
     validation: { fixtureScenarios: fixture.length, applicationScenarios: application.length, fixtureStates: states.filter(s => s.data.kind === 'component-fixture').length, applicationStates: states.filter(s => s.data.pages).length, allScenariosPassed: true },
     limitations: 'Per-finding scopes apply. Original audit and earlier batch evidence preserved. No publication tags, notes, storage location, keyboard shortcut or preset was changed and no print job was submitted. EPUB resource/selector and PDF page restored; audit panels closed. Native screen-reader listening and comprehensive format/theme/locale conformance remain outside these checks.',

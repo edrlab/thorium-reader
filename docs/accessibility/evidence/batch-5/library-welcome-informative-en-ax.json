@@ -1,0 +1,2133 @@
+{
+  "nodes": [
+    {
+      "nodeId": "4611",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "RootWebArea"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 144
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Thorium",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label",
+            "superseded": true
+          },
+          {
+            "type": "relatedElement",
+            "value": {
+              "type": "computedString",
+              "value": "Thorium"
+            },
+            "nativeSource": "title"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "focusable",
+          "value": {
+            "type": "booleanOrUndefined",
+            "value": true
+          }
+        },
+        {
+          "name": "focused",
+          "value": {
+            "type": "booleanOrUndefined",
+            "value": true
+          }
+        },
+        {
+          "name": "url",
+          "value": {
+            "type": "string",
+            "value": "http://localhost:8090/index_library.html"
+          }
+        }
+      ],
+      "childIds": [
+        "4630"
+      ],
+      "backendDOMNodeId": 4611,
+      "frameId": "DB493FCECD216510AB37036BF187DB3E"
+    },
+    {
+      "nodeId": "4630",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "uninteresting",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "4611",
+      "childIds": [
+        "4667"
+      ],
+      "backendDOMNodeId": 4630
+    },
+    {
+      "nodeId": "4667",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "generic"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 88
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "4630",
+      "childIds": [
+        "5383",
+        "4617",
+        "4612",
+        "4991",
+        "4993",
+        "5875"
+      ],
+      "backendDOMNodeId": 4667
+    },
+    {
+      "nodeId": "5383",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "generic"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 88
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "4667",
+      "childIds": [
+        "5381",
+        "5382"
+      ],
+      "backendDOMNodeId": 5383
+    },
+    {
+      "nodeId": "4617",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "inertElement",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "4667",
+      "childIds": [],
+      "backendDOMNodeId": 4617
+    },
+    {
+      "nodeId": "4612",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "inertElement",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "4667",
+      "childIds": [
+        "5094"
+      ],
+      "backendDOMNodeId": 4612
+    },
+    {
+      "nodeId": "5094",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "inertElement",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "4612",
+      "childIds": [],
+      "backendDOMNodeId": 5094
+    },
+    {
+      "nodeId": "4991",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "inertElement",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "4667",
+      "childIds": [
+        "4995"
+      ],
+      "backendDOMNodeId": 4991
+    },
+    {
+      "nodeId": "4995",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "inertElement",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "4991",
+      "childIds": [],
+      "backendDOMNodeId": 4995
+    },
+    {
+      "nodeId": "4993",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "inertElement",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "4667",
+      "childIds": [],
+      "backendDOMNodeId": 4993
+    },
+    {
+      "nodeId": "5875",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "generic"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 88
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "4667",
+      "childIds": [
+        "5872"
+      ],
+      "backendDOMNodeId": 5875
+    },
+    {
+      "nodeId": "5381",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "log"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 117
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          },
+          {
+            "type": "attribute",
+            "attribute": "title"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "live",
+          "value": {
+            "type": "token",
+            "value": "assertive"
+          }
+        },
+        {
+          "name": "atomic",
+          "value": {
+            "type": "boolean",
+            "value": false
+          }
+        },
+        {
+          "name": "relevant",
+          "value": {
+            "type": "tokenList",
+            "value": "additions"
+          }
+        }
+      ],
+      "parentId": "5383",
+      "childIds": [
+        "5807"
+      ],
+      "backendDOMNodeId": 5381
+    },
+    {
+      "nodeId": "5382",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "log"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 117
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          },
+          {
+            "type": "attribute",
+            "attribute": "title"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "live",
+          "value": {
+            "type": "token",
+            "value": "polite"
+          }
+        },
+        {
+          "name": "atomic",
+          "value": {
+            "type": "boolean",
+            "value": false
+          }
+        },
+        {
+          "name": "relevant",
+          "value": {
+            "type": "tokenList",
+            "value": "additions"
+          }
+        }
+      ],
+      "parentId": "5383",
+      "childIds": [],
+      "backendDOMNodeId": 5382
+    },
+    {
+      "nodeId": "5872",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "alertdialog"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 3
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Provisionning and activating customization profile Close",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "value": {
+              "type": "computedString",
+              "value": "Provisionning and activating customization profile Close"
+            },
+            "attribute": "aria-labelledby",
+            "attributeValue": {
+              "type": "idrefList",
+              "value": ":r5:",
+              "relatedNodes": [
+                {
+                  "backendDOMNodeId": 5869,
+                  "idref": ":r5:",
+                  "text": "Provisionning and activating customization profile Close"
+                }
+              ]
+            }
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label",
+            "superseded": true
+          },
+          {
+            "type": "attribute",
+            "attribute": "title",
+            "superseded": true
+          }
+        ]
+      },
+      "description": {
+        "type": "computedString",
+        "value": "Two people choosing books from a shelf Thorium University Press brings scholarly ideas to the world. We publish peer-reviewed books that connect authors and readers across spheres of knowledge to advance and enrich the global conversation. We embrace the highest standards of scholarship, inclusivity, and diversity in our publishing. In keeping with Thorium University’s commitment to serve the nation and the world, we publish for scholars, students, and engaged readers everywhere. For more informations, go to our website."
+      },
+      "properties": [
+        {
+          "name": "focusable",
+          "value": {
+            "type": "booleanOrUndefined",
+            "value": true
+          }
+        },
+        {
+          "name": "focused",
+          "value": {
+            "type": "booleanOrUndefined",
+            "value": true
+          }
+        },
+        {
+          "name": "modal",
+          "value": {
+            "type": "boolean",
+            "value": false
+          }
+        },
+        {
+          "name": "describedby",
+          "value": {
+            "type": "idrefList",
+            "value": ":r6:",
+            "relatedNodes": [
+              {
+                "backendDOMNodeId": 5870,
+                "idref": ":r6:"
+              }
+            ]
+          }
+        },
+        {
+          "name": "labelledby",
+          "value": {
+            "type": "nodeList",
+            "relatedNodes": [
+              {
+                "backendDOMNodeId": 5869,
+                "idref": ":r5:",
+                "text": "Provisionning and activating customization profile Close"
+              }
+            ]
+          }
+        }
+      ],
+      "parentId": "5875",
+      "childIds": [
+        "5869",
+        "5870",
+        "5871"
+      ],
+      "backendDOMNodeId": 5872
+    },
+    {
+      "nodeId": "5807",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "generic"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 88
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "5381",
+      "childIds": [
+        "5808"
+      ],
+      "backendDOMNodeId": 5807
+    },
+    {
+      "nodeId": "5869",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "heading"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 96
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Provisionning and activating customization profile Close",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          },
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "Provisionning and activating customization profile Close"
+            }
+          },
+          {
+            "type": "attribute",
+            "attribute": "title",
+            "superseded": true
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "level",
+          "value": {
+            "type": "integer",
+            "value": 2
+          }
+        }
+      ],
+      "parentId": "5872",
+      "childIds": [
+        "5887",
+        "5860"
+      ],
+      "backendDOMNodeId": 5869
+    },
+    {
+      "nodeId": "5870",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "paragraph"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 133
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "5872",
+      "childIds": [
+        "5914",
+        "5867"
+      ],
+      "backendDOMNodeId": 5870
+    },
+    {
+      "nodeId": "5871",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "uninteresting",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "5872",
+      "childIds": [
+        "5916",
+        "5868"
+      ],
+      "backendDOMNodeId": 5871
+    },
+    {
+      "nodeId": "5916",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "uninteresting",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "5871",
+      "childIds": [
+        "5913"
+      ],
+      "backendDOMNodeId": 5916
+    },
+    {
+      "nodeId": "5913",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "LabelText"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 104
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          },
+          {
+            "type": "attribute",
+            "attribute": "title"
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "5916",
+      "childIds": [
+        "5910",
+        "5911"
+      ],
+      "backendDOMNodeId": 5913
+    },
+    {
+      "nodeId": "5868",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "button"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 9
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Yes",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          },
+          {
+            "type": "relatedElement",
+            "nativeSource": "label"
+          },
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "Yes"
+            }
+          },
+          {
+            "type": "attribute",
+            "attribute": "title",
+            "superseded": true
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "invalid",
+          "value": {
+            "type": "token",
+            "value": "false"
+          }
+        },
+        {
+          "name": "focusable",
+          "value": {
+            "type": "booleanOrUndefined",
+            "value": true
+          }
+        }
+      ],
+      "parentId": "5871",
+      "childIds": [
+        "5889"
+      ],
+      "backendDOMNodeId": 5868
+    },
+    {
+      "nodeId": "5808",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "StaticText"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 158
+      },
+      "name": {
+        "type": "computedString",
+        "value": "33 options available.",
+        "sources": [
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "33 options available."
+            }
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "5807",
+      "childIds": [
+        "-1000004137"
+      ],
+      "backendDOMNodeId": 5808
+    },
+    {
+      "nodeId": "5887",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "StaticText"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 158
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Provisionning and activating customization profile",
+        "sources": [
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "Provisionning and activating customization profile"
+            }
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "5869",
+      "childIds": [
+        "-1000004138"
+      ],
+      "backendDOMNodeId": 5887
+    },
+    {
+      "nodeId": "5860",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "button"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 9
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Close",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "value": {
+              "type": "computedString",
+              "value": "Close"
+            },
+            "attribute": "aria-label",
+            "attributeValue": {
+              "type": "string",
+              "value": "Close"
+            }
+          },
+          {
+            "type": "relatedElement",
+            "superseded": true,
+            "nativeSource": "label"
+          },
+          {
+            "type": "contents",
+            "superseded": true
+          },
+          {
+            "type": "attribute",
+            "attribute": "title",
+            "superseded": true
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "invalid",
+          "value": {
+            "type": "token",
+            "value": "false"
+          }
+        },
+        {
+          "name": "focusable",
+          "value": {
+            "type": "booleanOrUndefined",
+            "value": true
+          }
+        }
+      ],
+      "parentId": "5869",
+      "childIds": [
+        "5859"
+      ],
+      "backendDOMNodeId": 5860
+    },
+    {
+      "nodeId": "5914",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "image"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 99
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Two people choosing books from a shelf",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          },
+          {
+            "type": "attribute",
+            "value": {
+              "type": "computedString",
+              "value": "Two people choosing books from a shelf"
+            },
+            "attribute": "alt",
+            "attributeValue": {
+              "type": "string",
+              "value": "Two people choosing books from a shelf"
+            }
+          },
+          {
+            "type": "attribute",
+            "attribute": "title",
+            "superseded": true
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "url",
+          "value": {
+            "type": "string",
+            "value": "thoriumhttps://0.0.0.0/custom-profile-zip/dGhvcml1bS1tYW5pZmVzdDovL29yZy5lZHJsYWIuYXVkaXQuYTE3LmluZm9ybWF0aXZlLWVu/Li93ZWxjb21lLXNjcmVlbi93ZWxjb21lLXNjcmVlbi5zdmc%3D"
+          }
+        }
+      ],
+      "parentId": "5870",
+      "childIds": [],
+      "backendDOMNodeId": 5914
+    },
+    {
+      "nodeId": "5867",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "generic"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 88
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "5870",
+      "childIds": [
+        "5915"
+      ],
+      "backendDOMNodeId": 5867
+    },
+    {
+      "nodeId": "5910",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "checkbox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 14
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Don't show again",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "value": {
+              "type": "computedString",
+              "value": "Don't show again"
+            },
+            "attribute": "aria-label",
+            "attributeValue": {
+              "type": "string",
+              "value": "Don't show again"
+            }
+          },
+          {
+            "type": "contents",
+            "superseded": true
+          },
+          {
+            "type": "attribute",
+            "attribute": "title",
+            "superseded": true
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "focusable",
+          "value": {
+            "type": "booleanOrUndefined",
+            "value": true
+          }
+        },
+        {
+          "name": "checked",
+          "value": {
+            "type": "tristate",
+            "value": "false"
+          }
+        }
+      ],
+      "parentId": "5913",
+      "childIds": [],
+      "backendDOMNodeId": 5910
+    },
+    {
+      "nodeId": "5911",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "ariaHiddenElement",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "5913",
+      "childIds": [
+        "5925"
+      ],
+      "backendDOMNodeId": 5911
+    },
+    {
+      "nodeId": "5925",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "ariaHiddenSubtree",
+          "value": {
+            "type": "idref",
+            "relatedNodes": [
+              {
+                "backendDOMNodeId": 5911
+              }
+            ]
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "5911",
+      "childIds": [],
+      "backendDOMNodeId": 5925
+    },
+    {
+      "nodeId": "5889",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "StaticText"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 158
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Yes",
+        "sources": [
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "Yes"
+            }
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "5868",
+      "childIds": [
+        "-1000004153"
+      ],
+      "backendDOMNodeId": 5889
+    },
+    {
+      "nodeId": "-1000004137",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "33 options available."
+      },
+      "properties": [],
+      "parentId": "5808",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000004138",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Provisionning and activating customization profile"
+      },
+      "properties": [],
+      "parentId": "5887",
+      "childIds": []
+    },
+    {
+      "nodeId": "5859",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "ariaHiddenElement",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "5860",
+      "childIds": [
+        "5858"
+      ],
+      "backendDOMNodeId": 5859
+    },
+    {
+      "nodeId": "5858",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "ariaHiddenSubtree",
+          "value": {
+            "type": "idref",
+            "relatedNodes": [
+              {
+                "backendDOMNodeId": 5859
+              }
+            ]
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "5859",
+      "childIds": [],
+      "backendDOMNodeId": 5858
+    },
+    {
+      "nodeId": "5915",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "uninteresting",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "5867",
+      "childIds": [
+        "5902"
+      ],
+      "backendDOMNodeId": 5915
+    },
+    {
+      "nodeId": "5902",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "uninteresting",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "5915",
+      "childIds": [
+        "5903",
+        "5905",
+        "5906",
+        "5907",
+        "5908"
+      ],
+      "backendDOMNodeId": 5902
+    },
+    {
+      "nodeId": "5903",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "heading"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 96
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Thorium University Press brings scholarly ideas to the world.",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          },
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "Thorium University Press brings scholarly ideas to the world."
+            }
+          },
+          {
+            "type": "attribute",
+            "attribute": "title",
+            "superseded": true
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "level",
+          "value": {
+            "type": "integer",
+            "value": 1
+          }
+        }
+      ],
+      "parentId": "5902",
+      "childIds": [
+        "5917",
+        "5918"
+      ],
+      "backendDOMNodeId": 5903
+    },
+    {
+      "nodeId": "5905",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "paragraph"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 133
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "5902",
+      "childIds": [
+        "5919"
+      ],
+      "backendDOMNodeId": 5905
+    },
+    {
+      "nodeId": "5906",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "paragraph"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 133
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "5902",
+      "childIds": [
+        "5920"
+      ],
+      "backendDOMNodeId": 5906
+    },
+    {
+      "nodeId": "5907",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "paragraph"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 133
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "5902",
+      "childIds": [
+        "5921"
+      ],
+      "backendDOMNodeId": 5907
+    },
+    {
+      "nodeId": "5908",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "paragraph"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 133
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "5902",
+      "childIds": [
+        "5922",
+        "5909",
+        "5924"
+      ],
+      "backendDOMNodeId": 5908
+    },
+    {
+      "nodeId": "-1000004153",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Yes"
+      },
+      "properties": [],
+      "parentId": "5889",
+      "childIds": []
+    },
+    {
+      "nodeId": "5917",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "StaticText"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 158
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Thorium University Press",
+        "sources": [
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "Thorium University Press"
+            }
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "5903",
+      "childIds": [
+        "-1000004139"
+      ],
+      "backendDOMNodeId": 5917
+    },
+    {
+      "nodeId": "5918",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "StaticText"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 158
+      },
+      "name": {
+        "type": "computedString",
+        "value": " brings scholarly ideas to the world.",
+        "sources": [
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": " brings scholarly ideas to the world."
+            }
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "5903",
+      "childIds": [
+        "-1000004140",
+        "-1000004141"
+      ],
+      "backendDOMNodeId": 5918
+    },
+    {
+      "nodeId": "5919",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "StaticText"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 158
+      },
+      "name": {
+        "type": "computedString",
+        "value": "We publish peer-reviewed books that connect authors and readers across spheres of knowledge to advance and enrich the global conversation.",
+        "sources": [
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "We publish peer-reviewed books that connect authors and readers across spheres of knowledge to advance and enrich the global conversation."
+            }
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "5905",
+      "childIds": [
+        "-1000004142",
+        "-1000004143",
+        "-1000004144"
+      ],
+      "backendDOMNodeId": 5919
+    },
+    {
+      "nodeId": "5920",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "StaticText"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 158
+      },
+      "name": {
+        "type": "computedString",
+        "value": "We embrace the highest standards of scholarship, inclusivity, and diversity in our publishing.",
+        "sources": [
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "We embrace the highest standards of scholarship, inclusivity, and diversity in our publishing."
+            }
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "5906",
+      "childIds": [
+        "-1000004145",
+        "-1000004146"
+      ],
+      "backendDOMNodeId": 5920
+    },
+    {
+      "nodeId": "5921",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "StaticText"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 158
+      },
+      "name": {
+        "type": "computedString",
+        "value": "In keeping with Thorium University’s commitment to serve the nation and the world, we publish for scholars, students, and engaged readers everywhere.",
+        "sources": [
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "In keeping with Thorium University’s commitment to serve the nation and the world, we publish for scholars, students, and engaged readers everywhere."
+            }
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "5907",
+      "childIds": [
+        "-1000004147",
+        "-1000004148",
+        "-1000004149"
+      ],
+      "backendDOMNodeId": 5921
+    },
+    {
+      "nodeId": "5922",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "StaticText"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 158
+      },
+      "name": {
+        "type": "computedString",
+        "value": "For more informations, go to ",
+        "sources": [
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "For more informations, go to "
+            }
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "5908",
+      "childIds": [
+        "-1000004150"
+      ],
+      "backendDOMNodeId": 5922
+    },
+    {
+      "nodeId": "5909",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "link"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 110
+      },
+      "name": {
+        "type": "computedString",
+        "value": "our website",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          },
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "our website"
+            }
+          },
+          {
+            "type": "attribute",
+            "attribute": "title",
+            "superseded": true
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "focusable",
+          "value": {
+            "type": "booleanOrUndefined",
+            "value": true
+          }
+        },
+        {
+          "name": "url",
+          "value": {
+            "type": "string",
+            "value": "https://edrlab.org/"
+          }
+        }
+      ],
+      "parentId": "5908",
+      "childIds": [
+        "5923"
+      ],
+      "backendDOMNodeId": 5909
+    },
+    {
+      "nodeId": "5924",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "StaticText"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 158
+      },
+      "name": {
+        "type": "computedString",
+        "value": ".",
+        "sources": [
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "."
+            }
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "5908",
+      "childIds": [
+        "-1000004152"
+      ],
+      "backendDOMNodeId": 5924
+    },
+    {
+      "nodeId": "-1000004139",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Thorium University Press"
+      },
+      "properties": [],
+      "parentId": "5917",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000004140",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "brings scholarly ideas to the "
+      },
+      "properties": [],
+      "parentId": "5918",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000004141",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "world."
+      },
+      "properties": [],
+      "parentId": "5918",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000004142",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "We publish peer-reviewed books that connect authors "
+      },
+      "properties": [],
+      "parentId": "5919",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000004143",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "and readers across spheres of knowledge to advance and "
+      },
+      "properties": [],
+      "parentId": "5919",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000004144",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "enrich the global conversation."
+      },
+      "properties": [],
+      "parentId": "5919",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000004145",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "We embrace the highest standards of scholarship, "
+      },
+      "properties": [],
+      "parentId": "5920",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000004146",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "inclusivity, and diversity in our publishing."
+      },
+      "properties": [],
+      "parentId": "5920",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000004147",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "In keeping with Thorium University’s commitment to "
+      },
+      "properties": [],
+      "parentId": "5921",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000004148",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "serve the nation and the world, we publish for scholars, "
+      },
+      "properties": [],
+      "parentId": "5921",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000004149",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "students, and engaged readers everywhere."
+      },
+      "properties": [],
+      "parentId": "5921",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000004150",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "For more informations, go to "
+      },
+      "properties": [],
+      "parentId": "5922",
+      "childIds": []
+    },
+    {
+      "nodeId": "5923",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "StaticText"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 158
+      },
+      "name": {
+        "type": "computedString",
+        "value": "our website",
+        "sources": [
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "our website"
+            }
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "5909",
+      "childIds": [
+        "-1000004151"
+      ],
+      "backendDOMNodeId": 5923
+    },
+    {
+      "nodeId": "-1000004152",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "."
+      },
+      "properties": [],
+      "parentId": "5924",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000004151",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "our website"
+      },
+      "properties": [],
+      "parentId": "5923",
+      "childIds": []
+    }
+  ]
+}

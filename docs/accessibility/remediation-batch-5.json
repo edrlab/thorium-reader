@@ -1,0 +1,45 @@
+{
+  "batch": 5,
+  "branch": "codex/a11y-batch-5-profile-alternatives",
+  "parentCommit": "1501efa87e4b10ffac801ccb87fe39b0317e3787",
+  "implementationState": "A17 implemented and dynamically validated on batch 5 branch",
+  "inventory": "docs/accessibility/evidence/batch-5/static-inventory.json",
+  "findings": {
+    "A17": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/common/components/customizationProfileDialog.tsx",
+        "src/renderer/library/components/layout/LibraryHeader.tsx"
+      ],
+      "authoringFiles": [
+        "test/customization/profile/thorium_university_press/manifest.json",
+        "docs/customization-profile-screens.md"
+      ],
+      "evidence": [
+        "evidence/batch-5/library-default-navigation.json",
+        "evidence/batch-5/library-welcome-decorative-en.json",
+        "evidence/batch-5/library-header-decorative-en.json",
+        "evidence/batch-5/library-welcome-decorative-fr.json",
+        "evidence/batch-5/library-header-decorative-fr.json",
+        "evidence/batch-5/library-welcome-informative-en.json",
+        "evidence/batch-5/library-header-informative-en.json",
+        "evidence/batch-5/library-welcome-informative-fr.json",
+        "evidence/batch-5/library-header-informative-fr.json",
+        "evidence/batch-5/library-welcome-fallback-fr.json",
+        "evidence/batch-5/library-header-fallback-fr.json",
+        "evidence/batch-5/library-welcome-no-art-en.json",
+        "evidence/batch-5/library-header-no-art-en.json"
+      ],
+      "observation": "Profile logos now expose an authored image title or the profile title; an explicit empty title is honored. Informative welcome alternatives preserve the selected/fallback language. Missing welcome artwork is omitted instead of rendering an empty src. Bundled University Press artwork was visually reviewed as decorative alongside complete welcome text and now explicitly declares an empty title. The unused string navigation-icon branch was removed; all current navigation icon producers use hidden SVGs and visible labels. The welcome checkbox initializes to false and Space toggles true/false; this repairs the missing required state discovered in real profile activation. Seven actual-app scenarios verify decorative, informative, English/French, fallback, absent-art and logo behavior using signed isolated profiles and Chromium AX trees.",
+      "limitations": "Fixed in the audited application contract and reviewed sample/variants. Legacy untitled welcome images retain empty alt for compatibility, which does not prove arbitrary images decorative. Third-party image meaning, authored HTML alternatives, every locale/theme and native screen-reader listening require separate review. A17 has current Library call sites only; no Reader welcome/header implementation is claimed."
+    }
+  },
+  "validation": {
+    "fixtureScenarios": 0,
+    "applicationScenarios": 7,
+    "fixtureStates": 0,
+    "applicationStates": 13,
+    "allScenariosPassed": true
+  },
+  "limitations": "Per-finding scopes apply. Original audit and earlier batch evidence preserved. Signed audit profiles activated only in workspace-local isolated user data. Existing default library retained five publications and English locale. No catalogs or publications in generated packages. Native screen-reader listening and comprehensive format/theme/locale conformance remain outside these checks."
+}

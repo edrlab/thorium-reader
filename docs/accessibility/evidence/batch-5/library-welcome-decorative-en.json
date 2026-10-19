@@ -1,0 +1,255 @@
+{
+  "label": "library-welcome-decorative-en",
+  "cdpPort": 9225,
+  "timestamp": "2026-10-19T14:25:37.481Z",
+  "axeVersion": "4.13.0",
+  "targets": [
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9225/devtools/page/DB493FCECD216510AB37036BF187DB3E",
+      "id": "DB493FCECD216510AB37036BF187DB3E",
+      "title": "Thorium",
+      "type": "page",
+      "url": "http://localhost:8090/index_library.html",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9225/devtools/page/DB493FCECD216510AB37036BF187DB3E"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9225/devtools/page/D2E13E54EEFE94AD9B6B30480E4E6F6D",
+      "id": "D2E13E54EEFE94AD9B6B30480E4E6F6D",
+      "title": "Service Worker chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/background.bundle.js",
+      "type": "service_worker",
+      "url": "chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/background.bundle.js",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9225/devtools/page/D2E13E54EEFE94AD9B6B30480E4E6F6D"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9225/devtools/page/0C9C226ADF259CC4595708914BEEBC59",
+      "id": "0C9C226ADF259CC4595708914BEEBC59",
+      "title": "Service Worker chrome-extension://bkalkabplpgilnljkppcjnjhaejcablk/build/background.js",
+      "type": "service_worker",
+      "url": "chrome-extension://bkalkabplpgilnljkppcjnjhaejcablk/build/background.js",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9225/devtools/page/0C9C226ADF259CC4595708914BEEBC59"
+    }
+  ],
+  "pages": [
+    {
+      "title": "Thorium",
+      "url": "http://localhost:8090/index_library.html",
+      "lang": "en",
+      "dimensions": {
+        "width": 1008,
+        "height": 703,
+        "scrollWidth": 1008
+      },
+      "focus": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Don't show again\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+      "dialogs": [
+        {
+          "html": "<section class=\"modal_dialog\" data-rac=\"\" aria-labelledby=\":r5:\" aria-describedby=\":r6:\" role=\"alertdialog\" tabindex=\"-1\"><h2 class=\"modal_dialog_header\" id=\":r5:\">Provisionning and activating customization profile<button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></h2><p class=\"modal_dialog_body\" id=\":r6:\" style=\"display: flex; gap: 20px; flex-direction: row; justify-content: normal;\"><img alt=\"\" src=\"thoriumhttps://0.0.0.0/custom-profile-zip/dGhvcml1bS1tYW5pZmVzdDovL29yZy5lZHJsYWIuYXVkaXQuYTE3LmRlY29yYXRpdmUtZW4%3D/Li93ZWxjb21lLXNjcmVlbi93ZWxjb21lLXNjcmVlbi5zdmc%3D\" style=\"max-width: 250px; max-height: 500px; object-fit: contain;\"><div style=\"position: relative; width: 100%; height: 100%;\"><div><div style=\"background-color: var(--color-neutral-base); border-radius: 10px; padding: 20px; height: 500px; font-family: PlantinMTPro, serif, sans-serif;\">\n    <h1 style=\"font-size: 32px; margin-bottom: 20px;\"><span style=\"color: var(--color-brand-primary); font-weight: bold;\">Thorium University Press</span> brings\n        scholarly ideas to the world.</h1>\n    <p style=\"line-height: 1.6; margin-bottom: 20px; font-size: 18px;\">We publish peer-reviewed books that connect\n        authors and readers across spheres of knowledge to advance and enrich the global conversation.</p>\n    <p style=\"font-size: 18px;\">We embrace the highest standards of scholarship, inclusivity, and diversity in our\n        publishing.</p>\n  "
+        }
+      ],
+      "sliders": [],
+      "evidencePrefix": "batch-5/library-welcome-decorative-en-0",
+      "axe": {
+        "violations": [],
+        "incomplete": [],
+        "passes": [
+          {
+            "id": "aria-allowed-attr",
+            "nodes": 3
+          },
+          {
+            "id": "aria-allowed-role",
+            "nodes": 13
+          },
+          {
+            "id": "aria-conditional-attr",
+            "nodes": 3
+          },
+          {
+            "id": "aria-deprecated-role",
+            "nodes": 2
+          },
+          {
+            "id": "aria-dialog-name",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-body",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-focus",
+            "nodes": 18
+          },
+          {
+            "id": "aria-prohibited-attr",
+            "nodes": 3
+          },
+          {
+            "id": "aria-required-attr",
+            "nodes": 2
+          },
+          {
+            "id": "aria-roles",
+            "nodes": 2
+          },
+          {
+            "id": "aria-toggle-field-name",
+            "nodes": 1
+          },
+          {
+            "id": "aria-valid-attr-value",
+            "nodes": 3
+          },
+          {
+            "id": "aria-valid-attr",
+            "nodes": 3
+          },
+          {
+            "id": "avoid-inline-spacing",
+            "nodes": 1
+          },
+          {
+            "id": "button-name",
+            "nodes": 2
+          },
+          {
+            "id": "bypass",
+            "nodes": 1
+          },
+          {
+            "id": "document-title",
+            "nodes": 1
+          },
+          {
+            "id": "duplicate-id-aria",
+            "nodes": 3
+          },
+          {
+            "id": "empty-heading",
+            "nodes": 2
+          },
+          {
+            "id": "heading-order",
+            "nodes": 2
+          },
+          {
+            "id": "html-has-lang",
+            "nodes": 1
+          },
+          {
+            "id": "html-lang-valid",
+            "nodes": 1
+          },
+          {
+            "id": "image-alt",
+            "nodes": 1
+          },
+          {
+            "id": "image-redundant-alt",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-one-main",
+            "nodes": 1
+          },
+          {
+            "id": "link-name",
+            "nodes": 1
+          },
+          {
+            "id": "meta-viewport-large",
+            "nodes": 1
+          },
+          {
+            "id": "meta-viewport",
+            "nodes": 1
+          },
+          {
+            "id": "nested-interactive",
+            "nodes": 3
+          },
+          {
+            "id": "page-has-heading-one",
+            "nodes": 1
+          },
+          {
+            "id": "presentation-role-conflict",
+            "nodes": 1
+          },
+          {
+            "id": "region",
+            "nodes": 22
+          },
+          {
+            "id": "tabindex",
+            "nodes": 4
+          },
+          {
+            "id": "target-size",
+            "nodes": 3
+          }
+        ],
+        "inapplicable": [
+          "accesskeys",
+          "area-alt",
+          "aria-braille-equivalent",
+          "aria-command-name",
+          "aria-input-field-name",
+          "aria-meter-name",
+          "aria-progressbar-name",
+          "aria-required-children",
+          "aria-required-parent",
+          "aria-tab-name",
+          "aria-text",
+          "aria-tooltip-name",
+          "aria-treeitem-name",
+          "autocomplete-valid",
+          "blink",
+          "color-contrast",
+          "definition-list",
+          "dlitem",
+          "empty-table-header",
+          "form-field-multiple-labels",
+          "frame-focusable-content",
+          "frame-tested",
+          "frame-title-unique",
+          "frame-title",
+          "html-xml-lang-mismatch",
+          "input-button-name",
+          "input-image-alt",
+          "label-title-only",
+          "label",
+          "landmark-banner-is-top-level",
+          "landmark-contentinfo-is-top-level",
+          "landmark-main-is-top-level",
+          "landmark-no-duplicate-banner",
+          "landmark-no-duplicate-contentinfo",
+          "landmark-no-duplicate-main",
+          "landmark-unique",
+          "link-in-text-block",
+          "list",
+          "listitem",
+          "marquee",
+          "meta-refresh",
+          "object-alt",
+          "role-img-alt",
+          "scope-attr-valid",
+          "scrollable-region-focusable",
+          "select-name",
+          "server-side-image-map",
+          "skip-link",
+          "summary-name",
+          "svg-img-alt",
+          "table-duplicate-name",
+          "td-headers-attr",
+          "th-has-data-cells",
+          "valid-lang",
+          "video-caption",
+          "no-autoplay-audio"
+        ]
+      }
+    }
+  ]
+}

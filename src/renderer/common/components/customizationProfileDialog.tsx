@@ -17,7 +17,7 @@ import * as stylesModals from "readium-desktop/renderer/assets/styles/components
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 // import * as PlusIcon from "readium-desktop/renderer/assets/icons/Plus-bold.svg";
-import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
+import { convertMultiLangStringToLangString } from "readium-desktop/common/language-string";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { customizationActions } from "readium-desktop/common/redux/actions";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
@@ -43,7 +43,7 @@ export const CustomizationProfileDialog: React.FC = () => {
 
     const dispatchProfileInHistoryFromWizard = (checkboxDoNotViewChecked: boolean) => dispatch(customizationActions.addHistory.build(profileInHistoryFound.id, checkboxDoNotViewChecked ? undefined : profileInHistoryFound.version));
     const getIfWizardIsViewed = React.useCallback(() => profileInHistoryFound && (manifest?.modified || manifest?.created) && profileInHistoryFound.version && (new Date(manifest.modified || manifest.created)).getTime() && profileInHistoryFound.version === (new Date(manifest.modified || manifest.created)).getTime(), [profileInHistoryFound, manifest?.modified, manifest?.created]);
-    const [checked, setChecked] = React.useState<boolean>(getIfWizardIsViewed());
+    const [checked, setChecked] = React.useState<boolean>(!!getIfWizardIsViewed());
 
     // React.useEffect(() => {
     //     setChecked(getIfWizardIsViewed());
@@ -53,7 +53,8 @@ export const CustomizationProfileDialog: React.FC = () => {
     const customizationBaseUrl = customizationId ? `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_CUSTOMPROFILEZIP}/${encodeURIComponent_RFC3986(Buffer.from(customizationId).toString("base64"))}/` : "";
     const welcomeScreenImage = manifest?.images?.find((ln) => ln.rel === "welcome-screen");
     const welcomeScreenImgZipPath = welcomeScreenImage?.href;
-    const welcomeScreenImgAlt = convertMultiLangStringToString(welcomeScreenImage?.title, locale) || "";
+    const [welcomeScreenImgTitleLang, welcomeScreenImgAlt] = convertMultiLangStringToLangString(welcomeScreenImage?.title, locale);
+    const welcomeScreenImgLang = typeof welcomeScreenImage?.title === "object" ? welcomeScreenImgTitleLang : welcomeScreenImage?.language;
     const welcomeScreenImgHref = customizationBaseUrl && welcomeScreenImgZipPath ? customizationBaseUrl + encodeURIComponent_RFC3986(Buffer.from(welcomeScreenImgZipPath).toString("base64")) : "";
     const welcomeScreenHtmlZipPath = customization.manifest?.links?.find((ln) => ln.rel === "welcome-screen" && (!ln.type || ln.type === "text/html") && ln.language === locale)?.href || customization.manifest?.links?.find((ln) => ln.rel === "welcome-screen" && (!ln.type || ln.type === "text/html") && (ln.language === "en" || !ln.language))?.href;
     const welcomeScreenHtmlHref = customizationBaseUrl && welcomeScreenHtmlZipPath ? customizationBaseUrl + encodeURIComponent_RFC3986(Buffer.from(welcomeScreenHtmlZipPath).toString("base64")) : "";
@@ -112,7 +113,7 @@ export const CustomizationProfileDialog: React.FC = () => {
                         </AlertDialog.Action>
                         </AlertDialog.Title>
                     <AlertDialog.Description className={stylesModals.modal_dialog_body} style={{ display: "flex", gap: "20px", flexDirection: "row", justifyContent: "normal"}}>
-                        {customization.welcomeScreen.enable && dangerousInnerHTML_WelcomeScreenSanitized ? <img alt={welcomeScreenImgAlt} style={{ maxWidth: "250px", maxHeight: "500px", objectFit: "contain" }} src={welcomeScreenImgHref} /> : <></>}
+                        {customization.welcomeScreen.enable && dangerousInnerHTML_WelcomeScreenSanitized && welcomeScreenImgHref ? <img alt={welcomeScreenImgAlt || ""} lang={welcomeScreenImgAlt ? welcomeScreenImgLang : undefined} style={{ maxWidth: "250px", maxHeight: "500px", objectFit: "contain" }} src={welcomeScreenImgHref} /> : <></>}
                         <div style={{position: "relative", width: "100%", height: "100%"}}>
                             {
                                 customization.welcomeScreen.enable && dangerousInnerHTML_WelcomeScreenSanitized ?

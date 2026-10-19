@@ -1,0 +1,89 @@
+{
+  "kind": "profile-input",
+  "manifest": {
+    "version": 1,
+    "identifier": "thorium-manifest://org.edrlab.audit.a17.decorative-en",
+    "created": "2025-11-27T09:37:37Z",
+    "modified": "2026-10-19T14:25:23.111Z",
+    "title": "Thorium University Press",
+    "description": "Thorium University Press publishes peer-reviewed books that connect authors and readers across spheres of knowledge to advance and enrich the global conversation.",
+    "theme": {
+      "color": {
+        "dark": {
+          "neutral": "#1C1C1C",
+          "primary": "#FF8C1A",
+          "secondary": "#483a3a",
+          "border": "#FF7A00",
+          "background": "#121212",
+          "appName": "#E0E0E0",
+          "scrollbarThumb": "#000000",
+          "buttonsBorder": "#FF8C1A"
+        },
+        "light": {
+          "neutral": "#FFFFFF",
+          "primary": "#121212",
+          "secondary": "#fff8f2",
+          "border": "#E16100",
+          "background": "#e6e8e6",
+          "appName": "#C9C5C9",
+          "scrollbarThumb": "#000000",
+          "buttonsBorder": "#E77500"
+        }
+      }
+    },
+    "links": [
+      {
+        "rel": "screen",
+        "href": "./screen/faq-en.html",
+        "type": "text/html",
+        "language": "en",
+        "title": "FAQ"
+      },
+      {
+        "rel": "screen",
+        "href": "./screen/help-en.html",
+        "type": "text/html",
+        "language": "en",
+        "title": "Help"
+      },
+      {
+        "rel": "screen",
+        "href": "./screen/faq-fr.html",
+        "type": "text/html",
+        "language": "fr",
+        "title": "FAQ"
+      },
+      {
+        "rel": "screen",
+        "href": "./screen/help-fr.html",
+        "type": "text/html",
+        "language": "fr",
+        "title": "Help"
+      },
+      {
+        "rel": "welcome-screen",
+        "href": "./welcome-screen/welcome-screen.html",
+        "type": "text/html",
+        "language": "en"
+      },
+      {
+        "rel": "welcome-screen",
+        "href": "./welcome-screen/welcome-screen-fr.html",
+        "type": "text/html",
+        "language": "fr"
+      }
+    ],
+    "publications": [],
+    "images": [
+      {
+        "rel": "logo",
+        "href": "./images/logo.svg"
+      },
+      {
+        "rel": "welcome-screen",
+        "href": "./welcome-screen/welcome-screen.svg",
+        "title": ""
+      }
+    ]
+  }
+}

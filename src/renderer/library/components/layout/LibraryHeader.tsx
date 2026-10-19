@@ -24,7 +24,7 @@ import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon.svg
 import * as CatalogsIcon from "readium-desktop/renderer/assets/icons/catalogs-icon.svg";
 import * as ShelfIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
-import SVG from "readium-desktop/renderer/common/components/SVG";
+import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
 import { Settings } from "../settings/Settings";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import { buildOpdsBrowserRoute } from "../../opds/route";
@@ -37,7 +37,7 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP } from "readium-desktop/common/streamerProtocol";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
+import { convertMultiLangStringToLangString, convertMultiLangStringToString } from "readium-desktop/common/language-string";
 // import { WizardModal } from "../Wizard";
 
 export interface NavigationHeader {
@@ -48,7 +48,7 @@ export interface NavigationHeader {
     replace?: boolean;
     searchEnable?: boolean;
     styles: string[];
-    svg: any;
+    svg: ISVGProps;
 }
 
 const Header = () => {
@@ -122,7 +122,7 @@ const Header = () => {
                     }}
                     style={{ height: "auto" }}
                 >
-                    {typeof item.svg === "string" ? <img alt="" aria-hidden width={"20px"} height={"20px"} src={item.svg}></img> : <SVG ariaHidden svg={item.svg} />}
+                    <SVG ariaHidden svg={item.svg} />
                     <h3>{item.label}</h3>
                 </Link>
             </li>
@@ -164,6 +164,9 @@ const Header = () => {
     const customizationEnable = !!customizationManifest;
     const customizationId = customizationManifest?.identifier;
     const logoObj = customizationManifest?.images?.find((ln) => ln?.rel === "logo");
+    const logoTitle = logoObj?.title ?? customizationManifest?.title;
+    const [logoTitleLang, logoAlt] = convertMultiLangStringToLangString(logoTitle, locale);
+    const logoLang = typeof logoTitle === "object" ? logoTitleLang : logoObj?.language;
     const customizationBaseUrl = customizationEnable ? `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_CUSTOMPROFILEZIP}/${encodeURIComponent_RFC3986(Buffer.from(customizationId).toString("base64"))}/` : "";
 
     const screenZipLinks = React.useMemo(
@@ -223,7 +226,6 @@ const Header = () => {
                 matchRoutes: ["/opds/" + hostEncoded],
                 searchEnable: false,
                 styles: [],
-                // svg: catalog.properties?.logo?.type === "image/svg+xml" ? customizationBaseUrl + encodeURIComponent_RFC3986(Buffer.from(catalog.properties.logo.href).toString("base64")) : ThoriumIcon,
                 svg: GlobeIcon,
             });
         }
@@ -268,7 +270,7 @@ const Header = () => {
             {
                 customizationEnable ?
                     <div className="logo" style={{ height: "60px", width: "calc(100% - 20px)", margin: " 20px auto", display: "flex", justifyContent: "center" }}>
-                        { logoObj ? <img src={customizationBaseUrl + encodeURIComponent_RFC3986(Buffer.from(logoObj.href).toString("base64"))} alt="" style={{ objectFit: "contain", maxHeight: "100px", maxWidth: "100%", width: "fit-content" }} />: <></> }
+                        { logoObj?.href ? <img src={customizationBaseUrl + encodeURIComponent_RFC3986(Buffer.from(logoObj.href).toString("base64"))} alt={logoAlt || ""} lang={logoAlt ? logoLang : undefined} style={{ objectFit: "contain", maxHeight: "100px", maxWidth: "100%", width: "fit-content" }} />: <></> }
                     </div>
                     : <></>
             }

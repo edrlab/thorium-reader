@@ -1,0 +1,13 @@
+{
+  "kind": "restoration-measurement",
+  "normalLibrary": {
+    "url": "http://localhost:8090/index_library.html",
+    "lang": "en",
+    "profileLogo": false,
+    "dialogs": 0,
+    "zoom": 1,
+    "publicationMenuControls": 5
+  },
+  "isolatedUserData": "dist/accessibility-batch5-profile",
+  "isolatedAppClosed": true
+}

@@ -160,7 +160,8 @@
         },
         {
           "rel": "welcome-screen",
-          "href": "./welcome-screen/welcome-screen.svg"
+          "href": "./welcome-screen/welcome-screen.svg",
+          "title": ""
         }
     ]
 }

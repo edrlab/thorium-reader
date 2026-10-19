@@ -1,0 +1,51 @@
+- region "toolbar":
+  - heading "toolbar" [level=2]
+  - button "Skip to content"
+  - navigation "Bookshelf menu":
+    - heading "Thorium" [level=1]
+    - list:
+      - listitem:
+        - button "Home" [pressed]:
+          - heading "Home" [level=3]
+      - listitem:
+        - button "All publications":
+          - heading "All publications" [level=3]
+      - listitem:
+        - button "Catalogs":
+          - heading "Catalogs" [level=3]
+      - listitem:
+        - button "FAQ":
+          - heading "FAQ" [level=3]
+      - listitem:
+        - button "Help":
+          - heading "Help" [level=3]
+      - listitem:
+        - button "Application Settings":
+          - heading "Application Settings" [level=3]: Settings
+  - main "main content":
+    - button "Import publication"
+    - heading "main content" [level=2]
+    - paragraph:
+      - strong: Drop files here
+    - paragraph: or use the "Import publication" button above.
+    - group: "Supported extensions:"
+    - paragraph: v3.5.2-beta.1
+    - link "About Thorium (online)":
+      - /url: ""
+- status
+- alertdialog "Provisionning and activating customization profile Close":
+  - heading "Provisionning and activating customization profile Close" [level=2]:
+    - text: Provisionning and activating customization profile
+    - button "Close"
+  - paragraph:
+    - heading "Thorium University Press brings scholarly ideas to the world." [level=1]
+    - paragraph: We publish peer-reviewed books that connect authors and readers across spheres of knowledge to advance and enrich the global conversation.
+    - paragraph: We embrace the highest standards of scholarship, inclusivity, and diversity in our publishing.
+    - paragraph: In keeping with Thorium University’s commitment to serve the nation and the world, we publish for scholars, students, and engaged readers everywhere.
+    - paragraph:
+      - text: For more informations, go to
+      - link "our website":
+        - /url: https://edrlab.org/
+      - text: .
+  - checkbox "Don't show again"
+  - button "Yes"

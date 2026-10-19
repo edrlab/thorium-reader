@@ -1,0 +1,30 @@
+Batch 5: A17 profile alternatives and adjacent welcome-checkbox state
+Branch: codex/a11y-batch-5-profile-alternatives (uncommitted)
+Parent: 1501efa87e4b10ffac801ccb87fe39b0317e3787 pushed to edrlab/thorium-reader on codex/a11y-batch-4-status-navigation-print
+Full TypeScript: tsc6 --noEmit --project tsconfig-cli.json --pretty false (exit 0)
+ESLint: customizationProfileDialog.tsx and LibraryHeader.tsx (exit 0)
+No stylesheet or translation changes
+Profile packager: repository package-customization-profile.sh; tsc6, TypeScript and tsc-alias (exit 0)
+Actual application scenarios: 7 passed, 13 Library captures; no renderer fixtures counted
+Original npm run start:dev:quick on port 9223; second app uses the same built entry and renderer servers with --user-data-dir=<workspace>/dist/accessibility-batch5-profile on port 9225
+Six signed profile variants built from bundled University Press logo, welcome SVG and English/French HTML; publications and catalog links removed
+Fresh profile identities/revisions prevent intentional welcome-history suppression on repeated runs
+Reviewed decorative artwork ignored in Chromium AX; logo fallback identifies profile
+Informative alternatives named in English/French; English fallback tagged en in French UI
+No welcome image entry renders no empty-src image; explicit empty logo override honored
+Welcome checkbox starts aria-checked=false; Space toggles true and back to false in isolated data
+Library navigation SVG icons hidden while visible-label names remain; unused string-icon branch removed
+Default Library retains five publication menu controls and English locale; profiles installed only in empty isolated data
+Targeted image-alt and aria-required-attr rules clear in all final captures; unrelated best-practice advisories retained
+No native screen-reader listening; arbitrary third-party image meaning and authored HTML alternatives remain author-review obligations
+Runtime scope builds:
+renderer pdf webview index (webpack 5.111.1) compiled successfully in 1781 ms
+renderer pdf extract webview index (webpack 5.111.1) compiled successfully in 907 ms
+renderer webview preload (webpack 5.111.1) compiled successfully in 3378 ms
+[2] main (webpack 5.111.1) compiled successfully in 12894 ms
+[0] renderer index app (webpack 5.111.1) compiled successfully in 17741 ms
+[1] renderer index reader (webpack 5.111.1) compiled successfully in 18708 ms
+[0] renderer index app (webpack 5.111.1) compiled successfully in 569 ms
+[0] renderer index app (webpack 5.111.1) compiled successfully in 479 ms
+[0] renderer index app (webpack 5.111.1) compiled successfully in 586 ms
+[0] renderer index app (webpack 5.111.1) compiled successfully in 933 ms

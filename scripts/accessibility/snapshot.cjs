@@ -9,10 +9,12 @@ const { chromium } = require("@playwright/test");
     if (subdir && !/^[a-z0-9-]+$/.test(subdir)) throw new Error("Invalid audit evidence subdirectory");
     const output = path.resolve("docs/accessibility/evidence", subdir);
     fs.mkdirSync(output, { recursive: true });
-    const browser = await chromium.connectOverCDP("http://127.0.0.1:9223");
+    const port = Number(process.env.THORIUM_AUDIT_CDP_PORT || 9223);
+    const endpoint = `http://127.0.0.1:${port}`;
+    const browser = await chromium.connectOverCDP(endpoint);
     try {
-        const targets = await (await fetch("http://127.0.0.1:9223/json/list")).json();
-        const results = { label, timestamp: new Date().toISOString(), axeVersion: require("axe-core/package.json").version, targets, pages: [] };
+        const targets = await (await fetch(endpoint + "/json/list")).json();
+        const results = { label, cdpPort: port, timestamp: new Date().toISOString(), axeVersion: require("axe-core/package.json").version, targets, pages: [] };
         for (const [index, page] of browser.contexts().flatMap(c => c.pages()).entries()) {
             if (!/index_(library|reader)\.html/.test(page.url())) continue;
             await page.addScriptTag({ path: require.resolve("axe-core") });
