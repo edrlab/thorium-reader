@@ -159,7 +159,9 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                                     <section key={i}>
                                         { group.publications?.length > 0 ?
                                         <div className={stylesGlobal.heading_link}>
-                                            <Entry level={this.props.level} entry={group.selfLink}></Entry>
+                                            {group.selfLink ?
+                                                <Entry level={this.props.level} entry={group.selfLink}></Entry>
+                                                : <h3>{group.title}</h3>}
                                         </div>
                                         : <></>}
                                         {

@@ -114,9 +114,10 @@ export interface IOpdsResultView {
 }
 
 export interface IOpdsGroupView {
+    title: string;
     navigation?: IOpdsNavigationLinkView[];
     publications?: IOpdsPublicationView[];
-    selfLink: IOpdsNavigationLinkView;
+    selfLink?: IOpdsNavigationLinkView;
 }
 
 export interface IOpdsFacetView {

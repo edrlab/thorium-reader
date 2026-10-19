@@ -27,6 +27,7 @@ jest.mock("readium-desktop/main/db/repository/publication", () => ({
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";
+import { OPDSGroup } from "@r2-opds-js/opds/opds2/opds2-group";
 import type { IHttpGetResult } from "readium-desktop/common/utils/http";
 import type { IOpdsResultView } from "readium-desktop/common/views/opds";
 import { normalizeOpdsAuthenticationLink, OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
@@ -64,6 +65,23 @@ const createConverter = () => {
     });
     return converter;
 };
+
+describe("OPDS group self links", () => {
+    it.each([undefined, "group.json"])("preserves the title with self href %s", (href) => {
+        const group = TaJsonDeserialize({
+            metadata: { title: "Publication group" },
+            ...(href ? { links: [{ rel: "self", href }] } : {}),
+        }, OPDSGroup);
+        const view = createConverter().convertOpdsGroupToView(group, baseUrl);
+
+        expect(view.title).toBe("Publication group");
+        if (href) {
+            expect(view.selfLink.url).toBe("https://example.org/catalog/group.json");
+        } else {
+            expect(view.selfLink).toBeUndefined();
+        }
+    });
+});
 
 describe("background feed authentication", () => {
     it("returns before checking authentication, deduplicates checks and refreshes only on changes", async () => {

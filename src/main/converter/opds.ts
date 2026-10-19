@@ -755,9 +755,10 @@ export class OpdsFeedViewConverter {
         selfLink.Href = lnFiltered?.Href || undefined;
 
         const ret: IOpdsGroupView = {
+            title,
             publications,
             navigation,
-            selfLink: this.convertOpdsNavigationLinkToView(selfLink, baseUrl),
+            selfLink: lnFiltered?.Href ? this.convertOpdsNavigationLinkToView(selfLink, baseUrl) : undefined,
         };
         return ret;
     }
