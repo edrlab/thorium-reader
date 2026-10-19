@@ -154,6 +154,30 @@
 
 .PopoverContent {
   z-index: 10000;
+
+  &[data-placement^="top"] {
+    .dropdown_menu {
+      margin-bottom: 1px;
+    }
+  }
+
+  &[data-placement^="bottom"] {
+    .dropdown_menu {
+      margin-top: 1px;
+    }
+  }
+
+  &[data-placement^="left"] {
+    .dropdown_menu {
+      margin-right: 1px;
+    }
+  }
+
+  &[data-placement^="right"] {
+    .dropdown_menu {
+      margin-left: 1px;
+    }
+  }
 }
 
 .menu {

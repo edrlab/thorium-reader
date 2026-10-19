@@ -35,6 +35,7 @@ const Menu = (props: React.PropsWithChildren<IBaseProps>) => {
                 offset={10}
                 crossOffset={0}
                 containerPadding={props.noCollisionPadding ? 0 : 12}
+                className={stylesDropDown.PopoverContent}
                 style={{ zIndex: OVERLAY_Z_INDEX }}
             >
                 <PopoverDialog>
