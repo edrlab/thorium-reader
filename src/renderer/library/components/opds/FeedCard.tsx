@@ -6,13 +6,8 @@
 // ==LICENSE-END==
 
 import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
-import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
-import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 
 import * as React from "react";
-import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
-import { FocusScope } from "react-aria";
-import { DialogTrigger, Pressable, Popover, Dialog as PopoverDialog, Button } from "react-aria-components";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon.svg";
@@ -141,8 +136,8 @@ export const FeedCard: React.FC<IFeedCardProps> = (props) => {
                 className={stylesCatalogs.button_favorites}>
                 <SVG svg={StarIcon} ariaHidden className={feed.favorite ? stylesCatalogs.catalog_favorite_icon_true : stylesCatalogs.catalog_favorite_icon_false} />
             </button>
-            {feed.authentified ? <FeedAuthentified feed={feed} logout={logout} __={__} />
-                : feed.authenticationUrl ? <FeedAuthentification feed={feed} triggerAuth={triggerAuth} __={__} /> : <></>}
+            {(feed.authentified || feed.authenticationUrl) &&
+                <FeedAccount feed={feed} logout={logout} triggerAuth={triggerAuth} __={__} />}
             <OpdsFeedUpdateForm trigger={(
                 <button
                     className={stylesCatalogs.button_edit}
@@ -166,7 +161,7 @@ export const FeedCard: React.FC<IFeedCardProps> = (props) => {
     );
 };
 
-const FeedAuthentified = ({ feed, logout, __ }: { feed: IOpdsFeedView, logout: (url: string) => void, __: I18nFunction }) => {
+const FeedAccount = ({ feed, logout, triggerAuth, __ }: { feed: IOpdsFeedView, logout: (url: string) => void, triggerAuth: (feedUrl: string, authenticationUrl: string) => void, __: I18nFunction }) => {
     const navigate = useNavigate();
     const [bookshelf, setBookshelf] = React.useState<string | undefined>();
     return <AccountDialog.Root>
@@ -187,54 +182,22 @@ const FeedAuthentified = ({ feed, logout, __ }: { feed: IOpdsFeedView, logout: (
                 </div>
                 <div className={stylesModals.modal_dialog_body} style={{ justifyContent: "flex-start" }}>
                     <h3 style={{ overflowWrap: "anywhere" }}>{feed.title}</h3>
-                    <UserProfile identifier={feed.identifier} __={__} onBookshelf={setBookshelf} />
+                    {feed.authentified && <UserProfile identifier={feed.identifier} __={__} onBookshelf={setBookshelf} />}
                 </div>
                 <div className={stylesModals.modal_dialog_footer} style={{ gap: "12px" }}>
-                    {bookshelf && <AccountDialog.Close asChild>
+                    {feed.authentified && bookshelf && <AccountDialog.Close asChild>
                         <button className={stylesButtons.button_primary_blue} onClick={() => navigate(buildOpdsBrowserRoute(feed.identifier, __("opds.shelf"), bookshelf))}>
                             {__("catalog.userProfile.bookshelf")}
                         </button>
                     </AccountDialog.Close>}
                     <AccountDialog.Close asChild>
-                        <button className={stylesButtons.button_secondary_blue} onClick={() => logout(feed.url)}>{__("catalog.logout")}</button>
+                        {feed.authentified ?
+                            <button className={stylesButtons.button_secondary_blue} onClick={() => logout(feed.url)}>{__("catalog.logout")}</button>
+                            : <button className={stylesButtons.button_primary_blue} onClick={() => triggerAuth(feed.url, feed.authenticationUrl)}>{__("catalog.login")}</button>
+                        }
                     </AccountDialog.Close>
                 </div>
             </AccountDialog.Content>
         </AccountDialog.Portal>
     </AccountDialog.Root>;
-};
-
-const FeedAuthentification = ({ feed, triggerAuth, __ }: { feed: IOpdsFeedView, triggerAuth: (feedUrl: string, authenticationUrl: string) => void, __: I18nFunction }) => {
-    return (
-        <DialogTrigger>
-            <Pressable>
-                <button className={stylesCatalogs.button_login} title={__("catalog.login")}>
-                    <SVG ariaHidden={true} svg={AvatarIcon} />
-                </button>
-            </Pressable>
-            <Popover
-                placement="bottom"
-                offset={5}
-                crossOffset={-10}
-                className={stylesPopoverDialog.delete_item}
-                style={{ zIndex: OVERLAY_Z_INDEX }}
-            >
-                <PopoverDialog>
-                    <FocusScope autoFocus>
-                        <Button
-                            slot="close"
-                            onPress={() => {
-                                triggerAuth(feed.url, feed.authenticationUrl);
-                            }}
-                            render={(buttonProps) => <button {...buttonProps} title={__("catalog.login")} />}
-                        >
-                            <SVG ariaHidden={true} svg={AvatarIcon} />
-                            {__("catalog.login")}
-                        </Button>
-                        <PopoverArrow className={stylesDropDown.PopoverArrow} aria-hidden />
-                    </FocusScope>
-                </PopoverDialog>
-            </Popover>
-        </DialogTrigger>
-    );
 };
