@@ -61,24 +61,34 @@ export function buildOpdsBrowserRoute(
 
 export function parseOpdsBrowserRoute(route: string) {
     // Parse route with regexp
-    const regexp = /\/opds\/([a-zA-Z0-9-=]+)\/browse\/([0-9]+)\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)/g;
+    const regexp = /^\/opds\/([a-zA-Z0-9-=]+)\/browse\/([0-9]+)\/([a-zA-Z0-9_-]*)\/([a-zA-Z0-9_-]+)$/;
     const match = regexp.exec(route);
 
     if (match == null) {
-        return null;
+        return undefined;
     }
 
     const rootFeedIdentifier = match[1];
     const level = parseInt(match[2], 10);
-    const title = decodeB64(match[3]);
-    const url = decodeB64(match[4]);
+    try {
+        const title = decodeB64(match[3]);
+        const url = decodeB64(match[4]);
+        // Missing link targets can be coerced to "undefined" by encodeURIComponent.
+        // Reject them before they become browser API requests.
+        // APIAPP targets contain a custom compound address, parsed by main's browse handler.
+        if (!url.startsWith("apiapp://")) {
+            new URL(url);
+        }
 
-    return {
-        rootFeedIdentifier,
-        title,
-        url,
-        level,
-    };
+        return {
+            rootFeedIdentifier,
+            title,
+            url,
+            level,
+        };
+    } catch {
+        return undefined;
+    }
 }
 
 export type TParseOpdsBrowserRoute = ReturnType<typeof parseOpdsBrowserRoute>;
