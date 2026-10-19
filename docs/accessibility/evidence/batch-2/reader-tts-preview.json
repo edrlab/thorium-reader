@@ -1,0 +1,871 @@
+{
+  "label": "reader-tts-preview",
+  "timestamp": "2026-10-19T12:40:35.779Z",
+  "axeVersion": "4.13.0",
+  "targets": [
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/7F70D97AE834C5C9DA6E62C697E6DE6C",
+      "id": "7F70D97AE834C5C9DA6E62C697E6DE6C",
+      "parentId": "8826E4F55AC70044EBD735B8C15E761E",
+      "title": "Talk to Me: Media Overlays",
+      "type": "webview",
+      "url": "httpsr2://id_nzdh_yz_rm_y_w_yt_m_d_jj_my00_yj_i1_l_w_jk_yj_qt_ym_u0_o_g_q3_z_d_iz_y_t_u4/xthoriumhttps/ip0.0.0.0/p/EPUB/ch03s02.xhtml?r2_GOTO=eyJjZmkiOiIvNC8yLzMyIiwiY3NzU2VsZWN0b3IiOiIuc2VjdDEgPiBwOm50aC1jaGlsZCgxNikiLCJwb3NpdGlvbiI6NTcsInByb2dyZXNzaW9uIjowLjIzMjU1ODEzOTUzNDg4MzcyLCJ0b3RhbFByb2dyZXNzaW9uIjowLjU3NDc1MDgzMDU2NDc4NH0%3D&r2_CSS=eyJzZXRDU1MiOnsiYTExeU5vcm1hbGl6ZSI6ZmFsc2UsImJvZHlIeXBoZW5zIjoiYXV0byIsImNvbENvdW50IjoiYXV0byIsImZvbnQiOiJERUZBVUxUIiwiZm9udFNpemUiOiIxMDAlIiwiaW52ZXJ0IjpmYWxzZSwibGV0dGVyU3BhY2luZyI6IjAiLCJsaWdhdHVyZXMiOiJub25lIiwibGluZUhlaWdodCI6IjAiLCJwYWdlTWFyZ2lucyI6IjEiLCJwYWdlZCI6dHJ1ZSwicGFyYVNwYWNpbmciOiIwIiwibmlnaHQiOmZhbHNlLCJzZXBpYSI6ZmFsc2UsIndvcmRTcGFjaW5nIjoiMCIsIm1hdGhKYXgiOmZhbHNlLCJyZWR1Y2VNb3Rpb24iOmZhbHNlLCJub0Zvb3Rub3RlcyI6ZmFsc2UsIm5vVGVtcG9yYXJ5TmF2VGFyZ2V0T3V0bGluZSI6ZmFsc2UsIm5vUnVieSI6ZmFsc2V9fQ%3D%3D&r2_isMO=0&r2_ERS=eyJuYW1lIjoiVGhvcml1bSIsInZlcnNpb24iOiIzLjUuMi1iZXRhLjEifQ%3D%3D&r2_DEBUG=false&r2_A11Y_SUPPORT_ENABLED=false&r2_CLIPBOARD_INTERCEPT=false&r2_WEBVIEW_SLOT=center&r2_SECOND_WEBVIEW=0&r2_SESSION_INFO=ZWMxZDQxNWEtNDQ0MS00MTU5LWJiZDEtOTliM2UzZTk4YTEw",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/7F70D97AE834C5C9DA6E62C697E6DE6C"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/8826E4F55AC70044EBD735B8C15E761E",
+      "id": "8826E4F55AC70044EBD735B8C15E761E",
+      "title": "Thorium - Accessible EPUB 3",
+      "type": "page",
+      "url": "http://localhost:8191/index_reader.html",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/8826E4F55AC70044EBD735B8C15E761E"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/DF837DA81094573B7500AB5D6569FCB3",
+      "id": "DF837DA81094573B7500AB5D6569FCB3",
+      "title": "Thorium - Catalogs",
+      "type": "page",
+      "url": "http://localhost:8090/index_library.html#/opds/8c5772bb-2e60-406c-ad4e-2c2ee0cee8e7/browse/1/aHR0cDovLzEyNy4wLjAuMTo0ODczL29wZHMvdjIvY2F0YWxvZy5qc29u/aHR0cDovLzEyNy4wLjAuMTo0ODczL29wZHMvdjIvY2F0YWxvZy5qc29u",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/DF837DA81094573B7500AB5D6569FCB3"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/F141A0F60D1924C67B9728A4AD746505",
+      "id": "F141A0F60D1924C67B9728A4AD746505",
+      "title": "Service Worker chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/background.bundle.js",
+      "type": "service_worker",
+      "url": "chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/background.bundle.js",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/F141A0F60D1924C67B9728A4AD746505"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/DDCC41A5923554921F2991BD04E72B52",
+      "id": "DDCC41A5923554921F2991BD04E72B52",
+      "title": "Service Worker chrome-extension://ijmmnfpjnmlljdjbbfpdgodddghhmemm/build/background.js",
+      "type": "service_worker",
+      "url": "chrome-extension://ijmmnfpjnmlljdjbbfpdgodddghhmemm/build/background.js",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/DDCC41A5923554921F2991BD04E72B52"
+    }
+  ],
+  "pages": [
+    {
+      "title": "Thorium - Accessible EPUB 3",
+      "url": "http://localhost:8191/index_reader.html",
+      "lang": "en",
+      "dimensions": {
+        "width": 1089,
+        "height": 771,
+        "scrollWidth": 1089
+      },
+      "focus": "<summary style=\"cursor: pointer;\">TTS highlight style preview</summary>",
+      "dialogs": [
+        {
+          "html": "<section id=\"react-aria4869630290-:r4:\" class=\"react-aria-Dialog\" data-rac=\"\" aria-labelledby=\"react-aria4869630290-:r5:\" role=\"dialog\" tabindex=\"-1\"><span data-focus-scope-start=\"true\" hidden=\"\"></span><div class=\"Tts_popover_container\"><div style=\"padding-right: 25px;\"><div class=\"ttsSelectRate\" style=\"padding-left: 8px;\"><template><div class=\"my_combobox_container R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" role=\"group\"></div></template><div class=\"react_aria_ComboBox\" data-rac=\"\"><label class=\"react_aria_Label\" dir=\"ltr\" id=\"react-aria4869630290-:r8c:\" for=\"react-aria4869630290-:r8b:\">TTS playback rate</label><div class=\"my_combobox_container R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" role=\"group\"><input aria-label=\"TTS playback rate\" type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria4869630290-:r8b:\" role=\"combobox\" aria-expanded=\"false\" class=\"react_aria_Input R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" value=\"1x\" title=\"\" aria-labelledby=\"react-aria4869630290-:r8b: react-aria4869630290-:r8c:\"><button id=\"react-aria4869630290-:r87:\" class=\"react_aria_Button\" data-rac=\"\" type=\"button\" tabindex=\"-1\" data-react-aria-pressable=\"true\" aria-label=\"Show suggestions\" aria-haspopup=\"listbox\" aria-expanded=\"false\" aria-labelledby=\"react-aria4869630290-:r87: react-aria4869630290-:r8c:\" style=\"width: unset;\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg></button></div></div></div><div class=\"ttsSelectVoice\"><template><div class=\"my_combobox_container "
+        }
+      ],
+      "sliders": [],
+      "evidencePrefix": "batch-2/reader-tts-preview-0",
+      "axe": {
+        "violations": [
+          {
+            "id": "landmark-one-main",
+            "impact": "moderate",
+            "tags": [
+              "cat.semantics",
+              "best-practice"
+            ],
+            "description": "Ensure the document has a main landmark",
+            "help": "Document should have one main landmark",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=axeAPI",
+            "nodes": [
+              {
+                "any": [],
+                "all": [
+                  {
+                    "id": "page-has-main",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "moderate",
+                    "message": "Document does not have a main landmark"
+                  }
+                ],
+                "none": [],
+                "impact": "moderate",
+                "html": "<html id=\"reader_html\" lang=\"en\" class=\"R2_CSS_CLASS__KEYBOARD_INTERACT\" style=\"--R2_FXL_X_SHIFT: 0px; --R2_FXL_Y_SHIFT: 0px; --R2_FXL_Y_SHIFT_: 0px; overflow: hidden;\">",
+                "target": [
+                  "#reader_html"
+                ],
+                "failureSummary": "Fix all of the following:\n  Document does not have a main landmark"
+              }
+            ]
+          },
+          {
+            "id": "page-has-heading-one",
+            "impact": "moderate",
+            "tags": [
+              "cat.semantics",
+              "best-practice"
+            ],
+            "description": "Ensure that the page, or at least one of its frames contains a level-one heading",
+            "help": "Page should contain a level-one heading",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=axeAPI",
+            "nodes": [
+              {
+                "any": [],
+                "all": [
+                  {
+                    "id": "page-has-heading-one",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "moderate",
+                    "message": "Page must have a level-one heading"
+                  }
+                ],
+                "none": [],
+                "impact": "moderate",
+                "html": "<html id=\"reader_html\" lang=\"en\" class=\"R2_CSS_CLASS__KEYBOARD_INTERACT\" style=\"--R2_FXL_X_SHIFT: 0px; --R2_FXL_Y_SHIFT: 0px; --R2_FXL_Y_SHIFT_: 0px; overflow: hidden;\">",
+                "target": [
+                  "#reader_html"
+                ],
+                "failureSummary": "Fix all of the following:\n  Page must have a level-one heading"
+              }
+            ]
+          }
+        ],
+        "incomplete": [
+          {
+            "id": "aria-prohibited-attr",
+            "impact": "serious",
+            "tags": [
+              "cat.aria",
+              "wcag2a",
+              "wcag412",
+              "EN-301-549",
+              "EN-9.4.1.2",
+              "RGAAv4",
+              "RGAA-7.1.1"
+            ],
+            "description": "Ensure ARIA attributes are not prohibited for an element's role",
+            "help": "Elements must only use permitted ARIA attributes",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-prohibited-attr?application=axeAPI",
+            "nodes": [
+              {
+                "any": [],
+                "all": [],
+                "none": [
+                  {
+                    "id": "aria-prohibited-attr",
+                    "data": {
+                      "role": null,
+                      "nodeName": "div",
+                      "messageKey": "noRoleSingular",
+                      "prohibited": [
+                        "aria-labelledby"
+                      ]
+                    },
+                    "relatedNodes": [],
+                    "impact": "serious",
+                    "message": "aria-labelledby attribute is not well supported on a div with no valid role attribute."
+                  }
+                ],
+                "impact": "serious",
+                "html": "<div dir=\"ltr\" class=\"react-aria-Popover\" data-rac=\"\" aria-labelledby=\"react-aria4869630290-:r5:\" data-trigger=\"DialogTrigger\" style=\"position: absolute; z-index: 102; max-height: 715px; --trigger-anchor-point: 441.5px 0px; --trigger-width: 42px; left: 125.484px; top: 56px;\" ...>",
+                "target": [
+                  ".react-aria-Popover"
+                ],
+                "failureSummary": "Fix all of the following:\n  aria-labelledby attribute is not well supported on a div with no valid role attribute."
+              }
+            ]
+          }
+        ],
+        "passes": [
+          {
+            "id": "aria-allowed-attr",
+            "nodes": 34
+          },
+          {
+            "id": "aria-allowed-role",
+            "nodes": 43
+          },
+          {
+            "id": "aria-conditional-attr",
+            "nodes": 34
+          },
+          {
+            "id": "aria-deprecated-role",
+            "nodes": 16
+          },
+          {
+            "id": "aria-dialog-name",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-body",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-focus",
+            "nodes": 45
+          },
+          {
+            "id": "aria-prohibited-attr",
+            "nodes": 33
+          },
+          {
+            "id": "aria-required-attr",
+            "nodes": 16
+          },
+          {
+            "id": "aria-roles",
+            "nodes": 16
+          },
+          {
+            "id": "aria-toggle-field-name",
+            "nodes": 4
+          },
+          {
+            "id": "aria-valid-attr-value",
+            "nodes": 34
+          },
+          {
+            "id": "aria-valid-attr",
+            "nodes": 34
+          },
+          {
+            "id": "autocomplete-valid",
+            "nodes": 4
+          },
+          {
+            "id": "avoid-inline-spacing",
+            "nodes": 2
+          },
+          {
+            "id": "button-name",
+            "nodes": 6
+          },
+          {
+            "id": "color-contrast",
+            "nodes": 4
+          },
+          {
+            "id": "document-title",
+            "nodes": 1
+          },
+          {
+            "id": "duplicate-id-aria",
+            "nodes": 38
+          },
+          {
+            "id": "form-field-multiple-labels",
+            "nodes": 22
+          },
+          {
+            "id": "html-has-lang",
+            "nodes": 1
+          },
+          {
+            "id": "html-lang-valid",
+            "nodes": 1
+          },
+          {
+            "id": "label-title-only",
+            "nodes": 22
+          },
+          {
+            "id": "label",
+            "nodes": 22
+          },
+          {
+            "id": "meta-viewport-large",
+            "nodes": 1
+          },
+          {
+            "id": "meta-viewport",
+            "nodes": 1
+          },
+          {
+            "id": "nested-interactive",
+            "nodes": 29
+          },
+          {
+            "id": "region",
+            "nodes": 97
+          },
+          {
+            "id": "summary-name",
+            "nodes": 1
+          },
+          {
+            "id": "tabindex",
+            "nodes": 15
+          },
+          {
+            "id": "target-size",
+            "nodes": 33
+          }
+        ],
+        "inapplicable": [
+          "accesskeys",
+          "area-alt",
+          "aria-braille-equivalent",
+          "aria-command-name",
+          "aria-input-field-name",
+          "aria-meter-name",
+          "aria-progressbar-name",
+          "aria-required-children",
+          "aria-required-parent",
+          "aria-tab-name",
+          "aria-text",
+          "aria-tooltip-name",
+          "aria-treeitem-name",
+          "blink",
+          "bypass",
+          "definition-list",
+          "dlitem",
+          "empty-heading",
+          "empty-table-header",
+          "frame-focusable-content",
+          "frame-tested",
+          "frame-title-unique",
+          "frame-title",
+          "heading-order",
+          "html-xml-lang-mismatch",
+          "image-alt",
+          "image-redundant-alt",
+          "input-button-name",
+          "input-image-alt",
+          "landmark-banner-is-top-level",
+          "landmark-contentinfo-is-top-level",
+          "landmark-main-is-top-level",
+          "landmark-no-duplicate-banner",
+          "landmark-no-duplicate-contentinfo",
+          "landmark-no-duplicate-main",
+          "landmark-unique",
+          "link-in-text-block",
+          "link-name",
+          "list",
+          "listitem",
+          "marquee",
+          "meta-refresh",
+          "object-alt",
+          "presentation-role-conflict",
+          "role-img-alt",
+          "scope-attr-valid",
+          "scrollable-region-focusable",
+          "select-name",
+          "server-side-image-map",
+          "skip-link",
+          "svg-img-alt",
+          "table-duplicate-name",
+          "td-headers-attr",
+          "th-has-data-cells",
+          "valid-lang",
+          "video-caption",
+          "no-autoplay-audio"
+        ]
+      }
+    },
+    {
+      "title": "Thorium - Catalogs",
+      "url": "http://localhost:8090/index_library.html#/opds/8c5772bb-2e60-406c-ad4e-2c2ee0cee8e7/browse/1/aHR0cDovLzEyNy4wLjAuMTo0ODczL29wZHMvdjIvY2F0YWxvZy5qc29u/aHR0cDovLzEyNy4wLjAuMTo0ODczL29wZHMvdjIvY2F0YWxvZy5qc29u",
+      "lang": "en",
+      "dimensions": {
+        "width": 1133,
+        "height": 808,
+        "scrollWidth": 1133
+      },
+      "focus": "<button title=\"Settings\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" aria-expanded=\"false\" id=\"react-aria6890934393-:rc6:\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#gear-icon\"></use></svg><h3 dir=\"ltr\" aria-label=\"Application Settings\">Settings</h3></button>",
+      "dialogs": [],
+      "sliders": [],
+      "evidencePrefix": "batch-2/reader-tts-preview-1",
+      "axe": {
+        "violations": [
+          {
+            "id": "heading-order",
+            "impact": "moderate",
+            "tags": [
+              "cat.semantics",
+              "best-practice"
+            ],
+            "description": "Ensure the order of headings is semantically correct",
+            "help": "Heading levels should only increase by one",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/heading-order?application=axeAPI",
+            "nodes": [
+              {
+                "any": [
+                  {
+                    "id": "heading-order",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "moderate",
+                    "message": "Heading order invalid"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "moderate",
+                "html": "<h3>Home</h3>",
+                "target": [
+                  "a[title=\"Home\"] > h3"
+                ],
+                "failureSummary": "Fix any of the following:\n  Heading order invalid"
+              },
+              {
+                "any": [
+                  {
+                    "id": "heading-order",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "moderate",
+                    "message": "Heading order invalid"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "moderate",
+                "html": "<h4 style=\"font-size: 16px;\">http://127.0.0.1:4873/opds/v2/catalog.json</h4>",
+                "target": [
+                  "h4"
+                ],
+                "failureSummary": "Fix any of the following:\n  Heading order invalid"
+              }
+            ]
+          },
+          {
+            "id": "landmark-main-is-top-level",
+            "impact": "moderate",
+            "tags": [
+              "cat.semantics",
+              "best-practice"
+            ],
+            "description": "Ensure the main landmark is at top level",
+            "help": "Main landmark should not be contained in another landmark",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/landmark-main-is-top-level?application=axeAPI",
+            "nodes": [
+              {
+                "any": [
+                  {
+                    "id": "landmark-is-top-level",
+                    "data": {
+                      "role": "main"
+                    },
+                    "relatedNodes": [],
+                    "impact": "moderate",
+                    "message": "The main landmark is contained in another landmark."
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "moderate",
+                "html": "<main id=\"main\" aria-label=\"main content\" class=\"main\">",
+                "target": [
+                  "#main"
+                ],
+                "failureSummary": "Fix any of the following:\n  The main landmark is contained in another landmark."
+              }
+            ]
+          },
+          {
+            "id": "list",
+            "impact": "serious",
+            "tags": [
+              "cat.structure",
+              "wcag2a",
+              "wcag131",
+              "EN-301-549",
+              "EN-9.1.3.1",
+              "RGAAv4",
+              "RGAA-9.3.1"
+            ],
+            "description": "Ensure that lists are structured correctly",
+            "help": "<ul> and <ol> must only directly contain <li>, <script> or <template> elements",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/list?application=axeAPI",
+            "nodes": [
+              {
+                "any": [],
+                "all": [],
+                "none": [
+                  {
+                    "id": "only-listitems",
+                    "data": {
+                      "values": "div"
+                    },
+                    "relatedNodes": [
+                      {
+                        "html": "<div>",
+                        "target": [
+                          "ul > div"
+                        ]
+                      }
+                    ],
+                    "impact": "serious",
+                    "message": "List element has direct children that are not allowed: div"
+                  }
+                ],
+                "impact": "serious",
+                "html": "<ul style=\"padding-top: 10px;\">",
+                "target": [
+                  "ul"
+                ],
+                "failureSummary": "Fix all of the following:\n  List element has direct children that are not allowed: div"
+              }
+            ]
+          },
+          {
+            "id": "listitem",
+            "impact": "serious",
+            "tags": [
+              "cat.structure",
+              "wcag2a",
+              "wcag131",
+              "EN-301-549",
+              "EN-9.1.3.1",
+              "RGAAv4",
+              "RGAA-9.3.1"
+            ],
+            "description": "Ensure <li> elements are used semantically",
+            "help": "<li> elements must be contained in a <ul> or <ol>",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/listitem?application=axeAPI",
+            "nodes": [
+              {
+                "any": [
+                  {
+                    "id": "listitem",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "serious",
+                    "message": "List item does not have a <ul>, <ol> parent element"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "serious",
+                "html": "<li class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" style=\"height: inherit;\"><a role=\"button\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" title=\"Home\" href=\"#/home\" style=\"height: inherit;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 12\"><use xlink:href=\"#home-icon\"></use></svg><h3>Home</h3></a></li>",
+                "target": [
+                  "li:nth-child(1)"
+                ],
+                "failureSummary": "Fix any of the following:\n  List item does not have a <ul>, <ol> parent element"
+              },
+              {
+                "any": [
+                  {
+                    "id": "listitem",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "serious",
+                    "message": "List item does not have a <ul>, <ol> parent element"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "serious",
+                "html": "<li class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" style=\"height: inherit;\">",
+                "target": [
+                  "div > li:nth-child(2)"
+                ],
+                "failureSummary": "Fix any of the following:\n  List item does not have a <ul>, <ol> parent element"
+              },
+              {
+                "any": [
+                  {
+                    "id": "listitem",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "serious",
+                    "message": "List item does not have a <ul>, <ol> parent element"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "serious",
+                "html": "<li class=\"active R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" style=\"height: inherit;\">",
+                "target": [
+                  ".active"
+                ],
+                "failureSummary": "Fix any of the following:\n  List item does not have a <ul>, <ol> parent element"
+              }
+            ]
+          }
+        ],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "tags": [
+              "cat.color",
+              "wcag2aa",
+              "wcag143",
+              "TTv5",
+              "TT13.c",
+              "EN-301-549",
+              "EN-9.1.4.3",
+              "ACT",
+              "RGAAv4",
+              "RGAA-3.2.1"
+            ],
+            "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "any": [
+                  {
+                    "id": "color-contrast",
+                    "data": {
+                      "contrastRatio": 0,
+                      "fontSize": "9.0pt (12px)",
+                      "fontWeight": "normal",
+                      "messageKey": "bgGradient",
+                      "expectedContrastRatio": "4.5:1"
+                    },
+                    "relatedNodes": [
+                      {
+                        "html": "<div class=\"no_img_wrapper\" style=\"background-image: linear-gradient(rgb(209, 142, 75), rgb(124, 76, 28));\"><div class=\"no_img\"><p aria-hidden=\"true\" lang=\"en\">Accessible EPUB 3</p><p aria-hidden=\"true\">Matt Garrish</p></div></div>",
+                        "target": [
+                          ".no_img_wrapper"
+                        ]
+                      }
+                    ],
+                    "impact": "serious",
+                    "message": "Element's background color could not be determined due to a background gradient"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "serious",
+                "html": "<p aria-hidden=\"true\" lang=\"en\">Accessible EPUB 3</p>",
+                "target": [
+                  ".no_img > p[lang=\"en\"]"
+                ],
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "any": [
+                  {
+                    "id": "color-contrast",
+                    "data": {
+                      "contrastRatio": 0,
+                      "fontSize": "9.4pt (12.6px)",
+                      "fontWeight": "normal",
+                      "messageKey": "bgGradient",
+                      "expectedContrastRatio": "4.5:1"
+                    },
+                    "relatedNodes": [
+                      {
+                        "html": "<div class=\"no_img_wrapper\" style=\"background-image: linear-gradient(rgb(209, 142, 75), rgb(124, 76, 28));\"><div class=\"no_img\"><p aria-hidden=\"true\" lang=\"en\">Accessible EPUB 3</p><p aria-hidden=\"true\">Matt Garrish</p></div></div>",
+                        "target": [
+                          ".no_img_wrapper"
+                        ]
+                      }
+                    ],
+                    "impact": "serious",
+                    "message": "Element's background color could not be determined due to a background gradient"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "serious",
+                "html": "<p aria-hidden=\"true\">Matt Garrish</p>",
+                "target": [
+                  ".no_img > p:nth-child(2)"
+                ],
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              }
+            ]
+          }
+        ],
+        "passes": [
+          {
+            "id": "aria-allowed-attr",
+            "nodes": 12
+          },
+          {
+            "id": "aria-allowed-role",
+            "nodes": 9
+          },
+          {
+            "id": "aria-conditional-attr",
+            "nodes": 12
+          },
+          {
+            "id": "aria-deprecated-role",
+            "nodes": 8
+          },
+          {
+            "id": "aria-hidden-body",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-focus",
+            "nodes": 14
+          },
+          {
+            "id": "aria-prohibited-attr",
+            "nodes": 12
+          },
+          {
+            "id": "aria-required-attr",
+            "nodes": 8
+          },
+          {
+            "id": "aria-roles",
+            "nodes": 8
+          },
+          {
+            "id": "aria-valid-attr-value",
+            "nodes": 12
+          },
+          {
+            "id": "aria-valid-attr",
+            "nodes": 12
+          },
+          {
+            "id": "avoid-inline-spacing",
+            "nodes": 13
+          },
+          {
+            "id": "button-name",
+            "nodes": 4
+          },
+          {
+            "id": "bypass",
+            "nodes": 1
+          },
+          {
+            "id": "color-contrast",
+            "nodes": 10
+          },
+          {
+            "id": "document-title",
+            "nodes": 1
+          },
+          {
+            "id": "empty-heading",
+            "nodes": 9
+          },
+          {
+            "id": "heading-order",
+            "nodes": 7
+          },
+          {
+            "id": "html-has-lang",
+            "nodes": 1
+          },
+          {
+            "id": "html-lang-valid",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-no-duplicate-main",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-one-main",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-unique",
+            "nodes": 3
+          },
+          {
+            "id": "link-name",
+            "nodes": 4
+          },
+          {
+            "id": "listitem",
+            "nodes": 1
+          },
+          {
+            "id": "meta-viewport-large",
+            "nodes": 1
+          },
+          {
+            "id": "meta-viewport",
+            "nodes": 1
+          },
+          {
+            "id": "nested-interactive",
+            "nodes": 7
+          },
+          {
+            "id": "page-has-heading-one",
+            "nodes": 1
+          },
+          {
+            "id": "region",
+            "nodes": 53
+          },
+          {
+            "id": "tabindex",
+            "nodes": 5
+          },
+          {
+            "id": "target-size",
+            "nodes": 8
+          }
+        ],
+        "inapplicable": [
+          "accesskeys",
+          "area-alt",
+          "aria-braille-equivalent",
+          "aria-command-name",
+          "aria-dialog-name",
+          "aria-input-field-name",
+          "aria-meter-name",
+          "aria-progressbar-name",
+          "aria-required-children",
+          "aria-required-parent",
+          "aria-tab-name",
+          "aria-text",
+          "aria-toggle-field-name",
+          "aria-tooltip-name",
+          "aria-treeitem-name",
+          "autocomplete-valid",
+          "blink",
+          "definition-list",
+          "dlitem",
+          "duplicate-id-aria",
+          "empty-table-header",
+          "form-field-multiple-labels",
+          "frame-focusable-content",
+          "frame-tested",
+          "frame-title-unique",
+          "frame-title",
+          "html-xml-lang-mismatch",
+          "image-alt",
+          "image-redundant-alt",
+          "input-button-name",
+          "input-image-alt",
+          "label-title-only",
+          "label",
+          "landmark-banner-is-top-level",
+          "landmark-contentinfo-is-top-level",
+          "landmark-no-duplicate-banner",
+          "landmark-no-duplicate-contentinfo",
+          "link-in-text-block",
+          "marquee",
+          "meta-refresh",
+          "object-alt",
+          "presentation-role-conflict",
+          "role-img-alt",
+          "scope-attr-valid",
+          "scrollable-region-focusable",
+          "select-name",
+          "server-side-image-map",
+          "skip-link",
+          "summary-name",
+          "svg-img-alt",
+          "table-duplicate-name",
+          "td-headers-attr",
+          "th-has-data-cells",
+          "valid-lang",
+          "video-caption",
+          "no-autoplay-audio"
+        ]
+      }
+    }
+  ]
+}

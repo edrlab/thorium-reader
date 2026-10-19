@@ -48,11 +48,14 @@ const context = React.createContext<{
 }>(undefined);
 
 const Item = ({v}: {v: IApiappSearchResultView}) => {
-
     const {selectSearchResult, setSelectSearchResult, submitAction } = React.useContext(context);
     return <li>
-                <a style={{
+                <button type="button" style={{
                     display: "block",
+                    width: "100%",
+                    height: "auto",
+                    minHeight: "48px",
+                    textAlign: "start",
                     cursor: "pointer",
                     padding: "8px",
                     marginTop: "1rem",
@@ -60,34 +63,17 @@ const Item = ({v}: {v: IApiappSearchResultView}) => {
                     border: selectSearchResult === v ? "2px solid var(--color-brand-primary)" : "2px solid transparent",
                     borderRadius: "8px",
                 }}
-                    role="option"
-                    aria-selected={selectSearchResult === v}
-                    tabIndex={0}
+                    aria-pressed={selectSearchResult === v}
                     onClick={() => setSelectSearchResult(v)}
-                    onDoubleClick={(_e) => {
-                        // e.preventDefault();
+                    onDoubleClick={() => {
                         setSelectSearchResult(v);
-                        setTimeout(() => {
-                            submitAction();
-                        }, 0);
-                    }}
-                    onKeyUp={(e) => {
-                        if (e.key === "Enter") {
-                            // e.preventDefault();
-                            // e.stopPropagation();
-                            setSelectSearchResult(v);
-                            setTimeout(() => {
-                                submitAction();
-                            }, 0);
-                        }
+                        setTimeout(() => submitAction(), 0);
                     }}
                 >
-                    <strong>
-                        {v.name}
-                    </strong>
+                    <strong>{v.name}</strong>
                     <br />
                     <span>{v.address}</span>
-                </a>
+                </button>
             </li>;
 };
 

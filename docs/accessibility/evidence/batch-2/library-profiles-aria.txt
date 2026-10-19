@@ -1,0 +1,17 @@
+- main:
+  - 'heading "Component fixture: profiles" [level=1]'
+  - paragraph: Switch profiles to customize the app with a partner vendor’s branding and colors. Each profile offers a tailored experience.
+  - radiogroup "Profiles":
+    - radio "Audit profile 1" [checked]
+    - heading "Audit profile 1" [level=3]
+    - paragraph: Local profile fixture 1
+    - text: "Version: 2026-01-01T00:00:00.000Z"
+    - button "Delete"
+    - radio "Audit profile 2"
+    - heading "Audit profile 2" [level=3]
+    - paragraph: Local profile fixture 2
+    - text: "Version: 2026-01-01T00:00:00.000Z"
+    - button "Delete"
+    - radio "Thorium vanilla"
+    - heading "Thorium vanilla" [level=3]
+    - paragraph: The Thorium Vanilla profile is the original one, designed by EDRLab.

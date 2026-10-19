@@ -22,9 +22,10 @@ const files = walk(path.join(root, 'evidence'));
 assert.equal(files.filter(f => /[\\/]failure-/.test(f)).length, 0, 'Unresolved fixture capture failure');
 for (const file of files.filter(f => f.endsWith('.json'))) JSON.parse(fs.readFileSync(file));
 const matrix = csv('component-matrix.csv');
-const remediationPath = path.join(root, 'remediation-batch-1.json');
-const remediation = fs.existsSync(remediationPath) ? JSON.parse(fs.readFileSync(remediationPath)) : undefined;
-const inventoryCount = JSON.parse(fs.readFileSync(remediation?.inventory || path.join(root, 'evidence/static-inventory.json'))).files.length;
+const remediations = fs.readdirSync(root).filter(n => /^remediation-batch-\d+\.json$/.test(n))
+    .sort((a, b) => Number(a.match(/\d+/)[0]) - Number(b.match(/\d+/)[0]))
+    .map(n => JSON.parse(fs.readFileSync(path.join(root, n))));
+const inventoryCount = JSON.parse(fs.readFileSync(remediations.at(-1)?.inventory || path.join(root, 'evidence/static-inventory.json'))).files.length;
 assert.equal(matrix.length, inventoryCount);
 assert.equal(new Set(matrix.map(r => r.file)).size, inventoryCount);
 assert.equal(matrix.filter(r => r.coverage_kind === 'inactive').length, 3);
@@ -52,22 +53,29 @@ const keyboard = JSON.parse(fs.readFileSync(path.join(root, 'evidence/continuati
 assert.equal(keyboard.length, 25); assert.equal(keyboard.filter(r => r.error).length, 0);
 assert.equal(JSON.parse(fs.readFileSync(path.join(root, 'evidence/continuation/additional-checks.json'))).errors.length, 0);
 assert.equal(csv('wcag-criteria.csv').length, 55);
-if (remediation) {
+for (const remediation of remediations) {
     for (const finding of Object.values(remediation.findings)) {
         for (const file of finding.files) assert.ok(matrix.some(r => r.file === file), file);
         for (const evidence of finding.evidence) assert.ok(fs.existsSync(path.join(root, evidence)), evidence);
     }
-    const batchStates = csv('batch-1-state-results.csv');
+    const batchStates = csv(`batch-${remediation.batch}-state-results.csv`);
     assert.equal(batchStates.length, remediation.validation.fixtureStates + remediation.validation.applicationStates);
     for (const row of batchStates) {
         const data = JSON.parse(fs.readFileSync(path.join(root, row.raw_evidence)));
         assert.ok(fs.existsSync(path.join(root, row.screenshot)), row.screenshot);
         if (data.kind === 'component-fixture') assert.equal(data.errors.length, 0, row.state);
     }
+    assert.equal(batchStates.filter(r => r.coverage_kind === 'component-fixture').length, remediation.validation.fixtureStates);
+    assert.equal(batchStates.filter(r => r.coverage_kind === 'application').length, remediation.validation.applicationStates);
     for (const name of ['fixture-checks', 'application-checks']) {
-        const checks = JSON.parse(fs.readFileSync(path.join(root, `evidence/batch-1/${name}.json`)));
+        const checks = JSON.parse(fs.readFileSync(path.join(root, `evidence/batch-${remediation.batch}/${name}.json`)));
         assert.ok(checks.tests.every(test => test.status === 'passed'), name);
+        assert.equal(checks.tests.length, name === 'fixture-checks' ? remediation.validation.fixtureScenarios : remediation.validation.applicationScenarios);
     }
+}
+const latestFindings = Object.assign({}, ...remediations.map(r => r.findings));
+for (const row of matrix) {
+    for (const id of row.remaining_finding_IDs.match(/\bA\d{2}\b/g) || []) assert.notEqual(latestFindings[id]?.status, 'fixed', `${row.file}: ${id} still marked remaining`);
 }
 const report = fs.readFileSync(path.join(root, 'audit-2026-10-19.md'), 'utf8');
 for (const match of report.matchAll(/\]\(([^)]+)\)/g)) {

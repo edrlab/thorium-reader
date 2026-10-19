@@ -1,6 +1,11 @@
 const fs = require("node:fs");
-const remediationPath = "docs/accessibility/remediation-batch-1.json";
-const remediation = fs.existsSync(remediationPath) ? JSON.parse(fs.readFileSync(remediationPath, "utf8")) : undefined;
+const batches = fs.readdirSync("docs/accessibility").filter(n => /^remediation-batch-\d+\.json$/.test(n))
+    .sort((a, b) => Number(a.match(/\d+/)[0]) - Number(b.match(/\d+/)[0]))
+    .map(n => JSON.parse(fs.readFileSync("docs/accessibility/" + n, "utf8")));
+const remediation = batches.length ? {
+    inventory: batches.at(-1).inventory,
+    findings: Object.assign({}, ...batches.map(batch => Object.fromEntries(Object.entries(batch.findings).map(([id, finding]) => [id, { ...finding, batch: batch.batch }])))),
+} : undefined;
 const inventory = JSON.parse(fs.readFileSync(remediation?.inventory || "docs/accessibility/evidence/static-inventory.json", "utf8"));
 const issues = {
     "FontSize.tsx": "A01 A13", "ReaderSettings/Slider.tsx": "A01 A02 A13", "ReadingSpacing.tsx": "A01 A02 A13",
@@ -32,11 +37,11 @@ const rows = inventory.files.map(file => {
     return [
     file.file, "Structural control review; no full conformance assertion", file.nodes.length,
     ids.join(" "),
-    [runtime[file.file] || (fixes.length ? "Post-fix coverage" : "Not exercised"), ...(fixes.length ? ["Batch 1: " + fixEvidence.join("; ")] : [])].join(". "), continuation[file.file]?.kind === "inactive" ? "Inactive source; no visual runtime surface" : "Not determined; sampled states do not establish conformance",
+    [runtime[file.file] || (fixes.length ? "Post-fix coverage" : "Not exercised"), ...(fixes.length ? ["Remediation: " + fixEvidence.join("; ")] : [])].join(". "), continuation[file.file]?.kind === "inactive" ? "Inactive source; no visual runtime surface" : "Not determined; sampled states do not establish conformance",
     continuation[file.file]?.kind || (runtime[file.file] ? "application" : fixes.length ? "application+fixture" : "untested"),
     continuation[file.file]?.observation ? "Baseline audit: " + continuation[file.file].observation : "See referenced application captures and report findings",
     continuation[file.file]?.limitations || "Representative application states only; all branches and native AT not verified",
-    fixes.length ? fixes.map(([id, finding]) => `${id}: ${finding.status}; ${finding.observation}`).join(" | ") : "No batch 1 remediation; historical evidence retained",
+    fixes.length ? fixes.map(([id, finding]) => `${id}: ${finding.status} (batch ${finding.batch}); ${finding.observation}`).join(" | ") : "No remediation yet; historical evidence retained",
     fixEvidence.join("; "), remaining.join(" "),
     ];
 });

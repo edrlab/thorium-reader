@@ -1,5 +1,6 @@
 {
     "accessibility": {
+        "cancelDownload": "Annuler le téléchargement : {{- title}}",
         "annotationNote": "Note d’annotation",
         "bookMenu": "Menu",
         "bookmarkNote": "Note du marque-page",

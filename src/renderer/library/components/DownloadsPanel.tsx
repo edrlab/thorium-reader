@@ -54,7 +54,7 @@ class DownloadsPanel extends React.Component<IProps, undefined> {
                         progress = 0;
                     }
                     return <li key={id}>
-                        <span className={stylesApp.title}><a onClick={() => abortDownload(id)}><SVG ariaHidden svg={CloseIcon} /></a></span>
+                        <span className={stylesApp.title}><button type="button" aria-label={__("accessibility.cancelDownload", { title: dl.downloadLabel })} onClick={() => abortDownload(id)}><SVG ariaHidden svg={CloseIcon} /></button></span>
                         {
                             progress === 0 ? // indeterminate
                             (<>

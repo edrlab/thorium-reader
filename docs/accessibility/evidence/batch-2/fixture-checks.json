@@ -1,0 +1,103 @@
+{
+  "batch": 2,
+  "tests": [
+    {
+      "id": "download-cancel-enter-space-and-localization",
+      "status": "passed",
+      "findings": [
+        "A05"
+      ],
+      "evidence": [
+        "batch-2/library-downloads.json",
+        "batch-2/library-downloads-fr.json"
+      ],
+      "limitation": "Synthetic download IDs; abort actions recorded without download sagas."
+    },
+    {
+      "id": "carousel-exposed-buttons-scroll-with-keyboard",
+      "status": "passed",
+      "findings": [
+        "A06"
+      ],
+      "evidence": [
+        "batch-2/library-carousel-scrolled.json",
+        "batch-2/library-carousel-start.json"
+      ]
+    },
+    {
+      "id": "pagination-single-controls-and-routing",
+      "status": "passed",
+      "findings": [
+        "A07"
+      ],
+      "evidence": "batch-2/library-opds-navigation.json",
+      "limitation": "Redux navigation requests recorded; no remote catalog was contacted."
+    },
+    {
+      "id": "pagination-disabled-and-absent-links",
+      "status": "passed",
+      "findings": [
+        "A07"
+      ],
+      "evidence": "batch-2/library-opds-navigation-disabled.json"
+    },
+    {
+      "id": "refresh-native-button-and-skip-heading-levels",
+      "status": "passed",
+      "findings": [
+        "A07",
+        "A21"
+      ],
+      "evidence": "batch-2/library-library-refresh.json"
+    },
+    {
+      "id": "profiles-one-native-radio-arrow-selection",
+      "status": "passed",
+      "findings": [
+        "A10"
+      ],
+      "evidence": "batch-2/library-profiles.json",
+      "limitation": "Real reducer updates in fixture; branding activation sagas and profile deletion not executed."
+    },
+    {
+      "id": "apiapp-buttons-select-without-submitting",
+      "status": "passed",
+      "findings": [
+        "A09"
+      ],
+      "evidence": "batch-2/library-apiapp-results.json",
+      "limitation": "Synthetic API response. Selection tested; no catalog added."
+    },
+    {
+      "id": "library-description-disclosure",
+      "status": "passed",
+      "findings": [
+        "A29"
+      ],
+      "evidence": [
+        "batch-2/library-description-expanded.json",
+        "batch-2/library-description-collapsed.json"
+      ]
+    },
+    {
+      "id": "reader-description-disclosure",
+      "status": "passed",
+      "findings": [
+        "A29"
+      ],
+      "evidence": [
+        "batch-2/reader-description-expanded.json",
+        "batch-2/reader-description-collapsed.json"
+      ]
+    },
+    {
+      "id": "reader-tts-preview-disclosure-exposed",
+      "status": "passed",
+      "findings": [
+        "A25"
+      ],
+      "evidence": "batch-2/reader-tts-preview-expanded.json",
+      "limitation": "Preview disclosure only; no audio played."
+    }
+  ]
+}

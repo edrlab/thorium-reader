@@ -34,6 +34,11 @@ import { buildOpdsBrowserRoute } from 'readium-desktop/renderer/library/opds/rou
 import OverloadNoteExportToHtml from 'readium-desktop/renderer/library/components/settings/OverloadNoteExportToHtml';
 import { FeedCard } from 'readium-desktop/renderer/library/components/opds/FeedCard';
 
+import Profiles from 'readium-desktop/renderer/library/components/settings/ProfilesSettings';
+import Slider from 'readium-desktop/renderer/library/components/utils/Slider';
+import LibraryLayout from 'readium-desktop/renderer/library/components/layout/LibraryLayout';
+import * as stylesSettings from 'readium-desktop/renderer/assets/styles/components/settings.scss';
+
 const common = (p: string) => 'src/renderer/common/components/' + p;
 const lib = (p: string) => 'src/renderer/library/components/' + p;
 const cases: Record<string, AuditCase> = {};
@@ -68,5 +73,12 @@ add('user-profile', [lib('opds/UserProfile.tsx')], () => <UserProfile identifier
 add('opds-menu', [lib('publication/menu/OpdsMenu.tsx')], () => <OpdsMenu opdsPublicationView={{ ...publication, title: 'Audit publication', authors: ['Audit author'], tags: [], links: [] } as any} />);
 add('authentication-settings', [lib('settings/AuthSettings.tsx')], () => <AuthSettings />);
 add('session-settings', [lib('settings/SaveSessionSettings.tsx')], () => <SaveSession />);
+add('profiles', [lib('settings/ProfilesSettings.tsx')], () => <div className={stylesSettings.settings_tab}><Profiles /></div>, s => {
+    s.customization.provision = ['one', 'two'].map((id, index) => ({ id: 'audit-' + id, fileName: 'audit-' + id, title: 'Audit profile ' + (index + 1), description: 'Local profile fixture ' + (index + 1), version: Date.parse('2026-01-01') }));
+    s.customization.activate = { id: 'audit-one' };
+});
+add('carousel', [lib('utils/Slider.tsx')], () => <div style={{ width: '500px' }}><Slider resetSliderPosition={false} content={Array.from({ length: 8 }, (_, index) => <div style={{ width: '200px', flexShrink: 0 }}><button>Audit book {index + 1}</button></div>)} /></div>);
+add('library-refresh', [lib('layout/LibraryLayout.tsx')], () => <LibraryLayout title="Audit catalog" page={__("opds.breadcrumbRoot")} catalogHeader={<div>Audit catalog</div>}><p>Isolated refresh control</p></LibraryLayout>);
+add('opds-navigation-disabled', [lib('opds/PageNavigation.tsx')], () => <PageNavigation pageLinks={{ first: [], previous: [], next: [{ url: 'https://audit.invalid/next' }], last: [] } as any} pageInfo={{ currentPage: 4, numberOfItems: 40, itemsPerPage: 10 } as any} />);
 const location = { pathname: buildOpdsBrowserRoute('audit', 'Audit catalog', 'https://audit.invalid/catalog', 1), search: '', hash: '', state: undefined };
 install('library', rootReducer((state: any = { location, action: 'POP' }) => state), cases);

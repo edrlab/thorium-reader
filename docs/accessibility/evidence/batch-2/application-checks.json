@@ -1,0 +1,50 @@
+{
+  "batch": 2,
+  "startup": "npm run start:dev:quick",
+  "tests": [
+    {
+      "id": "both-host-skip-heading-level-and-focus",
+      "status": "passed",
+      "findings": [
+        "A21"
+      ],
+      "evidence": "batch-2/reader-host-headings.json",
+      "limitation": "Heading levels and programmatic focus preserved. Native screen-reader heading navigation not tested."
+    },
+    {
+      "id": "live-home-carousel-keyboard",
+      "status": "passed",
+      "findings": [
+        "A06"
+      ],
+      "evidence": "batch-2/library-home-carousel.json"
+    },
+    {
+      "id": "live-local-opds-refresh-keyboard",
+      "status": "passed",
+      "findings": [
+        "A07"
+      ],
+      "evidence": "batch-2/library-opds-refresh.json",
+      "limitation": "Existing loopback test catalog only. Pagination links tested separately in fixtures."
+    },
+    {
+      "id": "live-profile-group-inspection",
+      "status": "passed",
+      "findings": [
+        "A10"
+      ],
+      "evidence": "batch-2/library-live-profiles.json",
+      "limitation": "Existing profile inspected only; no live profile activated or deleted. Multi-profile keyboard selection tested in fixtures."
+    },
+    {
+      "id": "live-reader-tts-preview-keyboard",
+      "status": "passed",
+      "findings": [
+        "A25"
+      ],
+      "evidence": "batch-2/reader-tts-preview.json",
+      "limitation": "Preview opened and closed; audio not started and TTS settings not changed."
+    }
+  ]
+}

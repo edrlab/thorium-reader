@@ -1,0 +1,14 @@
+- main:
+  - 'heading "Component fixture: opds-navigation" [level=1]'
+  - search:
+    - text: Search
+    - searchbox "Search"
+  - list:
+    - listitem:
+      - link "Audit category Books in the category (5)":
+        - /url: /opds/audit/browse/1/QXVkaXQgY2F0ZWdvcnk/aHR0cHM6Ly9hdWRpdC5pbnZhbGlkL2NhdGVnb3J5
+  - button "First"
+  - button "Previous"
+  - text: 2 / 4
+  - button "Next"
+  - button "Last"

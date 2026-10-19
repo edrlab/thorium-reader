@@ -1,0 +1,361 @@
+{
+  "id": "carousel",
+  "runtime": "library",
+  "files": [
+    "src/renderer/library/components/utils/Slider.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T12:40:11.492Z",
+  "lang": "en",
+  "errors": [],
+  "actions": [],
+  "text": "Component fixture: carousel\nAudit book 1\nAudit book 2\nAudit book 3\nAudit book 4\nAudit book 5\nAudit book 6\nAudit book 7\nAudit book 8",
+  "html": "<div id=\"audit-root\"><main><h1>Component fixture: carousel</h1><div style=\"width: 500px;\"><div class=\"slider\"><button aria-label=\"Slide to the left\" class=\"slider_button_prev button_transparency_icon\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-arrow_forward_ios-24px\"></use></svg></button><div class=\"slider_wrapper\"><ul class=\"slider_items\"><li><div style=\"width: 200px; flex-shrink: 0;\"><button>Audit book 1</button></div></li><li><div style=\"width: 200px; flex-shrink: 0;\"><button>Audit book 2</button></div></li><li><div style=\"width: 200px; flex-shrink: 0;\"><button>Audit book 3</button></div></li><li><div style=\"width: 200px; flex-shrink: 0;\"><button>Audit book 4</button></div></li><li><div style=\"width: 200px; flex-shrink: 0;\"><button>Audit book 5</button></div></li><li><div style=\"width: 200px; flex-shrink: 0;\"><button>Audit book 6</button></div></li><li><div style=\"width: 200px; flex-shrink: 0;\"><button>Audit book 7</button></div></li><li><div style=\"width: 200px; flex-shrink: 0;\"><button>Audit book 8</button></div></li></ul></div><button aria-label=\"Slide to the right\" class=\"slider_button_next button_transparency_icon\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-arrow_forward_ios-24px\"></use></svg></button></div></div></main></div>",
+  "dimensions": {
+    "width": 1184,
+    "height": 835,
+    "scrollWidth": 1184
+  },
+  "focus": "<button aria-label=\"Slide to the right\" class=\"slider_button_next button_transparency_icon\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-arrow_forward_ios-24px\"></use></svg></button>",
+  "controls": [
+    {
+      "html": "<button aria-label=\"Slide to the left\" class=\"slider_button_prev button_transparency_icon\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-arrow_forward_ios-24px\"></use></svg></button>",
+      "rect": {
+        "x": 430,
+        "y": 15.15625,
+        "width": 30,
+        "height": 30,
+        "top": 15.15625,
+        "right": 460,
+        "bottom": 45.15625,
+        "left": 430
+      },
+      "visible": true
+    },
+    {
+      "html": "<button>Audit book 1</button>",
+      "rect": {
+        "x": -181,
+        "y": 60.15625,
+        "width": 77.859375,
+        "height": 30,
+        "top": 60.15625,
+        "right": -103.140625,
+        "bottom": 90.15625,
+        "left": -181
+      },
+      "visible": true
+    },
+    {
+      "html": "<button>Audit book 2</button>",
+      "rect": {
+        "x": 34,
+        "y": 60.15625,
+        "width": 77.859375,
+        "height": 30,
+        "top": 60.15625,
+        "right": 111.859375,
+        "bottom": 90.15625,
+        "left": 34
+      },
+      "visible": true
+    },
+    {
+      "html": "<button>Audit book 3</button>",
+      "rect": {
+        "x": 249,
+        "y": 60.15625,
+        "width": 77.859375,
+        "height": 30,
+        "top": 60.15625,
+        "right": 326.859375,
+        "bottom": 90.15625,
+        "left": 249
+      },
+      "visible": true
+    },
+    {
+      "html": "<button>Audit book 4</button>",
+      "rect": {
+        "x": 464,
+        "y": 60.15625,
+        "width": 77.859375,
+        "height": 30,
+        "top": 60.15625,
+        "right": 541.859375,
+        "bottom": 90.15625,
+        "left": 464
+      },
+      "visible": true
+    },
+    {
+      "html": "<button>Audit book 5</button>",
+      "rect": {
+        "x": 679,
+        "y": 60.15625,
+        "width": 77.859375,
+        "height": 30,
+        "top": 60.15625,
+        "right": 756.859375,
+        "bottom": 90.15625,
+        "left": 679
+      },
+      "visible": true
+    },
+    {
+      "html": "<button>Audit book 6</button>",
+      "rect": {
+        "x": 894,
+        "y": 60.15625,
+        "width": 77.859375,
+        "height": 30,
+        "top": 60.15625,
+        "right": 971.859375,
+        "bottom": 90.15625,
+        "left": 894
+      },
+      "visible": true
+    },
+    {
+      "html": "<button>Audit book 7</button>",
+      "rect": {
+        "x": 1109,
+        "y": 60.15625,
+        "width": 77.859375,
+        "height": 30,
+        "top": 60.15625,
+        "right": 1186.859375,
+        "bottom": 90.15625,
+        "left": 1109
+      },
+      "visible": true
+    },
+    {
+      "html": "<button>Audit book 8</button>",
+      "rect": {
+        "x": 1324,
+        "y": 60.15625,
+        "width": 77.859375,
+        "height": 30,
+        "top": 60.15625,
+        "right": 1401.859375,
+        "bottom": 90.15625,
+        "left": 1324
+      },
+      "visible": true
+    },
+    {
+      "html": "<button aria-label=\"Slide to the right\" class=\"slider_button_next button_transparency_icon\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-arrow_forward_ios-24px\"></use></svg></button>",
+      "rect": {
+        "x": 470,
+        "y": 15.15625,
+        "width": 30,
+        "height": 30,
+        "top": 15.15625,
+        "right": 500,
+        "bottom": 45.15625,
+        "left": 470
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [],
+    "incomplete": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "tags": [
+          "cat.color",
+          "wcag2aa",
+          "wcag143",
+          "TTv5",
+          "TT13.c",
+          "EN-301-549",
+          "EN-9.1.4.3",
+          "ACT",
+          "RGAAv4",
+          "RGAA-3.2.1"
+        ],
+        "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "contrastRatio": 0,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "normal",
+                  "messageKey": "elmPartiallyObscured",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<body data-audit-runtime=\"library\" style=\"font-family: Arial, sans-serif; background: var(--color-background, white); color: var(--color-content, black);\">",
+                    "target": [
+                      "body"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element's background color could not be determined because it's partially obscured by another element"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<button>Audit book 7</button>",
+            "target": [
+              "li:nth-child(7) > div > button"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "contrastRatio": 0,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "normal",
+                  "messageKey": "elmPartiallyObscured",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<body data-audit-runtime=\"library\" style=\"font-family: Arial, sans-serif; background: var(--color-background, white); color: var(--color-content, black);\">",
+                    "target": [
+                      "body"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element's background color could not be determined because it's partially obscured by another element"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<button>Audit book 8</button>",
+            "target": [
+              "li:nth-child(8) > div > button"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+          }
+        ]
+      }
+    ],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 2
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 2
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 3
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 2
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 2
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 2
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 10
+      },
+      {
+        "id": "button-name",
+        "nodes": 10
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 6
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 1
+      },
+      {
+        "id": "heading-order",
+        "nodes": 1
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-main-is-top-level",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-no-duplicate-main",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-unique",
+        "nodes": 1
+      },
+      {
+        "id": "list",
+        "nodes": 1
+      },
+      {
+        "id": "listitem",
+        "nodes": 8
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 10
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 33
+      },
+      {
+        "id": "scrollable-region-focusable",
+        "nodes": 1
+      },
+      {
+        "id": "target-size",
+        "nodes": 10
+      }
+    ]
+  },
+  "evidencePrefix": "batch-2/library-carousel-scrolled"
+}

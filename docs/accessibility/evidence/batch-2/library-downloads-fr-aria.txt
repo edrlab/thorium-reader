@@ -1,0 +1,15 @@
+- main:
+  - 'heading "Component fixture: downloads" [level=1]'
+  - alert:
+    - text: Téléchargements
+    - list:
+      - listitem:
+        - 'button "Annuler le téléchargement : Audit book download"'
+        - text: 42%
+        - 'progressbar "Progression du téléchargement : Audit book download"': "42"
+        - text: Audit book download 10 MB 1024 Kb/s
+      - listitem:
+        - 'button "Annuler le téléchargement : Queued audit book"'
+        - text: "? %"
+        - 'progressbar "Progression du téléchargement : Queued audit book"': ...
+        - text: Queued audit book 20 MB 0 Kb/s

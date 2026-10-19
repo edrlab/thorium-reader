@@ -1,0 +1,26 @@
+Batch 2 validation: initial keyboard and semantics subset
+Parent: adb0838e7d0d51beeadb491fad86f8ef111cd4af; remote branch verified
+TypeScript: tsc6 --noEmit --project tsconfig-cli.json --pretty false (exit 0)
+ESLint: ESLINT_USE_FLAT_CONFIG=false; changed renderer TSX files (exit 0)
+Stylelint: src/renderer/assets/styles/app.scss (exit 0)
+Translation typings: npm run i18n-typed (exit 0)
+Fixture scenarios: 10 passed; 14 captured states
+Live application scenarios: 5 passed; 5 intended-host captured states
+Original audit and batch 1 evidence unchanged
+Native screen-reader listening not performed; remaining findings stay open
+Development builds:
+renderer pdf webview index (webpack 5.111.1) compiled successfully in 1694 ms
+renderer pdf extract webview index (webpack 5.111.1) compiled successfully in 1133 ms
+renderer webview preload (webpack 5.111.1) compiled successfully in 3390 ms
+[2] main (webpack 5.111.1) compiled successfully in 10344 ms
+[0] renderer index app (webpack 5.111.1) compiled successfully in 13254 ms
+[1] renderer index reader (webpack 5.111.1) compiled successfully in 13799 ms
+[0] renderer index app (webpack 5.111.1) compiled successfully in 827 ms
+[1] renderer index reader (webpack 5.111.1) compiled successfully in 1340 ms
+[0] renderer index app (webpack 5.111.1) compiled successfully in 504 ms
+Fixture builds with renderer runtime scope checks:
+renderer index app:
+  renderer index app compiled in 16787 ms
+
+renderer index reader:
+  renderer index reader compiled in 16762 ms

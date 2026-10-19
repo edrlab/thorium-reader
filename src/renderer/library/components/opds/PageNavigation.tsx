@@ -9,7 +9,6 @@ import * as stylesPublication from "readium-desktop/renderer/assets/styles/compo
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { IOpdsResultView } from "readium-desktop/common/views/opds";
 import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/arrowFirst-icon.svg";
@@ -66,8 +65,6 @@ class PageNavigation extends React.Component<IProps, undefined> {
     public render() {
         const { pageLinks, pageInfo, __ } = this.props;
 
-        const buildRoute = buildOpdsBrowserRouteWithLink(this.props.location.pathname);
-
         if (![pageLinks?.first, pageLinks?.previous, pageLinks?.next, pageLinks?.last]
             .some((links) => links?.[0]?.url)) {
             return <></>;
@@ -75,202 +72,49 @@ class PageNavigation extends React.Component<IProps, undefined> {
 
         return (
             <div className={stylesPublication.opds_publication_wrapper}>
-                {/* <button className={stylesButtons.button_primary_blue} onClick={() => console.log(pageLinks)}>Log "pageLinks"</button> */}
-                {/* <p className={stylesPublication.allBooks_header_pagination_title}>{__("catalog.numberOfPages")}</p> */}
                 <div className={stylesPublication.allBooks_header_pagination_container}>
                     <button
+                        type="button"
                         className={stylesPublication.allBooks_header_pagination_arrow}
-                        aria-label={`${__("opds.firstPage")}`}
-                        disabled={!pageLinks?.first[0]?.url || pageInfo?.currentPage === 0}
-                        tabIndex={-1}
+                        aria-label={__("opds.firstPage")}
+                        disabled={!pageLinks?.first?.[0]?.url || pageInfo?.currentPage === 0}
+                        onClick={this.onKeyboardPageNavigationFirst}
                     >
-                        {pageLinks?.first[0]?.url ?
-                            <Link
-                                to={{
-                                    ...this.props.location,
-                                    pathname: buildRoute(pageLinks.first[0]),
-                                }}
-                                onClick={(e) => {
-                                    if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
-                                        e.preventDefault();
-                                        e.currentTarget.click();
-                                    }
-                                }}
-                                onKeyDown={(e) => {
-                                    // if (e.code === "Space") {
-                                    if (e.key === " " || e.altKey || e.ctrlKey) {
-                                        e.preventDefault(); // prevent scroll
-                                    }
-                                }}
-                                onKeyUp={(e) => {
-                                    // Includes screen reader tests:
-                                    // if (e.code === "Space") { WORKS
-                                    // if (e.key === "Space") { DOES NOT WORK
-                                    // if (e.key === "Enter") { WORKS
-                                    if (e.key === " ") { // WORKS
-                                        e.preventDefault();
-                                        e.currentTarget.click();
-                                    }
-                                }}
-                            >
-                                <SVG ariaHidden={true} svg={ArrowFirstIcon} />
-                            </Link> :
-                            <SVG ariaHidden={true} svg={ArrowFirstIcon} />}
+                        <SVG ariaHidden svg={ArrowFirstIcon} />
                     </button>
-
                     <button
+                        type="button"
                         className={stylesPublication.allBooks_header_pagination_arrow}
-                        style={{
-                            transform: "rotate(180deg)",
-                        }}
-                        aria-label={`${__("opds.previous")}`}
-                        disabled={!pageLinks?.previous[0]?.url || pageInfo?.currentPage === 0}
-                        tabIndex={-1}
+                        style={{ transform: "rotate(180deg)" }}
+                        aria-label={__("opds.previous")}
+                        disabled={!pageLinks?.previous?.[0]?.url || pageInfo?.currentPage === 0}
+                        onClick={this.onKeyboardPageNavigationPrevious}
                     >
-                        {
-                            pageLinks?.previous[0]?.url ?
-                                <Link
-                                    to={{
-                                        ...this.props.location,
-                                        pathname: buildRoute(pageLinks.previous[0]),
-                                    }}
-                                    onClick={(e) => {
-                                        if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
-                                            e.preventDefault();
-                                            e.currentTarget.click();
-                                        }
-                                    }}
-                                    onKeyDown={(e) => {
-                                        // if (e.code === "Space") {
-                                        if (e.key === " " || e.altKey || e.ctrlKey) {
-                                            e.preventDefault(); // prevent scroll
-                                        }
-                                    }}
-                                    onKeyUp={(e) => {
-                                        // Includes screen reader tests:
-                                        // if (e.code === "Space") { WORKS
-                                        // if (e.key === "Space") { DOES NOT WORK
-                                        // if (e.key === "Enter") { WORKS
-                                        if (e.key === " ") { // WORKS
-                                            e.preventDefault();
-                                            e.currentTarget.click();
-                                        }
-                                    }}
-                                >
-                                    <SVG ariaHidden={true} svg={ChevronRight} />
-                                </Link>
-                                : <SVG ariaHidden={true} svg={ChevronRight} />}
+                        <SVG ariaHidden svg={ChevronRight} />
                     </button>
-
-                    {/* <select
-                        aria-label={`${__("reader.navigation.currentPageTotal", { current: pageInfo?.currentPage, total: pageInfo.numberOfItems })}`}
-                        className={stylesPublication.allBooks_header_pagination_select}
-                        value={pageInfo?.currentPage}
-                        onChange={(e) => {
-                            const pageIndex = e.target.value;
-                            console.log(pageIndex)
-                        }}
-                    >
-                        {
-                            ".".repeat(Math.ceil(pageInfo.numberOfItems / pageInfo.itemsPerPage)).split("").map((_s, i) => (
-                                <option
-                                    key={`page${i}`}
-                                    value={i}>
-                                    {i + 1} / {Math.ceil(pageInfo.numberOfItems / pageInfo.itemsPerPage)}
-                                </option>
-                            ))
-                        }
-                    </select> */}
                     <span className={stylesPublication.allBooks_header_pagination_opds_currentPage}>
-                        {
-                            pageInfo?.currentPage ?
-                                <>{pageInfo.currentPage} {
-                                    (pageInfo?.numberOfItems && pageInfo?.itemsPerPage) ?
-                                        ` / ${Math.ceil(pageInfo.numberOfItems / pageInfo.itemsPerPage)}`
-                                        : ""
-                                }</>
-                                : <></>
-                        }
+                        {pageInfo?.currentPage ? <>{pageInfo.currentPage} {
+                            (pageInfo?.numberOfItems && pageInfo?.itemsPerPage) ?
+                                ` / ${Math.ceil(pageInfo.numberOfItems / pageInfo.itemsPerPage)}` : ""
+                        }</> : <></>}
                     </span>
                     <button
+                        type="button"
                         className={stylesPublication.allBooks_header_pagination_arrow}
-                        aria-label={`${__("opds.next")}`}
-                        disabled={!pageLinks?.next[0]?.url || pageInfo?.currentPage === Math.ceil(pageInfo?.numberOfItems / (pageInfo?.itemsPerPage || 1))}
-                        tabIndex={-1}
+                        aria-label={__("opds.next")}
+                        disabled={!pageLinks?.next?.[0]?.url || pageInfo?.currentPage === Math.ceil(pageInfo?.numberOfItems / (pageInfo?.itemsPerPage || 1))}
+                        onClick={this.onKeyboardPageNavigationNext}
                     >
-                        {pageLinks?.next[0]?.url ?
-                            <Link
-                                to={{
-                                    ...this.props.location,
-                                    pathname: buildRoute(pageLinks.next[0]),
-                                }}
-                                onClick={(e) => {
-                                    if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
-                                        e.preventDefault();
-                                        e.currentTarget.click();
-                                    }
-                                }}
-                                onKeyDown={(e) => {
-                                    // if (e.code === "Space") {
-                                    if (e.key === " " || e.altKey || e.ctrlKey) {
-                                        e.preventDefault(); // prevent scroll
-                                    }
-                                }}
-                                onKeyUp={(e) => {
-                                    // Includes screen reader tests:
-                                    // if (e.code === "Space") { WORKS
-                                    // if (e.key === "Space") { DOES NOT WORK
-                                    // if (e.key === "Enter") { WORKS
-                                    if (e.key === " ") { // WORKS
-                                        e.preventDefault();
-                                        e.currentTarget.click();
-                                    }
-                                }}
-                            >
-                                <SVG ariaHidden={true} svg={ChevronRight} />
-                            </Link>
-                            : <SVG ariaHidden={true} svg={ChevronRight} />}
+                        <SVG ariaHidden svg={ChevronRight} />
                     </button>
-
                     <button
+                        type="button"
                         className={stylesPublication.allBooks_header_pagination_arrow}
-                        aria-label={`${__("opds.lastPage")}`}
-                        disabled={!pageLinks?.last[0]?.url || pageInfo?.currentPage === Math.ceil(pageInfo?.numberOfItems / (pageInfo?.itemsPerPage || 1))}
-                        tabIndex={-1}
+                        aria-label={__("opds.lastPage")}
+                        disabled={!pageLinks?.last?.[0]?.url || pageInfo?.currentPage === Math.ceil(pageInfo?.numberOfItems / (pageInfo?.itemsPerPage || 1))}
+                        onClick={this.onKeyboardPageNavigationLast}
                     >
-                        {
-                            pageLinks?.last[0]?.url ?
-                                <Link
-                                    to={{
-                                        ...this.props.location,
-                                        pathname: buildRoute(pageLinks.last[0]),
-                                    }}
-                                    onClick={(e) => {
-                                        if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
-                                            e.preventDefault();
-                                            e.currentTarget.click();
-                                        }
-                                    }}
-                                    onKeyDown={(e) => {
-                                        // if (e.code === "Space") {
-                                        if (e.key === " " || e.altKey || e.ctrlKey) {
-                                            e.preventDefault(); // prevent scroll
-                                        }
-                                    }}
-                                    onKeyUp={(e) => {
-                                        // Includes screen reader tests:
-                                        // if (e.code === "Space") { WORKS
-                                        // if (e.key === "Space") { DOES NOT WORK
-                                        // if (e.key === "Enter") { WORKS
-                                        if (e.key === " ") { // WORKS
-                                            e.preventDefault();
-                                            e.currentTarget.click();
-                                        }
-                                    }}
-                                >
-                                    <SVG ariaHidden={true} svg={ArrowLastIcon} />
-                                </Link>
-                                : <SVG ariaHidden={true} svg={ArrowLastIcon} />}
+                        <SVG ariaHidden svg={ArrowLastIcon} />
                     </button>
                 </div>
             </div>
@@ -308,7 +152,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
 
         const { pageLinks } = this.props;
         const buildRoute = buildOpdsBrowserRouteWithLink(this.props.location.pathname);
-        if (pageLinks?.first[0]?.url) { // TODO RTL
+        if (pageLinks?.first?.[0]?.url) { // TODO RTL
             this.props.historyPush({
                 ...this.props.location,
                 pathname: buildRoute(pageLinks.first[0]),
@@ -320,7 +164,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
         const { pageLinks } = this.props;
         const buildRoute = buildOpdsBrowserRouteWithLink(this.props.location.pathname);
 
-        if (pageLinks?.last[0]?.url) { // TODO RTL
+        if (pageLinks?.last?.[0]?.url) { // TODO RTL
             this.props.historyPush({
                 ...this.props.location,
                 pathname: buildRoute(pageLinks.last[0]),
@@ -331,7 +175,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
 
         const { pageLinks } = this.props;
         const buildRoute = buildOpdsBrowserRouteWithLink(this.props.location.pathname);
-        if (pageLinks?.next[0]?.url) { // TODO RTL
+        if (pageLinks?.next?.[0]?.url) { // TODO RTL
             this.props.historyPush({
                 ...this.props.location,
                 pathname: buildRoute(pageLinks.next[0]),
@@ -343,7 +187,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
         const { pageLinks } = this.props;
         const buildRoute = buildOpdsBrowserRouteWithLink(this.props.location.pathname);
 
-        if (pageLinks?.previous[0]?.url) { // TODO RTL
+        if (pageLinks?.previous?.[0]?.url) { // TODO RTL
             this.props.historyPush({
                 ...this.props.location,
                 pathname: buildRoute(pageLinks.previous[0]),

@@ -1,0 +1,117 @@
+{
+  "batch": 2,
+  "branch": "codex/a11y-batch-2-keyboard-semantics",
+  "parentCommit": "adb0838e7",
+  "implementationState": "In progress; validated initial keyboard/semantics subset on top of pushed batch 1",
+  "inventory": "docs/accessibility/evidence/batch-2/static-inventory.json",
+  "findings": {
+    "A05": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/library/components/DownloadsPanel.tsx"
+      ],
+      "evidence": [
+        "evidence/batch-2/library-downloads.json",
+        "evidence/batch-2/library-downloads-fr.json"
+      ],
+      "observation": "Native cancel buttons have localized download-specific names. Enter/Space each dispatch one abort for the intended synthetic ID; native progressbar names retained. No live download aborted."
+    },
+    "A06": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/library/components/utils/Slider.tsx"
+      ],
+      "evidence": [
+        "evidence/batch-2/library-carousel-scrolled.json",
+        "evidence/batch-2/library-carousel-start.json",
+        "evidence/batch-2/library-home-carousel.json"
+      ],
+      "observation": "Carousel buttons are exposed in the accessibility tree. Enter moves right and enables Left; Space moves back and disables Left at start. Verified in fixture and live Home."
+    },
+    "A07": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/library/components/layout/LibraryLayout.tsx",
+        "src/renderer/library/components/opds/PageNavigation.tsx"
+      ],
+      "evidence": [
+        "evidence/batch-2/library-library-refresh.json",
+        "evidence/batch-2/library-opds-navigation.json",
+        "evidence/batch-2/library-opds-navigation-disabled.json",
+        "evidence/batch-2/library-opds-refresh.json"
+      ],
+      "observation": "Refresh and pagination use one named native button per action. Four pagination controls follow DOM tab order and dispatch distinct navigation routes. Missing links/page-boundary buttons are disabled and cannot dispatch on click. Both refresh keyboard activations verified against existing loopback OPDS catalog; no remote transaction."
+    },
+    "A09": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/library/components/dialog/ApiappAddForm.tsx"
+      ],
+      "evidence": [
+        "evidence/batch-2/library-apiapp-results.json"
+      ],
+      "observation": "APIAPP results are ordinary named buttons with aria-pressed. Enter/Space select one result without submitting or closing the dialog; Add remains the explicit submission control. Synthetic API response only. Full-height result buttons preserve two-line labels."
+    },
+    "A10": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/library/components/settings/ProfilesSettings.tsx"
+      ],
+      "evidence": [
+        "evidence/batch-2/library-profiles.json",
+        "evidence/batch-2/library-live-profiles.json"
+      ],
+      "observation": "One native radio per profile, shared group name, localized named radiogroup, unique DOM IDs and visible-title accessible names. Arrow keys update checked state/focus and Space selects once using real reducer; vanilla inspected live without activating a profile."
+    },
+    "A21": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/library/components/layout/LibraryLayout.tsx",
+        "src/renderer/reader/components/Reader.tsx"
+      ],
+      "evidence": [
+        "evidence/batch-2/library-library-refresh.json",
+        "evidence/batch-2/reader-host-headings.json"
+      ],
+      "observation": "Existing toolbar/content skip headings now declare aria-level=2 in both windows. Programmatic focus remains available on both targets. Native screen-reader heading navigation not exercised."
+    },
+    "A25": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/reader/components/ReadingAudio.tsx"
+      ],
+      "evidence": [
+        "evidence/batch-2/reader-tts-preview-expanded.json",
+        "evidence/batch-2/reader-tts-preview.json"
+      ],
+      "observation": "TTS preview details no longer hides its focusable summary. Enter/Space opens/closes preview in fixture and live TTS options; Chromium AX exposes the expanded disclosure. Escape restores TTS options trigger. No audio played."
+    },
+    "A29": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/common/components/dialog/publicationInfos/PublicationInfoDescription.tsx"
+      ],
+      "evidence": [
+        "evidence/batch-2/library-description-expanded.json",
+        "evidence/batch-2/library-description-collapsed.json",
+        "evidence/batch-2/reader-description-expanded.json",
+        "evidence/batch-2/reader-description-collapsed.json"
+      ],
+      "observation": "Description disclosure is exposed, reports aria-expanded and controls the unique description wrapper ID. Enter/Space expands/collapses in both runtime fixtures."
+    }
+  },
+  "remainingPlannedFindings": [
+    "A12",
+    "A22",
+    "A23",
+    "A24"
+  ],
+  "validation": {
+    "fixtureScenarios": 10,
+    "applicationScenarios": 5,
+    "fixtureStates": 14,
+    "applicationStates": 5,
+    "allScenariosPassed": true
+  },
+  "limitations": "Synthetic service boundaries used for downloads, profile activation, OPDS pagination and APIAPP response. Live local-catalog refresh, carousel, profile inspection, skip headings and TTS preview tested. No native screen-reader listening or full conformance assertion. Remaining notification, list, panel and filter-disclosure work is open. This batch is uncommitted."
+}

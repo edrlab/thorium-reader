@@ -4,6 +4,7 @@ declare namespace typed_i18n {
   readonly "annotationNote": string,
   readonly "bookMenu": string,
   readonly "bookmarkNote": string,
+  readonly "cancelDownload": string,
   readonly "closeDialog": string,
   readonly "decreaseSetting": string,
   readonly "downloadProgress": string,
@@ -21,6 +22,7 @@ declare namespace typed_i18n {
   (_: "accessibility.annotationNote", __?: {}): string;
   (_: "accessibility.bookMenu", __?: {}): string;
   (_: "accessibility.bookmarkNote", __?: {}): string;
+  (_: "accessibility.cancelDownload", __?: {}): string;
   (_: "accessibility.closeDialog", __?: {}): string;
   (_: "accessibility.decreaseSetting", __?: {}): string;
   (_: "accessibility.downloadProgress", __?: {}): string;

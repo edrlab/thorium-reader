@@ -1,0 +1,7 @@
+- main:
+  - 'heading "Component fixture: opds-navigation-disabled" [level=1]'
+  - button "First" [disabled]
+  - button "Previous" [disabled]
+  - text: 4 / 4
+  - button "Next" [disabled]
+  - button "Last" [disabled]

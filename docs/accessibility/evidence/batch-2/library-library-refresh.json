@@ -1,0 +1,529 @@
+{
+  "id": "library-refresh",
+  "runtime": "library",
+  "files": [
+    "src/renderer/library/components/layout/LibraryLayout.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T12:40:13.838Z",
+  "lang": "en",
+  "errors": [],
+  "actions": [
+    [
+      "dispatch",
+      {
+        "type": "@@router/CALL_HISTORY_METHOD",
+        "payload": {
+          "method": "push",
+          "args": [
+            {
+              "pathname": "/opds/audit/browse/1/QXVkaXQgY2F0YWxvZw/aHR0cHM6Ly9hdWRpdC5pbnZhbGlkL2NhdGFsb2c",
+              "search": "",
+              "hash": ""
+            },
+            {
+              "displayType": "grid"
+            }
+          ]
+        }
+      }
+    ],
+    [
+      "dispatch",
+      {
+        "type": "@@router/CALL_HISTORY_METHOD",
+        "payload": {
+          "method": "push",
+          "args": [
+            {
+              "pathname": "/opds/audit/browse/1/QXVkaXQgY2F0YWxvZw/aHR0cHM6Ly9hdWRpdC5pbnZhbGlkL2NhdGFsb2c",
+              "search": "",
+              "hash": ""
+            },
+            {
+              "displayType": "grid"
+            }
+          ]
+        }
+      }
+    ]
+  ],
+  "text": "Component fixture: library-refresh\ntoolbar\nSkip to content\nHome\nAll publications\nCatalogs\nSettings\n-\nAudit catalog\nmain content\n\nIsolated refresh control",
+  "html": "<div id=\"audit-root\"><main><h1>Component fixture: library-refresh</h1><div role=\"region\" aria-label=\"toolbar\"><a role=\"heading\" aria-level=\"2\" class=\"anchor_link\" id=\"main-toolbar\" title=\"toolbar\" aria-label=\"toolbar\" tabindex=\"-1\">toolbar</a><div style=\"display: flex;\"><button aria-hidden=\"false\" class=\"skip_link\">Skip to content</button><nav class=\"main_navigation_library\" role=\"navigation\" aria-label=\"Bookshelf menu\"><h1 class=\"appName\" aria-label=\"Thorium\"></h1><ul style=\"padding-top: 10px;\"><div><li class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" style=\"height: inherit;\"><a role=\"button\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" title=\"Home\" href=\"/home\" style=\"height: inherit;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 12\"><use xlink:href=\"#home-icon\"></use></svg><h3>Home</h3></a></li><li class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" style=\"height: inherit;\"><a role=\"button\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" title=\"All publications\" href=\"/library\" style=\"height: inherit;\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#shelf-icon\"></use></svg><h3>All publications</h3></a></li><li class=\"active R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" style=\"height: inherit;\"><a aria-pressed=\"true\" role=\"button\" class=\"button_nav_primary\" title=\"Catalogs\" href=\"/opds\" style=\"height: inherit;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 12\"><use xlink:href=\"#catalogs-icon\"></use></svg><h3>Catalogs</h3></a></li></div><li><button title=\"Settings\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" aria-expanded=\"false\" id=\"react-aria9877240621-:r3:\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#gear-icon\"></use></svg><h3 dir=\"ltr\" aria-label=\"Application Settings\">Settings</h3></button></li></ul></nav><main id=\"main\" aria-label=\"main content\" class=\"main\"><div class=\"opds_header\"><h2 class=\"allBooks_header\">-</h2><div class=\"opds_header_actions\"><button type=\"button\" class=\"button_nav_tertiary button_refresh\" aria-label=\"reload\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 13\"><use xlink:href=\"#refresh-icon\"></use></svg></button></div></div><div class=\"catalog_breadcrumbSearch_Wrapper\"><div>Audit catalog</div></div><a role=\"heading\" aria-level=\"2\" class=\"anchor_link\" id=\"main-content\" title=\"main content\" aria-label=\"main content\" tabindex=\"-1\">main content</a><p>Isolated refresh control</p></main></div></div></main></div>",
+  "dimensions": {
+    "width": 1184,
+    "height": 835,
+    "scrollWidth": 1169
+  },
+  "focus": "<a role=\"heading\" aria-level=\"2\" class=\"anchor_link\" id=\"main-content\" title=\"main content\" aria-label=\"main content\" tabindex=\"-1\">main content</a>",
+  "controls": [
+    {
+      "html": "<a role=\"heading\" aria-level=\"2\" class=\"anchor_link\" id=\"main-toolbar\" title=\"toolbar\" aria-label=\"toolbar\" tabindex=\"-1\">toolbar</a>",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 1,
+        "height": 1,
+        "top": 0,
+        "right": 1,
+        "bottom": 1,
+        "left": 0
+      },
+      "visible": true
+    },
+    {
+      "html": "<button aria-hidden=\"false\" class=\"skip_link\">Skip to content</button>",
+      "rect": {
+        "x": -2000,
+        "y": 60.15625,
+        "width": 92.625,
+        "height": 30,
+        "top": 60.15625,
+        "right": -1907.375,
+        "bottom": 90.15625,
+        "left": -2000
+      },
+      "visible": true
+    },
+    {
+      "html": "<a role=\"button\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" title=\"Home\" href=\"/home\" style=\"height: inherit;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 12\"><use xlink:href=\"#home-icon\"></use></svg><h3>Home</h3></a>",
+      "rect": {
+        "x": 21,
+        "y": 146.25,
+        "width": 160,
+        "height": 28,
+        "top": 146.25,
+        "right": 181,
+        "bottom": 174.25,
+        "left": 21
+      },
+      "visible": true
+    },
+    {
+      "html": "<a role=\"button\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" title=\"All publications\" href=\"/library\" style=\"height: inherit;\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#shelf-icon\"></use></svg><h3>All publications</h3></a>",
+      "rect": {
+        "x": 21,
+        "y": 188.25,
+        "width": 160,
+        "height": 28,
+        "top": 188.25,
+        "right": 181,
+        "bottom": 216.25,
+        "left": 21
+      },
+      "visible": true
+    },
+    {
+      "html": "<a aria-pressed=\"true\" role=\"button\" class=\"button_nav_primary\" title=\"Catalogs\" href=\"/opds\" style=\"height: inherit;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 12\"><use xlink:href=\"#catalogs-icon\"></use></svg><h3>Catalogs</h3></a>",
+      "rect": {
+        "x": 21,
+        "y": 230.25,
+        "width": 162,
+        "height": 30,
+        "top": 230.25,
+        "right": 183,
+        "bottom": 260.25,
+        "left": 21
+      },
+      "visible": true
+    },
+    {
+      "html": "<button title=\"Settings\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" aria-expanded=\"false\" id=\"react-aria9877240621-:r3:\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#gear-icon\"></use></svg><h3 dir=\"ltr\" aria-label=\"Application Settings\">Settings</h3></button>",
+      "rect": {
+        "x": 21,
+        "y": 828.25,
+        "width": 150,
+        "height": 28,
+        "top": 828.25,
+        "right": 171,
+        "bottom": 856.25,
+        "left": 21
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"button\" class=\"button_nav_tertiary button_refresh\" aria-label=\"reload\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 13\"><use xlink:href=\"#refresh-icon\"></use></svg></button>",
+      "rect": {
+        "x": 1100,
+        "y": 91.453125,
+        "width": 27,
+        "height": 27,
+        "top": 91.453125,
+        "right": 1127,
+        "bottom": 118.453125,
+        "left": 1100
+      },
+      "visible": true
+    },
+    {
+      "html": "<a role=\"heading\" aria-level=\"2\" class=\"anchor_link\" id=\"main-content\" title=\"main content\" aria-label=\"main content\" tabindex=\"-1\">main content</a>",
+      "rect": {
+        "x": 207,
+        "y": 60.15625,
+        "width": 1,
+        "height": 1,
+        "top": 60.15625,
+        "right": 208,
+        "bottom": 61.15625,
+        "left": 207
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [
+      {
+        "id": "heading-order",
+        "impact": "moderate",
+        "tags": [
+          "cat.semantics",
+          "best-practice"
+        ],
+        "description": "Ensure the order of headings is semantically correct",
+        "help": "Heading levels should only increase by one",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/heading-order?application=axeAPI",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "heading-order",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "Heading order invalid"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "moderate",
+            "html": "<h3>Home</h3>",
+            "target": [
+              "a[title=\"Home\"] > h3"
+            ],
+            "failureSummary": "Fix any of the following:\n  Heading order invalid"
+          }
+        ]
+      },
+      {
+        "id": "landmark-main-is-top-level",
+        "impact": "moderate",
+        "tags": [
+          "cat.semantics",
+          "best-practice"
+        ],
+        "description": "Ensure the main landmark is at top level",
+        "help": "Main landmark should not be contained in another landmark",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/landmark-main-is-top-level?application=axeAPI",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "landmark-is-top-level",
+                "data": {
+                  "role": "main"
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "The main landmark is contained in another landmark."
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "moderate",
+            "html": "<main id=\"main\" aria-label=\"main content\" class=\"main\">",
+            "target": [
+              "#main"
+            ],
+            "failureSummary": "Fix any of the following:\n  The main landmark is contained in another landmark."
+          }
+        ]
+      },
+      {
+        "id": "landmark-no-duplicate-main",
+        "impact": "moderate",
+        "tags": [
+          "cat.semantics",
+          "best-practice"
+        ],
+        "description": "Ensure the document has at most one main landmark",
+        "help": "Document should not have more than one main landmark",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/landmark-no-duplicate-main?application=axeAPI",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "page-no-duplicate-main",
+                "data": null,
+                "relatedNodes": [
+                  {
+                    "html": "<main id=\"main\" aria-label=\"main content\" class=\"main\">",
+                    "target": [
+                      "#main"
+                    ]
+                  }
+                ],
+                "impact": "moderate",
+                "message": "Document has more than one main landmark"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "moderate",
+            "html": "<main>",
+            "target": [
+              "#audit-root > main"
+            ],
+            "failureSummary": "Fix any of the following:\n  Document has more than one main landmark"
+          }
+        ]
+      },
+      {
+        "id": "list",
+        "impact": "serious",
+        "tags": [
+          "cat.structure",
+          "wcag2a",
+          "wcag131",
+          "EN-301-549",
+          "EN-9.1.3.1",
+          "RGAAv4",
+          "RGAA-9.3.1"
+        ],
+        "description": "Ensure that lists are structured correctly",
+        "help": "<ul> and <ol> must only directly contain <li>, <script> or <template> elements",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/list?application=axeAPI",
+        "nodes": [
+          {
+            "any": [],
+            "all": [],
+            "none": [
+              {
+                "id": "only-listitems",
+                "data": {
+                  "values": "div"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div>",
+                    "target": [
+                      "ul > div"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "List element has direct children that are not allowed: div"
+              }
+            ],
+            "impact": "serious",
+            "html": "<ul style=\"padding-top: 10px;\">",
+            "target": [
+              "ul"
+            ],
+            "failureSummary": "Fix all of the following:\n  List element has direct children that are not allowed: div"
+          }
+        ]
+      },
+      {
+        "id": "listitem",
+        "impact": "serious",
+        "tags": [
+          "cat.structure",
+          "wcag2a",
+          "wcag131",
+          "EN-301-549",
+          "EN-9.1.3.1",
+          "RGAAv4",
+          "RGAA-9.3.1"
+        ],
+        "description": "Ensure <li> elements are used semantically",
+        "help": "<li> elements must be contained in a <ul> or <ol>",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/listitem?application=axeAPI",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "listitem",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "List item does not have a <ul>, <ol> parent element"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<li class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" style=\"height: inherit;\"><a role=\"button\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" title=\"Home\" href=\"/home\" style=\"height: inherit;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 12\"><use xlink:href=\"#home-icon\"></use></svg><h3>Home</h3></a></li>",
+            "target": [
+              "li:nth-child(1)"
+            ],
+            "failureSummary": "Fix any of the following:\n  List item does not have a <ul>, <ol> parent element"
+          },
+          {
+            "any": [
+              {
+                "id": "listitem",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "List item does not have a <ul>, <ol> parent element"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<li class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" style=\"height: inherit;\">",
+            "target": [
+              "div > li:nth-child(2)"
+            ],
+            "failureSummary": "Fix any of the following:\n  List item does not have a <ul>, <ol> parent element"
+          },
+          {
+            "any": [
+              {
+                "id": "listitem",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "List item does not have a <ul>, <ol> parent element"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<li class=\"active R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" style=\"height: inherit;\">",
+            "target": [
+              ".active"
+            ],
+            "failureSummary": "Fix any of the following:\n  List item does not have a <ul>, <ol> parent element"
+          }
+        ]
+      }
+    ],
+    "incomplete": [],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 11
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 7
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 11
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 7
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 6
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 11
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 7
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 7
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 11
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 11
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 9
+      },
+      {
+        "id": "button-name",
+        "nodes": 3
+      },
+      {
+        "id": "bypass",
+        "nodes": 1
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 7
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 9
+      },
+      {
+        "id": "heading-order",
+        "nodes": 8
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-main-is-top-level",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-unique",
+        "nodes": 4
+      },
+      {
+        "id": "link-name",
+        "nodes": 3
+      },
+      {
+        "id": "listitem",
+        "nodes": 1
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 6
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 32
+      },
+      {
+        "id": "tabindex",
+        "nodes": 3
+      },
+      {
+        "id": "target-size",
+        "nodes": 6
+      }
+    ]
+  },
+  "evidencePrefix": "batch-2/library-library-refresh"
+}

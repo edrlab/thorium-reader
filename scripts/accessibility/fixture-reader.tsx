@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { install, publication, note, locator, record, AuditCase } from './fixture-base';
+import { install, __, publication, note, locator, record, AuditCase } from './fixture-base';
 import { rootReducer } from 'readium-desktop/renderer/reader/redux/reducers';
 import { BookmarkLocatorInfo } from 'readium-desktop/renderer/reader/components/BookmarkLocatorInfo';
 import { ImageClickManagerImgViewerOnly } from 'readium-desktop/renderer/reader/components/ImageClickManagerViewerOnly';
@@ -10,6 +10,8 @@ import { PublicationInfoReaderWithRAC, PublicationInfoReaderWithRACTrigger, Publ
 import LoaderSearch from 'readium-desktop/renderer/reader/components/picker/LoaderSearch';
 import { FontSize } from 'readium-desktop/renderer/reader/components/ReaderSettings/FontSize';
 import { ReadingSpacing } from 'readium-desktop/renderer/reader/components/ReaderSettings/ReadingSpacing';
+import { ReadingAudio } from 'readium-desktop/renderer/reader/components/ReadingAudio';
+import Description from 'readium-desktop/renderer/common/components/dialog/publicationInfos/PublicationInfoDescription';
 const reader = (p: string) => 'src/renderer/reader/components/' + p;
 const cases: Record<string, AuditCase> = {};
 const add = (id: string, files: string[], render: () => React.ReactNode, state?: (s: any) => void) => cases[id] = { files, render, state };
@@ -28,6 +30,8 @@ add('bookmark-card', [reader('ReaderMenu/BookmarkCard.tsx')], () => <ul><Card bo
 add('divina-modes', [reader('ReaderSettings/DivinaSetReadingMode.tsx')], () => <Divina />);
 add('publication-information', [reader('dialog/publicationInfos/PublicationInfo.tsx'), reader('dialog/publicationInfos/TagManager.tsx')], () => <PublicationInfoReaderWithRAC handlePublicationInfo={open => { const store = (window as any).auditStore; record('publication-info-open', open); store.dispatch({ type: 'AUDIT_SET', payload: { dialog: { ...store.getState().dialog, open } } }); }}><PublicationInfoReaderWithRACTrigger asChild><button>Publication information</button></PublicationInfoReaderWithRACTrigger><PublicationInfoReaderWithRACContent /></PublicationInfoReaderWithRAC>, s => s.dialog = { open: true, type: 'publication-info-reader', data: { publication, readerReadingLocation: locator, focusWhereAmI: false } });
 add('search-loading', [reader('picker/LoaderSearch.tsx')], () => <LoaderSearch />, s => s.search.state = 'busy');
+add('audio-preview', [reader('ReadingAudio.tsx')], () => <ReadingAudio useMO={false} ttsState={0 as any} ttsPause={record} ttsResume={record} />);
+add('long-description', ['src/renderer/common/components/dialog/publicationInfos/PublicationInfoDescription.tsx'], () => <Description publicationViewMaybeOpds={publication} __={__} />);
 const reducer = rootReducer();
 install('reader', (state: any, action: any) => {
     const s = reducer(state, action);
