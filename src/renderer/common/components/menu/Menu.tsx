@@ -8,7 +8,7 @@
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 
 import * as React from "react";
-import { OVERLAY_Z_INDEX } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
 import { FocusScope } from "react-aria";
 import { DialogTrigger, Pressable, Popover, Dialog as PopoverDialog } from "react-aria-components";
 import classNames from "classnames";
@@ -32,14 +32,16 @@ const Menu = (props: React.PropsWithChildren<IBaseProps>) => {
             </Pressable>
             <Popover
                 placement="bottom end"
-                offset={5}
-                crossOffset={-10}
+                offset={10}
+                crossOffset={0}
                 containerPadding={props.noCollisionPadding ? 0 : 12}
+                className={stylesDropDown.PopoverContent}
                 style={{ zIndex: OVERLAY_Z_INDEX }}
             >
                 <PopoverDialog>
                     <FocusScope autoFocus>
                         <div className={stylesDropDown.dropdown_menu}>{props.children}</div>
+                        <PopoverArrow className={stylesDropDown.PopoverArrow} aria-hidden />
                     </FocusScope>
                 </PopoverDialog>
             </Popover>
