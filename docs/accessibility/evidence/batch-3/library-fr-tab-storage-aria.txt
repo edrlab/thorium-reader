@@ -1,0 +1,30 @@
+- main:
+  - 'heading "Component fixture: library-settings" [level=1]'
+  - button "Préférences de l'application" [expanded]:
+    - heading "Préférences de l'application" [level=3]: Préférences
+- button "Dismiss"
+- dialog "Préférences":
+  - heading "Préférences" [level=1]
+  - tablist "Préférences de l'application":
+    - tab "Géneral"
+    - tab "Raccourcis clavier"
+    - tab "Profils"
+    - tab "Stockage" [selected]
+    - tab "Options avancées"
+  - heading "Stockage" [level=2]
+  - tabpanel "Stockage":
+    - group:
+      - paragraph: En savoir plus sur cette fonctionnalité, actuellement en bêta
+      - text: ‹
+    - heading "Emplacements" [level=3]
+    - paragraph:
+      - strong: Stockage système
+    - paragraph: "Les publications gérées par l'application sont par défaut stockées dans :"
+    - button "C:/Audit/Thorium/Publications/Library"
+    - heading "Configuration" [level=3]
+    - paragraph: Les publications importées dans Thorium Reader seront stockées dans le répertoire sélectionné. Les publications précédemment importées resteront dans le stockage d'origine.
+    - button "Sélectionner un stockage supplémentaire"
+    - heading "Récupération" [level=3]
+    - paragraph: Vérifiez le stockage des publications pour trouver celles qui peuvent être récupérées en toute sécurité.
+    - button "Rechercher des publications récupérables"
+  - button "Fermer"

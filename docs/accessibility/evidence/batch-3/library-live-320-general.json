@@ -1,0 +1,542 @@
+{
+  "label": "library-live-320-general",
+  "timestamp": "2026-10-19T13:33:21.574Z",
+  "axeVersion": "4.13.0",
+  "targets": [
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/C576EFD80B7357D3E8AA1C70D3618C03",
+      "id": "C576EFD80B7357D3E8AA1C70D3618C03",
+      "title": "Thorium",
+      "type": "page",
+      "url": "http://localhost:8090/index_library.html#/home",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/C576EFD80B7357D3E8AA1C70D3618C03"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/55D06CD5A3262D778B7A749EBD2AC630",
+      "id": "55D06CD5A3262D778B7A749EBD2AC630",
+      "parentId": "0530CA20FE80C9722E0DF9139700B74C",
+      "title": "Talk to Me: Media Overlays",
+      "type": "webview",
+      "url": "httpsr2://id_nzdh_yz_rm_y_w_yt_m_d_jj_my00_yj_i1_l_w_jk_yj_qt_ym_u0_o_g_q3_z_d_iz_y_t_u4/xthoriumhttps/ip0.0.0.0/p/EPUB/ch03s02.xhtml?r2_GOTO=eyJjZmkiOiIvNC8yLzMyIiwiY3NzU2VsZWN0b3IiOiIuc2VjdDEgPiBwOm50aC1jaGlsZCgxNikiLCJwb3NpdGlvbiI6NTcsInByb2dyZXNzaW9uIjowLjIzMjU1ODEzOTUzNDg4MzcyLCJ0b3RhbFByb2dyZXNzaW9uIjowLjU3NDc1MDgzMDU2NDc4NH0%3D&r2_CSS=eyJzZXRDU1MiOnsiYTExeU5vcm1hbGl6ZSI6ZmFsc2UsImJvZHlIeXBoZW5zIjoiYXV0byIsImNvbENvdW50IjoiYXV0byIsImZvbnQiOiJERUZBVUxUIiwiZm9udFNpemUiOiIxMDAlIiwiaW52ZXJ0IjpmYWxzZSwibGV0dGVyU3BhY2luZyI6IjAiLCJsaWdhdHVyZXMiOiJub25lIiwibGluZUhlaWdodCI6IjAiLCJwYWdlTWFyZ2lucyI6IjEiLCJwYWdlZCI6dHJ1ZSwicGFyYVNwYWNpbmciOiIwIiwibmlnaHQiOmZhbHNlLCJzZXBpYSI6ZmFsc2UsIndvcmRTcGFjaW5nIjoiMCIsIm1hdGhKYXgiOmZhbHNlLCJyZWR1Y2VNb3Rpb24iOmZhbHNlLCJub0Zvb3Rub3RlcyI6ZmFsc2UsIm5vVGVtcG9yYXJ5TmF2VGFyZ2V0T3V0bGluZSI6ZmFsc2UsIm5vUnVieSI6ZmFsc2V9fQ%3D%3D&r2_isMO=0&r2_ERS=eyJuYW1lIjoiVGhvcml1bSIsInZlcnNpb24iOiIzLjUuMi1iZXRhLjEifQ%3D%3D&r2_DEBUG=false&r2_A11Y_SUPPORT_ENABLED=false&r2_CLIPBOARD_INTERCEPT=false&r2_WEBVIEW_SLOT=center&r2_SECOND_WEBVIEW=0&r2_SESSION_INFO=NjhhNjRhOGUtZjk3NC00ZGZhLWI2MTAtOGM1MTA0NDIxNzE1#",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/55D06CD5A3262D778B7A749EBD2AC630"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/0530CA20FE80C9722E0DF9139700B74C",
+      "id": "0530CA20FE80C9722E0DF9139700B74C",
+      "title": "Thorium - Accessible EPUB 3",
+      "type": "page",
+      "url": "http://localhost:8191/index_reader.html",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/0530CA20FE80C9722E0DF9139700B74C"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/786358C1812CC6F67A4A0A937421C4B1",
+      "id": "786358C1812CC6F67A4A0A937421C4B1",
+      "title": "Service Worker chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/background.bundle.js",
+      "type": "service_worker",
+      "url": "chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/background.bundle.js",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/786358C1812CC6F67A4A0A937421C4B1"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/1A77A35B864BA62854E215A415FC0C63",
+      "id": "1A77A35B864BA62854E215A415FC0C63",
+      "title": "Service Worker chrome-extension://ijmmnfpjnmlljdjbbfpdgodddghhmemm/build/background.js",
+      "type": "service_worker",
+      "url": "chrome-extension://ijmmnfpjnmlljdjbbfpdgodddghhmemm/build/background.js",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/1A77A35B864BA62854E215A415FC0C63"
+    }
+  ],
+  "pages": [
+    {
+      "title": "Thorium - Accessible EPUB 3",
+      "url": "http://localhost:8191/index_reader.html",
+      "lang": "en",
+      "dimensions": {
+        "width": 1089,
+        "height": 771,
+        "scrollWidth": 1089
+      },
+      "focus": "<body id=\"body_element\" data-theme=\"system\"><svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" style=\"position: absolute; width: 0; height: 0\" aria-hidden=\"true\" id=\"__SVG_SPRITE_NODE__\"><symbol xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" id=\"baseline-close-24px\">\n    <path d=\"M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z\"></path>\n    <path d=\"M0 0h24v24H0z\" fill=\"none\"></path>\n</symbol><symbol xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"#000000\" id=\"double_arrow_down_black_24dp\"><g><rect fill=\"none\" height=\"24\" width=\"24\"></rect></g><g><g><polygon points=\"18,6.41 16.59,5 12,9.58 7.41,5 6,6.41 12,12.41\"></polygon><polygon points=\"18,13 16.59,11.59 12,16.17 7.41,11.59 6,13 12,19\"></polygon></g></g></symbol><symbol xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"#000000\" id=\"double_arrow_left_black_24dp\"><g><rect fill=\"none\" height=\"24\" width=\"24\"></rect></g><g><g><polygon points=\"17.59,18 19,16.59 14.42,12 19,7.41 17.59,6 11.59,12\"></polygon><polygon points=\"11,18 12.41,16.59 7.83,12 12.41,7.41 11,6 5,12\"></polygon></g></g></symbol><symbol xmlns=\"http://ww",
+      "dialogs": [],
+      "sliders": [],
+      "evidencePrefix": "batch-3/library-live-320-general-0",
+      "axe": {
+        "violations": [
+          {
+            "id": "region",
+            "impact": "moderate",
+            "tags": [
+              "cat.keyboard",
+              "best-practice",
+              "RGAAv4",
+              "RGAA-9.2.1"
+            ],
+            "description": "Ensure all page content is contained by landmarks",
+            "help": "All page content should be contained by landmarks",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/region?application=axeAPI",
+            "nodes": [
+              {
+                "any": [
+                  {
+                    "id": "region",
+                    "data": {
+                      "isIframe": false
+                    },
+                    "relatedNodes": [],
+                    "impact": "moderate",
+                    "message": "Some page content is not contained by landmarks"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "moderate",
+                "html": "<a role=\"heading\" aria-level=\"2\" class=\"anchor_link\" id=\"main-toolbar\" title=\"toolbar\" aria-label=\"toolbar\" tabindex=\"-1\">toolbar</a>",
+                "target": [
+                  "#main-toolbar"
+                ],
+                "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+              }
+            ]
+          }
+        ],
+        "incomplete": [],
+        "passes": [
+          {
+            "id": "aria-allowed-attr",
+            "nodes": 17
+          },
+          {
+            "id": "aria-allowed-role",
+            "nodes": 28
+          },
+          {
+            "id": "aria-conditional-attr",
+            "nodes": 17
+          },
+          {
+            "id": "aria-deprecated-role",
+            "nodes": 5
+          },
+          {
+            "id": "aria-hidden-body",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-focus",
+            "nodes": 17
+          },
+          {
+            "id": "aria-prohibited-attr",
+            "nodes": 17
+          },
+          {
+            "id": "aria-required-attr",
+            "nodes": 5
+          },
+          {
+            "id": "aria-roles",
+            "nodes": 5
+          },
+          {
+            "id": "aria-valid-attr-value",
+            "nodes": 17
+          },
+          {
+            "id": "aria-valid-attr",
+            "nodes": 17
+          },
+          {
+            "id": "avoid-inline-spacing",
+            "nodes": 1
+          },
+          {
+            "id": "button-name",
+            "nodes": 13
+          },
+          {
+            "id": "document-title",
+            "nodes": 1
+          },
+          {
+            "id": "duplicate-id-aria",
+            "nodes": 2
+          },
+          {
+            "id": "empty-heading",
+            "nodes": 2
+          },
+          {
+            "id": "form-field-multiple-labels",
+            "nodes": 2
+          },
+          {
+            "id": "heading-order",
+            "nodes": 2
+          },
+          {
+            "id": "html-has-lang",
+            "nodes": 1
+          },
+          {
+            "id": "html-lang-valid",
+            "nodes": 1
+          },
+          {
+            "id": "label-title-only",
+            "nodes": 2
+          },
+          {
+            "id": "label",
+            "nodes": 2
+          },
+          {
+            "id": "landmark-main-is-top-level",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-no-duplicate-main",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-one-main",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-unique",
+            "nodes": 4
+          },
+          {
+            "id": "list",
+            "nodes": 3
+          },
+          {
+            "id": "listitem",
+            "nodes": 10
+          },
+          {
+            "id": "meta-viewport-large",
+            "nodes": 1
+          },
+          {
+            "id": "meta-viewport",
+            "nodes": 1
+          },
+          {
+            "id": "nested-interactive",
+            "nodes": 15
+          },
+          {
+            "id": "page-has-heading-one",
+            "nodes": 1
+          },
+          {
+            "id": "region",
+            "nodes": 44
+          },
+          {
+            "id": "tabindex",
+            "nodes": 6
+          },
+          {
+            "id": "target-size",
+            "nodes": 15
+          }
+        ],
+        "inapplicable": [
+          "accesskeys",
+          "area-alt",
+          "aria-braille-equivalent",
+          "aria-command-name",
+          "aria-dialog-name",
+          "aria-input-field-name",
+          "aria-meter-name",
+          "aria-progressbar-name",
+          "aria-required-children",
+          "aria-required-parent",
+          "aria-tab-name",
+          "aria-text",
+          "aria-toggle-field-name",
+          "aria-tooltip-name",
+          "aria-treeitem-name",
+          "autocomplete-valid",
+          "blink",
+          "bypass",
+          "color-contrast",
+          "definition-list",
+          "dlitem",
+          "empty-table-header",
+          "frame-focusable-content",
+          "frame-tested",
+          "frame-title-unique",
+          "frame-title",
+          "html-xml-lang-mismatch",
+          "image-alt",
+          "image-redundant-alt",
+          "input-button-name",
+          "input-image-alt",
+          "landmark-banner-is-top-level",
+          "landmark-contentinfo-is-top-level",
+          "landmark-no-duplicate-banner",
+          "landmark-no-duplicate-contentinfo",
+          "link-in-text-block",
+          "link-name",
+          "marquee",
+          "meta-refresh",
+          "object-alt",
+          "presentation-role-conflict",
+          "role-img-alt",
+          "scope-attr-valid",
+          "scrollable-region-focusable",
+          "select-name",
+          "server-side-image-map",
+          "skip-link",
+          "summary-name",
+          "svg-img-alt",
+          "table-duplicate-name",
+          "td-headers-attr",
+          "th-has-data-cells",
+          "valid-lang",
+          "video-caption",
+          "no-autoplay-audio"
+        ]
+      }
+    },
+    {
+      "title": "Thorium",
+      "url": "http://localhost:8090/index_library.html#/home",
+      "lang": "en",
+      "dimensions": {
+        "width": 320,
+        "height": 228,
+        "scrollWidth": 320
+      },
+      "focus": "<div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria2146201223-:r3j:\" data-key=\"tab-general\" data-react-aria-pressable=\"true\" id=\"react-aria2146201223-:r3k:-tab-tab-general\" aria-selected=\"true\" aria-controls=\"react-aria2146201223-:r3k:-tabpanel-tab-general\" role=\"tab\" data-selected=\"true\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 19 20\"><use xlink:href=\"#cog-icon\"></use></svg><span dir=\"ltr\">General</span></div>",
+      "dialogs": [
+        {
+          "html": "<section id=\"react-aria2146201223-:r3:\" class=\"modal_dialog settings_dialog\" data-rac=\"\" aria-labelledby=\":r0:\" role=\"dialog\" tabindex=\"-1\" style=\"overflow-y: hidden;\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><h1 id=\":r0:\">Settings</h1></div><template><div dir=\"ltr\" class=\"settings_tab_title\"><h2 dir=\"ltr\">General</h2></div><div class=\"settings_content\" style=\"margin-top: 70px;\"></div><div class=\"close_button_div\"><button dir=\"ltr\" data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></div></template><div data-orientation=\"vertical\" class=\"settings_container\" data-rac=\"\" data-focused=\"true\" data-focus-visible=\"true\"><div data-orientation=\"vertical\" class=\"settings_tabslist\" data-rac=\"\" data-collection=\"react-aria2146201223-:r3j:\" id=\"react-aria2146201223-:r3k:\" aria-label=\"Application Settings\" role=\"tablist\" aria-orientation=\"vertical\"><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria2146201223-:r3j:\" data-key=\"tab-general\" data-react-aria-pressable=\"true\" id=\"react-aria2146201223-:r3k:-tab-tab-general\" aria-selected=\"true\" aria-controls=\"react-aria2146201223-:r3k:-tabpanel-tab-general\" role=\"tab\" data-selected=\"true\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 19 20\"><use xlink:href=\"#cog-icon\"><"
+        }
+      ],
+      "sliders": [],
+      "evidencePrefix": "batch-3/library-live-320-general-1",
+      "axe": {
+        "violations": [],
+        "incomplete": [],
+        "passes": [
+          {
+            "id": "aria-allowed-attr",
+            "nodes": 19
+          },
+          {
+            "id": "aria-allowed-role",
+            "nodes": 30
+          },
+          {
+            "id": "aria-conditional-attr",
+            "nodes": 19
+          },
+          {
+            "id": "aria-deprecated-role",
+            "nodes": 17
+          },
+          {
+            "id": "aria-dialog-name",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-body",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-focus",
+            "nodes": 42
+          },
+          {
+            "id": "aria-prohibited-attr",
+            "nodes": 19
+          },
+          {
+            "id": "aria-required-attr",
+            "nodes": 17
+          },
+          {
+            "id": "aria-required-children",
+            "nodes": 1
+          },
+          {
+            "id": "aria-required-parent",
+            "nodes": 5
+          },
+          {
+            "id": "aria-roles",
+            "nodes": 17
+          },
+          {
+            "id": "aria-tab-name",
+            "nodes": 5
+          },
+          {
+            "id": "aria-toggle-field-name",
+            "nodes": 5
+          },
+          {
+            "id": "aria-valid-attr-value",
+            "nodes": 19
+          },
+          {
+            "id": "aria-valid-attr",
+            "nodes": 19
+          },
+          {
+            "id": "autocomplete-valid",
+            "nodes": 2
+          },
+          {
+            "id": "avoid-inline-spacing",
+            "nodes": 2
+          },
+          {
+            "id": "button-name",
+            "nodes": 4
+          },
+          {
+            "id": "bypass",
+            "nodes": 1
+          },
+          {
+            "id": "color-contrast",
+            "nodes": 2
+          },
+          {
+            "id": "document-title",
+            "nodes": 1
+          },
+          {
+            "id": "duplicate-id-aria",
+            "nodes": 15
+          },
+          {
+            "id": "empty-heading",
+            "nodes": 4
+          },
+          {
+            "id": "form-field-multiple-labels",
+            "nodes": 2
+          },
+          {
+            "id": "heading-order",
+            "nodes": 4
+          },
+          {
+            "id": "html-has-lang",
+            "nodes": 1
+          },
+          {
+            "id": "html-lang-valid",
+            "nodes": 1
+          },
+          {
+            "id": "label-title-only",
+            "nodes": 2
+          },
+          {
+            "id": "label",
+            "nodes": 2
+          },
+          {
+            "id": "landmark-one-main",
+            "nodes": 1
+          },
+          {
+            "id": "meta-viewport-large",
+            "nodes": 1
+          },
+          {
+            "id": "meta-viewport",
+            "nodes": 1
+          },
+          {
+            "id": "nested-interactive",
+            "nodes": 14
+          },
+          {
+            "id": "page-has-heading-one",
+            "nodes": 1
+          },
+          {
+            "id": "region",
+            "nodes": 62
+          },
+          {
+            "id": "scrollable-region-focusable",
+            "nodes": 1
+          },
+          {
+            "id": "tabindex",
+            "nodes": 17
+          },
+          {
+            "id": "target-size",
+            "nodes": 16
+          }
+        ],
+        "inapplicable": [
+          "accesskeys",
+          "area-alt",
+          "aria-braille-equivalent",
+          "aria-command-name",
+          "aria-input-field-name",
+          "aria-meter-name",
+          "aria-progressbar-name",
+          "aria-text",
+          "aria-tooltip-name",
+          "aria-treeitem-name",
+          "blink",
+          "definition-list",
+          "dlitem",
+          "empty-table-header",
+          "frame-focusable-content",
+          "frame-tested",
+          "frame-title-unique",
+          "frame-title",
+          "html-xml-lang-mismatch",
+          "image-alt",
+          "image-redundant-alt",
+          "input-button-name",
+          "input-image-alt",
+          "landmark-banner-is-top-level",
+          "landmark-contentinfo-is-top-level",
+          "landmark-main-is-top-level",
+          "landmark-no-duplicate-banner",
+          "landmark-no-duplicate-contentinfo",
+          "landmark-no-duplicate-main",
+          "landmark-unique",
+          "link-in-text-block",
+          "link-name",
+          "list",
+          "listitem",
+          "marquee",
+          "meta-refresh",
+          "object-alt",
+          "presentation-role-conflict",
+          "role-img-alt",
+          "scope-attr-valid",
+          "select-name",
+          "server-side-image-map",
+          "skip-link",
+          "summary-name",
+          "svg-img-alt",
+          "table-duplicate-name",
+          "td-headers-attr",
+          "th-has-data-cells",
+          "valid-lang",
+          "video-caption",
+          "no-autoplay-audio"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,290 @@
+{
+  "id": "library-settings",
+  "runtime": "library",
+  "files": [
+    "src/renderer/library/components/settings/Settings.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T13:23:41.058Z",
+  "lang": "en",
+  "errors": [],
+  "actions": [],
+  "text": "Component fixture: library-settings\nSettings\nSettings\nGeneral\nKeyboard shortcuts\nProfiles\nStorage\nAdvanced\nStorage\n\nLearn more about this feature, currently in beta\n\nLocations\n\nSystem Storage\n\nPublications managed by the application are by default stored in:\n\nC:/Audit/Thorium/Publications/Library\nConfiguration\n\nPublications imported into Thorium Reader will be stored in the selected directory. Publications previously imported will stay in the original system storage.\n\nSelect an additional storage\nRecovery\n\nCheck publication storage to find publications that can be safely recovered.\n\nCheck for recoverable publications",
+  "html": "<div id=\"audit-root\" inert=\"\"><main><h1>Component fixture: library-settings</h1><button title=\"Settings\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" aria-expanded=\"true\" id=\"react-aria8118544264-:r4:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria8118544264-:r3:\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#gear-icon\"></use></svg><h3 dir=\"ltr\" aria-label=\"Application Settings\">Settings</h3></button></main></div>\n<span data-focus-scope-start=\"true\" hidden=\"\" inert=\"\"></span>\n<div class=\"modal_dialog_overlay\" data-rac=\"\" style=\"position: fixed; inset: 0px; z-index: 102; --visual-viewport-width: 320px; --visual-viewport-height: 228px; --page-width: 320px; --page-height: 227.84375px;\"><div class=\"react-aria-Modal\" data-rac=\"\" style=\"display: contents;\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><button id=\"react-aria8118544264-:r5:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button></div><section id=\"react-aria8118544264-:r3:\" class=\"modal_dialog settings_dialog\" data-rac=\"\" aria-labelledby=\":r0:\" role=\"dialog\" tabindex=\"-1\" style=\"overflow-y: hidden;\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><h1 id=\":r0:\">Settings</h1></div><template><div dir=\"ltr\" class=\"settings_tab_title\"><h2 dir=\"ltr\">Storage</h2></div><div class=\"settings_content\" style=\"margin-top: 70px;\"></div><div class=\"close_button_div\"><button dir=\"ltr\" data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></div></template><div data-orientation=\"vertical\" class=\"settings_container\" data-rac=\"\" data-focused=\"true\" data-focus-visible=\"true\"><div data-orientation=\"vertical\" class=\"settings_tabslist\" data-rac=\"\" data-collection=\"react-aria8118544264-:r8:\" id=\"react-aria8118544264-:r9:\" aria-label=\"Application Settings\" role=\"tablist\" aria-orientation=\"vertical\"><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"-1\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-general\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r9:-tab-tab-general\" aria-selected=\"false\" role=\"tab\"><svg aria-hidden=\"true\" viewBox=\"0 0 19 20\"><use xlink:href=\"#cog-icon\"></use></svg><span dir=\"ltr\">General</span></div><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"-1\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-keyboardShortcuts\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r9:-tab-tab-keyboardShortcuts\" aria-selected=\"false\" role=\"tab\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 14\"><use xlink:href=\"#keyreturn-icon\"></use></svg><span dir=\"ltr\">Keyboard shortcuts</span></div><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"-1\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-profiles\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r9:-tab-tab-profiles\" aria-selected=\"false\" role=\"tab\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 11\"><use xlink:href=\"#avatar-icon\"></use></svg><span dir=\"ltr\">Profiles</span></div><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-storage\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r9:-tab-tab-storage\" aria-selected=\"true\" role=\"tab\" aria-controls=\"react-aria8118544264-:r9:-tabpanel-tab-storage\" data-selected=\"true\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 11\"><use xlink:href=\"#library-icon\"></use></svg><span dir=\"ltr\">Storage</span></div><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"-1\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-advanced\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r9:-tab-tab-advanced\" aria-selected=\"false\" role=\"tab\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 14\"><use xlink:href=\"#advanced-icon\"></use></svg><span dir=\"ltr\">Advanced</span></div></div><div dir=\"ltr\" class=\"settings_tab_title\"><h2 dir=\"ltr\">Storage</h2></div><div class=\"settings_content\" style=\"margin-top: 70px;\"><div class=\"react-aria-TabPanels\" style=\"--tab-panel-width: auto; --tab-panel-height: auto;\"><div id=\"react-aria8118544264-:r9:-tabpanel-tab-storage\" aria-labelledby=\"react-aria8118544264-:r9:-tab-tab-storage\" role=\"tabpanel\" class=\"react-aria-TabPanel\" data-rac=\"\"><div class=\"settings_tab\"><details class=\"session_text\"><summary dir=\"ltr\"><div style=\"display: flex; align-items: center; gap: 10px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg><p>Learn more about this feature, currently in beta</p></div></summary><div dir=\"ltr\" style=\"display: flex; flex-direction: column; gap: 10px; width: 100%;\"><p>Thorium does not automatically transfer your books: if you update the additional storage, you must manually move your publications to the new location. If you remove it, you must manually move your publications to the original storage.</p><p>You must keep this directory safe and accessible. Avoid deleting it, restricting access to it, or using slow or unstable storage, such as network drives.</p><p>Do not manually alter the files in this folder, as this may cause issues with your books or the reader. Think of this folder as a secure library managed by Thorium.</p><p>This feature works only with recent versions of Thorium; external folder books will not appear in Thorium 3.4 or earlier.</p></div></details><section class=\"section\" style=\"position: relative; gap: 14px;\"><div style=\"display: flex; flex-direction: column; gap: 6px;\"><h3>Locations</h3><div class=\"storage_location\" style=\"display: flex; flex-direction: column; gap: 4px;\"><p style=\"margin: 0px;\"><strong>System Storage</strong></p><p style=\"margin: 0px;\">Publications managed by the application are by default stored in:</p><button class=\"button_nav_tertiary\">C:/Audit/Thorium/Publications/Library</button></div></div></section><section class=\"section\" style=\"position: relative; gap: 14px;\"><div style=\"display: flex; flex-direction: column; gap: 6px;\"><h3>Configuration</h3><div class=\"session_text\" style=\"margin: 0px; align-items: flex-start;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg><div style=\"display: flex; flex-direction: column; gap: 4px;\"><p style=\"margin: 0px;\">Publications imported into Thorium Reader will be stored in the selected directory. Publications previously imported will stay in the original system storage.</p></div></div></div><button class=\"button_secondary_blue\">Select an additional storage</button></section><section class=\"section\" dir=\"ltr\" style=\"position: relative; gap: 14px;\"><div style=\"display: flex; flex-direction: column; gap: 6px;\"><h3 style=\"margin: 0px;\">Recovery</h3><p style=\"margin: 0px;\">Check publication storage to find publications that can be safely recovered.</p></div><div style=\"display: flex; gap: 10px; flex-wrap: wrap;\"><button class=\"button_secondary_blue\" aria-disabled=\"false\">Check for recoverable publications</button></div></section></div></div></div></div><div class=\"close_button_div\"><button dir=\"ltr\" data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></div></div></section></div></div>\n<span data-focus-scope-end=\"true\" hidden=\"\" inert=\"\"></span>",
+  "dimensions": {
+    "width": 320,
+    "height": 228,
+    "scrollWidth": 320
+  },
+  "focus": "<div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-storage\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r9:-tab-tab-storage\" aria-selected=\"true\" role=\"tab\" aria-controls=\"react-aria8118544264-:r9:-tabpanel-tab-storage\" data-selected=\"true\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 11\"><use xlink:href=\"#library-icon\"></use></svg><span dir=\"ltr\">Storage</span></div>",
+  "controls": [
+    {
+      "html": "<button title=\"Settings\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" aria-expanded=\"true\" id=\"react-aria8118544264-:r4:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria8118544264-:r3:\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#gear-icon\"></use></svg><h3 dir=\"ltr\" aria-label=\"Application Settings\">Settings</h3></button>",
+      "rect": {
+        "x": 0,
+        "y": 88.15625,
+        "width": 68.125,
+        "height": 30,
+        "top": 88.15625,
+        "right": 68.125,
+        "bottom": 118.15625,
+        "left": 0
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"react-aria8118544264-:r5:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button>",
+      "rect": {
+        "x": 159.5,
+        "y": 113.5,
+        "width": 1,
+        "height": 1,
+        "top": 113.5,
+        "right": 160.5,
+        "bottom": 114.5,
+        "left": 159.5
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"button_nav_tertiary\">C:/Audit/Thorium/Publications/Library</button>",
+      "rect": {
+        "x": 34,
+        "y": 214.59375,
+        "width": 242,
+        "height": 51.1875,
+        "top": 214.59375,
+        "right": 276,
+        "bottom": 265.78125,
+        "left": 34
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"button_secondary_blue\">Select an additional storage</button>",
+      "rect": {
+        "x": 29,
+        "y": 457.78125,
+        "width": 247,
+        "height": 30,
+        "top": 457.78125,
+        "right": 276,
+        "bottom": 487.78125,
+        "left": 29
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"button_secondary_blue\" aria-disabled=\"false\">Check for recoverable publications</button>",
+      "rect": {
+        "x": 29,
+        "y": 608.78125,
+        "width": 226.78125,
+        "height": 30,
+        "top": 608.78125,
+        "right": 255.78125,
+        "bottom": 638.78125,
+        "left": 29
+      },
+      "visible": true
+    },
+    {
+      "html": "<button dir=\"ltr\" data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button>",
+      "rect": {
+        "x": 268,
+        "y": 23,
+        "width": 30,
+        "height": 30,
+        "top": 23,
+        "right": 298,
+        "bottom": 53,
+        "left": 268
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [],
+    "incomplete": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "tags": [
+          "cat.color",
+          "wcag2aa",
+          "wcag143",
+          "TTv5",
+          "TT13.c",
+          "EN-301-549",
+          "EN-9.1.4.3",
+          "ACT",
+          "RGAAv4",
+          "RGAA-3.2.1"
+        ],
+        "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "contrastRatio": 0,
+                  "fontSize": "15.0pt (20px)",
+                  "fontWeight": "bold",
+                  "messageKey": "bgOverlap",
+                  "expectedContrastRatio": "3:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element's background color could not be determined because it is overlapped by another element"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<h2 dir=\"ltr\">Storage</h2>",
+            "target": [
+              "h2"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+          }
+        ]
+      }
+    ],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 11
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 8
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 11
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 8
+      },
+      {
+        "id": "aria-dialog-name",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 10
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 11
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 8
+      },
+      {
+        "id": "aria-required-children",
+        "nodes": 1
+      },
+      {
+        "id": "aria-required-parent",
+        "nodes": 5
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 8
+      },
+      {
+        "id": "aria-tab-name",
+        "nodes": 5
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 11
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 11
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 7
+      },
+      {
+        "id": "button-name",
+        "nodes": 5
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 1
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "duplicate-id-aria",
+        "nodes": 4
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 5
+      },
+      {
+        "id": "heading-order",
+        "nodes": 5
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 11
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 52
+      },
+      {
+        "id": "scrollable-region-focusable",
+        "nodes": 1
+      },
+      {
+        "id": "summary-name",
+        "nodes": 1
+      },
+      {
+        "id": "tabindex",
+        "nodes": 8
+      },
+      {
+        "id": "target-size",
+        "nodes": 11
+      }
+    ]
+  },
+  "evidencePrefix": "batch-3/library-320-storage"
+}

@@ -1,0 +1,110 @@
+{
+  "batch": 3,
+  "tests": [
+    {
+      "id": "library-settings-320-reflow-and-keyboard",
+      "status": "passed",
+      "findings": [
+        "A26"
+      ],
+      "evidence": [
+        "batch-3/library-320-general.json",
+        "batch-3/library-320-keyboard-shortcuts.json",
+        "batch-3/library-320-profiles.json",
+        "batch-3/library-320-storage.json",
+        "batch-3/library-320-advanced.json"
+      ],
+      "keyboardStops": {
+        "General": 9,
+        "Keyboard shortcuts": 125,
+        "Profiles": 3,
+        "Storage": 6,
+        "Advanced": 10
+      },
+      "limitation": "320x228 CSS viewport via CDP; actual components and keyboard events. No setting values changed."
+    },
+    {
+      "id": "library-french-settings-320",
+      "status": "passed",
+      "findings": [
+        "A26"
+      ],
+      "evidence": [
+        "batch-3/library-fr-tab-general.json",
+        "batch-3/library-fr-tab-keyboardShortcuts.json",
+        "batch-3/library-fr-tab-profiles.json",
+        "batch-3/library-fr-tab-storage.json",
+        "batch-3/library-fr-tab-advanced.json"
+      ]
+    },
+    {
+      "id": "editable-tag-targets-real-publication-context",
+      "status": "passed",
+      "findings": [
+        "A31"
+      ],
+      "evidence": "batch-3/library-publication-tag-targets.json",
+      "geometry": [
+        {
+          "x": 113.5625,
+          "y": 91.15625,
+          "width": 24,
+          "height": 24
+        },
+        {
+          "x": 206.59375,
+          "y": 91.15625,
+          "width": 24,
+          "height": 24
+        }
+      ],
+      "limitation": "Real TagManager composition with synthetic publication. Popovers cancelled; no tag deleted."
+    },
+    {
+      "id": "standalone-tag-targets-regression",
+      "status": "passed",
+      "findings": [
+        "A31"
+      ],
+      "evidence": "batch-3/library-editable-tags.json"
+    },
+    {
+      "id": "apiapp-add-modal-regression",
+      "status": "passed",
+      "findings": [
+        "A26"
+      ],
+      "evidence": "batch-3/library-apiapp-add-regression.json",
+      "limitation": "Standard-size shared modal regression only; cancellation without mutation."
+    },
+    {
+      "id": "delete-publication-modal-regression",
+      "status": "passed",
+      "findings": [
+        "A26"
+      ],
+      "evidence": "batch-3/library-delete-publication-regression.json",
+      "limitation": "Standard-size shared modal regression only; cancellation without mutation."
+    },
+    {
+      "id": "reader-settings-320-reflow-and-keyboard",
+      "status": "passed",
+      "findings": [
+        "A26"
+      ],
+      "evidence": [
+        "batch-3/reader-320-display.json",
+        "batch-3/reader-320-text.json",
+        "batch-3/reader-320-spacing.json",
+        "batch-3/reader-320-preferences.json"
+      ],
+      "keyboardStops": {
+        "Display": 16,
+        "Text": 10,
+        "Spacing": 25,
+        "Preferences": 7
+      },
+      "limitation": "320x228 CSS viewport via CDP; actual components and keyboard events. No setting values changed."
+    }
+  ]
+}

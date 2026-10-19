@@ -1,0 +1,261 @@
+- main:
+  - 'heading "Component fixture: library-settings" [level=1]'
+  - button "Préférences de l'application" [expanded]:
+    - heading "Préférences de l'application" [level=3]: Préférences
+- button "Dismiss"
+- dialog "Préférences":
+  - heading "Préférences" [level=1]
+  - tablist "Préférences de l'application":
+    - tab "Géneral"
+    - tab "Raccourcis clavier" [selected]
+    - tab "Profils"
+    - tab "Stockage"
+    - tab "Options avancées"
+  - heading "Raccourcis clavier" [level=2]
+  - button "Menu avancé raccourcis clavier":
+    - img "Menu avancé raccourcis clavier"
+  - tabpanel "Raccourcis clavier":
+    - textbox "Cherchez un raccourci"
+    - button "Exporter en HTML"
+    - list:
+      - listitem:
+        - heading "Ajouter un Signet avec Libellé" [level=3]
+        - button "Dans la vue lecture, ouvre la modale de création de signet et permet d'éditer son libellé"
+        - button "Modifier (Ajouter un Signet avec Libellé) SHIFT ALT + KeyB"
+      - listitem:
+        - heading "Créer une Annotation" [level=3]
+        - button "Lorsqu'un texte est sélectionné, il sera marqué comme annotation, et la boîte de dialogue d'annotation s'ouvrira pour ajouter du texte supplémentaire et sélectionner une couleur et un trait"
+        - button "Modifier (Créer une Annotation) SHIFT ALT + KeyA"
+      - listitem:
+        - heading "Créer une annotation rapide" [level=3]
+        - button "Créez rapidement une annotation pour le texte sélectionné, avec la dernière couleur et le type (note et étiquette seront vides)"
+        - button "Modifier (Créer une annotation rapide) SHIFT ALT + KeyQ"
+      - listitem:
+        - heading "Basculer la marge d'annotation" [level=3]
+        - button "Affiche les marques d'annotation du texte à la marge ou inversement"
+        - button "Modifier (Basculer la marge d'annotation) SHIFT CTRL ALT + KeyZ"
+      - listitem:
+        - heading "Segment audio suivant" [level=3]
+        - button "Dans la fenêtre du lecteur, appelle la commande « suivant » pour l'audio (synthèse vocale, lecture à voix haute ou « avance rapide » pour les livres audio)"
+        - button "Modifier (Segment audio suivant) CTRL + Digit3"
+      - listitem:
+        - heading "Segment audio suivant (alternatif)" [level=3]
+        - button "Dans la fenêtre du lecteur, appelle la commande « suivant » pour l'audio (synthèse vocale, lecture à voix haute ou « avance rapide » pour les livres audio)."
+        - button "Modifier (Segment audio suivant (alternatif)) SHIFT CTRL ALT + Digit3"
+      - listitem:
+        - heading "Lire/Pause Audio" [level=3]
+        - button "Dans la fenêtre du lecteur, appelle les commandes de basculement \"lecture\" ou \"pause\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3)."
+        - button "Modifier (Lire/Pause Audio) CTRL + Digit2"
+      - listitem:
+        - heading "Segment audio précédent" [level=3]
+        - button "Dans la fenêtre du lecteur, appelle la commande « précédent » pour l'audio (synthèse vocale, lecture à voix haute des superpositions multimédias EPUB3, ou « rembobiner » pour les livres audio)."
+        - button "Modifier (Segment audio précédent) CTRL + Digit1"
+      - listitem:
+        - heading "Segment audio précédent (alternatif)" [level=3]
+        - button "Dans la fenêtre du lecteur, appelle la commande « précédent » pour l'audio (synthèse vocale, lecture à voix haute des superpositions multimédias EPUB3, ou « rembobiner » pour les livres audio). Raccourci clavier alternatif."
+        - button "Modifier (Segment audio précédent (alternatif)) SHIFT CTRL ALT + Digit1"
+      - listitem:
+        - heading "Diminuer la vitesse de lecture audio" [level=3]
+        - button "Diminuer la vitesse de lecture à haute voix"
+        - button "Modifier (Diminuer la vitesse de lecture audio) CTRL + Digit5"
+      - listitem:
+        - heading "Augmenter la vitesse de lecture audio" [level=3]
+        - button "Augmenter la vitesse de lecture à haute voix"
+        - button "Modifier (Augmenter la vitesse de lecture audio) CTRL + Digit6"
+      - listitem:
+        - heading "Réinitialiser la vitesse de lecture audio" [level=3]
+        - button "Réinitialiser la vitesse de lecture à haute voix"
+        - button "Modifier (Réinitialiser la vitesse de lecture audio) CTRL + Digit7"
+      - listitem:
+        - heading "Arrêter l'Audio" [level=3]
+        - button "Dans la fenêtre du lecteur, appelle la commande \"arrêter\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3, ou \"pause\" pour les livres audio)."
+        - button "Modifier (Arrêter l'Audio) CTRL + Digit4"
+      - listitem:
+        - heading "Fermer le lecteur" [level=3]
+        - button "Dans la fenêtre du lecteur, ferme la fenêtre et retourne à la vue de la bibliothèque."
+        - button "Modifier (Fermer le lecteur) CTRL + KeyW"
+      - listitem:
+        - heading "Zoom Avant FXL" [level=3]
+        - button "Zoom avant sur une page à mise en page fixe."
+        - button "Modifier (Zoom Avant FXL) CTRL + Digit9"
+      - listitem:
+        - heading "Zoom arrière FXL" [level=3]
+        - button "Zoom arrière sur une page à mise en page fixe."
+        - button "Modifier (Zoom arrière FXL) CTRL + Digit8"
+      - listitem:
+        - heading "Réinitialiser le zoom FXL" [level=3]
+        - button "Réinitialiser à 100 % de zoom sur une page à mise en page fixe."
+        - button "Modifier (Réinitialiser le zoom FXL) CTRL + Digit0"
+      - listitem:
+        - heading "Focus sur le contenu principal" [level=3]
+        - button "Dans les fenêtres du lecteur et de la bibliothèque, déplace le focus clavier vers le repère de la zone principale. Dans la vue du lecteur, le focus clavier se déplace d'un pas supplémentaire dans le cadre affichant le contenu de la publication (les lecteurs d'écran lisent automatiquement l'élément HTML actuellement focalisé dans le document affiché)."
+        - button "Modifier (Focus sur le contenu principal) CTRL + F10"
+      - listitem:
+        - heading "Focus profond sur le contenu principal" [level=3]
+        - button "Le focus clavier est forcé plus profondément dans le cadre qui affiche le contenu de la publication (ce qui peut aider dans les cas où les lecteurs d'écran ne lisent pas automatiquement l'élément HTML actuellement focalisé à l'intérieur du document affiché)."
+        - button "Modifier (Focus profond sur le contenu principal) SHIFT CTRL + F10"
+      - listitem:
+        - heading "Aller à la Page du lecteur" [level=3]
+        - button "Dans la fenêtre du lecteur, déplace le focus clavier vers la section « aller à la page » dans le panneau de navigation."
+        - button "Modifier (Aller à la Page du lecteur) SHIFT CTRL + KeyP"
+      - listitem:
+        - heading "Focus sur la navigation du lecteur" [level=3]
+        - button "Dans la fenêtre du lecteur, déplace le focus clavier vers le panneau de navigation (table des matières, signets, etc.)."
+        - button "Modifier (Focus sur la navigation du lecteur) CTRL + KeyN"
+      - listitem:
+        - heading "Focus sur les annotations" [level=3]
+        - button "Dans la fenêtre du lecteur, déplace le focus clavier vers la section Annotations du panneau de navigation."
+        - button "Modifier (Focus sur les annotations) SHIFT CTRL + KeyA"
+      - listitem:
+        - heading "Focus sur les Signets de Navigation du Lecteur" [level=3]
+        - button "Dans la fenêtre du lecteur, déplace le focus clavier vers la section Marque-pages du panneau de navigation"
+        - button "Modifier (Focus sur les Signets de Navigation du Lecteur) SHIFT CTRL + KeyB"
+      - listitem:
+        - heading "Focus sur la recherche" [level=3]
+        - button "Dans la fenêtre du lecteur, déplace le focus clavier vers la section Recherche du panneau de navigation"
+        - button "Modifier (Focus sur la recherche) SHIFT CTRL + KeyF"
+      - listitem:
+        - heading "Focus sur la Table des matières" [level=3]
+        - button "Dans la fenêtre du lecteur, déplace le focus clavier vers le panneau de navigation, mais plus spécifiquement dans la table des matières, et si possible au niveau du titre détecté / le plus proche de l'emplacement de lecture."
+        - button "Modifier (Focus sur la Table des matières) SHIFT CTRL + KeyN"
+      - listitem:
+        - heading "Focus sur les Paramètres du Lecteur" [level=3]
+        - button "Dans la fenêtre du lecteur, déplace le focus clavier vers le panneau des paramètres (préférences utilisateur pour l'affichage du contenu de la publication)."
+        - button "Modifier (Focus sur les Paramètres du Lecteur) CTRL + KeyS"
+      - listitem:
+        - heading "Focus sur la Recherche" [level=3]
+        - button "Disponible depuis la bibliothèque et les infos de lecture. Dans la fenêtre de la bibliothèque, déplace le focus clavier vers l'entrée de texte de recherche de la bibliothèque locale ou du flux OPDS. Dans la fenêtre du lecteur, déplace le focus clavier vers l'entrée de texte de recherche globale de la publication."
+        - button "Modifier (Focus sur la Recherche) CTRL + KeyF"
+      - listitem:
+        - heading "Focus sur la Barre d'Outils" [level=3]
+        - button "Dans les fenêtres du lecteur et de la bibliothèque, déplace le focus clavier vers la barre d'outils horizontale supérieure, juste avant le lien \"sauter\" (qui lui-même déplace le focus vers le repère de la zone \"principale\")."
+        - button "Modifier (Focus sur la Barre d'Outils) CTRL + KeyT"
+      - listitem:
+        - heading "Aller au Chapitre Suivant" [level=3]
+        - button "Dans la fenêtre du lecteur, se déplace vers le \"chapitre\" précédent ou suivant (élément de la colonne vertébrale dans l'ordre de lecture de la publication). Notez que le focus clavier est automatiquement déplacé vers le repère de la zone \"principale\", qui se trouve juste avant le cadre affichant le contenu de la publication (comme lors du suivi / activation d'un lien dans la table des matières)."
+        - button "Modifier (Aller au Chapitre Suivant) SHIFT CTRL ALT + ArrowRight"
+      - listitem:
+        - heading "Aller au Chapitre Suivant (Alternatif)" [level=3]
+        - button "Dans la fenêtre du lecteur, se déplace vers le \"chapitre\" précédent ou suivant (élément de la colonne vertébrale dans l'ordre de lecture de la publication). Notez que le focus clavier est automatiquement déplacé vers le repère de la zone \"principale\", qui se trouve juste avant le cadre affichant le contenu de la publication (comme lors du suivi / activation d'un lien dans la table des matières)."
+        - button "Modifier (Aller au Chapitre Suivant (Alternatif)) CTRL + PageDown"
+      - listitem:
+        - heading "Aller à l'Historique Suivant" [level=3]
+        - 'button "dans la fenêtre du lecteur, revenir en arrière ou en avant dans l''historique de navigation : Début ou Fin de la publication."'
+        - button "Modifier (Aller à l'Historique Suivant) SHIFT CTRL + Backspace"
+      - listitem:
+        - heading "Aller à la Page Suivante de la Bibliothèque" [level=3]
+        - button "Dans la vue de la bibliothèque, affiche le prochain ensemble de livres."
+        - button "Modifier (Aller à la Page Suivante de la Bibliothèque) SHIFT CTRL + ArrowRight"
+      - listitem:
+        - heading "Aller à la Page Suivante de la Bibliothèque (Alternatif)" [level=3]
+        - button "Dans la vue de la bibliothèque, affiche le prochain ensemble de livres (raccourci clavier alternatif)."
+        - button "Modifier (Aller à la Page Suivante de la Bibliothèque (Alternatif)) SHIFT CTRL + Period"
+      - listitem:
+        - heading "Aller à la Page OPDS Suivante" [level=3]
+        - button "Dans la fenêtre de la bibliothèque pour les flux de Catalogues (OPD), active les liens de pagination suivants."
+        - button "Modifier (Aller à la Page OPDS Suivante) SHIFT CTRL + ArrowRight"
+      - listitem:
+        - heading "Aller à la Page Suivante d'un Catalogue (Alternatif)" [level=3]
+        - button "Dans vue bibliothèque d'un catalogue, saute à la page suivante (raccourci clavier alternatif)"
+        - button "Modifier (Aller à la Page Suivante d'un Catalogue (Alternatif)) SHIFT CTRL + Period"
+      - listitem:
+        - heading "Aller à la Page Suivante" [level=3]
+        - button "dans la fenêtre du lecteur, se déplace vers la \"page\" précédente ou suivante (ou unité de défilement, si la pagination est désactivée)."
+        - button "Modifier (Aller à la Page Suivante) ArrowRight"
+      - listitem:
+        - heading "Aller à la Page Suivante (Alternatif)" [level=3]
+        - button "Dans la fenêtre du lecteur, se déplace vers la \"page\" précédente ou suivante (ou unité de défilement, si la pagination est désactivée)."
+        - button "Modifier (Aller à la Page Suivante (Alternatif)) CTRL + Period"
+      - listitem:
+        - heading "Aller au Chapitre Précédent" [level=3]
+        - button "dans la fenêtre du lecteur, se déplace vers le \"chapitre\" précédent (élément de la colonne vertébrale dans l'ordre de lecture de la publication). Notez que le focus clavier est automatiquement déplacé vers le repère de la zone \"principale\", qui se trouve juste avant le cadre affichant le contenu de la publication (comme lors du suivi / activation d'un lien dans la table des matières)."
+        - button "Modifier (Aller au Chapitre Précédent) SHIFT CTRL ALT + ArrowLeft"
+      - listitem:
+        - heading "Aller au Chapitre Précédent (Alternatif)" [level=3]
+        - button "Dans la fenêtre du lecteur, se déplace vers le \"chapitre\" précédent (élément de la colonne vertébrale dans l'ordre de lecture de la publication). Notez que le focus clavier est automatiquement déplacé vers le repère de la zone \"principale\", qui se trouve juste avant le cadre affichant le contenu de la publication (comme lors du suivi / activation d'un lien dans la table des matières)."
+        - button "Modifier (Aller au Chapitre Précédent (Alternatif)) CTRL + PageUp"
+      - listitem:
+        - heading "Aller à l'Historique Précédent" [level=3]
+        - 'button "Dans la fenêtre du lecteur, revenir en arrière ou en avant dans l''historique de navigation : Début ou Fin de la publication."'
+        - button "Modifier (Aller à l'Historique Précédent) CTRL + Backspace"
+      - listitem:
+        - heading "Aller à la Page Précédente de la Bibliothèque" [level=3]
+        - button "Dans la vue de la bibliothèque, affiche l'ensemble précédent de livres."
+        - button "Modifier (Aller à la Page Précédente de la Bibliothèque) SHIFT CTRL + ArrowLeft"
+      - listitem:
+        - heading "Aller à la Page Précédente de la Bibliothèque (Alternatif)" [level=3]
+        - button "Dans la vue de la bibliothèque, affiche l'ensemble précédent de livres (raccourci clavier alternatif)."
+        - button "Modifier (Aller à la Page Précédente de la Bibliothèque (Alternatif)) SHIFT CTRL + Comma"
+      - listitem:
+        - heading "Aller à la Page OPDS Précédente" [level=3]
+        - button "Dans la fenêtre de la bibliothèque pour les flux de Catalogues (OPD), active les liens de pagination précédents."
+        - button "Modifier (Aller à la Page OPDS Précédente) SHIFT CTRL + ArrowLeft"
+      - listitem:
+        - heading "Aller à la Page OPDS Précédente (Alternatif)" [level=3]
+        - button "Dans la fenêtre de la bibliothèque pour les flux de Catalogues (OPD), active les liens de pagination précédents (raccourci clavier alternatif)."
+        - button "Modifier (Aller à la Page OPDS Précédente (Alternatif)) SHIFT CTRL + Comma"
+      - listitem:
+        - heading "Aller à la Page Précédente" [level=3]
+        - button "Dans la fenêtre du lecteur, se déplace vers la \"page\" précédente ou suivante (ou unité de défilement, si la pagination est désactivée)."
+        - button "Modifier (Aller à la Page Précédente) ArrowLeft"
+      - listitem:
+        - heading "Aller à la Page Précédente (Alternatif)" [level=3]
+        - button "Dans la fenêtre du lecteur, se déplace vers la \"page\" précédente ou suivante (ou unité de défilement, si la pagination est désactivée)."
+        - button "Modifier (Aller à la Page Précédente (Alternatif)) CTRL + Comma"
+      - listitem:
+        - heading "Aller au Début" [level=3]
+        - button "dans la fenêtre du lecteur, va au début de la publication."
+        - button "Modifier (Aller au Début) CTRL + Home"
+      - listitem:
+        - heading "Aller à la Fin" [level=3]
+        - button "Dans la fenêtre du lecteur, va à la fin de la publication."
+        - button "Modifier (Aller à la Fin) CTRL + End"
+      - listitem:
+        - heading "Ouvrir les Infos du Lecteur" [level=3]
+        - button "Dans la fenêtre du lecteur, ouvre une boîte de dialogue modale d'informations sur la publication (peut être utilisée dans une future version de Thorium pour une fonctionnalité similaire dans la fenêtre de la bibliothèque)."
+        - button "Modifier (Ouvrir les Infos du Lecteur) CTRL + KeyI"
+      - listitem:
+        - heading "Afficher les informations sur la publication et la progression" [level=3]
+        - button "Dans la fenêtre du lecteur, ouvre une boîte de dialogue modale d'informations sur la publication avec un focus clavier direct sur la section qui affiche la hiérarchie des titres et d'autres informations contextuelles pour l'emplacement de lecture actuel, telles que la pause de page précédente la plus proche, ainsi que l'index du document dans l'ordre de lecture (c'est la fonctionnalité \"où suis-je\")."
+        - button "Modifier (Afficher les informations sur la publication et la progression) SHIFT CTRL + KeyI"
+      - listitem:
+        - heading "Imprimer" [level=3]
+        - button "Dans la fenêtre du lecteur, ouvre une boîte de dialogue d'impression"
+        - button "Modifier (Imprimer) CTRL + KeyP"
+      - listitem:
+        - heading "Rechercher le résultat suivant" [level=3]
+        - button "Dans la fenêtre du lecteur, lorsque l'entrée de texte de recherche globale de la publication est ouverte, trouve la correspondance précédente / suivante."
+        - button "Modifier (Rechercher le résultat suivant) F3"
+      - listitem:
+        - heading "Rechercher le résultat suivant (alternatif)" [level=3]
+        - button "Identique à ci-dessus (raccourci clavier alternatif)."
+        - button "Modifier (Rechercher le résultat suivant (alternatif)) CTRL + KeyG"
+      - listitem:
+        - heading "Rechercher le résultat précédent" [level=3]
+        - button "Dans la fenêtre du lecteur, lorsque l'entrée de texte de recherche globale de la publication est ouverte, trouve la correspondance précédente / suivante."
+        - button "Modifier (Rechercher le résultat précédent) SHIFT + F3"
+      - listitem:
+        - heading "Rechercher le résultat précédent (alternatif)" [level=3]
+        - button "Identique à ci-dessus (raccourci clavier alternatif)."
+        - button "Modifier (Rechercher le résultat précédent (alternatif)) SHIFT CTRL + KeyG"
+      - listitem:
+        - heading "Décrire le lieu de lecture (Oral)" [level=3]
+        - button "Dans la fenêtre de lecture, décrit le contexte de la position de lecture en utilisant le lecteur d'écran et une parole assertive qui interrompt la narration en cours."
+        - button "Modifier (Décrire le lieu de lecture (Oral)) SHIFT CTRL + KeyK"
+      - listitem:
+        - heading "Basculer le signet" [level=3]
+        - button "Dans la fenêtre du lecteur, bascule le signet (une notification est produite pour que les lecteurs d'écran annoncent le changement)."
+        - button "Modifier (Basculer le signet) CTRL + KeyB"
+      - listitem:
+        - heading "Basculer en plein écran" [level=3]
+        - button "Dans la fenêtre du lecteur, bascule en plein écran. Notez que cela est différent du mode Zen. Le raccourci clavier est le seul moyen de passer en plein écran."
+        - button "Modifier (Basculer en plein écran) CTRL + F11"
+      - listitem:
+        - heading "Basculer le mode Zen" [level=3]
+        - button "Dans la fenêtre du lecteur, active ou quitte le mode Zen, qui simplifie l'interface pendant la lecture."
+        - button "Modifier (Basculer le mode Zen) SHIFT CTRL + F11"
+      - listitem:
+        - heading "Basculer vers le support optimisé des lecteurs d'écran" [level=3]
+        - button "Dans la vue bibliothèque, bascule vers le support optimisé des lecteurs d'écran"
+        - button "Modifier (Basculer vers le support optimisé des lecteurs d'écran) SHIFT CTRL + F12"
+  - button "Fermer"

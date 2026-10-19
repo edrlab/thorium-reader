@@ -1,0 +1,36 @@
+Batch 3 validation: A26 settings zoom/reflow and A31 tag targets
+Branch: codex/a11y-batch-3-reflow-targets (uncommitted)
+Parent: 937d9d5bc4656a8abd15c462c18d5bc48adc2383, pushed to edrlab/thorium-reader on codex/a11y-batch-2-keyboard-semantics
+TypeScript: node_modules/.bin/tsc6 --noEmit --project tsconfig-cli.json --pretty false (exit 0)
+ESLint: ESLINT_USE_FLAT_CONFIG=false; changed renderer TSX sources (exit 0)
+Stylelint: modals.scss, popoverDialog.scss, settings.scss, tags.scss (exit 0)
+Fixture scenarios: 7 passed; 18 component-fixture captures
+Live scenarios: 3 passed; 11 intended-host captures using npm run start:dev:quick
+Actual Electron Reader zoom 2; all four EPUB settings tabs; complete Tab cycles and point hit-testing
+Library 320x228 CSS viewport emulation; all five tabs; complete Tab cycles and point hit-testing
+Library/Reader 320x228 fixtures; French Library five-tab coverage
+Real TagManager + standalone fixtures and existing live publication: 24x24 pencil targets; Enter/Escape focus behavior
+Standard-size APIAPP and delete-confirmation shared modal cancellation regressions
+Final Library viewport restoration assertion passed after emulated-width traversal
+No metadata, shortcuts, storage location or presets changed; temporary UI state restored
+No native screen-reader listening; sampled scopes do not establish WCAG conformance
+Development bundles with runtime scope checking:
+renderer pdf webview index (webpack 5.111.1) compiled successfully in 1906 ms
+renderer pdf extract webview index (webpack 5.111.1) compiled successfully in 1102 ms
+renderer webview preload (webpack 5.111.1) compiled successfully in 3542 ms
+[2] main (webpack 5.111.1) compiled successfully in 13655 ms
+[0] renderer index app (webpack 5.111.1) compiled successfully in 15356 ms
+[1] renderer index reader (webpack 5.111.1) compiled successfully in 15571 ms
+[0] renderer index app (webpack 5.111.1) compiled successfully in 1139 ms
+[1] renderer index reader (webpack 5.111.1) compiled successfully in 1148 ms
+[0] renderer index app (webpack 5.111.1) compiled successfully in 772 ms
+[1] renderer index reader (webpack 5.111.1) compiled successfully in 853 ms
+[0] renderer index app (webpack 5.111.1) compiled successfully in 665 ms
+[0] renderer index app (webpack 5.111.1) compiled successfully in 746 ms
+[1] renderer index reader (webpack 5.111.1) compiled successfully in 734 ms
+Fixture builds:
+renderer index app:
+  renderer index app compiled in 13811 ms
+
+renderer index reader:
+  renderer index reader compiled in 13509 ms

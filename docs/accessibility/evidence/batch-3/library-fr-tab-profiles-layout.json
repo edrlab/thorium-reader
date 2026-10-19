@@ -1,0 +1,48 @@
+{
+  "kind": "layout-measurement",
+  "metrics": {
+    "viewport": {
+      "width": 320,
+      "height": 228
+    },
+    "zoom": 1,
+    "dialog": {
+      "x": 16,
+      "y": 16,
+      "width": 288,
+      "height": 196,
+      "top": 16,
+      "right": 304,
+      "bottom": 212,
+      "left": 16
+    },
+    "close": {
+      "x": 268,
+      "y": 23,
+      "width": 30,
+      "height": 30,
+      "top": 23,
+      "right": 298,
+      "bottom": 53,
+      "left": 268
+    },
+    "scroller": {
+      "rect": {
+        "x": 17,
+        "y": 17,
+        "width": 286,
+        "height": 194,
+        "top": 17,
+        "right": 303,
+        "bottom": 211,
+        "left": 17
+      },
+      "width": 271,
+      "scrollWidth": 271,
+      "height": 194,
+      "scrollHeight": 551
+    },
+    "wide": []
+  },
+  "trace": []
+}

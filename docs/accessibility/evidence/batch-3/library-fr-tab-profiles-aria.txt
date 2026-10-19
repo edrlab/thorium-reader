@@ -1,0 +1,21 @@
+- main:
+  - 'heading "Component fixture: library-settings" [level=1]'
+  - button "Préférences de l'application" [expanded]:
+    - heading "Préférences de l'application" [level=3]: Préférences
+- button "Dismiss"
+- dialog "Préférences":
+  - heading "Préférences" [level=1]
+  - tablist "Préférences de l'application":
+    - tab "Géneral"
+    - tab "Raccourcis clavier"
+    - tab "Profils" [selected]
+    - tab "Stockage"
+    - tab "Options avancées"
+  - heading "Profils" [level=2]
+  - tabpanel "Profils":
+    - paragraph: Changez de profil pour personnaliser l’application avec un thème, des catalogues et des informations spécifiques. Chaque profil offre une expérience sur mesure.
+    - radiogroup "Profils":
+      - radio "Thorium Vanilla" [checked]
+      - heading "Thorium Vanilla" [level=3]
+      - paragraph: Le profil Thorium Vanilla est le profil original, développé par EDRLab.
+  - button "Fermer"

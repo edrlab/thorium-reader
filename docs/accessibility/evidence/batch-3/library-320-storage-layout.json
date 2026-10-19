@@ -1,0 +1,175 @@
+{
+  "kind": "layout-measurement",
+  "metrics": {
+    "viewport": {
+      "width": 320,
+      "height": 228
+    },
+    "zoom": 1,
+    "dialog": {
+      "x": 16,
+      "y": 16,
+      "width": 288,
+      "height": 196,
+      "top": 16,
+      "right": 304,
+      "bottom": 212,
+      "left": 16
+    },
+    "close": {
+      "x": 268,
+      "y": 23,
+      "width": 30,
+      "height": 30,
+      "top": 23,
+      "right": 298,
+      "bottom": 53,
+      "left": 268
+    },
+    "scroller": {
+      "rect": {
+        "x": 17,
+        "y": 17,
+        "width": 286,
+        "height": 194,
+        "top": 17,
+        "right": 303,
+        "bottom": 211,
+        "left": 17
+      },
+      "width": 271,
+      "scrollWidth": 271,
+      "height": 194,
+      "scrollHeight": 946
+    },
+    "wide": []
+  },
+  "trace": [
+    {
+      "html": "<summary dir=\"ltr\"><div style=\"display: flex; align-items: center; gap: 10px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg><p>Learn more about this feature, currently in beta</p></div></summary>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 39,
+        "y": 110.59375,
+        "width": 207,
+        "height": 42,
+        "top": 110.59375,
+        "right": 246,
+        "bottom": 152.59375,
+        "left": 39
+      },
+      "visible": true,
+      "hit": "<p>Learn more about this feature, currently in beta</p>",
+      "point": {
+        "x": 142.5,
+        "y": 131.59375
+      }
+    },
+    {
+      "html": "<button class=\"button_nav_tertiary\">C:/Audit/Thorium/Publications/Library</button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 34,
+        "y": 106.59375,
+        "width": 242,
+        "height": 51.1875,
+        "top": 106.59375,
+        "right": 276,
+        "bottom": 157.78125,
+        "left": 34
+      },
+      "visible": true,
+      "hit": "<button class=\"button_nav_tertiary\">C:/Audit/Thorium/Publications/Library</button>",
+      "point": {
+        "x": 155,
+        "y": 132.1875
+      }
+    },
+    {
+      "html": "<button class=\"button_secondary_blue\">Select an additional storage</button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 29,
+        "y": 116.78125,
+        "width": 247,
+        "height": 30,
+        "top": 116.78125,
+        "right": 276,
+        "bottom": 146.78125,
+        "left": 29
+      },
+      "visible": true,
+      "hit": "<button class=\"button_secondary_blue\">Select an additional storage</button>",
+      "point": {
+        "x": 152.5,
+        "y": 131.78125
+      }
+    },
+    {
+      "html": "<button class=\"button_secondary_blue\" aria-disabled=\"false\">Check for recoverable publications</button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 29,
+        "y": 143.78125,
+        "width": 226.78125,
+        "height": 30,
+        "top": 143.78125,
+        "right": 255.78125,
+        "bottom": 173.78125,
+        "left": 29
+      },
+      "visible": true,
+      "hit": "<button class=\"button_secondary_blue\" aria-disabled=\"false\">Check for recoverable publications</button>",
+      "point": {
+        "x": 142.390625,
+        "y": 158.78125
+      }
+    },
+    {
+      "html": "<button dir=\"ltr\" data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 268,
+        "y": 23,
+        "width": 30,
+        "height": 30,
+        "top": 23,
+        "right": 298,
+        "bottom": 53,
+        "left": 268
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#close-icon\"></use>",
+      "point": {
+        "x": 283,
+        "y": 38
+      }
+    },
+    {
+      "html": "<div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-storage\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r9:-tab-tab-storage\" aria-selected=\"true\" role=\"tab\" aria-controls=\"react-aria8118544264-:r9:-tabpanel-tab-storage\" data-selected=\"true\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 11\"><use xlink:href=\"#library-icon\"></use></svg><span dir=\"ltr\">Storage</span></div>",
+      "atStart": true,
+      "withinDialog": true,
+      "box": {
+        "x": 29,
+        "y": 116,
+        "width": 247,
+        "height": 32,
+        "top": 116,
+        "right": 276,
+        "bottom": 148,
+        "left": 29
+      },
+      "visible": true,
+      "hit": "<div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-storage\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r",
+      "point": {
+        "x": 152.5,
+        "y": 132
+      }
+    }
+  ]
+}

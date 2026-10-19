@@ -1,0 +1,628 @@
+{
+  "id": "reader-settings-modal",
+  "runtime": "reader",
+  "files": [
+    "src/renderer/reader/components/ReaderSettings/ReaderSettings.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T13:35:39.973Z",
+  "lang": "en",
+  "errors": [],
+  "actions": [
+    [
+      "dispatch",
+      {
+        "type": "READER_SET_CONFIG",
+        "payload": {
+          "readerSettingsSection": "tab-display"
+        }
+      }
+    ],
+    [
+      "dispatch",
+      {
+        "type": "READER_SET_CONFIG",
+        "payload": {
+          "readerSettingsSection": "tab-text"
+        }
+      }
+    ],
+    [
+      "dispatch",
+      {
+        "type": "READER_SET_CONFIG",
+        "payload": {
+          "readerSettingsSection": "tab-spacing"
+        }
+      }
+    ]
+  ],
+  "text": "Component fixture: reader-settings-modal\nReader settings\nReader settings\nDisplay\nText\nSpacing\nPreferences\nCustomize text formatting\nSpacing\nMargin\n\n1\n\nWord spacing\n\nDefault\n\nLetter spacing\n\nDefault\n\nParagraph spacing\n\nDefault\n\nLine spacing\n\nDefault",
+  "html": "<div id=\"audit-root\" inert=\"\"><main><h1>Component fixture: reader-settings-modal</h1><button type=\"button\" aria-expanded=\"true\" id=\"react-aria567327564-:r4:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria567327564-:r3:\">Reader settings</button></main></div>\n<span data-focus-scope-start=\"true\" hidden=\"\" inert=\"\"></span>\n<div class=\"thorium-dialog-overlay\" data-rac=\"\" style=\"position: fixed; inset: 0px; z-index: 102; --visual-viewport-width: 320px; --visual-viewport-height: 228px; --page-width: 320px; --page-height: 227.84375px;\"><div class=\"react-aria-Modal\" data-rac=\"\" style=\"display: contents;\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><button id=\"react-aria567327564-:r5:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button></div><h2 id=\":r0:\">Reader settings</h2><section id=\"react-aria567327564-:r3:\" class=\"modal_dialog_reader\" data-rac=\"\" aria-labelledby=\":r0:\" role=\"dialog\" tabindex=\"-1\"><div style=\"min-height: inherit;\"><template><div class=\"settings_tabslist\"><div class=\"allowCustom\"><input id=\"allow-custom\" class=\"checkbox_custom_input\" type=\"checkbox\" checked=\"\"><label for=\"allow-custom\" class=\"checkbox_custom_label\"><div tabindex=\"0\" role=\"checkbox\" aria-checked=\"true\" aria-label=\"Customize text formatting\" class=\"checkbox_custom\" style=\"border: 2px solid transparent; background-color: var(--color-brand-primary);\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 13\"><use xlink:href=\"#singlecheck-icon\"></use></svg></div><span aria-hidden=\"true\">Customize text formatting</span></label></div></div><div class=\"settings_tab_title\"><h2>Spacing</h2></div><div class=\"settings_content\"></div><div class=\"close_button_div\"><div><button class=\"button_transparency_icon\" aria-label=\"Dock panel to the left\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 15\"><use xlink:href=\"#dockleft-icon\"></use></svg></button><button class=\"button_transparency_icon\" aria-label=\"Dock panel to the right\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 15\"><use xlink:href=\"#dockright-icon\"></use></svg></button><button class=\"button_transparency_icon\" disabled=\"\" aria-label=\"Show panel as a modal popup\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 16\"><use xlink:href=\"#dockmodal-icon\"></use></svg></button><button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></div></div></template><div data-orientation=\"vertical\" class=\"settings_container\" data-rac=\"\" data-focused=\"true\" data-focus-visible=\"true\"><div class=\"settings_tabslist\"><div data-orientation=\"vertical\" class=\"react-aria-TabList\" data-rac=\"\" data-collection=\"react-aria567327564-:r8:\" id=\"react-aria567327564-:r9:\" aria-label=\"Reader settings\" role=\"tablist\" aria-orientation=\"vertical\"><div data-value=\"tab-display\" class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"-1\" data-collection=\"react-aria567327564-:r8:\" data-key=\"tab-display\" data-react-aria-pressable=\"true\" id=\"react-aria567327564-:r9:-tab-tab-display\" aria-selected=\"false\" role=\"tab\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 11\"><use xlink:href=\"#alignleft-icon\"></use></svg><span>Display</span></div><div data-value=\"tab-text\" class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"-1\" data-collection=\"react-aria567327564-:r8:\" data-key=\"tab-text\" data-react-aria-pressable=\"true\" id=\"react-aria567327564-:r9:-tab-tab-text\" aria-selected=\"false\" role=\"tab\"><svg aria-hidden=\"true\" viewBox=\"0 0 19 13\"><use xlink:href=\"#textarea-icon\"></use></svg><span>Text</span></div><div data-value=\"tab-spacing\" class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria567327564-:r8:\" data-key=\"tab-spacing\" data-react-aria-pressable=\"true\" id=\"react-aria567327564-:r9:-tab-tab-spacing\" aria-selected=\"true\" role=\"tab\" aria-controls=\"react-aria567327564-:r9:-tabpanel-tab-spacing\" data-selected=\"true\" data-focus-id=\"reader-settings-nav\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 14\"><use xlink:href=\"#layout-icon\"></use></svg><span>Spacing</span></div><div data-separator-before=\"true\" data-value=\"tab-preset\" class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"-1\" data-collection=\"react-aria567327564-:r8:\" data-key=\"tab-preset\" data-react-aria-pressable=\"true\" id=\"react-aria567327564-:r9:-tab-tab-preset\" aria-selected=\"false\" role=\"tab\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#gear-icon\"></use></svg><span>Preferences</span></div></div><div class=\"allowCustom\"><input id=\"allow-custom\" class=\"checkbox_custom_input\" type=\"checkbox\" checked=\"\"><label for=\"allow-custom\" class=\"checkbox_custom_label\"><div tabindex=\"0\" role=\"checkbox\" aria-checked=\"true\" aria-label=\"Customize text formatting\" class=\"checkbox_custom\" style=\"border: 2px solid transparent; background-color: var(--color-brand-primary);\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 13\"><use xlink:href=\"#singlecheck-icon\"></use></svg></div><span aria-hidden=\"true\">Customize text formatting</span></label></div></div><div class=\"settings_tab_title\"><h2>Spacing</h2></div><div class=\"settings_content\"><div class=\"react-aria-TabPanels\" style=\"--tab-panel-width: auto; --tab-panel-height: auto;\"><div data-focus-id=\"readerSettings_tabs-tab-spacing\" id=\"react-aria567327564-:r9:-tabpanel-tab-spacing\" aria-labelledby=\"react-aria567327564-:r9:-tab-tab-spacing\" role=\"tabpanel\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\"><div class=\"settings_tab\"><div class=\"settings_tab_container_reading_spacing\"><section class=\"section\"><div class=\"spacing_heading\"><h3 id=\":r28:\">Margin</h3><p>1</p></div><div class=\"size_range\"><button class=\"reset_button\" title=\"Reset Margin\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#clock-reverse-icon\"></use></svg></button><button class=\"scale_button\" aria-label=\"Decrease Margin\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button><input id=\":r28:-range\" type=\"range\" aria-labelledby=\":r28:\" min=\"0\" max=\"7\" aria-valuetext=\"1\" class=\"\" value=\"3\"><button class=\"scale_button\" aria-label=\"Increase Margin\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg></button></div></section><section class=\"section\"><div class=\"spacing_heading\"><h3 id=\":r29:\">Word spacing</h3><p>Default</p></div><div class=\"size_range\"><button class=\"reset_button\" title=\"Reset Word spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#clock-reverse-icon\"></use></svg></button><button class=\"scale_button\" aria-label=\"Decrease Word spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button><input id=\":r29:-range\" type=\"range\" aria-labelledby=\":r29:\" min=\"0\" max=\"9\" aria-valuetext=\"Default\" class=\"range_inactive\" value=\"0\"><button class=\"scale_button\" aria-label=\"Increase Word spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg></button></div></section><section class=\"section\"><div class=\"spacing_heading\"><h3 id=\":r2a:\">Letter spacing</h3><p>Default</p></div><div class=\"size_range\"><button class=\"reset_button\" title=\"Reset Letter spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#clock-reverse-icon\"></use></svg></button><button class=\"scale_button\" aria-label=\"Decrease Letter spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button><input id=\":r2a:-range\" type=\"range\" aria-labelledby=\":r2a:\" min=\"0\" max=\"8\" aria-valuetext=\"Default\" class=\"range_inactive\" value=\"0\"><button class=\"scale_button\" aria-label=\"Increase Letter spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg></button></div></section><section class=\"section\"><div class=\"spacing_heading\"><h3 id=\":r2b:\">Paragraph spacing</h3><p>Default</p></div><div class=\"size_range\"><button class=\"reset_button\" title=\"Reset Paragraph spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#clock-reverse-icon\"></use></svg></button><button class=\"scale_button\" aria-label=\"Decrease Paragraph spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button><input id=\":r2b:-range\" type=\"range\" aria-labelledby=\":r2b:\" min=\"0\" max=\"7\" aria-valuetext=\"Default\" class=\"range_inactive\" value=\"0\"><button class=\"scale_button\" aria-label=\"Increase Paragraph spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg></button></div></section><section class=\"section\"><div class=\"spacing_heading\"><h3 id=\":r2c:\">Line spacing</h3><p>Default</p></div><div class=\"size_range\"><button class=\"reset_button\" title=\"Reset Line spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#clock-reverse-icon\"></use></svg></button><button class=\"scale_button\" aria-label=\"Decrease Line spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button><input id=\":r2c:-range\" type=\"range\" aria-labelledby=\":r2c:\" min=\"0\" max=\"8\" aria-valuetext=\"Default\" class=\"range_inactive\" value=\"0\"><button class=\"scale_button\" aria-label=\"Increase Line spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg></button></div></section></div></div></div></div></div><div class=\"close_button_div\"><div><button class=\"button_transparency_icon\" aria-label=\"Dock panel to the left\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 15\"><use xlink:href=\"#dockleft-icon\"></use></svg></button><button class=\"button_transparency_icon\" aria-label=\"Dock panel to the right\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 15\"><use xlink:href=\"#dockright-icon\"></use></svg></button><button class=\"button_transparency_icon\" disabled=\"\" aria-label=\"Show panel as a modal popup\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 16\"><use xlink:href=\"#dockmodal-icon\"></use></svg></button><button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></div></div></div></div></section></div></div>\n<span data-focus-scope-end=\"true\" hidden=\"\" inert=\"\"></span>",
+  "dimensions": {
+    "width": 320,
+    "height": 228,
+    "scrollWidth": 320
+  },
+  "focus": "<div data-value=\"tab-spacing\" class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria567327564-:r8:\" data-key=\"tab-spacing\" data-react-aria-pressable=\"true\" id=\"react-aria567327564-:r9:-tab-tab-spacing\" aria-selected=\"true\" role=\"tab\" aria-controls=\"react-aria567327564-:r9:-tabpanel-tab-spacing\" data-selected=\"true\" data-focus-id=\"reader-settings-nav\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 14\"><use xlink:href=\"#layout-icon\"></use></svg><span>Spacing</span></div>",
+  "controls": [
+    {
+      "html": "<button type=\"button\" aria-expanded=\"true\" id=\"react-aria567327564-:r4:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria567327564-:r3:\">Reader settings</button>",
+      "rect": {
+        "x": 0,
+        "y": 88.15625,
+        "width": 98.0625,
+        "height": 16,
+        "top": 88.15625,
+        "right": 98.0625,
+        "bottom": 104.15625,
+        "left": 0
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"react-aria567327564-:r5:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button>",
+      "rect": {
+        "x": -1,
+        "y": -1,
+        "width": 1,
+        "height": 1,
+        "top": -1,
+        "right": 0,
+        "bottom": 0,
+        "left": -1
+      },
+      "visible": true
+    },
+    {
+      "html": "<input id=\"allow-custom\" class=\"checkbox_custom_input\" type=\"checkbox\" checked=\"\">",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "visible": false
+    },
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"true\" aria-label=\"Customize text formatting\" class=\"checkbox_custom\" style=\"border: 2px solid transparent; background-color: var(--color-brand-primary);\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 13\"><use xlink:href=\"#singlecheck-icon\"></use></svg></div>",
+      "rect": {
+        "x": 44.09375,
+        "y": -1,
+        "width": 16,
+        "height": 16,
+        "top": -1,
+        "right": 60.09375,
+        "bottom": 15,
+        "left": 44.09375
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"reset_button\" title=\"Reset Margin\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#clock-reverse-icon\"></use></svg></button>",
+      "rect": {
+        "x": 29,
+        "y": 154.59375,
+        "width": 29.53125,
+        "height": 32,
+        "top": 154.59375,
+        "right": 58.53125,
+        "bottom": 186.59375,
+        "left": 29
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Decrease Margin\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button>",
+      "rect": {
+        "x": 60.36015701293945,
+        "y": 155.6437530517578,
+        "width": 27.48281478881836,
+        "height": 29.899993896484375,
+        "top": 155.6437530517578,
+        "right": 87.84297180175781,
+        "bottom": 185.5437469482422,
+        "left": 60.36015701293945
+      },
+      "visible": true
+    },
+    {
+      "html": "<input id=\":r28:-range\" type=\"range\" aria-labelledby=\":r28:\" min=\"0\" max=\"7\" aria-valuetext=\"1\" class=\"\" value=\"3\">",
+      "rect": {
+        "x": 91.671875,
+        "y": 168.09375,
+        "width": 131.484375,
+        "height": 5,
+        "top": 168.09375,
+        "right": 223.15625,
+        "bottom": 173.09375,
+        "left": 91.671875
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Increase Margin\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg></button>",
+      "rect": {
+        "x": 226.9851531982422,
+        "y": 155.6437530517578,
+        "width": 27.482803344726562,
+        "height": 29.899993896484375,
+        "top": 155.6437530517578,
+        "right": 254.46795654296875,
+        "bottom": 185.5437469482422,
+        "left": 226.9851531982422
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"reset_button\" title=\"Reset Word spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#clock-reverse-icon\"></use></svg></button>",
+      "rect": {
+        "x": 29,
+        "y": 252.59375,
+        "width": 29.53125,
+        "height": 32,
+        "top": 252.59375,
+        "right": 58.53125,
+        "bottom": 284.59375,
+        "left": 29
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Decrease Word spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button>",
+      "rect": {
+        "x": 60.36015701293945,
+        "y": 253.6437530517578,
+        "width": 27.48281478881836,
+        "height": 29.900009155273438,
+        "top": 253.6437530517578,
+        "right": 87.84297180175781,
+        "bottom": 283.54376220703125,
+        "left": 60.36015701293945
+      },
+      "visible": true
+    },
+    {
+      "html": "<input id=\":r29:-range\" type=\"range\" aria-labelledby=\":r29:\" min=\"0\" max=\"9\" aria-valuetext=\"Default\" class=\"range_inactive\" value=\"0\">",
+      "rect": {
+        "x": 91.671875,
+        "y": 266.09375,
+        "width": 131.484375,
+        "height": 5,
+        "top": 266.09375,
+        "right": 223.15625,
+        "bottom": 271.09375,
+        "left": 91.671875
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Increase Word spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg></button>",
+      "rect": {
+        "x": 226.9851531982422,
+        "y": 253.6437530517578,
+        "width": 27.482803344726562,
+        "height": 29.900009155273438,
+        "top": 253.6437530517578,
+        "right": 254.46795654296875,
+        "bottom": 283.54376220703125,
+        "left": 226.9851531982422
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"reset_button\" title=\"Reset Letter spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#clock-reverse-icon\"></use></svg></button>",
+      "rect": {
+        "x": 29,
+        "y": 350.59375,
+        "width": 29.53125,
+        "height": 32,
+        "top": 350.59375,
+        "right": 58.53125,
+        "bottom": 382.59375,
+        "left": 29
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Decrease Letter spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button>",
+      "rect": {
+        "x": 60.36015701293945,
+        "y": 351.64373779296875,
+        "width": 27.48281478881836,
+        "height": 29.9000244140625,
+        "top": 351.64373779296875,
+        "right": 87.84297180175781,
+        "bottom": 381.54376220703125,
+        "left": 60.36015701293945
+      },
+      "visible": true
+    },
+    {
+      "html": "<input id=\":r2a:-range\" type=\"range\" aria-labelledby=\":r2a:\" min=\"0\" max=\"8\" aria-valuetext=\"Default\" class=\"range_inactive\" value=\"0\">",
+      "rect": {
+        "x": 91.671875,
+        "y": 364.09375,
+        "width": 131.484375,
+        "height": 5,
+        "top": 364.09375,
+        "right": 223.15625,
+        "bottom": 369.09375,
+        "left": 91.671875
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Increase Letter spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg></button>",
+      "rect": {
+        "x": 226.9851531982422,
+        "y": 351.64373779296875,
+        "width": 27.482803344726562,
+        "height": 29.9000244140625,
+        "top": 351.64373779296875,
+        "right": 254.46795654296875,
+        "bottom": 381.54376220703125,
+        "left": 226.9851531982422
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"reset_button\" title=\"Reset Paragraph spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#clock-reverse-icon\"></use></svg></button>",
+      "rect": {
+        "x": 29,
+        "y": 448.59375,
+        "width": 29.53125,
+        "height": 32,
+        "top": 448.59375,
+        "right": 58.53125,
+        "bottom": 480.59375,
+        "left": 29
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Decrease Paragraph spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button>",
+      "rect": {
+        "x": 60.36015701293945,
+        "y": 449.64373779296875,
+        "width": 27.48281478881836,
+        "height": 29.9000244140625,
+        "top": 449.64373779296875,
+        "right": 87.84297180175781,
+        "bottom": 479.54376220703125,
+        "left": 60.36015701293945
+      },
+      "visible": true
+    },
+    {
+      "html": "<input id=\":r2b:-range\" type=\"range\" aria-labelledby=\":r2b:\" min=\"0\" max=\"7\" aria-valuetext=\"Default\" class=\"range_inactive\" value=\"0\">",
+      "rect": {
+        "x": 91.671875,
+        "y": 462.09375,
+        "width": 131.484375,
+        "height": 5,
+        "top": 462.09375,
+        "right": 223.15625,
+        "bottom": 467.09375,
+        "left": 91.671875
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Increase Paragraph spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg></button>",
+      "rect": {
+        "x": 226.9851531982422,
+        "y": 449.64373779296875,
+        "width": 27.482803344726562,
+        "height": 29.9000244140625,
+        "top": 449.64373779296875,
+        "right": 254.46795654296875,
+        "bottom": 479.54376220703125,
+        "left": 226.9851531982422
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"reset_button\" title=\"Reset Line spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#clock-reverse-icon\"></use></svg></button>",
+      "rect": {
+        "x": 29,
+        "y": 546.59375,
+        "width": 29.53125,
+        "height": 32,
+        "top": 546.59375,
+        "right": 58.53125,
+        "bottom": 578.59375,
+        "left": 29
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Decrease Line spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button>",
+      "rect": {
+        "x": 60.36015701293945,
+        "y": 547.6437377929688,
+        "width": 27.48281478881836,
+        "height": 29.9000244140625,
+        "top": 547.6437377929688,
+        "right": 87.84297180175781,
+        "bottom": 577.5437622070312,
+        "left": 60.36015701293945
+      },
+      "visible": true
+    },
+    {
+      "html": "<input id=\":r2c:-range\" type=\"range\" aria-labelledby=\":r2c:\" min=\"0\" max=\"8\" aria-valuetext=\"Default\" class=\"range_inactive\" value=\"0\">",
+      "rect": {
+        "x": 91.671875,
+        "y": 560.09375,
+        "width": 131.484375,
+        "height": 5,
+        "top": 560.09375,
+        "right": 223.15625,
+        "bottom": 565.09375,
+        "left": 91.671875
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Increase Line spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg></button>",
+      "rect": {
+        "x": 226.9851531982422,
+        "y": 547.6437377929688,
+        "width": 27.482803344726562,
+        "height": 29.9000244140625,
+        "top": 547.6437377929688,
+        "right": 254.46795654296875,
+        "bottom": 577.5437622070312,
+        "left": 226.9851531982422
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"button_transparency_icon\" aria-label=\"Dock panel to the left\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 15\"><use xlink:href=\"#dockleft-icon\"></use></svg></button>",
+      "rect": {
+        "x": 163,
+        "y": 23,
+        "width": 30,
+        "height": 30,
+        "top": 23,
+        "right": 193,
+        "bottom": 53,
+        "left": 163
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"button_transparency_icon\" aria-label=\"Dock panel to the right\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 15\"><use xlink:href=\"#dockright-icon\"></use></svg></button>",
+      "rect": {
+        "x": 198,
+        "y": 23,
+        "width": 30,
+        "height": 30,
+        "top": 23,
+        "right": 228,
+        "bottom": 53,
+        "left": 198
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"button_transparency_icon\" disabled=\"\" aria-label=\"Show panel as a modal popup\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 16\"><use xlink:href=\"#dockmodal-icon\"></use></svg></button>",
+      "rect": {
+        "x": 233,
+        "y": 23,
+        "width": 30,
+        "height": 30,
+        "top": 23,
+        "right": 263,
+        "bottom": 53,
+        "left": 233
+      },
+      "visible": true
+    },
+    {
+      "html": "<button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button>",
+      "rect": {
+        "x": 268,
+        "y": 23,
+        "width": 30,
+        "height": 30,
+        "top": 23,
+        "right": 298,
+        "bottom": 53,
+        "left": 268
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [
+      {
+        "id": "region",
+        "impact": "moderate",
+        "tags": [
+          "cat.keyboard",
+          "best-practice",
+          "RGAAv4",
+          "RGAA-9.2.1"
+        ],
+        "description": "Ensure all page content is contained by landmarks",
+        "help": "All page content should be contained by landmarks",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/region?application=axeAPI",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "Some page content is not contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "moderate",
+            "html": "<h2 id=\":r0:\">Reader settings</h2>",
+            "target": [
+              "#\\:r0\\:"
+            ],
+            "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+          }
+        ]
+      }
+    ],
+    "incomplete": [],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 28
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 8
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 28
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 8
+      },
+      {
+        "id": "aria-dialog-name",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 26
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 28
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 8
+      },
+      {
+        "id": "aria-required-children",
+        "nodes": 1
+      },
+      {
+        "id": "aria-required-parent",
+        "nodes": 4
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 8
+      },
+      {
+        "id": "aria-tab-name",
+        "nodes": 4
+      },
+      {
+        "id": "aria-toggle-field-name",
+        "nodes": 1
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 28
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 28
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 5
+      },
+      {
+        "id": "button-name",
+        "nodes": 20
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 3
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "duplicate-id-aria",
+        "nodes": 10
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 7
+      },
+      {
+        "id": "form-field-multiple-labels",
+        "nodes": 5
+      },
+      {
+        "id": "heading-order",
+        "nodes": 7
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "label-title-only",
+        "nodes": 5
+      },
+      {
+        "id": "label",
+        "nodes": 5
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 30
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 78
+      },
+      {
+        "id": "scrollable-region-focusable",
+        "nodes": 1
+      },
+      {
+        "id": "tabindex",
+        "nodes": 8
+      },
+      {
+        "id": "target-size",
+        "nodes": 29
+      }
+    ]
+  },
+  "evidencePrefix": "batch-3/reader-320-spacing"
+}

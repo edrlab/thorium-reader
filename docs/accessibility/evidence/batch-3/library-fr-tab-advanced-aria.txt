@@ -1,0 +1,39 @@
+- main:
+  - 'heading "Component fixture: library-settings" [level=1]'
+  - button "Préférences de l'application" [expanded]:
+    - heading "Préférences de l'application" [level=3]: Préférences
+- button "Dismiss"
+- dialog "Préférences":
+  - heading "Préférences" [level=1]
+  - tablist "Préférences de l'application":
+    - tab "Géneral"
+    - tab "Raccourcis clavier"
+    - tab "Profils"
+    - tab "Stockage"
+    - tab "Options avancées" [selected]
+  - heading "Options avancées" [level=2]
+  - tabpanel "Options avancées":
+    - heading "Gérer l'accès aux catalogues" [level=3]
+    - paragraph: Cette action supprime vos identifiants de connexion aux catalogues.
+    - button "Effacer les données d'authentification":
+      - paragraph: Effacer les données d'authentification
+    - heading "Ajouter un compte bibliothèque" [level=3]
+    - checkbox "Activer l'accès à l'API Dilicom PNB (Prêt numérique en bibliothèque)"
+    - button "Comment ça marche ?"
+    - heading "Poste partagé" [level=3]
+    - checkbox "Supprimer automatiquement les publications dont la licence a expiré et les données locales"
+    - heading "Créateur" [level=3]
+    - paragraph: Il sera utilisé comme créateur des notes que vous pouvez exporter.
+    - textbox "Nom"
+    - text: Nom
+    - radiogroup "Type :":
+      - paragraph: "Type :"
+      - radio "Organisation" [checked]
+      - text: Organisation
+      - radio "Personne"
+      - text: Personne
+    - heading "Exportation de notes (annotations et marque-pages)" [level=3]
+    - checkbox "Personnaliser le modèle HTML"
+    - heading "Télémétrie" [level=3]
+    - checkbox "Désactiver la télémétrie"
+  - button "Fermer"

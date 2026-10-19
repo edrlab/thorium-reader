@@ -1,0 +1,33 @@
+- main:
+  - 'heading "Component fixture: library-settings" [level=1]'
+  - button "Application Settings" [expanded]:
+    - heading "Application Settings" [level=3]: Settings
+- button "Dismiss"
+- dialog "Settings":
+  - heading "Settings" [level=1]
+  - tablist "Application Settings":
+    - tab "General" [selected]
+    - tab "Keyboard shortcuts"
+    - tab "Profiles"
+    - tab "Storage"
+    - tab "Advanced"
+  - heading "General" [level=2]
+  - tabpanel "General":
+    - text: Language
+    - group:
+      - combobox "Language": English
+      - button "Show suggestions Language"
+    - text: Application Theme
+    - group:
+      - combobox "Application Theme": Automatic
+      - button "Show suggestions Application Theme"
+    - paragraph: Application theme matches operating system.
+    - heading "Improved support for screen readers" [level=3]
+    - paragraph: When the application detects the presence of assistive technology, the user interface works better with screen readers
+    - checkbox "Enhance screen reader experience"
+    - heading "Window behavior" [level=3]
+    - checkbox "Minimize the library to the system tray"
+    - checkbox "Minimize the library after opening reader windows"
+    - checkbox "Keep the library in the background after closing reader windows"
+    - checkbox "Use one reader window per publication"
+  - button "Close"

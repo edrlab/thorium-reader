@@ -1,0 +1,261 @@
+- main:
+  - 'heading "Component fixture: library-settings" [level=1]'
+  - button "Application Settings" [expanded]:
+    - heading "Application Settings" [level=3]: Settings
+- button "Dismiss"
+- dialog "Settings":
+  - heading "Settings" [level=1]
+  - tablist "Application Settings":
+    - tab "General"
+    - tab "Keyboard shortcuts" [selected]
+    - tab "Profiles"
+    - tab "Storage"
+    - tab "Advanced"
+  - heading "Keyboard shortcuts" [level=2]
+  - button "Keyboard shortcuts advanced menu":
+    - img "Keyboard shortcuts advanced menu"
+  - tabpanel "Keyboard shortcuts":
+    - textbox "Type to search a shortcut"
+    - button "Export to HTML"
+    - list:
+      - listitem:
+        - heading "Create Bookmark with Label" [level=3]
+        - button "Open the bookmark creation dialog and edit the textual label (note), color and tag"
+        - button "Edit (Create Bookmark with Label) SHIFT ALT + KeyB"
+      - listitem:
+        - heading "Create Annotation" [level=3]
+        - button "Open the annotation creation dialog for the selected document text, and edit the textual note, highlight color and type, and tag"
+        - button "Edit (Create Annotation) SHIFT ALT + KeyA"
+      - listitem:
+        - heading "Create Quick Annotation" [level=3]
+        - button "Quickly create an annotation for the selected text, with the last-used highlight color and type (note and tag will be empty)"
+        - button "Edit (Create Quick Annotation) SHIFT ALT + KeyQ"
+      - listitem:
+        - heading "Toggle Annotation Margin" [level=3]
+        - button "Alternate the annotation and bookmark visual indicators, either in the document margin or in the text"
+        - button "Edit (Toggle Annotation Margin) SHIFT CTRL ALT + KeyZ"
+      - listitem:
+        - heading "Next Audio Segment" [level=3]
+        - button "Move forward to the next audio segment in the narration (EPUB3 Media Overlays, Text To Speech, or pre-recorded audiobook)"
+        - button "Edit (Next Audio Segment) CTRL + Digit3"
+      - listitem:
+        - heading "Next Audio Segment (escape)" [level=3]
+        - button "Move forward to the next audio segment in the narration (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook). This skips any currently escapable structure"
+        - button "Edit (Next Audio Segment (escape)) SHIFT CTRL ALT + Digit3"
+      - listitem:
+        - heading "Play/Pause Audio" [level=3]
+        - button "Toggle play/pause for current narration (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook)"
+        - button "Edit (Play/Pause Audio) CTRL + Digit2"
+      - listitem:
+        - heading "Previous Audio Segment" [level=3]
+        - button "Move back to the previous audio segment in the narration (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook)"
+        - button "Edit (Previous Audio Segment) CTRL + Digit1"
+      - listitem:
+        - heading "Previous Audio Segment (escape)" [level=3]
+        - button "Move back to the previous audio segment in the narration (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook). This skips any currently escapable structure"
+        - button "Edit (Previous Audio Segment (escape)) SHIFT CTRL ALT + Digit1"
+      - listitem:
+        - heading "Decrease audio speed" [level=3]
+        - button "Decrease the speed of EPUB3 Media Overlays audio playback or TTS read-aloud speech rate"
+        - button "Edit (Decrease audio speed) CTRL + Digit5"
+      - listitem:
+        - heading "Increase audio speed" [level=3]
+        - button "Increase the speed of EPUB3 Media Overlays audio playback or TTS read-aloud speech rate"
+        - button "Edit (Increase audio speed) CTRL + Digit6"
+      - listitem:
+        - heading "Reset audio speed" [level=3]
+        - button "Reset the speed of EPUB3 Media Overlays audio playback or TTS read-aloud speech rate"
+        - button "Edit (Reset audio speed) CTRL + Digit7"
+      - listitem:
+        - heading "Stop Audio" [level=3]
+        - button "Stop current audio (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook)"
+        - button "Edit (Stop Audio) CTRL + Digit4"
+      - listitem:
+        - heading "Close Reader" [level=3]
+        - button "Close the reader window and return to the library"
+        - button "Edit (Close Reader) CTRL + KeyW"
+      - listitem:
+        - heading "FXL Zoom In" [level=3]
+        - button "Zoom into a fixed layout single page or 2-page spread."
+        - button "Edit (FXL Zoom In) CTRL + Digit9"
+      - listitem:
+        - heading "FXL Zoom Out" [level=3]
+        - button "Zoom out of a fixed layout single page or 2-page spread."
+        - button "Edit (FXL Zoom Out) CTRL + Digit8"
+      - listitem:
+        - heading "Reset FXL Zoom" [level=3]
+        - button "Reset zoom on a fixed layout single page or 2-page spread."
+        - button "Edit (Reset FXL Zoom) CTRL + Digit0"
+      - listitem:
+        - heading "Focus on Main Content" [level=3]
+        - button "Move the keyboard focus to the 'main' landmark in the graphical user interface. In the reader window, this moves into the publication content"
+        - button "Edit (Focus on Main Content) CTRL + F10"
+      - listitem:
+        - heading "Deep Focus on Main Content" [level=3]
+        - button "In the reader window, this moves the keyboard focus into the publication content using a more reliable technique for screen readers"
+        - button "Edit (Deep Focus on Main Content) SHIFT CTRL + F10"
+      - listitem:
+        - heading "Focus on 'Go to Page'" [level=3]
+        - button "Move the keyboard focus to the 'goto page' section of the reader window's navigation panel"
+        - button "Edit (Focus on 'Go to Page') SHIFT CTRL + KeyP"
+      - listitem:
+        - heading "Focus on Navigation Panel" [level=3]
+        - button "Move the keyboard focus to the reader window's navigation panel"
+        - button "Edit (Focus on Navigation Panel) CTRL + KeyN"
+      - listitem:
+        - heading "Focus on 'Annotations'" [level=3]
+        - button "Move the keyboard focus to the 'annotations' section of the reader window's navigation panel"
+        - button "Edit (Focus on 'Annotations') SHIFT CTRL + KeyA"
+      - listitem:
+        - heading "Focus on 'Bookmarks'" [level=3]
+        - button "Move the keyboard focus to the 'bookmarks' section of the reader window's navigation panel"
+        - button "Edit (Focus on 'Bookmarks') SHIFT CTRL + KeyB"
+      - listitem:
+        - heading "Focus on 'Search'" [level=3]
+        - button "Move the keyboard focus to the 'search' section of the reader window's navigation panel"
+        - button "Edit (Focus on 'Search') SHIFT CTRL + KeyF"
+      - listitem:
+        - heading "Focus on 'table of contents'" [level=3]
+        - button "Move the keyboard focus to the 'TOC' section of the reader window's navigation panel"
+        - button "Edit (Focus on 'table of contents') SHIFT CTRL + KeyN"
+      - listitem:
+        - heading "Focus on Reader Settings" [level=3]
+        - button "Move the keyboard focus to the reader window's settings panel (display preferences, etc.)"
+        - button "Edit (Focus on Reader Settings) CTRL + KeyS"
+      - listitem:
+        - heading "Search Command" [level=3]
+        - button "Move the keyboard focus to the reader window's text search input, or in the library window this searches the bookshelf or the active OPDS feed"
+        - button "Edit (Search Command) CTRL + KeyF"
+      - listitem:
+        - heading "Focus on Toolbar" [level=3]
+        - button "Move the keyboard focus to the landmark area of the graphical user interface immediately before the 'skip link' (which itself moves the focus to the main content area of the library or reader window)"
+        - button "Edit (Focus on Toolbar) CTRL + KeyT"
+      - listitem:
+        - heading "Go to Next Chapter" [level=3]
+        - button "In the reader window, navigate to the next document in the reading order of the publication (e.g. chapter in the book spine). Note that there is an alternative keyboard shortcut to this default one"
+        - button "Edit (Go to Next Chapter) SHIFT CTRL ALT + ArrowRight"
+      - listitem:
+        - heading "Go to Next Chapter (Alternative)" [level=3]
+        - button "In the reader window, navigate to the next document in the reading order of the publication (e.g. chapter in the book spine). This is an alternative keyboard shortcut to the default one"
+        - button "Edit (Go to Next Chapter (Alternative)) CTRL + PageDown"
+      - listitem:
+        - heading "Go to Next History" [level=3]
+        - button "In the reader window, jump one step forward in the navigation history"
+        - button "Edit (Go to Next History) SHIFT CTRL + Backspace"
+      - listitem:
+        - heading "Go to Next Library Page" [level=3]
+        - button "In the library window, show the next page of a paginated list of publications. Note that there is an alternative keyboard shortcut to this default one"
+        - button "Edit (Go to Next Library Page) SHIFT CTRL + ArrowRight"
+      - listitem:
+        - heading "Go to Next Library Page (Alternative)" [level=3]
+        - button "In the library window, show the next page of a paginated list of publications. This is an alternative keyboard shortcut to the default one"
+        - button "Edit (Go to Next Library Page (Alternative)) SHIFT CTRL + Period"
+      - listitem:
+        - heading "Go to Next OPDS Page" [level=3]
+        - button "In the library window for catalogs / OPDS feeds, follow the next pagination link. Note that there is an alternative keyboard shortcut to this default one"
+        - button "Edit (Go to Next OPDS Page) SHIFT CTRL + ArrowRight"
+      - listitem:
+        - heading "Go to Next OPDS Page (Alternative)" [level=3]
+        - button "In the library window for catalogs / OPDS feeds, follow the next pagination link. This is an alternative keyboard shortcut to the default one"
+        - button "Edit (Go to Next OPDS Page (Alternative)) SHIFT CTRL + Period"
+      - listitem:
+        - heading "Go to Next Page" [level=3]
+        - button "In the reader window, turn to the next 'page' in the publication. Note that there is an alternative keyboard shortcut to this default one"
+        - button "Edit (Go to Next Page) ArrowRight"
+      - listitem:
+        - heading "Go to Next Page (Alternative)" [level=3]
+        - button "In the reader window, turn to the next 'page' in the publication. This is an alternative keyboard shortcut to the default one"
+        - button "Edit (Go to Next Page (Alternative)) CTRL + Period"
+      - listitem:
+        - heading "Go to Previous Chapter" [level=3]
+        - button "In the reader window, navigate to the previous document in the reading order of the publication (e.g. chapter in the book spine). Note that there is an alternative keyboard shortcut to this default one"
+        - button "Edit (Go to Previous Chapter) SHIFT CTRL ALT + ArrowLeft"
+      - listitem:
+        - heading "Go to Previous Chapter (Alternative)" [level=3]
+        - button "In the reader window, navigate to the previous document in the reading order of the publication (e.g. chapter in the book spine). This is an alternative keyboard shortcut to the default one"
+        - button "Edit (Go to Previous Chapter (Alternative)) CTRL + PageUp"
+      - listitem:
+        - heading "Go to Previous History" [level=3]
+        - button "In the reader window, jump one step backwards in the navigation history"
+        - button "Edit (Go to Previous History) CTRL + Backspace"
+      - listitem:
+        - heading "Go to Previous Library Page" [level=3]
+        - button "In the library window, show the previous page of a paginated list of publications. Note that there is an alternative keyboard shortcut to this default one"
+        - button "Edit (Go to Previous Library Page) SHIFT CTRL + ArrowLeft"
+      - listitem:
+        - heading "Go to Previous Library Page (Alternative)" [level=3]
+        - button "In the library window, show the previous page of a paginated list of publications. This is an alternative keyboard shortcut to the default one"
+        - button "Edit (Go to Previous Library Page (Alternative)) SHIFT CTRL + Comma"
+      - listitem:
+        - heading "Go to Previous OPDS Page" [level=3]
+        - button "In the library window for catalogs / OPDS feeds, follow the previous pagination link. Note that there is an alternative keyboard shortcut to this default one"
+        - button "Edit (Go to Previous OPDS Page) SHIFT CTRL + ArrowLeft"
+      - listitem:
+        - heading "Go to Previous OPDS Page (Alternative)" [level=3]
+        - button "In the library window for catalogs / OPDS feeds, follow the previous pagination link. This is an alternative keyboard shortcut to the default one"
+        - button "Edit (Go to Previous OPDS Page (Alternative)) SHIFT CTRL + Comma"
+      - listitem:
+        - heading "Go to Previous Page" [level=3]
+        - button "In the reader window, turn to the previous 'page' in the publication. Note that there is an alternative keyboard shortcut to this default one"
+        - button "Edit (Go to Previous Page) ArrowLeft"
+      - listitem:
+        - heading "Go to Previous Page (Alternative)" [level=3]
+        - button "In the reader window, turn to the previous 'page' in the publication. This is an alternative keyboard shortcut to the default one"
+        - button "Edit (Go to Previous Page (Alternative)) CTRL + Comma"
+      - listitem:
+        - heading "Go to Beginning" [level=3]
+        - button "In the reader window, go to the beginning of the publication"
+        - button "Edit (Go to Beginning) CTRL + Home"
+      - listitem:
+        - heading "Go to End" [level=3]
+        - button "In the reader window, go to the end of the publication"
+        - button "Edit (Go to End) CTRL + End"
+      - listitem:
+        - heading "Display Publication Information" [level=3]
+        - button "In the reader window, open the information dialog for the publication"
+        - button "Edit (Display Publication Information) CTRL + KeyI"
+      - listitem:
+        - heading "Display Publication Information, Show Reading Location" [level=3]
+        - button "In the reader window, open the popup dialog that display information about the publication, and focus the keyboard on the section that shows the context of the current reading location"
+        - button "Edit (Display Publication Information, Show Reading Location) SHIFT CTRL + KeyI"
+      - listitem:
+        - heading "Print" [level=3]
+        - button "In the reader window, open the print dialog"
+        - button "Edit (Print) CTRL + KeyP"
+      - listitem:
+        - heading "Search Result Next" [level=3]
+        - button "In the reader window's search tool, go to the next search result. Note that there is an alternative keyboard shortcut to this default one"
+        - button "Edit (Search Result Next) F3"
+      - listitem:
+        - heading "Search Result Next (Alternative)" [level=3]
+        - button "In the reader window's search tool, go to the next search result. This is an alternative keyboard shortcut to the default one"
+        - button "Edit (Search Result Next (Alternative)) CTRL + KeyG"
+      - listitem:
+        - heading "Search Result Previous" [level=3]
+        - button "In the reader window's search tool, go to the previous search result. Note that there is an alternative keyboard shortcut to this default one"
+        - button "Edit (Search Result Previous) SHIFT + F3"
+      - listitem:
+        - heading "Search Result Previous (Alternative)" [level=3]
+        - button "In the reader window's search tool, go to the previous search result. This is an alternative keyboard shortcut to the default one"
+        - button "Edit (Search Result Previous (Alternative)) SHIFT CTRL + KeyG"
+      - listitem:
+        - heading "Describe Reading Location (Speech)" [level=3]
+        - button "In the reader window, describe the context of the current reading location, using speech text compatible with screen readers"
+        - button "Edit (Describe Reading Location (Speech)) SHIFT CTRL + KeyK"
+      - listitem:
+        - heading "Toggle Bookmark" [level=3]
+        - button "Add a new bookmark or remove an existing one if it is currently selected"
+        - button "Edit (Toggle Bookmark) CTRL + KeyB"
+      - listitem:
+        - heading "Toggle Fullscreen" [level=3]
+        - button "In the reader window, activate system fullscreen or restore normal window mode. Note that this is different from 'zen mode' which simplifies the user interface"
+        - button "Edit (Toggle Fullscreen) CTRL + F11"
+      - listitem:
+        - heading "Toggle Zen mode" [level=3]
+        - button "In the reader window, activate or exit zen mode, which simplifies the user interface while reading"
+        - button "Edit (Toggle Zen mode) SHIFT CTRL + F11"
+      - listitem:
+        - heading "Toggle screen reader optimizations" [level=3]
+        - button "In the library window, toggle optimized support for screen readers"
+        - button "Edit (Toggle screen reader optimizations) SHIFT CTRL + F12"
+  - button "Close"

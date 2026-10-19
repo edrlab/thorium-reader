@@ -1,0 +1,79 @@
+- region "toolbar":
+  - heading "toolbar" [level=2]
+  - button "Skip to content"
+  - navigation "Bookshelf menu":
+    - heading "Thorium" [level=1]: Th
+    - list:
+      - listitem:
+        - button "Home" [pressed]
+      - listitem:
+        - button "All publications"
+      - listitem:
+        - button "Catalogs"
+      - listitem:
+        - button "Settings" [expanded]
+  - main "main content":
+    - button "Import publication"
+    - heading "main content" [level=2]
+    - heading "Resume reading" [level=2]
+    - button "Slide to the left" [disabled]
+    - list:
+      - listitem:
+        - img
+        - text: EPUB
+        - button "Menu (Accessible EPUB 3)":
+          - img "Menu (Accessible EPUB 3)"
+      - listitem:
+        - img
+        - text: PDF
+        - button "Menu (Untitled)":
+          - img "Menu (Untitled)"
+      - listitem:
+        - img
+        - text: 20 days EPUB
+        - button "Menu (La Proie)":
+          - img "Menu (La Proie)"
+      - listitem:
+        - img
+        - text: 17 days EPUB
+        - button "Menu (La toile de l'Araignée)":
+          - img "Menu (La toile de l'Araignée)"
+    - button "Slide to the right"
+    - heading "Recently added" [level=2]
+    - button "Slide to the left" [disabled]
+    - list:
+      - listitem:
+        - img
+        - text: Licensed EPUB
+        - button "Menu (The Waste Land)":
+          - img "Menu (The Waste Land)"
+    - button "Slide to the right"
+    - paragraph: v3.5.2-beta.1
+    - link "About Thorium (online)":
+      - /url: ""
+- button "Dismiss"
+- dialog "Settings":
+  - heading "Settings" [level=1]
+  - tablist "Application Settings":
+    - tab "General"
+    - tab "Keyboard shortcuts"
+    - tab "Profiles"
+    - tab "Storage" [selected]
+    - tab "Advanced"
+  - heading "Storage" [level=2]
+  - tabpanel "Storage":
+    - group:
+      - paragraph: Learn more about this feature, currently in beta
+      - text: ‹
+    - heading "Locations" [level=3]
+    - paragraph:
+      - strong: System Storage
+    - paragraph: "Publications managed by the application are by default stored in:"
+    - button "C:\\Users\\plero\\AppData\\Roaming\\EDRLab.ThoriumReader\\publications-dev"
+    - heading "Configuration" [level=3]
+    - paragraph: Publications imported into Thorium Reader will be stored in the selected directory. Publications previously imported will stay in the original system storage.
+    - button "Select an additional storage"
+    - heading "Recovery" [level=3]
+    - paragraph: Check publication storage to find publications that can be safely recovered.
+    - button "Check for recoverable publications"
+  - button "Close"

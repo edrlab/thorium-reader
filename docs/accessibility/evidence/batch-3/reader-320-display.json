@@ -1,0 +1,750 @@
+{
+  "id": "reader-settings-modal",
+  "runtime": "reader",
+  "files": [
+    "src/renderer/reader/components/ReaderSettings/ReaderSettings.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T13:35:38.966Z",
+  "lang": "en",
+  "errors": [],
+  "actions": [
+    [
+      "dispatch",
+      {
+        "type": "READER_SET_CONFIG",
+        "payload": {
+          "readerSettingsSection": "tab-display"
+        }
+      }
+    ]
+  ],
+  "text": "Component fixture: reader-settings-modal\nReader settings\nReader settings\nDisplay\nText\nSpacing\nPreferences\nCustomize text formatting\nDisplay\nTheme\nNeutral\nSepia\nNight\nPaper\nContrast 1\nContrast 2\nContrast 3\nContrast 4\nLayout\nScrollable\nPaginated\nAlignment\nDefault\nJustify\nLeft\nColumns\nDefault\n1 col\n2 cols\nEnable MathJax\nShow page breaks in margin\nReduce motion\nDisable popup footnotes\nDisable visual navigation indicators\nHide Japanese Ruby\nDisable Right-To-Left UI",
+  "html": "<div id=\"audit-root\" inert=\"\"><main><h1>Component fixture: reader-settings-modal</h1><button type=\"button\" aria-expanded=\"true\" id=\"react-aria567327564-:r4:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria567327564-:r3:\">Reader settings</button></main></div>\n<span data-focus-scope-start=\"true\" hidden=\"\" inert=\"\"></span>\n<div class=\"thorium-dialog-overlay\" data-rac=\"\" style=\"position: fixed; inset: 0px; z-index: 102; --visual-viewport-width: 320px; --visual-viewport-height: 228px; --page-width: 320px; --page-height: 227.84375px;\"><div class=\"react-aria-Modal\" data-rac=\"\" style=\"display: contents;\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><button id=\"react-aria567327564-:r5:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button></div><h2 id=\":r0:\">Reader settings</h2><section id=\"react-aria567327564-:r3:\" class=\"modal_dialog_reader\" data-rac=\"\" aria-labelledby=\":r0:\" role=\"dialog\" tabindex=\"-1\"><div style=\"min-height: inherit;\"><template><div class=\"settings_tabslist\"><div class=\"allowCustom\"><input id=\"allow-custom\" class=\"checkbox_custom_input\" type=\"checkbox\" checked=\"\"><label for=\"allow-custom\" class=\"checkbox_custom_label\"><div tabindex=\"0\" role=\"checkbox\" aria-checked=\"true\" aria-label=\"Customize text formatting\" class=\"checkbox_custom\" style=\"border: 2px solid transparent; background-color: var(--color-brand-primary);\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 13\"><use xlink:href=\"#singlecheck-icon\"></use></svg></div><span aria-hidden=\"true\">Customize text formatting</span></label></div></div><div class=\"settings_tab_title\"><h2>Display</h2></div><div class=\"settings_content\"></div><div class=\"close_button_div\"><div><button class=\"button_transparency_icon\" aria-label=\"Dock panel to the left\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 15\"><use xlink:href=\"#dockleft-icon\"></use></svg></button><button class=\"button_transparency_icon\" aria-label=\"Dock panel to the right\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 15\"><use xlink:href=\"#dockright-icon\"></use></svg></button><button class=\"button_transparency_icon\" disabled=\"\" aria-label=\"Show panel as a modal popup\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 16\"><use xlink:href=\"#dockmodal-icon\"></use></svg></button><button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></div></div></template><div data-orientation=\"vertical\" class=\"settings_container\" data-rac=\"\" data-focused=\"true\" data-focus-visible=\"true\"><div class=\"settings_tabslist\"><div data-orientation=\"vertical\" class=\"react-aria-TabList\" data-rac=\"\" data-collection=\"react-aria567327564-:r8:\" id=\"react-aria567327564-:r9:\" aria-label=\"Reader settings\" role=\"tablist\" aria-orientation=\"vertical\"><div data-focus-id=\"reader-settings-nav\" data-value=\"tab-display\" class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria567327564-:r8:\" data-key=\"tab-display\" data-react-aria-pressable=\"true\" id=\"react-aria567327564-:r9:-tab-tab-display\" aria-selected=\"true\" aria-controls=\"react-aria567327564-:r9:-tabpanel-tab-display\" role=\"tab\" data-selected=\"true\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 11\"><use xlink:href=\"#alignleft-icon\"></use></svg><span>Display</span></div><div data-value=\"tab-text\" class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"-1\" data-collection=\"react-aria567327564-:r8:\" data-key=\"tab-text\" data-react-aria-pressable=\"true\" id=\"react-aria567327564-:r9:-tab-tab-text\" aria-selected=\"false\" role=\"tab\"><svg aria-hidden=\"true\" viewBox=\"0 0 19 13\"><use xlink:href=\"#textarea-icon\"></use></svg><span>Text</span></div><div data-value=\"tab-spacing\" class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"-1\" data-collection=\"react-aria567327564-:r8:\" data-key=\"tab-spacing\" data-react-aria-pressable=\"true\" id=\"react-aria567327564-:r9:-tab-tab-spacing\" aria-selected=\"false\" role=\"tab\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 14\"><use xlink:href=\"#layout-icon\"></use></svg><span>Spacing</span></div><div data-separator-before=\"true\" data-value=\"tab-preset\" class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"-1\" data-collection=\"react-aria567327564-:r8:\" data-key=\"tab-preset\" data-react-aria-pressable=\"true\" id=\"react-aria567327564-:r9:-tab-tab-preset\" aria-selected=\"false\" role=\"tab\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#gear-icon\"></use></svg><span>Preferences</span></div></div><div class=\"allowCustom\"><input id=\"allow-custom\" class=\"checkbox_custom_input\" type=\"checkbox\" checked=\"\"><label for=\"allow-custom\" class=\"checkbox_custom_label\"><div tabindex=\"0\" role=\"checkbox\" aria-checked=\"true\" aria-label=\"Customize text formatting\" class=\"checkbox_custom\" style=\"border: 2px solid transparent; background-color: var(--color-brand-primary);\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 13\"><use xlink:href=\"#singlecheck-icon\"></use></svg></div><span aria-hidden=\"true\">Customize text formatting</span></label></div></div><div class=\"settings_tab_title\"><h2>Display</h2></div><div class=\"settings_content\"><div class=\"react-aria-TabPanels\"><div data-focus-id=\"readerSettings_tabs-tab-display\" id=\"react-aria567327564-:r9:-tabpanel-tab-display\" aria-labelledby=\"react-aria567327564-:r9:-tab-tab-display\" role=\"tabpanel\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\"><section class=\"settings_tab\"><section class=\"section\"><h3>Theme</h3><div class=\"react-aria-RadioGroup\" data-rac=\"\" aria-label=\"Theme\" role=\"radiogroup\" aria-orientation=\"horizontal\" id=\"react-aria567327564-:rc:\" data-orientation=\"horizontal\" style=\"display: flex; gap: 20px; margin-top: 5px; flex-wrap: wrap;\"><label data-input-type=\"radio\" data-react-aria-pressable=\"true\" class=\"settings_theme_container\" data-rac=\"\" data-selected=\"true\" style=\"background-color: rgb(254, 254, 254); color: black;\"><span style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><input data-react-aria-pressable=\"true\" tabindex=\"0\" type=\"radio\" name=\"react-aria567327564-:rh:\" value=\"neutral\" checked=\"\" title=\"\"></span><svg aria-hidden=\"true\" viewBox=\"0 0 15 7\"><use xlink:href=\"#doubleCheck-icon\"></use></svg><span>Neutral</span></label><label data-input-type=\"radio\" data-react-aria-pressable=\"true\" class=\"settings_theme_container\" data-rac=\"\" style=\"background-color: rgb(250, 244, 232); color: black;\"><span style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><input data-react-aria-pressable=\"true\" tabindex=\"-1\" type=\"radio\" name=\"react-aria567327564-:rh:\" value=\"sepia\" title=\"\"></span><span>Sepia</span></label><label data-input-type=\"radio\" data-react-aria-pressable=\"true\" class=\"settings_theme_container\" data-rac=\"\" style=\"background-color: rgb(18, 18, 18); color: rgb(255, 255, 255);\"><span style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><input data-react-aria-pressable=\"true\" tabindex=\"-1\" type=\"radio\" name=\"react-aria567327564-:rh:\" value=\"night\" title=\"\"></span><span>Night</span></label><label data-input-type=\"radio\" data-react-aria-pressable=\"true\" class=\"settings_theme_container\" data-rac=\"\" style=\"background-color: rgb(233, 221, 200); color: rgb(0, 0, 0);\"><span style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><input data-react-aria-pressable=\"true\" tabindex=\"-1\" type=\"radio\" name=\"react-aria567327564-:rh:\" value=\"paper\" title=\"\"></span><span>Paper</span></label><label data-input-type=\"radio\" data-react-aria-pressable=\"true\" class=\"settings_theme_container\" data-rac=\"\" style=\"background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);\"><span style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><input data-react-aria-pressable=\"true\" tabindex=\"-1\" type=\"radio\" name=\"react-aria567327564-:rh:\" value=\"contrast1\" title=\"\"></span><span>Contrast 1</span></label><label data-input-type=\"radio\" data-react-aria-pressable=\"true\" class=\"settings_theme_container\" data-rac=\"\" style=\"background-color: rgb(0, 0, 0); color: rgb(255, 255, 0);\"><span style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><input data-react-aria-pressable=\"true\" tabindex=\"-1\" type=\"radio\" name=\"react-aria567327564-:rh:\" value=\"contrast2\" title=\"\"></span><span>Contrast 2</span></label><label data-input-type=\"radio\" data-react-aria-pressable=\"true\" class=\"settings_theme_container\" data-rac=\"\" style=\"background-color: rgb(24, 24, 66); color: rgb(255, 255, 255);\"><span style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><input data-react-aria-pressable=\"true\" tabindex=\"-1\" type=\"radio\" name=\"react-aria567327564-:rh:\" value=\"contrast3\" title=\"\"></span><span>Contrast 3</span></label><label data-input-type=\"radio\" data-react-aria-pressable=\"true\" class=\"settings_theme_container\" data-rac=\"\" style=\"background-color: rgb(197, 231, 205); color: rgb(0, 0, 0);\"><span style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><input data-react-aria-pressable=\"true\" tabindex=\"-1\" type=\"radio\" name=\"react-aria567327564-:rh:\" value=\"contrast4\" title=\"\"></span><span>Contrast 4</span></label></div></section><div class=\"section\"><h3>Layout</h3><div class=\"display_options\" style=\"margin-bottom: 20px;\"><div class=\"react-aria-RadioGroup\" data-rac=\"\" aria-label=\"Layout\" role=\"radiogroup\" aria-orientation=\"horizontal\" id=\"react-aria567327564-:rq:\" data-orientation=\"horizontal\" style=\"display: flex; gap: 10px;\"><label data-input-type=\"radio\" data-react-aria-pressable=\"true\" class=\"display_options_item\" data-rac=\"\"><span style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><input data-react-aria-pressable=\"true\" tabindex=\"-1\" type=\"radio\" name=\"react-aria567327564-:rv:\" value=\"scroll_option\" title=\"\"></span><svg aria-hidden=\"true\" viewBox=\"0 0 20 18\"><use xlink:href=\"#scroll-icon\"></use></svg><span>Scrollable</span></label><label data-input-type=\"radio\" data-react-aria-pressable=\"true\" class=\"display_options_item\" data-rac=\"\" data-selected=\"true\"><span style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><input data-react-aria-pressable=\"true\" tabindex=\"0\" type=\"radio\" name=\"react-aria567327564-:rv:\" value=\"page_option\" checked=\"\" title=\"\"></span><svg aria-hidden=\"true\" viewBox=\"0 0 22 19\"><use xlink:href=\"#page-icon\"></use></svg><span>Paginated</span></label></div></div></div><section class=\"section\"><div><h3>Alignment</h3></div><div class=\"display_options\" style=\"margin-bottom: 20px;\"><div class=\"react-aria-RadioGroup\" data-rac=\"\" aria-label=\"Alignment\" role=\"radiogroup\" aria-orientation=\"horizontal\" id=\"react-aria567327564-:r12:\" data-orientation=\"horizontal\" style=\"display: flex; gap: 10px;\"><label data-input-type=\"radio\" data-react-aria-pressable=\"true\" class=\"display_options_item\" data-rac=\"\" data-selected=\"true\"><span style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><input data-react-aria-pressable=\"true\" tabindex=\"0\" type=\"radio\" name=\"react-aria567327564-:r17:\" value=\"auto\" checked=\"\" title=\"\"></span><svg aria-hidden=\"true\" viewBox=\"0 0 17 20\"><use xlink:href=\"#defaultPage-icon\"></use></svg><span>Default</span></label><label data-input-type=\"radio\" data-react-aria-pressable=\"true\" class=\"display_options_item\" data-rac=\"\"><span style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><input data-react-aria-pressable=\"true\" tabindex=\"-1\" type=\"radio\" name=\"react-aria567327564-:r17:\" value=\"justify\" title=\"\"></span><svg aria-hidden=\"true\" viewBox=\"0 0 18 13\"><use xlink:href=\"#align-justify-icon\"></use></svg><span>Justify</span></label><label data-input-type=\"radio\" data-react-aria-pressable=\"true\" class=\"display_options_item\" data-rac=\"\"><span style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><input data-react-aria-pressable=\"true\" tabindex=\"-1\" type=\"radio\" name=\"react-aria567327564-:r17:\" value=\"start\" title=\"\"></span><svg aria-hidden=\"true\" viewBox=\"0 0 16 11\"><use xlink:href=\"#alignleft-icon\"></use></svg><span>Left</span></label></div></div></section><section class=\"section\"><div><h3>Columns</h3></div><div class=\"display_options\" style=\"margin-bottom: 20px;\"><div class=\"react-aria-RadioGroup\" data-rac=\"\" aria-label=\"Columns\" role=\"radiogroup\" aria-orientation=\"horizontal\" id=\"react-aria567327564-:r1b:\" data-orientation=\"horizontal\" style=\"display: flex; gap: 10px;\"><label data-input-type=\"radio\" data-react-aria-pressable=\"true\" class=\"display_options_item\" data-rac=\"\" data-selected=\"true\"><span style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><input data-react-aria-pressable=\"true\" tabindex=\"0\" type=\"radio\" name=\"react-aria567327564-:r1g:\" value=\"auto\" checked=\"\" title=\"\"></span><svg aria-hidden=\"true\" viewBox=\"0 0 17 20\"><use xlink:href=\"#defaultPage-icon\"></use></svg><span>Default</span></label><label data-input-type=\"radio\" data-react-aria-pressable=\"true\" class=\"display_options_item\" data-rac=\"\"><span style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><input data-react-aria-pressable=\"true\" tabindex=\"-1\" type=\"radio\" name=\"react-aria567327564-:r1g:\" value=\"1\" title=\"\"></span><svg aria-hidden=\"true\" viewBox=\"0 0 18 13\"><use xlink:href=\"#align-justify-icon\"></use></svg><span>1 col</span></label><label data-input-type=\"radio\" data-react-aria-pressable=\"true\" class=\"display_options_item\" data-rac=\"\"><span style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><input data-react-aria-pressable=\"true\" tabindex=\"-1\" type=\"radio\" name=\"react-aria567327564-:r1g:\" value=\"2\" title=\"\"></span><svg aria-hidden=\"true\" viewBox=\"0 0 18 13\"><use xlink:href=\"#2cols-icon\"></use></svg><span>2 cols</span></label></div></div></section><div><section><div class=\"display_checkbox_section\"><input id=\"mathjax\" type=\"checkbox\" name=\"mathjax\" class=\"checkbox_custom_input\"><label for=\"mathjax\" class=\"checkbox_custom_label\" style=\"margin: 0px 5px; height: unset;\"><div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Enable MathJax\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div><span aria-hidden=\"true\">Enable MathJax</span></label></div></section><section><div class=\"display_checkbox_section\"><input id=\"enablePageBreakMarginIndicators\" type=\"checkbox\" name=\"enablePageBreakMarginIndicators\" class=\"checkbox_custom_input\"><label for=\"enablePageBreakMarginIndicators\" class=\"checkbox_custom_label\" style=\"margin: 0px 5px; height: unset;\"><div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Show page breaks in margin\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div><span aria-hidden=\"true\">Show page breaks in margin</span></label></div></section><section><div class=\"display_checkbox_section\"><input id=\"reduceMotionCheckBox\" type=\"checkbox\" name=\"reduceMotionCheckBox\" class=\"checkbox_custom_input\"><label for=\"reduceMotionCheckBox\" class=\"checkbox_custom_label\" style=\"margin: 0px 5px; height: unset;\"><div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Reduce motion\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div><span aria-hidden=\"true\">Reduce motion</span></label></div></section><section><div class=\"display_checkbox_section\"><input id=\"noFootnotesCheckBox\" type=\"checkbox\" name=\"noFootnotesCheckBox\" class=\"checkbox_custom_input\"><label for=\"noFootnotesCheckBox\" class=\"checkbox_custom_label\" style=\"margin: 0px 5px; height: unset;\"><div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Disable popup footnotes\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div><span aria-hidden=\"true\">Disable popup footnotes</span></label></div></section><section><div class=\"display_checkbox_section\"><input id=\"noTemporaryNavTargetOutlineCheckBox\" type=\"checkbox\" name=\"noTemporaryNavTargetOutlineCheckBox\" class=\"checkbox_custom_input\"><label for=\"noTemporaryNavTargetOutlineCheckBox\" class=\"checkbox_custom_label\" style=\"margin: 0px 5px; height: unset;\"><div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Disable visual navigation indicators\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div><span aria-hidden=\"true\">Disable visual navigation indicators</span></label></div></section><section><div class=\"display_checkbox_section\"><input id=\"noRubyCheckBox\" type=\"checkbox\" name=\"noRubyCheckBox\" class=\"checkbox_custom_input\"><label for=\"noRubyCheckBox\" class=\"checkbox_custom_label\" style=\"margin: 0px 5px; height: unset;\"><div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Hide Japanese Ruby\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div><span aria-hidden=\"true\">Hide Japanese Ruby</span></label></div></section><section><div class=\"display_checkbox_section\"><input id=\"noRTLFlipCheckBox\" type=\"checkbox\" name=\"noRTLFlipCheckBox\" class=\"checkbox_custom_input\"><label for=\"noRTLFlipCheckBox\" class=\"checkbox_custom_label\" style=\"margin: 0px 5px; height: unset;\"><div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Disable Right-To-Left UI\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div><span aria-hidden=\"true\">Disable Right-To-Left UI</span></label></div></section></div></section></div></div></div><div class=\"close_button_div\"><div><button class=\"button_transparency_icon\" aria-label=\"Dock panel to the left\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 15\"><use xlink:href=\"#dockleft-icon\"></use></svg></button><button class=\"button_transparency_icon\" aria-label=\"Dock panel to the right\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 15\"><use xlink:href=\"#dockright-icon\"></use></svg></button><button class=\"button_transparency_icon\" disabled=\"\" aria-label=\"Show panel as a modal popup\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 16\"><use xlink:href=\"#dockmodal-icon\"></use></svg></button><button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></div></div></div></div></section></div></div>\n<span data-focus-scope-end=\"true\" hidden=\"\" inert=\"\"></span>",
+  "dimensions": {
+    "width": 320,
+    "height": 228,
+    "scrollWidth": 320
+  },
+  "focus": "<div data-focus-id=\"reader-settings-nav\" data-value=\"tab-display\" class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria567327564-:r8:\" data-key=\"tab-display\" data-react-aria-pressable=\"true\" id=\"react-aria567327564-:r9:-tab-tab-display\" aria-selected=\"true\" aria-controls=\"react-aria567327564-:r9:-tabpanel-tab-display\" role=\"tab\" data-selected=\"true\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 11\"><use xlink:href=\"#alignleft-icon\"></use></svg><span>Display</span></div>",
+  "controls": [
+    {
+      "html": "<button type=\"button\" aria-expanded=\"true\" id=\"react-aria567327564-:r4:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria567327564-:r3:\">Reader settings</button>",
+      "rect": {
+        "x": 0,
+        "y": 88.15625,
+        "width": 98.0625,
+        "height": 16,
+        "top": 88.15625,
+        "right": 98.0625,
+        "bottom": 104.15625,
+        "left": 0
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"react-aria567327564-:r5:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button>",
+      "rect": {
+        "x": -1,
+        "y": -1,
+        "width": 1,
+        "height": 1,
+        "top": -1,
+        "right": 0,
+        "bottom": 0,
+        "left": -1
+      },
+      "visible": true
+    },
+    {
+      "html": "<input id=\"allow-custom\" class=\"checkbox_custom_input\" type=\"checkbox\" checked=\"\">",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "visible": false
+    },
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"true\" aria-label=\"Customize text formatting\" class=\"checkbox_custom\" style=\"border: 2px solid transparent; background-color: var(--color-brand-primary);\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 13\"><use xlink:href=\"#singlecheck-icon\"></use></svg></div>",
+      "rect": {
+        "x": 44.09375,
+        "y": -1,
+        "width": 16,
+        "height": 16,
+        "top": -1,
+        "right": 60.09375,
+        "bottom": 15,
+        "left": 44.09375
+      },
+      "visible": true
+    },
+    {
+      "html": "<input data-react-aria-pressable=\"true\" tabindex=\"0\" type=\"radio\" name=\"react-aria567327564-:rh:\" value=\"neutral\" checked=\"\" title=\"\">",
+      "rect": {
+        "x": 79.25,
+        "y": 177.59375,
+        "width": 13,
+        "height": 13,
+        "top": 177.59375,
+        "right": 92.25,
+        "bottom": 190.59375,
+        "left": 79.25
+      },
+      "visible": true
+    },
+    {
+      "html": "<input data-react-aria-pressable=\"true\" tabindex=\"-1\" type=\"radio\" name=\"react-aria567327564-:rh:\" value=\"sepia\" title=\"\">",
+      "rect": {
+        "x": 223.75,
+        "y": 186.59375,
+        "width": 13,
+        "height": 13,
+        "top": 186.59375,
+        "right": 236.75,
+        "bottom": 199.59375,
+        "left": 223.75
+      },
+      "visible": true
+    },
+    {
+      "html": "<input data-react-aria-pressable=\"true\" tabindex=\"-1\" type=\"radio\" name=\"react-aria567327564-:rh:\" value=\"night\" title=\"\">",
+      "rect": {
+        "x": 90.25,
+        "y": 253.59375,
+        "width": 13,
+        "height": 13,
+        "top": 253.59375,
+        "right": 103.25,
+        "bottom": 266.59375,
+        "left": 90.25
+      },
+      "visible": true
+    },
+    {
+      "html": "<input data-react-aria-pressable=\"true\" tabindex=\"-1\" type=\"radio\" name=\"react-aria567327564-:rh:\" value=\"paper\" title=\"\">",
+      "rect": {
+        "x": 223.75,
+        "y": 253.59375,
+        "width": 13,
+        "height": 13,
+        "top": 253.59375,
+        "right": 236.75,
+        "bottom": 266.59375,
+        "left": 223.75
+      },
+      "visible": true
+    },
+    {
+      "html": "<input data-react-aria-pressable=\"true\" tabindex=\"-1\" type=\"radio\" name=\"react-aria567327564-:rh:\" value=\"contrast1\" title=\"\">",
+      "rect": {
+        "x": 90.25,
+        "y": 320.59375,
+        "width": 13,
+        "height": 13,
+        "top": 320.59375,
+        "right": 103.25,
+        "bottom": 333.59375,
+        "left": 90.25
+      },
+      "visible": true
+    },
+    {
+      "html": "<input data-react-aria-pressable=\"true\" tabindex=\"-1\" type=\"radio\" name=\"react-aria567327564-:rh:\" value=\"contrast2\" title=\"\">",
+      "rect": {
+        "x": 223.75,
+        "y": 320.59375,
+        "width": 13,
+        "height": 13,
+        "top": 320.59375,
+        "right": 236.75,
+        "bottom": 333.59375,
+        "left": 223.75
+      },
+      "visible": true
+    },
+    {
+      "html": "<input data-react-aria-pressable=\"true\" tabindex=\"-1\" type=\"radio\" name=\"react-aria567327564-:rh:\" value=\"contrast3\" title=\"\">",
+      "rect": {
+        "x": 90.25,
+        "y": 387.59375,
+        "width": 13,
+        "height": 13,
+        "top": 387.59375,
+        "right": 103.25,
+        "bottom": 400.59375,
+        "left": 90.25
+      },
+      "visible": true
+    },
+    {
+      "html": "<input data-react-aria-pressable=\"true\" tabindex=\"-1\" type=\"radio\" name=\"react-aria567327564-:rh:\" value=\"contrast4\" title=\"\">",
+      "rect": {
+        "x": 223.75,
+        "y": 387.59375,
+        "width": 13,
+        "height": 13,
+        "top": 387.59375,
+        "right": 236.75,
+        "bottom": 400.59375,
+        "left": 223.75
+      },
+      "visible": true
+    },
+    {
+      "html": "<input data-react-aria-pressable=\"true\" tabindex=\"-1\" type=\"radio\" name=\"react-aria567327564-:rv:\" value=\"scroll_option\" title=\"\">",
+      "rect": {
+        "x": 82,
+        "y": 520.09375,
+        "width": 13,
+        "height": 13,
+        "top": 520.09375,
+        "right": 95,
+        "bottom": 533.09375,
+        "left": 82
+      },
+      "visible": true
+    },
+    {
+      "html": "<input data-react-aria-pressable=\"true\" tabindex=\"0\" type=\"radio\" name=\"react-aria567327564-:rv:\" value=\"page_option\" checked=\"\" title=\"\">",
+      "rect": {
+        "x": 178,
+        "y": 511.09375,
+        "width": 13,
+        "height": 13,
+        "top": 511.09375,
+        "right": 191,
+        "bottom": 524.09375,
+        "left": 178
+      },
+      "visible": true
+    },
+    {
+      "html": "<input data-react-aria-pressable=\"true\" tabindex=\"0\" type=\"radio\" name=\"react-aria567327564-:r17:\" value=\"auto\" checked=\"\" title=\"\">",
+      "rect": {
+        "x": 81.75,
+        "y": 676.09375,
+        "width": 13,
+        "height": 13,
+        "top": 676.09375,
+        "right": 94.75,
+        "bottom": 689.09375,
+        "left": 81.75
+      },
+      "visible": true
+    },
+    {
+      "html": "<input data-react-aria-pressable=\"true\" tabindex=\"-1\" type=\"radio\" name=\"react-aria567327564-:r17:\" value=\"justify\" title=\"\">",
+      "rect": {
+        "x": 221.25,
+        "y": 685.09375,
+        "width": 13,
+        "height": 13,
+        "top": 685.09375,
+        "right": 234.25,
+        "bottom": 698.09375,
+        "left": 221.25
+      },
+      "visible": true
+    },
+    {
+      "html": "<input data-react-aria-pressable=\"true\" tabindex=\"-1\" type=\"radio\" name=\"react-aria567327564-:r17:\" value=\"start\" title=\"\">",
+      "rect": {
+        "x": 157,
+        "y": 772.09375,
+        "width": 13,
+        "height": 13,
+        "top": 772.09375,
+        "right": 170,
+        "bottom": 785.09375,
+        "left": 157
+      },
+      "visible": true
+    },
+    {
+      "html": "<input data-react-aria-pressable=\"true\" tabindex=\"0\" type=\"radio\" name=\"react-aria567327564-:r1g:\" value=\"auto\" checked=\"\" title=\"\">",
+      "rect": {
+        "x": 81.75,
+        "y": 928.09375,
+        "width": 13,
+        "height": 13,
+        "top": 928.09375,
+        "right": 94.75,
+        "bottom": 941.09375,
+        "left": 81.75
+      },
+      "visible": true
+    },
+    {
+      "html": "<input data-react-aria-pressable=\"true\" tabindex=\"-1\" type=\"radio\" name=\"react-aria567327564-:r1g:\" value=\"1\" title=\"\">",
+      "rect": {
+        "x": 221.25,
+        "y": 937.09375,
+        "width": 13,
+        "height": 13,
+        "top": 937.09375,
+        "right": 234.25,
+        "bottom": 950.09375,
+        "left": 221.25
+      },
+      "visible": true
+    },
+    {
+      "html": "<input data-react-aria-pressable=\"true\" tabindex=\"-1\" type=\"radio\" name=\"react-aria567327564-:r1g:\" value=\"2\" title=\"\">",
+      "rect": {
+        "x": 157,
+        "y": 1024.09375,
+        "width": 13,
+        "height": 13,
+        "top": 1024.09375,
+        "right": 170,
+        "bottom": 1037.09375,
+        "left": 157
+      },
+      "visible": true
+    },
+    {
+      "html": "<input id=\"mathjax\" type=\"checkbox\" name=\"mathjax\" class=\"checkbox_custom_input\">",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "visible": false
+    },
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Enable MathJax\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+      "rect": {
+        "x": 34,
+        "y": 1115.59375,
+        "width": 16,
+        "height": 16,
+        "top": 1115.59375,
+        "right": 50,
+        "bottom": 1131.59375,
+        "left": 34
+      },
+      "visible": true
+    },
+    {
+      "html": "<input id=\"enablePageBreakMarginIndicators\" type=\"checkbox\" name=\"enablePageBreakMarginIndicators\" class=\"checkbox_custom_input\">",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "visible": false
+    },
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Show page breaks in margin\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+      "rect": {
+        "x": 34,
+        "y": 1152.59375,
+        "width": 16,
+        "height": 16,
+        "top": 1152.59375,
+        "right": 50,
+        "bottom": 1168.59375,
+        "left": 34
+      },
+      "visible": true
+    },
+    {
+      "html": "<input id=\"reduceMotionCheckBox\" type=\"checkbox\" name=\"reduceMotionCheckBox\" class=\"checkbox_custom_input\">",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "visible": false
+    },
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Reduce motion\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+      "rect": {
+        "x": 34,
+        "y": 1189.59375,
+        "width": 16,
+        "height": 16,
+        "top": 1189.59375,
+        "right": 50,
+        "bottom": 1205.59375,
+        "left": 34
+      },
+      "visible": true
+    },
+    {
+      "html": "<input id=\"noFootnotesCheckBox\" type=\"checkbox\" name=\"noFootnotesCheckBox\" class=\"checkbox_custom_input\">",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "visible": false
+    },
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Disable popup footnotes\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+      "rect": {
+        "x": 34,
+        "y": 1226.59375,
+        "width": 16,
+        "height": 16,
+        "top": 1226.59375,
+        "right": 50,
+        "bottom": 1242.59375,
+        "left": 34
+      },
+      "visible": true
+    },
+    {
+      "html": "<input id=\"noTemporaryNavTargetOutlineCheckBox\" type=\"checkbox\" name=\"noTemporaryNavTargetOutlineCheckBox\" class=\"checkbox_custom_input\">",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "visible": false
+    },
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Disable visual navigation indicators\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+      "rect": {
+        "x": 34,
+        "y": 1271.09375,
+        "width": 16,
+        "height": 16,
+        "top": 1271.09375,
+        "right": 50,
+        "bottom": 1287.09375,
+        "left": 34
+      },
+      "visible": true
+    },
+    {
+      "html": "<input id=\"noRubyCheckBox\" type=\"checkbox\" name=\"noRubyCheckBox\" class=\"checkbox_custom_input\">",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "visible": false
+    },
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Hide Japanese Ruby\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+      "rect": {
+        "x": 34,
+        "y": 1315.59375,
+        "width": 16,
+        "height": 16,
+        "top": 1315.59375,
+        "right": 50,
+        "bottom": 1331.59375,
+        "left": 34
+      },
+      "visible": true
+    },
+    {
+      "html": "<input id=\"noRTLFlipCheckBox\" type=\"checkbox\" name=\"noRTLFlipCheckBox\" class=\"checkbox_custom_input\">",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "visible": false
+    },
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Disable Right-To-Left UI\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+      "rect": {
+        "x": 34,
+        "y": 1352.59375,
+        "width": 16,
+        "height": 16,
+        "top": 1352.59375,
+        "right": 50,
+        "bottom": 1368.59375,
+        "left": 34
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"button_transparency_icon\" aria-label=\"Dock panel to the left\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 15\"><use xlink:href=\"#dockleft-icon\"></use></svg></button>",
+      "rect": {
+        "x": 163,
+        "y": 23,
+        "width": 30,
+        "height": 30,
+        "top": 23,
+        "right": 193,
+        "bottom": 53,
+        "left": 163
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"button_transparency_icon\" aria-label=\"Dock panel to the right\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 15\"><use xlink:href=\"#dockright-icon\"></use></svg></button>",
+      "rect": {
+        "x": 198,
+        "y": 23,
+        "width": 30,
+        "height": 30,
+        "top": 23,
+        "right": 228,
+        "bottom": 53,
+        "left": 198
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"button_transparency_icon\" disabled=\"\" aria-label=\"Show panel as a modal popup\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 16\"><use xlink:href=\"#dockmodal-icon\"></use></svg></button>",
+      "rect": {
+        "x": 233,
+        "y": 23,
+        "width": 30,
+        "height": 30,
+        "top": 23,
+        "right": 263,
+        "bottom": 53,
+        "left": 233
+      },
+      "visible": true
+    },
+    {
+      "html": "<button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button>",
+      "rect": {
+        "x": 268,
+        "y": 23,
+        "width": 30,
+        "height": 30,
+        "top": 23,
+        "right": 298,
+        "bottom": 53,
+        "left": 268
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [
+      {
+        "id": "region",
+        "impact": "moderate",
+        "tags": [
+          "cat.keyboard",
+          "best-practice",
+          "RGAAv4",
+          "RGAA-9.2.1"
+        ],
+        "description": "Ensure all page content is contained by landmarks",
+        "help": "All page content should be contained by landmarks",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/region?application=axeAPI",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "region",
+                "data": {
+                  "isIframe": false
+                },
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "Some page content is not contained by landmarks"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "moderate",
+            "html": "<h2 id=\":r0:\">Reader settings</h2>",
+            "target": [
+              "#\\:r0\\:"
+            ],
+            "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+          }
+        ]
+      }
+    ],
+    "incomplete": [],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 24
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 19
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 24
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 19
+      },
+      {
+        "id": "aria-dialog-name",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 27
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 24
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 19
+      },
+      {
+        "id": "aria-required-children",
+        "nodes": 1
+      },
+      {
+        "id": "aria-required-parent",
+        "nodes": 4
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 19
+      },
+      {
+        "id": "aria-tab-name",
+        "nodes": 4
+      },
+      {
+        "id": "aria-toggle-field-name",
+        "nodes": 8
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 24
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 24
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 5
+      },
+      {
+        "id": "button-name",
+        "nodes": 5
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 3
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "duplicate-id-aria",
+        "nodes": 12
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 6
+      },
+      {
+        "id": "form-field-multiple-labels",
+        "nodes": 16
+      },
+      {
+        "id": "heading-order",
+        "nodes": 6
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "label-title-only",
+        "nodes": 16
+      },
+      {
+        "id": "label",
+        "nodes": 16
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 33
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 142
+      },
+      {
+        "id": "scrollable-region-focusable",
+        "nodes": 1
+      },
+      {
+        "id": "tabindex",
+        "nodes": 31
+      },
+      {
+        "id": "target-size",
+        "nodes": 32
+      }
+    ]
+  },
+  "evidencePrefix": "batch-3/reader-320-display"
+}

@@ -1,0 +1,21 @@
+- main:
+  - 'heading "Component fixture: library-settings" [level=1]'
+  - button "Application Settings" [expanded]:
+    - heading "Application Settings" [level=3]: Settings
+- button "Dismiss"
+- dialog "Settings":
+  - heading "Settings" [level=1]
+  - tablist "Application Settings":
+    - tab "General"
+    - tab "Keyboard shortcuts"
+    - tab "Profiles" [selected]
+    - tab "Storage"
+    - tab "Advanced"
+  - heading "Profiles" [level=2]
+  - tabpanel "Profiles":
+    - paragraph: Switch profiles to customize the app with a partner vendor’s branding and colors. Each profile offers a tailored experience.
+    - radiogroup "Profiles":
+      - radio "Thorium vanilla" [checked]
+      - heading "Thorium vanilla" [level=3]
+      - paragraph: The Thorium Vanilla profile is the original one, designed by EDRLab.
+  - button "Close"

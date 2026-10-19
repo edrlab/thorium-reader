@@ -1,0 +1,33 @@
+- main:
+  - 'heading "Component fixture: library-settings" [level=1]'
+  - button "Préférences de l'application" [expanded]:
+    - heading "Préférences de l'application" [level=3]: Préférences
+- button "Dismiss"
+- dialog "Préférences":
+  - heading "Préférences" [level=1]
+  - tablist "Préférences de l'application":
+    - tab "Géneral" [selected]
+    - tab "Raccourcis clavier"
+    - tab "Profils"
+    - tab "Stockage"
+    - tab "Options avancées"
+  - heading "Géneral" [level=2]
+  - tabpanel "Géneral":
+    - text: Choix de la langue
+    - group:
+      - combobox "Choix de la langue": Français (French)
+      - button "Show suggestions Choix de la langue"
+    - text: Thème de l'application
+    - group:
+      - combobox "Thème de l'application": Automatique
+      - button "Show suggestions Thème de l'application"
+    - paragraph: Le thème de l'application correspond au thème de votre système.
+    - heading "Support amélioré pour les lecteurs d'écran" [level=3]
+    - paragraph: Lorsque l'application détecte la présence d'une technologie d'assistance, l'interface utilisateur fonctionne mieux avec les lecteurs d'écran
+    - checkbox "Améliorer l'expérience d'un utilisateur doté d'un lecteur d'écran"
+    - heading "Comportement des fenêtres" [level=3]
+    - checkbox "Réduire la bibliothèque dans la zone de notification"
+    - checkbox "Réduire la bibliothèque après l'ouverture des fenêtres de lecture"
+    - checkbox "Garder la bibliothèque en arrière-plan après la fermeture des fenêtres de lecture"
+    - checkbox "Utiliser une seule fenêtre de lecture par publication"
+  - button "Fermer"

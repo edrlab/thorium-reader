@@ -1,0 +1,177 @@
+{
+  "id": "delete-publication",
+  "runtime": "library",
+  "files": [
+    "src/renderer/library/components/dialog/DeletePublicationConfirm.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T13:24:18.752Z",
+  "lang": "en",
+  "errors": [],
+  "actions": [],
+  "text": "Component fixture: delete-publication\nDelete audit publication\nDelete publication?\n\nAudit publication\n\nCancel\nYes",
+  "html": "<div id=\"audit-root\" inert=\"\"><main><h1>Component fixture: delete-publication</h1><button aria-expanded=\"true\" id=\"react-aria8118544264-:rir:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria8118544264-:riq:\">Delete audit publication</button></main></div>\n<span data-focus-scope-start=\"true\" hidden=\"\" inert=\"\"></span>\n<div class=\"AlertDialogOverlay\" data-rac=\"\" style=\"position: fixed; inset: 0px; z-index: 102; --visual-viewport-width: 1200px; --visual-viewport-height: 850px; --page-width: 1200px; --page-height: 849.84375px;\"><div class=\"react-aria-Modal\" data-rac=\"\" style=\"display: contents;\"><section id=\"react-aria8118544264-:riq:\" class=\"AlertDialogContent\" data-rac=\"\" aria-labelledby=\":rin:\" aria-describedby=\":rio:\" role=\"alertdialog\" tabindex=\"-1\"><h2 class=\"AlertDialogTitle\" id=\":rin:\">Delete publication?</h2><p class=\"AlertDialogDescription\" id=\":rio:\">Audit publication</p><div class=\"AlertDialogButtonContainer\"><button class=\"button_secondary_blue react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:riu:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button><button class=\"button_primary_blue\" type=\"button\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg>Yes</button></div></section></div></div>\n<span data-focus-scope-end=\"true\" hidden=\"\" inert=\"\"></span>",
+  "dimensions": {
+    "width": 1200,
+    "height": 850,
+    "scrollWidth": 1200
+  },
+  "focus": "<button class=\"button_secondary_blue react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:riu:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>",
+  "controls": [
+    {
+      "html": "<button aria-expanded=\"true\" id=\"react-aria8118544264-:rir:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria8118544264-:riq:\">Delete audit publication</button>",
+      "rect": {
+        "x": 0,
+        "y": 60.15625,
+        "width": 145.546875,
+        "height": 30,
+        "top": 60.15625,
+        "right": 145.546875,
+        "bottom": 90.15625,
+        "left": 0
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"button_secondary_blue react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:riu:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>",
+      "rect": {
+        "x": 640,
+        "y": 446.5,
+        "width": 100,
+        "height": 30,
+        "top": 446.5,
+        "right": 740,
+        "bottom": 476.5,
+        "left": 640
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"button_primary_blue\" type=\"button\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg>Yes</button>",
+      "rect": {
+        "x": 750,
+        "y": 446.5,
+        "width": 100,
+        "height": 30,
+        "top": 446.5,
+        "right": 850,
+        "bottom": 476.5,
+        "left": 750
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [],
+    "incomplete": [],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 1
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 1
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 1
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 1
+      },
+      {
+        "id": "aria-dialog-name",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 2
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 1
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 1
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 1
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 1
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 1
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 3
+      },
+      {
+        "id": "button-name",
+        "nodes": 2
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "duplicate-id-aria",
+        "nodes": 3
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 1
+      },
+      {
+        "id": "heading-order",
+        "nodes": 1
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 2
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 8
+      },
+      {
+        "id": "tabindex",
+        "nodes": 3
+      },
+      {
+        "id": "target-size",
+        "nodes": 2
+      }
+    ]
+  },
+  "evidencePrefix": "batch-3/library-delete-publication-regression"
+}

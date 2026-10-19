@@ -38,12 +38,16 @@ import Profiles from 'readium-desktop/renderer/library/components/settings/Profi
 import Slider from 'readium-desktop/renderer/library/components/utils/Slider';
 import LibraryLayout from 'readium-desktop/renderer/library/components/layout/LibraryLayout';
 import * as stylesSettings from 'readium-desktop/renderer/assets/styles/components/settings.scss';
+import { Settings } from 'readium-desktop/renderer/library/components/settings/Settings';
+import TagManager from 'readium-desktop/renderer/library/components/dialog/publicationInfos/TagManager';
 
 const common = (p: string) => 'src/renderer/common/components/' + p;
 const lib = (p: string) => 'src/renderer/library/components/' + p;
 const cases: Record<string, AuditCase> = {};
 const add = (id: string, files: string[], render: () => React.ReactNode, state?: (s: any) => void, after?: () => void) => cases[id] = { files, render, state, after };
 const patch = (payload: any) => (window as any).auditStore.dispatch({ type: 'AUDIT_SET', payload });
+add('library-settings', [lib('settings/Settings.tsx')], () => <Settings />, s => { s.publication.directory = { defaultDirectory: 'C:/Audit/Thorium/Publications/Library', userDirectory: '' }; });
+add('publication-tags', [lib('dialog/publicationInfos/TagManager.tsx'), common('dialog/publicationInfos/tag/tagButton.tsx'), common('dialog/publicationInfos/tag/tagList.tsx')], () => <TagManager />, s => s.dialog = { open: true, type: 'publication-info-lib', data: { publication } });
 const button = (text: string) => <button>{text}</button>;
 add('template-editor', [lib('settings/OverloadNoteExportToHtml.tsx')], () => <OverloadNoteExportToHtml />, s => { s.noteExport.overrideHTMLTemplate = true; });
 add('catalog-favorites', [lib('opds/FeedCard.tsx')], () => <ul><FeedCard feed={feed} location={{ pathname: '/' }} /><FeedCard feed={{ ...feed, identifier: 'audit-favorite', title: 'Favorite audit catalog', favorite: true }} location={{ pathname: '/' }} /></ul>);

@@ -1,0 +1,82 @@
+{
+  "batch": 3,
+  "branch": "codex/a11y-batch-3-reflow-targets",
+  "parentCommit": "937d9d5bc4656a8abd15c462c18d5bc48adc2383",
+  "implementationState": "A26/A31 implemented and dynamically validated; uncommitted on batch 3 branch",
+  "inventory": "docs/accessibility/evidence/batch-3/static-inventory.json",
+  "findings": {
+    "A26": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/library/components/settings/Settings.tsx",
+        "src/renderer/library/components/settings/KeyboardSettings.tsx",
+        "src/renderer/library/components/settings/SaveCreatorSettings.tsx",
+        "src/renderer/library/components/settings/ProfilesSettings.tsx",
+        "src/renderer/library/components/settings/StorageSettings.tsx",
+        "src/renderer/reader/components/ReaderSettings/ReaderSettings.tsx",
+        "src/renderer/reader/components/ReaderSettings/ReadingDisplayAlign.tsx",
+        "src/renderer/reader/components/ReaderSettings/ReadingDisplayCol.tsx",
+        "src/renderer/reader/components/ReaderSettings/SaveResetApplyPreset.tsx"
+      ],
+      "styles": [
+        "src/renderer/assets/styles/components/settings.scss",
+        "src/renderer/assets/styles/components/modals.scss",
+        "src/renderer/assets/styles/components/popoverDialog.scss"
+      ],
+      "evidence": [
+        "evidence/batch-3/library-320-general.json",
+        "evidence/batch-3/library-320-keyboard-shortcuts.json",
+        "evidence/batch-3/library-320-profiles.json",
+        "evidence/batch-3/library-320-storage.json",
+        "evidence/batch-3/library-320-advanced.json",
+        "evidence/batch-3/reader-320-display.json",
+        "evidence/batch-3/reader-320-text.json",
+        "evidence/batch-3/reader-320-spacing.json",
+        "evidence/batch-3/reader-320-preferences.json",
+        "evidence/batch-3/library-fr-tab-general.json",
+        "evidence/batch-3/library-fr-tab-keyboardShortcuts.json",
+        "evidence/batch-3/library-fr-tab-profiles.json",
+        "evidence/batch-3/library-fr-tab-storage.json",
+        "evidence/batch-3/library-fr-tab-advanced.json",
+        "evidence/batch-3/reader-live-200-display.json",
+        "evidence/batch-3/reader-live-200-text.json",
+        "evidence/batch-3/reader-live-200-spacing.json",
+        "evidence/batch-3/reader-live-200-preferences.json",
+        "evidence/batch-3/library-live-320-general.json",
+        "evidence/batch-3/library-live-320-keyboard-shortcuts.json",
+        "evidence/batch-3/library-live-320-profiles.json",
+        "evidence/batch-3/library-live-320-storage.json",
+        "evidence/batch-3/library-live-320-advanced.json"
+      ],
+      "observation": "Settings no longer impose a minimum height larger than the viewport. Narrow modal settings use one vertical scroller, wrapped controls and a pinned Close/docking band. Shortcut actions, creator fields, radio choices and preset Reset content reflow. Positioned radio/profile cards anchor hidden native inputs so keyboard focus scrolls visible controls into view. All five Library tabs and four EPUB Reader tabs tested in 320x228 CSS fixtures, with French Library coverage, complete Tab cycles and point hit-testing. Live Reader uses actual Electron 200% zoom; live Library uses a 320x228 CSS viewport. No setting values, shortcuts or storage actions submitted.",
+      "limitations": "Scope is modal Library/EPUB settings in sampled states. 320 CSS viewport uses CDP emulation rather than native window resizing. Other dialogs, custom profile branches, format-specific Reader tabs, all locales/themes and native screen-reader listening are not certified."
+    },
+    "A31": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/common/components/dialog/publicationInfos/tag/tagButton.tsx",
+        "src/renderer/common/components/dialog/publicationInfos/tag/tagList.tsx",
+        "src/renderer/library/components/dialog/publicationInfos/TagManager.tsx"
+      ],
+      "styles": [
+        "src/renderer/assets/styles/components/tags.scss"
+      ],
+      "evidence": [
+        "evidence/batch-3/library-editable-tags.json",
+        "evidence/batch-3/library-publication-tag-targets.json",
+        "evidence/batch-3/library-live-tag-target.json",
+        "evidence/batch-3/library-live-tag-popover.json"
+      ],
+      "observation": "Tag pencil buttons have a real 24x24 CSS px target with a 12px icon; adjacent tag links have a 24px minimum height. Geometry and target-size checks pass in standalone and real TagManager fixtures. Existing Crime & mystery fiction tag in La Proie checked live; Enter opens the named popover, Delete receives focus, and Escape returns to the pencil without deleting a tag.",
+      "limitations": "Addresses the audited tag pencils. It is not an application-wide minimum-target-size certification; unrelated small controls and the criterion exceptions require separate assessment."
+    }
+  },
+  "validation": {
+    "fixtureScenarios": 7,
+    "applicationScenarios": 3,
+    "fixtureStates": 18,
+    "applicationStates": 11,
+    "allScenariosPassed": true
+  },
+  "limitations": "Per-finding scopes apply. Original audit and earlier batch evidence preserved. No publication metadata, notes, storage location, keyboard shortcut or preset was changed. Zoom, CSS viewport, text customization and docking were restored. Native screen-reader listening and comprehensive format/theme/locale conformance remain outside these checks."
+}

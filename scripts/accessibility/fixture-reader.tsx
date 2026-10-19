@@ -17,9 +17,16 @@ import * as Dialog from 'readium-desktop/renderer/common/components/Dialog';
 import FilterPopover from 'readium-desktop/renderer/reader/components/ReaderMenu/FilterPopover';
 import * as FilterIcon from 'readium-desktop/renderer/assets/icons/filter3-icon.svg';
 import type { Selection } from 'react-aria-components';
+import { ReaderSettings } from 'readium-desktop/renderer/reader/components/ReaderSettings/ReaderSettings';
+import * as stylesPopover from 'readium-desktop/renderer/assets/styles/components/popoverDialog.scss';
 const reader = (p: string) => 'src/renderer/reader/components/' + p;
 const cases: Record<string, AuditCase> = {};
 const add = (id: string, files: string[], render: () => React.ReactNode, state?: (s: any) => void) => cases[id] = { files, render, state };
+function SettingsModal() {
+    const [open, setOpen] = React.useState(false);
+    return <Dialog.Root isOpen={open} onOpenChange={setOpen}><Dialog.Trigger>Reader settings</Dialog.Trigger><Dialog.Portal><Dialog.Title>Reader settings</Dialog.Title><Dialog.Content className={stylesPopover.modal_dialog_reader}><ReaderSettings isPdf={false} isDivina={false} isFXL={false} divinaReadingMode="single" divinaReadingModeSupported={[]} handleDivinaReadingMode={record} disableRTLFlip={false} setDisableRTLFlip={record} fxlZoomPercent={100} zenMode={false} setZenModeAndFXLZoom={record} pdfPlayerZoom="page-fit" pdfPlayerSpreadMode={0} /></Dialog.Content></Dialog.Portal></Dialog.Root>;
+}
+add('reader-settings-modal', [reader('ReaderSettings/ReaderSettings.tsx')], () => <SettingsModal />, s => { s.reader.config.readerDockingMode = 'full'; s.reader.config.readerSettingsSection = 'tab-display'; s.reader.allowCustomConfig.state = true; });
 function Filters({ empty = false }) {
     const [open, setOpen] = React.useState(false);
     const [tags, setTags] = React.useState<Selection>('all');

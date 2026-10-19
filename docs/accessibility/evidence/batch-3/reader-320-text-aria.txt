@@ -1,0 +1,29 @@
+- main:
+  - 'heading "Component fixture: reader-settings-modal" [level=1]'
+  - button "Reader settings" [expanded]
+- button "Dismiss"
+- heading "Reader settings" [level=2]
+- dialog "Reader settings":
+  - tablist "Reader settings":
+    - tab "Display"
+    - tab "Text" [selected]
+    - tab "Spacing"
+    - tab "Preferences"
+  - checkbox "Customize text formatting" [checked]
+  - heading "Text" [level=2]
+  - tabpanel "Text":
+    - heading "Font size (100%)" [level=3]
+    - button "Reset Font size"
+    - button "Reduce font size"
+    - slider "Font size": "100"
+    - button "Increase font size"
+    - text: Font
+    - group:
+      - combobox "Font": Original font
+      - button "Show suggestions Font"
+    - paragraph: Select custom font from operating system by typing its name
+    - heading "Preview:" [level=3]
+  - button "Dock panel to the left"
+  - button "Dock panel to the right"
+  - button "Show panel as a modal popup" [disabled]
+  - button "Close"

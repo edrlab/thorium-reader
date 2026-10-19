@@ -1,0 +1,8 @@
+- main:
+  - 'heading "Component fixture: delete-publication" [level=1]'
+  - button "Delete audit publication" [expanded]
+- alertdialog "Delete publication?":
+  - heading "Delete publication?" [level=2]
+  - paragraph: Audit publication
+  - button "Cancel"
+  - button "Yes"

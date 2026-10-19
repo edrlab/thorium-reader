@@ -1,0 +1,70 @@
+- region "toolbar":
+  - heading "toolbar" [level=2]
+  - button "Skip to content"
+  - navigation "Bookshelf menu":
+    - heading "Thorium" [level=1]: Th
+    - list:
+      - listitem:
+        - button "Home" [pressed]
+      - listitem:
+        - button "All publications"
+      - listitem:
+        - button "Catalogs"
+      - listitem:
+        - button "Settings" [expanded]
+  - main "main content":
+    - button "Import publication"
+    - heading "main content" [level=2]
+    - heading "Resume reading" [level=2]
+    - button "Slide to the left" [disabled]
+    - list:
+      - listitem:
+        - img
+        - text: EPUB
+        - button "Menu (Accessible EPUB 3)":
+          - img "Menu (Accessible EPUB 3)"
+      - listitem:
+        - img
+        - text: PDF
+        - button "Menu (Untitled)":
+          - img "Menu (Untitled)"
+      - listitem:
+        - img
+        - text: 20 days EPUB
+        - button "Menu (La Proie)":
+          - img "Menu (La Proie)"
+      - listitem:
+        - img
+        - text: 17 days EPUB
+        - button "Menu (La toile de l'Araignée)":
+          - img "Menu (La toile de l'Araignée)"
+    - button "Slide to the right"
+    - heading "Recently added" [level=2]
+    - button "Slide to the left" [disabled]
+    - list:
+      - listitem:
+        - img
+        - text: Licensed EPUB
+        - button "Menu (The Waste Land)":
+          - img "Menu (The Waste Land)"
+    - button "Slide to the right"
+    - paragraph: v3.5.2-beta.1
+    - link "About Thorium (online)":
+      - /url: ""
+- button "Dismiss"
+- dialog "Settings":
+  - heading "Settings" [level=1]
+  - tablist "Application Settings":
+    - tab "General"
+    - tab "Keyboard shortcuts"
+    - tab "Profiles" [selected]
+    - tab "Storage"
+    - tab "Advanced"
+  - heading "Profiles" [level=2]
+  - tabpanel "Profiles":
+    - paragraph: Switch profiles to customize the app with a partner vendor’s branding and colors. Each profile offers a tailored experience.
+    - radiogroup "Profiles":
+      - radio "Thorium vanilla" [checked]
+      - heading "Thorium vanilla" [level=3]
+      - paragraph: The Thorium Vanilla profile is the original one, designed by EDRLab.
+  - button "Close"

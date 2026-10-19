@@ -1,0 +1,475 @@
+{
+  "id": "library-settings",
+  "runtime": "library",
+  "files": [
+    "src/renderer/library/components/settings/Settings.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T13:23:41.403Z",
+  "lang": "en",
+  "errors": [],
+  "actions": [
+    [
+      "dispatch",
+      {
+        "type": "API_CLEAN",
+        "payload": {
+          "requestId": "38b7d77d-cde5-4a64-a00e-f7dac54071ba"
+        }
+      }
+    ],
+    [
+      "dispatch",
+      {
+        "type": "API_CLEAN",
+        "payload": {
+          "requestId": "ccef8aa7-3b08-4936-8d14-e7a832986198"
+        }
+      }
+    ]
+  ],
+  "text": "Component fixture: library-settings\nSettings\nSettings\nGeneral\nKeyboard shortcuts\nProfiles\nStorage\nAdvanced\nAdvanced\nAccess to publication catalogs\n\nThis action deletes all OPDS login credentials.\n\nClear login data\n\nAccess to French library accounts\nActivate the 'PNB' library system\nHow does it work?\nShared computer mode\nAutomatically remove expired publications and associated user data\n\nEnsures that expired loans are automatically deleted (including personal annotations, reading bookmarks, etc.). This is useful in 'shared computers' environments such as library or university rooms.\n\nAnnotations creator (optional)\n\nIf specified, this name will be included in the metadata of exported notes.\n\nName\n\nType:\n\nOrganization\nPerson\nNotes export (annotations and bookmarks)\nCustomize the HTML template\nTelemetry\nDisable telemetry measurements\n\nWhen enabled, Thorium does not send telemetry measurements.",
+  "html": "<div id=\"audit-root\" inert=\"\"><main><h1>Component fixture: library-settings</h1><button title=\"Settings\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" aria-expanded=\"true\" id=\"react-aria8118544264-:r4:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria8118544264-:r3:\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#gear-icon\"></use></svg><h3 dir=\"ltr\" aria-label=\"Application Settings\">Settings</h3></button></main></div>\n<span data-focus-scope-start=\"true\" hidden=\"\" inert=\"\"></span>\n<div class=\"modal_dialog_overlay\" data-rac=\"\" style=\"position: fixed; inset: 0px; z-index: 102; --visual-viewport-width: 320px; --visual-viewport-height: 228px; --page-width: 320px; --page-height: 227.84375px;\"><div class=\"react-aria-Modal\" data-rac=\"\" style=\"display: contents;\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><button id=\"react-aria8118544264-:r5:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button></div><section id=\"react-aria8118544264-:r3:\" class=\"modal_dialog settings_dialog\" data-rac=\"\" aria-labelledby=\":r0:\" role=\"dialog\" tabindex=\"-1\" style=\"overflow-y: hidden;\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><h1 id=\":r0:\">Settings</h1></div><template><div dir=\"ltr\" class=\"settings_tab_title\"><h2 dir=\"ltr\">Advanced</h2></div><div class=\"settings_content\" style=\"margin-top: 70px;\"></div><div class=\"close_button_div\"><button dir=\"ltr\" data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></div></template><div data-orientation=\"vertical\" class=\"settings_container\" data-rac=\"\" data-focused=\"true\" data-focus-visible=\"true\"><div data-orientation=\"vertical\" class=\"settings_tabslist\" data-rac=\"\" data-collection=\"react-aria8118544264-:r8:\" id=\"react-aria8118544264-:r9:\" aria-label=\"Application Settings\" role=\"tablist\" aria-orientation=\"vertical\"><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"-1\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-general\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r9:-tab-tab-general\" aria-selected=\"false\" role=\"tab\"><svg aria-hidden=\"true\" viewBox=\"0 0 19 20\"><use xlink:href=\"#cog-icon\"></use></svg><span dir=\"ltr\">General</span></div><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"-1\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-keyboardShortcuts\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r9:-tab-tab-keyboardShortcuts\" aria-selected=\"false\" role=\"tab\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 14\"><use xlink:href=\"#keyreturn-icon\"></use></svg><span dir=\"ltr\">Keyboard shortcuts</span></div><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"-1\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-profiles\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r9:-tab-tab-profiles\" aria-selected=\"false\" role=\"tab\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 11\"><use xlink:href=\"#avatar-icon\"></use></svg><span dir=\"ltr\">Profiles</span></div><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"-1\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-storage\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r9:-tab-tab-storage\" aria-selected=\"false\" role=\"tab\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 11\"><use xlink:href=\"#library-icon\"></use></svg><span dir=\"ltr\">Storage</span></div><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-advanced\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r9:-tab-tab-advanced\" aria-selected=\"true\" role=\"tab\" aria-controls=\"react-aria8118544264-:r9:-tabpanel-tab-advanced\" data-selected=\"true\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 14\"><use xlink:href=\"#advanced-icon\"></use></svg><span dir=\"ltr\">Advanced</span></div></div><div dir=\"ltr\" class=\"settings_tab_title\"><h2 dir=\"ltr\">Advanced</h2></div><div class=\"settings_content\" style=\"margin-top: 70px;\"><div class=\"react-aria-TabPanels\" style=\"--tab-panel-width: auto; --tab-panel-height: auto;\"><div id=\"react-aria8118544264-:r9:-tabpanel-tab-advanced\" aria-labelledby=\"react-aria8118544264-:r9:-tab-tab-advanced\" role=\"tabpanel\" class=\"react-aria-TabPanel\" data-rac=\"\"><div class=\"settings_tab\"><section class=\"section\" style=\"position: relative;\"><h3 dir=\"ltr\">Access to publication catalogs</h3><div class=\"session_text\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg><p dir=\"ltr\">This action deletes all OPDS login credentials.</p></div><button class=\"btn_primary\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg><p dir=\"ltr\">Clear login data</p></button></section><section class=\"section\" style=\"gap: 10px;\"><h3 dir=\"ltr\">Access to French library accounts</h3><div dir=\"ltr\" class=\"annotations_checkbox\"><input type=\"checkbox\" id=\"enableAPIAPP\" class=\"checkbox_custom_input\" name=\"enableAPIAPP\"><label for=\"enableAPIAPP\" class=\"checkbox_custom_label\"><div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Activate the 'PNB' library system\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div><div aria-hidden=\"true\"><h4 dir=\"ltr\">Activate the 'PNB' library system</h4></div></label></div><div><button dir=\"ltr\" class=\"button_catalog_infos\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#outline-info-24px\"></use></svg>How does it work?<svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg></button></div></section><section class=\"section\" style=\"gap: 10px;\"><h3 dir=\"ltr\">Shared computer mode</h3><div dir=\"ltr\" class=\"annotations_checkbox\"><input type=\"checkbox\" id=\"lcpAutoDeleteExpiredPublications\" class=\"checkbox_custom_input\" name=\"lcpAutoDeleteExpiredPublications\"><label for=\"lcpAutoDeleteExpiredPublications\" class=\"checkbox_custom_label\"><div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-disabled=\"false\" aria-label=\"Automatically remove expired publications and associated user data\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div><div aria-hidden=\"true\"><h4 dir=\"ltr\">Automatically remove expired publications and associated user data</h4><p dir=\"ltr\">Ensures that expired loans are automatically deleted (including personal annotations, reading bookmarks, etc.). This is useful in 'shared computers' environments such as library or university rooms.</p></div></label></div></section><section class=\"section\" style=\"gap: 10px;\"><section style=\"position: relative;\"><h3 dir=\"ltr\">Annotations creator (optional)</h3><div class=\"session_text\" style=\"margin: 0px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg><p dir=\"ltr\">If specified, this name will be included in the metadata of exported notes.</p></div><div class=\"form_group\" style=\"margin-top: 20px; width: 360px;\"><input dir=\"ltr\" type=\"text\" id=\"creator-name\" aria-label=\"Name\" name=\"creator-name\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" title=\"\" value=\"\" style=\"width: 100%; margin-left: 10px;\"><label dir=\"ltr\" for=\"creator-name\">Name</label></div><div dir=\"ltr\" class=\"react-aria-RadioGroup\" data-rac=\"\" aria-label=\"Type:\" role=\"radiogroup\" aria-orientation=\"horizontal\" id=\"react-aria8118544264-:r7k:\" data-orientation=\"horizontal\" style=\"display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;\"><p dir=\"ltr\">Type:</p><label data-react-aria-pressable=\"true\" class=\"annotations_filter_tag\" data-rac=\"\" data-selected=\"true\"><span style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><input data-react-aria-pressable=\"true\" tabindex=\"0\" type=\"radio\" name=\"react-aria8118544264-:r7p:\" value=\"Organization\" checked=\"\" title=\"\"></span><span>Organization</span></label><label data-react-aria-pressable=\"true\" class=\"annotations_filter_tag\" data-rac=\"\"><span style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><input data-react-aria-pressable=\"true\" tabindex=\"-1\" type=\"radio\" name=\"react-aria8118544264-:r7p:\" value=\"Person\" title=\"\"></span><span>Person</span></label></div></section><section style=\"position: relative;\"><h3 id=\":r7s:\" dir=\"ltr\">Notes export (annotations and bookmarks)</h3><input type=\"checkbox\" class=\"checkbox_custom_input\" name=\"enableCheckbox\"><div dir=\"ltr\" class=\"annotations_checkbox\"><input type=\"checkbox\" id=\"enableCheckbox\" class=\"checkbox_custom_input\" name=\"enableCheckbox\"><label for=\"enableCheckbox\" class=\"checkbox_custom_label\"><div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Customize the HTML template\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div><span aria-hidden=\"true\" dir=\"ltr\">Customize the HTML template</span></label></div></section></section><section class=\"section\" style=\"gap: 10px;\"><h3 dir=\"ltr\">Telemetry</h3><div dir=\"ltr\" class=\"annotations_checkbox\"><input type=\"checkbox\" id=\"disableGoogleAnalyticsTelemetry\" class=\"checkbox_custom_input\" name=\"disableGoogleAnalyticsTelemetry\"><label for=\"disableGoogleAnalyticsTelemetry\" class=\"checkbox_custom_label\"><div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Disable telemetry measurements\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div><div aria-hidden=\"true\"><h4 dir=\"ltr\">Disable telemetry measurements</h4><p dir=\"ltr\">When enabled, Thorium does not send telemetry measurements.</p></div></label></div></section></div></div></div></div><div class=\"close_button_div\"><button dir=\"ltr\" data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></div></div></section></div></div>\n<span data-focus-scope-end=\"true\" hidden=\"\" inert=\"\"></span>",
+  "dimensions": {
+    "width": 320,
+    "height": 228,
+    "scrollWidth": 320
+  },
+  "focus": "<div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-advanced\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r9:-tab-tab-advanced\" aria-selected=\"true\" role=\"tab\" aria-controls=\"react-aria8118544264-:r9:-tabpanel-tab-advanced\" data-selected=\"true\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 14\"><use xlink:href=\"#advanced-icon\"></use></svg><span dir=\"ltr\">Advanced</span></div>",
+  "controls": [
+    {
+      "html": "<button title=\"Settings\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" aria-expanded=\"true\" id=\"react-aria8118544264-:r4:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria8118544264-:r3:\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#gear-icon\"></use></svg><h3 dir=\"ltr\" aria-label=\"Application Settings\">Settings</h3></button>",
+      "rect": {
+        "x": 0,
+        "y": 88.15625,
+        "width": 68.125,
+        "height": 30,
+        "top": 88.15625,
+        "right": 68.125,
+        "bottom": 118.15625,
+        "left": 0
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"react-aria8118544264-:r5:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button>",
+      "rect": {
+        "x": 159.5,
+        "y": 113.5,
+        "width": 1,
+        "height": 1,
+        "top": 113.5,
+        "right": 160.5,
+        "bottom": 114.5,
+        "left": 159.5
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"btn_primary\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg><p dir=\"ltr\">Clear login data</p></button>",
+      "rect": {
+        "x": 29,
+        "y": 231.59375,
+        "width": 135.0625,
+        "height": 35,
+        "top": 231.59375,
+        "right": 164.0625,
+        "bottom": 266.59375,
+        "left": 29
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"checkbox\" id=\"enableAPIAPP\" class=\"checkbox_custom_input\" name=\"enableAPIAPP\">",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "visible": false
+    },
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Activate the 'PNB' library system\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+      "rect": {
+        "x": 29,
+        "y": 340.59375,
+        "width": 16,
+        "height": 16,
+        "top": 340.59375,
+        "right": 45,
+        "bottom": 356.59375,
+        "left": 29
+      },
+      "visible": true
+    },
+    {
+      "html": "<button dir=\"ltr\" class=\"button_catalog_infos\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#outline-info-24px\"></use></svg>How does it work?<svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg></button>",
+      "rect": {
+        "x": 29,
+        "y": 386.59375,
+        "width": 174.390625,
+        "height": 30,
+        "top": 386.59375,
+        "right": 203.390625,
+        "bottom": 416.59375,
+        "left": 29
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"checkbox\" id=\"lcpAutoDeleteExpiredPublications\" class=\"checkbox_custom_input\" name=\"lcpAutoDeleteExpiredPublications\">",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "visible": false
+    },
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-disabled=\"false\" aria-label=\"Automatically remove expired publications and associated user data\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+      "rect": {
+        "x": 29,
+        "y": 500.59375,
+        "width": 16,
+        "height": 16,
+        "top": 500.59375,
+        "right": 45,
+        "bottom": 516.59375,
+        "left": 29
+      },
+      "visible": true
+    },
+    {
+      "html": "<input dir=\"ltr\" type=\"text\" id=\"creator-name\" aria-label=\"Name\" name=\"creator-name\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" title=\"\" value=\"\" style=\"width: 100%; margin-left: 10px;\">",
+      "rect": {
+        "x": 42,
+        "y": 792.59375,
+        "width": 231,
+        "height": 25,
+        "top": 792.59375,
+        "right": 273,
+        "bottom": 817.59375,
+        "left": 42
+      },
+      "visible": true
+    },
+    {
+      "html": "<input data-react-aria-pressable=\"true\" tabindex=\"0\" type=\"radio\" name=\"react-aria8118544264-:r7p:\" value=\"Organization\" checked=\"\" title=\"\">",
+      "rect": {
+        "x": 71.25,
+        "y": 833.59375,
+        "width": 13,
+        "height": 13,
+        "top": 833.59375,
+        "right": 84.25,
+        "bottom": 846.59375,
+        "left": 71.25
+      },
+      "visible": true
+    },
+    {
+      "html": "<input data-react-aria-pressable=\"true\" tabindex=\"-1\" type=\"radio\" name=\"react-aria8118544264-:r7p:\" value=\"Person\" title=\"\">",
+      "rect": {
+        "x": 175.96875,
+        "y": 842.59375,
+        "width": 13,
+        "height": 13,
+        "top": 842.59375,
+        "right": 188.96875,
+        "bottom": 855.59375,
+        "left": 175.96875
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"checkbox\" class=\"checkbox_custom_input\" name=\"enableCheckbox\">",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "visible": false
+    },
+    {
+      "html": "<input type=\"checkbox\" id=\"enableCheckbox\" class=\"checkbox_custom_input\" name=\"enableCheckbox\">",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "visible": false
+    },
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Customize the HTML template\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+      "rect": {
+        "x": 29,
+        "y": 931.59375,
+        "width": 16,
+        "height": 16,
+        "top": 931.59375,
+        "right": 45,
+        "bottom": 947.59375,
+        "left": 29
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"checkbox\" id=\"disableGoogleAnalyticsTelemetry\" class=\"checkbox_custom_input\" name=\"disableGoogleAnalyticsTelemetry\">",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "visible": false
+    },
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Disable telemetry measurements\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+      "rect": {
+        "x": 29,
+        "y": 1051.59375,
+        "width": 16,
+        "height": 16,
+        "top": 1051.59375,
+        "right": 45,
+        "bottom": 1067.59375,
+        "left": 29
+      },
+      "visible": true
+    },
+    {
+      "html": "<button dir=\"ltr\" data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button>",
+      "rect": {
+        "x": 268,
+        "y": 23,
+        "width": 30,
+        "height": 30,
+        "top": 23,
+        "right": 298,
+        "bottom": 53,
+        "left": 268
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [],
+    "incomplete": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "tags": [
+          "cat.color",
+          "wcag2aa",
+          "wcag143",
+          "TTv5",
+          "TT13.c",
+          "EN-301-549",
+          "EN-9.1.4.3",
+          "ACT",
+          "RGAAv4",
+          "RGAA-3.2.1"
+        ],
+        "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "contrastRatio": 0,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "normal",
+                  "messageKey": "bgOverlap",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element's background color could not be determined because it is overlapped by another element"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<span dir=\"ltr\">Advanced</span>",
+            "target": [
+              "#react-aria8118544264-\\:r9\\:-tab-tab-advanced > span"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+          }
+        ]
+      }
+    ],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 16
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 13
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 16
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 13
+      },
+      {
+        "id": "aria-dialog-name",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 17
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 16
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 13
+      },
+      {
+        "id": "aria-required-children",
+        "nodes": 1
+      },
+      {
+        "id": "aria-required-parent",
+        "nodes": 5
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 13
+      },
+      {
+        "id": "aria-tab-name",
+        "nodes": 5
+      },
+      {
+        "id": "aria-toggle-field-name",
+        "nodes": 4
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 16
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 16
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 4
+      },
+      {
+        "id": "button-name",
+        "nodes": 4
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 2
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "duplicate-id-aria",
+        "nodes": 9
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 8
+      },
+      {
+        "id": "form-field-multiple-labels",
+        "nodes": 3
+      },
+      {
+        "id": "heading-order",
+        "nodes": 8
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "label-title-only",
+        "nodes": 3
+      },
+      {
+        "id": "label",
+        "nodes": 3
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 15
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 73
+      },
+      {
+        "id": "scrollable-region-focusable",
+        "nodes": 1
+      },
+      {
+        "id": "tabindex",
+        "nodes": 14
+      },
+      {
+        "id": "target-size",
+        "nodes": 16
+      }
+    ]
+  },
+  "evidencePrefix": "batch-3/library-320-advanced"
+}

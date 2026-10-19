@@ -1,0 +1,1986 @@
+{
+  "id": "library-settings",
+  "runtime": "library",
+  "files": [
+    "src/renderer/library/components/settings/Settings.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T13:23:40.305Z",
+  "lang": "en",
+  "errors": [],
+  "actions": [],
+  "text": "Component fixture: library-settings\nSettings\nSettings\nGeneral\nKeyboard shortcuts\nProfiles\nStorage\nAdvanced\nKeyboard shortcuts\nExport to HTML\nCreate Bookmark with Label\n+\nALT +\nB\nCreate Annotation\n+\nALT +\nA\nCreate Quick Annotation\n+\nALT +\nQ\nToggle Annotation Margin\n+\nCTRL +\nALT +\nZ\nNext Audio Segment\nCTRL +\n3\nNext Audio Segment (escape)\n+\nCTRL +\nALT +\n3\nPlay/Pause Audio\nCTRL +\n2\nPrevious Audio Segment\nCTRL +\n1\nPrevious Audio Segment (escape)\n+\nCTRL +\nALT +\n1\nDecrease audio speed\nCTRL +\n5\nIncrease audio speed\nCTRL +\n6\nReset audio speed\nCTRL +\n7\nStop Audio\nCTRL +\n4\nClose Reader\nCTRL +\nW\nFXL Zoom In\nCTRL +\n9\nFXL Zoom Out\nCTRL +\n8\nReset FXL Zoom\nCTRL +\n0\nFocus on Main Content\nCTRL +\nF10\nDeep Focus on Main Content\n+\nCTRL +\nF10\nFocus on 'Go to Page'\n+\nCTRL +\nP\nFocus on Navigation Panel\nCTRL +\nN\nFocus on 'Annotations'\n+\nCTRL +\nA\nFocus on 'Bookmarks'\n+\nCTRL +\nB\nFocus on 'Search'\n+\nCTRL +\nF\nFocus on 'table of contents'\n+\nCTRL +\nN\nFocus on Reader Settings\nCTRL +\nS\nSearch Command\nCTRL +\nF\nFocus on Toolbar\nCTRL +\nT\nGo to Next Chapter\n+\nCTRL +\nALT +\nArrowRight\nGo to Next Chapter (Alternative)\nCTRL +\nPageDown\nGo to Next History\n+\nCTRL +\nBackspace\nGo to Next Library Page\n+\nCTRL +\nArrowRight\nGo to Next Library Page (Alternative)\n+\nCTRL +\n.\nGo to Next OPDS Page\n+\nCTRL +\nArrowRight\nGo to Next OPDS Page (Alternative)\n+\nCTRL +\n.\nGo to Next Page\nArrowRight\nGo to Next Page (Alternative)\nCTRL +\n.\nGo to Previous Chapter\n+\nCTRL +\nALT +\nArrowLeft\nGo to Previous Chapter (Alternative)\nCTRL +\nPageUp\nGo to Previous History\nCTRL +\nBackspace\nGo to Previous Library Page\n+\nCTRL +\nArrowLeft\nGo to Previous Library Page (Alternative)\n+\nCTRL +\n,\nGo to Previous OPDS Page\n+\nCTRL +\nArrowLeft\nGo to Previous OPDS Page (Alternative)\n+\nCTRL +\n,\nGo to Previous Page\nArrowLeft\nGo to Previous Page (Alternative)\nCTRL +\n,\nGo to Beginning\nCTRL +\nHome\nGo to End\nCTRL +\nEnd\nDisplay Publication Information\nCTRL +\nI\nDisplay Publication Information, Show Reading Location\n+\nCTRL +\nI\nPrint\nCTRL +\nP\nSearch Result Next\nF3\nSearch Result Next (Alternative)\nCTRL +\nG\nSearch Result Previous\n+\nF3\nSearch Result Previous (Alternative)\n+\nCTRL +\nG\nDescribe Reading Location (Speech)\n+\nCTRL +\nK\nToggle Bookmark\nCTRL +\nB\nToggle Fullscreen\nCTRL +\nF11\nToggle Zen mode\n+\nCTRL +\nF11\nToggle screen reader optimizations\n+\nCTRL +\nF12",
+  "html": "<div id=\"audit-root\" inert=\"\"><main><h1>Component fixture: library-settings</h1><button title=\"Settings\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" aria-expanded=\"true\" id=\"react-aria8118544264-:r4:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria8118544264-:r3:\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#gear-icon\"></use></svg><h3 dir=\"ltr\" aria-label=\"Application Settings\">Settings</h3></button></main></div>\n<span data-focus-scope-start=\"true\" hidden=\"\" inert=\"\"></span>\n<div class=\"modal_dialog_overlay\" data-rac=\"\" style=\"position: fixed; inset: 0px; z-index: 102; --visual-viewport-width: 320px; --visual-viewport-height: 228px; --page-width: 320px; --page-height: 227.84375px;\"><div class=\"react-aria-Modal\" data-rac=\"\" style=\"display: contents;\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><button id=\"react-aria8118544264-:r5:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button></div><section id=\"react-aria8118544264-:r3:\" class=\"modal_dialog settings_dialog\" data-rac=\"\" aria-labelledby=\":r0:\" role=\"dialog\" tabindex=\"-1\" style=\"overflow-y: hidden;\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><h1 id=\":r0:\">Settings</h1></div><template><div dir=\"ltr\" class=\"settings_tab_title\"><h2 dir=\"ltr\">Keyboard shortcuts</h2></div><div class=\"settings_content\" style=\"margin-top: 70px;\"></div><div class=\"close_button_div\"><button dir=\"ltr\" data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></div></template><div data-orientation=\"vertical\" class=\"settings_container\" data-rac=\"\" data-focused=\"true\" data-focus-visible=\"true\"><div data-orientation=\"vertical\" class=\"settings_tabslist\" data-rac=\"\" data-collection=\"react-aria8118544264-:r8:\" id=\"react-aria8118544264-:r9:\" aria-label=\"Application Settings\" role=\"tablist\" aria-orientation=\"vertical\"><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"-1\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-general\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r9:-tab-tab-general\" aria-selected=\"false\" role=\"tab\"><svg aria-hidden=\"true\" viewBox=\"0 0 19 20\"><use xlink:href=\"#cog-icon\"></use></svg><span dir=\"ltr\">General</span></div><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-keyboardShortcuts\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r9:-tab-tab-keyboardShortcuts\" aria-selected=\"true\" role=\"tab\" aria-controls=\"react-aria8118544264-:r9:-tabpanel-tab-keyboardShortcuts\" data-selected=\"true\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 14\"><use xlink:href=\"#keyreturn-icon\"></use></svg><span dir=\"ltr\">Keyboard shortcuts</span></div><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"-1\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-profiles\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r9:-tab-tab-profiles\" aria-selected=\"false\" role=\"tab\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 11\"><use xlink:href=\"#avatar-icon\"></use></svg><span dir=\"ltr\">Profiles</span></div><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"-1\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-storage\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r9:-tab-tab-storage\" aria-selected=\"false\" role=\"tab\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 11\"><use xlink:href=\"#library-icon\"></use></svg><span dir=\"ltr\">Storage</span></div><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"-1\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-advanced\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r9:-tab-tab-advanced\" aria-selected=\"false\" role=\"tab\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 14\"><use xlink:href=\"#advanced-icon\"></use></svg><span dir=\"ltr\">Advanced</span></div></div><div dir=\"ltr\" class=\"settings_tab_title\"><h2 dir=\"ltr\">Keyboard shortcuts</h2><button aria-expanded=\"false\" id=\"react-aria8118544264-:r1e:\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg class=\"button_secondary_blue advanced_trigger\" viewBox=\"0 0 24 24\"><title>Keyboard shortcuts advanced menu</title><use xlink:href=\"#menu\"></use></svg></button></div><div class=\"settings_content\" style=\"margin-top: 70px;\"><div class=\"react-aria-TabPanels\" style=\"--tab-panel-width: auto; --tab-panel-height: auto;\"><div id=\"react-aria8118544264-:r9:-tabpanel-tab-keyboardShortcuts\" aria-labelledby=\"react-aria8118544264-:r9:-tab-tab-keyboardShortcuts\" role=\"tabpanel\" class=\"react-aria-TabPanel\" data-rac=\"\"><div class=\"settings_tab\"><section><div class=\"d_flex button_outline_accessibility\"></div><div><div style=\"display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;\"><input dir=\"ltr\" type=\"text\" placeholder=\"Type to search a shortcut\" value=\"\" style=\"width: 200px; border-radius: 4px;\"><button class=\"button_secondary_blue\">Export to HTML</button></div><ul class=\"p_0\"><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Create Bookmark with Label</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Open the bookmark creation dialog and edit the textual label (note), color and tag\" id=\"react-aria8118544264-:r1h:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span title=\"Alt\">ALT + </span><span>B</span></span><button id=\"keyEditButt_AddBookmarkWithLabel\" aria-label=\"Edit (Create Bookmark with Label) SHIFT ALT + KeyB\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Create Annotation</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Open the annotation creation dialog for the selected document text, and edit the textual note, highlight color and type, and tag\" id=\"react-aria8118544264-:r1k:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span title=\"Alt\">ALT + </span><span>A</span></span><button id=\"keyEditButt_AnnotationsCreate\" aria-label=\"Edit (Create Annotation) SHIFT ALT + KeyA\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Create Quick Annotation</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Quickly create an annotation for the selected text, with the last-used highlight color and type (note and tag will be empty)\" id=\"react-aria8118544264-:r1n:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span title=\"Alt\">ALT + </span><span>Q</span></span><button id=\"keyEditButt_AnnotationsCreateQuick\" aria-label=\"Edit (Create Quick Annotation) SHIFT ALT + KeyQ\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Toggle Annotation Margin</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Alternate the annotation and bookmark visual indicators, either in the document margin or in the text\" id=\"react-aria8118544264-:r1q:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span title=\"Control\">CTRL + </span><span title=\"Alt\">ALT + </span><span>Z</span></span><button id=\"keyEditButt_AnnotationsToggleMargin\" aria-label=\"Edit (Toggle Annotation Margin) SHIFT CTRL ALT + KeyZ\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Next Audio Segment</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move forward to the next audio segment in the narration (EPUB3 Media Overlays, Text To Speech, or pre-recorded audiobook)\" id=\"react-aria8118544264-:r1t:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Control\">CTRL + </span><span>3</span></span><button id=\"keyEditButt_AudioNext\" aria-label=\"Edit (Next Audio Segment) CTRL + Digit3\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Next Audio Segment (escape)</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move forward to the next audio segment in the narration (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook). This skips any currently escapable structure\" id=\"react-aria8118544264-:r20:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span title=\"Control\">CTRL + </span><span title=\"Alt\">ALT + </span><span>3</span></span><button id=\"keyEditButt_AudioNextAlt\" aria-label=\"Edit (Next Audio Segment (escape)) SHIFT CTRL ALT + Digit3\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Play/Pause Audio</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Toggle play/pause for current narration (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook)\" id=\"react-aria8118544264-:r23:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Control\">CTRL + </span><span>2</span></span><button id=\"keyEditButt_AudioPlayPause\" aria-label=\"Edit (Play/Pause Audio) CTRL + Digit2\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Previous Audio Segment</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move back to the previous audio segment in the narration (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook)\" id=\"react-aria8118544264-:r26:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Control\">CTRL + </span><span>1</span></span><button id=\"keyEditButt_AudioPrevious\" aria-label=\"Edit (Previous Audio Segment) CTRL + Digit1\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Previous Audio Segment (escape)</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move back to the previous audio segment in the narration (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook). This skips any currently escapable structure\" id=\"react-aria8118544264-:r29:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span title=\"Control\">CTRL + </span><span title=\"Alt\">ALT + </span><span>1</span></span><button id=\"keyEditButt_AudioPreviousAlt\" aria-label=\"Edit (Previous Audio Segment (escape)) SHIFT CTRL ALT + Digit1\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Decrease audio speed</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Decrease the speed of EPUB3 Media Overlays audio playback or TTS read-aloud speech rate\" id=\"react-aria8118544264-:r2c:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Control\">CTRL + </span><span>5</span></span><button id=\"keyEditButt_AudioSpeedDecrease\" aria-label=\"Edit (Decrease audio speed) CTRL + Digit5\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Increase audio speed</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Increase the speed of EPUB3 Media Overlays audio playback or TTS read-aloud speech rate\" id=\"react-aria8118544264-:r2f:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Control\">CTRL + </span><span>6</span></span><button id=\"keyEditButt_AudioSpeedIncrease\" aria-label=\"Edit (Increase audio speed) CTRL + Digit6\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Reset audio speed</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Reset the speed of EPUB3 Media Overlays audio playback or TTS read-aloud speech rate\" id=\"react-aria8118544264-:r2i:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Control\">CTRL + </span><span>7</span></span><button id=\"keyEditButt_AudioSpeedReset\" aria-label=\"Edit (Reset audio speed) CTRL + Digit7\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Stop Audio</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Stop current audio (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook)\" id=\"react-aria8118544264-:r2l:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Control\">CTRL + </span><span>4</span></span><button id=\"keyEditButt_AudioStop\" aria-label=\"Edit (Stop Audio) CTRL + Digit4\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Close Reader</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Close the reader window and return to the library\" id=\"react-aria8118544264-:r2o:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Control\">CTRL + </span><span>W</span></span><button id=\"keyEditButt_CloseReader\" aria-label=\"Edit (Close Reader) CTRL + KeyW\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">FXL Zoom In</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Zoom into a fixed layout single page or 2-page spread.\" id=\"react-aria8118544264-:r2r:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Control\">CTRL + </span><span>9</span></span><button id=\"keyEditButt_FXLZoomIn\" aria-label=\"Edit (FXL Zoom In) CTRL + Digit9\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">FXL Zoom Out</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Zoom out of a fixed layout single page or 2-page spread.\" id=\"react-aria8118544264-:r2u:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Control\">CTRL + </span><span>8</span></span><button id=\"keyEditButt_FXLZoomOut\" aria-label=\"Edit (FXL Zoom Out) CTRL + Digit8\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Reset FXL Zoom</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Reset zoom on a fixed layout single page or 2-page spread.\" id=\"react-aria8118544264-:r31:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Control\">CTRL + </span><span>0</span></span><button id=\"keyEditButt_FXLZoomReset\" aria-label=\"Edit (Reset FXL Zoom) CTRL + Digit0\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Focus on Main Content</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the 'main' landmark in the graphical user interface. In the reader window, this moves into the publication content\" id=\"react-aria8118544264-:r34:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Control\">CTRL + </span><span>F10</span></span><button id=\"keyEditButt_FocusMain\" aria-label=\"Edit (Focus on Main Content) CTRL + F10\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Deep Focus on Main Content</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, this moves the keyboard focus into the publication content using a more reliable technique for screen readers\" id=\"react-aria8118544264-:r37:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span title=\"Control\">CTRL + </span><span>F10</span></span><button id=\"keyEditButt_FocusMainDeep\" aria-label=\"Edit (Deep Focus on Main Content) SHIFT CTRL + F10\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Focus on 'Go to Page'</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the 'goto page' section of the reader window's navigation panel\" id=\"react-aria8118544264-:r3a:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span title=\"Control\">CTRL + </span><span>P</span></span><button id=\"keyEditButt_FocusReaderGotoPage\" aria-label=\"Edit (Focus on 'Go to Page') SHIFT CTRL + KeyP\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Focus on Navigation Panel</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the reader window's navigation panel\" id=\"react-aria8118544264-:r3d:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Control\">CTRL + </span><span>N</span></span><button id=\"keyEditButt_FocusReaderNavigation\" aria-label=\"Edit (Focus on Navigation Panel) CTRL + KeyN\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Focus on 'Annotations'</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the 'annotations' section of the reader window's navigation panel\" id=\"react-aria8118544264-:r3g:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span title=\"Control\">CTRL + </span><span>A</span></span><button id=\"keyEditButt_FocusReaderNavigationAnnotations\" aria-label=\"Edit (Focus on 'Annotations') SHIFT CTRL + KeyA\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Focus on 'Bookmarks'</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the 'bookmarks' section of the reader window's navigation panel\" id=\"react-aria8118544264-:r3j:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span title=\"Control\">CTRL + </span><span>B</span></span><button id=\"keyEditButt_FocusReaderNavigationBookmarks\" aria-label=\"Edit (Focus on 'Bookmarks') SHIFT CTRL + KeyB\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Focus on 'Search'</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the 'search' section of the reader window's navigation panel\" id=\"react-aria8118544264-:r3m:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span title=\"Control\">CTRL + </span><span>F</span></span><button id=\"keyEditButt_FocusReaderNavigationSearch\" aria-label=\"Edit (Focus on 'Search') SHIFT CTRL + KeyF\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Focus on 'table of contents'</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the 'TOC' section of the reader window's navigation panel\" id=\"react-aria8118544264-:r3p:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span title=\"Control\">CTRL + </span><span>N</span></span><button id=\"keyEditButt_FocusReaderNavigationTOC\" aria-label=\"Edit (Focus on 'table of contents') SHIFT CTRL + KeyN\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Focus on Reader Settings</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the reader window's settings panel (display preferences, etc.)\" id=\"react-aria8118544264-:r3s:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Control\">CTRL + </span><span>S</span></span><button id=\"keyEditButt_FocusReaderSettings\" aria-label=\"Edit (Focus on Reader Settings) CTRL + KeyS\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Search Command</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the reader window's text search input, or in the library window this searches the bookshelf or the active OPDS feed\" id=\"react-aria8118544264-:r3v:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Control\">CTRL + </span><span>F</span></span><button id=\"keyEditButt_FocusSearch\" aria-label=\"Edit (Search Command) CTRL + KeyF\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Focus on Toolbar</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the landmark area of the graphical user interface immediately before the 'skip link' (which itself moves the focus to the main content area of the library or reader window)\" id=\"react-aria8118544264-:r42:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Control\">CTRL + </span><span>T</span></span><button id=\"keyEditButt_FocusToolbar\" aria-label=\"Edit (Focus on Toolbar) CTRL + KeyT\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Go to Next Chapter</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, navigate to the next document in the reading order of the publication (e.g. chapter in the book spine). Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r45:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span title=\"Control\">CTRL + </span><span title=\"Alt\">ALT + </span><span>ArrowRight</span></span><button id=\"keyEditButt_NavigateNextChapter\" aria-label=\"Edit (Go to Next Chapter) SHIFT CTRL ALT + ArrowRight\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Go to Next Chapter (Alternative)</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, navigate to the next document in the reading order of the publication (e.g. chapter in the book spine). This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r48:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Control\">CTRL + </span><span>PageDown</span></span><button id=\"keyEditButt_NavigateNextChapterAlt\" aria-label=\"Edit (Go to Next Chapter (Alternative)) CTRL + PageDown\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Go to Next History</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, jump one step forward in the navigation history\" id=\"react-aria8118544264-:r4b:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span title=\"Control\">CTRL + </span><span>Backspace</span></span><button id=\"keyEditButt_NavigateNextHistory\" aria-label=\"Edit (Go to Next History) SHIFT CTRL + Backspace\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Go to Next Library Page</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the library window, show the next page of a paginated list of publications. Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r4e:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span title=\"Control\">CTRL + </span><span>ArrowRight</span></span><button id=\"keyEditButt_NavigateNextLibraryPage\" aria-label=\"Edit (Go to Next Library Page) SHIFT CTRL + ArrowRight\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Go to Next Library Page (Alternative)</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the library window, show the next page of a paginated list of publications. This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r4h:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span title=\"Control\">CTRL + </span><span>.</span></span><button id=\"keyEditButt_NavigateNextLibraryPageAlt\" aria-label=\"Edit (Go to Next Library Page (Alternative)) SHIFT CTRL + Period\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Go to Next OPDS Page</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the library window for catalogs / OPDS feeds, follow the next pagination link. Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r4k:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span title=\"Control\">CTRL + </span><span>ArrowRight</span></span><button id=\"keyEditButt_NavigateNextOPDSPage\" aria-label=\"Edit (Go to Next OPDS Page) SHIFT CTRL + ArrowRight\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Go to Next OPDS Page (Alternative)</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the library window for catalogs / OPDS feeds, follow the next pagination link. This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r4n:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span title=\"Control\">CTRL + </span><span>.</span></span><button id=\"keyEditButt_NavigateNextOPDSPageAlt\" aria-label=\"Edit (Go to Next OPDS Page (Alternative)) SHIFT CTRL + Period\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Go to Next Page</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, turn to the next 'page' in the publication. Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r4q:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span>ArrowRight</span></span><button id=\"keyEditButt_NavigateNextPage\" aria-label=\"Edit (Go to Next Page) ArrowRight\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Go to Next Page (Alternative)</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, turn to the next 'page' in the publication. This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r4t:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Control\">CTRL + </span><span>.</span></span><button id=\"keyEditButt_NavigateNextPageAlt\" aria-label=\"Edit (Go to Next Page (Alternative)) CTRL + Period\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Go to Previous Chapter</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, navigate to the previous document in the reading order of the publication (e.g. chapter in the book spine). Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r50:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span title=\"Control\">CTRL + </span><span title=\"Alt\">ALT + </span><span>ArrowLeft</span></span><button id=\"keyEditButt_NavigatePreviousChapter\" aria-label=\"Edit (Go to Previous Chapter) SHIFT CTRL ALT + ArrowLeft\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Go to Previous Chapter (Alternative)</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, navigate to the previous document in the reading order of the publication (e.g. chapter in the book spine). This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r53:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Control\">CTRL + </span><span>PageUp</span></span><button id=\"keyEditButt_NavigatePreviousChapterAlt\" aria-label=\"Edit (Go to Previous Chapter (Alternative)) CTRL + PageUp\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Go to Previous History</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, jump one step backwards in the navigation history\" id=\"react-aria8118544264-:r56:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Control\">CTRL + </span><span>Backspace</span></span><button id=\"keyEditButt_NavigatePreviousHistory\" aria-label=\"Edit (Go to Previous History) CTRL + Backspace\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Go to Previous Library Page</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the library window, show the previous page of a paginated list of publications. Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r59:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span title=\"Control\">CTRL + </span><span>ArrowLeft</span></span><button id=\"keyEditButt_NavigatePreviousLibraryPage\" aria-label=\"Edit (Go to Previous Library Page) SHIFT CTRL + ArrowLeft\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Go to Previous Library Page (Alternative)</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the library window, show the previous page of a paginated list of publications. This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r5c:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span title=\"Control\">CTRL + </span><span>,</span></span><button id=\"keyEditButt_NavigatePreviousLibraryPageAlt\" aria-label=\"Edit (Go to Previous Library Page (Alternative)) SHIFT CTRL + Comma\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Go to Previous OPDS Page</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the library window for catalogs / OPDS feeds, follow the previous pagination link. Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r5f:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span title=\"Control\">CTRL + </span><span>ArrowLeft</span></span><button id=\"keyEditButt_NavigatePreviousOPDSPage\" aria-label=\"Edit (Go to Previous OPDS Page) SHIFT CTRL + ArrowLeft\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Go to Previous OPDS Page (Alternative)</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the library window for catalogs / OPDS feeds, follow the previous pagination link. This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r5i:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span title=\"Control\">CTRL + </span><span>,</span></span><button id=\"keyEditButt_NavigatePreviousOPDSPageAlt\" aria-label=\"Edit (Go to Previous OPDS Page (Alternative)) SHIFT CTRL + Comma\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Go to Previous Page</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, turn to the previous 'page' in the publication. Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r5l:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span>ArrowLeft</span></span><button id=\"keyEditButt_NavigatePreviousPage\" aria-label=\"Edit (Go to Previous Page) ArrowLeft\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Go to Previous Page (Alternative)</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, turn to the previous 'page' in the publication. This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r5o:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Control\">CTRL + </span><span>,</span></span><button id=\"keyEditButt_NavigatePreviousPageAlt\" aria-label=\"Edit (Go to Previous Page (Alternative)) CTRL + Comma\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Go to Beginning</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, go to the beginning of the publication\" id=\"react-aria8118544264-:r5r:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Control\">CTRL + </span><span>Home</span></span><button id=\"keyEditButt_NavigateToBegin\" aria-label=\"Edit (Go to Beginning) CTRL + Home\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Go to End</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, go to the end of the publication\" id=\"react-aria8118544264-:r5u:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Control\">CTRL + </span><span>End</span></span><button id=\"keyEditButt_NavigateToEnd\" aria-label=\"Edit (Go to End) CTRL + End\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Display Publication Information</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, open the information dialog for the publication\" id=\"react-aria8118544264-:r61:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Control\">CTRL + </span><span>I</span></span><button id=\"keyEditButt_OpenReaderInfo\" aria-label=\"Edit (Display Publication Information) CTRL + KeyI\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Display Publication Information, Show Reading Location</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, open the popup dialog that display information about the publication, and focus the keyboard on the section that shows the context of the current reading location\" id=\"react-aria8118544264-:r64:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span title=\"Control\">CTRL + </span><span>I</span></span><button id=\"keyEditButt_OpenReaderInfoWhereAmI\" aria-label=\"Edit (Display Publication Information, Show Reading Location) SHIFT CTRL + KeyI\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Print</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, open the print dialog\" id=\"react-aria8118544264-:r67:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Control\">CTRL + </span><span>P</span></span><button id=\"keyEditButt_Print\" aria-label=\"Edit (Print) CTRL + KeyP\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Search Result Next</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window's search tool, go to the next search result. Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r6a:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span>F3</span></span><button id=\"keyEditButt_SearchNext\" aria-label=\"Edit (Search Result Next) F3\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Search Result Next (Alternative)</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window's search tool, go to the next search result. This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r6d:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Control\">CTRL + </span><span>G</span></span><button id=\"keyEditButt_SearchNextAlt\" aria-label=\"Edit (Search Result Next (Alternative)) CTRL + KeyG\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Search Result Previous</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window's search tool, go to the previous search result. Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r6g:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span>F3</span></span><button id=\"keyEditButt_SearchPrevious\" aria-label=\"Edit (Search Result Previous) SHIFT + F3\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Search Result Previous (Alternative)</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window's search tool, go to the previous search result. This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r6j:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span title=\"Control\">CTRL + </span><span>G</span></span><button id=\"keyEditButt_SearchPreviousAlt\" aria-label=\"Edit (Search Result Previous (Alternative)) SHIFT CTRL + KeyG\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Describe Reading Location (Speech)</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, describe the context of the current reading location, using speech text compatible with screen readers\" id=\"react-aria8118544264-:r6m:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span title=\"Control\">CTRL + </span><span>K</span></span><button id=\"keyEditButt_SpeakReaderInfoWhereAmI\" aria-label=\"Edit (Describe Reading Location (Speech)) SHIFT CTRL + KeyK\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Toggle Bookmark</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Add a new bookmark or remove an existing one if it is currently selected\" id=\"react-aria8118544264-:r6p:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Control\">CTRL + </span><span>B</span></span><button id=\"keyEditButt_ToggleBookmark\" aria-label=\"Edit (Toggle Bookmark) CTRL + KeyB\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Toggle Fullscreen</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, activate system fullscreen or restore normal window mode. Note that this is different from 'zen mode' which simplifies the user interface\" id=\"react-aria8118544264-:r6s:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Control\">CTRL + </span><span>F11</span></span><button id=\"keyEditButt_ToggleReaderFullscreen\" aria-label=\"Edit (Toggle Fullscreen) CTRL + F11\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Toggle Zen mode</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, activate or exit zen mode, which simplifies the user interface while reading\" id=\"react-aria8118544264-:r6v:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span title=\"Control\">CTRL + </span><span>F11</span></span><button id=\"keyEditButt_ToggleReaderZenMode\" aria-label=\"Edit (Toggle Zen mode) SHIFT CTRL + F11\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li><li class=\"keyshortElement_container\"><div style=\"display: flex;\"><h3 class=\"keyshortElement_title\">Toggle screen reader optimizations</h3><button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the library window, toggle optimized support for screen readers\" id=\"react-aria8118544264-:r72:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button></div><div class=\"keyshortElement_shortcut_container\"><div class=\"keyshortElement_shortcut\"><span aria-hidden=\"true\"><span title=\"Shift\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 15\"><use xlink:href=\"#shift-icon\"></use></svg> + </span><span title=\"Control\">CTRL + </span><span>F12</span></span><button id=\"keyEditButt_ToggleScreenReaderOptimize\" aria-label=\"Edit (Toggle screen reader optimizations) SHIFT CTRL + F12\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></li></ul></div></section></div></div></div></div><div class=\"close_button_div\"><button dir=\"ltr\" data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></div></div></section></div></div>\n<span data-focus-scope-end=\"true\" hidden=\"\" inert=\"\"></span>",
+  "dimensions": {
+    "width": 320,
+    "height": 228,
+    "scrollWidth": 320
+  },
+  "focus": "<div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-keyboardShortcuts\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r9:-tab-tab-keyboardShortcuts\" aria-selected=\"true\" role=\"tab\" aria-controls=\"react-aria8118544264-:r9:-tabpanel-tab-keyboardShortcuts\" data-selected=\"true\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 14\"><use xlink:href=\"#keyreturn-icon\"></use></svg><span dir=\"ltr\">Keyboard shortcuts</span></div>",
+  "controls": [
+    {
+      "html": "<button title=\"Settings\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" aria-expanded=\"true\" id=\"react-aria8118544264-:r4:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria8118544264-:r3:\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#gear-icon\"></use></svg><h3 dir=\"ltr\" aria-label=\"Application Settings\">Settings</h3></button>",
+      "rect": {
+        "x": 0,
+        "y": 88.15625,
+        "width": 68.125,
+        "height": 30,
+        "top": 88.15625,
+        "right": 68.125,
+        "bottom": 118.15625,
+        "left": 0
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"react-aria8118544264-:r5:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button>",
+      "rect": {
+        "x": 159.5,
+        "y": 113.5,
+        "width": 1,
+        "height": 1,
+        "top": 113.5,
+        "right": 160.5,
+        "bottom": 114.5,
+        "left": 159.5
+      },
+      "visible": true
+    },
+    {
+      "html": "<button aria-expanded=\"false\" id=\"react-aria8118544264-:r1e:\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg class=\"button_secondary_blue advanced_trigger\" viewBox=\"0 0 24 24\"><title>Keyboard shortcuts advanced menu</title><use xlink:href=\"#menu\"></use></svg></button>",
+      "rect": {
+        "x": 227.9375,
+        "y": -19,
+        "width": 28,
+        "height": 30,
+        "top": -19,
+        "right": 255.9375,
+        "bottom": 11,
+        "left": 227.9375
+      },
+      "visible": true
+    },
+    {
+      "html": "<input dir=\"ltr\" type=\"text\" placeholder=\"Type to search a shortcut\" value=\"\" style=\"width: 200px; border-radius: 4px;\">",
+      "rect": {
+        "x": 29,
+        "y": 36.59375,
+        "width": 200,
+        "height": 35,
+        "top": 36.59375,
+        "right": 229,
+        "bottom": 71.59375,
+        "left": 29
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"button_secondary_blue\">Export to HTML</button>",
+      "rect": {
+        "x": 29,
+        "y": 81.59375,
+        "width": 110.03125,
+        "height": 30,
+        "top": 81.59375,
+        "right": 139.03125,
+        "bottom": 111.59375,
+        "left": 29
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Open the bookmark creation dialog and edit the textual label (note), color and tag\" id=\"react-aria8118544264-:r1h:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 230.28125,
+        "y": 123.59375,
+        "width": 15,
+        "height": 15,
+        "top": 123.59375,
+        "right": 245.28125,
+        "bottom": 138.59375,
+        "left": 230.28125
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_AddBookmarkWithLabel\" aria-label=\"Edit (Create Bookmark with Label) SHIFT ALT + KeyB\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 128.6875,
+        "y": 152.59375,
+        "width": 20,
+        "height": 20,
+        "top": 152.59375,
+        "right": 148.6875,
+        "bottom": 172.59375,
+        "left": 128.6875
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Open the annotation creation dialog for the selected document text, and edit the textual note, highlight color and type, and tag\" id=\"react-aria8118544264-:r1k:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 162.828125,
+        "y": 196.59375,
+        "width": 15,
+        "height": 15,
+        "top": 196.59375,
+        "right": 177.828125,
+        "bottom": 211.59375,
+        "left": 162.828125
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_AnnotationsCreate\" aria-label=\"Edit (Create Annotation) SHIFT ALT + KeyA\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 128.6875,
+        "y": 225.59375,
+        "width": 20,
+        "height": 20,
+        "top": 225.59375,
+        "right": 148.6875,
+        "bottom": 245.59375,
+        "left": 128.6875
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Quickly create an annotation for the selected text, with the last-used highlight color and type (note and tag will be empty)\" id=\"react-aria8118544264-:r1n:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 205.625,
+        "y": 269.59375,
+        "width": 15,
+        "height": 15,
+        "top": 269.59375,
+        "right": 220.625,
+        "bottom": 284.59375,
+        "left": 205.625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_AnnotationsCreateQuick\" aria-label=\"Edit (Create Quick Annotation) SHIFT ALT + KeyQ\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 130.46875,
+        "y": 298.59375,
+        "width": 20,
+        "height": 20,
+        "top": 298.59375,
+        "right": 150.46875,
+        "bottom": 318.59375,
+        "left": 130.46875
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Alternate the annotation and bookmark visual indicators, either in the document margin or in the text\" id=\"react-aria8118544264-:r1q:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 213.875,
+        "y": 342.59375,
+        "width": 15,
+        "height": 15,
+        "top": 342.59375,
+        "right": 228.875,
+        "bottom": 357.59375,
+        "left": 213.875
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_AnnotationsToggleMargin\" aria-label=\"Edit (Toggle Annotation Margin) SHIFT CTRL ALT + KeyZ\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 187.78125,
+        "y": 371.59375,
+        "width": 20,
+        "height": 20,
+        "top": 371.59375,
+        "right": 207.78125,
+        "bottom": 391.59375,
+        "left": 187.78125
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move forward to the next audio segment in the narration (EPUB3 Media Overlays, Text To Speech, or pre-recorded audiobook)\" id=\"react-aria8118544264-:r1t:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 178.390625,
+        "y": 415.59375,
+        "width": 15,
+        "height": 15,
+        "top": 415.59375,
+        "right": 193.390625,
+        "bottom": 430.59375,
+        "left": 178.390625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_AudioNext\" aria-label=\"Edit (Next Audio Segment) CTRL + Digit3\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 105.890625,
+        "y": 444.59375,
+        "width": 20,
+        "height": 20,
+        "top": 444.59375,
+        "right": 125.890625,
+        "bottom": 464.59375,
+        "left": 105.890625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move forward to the next audio segment in the narration (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook). This skips any currently escapable structure\" id=\"react-aria8118544264-:r20:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 239.09375,
+        "y": 488.59375,
+        "width": 15,
+        "height": 15,
+        "top": 488.59375,
+        "right": 254.09375,
+        "bottom": 503.59375,
+        "left": 239.09375
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_AudioNextAlt\" aria-label=\"Edit (Next Audio Segment (escape)) SHIFT CTRL ALT + Digit3\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 186.90625,
+        "y": 517.59375,
+        "width": 20,
+        "height": 20,
+        "top": 517.59375,
+        "right": 206.90625,
+        "bottom": 537.59375,
+        "left": 186.90625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Toggle play/pause for current narration (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook)\" id=\"react-aria8118544264-:r23:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 158.96875,
+        "y": 561.59375,
+        "width": 15,
+        "height": 15,
+        "top": 561.59375,
+        "right": 173.96875,
+        "bottom": 576.59375,
+        "left": 158.96875
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_AudioPlayPause\" aria-label=\"Edit (Play/Pause Audio) CTRL + Digit2\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 105.890625,
+        "y": 590.59375,
+        "width": 20,
+        "height": 20,
+        "top": 590.59375,
+        "right": 125.890625,
+        "bottom": 610.59375,
+        "left": 105.890625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move back to the previous audio segment in the narration (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook)\" id=\"react-aria8118544264-:r26:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 207.1875,
+        "y": 634.59375,
+        "width": 15,
+        "height": 15,
+        "top": 634.59375,
+        "right": 222.1875,
+        "bottom": 649.59375,
+        "left": 207.1875
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_AudioPrevious\" aria-label=\"Edit (Previous Audio Segment) CTRL + Digit1\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 105.890625,
+        "y": 663.59375,
+        "width": 20,
+        "height": 20,
+        "top": 663.59375,
+        "right": 125.890625,
+        "bottom": 683.59375,
+        "left": 105.890625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move back to the previous audio segment in the narration (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook). This skips any currently escapable structure\" id=\"react-aria8118544264-:r29:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 32,
+        "y": 733.59375,
+        "width": 15,
+        "height": 15,
+        "top": 733.59375,
+        "right": 47,
+        "bottom": 748.59375,
+        "left": 32
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_AudioPreviousAlt\" aria-label=\"Edit (Previous Audio Segment (escape)) SHIFT CTRL ALT + Digit1\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 186.90625,
+        "y": 751.59375,
+        "width": 20,
+        "height": 20,
+        "top": 751.59375,
+        "right": 206.90625,
+        "bottom": 771.59375,
+        "left": 186.90625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Decrease the speed of EPUB3 Media Overlays audio playback or TTS read-aloud speech rate\" id=\"react-aria8118544264-:r2c:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 189.859375,
+        "y": 795.59375,
+        "width": 15,
+        "height": 15,
+        "top": 795.59375,
+        "right": 204.859375,
+        "bottom": 810.59375,
+        "left": 189.859375
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_AudioSpeedDecrease\" aria-label=\"Edit (Decrease audio speed) CTRL + Digit5\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 105.890625,
+        "y": 824.59375,
+        "width": 20,
+        "height": 20,
+        "top": 824.59375,
+        "right": 125.890625,
+        "bottom": 844.59375,
+        "left": 105.890625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Increase the speed of EPUB3 Media Overlays audio playback or TTS read-aloud speech rate\" id=\"react-aria8118544264-:r2f:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 184.40625,
+        "y": 868.59375,
+        "width": 15,
+        "height": 15,
+        "top": 868.59375,
+        "right": 199.40625,
+        "bottom": 883.59375,
+        "left": 184.40625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_AudioSpeedIncrease\" aria-label=\"Edit (Increase audio speed) CTRL + Digit6\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 105.890625,
+        "y": 897.59375,
+        "width": 20,
+        "height": 20,
+        "top": 897.59375,
+        "right": 125.890625,
+        "bottom": 917.59375,
+        "left": 105.890625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Reset the speed of EPUB3 Media Overlays audio playback or TTS read-aloud speech rate\" id=\"react-aria8118544264-:r2i:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 165.703125,
+        "y": 941.59375,
+        "width": 15,
+        "height": 15,
+        "top": 941.59375,
+        "right": 180.703125,
+        "bottom": 956.59375,
+        "left": 165.703125
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_AudioSpeedReset\" aria-label=\"Edit (Reset audio speed) CTRL + Digit7\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 105.890625,
+        "y": 970.59375,
+        "width": 20,
+        "height": 20,
+        "top": 970.59375,
+        "right": 125.890625,
+        "bottom": 990.59375,
+        "left": 105.890625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Stop current audio (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook)\" id=\"react-aria8118544264-:r2l:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 116.140625,
+        "y": 1014.59375,
+        "width": 15,
+        "height": 15,
+        "top": 1014.59375,
+        "right": 131.140625,
+        "bottom": 1029.59375,
+        "left": 116.140625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_AudioStop\" aria-label=\"Edit (Stop Audio) CTRL + Digit4\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 105.890625,
+        "y": 1043.59375,
+        "width": 20,
+        "height": 20,
+        "top": 1043.59375,
+        "right": 125.890625,
+        "bottom": 1063.59375,
+        "left": 105.890625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Close the reader window and return to the library\" id=\"react-aria8118544264-:r2o:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 131.484375,
+        "y": 1087.59375,
+        "width": 15,
+        "height": 15,
+        "top": 1087.59375,
+        "right": 146.484375,
+        "bottom": 1102.59375,
+        "left": 131.484375
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_CloseReader\" aria-label=\"Edit (Close Reader) CTRL + KeyW\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 112.09375,
+        "y": 1116.59375,
+        "width": 20,
+        "height": 20,
+        "top": 1116.59375,
+        "right": 132.09375,
+        "bottom": 1136.59375,
+        "left": 112.09375
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Zoom into a fixed layout single page or 2-page spread.\" id=\"react-aria8118544264-:r2r:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 126.515625,
+        "y": 1160.59375,
+        "width": 15,
+        "height": 15,
+        "top": 1160.59375,
+        "right": 141.515625,
+        "bottom": 1175.59375,
+        "left": 126.515625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_FXLZoomIn\" aria-label=\"Edit (FXL Zoom In) CTRL + Digit9\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 105.890625,
+        "y": 1189.59375,
+        "width": 20,
+        "height": 20,
+        "top": 1189.59375,
+        "right": 125.890625,
+        "bottom": 1209.59375,
+        "left": 105.890625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Zoom out of a fixed layout single page or 2-page spread.\" id=\"react-aria8118544264-:r2u:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 138.1875,
+        "y": 1233.59375,
+        "width": 15,
+        "height": 15,
+        "top": 1233.59375,
+        "right": 153.1875,
+        "bottom": 1248.59375,
+        "left": 138.1875
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_FXLZoomOut\" aria-label=\"Edit (FXL Zoom Out) CTRL + Digit8\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 105.890625,
+        "y": 1262.59375,
+        "width": 20,
+        "height": 20,
+        "top": 1262.59375,
+        "right": 125.890625,
+        "bottom": 1282.59375,
+        "left": 105.890625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Reset zoom on a fixed layout single page or 2-page spread.\" id=\"react-aria8118544264-:r31:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 152.203125,
+        "y": 1306.59375,
+        "width": 15,
+        "height": 15,
+        "top": 1306.59375,
+        "right": 167.203125,
+        "bottom": 1321.59375,
+        "left": 152.203125
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_FXLZoomReset\" aria-label=\"Edit (Reset FXL Zoom) CTRL + Digit0\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 105.890625,
+        "y": 1335.59375,
+        "width": 20,
+        "height": 20,
+        "top": 1335.59375,
+        "right": 125.890625,
+        "bottom": 1355.59375,
+        "left": 105.890625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the 'main' landmark in the graphical user interface. In the reader window, this moves into the publication content\" id=\"react-aria8118544264-:r34:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 196.765625,
+        "y": 1379.59375,
+        "width": 15,
+        "height": 15,
+        "top": 1379.59375,
+        "right": 211.765625,
+        "bottom": 1394.59375,
+        "left": 196.765625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_FocusMain\" aria-label=\"Edit (Focus on Main Content) CTRL + F10\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 124.5625,
+        "y": 1408.59375,
+        "width": 20,
+        "height": 20,
+        "top": 1408.59375,
+        "right": 144.5625,
+        "bottom": 1428.59375,
+        "left": 124.5625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, this moves the keyboard focus into the publication content using a more reliable technique for screen readers\" id=\"react-aria8118544264-:r37:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 234.890625,
+        "y": 1452.59375,
+        "width": 15,
+        "height": 15,
+        "top": 1452.59375,
+        "right": 249.890625,
+        "bottom": 1467.59375,
+        "left": 234.890625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_FocusMainDeep\" aria-label=\"Edit (Deep Focus on Main Content) SHIFT CTRL + F10\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 158.90625,
+        "y": 1481.59375,
+        "width": 20,
+        "height": 20,
+        "top": 1481.59375,
+        "right": 178.90625,
+        "bottom": 1501.59375,
+        "left": 158.90625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the 'goto page' section of the reader window's navigation panel\" id=\"react-aria8118544264-:r3a:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 188.671875,
+        "y": 1525.59375,
+        "width": 15,
+        "height": 15,
+        "top": 1525.59375,
+        "right": 203.671875,
+        "bottom": 1540.59375,
+        "left": 188.671875
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_FocusReaderGotoPage\" aria-label=\"Edit (Focus on 'Go to Page') SHIFT CTRL + KeyP\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 142,
+        "y": 1554.59375,
+        "width": 20,
+        "height": 20,
+        "top": 1554.59375,
+        "right": 162,
+        "bottom": 1574.59375,
+        "left": 142
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the reader window's navigation panel\" id=\"react-aria8118544264-:r3d:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 220.921875,
+        "y": 1598.59375,
+        "width": 15,
+        "height": 15,
+        "top": 1598.59375,
+        "right": 235.921875,
+        "bottom": 1613.59375,
+        "left": 220.921875
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_FocusReaderNavigation\" aria-label=\"Edit (Focus on Navigation Panel) CTRL + KeyN\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 108.546875,
+        "y": 1627.59375,
+        "width": 20,
+        "height": 20,
+        "top": 1627.59375,
+        "right": 128.546875,
+        "bottom": 1647.59375,
+        "left": 108.546875
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the 'annotations' section of the reader window's navigation panel\" id=\"react-aria8118544264-:r3g:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 196.4375,
+        "y": 1671.59375,
+        "width": 15,
+        "height": 15,
+        "top": 1671.59375,
+        "right": 211.4375,
+        "bottom": 1686.59375,
+        "left": 196.4375
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_FocusReaderNavigationAnnotations\" aria-label=\"Edit (Focus on 'Annotations') SHIFT CTRL + KeyA\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 142,
+        "y": 1700.59375,
+        "width": 20,
+        "height": 20,
+        "top": 1700.59375,
+        "right": 162,
+        "bottom": 1720.59375,
+        "left": 142
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the 'bookmarks' section of the reader window's navigation panel\" id=\"react-aria8118544264-:r3j:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 191.03125,
+        "y": 1744.59375,
+        "width": 15,
+        "height": 15,
+        "top": 1744.59375,
+        "right": 206.03125,
+        "bottom": 1759.59375,
+        "left": 191.03125
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_FocusReaderNavigationBookmarks\" aria-label=\"Edit (Focus on 'Bookmarks') SHIFT CTRL + KeyB\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 142,
+        "y": 1773.59375,
+        "width": 20,
+        "height": 20,
+        "top": 1773.59375,
+        "right": 162,
+        "bottom": 1793.59375,
+        "left": 142
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the 'search' section of the reader window's navigation panel\" id=\"react-aria8118544264-:r3m:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 161.46875,
+        "y": 1817.59375,
+        "width": 15,
+        "height": 15,
+        "top": 1817.59375,
+        "right": 176.46875,
+        "bottom": 1832.59375,
+        "left": 161.46875
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_FocusReaderNavigationSearch\" aria-label=\"Edit (Focus on 'Search') SHIFT CTRL + KeyF\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 141.109375,
+        "y": 1846.59375,
+        "width": 20,
+        "height": 20,
+        "top": 1846.59375,
+        "right": 161.109375,
+        "bottom": 1866.59375,
+        "left": 141.109375
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the 'TOC' section of the reader window's navigation panel\" id=\"react-aria8118544264-:r3p:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 226.78125,
+        "y": 1890.59375,
+        "width": 15,
+        "height": 15,
+        "top": 1890.59375,
+        "right": 241.78125,
+        "bottom": 1905.59375,
+        "left": 226.78125
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_FocusReaderNavigationTOC\" aria-label=\"Edit (Focus on 'table of contents') SHIFT CTRL + KeyN\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 142.890625,
+        "y": 1919.59375,
+        "width": 20,
+        "height": 20,
+        "top": 1919.59375,
+        "right": 162.890625,
+        "bottom": 1939.59375,
+        "left": 142.890625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the reader window's settings panel (display preferences, etc.)\" id=\"react-aria8118544264-:r3s:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 214.703125,
+        "y": 1963.59375,
+        "width": 15,
+        "height": 15,
+        "top": 1963.59375,
+        "right": 229.703125,
+        "bottom": 1978.59375,
+        "left": 214.703125
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_FocusReaderSettings\" aria-label=\"Edit (Focus on Reader Settings) CTRL + KeyS\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 107.65625,
+        "y": 1992.59375,
+        "width": 20,
+        "height": 20,
+        "top": 1992.59375,
+        "right": 127.65625,
+        "bottom": 2012.59375,
+        "left": 107.65625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the reader window's text search input, or in the library window this searches the bookshelf or the active OPDS feed\" id=\"react-aria8118544264-:r3v:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 161.046875,
+        "y": 2036.59375,
+        "width": 15,
+        "height": 15,
+        "top": 2036.59375,
+        "right": 176.046875,
+        "bottom": 2051.59375,
+        "left": 161.046875
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_FocusSearch\" aria-label=\"Edit (Search Command) CTRL + KeyF\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 106.765625,
+        "y": 2065.59375,
+        "width": 20,
+        "height": 20,
+        "top": 2065.59375,
+        "right": 126.765625,
+        "bottom": 2085.59375,
+        "left": 106.765625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the landmark area of the graphical user interface immediately before the 'skip link' (which itself moves the focus to the main content area of the library or reader window)\" id=\"react-aria8118544264-:r42:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 158.40625,
+        "y": 2109.59375,
+        "width": 15,
+        "height": 15,
+        "top": 2109.59375,
+        "right": 173.40625,
+        "bottom": 2124.59375,
+        "left": 158.40625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_FocusToolbar\" aria-label=\"Edit (Focus on Toolbar) CTRL + KeyT\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 106.765625,
+        "y": 2138.59375,
+        "width": 20,
+        "height": 20,
+        "top": 2138.59375,
+        "right": 126.765625,
+        "bottom": 2158.59375,
+        "left": 106.765625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, navigate to the next document in the reading order of the publication (e.g. chapter in the book spine). Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r45:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 169.578125,
+        "y": 2182.59375,
+        "width": 15,
+        "height": 15,
+        "top": 2182.59375,
+        "right": 184.578125,
+        "bottom": 2197.59375,
+        "left": 169.578125
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigateNextChapter\" aria-label=\"Edit (Go to Next Chapter) SHIFT CTRL ALT + ArrowRight\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 32,
+        "y": 2234.59375,
+        "width": 20,
+        "height": 20,
+        "top": 2234.59375,
+        "right": 52,
+        "bottom": 2254.59375,
+        "left": 32
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, navigate to the next document in the reading order of the publication (e.g. chapter in the book spine). This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r48:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 255.140625,
+        "y": 2278.59375,
+        "width": 15,
+        "height": 15,
+        "top": 2278.59375,
+        "right": 270.140625,
+        "bottom": 2293.59375,
+        "left": 255.140625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigateNextChapterAlt\" aria-label=\"Edit (Go to Next Chapter (Alternative)) CTRL + PageDown\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 175.265625,
+        "y": 2307.59375,
+        "width": 20,
+        "height": 20,
+        "top": 2307.59375,
+        "right": 195.265625,
+        "bottom": 2327.59375,
+        "left": 175.265625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, jump one step forward in the navigation history\" id=\"react-aria8118544264-:r4b:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 164.90625,
+        "y": 2351.59375,
+        "width": 15,
+        "height": 15,
+        "top": 2351.59375,
+        "right": 179.90625,
+        "bottom": 2366.59375,
+        "left": 164.90625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigateNextHistory\" aria-label=\"Edit (Go to Next History) SHIFT CTRL + Backspace\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 209.59375,
+        "y": 2380.59375,
+        "width": 20,
+        "height": 20,
+        "top": 2380.59375,
+        "right": 229.59375,
+        "bottom": 2400.59375,
+        "left": 209.59375
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the library window, show the next page of a paginated list of publications. Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r4e:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 201.484375,
+        "y": 2424.59375,
+        "width": 15,
+        "height": 15,
+        "top": 2424.59375,
+        "right": 216.484375,
+        "bottom": 2439.59375,
+        "left": 201.484375
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigateNextLibraryPage\" aria-label=\"Edit (Go to Next Library Page) SHIFT CTRL + ArrowRight\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 210.46875,
+        "y": 2453.59375,
+        "width": 20,
+        "height": 20,
+        "top": 2453.59375,
+        "right": 230.46875,
+        "bottom": 2473.59375,
+        "left": 210.46875
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the library window, show the next page of a paginated list of publications. This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r4h:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 32,
+        "y": 2539.59375,
+        "width": 15,
+        "height": 15,
+        "top": 2539.59375,
+        "right": 47,
+        "bottom": 2554.59375,
+        "left": 32
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigateNextLibraryPageAlt\" aria-label=\"Edit (Go to Next Library Page (Alternative)) SHIFT CTRL + Period\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 135.78125,
+        "y": 2557.59375,
+        "width": 20,
+        "height": 20,
+        "top": 2557.59375,
+        "right": 155.78125,
+        "bottom": 2577.59375,
+        "left": 135.78125
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the library window for catalogs / OPDS feeds, follow the next pagination link. Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r4k:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 193.703125,
+        "y": 2601.59375,
+        "width": 15,
+        "height": 15,
+        "top": 2601.59375,
+        "right": 208.703125,
+        "bottom": 2616.59375,
+        "left": 193.703125
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigateNextOPDSPage\" aria-label=\"Edit (Go to Next OPDS Page) SHIFT CTRL + ArrowRight\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 210.46875,
+        "y": 2630.59375,
+        "width": 20,
+        "height": 20,
+        "top": 2630.59375,
+        "right": 230.46875,
+        "bottom": 2650.59375,
+        "left": 210.46875
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the library window for catalogs / OPDS feeds, follow the next pagination link. This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r4n:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 32,
+        "y": 2716.59375,
+        "width": 15,
+        "height": 15,
+        "top": 2716.59375,
+        "right": 47,
+        "bottom": 2731.59375,
+        "left": 32
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigateNextOPDSPageAlt\" aria-label=\"Edit (Go to Next OPDS Page (Alternative)) SHIFT CTRL + Period\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 135.78125,
+        "y": 2734.59375,
+        "width": 20,
+        "height": 20,
+        "top": 2734.59375,
+        "right": 155.78125,
+        "bottom": 2754.59375,
+        "left": 135.78125
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, turn to the next 'page' in the publication. Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r4q:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 150.140625,
+        "y": 2778.59375,
+        "width": 15,
+        "height": 15,
+        "top": 2778.59375,
+        "right": 165.140625,
+        "bottom": 2793.59375,
+        "left": 150.140625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigateNextPage\" aria-label=\"Edit (Go to Next Page) ArrowRight\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 116.140625,
+        "y": 2807.59375,
+        "width": 20,
+        "height": 20,
+        "top": 2807.59375,
+        "right": 136.140625,
+        "bottom": 2827.59375,
+        "left": 116.140625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, turn to the next 'page' in the publication. This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r4t:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 235.703125,
+        "y": 2851.59375,
+        "width": 15,
+        "height": 15,
+        "top": 2851.59375,
+        "right": 250.703125,
+        "bottom": 2866.59375,
+        "left": 235.703125
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigateNextPageAlt\" aria-label=\"Edit (Go to Next Page (Alternative)) CTRL + Period\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 101.4375,
+        "y": 2880.59375,
+        "width": 20,
+        "height": 20,
+        "top": 2880.59375,
+        "right": 121.4375,
+        "bottom": 2900.59375,
+        "left": 101.4375
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, navigate to the previous document in the reading order of the publication (e.g. chapter in the book spine). Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r50:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 198.359375,
+        "y": 2924.59375,
+        "width": 15,
+        "height": 15,
+        "top": 2924.59375,
+        "right": 213.359375,
+        "bottom": 2939.59375,
+        "left": 198.359375
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigatePreviousChapter\" aria-label=\"Edit (Go to Previous Chapter) SHIFT CTRL ALT + ArrowLeft\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 246.46875,
+        "y": 2953.59375,
+        "width": 20,
+        "height": 20,
+        "top": 2953.59375,
+        "right": 266.46875,
+        "bottom": 2973.59375,
+        "left": 246.46875
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, navigate to the previous document in the reading order of the publication (e.g. chapter in the book spine). This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r53:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 32,
+        "y": 3039.59375,
+        "width": 15,
+        "height": 15,
+        "top": 3039.59375,
+        "right": 47,
+        "bottom": 3054.59375,
+        "left": 32
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigatePreviousChapterAlt\" aria-label=\"Edit (Go to Previous Chapter (Alternative)) CTRL + PageUp\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 154.8125,
+        "y": 3057.59375,
+        "width": 20,
+        "height": 20,
+        "top": 3057.59375,
+        "right": 174.8125,
+        "bottom": 3077.59375,
+        "left": 154.8125
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, jump one step backwards in the navigation history\" id=\"react-aria8118544264-:r56:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 193.703125,
+        "y": 3101.59375,
+        "width": 15,
+        "height": 15,
+        "top": 3101.59375,
+        "right": 208.703125,
+        "bottom": 3116.59375,
+        "left": 193.703125
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigatePreviousHistory\" aria-label=\"Edit (Go to Previous History) CTRL + Backspace\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 175.25,
+        "y": 3130.59375,
+        "width": 20,
+        "height": 20,
+        "top": 3130.59375,
+        "right": 195.25,
+        "bottom": 3150.59375,
+        "left": 175.25
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the library window, show the previous page of a paginated list of publications. Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r59:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 230.28125,
+        "y": 3174.59375,
+        "width": 15,
+        "height": 15,
+        "top": 3174.59375,
+        "right": 245.28125,
+        "bottom": 3189.59375,
+        "left": 230.28125
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigatePreviousLibraryPage\" aria-label=\"Edit (Go to Previous Library Page) SHIFT CTRL + ArrowLeft\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 199.796875,
+        "y": 3203.59375,
+        "width": 20,
+        "height": 20,
+        "top": 3203.59375,
+        "right": 219.796875,
+        "bottom": 3223.59375,
+        "left": 199.796875
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the library window, show the previous page of a paginated list of publications. This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r5c:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 32,
+        "y": 3289.59375,
+        "width": 15,
+        "height": 15,
+        "top": 3289.59375,
+        "right": 47,
+        "bottom": 3304.59375,
+        "left": 32
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigatePreviousLibraryPageAlt\" aria-label=\"Edit (Go to Previous Library Page (Alternative)) SHIFT CTRL + Comma\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 135.78125,
+        "y": 3307.59375,
+        "width": 20,
+        "height": 20,
+        "top": 3307.59375,
+        "right": 155.78125,
+        "bottom": 3327.59375,
+        "left": 135.78125
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the library window for catalogs / OPDS feeds, follow the previous pagination link. Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r5f:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 222.5,
+        "y": 3351.59375,
+        "width": 15,
+        "height": 15,
+        "top": 3351.59375,
+        "right": 237.5,
+        "bottom": 3366.59375,
+        "left": 222.5
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigatePreviousOPDSPage\" aria-label=\"Edit (Go to Previous OPDS Page) SHIFT CTRL + ArrowLeft\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 199.796875,
+        "y": 3380.59375,
+        "width": 20,
+        "height": 20,
+        "top": 3380.59375,
+        "right": 219.796875,
+        "bottom": 3400.59375,
+        "left": 199.796875
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the library window for catalogs / OPDS feeds, follow the previous pagination link. This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r5i:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 32,
+        "y": 3466.59375,
+        "width": 15,
+        "height": 15,
+        "top": 3466.59375,
+        "right": 47,
+        "bottom": 3481.59375,
+        "left": 32
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigatePreviousOPDSPageAlt\" aria-label=\"Edit (Go to Previous OPDS Page (Alternative)) SHIFT CTRL + Comma\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 135.78125,
+        "y": 3484.59375,
+        "width": 20,
+        "height": 20,
+        "top": 3484.59375,
+        "right": 155.78125,
+        "bottom": 3504.59375,
+        "left": 135.78125
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, turn to the previous 'page' in the publication. Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r5l:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 178.9375,
+        "y": 3528.59375,
+        "width": 15,
+        "height": 15,
+        "top": 3528.59375,
+        "right": 193.9375,
+        "bottom": 3543.59375,
+        "left": 178.9375
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigatePreviousPage\" aria-label=\"Edit (Go to Previous Page) ArrowLeft\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 105.46875,
+        "y": 3557.59375,
+        "width": 20,
+        "height": 20,
+        "top": 3557.59375,
+        "right": 125.46875,
+        "bottom": 3577.59375,
+        "left": 105.46875
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, turn to the previous 'page' in the publication. This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r5o:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 32,
+        "y": 3627.59375,
+        "width": 15,
+        "height": 15,
+        "top": 3627.59375,
+        "right": 47,
+        "bottom": 3642.59375,
+        "left": 32
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigatePreviousPageAlt\" aria-label=\"Edit (Go to Previous Page (Alternative)) CTRL + Comma\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 101.4375,
+        "y": 3645.59375,
+        "width": 20,
+        "height": 20,
+        "top": 3645.59375,
+        "right": 121.4375,
+        "bottom": 3665.59375,
+        "left": 101.4375
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, go to the beginning of the publication\" id=\"react-aria8118544264-:r5r:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 150.875,
+        "y": 3689.59375,
+        "width": 15,
+        "height": 15,
+        "top": 3689.59375,
+        "right": 165.875,
+        "bottom": 3704.59375,
+        "left": 150.875
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigateToBegin\" aria-label=\"Edit (Go to Beginning) CTRL + Home\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 139.671875,
+        "y": 3718.59375,
+        "width": 20,
+        "height": 20,
+        "top": 3718.59375,
+        "right": 159.671875,
+        "bottom": 3738.59375,
+        "left": 139.671875
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, go to the end of the publication\" id=\"react-aria8118544264-:r5u:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 108.890625,
+        "y": 3762.59375,
+        "width": 15,
+        "height": 15,
+        "top": 3762.59375,
+        "right": 123.890625,
+        "bottom": 3777.59375,
+        "left": 108.890625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigateToEnd\" aria-label=\"Edit (Go to End) CTRL + End\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 125.453125,
+        "y": 3791.59375,
+        "width": 20,
+        "height": 20,
+        "top": 3791.59375,
+        "right": 145.453125,
+        "bottom": 3811.59375,
+        "left": 125.453125
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, open the information dialog for the publication\" id=\"react-aria8118544264-:r61:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 252.03125,
+        "y": 3835.59375,
+        "width": 15,
+        "height": 15,
+        "top": 3835.59375,
+        "right": 267.03125,
+        "bottom": 3850.59375,
+        "left": 252.03125
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_OpenReaderInfo\" aria-label=\"Edit (Display Publication Information) CTRL + KeyI\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 101.4375,
+        "y": 3864.59375,
+        "width": 20,
+        "height": 20,
+        "top": 3864.59375,
+        "right": 121.4375,
+        "bottom": 3884.59375,
+        "left": 101.4375
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, open the popup dialog that display information about the publication, and focus the keyboard on the section that shows the context of the current reading location\" id=\"react-aria8118544264-:r64:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 32,
+        "y": 3950.59375,
+        "width": 15,
+        "height": 15,
+        "top": 3950.59375,
+        "right": 47,
+        "bottom": 3965.59375,
+        "left": 32
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_OpenReaderInfoWhereAmI\" aria-label=\"Edit (Display Publication Information, Show Reading Location) SHIFT CTRL + KeyI\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 135.78125,
+        "y": 3968.59375,
+        "width": 20,
+        "height": 20,
+        "top": 3968.59375,
+        "right": 155.78125,
+        "bottom": 3988.59375,
+        "left": 135.78125
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, open the print dialog\" id=\"react-aria8118544264-:r67:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 73.890625,
+        "y": 4012.59375,
+        "width": 15,
+        "height": 15,
+        "top": 4012.59375,
+        "right": 88.890625,
+        "bottom": 4027.59375,
+        "left": 73.890625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_Print\" aria-label=\"Edit (Print) CTRL + KeyP\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 107.65625,
+        "y": 4041.59375,
+        "width": 20,
+        "height": 20,
+        "top": 4041.59375,
+        "right": 127.65625,
+        "bottom": 4061.59375,
+        "left": 107.65625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window's search tool, go to the next search result. Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r6a:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 169.609375,
+        "y": 4085.59375,
+        "width": 15,
+        "height": 15,
+        "top": 4085.59375,
+        "right": 184.609375,
+        "bottom": 4100.59375,
+        "left": 169.609375
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_SearchNext\" aria-label=\"Edit (Search Result Next) F3\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 55.671875,
+        "y": 4114.59375,
+        "width": 20,
+        "height": 20,
+        "top": 4114.59375,
+        "right": 75.671875,
+        "bottom": 4134.59375,
+        "left": 55.671875
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window's search tool, go to the next search result. This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r6d:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 255.1875,
+        "y": 4158.59375,
+        "width": 15,
+        "height": 15,
+        "top": 4158.59375,
+        "right": 270.1875,
+        "bottom": 4173.59375,
+        "left": 255.1875
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_SearchNextAlt\" aria-label=\"Edit (Search Result Next (Alternative)) CTRL + KeyG\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 109.4375,
+        "y": 4187.59375,
+        "width": 20,
+        "height": 20,
+        "top": 4187.59375,
+        "right": 129.4375,
+        "bottom": 4207.59375,
+        "left": 109.4375
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window's search tool, go to the previous search result. Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r6g:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 198.40625,
+        "y": 4231.59375,
+        "width": 15,
+        "height": 15,
+        "top": 4231.59375,
+        "right": 213.40625,
+        "bottom": 4246.59375,
+        "left": 198.40625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_SearchPrevious\" aria-label=\"Edit (Search Result Previous) SHIFT + F3\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 90.015625,
+        "y": 4260.59375,
+        "width": 20,
+        "height": 20,
+        "top": 4260.59375,
+        "right": 110.015625,
+        "bottom": 4280.59375,
+        "left": 90.015625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window's search tool, go to the previous search result. This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r6j:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 32,
+        "y": 4346.59375,
+        "width": 15,
+        "height": 15,
+        "top": 4346.59375,
+        "right": 47,
+        "bottom": 4361.59375,
+        "left": 32
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_SearchPreviousAlt\" aria-label=\"Edit (Search Result Previous (Alternative)) SHIFT CTRL + KeyG\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 143.78125,
+        "y": 4364.59375,
+        "width": 20,
+        "height": 20,
+        "top": 4364.59375,
+        "right": 163.78125,
+        "bottom": 4384.59375,
+        "left": 143.78125
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, describe the context of the current reading location, using speech text compatible with screen readers\" id=\"react-aria8118544264-:r6m:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 32,
+        "y": 4450.59375,
+        "width": 15,
+        "height": 15,
+        "top": 4450.59375,
+        "right": 47,
+        "bottom": 4465.59375,
+        "left": 32
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_SpeakReaderInfoWhereAmI\" aria-label=\"Edit (Describe Reading Location (Speech)) SHIFT CTRL + KeyK\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 142,
+        "y": 4468.59375,
+        "width": 20,
+        "height": 20,
+        "top": 4468.59375,
+        "right": 162,
+        "bottom": 4488.59375,
+        "left": 142
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Add a new bookmark or remove an existing one if it is currently selected\" id=\"react-aria8118544264-:r6p:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 159.203125,
+        "y": 4512.59375,
+        "width": 15,
+        "height": 15,
+        "top": 4512.59375,
+        "right": 174.203125,
+        "bottom": 4527.59375,
+        "left": 159.203125
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_ToggleBookmark\" aria-label=\"Edit (Toggle Bookmark) CTRL + KeyB\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 107.65625,
+        "y": 4541.59375,
+        "width": 20,
+        "height": 20,
+        "top": 4541.59375,
+        "right": 127.65625,
+        "bottom": 4561.59375,
+        "left": 107.65625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, activate system fullscreen or restore normal window mode. Note that this is different from 'zen mode' which simplifies the user interface\" id=\"react-aria8118544264-:r6s:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 160.765625,
+        "y": 4585.59375,
+        "width": 15,
+        "height": 15,
+        "top": 4585.59375,
+        "right": 175.765625,
+        "bottom": 4600.59375,
+        "left": 160.765625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_ToggleReaderFullscreen\" aria-label=\"Edit (Toggle Fullscreen) CTRL + F11\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 123.375,
+        "y": 4614.59375,
+        "width": 20,
+        "height": 20,
+        "top": 4614.59375,
+        "right": 143.375,
+        "bottom": 4634.59375,
+        "left": 123.375
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, activate or exit zen mode, which simplifies the user interface while reading\" id=\"react-aria8118544264-:r6v:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 156.859375,
+        "y": 4658.59375,
+        "width": 15,
+        "height": 15,
+        "top": 4658.59375,
+        "right": 171.859375,
+        "bottom": 4673.59375,
+        "left": 156.859375
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_ToggleReaderZenMode\" aria-label=\"Edit (Toggle Zen mode) SHIFT CTRL + F11\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 157.71875,
+        "y": 4687.59375,
+        "width": 20,
+        "height": 20,
+        "top": 4687.59375,
+        "right": 177.71875,
+        "bottom": 4707.59375,
+        "left": 157.71875
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the library window, toggle optimized support for screen readers\" id=\"react-aria8118544264-:r72:\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "rect": {
+        "x": 32,
+        "y": 4757.59375,
+        "width": 15,
+        "height": 15,
+        "top": 4757.59375,
+        "right": 47,
+        "bottom": 4772.59375,
+        "left": 32
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"keyEditButt_ToggleScreenReaderOptimize\" aria-label=\"Edit (Toggle screen reader optimizations) SHIFT CTRL + F12\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 158.90625,
+        "y": 4775.59375,
+        "width": 20,
+        "height": 20,
+        "top": 4775.59375,
+        "right": 178.90625,
+        "bottom": 4795.59375,
+        "left": 158.90625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button dir=\"ltr\" data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button>",
+      "rect": {
+        "x": 268,
+        "y": 23,
+        "width": 30,
+        "height": 30,
+        "top": 23,
+        "right": 298,
+        "bottom": 53,
+        "left": 268
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [],
+    "incomplete": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "tags": [
+          "cat.color",
+          "wcag2aa",
+          "wcag143",
+          "TTv5",
+          "TT13.c",
+          "EN-301-549",
+          "EN-9.1.4.3",
+          "ACT",
+          "RGAAv4",
+          "RGAA-3.2.1"
+        ],
+        "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "contrastRatio": 0,
+                  "fontSize": "10.8pt (14.4px)",
+                  "fontWeight": "normal",
+                  "messageKey": "bgOverlap",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element's background color could not be determined because it is overlapped by another element"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<input dir=\"ltr\" type=\"text\" placeholder=\"Type to search a shortcut\" value=\"\" style=\"width: 200px; border-radius: 4px;\">",
+            "target": [
+              "input"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+          }
+        ]
+      }
+    ],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 131
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 8
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 131
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 8
+      },
+      {
+        "id": "aria-dialog-name",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 188
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 131
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 8
+      },
+      {
+        "id": "aria-required-children",
+        "nodes": 1
+      },
+      {
+        "id": "aria-required-parent",
+        "nodes": 5
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 8
+      },
+      {
+        "id": "aria-tab-name",
+        "nodes": 5
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 131
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 131
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 8
+      },
+      {
+        "id": "button-name",
+        "nodes": 124
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 1
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "duplicate-id-aria",
+        "nodes": 4
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 62
+      },
+      {
+        "id": "form-field-multiple-labels",
+        "nodes": 1
+      },
+      {
+        "id": "heading-order",
+        "nodes": 62
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "label-title-only",
+        "nodes": 1
+      },
+      {
+        "id": "label",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "list",
+        "nodes": 1
+      },
+      {
+        "id": "listitem",
+        "nodes": 60
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 129
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 458
+      },
+      {
+        "id": "scrollable-region-focusable",
+        "nodes": 1
+      },
+      {
+        "id": "tabindex",
+        "nodes": 69
+      },
+      {
+        "id": "target-size",
+        "nodes": 130
+      }
+    ]
+  },
+  "evidencePrefix": "batch-3/library-320-keyboard-shortcuts"
+}

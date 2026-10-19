@@ -46,11 +46,11 @@ fs.writeFileSync(root + 'batch-2-state-results.csv', csv([['state', 'coverage_ki
 })]));
 for (const finding of Object.values(findings)) for (const item of finding.evidence) if (!fs.existsSync(root + item)) throw new Error('Missing evidence: ' + item);
 const summary = {
-    batch: 2, branch: 'codex/a11y-batch-2-keyboard-semantics', parentCommit: 'adb0838e7', publishedInitialCommit: '0ed29902babf4238d366e9d846f06d4bfe72e354', implementationState: 'Initial eight findings committed and pushed; remaining four findings implemented and dynamically validated as an uncommitted continuation',
+    batch: 2, branch: 'codex/a11y-batch-2-keyboard-semantics', parentCommit: 'adb0838e7', publishedInitialCommit: '0ed29902babf4238d366e9d846f06d4bfe72e354', publishedContinuationCommit: '937d9d5bc4656a8abd15c462c18d5bc48adc2383', implementationState: 'All 12 batch 2 findings committed and pushed to origin/codex/a11y-batch-2-keyboard-semantics',
     inventory: 'docs/accessibility/evidence/batch-2-continuation/static-inventory.json', findings,
     remainingPlannedFindings: [], validationRuns,
     validation: { fixtureScenarios: validationRuns.reduce((n, r) => n + r.fixtureScenarios, 0), applicationScenarios: validationRuns.reduce((n, r) => n + r.applicationScenarios, 0), fixtureStates: states.filter(s => s.data.kind === 'component-fixture').length, applicationStates: states.filter(s => s.data.pages).length, allScenariosPassed: true },
-    limitations: 'Service-boundary stubs documented per finding; no OS clipboard mutation or real lending/loan/download transaction. No native screen-reader listening or full conformance assertion. A17 content review, A15/A16/A27 risks, A26 reflow/zoom, A31 target size and other format-specific assessments remain. Continuation is uncommitted; original and published evidence preserved.',
+    limitations: 'Service-boundary stubs documented per finding; no OS clipboard mutation or real lending/loan/download transaction. No native screen-reader listening or full conformance assertion. A17 content review, A15/A16/A27 risks, A26 reflow/zoom, A31 target size and other format-specific assessments remain. Batch 2 is published; original and published evidence preserved.',
 };
 fs.writeFileSync(root + 'remediation-batch-2.json', JSON.stringify(summary, null, 2) + '\n');
 console.log(JSON.stringify({ fixedFindings: Object.keys(findings), ...summary.validation }));

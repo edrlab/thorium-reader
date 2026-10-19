@@ -1,0 +1,112 @@
+{
+  "kind": "layout-measurement",
+  "metrics": {
+    "viewport": {
+      "width": 320,
+      "height": 228
+    },
+    "zoom": 1,
+    "dialog": {
+      "x": 16,
+      "y": 16,
+      "width": 288,
+      "height": 196,
+      "top": 16,
+      "right": 304,
+      "bottom": 212,
+      "left": 16
+    },
+    "close": {
+      "x": 268,
+      "y": 23,
+      "width": 30,
+      "height": 30,
+      "top": 23,
+      "right": 298,
+      "bottom": 53,
+      "left": 268
+    },
+    "scroller": {
+      "rect": {
+        "x": 17,
+        "y": 17,
+        "width": 286,
+        "height": 194,
+        "top": 17,
+        "right": 303,
+        "bottom": 211,
+        "left": 17
+      },
+      "width": 271,
+      "scrollWidth": 271,
+      "height": 194,
+      "scrollHeight": 519
+    },
+    "wide": []
+  },
+  "trace": [
+    {
+      "html": "<input type=\"radio\" id=\":r75:-vanilla\" name=\":r75:\" aria-label=\"Thorium vanilla\" value=\"Thorium vanilla\" checked=\"\">",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 40,
+        "y": 118.59375,
+        "width": 227,
+        "height": 61,
+        "top": 118.59375,
+        "right": 267,
+        "bottom": 179.59375,
+        "left": 40
+      },
+      "visible": true,
+      "hit": "<p dir=\"ltr\">The Thorium Vanilla profile is the original one, designed by EDRLab.</p>",
+      "point": {
+        "x": 153.5,
+        "y": 149.09375
+      }
+    },
+    {
+      "html": "<button dir=\"ltr\" data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 268,
+        "y": 23,
+        "width": 30,
+        "height": 30,
+        "top": 23,
+        "right": 298,
+        "bottom": 53,
+        "left": 268
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#close-icon\"></use>",
+      "point": {
+        "x": 283,
+        "y": 38
+      }
+    },
+    {
+      "html": "<div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-profiles\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r9:-tab-tab-profiles\" aria-selected=\"true\" role=\"tab\" aria-controls=\"react-aria8118544264-:r9:-tabpanel-tab-profiles\" data-selected=\"true\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 11\"><use xlink:href=\"#avatar-icon\"></use></svg><span dir=\"ltr\">Profiles</span></div>",
+      "atStart": true,
+      "withinDialog": true,
+      "box": {
+        "x": 29,
+        "y": 116,
+        "width": 247,
+        "height": 32,
+        "top": 116,
+        "right": 276,
+        "bottom": 148,
+        "left": 29
+      },
+      "visible": true,
+      "hit": "<div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-profiles\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:",
+      "point": {
+        "x": 152.5,
+        "y": 132
+      }
+    }
+  ]
+}

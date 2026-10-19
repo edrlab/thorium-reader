@@ -1,0 +1,290 @@
+{
+  "id": "publication-tags",
+  "runtime": "library",
+  "files": [
+    "src/renderer/library/components/dialog/publicationInfos/TagManager.tsx",
+    "src/renderer/common/components/dialog/publicationInfos/tag/tagButton.tsx",
+    "src/renderer/common/components/dialog/publicationInfos/tag/tagList.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T13:24:17.158Z",
+  "lang": "en",
+  "errors": [],
+  "actions": [],
+  "text": "Component fixture: publication-tags\nTags :\nResearch\nTo read\nTag\nAdd",
+  "html": "<div id=\"audit-root\"><main><h1>Component fixture: publication-tags</h1><section class=\"publicationInfo_tagContainer\"><div class=\"publicationInfo_heading tag_list\"><h3>Tags :</h3><div class=\"tags_wrapper\"><div class=\"tag no_hover\"><a href=\"/library?focus=tags&amp;value=Research\">Research</a><button type=\"button\" aria-label=\"Edit tag: Research\" aria-expanded=\"false\" id=\"react-aria8118544264-:rhh:\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div><div class=\"tag no_hover\"><a href=\"/library?focus=tags&amp;value=To%20read\">To read</a><button type=\"button\" aria-label=\"Edit tag: To read\" aria-expanded=\"false\" id=\"react-aria8118544264-:rhj:\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button></div></div></div><form style=\"min-width: unset;\"><template><div class=\"my_combobox_container R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" role=\"group\" style=\"width: 250px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 8\"><use xlink:href=\"#tag-icon\"></use></svg></div></template><div class=\"react_aria_ComboBox\" data-rac=\"\" style=\"width: 270px;\"><label class=\"react_aria_Label\" id=\"react-aria8118544264-:rhp:\" for=\"react-aria8118544264-:rho:\" dir=\"ltr\">Tag</label><div class=\"my_combobox_container R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" role=\"group\" style=\"width: 250px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 8\"><use xlink:href=\"#tag-icon\"></use></svg><input type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria8118544264-:rho:\" aria-labelledby=\"react-aria8118544264-:rhp:\" role=\"combobox\" aria-expanded=\"false\" class=\"react_aria_Input R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" value=\"\" title=\"\"></div></div><button type=\"submit\" class=\"button_secondary_blue\" style=\"margin-top: 9px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 9 9\"><use xlink:href=\"#addTag-icon\"></use></svg>Add</button></form></section></main></div>",
+  "dimensions": {
+    "width": 320,
+    "height": 228,
+    "scrollWidth": 372
+  },
+  "focus": "<button type=\"button\" aria-label=\"Edit tag: To read\" aria-expanded=\"false\" id=\"react-aria8118544264-:rhj:\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+  "controls": [
+    {
+      "html": "<a href=\"/library?focus=tags&amp;value=Research\">Research</a>",
+      "rect": {
+        "x": 57.203125,
+        "y": 91.15625,
+        "width": 51.359375,
+        "height": 24,
+        "top": 91.15625,
+        "right": 108.5625,
+        "bottom": 115.15625,
+        "left": 57.203125
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"button\" aria-label=\"Edit tag: Research\" aria-expanded=\"false\" id=\"react-aria8118544264-:rhh:\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 113.5625,
+        "y": 91.15625,
+        "width": 24,
+        "height": 24,
+        "top": 91.15625,
+        "right": 137.5625,
+        "bottom": 115.15625,
+        "left": 113.5625
+      },
+      "visible": true
+    },
+    {
+      "html": "<a href=\"/library?focus=tags&amp;value=To%20read\">To read</a>",
+      "rect": {
+        "x": 161.5625,
+        "y": 91.15625,
+        "width": 40.03125,
+        "height": 24,
+        "top": 91.15625,
+        "right": 201.59375,
+        "bottom": 115.15625,
+        "left": 161.5625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"button\" aria-label=\"Edit tag: To read\" aria-expanded=\"false\" id=\"react-aria8118544264-:rhj:\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "rect": {
+        "x": 206.59375,
+        "y": 91.15625,
+        "width": 24,
+        "height": 24,
+        "top": 91.15625,
+        "right": 230.59375,
+        "bottom": 115.15625,
+        "left": 206.59375
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria8118544264-:rho:\" aria-labelledby=\"react-aria8118544264-:rhp:\" role=\"combobox\" aria-expanded=\"false\" class=\"react_aria_Input R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" value=\"\" title=\"\">",
+      "rect": {
+        "x": 3,
+        "y": 167.15625,
+        "width": 246,
+        "height": 24,
+        "top": 167.15625,
+        "right": 249,
+        "bottom": 191.15625,
+        "left": 3
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"submit\" class=\"button_secondary_blue\" style=\"margin-top: 9px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 9 9\"><use xlink:href=\"#addTag-icon\"></use></svg>Add</button>",
+      "rect": {
+        "x": 272,
+        "y": 165.65625,
+        "width": 100,
+        "height": 30,
+        "top": 165.65625,
+        "right": 372,
+        "bottom": 195.65625,
+        "left": 272
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [
+      {
+        "id": "heading-order",
+        "impact": "moderate",
+        "tags": [
+          "cat.semantics",
+          "best-practice"
+        ],
+        "description": "Ensure the order of headings is semantically correct",
+        "help": "Heading levels should only increase by one",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/heading-order?application=axeAPI",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "heading-order",
+                "data": null,
+                "relatedNodes": [],
+                "impact": "moderate",
+                "message": "Heading order invalid"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "moderate",
+            "html": "<h3>Tags :</h3>",
+            "target": [
+              "h3"
+            ],
+            "failureSummary": "Fix any of the following:\n  Heading order invalid"
+          }
+        ]
+      }
+    ],
+    "incomplete": [],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 3
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 2
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 3
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 2
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 5
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 3
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 2
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 2
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 3
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 3
+      },
+      {
+        "id": "autocomplete-valid",
+        "nodes": 1
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 6
+      },
+      {
+        "id": "button-name",
+        "nodes": 3
+      },
+      {
+        "id": "bypass",
+        "nodes": 1
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 7
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "duplicate-id-aria",
+        "nodes": 2
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 2
+      },
+      {
+        "id": "form-field-multiple-labels",
+        "nodes": 1
+      },
+      {
+        "id": "heading-order",
+        "nodes": 1
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "label-title-only",
+        "nodes": 1
+      },
+      {
+        "id": "label",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-main-is-top-level",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-no-duplicate-main",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-unique",
+        "nodes": 1
+      },
+      {
+        "id": "link-name",
+        "nodes": 2
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 3
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 19
+      },
+      {
+        "id": "tabindex",
+        "nodes": 3
+      },
+      {
+        "id": "target-size",
+        "nodes": 6
+      }
+    ]
+  },
+  "evidencePrefix": "batch-3/library-publication-tag-targets"
+}

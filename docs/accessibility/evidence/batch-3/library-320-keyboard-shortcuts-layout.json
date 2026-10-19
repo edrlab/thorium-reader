@@ -1,0 +1,2674 @@
+{
+  "kind": "layout-measurement",
+  "metrics": {
+    "viewport": {
+      "width": 320,
+      "height": 228
+    },
+    "zoom": 1,
+    "dialog": {
+      "x": 16,
+      "y": 16,
+      "width": 288,
+      "height": 196,
+      "top": 16,
+      "right": 304,
+      "bottom": 212,
+      "left": 16
+    },
+    "close": {
+      "x": 268,
+      "y": 23,
+      "width": 30,
+      "height": 30,
+      "top": 23,
+      "right": 298,
+      "bottom": 53,
+      "left": 268
+    },
+    "scroller": {
+      "rect": {
+        "x": 17,
+        "y": 17,
+        "width": 286,
+        "height": 194,
+        "top": 17,
+        "right": 303,
+        "bottom": 211,
+        "left": 17
+      },
+      "width": 271,
+      "scrollWidth": 271,
+      "height": 194,
+      "scrollHeight": 5115
+    },
+    "wide": []
+  },
+  "trace": [
+    {
+      "html": "<button aria-expanded=\"false\" id=\"react-aria8118544264-:r1e:\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg class=\"button_secondary_blue advanced_trigger\" viewBox=\"0 0 24 24\"><title>Keyboard shortcuts advanced menu</title><use xlink:href=\"#menu\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 227.9375,
+        "y": 117,
+        "width": 28,
+        "height": 30,
+        "top": 117,
+        "right": 255.9375,
+        "bottom": 147,
+        "left": 227.9375
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#menu\"></use>",
+      "point": {
+        "x": 241.9375,
+        "y": 132
+      }
+    },
+    {
+      "html": "<input dir=\"ltr\" type=\"text\" placeholder=\"Type to search a shortcut\" value=\"\" style=\"width: 200px; border-radius: 4px;\">",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 29,
+        "y": 163.59375,
+        "width": 200,
+        "height": 35,
+        "top": 163.59375,
+        "right": 229,
+        "bottom": 198.59375,
+        "left": 29
+      },
+      "visible": true,
+      "hit": "<input dir=\"ltr\" type=\"text\" placeholder=\"Type to search a shortcut\" value=\"\" style=\"width: 200px; border-radius: 4px;\">",
+      "point": {
+        "x": 129,
+        "y": 181.09375
+      }
+    },
+    {
+      "html": "<button class=\"button_secondary_blue\">Export to HTML</button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 29,
+        "y": 116.59375,
+        "width": 110.03125,
+        "height": 30,
+        "top": 116.59375,
+        "right": 139.03125,
+        "bottom": 146.59375,
+        "left": 29
+      },
+      "visible": true,
+      "hit": "<button class=\"button_secondary_blue\">Export to HTML</button>",
+      "point": {
+        "x": 84.015625,
+        "y": 131.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Open the bookmark creation dialog and edit the textual label (note), color and tag\" id=\"react-aria8118544264-:r1h:\" aria-describedby=\"react-aria8118544264-:r1g:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 230.28125,
+        "y": 158.59375,
+        "width": 15,
+        "height": 15,
+        "top": 158.59375,
+        "right": 245.28125,
+        "bottom": 173.59375,
+        "left": 230.28125
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 237.78125,
+        "y": 166.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_AddBookmarkWithLabel\" aria-label=\"Edit (Create Bookmark with Label) SHIFT ALT + KeyB\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 128.6875,
+        "y": 166.59375,
+        "width": 20,
+        "height": 20,
+        "top": 166.59375,
+        "right": 148.6875,
+        "bottom": 186.59375,
+        "left": 128.6875
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 138.6875,
+        "y": 176.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Open the annotation creation dialog for the selected document text, and edit the textual note, highlight color and type, and tag\" id=\"react-aria8118544264-:r1k:\" aria-describedby=\"react-aria8118544264-:r1j:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 162.828125,
+        "y": 124.59375,
+        "width": 15,
+        "height": 15,
+        "top": 124.59375,
+        "right": 177.828125,
+        "bottom": 139.59375,
+        "left": 162.828125
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 170.328125,
+        "y": 132.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_AnnotationsCreate\" aria-label=\"Edit (Create Annotation) SHIFT ALT + KeyA\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 128.6875,
+        "y": 153.59375,
+        "width": 20,
+        "height": 20,
+        "top": 153.59375,
+        "right": 148.6875,
+        "bottom": 173.59375,
+        "left": 128.6875
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 138.6875,
+        "y": 163.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Quickly create an annotation for the selected text, with the last-used highlight color and type (note and tag will be empty)\" id=\"react-aria8118544264-:r1n:\" aria-describedby=\"react-aria8118544264-:r1m:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 205.625,
+        "y": 171.59375,
+        "width": 15,
+        "height": 15,
+        "top": 171.59375,
+        "right": 220.625,
+        "bottom": 186.59375,
+        "left": 205.625
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 213.125,
+        "y": 179.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_AnnotationsCreateQuick\" aria-label=\"Edit (Create Quick Annotation) SHIFT ALT + KeyQ\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 130.46875,
+        "y": 121.59375,
+        "width": 20,
+        "height": 20,
+        "top": 121.59375,
+        "right": 150.46875,
+        "bottom": 141.59375,
+        "left": 130.46875
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 140.46875,
+        "y": 131.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Alternate the annotation and bookmark visual indicators, either in the document margin or in the text\" id=\"react-aria8118544264-:r1q:\" aria-describedby=\"react-aria8118544264-:r1p:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 213.875,
+        "y": 165.59375,
+        "width": 15,
+        "height": 15,
+        "top": 165.59375,
+        "right": 228.875,
+        "bottom": 180.59375,
+        "left": 213.875
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 221.375,
+        "y": 173.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_AnnotationsToggleMargin\" aria-label=\"Edit (Toggle Annotation Margin) SHIFT CTRL ALT + KeyZ\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 187.78125,
+        "y": 166.59375,
+        "width": 20,
+        "height": 20,
+        "top": 166.59375,
+        "right": 207.78125,
+        "bottom": 186.59375,
+        "left": 187.78125
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 197.78125,
+        "y": 176.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move forward to the next audio segment in the narration (EPUB3 Media Overlays, Text To Speech, or pre-recorded audiobook)\" id=\"react-aria8118544264-:r1t:\" aria-describedby=\"react-aria8118544264-:r1s:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 178.390625,
+        "y": 124.59375,
+        "width": 15,
+        "height": 15,
+        "top": 124.59375,
+        "right": 193.390625,
+        "bottom": 139.59375,
+        "left": 178.390625
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 185.890625,
+        "y": 132.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_AudioNext\" aria-label=\"Edit (Next Audio Segment) CTRL + Digit3\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 105.890625,
+        "y": 153.59375,
+        "width": 20,
+        "height": 20,
+        "top": 153.59375,
+        "right": 125.890625,
+        "bottom": 173.59375,
+        "left": 105.890625
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 115.890625,
+        "y": 163.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move forward to the next audio segment in the narration (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook). This skips any currently escapable structure\" id=\"react-aria8118544264-:r20:\" aria-describedby=\"react-aria8118544264-:r1v:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 239.09375,
+        "y": 171.59375,
+        "width": 15,
+        "height": 15,
+        "top": 171.59375,
+        "right": 254.09375,
+        "bottom": 186.59375,
+        "left": 239.09375
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 246.59375,
+        "y": 179.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_AudioNextAlt\" aria-label=\"Edit (Next Audio Segment (escape)) SHIFT CTRL ALT + Digit3\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 186.90625,
+        "y": 121.59375,
+        "width": 20,
+        "height": 20,
+        "top": 121.59375,
+        "right": 206.90625,
+        "bottom": 141.59375,
+        "left": 186.90625
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 196.90625,
+        "y": 131.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Toggle play/pause for current narration (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook)\" id=\"react-aria8118544264-:r23:\" aria-describedby=\"react-aria8118544264-:r22:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 158.96875,
+        "y": 165.59375,
+        "width": 15,
+        "height": 15,
+        "top": 165.59375,
+        "right": 173.96875,
+        "bottom": 180.59375,
+        "left": 158.96875
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 166.46875,
+        "y": 173.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_AudioPlayPause\" aria-label=\"Edit (Play/Pause Audio) CTRL + Digit2\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 105.890625,
+        "y": 166.59375,
+        "width": 20,
+        "height": 20,
+        "top": 166.59375,
+        "right": 125.890625,
+        "bottom": 186.59375,
+        "left": 105.890625
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 115.890625,
+        "y": 176.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move back to the previous audio segment in the narration (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook)\" id=\"react-aria8118544264-:r26:\" aria-describedby=\"react-aria8118544264-:r25:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 207.1875,
+        "y": 124.59375,
+        "width": 15,
+        "height": 15,
+        "top": 124.59375,
+        "right": 222.1875,
+        "bottom": 139.59375,
+        "left": 207.1875
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 214.6875,
+        "y": 132.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_AudioPrevious\" aria-label=\"Edit (Previous Audio Segment) CTRL + Digit1\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 105.890625,
+        "y": 153.59375,
+        "width": 20,
+        "height": 20,
+        "top": 153.59375,
+        "right": 125.890625,
+        "bottom": 173.59375,
+        "left": 105.890625
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 115.890625,
+        "y": 163.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move back to the previous audio segment in the narration (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook). This skips any currently escapable structure\" id=\"react-aria8118544264-:r29:\" aria-describedby=\"react-aria8118544264-:r28:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 32,
+        "y": 124.59375,
+        "width": 15,
+        "height": 15,
+        "top": 124.59375,
+        "right": 47,
+        "bottom": 139.59375,
+        "left": 32
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 39.5,
+        "y": 132.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_AudioPreviousAlt\" aria-label=\"Edit (Previous Audio Segment (escape)) SHIFT CTRL ALT + Digit1\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 186.90625,
+        "y": 142.59375,
+        "width": 20,
+        "height": 20,
+        "top": 142.59375,
+        "right": 206.90625,
+        "bottom": 162.59375,
+        "left": 186.90625
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 196.90625,
+        "y": 152.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Decrease the speed of EPUB3 Media Overlays audio playback or TTS read-aloud speech rate\" id=\"react-aria8118544264-:r2c:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 189.859375,
+        "y": 171.59375,
+        "width": 15,
+        "height": 15,
+        "top": 171.59375,
+        "right": 204.859375,
+        "bottom": 186.59375,
+        "left": 189.859375
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 197.359375,
+        "y": 179.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_AudioSpeedDecrease\" aria-label=\"Edit (Decrease audio speed) CTRL + Digit5\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 105.890625,
+        "y": 121.59375,
+        "width": 20,
+        "height": 20,
+        "top": 121.59375,
+        "right": 125.890625,
+        "bottom": 141.59375,
+        "left": 105.890625
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 115.890625,
+        "y": 131.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Increase the speed of EPUB3 Media Overlays audio playback or TTS read-aloud speech rate\" id=\"react-aria8118544264-:r2f:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 184.40625,
+        "y": 165.59375,
+        "width": 15,
+        "height": 15,
+        "top": 165.59375,
+        "right": 199.40625,
+        "bottom": 180.59375,
+        "left": 184.40625
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 191.90625,
+        "y": 173.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_AudioSpeedIncrease\" aria-label=\"Edit (Increase audio speed) CTRL + Digit6\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 105.890625,
+        "y": 166.59375,
+        "width": 20,
+        "height": 20,
+        "top": 166.59375,
+        "right": 125.890625,
+        "bottom": 186.59375,
+        "left": 105.890625
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 115.890625,
+        "y": 176.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Reset the speed of EPUB3 Media Overlays audio playback or TTS read-aloud speech rate\" id=\"react-aria8118544264-:r2i:\" aria-describedby=\"react-aria8118544264-:r2h:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 165.703125,
+        "y": 124.59375,
+        "width": 15,
+        "height": 15,
+        "top": 124.59375,
+        "right": 180.703125,
+        "bottom": 139.59375,
+        "left": 165.703125
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 173.203125,
+        "y": 132.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_AudioSpeedReset\" aria-label=\"Edit (Reset audio speed) CTRL + Digit7\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 105.890625,
+        "y": 153.59375,
+        "width": 20,
+        "height": 20,
+        "top": 153.59375,
+        "right": 125.890625,
+        "bottom": 173.59375,
+        "left": 105.890625
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 115.890625,
+        "y": 163.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Stop current audio (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook)\" id=\"react-aria8118544264-:r2l:\" aria-describedby=\"react-aria8118544264-:r2k:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 116.140625,
+        "y": 171.59375,
+        "width": 15,
+        "height": 15,
+        "top": 171.59375,
+        "right": 131.140625,
+        "bottom": 186.59375,
+        "left": 116.140625
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 123.640625,
+        "y": 179.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_AudioStop\" aria-label=\"Edit (Stop Audio) CTRL + Digit4\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 105.890625,
+        "y": 121.59375,
+        "width": 20,
+        "height": 20,
+        "top": 121.59375,
+        "right": 125.890625,
+        "bottom": 141.59375,
+        "left": 105.890625
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 115.890625,
+        "y": 131.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Close the reader window and return to the library\" id=\"react-aria8118544264-:r2o:\" aria-describedby=\"react-aria8118544264-:r2n:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 131.484375,
+        "y": 165.59375,
+        "width": 15,
+        "height": 15,
+        "top": 165.59375,
+        "right": 146.484375,
+        "bottom": 180.59375,
+        "left": 131.484375
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 138.984375,
+        "y": 173.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_CloseReader\" aria-label=\"Edit (Close Reader) CTRL + KeyW\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 112.09375,
+        "y": 166.59375,
+        "width": 20,
+        "height": 20,
+        "top": 166.59375,
+        "right": 132.09375,
+        "bottom": 186.59375,
+        "left": 112.09375
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 122.09375,
+        "y": 176.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Zoom into a fixed layout single page or 2-page spread.\" id=\"react-aria8118544264-:r2r:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 126.515625,
+        "y": 124.59375,
+        "width": 15,
+        "height": 15,
+        "top": 124.59375,
+        "right": 141.515625,
+        "bottom": 139.59375,
+        "left": 126.515625
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 134.015625,
+        "y": 132.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_FXLZoomIn\" aria-label=\"Edit (FXL Zoom In) CTRL + Digit9\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 105.890625,
+        "y": 153.59375,
+        "width": 20,
+        "height": 20,
+        "top": 153.59375,
+        "right": 125.890625,
+        "bottom": 173.59375,
+        "left": 105.890625
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 115.890625,
+        "y": 163.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Zoom out of a fixed layout single page or 2-page spread.\" id=\"react-aria8118544264-:r2u:\" aria-describedby=\"react-aria8118544264-:r2t:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 138.1875,
+        "y": 171.59375,
+        "width": 15,
+        "height": 15,
+        "top": 171.59375,
+        "right": 153.1875,
+        "bottom": 186.59375,
+        "left": 138.1875
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 145.6875,
+        "y": 179.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_FXLZoomOut\" aria-label=\"Edit (FXL Zoom Out) CTRL + Digit8\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 105.890625,
+        "y": 121.59375,
+        "width": 20,
+        "height": 20,
+        "top": 121.59375,
+        "right": 125.890625,
+        "bottom": 141.59375,
+        "left": 105.890625
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 115.890625,
+        "y": 131.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Reset zoom on a fixed layout single page or 2-page spread.\" id=\"react-aria8118544264-:r31:\" aria-describedby=\"react-aria8118544264-:r30:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 152.203125,
+        "y": 165.59375,
+        "width": 15,
+        "height": 15,
+        "top": 165.59375,
+        "right": 167.203125,
+        "bottom": 180.59375,
+        "left": 152.203125
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 159.703125,
+        "y": 173.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_FXLZoomReset\" aria-label=\"Edit (Reset FXL Zoom) CTRL + Digit0\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 105.890625,
+        "y": 166.59375,
+        "width": 20,
+        "height": 20,
+        "top": 166.59375,
+        "right": 125.890625,
+        "bottom": 186.59375,
+        "left": 105.890625
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 115.890625,
+        "y": 176.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the 'main' landmark in the graphical user interface. In the reader window, this moves into the publication content\" id=\"react-aria8118544264-:r34:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 196.765625,
+        "y": 124.59375,
+        "width": 15,
+        "height": 15,
+        "top": 124.59375,
+        "right": 211.765625,
+        "bottom": 139.59375,
+        "left": 196.765625
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 204.265625,
+        "y": 132.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_FocusMain\" aria-label=\"Edit (Focus on Main Content) CTRL + F10\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 124.5625,
+        "y": 153.59375,
+        "width": 20,
+        "height": 20,
+        "top": 153.59375,
+        "right": 144.5625,
+        "bottom": 173.59375,
+        "left": 124.5625
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 134.5625,
+        "y": 163.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, this moves the keyboard focus into the publication content using a more reliable technique for screen readers\" id=\"react-aria8118544264-:r37:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 234.890625,
+        "y": 171.59375,
+        "width": 15,
+        "height": 15,
+        "top": 171.59375,
+        "right": 249.890625,
+        "bottom": 186.59375,
+        "left": 234.890625
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 242.390625,
+        "y": 179.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_FocusMainDeep\" aria-label=\"Edit (Deep Focus on Main Content) SHIFT CTRL + F10\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 158.90625,
+        "y": 121.59375,
+        "width": 20,
+        "height": 20,
+        "top": 121.59375,
+        "right": 178.90625,
+        "bottom": 141.59375,
+        "left": 158.90625
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 168.90625,
+        "y": 131.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the 'goto page' section of the reader window's navigation panel\" id=\"react-aria8118544264-:r3a:\" aria-describedby=\"react-aria8118544264-:r39:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 188.671875,
+        "y": 165.59375,
+        "width": 15,
+        "height": 15,
+        "top": 165.59375,
+        "right": 203.671875,
+        "bottom": 180.59375,
+        "left": 188.671875
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 196.171875,
+        "y": 173.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_FocusReaderGotoPage\" aria-label=\"Edit (Focus on 'Go to Page') SHIFT CTRL + KeyP\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 142,
+        "y": 166.59375,
+        "width": 20,
+        "height": 20,
+        "top": 166.59375,
+        "right": 162,
+        "bottom": 186.59375,
+        "left": 142
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 152,
+        "y": 176.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the reader window's navigation panel\" id=\"react-aria8118544264-:r3d:\" aria-describedby=\"react-aria8118544264-:r3c:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 220.921875,
+        "y": 124.59375,
+        "width": 15,
+        "height": 15,
+        "top": 124.59375,
+        "right": 235.921875,
+        "bottom": 139.59375,
+        "left": 220.921875
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 228.421875,
+        "y": 132.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_FocusReaderNavigation\" aria-label=\"Edit (Focus on Navigation Panel) CTRL + KeyN\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 108.546875,
+        "y": 153.59375,
+        "width": 20,
+        "height": 20,
+        "top": 153.59375,
+        "right": 128.546875,
+        "bottom": 173.59375,
+        "left": 108.546875
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 118.546875,
+        "y": 163.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the 'annotations' section of the reader window's navigation panel\" id=\"react-aria8118544264-:r3g:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 196.4375,
+        "y": 171.59375,
+        "width": 15,
+        "height": 15,
+        "top": 171.59375,
+        "right": 211.4375,
+        "bottom": 186.59375,
+        "left": 196.4375
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 203.9375,
+        "y": 179.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_FocusReaderNavigationAnnotations\" aria-label=\"Edit (Focus on 'Annotations') SHIFT CTRL + KeyA\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 142,
+        "y": 121.59375,
+        "width": 20,
+        "height": 20,
+        "top": 121.59375,
+        "right": 162,
+        "bottom": 141.59375,
+        "left": 142
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 152,
+        "y": 131.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the 'bookmarks' section of the reader window's navigation panel\" id=\"react-aria8118544264-:r3j:\" aria-describedby=\"react-aria8118544264-:r3i:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 191.03125,
+        "y": 165.59375,
+        "width": 15,
+        "height": 15,
+        "top": 165.59375,
+        "right": 206.03125,
+        "bottom": 180.59375,
+        "left": 191.03125
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 198.53125,
+        "y": 173.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_FocusReaderNavigationBookmarks\" aria-label=\"Edit (Focus on 'Bookmarks') SHIFT CTRL + KeyB\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 142,
+        "y": 166.59375,
+        "width": 20,
+        "height": 20,
+        "top": 166.59375,
+        "right": 162,
+        "bottom": 186.59375,
+        "left": 142
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 152,
+        "y": 176.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the 'search' section of the reader window's navigation panel\" id=\"react-aria8118544264-:r3m:\" aria-describedby=\"react-aria8118544264-:r3l:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 161.46875,
+        "y": 124.59375,
+        "width": 15,
+        "height": 15,
+        "top": 124.59375,
+        "right": 176.46875,
+        "bottom": 139.59375,
+        "left": 161.46875
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 168.96875,
+        "y": 132.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_FocusReaderNavigationSearch\" aria-label=\"Edit (Focus on 'Search') SHIFT CTRL + KeyF\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 141.109375,
+        "y": 153.59375,
+        "width": 20,
+        "height": 20,
+        "top": 153.59375,
+        "right": 161.109375,
+        "bottom": 173.59375,
+        "left": 141.109375
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 151.109375,
+        "y": 163.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the 'TOC' section of the reader window's navigation panel\" id=\"react-aria8118544264-:r3p:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 226.78125,
+        "y": 171.59375,
+        "width": 15,
+        "height": 15,
+        "top": 171.59375,
+        "right": 241.78125,
+        "bottom": 186.59375,
+        "left": 226.78125
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 234.28125,
+        "y": 179.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_FocusReaderNavigationTOC\" aria-label=\"Edit (Focus on 'table of contents') SHIFT CTRL + KeyN\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 142.890625,
+        "y": 121.59375,
+        "width": 20,
+        "height": 20,
+        "top": 121.59375,
+        "right": 162.890625,
+        "bottom": 141.59375,
+        "left": 142.890625
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 152.890625,
+        "y": 131.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the reader window's settings panel (display preferences, etc.)\" id=\"react-aria8118544264-:r3s:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 214.703125,
+        "y": 165.59375,
+        "width": 15,
+        "height": 15,
+        "top": 165.59375,
+        "right": 229.703125,
+        "bottom": 180.59375,
+        "left": 214.703125
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 222.203125,
+        "y": 173.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_FocusReaderSettings\" aria-label=\"Edit (Focus on Reader Settings) CTRL + KeyS\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 107.65625,
+        "y": 166.59375,
+        "width": 20,
+        "height": 20,
+        "top": 166.59375,
+        "right": 127.65625,
+        "bottom": 186.59375,
+        "left": 107.65625
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 117.65625,
+        "y": 176.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the reader window's text search input, or in the library window this searches the bookshelf or the active OPDS feed\" id=\"react-aria8118544264-:r3v:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 161.046875,
+        "y": 124.59375,
+        "width": 15,
+        "height": 15,
+        "top": 124.59375,
+        "right": 176.046875,
+        "bottom": 139.59375,
+        "left": 161.046875
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 168.546875,
+        "y": 132.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_FocusSearch\" aria-label=\"Edit (Search Command) CTRL + KeyF\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 106.765625,
+        "y": 153.59375,
+        "width": 20,
+        "height": 20,
+        "top": 153.59375,
+        "right": 126.765625,
+        "bottom": 173.59375,
+        "left": 106.765625
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 116.765625,
+        "y": 163.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Move the keyboard focus to the landmark area of the graphical user interface immediately before the 'skip link' (which itself moves the focus to the main content area of the library or reader window)\" id=\"react-aria8118544264-:r42:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 158.40625,
+        "y": 171.59375,
+        "width": 15,
+        "height": 15,
+        "top": 171.59375,
+        "right": 173.40625,
+        "bottom": 186.59375,
+        "left": 158.40625
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 165.90625,
+        "y": 179.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_FocusToolbar\" aria-label=\"Edit (Focus on Toolbar) CTRL + KeyT\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 106.765625,
+        "y": 121.59375,
+        "width": 20,
+        "height": 20,
+        "top": 121.59375,
+        "right": 126.765625,
+        "bottom": 141.59375,
+        "left": 106.765625
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 116.765625,
+        "y": 131.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, navigate to the next document in the reading order of the publication (e.g. chapter in the book spine). Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r45:\" aria-describedby=\"react-aria8118544264-:r44:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 169.578125,
+        "y": 165.59375,
+        "width": 15,
+        "height": 15,
+        "top": 165.59375,
+        "right": 184.578125,
+        "bottom": 180.59375,
+        "left": 169.578125
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 177.078125,
+        "y": 173.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigateNextChapter\" aria-label=\"Edit (Go to Next Chapter) SHIFT CTRL ALT + ArrowRight\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 32,
+        "y": 121.59375,
+        "width": 20,
+        "height": 20,
+        "top": 121.59375,
+        "right": 52,
+        "bottom": 141.59375,
+        "left": 32
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 42,
+        "y": 131.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, navigate to the next document in the reading order of the publication (e.g. chapter in the book spine). This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r48:\" aria-describedby=\"react-aria8118544264-:r47:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 255.140625,
+        "y": 165.59375,
+        "width": 15,
+        "height": 15,
+        "top": 165.59375,
+        "right": 270.140625,
+        "bottom": 180.59375,
+        "left": 255.140625
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 262.640625,
+        "y": 173.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigateNextChapterAlt\" aria-label=\"Edit (Go to Next Chapter (Alternative)) CTRL + PageDown\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 175.265625,
+        "y": 166.59375,
+        "width": 20,
+        "height": 20,
+        "top": 166.59375,
+        "right": 195.265625,
+        "bottom": 186.59375,
+        "left": 175.265625
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 185.265625,
+        "y": 176.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, jump one step forward in the navigation history\" id=\"react-aria8118544264-:r4b:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 164.90625,
+        "y": 124.59375,
+        "width": 15,
+        "height": 15,
+        "top": 124.59375,
+        "right": 179.90625,
+        "bottom": 139.59375,
+        "left": 164.90625
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 172.40625,
+        "y": 132.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigateNextHistory\" aria-label=\"Edit (Go to Next History) SHIFT CTRL + Backspace\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 209.59375,
+        "y": 153.59375,
+        "width": 20,
+        "height": 20,
+        "top": 153.59375,
+        "right": 229.59375,
+        "bottom": 173.59375,
+        "left": 209.59375
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 219.59375,
+        "y": 163.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the library window, show the next page of a paginated list of publications. Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r4e:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 201.484375,
+        "y": 171.59375,
+        "width": 15,
+        "height": 15,
+        "top": 171.59375,
+        "right": 216.484375,
+        "bottom": 186.59375,
+        "left": 201.484375
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 208.984375,
+        "y": 179.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigateNextLibraryPage\" aria-label=\"Edit (Go to Next Library Page) SHIFT CTRL + ArrowRight\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 210.46875,
+        "y": 121.59375,
+        "width": 20,
+        "height": 20,
+        "top": 121.59375,
+        "right": 230.46875,
+        "bottom": 141.59375,
+        "left": 210.46875
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 220.46875,
+        "y": 131.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the library window, show the next page of a paginated list of publications. This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r4h:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 32,
+        "y": 124.59375,
+        "width": 15,
+        "height": 15,
+        "top": 124.59375,
+        "right": 47,
+        "bottom": 139.59375,
+        "left": 32
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 39.5,
+        "y": 132.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigateNextLibraryPageAlt\" aria-label=\"Edit (Go to Next Library Page (Alternative)) SHIFT CTRL + Period\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 135.78125,
+        "y": 142.59375,
+        "width": 20,
+        "height": 20,
+        "top": 142.59375,
+        "right": 155.78125,
+        "bottom": 162.59375,
+        "left": 135.78125
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 145.78125,
+        "y": 152.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the library window for catalogs / OPDS feeds, follow the next pagination link. Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r4k:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 193.703125,
+        "y": 171.59375,
+        "width": 15,
+        "height": 15,
+        "top": 171.59375,
+        "right": 208.703125,
+        "bottom": 186.59375,
+        "left": 193.703125
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 201.203125,
+        "y": 179.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigateNextOPDSPage\" aria-label=\"Edit (Go to Next OPDS Page) SHIFT CTRL + ArrowRight\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 210.46875,
+        "y": 121.59375,
+        "width": 20,
+        "height": 20,
+        "top": 121.59375,
+        "right": 230.46875,
+        "bottom": 141.59375,
+        "left": 210.46875
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 220.46875,
+        "y": 131.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the library window for catalogs / OPDS feeds, follow the next pagination link. This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r4n:\" aria-describedby=\"react-aria8118544264-:r4m:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 32,
+        "y": 124.59375,
+        "width": 15,
+        "height": 15,
+        "top": 124.59375,
+        "right": 47,
+        "bottom": 139.59375,
+        "left": 32
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 39.5,
+        "y": 132.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigateNextOPDSPageAlt\" aria-label=\"Edit (Go to Next OPDS Page (Alternative)) SHIFT CTRL + Period\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 135.78125,
+        "y": 142.59375,
+        "width": 20,
+        "height": 20,
+        "top": 142.59375,
+        "right": 155.78125,
+        "bottom": 162.59375,
+        "left": 135.78125
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 145.78125,
+        "y": 152.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, turn to the next 'page' in the publication. Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r4q:\" aria-describedby=\"react-aria8118544264-:r4p:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 150.140625,
+        "y": 171.59375,
+        "width": 15,
+        "height": 15,
+        "top": 171.59375,
+        "right": 165.140625,
+        "bottom": 186.59375,
+        "left": 150.140625
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 157.640625,
+        "y": 179.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigateNextPage\" aria-label=\"Edit (Go to Next Page) ArrowRight\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 116.140625,
+        "y": 121.59375,
+        "width": 20,
+        "height": 20,
+        "top": 121.59375,
+        "right": 136.140625,
+        "bottom": 141.59375,
+        "left": 116.140625
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 126.140625,
+        "y": 131.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, turn to the next 'page' in the publication. This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r4t:\" aria-describedby=\"react-aria8118544264-:r4s:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 235.703125,
+        "y": 165.59375,
+        "width": 15,
+        "height": 15,
+        "top": 165.59375,
+        "right": 250.703125,
+        "bottom": 180.59375,
+        "left": 235.703125
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 243.203125,
+        "y": 173.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigateNextPageAlt\" aria-label=\"Edit (Go to Next Page (Alternative)) CTRL + Period\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 101.4375,
+        "y": 166.59375,
+        "width": 20,
+        "height": 20,
+        "top": 166.59375,
+        "right": 121.4375,
+        "bottom": 186.59375,
+        "left": 101.4375
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 111.4375,
+        "y": 176.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, navigate to the previous document in the reading order of the publication (e.g. chapter in the book spine). Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r50:\" aria-describedby=\"react-aria8118544264-:r4v:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 198.359375,
+        "y": 124.59375,
+        "width": 15,
+        "height": 15,
+        "top": 124.59375,
+        "right": 213.359375,
+        "bottom": 139.59375,
+        "left": 198.359375
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 205.859375,
+        "y": 132.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigatePreviousChapter\" aria-label=\"Edit (Go to Previous Chapter) SHIFT CTRL ALT + ArrowLeft\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 246.46875,
+        "y": 153.59375,
+        "width": 20,
+        "height": 20,
+        "top": 153.59375,
+        "right": 266.46875,
+        "bottom": 173.59375,
+        "left": 246.46875
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 256.46875,
+        "y": 163.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, navigate to the previous document in the reading order of the publication (e.g. chapter in the book spine). This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r53:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 32,
+        "y": 124.59375,
+        "width": 15,
+        "height": 15,
+        "top": 124.59375,
+        "right": 47,
+        "bottom": 139.59375,
+        "left": 32
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 39.5,
+        "y": 132.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigatePreviousChapterAlt\" aria-label=\"Edit (Go to Previous Chapter (Alternative)) CTRL + PageUp\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 154.8125,
+        "y": 142.59375,
+        "width": 20,
+        "height": 20,
+        "top": 142.59375,
+        "right": 174.8125,
+        "bottom": 162.59375,
+        "left": 154.8125
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 164.8125,
+        "y": 152.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, jump one step backwards in the navigation history\" id=\"react-aria8118544264-:r56:\" aria-describedby=\"react-aria8118544264-:r55:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 193.703125,
+        "y": 171.59375,
+        "width": 15,
+        "height": 15,
+        "top": 171.59375,
+        "right": 208.703125,
+        "bottom": 186.59375,
+        "left": 193.703125
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 201.203125,
+        "y": 179.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigatePreviousHistory\" aria-label=\"Edit (Go to Previous History) CTRL + Backspace\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 175.25,
+        "y": 121.59375,
+        "width": 20,
+        "height": 20,
+        "top": 121.59375,
+        "right": 195.25,
+        "bottom": 141.59375,
+        "left": 175.25
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 185.25,
+        "y": 131.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the library window, show the previous page of a paginated list of publications. Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r59:\" aria-describedby=\"react-aria8118544264-:r58:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 230.28125,
+        "y": 165.59375,
+        "width": 15,
+        "height": 15,
+        "top": 165.59375,
+        "right": 245.28125,
+        "bottom": 180.59375,
+        "left": 230.28125
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 237.78125,
+        "y": 173.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigatePreviousLibraryPage\" aria-label=\"Edit (Go to Previous Library Page) SHIFT CTRL + ArrowLeft\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 199.796875,
+        "y": 166.59375,
+        "width": 20,
+        "height": 20,
+        "top": 166.59375,
+        "right": 219.796875,
+        "bottom": 186.59375,
+        "left": 199.796875
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 209.796875,
+        "y": 176.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the library window, show the previous page of a paginated list of publications. This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r5c:\" aria-describedby=\"react-aria8118544264-:r5b:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 32,
+        "y": 124.59375,
+        "width": 15,
+        "height": 15,
+        "top": 124.59375,
+        "right": 47,
+        "bottom": 139.59375,
+        "left": 32
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 39.5,
+        "y": 132.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigatePreviousLibraryPageAlt\" aria-label=\"Edit (Go to Previous Library Page (Alternative)) SHIFT CTRL + Comma\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 135.78125,
+        "y": 142.59375,
+        "width": 20,
+        "height": 20,
+        "top": 142.59375,
+        "right": 155.78125,
+        "bottom": 162.59375,
+        "left": 135.78125
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 145.78125,
+        "y": 152.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the library window for catalogs / OPDS feeds, follow the previous pagination link. Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r5f:\" aria-describedby=\"react-aria8118544264-:r5e:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 222.5,
+        "y": 171.59375,
+        "width": 15,
+        "height": 15,
+        "top": 171.59375,
+        "right": 237.5,
+        "bottom": 186.59375,
+        "left": 222.5
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 230,
+        "y": 179.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigatePreviousOPDSPage\" aria-label=\"Edit (Go to Previous OPDS Page) SHIFT CTRL + ArrowLeft\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 199.796875,
+        "y": 121.59375,
+        "width": 20,
+        "height": 20,
+        "top": 121.59375,
+        "right": 219.796875,
+        "bottom": 141.59375,
+        "left": 199.796875
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 209.796875,
+        "y": 131.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the library window for catalogs / OPDS feeds, follow the previous pagination link. This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r5i:\" aria-describedby=\"react-aria8118544264-:r5h:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 32,
+        "y": 124.59375,
+        "width": 15,
+        "height": 15,
+        "top": 124.59375,
+        "right": 47,
+        "bottom": 139.59375,
+        "left": 32
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 39.5,
+        "y": 132.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigatePreviousOPDSPageAlt\" aria-label=\"Edit (Go to Previous OPDS Page (Alternative)) SHIFT CTRL + Comma\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 135.78125,
+        "y": 142.59375,
+        "width": 20,
+        "height": 20,
+        "top": 142.59375,
+        "right": 155.78125,
+        "bottom": 162.59375,
+        "left": 135.78125
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 145.78125,
+        "y": 152.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, turn to the previous 'page' in the publication. Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r5l:\" aria-describedby=\"react-aria8118544264-:r5k:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 178.9375,
+        "y": 171.59375,
+        "width": 15,
+        "height": 15,
+        "top": 171.59375,
+        "right": 193.9375,
+        "bottom": 186.59375,
+        "left": 178.9375
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 186.4375,
+        "y": 179.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigatePreviousPage\" aria-label=\"Edit (Go to Previous Page) ArrowLeft\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 105.46875,
+        "y": 121.59375,
+        "width": 20,
+        "height": 20,
+        "top": 121.59375,
+        "right": 125.46875,
+        "bottom": 141.59375,
+        "left": 105.46875
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 115.46875,
+        "y": 131.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, turn to the previous 'page' in the publication. This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r5o:\" aria-describedby=\"react-aria8118544264-:r5n:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 32,
+        "y": 171.59375,
+        "width": 15,
+        "height": 15,
+        "top": 171.59375,
+        "right": 47,
+        "bottom": 186.59375,
+        "left": 32
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 39.5,
+        "y": 179.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigatePreviousPageAlt\" aria-label=\"Edit (Go to Previous Page (Alternative)) CTRL + Comma\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 101.4375,
+        "y": 166.59375,
+        "width": 20,
+        "height": 20,
+        "top": 166.59375,
+        "right": 121.4375,
+        "bottom": 186.59375,
+        "left": 101.4375
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 111.4375,
+        "y": 176.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, go to the beginning of the publication\" id=\"react-aria8118544264-:r5r:\" aria-describedby=\"react-aria8118544264-:r5q:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 150.875,
+        "y": 124.59375,
+        "width": 15,
+        "height": 15,
+        "top": 124.59375,
+        "right": 165.875,
+        "bottom": 139.59375,
+        "left": 150.875
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 158.375,
+        "y": 132.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigateToBegin\" aria-label=\"Edit (Go to Beginning) CTRL + Home\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 139.671875,
+        "y": 153.59375,
+        "width": 20,
+        "height": 20,
+        "top": 153.59375,
+        "right": 159.671875,
+        "bottom": 173.59375,
+        "left": 139.671875
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 149.671875,
+        "y": 163.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, go to the end of the publication\" id=\"react-aria8118544264-:r5u:\" aria-describedby=\"react-aria8118544264-:r5t:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 108.890625,
+        "y": 171.59375,
+        "width": 15,
+        "height": 15,
+        "top": 171.59375,
+        "right": 123.890625,
+        "bottom": 186.59375,
+        "left": 108.890625
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 116.390625,
+        "y": 179.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_NavigateToEnd\" aria-label=\"Edit (Go to End) CTRL + End\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 125.453125,
+        "y": 121.59375,
+        "width": 20,
+        "height": 20,
+        "top": 121.59375,
+        "right": 145.453125,
+        "bottom": 141.59375,
+        "left": 125.453125
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 135.453125,
+        "y": 131.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, open the information dialog for the publication\" id=\"react-aria8118544264-:r61:\" aria-describedby=\"react-aria8118544264-:r60:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 252.03125,
+        "y": 165.59375,
+        "width": 15,
+        "height": 15,
+        "top": 165.59375,
+        "right": 267.03125,
+        "bottom": 180.59375,
+        "left": 252.03125
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 259.53125,
+        "y": 173.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_OpenReaderInfo\" aria-label=\"Edit (Display Publication Information) CTRL + KeyI\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 101.4375,
+        "y": 166.59375,
+        "width": 20,
+        "height": 20,
+        "top": 166.59375,
+        "right": 121.4375,
+        "bottom": 186.59375,
+        "left": 101.4375
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 111.4375,
+        "y": 176.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, open the popup dialog that display information about the publication, and focus the keyboard on the section that shows the context of the current reading location\" id=\"react-aria8118544264-:r64:\" aria-describedby=\"react-aria8118544264-:r63:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 32,
+        "y": 124.59375,
+        "width": 15,
+        "height": 15,
+        "top": 124.59375,
+        "right": 47,
+        "bottom": 139.59375,
+        "left": 32
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 39.5,
+        "y": 132.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_OpenReaderInfoWhereAmI\" aria-label=\"Edit (Display Publication Information, Show Reading Location) SHIFT CTRL + KeyI\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 135.78125,
+        "y": 142.59375,
+        "width": 20,
+        "height": 20,
+        "top": 142.59375,
+        "right": 155.78125,
+        "bottom": 162.59375,
+        "left": 135.78125
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 145.78125,
+        "y": 152.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, open the print dialog\" id=\"react-aria8118544264-:r67:\" aria-describedby=\"react-aria8118544264-:r66:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 73.890625,
+        "y": 171.59375,
+        "width": 15,
+        "height": 15,
+        "top": 171.59375,
+        "right": 88.890625,
+        "bottom": 186.59375,
+        "left": 73.890625
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 81.390625,
+        "y": 179.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_Print\" aria-label=\"Edit (Print) CTRL + KeyP\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 107.65625,
+        "y": 121.59375,
+        "width": 20,
+        "height": 20,
+        "top": 121.59375,
+        "right": 127.65625,
+        "bottom": 141.59375,
+        "left": 107.65625
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 117.65625,
+        "y": 131.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window's search tool, go to the next search result. Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r6a:\" aria-describedby=\"react-aria8118544264-:r69:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 169.609375,
+        "y": 165.59375,
+        "width": 15,
+        "height": 15,
+        "top": 165.59375,
+        "right": 184.609375,
+        "bottom": 180.59375,
+        "left": 169.609375
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 177.109375,
+        "y": 173.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_SearchNext\" aria-label=\"Edit (Search Result Next) F3\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 55.671875,
+        "y": 166.59375,
+        "width": 20,
+        "height": 20,
+        "top": 166.59375,
+        "right": 75.671875,
+        "bottom": 186.59375,
+        "left": 55.671875
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 65.671875,
+        "y": 176.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window's search tool, go to the next search result. This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r6d:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 255.1875,
+        "y": 124.59375,
+        "width": 15,
+        "height": 15,
+        "top": 124.59375,
+        "right": 270.1875,
+        "bottom": 139.59375,
+        "left": 255.1875
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 262.6875,
+        "y": 132.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_SearchNextAlt\" aria-label=\"Edit (Search Result Next (Alternative)) CTRL + KeyG\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 109.4375,
+        "y": 153.59375,
+        "width": 20,
+        "height": 20,
+        "top": 153.59375,
+        "right": 129.4375,
+        "bottom": 173.59375,
+        "left": 109.4375
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 119.4375,
+        "y": 163.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window's search tool, go to the previous search result. Note that there is an alternative keyboard shortcut to this default one\" id=\"react-aria8118544264-:r6g:\" aria-describedby=\"react-aria8118544264-:r6f:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 198.40625,
+        "y": 171.59375,
+        "width": 15,
+        "height": 15,
+        "top": 171.59375,
+        "right": 213.40625,
+        "bottom": 186.59375,
+        "left": 198.40625
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 205.90625,
+        "y": 179.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_SearchPrevious\" aria-label=\"Edit (Search Result Previous) SHIFT + F3\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 90.015625,
+        "y": 121.59375,
+        "width": 20,
+        "height": 20,
+        "top": 121.59375,
+        "right": 110.015625,
+        "bottom": 141.59375,
+        "left": 90.015625
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 100.015625,
+        "y": 131.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window's search tool, go to the previous search result. This is an alternative keyboard shortcut to the default one\" id=\"react-aria8118544264-:r6j:\" aria-describedby=\"react-aria8118544264-:r6i:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 32,
+        "y": 124.59375,
+        "width": 15,
+        "height": 15,
+        "top": 124.59375,
+        "right": 47,
+        "bottom": 139.59375,
+        "left": 32
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 39.5,
+        "y": 132.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_SearchPreviousAlt\" aria-label=\"Edit (Search Result Previous (Alternative)) SHIFT CTRL + KeyG\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 143.78125,
+        "y": 142.59375,
+        "width": 20,
+        "height": 20,
+        "top": 142.59375,
+        "right": 163.78125,
+        "bottom": 162.59375,
+        "left": 143.78125
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 153.78125,
+        "y": 152.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, describe the context of the current reading location, using speech text compatible with screen readers\" id=\"react-aria8118544264-:r6m:\" aria-describedby=\"react-aria8118544264-:r6l:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 32,
+        "y": 124.59375,
+        "width": 15,
+        "height": 15,
+        "top": 124.59375,
+        "right": 47,
+        "bottom": 139.59375,
+        "left": 32
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 39.5,
+        "y": 132.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_SpeakReaderInfoWhereAmI\" aria-label=\"Edit (Describe Reading Location (Speech)) SHIFT CTRL + KeyK\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 142,
+        "y": 142.59375,
+        "width": 20,
+        "height": 20,
+        "top": 142.59375,
+        "right": 162,
+        "bottom": 162.59375,
+        "left": 142
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 152,
+        "y": 152.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Add a new bookmark or remove an existing one if it is currently selected\" id=\"react-aria8118544264-:r6p:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 159.203125,
+        "y": 171.59375,
+        "width": 15,
+        "height": 15,
+        "top": 171.59375,
+        "right": 174.203125,
+        "bottom": 186.59375,
+        "left": 159.203125
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 166.703125,
+        "y": 179.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_ToggleBookmark\" aria-label=\"Edit (Toggle Bookmark) CTRL + KeyB\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 107.65625,
+        "y": 121.59375,
+        "width": 20,
+        "height": 20,
+        "top": 121.59375,
+        "right": 127.65625,
+        "bottom": 141.59375,
+        "left": 107.65625
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 117.65625,
+        "y": 131.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, activate system fullscreen or restore normal window mode. Note that this is different from 'zen mode' which simplifies the user interface\" id=\"react-aria8118544264-:r6s:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 160.765625,
+        "y": 165.59375,
+        "width": 15,
+        "height": 15,
+        "top": 165.59375,
+        "right": 175.765625,
+        "bottom": 180.59375,
+        "left": 160.765625
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 168.265625,
+        "y": 173.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_ToggleReaderFullscreen\" aria-label=\"Edit (Toggle Fullscreen) CTRL + F11\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 123.375,
+        "y": 166.59375,
+        "width": 20,
+        "height": 20,
+        "top": 166.59375,
+        "right": 143.375,
+        "bottom": 186.59375,
+        "left": 123.375
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 133.375,
+        "y": 176.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the reader window, activate or exit zen mode, which simplifies the user interface while reading\" id=\"react-aria8118544264-:r6v:\" aria-describedby=\"react-aria8118544264-:r6u:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 156.859375,
+        "y": 124.59375,
+        "width": 15,
+        "height": 15,
+        "top": 124.59375,
+        "right": 171.859375,
+        "bottom": 139.59375,
+        "left": 156.859375
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 164.359375,
+        "y": 132.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_ToggleReaderZenMode\" aria-label=\"Edit (Toggle Zen mode) SHIFT CTRL + F11\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 157.71875,
+        "y": 153.59375,
+        "width": 20,
+        "height": 20,
+        "top": 153.59375,
+        "right": 177.71875,
+        "bottom": 173.59375,
+        "left": 157.71875
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 167.71875,
+        "y": 163.59375
+      }
+    },
+    {
+      "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"In the library window, toggle optimized support for screen readers\" id=\"react-aria8118544264-:r72:\" aria-describedby=\"react-aria8118544264-:r71:\" data-focused=\"true\" data-focus-visible=\"true\" style=\"width: 15px; height: 15px; margin-left: 3px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 32,
+        "y": 138.59375,
+        "width": 15,
+        "height": 15,
+        "top": 138.59375,
+        "right": 47,
+        "bottom": 153.59375,
+        "left": 32
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#info-icon\"></use>",
+      "point": {
+        "x": 39.5,
+        "y": 146.09375
+      }
+    },
+    {
+      "html": "<button id=\"keyEditButt_ToggleScreenReaderOptimize\" aria-label=\"Edit (Toggle screen reader optimizations) SHIFT CTRL + F12\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 158.90625,
+        "y": 156.59375,
+        "width": 20,
+        "height": 20,
+        "top": 156.59375,
+        "right": 178.90625,
+        "bottom": 176.59375,
+        "left": 158.90625
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg>",
+      "point": {
+        "x": 168.90625,
+        "y": 166.59375
+      }
+    },
+    {
+      "html": "<button dir=\"ltr\" data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 268,
+        "y": 23,
+        "width": 30,
+        "height": 30,
+        "top": 23,
+        "right": 298,
+        "bottom": 53,
+        "left": 268
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#close-icon\"></use>",
+      "point": {
+        "x": 283,
+        "y": 38
+      }
+    },
+    {
+      "html": "<div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-keyboardShortcuts\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r9:-tab-tab-keyboardShortcuts\" aria-selected=\"true\" role=\"tab\" aria-controls=\"react-aria8118544264-:r9:-tabpanel-tab-keyboardShortcuts\" data-selected=\"true\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 14\"><use xlink:href=\"#keyreturn-icon\"></use></svg><span dir=\"ltr\">Keyboard shortcuts</span></div>",
+      "atStart": true,
+      "withinDialog": true,
+      "box": {
+        "x": 29,
+        "y": 108,
+        "width": 247,
+        "height": 32,
+        "top": 108,
+        "right": 276,
+        "bottom": 140,
+        "left": 29
+      },
+      "visible": true,
+      "hit": "<span dir=\"ltr\">Keyboard shortcuts</span>",
+      "point": {
+        "x": 152.5,
+        "y": 124
+      }
+    }
+  ]
+}

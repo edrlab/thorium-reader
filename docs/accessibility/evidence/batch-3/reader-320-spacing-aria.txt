@@ -1,0 +1,48 @@
+- main:
+  - 'heading "Component fixture: reader-settings-modal" [level=1]'
+  - button "Reader settings" [expanded]
+- button "Dismiss"
+- heading "Reader settings" [level=2]
+- dialog "Reader settings":
+  - tablist "Reader settings":
+    - tab "Display"
+    - tab "Text"
+    - tab "Spacing" [selected]
+    - tab "Preferences"
+  - checkbox "Customize text formatting" [checked]
+  - heading "Spacing" [level=2]
+  - tabpanel "Spacing":
+    - heading "Margin" [level=3]
+    - paragraph: "1"
+    - button "Reset Margin"
+    - button "Decrease Margin"
+    - slider "Margin": "3"
+    - button "Increase Margin"
+    - heading "Word spacing" [level=3]
+    - paragraph: Default
+    - button "Reset Word spacing"
+    - button "Decrease Word spacing"
+    - slider "Word spacing": "0"
+    - button "Increase Word spacing"
+    - heading "Letter spacing" [level=3]
+    - paragraph: Default
+    - button "Reset Letter spacing"
+    - button "Decrease Letter spacing"
+    - slider "Letter spacing": "0"
+    - button "Increase Letter spacing"
+    - heading "Paragraph spacing" [level=3]
+    - paragraph: Default
+    - button "Reset Paragraph spacing"
+    - button "Decrease Paragraph spacing"
+    - slider "Paragraph spacing": "0"
+    - button "Increase Paragraph spacing"
+    - heading "Line spacing" [level=3]
+    - paragraph: Default
+    - button "Reset Line spacing"
+    - button "Decrease Line spacing"
+    - slider "Line spacing": "0"
+    - button "Increase Line spacing"
+  - button "Dock panel to the left"
+  - button "Dock panel to the right"
+  - button "Show panel as a modal popup" [disabled]
+  - button "Close"

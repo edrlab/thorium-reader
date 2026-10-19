@@ -1,0 +1,30 @@
+- main:
+  - 'heading "Component fixture: library-settings" [level=1]'
+  - button "Application Settings" [expanded]:
+    - heading "Application Settings" [level=3]: Settings
+- button "Dismiss"
+- dialog "Settings":
+  - heading "Settings" [level=1]
+  - tablist "Application Settings":
+    - tab "General"
+    - tab "Keyboard shortcuts"
+    - tab "Profiles"
+    - tab "Storage" [selected]
+    - tab "Advanced"
+  - heading "Storage" [level=2]
+  - tabpanel "Storage":
+    - group:
+      - paragraph: Learn more about this feature, currently in beta
+      - text: ‹
+    - heading "Locations" [level=3]
+    - paragraph:
+      - strong: System Storage
+    - paragraph: "Publications managed by the application are by default stored in:"
+    - button "C:/Audit/Thorium/Publications/Library"
+    - heading "Configuration" [level=3]
+    - paragraph: Publications imported into Thorium Reader will be stored in the selected directory. Publications previously imported will stay in the original system storage.
+    - button "Select an additional storage"
+    - heading "Recovery" [level=3]
+    - paragraph: Check publication storage to find publications that can be safely recovered.
+    - button "Check for recoverable publications"
+  - button "Close"

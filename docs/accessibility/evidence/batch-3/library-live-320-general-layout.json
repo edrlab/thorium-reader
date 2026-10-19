@@ -1,0 +1,238 @@
+{
+  "kind": "layout-measurement",
+  "metrics": {
+    "viewport": {
+      "width": 320,
+      "height": 228
+    },
+    "zoom": 1,
+    "dialog": {
+      "x": 16,
+      "y": 16,
+      "width": 288,
+      "height": 196,
+      "top": 16,
+      "right": 304,
+      "bottom": 212,
+      "left": 16
+    },
+    "close": {
+      "x": 268,
+      "y": 23,
+      "width": 30,
+      "height": 30,
+      "top": 23,
+      "right": 298,
+      "bottom": 53,
+      "left": 268
+    },
+    "scroller": {
+      "rect": {
+        "x": 17,
+        "y": 17,
+        "width": 286,
+        "height": 194,
+        "top": 17,
+        "right": 303,
+        "bottom": 211,
+        "left": 17
+      },
+      "width": 271,
+      "scrollWidth": 271,
+      "height": 194,
+      "scrollHeight": 1363
+    },
+    "wide": []
+  },
+  "trace": [
+    {
+      "html": "<input type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria2146201223-:r3r:\" aria-labelledby=\"react-aria2146201223-:r3s:\" role=\"combobox\" aria-expanded=\"false\" class=\"react_aria_Input R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" value=\"English\" title=\"\" data-focused=\"true\" data-focus-visible=\"true\">",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 32,
+        "y": 119.65625,
+        "width": 235,
+        "height": 24,
+        "top": 119.65625,
+        "right": 267,
+        "bottom": 143.65625,
+        "left": 32
+      },
+      "visible": true,
+      "hit": "<input type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria2146201223-:r3r:\" aria-labelledby=\"react-aria21462012",
+      "point": {
+        "x": 149.5,
+        "y": 131.65625
+      }
+    },
+    {
+      "html": "<input type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria2146201223-:r48:\" aria-labelledby=\"react-aria2146201223-:r49:\" role=\"combobox\" aria-expanded=\"false\" class=\"react_aria_Input R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" value=\"Automatic\" title=\"\" data-focused=\"true\" data-focus-visible=\"true\">",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 32,
+        "y": 120.4375,
+        "width": 235,
+        "height": 24,
+        "top": 120.4375,
+        "right": 267,
+        "bottom": 144.4375,
+        "left": 32
+      },
+      "visible": true,
+      "hit": "<input type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria2146201223-:r48:\" aria-labelledby=\"react-aria21462012",
+      "point": {
+        "x": 149.5,
+        "y": 132.4375
+      }
+    },
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Enhance screen reader experience\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 29,
+        "y": 124.4375,
+        "width": 16,
+        "height": 16,
+        "top": 124.4375,
+        "right": 45,
+        "bottom": 140.4375,
+        "left": 29
+      },
+      "visible": true,
+      "hit": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Enhance screen reader experience\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); bac",
+      "point": {
+        "x": 37,
+        "y": 132.4375
+      }
+    },
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Minimize the library to the system tray\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 29,
+        "y": 124.4375,
+        "width": 16,
+        "height": 16,
+        "top": 124.4375,
+        "right": 45,
+        "bottom": 140.4375,
+        "left": 29
+      },
+      "visible": true,
+      "hit": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Minimize the library to the system tray\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primar",
+      "point": {
+        "x": 37,
+        "y": 132.4375
+      }
+    },
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Minimize the library after opening reader windows\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 29,
+        "y": 123.59375,
+        "width": 16,
+        "height": 16,
+        "top": 123.59375,
+        "right": 45,
+        "bottom": 139.59375,
+        "left": 29
+      },
+      "visible": true,
+      "hit": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Minimize the library after opening reader windows\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-t",
+      "point": {
+        "x": 37,
+        "y": 131.59375
+      }
+    },
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Keep the library in the background after closing reader windows\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 29,
+        "y": 123.59375,
+        "width": 16,
+        "height": 16,
+        "top": 123.59375,
+        "right": 45,
+        "bottom": 139.59375,
+        "left": 29
+      },
+      "visible": true,
+      "hit": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Keep the library in the background after closing reader windows\" class=\"checkbox_custom\" style=\"border: 2px solid",
+      "point": {
+        "x": 37,
+        "y": 131.59375
+      }
+    },
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Use one reader window per publication\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 29,
+        "y": 123.59375,
+        "width": 16,
+        "height": 16,
+        "top": 123.59375,
+        "right": 45,
+        "bottom": 139.59375,
+        "left": 29
+      },
+      "visible": true,
+      "hit": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Use one reader window per publication\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary)",
+      "point": {
+        "x": 37,
+        "y": 131.59375
+      }
+    },
+    {
+      "html": "<button dir=\"ltr\" data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 268,
+        "y": 23,
+        "width": 30,
+        "height": 30,
+        "top": 23,
+        "right": 298,
+        "bottom": 53,
+        "left": 268
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#close-icon\"></use>",
+      "point": {
+        "x": 283,
+        "y": 38
+      }
+    },
+    {
+      "html": "<div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria2146201223-:r3j:\" data-key=\"tab-general\" data-react-aria-pressable=\"true\" id=\"react-aria2146201223-:r3k:-tab-tab-general\" aria-selected=\"true\" aria-controls=\"react-aria2146201223-:r3k:-tabpanel-tab-general\" role=\"tab\" data-selected=\"true\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 19 20\"><use xlink:href=\"#cog-icon\"></use></svg><span dir=\"ltr\">General</span></div>",
+      "atStart": true,
+      "withinDialog": true,
+      "box": {
+        "x": 29,
+        "y": 67,
+        "width": 247,
+        "height": 32,
+        "top": 67,
+        "right": 276,
+        "bottom": 99,
+        "left": 29
+      },
+      "visible": true,
+      "hit": "<div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria2146201223-:r3j:\" data-key=\"tab-general\" data-react-aria-pressable=\"true\" id=\"react-aria2146201223-:",
+      "point": {
+        "x": 152.5,
+        "y": 83
+      }
+    }
+  ]
+}

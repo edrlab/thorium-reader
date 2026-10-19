@@ -1,0 +1,175 @@
+{
+  "kind": "layout-measurement",
+  "metrics": {
+    "viewport": {
+      "width": 320,
+      "height": 228
+    },
+    "zoom": 1,
+    "dialog": {
+      "x": 16,
+      "y": 16,
+      "width": 288,
+      "height": 196,
+      "top": 16,
+      "right": 304,
+      "bottom": 212,
+      "left": 16
+    },
+    "close": {
+      "x": 268,
+      "y": 23,
+      "width": 30,
+      "height": 30,
+      "top": 23,
+      "right": 298,
+      "bottom": 53,
+      "left": 268
+    },
+    "scroller": {
+      "rect": {
+        "x": 17,
+        "y": 17,
+        "width": 286,
+        "height": 194,
+        "top": 17,
+        "right": 303,
+        "bottom": 211,
+        "left": 17
+      },
+      "width": 271,
+      "scrollWidth": 271,
+      "height": 194,
+      "scrollHeight": 1020
+    },
+    "wide": []
+  },
+  "trace": [
+    {
+      "html": "<summary dir=\"ltr\"><div style=\"display: flex; align-items: center; gap: 10px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg><p>Learn more about this feature, currently in beta</p></div></summary>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 39,
+        "y": 107.59375,
+        "width": 207,
+        "height": 48,
+        "top": 107.59375,
+        "right": 246,
+        "bottom": 155.59375,
+        "left": 39
+      },
+      "visible": true,
+      "hit": "<p>Learn more about this feature, currently in beta</p>",
+      "point": {
+        "x": 142.5,
+        "y": 131.59375
+      }
+    },
+    {
+      "html": "<button class=\"button_nav_tertiary\">C:\\Users\\plero\\AppData\\Roaming\\EDRLab.ThoriumReader\\publications-dev</button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 34,
+        "y": 96.59375,
+        "width": 242,
+        "height": 70.78125,
+        "top": 96.59375,
+        "right": 276,
+        "bottom": 167.375,
+        "left": 34
+      },
+      "visible": true,
+      "hit": "<button class=\"button_nav_tertiary\">C:\\Users\\plero\\AppData\\Roaming\\EDRLab.ThoriumReader\\publications-dev</button>",
+      "point": {
+        "x": 155,
+        "y": 131.984375
+      }
+    },
+    {
+      "html": "<button class=\"button_secondary_blue\">Select an additional storage</button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 29,
+        "y": 117.375,
+        "width": 247,
+        "height": 30,
+        "top": 117.375,
+        "right": 276,
+        "bottom": 147.375,
+        "left": 29
+      },
+      "visible": true,
+      "hit": "<button class=\"button_secondary_blue\">Select an additional storage</button>",
+      "point": {
+        "x": 152.5,
+        "y": 132.375
+      }
+    },
+    {
+      "html": "<button class=\"button_secondary_blue\" aria-disabled=\"false\">Check for recoverable publications</button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 29,
+        "y": 144.375,
+        "width": 226.78125,
+        "height": 30,
+        "top": 144.375,
+        "right": 255.78125,
+        "bottom": 174.375,
+        "left": 29
+      },
+      "visible": true,
+      "hit": "<button class=\"button_secondary_blue\" aria-disabled=\"false\">Check for recoverable publications</button>",
+      "point": {
+        "x": 142.390625,
+        "y": 159.375
+      }
+    },
+    {
+      "html": "<button dir=\"ltr\" data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 268,
+        "y": 23,
+        "width": 30,
+        "height": 30,
+        "top": 23,
+        "right": 298,
+        "bottom": 53,
+        "left": 268
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#close-icon\"></use>",
+      "point": {
+        "x": 283,
+        "y": 38
+      }
+    },
+    {
+      "html": "<div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria2146201223-:r3j:\" data-key=\"tab-storage\" data-react-aria-pressable=\"true\" id=\"react-aria2146201223-:r3k:-tab-tab-storage\" aria-selected=\"true\" role=\"tab\" aria-controls=\"react-aria2146201223-:r3k:-tabpanel-tab-storage\" data-selected=\"true\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 11\"><use xlink:href=\"#library-icon\"></use></svg><span dir=\"ltr\">Storage</span></div>",
+      "atStart": true,
+      "withinDialog": true,
+      "box": {
+        "x": 29,
+        "y": 116,
+        "width": 247,
+        "height": 32,
+        "top": 116,
+        "right": 276,
+        "bottom": 148,
+        "left": 29
+      },
+      "visible": true,
+      "hit": "<div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria2146201223-:r3j:\" data-key=\"tab-storage\" data-react-aria-pressable=\"true\" id=\"react-aria2146201223-:",
+      "point": {
+        "x": 152.5,
+        "y": 132
+      }
+    }
+  ]
+}

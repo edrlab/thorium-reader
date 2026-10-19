@@ -1,0 +1,196 @@
+{
+  "kind": "layout-measurement",
+  "metrics": {
+    "viewport": {
+      "width": 320,
+      "height": 228
+    },
+    "zoom": 1,
+    "dialog": {
+      "x": 16,
+      "y": 16,
+      "width": 288,
+      "height": 196,
+      "top": 16,
+      "right": 304,
+      "bottom": 212,
+      "left": 16
+    },
+    "close": {
+      "x": 268,
+      "y": 23,
+      "width": 30,
+      "height": 30,
+      "top": 23,
+      "right": 298,
+      "bottom": 53,
+      "left": 268
+    },
+    "scroller": {
+      "rect": {
+        "x": 17,
+        "y": 17,
+        "width": 286,
+        "height": 196,
+        "top": 17,
+        "right": 303,
+        "bottom": 213,
+        "left": 17
+      },
+      "width": 271,
+      "scrollWidth": 271,
+      "height": 196,
+      "scrollHeight": 685
+    },
+    "wide": []
+  },
+  "trace": [
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"true\" aria-label=\"Customize text formatting\" class=\"checkbox_custom\" style=\"border: 2px solid transparent; background-color: var(--color-brand-primary);\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 13\"><use xlink:href=\"#singlecheck-icon\"></use></svg></div>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 44.09375,
+        "y": 167,
+        "width": 16,
+        "height": 16,
+        "top": 167,
+        "right": 60.09375,
+        "bottom": 183,
+        "left": 44.09375
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 17 13\"><use xlink:href=\"#singlecheck-icon\"></use></svg>",
+      "point": {
+        "x": 52.09375,
+        "y": 175
+      }
+    },
+    {
+      "html": "<button class=\"button_secondary_blue\" style=\"height: 30px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 15 7\"><use xlink:href=\"#doubleCheck-icon\"></use></svg>Apply</button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 29,
+        "y": 117.59375,
+        "width": 100,
+        "height": 30,
+        "top": 117.59375,
+        "right": 129,
+        "bottom": 147.59375,
+        "left": 29
+      },
+      "visible": true,
+      "hit": "<button class=\"button_secondary_blue\" style=\"height: 30px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 15 7\"><use xlink:href=\"#doubleCheck-icon\"></use></svg>Apply</button>",
+      "point": {
+        "x": 79,
+        "y": 132.59375
+      }
+    },
+    {
+      "html": "<button class=\"button_secondary_blue\" style=\"height: 30px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#clock-reverse-icon\"></use></svg>Reset</button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 29,
+        "y": 124.59375,
+        "width": 100,
+        "height": 30,
+        "top": 124.59375,
+        "right": 129,
+        "bottom": 154.59375,
+        "left": 29
+      },
+      "visible": true,
+      "hit": "<button class=\"button_secondary_blue\" style=\"height: 30px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#clock-reverse-icon\"></use></svg>Reset</button>",
+      "point": {
+        "x": 79,
+        "y": 139.59375
+      }
+    },
+    {
+      "html": "<button class=\"button_transparency_icon\" aria-label=\"Dock panel to the left\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 15\"><use xlink:href=\"#dockleft-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 163,
+        "y": 23,
+        "width": 30,
+        "height": 30,
+        "top": 23,
+        "right": 193,
+        "bottom": 53,
+        "left": 163
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 18 15\"><use xlink:href=\"#dockleft-icon\"></use></svg>",
+      "point": {
+        "x": 178,
+        "y": 38
+      }
+    },
+    {
+      "html": "<button class=\"button_transparency_icon\" aria-label=\"Dock panel to the right\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 15\"><use xlink:href=\"#dockright-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 198,
+        "y": 23,
+        "width": 30,
+        "height": 30,
+        "top": 23,
+        "right": 228,
+        "bottom": 53,
+        "left": 198
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 18 15\"><use xlink:href=\"#dockright-icon\"></use></svg>",
+      "point": {
+        "x": 213,
+        "y": 38
+      }
+    },
+    {
+      "html": "<button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 268,
+        "y": 23,
+        "width": 30,
+        "height": 30,
+        "top": 23,
+        "right": 298,
+        "bottom": 53,
+        "left": 268
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#close-icon\"></use>",
+      "point": {
+        "x": 283,
+        "y": 38
+      }
+    },
+    {
+      "html": "<div data-separator-before=\"true\" data-value=\"tab-preset\" class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria567327564-:r8:\" data-key=\"tab-preset\" data-react-aria-pressable=\"true\" id=\"react-aria567327564-:r9:-tab-tab-preset\" aria-selected=\"true\" role=\"tab\" aria-controls=\"react-aria567327564-:r9:-tabpanel-tab-preset\" data-selected=\"true\" data-focus-id=\"reader-settings-nav\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#gear-icon\"></use></svg><span>Preferences</span></div>",
+      "atStart": true,
+      "withinDialog": true,
+      "box": {
+        "x": 29,
+        "y": 117,
+        "width": 247,
+        "height": 32,
+        "top": 117,
+        "right": 276,
+        "bottom": 149,
+        "left": 29
+      },
+      "visible": true,
+      "hit": "<div data-separator-before=\"true\" data-value=\"tab-preset\" class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria567327564-:r8:\" data-key=\"tab-preset\" data-reac",
+      "point": {
+        "x": 152.5,
+        "y": 133
+      }
+    }
+  ]
+}

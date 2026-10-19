@@ -1,0 +1,13 @@
+- main:
+  - 'heading "Component fixture: publication-tags" [level=1]'
+  - heading "Tags :" [level=3]
+  - link "Research":
+    - /url: /library?focus=tags&value=Research
+  - 'button "Edit tag: Research"'
+  - link "To read":
+    - /url: /library?focus=tags&value=To%20read
+  - 'button "Edit tag: To read"'
+  - text: Tag
+  - group:
+    - combobox "Tag"
+  - button "Add"

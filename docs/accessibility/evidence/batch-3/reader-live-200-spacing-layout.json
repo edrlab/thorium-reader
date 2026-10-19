@@ -1,0 +1,574 @@
+{
+  "kind": "layout-measurement",
+  "metrics": {
+    "viewport": {
+      "width": 544,
+      "height": 385
+    },
+    "zoom": 2,
+    "dialog": {
+      "x": 16,
+      "y": 16,
+      "width": 512.5,
+      "height": 353.5,
+      "top": 16,
+      "right": 528.5,
+      "bottom": 369.5,
+      "left": 16
+    },
+    "close": {
+      "x": 493.5,
+      "y": 22,
+      "width": 30,
+      "height": 30,
+      "top": 22,
+      "right": 523.5,
+      "bottom": 52,
+      "left": 493.5
+    },
+    "scroller": {
+      "rect": {
+        "x": 16,
+        "y": 16,
+        "width": 512.5,
+        "height": 353.5,
+        "top": 16,
+        "right": 528.5,
+        "bottom": 369.5,
+        "left": 16
+      },
+      "width": 505,
+      "scrollWidth": 505,
+      "height": 354,
+      "scrollHeight": 858
+    },
+    "wide": []
+  },
+  "trace": [
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"true\" aria-label=\"Customize text formatting\" class=\"checkbox_custom\" style=\"border: 2px solid transparent; background-color: var(--color-brand-primary);\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 13\"><use xlink:href=\"#singlecheck-icon\"></use></svg></div>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 66.5,
+        "y": 239,
+        "width": 16,
+        "height": 16,
+        "top": 239,
+        "right": 82.5,
+        "bottom": 255,
+        "left": 66.5
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 17 13\"><use xlink:href=\"#singlecheck-icon\"></use></svg>",
+      "point": {
+        "x": 74.5,
+        "y": 247
+      }
+    },
+    {
+      "html": "<button class=\"reset_button\" title=\"Reset Margin\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#clock-reverse-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 28,
+        "y": 194.59375,
+        "width": 32,
+        "height": 32,
+        "top": 194.59375,
+        "right": 60,
+        "bottom": 226.59375,
+        "left": 28
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#clock-reverse-icon\"></use>",
+      "point": {
+        "x": 44,
+        "y": 210.59375
+      }
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Decrease Margin\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 61.54999923706055,
+        "y": 195.6437530517578,
+        "width": 29.89999771118164,
+        "height": 29.899993896484375,
+        "top": 195.6437530517578,
+        "right": 91.44999694824219,
+        "bottom": 225.5437469482422,
+        "left": 61.54999923706055
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#Minus-Bold\"></use>",
+      "point": {
+        "x": 76.49999809265137,
+        "y": 210.59375
+      }
+    },
+    {
+      "html": "<input id=\":r6k:-range\" type=\"range\" aria-labelledby=\":r6k:\" min=\"0\" max=\"7\" aria-valuetext=\"1\" class=\"\" value=\"3\">",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 95,
+        "y": 208.09375,
+        "width": 150,
+        "height": 5,
+        "top": 208.09375,
+        "right": 245,
+        "bottom": 213.09375,
+        "left": 95
+      },
+      "visible": true,
+      "hit": "<input id=\":r6k:-range\" type=\"range\" aria-labelledby=\":r6k:\" min=\"0\" max=\"7\" aria-valuetext=\"1\" class=\"\" value=\"3\">",
+      "point": {
+        "x": 170,
+        "y": 210.59375
+      }
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Increase Margin\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 248.5500030517578,
+        "y": 195.6437530517578,
+        "width": 29.900009155273438,
+        "height": 29.899993896484375,
+        "top": 195.6437530517578,
+        "right": 278.45001220703125,
+        "bottom": 225.5437469482422,
+        "left": 248.5500030517578
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#Plus-bold\"></use>",
+      "point": {
+        "x": 263.50000762939453,
+        "y": 210.59375
+      }
+    },
+    {
+      "html": "<button class=\"reset_button\" title=\"Reset Word spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#clock-reverse-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 28,
+        "y": 295.59375,
+        "width": 32,
+        "height": 32,
+        "top": 295.59375,
+        "right": 60,
+        "bottom": 327.59375,
+        "left": 28
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#clock-reverse-icon\"></use>",
+      "point": {
+        "x": 44,
+        "y": 311.59375
+      }
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Decrease Word spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 61.54999923706055,
+        "y": 296.64373779296875,
+        "width": 29.89999771118164,
+        "height": 29.9000244140625,
+        "top": 296.64373779296875,
+        "right": 91.44999694824219,
+        "bottom": 326.54376220703125,
+        "left": 61.54999923706055
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#Minus-Bold\"></use>",
+      "point": {
+        "x": 76.49999809265137,
+        "y": 311.59375
+      }
+    },
+    {
+      "html": "<input id=\":r6l:-range\" type=\"range\" aria-labelledby=\":r6l:\" min=\"0\" max=\"9\" aria-valuetext=\"Default\" class=\"range_inactive\" value=\"0\">",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 95,
+        "y": 309.09375,
+        "width": 150,
+        "height": 5,
+        "top": 309.09375,
+        "right": 245,
+        "bottom": 314.09375,
+        "left": 95
+      },
+      "visible": true,
+      "hit": "<input id=\":r6l:-range\" type=\"range\" aria-labelledby=\":r6l:\" min=\"0\" max=\"9\" aria-valuetext=\"Default\" class=\"range_inactive\" value=\"0\">",
+      "point": {
+        "x": 170,
+        "y": 311.59375
+      }
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Increase Word spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 248.5500030517578,
+        "y": 296.64373779296875,
+        "width": 29.900009155273438,
+        "height": 29.9000244140625,
+        "top": 296.64373779296875,
+        "right": 278.45001220703125,
+        "bottom": 326.54376220703125,
+        "left": 248.5500030517578
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#Plus-bold\"></use>",
+      "point": {
+        "x": 263.50000762939453,
+        "y": 311.59375
+      }
+    },
+    {
+      "html": "<button class=\"reset_button\" title=\"Reset Letter spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#clock-reverse-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 28,
+        "y": 194.59375,
+        "width": 32,
+        "height": 32,
+        "top": 194.59375,
+        "right": 60,
+        "bottom": 226.59375,
+        "left": 28
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#clock-reverse-icon\"></use>",
+      "point": {
+        "x": 44,
+        "y": 210.59375
+      }
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Decrease Letter spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 61.54999923706055,
+        "y": 195.6437530517578,
+        "width": 29.89999771118164,
+        "height": 29.899993896484375,
+        "top": 195.6437530517578,
+        "right": 91.44999694824219,
+        "bottom": 225.5437469482422,
+        "left": 61.54999923706055
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#Minus-Bold\"></use>",
+      "point": {
+        "x": 76.49999809265137,
+        "y": 210.59375
+      }
+    },
+    {
+      "html": "<input id=\":r6m:-range\" type=\"range\" aria-labelledby=\":r6m:\" min=\"0\" max=\"8\" aria-valuetext=\"Default\" class=\"range_inactive\" value=\"0\">",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 95,
+        "y": 208.09375,
+        "width": 150,
+        "height": 5,
+        "top": 208.09375,
+        "right": 245,
+        "bottom": 213.09375,
+        "left": 95
+      },
+      "visible": true,
+      "hit": "<input id=\":r6m:-range\" type=\"range\" aria-labelledby=\":r6m:\" min=\"0\" max=\"8\" aria-valuetext=\"Default\" class=\"range_inactive\" value=\"0\">",
+      "point": {
+        "x": 170,
+        "y": 210.59375
+      }
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Increase Letter spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 248.5500030517578,
+        "y": 195.6437530517578,
+        "width": 29.900009155273438,
+        "height": 29.899993896484375,
+        "top": 195.6437530517578,
+        "right": 278.45001220703125,
+        "bottom": 225.5437469482422,
+        "left": 248.5500030517578
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#Plus-bold\"></use>",
+      "point": {
+        "x": 263.50000762939453,
+        "y": 210.59375
+      }
+    },
+    {
+      "html": "<button class=\"reset_button\" title=\"Reset Paragraph spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#clock-reverse-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 28,
+        "y": 295.59375,
+        "width": 32,
+        "height": 32,
+        "top": 295.59375,
+        "right": 60,
+        "bottom": 327.59375,
+        "left": 28
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#clock-reverse-icon\"></use>",
+      "point": {
+        "x": 44,
+        "y": 311.59375
+      }
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Decrease Paragraph spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 61.54999923706055,
+        "y": 296.64373779296875,
+        "width": 29.89999771118164,
+        "height": 29.9000244140625,
+        "top": 296.64373779296875,
+        "right": 91.44999694824219,
+        "bottom": 326.54376220703125,
+        "left": 61.54999923706055
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#Minus-Bold\"></use>",
+      "point": {
+        "x": 76.49999809265137,
+        "y": 311.59375
+      }
+    },
+    {
+      "html": "<input id=\":r6n:-range\" type=\"range\" aria-labelledby=\":r6n:\" min=\"0\" max=\"7\" aria-valuetext=\"Default\" class=\"range_inactive\" value=\"0\">",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 95,
+        "y": 309.09375,
+        "width": 150,
+        "height": 5,
+        "top": 309.09375,
+        "right": 245,
+        "bottom": 314.09375,
+        "left": 95
+      },
+      "visible": true,
+      "hit": "<input id=\":r6n:-range\" type=\"range\" aria-labelledby=\":r6n:\" min=\"0\" max=\"7\" aria-valuetext=\"Default\" class=\"range_inactive\" value=\"0\">",
+      "point": {
+        "x": 170,
+        "y": 311.59375
+      }
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Increase Paragraph spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 248.5500030517578,
+        "y": 296.64373779296875,
+        "width": 29.900009155273438,
+        "height": 29.9000244140625,
+        "top": 296.64373779296875,
+        "right": 278.45001220703125,
+        "bottom": 326.54376220703125,
+        "left": 248.5500030517578
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#Plus-bold\"></use>",
+      "point": {
+        "x": 263.50000762939453,
+        "y": 311.59375
+      }
+    },
+    {
+      "html": "<button class=\"reset_button\" title=\"Reset Line spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#clock-reverse-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 28,
+        "y": 301.59375,
+        "width": 32,
+        "height": 32,
+        "top": 301.59375,
+        "right": 60,
+        "bottom": 333.59375,
+        "left": 28
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#clock-reverse-icon\"></use>",
+      "point": {
+        "x": 44,
+        "y": 317.59375
+      }
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Decrease Line spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 61.54999923706055,
+        "y": 302.64373779296875,
+        "width": 29.89999771118164,
+        "height": 29.9000244140625,
+        "top": 302.64373779296875,
+        "right": 91.44999694824219,
+        "bottom": 332.54376220703125,
+        "left": 61.54999923706055
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#Minus-Bold\"></use>",
+      "point": {
+        "x": 76.49999809265137,
+        "y": 317.59375
+      }
+    },
+    {
+      "html": "<input id=\":r6o:-range\" type=\"range\" aria-labelledby=\":r6o:\" min=\"0\" max=\"8\" aria-valuetext=\"Default\" class=\"range_inactive\" value=\"0\">",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 95,
+        "y": 315.09375,
+        "width": 150,
+        "height": 5,
+        "top": 315.09375,
+        "right": 245,
+        "bottom": 320.09375,
+        "left": 95
+      },
+      "visible": true,
+      "hit": "<input id=\":r6o:-range\" type=\"range\" aria-labelledby=\":r6o:\" min=\"0\" max=\"8\" aria-valuetext=\"Default\" class=\"range_inactive\" value=\"0\">",
+      "point": {
+        "x": 170,
+        "y": 317.59375
+      }
+    },
+    {
+      "html": "<button class=\"scale_button\" aria-label=\"Increase Line spacing\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 248.5500030517578,
+        "y": 302.64373779296875,
+        "width": 29.900009155273438,
+        "height": 29.9000244140625,
+        "top": 302.64373779296875,
+        "right": 278.45001220703125,
+        "bottom": 332.54376220703125,
+        "left": 248.5500030517578
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#Plus-bold\"></use>",
+      "point": {
+        "x": 263.50000762939453,
+        "y": 317.59375
+      }
+    },
+    {
+      "html": "<button class=\"button_transparency_icon\" aria-label=\"Dock panel to the left\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 15\"><use xlink:href=\"#dockleft-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 388.5,
+        "y": 22,
+        "width": 30,
+        "height": 30,
+        "top": 22,
+        "right": 418.5,
+        "bottom": 52,
+        "left": 388.5
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 18 15\"><use xlink:href=\"#dockleft-icon\"></use></svg>",
+      "point": {
+        "x": 403.5,
+        "y": 37
+      }
+    },
+    {
+      "html": "<button class=\"button_transparency_icon\" aria-label=\"Dock panel to the right\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 15\"><use xlink:href=\"#dockright-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 423.5,
+        "y": 22,
+        "width": 30,
+        "height": 30,
+        "top": 22,
+        "right": 453.5,
+        "bottom": 52,
+        "left": 423.5
+      },
+      "visible": true,
+      "hit": "<svg aria-hidden=\"true\" viewBox=\"0 0 18 15\"><use xlink:href=\"#dockright-icon\"></use></svg>",
+      "point": {
+        "x": 438.5,
+        "y": 37
+      }
+    },
+    {
+      "html": "<button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button>",
+      "atStart": false,
+      "withinDialog": true,
+      "box": {
+        "x": 493.5,
+        "y": 22,
+        "width": 30,
+        "height": 30,
+        "top": 22,
+        "right": 523.5,
+        "bottom": 52,
+        "left": 493.5
+      },
+      "visible": true,
+      "hit": "<use xlink:href=\"#close-icon\"></use>",
+      "point": {
+        "x": 508.5,
+        "y": 37
+      }
+    },
+    {
+      "html": "<div data-value=\"tab-spacing\" class=\"react-aria-Tab\" data-rac=\"\" data-collection=\"react-aria2624630345-:r49:\" data-key=\"tab-spacing\" id=\"react-aria2624630345-:r4a:-tab-tab-spacing\" aria-selected=\"true\" role=\"tab\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-controls=\"react-aria2624630345-:r4a:-tabpanel-tab-spacing\" data-selected=\"true\" data-focus-id=\"reader-settings-nav\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 14\"><use xlink:href=\"#layout-icon\"></use></svg><span>Spacing</span></div>",
+      "atStart": true,
+      "withinDialog": true,
+      "box": {
+        "x": 28,
+        "y": 148,
+        "width": 481,
+        "height": 32,
+        "top": 148,
+        "right": 509,
+        "bottom": 180,
+        "left": 28
+      },
+      "visible": true,
+      "hit": "<div data-value=\"tab-spacing\" class=\"react-aria-Tab\" data-rac=\"\" data-collection=\"react-aria2624630345-:r49:\" data-key=\"tab-spacing\" id=\"react-aria2624630345-:r4a:-tab-tab-spacing\"",
+      "point": {
+        "x": 268.5,
+        "y": 164
+      }
+    }
+  ]
+}

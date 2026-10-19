@@ -1,0 +1,66 @@
+{
+  "batch": 3,
+  "startup": "npm run start:dev:quick",
+  "tests": [
+    {
+      "id": "live-reader-settings-native-200-percent",
+      "status": "passed",
+      "findings": [
+        "A26"
+      ],
+      "evidence": [
+        "batch-3/reader-live-200-display.json",
+        "batch-3/reader-live-200-text.json",
+        "batch-3/reader-live-200-spacing.json",
+        "batch-3/reader-live-200-preferences.json"
+      ],
+      "keyboardStops": {
+        "Display": 16,
+        "Text": 10,
+        "Spacing": 25,
+        "Preferences": 7
+      },
+      "limitation": "Actual Electron webFrame zoom factor 2. Text customization toggled only to expose Text/Spacing and restored; format values and presets not changed."
+    },
+    {
+      "id": "live-existing-publication-tag-target-and-keyboard",
+      "status": "passed",
+      "findings": [
+        "A31"
+      ],
+      "evidence": [
+        "batch-3/library-live-tag-target.json",
+        "batch-3/library-live-tag-popover.json"
+      ],
+      "geometry": {
+        "x": 639.5625,
+        "y": 561.171875,
+        "width": 24,
+        "height": 24
+      },
+      "limitation": "Existing Crime & mystery fiction tag inspected in La Proie. Delete was never activated; no publication metadata changed."
+    },
+    {
+      "id": "live-library-settings-320-all-tabs",
+      "status": "passed",
+      "findings": [
+        "A26"
+      ],
+      "evidence": [
+        "batch-3/library-live-320-general.json",
+        "batch-3/library-live-320-keyboard-shortcuts.json",
+        "batch-3/library-live-320-profiles.json",
+        "batch-3/library-live-320-storage.json",
+        "batch-3/library-live-320-advanced.json"
+      ],
+      "keyboardStops": {
+        "General": 9,
+        "Keyboard shortcuts": 125,
+        "Profiles": 3,
+        "Storage": 6,
+        "Advanced": 10
+      },
+      "limitation": "CSS viewport 320x228 via CDP device metrics, not native window resize. Focus-only traversal; no setting, storage or shortcut action submitted."
+    }
+  ]
+}

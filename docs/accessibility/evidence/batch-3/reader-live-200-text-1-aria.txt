@@ -1,0 +1,57 @@
+- region "toolbar":
+  - heading "toolbar" [level=2]
+  - button "Skip to content"
+  - navigation "Bookshelf menu":
+    - heading "Thorium" [level=1]
+    - list:
+      - listitem:
+        - button "Home" [pressed]:
+          - heading "Home" [level=3]
+      - listitem:
+        - button "All publications":
+          - heading "All publications" [level=3]
+      - listitem:
+        - button "Catalogs":
+          - heading "Catalogs" [level=3]
+      - listitem:
+        - button "Application Settings":
+          - heading "Application Settings" [level=3]: Settings
+  - main "main content":
+    - button "Import publication"
+    - heading "main content" [level=2]
+    - heading "Resume reading" [level=2]
+    - button "Slide to the left" [disabled]
+    - list:
+      - listitem:
+        - img
+        - text: EPUB
+        - button "Menu (Accessible EPUB 3)":
+          - img "Menu (Accessible EPUB 3)"
+      - listitem:
+        - img
+        - text: PDF
+        - button "Menu (Untitled)":
+          - img "Menu (Untitled)"
+      - listitem:
+        - img
+        - text: 20 days EPUB
+        - button "Menu (La Proie)":
+          - img "Menu (La Proie)"
+      - listitem:
+        - img
+        - text: 17 days EPUB
+        - button "Menu (La toile de l'Araignée)":
+          - img "Menu (La toile de l'Araignée)"
+    - button "Slide to the right"
+    - heading "Recently added" [level=2]
+    - button "Slide to the left" [disabled]
+    - list:
+      - listitem:
+        - img
+        - text: Licensed EPUB
+        - button "Menu (The Waste Land)":
+          - img "Menu (The Waste Land)"
+    - button "Slide to the right" [disabled]
+    - paragraph: v3.5.2-beta.1
+    - link "About Thorium (online)":
+      - /url: ""

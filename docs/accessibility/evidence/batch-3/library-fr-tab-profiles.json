@@ -1,0 +1,235 @@
+{
+  "id": "library-settings",
+  "runtime": "library",
+  "files": [
+    "src/renderer/library/components/settings/Settings.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T13:24:15.647Z",
+  "lang": "fr",
+  "errors": [],
+  "actions": [
+    [
+      "dispatch",
+      {
+        "type": "AUDIT_SET",
+        "payload": {
+          "i18n": {
+            "locale": "fr"
+          }
+        }
+      }
+    ]
+  ],
+  "text": "Component fixture: library-settings\nPréférences\nPréférences\nGéneral\nRaccourcis clavier\nProfils\nStockage\nOptions avancées\nProfils\n\nChangez de profil pour personnaliser l’application avec un thème, des catalogues et des informations spécifiques. Chaque profil offre une expérience sur mesure.\n\nThorium Vanilla\n\nLe profil Thorium Vanilla est le profil original, développé par EDRLab.",
+  "html": "<div id=\"audit-root\" inert=\"\"><main><h1>Component fixture: library-settings</h1><button title=\"Préférences\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" aria-expanded=\"true\" id=\"react-aria8118544264-:r8s:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria8118544264-:r8r:\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#gear-icon\"></use></svg><h3 dir=\"ltr\" aria-label=\"Préférences de l'application\">Préférences</h3></button></main></div>\n<span data-focus-scope-start=\"true\" hidden=\"\" inert=\"\"></span>\n<div class=\"modal_dialog_overlay\" data-rac=\"\" style=\"position: fixed; inset: 0px; z-index: 102; --visual-viewport-width: 320px; --visual-viewport-height: 228px; --page-width: 320px; --page-height: 227.84375px;\"><div class=\"react-aria-Modal\" data-rac=\"\" style=\"display: contents;\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><button id=\"react-aria8118544264-:r8t:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button></div><section id=\"react-aria8118544264-:r8r:\" class=\"modal_dialog settings_dialog\" data-rac=\"\" aria-labelledby=\":r8o:\" role=\"dialog\" tabindex=\"-1\" style=\"overflow-y: hidden;\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><h1 id=\":r8o:\">Préférences</h1></div><template><div dir=\"ltr\" class=\"settings_tab_title\"><h2 dir=\"ltr\">Profils</h2></div><div class=\"settings_content\" style=\"margin-top: 70px;\"></div><div class=\"close_button_div\"><button dir=\"ltr\" data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Fermer\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></div></template><div data-orientation=\"vertical\" class=\"settings_container\" data-rac=\"\" data-focused=\"true\" data-focus-visible=\"true\"><div data-orientation=\"vertical\" class=\"settings_tabslist\" data-rac=\"\" data-collection=\"react-aria8118544264-:r90:\" id=\"react-aria8118544264-:r91:\" aria-label=\"Préférences de l'application\" role=\"tablist\" aria-orientation=\"vertical\"><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"-1\" data-collection=\"react-aria8118544264-:r90:\" data-key=\"tab-general\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r91:-tab-tab-general\" aria-selected=\"false\" role=\"tab\"><svg aria-hidden=\"true\" viewBox=\"0 0 19 20\"><use xlink:href=\"#cog-icon\"></use></svg><span dir=\"ltr\">Géneral</span></div><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"-1\" data-collection=\"react-aria8118544264-:r90:\" data-key=\"tab-keyboardShortcuts\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r91:-tab-tab-keyboardShortcuts\" aria-selected=\"false\" role=\"tab\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 14\"><use xlink:href=\"#keyreturn-icon\"></use></svg><span dir=\"ltr\">Raccourcis clavier</span></div><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria8118544264-:r90:\" data-key=\"tab-profiles\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r91:-tab-tab-profiles\" aria-selected=\"true\" role=\"tab\" data-focused=\"true\" data-focus-visible=\"true\" aria-controls=\"react-aria8118544264-:r91:-tabpanel-tab-profiles\" data-selected=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 11\"><use xlink:href=\"#avatar-icon\"></use></svg><span dir=\"ltr\">Profils</span></div><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"-1\" data-collection=\"react-aria8118544264-:r90:\" data-key=\"tab-storage\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r91:-tab-tab-storage\" aria-selected=\"false\" role=\"tab\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 11\"><use xlink:href=\"#library-icon\"></use></svg><span dir=\"ltr\">Stockage</span></div><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"-1\" data-collection=\"react-aria8118544264-:r90:\" data-key=\"tab-advanced\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r91:-tab-tab-advanced\" aria-selected=\"false\" role=\"tab\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 14\"><use xlink:href=\"#advanced-icon\"></use></svg><span dir=\"ltr\">Options avancées</span></div></div><div dir=\"ltr\" class=\"settings_tab_title\"><h2 dir=\"ltr\">Profils</h2></div><div class=\"settings_content\" style=\"margin-top: 70px;\"><div class=\"react-aria-TabPanels\" style=\"--tab-panel-width: auto; --tab-panel-height: auto;\"><div id=\"react-aria8118544264-:r91:-tabpanel-tab-profiles\" aria-labelledby=\"react-aria8118544264-:r91:-tab-tab-profiles\" role=\"tabpanel\" class=\"react-aria-TabPanel\" data-rac=\"\"><div class=\"settings_tab\"><div class=\"session_text\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg><p dir=\"ltr\">Changez de profil pour personnaliser l’application avec un thème, des catalogues et des informations spécifiques. Chaque profil offre une expérience sur mesure.</p></div><div class=\"profile_selection_form\" role=\"radiogroup\" aria-label=\"Profils\"><div class=\"profile_selection_input profile_selection_input_checked\"><input type=\"radio\" id=\":rft:-vanilla\" name=\":rft:\" aria-label=\"Thorium Vanilla\" value=\"Thorium Vanilla\" checked=\"\"><label for=\":rft:-vanilla\" class=\"profile_selection_label\"><svg aria-hidden=\"true\" viewBox=\"0 0 256 256\"><use xlink:href=\"#thorium\"></use></svg><div class=\"profile_selection_description\"><div><h3 dir=\"ltr\">Thorium Vanilla</h3><p dir=\"ltr\">Le profil Thorium Vanilla est le profil original, développé par EDRLab.</p></div></div></label></div></div></div></div></div></div><div class=\"close_button_div\"><button dir=\"ltr\" data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Fermer\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></div></div></section></div></div>\n<span data-focus-scope-end=\"true\" hidden=\"\" inert=\"\"></span>",
+  "dimensions": {
+    "width": 320,
+    "height": 228,
+    "scrollWidth": 320
+  },
+  "focus": "<div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria8118544264-:r90:\" data-key=\"tab-profiles\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r91:-tab-tab-profiles\" aria-selected=\"true\" role=\"tab\" data-focused=\"true\" data-focus-visible=\"true\" aria-controls=\"react-aria8118544264-:r91:-tabpanel-tab-profiles\" data-selected=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 11\"><use xlink:href=\"#avatar-icon\"></use></svg><span dir=\"ltr\">Profils</span></div>",
+  "controls": [
+    {
+      "html": "<button title=\"Préférences\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" aria-expanded=\"true\" id=\"react-aria8118544264-:r8s:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria8118544264-:r8r:\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#gear-icon\"></use></svg><h3 dir=\"ltr\" aria-label=\"Préférences de l'application\">Préférences</h3></button>",
+      "rect": {
+        "x": 0,
+        "y": 88.15625,
+        "width": 96.625,
+        "height": 30,
+        "top": 88.15625,
+        "right": 96.625,
+        "bottom": 118.15625,
+        "left": 0
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"react-aria8118544264-:r8t:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button>",
+      "rect": {
+        "x": 159.5,
+        "y": 113.5,
+        "width": 1,
+        "height": 1,
+        "top": 113.5,
+        "right": 160.5,
+        "bottom": 114.5,
+        "left": 159.5
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\":rft:-vanilla\" name=\":rft:\" aria-label=\"Thorium Vanilla\" value=\"Thorium Vanilla\" checked=\"\">",
+      "rect": {
+        "x": 153,
+        "y": 505.59375,
+        "width": 1,
+        "height": 1,
+        "top": 505.59375,
+        "right": 154,
+        "bottom": 506.59375,
+        "left": 153
+      },
+      "visible": true
+    },
+    {
+      "html": "<button dir=\"ltr\" data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Fermer\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button>",
+      "rect": {
+        "x": 268,
+        "y": 23,
+        "width": 30,
+        "height": 30,
+        "top": 23,
+        "right": 298,
+        "bottom": 53,
+        "left": 268
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [],
+    "incomplete": [],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 12
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 9
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 12
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 9
+      },
+      {
+        "id": "aria-dialog-name",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 10
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 12
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 9
+      },
+      {
+        "id": "aria-required-children",
+        "nodes": 1
+      },
+      {
+        "id": "aria-required-parent",
+        "nodes": 5
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 9
+      },
+      {
+        "id": "aria-tab-name",
+        "nodes": 5
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 12
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 12
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 4
+      },
+      {
+        "id": "button-name",
+        "nodes": 2
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 2
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "duplicate-id-aria",
+        "nodes": 5
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 3
+      },
+      {
+        "id": "form-field-multiple-labels",
+        "nodes": 1
+      },
+      {
+        "id": "heading-order",
+        "nodes": 3
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "label-title-only",
+        "nodes": 1
+      },
+      {
+        "id": "label",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 8
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 37
+      },
+      {
+        "id": "scrollable-region-focusable",
+        "nodes": 1
+      },
+      {
+        "id": "tabindex",
+        "nodes": 8
+      },
+      {
+        "id": "target-size",
+        "nodes": 8
+      }
+    ]
+  },
+  "evidencePrefix": "batch-3/library-fr-tab-profiles"
+}

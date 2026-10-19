@@ -1,0 +1,24 @@
+- main:
+  - 'heading "Component fixture: reader-settings-modal" [level=1]'
+  - button "Reader settings" [expanded]
+- button "Dismiss"
+- heading "Reader settings" [level=2]
+- dialog "Reader settings":
+  - tablist "Reader settings":
+    - tab "Display"
+    - tab "Text"
+    - tab "Spacing"
+    - tab "Preferences" [selected]
+  - checkbox "Customize text formatting" [checked]
+  - heading "Preferences" [level=2]
+  - tabpanel "Preferences":
+    - button "Save" [disabled]
+    - paragraph: This action saves the current configuration, i.e. your preferred display and text formatting options. The settings can then be applied to other publications by clicking the 'apply' button in other reader windows.
+    - button "Apply"
+    - paragraph: Apply your preferred configuration to the current publication.
+    - button "Reset"
+    - paragraph: Reset your preferred configuration (default settings).
+  - button "Dock panel to the left"
+  - button "Dock panel to the right"
+  - button "Show panel as a modal popup" [disabled]
+  - button "Close"

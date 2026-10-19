@@ -1,0 +1,127 @@
+- region "toolbar":
+  - heading "toolbar" [level=2]
+  - button "Skip to content"
+  - navigation "Bookshelf menu":
+    - heading "Thorium" [level=1]
+    - list:
+      - listitem:
+        - button "Home" [pressed]:
+          - heading "Home" [level=3]
+      - listitem:
+        - button "All publications":
+          - heading "All publications" [level=3]
+      - listitem:
+        - button "Catalogs":
+          - heading "Catalogs" [level=3]
+      - listitem:
+        - button "Application Settings":
+          - heading "Application Settings" [level=3]: Settings
+  - main "main content":
+    - button "Import publication"
+    - heading "main content" [level=2]
+    - heading "Resume reading" [level=2]
+    - button "Slide to the left" [disabled]
+    - list:
+      - listitem:
+        - img
+        - text: EPUB
+        - button "Menu (Accessible EPUB 3)":
+          - img "Menu (Accessible EPUB 3)"
+      - listitem:
+        - img
+        - text: PDF
+        - button "Menu (Untitled)":
+          - img "Menu (Untitled)"
+      - listitem:
+        - img
+        - text: 20 days EPUB
+        - button "Menu (La Proie)" [expanded]:
+          - img "Menu (La Proie)"
+      - listitem:
+        - img
+        - text: 17 days EPUB
+        - button "Menu (La toile de l'Araignée)":
+          - img "Menu (La toile de l'Araignée)"
+    - button "Slide to the right"
+    - heading "Recently added" [level=2]
+    - button "Slide to the left" [disabled]
+    - list:
+      - listitem:
+        - img
+        - text: Licensed EPUB
+        - button "Menu (The Waste Land)":
+          - img "Menu (The Waste Land)"
+    - button "Slide to the right" [disabled]
+    - paragraph: v3.5.2-beta.1
+    - link "About Thorium (online)":
+      - /url: ""
+- button "Dismiss"
+- dialog "Menu (La Proie)":
+  - button "About publication" [expanded]:
+    - paragraph: About publication
+  - button "Mark as read"
+  - button "Delete":
+    - paragraph: Delete
+  - button "Save as":
+    - paragraph: Save as
+  - button "Import notes"
+  - button "Export notes"
+- button "Dismiss"
+- button "Dismiss"
+- dialog "About publication":
+  - heading "About publication" [level=2]
+  - heading "About publication" [level=1]
+  - button "Close"
+  - img "cover image"
+  - button "Read"
+  - button "Renew"
+  - button "Return"
+  - button "Delete"
+  - button "Save as"
+  - heading "La Proie" [level=2]
+  - text: Yrsa Sigurðardóttir
+  - heading "Description" [level=3]
+  - text: "Après une soirée arrosée à Reykjavík, un groupe d’amis part en randonnée dans la réserve naturelle de Lónsöræfi. En plein hiver, au cœur des vents glacials, ils s’évanouissent. Quand les secours atteignent enfin leur campement déserté, une seule certitude s’impose : quelque chose les a poussés à fuir dans la panique, presque nus, vers la blancheur hostile. Au même moment, la station radar isolée de Stokksnes devient le théâtre d’évènements troublants. Le technicien de garde croit devenir fou – l’interphone, qui n’est plus raccordé depuis des années, sonne subitement dans la nuit. À l’autre bout, une voix d’enfant. Mais en allant inspecter, il n’y a personne. Et la neige immaculée ne ment pas… Paysages qui dévorent, et présences que l’on ne sait nommer, \"La Proie\" est un thriller glaçant redoutable où l’Islande, magnifique et farouche, révèle ce que la nuit emporte… et ce qu’elle rend."
+  - button "See more"
+  - heading "Publication Details" [level=3]
+  - strong: "Published on:"
+  - text: 12/08/2025
+  - strong: "Publisher:"
+  - text: Actes Sud
+  - strong: "Language:"
+  - text: Français (French) (fr)
+  - heading "Accessibility" [level=3]
+  - heading "Ways of reading" [level=5]
+  - list:
+    - listitem "Appearance of the text and page layout can be modified according to the capabilities of the reading system (font family and font size, spaces between paragraphs, sentences, words, and letters, as well as color of background and text)": Appearance can be modified
+    - listitem "All content can be read as read aloud speech or dynamic braille": Readable in read aloud or dynamic braille
+    - listitem "Has alternative text descriptions for images": Has alternative text
+  - heading "Navigation" [level=5]
+  - list:
+    - listitem "Table of contents to all chapters of the text via links": Table of contents
+    - listitem "Elements such as headings, tables, etc for structured navigation": Headings
+  - group: More information ‹
+  - heading "License (LCP)" [level=4]
+  - strong: "Remaining time:"
+  - text: 20 days (November 9, 2026 9:34 AM)
+  - strong: "Printed pages:"
+  - text: "0"
+  - status:
+    - strong: "Reading progress sync:"
+    - text: Not enabled for this publication.
+  - heading "Tags :" [level=3]
+  - link "Crime & mystery fiction":
+    - /url: "#/library?focus=tags&value=Crime%20%26%20mystery%20fiction"
+  - 'button "Edit tag: Crime & mystery fiction" [expanded]'
+  - text: Tag
+  - group:
+    - combobox "Tag"
+    - button "Show suggestions Tag"
+  - button "Add"
+  - heading "Progression" [level=3]
+  - paragraph: 14/41 (6) [25%]
+  - paragraph: "Current page: 64"
+- button "Dismiss"
+- 'dialog "Edit tag: Crime & mystery fiction"':
+  - button "Delete"
+- button "Dismiss"

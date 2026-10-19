@@ -1,0 +1,460 @@
+{
+  "id": "library-settings",
+  "runtime": "library",
+  "files": [
+    "src/renderer/library/components/settings/Settings.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T13:23:37.342Z",
+  "lang": "en",
+  "errors": [],
+  "actions": [],
+  "text": "Component fixture: library-settings\nSettings\nSettings\nGeneral\nKeyboard shortcuts\nProfiles\nStorage\nAdvanced\nGeneral\nLanguage\nApplication Theme\n\nApplication theme matches operating system.\n\nImproved support for screen readers\n\nWhen the application detects the presence of assistive technology, the user interface works better with screen readers\n\nEnhance screen reader experience\nWindow behavior\nMinimize the library to the system tray\n\nWhen enabled, minimizing the library window keeps Thorium running in the Windows notification area.\n\nMinimize the library after opening reader windows\n\nWhen enabled, opening a reader window minimizes the library window.\n\nKeep the library in the background after closing reader windows\n\nWhen enabled, closing a reader window does not restore or focus the library window.\n\nUse one reader window per publication\n\nWhen enabled, opening a publication that is already open focuses its reader window instead of opening another one.",
+  "html": "<div id=\"audit-root\" inert=\"\"><main><h1>Component fixture: library-settings</h1><button title=\"Settings\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" aria-expanded=\"true\" id=\"react-aria8118544264-:r4:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria8118544264-:r3:\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#gear-icon\"></use></svg><h3 dir=\"ltr\" aria-label=\"Application Settings\">Settings</h3></button></main></div>\n<span data-focus-scope-start=\"true\" hidden=\"\" inert=\"\"></span>\n<div class=\"modal_dialog_overlay\" data-rac=\"\" style=\"position: fixed; inset: 0px; z-index: 102; --visual-viewport-width: 320px; --visual-viewport-height: 228px; --page-width: 320px; --page-height: 227.84375px;\"><div class=\"react-aria-Modal\" data-rac=\"\" style=\"display: contents;\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><button id=\"react-aria8118544264-:r5:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button></div><section id=\"react-aria8118544264-:r3:\" class=\"modal_dialog settings_dialog\" data-rac=\"\" aria-labelledby=\":r0:\" role=\"dialog\" tabindex=\"-1\" style=\"overflow-y: hidden;\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><h1 id=\":r0:\">Settings</h1></div><template><div dir=\"ltr\" class=\"settings_tab_title\"><h2 dir=\"ltr\">General</h2></div><div class=\"settings_content\" style=\"margin-top: 70px;\"></div><div class=\"close_button_div\"><button dir=\"ltr\" data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></div></template><div data-orientation=\"vertical\" class=\"settings_container\" data-rac=\"\" data-focused=\"true\" data-focus-visible=\"true\"><div data-orientation=\"vertical\" class=\"settings_tabslist\" data-rac=\"\" data-collection=\"react-aria8118544264-:r8:\" id=\"react-aria8118544264-:r9:\" aria-label=\"Application Settings\" role=\"tablist\" aria-orientation=\"vertical\"><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-general\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r9:-tab-tab-general\" aria-selected=\"true\" aria-controls=\"react-aria8118544264-:r9:-tabpanel-tab-general\" role=\"tab\" data-selected=\"true\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 19 20\"><use xlink:href=\"#cog-icon\"></use></svg><span dir=\"ltr\">General</span></div><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"-1\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-keyboardShortcuts\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r9:-tab-tab-keyboardShortcuts\" aria-selected=\"false\" role=\"tab\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 14\"><use xlink:href=\"#keyreturn-icon\"></use></svg><span dir=\"ltr\">Keyboard shortcuts</span></div><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"-1\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-profiles\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r9:-tab-tab-profiles\" aria-selected=\"false\" role=\"tab\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 11\"><use xlink:href=\"#avatar-icon\"></use></svg><span dir=\"ltr\">Profiles</span></div><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"-1\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-storage\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r9:-tab-tab-storage\" aria-selected=\"false\" role=\"tab\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 11\"><use xlink:href=\"#library-icon\"></use></svg><span dir=\"ltr\">Storage</span></div><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"-1\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-advanced\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r9:-tab-tab-advanced\" aria-selected=\"false\" role=\"tab\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 14\"><use xlink:href=\"#advanced-icon\"></use></svg><span dir=\"ltr\">Advanced</span></div></div><div dir=\"ltr\" class=\"settings_tab_title\"><h2 dir=\"ltr\">General</h2></div><div class=\"settings_content\" style=\"margin-top: 70px;\"><div class=\"react-aria-TabPanels\"><div id=\"react-aria8118544264-:r9:-tabpanel-tab-general\" aria-labelledby=\"react-aria8118544264-:r9:-tab-tab-general\" role=\"tabpanel\" class=\"react-aria-TabPanel\" data-rac=\"\"><div class=\"settings_tab\"><section class=\"section\" style=\"gap: 10px;\"><template><div class=\"my_combobox_container R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" role=\"group\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#language\"></use></svg></div></template><div class=\"react_aria_ComboBox\" data-rac=\"\"><label class=\"react_aria_Label\" id=\"react-aria8118544264-:rh:\" for=\"react-aria8118544264-:rg:\" dir=\"ltr\">Language</label><div class=\"my_combobox_container R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" role=\"group\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#language\"></use></svg><input type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria8118544264-:rg:\" aria-labelledby=\"react-aria8118544264-:rh:\" role=\"combobox\" aria-expanded=\"false\" class=\"react_aria_Input R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" value=\"English\" title=\"\"><button id=\"react-aria8118544264-:rc:\" class=\"react_aria_Button\" data-rac=\"\" type=\"button\" tabindex=\"-1\" data-react-aria-pressable=\"true\" aria-label=\"Show suggestions\" aria-labelledby=\"react-aria8118544264-:rc: react-aria8118544264-:rh:\" aria-haspopup=\"listbox\" aria-expanded=\"false\" style=\"width: unset;\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg></button></div></div><div><template><div class=\"my_combobox_container R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" role=\"group\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 10\"><use xlink:href=\"#paintbrush-icon\"></use></svg></div></template><div class=\"react_aria_ComboBox\" data-rac=\"\"><label class=\"react_aria_Label\" id=\"react-aria8118544264-:ru:\" for=\"react-aria8118544264-:rt:\" dir=\"ltr\">Application Theme</label><div class=\"my_combobox_container R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" role=\"group\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 10\"><use xlink:href=\"#paintbrush-icon\"></use></svg><input type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria8118544264-:rt:\" aria-labelledby=\"react-aria8118544264-:ru:\" role=\"combobox\" aria-expanded=\"false\" class=\"react_aria_Input R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" value=\"Automatic\" title=\"\"><button id=\"react-aria8118544264-:rp:\" class=\"react_aria_Button\" data-rac=\"\" type=\"button\" tabindex=\"-1\" data-react-aria-pressable=\"true\" aria-label=\"Show suggestions\" aria-labelledby=\"react-aria8118544264-:rp: react-aria8118544264-:ru:\" aria-haspopup=\"listbox\" aria-expanded=\"false\" style=\"width: unset;\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg></button></div></div><div class=\"session_text\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg><p dir=\"ltr\">Application theme matches operating system.</p></div></div></section><section class=\"section\" style=\"position: relative;\"><h3 dir=\"ltr\">Improved support for screen readers</h3><div class=\"session_text\" style=\"margin: 0px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg><p dir=\"ltr\">When the application detects the presence of assistive technology, the user interface works better with screen readers</p></div><div dir=\"ltr\" class=\"annotations_checkbox\"><input type=\"checkbox\" id=\"screenReaderSettings\" class=\"checkbox_custom_input\" name=\"screenReaderSettings\"><label for=\"screenReaderSettings\" class=\"checkbox_custom_label\"><div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Enhance screen reader experience\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div><span aria-hidden=\"true\" dir=\"ltr\">Enhance screen reader experience</span></label></div></section><section class=\"section\" style=\"gap: 10px;\"><h3 dir=\"ltr\">Window behavior</h3><div dir=\"ltr\" class=\"annotations_checkbox\"><input type=\"checkbox\" id=\"minimizeLibraryToTray\" class=\"checkbox_custom_input\" name=\"minimizeLibraryToTray\"><label for=\"minimizeLibraryToTray\" class=\"checkbox_custom_label\"><div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Minimize the library to the system tray\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div><div aria-hidden=\"true\"><h4 dir=\"ltr\">Minimize the library to the system tray</h4><p dir=\"ltr\">When enabled, minimizing the library window keeps Thorium running in the Windows notification area.</p></div></label></div><div dir=\"ltr\" class=\"annotations_checkbox\"><input type=\"checkbox\" id=\"keepLibraryWindowInBackgroundOnReaderOpen\" class=\"checkbox_custom_input\" name=\"keepLibraryWindowInBackgroundOnReaderOpen\"><label for=\"keepLibraryWindowInBackgroundOnReaderOpen\" class=\"checkbox_custom_label\"><div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Minimize the library after opening reader windows\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div><div aria-hidden=\"true\"><h4 dir=\"ltr\">Minimize the library after opening reader windows</h4><p dir=\"ltr\">When enabled, opening a reader window minimizes the library window.</p></div></label></div><div dir=\"ltr\" class=\"annotations_checkbox\"><input type=\"checkbox\" id=\"keepLibraryWindowInBackgroundOnReaderClose\" class=\"checkbox_custom_input\" name=\"keepLibraryWindowInBackgroundOnReaderClose\"><label for=\"keepLibraryWindowInBackgroundOnReaderClose\" class=\"checkbox_custom_label\"><div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Keep the library in the background after closing reader windows\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div><div aria-hidden=\"true\"><h4 dir=\"ltr\">Keep the library in the background after closing reader windows</h4><p dir=\"ltr\">When enabled, closing a reader window does not restore or focus the library window.</p></div></label></div><div dir=\"ltr\" class=\"annotations_checkbox\"><input type=\"checkbox\" id=\"oneReaderWindowPerPublication\" class=\"checkbox_custom_input\" name=\"oneReaderWindowPerPublication\"><label for=\"oneReaderWindowPerPublication\" class=\"checkbox_custom_label\"><div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Use one reader window per publication\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div><div aria-hidden=\"true\"><h4 dir=\"ltr\">Use one reader window per publication</h4><p dir=\"ltr\">When enabled, opening a publication that is already open focuses its reader window instead of opening another one.</p></div></label></div></section></div></div></div></div><div class=\"close_button_div\"><button dir=\"ltr\" data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></div></div></section></div></div>\n<span data-focus-scope-end=\"true\" hidden=\"\" inert=\"\"></span>",
+  "dimensions": {
+    "width": 320,
+    "height": 228,
+    "scrollWidth": 320
+  },
+  "focus": "<div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria8118544264-:r8:\" data-key=\"tab-general\" data-react-aria-pressable=\"true\" id=\"react-aria8118544264-:r9:-tab-tab-general\" aria-selected=\"true\" aria-controls=\"react-aria8118544264-:r9:-tabpanel-tab-general\" role=\"tab\" data-selected=\"true\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 19 20\"><use xlink:href=\"#cog-icon\"></use></svg><span dir=\"ltr\">General</span></div>",
+  "controls": [
+    {
+      "html": "<button title=\"Settings\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" aria-expanded=\"true\" id=\"react-aria8118544264-:r4:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria8118544264-:r3:\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#gear-icon\"></use></svg><h3 dir=\"ltr\" aria-label=\"Application Settings\">Settings</h3></button>",
+      "rect": {
+        "x": 0,
+        "y": 88.15625,
+        "width": 68.125,
+        "height": 30,
+        "top": 88.15625,
+        "right": 68.125,
+        "bottom": 118.15625,
+        "left": 0
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"react-aria8118544264-:r5:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button>",
+      "rect": {
+        "x": 159.5,
+        "y": 113.5,
+        "width": 1,
+        "height": 1,
+        "top": 113.5,
+        "right": 160.5,
+        "bottom": 114.5,
+        "left": 159.5
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria8118544264-:rg:\" aria-labelledby=\"react-aria8118544264-:rh:\" role=\"combobox\" aria-expanded=\"false\" class=\"react_aria_Input R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" value=\"English\" title=\"\">",
+      "rect": {
+        "x": 32,
+        "y": -123.40625,
+        "width": 235,
+        "height": 24,
+        "top": -123.40625,
+        "right": 267,
+        "bottom": -99.40625,
+        "left": 32
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"react-aria8118544264-:rc:\" class=\"react_aria_Button\" data-rac=\"\" type=\"button\" tabindex=\"-1\" data-react-aria-pressable=\"true\" aria-label=\"Show suggestions\" aria-labelledby=\"react-aria8118544264-:rc: react-aria8118544264-:rh:\" aria-haspopup=\"listbox\" aria-expanded=\"false\" style=\"width: unset;\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg></button>",
+      "rect": {
+        "x": 241.578125,
+        "y": -122.84375,
+        "width": 20,
+        "height": 22.859375,
+        "top": -122.84375,
+        "right": 261.578125,
+        "bottom": -99.984375,
+        "left": 241.578125
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria8118544264-:rt:\" aria-labelledby=\"react-aria8118544264-:ru:\" role=\"combobox\" aria-expanded=\"false\" class=\"react_aria_Input R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" value=\"Automatic\" title=\"\">",
+      "rect": {
+        "x": 32,
+        "y": -27.40625,
+        "width": 235,
+        "height": 24,
+        "top": -27.40625,
+        "right": 267,
+        "bottom": -3.40625,
+        "left": 32
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"react-aria8118544264-:rp:\" class=\"react_aria_Button\" data-rac=\"\" type=\"button\" tabindex=\"-1\" data-react-aria-pressable=\"true\" aria-label=\"Show suggestions\" aria-labelledby=\"react-aria8118544264-:rp: react-aria8118544264-:ru:\" aria-haspopup=\"listbox\" aria-expanded=\"false\" style=\"width: unset;\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg></button>",
+      "rect": {
+        "x": 241.578125,
+        "y": -26.84375,
+        "width": 20,
+        "height": 22.859375,
+        "top": -26.84375,
+        "right": 261.578125,
+        "bottom": -3.984375,
+        "left": 241.578125
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"checkbox\" id=\"screenReaderSettings\" class=\"checkbox_custom_input\" name=\"screenReaderSettings\">",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "visible": false
+    },
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Enhance screen reader experience\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+      "rect": {
+        "x": 29,
+        "y": 244.59375,
+        "width": 16,
+        "height": 16,
+        "top": 244.59375,
+        "right": 45,
+        "bottom": 260.59375,
+        "left": 29
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"checkbox\" id=\"minimizeLibraryToTray\" class=\"checkbox_custom_input\" name=\"minimizeLibraryToTray\">",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "visible": false
+    },
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Minimize the library to the system tray\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+      "rect": {
+        "x": 29,
+        "y": 344.59375,
+        "width": 16,
+        "height": 16,
+        "top": 344.59375,
+        "right": 45,
+        "bottom": 360.59375,
+        "left": 29
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"checkbox\" id=\"keepLibraryWindowInBackgroundOnReaderOpen\" class=\"checkbox_custom_input\" name=\"keepLibraryWindowInBackgroundOnReaderOpen\">",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "visible": false
+    },
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Minimize the library after opening reader windows\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+      "rect": {
+        "x": 29,
+        "y": 438.59375,
+        "width": 16,
+        "height": 16,
+        "top": 438.59375,
+        "right": 45,
+        "bottom": 454.59375,
+        "left": 29
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"checkbox\" id=\"keepLibraryWindowInBackgroundOnReaderClose\" class=\"checkbox_custom_input\" name=\"keepLibraryWindowInBackgroundOnReaderClose\">",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "visible": false
+    },
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Keep the library in the background after closing reader windows\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+      "rect": {
+        "x": 29,
+        "y": 518.59375,
+        "width": 16,
+        "height": 16,
+        "top": 518.59375,
+        "right": 45,
+        "bottom": 534.59375,
+        "left": 29
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"checkbox\" id=\"oneReaderWindowPerPublication\" class=\"checkbox_custom_input\" name=\"oneReaderWindowPerPublication\">",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "visible": false
+    },
+    {
+      "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Use one reader window per publication\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+      "rect": {
+        "x": 29,
+        "y": 628.59375,
+        "width": 16,
+        "height": 16,
+        "top": 628.59375,
+        "right": 45,
+        "bottom": 644.59375,
+        "left": 29
+      },
+      "visible": true
+    },
+    {
+      "html": "<button dir=\"ltr\" data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button>",
+      "rect": {
+        "x": 268,
+        "y": 23,
+        "width": 30,
+        "height": 30,
+        "top": 23,
+        "right": 298,
+        "bottom": 53,
+        "left": 268
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [],
+    "incomplete": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "tags": [
+          "cat.color",
+          "wcag2aa",
+          "wcag143",
+          "TTv5",
+          "TT13.c",
+          "EN-301-549",
+          "EN-9.1.4.3",
+          "ACT",
+          "RGAAv4",
+          "RGAA-3.2.1"
+        ],
+        "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "contrastRatio": 0,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "normal",
+                  "messageKey": "bgOverlap",
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Element's background color could not be determined because it is overlapped by another element"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<p dir=\"ltr\">Application theme matches operating system.</p>",
+            "target": [
+              "div:nth-child(3) > .session_text > p"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+          }
+        ]
+      }
+    ],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 19
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 17
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 19
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 17
+      },
+      {
+        "id": "aria-dialog-name",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 19
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 19
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 17
+      },
+      {
+        "id": "aria-required-children",
+        "nodes": 1
+      },
+      {
+        "id": "aria-required-parent",
+        "nodes": 5
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 17
+      },
+      {
+        "id": "aria-tab-name",
+        "nodes": 5
+      },
+      {
+        "id": "aria-toggle-field-name",
+        "nodes": 5
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 19
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 19
+      },
+      {
+        "id": "autocomplete-valid",
+        "nodes": 2
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 6
+      },
+      {
+        "id": "button-name",
+        "nodes": 4
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 2
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "duplicate-id-aria",
+        "nodes": 15
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 4
+      },
+      {
+        "id": "form-field-multiple-labels",
+        "nodes": 2
+      },
+      {
+        "id": "heading-order",
+        "nodes": 4
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "label-title-only",
+        "nodes": 2
+      },
+      {
+        "id": "label",
+        "nodes": 2
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 14
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 62
+      },
+      {
+        "id": "scrollable-region-focusable",
+        "nodes": 1
+      },
+      {
+        "id": "tabindex",
+        "nodes": 17
+      },
+      {
+        "id": "target-size",
+        "nodes": 16
+      }
+    ]
+  },
+  "evidencePrefix": "batch-3/library-320-general"
+}

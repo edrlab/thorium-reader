@@ -619,7 +619,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
 
                         <div>
 
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: "10px" }}>
                             <input
                                 dir={isRTL ? "rtl" : "ltr"}
                                 type="text"
