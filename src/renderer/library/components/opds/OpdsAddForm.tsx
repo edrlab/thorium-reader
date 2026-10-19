@@ -131,7 +131,7 @@ const OpdsAddForm: React.FC<IProps> = ({feedsResult}) => {
             }
             <div style={{display: "flex", alignItems: "center", gap: "10px"}}>
                 <OpdsFeedAddFormDialog/>
-                <RegistryAddFormDialog/>
+                {__TH__SEARCH_CATALOGS_ENABLED__ && <RegistryAddFormDialog/>}
                 <ApiappAddFormDialog/>
             </div>
         </section>
