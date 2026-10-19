@@ -1,0 +1,98 @@
+- heading "toolbar"
+- button "Skip to content"
+- navigation "toolbar":
+  - list:
+    - list:
+      - listitem:
+        - button "Close this reading window (back to bookshelf)"
+      - listitem:
+        - button "Information" [disabled]
+    - list:
+      - listitem:
+        - button "Activate Text To Speech (TTS)"
+      - listitem:
+        - button "TTS options"
+    - list:
+      - listitem:
+        - button "Search publication"
+      - listitem:
+        - checkbox "Bookmark (Add)"
+      - listitem:
+        - checkbox "Annotation"
+      - listitem:
+        - button "Navigation"
+      - listitem:
+        - button "Reader settings" [expanded] [pressed]
+      - listitem:
+        - button "Zen mode"
+- main "main content":
+  - heading "main content"
+  - iframe
+  - navigation "Navigation":
+    - button "Go backward"
+    - button "Go forward"
+- navigation "Navigation history":
+  - button "Jump back in navigation history" [disabled]
+  - button "Jump forward in navigation history" [disabled]
+- button "Dismiss"
+- heading "Reader settings" [level=1]
+- dialog "Reader settings":
+  - tablist "Reader settings":
+    - tab "Display" [selected]
+    - tab "Text disabled" [disabled]
+    - tab "Spacing disabled" [disabled]
+    - tab "Preferences"
+  - checkbox "Customize text formatting"
+  - heading "Display" [level=2]
+  - tabpanel "Display":
+    - heading "Theme" [level=3]
+    - radiogroup "Theme":
+      - radio "Neutral" [checked]
+      - text: Neutral
+      - radio "Sepia"
+      - text: Sepia
+      - radio "Night"
+      - text: Night
+      - radio "Paper"
+      - text: Paper
+      - radio "Contrast 1"
+      - text: Contrast 1
+      - radio "Contrast 2"
+      - text: Contrast 2
+      - radio "Contrast 3"
+      - text: Contrast 3
+      - radio "Contrast 4"
+      - text: Contrast 4
+    - heading "Layout" [level=3]
+    - radiogroup "Layout":
+      - radio "Scrollable"
+      - text: Scrollable
+      - radio "Paginated" [checked]
+      - text: Paginated
+    - heading "Alignment" [level=3]
+    - radiogroup "Alignment":
+      - radio "Default" [checked]
+      - text: Default
+      - radio "Justify"
+      - text: Justify
+      - radio "Left"
+      - text: Left
+    - heading "Columns" [level=3]
+    - radiogroup "Columns":
+      - radio "Default" [checked]
+      - text: Default
+      - radio "1 col"
+      - text: 1 col
+      - radio "2 cols"
+      - text: 2 cols
+    - checkbox "Enable MathJax"
+    - checkbox "Show page breaks in margin"
+    - checkbox "Reduce motion"
+    - checkbox "Disable popup footnotes"
+    - checkbox "Disable visual navigation indicators"
+    - checkbox "Hide Japanese Ruby"
+    - checkbox "Disable Right-To-Left UI"
+  - button "Dock panel to the left"
+  - button "Dock panel to the right"
+  - button "Show panel as a modal popup" [disabled]
+  - button "Close"

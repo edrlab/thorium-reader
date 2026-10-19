@@ -1,0 +1,8 @@
+- main:
+  - 'heading "Component fixture: delete-feed" [level=1]'
+  - button "Delete audit catalog" [expanded]
+- alertdialog "Delete catalog?":
+  - heading "Delete catalog?" [level=2]
+  - paragraph: Audit catalog
+  - button "Cancel"
+  - button "Yes"

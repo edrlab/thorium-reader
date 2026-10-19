@@ -1,0 +1,212 @@
+{
+  "id": "image-viewer",
+  "runtime": "reader",
+  "files": [
+    "src/renderer/reader/components/ImageClickManagerViewerOnly.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T11:57:19.480Z",
+  "errors": [],
+  "actions": [],
+  "text": "Component fixture: image-viewer\nImage viewer (zoom)",
+  "html": "<div id=\"audit-root\" inert=\"\"><main><h1>Component fixture: image-viewer</h1></main></div>\n<span data-focus-scope-start=\"true\" hidden=\"\" inert=\"\"></span>\n<div class=\"modal_dialog_overlay\" data-rac=\"\" style=\"position: fixed; inset: 0px; z-index: 102; --visual-viewport-width: 1184px; --visual-viewport-height: 835px; --page-width: 1184px; --page-height: 834.84375px;\"><div class=\"react-aria-Modal\" data-rac=\"\" style=\"display: contents;\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><button id=\"react-aria2330647314-:r2:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button></div><section class=\"modal_dialog\" data-rac=\"\" aria-labelledby=\":r0:\" role=\"dialog\" tabindex=\"-1\" style=\"min-width: 85%; min-height: 85%; padding: 5px 10px; width: unset; max-width: calc(100% - 100px); max-height: calc(100% - 100px);\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><h2 id=\":r0:\">Image viewer (zoom)</h2></div><div style=\"display: flex; align-items: center; justify-content: end;\"><button class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\" style=\"z-index: 105;\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-close-24px\"></use></svg></button></div><div style=\"display: flex; flex-direction: column; padding: 5px 10px; align-items: center; flex: 1 1 0%;\"><div style=\"position: relative; display: flex; gap: 10px; width: 100%; height: 100%; padding-left: 5px; flex: 1 1 0%; justify-content: center; align-items: center;\"><style>\n\n.imgViewerControls {\n    position: absolute;\n    align-items: center;\n    justify-content: center;\n    z-index: 105;\n    transform: translate(-50%, 50%);\n    display: flex;\n    // opacity: 0;\n    transition: 200ms;\n    gap: 10px;\n}\n\n.imgViewerControls button {\n        border-radius: 6px;\n        background-color: var(--color-brand-secondary);\n        padding: 0 5px;\n        color: var(--color-brand-primary);\n        fill: var(--color-brand-primary);\n        border: 1px solid var(--color-brand-primary);\n        filter: opacity(0.8);\n        transition: 200ms;\n        width: 24px;\n        height: 24px;\n}\n\n.imgViewerControls button:hover {\n    filter: opacity(1);\n}\n\n.imgViewerControls svg {\n    width: 15px;\n    height: 15px;\n    fill: var(--color-brand-primary);\n}\n        </style><div class=\"imgViewerControls\" style=\"bottom: 20px; right: 50%; left: 50%;\"><button title=\"Zoom In\"><svg viewBox=\"0 0 14 14\"><use xlink:href=\"#add-alone\"></use></svg></button><button title=\"Zoom Out\"><svg viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button><button title=\"Reset Zoom\"><svg viewBox=\"0 0 18 17\"><use xlink:href=\"#backward-icon\"></use></svg></button></div><div class=\"react-transform-wrapper transform-component-module_wrapper__SPB86 \" style=\"display: flex; width: 100%; height: 100%; min-height: 350px; flex: 1 1 0%; position: relative;\"><div class=\"react-transform-component transform-component-module_content__FBWxo \" style=\"transform-origin: 0px 0px; transform: translate(282px, 25px) scale(1);\"><img src=\"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22400%22%20height%3D%22300%22%3E%3Crect%20width%3D%22400%22%20height%3D%22300%22%20fill%3D%22navy%22%2F%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22150%22%20r%3D%2280%22%20fill%3D%22white%22%2F%3E%3C%2Fsvg%3E\" alt=\"White circle on a blue rectangle\" title=\"Audit illustration\" tabindex=\"0\" style=\"height: 100%; width: 100%; max-height: calc(-250px + 100vh); background-color: white; color: black; fill: currentcolor; stroke: currentcolor;\"></div></div></div></div></section></div></div>\n<span data-focus-scope-end=\"true\" hidden=\"\" inert=\"\"></span>",
+  "dimensions": {
+    "width": 1184,
+    "height": 835,
+    "scrollWidth": 1184
+  },
+  "focus": "<section class=\"modal_dialog\" data-rac=\"\" aria-labelledby=\":r0:\" role=\"dialog\" tabindex=\"-1\" style=\"min-width: 85%; min-height: 85%; padding: 5px 10px; width: unset; max-width: calc(100% - 100px); max-height: calc(100% - 100px);\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><h2 id=\":r0:\">Image viewer (zoom)</h2></div><div style=\"display: flex; align-items: center; justify-content: end;\"><button class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\" style=\"z-index: 105;\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-close-24px\"></use></svg></button></div><div style=\"display: flex; flex-direction: column; padding: 5px 10px; align-items: center; flex: 1 1 0%;\"><div style=\"position: relative; display: flex; gap: 10px; width: 100%; height: 100%; padding-left: 5px; flex: 1 1 0%; justify-content: center; align-items: center;\"><style>\n\n.imgViewerControls {\n    position: absolute;\n    align-items: center;\n    justify-content: center;\n    z-index: 105;\n    transform: translate(-50%, 50%);\n    display: flex;\n    // opacity: 0;\n    transition: 200ms;\n    gap: 10px;\n}\n\n.imgViewerControls button {\n        border-radius: 6px;\n        background-color: var(--color-brand-secondary);\n        padding: 0 5px;\n        color: var(--color-brand-primary);\n        fill: var(--color-brand-primary);\n        border: 1px solid var(--color-brand-primary);\n        filter: opacity(0.8);\n        transition: 200ms;\n        width: 24px;\n        height: 24px;\n}\n\n.imgViewerControls button:hover {\n    filter: opacity(1);\n}\n\n.imgViewerControls svg {\n    width: 15px;\n    height: 15px;\n    fill: var(--color-brand-primary);\n}\n        </style><div class=\"imgViewerControls\" style=\"bottom: 20px; right: 50%; left: 50%;\"><button title=\"Zoom In\"><svg viewBox=\"0 0 14 14\"><use xlink:href=\"#add-alone\"></use></svg></button><button title=\"Zoom Out\"><svg viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button><button title=\"Reset Zoom\"><svg viewBox=\"0 0 18 17\"><use xlink:href=\"#backward-icon\"></use></svg></button></div><div class=\"react-transform-wrapper transform-component-module_wrapper__SPB86 \" style=\"display: flex; width: 100%; height: 100%; min-height: 350px; flex: 1 1 0%; position: relative;\"><div class=\"react-transform-component transform-component-module_content__FBWxo \" style=\"transform-origin: 0px 0px; transform: translate(282px, 25px) scale(1);\"><img src=\"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22400%22%20height%3D%22300%22%3E%3Crect%20width%3D%22400%22%20height%3D%22300%22%20fill%3D%22navy%22%2F%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22150%22%20r%3D%2280%22%20fill%3D%22white%22%2F%3E%3C%2Fsvg%3E\" alt=\"White circle on a blue rectangle\" title=\"Audit illustration\" tabindex=\"0\" style=\"height: 100%; width: 100%; max-height: calc(-250px + 100vh); background-color: white; color: black; fill: currentcolor; stroke: currentcolor;\"></div></div></div></div></section>",
+  "controls": [
+    {
+      "html": "<button id=\"react-aria2330647314-:r2:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button>",
+      "rect": {
+        "x": 591.5,
+        "y": 417,
+        "width": 1,
+        "height": 1,
+        "top": 417,
+        "right": 592.5,
+        "bottom": 418,
+        "left": 591.5
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\" style=\"z-index: 105;\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-close-24px\"></use></svg></button>",
+      "rect": {
+        "x": 1054.1953125,
+        "y": 68.625,
+        "width": 30,
+        "height": 30,
+        "top": 68.625,
+        "right": 1084.1953125,
+        "bottom": 98.625,
+        "left": 1054.1953125
+      },
+      "visible": true
+    },
+    {
+      "html": "<button title=\"Zoom In\"><svg viewBox=\"0 0 14 14\"><use xlink:href=\"#add-alone\"></use></svg></button>",
+      "rect": {
+        "x": 546,
+        "y": 729.375,
+        "width": 24,
+        "height": 24,
+        "top": 729.375,
+        "right": 570,
+        "bottom": 753.375,
+        "left": 546
+      },
+      "visible": true
+    },
+    {
+      "html": "<button title=\"Zoom Out\"><svg viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button>",
+      "rect": {
+        "x": 580,
+        "y": 729.375,
+        "width": 24,
+        "height": 24,
+        "top": 729.375,
+        "right": 604,
+        "bottom": 753.375,
+        "left": 580
+      },
+      "visible": true
+    },
+    {
+      "html": "<button title=\"Reset Zoom\"><svg viewBox=\"0 0 18 17\"><use xlink:href=\"#backward-icon\"></use></svg></button>",
+      "rect": {
+        "x": 614,
+        "y": 729.375,
+        "width": 24,
+        "height": 24,
+        "top": 729.375,
+        "right": 638,
+        "bottom": 753.375,
+        "left": 614
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [],
+    "incomplete": [],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 3
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 1
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 3
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 1
+      },
+      {
+        "id": "aria-dialog-name",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 2
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 3
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 1
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 1
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 3
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 3
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 4
+      },
+      {
+        "id": "button-name",
+        "nodes": 5
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "duplicate-id-aria",
+        "nodes": 1
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 1
+      },
+      {
+        "id": "heading-order",
+        "nodes": 1
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "image-alt",
+        "nodes": 1
+      },
+      {
+        "id": "image-redundant-alt",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 6
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 24
+      },
+      {
+        "id": "tabindex",
+        "nodes": 4
+      },
+      {
+        "id": "target-size",
+        "nodes": 5
+      }
+    ]
+  },
+  "evidencePrefix": "continuation/reader-image-viewer"
+}

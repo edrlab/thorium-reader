@@ -1,0 +1,82 @@
+- region "toolbar":
+  - heading "toolbar"
+  - button "Skip to content"
+  - navigation "Bookshelf menu":
+    - heading "Thorium" [level=1]
+    - list:
+      - listitem:
+        - button "Home" [pressed]:
+          - heading "Home" [level=3]
+      - listitem:
+        - button "All publications":
+          - heading "All publications" [level=3]
+      - listitem:
+        - button "Catalogs":
+          - heading "Catalogs" [level=3]
+      - listitem:
+        - button "Application Settings" [expanded]:
+          - heading "Application Settings" [level=3]: Settings
+  - main "main content":
+    - button "Import publication"
+    - heading "main content"
+    - heading "Resume reading" [level=2]
+    - list:
+      - listitem:
+        - img
+        - text: 20 days EPUB
+        - button "Menu (La Proie)":
+          - img "Menu (La Proie)"
+      - listitem:
+        - img
+        - text: EPUB
+        - button "Menu (Accessible EPUB 3)":
+          - img "Menu (Accessible EPUB 3)"
+      - listitem:
+        - img
+        - text: 17 days EPUB
+        - button "Menu (La toile de l'Araignée)":
+          - img "Menu (La toile de l'Araignée)"
+      - listitem:
+        - img
+        - text: PDF
+        - button "Menu (Untitled)":
+          - img "Menu (Untitled)"
+    - heading "Recently added" [level=2]
+    - list:
+      - listitem:
+        - img
+        - text: Licensed EPUB
+        - button "Menu (The Waste Land)":
+          - img "Menu (The Waste Land)"
+    - paragraph: v3.5.2-beta.1
+    - link "About Thorium (online)":
+      - /url: ""
+- button "Dismiss"
+- dialog "Settings":
+  - heading "Settings" [level=1]
+  - tablist "Application Settings":
+    - tab "General" [selected]
+    - tab "Keyboard shortcuts"
+    - tab "Profiles"
+    - tab "Storage"
+    - tab "Advanced"
+  - heading "General" [level=2]
+  - tabpanel "General":
+    - text: Language
+    - group:
+      - combobox "Language": English
+      - button "Show suggestions Language"
+    - text: Application Theme
+    - group:
+      - combobox "Application Theme": Automatic
+      - button "Show suggestions Application Theme"
+    - paragraph: Application theme matches operating system.
+    - heading "Improved support for screen readers" [level=3]
+    - paragraph: When the application detects the presence of assistive technology, the user interface works better with screen readers
+    - checkbox "Enhance screen reader experience"
+    - heading "Window behavior" [level=3]
+    - checkbox "Minimize the library to the system tray"
+    - checkbox "Minimize the library after opening reader windows"
+    - checkbox "Keep the library in the background after closing reader windows"
+    - checkbox "Use one reader window per publication"
+  - button "Close"

@@ -1,0 +1,87 @@
+[
+  {
+    "html": "<button id=\"reader-menu-nav\" data-focus-id=\"reader-menu-docked-trigger\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Navigation\" aria-labelledby=\"react-aria7029646687-:rgf: reader-menu-nav react-aria7029646687-:rgb:\" aria-haspopup=\"listbox\" aria-expanded=\"false\" dat",
+    "outline": "rgb(16, 83, 200) none 0px",
+    "border": "0px none rgb(16, 83, 200)",
+    "background": "rgb(236, 242, 253)",
+    "shadow": "none",
+    "rect": {
+      "x": 747,
+      "y": 136,
+      "width": 184,
+      "height": 20,
+      "top": 136,
+      "right": 931,
+      "bottom": 156,
+      "left": 747
+    }
+  },
+  {
+    "html": "<div class=\"my_combobox_container\" data-rac=\"\" role=\"group\" data-focus-within=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 20 14\"><use xlink:href=\"#search-icon\"></use></svg><button id=\"reader-menu-nav\" data-focus-id=\"reader-menu-docked-trigger\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" type=\"button\" tabindex=",
+    "outline": "rgb(16, 83, 200) solid 2px",
+    "border": "1px solid rgb(16, 83, 200)",
+    "background": "rgb(236, 242, 253)",
+    "shadow": "none",
+    "rect": {
+      "x": 736,
+      "y": 132.5,
+      "width": 206,
+      "height": 27,
+      "top": 132.5,
+      "right": 942,
+      "bottom": 159.5,
+      "left": 736
+    }
+  },
+  {
+    "html": "<div class=\"react_aria_ComboBox\" data-rac=\"\" style=\"margin: 0px; padding: 10px 0px; flex-direction: row; background-color: var(--color-header-docked);\" data-focused=\"true\" data-focus-visible=\"true\"><span class=\"react_aria_Label\" id=\"react-aria7029646687-:rgb:\"></span><div class=\"my_combobox_container\" data-rac=\"\" role=\"group\" data-focus-within=\"tru",
+    "outline": "rgb(77, 77, 77) none 0px",
+    "border": "0px none rgb(77, 77, 77)",
+    "background": "rgb(245, 245, 245)",
+    "shadow": "none",
+    "rect": {
+      "x": 731,
+      "y": 122.5,
+      "width": 211,
+      "height": 47,
+      "top": 122.5,
+      "right": 942,
+      "bottom": 169.5,
+      "left": 731
+    }
+  },
+  {
+    "html": "<div class=\"docked_header\"><template><div class=\"my_combobox_container\" data-rac=\"\" role=\"group\"><svg aria-hidden=\"true\" viewBox=\"0 0 20 14\"><use xlink:href=\"#search-icon\"></use></svg></div></template><div class=\"react_aria_ComboBox\" data-rac=\"\" style=\"margin: 0px; padding: 10px 0px; flex-direction: row; background-color: var(--color-header-docked)",
+    "outline": "rgb(77, 77, 77) none 0px",
+    "border": "",
+    "background": "rgb(245, 245, 245)",
+    "shadow": "none",
+    "rect": {
+      "x": 721,
+      "y": 120,
+      "width": 368,
+      "height": 53,
+      "top": 120,
+      "right": 1089,
+      "bottom": 173,
+      "left": 721
+    }
+  },
+  {
+    "html": "<div style=\"min-height: inherit;\"><h1 style=\"position: absolute; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px;\">Navigation</h1><div class=\"docked_header\"><template><div class=\"my_combobox_container\" data-rac=\"\" role=\"group\"><svg aria-hidden=\"true\" viewB",
+    "outline": "rgb(77, 77, 77) none 0px",
+    "border": "0px none rgb(77, 77, 77)",
+    "background": "rgba(0, 0, 0, 0)",
+    "shadow": "none",
+    "rect": {
+      "x": 721,
+      "y": 120,
+      "width": 368,
+      "height": 544,
+      "top": 120,
+      "right": 1089,
+      "bottom": 664,
+      "left": 721
+    }
+  }
+]

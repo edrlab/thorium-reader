@@ -1,0 +1,12 @@
+- main:
+  - 'heading "Component fixture: lcp-controls" [level=1]'
+  - button "Read"
+  - button "Renew" [expanded]
+  - button "Return"
+  - button "Delete"
+  - button "Save as"
+- alertdialog "Renew/extend loan?":
+  - heading "Renew/extend loan?" [level=2]
+  - paragraph: Audit publication
+  - button "Cancel"
+  - button "Yes"

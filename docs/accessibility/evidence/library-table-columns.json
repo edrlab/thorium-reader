@@ -1,0 +1,430 @@
+{
+  "label": "library-table-columns",
+  "timestamp": "2026-10-19T11:21:25.674Z",
+  "axeVersion": "4.13.0",
+  "targets": [
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/8870060FCC5D1B16FFD54EE19484FBF5",
+      "id": "8870060FCC5D1B16FFD54EE19484FBF5",
+      "title": "Thorium",
+      "type": "page",
+      "url": "http://localhost:8090/index_library.html#/library",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/8870060FCC5D1B16FFD54EE19484FBF5"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/544959611FA569BE513035F0416FEFCA",
+      "id": "544959611FA569BE513035F0416FEFCA",
+      "title": "Service Worker chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/background.bundle.js",
+      "type": "service_worker",
+      "url": "chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/background.bundle.js",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/544959611FA569BE513035F0416FEFCA"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/9349226D127C9C3D484CADC1698DBD30",
+      "id": "9349226D127C9C3D484CADC1698DBD30",
+      "title": "Service Worker chrome-extension://ijmmnfpjnmlljdjbbfpdgodddghhmemm/build/background.js",
+      "type": "service_worker",
+      "url": "chrome-extension://ijmmnfpjnmlljdjbbfpdgodddghhmemm/build/background.js",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/9349226D127C9C3D484CADC1698DBD30"
+    }
+  ],
+  "pages": [
+    {
+      "title": "Thorium",
+      "url": "http://localhost:8090/index_library.html#/library",
+      "lang": "",
+      "dimensions": {
+        "width": 1133,
+        "height": 808,
+        "scrollWidth": 1133
+      },
+      "focus": "<input type=\"checkbox\" id=\"colReadingState\" title=\"Toggle Column Visible\" checked=\"\" style=\"cursor: pointer;\">",
+      "dialogs": [
+        {
+          "html": "<section id=\"react-aria7386672771-:rmk:\" class=\"react-aria-Dialog\" data-rac=\"\" aria-labelledby=\"react-aria7386672771-:rml:\" role=\"dialog\" tabindex=\"-1\"><span data-focus-scope-start=\"true\" hidden=\"\"></span><div style=\"margin-bottom: 10px; display: flex; align-items: center;\"><input type=\"checkbox\" id=\"colReadingState\" title=\"Toggle Column Visible\" checked=\"\" style=\"cursor: pointer;\"><label for=\"colReadingState\" style=\"margin-left: 8px; cursor: pointer;\">Progression</label></div><div style=\"margin-bottom: 10px; display: flex; align-items: center;\"><input type=\"checkbox\" id=\"colRemainingDays\" title=\"Toggle Column Visible\" checked=\"\" style=\"cursor: pointer;\"><label for=\"colRemainingDays\" style=\"margin-left: 8px; cursor: pointer;\">Loan (remaining time)</label></div><div style=\"margin-bottom: 10px; display: flex; align-items: center;\"><input type=\"checkbox\" id=\"colLanguages\" title=\"Toggle Column Visible\" checked=\"\" style=\"cursor: pointer;\"><label for=\"colLanguages\" style=\"margin-left: 8px; cursor: pointer;\">Language</label></div><div style=\"margin-bottom: 10px; display: flex; align-items: center;\"><input type=\"checkbox\" id=\"colTags\" title=\"Toggle Column Visible\" checked=\"\" style=\"cursor: pointer;\"><label for=\"colTags\" style=\"margin-left: 8px; cursor: pointer;\">Tags</label></div><div style=\"margin-bottom: 10px; display: flex; align-items: center;\"><input type=\"checkbox\" id=\"colFormat\" title=\"Toggle Column Visible\" checked=\"\" style=\"cursor: pointer;\"><label for=\"colFormat\" style=\"margin-left: 8px; cursor: pointer;\">Format</label></div><div style=\"margin-bottom: 10px; display: flex;"
+        }
+      ],
+      "sliders": [],
+      "evidencePrefix": "library-table-columns-0",
+      "axe": {
+        "violations": [
+          {
+            "id": "html-has-lang",
+            "impact": "serious",
+            "tags": [
+              "cat.language",
+              "wcag2a",
+              "wcag311",
+              "TTv5",
+              "TT11.a",
+              "EN-301-549",
+              "EN-9.3.1.1",
+              "ACT",
+              "RGAAv4",
+              "RGAA-8.3.1"
+            ],
+            "description": "Ensure every HTML document has a lang attribute",
+            "help": "<html> element must have a lang attribute",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/html-has-lang?application=axeAPI",
+            "nodes": [
+              {
+                "any": [
+                  {
+                    "id": "has-lang",
+                    "data": {
+                      "messageKey": "noLang"
+                    },
+                    "relatedNodes": [],
+                    "impact": "serious",
+                    "message": "The <html> element does not have a lang attribute"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "serious",
+                "html": "<html id=\"library_html\" style=\"overflow: hidden;\" class=\"\">",
+                "target": [
+                  "#library_html"
+                ],
+                "failureSummary": "Fix any of the following:\n  The <html> element does not have a lang attribute"
+              }
+            ]
+          },
+          {
+            "id": "landmark-one-main",
+            "impact": "moderate",
+            "tags": [
+              "cat.semantics",
+              "best-practice"
+            ],
+            "description": "Ensure the document has a main landmark",
+            "help": "Document should have one main landmark",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=axeAPI",
+            "nodes": [
+              {
+                "any": [],
+                "all": [
+                  {
+                    "id": "page-has-main",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "moderate",
+                    "message": "Document does not have a main landmark"
+                  }
+                ],
+                "none": [],
+                "impact": "moderate",
+                "html": "<html id=\"library_html\" style=\"overflow: hidden;\" class=\"\">",
+                "target": [
+                  "#library_html"
+                ],
+                "failureSummary": "Fix all of the following:\n  Document does not have a main landmark"
+              }
+            ]
+          },
+          {
+            "id": "page-has-heading-one",
+            "impact": "moderate",
+            "tags": [
+              "cat.semantics",
+              "best-practice"
+            ],
+            "description": "Ensure that the page, or at least one of its frames contains a level-one heading",
+            "help": "Page should contain a level-one heading",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=axeAPI",
+            "nodes": [
+              {
+                "any": [],
+                "all": [
+                  {
+                    "id": "page-has-heading-one",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "moderate",
+                    "message": "Page must have a level-one heading"
+                  }
+                ],
+                "none": [],
+                "impact": "moderate",
+                "html": "<html id=\"library_html\" style=\"overflow: hidden;\" class=\"\">",
+                "target": [
+                  "#library_html"
+                ],
+                "failureSummary": "Fix all of the following:\n  Page must have a level-one heading"
+              }
+            ]
+          }
+        ],
+        "incomplete": [
+          {
+            "id": "aria-prohibited-attr",
+            "impact": "serious",
+            "tags": [
+              "cat.aria",
+              "wcag2a",
+              "wcag412",
+              "EN-301-549",
+              "EN-9.4.1.2",
+              "RGAAv4",
+              "RGAA-7.1.1"
+            ],
+            "description": "Ensure ARIA attributes are not prohibited for an element's role",
+            "help": "Elements must only use permitted ARIA attributes",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-prohibited-attr?application=axeAPI",
+            "nodes": [
+              {
+                "any": [],
+                "all": [],
+                "none": [
+                  {
+                    "id": "aria-prohibited-attr",
+                    "data": {
+                      "role": null,
+                      "nodeName": "div",
+                      "messageKey": "noRoleSingular",
+                      "prohibited": [
+                        "aria-labelledby"
+                      ]
+                    },
+                    "relatedNodes": [],
+                    "impact": "serious",
+                    "message": "aria-labelledby attribute is not well supported on a div with no valid role attribute."
+                  }
+                ],
+                "impact": "serious",
+                "html": "<div dir=\"ltr\" class=\"annotation_form\" data-rac=\"\" aria-labelledby=\"react-aria7386672771...\" data-trigger=\"DialogTrigger\" style=\"position: absolute; ...\" data-placement=\"bottom\">",
+                "target": [
+                  ".annotation_form"
+                ],
+                "failureSummary": "Fix all of the following:\n  aria-labelledby attribute is not well supported on a div with no valid role attribute."
+              }
+            ]
+          },
+          {
+            "id": "bypass",
+            "impact": "serious",
+            "tags": [
+              "cat.keyboard",
+              "wcag2a",
+              "wcag241",
+              "section508",
+              "section508.22.o",
+              "TTv5",
+              "TT9.a",
+              "EN-301-549",
+              "EN-9.2.4.1",
+              "RGAAv4",
+              "RGAA-12.7.1"
+            ],
+            "description": "Ensure each page has at least one mechanism for a user to bypass navigation and jump straight to the content",
+            "help": "Page must have means to bypass repeated blocks",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/bypass?application=axeAPI",
+            "nodes": [
+              {
+                "any": [
+                  {
+                    "id": "internal-link-present",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "serious",
+                    "message": "No valid skip link found"
+                  },
+                  {
+                    "id": "header-present",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "serious",
+                    "message": "Page does not have a heading"
+                  },
+                  {
+                    "id": "landmark",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "serious",
+                    "message": "Page does not have a landmark region"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "serious",
+                "html": "<html id=\"library_html\" style=\"overflow: hidden;\" class=\"\">",
+                "target": [
+                  "#library_html"
+                ],
+                "failureSummary": "Fix any of the following:\n  No valid skip link found\n  Page does not have a heading\n  Page does not have a landmark region"
+              }
+            ]
+          }
+        ],
+        "passes": [
+          {
+            "id": "aria-allowed-attr",
+            "nodes": 6
+          },
+          {
+            "id": "aria-allowed-role",
+            "nodes": 123
+          },
+          {
+            "id": "aria-conditional-attr",
+            "nodes": 6
+          },
+          {
+            "id": "aria-deprecated-role",
+            "nodes": 3
+          },
+          {
+            "id": "aria-dialog-name",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-body",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-focus",
+            "nodes": 30
+          },
+          {
+            "id": "aria-prohibited-attr",
+            "nodes": 5
+          },
+          {
+            "id": "aria-required-attr",
+            "nodes": 3
+          },
+          {
+            "id": "aria-roles",
+            "nodes": 3
+          },
+          {
+            "id": "aria-valid-attr-value",
+            "nodes": 6
+          },
+          {
+            "id": "aria-valid-attr",
+            "nodes": 6
+          },
+          {
+            "id": "avoid-inline-spacing",
+            "nodes": 2
+          },
+          {
+            "id": "button-name",
+            "nodes": 2
+          },
+          {
+            "id": "document-title",
+            "nodes": 1
+          },
+          {
+            "id": "duplicate-id-aria",
+            "nodes": 18
+          },
+          {
+            "id": "form-field-multiple-labels",
+            "nodes": 12
+          },
+          {
+            "id": "label-title-only",
+            "nodes": 12
+          },
+          {
+            "id": "label",
+            "nodes": 12
+          },
+          {
+            "id": "meta-viewport-large",
+            "nodes": 1
+          },
+          {
+            "id": "meta-viewport",
+            "nodes": 1
+          },
+          {
+            "id": "nested-interactive",
+            "nodes": 14
+          },
+          {
+            "id": "region",
+            "nodes": 47
+          },
+          {
+            "id": "tabindex",
+            "nodes": 3
+          },
+          {
+            "id": "target-size",
+            "nodes": 14
+          }
+        ],
+        "inapplicable": [
+          "accesskeys",
+          "area-alt",
+          "aria-braille-equivalent",
+          "aria-command-name",
+          "aria-input-field-name",
+          "aria-meter-name",
+          "aria-progressbar-name",
+          "aria-required-children",
+          "aria-required-parent",
+          "aria-tab-name",
+          "aria-text",
+          "aria-toggle-field-name",
+          "aria-tooltip-name",
+          "aria-treeitem-name",
+          "autocomplete-valid",
+          "blink",
+          "color-contrast",
+          "definition-list",
+          "dlitem",
+          "empty-heading",
+          "empty-table-header",
+          "frame-focusable-content",
+          "frame-tested",
+          "frame-title-unique",
+          "frame-title",
+          "heading-order",
+          "html-lang-valid",
+          "html-xml-lang-mismatch",
+          "image-alt",
+          "image-redundant-alt",
+          "input-button-name",
+          "input-image-alt",
+          "landmark-banner-is-top-level",
+          "landmark-contentinfo-is-top-level",
+          "landmark-main-is-top-level",
+          "landmark-no-duplicate-banner",
+          "landmark-no-duplicate-contentinfo",
+          "landmark-no-duplicate-main",
+          "landmark-unique",
+          "link-in-text-block",
+          "link-name",
+          "list",
+          "listitem",
+          "marquee",
+          "meta-refresh",
+          "object-alt",
+          "presentation-role-conflict",
+          "role-img-alt",
+          "scope-attr-valid",
+          "scrollable-region-focusable",
+          "select-name",
+          "server-side-image-map",
+          "skip-link",
+          "summary-name",
+          "svg-img-alt",
+          "table-duplicate-name",
+          "td-headers-attr",
+          "th-has-data-cells",
+          "valid-lang",
+          "video-caption",
+          "no-autoplay-audio"
+        ]
+      }
+    }
+  ]
+}

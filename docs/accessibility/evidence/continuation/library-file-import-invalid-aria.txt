@@ -1,0 +1,7 @@
+- main:
+  - 'heading "Component fixture: file-import-invalid" [level=1]'
+- alertdialog "Import":
+  - heading "Import" [level=2]
+  - text: An error occurred, verify the file extension (.lcpl .epub .epub3 .pnld .audiobook .webpub .lcpa .lcpaudiobook .lcpdf .pdf .lpf .divina .daisy .zip .opf ncc.html .cbz)
+  - button "Cancel"
+  - button "Import"

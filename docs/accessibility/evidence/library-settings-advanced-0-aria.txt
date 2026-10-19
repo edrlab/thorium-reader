@@ -1,0 +1,88 @@
+- region "toolbar":
+  - heading "toolbar"
+  - button "Skip to content"
+  - navigation "Bookshelf menu":
+    - heading "Thorium" [level=1]
+    - list:
+      - listitem:
+        - button "Home" [pressed]:
+          - heading "Home" [level=3]
+      - listitem:
+        - button "All publications":
+          - heading "All publications" [level=3]
+      - listitem:
+        - button "Catalogs":
+          - heading "Catalogs" [level=3]
+      - listitem:
+        - button "Application Settings" [expanded]:
+          - heading "Application Settings" [level=3]: Settings
+  - main "main content":
+    - button "Import publication"
+    - heading "main content"
+    - heading "Resume reading" [level=2]
+    - list:
+      - listitem:
+        - img
+        - text: 20 days EPUB
+        - button "Menu (La Proie)":
+          - img "Menu (La Proie)"
+      - listitem:
+        - img
+        - text: EPUB
+        - button "Menu (Accessible EPUB 3)":
+          - img "Menu (Accessible EPUB 3)"
+      - listitem:
+        - img
+        - text: 17 days EPUB
+        - button "Menu (La toile de l'Araignée)":
+          - img "Menu (La toile de l'Araignée)"
+      - listitem:
+        - img
+        - text: PDF
+        - button "Menu (Untitled)":
+          - img "Menu (Untitled)"
+    - heading "Recently added" [level=2]
+    - list:
+      - listitem:
+        - img
+        - text: Licensed EPUB
+        - button "Menu (The Waste Land)":
+          - img "Menu (The Waste Land)"
+    - paragraph: v3.5.2-beta.1
+    - link "About Thorium (online)":
+      - /url: ""
+- button "Dismiss"
+- dialog "Settings":
+  - heading "Settings" [level=1]
+  - tablist "Application Settings":
+    - tab "General"
+    - tab "Keyboard shortcuts"
+    - tab "Profiles"
+    - tab "Storage"
+    - tab "Advanced" [selected]
+  - heading "Advanced" [level=2]
+  - tabpanel "Advanced":
+    - heading "Access to publication catalogs" [level=3]
+    - paragraph: This action deletes all OPDS login credentials.
+    - button "Clear login data":
+      - paragraph: Clear login data
+    - heading "Access to French library accounts" [level=3]
+    - checkbox "Activate the 'PNB' library system"
+    - button "How does it work?"
+    - heading "Shared computer mode" [level=3]
+    - checkbox "Automatically remove expired publications and associated user data"
+    - heading "Annotations creator (optional)" [level=3]
+    - paragraph: If specified, this name will be included in the metadata of exported notes.
+    - textbox "Name"
+    - text: Name
+    - radiogroup "Type:":
+      - paragraph: "Type:"
+      - radio "Organization" [checked]
+      - text: Organization
+      - radio "Person"
+      - text: Person
+    - heading "Notes export (annotations and bookmarks)" [level=3]
+    - checkbox "Customize the HTML template"
+    - heading "Telemetry" [level=3]
+    - checkbox "Disable telemetry measurements"
+  - button "Close"

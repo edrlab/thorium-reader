@@ -1,0 +1,12 @@
+- main:
+  - 'heading "Component fixture: lcp-controls" [level=1]'
+  - button "Read"
+  - button "Renew"
+  - button "Return" [expanded]
+  - button "Delete"
+  - button "Save as"
+- alertdialog "Return publication?":
+  - heading "Return publication?" [level=2]
+  - paragraph: Audit publication
+  - button "Cancel"
+  - button "Yes"

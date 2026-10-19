@@ -1,0 +1,1462 @@
+{
+  "nodes": [
+    {
+      "nodeId": "1713",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "RootWebArea"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 144
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Thorium library component audit fixture",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label",
+            "superseded": true
+          },
+          {
+            "type": "relatedElement",
+            "value": {
+              "type": "computedString",
+              "value": "Thorium library component audit fixture"
+            },
+            "nativeSource": "title"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "focusable",
+          "value": {
+            "type": "booleanOrUndefined",
+            "value": true
+          }
+        },
+        {
+          "name": "focused",
+          "value": {
+            "type": "booleanOrUndefined",
+            "value": true
+          }
+        },
+        {
+          "name": "url",
+          "value": {
+            "type": "string",
+            "value": "file:///C:/Users/plero/.codex/worktrees/8a0b/thorium-reader/dist/accessibility-fixtures/library.html"
+          }
+        }
+      ],
+      "childIds": [
+        "1714"
+      ],
+      "backendDOMNodeId": 1713,
+      "frameId": "380193BDBA6451218E9FB9C7C7D1D4A8"
+    },
+    {
+      "nodeId": "1714",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "uninteresting",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "1713",
+      "childIds": [
+        "1771"
+      ],
+      "backendDOMNodeId": 1714
+    },
+    {
+      "nodeId": "1771",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "generic"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 88
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "1714",
+      "childIds": [
+        "2006"
+      ],
+      "backendDOMNodeId": 1771
+    },
+    {
+      "nodeId": "2006",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "generic"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 88
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "1771",
+      "childIds": [
+        "2083"
+      ],
+      "backendDOMNodeId": 2006
+    },
+    {
+      "nodeId": "2083",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "main"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 118
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          },
+          {
+            "type": "attribute",
+            "attribute": "title"
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "2006",
+      "childIds": [
+        "2080",
+        "2081",
+        "2082"
+      ],
+      "backendDOMNodeId": 2083
+    },
+    {
+      "nodeId": "2080",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "heading"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 96
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Component fixture: long-description",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          },
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "Component fixture: long-description"
+            }
+          },
+          {
+            "type": "attribute",
+            "attribute": "title",
+            "superseded": true
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "level",
+          "value": {
+            "type": "integer",
+            "value": 1
+          }
+        }
+      ],
+      "parentId": "2083",
+      "childIds": [
+        "2084",
+        "2085"
+      ],
+      "backendDOMNodeId": 2080
+    },
+    {
+      "nodeId": "2081",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "uninteresting",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "2083",
+      "childIds": [
+        "2076"
+      ],
+      "backendDOMNodeId": 2081
+    },
+    {
+      "nodeId": "2076",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "heading"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 96
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Description",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          },
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "Description"
+            }
+          },
+          {
+            "type": "attribute",
+            "attribute": "title",
+            "superseded": true
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "level",
+          "value": {
+            "type": "integer",
+            "value": 3
+          }
+        }
+      ],
+      "parentId": "2081",
+      "childIds": [
+        "2086"
+      ],
+      "backendDOMNodeId": 2076
+    },
+    {
+      "nodeId": "2082",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "generic"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 88
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "2083",
+      "childIds": [
+        "2079",
+        "2090"
+      ],
+      "backendDOMNodeId": 2082
+    },
+    {
+      "nodeId": "2084",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "StaticText"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 158
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Component fixture: ",
+        "sources": [
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "Component fixture: "
+            }
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "2080",
+      "childIds": [
+        "-1000000819"
+      ],
+      "backendDOMNodeId": 2084
+    },
+    {
+      "nodeId": "2085",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "StaticText"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 158
+      },
+      "name": {
+        "type": "computedString",
+        "value": "long-description",
+        "sources": [
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "long-description"
+            }
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "2080",
+      "childIds": [
+        "-1000000820"
+      ],
+      "backendDOMNodeId": 2085
+    },
+    {
+      "nodeId": "2086",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "StaticText"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 158
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Description",
+        "sources": [
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "Description"
+            }
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "2076",
+      "childIds": [
+        "-1000000821"
+      ],
+      "backendDOMNodeId": 2086
+    },
+    {
+      "nodeId": "2079",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "generic"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 88
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "2082",
+      "childIds": [
+        "2078"
+      ],
+      "backendDOMNodeId": 2079
+    },
+    {
+      "nodeId": "2090",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "button"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 9
+      },
+      "name": {
+        "type": "computedString",
+        "value": "See less",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          },
+          {
+            "type": "relatedElement",
+            "nativeSource": "label"
+          },
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "See less"
+            }
+          },
+          {
+            "type": "attribute",
+            "attribute": "title",
+            "superseded": true
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "invalid",
+          "value": {
+            "type": "token",
+            "value": "false"
+          }
+        },
+        {
+          "name": "focusable",
+          "value": {
+            "type": "booleanOrUndefined",
+            "value": true
+          }
+        },
+        {
+          "name": "focused",
+          "value": {
+            "type": "booleanOrUndefined",
+            "value": true
+          }
+        }
+      ],
+      "parentId": "2082",
+      "childIds": [
+        "2098",
+        "2094"
+      ],
+      "backendDOMNodeId": 2090
+    },
+    {
+      "nodeId": "-1000000819",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Component fixture: "
+      },
+      "properties": [],
+      "parentId": "2084",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000820",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "long-description"
+      },
+      "properties": [],
+      "parentId": "2085",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000821",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "Description"
+      },
+      "properties": [],
+      "parentId": "2086",
+      "childIds": []
+    },
+    {
+      "nodeId": "2078",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "uninteresting",
+          "value": {
+            "type": "boolean",
+            "value": true
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "2079",
+      "childIds": [
+        "2077"
+      ],
+      "backendDOMNodeId": 2078
+    },
+    {
+      "nodeId": "2077",
+      "ignored": false,
+      "role": {
+        "type": "role",
+        "value": "paragraph"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 133
+      },
+      "name": {
+        "type": "computedString",
+        "value": "",
+        "sources": [
+          {
+            "type": "relatedElement",
+            "attribute": "aria-labelledby"
+          },
+          {
+            "type": "attribute",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "2078",
+      "childIds": [
+        "2087"
+      ],
+      "backendDOMNodeId": 2077
+    },
+    {
+      "nodeId": "2098",
+      "ignored": true,
+      "ignoredReasons": [
+        {
+          "name": "ariaHiddenSubtree",
+          "value": {
+            "type": "idref",
+            "relatedNodes": [
+              {
+                "backendDOMNodeId": 2089
+              }
+            ]
+          }
+        }
+      ],
+      "role": {
+        "type": "role",
+        "value": "none"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 0
+      },
+      "parentId": "2090",
+      "childIds": [],
+      "backendDOMNodeId": 2098
+    },
+    {
+      "nodeId": "2094",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "StaticText"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 158
+      },
+      "name": {
+        "type": "computedString",
+        "value": "See less",
+        "sources": [
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "See less"
+            }
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "2090",
+      "childIds": [
+        "-1000000892"
+      ],
+      "backendDOMNodeId": 2094
+    },
+    {
+      "nodeId": "2087",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "StaticText"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 158
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access.",
+        "sources": [
+          {
+            "type": "contents",
+            "value": {
+              "type": "computedString",
+              "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access."
+            }
+          }
+        ]
+      },
+      "properties": [],
+      "parentId": "2077",
+      "childIds": [
+        "-1000000857",
+        "-1000000858",
+        "-1000000859",
+        "-1000000860",
+        "-1000000861",
+        "-1000000862",
+        "-1000000863",
+        "-1000000864",
+        "-1000000865",
+        "-1000000866",
+        "-1000000867",
+        "-1000000868",
+        "-1000000869",
+        "-1000000870",
+        "-1000000871",
+        "-1000000872",
+        "-1000000873",
+        "-1000000874",
+        "-1000000875",
+        "-1000000876",
+        "-1000000877",
+        "-1000000878",
+        "-1000000879",
+        "-1000000880",
+        "-1000000881",
+        "-1000000882",
+        "-1000000883",
+        "-1000000884",
+        "-1000000885",
+        "-1000000886",
+        "-1000000887",
+        "-1000000888",
+        "-1000000889",
+        "-1000000890"
+      ],
+      "backendDOMNodeId": 2087
+    },
+    {
+      "nodeId": "-1000000892",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "See less"
+      },
+      "properties": [],
+      "parentId": "2094",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000857",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000858",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000859",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000860",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000861",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000862",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000863",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000864",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000865",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000866",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000867",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000868",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000869",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000870",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000871",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000872",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000873",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000874",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000875",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000876",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000877",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000878",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000879",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000880",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000881",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000882",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000883",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000884",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000885",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000886",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000887",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000888",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000889",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. "
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    },
+    {
+      "nodeId": "-1000000890",
+      "ignored": false,
+      "role": {
+        "type": "internalRole",
+        "value": "InlineTextBox"
+      },
+      "chromeRole": {
+        "type": "internalRole",
+        "value": 101
+      },
+      "name": {
+        "type": "computedString",
+        "value": "A long publication description for testing expansion and keyboard access."
+      },
+      "properties": [],
+      "parentId": "2087",
+      "childIds": []
+    }
+  ]
+}

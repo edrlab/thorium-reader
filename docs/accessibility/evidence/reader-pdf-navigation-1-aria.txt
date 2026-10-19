@@ -1,0 +1,242 @@
+- heading "toolbar"
+- button "Skip to content"
+- navigation "toolbar":
+  - list:
+    - list:
+      - listitem:
+        - button "Close this reading window (back to bookshelf)"
+      - listitem:
+        - button "Information" [disabled]
+    - list:
+      - listitem:
+        - button "Print"
+      - listitem:
+        - button "Search publication"
+      - listitem:
+        - checkbox "Bookmark (Add)"
+      - listitem:
+        - checkbox "Annotation"
+      - listitem:
+        - button "Navigation" [expanded] [pressed]
+      - listitem:
+        - button "Reader settings"
+      - listitem:
+        - checkbox "Page fit or width"
+      - listitem:
+        - button "Zen mode"
+- main "main content":
+  - heading "main content"
+  - iframe
+- navigation "Navigation history":
+  - button "Jump back in navigation history" [disabled]
+  - button "Jump forward in navigation history" [disabled]
+- button "Dismiss"
+- heading "Navigation" [level=1]
+- dialog "Navigation":
+  - heading "Navigation" [level=1]
+  - tablist "Navigation":
+    - tab "Table of Contents" [selected]
+    - tab "Landmarks" [disabled]
+    - tab "Go to page"
+    - tab "Bookmarks"
+    - tab "Annotations"
+  - heading "Table of Contents" [level=2]
+  - region:
+    - tabpanel "Table of Contents":
+      - list "Table of Contents":
+        - listitem:
+          - heading "The Constitution Acts 1867, 1982" [level=1]
+          - list:
+            - listitem:
+              - heading "FOREWORD" [level=2]
+              - list
+            - listitem:
+              - heading "Table of Provisions" [level=2]
+              - list
+            - listitem:
+              - heading "Constitution Act, 1867" [level=2]
+              - list:
+                - listitem:
+                  - heading "1 I. PRELIMINARY" [level=3]
+                  - list
+                - listitem:
+                  - heading "3 II. UNION" [level=3]
+                  - list
+                - listitem:
+                  - heading "9 III. EXECUTIVE POWER" [level=3]
+                  - list
+                - listitem:
+                  - heading "17 IV. LEGISLATIVE POWER" [level=3]
+                  - list:
+                    - listitem:
+                      - heading "21 The Senate" [level=4]
+                      - list
+                    - listitem:
+                      - heading "37 The House of Commons" [level=4]
+                      - list
+                    - listitem:
+                      - heading "53 Money Votes; Royal Assent" [level=4]
+                      - list
+                - listitem:
+                  - heading "58 V. PROVINCIAL CONSTITUTIONS" [level=3]
+                  - list:
+                    - listitem:
+                      - heading "58 Executive Power" [level=4]
+                      - list
+                    - listitem:
+                      - heading "69 Legislative Power" [level=4]
+                      - list:
+                        - listitem:
+                          - heading "69 1. Ontario" [level=5]
+                          - list
+                        - listitem:
+                          - heading "71 2. Quebec" [level=5]
+                          - list
+                        - listitem:
+                          - heading "81 3. Ontario and Quebec" [level=5]
+                          - list
+                        - listitem:
+                          - heading "88 4. Nova Scotia and New Brunswick" [level=5]
+                          - list
+                        - listitem:
+                          - heading "89 5. Ontario, Quebec, and Nova Scotia" [level=5]
+                          - list
+                        - listitem:
+                          - heading "90 6. The Four Provinces" [level=5]
+                          - list
+                - listitem:
+                  - heading "91 VI. DISTRIBUTION OF LEGISLATIVE POWERS" [level=3]
+                  - list:
+                    - listitem:
+                      - heading "91 Powers of the Parliament" [level=4]
+                      - list
+                    - listitem:
+                      - heading "92 Exclusive Powers of Provincial Legislatures" [level=4]
+                      - list
+                    - listitem:
+                      - heading "92A Non-Renewable Natural Resources, Forestry Resources and Electrical Energy" [level=4]
+                      - list
+                    - listitem:
+                      - heading "93 Education" [level=4]
+                      - list
+                    - listitem:
+                      - heading "94 Uniformity of Laws in Ontario, Nova Scotia, and New Brunswick" [level=4]
+                      - list
+                    - listitem:
+                      - heading "94A Old Age Pensions" [level=4]
+                      - list
+                    - listitem:
+                      - heading "95 Agriculture and Immigration" [level=4]
+                      - list
+                - listitem:
+                  - heading "96 VII. JUDICATURE" [level=3]
+                  - list
+                - listitem:
+                  - heading "102 VIII. REVENUES; DEBTS; ASSETS; TAXATION" [level=3]
+                  - list
+                - listitem:
+                  - heading "127 IX. MISCELLANEOUS PROVISIONS" [level=3]
+                  - list:
+                    - listitem:
+                      - heading "127 General" [level=4]
+                      - list
+                    - listitem:
+                      - heading "134 Ontario and Quebec" [level=4]
+                      - list
+                - listitem:
+                  - heading "145 X. INTERCOLONIAL RAILWAY" [level=3]
+                  - list
+                - listitem:
+                  - heading "146 XI. ADMISSION OF OTHER COLONIES" [level=3]
+                  - list
+                - listitem:
+                  - heading "THE FIRST SCHEDULE (78)" [level=3]
+                  - list
+                - listitem:
+                  - heading "THE SECOND SCHEDULE" [level=3]
+                  - list
+                - listitem:
+                  - heading "THE THIRD SCHEDULE" [level=3]
+                  - list
+                - listitem:
+                  - heading "THE FOURTH SCHEDULE" [level=3]
+                  - list
+                - listitem:
+                  - heading "THE FIFTH SCHEDULE" [level=3]
+                  - list
+                - listitem:
+                  - heading "THE SIXTH SCHEDULE" [level=3]
+                  - list
+            - listitem:
+              - heading "Constitution Act, 1982" [level=2]
+              - list:
+                - listitem:
+                  - heading "PART I CANADIAN CHARTER OF RIGHTS AND FREEDOMS" [level=3]
+                  - list:
+                    - listitem:
+                      - heading "1 Guarantee of Rights and Freedoms" [level=4]
+                      - list
+                    - listitem:
+                      - heading "2 Fundamental Freedoms" [level=4]
+                      - list
+                    - listitem:
+                      - heading "3 Democratic Rights" [level=4]
+                      - list
+                    - listitem:
+                      - heading "6 Mobility Rights" [level=4]
+                      - list
+                    - listitem:
+                      - heading "7 Legal Rights" [level=4]
+                      - list
+                    - listitem:
+                      - heading "15 Equality Rights" [level=4]
+                      - list
+                    - listitem:
+                      - heading "16 Official Languages of Canada" [level=4]
+                      - list
+                    - listitem:
+                      - heading "23 Minority Language Educational Rights" [level=4]
+                      - list
+                    - listitem:
+                      - heading "24 Enforcement" [level=4]
+                      - list
+                    - listitem:
+                      - heading "25 General" [level=4]
+                      - list
+                    - listitem:
+                      - heading "32 Application of Charter" [level=4]
+                      - list
+                    - listitem:
+                      - heading "34 Citation" [level=4]
+                      - list
+                - listitem:
+                  - heading "35 PART II RIGHTS OF THE ABORIGINAL PEOPLES OF CANADA" [level=3]
+                  - list
+                - listitem:
+                  - heading "36 PART III EQUALIZATION AND REGIONAL DISPARITIES" [level=3]
+                  - list
+                - listitem:
+                  - heading "37 PART IV CONSTITUTIONAL CONFERENCE" [level=3]
+                  - list
+                - listitem:
+                  - heading "37.1 PART IV.I CONSTITUTIONAL CONFERENCES" [level=3]
+                  - list
+                - listitem:
+                  - heading "38 PART V PROCEDURE FOR AMENDING CONSTITUTION OF CANADA (101)" [level=3]
+                  - list
+                - listitem:
+                  - heading "50 PART VI AMENDMENT TO THE CONSTITUTION ACT, 1867" [level=3]
+                  - list
+                - listitem:
+                  - heading "52 PART VII GENERAL" [level=3]
+                  - list
+                - listitem:
+                  - heading "SCHEDULE TO THE CONSTITUTION ACT, 1982" [level=3]
+                  - list
+            - listitem:
+              - heading "ENDNOTES" [level=2]
+              - list
+  - button "Dock panel to the left"
+  - button "Dock panel to the right"
+  - button "Show panel as a modal popup" [disabled]
+  - button "Close"

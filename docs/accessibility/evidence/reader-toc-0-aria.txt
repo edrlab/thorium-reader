@@ -1,0 +1,160 @@
+- heading "toolbar"
+- button "Skip to content"
+- navigation "toolbar":
+  - list:
+    - list:
+      - listitem:
+        - button "Close this reading window (back to bookshelf)"
+      - listitem:
+        - button "Information" [disabled]
+    - list:
+      - listitem:
+        - button "Activate Text To Speech (TTS)"
+      - listitem:
+        - button "TTS options"
+    - list:
+      - listitem:
+        - button "Search publication"
+      - listitem:
+        - checkbox "Bookmark (Add)"
+      - listitem:
+        - checkbox "Annotation"
+      - listitem:
+        - button "Navigation" [expanded] [pressed]
+      - listitem:
+        - button "Reader settings"
+      - listitem:
+        - button "Zen mode"
+- main "main content":
+  - heading "main content"
+  - iframe
+  - navigation "Navigation":
+    - button "Go backward"
+    - button "Go forward"
+- navigation "Navigation history":
+  - button "Jump back in navigation history" [disabled]
+  - button "Jump forward in navigation history" [disabled]
+- button "Dismiss"
+- heading "Navigation" [level=1]
+- dialog "Navigation":
+  - heading "Navigation" [level=1]
+  - tablist "Navigation":
+    - tab "Table of Contents" [selected]
+    - tab "Landmarks"
+    - tab "Search"
+    - tab "Go to page" [disabled]
+    - tab "Bookmarks"
+    - tab "Annotations"
+  - heading "Table of Contents" [level=2]
+  - region:
+    - tabpanel "Table of Contents":
+      - list "Table of Contents":
+        - listitem:
+          - heading "Preface" [level=1]
+          - list:
+            - listitem:
+              - heading "Conventions Used in This Book" [level=2]
+            - listitem:
+              - heading "Using Code Examples" [level=2]
+            - listitem:
+              - heading "Safari® Books Online" [level=2]
+            - listitem:
+              - heading "How to Contact Us" [level=2]
+            - listitem:
+              - heading "Acknowledgments" [level=2]
+        - listitem:
+          - heading "1. Introduction" [level=1]
+          - list:
+            - listitem:
+              - heading "The Digital Famine" [level=2]
+            - listitem:
+              - heading "Accessibility and Usability" [level=2]
+        - listitem:
+          - 'heading "2. Building a Better EPUB: Fundamental Accessibility" [level=1]'
+          - list:
+            - listitem:
+              - 'heading "A Solid Foundation: Structure and Semantics" [level=2]'
+              - list:
+                - listitem:
+                  - heading "Data Integrity" [level=3]
+                - listitem:
+                  - heading "Separation of Style" [level=3]
+                - listitem:
+                  - heading "Semantic Inflection" [level=3]
+                - listitem:
+                  - heading "Language" [level=3]
+                - listitem:
+                  - heading "Logical Reading Order" [level=3]
+                - listitem:
+                  - heading "Sections and Headings" [level=3]
+                - listitem:
+                  - heading "Context Changes" [level=3]
+                - listitem:
+                  - heading "Lists" [level=3]
+                - listitem:
+                  - heading "Tables" [level=3]
+                - listitem:
+                  - heading "Figures" [level=3]
+                - listitem:
+                  - heading "Images" [level=3]
+                - listitem:
+                  - heading "SVG" [level=3]
+                - listitem:
+                  - heading "MathML" [level=3]
+                - listitem:
+                  - heading "Footnotes" [level=3]
+                - listitem:
+                  - heading "Page Numbering" [level=3]
+            - listitem:
+              - 'heading "Getting Around: Navigating an EPUB" [level=2]'
+            - listitem:
+              - 'heading "The Untold Story: Metadata" [level=2]'
+        - listitem:
+          - 'heading "3. It’s Alive: Rich Content Accessibility" [level=1]'
+          - list:
+            - listitem:
+              - 'heading "The Sound and the Fury: Audio and Video" [level=2]'
+              - list:
+                - listitem:
+                  - heading "Timed Tracks" [level=3]
+            - listitem:
+              - 'heading "Talk to Me: Media Overlays" [level=2]'
+              - list:
+                - listitem:
+                  - heading "Building an Overlay (***)" [level=3]: Building an Overlay
+                - listitem:
+                  - heading "Structural Considerations" [level=3]
+            - listitem:
+              - 'heading "Tell It Like It Is: Text-to-Speech (TTS)" [level=2]'
+              - list:
+                - listitem:
+                  - heading "PLS Lexicons" [level=3]
+                - listitem:
+                  - heading "SSML" [level=3]
+                - listitem:
+                  - heading "CSS3 Speech" [level=3]
+            - listitem:
+              - 'heading "The Coded Word: Scripted Interactivity" [level=2]'
+            - listitem:
+              - 'heading "A Little Help: WAI-ARIA" [level=2]'
+              - list:
+                - listitem:
+                  - heading "Custom Controls" [level=3]
+                - listitem:
+                  - heading "Forms" [level=3]
+                - listitem:
+                  - heading "Live Regions" [level=3]
+            - listitem:
+              - 'heading "A Blank Slate: Canvas" [level=2]'
+        - listitem:
+          - heading "4. Conclusion" [level=1]
+          - list:
+            - listitem:
+              - heading "EPUB 3 Best Practices Teaser" [level=2]
+              - list:
+                - listitem:
+                  - heading "About the Book" [level=3]
+  - button "Dock panel to the left"
+  - button "Dock panel to the right"
+  - button "Show panel as a modal popup" [disabled]
+  - button "Close"

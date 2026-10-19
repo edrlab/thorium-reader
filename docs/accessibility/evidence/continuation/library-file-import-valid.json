@@ -1,0 +1,171 @@
+{
+  "id": "file-import-valid",
+  "runtime": "library",
+  "files": [
+    "src/renderer/library/components/dialog/FileImport.tsx",
+    "src/renderer/library/components/dialog/DialogManager.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T11:57:39.417Z",
+  "errors": [],
+  "actions": [],
+  "text": "Component fixture: file-import-valid\nConfirm import:\nAudit publication.epub\nCancel\nImport",
+  "html": "<div id=\"audit-root\" inert=\"\"><main><h1>Component fixture: file-import-valid</h1></main></div>\n<span data-focus-scope-start=\"true\" hidden=\"\" inert=\"\"></span>\n<div class=\"AlertDialogOverlay\" data-rac=\"\" style=\"position: fixed; inset: 0px; z-index: 102; --visual-viewport-width: 1184px; --visual-viewport-height: 835px; --page-width: 1184px; --page-height: 834.84375px;\"><div class=\"react-aria-Modal\" data-rac=\"\" style=\"display: contents;\"><section class=\"AlertDialogContent\" data-rac=\"\" aria-labelledby=\":r1b:\" aria-describedby=\":r1c:\" role=\"alertdialog\" tabindex=\"-1\" style=\"overflow-y: scroll;\"><h2 class=\"AlertDialogTitle\" id=\":r1b:\">Confirm import:</h2><ul class=\"AlertDialogDescription\" id=\":r1c:\"><li>Audit publication.epub</li></ul><div class=\"AlertDialogButtonContainer\"><button class=\"AlertDialogButton abort react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7789981493-:r1f:\" data-focused=\"true\">Cancel</button><button class=\"AlertDialogButton yes\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#add-alone\"></use></svg>Import</button></div></section></div></div>\n<span data-focus-scope-end=\"true\" hidden=\"\" inert=\"\"></span>",
+  "dimensions": {
+    "width": 1184,
+    "height": 835,
+    "scrollWidth": 1184
+  },
+  "focus": "<button class=\"AlertDialogButton abort react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7789981493-:r1f:\" data-focused=\"true\">Cancel</button>",
+  "controls": [
+    {
+      "html": "<button class=\"AlertDialogButton abort react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7789981493-:r1f:\" data-focused=\"true\">Cancel</button>",
+      "rect": {
+        "x": 668.78125,
+        "y": 436.5,
+        "width": 68.703125,
+        "height": 35,
+        "top": 436.5,
+        "right": 737.484375,
+        "bottom": 471.5,
+        "left": 668.78125
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"AlertDialogButton yes\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#add-alone\"></use></svg>Import</button>",
+      "rect": {
+        "x": 747.484375,
+        "y": 436.5,
+        "width": 82.515625,
+        "height": 35,
+        "top": 436.5,
+        "right": 830,
+        "bottom": 471.5,
+        "left": 747.484375
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [],
+    "incomplete": [],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 1
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 1
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 1
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 1
+      },
+      {
+        "id": "aria-dialog-name",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 2
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 1
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 1
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 1
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 1
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 1
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 4
+      },
+      {
+        "id": "button-name",
+        "nodes": 2
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "duplicate-id-aria",
+        "nodes": 2
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 1
+      },
+      {
+        "id": "heading-order",
+        "nodes": 1
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "list",
+        "nodes": 1
+      },
+      {
+        "id": "listitem",
+        "nodes": 1
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 2
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 9
+      },
+      {
+        "id": "tabindex",
+        "nodes": 3
+      },
+      {
+        "id": "target-size",
+        "nodes": 2
+      }
+    ]
+  },
+  "evidencePrefix": "continuation/library-file-import-valid"
+}

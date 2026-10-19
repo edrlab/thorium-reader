@@ -1,0 +1,11 @@
+- main:
+  - 'heading "Component fixture: divina-modes" [level=1]'
+  - radiogroup "Layout":
+    - radio "double" [checked]
+    - text: double
+    - radio "guided" [disabled]
+    - text: guided
+    - radio "scroll"
+    - text: scroll
+    - radio "single"
+    - text: single

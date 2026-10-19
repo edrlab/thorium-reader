@@ -1,0 +1,8 @@
+- main:
+  - 'heading "Component fixture: file-import-valid" [level=1]'
+- alertdialog "Confirm import:":
+  - heading "Confirm import:" [level=2]
+  - list:
+    - listitem: Audit publication.epub
+  - button "Cancel"
+  - button "Import"

@@ -1,0 +1,11 @@
+renderer pdf webview index (webpack 5.111.1) compiled successfully in 1283 ms
+renderer pdf extract webview index (webpack 5.111.1) compiled successfully in 812 ms
+renderer webview preload (webpack 5.111.1) compiled successfully in 2725 ms
+[2] main (webpack 5.111.1) compiled successfully in 10307 ms
+[0] renderer index app (webpack 5.111.1) compiled successfully in 12854 ms
+[1] renderer index reader (webpack 5.111.1) compiled successfully in 13630 ms
+[2] npm run start:dev:main exited with code 0
+--> Sending SIGTERM to other processes..
+[0] npm run start:dev:renderer:library exited with code 1
+--> Sending SIGTERM to other processes..
+[1] npm run start:dev:renderer:reader exited with code 1

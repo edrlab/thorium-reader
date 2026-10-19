@@ -1,0 +1,24 @@
+- main:
+  - 'heading "Component fixture: update-feed" [level=1]'
+  - button "Edit audit catalog" [expanded]
+- button "Dismiss"
+- dialog "Edit OPDS feed":
+  - heading "Edit OPDS feed" [level=2]
+  - button "Close"
+  - text: "Name:"
+  - textbox "Name:": Audit catalog
+  - text: "Link:"
+  - textbox "Link:": https://audit.invalid/catalog
+  - button "Add to favorites":
+    - paragraph: Add to favorites
+  - radiogroup "Catalog color":
+    - radio "Gray"
+    - radio "Red"
+    - radio "Yellow"
+    - radio "Blue"
+    - radio "Green"
+    - radio "Purple"
+    - radio "Orange"
+    - radio "Pink"
+  - button "Cancel"
+  - button "Edit"

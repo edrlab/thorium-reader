@@ -1,0 +1,16 @@
+- main:
+  - 'heading "Component fixture: opds-properties-unavailable" [level=1]'
+  - strong: "Number of items:"
+  - text: "5"
+  - strong: "Price:"
+  - text: 0.5 EUR
+  - strong: "Copies:"
+  - text: "5"
+  - strong: "Available:"
+  - text: "2"
+  - strong: "Held:"
+  - text: "3"
+  - strong: "Hold position:"
+  - text: "2"
+  - strong: "State:"
+  - paragraph: Unavailable

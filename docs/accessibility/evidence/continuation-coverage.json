@@ -1,0 +1,406 @@
+{
+  "src/renderer/common/components/ImportAnnotationsDialog.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-import-annotations-conflicts.json"
+    ],
+    "observation": "Conflict counts/creator context rendered; named confirmation; Cancel initial focus, Tab cycle and Escape abort action inspected. No set imported.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/common/components/Loader.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-loading.json"
+    ],
+    "observation": "Spinner rendered and excluded from accessibility tree; no independent status text. A15 remains contextual review, not a standalone 4.1.3 failure.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/common/components/customizationProfileDialog.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-welcome-profile.json"
+    ],
+    "observation": "Welcome HTML, image and do-not-show checkbox rendered. Image has no alternative: A17 confirmed. Profile lock/error variants untested.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/common/components/dialog/publicationInfos/LcpInfo.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-lcp-information.json"
+    ],
+    "observation": "Active license dates, remaining copy/print allowances and status rendered as text. Other license statuses untested.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/common/components/dialog/publicationInfos/PublicationInfoDescription.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-description-expanded.json",
+      "evidence/continuation/library-long-description.json"
+    ],
+    "observation": "Long text rendered; Tab reaches aria-hidden expander and Enter switches See more/See less. A29.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/common/components/dialog/publicationInfos/publicationInfoA11y.tsx": {
+    "kind": "inactive",
+    "evidence": [
+      "src/renderer/common/components/dialog/publicationInfos/publicationInfoA11y.tsx"
+    ],
+    "observation": "Commented-out legacy component only; active implementation is publicationInfoA11y2.tsx. No runtime UI to exercise.",
+    "limitations": "No dynamic conformance conclusion applies to this inactive file."
+  },
+  "src/renderer/common/components/dialog/publicationInfos/tag/tagButton.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-editable-tags.json",
+      "evidence/continuation/library-tag-delete-popover.json"
+    ],
+    "observation": "Two tag edit buttons unnamed; 11x11 CSS px targets with 21px safe diameter; opened delete popover has empty Chromium AX name. A28/A31. Escape restores trigger.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/common/components/dialog/publicationInfos/tag/tagList.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-editable-tags.json",
+      "evidence/continuation/library-tag-delete-popover.json"
+    ],
+    "observation": "Two tags rendered through real TagButton children; array wrapper adds no separate control. Child defects A28/A31 attributed to TagButton.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/common/components/hoc/translator.tsx": {
+    "kind": "composed",
+    "evidence": [
+      "evidence/continuation/library-lcp-information.json"
+    ],
+    "observation": "withTranslator wraps the actually rendered LcpInfo, FileImport and other connected components; English translated strings observed. Nonvisual HOC; no independent keyboard surface.",
+    "limitations": "Composition/source tracing, not a separate standalone component run."
+  },
+  "src/renderer/common/components/overlayHelpers.tsx": {
+    "kind": "composed",
+    "evidence": [
+      "evidence/continuation/library-tag-delete-popover.json"
+    ],
+    "observation": "PopoverArrow composed in the open tag popover; decorative aria-hidden SVG observed. CloseOnAnchorRemoval observer branch not independently triggered.",
+    "limitations": "Composition/source tracing, not a separate standalone component run."
+  },
+  "src/renderer/common/components/toast/Toast.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-toast-expanded.json",
+      "evidence/continuation/library-toast.json"
+    ],
+    "observation": "Alert and named Close rendered; focused alert does not expand on Enter/Space, pointer on container expands. A12 keyboard expansion confirmed; clipboard and expiry equivalence not certified.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/common/components/toast/ToastManager.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-toast-expanded.json",
+      "evidence/continuation/library-toast.json"
+    ],
+    "observation": "Synthetic toast-state update creates Toast; real manager renders/filters via Redux. System notifications and publication-filter branches not fully tested.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/library/components/DownloadsPanel.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-downloads.json"
+    ],
+    "observation": "42% and indeterminate downloads rendered. Cancel anchors absent from Tab order (A05); both native progressbar AX names empty (A30). No download cancelled.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/library/components/LoaderMainLoad.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-loading.json"
+    ],
+    "observation": "Busy=true spinner rendered, no exposed status text; host announcement responsibility remains A15 review.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/library/components/catalog/NoPublicationInfo.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-empty-library.json"
+    ],
+    "observation": "Empty-library instructions and supported-extension disclosure rendered; Enter opens native details.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/library/components/customization/Customization.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-customization-screen.json"
+    ],
+    "observation": "Real LibraryLayout and locally supplied profile HTML rendered; ready-state heading focus inspected. Wrapper adds a second main/h1; those fixture-only landmark/heading flags are excluded.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/library/components/dialog/ApiappAddForm.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-apiapp-add.json",
+      "evidence/continuation/library-apiapp-search-results.json"
+    ],
+    "observation": "Dialog opens/closes with keyboard; search API response supplied at Redux result boundary. Unlabelled search and option lacking listbox reproduced: A04/A09. No catalog added.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/library/components/dialog/DeleteOpdsFeedConfirm.tsx": {
+    "kind": "application+fixture",
+    "evidence": [
+      "evidence/library-continuation-feed-delete.json",
+      "evidence/continuation/library-delete-feed.json"
+    ],
+    "observation": "Named confirmation, Cancel initial focus, Tab containment and Escape restoration in fixture; also opened/cancelled in live app. No deletion.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/library/components/dialog/DeletePublicationConfirm.tsx": {
+    "kind": "application+fixture",
+    "evidence": [
+      "evidence/library-continuation-delete-confirm.json",
+      "evidence/continuation/library-delete-publication.json"
+    ],
+    "observation": "Named confirmation, Cancel initial focus, Tab containment and Escape restoration in fixture and live app. No deletion.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/library/components/dialog/DialogManager.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-file-import-invalid.json",
+      "evidence/continuation/library-file-import-valid.json",
+      "evidence/continuation/library-lcp-authentication.json"
+    ],
+    "observation": "Real manager mounted FileImport and LCP-authentication branches from synthetic dialog state; no independent visual surface.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/library/components/dialog/FileImport.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-file-import-invalid.json",
+      "evidence/continuation/library-file-import-valid.json"
+    ],
+    "observation": "Valid filename and invalid/empty input branches rendered; named confirmation, Cancel initial focus, Tab and Escape checked. No file imported.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/library/components/dialog/LcpAuthentication.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-lcp-authentication.json"
+    ],
+    "observation": "Hint/error/password dialog rendered; password accessible name and autofocus inspected, Tab cycle and Escape checked. Unlock and password-manager/3.3.8 flow untested.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/library/components/dialog/OpdsFeedUpdateForm.tsx": {
+    "kind": "application+fixture",
+    "evidence": [
+      "evidence/library-continuation-feed-update.json",
+      "evidence/continuation/library-update-feed.json"
+    ],
+    "observation": "Populated edit dialog rendered in fixture and live app; Tab and Escape restoration checked. No data saved.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/library/components/dialog/publicationInfos/catalogLcpControls.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-lcp-controls.json",
+      "evidence/continuation/library-lcp-renew-confirmation.json",
+      "evidence/continuation/library-lcp-return-confirmation.json"
+    ],
+    "observation": "Active license Read/Renew/Return/Delete/Save-as controls rendered; renew/return confirmations opened and cancelled with focus restoration. No license mutation.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/library/components/dialog/publicationInfos/opdsControls/BorrowButton.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-borrow-failed.json",
+      "evidence/continuation/library-borrow-pending.json",
+      "evidence/continuation/library-borrow.json"
+    ],
+    "observation": "Enter starts disabled pending state; synthetic unsuccessful API_RESULT restores button and renders role=alert. Real borrow/auth/success flow untested.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/library/components/dialog/publicationInfos/opdsControls/CancelHold.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-cancel-hold-failed-settled.json",
+      "evidence/continuation/library-cancel-hold-failed.json",
+      "evidence/continuation/library-cancel-hold-pending.json",
+      "evidence/continuation/library-cancel-hold.json"
+    ],
+    "observation": "Enter starts disabled pending state; synthetic failure restores button and exposes alert. Settled contrast retest clears transition-only axe flag. No hold changed.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/library/components/dialog/publicationInfos/opdsControls/OpdsLinkProperties.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-opds-properties-available.json",
+      "evidence/continuation/library-opds-properties-ready.json",
+      "evidence/continuation/library-opds-properties-reserved.json",
+      "evidence/continuation/library-opds-properties-unavailable.json"
+    ],
+    "observation": "Available/unavailable/ready/reserved metadata rendered with text alternatives for decorative icons; price/copy/hold sample fields included.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/library/components/opds/Entry.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-opds-navigation.json"
+    ],
+    "observation": "Category title/subtitle/count rendered through EntryList; native link exposed, keyboard navigation sampled. Synthetic router records navigation only.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/library/components/opds/EntryList.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-opds-navigation.json"
+    ],
+    "observation": "Real list and Entry child rendered; category navigation sampled. No extra wrapper-specific failure established.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/library/components/opds/MessageOpdBrowserResult.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-opds-message.json"
+    ],
+    "observation": "Error title/message rendered as static heading/text. A15 live status-announcement concern needs actual asynchronous replacement/AT test.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/library/components/opds/PageNavigation.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-opds-navigation.json"
+    ],
+    "observation": "Four page controls rendered; four nested-interactive and four link-name failures reproduced (A07); Tab reaches unnamed links.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/library/components/opds/SearchForm.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-opds-navigation.json"
+    ],
+    "observation": "Enabled named searchbox rendered; typing/Enter records navigation action. Visible label htmlFor mismatch remains, but aria-label supplies computed name.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/library/components/opds/UserProfile.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-user-profile-loading.json",
+      "evidence/continuation/library-user-profile-unavailable.json",
+      "evidence/continuation/library-user-profile.json"
+    ],
+    "observation": "Loading status, populated profile/quotas/edit control, and unavailable branch rendered with local responses. External profile edit not activated.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/library/components/publication/menu/OpdsMenu.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-opds-menu.json"
+    ],
+    "observation": "About-publication trigger and hydrated OPDS content rendered; no catalog/download actions activated. Hydration supplied at saga boundary.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/library/components/settings/AuthSettings.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-authentication-settings.json"
+    ],
+    "observation": "Named Clear login data button rendered in fixture only. No active source import found; unreachable in current Settings composition; action not activated.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/library/components/settings/SaveSessionSettings.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/library-session-settings.json"
+    ],
+    "observation": "Named ARIA checkbox responds to Space and changes checked false->true in fixture store. Current Settings reference is commented out; not claimed reachable in app.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/library/components/utils/GridView.tsx": {
+    "kind": "composed",
+    "evidence": [
+      "evidence/library-opds-local.json"
+    ],
+    "observation": "Composed application coverage: EntryPublicationList.tsx:13,52 imports/renders GridView for the already captured OPDS publication grid. Child PublicationCard UI observed; scrollToTop update branch not separately tested.",
+    "limitations": "Composition/source tracing, not a separate standalone component run."
+  },
+  "src/renderer/library/components/withRouter.tsx": {
+    "kind": "inactive",
+    "evidence": [
+      "src/renderer/library/components/withRouter.tsx"
+    ],
+    "observation": "All code commented out; no runtime export or visual component.",
+    "limitations": "No dynamic conformance conclusion applies to this inactive file."
+  },
+  "src/renderer/reader/components/BookmarkLocatorInfo.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/reader-bookmark-locator.json"
+    ],
+    "observation": "Audio locator timestamp/progression branch rendered (00:02:00, 25%). PDF/Divina/caret fallback branches untested.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/reader/components/ImageClickManager.tsx": {
+    "kind": "inactive",
+    "evidence": [
+      "src/renderer/reader/components/ImageClickManager.tsx"
+    ],
+    "observation": "License header only (361 bytes); viewer implementation lives in ImageClickManagerViewerOnly.tsx.",
+    "limitations": "No dynamic conformance conclusion applies to this inactive file."
+  },
+  "src/renderer/reader/components/ImageClickManagerViewerOnly.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/reader-image-viewer-zoomed.json",
+      "evidence/continuation/reader-image-viewer.json"
+    ],
+    "observation": "Image alternative and named Zoom In/Out/Reset/Close exposed. Enter changes zoom; reset, Tab cycle and Escape dismissal exercised. SVG-fragment and pan gestures untested.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/reader/components/ReaderMenu/AnnotationCard.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/reader-annotation-card-editing.json",
+      "evidence/continuation/reader-annotation-card.json"
+    ],
+    "observation": "Populated card, metadata, tag action, inline editor rendered. Enter filter callback works; Chromium reports named link. Edit textbox still unnamed (A03); Escape returns Edit focus.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/reader/components/ReaderMenu/BookmarkCard.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/reader-bookmark-card-editing.json",
+      "evidence/continuation/reader-bookmark-card.json"
+    ],
+    "observation": "Populated card/audio locator, tag action and inline editor rendered. Enter filter callback works; Chromium reports named link. A03 editor reproduced; Escape returns Edit focus.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/reader/components/ReaderSettings/DivinaSetReadingMode.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/reader-divina-modes.json",
+      "evidence/continuation/reader-divina-selection.json"
+    ],
+    "observation": "Three supported modes and disabled guided option rendered. ArrowRight moves selected single->double; native names/group/checked state exposed. Comic engine not exercised.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/reader/components/dialog/publicationInfos/PublicationInfo.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/reader-publication-information.json"
+    ],
+    "observation": "Controlled Reader info dialog with real common metadata and Reader TagManager rendered; named Close and Escape dismissal checked. Full main/saga integration untested.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/reader/components/dialog/publicationInfos/TagManager.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/reader-publication-information.json"
+    ],
+    "observation": "Existing tags and Add tag textbox/action rendered inside Reader info. Tag writes not submitted; mutation contract untested.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  },
+  "src/renderer/reader/components/picker/LoaderSearch.tsx": {
+    "kind": "component-fixture",
+    "evidence": [
+      "evidence/continuation/reader-search-loading.json"
+    ],
+    "observation": "Search busy spinner rendered, no exposed status text; full search-result announcement still needs integration/AT testing.",
+    "limitations": "Sampled branches only. Fixture uses real component/styles/reducers; local inputs, no sagas/live services. Native AT, complete theme/zoom/spacing/target checks remain."
+  }
+}

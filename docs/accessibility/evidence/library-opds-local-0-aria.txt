@@ -1,0 +1,32 @@
+- log
+- log
+- region "toolbar":
+  - heading "toolbar"
+  - button "Skip to content"
+  - navigation "Bookshelf menu":
+    - heading "Thorium" [level=1]
+    - list:
+      - listitem:
+        - button "Home":
+          - heading "Home" [level=3]
+      - listitem:
+        - button "All publications":
+          - heading "All publications" [level=3]
+      - listitem:
+        - button "Catalogs" [pressed]:
+          - heading "Catalogs" [level=3]
+      - listitem:
+        - button "Application Settings":
+          - heading "Application Settings" [level=3]: Settings
+  - main "main content":
+    - heading "Thorium OPDS Progression Test Catalog" [level=2]
+    - button "reload":
+      - link "reload":
+        - /url: "#/opds/8c5772bb-2e60-406c-ad4e-2c2ee0cee8e7/browse/1/aHR0cDovLzEyNy4wLjAuMTo0ODczL29wZHMvdjIvY2F0YWxvZy5qc29u/aHR0cDovLzEyNy4wLjAuMTo0ODczL29wZHMvdjIvY2F0YWxvZy5qc29u"
+        - img "reload"
+    - link "Catalogs":
+      - /url: "#/opds"
+    - heading "http://127.0.0.1:4873/opds/v2/catalog.json" [level=4]
+    - heading "main content"
+    - button "Accessible EPUB 3 - Matt Garrish"
+    - text: Downloaded

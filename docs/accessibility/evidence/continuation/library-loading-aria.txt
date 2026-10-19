@@ -1,0 +1,2 @@
+- main:
+  - 'heading "Component fixture: loading" [level=1]'

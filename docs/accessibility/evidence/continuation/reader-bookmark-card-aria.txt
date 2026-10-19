@@ -1,0 +1,15 @@
+- main:
+  - 'heading "Component fixture: bookmark-card" [level=1]'
+  - list:
+    - listitem:
+      - button "Go to the content (Bookmark 1)":
+        - paragraph: 00:02:00 (25%)
+      - paragraph:
+        - text: Audit note
+        - strong: with emphasis
+      - text: Research
+      - paragraph: 19/10/2026
+      - paragraph: 100%
+      - paragraph: Audit creator
+      - button "Edit"
+      - button "Delete"

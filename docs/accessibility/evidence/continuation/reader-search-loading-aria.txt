@@ -1,0 +1,2 @@
+- main:
+  - 'heading "Component fixture: search-loading" [level=1]'

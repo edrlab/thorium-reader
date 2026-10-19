@@ -1,0 +1,82 @@
+- heading "toolbar"
+- button "Skip to content"
+- navigation "toolbar":
+  - list:
+    - list:
+      - listitem:
+        - button "Close this reading window (back to bookshelf)"
+      - listitem:
+        - button "Information"
+    - list:
+      - listitem:
+        - button "Activate Text To Speech (TTS)"
+      - listitem:
+        - button "TTS options"
+    - list:
+      - listitem:
+        - button "Search publication" [pressed]
+        - search:
+          - searchbox "Search publication": accessibility
+          - button "Find"
+        - button "95 matches"
+        - button "Previous"
+        - button "Next"
+      - listitem:
+        - checkbox "Bookmark (Add)"
+      - listitem:
+        - checkbox "Annotation"
+      - listitem:
+        - button "Navigation" [expanded] [pressed]
+      - listitem:
+        - button "Reader settings"
+      - listitem:
+        - button "Zen mode"
+- main "main content":
+  - heading "main content"
+  - iframe
+  - navigation "Navigation":
+    - button "Go backward"
+    - button "Go forward"
+- navigation "Navigation history":
+  - button "Jump back in navigation history" [disabled]
+  - button "Jump forward in navigation history" [disabled]
+- heading "Navigation" [level=1]
+- heading "Navigation" [level=1]
+- group:
+  - button "Search Navigation": Search
+- button "Dock panel to the left"
+- button "Dock panel to the right" [disabled]
+- button "Show panel as a modal popup"
+- button "Close"
+- region:
+  - region "Search":
+    - paragraph: 95 matches
+    - list "95 matches":
+      - listitem: "#2 EPUB/bk01-toc.xhtml"
+      - listitem [level=1]: ...troduction The Digital Famine Accessibility and Usability 2. Building a B...
+      - listitem [level=1]: "...ng a Better EPUB: Fundamental Accessibility A Solid Foundation: Structure..."
+      - listitem [level=1]: "...a 3. It’s Alive: Rich Content Accessibility The Sound and the Fury: Audio..."
+      - listitem: Preface
+      - listitem [level=1]: ... Preface Accessibility is a difficult concept to def...
+      - listitem [level=1]: ... be read as an instrument for accessibility compliance nor as a replaceme...
+      - listitem [level=1]: ...EPUB, such as the Web Content Accessibility Guidelines (WCAG) and Web Acc...
+      - listitem [level=1]: ...ity Guidelines (WCAG) and Web Accessibility Initiative’s Accessible Rich ...
+      - listitem [level=1]: ...into the trap of hand-picking accessibility. It is also naturally the cas...
+      - listitem [level=1]: ...You need to be thinking about accessibility and planning good content pra...
+      - listitem: 1. Introduction
+      - listitem [level=1]: ...ntwined than you might think. Accessibility is not a feel-good considerat...
+    - text: Page
+    - combobox "Page":
+      - option "1 / 10" [selected]
+      - option "2 / 10"
+      - option "3 / 10"
+      - option "4 / 10"
+      - option "5 / 10"
+      - option "6 / 10"
+      - option "7 / 10"
+      - option "8 / 10"
+      - option "9 / 10"
+      - option "10 / 10"
+    - button "Next"
+    - button "Last"
+    - paragraph: "[ 1 ... 10 ] / 95 matches"

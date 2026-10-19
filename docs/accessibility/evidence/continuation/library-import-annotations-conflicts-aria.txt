@@ -1,0 +1,9 @@
+- main:
+  - 'heading "Component fixture: import-annotations-conflicts" [level=1]'
+  - button "Import annotations" [expanded]
+- alertdialog "Import notes?":
+  - heading "Import notes?" [level=2]
+  - paragraph: "Origin publication: 'Audit source' by 'Audit creator' Annotations title: 'Audit annotation set' 1 note created by 'Audit creator' will be imported into 'Audit publication' by 'Audit author' Conflict(s): 1 newer note Conflict(s): 1 older note"
+  - button "Cancel"
+  - button "Import all notes"
+  - button "Import only conflict-free notes"

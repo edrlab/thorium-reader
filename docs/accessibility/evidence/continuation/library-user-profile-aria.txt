@@ -1,0 +1,10 @@
+- main:
+  - 'heading "Component fixture: user-profile" [level=1]'
+  - region "Account":
+    - paragraph: Audit patron
+    - paragraph: patron@example.invalid
+    - heading "Loans" [level=4]
+    - paragraph: 2 of 4 used
+    - heading "Holds" [level=4]
+    - paragraph: 2 of 3 used
+    - button "Edit profile"

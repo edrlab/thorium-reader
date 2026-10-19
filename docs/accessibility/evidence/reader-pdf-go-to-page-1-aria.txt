@@ -1,0 +1,54 @@
+- heading "toolbar"
+- button "Skip to content"
+- navigation "toolbar":
+  - list:
+    - list:
+      - listitem:
+        - button "Close this reading window (back to bookshelf)"
+      - listitem:
+        - button "Information" [disabled]
+    - list:
+      - listitem:
+        - button "Print"
+      - listitem:
+        - button "Search publication"
+      - listitem:
+        - checkbox "Bookmark (Add)"
+      - listitem:
+        - checkbox "Annotation"
+      - listitem:
+        - button "Navigation" [expanded] [pressed]
+      - listitem:
+        - button "Reader settings"
+      - listitem:
+        - checkbox "Page fit or width"
+      - listitem:
+        - button "Zen mode"
+- main "main content":
+  - heading "main content"
+  - iframe
+- navigation "Navigation history":
+  - button "Jump back in navigation history" [disabled]
+  - button "Jump forward in navigation history" [disabled]
+- button "Dismiss"
+- heading "Navigation" [level=1]
+- dialog "Navigation":
+  - heading "Navigation" [level=1]
+  - tablist "Navigation":
+    - tab "Table of Contents"
+    - tab "Landmarks" [disabled]
+    - tab "Go to page" [selected]
+    - tab "Bookmarks"
+    - tab "Annotations"
+  - heading "Go to page" [level=2]
+  - region:
+    - tabpanel "Go to page":
+      - text: "Current page: 54/101 Enter page number"
+      - group:
+        - combobox "Enter page number"
+        - button "Show suggestions Enter page number"
+      - button "Go to"
+  - button "Dock panel to the left"
+  - button "Dock panel to the right"
+  - button "Show panel as a modal popup" [disabled]
+  - button "Close"

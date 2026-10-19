@@ -1,0 +1,14 @@
+- main:
+  - 'heading "Component fixture: welcome-profile" [level=1]'
+- alertdialog "Provisionning and activating customization profile Close":
+  - heading "Provisionning and activating customization profile Close" [level=2]:
+    - text: Provisionning and activating customization profile
+    - button "Close"
+  - paragraph:
+    - img
+    - heading "Audit profile" [level=1]
+    - paragraph: Welcome to the audit profile.
+    - link "Help":
+      - /url: "#help"
+  - checkbox "Don't show again" [checked]
+  - button "Yes"

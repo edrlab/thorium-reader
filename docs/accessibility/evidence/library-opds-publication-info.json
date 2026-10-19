@@ -1,0 +1,319 @@
+{
+  "label": "library-opds-publication-info",
+  "timestamp": "2026-10-19T11:20:55.040Z",
+  "axeVersion": "4.13.0",
+  "targets": [
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/8870060FCC5D1B16FFD54EE19484FBF5",
+      "id": "8870060FCC5D1B16FFD54EE19484FBF5",
+      "title": "Thorium - Catalogs",
+      "type": "page",
+      "url": "http://localhost:8090/index_library.html#/opds/8c5772bb-2e60-406c-ad4e-2c2ee0cee8e7/browse/1/aHR0cDovLzEyNy4wLjAuMTo0ODczL29wZHMvdjIvY2F0YWxvZy5qc29u/aHR0cDovLzEyNy4wLjAuMTo0ODczL29wZHMvdjIvY2F0YWxvZy5qc29u",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/8870060FCC5D1B16FFD54EE19484FBF5"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/544959611FA569BE513035F0416FEFCA",
+      "id": "544959611FA569BE513035F0416FEFCA",
+      "title": "Service Worker chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/background.bundle.js",
+      "type": "service_worker",
+      "url": "chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/background.bundle.js",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/544959611FA569BE513035F0416FEFCA"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/9349226D127C9C3D484CADC1698DBD30",
+      "id": "9349226D127C9C3D484CADC1698DBD30",
+      "title": "Service Worker chrome-extension://ijmmnfpjnmlljdjbbfpdgodddghhmemm/build/background.js",
+      "type": "service_worker",
+      "url": "chrome-extension://ijmmnfpjnmlljdjbbfpdgodddghhmemm/build/background.js",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/9349226D127C9C3D484CADC1698DBD30"
+    }
+  ],
+  "pages": [
+    {
+      "title": "Thorium - Catalogs",
+      "url": "http://localhost:8090/index_library.html#/opds/8c5772bb-2e60-406c-ad4e-2c2ee0cee8e7/browse/1/aHR0cDovLzEyNy4wLjAuMTo0ODczL29wZHMvdjIvY2F0YWxvZy5qc29u/aHR0cDovLzEyNy4wLjAuMTo0ODczL29wZHMvdjIvY2F0YWxvZy5qc29u",
+      "lang": "",
+      "dimensions": {
+        "width": 1133,
+        "height": 808,
+        "scrollWidth": 1133
+      },
+      "focus": "<section id=\"react-aria7386672771-:rm7:\" class=\"modal_dialog\" data-rac=\"\" aria-labelledby=\":rm5:\" role=\"dialog\" tabindex=\"-1\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><h2 id=\":rm5:\">About publication</h2></div><div class=\"modal_dialog_header\"><h2>About publication</h2><button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></div><div class=\"modal_dialog_body\"><div class=\"publicationInfo_container\"><div class=\"publicationInfo_leftSide\"><div class=\"publicationInfo_leftSide_coverWrapper\"><div class=\"cover_wrapper\"><div class=\"no_img_wrapper\" style=\"background-image: linear-gradient(rgb(209, 142, 75), rgb(124, 76, 28));\"><div class=\"no_img\"><p aria-hidden=\"true\" lang=\"en\">Accessible EPUB 3</p><p aria-hidden=\"true\">Matt Garrish</p></div></div><div class=\"gradient\"></div></div></div><div class=\"publicationInfo_leftSide_buttonsWrapper\"><div><button class=\"button_primary\" title",
+      "dialogs": [
+        {
+          "html": "<section id=\"react-aria7386672771-:rm7:\" class=\"modal_dialog\" data-rac=\"\" aria-labelledby=\":rm5:\" role=\"dialog\" tabindex=\"-1\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><h2 id=\":rm5:\">About publication</h2></div><div class=\"modal_dialog_header\"><h2>About publication</h2><button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></div><div class=\"modal_dialog_body\"><div class=\"publicationInfo_container\"><div class=\"publicationInfo_leftSide\"><div class=\"publicationInfo_leftSide_coverWrapper\"><div class=\"cover_wrapper\"><div class=\"no_img_wrapper\" style=\"background-image: linear-gradient(rgb(209, 142, 75), rgb(124, 76, 28));\"><div class=\"no_img\"><p aria-hidden=\"true\" lang=\"en\">Accessible EPUB 3</p><p aria-hidden=\"true\">Matt Garrish</p></div></div><div class=\"gradient\"></div></div></div><div class=\"publicationInfo_leftSide_buttonsWrapper\"><div><button class=\"button_primary\" title=\"Import\">Import (EPUB)</button><button class=\"button_secondary\">Read</button></div></div></div><div class=\"publicationInfo_rightSide\"><section><h2 class=\"allowUserSelect my_10 book_title\" lang=\"en\">Accessible EPUB 3</h2><span lang=\"en\" class=\"allowUserSelect authors\">Matt Garrish</span></section><section></section><section><div class=\"publicationInfo_heading\"><h3>Publication Details</h3></div><di"
+        }
+      ],
+      "sliders": [],
+      "evidencePrefix": "library-opds-publication-info-0",
+      "axe": {
+        "violations": [
+          {
+            "id": "heading-order",
+            "impact": "moderate",
+            "tags": [
+              "cat.semantics",
+              "best-practice"
+            ],
+            "description": "Ensure the order of headings is semantically correct",
+            "help": "Heading levels should only increase by one",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/heading-order?application=axeAPI",
+            "nodes": [
+              {
+                "any": [
+                  {
+                    "id": "heading-order",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "moderate",
+                    "message": "Heading order invalid"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "moderate",
+                "html": "<h5 class=\"publicationInfoA11y2-title\">Ways of reading</h5>",
+                "target": [
+                  ".accessibility_infos > h5:nth-child(2)"
+                ],
+                "failureSummary": "Fix any of the following:\n  Heading order invalid"
+              }
+            ]
+          },
+          {
+            "id": "html-has-lang",
+            "impact": "serious",
+            "tags": [
+              "cat.language",
+              "wcag2a",
+              "wcag311",
+              "TTv5",
+              "TT11.a",
+              "EN-301-549",
+              "EN-9.3.1.1",
+              "ACT",
+              "RGAAv4",
+              "RGAA-8.3.1"
+            ],
+            "description": "Ensure every HTML document has a lang attribute",
+            "help": "<html> element must have a lang attribute",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/html-has-lang?application=axeAPI",
+            "nodes": [
+              {
+                "any": [
+                  {
+                    "id": "has-lang",
+                    "data": {
+                      "messageKey": "noLang"
+                    },
+                    "relatedNodes": [],
+                    "impact": "serious",
+                    "message": "The <html> element does not have a lang attribute"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "serious",
+                "html": "<html id=\"library_html\" style=\"overflow: hidden;\" class=\"\">",
+                "target": [
+                  "#library_html"
+                ],
+                "failureSummary": "Fix any of the following:\n  The <html> element does not have a lang attribute"
+              }
+            ]
+          }
+        ],
+        "incomplete": [],
+        "passes": [
+          {
+            "id": "aria-allowed-attr",
+            "nodes": 5
+          },
+          {
+            "id": "aria-allowed-role",
+            "nodes": 13
+          },
+          {
+            "id": "aria-conditional-attr",
+            "nodes": 5
+          },
+          {
+            "id": "aria-deprecated-role",
+            "nodes": 4
+          },
+          {
+            "id": "aria-dialog-name",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-body",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-focus",
+            "nodes": 16
+          },
+          {
+            "id": "aria-prohibited-attr",
+            "nodes": 5
+          },
+          {
+            "id": "aria-required-attr",
+            "nodes": 4
+          },
+          {
+            "id": "aria-roles",
+            "nodes": 4
+          },
+          {
+            "id": "aria-valid-attr-value",
+            "nodes": 5
+          },
+          {
+            "id": "aria-valid-attr",
+            "nodes": 5
+          },
+          {
+            "id": "avoid-inline-spacing",
+            "nodes": 1
+          },
+          {
+            "id": "button-name",
+            "nodes": 4
+          },
+          {
+            "id": "bypass",
+            "nodes": 1
+          },
+          {
+            "id": "document-title",
+            "nodes": 1
+          },
+          {
+            "id": "duplicate-id-aria",
+            "nodes": 2
+          },
+          {
+            "id": "empty-heading",
+            "nodes": 8
+          },
+          {
+            "id": "heading-order",
+            "nodes": 7
+          },
+          {
+            "id": "landmark-one-main",
+            "nodes": 1
+          },
+          {
+            "id": "list",
+            "nodes": 2
+          },
+          {
+            "id": "listitem",
+            "nodes": 4
+          },
+          {
+            "id": "meta-viewport-large",
+            "nodes": 1
+          },
+          {
+            "id": "meta-viewport",
+            "nodes": 1
+          },
+          {
+            "id": "nested-interactive",
+            "nodes": 5
+          },
+          {
+            "id": "page-has-heading-one",
+            "nodes": 1
+          },
+          {
+            "id": "region",
+            "nodes": 57
+          },
+          {
+            "id": "summary-name",
+            "nodes": 1
+          },
+          {
+            "id": "tabindex",
+            "nodes": 3
+          },
+          {
+            "id": "target-size",
+            "nodes": 5
+          },
+          {
+            "id": "valid-lang",
+            "nodes": 2
+          }
+        ],
+        "inapplicable": [
+          "accesskeys",
+          "area-alt",
+          "aria-braille-equivalent",
+          "aria-command-name",
+          "aria-input-field-name",
+          "aria-meter-name",
+          "aria-progressbar-name",
+          "aria-required-children",
+          "aria-required-parent",
+          "aria-tab-name",
+          "aria-text",
+          "aria-toggle-field-name",
+          "aria-tooltip-name",
+          "aria-treeitem-name",
+          "autocomplete-valid",
+          "blink",
+          "color-contrast",
+          "definition-list",
+          "dlitem",
+          "empty-table-header",
+          "form-field-multiple-labels",
+          "frame-focusable-content",
+          "frame-tested",
+          "frame-title-unique",
+          "frame-title",
+          "html-lang-valid",
+          "html-xml-lang-mismatch",
+          "image-alt",
+          "image-redundant-alt",
+          "input-button-name",
+          "input-image-alt",
+          "label-title-only",
+          "label",
+          "landmark-banner-is-top-level",
+          "landmark-contentinfo-is-top-level",
+          "landmark-main-is-top-level",
+          "landmark-no-duplicate-banner",
+          "landmark-no-duplicate-contentinfo",
+          "landmark-no-duplicate-main",
+          "landmark-unique",
+          "link-in-text-block",
+          "link-name",
+          "marquee",
+          "meta-refresh",
+          "object-alt",
+          "presentation-role-conflict",
+          "role-img-alt",
+          "scope-attr-valid",
+          "scrollable-region-focusable",
+          "select-name",
+          "server-side-image-map",
+          "skip-link",
+          "svg-img-alt",
+          "table-duplicate-name",
+          "td-headers-attr",
+          "th-has-data-cells",
+          "video-caption",
+          "no-autoplay-audio"
+        ]
+      }
+    }
+  ]
+}

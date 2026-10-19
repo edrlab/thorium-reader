@@ -1,0 +1,31 @@
+- main:
+  - 'heading "Component fixture: annotation-card" [level=1]'
+  - list:
+    - listitem "Yellow Note":
+      - paragraph: Selected passage
+      - textbox: Audit note **with emphasis**
+      - text: 28/1500
+      - heading "Color" [level=4]
+      - radiogroup:
+        - radio "Red"
+        - radio "Orange"
+        - radio "Yellow" [checked]
+        - radio "Green"
+        - radio "Cyan"
+        - radio "Purple"
+      - heading "Highlight" [level=4]
+      - radiogroup:
+        - radio "Highlight Solid background" [checked]
+        - radio "Highlight Underline"
+        - radio "Highlight Strikethrough"
+        - radio "Highlight Outline"
+      - heading "Tag" [level=4]
+      - group:
+        - combobox "Tag": Research
+      - button "Cancel"
+      - button "Save"
+      - paragraph: 19/10/2026
+      - paragraph: 100%
+      - paragraph: Audit creator
+      - button "Edit" [disabled]
+      - button "Delete"

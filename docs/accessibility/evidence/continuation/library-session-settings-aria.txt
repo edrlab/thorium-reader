@@ -1,0 +1,5 @@
+- main:
+  - 'heading "Component fixture: session-settings" [level=1]'
+  - heading "Saving and restoring the reading session" [level=3]
+  - paragraph: Activate this if you want reader windows that are open when you close the application to automatically re-open at next launch.
+  - checkbox "Enable session saving"

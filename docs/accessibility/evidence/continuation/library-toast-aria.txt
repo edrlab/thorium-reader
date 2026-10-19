@@ -1,0 +1,4 @@
+- main:
+  - 'heading "Component fixture: toast" [level=1]'
+  - alert: Audit notification. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text. Detailed notification text.
+  - button "Close"

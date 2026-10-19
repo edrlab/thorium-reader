@@ -1,0 +1,22 @@
+- main:
+  - 'heading "Component fixture: opds-navigation" [level=1]'
+  - search:
+    - text: Search
+    - searchbox "Search"
+  - list:
+    - listitem:
+      - link "Audit category Books in the category (5)":
+        - /url: /opds/audit/browse/1/QXVkaXQgY2F0ZWdvcnk/aHR0cHM6Ly9hdWRpdC5pbnZhbGlkL2NhdGVnb3J5
+  - button "First":
+    - link:
+      - /url: /opds/audit/browse/1/QXVkaXQgY2F0YWxvZw/aHR0cHM6Ly9hdWRpdC5pbnZhbGlkL2ZpcnN0
+  - button "Previous":
+    - link:
+      - /url: /opds/audit/browse/1/QXVkaXQgY2F0YWxvZw/aHR0cHM6Ly9hdWRpdC5pbnZhbGlkL3ByZXY
+  - text: 2 / 4
+  - button "Next":
+    - link:
+      - /url: /opds/audit/browse/1/QXVkaXQgY2F0YWxvZw/aHR0cHM6Ly9hdWRpdC5pbnZhbGlkL25leHQ
+  - button "Last":
+    - link:
+      - /url: /opds/audit/browse/1/QXVkaXQgY2F0YWxvZw/aHR0cHM6Ly9hdWRpdC5pbnZhbGlkL2xhc3Q

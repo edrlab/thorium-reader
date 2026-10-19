@@ -1,0 +1,4 @@
+- main:
+  - 'heading "Component fixture: opds-message" [level=1]'
+  - heading "Catalog unavailable" [level=3]
+  - paragraph: The local audit catalog returned an error.

@@ -1,0 +1,6 @@
+- main:
+  - 'heading "Component fixture: empty-library" [level=1]'
+  - paragraph:
+    - strong: Drop files here
+  - paragraph: or use the "Import publication" button above.
+  - group: "Supported extensions:"

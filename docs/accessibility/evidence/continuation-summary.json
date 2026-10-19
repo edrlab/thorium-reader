@@ -1,0 +1,18 @@
+{
+  "filesRequested": 47,
+  "disposition": {
+    "component-fixture": 38,
+    "inactive": 3,
+    "composed": 3,
+    "application+fixture": 3
+  },
+  "filesRenderedInFixtures": 41,
+  "fixtureStates": 54,
+  "fixtureStatesByWindow": {
+    "library": 43,
+    "reader": 11
+  },
+  "keyboardScenarios": 25,
+  "newApplicationStates": 3,
+  "interpretation": "41 fixture-rendered files, of which three also tested in the running app; three traced composed helpers; three inactive files. No blanket WCAG pass."
+}

@@ -1,0 +1,940 @@
+[
+  {
+    "id": "delete-feed-focus",
+    "runtime": "library",
+    "initialFocus": {
+      "html": "<button class=\"button_secondary_blue react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:r6:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+    },
+    "steps": [
+      {
+        "html": "<button class=\"button_primary_blue\" type=\"button\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg>Yes</button>"
+      },
+      {
+        "html": "<button class=\"button_secondary_blue react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:r6:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+      },
+      {
+        "html": "<button class=\"button_primary_blue\" type=\"button\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg>Yes</button>"
+      },
+      {
+        "html": "<button class=\"button_secondary_blue react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:r6:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+      },
+      {
+        "html": "<button class=\"button_primary_blue\" type=\"button\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg>Yes</button>"
+      },
+      {
+        "html": "<button class=\"button_secondary_blue react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:r6:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+      },
+      {
+        "html": "<button class=\"button_primary_blue\" type=\"button\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg>Yes</button>"
+      },
+      {
+        "html": "<button class=\"button_secondary_blue react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:r6:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+      },
+      {
+        "html": "<button class=\"button_primary_blue\" type=\"button\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg>Yes</button>"
+      },
+      {
+        "html": "<button class=\"button_secondary_blue react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:r6:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+      },
+      {
+        "html": "<button class=\"button_primary_blue\" type=\"button\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg>Yes</button>"
+      },
+      {
+        "html": "<button class=\"button_secondary_blue react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:r6:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+      }
+    ],
+    "afterEscape": {
+      "html": "<button aria-expanded=\"false\" id=\"react-aria7317093440-:r3:\" data-react-aria-pressable=\"true\" tabindex=\"0\">Delete audit catalog</button>"
+    },
+    "dialogsAfterEscape": 0
+  },
+  {
+    "id": "delete-publication-focus",
+    "runtime": "library",
+    "initialFocus": {
+      "html": "<button class=\"button_secondary_blue react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:re:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+    },
+    "steps": [
+      {
+        "html": "<button class=\"button_primary_blue\" type=\"button\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg>Yes</button>"
+      },
+      {
+        "html": "<button class=\"button_secondary_blue react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:re:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+      },
+      {
+        "html": "<button class=\"button_primary_blue\" type=\"button\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg>Yes</button>"
+      },
+      {
+        "html": "<button class=\"button_secondary_blue react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:re:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+      },
+      {
+        "html": "<button class=\"button_primary_blue\" type=\"button\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg>Yes</button>"
+      },
+      {
+        "html": "<button class=\"button_secondary_blue react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:re:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+      },
+      {
+        "html": "<button class=\"button_primary_blue\" type=\"button\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg>Yes</button>"
+      },
+      {
+        "html": "<button class=\"button_secondary_blue react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:re:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+      },
+      {
+        "html": "<button class=\"button_primary_blue\" type=\"button\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg>Yes</button>"
+      },
+      {
+        "html": "<button class=\"button_secondary_blue react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:re:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+      },
+      {
+        "html": "<button class=\"button_primary_blue\" type=\"button\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg>Yes</button>"
+      },
+      {
+        "html": "<button class=\"button_secondary_blue react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:re:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+      }
+    ],
+    "afterEscape": {
+      "html": "<button aria-expanded=\"false\" id=\"react-aria7317093440-:rb:\" data-react-aria-pressable=\"true\" tabindex=\"0\">Delete audit publication</button>"
+    },
+    "dialogsAfterEscape": 0
+  },
+  {
+    "id": "update-feed-focus",
+    "runtime": "library",
+    "initialFocus": {
+      "html": "<section id=\"react-aria7317093440-:ri:\" class=\"modal_dialog\" data-rac=\"\" aria-labelledby=\":rg:\" role=\"dialog\" tabindex=\"-1\"><div class=\"modal_dialog_header\"><h2 id=\":rg:\">Edit OPDS feed</h2><div><button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-close-24px\"></use></svg></button></div></div><form class=\"modal_dialog_body\"><div><div class=\"form_group form_group_catalog\"><label for=\"title\">Name:</label><input class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" id=\"title\" type=\"text\" aria-label=\"Name:\" required=\"\" value=\"Audit catalog\"></div><div class=\"form_group form_group_catalog\"><label for=\"url\">Link:</label><input class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" id=\"url\" type=\"text\" aria-label=\"Link:\" required=\"\" value=\"https://audit.invalid/catalog\"></div><button type=\"button\" class=\"button_nav_primary\" style=\"margin-top: 20px;\"><svg aria-hidden=\"true\" class=\"catalog_favorite_icon_false\" viewBox=\"0 0 24 24\"><use xlink:href=\"#star-icon\"></use></svg><p>Add to favorites</p></button><div class=\"catalog_color_picker\" role=\"radiogroup\" aria-label=\"Catalog color\"><div><input type=\"radio\" id=\"2b8b225c-eb26-4317-8865-39328937400b_color-gray\" name=\"2b8b225c-eb26-4317-8865-39328937400b_colorpicker\" aria-label=\"Gray\" value=\"gray\"><label aria-hidden=\"true\" title=\"Gray\" for=\"2b8b225c-eb26-4317-8865-39328937400b_color-gray\" class=\"catalog_color_swatch\" data-color=\"gray\"></label></div><div><input type=\"radio\" id=\"2b8b225c-eb26-4317-8865-39328937400b_col"
+    },
+    "steps": [
+      {
+        "html": "<button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-close-24px\"></use></svg></button>"
+      },
+      {
+        "html": "<input class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" id=\"title\" type=\"text\" aria-label=\"Name:\" required=\"\" value=\"Audit catalog\">"
+      },
+      {
+        "html": "<input class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" id=\"url\" type=\"text\" aria-label=\"Link:\" required=\"\" value=\"https://audit.invalid/catalog\">"
+      },
+      {
+        "html": "<button type=\"button\" class=\"button_nav_primary\" style=\"margin-top: 20px;\"><svg aria-hidden=\"true\" class=\"catalog_favorite_icon_false\" viewBox=\"0 0 24 24\"><use xlink:href=\"#star-icon\"></use></svg><p>Add to favorites</p></button>"
+      },
+      {
+        "html": "<input type=\"radio\" id=\"2b8b225c-eb26-4317-8865-39328937400b_color-gray\" name=\"2b8b225c-eb26-4317-8865-39328937400b_colorpicker\" aria-label=\"Gray\" value=\"gray\">"
+      },
+      {
+        "html": "<button class=\"button_secondary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\">Cancel</button>"
+      },
+      {
+        "html": "<button type=\"submit\" class=\"button_primary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\">Edit</button>"
+      },
+      {
+        "html": "<button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-close-24px\"></use></svg></button>"
+      },
+      {
+        "html": "<input class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" id=\"title\" type=\"text\" aria-label=\"Name:\" required=\"\" value=\"Audit catalog\">"
+      },
+      {
+        "html": "<input class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" id=\"url\" type=\"text\" aria-label=\"Link:\" required=\"\" value=\"https://audit.invalid/catalog\">"
+      },
+      {
+        "html": "<button type=\"button\" class=\"button_nav_primary\" style=\"margin-top: 20px;\"><svg aria-hidden=\"true\" class=\"catalog_favorite_icon_false\" viewBox=\"0 0 24 24\"><use xlink:href=\"#star-icon\"></use></svg><p>Add to favorites</p></button>"
+      },
+      {
+        "html": "<input type=\"radio\" id=\"2b8b225c-eb26-4317-8865-39328937400b_color-gray\" name=\"2b8b225c-eb26-4317-8865-39328937400b_colorpicker\" aria-label=\"Gray\" value=\"gray\">"
+      }
+    ],
+    "afterEscape": {
+      "html": "<button aria-expanded=\"false\" id=\"react-aria7317093440-:rj:\" data-react-aria-pressable=\"true\" tabindex=\"0\">Edit audit catalog</button>"
+    },
+    "dialogsAfterEscape": 0
+  },
+  {
+    "id": "apiapp-add-focus",
+    "runtime": "library",
+    "initialFocus": {
+      "html": "<section id=\"react-aria7317093440-:rp:\" class=\"modal_dialog\" data-rac=\"\" aria-labelledby=\":rn:\" role=\"dialog\" tabindex=\"-1\"><div class=\"modal_dialog_header\"><h2 id=\":rn:\">Add library account</h2><div><button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-close-24px\"></use></svg></button></div></div><form class=\"modal_dialog_body\"><div><div class=\"modal_dialog_body\"><div class=\"form_group_wrapper\"><div class=\"form_group form_group_catalog\" style=\"margin-bottom: 0px;\"><label for=\"apiapp-search\">Search</label><input class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" type=\"search\" id=\"apiapp_search\"></div><button class=\"button_nav_primary\" title=\"Search\" style=\"height: 24px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 17\"><use xlink:href=\"#magnifying_glass\"></use></svg>Search</button></div><div></div><div><button dir=\"ltr\" class=\"button_catalog_infos\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#outline-info-24px\"></use></svg>How does it work?<svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg></button></div></div></div><div class=\"modal_dialog_footer\"><button class=\"button_secondary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\">Cancel</button><button type=\"submit\" class=\"button_primary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#add-alone\"></use></svg>Add</button></div></form></section>"
+    },
+    "steps": [
+      {
+        "html": "<button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-close-24px\"></use></svg></button>"
+      },
+      {
+        "html": "<input class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" type=\"search\" id=\"apiapp_search\">"
+      },
+      {
+        "html": "<button class=\"button_nav_primary\" title=\"Search\" style=\"height: 24px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 17\"><use xlink:href=\"#magnifying_glass\"></use></svg>Search</button>"
+      },
+      {
+        "html": "<button dir=\"ltr\" class=\"button_catalog_infos\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#outline-info-24px\"></use></svg>How does it work?<svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg></button>"
+      },
+      {
+        "html": "<button class=\"button_secondary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\">Cancel</button>"
+      },
+      {
+        "html": "<button type=\"submit\" class=\"button_primary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#add-alone\"></use></svg>Add</button>"
+      },
+      {
+        "html": "<button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-close-24px\"></use></svg></button>"
+      },
+      {
+        "html": "<input class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" type=\"search\" id=\"apiapp_search\">"
+      },
+      {
+        "html": "<button class=\"button_nav_primary\" title=\"Search\" style=\"height: 24px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 17\"><use xlink:href=\"#magnifying_glass\"></use></svg>Search</button>"
+      },
+      {
+        "html": "<button dir=\"ltr\" class=\"button_catalog_infos\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#outline-info-24px\"></use></svg>How does it work?<svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg></button>"
+      },
+      {
+        "html": "<button class=\"button_secondary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\">Cancel</button>"
+      },
+      {
+        "html": "<button type=\"submit\" class=\"button_primary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#add-alone\"></use></svg>Add</button>"
+      }
+    ],
+    "afterEscape": {
+      "html": "<button class=\"button_nav_primary\" aria-expanded=\"false\" id=\"react-aria7317093440-:rq:\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 11\"><use xlink:href=\"#library-icon\"></use></svg><span>Add library account</span></button>"
+    },
+    "dialogsAfterEscape": 0
+  },
+  {
+    "id": "download-keyboard",
+    "runtime": "library",
+    "steps": [
+      {
+        "html": "<body data-audit-runtime=\"library\" style=\"font-family: Arial, sans-serif; background: var(--color-background, white); color: var(--color-content, black);\"><svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" style=\"position: absolute; width: 0; height: 0\" aria-hidden=\"true\" id=\"__SVG_SPRITE_NODE__\"><symbol xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 14 12\" fill=\"none\" id=\"home-icon\">\n<path d=\"M13.125 10.2655H12.4688V5.42837C12.4685 5.27735 12.4371 5.12801 12.3765 4.98968C12.3159 4.85136 12.2274 4.72702 12.1166 4.62446L7.7443 0.497199L7.73555 0.488996C7.53461 0.30511 7.2721 0.203125 6.99973 0.203125C6.72735 0.203125 6.46484 0.30511 6.26391 0.488996L6.25461 0.497199L1.88344 4.62446C1.77259 4.72702 1.68409 4.85136 1.62349 4.98968C1.56289 5.12801 1.53149 5.27735 1.53125 5.42837V10.2655H0.875C0.700952 10.2655 0.534032 10.3346 0.410961 10.4577C0.28789 10.5808 0.21875 10.7477 0.21875 10.9217C0.21875 11.0958 0.28789 11.2627 0.410961 11.3858C0.534032 11.5088 0.700952 11.578 0.875 11.578H13.125C13.299 11.578 13.466 11.5088 13.589 11.3858C13.7121 11.2627 13.7812 11.0958 13.7812 10.9217C13.7812 10.7477 13.7121 10.5808 13.589 10.4577C13.466 10.3346 13.299 10.2655 13.125 10.2655ZM2.84375 5.52298L7 1.59915L11.1562 5.52298V10.2655H8.96875V7.85923C8.96875 7.7156 8.94046 7.57337 8.88549 7.44067C8.83053 7.30797 8.74996 7.1874 8.6484 7.08583C8.54683 6.98427 8.42626 6.9037 8.29356 6.84874C8.16086 6.79377 8.01863 6.76548 7.875 6.76548H6.125C5.83492 6.76548 5.55672 6.88071 5.3516 7.08583C5.14648 7.29095 5.03125 7.56915 5.03125 7.85923V10.2655H2.84375V5.52298ZM7.6"
+      },
+      {
+        "html": "<body data-audit-runtime=\"library\" style=\"font-family: Arial, sans-serif; background: var(--color-background, white); color: var(--color-content, black);\"><svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" style=\"position: absolute; width: 0; height: 0\" aria-hidden=\"true\" id=\"__SVG_SPRITE_NODE__\"><symbol xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 14 12\" fill=\"none\" id=\"home-icon\">\n<path d=\"M13.125 10.2655H12.4688V5.42837C12.4685 5.27735 12.4371 5.12801 12.3765 4.98968C12.3159 4.85136 12.2274 4.72702 12.1166 4.62446L7.7443 0.497199L7.73555 0.488996C7.53461 0.30511 7.2721 0.203125 6.99973 0.203125C6.72735 0.203125 6.46484 0.30511 6.26391 0.488996L6.25461 0.497199L1.88344 4.62446C1.77259 4.72702 1.68409 4.85136 1.62349 4.98968C1.56289 5.12801 1.53149 5.27735 1.53125 5.42837V10.2655H0.875C0.700952 10.2655 0.534032 10.3346 0.410961 10.4577C0.28789 10.5808 0.21875 10.7477 0.21875 10.9217C0.21875 11.0958 0.28789 11.2627 0.410961 11.3858C0.534032 11.5088 0.700952 11.578 0.875 11.578H13.125C13.299 11.578 13.466 11.5088 13.589 11.3858C13.7121 11.2627 13.7812 11.0958 13.7812 10.9217C13.7812 10.7477 13.7121 10.5808 13.589 10.4577C13.466 10.3346 13.299 10.2655 13.125 10.2655ZM2.84375 5.52298L7 1.59915L11.1562 5.52298V10.2655H8.96875V7.85923C8.96875 7.7156 8.94046 7.57337 8.88549 7.44067C8.83053 7.30797 8.74996 7.1874 8.6484 7.08583C8.54683 6.98427 8.42626 6.9037 8.29356 6.84874C8.16086 6.79377 8.01863 6.76548 7.875 6.76548H6.125C5.83492 6.76548 5.55672 6.88071 5.3516 7.08583C5.14648 7.29095 5.03125 7.56915 5.03125 7.85923V10.2655H2.84375V5.52298ZM7.6"
+      },
+      {
+        "html": "<body data-audit-runtime=\"library\" style=\"font-family: Arial, sans-serif; background: var(--color-background, white); color: var(--color-content, black);\"><svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" style=\"position: absolute; width: 0; height: 0\" aria-hidden=\"true\" id=\"__SVG_SPRITE_NODE__\"><symbol xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 14 12\" fill=\"none\" id=\"home-icon\">\n<path d=\"M13.125 10.2655H12.4688V5.42837C12.4685 5.27735 12.4371 5.12801 12.3765 4.98968C12.3159 4.85136 12.2274 4.72702 12.1166 4.62446L7.7443 0.497199L7.73555 0.488996C7.53461 0.30511 7.2721 0.203125 6.99973 0.203125C6.72735 0.203125 6.46484 0.30511 6.26391 0.488996L6.25461 0.497199L1.88344 4.62446C1.77259 4.72702 1.68409 4.85136 1.62349 4.98968C1.56289 5.12801 1.53149 5.27735 1.53125 5.42837V10.2655H0.875C0.700952 10.2655 0.534032 10.3346 0.410961 10.4577C0.28789 10.5808 0.21875 10.7477 0.21875 10.9217C0.21875 11.0958 0.28789 11.2627 0.410961 11.3858C0.534032 11.5088 0.700952 11.578 0.875 11.578H13.125C13.299 11.578 13.466 11.5088 13.589 11.3858C13.7121 11.2627 13.7812 11.0958 13.7812 10.9217C13.7812 10.7477 13.7121 10.5808 13.589 10.4577C13.466 10.3346 13.299 10.2655 13.125 10.2655ZM2.84375 5.52298L7 1.59915L11.1562 5.52298V10.2655H8.96875V7.85923C8.96875 7.7156 8.94046 7.57337 8.88549 7.44067C8.83053 7.30797 8.74996 7.1874 8.6484 7.08583C8.54683 6.98427 8.42626 6.9037 8.29356 6.84874C8.16086 6.79377 8.01863 6.76548 7.875 6.76548H6.125C5.83492 6.76548 5.55672 6.88071 5.3516 7.08583C5.14648 7.29095 5.03125 7.56915 5.03125 7.85923V10.2655H2.84375V5.52298ZM7.6"
+      },
+      {
+        "html": "<body data-audit-runtime=\"library\" style=\"font-family: Arial, sans-serif; background: var(--color-background, white); color: var(--color-content, black);\"><svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" style=\"position: absolute; width: 0; height: 0\" aria-hidden=\"true\" id=\"__SVG_SPRITE_NODE__\"><symbol xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 14 12\" fill=\"none\" id=\"home-icon\">\n<path d=\"M13.125 10.2655H12.4688V5.42837C12.4685 5.27735 12.4371 5.12801 12.3765 4.98968C12.3159 4.85136 12.2274 4.72702 12.1166 4.62446L7.7443 0.497199L7.73555 0.488996C7.53461 0.30511 7.2721 0.203125 6.99973 0.203125C6.72735 0.203125 6.46484 0.30511 6.26391 0.488996L6.25461 0.497199L1.88344 4.62446C1.77259 4.72702 1.68409 4.85136 1.62349 4.98968C1.56289 5.12801 1.53149 5.27735 1.53125 5.42837V10.2655H0.875C0.700952 10.2655 0.534032 10.3346 0.410961 10.4577C0.28789 10.5808 0.21875 10.7477 0.21875 10.9217C0.21875 11.0958 0.28789 11.2627 0.410961 11.3858C0.534032 11.5088 0.700952 11.578 0.875 11.578H13.125C13.299 11.578 13.466 11.5088 13.589 11.3858C13.7121 11.2627 13.7812 11.0958 13.7812 10.9217C13.7812 10.7477 13.7121 10.5808 13.589 10.4577C13.466 10.3346 13.299 10.2655 13.125 10.2655ZM2.84375 5.52298L7 1.59915L11.1562 5.52298V10.2655H8.96875V7.85923C8.96875 7.7156 8.94046 7.57337 8.88549 7.44067C8.83053 7.30797 8.74996 7.1874 8.6484 7.08583C8.54683 6.98427 8.42626 6.9037 8.29356 6.84874C8.16086 6.79377 8.01863 6.76548 7.875 6.76548H6.125C5.83492 6.76548 5.55672 6.88071 5.3516 7.08583C5.14648 7.29095 5.03125 7.56915 5.03125 7.85923V10.2655H2.84375V5.52298ZM7.6"
+      },
+      {
+        "html": "<body data-audit-runtime=\"library\" style=\"font-family: Arial, sans-serif; background: var(--color-background, white); color: var(--color-content, black);\"><svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" style=\"position: absolute; width: 0; height: 0\" aria-hidden=\"true\" id=\"__SVG_SPRITE_NODE__\"><symbol xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 14 12\" fill=\"none\" id=\"home-icon\">\n<path d=\"M13.125 10.2655H12.4688V5.42837C12.4685 5.27735 12.4371 5.12801 12.3765 4.98968C12.3159 4.85136 12.2274 4.72702 12.1166 4.62446L7.7443 0.497199L7.73555 0.488996C7.53461 0.30511 7.2721 0.203125 6.99973 0.203125C6.72735 0.203125 6.46484 0.30511 6.26391 0.488996L6.25461 0.497199L1.88344 4.62446C1.77259 4.72702 1.68409 4.85136 1.62349 4.98968C1.56289 5.12801 1.53149 5.27735 1.53125 5.42837V10.2655H0.875C0.700952 10.2655 0.534032 10.3346 0.410961 10.4577C0.28789 10.5808 0.21875 10.7477 0.21875 10.9217C0.21875 11.0958 0.28789 11.2627 0.410961 11.3858C0.534032 11.5088 0.700952 11.578 0.875 11.578H13.125C13.299 11.578 13.466 11.5088 13.589 11.3858C13.7121 11.2627 13.7812 11.0958 13.7812 10.9217C13.7812 10.7477 13.7121 10.5808 13.589 10.4577C13.466 10.3346 13.299 10.2655 13.125 10.2655ZM2.84375 5.52298L7 1.59915L11.1562 5.52298V10.2655H8.96875V7.85923C8.96875 7.7156 8.94046 7.57337 8.88549 7.44067C8.83053 7.30797 8.74996 7.1874 8.6484 7.08583C8.54683 6.98427 8.42626 6.9037 8.29356 6.84874C8.16086 6.79377 8.01863 6.76548 7.875 6.76548H6.125C5.83492 6.76548 5.55672 6.88071 5.3516 7.08583C5.14648 7.29095 5.03125 7.56915 5.03125 7.85923V10.2655H2.84375V5.52298ZM7.6"
+      },
+      {
+        "html": "<body data-audit-runtime=\"library\" style=\"font-family: Arial, sans-serif; background: var(--color-background, white); color: var(--color-content, black);\"><svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" style=\"position: absolute; width: 0; height: 0\" aria-hidden=\"true\" id=\"__SVG_SPRITE_NODE__\"><symbol xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 14 12\" fill=\"none\" id=\"home-icon\">\n<path d=\"M13.125 10.2655H12.4688V5.42837C12.4685 5.27735 12.4371 5.12801 12.3765 4.98968C12.3159 4.85136 12.2274 4.72702 12.1166 4.62446L7.7443 0.497199L7.73555 0.488996C7.53461 0.30511 7.2721 0.203125 6.99973 0.203125C6.72735 0.203125 6.46484 0.30511 6.26391 0.488996L6.25461 0.497199L1.88344 4.62446C1.77259 4.72702 1.68409 4.85136 1.62349 4.98968C1.56289 5.12801 1.53149 5.27735 1.53125 5.42837V10.2655H0.875C0.700952 10.2655 0.534032 10.3346 0.410961 10.4577C0.28789 10.5808 0.21875 10.7477 0.21875 10.9217C0.21875 11.0958 0.28789 11.2627 0.410961 11.3858C0.534032 11.5088 0.700952 11.578 0.875 11.578H13.125C13.299 11.578 13.466 11.5088 13.589 11.3858C13.7121 11.2627 13.7812 11.0958 13.7812 10.9217C13.7812 10.7477 13.7121 10.5808 13.589 10.4577C13.466 10.3346 13.299 10.2655 13.125 10.2655ZM2.84375 5.52298L7 1.59915L11.1562 5.52298V10.2655H8.96875V7.85923C8.96875 7.7156 8.94046 7.57337 8.88549 7.44067C8.83053 7.30797 8.74996 7.1874 8.6484 7.08583C8.54683 6.98427 8.42626 6.9037 8.29356 6.84874C8.16086 6.79377 8.01863 6.76548 7.875 6.76548H6.125C5.83492 6.76548 5.55672 6.88071 5.3516 7.08583C5.14648 7.29095 5.03125 7.56915 5.03125 7.85923V10.2655H2.84375V5.52298ZM7.6"
+      }
+    ],
+    "anchors": [
+      {
+        "html": "<a><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></a>",
+        "tabIndex": 0,
+        "role": null
+      },
+      {
+        "html": "<a><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></a>",
+        "tabIndex": 0,
+        "role": null
+      }
+    ]
+  },
+  {
+    "id": "description-hidden-focus",
+    "runtime": "library",
+    "steps": [
+      {
+        "html": "<button aria-hidden=\"true\" class=\"publicationInfo_description_bloc_seeMore\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg>See more</button>",
+        "hidden": "<button aria-hidden=\"true\" class=\"publicationInfo_description_bloc_seeMore\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg>See more</button>"
+      },
+      {
+        "html": "<button aria-hidden=\"true\" class=\"publicationInfo_description_bloc_seeMore\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg>See more</button>",
+        "hidden": "<button aria-hidden=\"true\" class=\"publicationInfo_description_bloc_seeMore\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg>See more</button>"
+      },
+      {
+        "html": "<button aria-hidden=\"true\" class=\"publicationInfo_description_bloc_seeMore\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg>See more</button>",
+        "hidden": "<button aria-hidden=\"true\" class=\"publicationInfo_description_bloc_seeMore\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg>See more</button>"
+      }
+    ],
+    "before": "See more",
+    "after": "See less",
+    "focus": {
+      "html": "<button aria-hidden=\"true\" class=\"publicationInfo_description_bloc_seeMore\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-up\"></use></svg>See less</button>",
+      "hidden": "<button aria-hidden=\"true\" class=\"publicationInfo_description_bloc_seeMore\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-up\"></use></svg>See less</button>"
+    }
+  },
+  {
+    "id": "tag-popover",
+    "runtime": "library",
+    "steps": [
+      {
+        "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:r15:\" slot=\"close\" title=\"Delete tag\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg>Delete</button>"
+      },
+      {
+        "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:r15:\" slot=\"close\" title=\"Delete tag\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg>Delete</button>"
+      },
+      {
+        "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:r15:\" slot=\"close\" title=\"Delete tag\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg>Delete</button>"
+      },
+      {
+        "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:r15:\" slot=\"close\" title=\"Delete tag\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg>Delete</button>"
+      },
+      {
+        "html": "<button class=\"react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:r15:\" slot=\"close\" title=\"Delete tag\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg>Delete</button>"
+      }
+    ],
+    "afterEscape": {
+      "html": "<button aria-expanded=\"false\" id=\"react-aria7317093440-:rv:\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>"
+    }
+  },
+  {
+    "id": "toast-keyboard-expand",
+    "runtime": "library",
+    "before": "",
+    "afterKeyboard": "",
+    "afterPointer": "toast_open",
+    "focus": {
+      "html": "<body data-audit-runtime=\"library\" style=\"font-family: Arial, sans-serif; background: var(--color-background, white); color: var(--color-content, black);\"><svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" style=\"position: absolute; width: 0; height: 0\" aria-hidden=\"true\" id=\"__SVG_SPRITE_NODE__\"><symbol xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 14 12\" fill=\"none\" id=\"home-icon\">\n<path d=\"M13.125 10.2655H12.4688V5.42837C12.4685 5.27735 12.4371 5.12801 12.3765 4.98968C12.3159 4.85136 12.2274 4.72702 12.1166 4.62446L7.7443 0.497199L7.73555 0.488996C7.53461 0.30511 7.2721 0.203125 6.99973 0.203125C6.72735 0.203125 6.46484 0.30511 6.26391 0.488996L6.25461 0.497199L1.88344 4.62446C1.77259 4.72702 1.68409 4.85136 1.62349 4.98968C1.56289 5.12801 1.53149 5.27735 1.53125 5.42837V10.2655H0.875C0.700952 10.2655 0.534032 10.3346 0.410961 10.4577C0.28789 10.5808 0.21875 10.7477 0.21875 10.9217C0.21875 11.0958 0.28789 11.2627 0.410961 11.3858C0.534032 11.5088 0.700952 11.578 0.875 11.578H13.125C13.299 11.578 13.466 11.5088 13.589 11.3858C13.7121 11.2627 13.7812 11.0958 13.7812 10.9217C13.7812 10.7477 13.7121 10.5808 13.589 10.4577C13.466 10.3346 13.299 10.2655 13.125 10.2655ZM2.84375 5.52298L7 1.59915L11.1562 5.52298V10.2655H8.96875V7.85923C8.96875 7.7156 8.94046 7.57337 8.88549 7.44067C8.83053 7.30797 8.74996 7.1874 8.6484 7.08583C8.54683 6.98427 8.42626 6.9037 8.29356 6.84874C8.16086 6.79377 8.01863 6.76548 7.875 6.76548H6.125C5.83492 6.76548 5.55672 6.88071 5.3516 7.08583C5.14648 7.29095 5.03125 7.56915 5.03125 7.85923V10.2655H2.84375V5.52298ZM7.6"
+    }
+  },
+  {
+    "id": "empty-library-details",
+    "runtime": "library",
+    "open": "",
+    "focus": {
+      "html": "<summary><svg aria-hidden=\"true\" viewBox=\"0 0 12 13\"><use xlink:href=\"#documents-icon\"></use></svg>Supported extensions:<svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg></summary>"
+    }
+  },
+  {
+    "id": "session-space",
+    "runtime": "library",
+    "before": "false",
+    "after": "true",
+    "steps": [
+      {
+        "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"true\" aria-label=\"Enable session saving\" class=\"checkbox_custom\" style=\"border: 2px solid transparent; background-color: var(--color-brand-primary);\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 13\"><use xlink:href=\"#singlecheck-icon\"></use></svg></div>"
+      },
+      {
+        "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"true\" aria-label=\"Enable session saving\" class=\"checkbox_custom\" style=\"border: 2px solid transparent; background-color: var(--color-brand-primary);\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 13\"><use xlink:href=\"#singlecheck-icon\"></use></svg></div>"
+      },
+      {
+        "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"true\" aria-label=\"Enable session saving\" class=\"checkbox_custom\" style=\"border: 2px solid transparent; background-color: var(--color-brand-primary);\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 13\"><use xlink:href=\"#singlecheck-icon\"></use></svg></div>"
+      }
+    ]
+  },
+  {
+    "id": "file-import-valid-keyboard",
+    "runtime": "library",
+    "initial": {
+      "html": "<button class=\"AlertDialogButton abort react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:r1c:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+    },
+    "steps": [
+      {
+        "html": "<button class=\"AlertDialogButton yes\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#add-alone\"></use></svg>Import</button>"
+      },
+      {
+        "html": "<button class=\"AlertDialogButton abort react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:r1c:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+      },
+      {
+        "html": "<button class=\"AlertDialogButton yes\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#add-alone\"></use></svg>Import</button>"
+      },
+      {
+        "html": "<button class=\"AlertDialogButton abort react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:r1c:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+      },
+      {
+        "html": "<button class=\"AlertDialogButton yes\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#add-alone\"></use></svg>Import</button>"
+      },
+      {
+        "html": "<button class=\"AlertDialogButton abort react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:r1c:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+      },
+      {
+        "html": "<button class=\"AlertDialogButton yes\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#add-alone\"></use></svg>Import</button>"
+      },
+      {
+        "html": "<button class=\"AlertDialogButton abort react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:r1c:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+      },
+      {
+        "html": "<button class=\"AlertDialogButton yes\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#add-alone\"></use></svg>Import</button>"
+      }
+    ],
+    "actions": [
+      [
+        "dispatch",
+        {
+          "type": "DIALOG_CLOSE_REQUEST",
+          "payload": {}
+        }
+      ]
+    ],
+    "afterEscape": {
+      "html": "<body data-audit-runtime=\"library\" style=\"font-family: Arial, sans-serif; background: var(--color-background, white); color: var(--color-content, black);\"><svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" style=\"position: absolute; width: 0; height: 0\" aria-hidden=\"true\" id=\"__SVG_SPRITE_NODE__\"><symbol xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 14 12\" fill=\"none\" id=\"home-icon\">\n<path d=\"M13.125 10.2655H12.4688V5.42837C12.4685 5.27735 12.4371 5.12801 12.3765 4.98968C12.3159 4.85136 12.2274 4.72702 12.1166 4.62446L7.7443 0.497199L7.73555 0.488996C7.53461 0.30511 7.2721 0.203125 6.99973 0.203125C6.72735 0.203125 6.46484 0.30511 6.26391 0.488996L6.25461 0.497199L1.88344 4.62446C1.77259 4.72702 1.68409 4.85136 1.62349 4.98968C1.56289 5.12801 1.53149 5.27735 1.53125 5.42837V10.2655H0.875C0.700952 10.2655 0.534032 10.3346 0.410961 10.4577C0.28789 10.5808 0.21875 10.7477 0.21875 10.9217C0.21875 11.0958 0.28789 11.2627 0.410961 11.3858C0.534032 11.5088 0.700952 11.578 0.875 11.578H13.125C13.299 11.578 13.466 11.5088 13.589 11.3858C13.7121 11.2627 13.7812 11.0958 13.7812 10.9217C13.7812 10.7477 13.7121 10.5808 13.589 10.4577C13.466 10.3346 13.299 10.2655 13.125 10.2655ZM2.84375 5.52298L7 1.59915L11.1562 5.52298V10.2655H8.96875V7.85923C8.96875 7.7156 8.94046 7.57337 8.88549 7.44067C8.83053 7.30797 8.74996 7.1874 8.6484 7.08583C8.54683 6.98427 8.42626 6.9037 8.29356 6.84874C8.16086 6.79377 8.01863 6.76548 7.875 6.76548H6.125C5.83492 6.76548 5.55672 6.88071 5.3516 7.08583C5.14648 7.29095 5.03125 7.56915 5.03125 7.85923V10.2655H2.84375V5.52298ZM7.6"
+    }
+  },
+  {
+    "id": "file-import-invalid-keyboard",
+    "runtime": "library",
+    "initial": {
+      "html": "<button class=\"AlertDialogButton abort react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:r1i:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+    },
+    "steps": [
+      {
+        "html": "<button class=\"AlertDialogButton yes\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#add-alone\"></use></svg>Import</button>"
+      },
+      {
+        "html": "<button class=\"AlertDialogButton abort react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:r1i:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+      },
+      {
+        "html": "<button class=\"AlertDialogButton yes\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#add-alone\"></use></svg>Import</button>"
+      },
+      {
+        "html": "<button class=\"AlertDialogButton abort react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:r1i:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+      },
+      {
+        "html": "<button class=\"AlertDialogButton yes\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#add-alone\"></use></svg>Import</button>"
+      },
+      {
+        "html": "<button class=\"AlertDialogButton abort react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:r1i:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+      },
+      {
+        "html": "<button class=\"AlertDialogButton yes\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#add-alone\"></use></svg>Import</button>"
+      },
+      {
+        "html": "<button class=\"AlertDialogButton abort react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:r1i:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+      },
+      {
+        "html": "<button class=\"AlertDialogButton yes\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#add-alone\"></use></svg>Import</button>"
+      }
+    ],
+    "actions": [
+      [
+        "dispatch",
+        {
+          "type": "DIALOG_CLOSE_REQUEST",
+          "payload": {}
+        }
+      ]
+    ],
+    "afterEscape": {
+      "html": "<body data-audit-runtime=\"library\" style=\"font-family: Arial, sans-serif; background: var(--color-background, white); color: var(--color-content, black);\"><svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" style=\"position: absolute; width: 0; height: 0\" aria-hidden=\"true\" id=\"__SVG_SPRITE_NODE__\"><symbol xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 14 12\" fill=\"none\" id=\"home-icon\">\n<path d=\"M13.125 10.2655H12.4688V5.42837C12.4685 5.27735 12.4371 5.12801 12.3765 4.98968C12.3159 4.85136 12.2274 4.72702 12.1166 4.62446L7.7443 0.497199L7.73555 0.488996C7.53461 0.30511 7.2721 0.203125 6.99973 0.203125C6.72735 0.203125 6.46484 0.30511 6.26391 0.488996L6.25461 0.497199L1.88344 4.62446C1.77259 4.72702 1.68409 4.85136 1.62349 4.98968C1.56289 5.12801 1.53149 5.27735 1.53125 5.42837V10.2655H0.875C0.700952 10.2655 0.534032 10.3346 0.410961 10.4577C0.28789 10.5808 0.21875 10.7477 0.21875 10.9217C0.21875 11.0958 0.28789 11.2627 0.410961 11.3858C0.534032 11.5088 0.700952 11.578 0.875 11.578H13.125C13.299 11.578 13.466 11.5088 13.589 11.3858C13.7121 11.2627 13.7812 11.0958 13.7812 10.9217C13.7812 10.7477 13.7121 10.5808 13.589 10.4577C13.466 10.3346 13.299 10.2655 13.125 10.2655ZM2.84375 5.52298L7 1.59915L11.1562 5.52298V10.2655H8.96875V7.85923C8.96875 7.7156 8.94046 7.57337 8.88549 7.44067C8.83053 7.30797 8.74996 7.1874 8.6484 7.08583C8.54683 6.98427 8.42626 6.9037 8.29356 6.84874C8.16086 6.79377 8.01863 6.76548 7.875 6.76548H6.125C5.83492 6.76548 5.55672 6.88071 5.3516 7.08583C5.14648 7.29095 5.03125 7.56915 5.03125 7.85923V10.2655H2.84375V5.52298ZM7.6"
+    }
+  },
+  {
+    "id": "lcp-authentication-keyboard",
+    "runtime": "library",
+    "initial": {
+      "html": "<input id=\"passphrase\" aria-label=\"Passphrase\" type=\"password\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\">"
+    },
+    "steps": [
+      {
+        "html": "<button type=\"button\" aria-label=\"Show passphrase\" style=\"width: 30px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#eye-password-hide-icon\"></use></svg></button>"
+      },
+      {
+        "html": "<summary>What is LCP?</summary>"
+      },
+      {
+        "html": "<button class=\"button_secondary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\">Cancel</button>"
+      },
+      {
+        "html": "<button type=\"submit\" class=\"button_primary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#lock-icon\"></use></svg>Open</button>"
+      },
+      {
+        "html": "<input id=\"passphrase\" aria-label=\"Passphrase\" type=\"password\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\">"
+      },
+      {
+        "html": "<button type=\"button\" aria-label=\"Show passphrase\" style=\"width: 30px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#eye-password-hide-icon\"></use></svg></button>"
+      },
+      {
+        "html": "<summary>What is LCP?</summary>"
+      },
+      {
+        "html": "<button class=\"button_secondary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\">Cancel</button>"
+      },
+      {
+        "html": "<button type=\"submit\" class=\"button_primary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#lock-icon\"></use></svg>Open</button>"
+      }
+    ],
+    "actions": [
+      [
+        "dispatch",
+        {
+          "type": "DIALOG_CLOSE_REQUEST",
+          "payload": {}
+        }
+      ]
+    ],
+    "afterEscape": {
+      "html": "<body data-audit-runtime=\"library\" style=\"font-family: Arial, sans-serif; background: var(--color-background, white); color: var(--color-content, black);\"><svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" style=\"position: absolute; width: 0; height: 0\" aria-hidden=\"true\" id=\"__SVG_SPRITE_NODE__\"><symbol xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 14 12\" fill=\"none\" id=\"home-icon\">\n<path d=\"M13.125 10.2655H12.4688V5.42837C12.4685 5.27735 12.4371 5.12801 12.3765 4.98968C12.3159 4.85136 12.2274 4.72702 12.1166 4.62446L7.7443 0.497199L7.73555 0.488996C7.53461 0.30511 7.2721 0.203125 6.99973 0.203125C6.72735 0.203125 6.46484 0.30511 6.26391 0.488996L6.25461 0.497199L1.88344 4.62446C1.77259 4.72702 1.68409 4.85136 1.62349 4.98968C1.56289 5.12801 1.53149 5.27735 1.53125 5.42837V10.2655H0.875C0.700952 10.2655 0.534032 10.3346 0.410961 10.4577C0.28789 10.5808 0.21875 10.7477 0.21875 10.9217C0.21875 11.0958 0.28789 11.2627 0.410961 11.3858C0.534032 11.5088 0.700952 11.578 0.875 11.578H13.125C13.299 11.578 13.466 11.5088 13.589 11.3858C13.7121 11.2627 13.7812 11.0958 13.7812 10.9217C13.7812 10.7477 13.7121 10.5808 13.589 10.4577C13.466 10.3346 13.299 10.2655 13.125 10.2655ZM2.84375 5.52298L7 1.59915L11.1562 5.52298V10.2655H8.96875V7.85923C8.96875 7.7156 8.94046 7.57337 8.88549 7.44067C8.83053 7.30797 8.74996 7.1874 8.6484 7.08583C8.54683 6.98427 8.42626 6.9037 8.29356 6.84874C8.16086 6.79377 8.01863 6.76548 7.875 6.76548H6.125C5.83492 6.76548 5.55672 6.88071 5.3516 7.08583C5.14648 7.29095 5.03125 7.56915 5.03125 7.85923V10.2655H2.84375V5.52298ZM7.6"
+    }
+  },
+  {
+    "id": "import-annotations-conflicts-keyboard",
+    "runtime": "library",
+    "initial": {
+      "html": "<button class=\"button_secondary_blue react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:r1v:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+    },
+    "steps": [
+      {
+        "html": "<button class=\"button_primary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg>Import all notes</button>"
+      },
+      {
+        "html": "<button class=\"button_primary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg>Import only conflict-free notes</button>"
+      },
+      {
+        "html": "<button class=\"button_secondary_blue react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:r1v:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+      },
+      {
+        "html": "<button class=\"button_primary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg>Import all notes</button>"
+      },
+      {
+        "html": "<button class=\"button_primary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg>Import only conflict-free notes</button>"
+      },
+      {
+        "html": "<button class=\"button_secondary_blue react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:r1v:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+      },
+      {
+        "html": "<button class=\"button_primary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg>Import all notes</button>"
+      },
+      {
+        "html": "<button class=\"button_primary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg>Import only conflict-free notes</button>"
+      },
+      {
+        "html": "<button class=\"button_secondary_blue react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:r1v:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+      }
+    ],
+    "actions": [
+      [
+        "dispatch",
+        {
+          "type": "ANNOTATION_IMPORT_CONFIRM_OR_ABORT",
+          "payload": {
+            "state": "abort"
+          }
+        }
+      ],
+      [
+        "dispatch",
+        {
+          "type": "ANNOTATION_IMPORT_CONFIRM_OR_ABORT",
+          "payload": {
+            "state": "abort"
+          }
+        }
+      ]
+    ],
+    "afterEscape": {
+      "html": "<body data-audit-runtime=\"library\" style=\"font-family: Arial, sans-serif; background: var(--color-background, white); color: var(--color-content, black);\"><svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" style=\"position: absolute; width: 0; height: 0\" aria-hidden=\"true\" id=\"__SVG_SPRITE_NODE__\"><symbol xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 14 12\" fill=\"none\" id=\"home-icon\">\n<path d=\"M13.125 10.2655H12.4688V5.42837C12.4685 5.27735 12.4371 5.12801 12.3765 4.98968C12.3159 4.85136 12.2274 4.72702 12.1166 4.62446L7.7443 0.497199L7.73555 0.488996C7.53461 0.30511 7.2721 0.203125 6.99973 0.203125C6.72735 0.203125 6.46484 0.30511 6.26391 0.488996L6.25461 0.497199L1.88344 4.62446C1.77259 4.72702 1.68409 4.85136 1.62349 4.98968C1.56289 5.12801 1.53149 5.27735 1.53125 5.42837V10.2655H0.875C0.700952 10.2655 0.534032 10.3346 0.410961 10.4577C0.28789 10.5808 0.21875 10.7477 0.21875 10.9217C0.21875 11.0958 0.28789 11.2627 0.410961 11.3858C0.534032 11.5088 0.700952 11.578 0.875 11.578H13.125C13.299 11.578 13.466 11.5088 13.589 11.3858C13.7121 11.2627 13.7812 11.0958 13.7812 10.9217C13.7812 10.7477 13.7121 10.5808 13.589 10.4577C13.466 10.3346 13.299 10.2655 13.125 10.2655ZM2.84375 5.52298L7 1.59915L11.1562 5.52298V10.2655H8.96875V7.85923C8.96875 7.7156 8.94046 7.57337 8.88549 7.44067C8.83053 7.30797 8.74996 7.1874 8.6484 7.08583C8.54683 6.98427 8.42626 6.9037 8.29356 6.84874C8.16086 6.79377 8.01863 6.76548 7.875 6.76548H6.125C5.83492 6.76548 5.55672 6.88071 5.3516 7.08583C5.14648 7.29095 5.03125 7.56915 5.03125 7.85923V10.2655H2.84375V5.52298ZM7.6"
+    }
+  },
+  {
+    "id": "borrow-response-states",
+    "runtime": "library",
+    "pendingFocus": {
+      "html": "<body data-audit-runtime=\"library\" style=\"font-family: Arial, sans-serif; background: var(--color-background, white); color: var(--color-content, black);\"><svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" style=\"position: absolute; width: 0; height: 0\" aria-hidden=\"true\" id=\"__SVG_SPRITE_NODE__\"><symbol xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 14 12\" fill=\"none\" id=\"home-icon\">\n<path d=\"M13.125 10.2655H12.4688V5.42837C12.4685 5.27735 12.4371 5.12801 12.3765 4.98968C12.3159 4.85136 12.2274 4.72702 12.1166 4.62446L7.7443 0.497199L7.73555 0.488996C7.53461 0.30511 7.2721 0.203125 6.99973 0.203125C6.72735 0.203125 6.46484 0.30511 6.26391 0.488996L6.25461 0.497199L1.88344 4.62446C1.77259 4.72702 1.68409 4.85136 1.62349 4.98968C1.56289 5.12801 1.53149 5.27735 1.53125 5.42837V10.2655H0.875C0.700952 10.2655 0.534032 10.3346 0.410961 10.4577C0.28789 10.5808 0.21875 10.7477 0.21875 10.9217C0.21875 11.0958 0.28789 11.2627 0.410961 11.3858C0.534032 11.5088 0.700952 11.578 0.875 11.578H13.125C13.299 11.578 13.466 11.5088 13.589 11.3858C13.7121 11.2627 13.7812 11.0958 13.7812 10.9217C13.7812 10.7477 13.7121 10.5808 13.589 10.4577C13.466 10.3346 13.299 10.2655 13.125 10.2655ZM2.84375 5.52298L7 1.59915L11.1562 5.52298V10.2655H8.96875V7.85923C8.96875 7.7156 8.94046 7.57337 8.88549 7.44067C8.83053 7.30797 8.74996 7.1874 8.6484 7.08583C8.54683 6.98427 8.42626 6.9037 8.29356 6.84874C8.16086 6.79377 8.01863 6.76548 7.875 6.76548H6.125C5.83492 6.76548 5.55672 6.88071 5.3516 7.08583C5.14648 7.29095 5.03125 7.56915 5.03125 7.85923V10.2655H2.84375V5.52298ZM7.6"
+    },
+    "failureAlert": "Error accessing feed",
+    "steps": [
+      {
+        "html": "<button>Borrow audit publication</button>"
+      },
+      {
+        "html": "<button>Borrow audit publication</button>"
+      },
+      {
+        "html": "<button>Borrow audit publication</button>"
+      },
+      {
+        "html": "<button>Borrow audit publication</button>"
+      }
+    ]
+  },
+  {
+    "id": "cancel-hold-response-states",
+    "runtime": "library",
+    "pendingFocus": {
+      "html": "<body data-audit-runtime=\"library\" style=\"font-family: Arial, sans-serif; background: var(--color-background, white); color: var(--color-content, black);\"><svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" style=\"position: absolute; width: 0; height: 0\" aria-hidden=\"true\" id=\"__SVG_SPRITE_NODE__\"><symbol xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 14 12\" fill=\"none\" id=\"home-icon\">\n<path d=\"M13.125 10.2655H12.4688V5.42837C12.4685 5.27735 12.4371 5.12801 12.3765 4.98968C12.3159 4.85136 12.2274 4.72702 12.1166 4.62446L7.7443 0.497199L7.73555 0.488996C7.53461 0.30511 7.2721 0.203125 6.99973 0.203125C6.72735 0.203125 6.46484 0.30511 6.26391 0.488996L6.25461 0.497199L1.88344 4.62446C1.77259 4.72702 1.68409 4.85136 1.62349 4.98968C1.56289 5.12801 1.53149 5.27735 1.53125 5.42837V10.2655H0.875C0.700952 10.2655 0.534032 10.3346 0.410961 10.4577C0.28789 10.5808 0.21875 10.7477 0.21875 10.9217C0.21875 11.0958 0.28789 11.2627 0.410961 11.3858C0.534032 11.5088 0.700952 11.578 0.875 11.578H13.125C13.299 11.578 13.466 11.5088 13.589 11.3858C13.7121 11.2627 13.7812 11.0958 13.7812 10.9217C13.7812 10.7477 13.7121 10.5808 13.589 10.4577C13.466 10.3346 13.299 10.2655 13.125 10.2655ZM2.84375 5.52298L7 1.59915L11.1562 5.52298V10.2655H8.96875V7.85923C8.96875 7.7156 8.94046 7.57337 8.88549 7.44067C8.83053 7.30797 8.74996 7.1874 8.6484 7.08583C8.54683 6.98427 8.42626 6.9037 8.29356 6.84874C8.16086 6.79377 8.01863 6.76548 7.875 6.76548H6.125C5.83492 6.76548 5.55672 6.88071 5.3516 7.08583C5.14648 7.29095 5.03125 7.56915 5.03125 7.85923V10.2655H2.84375V5.52298ZM7.6"
+    },
+    "failureAlert": "Unable to cancel this hold. Please try again.",
+    "steps": [
+      {
+        "html": "<button class=\"button_secondary\">Cancel hold</button>"
+      },
+      {
+        "html": "<button class=\"button_secondary\">Cancel hold</button>"
+      },
+      {
+        "html": "<button class=\"button_secondary\">Cancel hold</button>"
+      },
+      {
+        "html": "<button class=\"button_secondary\">Cancel hold</button>"
+      }
+    ]
+  },
+  {
+    "id": "apiapp-search-results",
+    "runtime": "library",
+    "steps": [
+      {
+        "html": "<button class=\"button_nav_primary\" title=\"Search\" style=\"height: 24px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 17\"><use xlink:href=\"#magnifying_glass\"></use></svg>Search</button>"
+      },
+      {
+        "html": "<a role=\"option\" aria-selected=\"false\" tabindex=\"0\" style=\"display: block; cursor: pointer; padding: 8px; margin-top: 1rem; background-color: transparent; border: 2px solid transparent; border-radius: 8px;\"><strong>Audit lending library</strong><br><span>Audit city</span></a>"
+      },
+      {
+        "html": "<button dir=\"ltr\" class=\"button_catalog_infos\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#outline-info-24px\"></use></svg>How does it work?<svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg></button>"
+      },
+      {
+        "html": "<button class=\"button_secondary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\">Cancel</button>"
+      },
+      {
+        "html": "<button type=\"submit\" class=\"button_primary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#add-alone\"></use></svg>Add</button>"
+      },
+      {
+        "html": "<button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-close-24px\"></use></svg></button>"
+      },
+      {
+        "html": "<input class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" type=\"search\" id=\"apiapp_search\">"
+      },
+      {
+        "html": "<button class=\"button_nav_primary\" title=\"Search\" style=\"height: 24px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 17\"><use xlink:href=\"#magnifying_glass\"></use></svg>Search</button>"
+      },
+      {
+        "html": "<a role=\"option\" aria-selected=\"false\" tabindex=\"0\" style=\"display: block; cursor: pointer; padding: 8px; margin-top: 1rem; background-color: transparent; border: 2px solid transparent; border-radius: 8px;\"><strong>Audit lending library</strong><br><span>Audit city</span></a>"
+      },
+      {
+        "html": "<button dir=\"ltr\" class=\"button_catalog_infos\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#outline-info-24px\"></use></svg>How does it work?<svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg></button>"
+      }
+    ],
+    "actions": [
+      [
+        "dispatch",
+        {
+          "type": "API_REQUEST",
+          "payload": [
+            "Audit"
+          ],
+          "meta": {
+            "api": {
+              "requestId": "adc976d5-6f25-4b9a-b6af-c15073cd8a0d",
+              "moduleId": "apiapp",
+              "methodId": "search"
+            }
+          }
+        }
+      ],
+      [
+        "dispatch",
+        {
+          "type": "API_REQUEST",
+          "payload": [
+            "Audit"
+          ],
+          "meta": {
+            "api": {
+              "requestId": "adc976d5-6f25-4b9a-b6af-c15073cd8a0d",
+              "moduleId": "apiapp",
+              "methodId": "search"
+            }
+          }
+        }
+      ],
+      [
+        "dispatch",
+        {
+          "type": "API_RESULT",
+          "meta": {
+            "api": {
+              "requestId": "adc976d5-6f25-4b9a-b6af-c15073cd8a0d",
+              "moduleId": "apiapp",
+              "methodId": "search"
+            }
+          },
+          "payload": [
+            {
+              "id": "audit",
+              "name": "Audit lending library",
+              "address": "Audit city",
+              "url": "https://audit.invalid"
+            }
+          ],
+          "error": false
+        }
+      ]
+    ]
+  },
+  {
+    "id": "opds-navigation-keyboard",
+    "runtime": "library",
+    "steps": [
+      {
+        "html": "<a class=\"button_transparency\" href=\"/opds/audit/browse/1/QXVkaXQgY2F0ZWdvcnk/aHR0cHM6Ly9hdWRpdC5pbnZhbGlkL2NhdGVnb3J5\"><span><span title=\"Books in the category\">Audit category</span><span title=\"Books in the category\" aria-label=\"Books in the category\"><br>Books in the category</span></span><span class=\"numberOfItems\">(5)</span></a>"
+      },
+      {
+        "html": "<a href=\"/opds/audit/browse/1/QXVkaXQgY2F0YWxvZw/aHR0cHM6Ly9hdWRpdC5pbnZhbGlkL2ZpcnN0\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#arrowFirst-icon\"></use></svg></a>"
+      },
+      {
+        "html": "<a href=\"/opds/audit/browse/1/QXVkaXQgY2F0YWxvZw/aHR0cHM6Ly9hdWRpdC5pbnZhbGlkL3ByZXY\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 16\"><use xlink:href=\"#chevron-right\"></use></svg></a>"
+      },
+      {
+        "html": "<a href=\"/opds/audit/browse/1/QXVkaXQgY2F0YWxvZw/aHR0cHM6Ly9hdWRpdC5pbnZhbGlkL25leHQ\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 16\"><use xlink:href=\"#chevron-right\"></use></svg></a>"
+      },
+      {
+        "html": "<a href=\"/opds/audit/browse/1/QXVkaXQgY2F0YWxvZw/aHR0cHM6Ly9hdWRpdC5pbnZhbGlkL2xhc3Q\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#arrowLast-icon\"></use></svg></a>"
+      },
+      {
+        "html": "<input type=\"search\" id=\"menu_search\" aria-label=\"Search\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\">"
+      },
+      {
+        "html": "<a class=\"button_transparency\" href=\"/opds/audit/browse/1/QXVkaXQgY2F0ZWdvcnk/aHR0cHM6Ly9hdWRpdC5pbnZhbGlkL2NhdGVnb3J5\"><span><span title=\"Books in the category\">Audit category</span><span title=\"Books in the category\" aria-label=\"Books in the category\"><br>Books in the category</span></span><span class=\"numberOfItems\">(5)</span></a>"
+      },
+      {
+        "html": "<a href=\"/opds/audit/browse/1/QXVkaXQgY2F0YWxvZw/aHR0cHM6Ly9hdWRpdC5pbnZhbGlkL2ZpcnN0\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#arrowFirst-icon\"></use></svg></a>"
+      },
+      {
+        "html": "<a href=\"/opds/audit/browse/1/QXVkaXQgY2F0YWxvZw/aHR0cHM6Ly9hdWRpdC5pbnZhbGlkL3ByZXY\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 16\"><use xlink:href=\"#chevron-right\"></use></svg></a>"
+      },
+      {
+        "html": "<a href=\"/opds/audit/browse/1/QXVkaXQgY2F0YWxvZw/aHR0cHM6Ly9hdWRpdC5pbnZhbGlkL25leHQ\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 16\"><use xlink:href=\"#chevron-right\"></use></svg></a>"
+      }
+    ],
+    "actions": [
+      [
+        "dispatch",
+        {
+          "type": "@@router/CALL_HISTORY_METHOD",
+          "payload": {
+            "method": "push",
+            "args": [
+              {
+                "pathname": "/opds/audit/browse/1/QXVkaXQ/aHR0cHM6Ly9hdWRpdC5pbnZhbGlkL3NlYXJjaD9xPUF1ZGl0",
+                "search": "",
+                "hash": ""
+              },
+              null
+            ]
+          }
+        }
+      ]
+    ]
+  },
+  {
+    "id": "lcp-renew-return-confirmations",
+    "runtime": "library",
+    "states": [
+      {
+        "name": "Renew",
+        "initial": {
+          "html": "<button class=\"button_secondary_blue react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:r2m:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+        },
+        "restored": {
+          "html": "<body data-audit-runtime=\"library\" style=\"font-family: Arial, sans-serif; background: var(--color-background, white); color: var(--color-content, black);\"><svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" style=\"position: absolute; width: 0; height: 0\" aria-hidden=\"true\" id=\"__SVG_SPRITE_NODE__\"><symbol xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 14 12\" fill=\"none\" id=\"home-icon\">\n<path d=\"M13.125 10.2655H12.4688V5.42837C12.4685 5.27735 12.4371 5.12801 12.3765 4.98968C12.3159 4.85136 12.2274 4.72702 12.1166 4.62446L7.7443 0.497199L7.73555 0.488996C7.53461 0.30511 7.2721 0.203125 6.99973 0.203125C6.72735 0.203125 6.46484 0.30511 6.26391 0.488996L6.25461 0.497199L1.88344 4.62446C1.77259 4.72702 1.68409 4.85136 1.62349 4.98968C1.56289 5.12801 1.53149 5.27735 1.53125 5.42837V10.2655H0.875C0.700952 10.2655 0.534032 10.3346 0.410961 10.4577C0.28789 10.5808 0.21875 10.7477 0.21875 10.9217C0.21875 11.0958 0.28789 11.2627 0.410961 11.3858C0.534032 11.5088 0.700952 11.578 0.875 11.578H13.125C13.299 11.578 13.466 11.5088 13.589 11.3858C13.7121 11.2627 13.7812 11.0958 13.7812 10.9217C13.7812 10.7477 13.7121 10.5808 13.589 10.4577C13.466 10.3346 13.299 10.2655 13.125 10.2655ZM2.84375 5.52298L7 1.59915L11.1562 5.52298V10.2655H8.96875V7.85923C8.96875 7.7156 8.94046 7.57337 8.88549 7.44067C8.83053 7.30797 8.74996 7.1874 8.6484 7.08583C8.54683 6.98427 8.42626 6.9037 8.29356 6.84874C8.16086 6.79377 8.01863 6.76548 7.875 6.76548H6.125C5.83492 6.76548 5.55672 6.88071 5.3516 7.08583C5.14648 7.29095 5.03125 7.56915 5.03125 7.85923V10.2655H2.84375V5.52298ZM7.6"
+        }
+      },
+      {
+        "name": "Return",
+        "initial": {
+          "html": "<button class=\"button_secondary_blue react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7317093440-:r36:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>"
+        },
+        "restored": {
+          "html": "<button class=\"button_secondary\" aria-expanded=\"false\" id=\"react-aria7317093440-:r2v:\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 32 32\"><use xlink:href=\"#arrow-right\"></use></svg>Return</button>"
+        }
+      }
+    ]
+  },
+  {
+    "id": "annotation-card-interactions",
+    "runtime": "reader",
+    "filterFocus": {
+      "html": "<a class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" tabindex=\"0\">Research</a>"
+    },
+    "filterActions": [
+      [
+        "Research"
+      ]
+    ],
+    "initial": {
+      "html": "<textarea id=\"audit-note_edit\" name=\"addNote\" wrap=\"hard\" class=\"annotation_edit_form_textarea\" maxlength=\"1500\" style=\"height: 37px;\">Audit note **with emphasis**</textarea>"
+    },
+    "steps": [
+      {
+        "html": "<input type=\"radio\" id=\"audit-note_color-#FEF3BD\" name=\"colorpicker\" aria-label=\"Yellow\" value=\"#FEF3BD\" checked=\"\">"
+      },
+      {
+        "html": "<input type=\"radio\" id=\"audit-note_drawtype-solid_background\" name=\"drawtype\" aria-label=\"Highlight Solid background\" value=\"solid_background\" checked=\"\">"
+      },
+      {
+        "html": "<input aria-label=\"Tag\" type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" placeholder=\"Add tag\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria4676522220-:r6:\" role=\"combobox\" aria-expanded=\"false\" class=\"react_aria_Input R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" value=\"Research\" title=\"\" data-focused=\"true\" data-focus-visible=\"true\">"
+      },
+      {
+        "html": "<button class=\"button_secondary_blue\" aria-label=\"Cancel\" type=\"button\">Cancel</button>"
+      },
+      {
+        "html": "<button type=\"submit\" class=\"button_primary_blue\" aria-label=\"Save\"><svg aria-hidden=\"true\" viewBox=\"0 0 8 8\"><use xlink:href=\"#floppydisk-icon\"></use></svg>Save</button>"
+      },
+      {
+        "html": "<textarea id=\"audit-note_edit\" name=\"addNote\" wrap=\"hard\" class=\"annotation_edit_form_textarea\" maxlength=\"1500\" style=\"height: 37px;\">Audit note **with emphasis**</textarea>"
+      },
+      {
+        "html": "<input type=\"radio\" id=\"audit-note_color-#FEF3BD\" name=\"colorpicker\" aria-label=\"Yellow\" value=\"#FEF3BD\" checked=\"\">"
+      },
+      {
+        "html": "<input type=\"radio\" id=\"audit-note_drawtype-solid_background\" name=\"drawtype\" aria-label=\"Highlight Solid background\" value=\"solid_background\" checked=\"\">"
+      },
+      {
+        "html": "<input aria-label=\"Tag\" type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" placeholder=\"Add tag\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria4676522220-:r6:\" role=\"combobox\" aria-expanded=\"false\" class=\"react_aria_Input R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" value=\"Research\" title=\"\" data-focused=\"true\" data-focus-visible=\"true\">"
+      },
+      {
+        "html": "<button class=\"button_secondary_blue\" aria-label=\"Cancel\" type=\"button\">Cancel</button>"
+      },
+      {
+        "html": "<button type=\"submit\" class=\"button_primary_blue\" aria-label=\"Save\"><svg aria-hidden=\"true\" viewBox=\"0 0 8 8\"><use xlink:href=\"#floppydisk-icon\"></use></svg>Save</button>"
+      },
+      {
+        "html": "<textarea id=\"audit-note_edit\" name=\"addNote\" wrap=\"hard\" class=\"annotation_edit_form_textarea\" maxlength=\"1500\" style=\"height: 37px;\">Audit note **with emphasis**</textarea>"
+      }
+    ],
+    "afterEscape": {
+      "html": "<button id=\"audit-note_edit_button\" title=\"Edit\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>"
+    }
+  },
+  {
+    "id": "bookmark-card-interactions",
+    "runtime": "reader",
+    "filterFocus": {
+      "html": "<a class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" tabindex=\"0\" style=\"user-select: text;\">Research</a>"
+    },
+    "filterActions": [
+      [
+        "Research"
+      ]
+    ],
+    "initial": {
+      "html": "<textarea id=\"audit-note_edit\" name=\"editBookmark\" wrap=\"hard\" class=\"bookmark_form_textarea\" maxlength=\"1500\" style=\"height: 107px;\">Audit note **with emphasis**</textarea>"
+    },
+    "steps": [
+      {
+        "html": "<input type=\"radio\" id=\"audit-note_color-#FEF3BD\" name=\"colorpicker\" aria-label=\"Yellow\" value=\"#FEF3BD\" checked=\"\">"
+      },
+      {
+        "html": "<input aria-label=\"Tag\" type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" placeholder=\"Add tag\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria4676522220-:rl:\" role=\"combobox\" aria-expanded=\"false\" class=\"react_aria_Input R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" value=\"Research\" title=\"\" data-focused=\"true\" data-focus-visible=\"true\">"
+      },
+      {
+        "html": "<button class=\"button_secondary_blue\" aria-label=\"Cancel\" type=\"button\">Cancel</button>"
+      },
+      {
+        "html": "<button type=\"submit\" class=\"button_primary_blue\" aria-label=\"Save\"><svg aria-hidden=\"true\" viewBox=\"0 0 8 8\"><use xlink:href=\"#floppydisk-icon\"></use></svg>Save</button>"
+      },
+      {
+        "html": "<textarea id=\"audit-note_edit\" name=\"editBookmark\" wrap=\"hard\" class=\"bookmark_form_textarea\" maxlength=\"1500\" style=\"height: 107px;\">Audit note **with emphasis**</textarea>"
+      },
+      {
+        "html": "<input type=\"radio\" id=\"audit-note_color-#FEF3BD\" name=\"colorpicker\" aria-label=\"Yellow\" value=\"#FEF3BD\" checked=\"\">"
+      },
+      {
+        "html": "<input aria-label=\"Tag\" type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" placeholder=\"Add tag\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria4676522220-:rl:\" role=\"combobox\" aria-expanded=\"false\" class=\"react_aria_Input R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" value=\"Research\" title=\"\" data-focused=\"true\" data-focus-visible=\"true\">"
+      },
+      {
+        "html": "<button class=\"button_secondary_blue\" aria-label=\"Cancel\" type=\"button\">Cancel</button>"
+      },
+      {
+        "html": "<button type=\"submit\" class=\"button_primary_blue\" aria-label=\"Save\"><svg aria-hidden=\"true\" viewBox=\"0 0 8 8\"><use xlink:href=\"#floppydisk-icon\"></use></svg>Save</button>"
+      },
+      {
+        "html": "<textarea id=\"audit-note_edit\" name=\"editBookmark\" wrap=\"hard\" class=\"bookmark_form_textarea\" maxlength=\"1500\" style=\"height: 107px;\">Audit note **with emphasis**</textarea>"
+      },
+      {
+        "html": "<input type=\"radio\" id=\"audit-note_color-#FEF3BD\" name=\"colorpicker\" aria-label=\"Yellow\" value=\"#FEF3BD\" checked=\"\">"
+      },
+      {
+        "html": "<input aria-label=\"Tag\" type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" placeholder=\"Add tag\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria4676522220-:rl:\" role=\"combobox\" aria-expanded=\"false\" class=\"react_aria_Input R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" value=\"Research\" title=\"\" data-focused=\"true\" data-focus-visible=\"true\">"
+      }
+    ],
+    "afterEscape": {
+      "html": "<button id=\"audit-note_edit_button\" title=\"Edit\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></button>"
+    }
+  },
+  {
+    "id": "image-viewer-zoom",
+    "runtime": "reader",
+    "before": "transform-origin: 0px 0px; transform: translate(282px, 25px) scale(1);",
+    "after": "transform-origin: 0px 0px; transform: translate(184.447px, -48.1646px) scale(1.48776);",
+    "reset": "transform-origin: 0px 0px; transform: translate(282px, 25px) scale(1);",
+    "steps": [
+      {
+        "html": "<img src=\"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22400%22%20height%3D%22300%22%3E%3Crect%20width%3D%22400%22%20height%3D%22300%22%20fill%3D%22navy%22%2F%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22150%22%20r%3D%2280%22%20fill%3D%22white%22%2F%3E%3C%2Fsvg%3E\" alt=\"White circle on a blue rectangle\" title=\"Audit illustration\" tabindex=\"0\" style=\"height: 100%; width: 100%; max-height: calc(-250px + 100vh); background-color: white; color: black; fill: currentcolor; stroke: currentcolor;\">"
+      },
+      {
+        "html": "<button class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\" style=\"z-index: 105;\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-close-24px\"></use></svg></button>"
+      },
+      {
+        "html": "<button title=\"Zoom In\"><svg viewBox=\"0 0 14 14\"><use xlink:href=\"#add-alone\"></use></svg></button>"
+      },
+      {
+        "html": "<button title=\"Zoom Out\"><svg viewBox=\"0 0 17 16\"><use xlink:href=\"#Minus-Bold\"></use></svg></button>"
+      },
+      {
+        "html": "<button title=\"Reset Zoom\"><svg viewBox=\"0 0 18 17\"><use xlink:href=\"#backward-icon\"></use></svg></button>"
+      },
+      {
+        "html": "<img src=\"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22400%22%20height%3D%22300%22%3E%3Crect%20width%3D%22400%22%20height%3D%22300%22%20fill%3D%22navy%22%2F%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22150%22%20r%3D%2280%22%20fill%3D%22white%22%2F%3E%3C%2Fsvg%3E\" alt=\"White circle on a blue rectangle\" title=\"Audit illustration\" tabindex=\"0\" style=\"height: 100%; width: 100%; max-height: calc(-250px + 100vh); background-color: white; color: black; fill: currentcolor; stroke: currentcolor;\">"
+      },
+      {
+        "html": "<button class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\" style=\"z-index: 105;\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-close-24px\"></use></svg></button>"
+      },
+      {
+        "html": "<button title=\"Zoom In\"><svg viewBox=\"0 0 14 14\"><use xlink:href=\"#add-alone\"></use></svg></button>"
+      }
+    ],
+    "dialogsAfterEscape": 0
+  },
+  {
+    "id": "divina-arrow-selection",
+    "runtime": "reader",
+    "selected": "radio-double",
+    "guidedDisabled": true
+  },
+  {
+    "id": "reader-tags-and-close",
+    "runtime": "reader",
+    "steps": [
+      {
+        "html": "<button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button>"
+      },
+      {
+        "html": "<button aria-hidden=\"true\" class=\"publicationInfo_description_bloc_seeMore\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg>See more</button>",
+        "hidden": "<button aria-hidden=\"true\" class=\"publicationInfo_description_bloc_seeMore\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg>See more</button>"
+      },
+      {
+        "html": "<input type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria4676522220-:r1i:\" aria-labelledby=\"react-aria4676522220-:r1j:\" role=\"combobox\" aria-expanded=\"false\" class=\"react_aria_Input R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" value=\"\" title=\"\" data-focused=\"true\" data-focus-visible=\"true\">"
+      },
+      {
+        "html": "<button type=\"submit\" class=\"button_secondary_blue\" style=\"margin-top: 9px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 9 9\"><use xlink:href=\"#addTag-icon\"></use></svg>Add</button>"
+      },
+      {
+        "html": "<button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button>"
+      },
+      {
+        "html": "<button aria-hidden=\"true\" class=\"publicationInfo_description_bloc_seeMore\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg>See more</button>",
+        "hidden": "<button aria-hidden=\"true\" class=\"publicationInfo_description_bloc_seeMore\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg>See more</button>"
+      },
+      {
+        "html": "<input type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria4676522220-:r1i:\" aria-labelledby=\"react-aria4676522220-:r1j:\" role=\"combobox\" aria-expanded=\"false\" class=\"react_aria_Input R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" value=\"\" title=\"\" data-focused=\"true\" data-focus-visible=\"true\">"
+      },
+      {
+        "html": "<button type=\"submit\" class=\"button_secondary_blue\" style=\"margin-top: 9px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 9 9\"><use xlink:href=\"#addTag-icon\"></use></svg>Add</button>"
+      },
+      {
+        "html": "<button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button>"
+      },
+      {
+        "html": "<button aria-hidden=\"true\" class=\"publicationInfo_description_bloc_seeMore\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg>See more</button>",
+        "hidden": "<button aria-hidden=\"true\" class=\"publicationInfo_description_bloc_seeMore\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg>See more</button>"
+      },
+      {
+        "html": "<input type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria4676522220-:r1i:\" aria-labelledby=\"react-aria4676522220-:r1j:\" role=\"combobox\" aria-expanded=\"false\" class=\"react_aria_Input R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" value=\"\" title=\"\" data-focused=\"true\" data-focus-visible=\"true\">"
+      },
+      {
+        "html": "<button type=\"submit\" class=\"button_secondary_blue\" style=\"margin-top: 9px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 9 9\"><use xlink:href=\"#addTag-icon\"></use></svg>Add</button>"
+      }
+    ],
+    "dialogsAfterEscape": 0,
+    "focus": {
+      "html": "<body data-audit-runtime=\"reader\" style=\"font-family: Arial, sans-serif; background: var(--color-background, white); color: var(--color-content, black);\"><svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" style=\"position: absolute; width: 0; height: 0\" aria-hidden=\"true\" id=\"__SVG_SPRITE_NODE__\"><symbol xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 18 17\" fill=\"none\" id=\"backward-icon\">\n<path d=\"M17.8125 8.55482C17.8127 10.6088 17.004 12.5803 15.5614 14.0424C14.1188 15.5046 12.1585 16.3398 10.1047 16.3673H10C8.00552 16.3715 6.08591 15.6081 4.63906 14.2353C4.45828 14.0646 4.35273 13.829 4.34562 13.5804C4.33851 13.3319 4.43044 13.0907 4.60117 12.9099C4.7719 12.7291 5.00746 12.6236 5.25602 12.6165C5.50458 12.6094 5.74578 12.7013 5.92656 12.872C6.77519 13.6732 7.84111 14.2065 8.99112 14.4053C10.1411 14.6041 11.3242 14.4596 12.3926 13.9898C13.4609 13.5201 14.3671 12.7459 14.998 11.764C15.6288 10.7821 15.9563 9.63604 15.9395 8.46909C15.9227 7.30214 15.5623 6.16602 14.9035 5.2027C14.2446 4.23939 13.3165 3.4916 12.2351 3.05279C11.1536 2.61397 9.96684 2.5036 8.82303 2.73545C7.67922 2.9673 6.62911 3.53109 5.80391 4.35638C5.79375 4.36654 5.78438 4.37591 5.77344 4.38529L4.28828 5.74232H5.625C5.87364 5.74232 6.1121 5.84109 6.28791 6.01691C6.46373 6.19272 6.5625 6.43118 6.5625 6.67982C6.5625 6.92846 6.46373 7.16692 6.28791 7.34273C6.1121 7.51855 5.87364 7.61732 5.625 7.61732H1.875C1.62636 7.61732 1.3879 7.51855 1.21209 7.34273C1.03627 7.16692 0.9375 6.92846 0.9375 6.67982V2.92982C0.9375 2.68118 1.03627 2.44272 1.21209 2.26691C1.3879 2.09109 1.62636 1.992"
+    }
+  },
+  {
+    "id": "user-profile-loading-unavailable",
+    "runtime": "library"
+  }
+]

@@ -1,0 +1,266 @@
+{
+  "label": "library-continuation-feed-delete",
+  "timestamp": "2026-10-19T11:52:25.139Z",
+  "axeVersion": "4.13.0",
+  "targets": [
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/F5B151EE080133274D6042A19B141E8C",
+      "id": "F5B151EE080133274D6042A19B141E8C",
+      "title": "Thorium",
+      "type": "page",
+      "url": "http://localhost:8090/index_library.html#/opds",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/F5B151EE080133274D6042A19B141E8C"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/5CE550D8A1682380903929971F48223B",
+      "id": "5CE550D8A1682380903929971F48223B",
+      "title": "Service Worker chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/background.bundle.js",
+      "type": "service_worker",
+      "url": "chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/background.bundle.js",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/5CE550D8A1682380903929971F48223B"
+    }
+  ],
+  "pages": [
+    {
+      "title": "Thorium",
+      "url": "http://localhost:8090/index_library.html#/opds",
+      "lang": "",
+      "dimensions": {
+        "width": 1133,
+        "height": 808,
+        "scrollWidth": 1133
+      },
+      "focus": "<button class=\"button_secondary_blue react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria8965066365-:r41:\" data-focused=\"true\">Cancel</button>",
+      "dialogs": [
+        {
+          "html": "<section id=\"react-aria8965066365-:r2a:\" class=\"AlertDialogContent\" data-rac=\"\" aria-labelledby=\":r28:\" aria-describedby=\":r29:\" role=\"alertdialog\" tabindex=\"-1\"><h2 class=\"AlertDialogTitle\" id=\":r28:\">Delete catalog?</h2><p class=\"AlertDialogDescription\" id=\":r29:\">http://127.0.0.1:4873/opds/v2/catalog.json</p><div class=\"AlertDialogButtonContainer\"><button class=\"button_secondary_blue react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria8965066365-:r41:\" data-focused=\"true\">Cancel</button><button class=\"button_primary_blue\" type=\"button\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg>Yes</button></div></section>"
+        }
+      ],
+      "sliders": [],
+      "evidencePrefix": "library-continuation-feed-delete-0",
+      "axe": {
+        "violations": [
+          {
+            "id": "html-has-lang",
+            "impact": "serious",
+            "tags": [
+              "cat.language",
+              "wcag2a",
+              "wcag311",
+              "TTv5",
+              "TT11.a",
+              "EN-301-549",
+              "EN-9.3.1.1",
+              "ACT",
+              "RGAAv4",
+              "RGAA-8.3.1"
+            ],
+            "description": "Ensure every HTML document has a lang attribute",
+            "help": "<html> element must have a lang attribute",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/html-has-lang?application=axeAPI",
+            "nodes": [
+              {
+                "any": [
+                  {
+                    "id": "has-lang",
+                    "data": {
+                      "messageKey": "noLang"
+                    },
+                    "relatedNodes": [],
+                    "impact": "serious",
+                    "message": "The <html> element does not have a lang attribute"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "serious",
+                "html": "<html id=\"library_html\" style=\"overflow: hidden;\" class=\"\">",
+                "target": [
+                  "#library_html"
+                ],
+                "failureSummary": "Fix any of the following:\n  The <html> element does not have a lang attribute"
+              }
+            ]
+          }
+        ],
+        "incomplete": [],
+        "passes": [
+          {
+            "id": "aria-allowed-attr",
+            "nodes": 1
+          },
+          {
+            "id": "aria-allowed-role",
+            "nodes": 9
+          },
+          {
+            "id": "aria-conditional-attr",
+            "nodes": 1
+          },
+          {
+            "id": "aria-deprecated-role",
+            "nodes": 1
+          },
+          {
+            "id": "aria-dialog-name",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-body",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-focus",
+            "nodes": 41
+          },
+          {
+            "id": "aria-prohibited-attr",
+            "nodes": 1
+          },
+          {
+            "id": "aria-required-attr",
+            "nodes": 1
+          },
+          {
+            "id": "aria-roles",
+            "nodes": 1
+          },
+          {
+            "id": "aria-valid-attr-value",
+            "nodes": 1
+          },
+          {
+            "id": "aria-valid-attr",
+            "nodes": 1
+          },
+          {
+            "id": "avoid-inline-spacing",
+            "nodes": 1
+          },
+          {
+            "id": "button-name",
+            "nodes": 2
+          },
+          {
+            "id": "bypass",
+            "nodes": 1
+          },
+          {
+            "id": "document-title",
+            "nodes": 1
+          },
+          {
+            "id": "duplicate-id-aria",
+            "nodes": 3
+          },
+          {
+            "id": "empty-heading",
+            "nodes": 1
+          },
+          {
+            "id": "heading-order",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-one-main",
+            "nodes": 1
+          },
+          {
+            "id": "meta-viewport-large",
+            "nodes": 1
+          },
+          {
+            "id": "meta-viewport",
+            "nodes": 1
+          },
+          {
+            "id": "nested-interactive",
+            "nodes": 2
+          },
+          {
+            "id": "page-has-heading-one",
+            "nodes": 1
+          },
+          {
+            "id": "region",
+            "nodes": 8
+          },
+          {
+            "id": "tabindex",
+            "nodes": 3
+          },
+          {
+            "id": "target-size",
+            "nodes": 2
+          }
+        ],
+        "inapplicable": [
+          "accesskeys",
+          "area-alt",
+          "aria-braille-equivalent",
+          "aria-command-name",
+          "aria-input-field-name",
+          "aria-meter-name",
+          "aria-progressbar-name",
+          "aria-required-children",
+          "aria-required-parent",
+          "aria-tab-name",
+          "aria-text",
+          "aria-toggle-field-name",
+          "aria-tooltip-name",
+          "aria-treeitem-name",
+          "autocomplete-valid",
+          "blink",
+          "color-contrast",
+          "definition-list",
+          "dlitem",
+          "empty-table-header",
+          "form-field-multiple-labels",
+          "frame-focusable-content",
+          "frame-tested",
+          "frame-title-unique",
+          "frame-title",
+          "html-lang-valid",
+          "html-xml-lang-mismatch",
+          "image-alt",
+          "image-redundant-alt",
+          "input-button-name",
+          "input-image-alt",
+          "label-title-only",
+          "label",
+          "landmark-banner-is-top-level",
+          "landmark-contentinfo-is-top-level",
+          "landmark-main-is-top-level",
+          "landmark-no-duplicate-banner",
+          "landmark-no-duplicate-contentinfo",
+          "landmark-no-duplicate-main",
+          "landmark-unique",
+          "link-in-text-block",
+          "link-name",
+          "list",
+          "listitem",
+          "marquee",
+          "meta-refresh",
+          "object-alt",
+          "presentation-role-conflict",
+          "role-img-alt",
+          "scope-attr-valid",
+          "scrollable-region-focusable",
+          "select-name",
+          "server-side-image-map",
+          "skip-link",
+          "summary-name",
+          "svg-img-alt",
+          "table-duplicate-name",
+          "td-headers-attr",
+          "th-has-data-cells",
+          "valid-lang",
+          "video-caption",
+          "no-autoplay-audio"
+        ]
+      }
+    }
+  ]
+}

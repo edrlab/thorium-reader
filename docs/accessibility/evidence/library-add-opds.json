@@ -1,0 +1,287 @@
+{
+  "label": "library-add-opds",
+  "timestamp": "2026-10-19T11:09:54.351Z",
+  "axeVersion": "4.13.0",
+  "targets": [
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/8870060FCC5D1B16FFD54EE19484FBF5",
+      "id": "8870060FCC5D1B16FFD54EE19484FBF5",
+      "title": "Thorium",
+      "type": "page",
+      "url": "http://localhost:8090/index_library.html#/opds",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/8870060FCC5D1B16FFD54EE19484FBF5"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/544959611FA569BE513035F0416FEFCA",
+      "id": "544959611FA569BE513035F0416FEFCA",
+      "title": "Service Worker chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/background.bundle.js",
+      "type": "service_worker",
+      "url": "chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/background.bundle.js",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/544959611FA569BE513035F0416FEFCA"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/15CAFC16D712448717F0662D4552F956",
+      "id": "15CAFC16D712448717F0662D4552F956",
+      "title": "Service Worker chrome-extension://ijmmnfpjnmlljdjbbfpdgodddghhmemm/build/background.js",
+      "type": "service_worker",
+      "url": "chrome-extension://ijmmnfpjnmlljdjbbfpdgodddghhmemm/build/background.js",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/15CAFC16D712448717F0662D4552F956"
+    }
+  ],
+  "pages": [
+    {
+      "title": "Thorium",
+      "url": "http://localhost:8090/index_library.html#/opds",
+      "lang": "",
+      "dimensions": {
+        "width": 1133,
+        "height": 808,
+        "scrollWidth": 1133
+      },
+      "focus": "<section id=\"react-aria7386672771-:rbf:\" class=\"modal_dialog\" data-rac=\"\" aria-labelledby=\":rbd:\" role=\"dialog\" tabindex=\"-1\"><div class=\"modal_dialog_header\"><h2 id=\":rbd:\">Add OPDS feed</h2><div><button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-close-24px\"></use></svg></button></div></div><form class=\"modal_dialog_body\"><div><div class=\"form_group form_group_catalog\"><label for=\"title\">Name:</label><i><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></i><input id=\"title\" type=\"text\" aria-label=\"Name:\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" required=\"\" value=\"\"></div><div class=\"form_group form_group_catalog\"><label for=\"url\">Link:</label><i><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#link-icon\"></use></svg></i><input id=\"url\" type=\"text\" aria-label=\"Link:\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" required=\"\" value=\"\"></div><button type=\"button\"><svg aria-hidden=\"true\" class=\"catalog_favorite_icon_false\" viewBox=\"0 0 24 24\"><use xlink:href=\"#star-icon\"></use></svg>Add to fa",
+      "dialogs": [
+        {
+          "html": "<section id=\"react-aria7386672771-:rbf:\" class=\"modal_dialog\" data-rac=\"\" aria-labelledby=\":rbd:\" role=\"dialog\" tabindex=\"-1\"><div class=\"modal_dialog_header\"><h2 id=\":rbd:\">Add OPDS feed</h2><div><button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-close-24px\"></use></svg></button></div></div><form class=\"modal_dialog_body\"><div><div class=\"form_group form_group_catalog\"><label for=\"title\">Name:</label><i><svg aria-hidden=\"true\" viewBox=\"0 0 11 11\"><use xlink:href=\"#pen-icon\"></use></svg></i><input id=\"title\" type=\"text\" aria-label=\"Name:\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" required=\"\" value=\"\"></div><div class=\"form_group form_group_catalog\"><label for=\"url\">Link:</label><i><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#link-icon\"></use></svg></i><input id=\"url\" type=\"text\" aria-label=\"Link:\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" required=\"\" value=\"\"></div><button type=\"button\"><svg aria-hidden=\"true\" class=\"catalog_favorite_icon_false\" viewBox=\"0 0 24 24\"><use xlink:href=\"#star-icon\"></use></svg>Add to favorites</button><div class=\"catalog_color_picker\" role=\"radiogroup\" aria-label=\"Catalog color\"><div><input type=\"radio\" id=\"00b2db11-7392-427c-b6f4-3f72af7fcdaa_color-gray\" name=\"00b2db11-7392-427c-b6f4-3f72af7fcdaa_colorpicker\" aria-label=\"Gray\" value=\"gray\" checked=\"\"><label aria-hidden=\"true\" title=\"Gray\" for=\"00b2db11-7392-427c-b6f4-3f72af7fcdaa_color-gray\" class=\"catalog_color_swatch\" data-co"
+        }
+      ],
+      "sliders": [],
+      "evidencePrefix": "library-add-opds-0",
+      "axe": {
+        "violations": [
+          {
+            "id": "html-has-lang",
+            "impact": "serious",
+            "tags": [
+              "cat.language",
+              "wcag2a",
+              "wcag311",
+              "TTv5",
+              "TT11.a",
+              "EN-301-549",
+              "EN-9.3.1.1",
+              "ACT",
+              "RGAAv4",
+              "RGAA-8.3.1"
+            ],
+            "description": "Ensure every HTML document has a lang attribute",
+            "help": "<html> element must have a lang attribute",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/html-has-lang?application=axeAPI",
+            "nodes": [
+              {
+                "any": [
+                  {
+                    "id": "has-lang",
+                    "data": {
+                      "messageKey": "noLang"
+                    },
+                    "relatedNodes": [],
+                    "impact": "serious",
+                    "message": "The <html> element does not have a lang attribute"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "serious",
+                "html": "<html id=\"library_html\" style=\"overflow: hidden;\" class=\"\">",
+                "target": [
+                  "#library_html"
+                ],
+                "failureSummary": "Fix any of the following:\n  The <html> element does not have a lang attribute"
+              }
+            ]
+          }
+        ],
+        "incomplete": [],
+        "passes": [
+          {
+            "id": "aria-allowed-attr",
+            "nodes": 14
+          },
+          {
+            "id": "aria-allowed-role",
+            "nodes": 10
+          },
+          {
+            "id": "aria-conditional-attr",
+            "nodes": 14
+          },
+          {
+            "id": "aria-deprecated-role",
+            "nodes": 2
+          },
+          {
+            "id": "aria-dialog-name",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-body",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-focus",
+            "nodes": 55
+          },
+          {
+            "id": "aria-prohibited-attr",
+            "nodes": 14
+          },
+          {
+            "id": "aria-required-attr",
+            "nodes": 2
+          },
+          {
+            "id": "aria-roles",
+            "nodes": 2
+          },
+          {
+            "id": "aria-valid-attr-value",
+            "nodes": 14
+          },
+          {
+            "id": "aria-valid-attr",
+            "nodes": 14
+          },
+          {
+            "id": "avoid-inline-spacing",
+            "nodes": 1
+          },
+          {
+            "id": "button-name",
+            "nodes": 6
+          },
+          {
+            "id": "bypass",
+            "nodes": 1
+          },
+          {
+            "id": "color-contrast",
+            "nodes": 2
+          },
+          {
+            "id": "document-title",
+            "nodes": 1
+          },
+          {
+            "id": "duplicate-id-aria",
+            "nodes": 12
+          },
+          {
+            "id": "empty-heading",
+            "nodes": 1
+          },
+          {
+            "id": "form-field-multiple-labels",
+            "nodes": 10
+          },
+          {
+            "id": "heading-order",
+            "nodes": 1
+          },
+          {
+            "id": "label-title-only",
+            "nodes": 10
+          },
+          {
+            "id": "label",
+            "nodes": 10
+          },
+          {
+            "id": "landmark-one-main",
+            "nodes": 1
+          },
+          {
+            "id": "meta-viewport-large",
+            "nodes": 1
+          },
+          {
+            "id": "meta-viewport",
+            "nodes": 1
+          },
+          {
+            "id": "nested-interactive",
+            "nodes": 14
+          },
+          {
+            "id": "page-has-heading-one",
+            "nodes": 1
+          },
+          {
+            "id": "region",
+            "nodes": 42
+          },
+          {
+            "id": "tabindex",
+            "nodes": 5
+          },
+          {
+            "id": "target-size",
+            "nodes": 15
+          }
+        ],
+        "inapplicable": [
+          "accesskeys",
+          "area-alt",
+          "aria-braille-equivalent",
+          "aria-command-name",
+          "aria-input-field-name",
+          "aria-meter-name",
+          "aria-progressbar-name",
+          "aria-required-children",
+          "aria-required-parent",
+          "aria-tab-name",
+          "aria-text",
+          "aria-toggle-field-name",
+          "aria-tooltip-name",
+          "aria-treeitem-name",
+          "autocomplete-valid",
+          "blink",
+          "definition-list",
+          "dlitem",
+          "empty-table-header",
+          "frame-focusable-content",
+          "frame-tested",
+          "frame-title-unique",
+          "frame-title",
+          "html-lang-valid",
+          "html-xml-lang-mismatch",
+          "image-alt",
+          "image-redundant-alt",
+          "input-button-name",
+          "input-image-alt",
+          "landmark-banner-is-top-level",
+          "landmark-contentinfo-is-top-level",
+          "landmark-main-is-top-level",
+          "landmark-no-duplicate-banner",
+          "landmark-no-duplicate-contentinfo",
+          "landmark-no-duplicate-main",
+          "landmark-unique",
+          "link-in-text-block",
+          "link-name",
+          "list",
+          "listitem",
+          "marquee",
+          "meta-refresh",
+          "object-alt",
+          "presentation-role-conflict",
+          "role-img-alt",
+          "scope-attr-valid",
+          "scrollable-region-focusable",
+          "select-name",
+          "server-side-image-map",
+          "skip-link",
+          "summary-name",
+          "svg-img-alt",
+          "table-duplicate-name",
+          "td-headers-attr",
+          "th-has-data-cells",
+          "valid-lang",
+          "video-caption",
+          "no-autoplay-audio"
+        ]
+      }
+    }
+  ]
+}

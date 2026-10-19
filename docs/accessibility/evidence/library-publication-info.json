@@ -1,0 +1,409 @@
+{
+  "label": "library-publication-info",
+  "timestamp": "2026-10-19T11:09:27.965Z",
+  "axeVersion": "4.13.0",
+  "targets": [
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/8870060FCC5D1B16FFD54EE19484FBF5",
+      "id": "8870060FCC5D1B16FFD54EE19484FBF5",
+      "title": "Thorium",
+      "type": "page",
+      "url": "http://localhost:8090/index_library.html",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/8870060FCC5D1B16FFD54EE19484FBF5"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/544959611FA569BE513035F0416FEFCA",
+      "id": "544959611FA569BE513035F0416FEFCA",
+      "title": "Service Worker chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/background.bundle.js",
+      "type": "service_worker",
+      "url": "chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/background.bundle.js",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/544959611FA569BE513035F0416FEFCA"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/15CAFC16D712448717F0662D4552F956",
+      "id": "15CAFC16D712448717F0662D4552F956",
+      "title": "Service Worker chrome-extension://ijmmnfpjnmlljdjbbfpdgodddghhmemm/build/background.js",
+      "type": "service_worker",
+      "url": "chrome-extension://ijmmnfpjnmlljdjbbfpdgodddghhmemm/build/background.js",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/15CAFC16D712448717F0662D4552F956"
+    }
+  ],
+  "pages": [
+    {
+      "title": "Thorium",
+      "url": "http://localhost:8090/index_library.html",
+      "lang": "",
+      "dimensions": {
+        "width": 1133,
+        "height": 808,
+        "scrollWidth": 1133
+      },
+      "focus": "<section id=\"react-aria7386672771-:r92:\" class=\"modal_dialog\" data-rac=\"\" aria-labelledby=\":r90:\" role=\"dialog\" tabindex=\"-1\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><h2 id=\":r90:\">About publication</h2></div><div class=\"modal_dialog_header\"><h1>About publication</h1><button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></div><div class=\"modal_dialog_body\"><div class=\"publicationInfo_container\"><div class=\"publicationInfo_leftSide\"><div class=\"publicationInfo_leftSide_coverWrapper\"><div class=\"cover_wrapper\"><img tabindex=\"0\" class=\"cover_img\" role=\"presentation\" alt=\"cover image\" src=\"store://77ac4faf-02c3-4b25-bdb4-be48d7d23a58/cover.jpeg\" aria-expanded=\"false\" id=\"react-aria7386672771-:r9j:\" data-react-aria-pressable=\"true\"><div class=\"gradient\"></div></div></div><div class=\"publicationInfo_leftSide_buttonsWrapper\"><button class=\"button_primary\"><svg aria-hidden=\"",
+      "dialogs": [
+        {
+          "html": "<section id=\"react-aria7386672771-:r6:\" class=\"react-aria-Dialog\" data-rac=\"\" aria-labelledby=\"react-aria7386672771-:r7:\" role=\"dialog\" tabindex=\"-1\"><span data-focus-scope-start=\"true\" hidden=\"\"></span><div class=\"dropdown_menu\"><button class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" aria-expanded=\"true\" id=\"react-aria7386672771-:r93:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria7386672771-:r92:\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg><p>About publication</p></button><div style=\"border-bottom: 1px solid var(--color-brand-primary);\"></div><button class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\"><svg aria-hidden=\"true\" viewBox=\"0 0 15 7\"><use xlink:href=\"#doubleCheck-icon\"></use></svg>Mark as read</button><div style=\"border-bottom: 1px solid var(--color-brand-primary);\"></div><button class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" aria-expanded=\"false\" id=\"react-aria7386672771-:r97:\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg><p>Delete</p></button><div style=\"border-bottom: 1px solid var(--color-brand-primary);\"></div><button class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\"><svg aria-hidden=\"true\" viewBox=\"0 0 10 11\"><use xlink:href=\"#SaveAs-icon\"></use></svg><p>Save as</p></button><div style=\"border-bottom: 1px solid var(--color-brand-primary);\"></div><button class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" aria-expanded=\"false\" id=\"react-aria7386672771-:r9b:\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" vie"
+        },
+        {
+          "html": "<section id=\"react-aria7386672771-:r92:\" class=\"modal_dialog\" data-rac=\"\" aria-labelledby=\":r90:\" role=\"dialog\" tabindex=\"-1\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><h2 id=\":r90:\">About publication</h2></div><div class=\"modal_dialog_header\"><h1>About publication</h1><button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></div><div class=\"modal_dialog_body\"><div class=\"publicationInfo_container\"><div class=\"publicationInfo_leftSide\"><div class=\"publicationInfo_leftSide_coverWrapper\"><div class=\"cover_wrapper\"><img tabindex=\"0\" class=\"cover_img\" role=\"presentation\" alt=\"cover image\" src=\"store://77ac4faf-02c3-4b25-bdb4-be48d7d23a58/cover.jpeg\" aria-expanded=\"false\" id=\"react-aria7386672771-:r9j:\" data-react-aria-pressable=\"true\"><div class=\"gradient\"></div></div></div><div class=\"publicationInfo_leftSide_buttonsWrapper\"><button class=\"button_primary\"><svg aria-hidden=\"true\" viewBox=\"0 0 11 9\"><use xlink:href=\"#readBook-icon\"></use></svg>Read</button><button class=\"button_secondary\" aria-expanded=\"false\" id=\"react-aria7386672771-:ra8:\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#trash-icon\"></use></svg>Delete</button><button class=\"button_secondary\"><svg aria-hidden=\"true\" viewBox=\"0 0 10 11\"><use x"
+        }
+      ],
+      "sliders": [],
+      "evidencePrefix": "library-publication-info-0",
+      "axe": {
+        "violations": [
+          {
+            "id": "aria-allowed-role",
+            "impact": "minor",
+            "tags": [
+              "cat.aria",
+              "best-practice"
+            ],
+            "description": "Ensure role attribute has an appropriate value for the element",
+            "help": "ARIA role should be appropriate for the element",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-allowed-role?application=axeAPI",
+            "nodes": [
+              {
+                "any": [
+                  {
+                    "id": "aria-allowed-role",
+                    "data": [
+                      "presentation"
+                    ],
+                    "relatedNodes": [],
+                    "impact": "minor",
+                    "message": "ARIA role presentation is not allowed for given element"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "minor",
+                "html": "<img tabindex=\"0\" class=\"cover_img\" role=\"presentation\" alt=\"cover image\" src=\"store://77ac4faf-02c3-4b25-bdb4-be48d7d23a58/cover.jpeg\" aria-expanded=\"false\" id=\"react-aria7386672771-:r9j:\" data-react-aria-pressable=\"true\">",
+                "target": [
+                  "#react-aria7386672771-\\:r9j\\:"
+                ],
+                "failureSummary": "Fix any of the following:\n  ARIA role presentation is not allowed for given element"
+              }
+            ]
+          },
+          {
+            "id": "heading-order",
+            "impact": "moderate",
+            "tags": [
+              "cat.semantics",
+              "best-practice"
+            ],
+            "description": "Ensure the order of headings is semantically correct",
+            "help": "Heading levels should only increase by one",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/heading-order?application=axeAPI",
+            "nodes": [
+              {
+                "any": [
+                  {
+                    "id": "heading-order",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "moderate",
+                    "message": "Heading order invalid"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "moderate",
+                "html": "<h5 class=\"publicationInfoA11y2-title\">Ways of reading</h5>",
+                "target": [
+                  ".accessibility_infos > h5:nth-child(2)"
+                ],
+                "failureSummary": "Fix any of the following:\n  Heading order invalid"
+              }
+            ]
+          },
+          {
+            "id": "html-has-lang",
+            "impact": "serious",
+            "tags": [
+              "cat.language",
+              "wcag2a",
+              "wcag311",
+              "TTv5",
+              "TT11.a",
+              "EN-301-549",
+              "EN-9.3.1.1",
+              "ACT",
+              "RGAAv4",
+              "RGAA-8.3.1"
+            ],
+            "description": "Ensure every HTML document has a lang attribute",
+            "help": "<html> element must have a lang attribute",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/html-has-lang?application=axeAPI",
+            "nodes": [
+              {
+                "any": [
+                  {
+                    "id": "has-lang",
+                    "data": {
+                      "messageKey": "noLang"
+                    },
+                    "relatedNodes": [],
+                    "impact": "serious",
+                    "message": "The <html> element does not have a lang attribute"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "serious",
+                "html": "<html id=\"library_html\" style=\"overflow: hidden;\" class=\"\">",
+                "target": [
+                  "#library_html"
+                ],
+                "failureSummary": "Fix any of the following:\n  The <html> element does not have a lang attribute"
+              }
+            ]
+          },
+          {
+            "id": "presentation-role-conflict",
+            "impact": "minor",
+            "tags": [
+              "cat.aria",
+              "best-practice",
+              "ACT"
+            ],
+            "description": "Ensure elements marked as presentational do not have global ARIA or tabindex so that all screen readers ignore them",
+            "help": "Elements marked as presentational should be consistently ignored",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/presentation-role-conflict?application=axeAPI",
+            "nodes": [
+              {
+                "any": [],
+                "all": [],
+                "none": [
+                  {
+                    "id": "is-element-focusable",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "minor",
+                    "message": "Element is not focusable."
+                  }
+                ],
+                "impact": "minor",
+                "html": "<img tabindex=\"0\" class=\"cover_img\" role=\"presentation\" alt=\"cover image\" src=\"store://77ac4faf-02c3-4b25-bdb4-be48d7d23a58/cover.jpeg\" aria-expanded=\"false\" id=\"react-aria7386672771-:r9j:\" data-react-aria-pressable=\"true\">",
+                "target": [
+                  "#react-aria7386672771-\\:r9j\\:"
+                ],
+                "failureSummary": "Fix all of the following:\n  Element is not focusable."
+              }
+            ]
+          }
+        ],
+        "incomplete": [],
+        "passes": [
+          {
+            "id": "aria-allowed-attr",
+            "nodes": 7
+          },
+          {
+            "id": "aria-allowed-role",
+            "nodes": 18
+          },
+          {
+            "id": "aria-conditional-attr",
+            "nodes": 7
+          },
+          {
+            "id": "aria-deprecated-role",
+            "nodes": 5
+          },
+          {
+            "id": "aria-dialog-name",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-body",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-focus",
+            "nodes": 39
+          },
+          {
+            "id": "aria-prohibited-attr",
+            "nodes": 7
+          },
+          {
+            "id": "aria-required-attr",
+            "nodes": 5
+          },
+          {
+            "id": "aria-roles",
+            "nodes": 5
+          },
+          {
+            "id": "aria-valid-attr-value",
+            "nodes": 7
+          },
+          {
+            "id": "aria-valid-attr",
+            "nodes": 7
+          },
+          {
+            "id": "autocomplete-valid",
+            "nodes": 1
+          },
+          {
+            "id": "avoid-inline-spacing",
+            "nodes": 1
+          },
+          {
+            "id": "button-name",
+            "nodes": 7
+          },
+          {
+            "id": "bypass",
+            "nodes": 1
+          },
+          {
+            "id": "color-contrast",
+            "nodes": 1
+          },
+          {
+            "id": "document-title",
+            "nodes": 1
+          },
+          {
+            "id": "duplicate-id-aria",
+            "nodes": 7
+          },
+          {
+            "id": "empty-heading",
+            "nodes": 9
+          },
+          {
+            "id": "form-field-multiple-labels",
+            "nodes": 1
+          },
+          {
+            "id": "heading-order",
+            "nodes": 8
+          },
+          {
+            "id": "image-alt",
+            "nodes": 1
+          },
+          {
+            "id": "image-redundant-alt",
+            "nodes": 1
+          },
+          {
+            "id": "label-title-only",
+            "nodes": 1
+          },
+          {
+            "id": "label",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-one-main",
+            "nodes": 1
+          },
+          {
+            "id": "list",
+            "nodes": 2
+          },
+          {
+            "id": "listitem",
+            "nodes": 4
+          },
+          {
+            "id": "meta-viewport-large",
+            "nodes": 1
+          },
+          {
+            "id": "meta-viewport",
+            "nodes": 1
+          },
+          {
+            "id": "nested-interactive",
+            "nodes": 9
+          },
+          {
+            "id": "page-has-heading-one",
+            "nodes": 1
+          },
+          {
+            "id": "region",
+            "nodes": 74
+          },
+          {
+            "id": "summary-name",
+            "nodes": 1
+          },
+          {
+            "id": "tabindex",
+            "nodes": 8
+          },
+          {
+            "id": "target-size",
+            "nodes": 9
+          },
+          {
+            "id": "valid-lang",
+            "nodes": 3
+          }
+        ],
+        "inapplicable": [
+          "accesskeys",
+          "area-alt",
+          "aria-braille-equivalent",
+          "aria-command-name",
+          "aria-input-field-name",
+          "aria-meter-name",
+          "aria-progressbar-name",
+          "aria-required-children",
+          "aria-required-parent",
+          "aria-tab-name",
+          "aria-text",
+          "aria-toggle-field-name",
+          "aria-tooltip-name",
+          "aria-treeitem-name",
+          "blink",
+          "definition-list",
+          "dlitem",
+          "empty-table-header",
+          "frame-focusable-content",
+          "frame-tested",
+          "frame-title-unique",
+          "frame-title",
+          "html-lang-valid",
+          "html-xml-lang-mismatch",
+          "input-button-name",
+          "input-image-alt",
+          "landmark-banner-is-top-level",
+          "landmark-contentinfo-is-top-level",
+          "landmark-main-is-top-level",
+          "landmark-no-duplicate-banner",
+          "landmark-no-duplicate-contentinfo",
+          "landmark-no-duplicate-main",
+          "landmark-unique",
+          "link-in-text-block",
+          "link-name",
+          "marquee",
+          "meta-refresh",
+          "object-alt",
+          "role-img-alt",
+          "scope-attr-valid",
+          "scrollable-region-focusable",
+          "select-name",
+          "server-side-image-map",
+          "skip-link",
+          "svg-img-alt",
+          "table-duplicate-name",
+          "td-headers-attr",
+          "th-has-data-cells",
+          "video-caption",
+          "no-autoplay-audio"
+        ]
+      }
+    }
+  ]
+}

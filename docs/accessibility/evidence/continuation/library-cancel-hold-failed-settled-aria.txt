@@ -1,0 +1,4 @@
+- main:
+  - 'heading "Component fixture: cancel-hold" [level=1]'
+  - button "Cancel hold"
+  - alert: Unable to cancel this hold. Please try again.

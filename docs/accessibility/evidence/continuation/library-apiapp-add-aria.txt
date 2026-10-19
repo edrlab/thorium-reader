@@ -1,0 +1,13 @@
+- main:
+  - 'heading "Component fixture: apiapp-add" [level=1]'
+  - button "Add library account" [expanded]
+- button "Dismiss"
+- dialog "Add library account":
+  - heading "Add library account" [level=2]
+  - button "Close"
+  - text: Search
+  - searchbox
+  - button "Search"
+  - button "How does it work?"
+  - button "Cancel"
+  - button "Add"

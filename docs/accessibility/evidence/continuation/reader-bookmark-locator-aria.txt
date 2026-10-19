@@ -1,0 +1,3 @@
+- main:
+  - 'heading "Component fixture: bookmark-locator" [level=1]'
+  - text: 00:02:00 (25%)

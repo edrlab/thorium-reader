@@ -1,0 +1,374 @@
+{
+  "id": "update-feed",
+  "runtime": "library",
+  "files": [
+    "src/renderer/library/components/dialog/OpdsFeedUpdateForm.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T11:57:42.627Z",
+  "errors": [],
+  "actions": [],
+  "text": "Component fixture: update-feed\nEdit audit catalog\nEdit OPDS feed\nName:\nLink:\n\nAdd to favorites\n\nCancel\nEdit",
+  "html": "<div id=\"audit-root\" inert=\"\"><main><h1>Component fixture: update-feed</h1><button aria-expanded=\"true\" id=\"react-aria7789981493-:r1v:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria7789981493-:r1u:\">Edit audit catalog</button></main></div>\n<span data-focus-scope-start=\"true\" hidden=\"\" inert=\"\"></span>\n<div class=\"modal_dialog_overlay\" data-rac=\"\" style=\"position: fixed; inset: 0px; z-index: 102; --visual-viewport-width: 1184px; --visual-viewport-height: 835px; --page-width: 1184px; --page-height: 834.84375px;\"><div class=\"react-aria-Modal\" data-rac=\"\" style=\"display: contents;\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><button id=\"react-aria7789981493-:r20:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button></div><section id=\"react-aria7789981493-:r1u:\" class=\"modal_dialog\" data-rac=\"\" aria-labelledby=\":r1s:\" role=\"dialog\" tabindex=\"-1\"><div class=\"modal_dialog_header\"><h2 id=\":r1s:\">Edit OPDS feed</h2><div><button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-close-24px\"></use></svg></button></div></div><form class=\"modal_dialog_body\"><div><div class=\"form_group form_group_catalog\"><label for=\"title\">Name:</label><input class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" id=\"title\" type=\"text\" aria-label=\"Name:\" required=\"\" value=\"Audit catalog\"></div><div class=\"form_group form_group_catalog\"><label for=\"url\">Link:</label><input class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" id=\"url\" type=\"text\" aria-label=\"Link:\" required=\"\" value=\"https://audit.invalid/catalog\"></div><button type=\"button\" class=\"button_nav_primary\" style=\"margin-top: 20px;\"><svg aria-hidden=\"true\" class=\"catalog_favorite_icon_false\" viewBox=\"0 0 24 24\"><use xlink:href=\"#star-icon\"></use></svg><p>Add to favorites</p></button><div class=\"catalog_color_picker\" role=\"radiogroup\" aria-label=\"Catalog color\"><div><input type=\"radio\" id=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-gray\" name=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_colorpicker\" aria-label=\"Gray\" value=\"gray\"><label aria-hidden=\"true\" title=\"Gray\" for=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-gray\" class=\"catalog_color_swatch\" data-color=\"gray\"></label></div><div><input type=\"radio\" id=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-red\" name=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_colorpicker\" aria-label=\"Red\" value=\"red\"><label aria-hidden=\"true\" title=\"Red\" for=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-red\" class=\"catalog_color_swatch\" data-color=\"red\"></label></div><div><input type=\"radio\" id=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-yellow\" name=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_colorpicker\" aria-label=\"Yellow\" value=\"yellow\"><label aria-hidden=\"true\" title=\"Yellow\" for=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-yellow\" class=\"catalog_color_swatch\" data-color=\"yellow\"></label></div><div><input type=\"radio\" id=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-blue\" name=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_colorpicker\" aria-label=\"Blue\" value=\"blue\"><label aria-hidden=\"true\" title=\"Blue\" for=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-blue\" class=\"catalog_color_swatch\" data-color=\"blue\"></label></div><div><input type=\"radio\" id=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-green\" name=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_colorpicker\" aria-label=\"Green\" value=\"green\"><label aria-hidden=\"true\" title=\"Green\" for=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-green\" class=\"catalog_color_swatch\" data-color=\"green\"></label></div><div><input type=\"radio\" id=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-purple\" name=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_colorpicker\" aria-label=\"Purple\" value=\"purple\"><label aria-hidden=\"true\" title=\"Purple\" for=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-purple\" class=\"catalog_color_swatch\" data-color=\"purple\"></label></div><div><input type=\"radio\" id=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-orange\" name=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_colorpicker\" aria-label=\"Orange\" value=\"orange\"><label aria-hidden=\"true\" title=\"Orange\" for=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-orange\" class=\"catalog_color_swatch\" data-color=\"orange\"></label></div><div><input type=\"radio\" id=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-pink\" name=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_colorpicker\" aria-label=\"Pink\" value=\"pink\"><label aria-hidden=\"true\" title=\"Pink\" for=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-pink\" class=\"catalog_color_swatch\" data-color=\"pink\"></label></div></div></div><div class=\"modal_dialog_footer\"><button class=\"button_secondary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\">Cancel</button><button type=\"submit\" class=\"button_primary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\">Edit</button></div></form></section></div></div>\n<span data-focus-scope-end=\"true\" hidden=\"\" inert=\"\"></span>",
+  "dimensions": {
+    "width": 1184,
+    "height": 835,
+    "scrollWidth": 1184
+  },
+  "focus": "<section id=\"react-aria7789981493-:r1u:\" class=\"modal_dialog\" data-rac=\"\" aria-labelledby=\":r1s:\" role=\"dialog\" tabindex=\"-1\"><div class=\"modal_dialog_header\"><h2 id=\":r1s:\">Edit OPDS feed</h2><div><button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-close-24px\"></use></svg></button></div></div><form class=\"modal_dialog_body\"><div><div class=\"form_group form_group_catalog\"><label for=\"title\">Name:</label><input class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" id=\"title\" type=\"text\" aria-label=\"Name:\" required=\"\" value=\"Audit catalog\"></div><div class=\"form_group form_group_catalog\"><label for=\"url\">Link:</label><input class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" id=\"url\" type=\"text\" aria-label=\"Link:\" required=\"\" value=\"https://audit.invalid/catalog\"></div><button type=\"button\" class=\"button_nav_primary\" style=\"margin-top: 20px;\"><svg aria-hidden=\"true\" class=\"catalog_favorite_icon_false\" viewBox=\"0 0 24 24\"><use xlink:href=\"#star-icon\"></use></svg><p>Add to favorites</p></button><div class=\"catalog_color_picker\" role=\"radiogroup\" aria-label=\"Catalog color\"><div><input type=\"radio\" id=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-gray\" name=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_colorpicker\" aria-label=\"Gray\" value=\"gray\"><label aria-hidden=\"true\" title=\"Gray\" for=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-gray\" class=\"catalog_color_swatch\" data-color=\"gray\"></label></div><div><input type=\"radio\" id=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-red\" name=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_colorpicker\" aria-label=\"Red\" value=\"red\"><label aria-hidden=\"true\" title=\"Red\" for=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-red\" class=\"catalog_color_swatch\" data-color=\"red\"></label></div><div><input type=\"radio\" id=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-yellow\" name=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_colorpicker\" aria-label=\"Yellow\" value=\"yellow\"><label aria-hidden=\"true\" title=\"Yellow\" for=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-yellow\" class=\"catalog_color_swatch\" data-color=\"yellow\"></label></div><div><input type=\"radio\" id=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-blue\" name=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_colorpicker\" aria-label=\"Blue\" value=\"blue\"><label aria-hidden=\"true\" title=\"Blue\" for=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-blue\" class=\"catalog_color_swatch\" data-color=\"blue\"></label></div><div><input type=\"radio\" id=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-green\" name=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_colorpicker\" aria-label=\"Green\" value=\"green\"><label aria-hidden=\"true\" title=\"Green\" for=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-green\" class=\"catalog_color_swatch\" data-color=\"green\"></label></div><div><input type=\"radio\" id=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-purple\" name=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_colorpicker\" aria-label=\"Purple\" value=\"purple\"><label aria-hidden=\"true\" title=\"Purple\" for=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-purple\" class=\"catalog_color_swatch\" data-color=\"purple\"></label></div><div><input type=\"radio\" id=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-orange\" name=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_colorpicker\" aria-label=\"Orange\" value=\"orange\"><label aria-hidden=\"true\" title=\"Orange\" for=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-orange\" class=\"catalog_color_swatch\" data-color=\"orange\"></label></div><div><input type=\"radio\" id=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-pink\" name=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_colorpicker\" aria-label=\"Pink\" value=\"pink\"><label aria-hidden=\"true\" title=\"Pink\" for=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-pink\" class=\"catalog_color_swatch\" data-color=\"pink\"></label></div></div></div><div class=\"modal_dialog_footer\"><button class=\"button_secondary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\">Cancel</button><button type=\"submit\" class=\"button_primary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\">Edit</button></div></form></section>",
+  "controls": [
+    {
+      "html": "<button aria-expanded=\"true\" id=\"react-aria7789981493-:r1v:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria7789981493-:r1u:\">Edit audit catalog</button>",
+      "rect": {
+        "x": 0,
+        "y": 60.15625,
+        "width": 107.40625,
+        "height": 30,
+        "top": 60.15625,
+        "right": 107.40625,
+        "bottom": 90.15625,
+        "left": 0
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"react-aria7789981493-:r20:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button>",
+      "rect": {
+        "x": 591.5,
+        "y": 417,
+        "width": 1,
+        "height": 1,
+        "top": 417,
+        "right": 592.5,
+        "bottom": 418,
+        "left": 591.5
+      },
+      "visible": true
+    },
+    {
+      "html": "<button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-close-24px\"></use></svg></button>",
+      "rect": {
+        "x": 929,
+        "y": 228,
+        "width": 30,
+        "height": 30,
+        "top": 228,
+        "right": 959,
+        "bottom": 258,
+        "left": 929
+      },
+      "visible": true
+    },
+    {
+      "html": "<input class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" id=\"title\" type=\"text\" aria-label=\"Name:\" required=\"\" value=\"Audit catalog\">",
+      "rect": {
+        "x": 258,
+        "y": 313.5,
+        "width": 703,
+        "height": 27,
+        "top": 313.5,
+        "right": 961,
+        "bottom": 340.5,
+        "left": 258
+      },
+      "visible": true
+    },
+    {
+      "html": "<input class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" id=\"url\" type=\"text\" aria-label=\"Link:\" required=\"\" value=\"https://audit.invalid/catalog\">",
+      "rect": {
+        "x": 258,
+        "y": 379.5,
+        "width": 703,
+        "height": 27,
+        "top": 379.5,
+        "right": 961,
+        "bottom": 406.5,
+        "left": 258
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"button\" class=\"button_nav_primary\" style=\"margin-top: 20px;\"><svg aria-hidden=\"true\" class=\"catalog_favorite_icon_false\" viewBox=\"0 0 24 24\"><use xlink:href=\"#star-icon\"></use></svg><p>Add to favorites</p></button>",
+      "rect": {
+        "x": 225,
+        "y": 431,
+        "width": 115.390625,
+        "height": 32,
+        "top": 431,
+        "right": 340.390625,
+        "bottom": 463,
+        "left": 225
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-gray\" name=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_colorpicker\" aria-label=\"Gray\" value=\"gray\">",
+      "rect": {
+        "x": 233,
+        "y": 489,
+        "width": 13,
+        "height": 13,
+        "top": 489,
+        "right": 246,
+        "bottom": 502,
+        "left": 233
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-red\" name=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_colorpicker\" aria-label=\"Red\" value=\"red\">",
+      "rect": {
+        "x": 261,
+        "y": 489,
+        "width": 13,
+        "height": 13,
+        "top": 489,
+        "right": 274,
+        "bottom": 502,
+        "left": 261
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-yellow\" name=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_colorpicker\" aria-label=\"Yellow\" value=\"yellow\">",
+      "rect": {
+        "x": 289,
+        "y": 489,
+        "width": 13,
+        "height": 13,
+        "top": 489,
+        "right": 302,
+        "bottom": 502,
+        "left": 289
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-blue\" name=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_colorpicker\" aria-label=\"Blue\" value=\"blue\">",
+      "rect": {
+        "x": 317,
+        "y": 489,
+        "width": 13,
+        "height": 13,
+        "top": 489,
+        "right": 330,
+        "bottom": 502,
+        "left": 317
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-green\" name=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_colorpicker\" aria-label=\"Green\" value=\"green\">",
+      "rect": {
+        "x": 345,
+        "y": 489,
+        "width": 13,
+        "height": 13,
+        "top": 489,
+        "right": 358,
+        "bottom": 502,
+        "left": 345
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-purple\" name=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_colorpicker\" aria-label=\"Purple\" value=\"purple\">",
+      "rect": {
+        "x": 373,
+        "y": 489,
+        "width": 13,
+        "height": 13,
+        "top": 489,
+        "right": 386,
+        "bottom": 502,
+        "left": 373
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-orange\" name=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_colorpicker\" aria-label=\"Orange\" value=\"orange\">",
+      "rect": {
+        "x": 401,
+        "y": 489,
+        "width": 13,
+        "height": 13,
+        "top": 489,
+        "right": 414,
+        "bottom": 502,
+        "left": 401
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"radio\" id=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_color-pink\" name=\"0c3588cb-6c4b-4d5b-b4eb-08c2973812f7_colorpicker\" aria-label=\"Pink\" value=\"pink\">",
+      "rect": {
+        "x": 429,
+        "y": 489,
+        "width": 13,
+        "height": 13,
+        "top": 489,
+        "right": 442,
+        "bottom": 502,
+        "left": 429
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"button_secondary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\">Cancel</button>",
+      "rect": {
+        "x": 789,
+        "y": 567,
+        "width": 70,
+        "height": 30,
+        "top": 567,
+        "right": 859,
+        "bottom": 597,
+        "left": 789
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"submit\" class=\"button_primary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\">Edit</button>",
+      "rect": {
+        "x": 869,
+        "y": 567,
+        "width": 70,
+        "height": 30,
+        "top": 567,
+        "right": 939,
+        "bottom": 597,
+        "left": 869
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [],
+    "incomplete": [],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 14
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 2
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 14
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 2
+      },
+      {
+        "id": "aria-dialog-name",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 11
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 14
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 2
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 2
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 14
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 14
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 3
+      },
+      {
+        "id": "button-name",
+        "nodes": 5
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 2
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "duplicate-id-aria",
+        "nodes": 12
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 1
+      },
+      {
+        "id": "form-field-multiple-labels",
+        "nodes": 10
+      },
+      {
+        "id": "heading-order",
+        "nodes": 1
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "label-title-only",
+        "nodes": 10
+      },
+      {
+        "id": "label",
+        "nodes": 10
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 13
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 39
+      },
+      {
+        "id": "tabindex",
+        "nodes": 5
+      },
+      {
+        "id": "target-size",
+        "nodes": 15
+      }
+    ]
+  },
+  "evidencePrefix": "continuation/library-update-feed"
+}

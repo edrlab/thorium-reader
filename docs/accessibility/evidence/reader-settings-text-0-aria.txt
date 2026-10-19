@@ -1,0 +1,62 @@
+- heading "toolbar"
+- button "Skip to content"
+- navigation "toolbar":
+  - list:
+    - list:
+      - listitem:
+        - button "Close this reading window (back to bookshelf)"
+      - listitem:
+        - button "Information" [disabled]
+    - list:
+      - listitem:
+        - button "Activate Text To Speech (TTS)"
+      - listitem:
+        - button "TTS options"
+    - list:
+      - listitem:
+        - button "Search publication"
+      - listitem:
+        - checkbox "Bookmark (Add)"
+      - listitem:
+        - checkbox "Annotation"
+      - listitem:
+        - button "Navigation"
+      - listitem:
+        - button "Reader settings" [expanded] [pressed]
+      - listitem:
+        - button "Zen mode"
+- main "main content":
+  - heading "main content"
+  - iframe
+  - navigation "Navigation":
+    - button "Go backward"
+    - button "Go forward"
+- navigation "Navigation history":
+  - button "Jump back in navigation history" [disabled]
+  - button "Jump forward in navigation history" [disabled]
+- button "Dismiss"
+- heading "Reader settings" [level=1]
+- dialog "Reader settings":
+  - tablist "Reader settings":
+    - tab "Display"
+    - tab "Text" [selected]
+    - tab "Spacing"
+    - tab "Preferences"
+  - checkbox "Customize text formatting" [checked]
+  - heading "Text" [level=2]
+  - tabpanel "Text":
+    - heading "Font size (100%)" [level=3]
+    - button "default value"
+    - button "Reduce font size"
+    - slider: "100"
+    - button "Increase font size"
+    - text: Font
+    - group:
+      - combobox "Font": Original font
+      - button "Show suggestions Font"
+    - paragraph: Select custom font from operating system by typing its name
+    - heading "Preview:" [level=3]
+  - button "Dock panel to the left"
+  - button "Dock panel to the right"
+  - button "Show panel as a modal popup" [disabled]
+  - button "Close"

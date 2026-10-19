@@ -1,0 +1,15 @@
+- main:
+  - 'heading "Component fixture: annotation-card" [level=1]'
+  - list:
+    - listitem "Yellow Note":
+      - button "Go to the content (Selected passage)":
+        - paragraph: Selected passage
+      - paragraph:
+        - text: Audit note
+        - strong: with emphasis
+      - text: Research
+      - paragraph: 19/10/2026
+      - paragraph: 100%
+      - paragraph: Audit creator
+      - button "Edit"
+      - button "Delete"

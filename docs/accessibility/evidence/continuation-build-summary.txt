@@ -1,0 +1,11 @@
+renderer pdf webview index (webpack 5.111.1) compiled successfully in 1594 ms
+renderer pdf extract webview index (webpack 5.111.1) compiled successfully in 1113 ms
+renderer webview preload (webpack 5.111.1) compiled successfully in 3987 ms
+[2] main (webpack 5.111.1) compiled successfully in 14462 ms
+[0] renderer index app (webpack 5.111.1) compiled successfully in 19094 ms
+[1] renderer index reader (webpack 5.111.1) compiled successfully in 20084 ms
+renderer index app:
+  renderer index app compiled in 16234 ms
+
+renderer index reader:
+  renderer index reader compiled in 15811 ms

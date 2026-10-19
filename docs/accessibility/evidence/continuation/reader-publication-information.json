@@ -1,0 +1,304 @@
+{
+  "id": "publication-information",
+  "runtime": "reader",
+  "files": [
+    "src/renderer/reader/components/dialog/publicationInfos/PublicationInfo.tsx",
+    "src/renderer/reader/components/dialog/publicationInfos/TagManager.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T11:58:31.991Z",
+  "errors": [],
+  "actions": [],
+  "text": "Component fixture: publication-information\nPublication information\nAbout publication\nAbout publication\n\nAudit publication\n\nAudit author\n\nAudit publication\nAudit author\nDescription\n\nA long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access.\n\nSee more\nPublication Details\nLanguage: English (en)\n\nAccessibility\nLicense (LCP)\nRemaining time: 73 days (January 1, 2027 12:00 AM)\nCopied characters: 100 / 1000\nPrinted pages: 2 / 20 [1,2]\n\nReading progress sync: Not enabled for this publication.\n\nTags :\nResearch\nTo read\nTag\nAdd\n_",
+  "html": "<div id=\"audit-root\" inert=\"\"><main><h1>Component fixture: publication-information</h1><button aria-expanded=\"true\" aria-controls=\"react-aria4676522220-:r15:\" id=\"react-aria4676522220-:r16:\" data-react-aria-pressable=\"true\" tabindex=\"0\">Publication information</button></main></div>\n<span data-focus-scope-start=\"true\" hidden=\"\" inert=\"\"></span>\n<div class=\"modal_dialog_overlay\" data-rac=\"\" style=\"position: fixed; inset: 0px; z-index: 102; --visual-viewport-width: 1184px; --visual-viewport-height: 835px; --page-width: 1184px; --page-height: 834.84375px;\"><div class=\"react-aria-Modal\" data-rac=\"\" style=\"display: contents;\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><button id=\"react-aria4676522220-:r17:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button></div><section id=\"react-aria4676522220-:r15:\" class=\"modal_dialog\" data-rac=\"\" aria-labelledby=\":r13:\" role=\"dialog\" tabindex=\"-1\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><h2 id=\":r13:\">About publication</h2></div><div class=\"modal_dialog_header\"><h1>About publication</h1><button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></div><div class=\"modal_dialog_body\"><div class=\"publicationInfo_container\"><div class=\"publicationInfo_leftSide\"><div class=\"publicationInfo_leftSide_coverWrapper\"><div class=\"cover_wrapper\"><div class=\"no_img_wrapper\" style=\"background-image: linear-gradient(rgb(209, 142, 75), rgb(124, 76, 28));\"><div class=\"no_img\"><p aria-hidden=\"true\" lang=\"en\">Audit publication</p><p aria-hidden=\"true\">Audit author</p></div></div><div class=\"gradient\"></div></div></div><div class=\"publicationInfo_leftSide_buttonsWrapper\"></div></div><div class=\"publicationInfo_rightSide\"><section><h2 class=\"allowUserSelect my_10 book_title\" lang=\"en\">Audit publication</h2><span lang=\"en\" class=\"allowUserSelect authors\">Audit author</span></section><section><div class=\"publicationInfo_heading\"><h3>Description</h3></div><div class=\"publicationInfo_description_bloc\"><div class=\"descriptionWrapper hideEnd\"><div lang=\"en\" class=\"allowUserSelect\"><p>A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. </p></div></div><button aria-hidden=\"true\" class=\"publicationInfo_description_bloc_seeMore\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg>See more</button></div></section><section><div class=\"publicationInfo_heading\"><h3>Publication Details</h3></div><div class=\"publicationInfo_moreInfo_content\"><div><strong>Language: </strong><span class=\"allowUserSelect\">English (en)</span><br></div></div></section><section><div class=\"publicationInfo_heading\"><h3>Accessibility</h3></div><div class=\"accessibility_infos\"><style>\n            .publicationInfoA11y2-icon {\n                position: relative;\n            }\n\n            // .publicationInfoA11y2-icon::after {\n            //     content: '';\n            //     width: 1.2em;\n            //     height: 1.2em;\n            //     background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' stroke='%23007bff' stroke-width='2' fill='none'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='14' fill='%23007bff'%3E?%3C/text%3E%3C/svg%3E\");\n            //     background-size: contain;\n            //     position: absolute;\n            //     right: -7px;\n            //     top: 2px;\n            // }\n\n            .publicationInfoA11y2-title {\n                font-size: 1em;\n                margin-bottom: 5px;\n            }\n\n        </style></div></section><section class=\"publicationInfo_lcpInfo_content\"><div class=\"publicationInfo_heading\"><h4>License (LCP)</h4></div><div class=\"allowUserSelect\"><strong>Remaining time: </strong><span>73 days (January 1, 2027 12:00 AM)</span><br><strong>Copied characters: </strong><span>100 / 1000</span><br><strong>Printed pages: </strong><span>2 / 20  </span> [1,2] </div></section><p role=\"status\"><strong>Reading progress sync: </strong>Not enabled for this publication.</p><section class=\"publicationInfo_tagContainer\"><div class=\"publicationInfo_heading tag_list\"><h4>Tags :</h4><div class=\"tags_wrapper\"><div class=\"tag no_hover\">Research</div><div class=\"tag no_hover\">To read</div></div></div><form style=\"min-width: unset;\"><template><div class=\"my_combobox_container R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" role=\"group\" style=\"width: 250px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 8\"><use xlink:href=\"#tag-icon\"></use></svg></div></template><div class=\"react_aria_ComboBox\" data-rac=\"\" style=\"width: 270px;\"><label class=\"react_aria_Label\" id=\"react-aria4676522220-:r1j:\" for=\"react-aria4676522220-:r1i:\" dir=\"ltr\">Tag</label><div class=\"my_combobox_container R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" role=\"group\" style=\"width: 250px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 8\"><use xlink:href=\"#tag-icon\"></use></svg><input type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria4676522220-:r1i:\" aria-labelledby=\"react-aria4676522220-:r1j:\" role=\"combobox\" aria-expanded=\"false\" class=\"react_aria_Input R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" value=\"\" title=\"\"></div></div><button type=\"submit\" class=\"button_secondary_blue\" style=\"margin-top: 9px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 9 9\"><use xlink:href=\"#addTag-icon\"></use></svg>Add</button></form></section>_</div></div></div></section></div></div>\n<span data-focus-scope-end=\"true\" hidden=\"\" inert=\"\"></span>",
+  "dimensions": {
+    "width": 1184,
+    "height": 835,
+    "scrollWidth": 1184
+  },
+  "focus": "<section id=\"react-aria4676522220-:r15:\" class=\"modal_dialog\" data-rac=\"\" aria-labelledby=\":r13:\" role=\"dialog\" tabindex=\"-1\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><h2 id=\":r13:\">About publication</h2></div><div class=\"modal_dialog_header\"><h1>About publication</h1><button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></div><div class=\"modal_dialog_body\"><div class=\"publicationInfo_container\"><div class=\"publicationInfo_leftSide\"><div class=\"publicationInfo_leftSide_coverWrapper\"><div class=\"cover_wrapper\"><div class=\"no_img_wrapper\" style=\"background-image: linear-gradient(rgb(209, 142, 75), rgb(124, 76, 28));\"><div class=\"no_img\"><p aria-hidden=\"true\" lang=\"en\">Audit publication</p><p aria-hidden=\"true\">Audit author</p></div></div><div class=\"gradient\"></div></div></div><div class=\"publicationInfo_leftSide_buttonsWrapper\"></div></div><div class=\"publicationInfo_rightSide\"><section><h2 class=\"allowUserSelect my_10 book_title\" lang=\"en\">Audit publication</h2><span lang=\"en\" class=\"allowUserSelect authors\">Audit author</span></section><section><div class=\"publicationInfo_heading\"><h3>Description</h3></div><div class=\"publicationInfo_description_bloc\"><div class=\"descriptionWrapper hideEnd\"><div lang=\"en\" class=\"allowUserSelect\"><p>A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. A long publication description for testing expansion and keyboard access. </p></div></div><button aria-hidden=\"true\" class=\"publicationInfo_description_bloc_seeMore\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg>See more</button></div></section><section><div class=\"publicationInfo_heading\"><h3>Publication Details</h3></div><div class=\"publicationInfo_moreInfo_content\"><div><strong>Language: </strong><span class=\"allowUserSelect\">English (en)</span><br></div></div></section><section><div class=\"publicationInfo_heading\"><h3>Accessibility</h3></div><div class=\"accessibility_infos\"><style>\n            .publicationInfoA11y2-icon {\n                position: relative;\n            }\n\n            // .publicationInfoA11y2-icon::after {\n            //     content: '';\n            //     width: 1.2em;\n            //     height: 1.2em;\n            //     background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' stroke='%23007bff' stroke-width='2' fill='none'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='14' fill='%23007bff'%3E?%3C/text%3E%3C/svg%3E\");\n            //     background-size: contain;\n            //     position: absolute;\n            //     right: -7px;\n            //     top: 2px;\n            // }\n\n            .publicationInfoA11y2-title {\n                font-size: 1em;\n                margin-bottom: 5px;\n            }\n\n        </style></div></section><section class=\"publicationInfo_lcpInfo_content\"><div class=\"publicationInfo_heading\"><h4>License (LCP)</h4></div><div class=\"allowUserSelect\"><strong>Remaining time: </strong><span>73 days (January 1, 2027 12:00 AM)</span><br><strong>Copied characters: </strong><span>100 / 1000</span><br><strong>Printed pages: </strong><span>2 / 20  </span> [1,2] </div></section><p role=\"status\"><strong>Reading progress sync: </strong>Not enabled for this publication.</p><section class=\"publicationInfo_tagContainer\"><div class=\"publicationInfo_heading tag_list\"><h4>Tags :</h4><div class=\"tags_wrapper\"><div class=\"tag no_hover\">Research</div><div class=\"tag no_hover\">To read</div></div></div><form style=\"min-width: unset;\"><template><div class=\"my_combobox_container R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" role=\"group\" style=\"width: 250px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 8\"><use xlink:href=\"#tag-icon\"></use></svg></div></template><div class=\"react_aria_ComboBox\" data-rac=\"\" style=\"width: 270px;\"><label class=\"react_aria_Label\" id=\"react-aria4676522220-:r1j:\" for=\"react-aria4676522220-:r1i:\" dir=\"ltr\">Tag</label><div class=\"my_combobox_container R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" role=\"group\" style=\"width: 250px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 8\"><use xlink:href=\"#tag-icon\"></use></svg><input type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria4676522220-:r1i:\" aria-labelledby=\"react-aria4676522220-:r1j:\" role=\"combobox\" aria-expanded=\"false\" class=\"react_aria_Input R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" value=\"\" title=\"\"></div></div><button type=\"submit\" class=\"button_secondary_blue\" style=\"margin-top: 9px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 9 9\"><use xlink:href=\"#addTag-icon\"></use></svg>Add</button></form></section>_</div></div></div></section>",
+  "controls": [
+    {
+      "html": "<button aria-expanded=\"true\" aria-controls=\"react-aria4676522220-:r15:\" id=\"react-aria4676522220-:r16:\" data-react-aria-pressable=\"true\" tabindex=\"0\">Publication information</button>",
+      "rect": {
+        "x": 0,
+        "y": 60.15625,
+        "width": 141.640625,
+        "height": 16,
+        "top": 60.15625,
+        "right": 141.640625,
+        "bottom": 76.15625,
+        "left": 0
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"react-aria4676522220-:r17:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button>",
+      "rect": {
+        "x": 591.5,
+        "y": 417,
+        "width": 1,
+        "height": 1,
+        "top": 417,
+        "right": 592.5,
+        "bottom": 418,
+        "left": 591.5
+      },
+      "visible": true
+    },
+    {
+      "html": "<button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button>",
+      "rect": {
+        "x": 929,
+        "y": 49.390625,
+        "width": 30,
+        "height": 30,
+        "top": 49.390625,
+        "right": 959,
+        "bottom": 79.390625,
+        "left": 929
+      },
+      "visible": true
+    },
+    {
+      "html": "<button aria-hidden=\"true\" class=\"publicationInfo_description_bloc_seeMore\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg>See more</button>",
+      "rect": {
+        "x": 476.328125,
+        "y": 375.390625,
+        "width": 100,
+        "height": 16,
+        "top": 375.390625,
+        "right": 576.328125,
+        "bottom": 391.390625,
+        "left": 476.328125
+      },
+      "visible": true
+    },
+    {
+      "html": "<p role=\"status\"><strong>Reading progress sync: </strong>Not enabled for this publication.</p>",
+      "rect": {
+        "x": 476.328125,
+        "y": 604,
+        "width": 462.671875,
+        "height": 14,
+        "top": 604,
+        "right": 939,
+        "bottom": 618,
+        "left": 476.328125
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria4676522220-:r1i:\" aria-labelledby=\"react-aria4676522220-:r1j:\" role=\"combobox\" aria-expanded=\"false\" class=\"react_aria_Input R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" value=\"\" title=\"\">",
+      "rect": {
+        "x": 479.328125,
+        "y": 709.609375,
+        "width": 246,
+        "height": 24,
+        "top": 709.609375,
+        "right": 725.328125,
+        "bottom": 733.609375,
+        "left": 479.328125
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"submit\" class=\"button_secondary_blue\" style=\"margin-top: 9px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 9 9\"><use xlink:href=\"#addTag-icon\"></use></svg>Add</button>",
+      "rect": {
+        "x": 756.328125,
+        "y": 708.109375,
+        "width": 100,
+        "height": 30,
+        "top": 708.109375,
+        "right": 856.328125,
+        "bottom": 738.109375,
+        "left": 756.328125
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [],
+    "incomplete": [
+      {
+        "id": "aria-hidden-focus",
+        "impact": "serious",
+        "tags": [
+          "cat.name-role-value",
+          "wcag2a",
+          "wcag412",
+          "TTv5",
+          "TT6.a",
+          "EN-301-549",
+          "EN-9.4.1.2",
+          "RGAAv4",
+          "RGAA-10.8.1"
+        ],
+        "description": "Ensure aria-hidden elements are not focusable nor contain focusable elements",
+        "help": "ARIA hidden element must not be focusable or contain focusable elements",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-hidden-focus?application=axeAPI",
+        "nodes": [
+          {
+            "any": [],
+            "all": [
+              {
+                "id": "focusable-modal-open",
+                "data": null,
+                "relatedNodes": [
+                  {
+                    "html": "<button aria-hidden=\"true\" class=\"publicationInfo_description_bloc_seeMore\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg>See more</button>",
+                    "target": [
+                      ".publicationInfo_description_bloc_seeMore"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Check that focusable elements are not tabbable in the current state"
+              }
+            ],
+            "none": [],
+            "impact": "serious",
+            "html": "<button aria-hidden=\"true\" class=\"publicationInfo_description_bloc_seeMore\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg>See more</button>",
+            "target": [
+              ".publicationInfo_description_bloc_seeMore"
+            ],
+            "failureSummary": "Fix all of the following:\n  Check that focusable elements are not tabbable in the current state"
+          }
+        ]
+      }
+    ],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 4
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 4
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 4
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 4
+      },
+      {
+        "id": "aria-dialog-name",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 6
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 4
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 4
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 4
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 4
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 4
+      },
+      {
+        "id": "autocomplete-valid",
+        "nodes": 1
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 3
+      },
+      {
+        "id": "button-name",
+        "nodes": 3
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 2
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "duplicate-id-aria",
+        "nodes": 4
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 8
+      },
+      {
+        "id": "form-field-multiple-labels",
+        "nodes": 1
+      },
+      {
+        "id": "heading-order",
+        "nodes": 8
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "label-title-only",
+        "nodes": 1
+      },
+      {
+        "id": "label",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 3
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 68
+      },
+      {
+        "id": "tabindex",
+        "nodes": 4
+      },
+      {
+        "id": "target-size",
+        "nodes": 4
+      },
+      {
+        "id": "valid-lang",
+        "nodes": 3
+      }
+    ]
+  },
+  "evidencePrefix": "continuation/reader-publication-information"
+}

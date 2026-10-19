@@ -1,0 +1,4 @@
+- main:
+  - 'heading "Component fixture: borrow" [level=1]'
+  - button "Borrow audit publication"
+  - alert: Error accessing feed

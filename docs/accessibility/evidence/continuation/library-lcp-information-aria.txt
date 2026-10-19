@@ -1,0 +1,9 @@
+- main:
+  - 'heading "Component fixture: lcp-information" [level=1]'
+  - heading "License (LCP)" [level=4]
+  - strong: "Remaining time:"
+  - text: 73 days (January 1, 2027 12:00 AM)
+  - strong: "Copied characters:"
+  - text: 100 / 1000
+  - strong: "Printed pages:"
+  - text: 2 / 20 [1,2]

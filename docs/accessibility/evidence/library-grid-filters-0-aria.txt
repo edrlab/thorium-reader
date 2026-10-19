@@ -1,0 +1,83 @@
+- log
+- log
+- region "toolbar":
+  - heading "toolbar"
+  - button "Skip to content"
+  - navigation "Bookshelf menu":
+    - heading "Thorium" [level=1]
+    - list:
+      - listitem:
+        - button "Home":
+          - heading "Home" [level=3]
+      - listitem:
+        - button "All publications" [pressed]:
+          - heading "All publications" [level=3]
+      - listitem:
+        - button "Catalogs":
+          - heading "Catalogs" [level=3]
+      - listitem:
+        - button "Application Settings":
+          - heading "Application Settings" [level=3]: Settings
+  - main "main content":
+    - navigation "Menu":
+      - paragraph: View mode
+      - button "Grid" [pressed]:
+        - heading "Grid" [level=3]
+      - button "Table":
+        - heading "Table" [level=3]
+      - button "Import publication"
+    - heading "main content"
+    - heading "All publications" [level=2]
+    - text: Search (5)
+    - searchbox "Search (5)"
+    - button "Add filters" [expanded]
+    - button "Add sorting"
+    - text: Number of pages
+    - button "First" [disabled]
+    - button "Previous" [disabled]
+    - 'combobox "Current page: 1/1"':
+      - option "1 / 1" [selected]
+    - button "Next" [disabled]
+    - button "Last" [disabled]
+    - img
+    - text: 17 days EPUB
+    - button "Menu (La toile de l'Araignée)":
+      - img "Menu (La toile de l'Araignée)"
+    - img
+    - text: PDF
+    - button "Menu (Untitled)":
+      - img "Menu (Untitled)"
+    - img
+    - text: EPUB
+    - button "Menu (Accessible EPUB 3)":
+      - img "Menu (Accessible EPUB 3)"
+    - img
+    - text: 20 days EPUB
+    - button "Menu (La Proie)":
+      - img "Menu (La Proie)"
+    - img
+    - text: Licensed EPUB
+    - button "Menu (The Waste Land)":
+      - img "Menu (The Waste Land)"
+    - paragraph: v3.5.2-beta.1
+    - link "About Thorium (online)":
+      - /url: ""
+- button "Dismiss"
+- dialog:
+  - text: Filter by Format
+  - group:
+    - combobox "Filter by tag Filter by Format"
+    - button "Show suggestions Filter by Format"
+  - text: Filter by Language
+  - group:
+    - combobox "Filter by tag Filter by Language"
+    - button "Show suggestions Filter by Language"
+  - text: Filter by Progression
+  - group:
+    - combobox "Filter by tag Filter by Progression"
+    - button "Show suggestions Filter by Progression"
+  - text: Filter by Tags
+  - group:
+    - combobox "Filter by tag Filter by Tags"
+    - button "Show suggestions Filter by Tags"
+- button "Dismiss"

@@ -1,0 +1,190 @@
+{
+  "id": "import-annotations-conflicts",
+  "runtime": "library",
+  "files": [
+    "src/renderer/common/components/ImportAnnotationsDialog.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T11:57:25.530Z",
+  "errors": [],
+  "actions": [],
+  "text": "Component fixture: import-annotations-conflicts\nImport annotations\nImport notes?\n\nOrigin publication: 'Audit source' by 'Audit creator'\nAnnotations title: 'Audit annotation set'\n1 note created by 'Audit creator' will be imported into 'Audit publication' by 'Audit author'\nConflict(s): 1 newer note\nConflict(s): 1 older note\n\nCancel\nImport all notes\nImport only conflict-free notes",
+  "html": "<div id=\"audit-root\" inert=\"\"><main><h1>Component fixture: import-annotations-conflicts</h1><button aria-expanded=\"true\" aria-controls=\"react-aria7789981493-:r2:\" id=\"react-aria7789981493-:r3:\" data-react-aria-pressable=\"true\" tabindex=\"0\">Import annotations</button></main></div>\n<span data-focus-scope-start=\"true\" hidden=\"\" inert=\"\"></span>\n<div class=\"AlertDialogOverlay\" data-rac=\"\" style=\"position: fixed; inset: 0px; z-index: 102; --visual-viewport-width: 1184px; --visual-viewport-height: 835px; --page-width: 1184px; --page-height: 834.84375px;\"><div class=\"react-aria-Modal\" data-rac=\"\" style=\"display: contents;\"><section id=\"react-aria7789981493-:r2:\" class=\"AlertDialogContent\" data-rac=\"\" aria-labelledby=\":r0:\" aria-describedby=\":r1:\" role=\"alertdialog\" tabindex=\"-1\"><h2 class=\"AlertDialogTitle\" id=\":r0:\">Import notes?</h2><p class=\"AlertDialogDescription\" id=\":r1:\" style=\"display: flex; flex-direction: column; gap: 5px;\"><span>Origin publication: 'Audit source' by 'Audit creator'</span><span>Annotations title: 'Audit annotation set'</span><span>1 note created by 'Audit creator' will be imported into 'Audit publication' by 'Audit author'</span><span>Conflict(s): 1 newer note</span><span>Conflict(s): 1 older note</span></p><div class=\"AlertDialogButtonContainer\"><button class=\"button_secondary_blue react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7789981493-:r6:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button><button class=\"button_primary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg>Import all notes</button><button class=\"button_primary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg>Import only conflict-free notes</button></div></section></div></div>\n<span data-focus-scope-end=\"true\" hidden=\"\" inert=\"\"></span>",
+  "dimensions": {
+    "width": 1184,
+    "height": 835,
+    "scrollWidth": 1184
+  },
+  "focus": "<button class=\"button_secondary_blue react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7789981493-:r6:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>",
+  "controls": [
+    {
+      "html": "<button aria-expanded=\"true\" aria-controls=\"react-aria7789981493-:r2:\" id=\"react-aria7789981493-:r3:\" data-react-aria-pressable=\"true\" tabindex=\"0\">Import annotations</button>",
+      "rect": {
+        "x": 0,
+        "y": 60.15625,
+        "width": 115.96875,
+        "height": 30,
+        "top": 60.15625,
+        "right": 115.96875,
+        "bottom": 90.15625,
+        "left": 0
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"button_secondary_blue react-aria-Button\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" id=\"react-aria7789981493-:r6:\" data-focused=\"true\" data-focus-visible=\"true\">Cancel</button>",
+      "rect": {
+        "x": 380.640625,
+        "y": 485,
+        "width": 100,
+        "height": 30,
+        "top": 485,
+        "right": 480.640625,
+        "bottom": 515,
+        "left": 380.640625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"button_primary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg>Import all notes</button>",
+      "rect": {
+        "x": 490.640625,
+        "y": 485,
+        "width": 126.71875,
+        "height": 30,
+        "top": 485,
+        "right": 617.359375,
+        "bottom": 515,
+        "left": 490.640625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"button_primary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 17 16\"><use xlink:href=\"#Plus-bold\"></use></svg>Import only conflict-free notes</button>",
+      "rect": {
+        "x": 627.359375,
+        "y": 485,
+        "width": 214.640625,
+        "height": 30,
+        "top": 485,
+        "right": 842,
+        "bottom": 515,
+        "left": 627.359375
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [],
+    "incomplete": [],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 1
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 1
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 1
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 1
+      },
+      {
+        "id": "aria-dialog-name",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 3
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 1
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 1
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 1
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 1
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 1
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 3
+      },
+      {
+        "id": "button-name",
+        "nodes": 3
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "duplicate-id-aria",
+        "nodes": 3
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 1
+      },
+      {
+        "id": "heading-order",
+        "nodes": 1
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 3
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 14
+      },
+      {
+        "id": "tabindex",
+        "nodes": 4
+      },
+      {
+        "id": "target-size",
+        "nodes": 3
+      }
+    ]
+  },
+  "evidencePrefix": "continuation/library-import-annotations-conflicts"
+}

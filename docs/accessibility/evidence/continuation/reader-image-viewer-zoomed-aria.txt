@@ -1,0 +1,13 @@
+- main:
+  - 'heading "Component fixture: image-viewer" [level=1]'
+- button "Dismiss"
+- dialog "Image viewer (zoom)":
+  - heading "Image viewer (zoom)" [level=2]
+  - button "Close"
+  - button "Zoom In":
+    - img
+  - button "Zoom Out":
+    - img
+  - button "Reset Zoom":
+    - img
+  - img "White circle on a blue rectangle"

@@ -1,0 +1,3 @@
+- main:
+  - 'heading "Component fixture: cancel-hold" [level=1]'
+  - button "Cancel hold"

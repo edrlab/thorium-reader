@@ -1,0 +1,22 @@
+- main:
+  - 'heading "Component fixture: opds-menu" [level=1]'
+  - button "About publication" [expanded]
+- button "Dismiss"
+- dialog "About publication":
+  - heading "About publication" [level=2]
+  - heading "About publication" [level=2]
+  - button "Close"
+  - heading "Audit OPDS publication" [level=2]
+  - text: Audit author
+  - heading "Description" [level=3]
+  - paragraph: Audit catalog publication description.
+  - heading "Publication Details" [level=3]
+  - strong: "Language:"
+  - text: English (en)
+  - strong: "Number of pages:"
+  - text: "100"
+  - heading "Accessibility" [level=3]
+  - status:
+    - strong: "Reading progress sync:"
+    - text: Not enabled for this publication.
+  - heading "Tags" [level=3]

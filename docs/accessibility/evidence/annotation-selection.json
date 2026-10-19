@@ -1,0 +1,12 @@
+[
+  {
+    "title": "Talk to Me: Media Overlays",
+    "action": "select",
+    "result": {
+      "type": "object",
+      "value": {
+        "selectedCharacters": 40
+      }
+    }
+  }
+]

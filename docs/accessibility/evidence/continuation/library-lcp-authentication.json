@@ -1,0 +1,243 @@
+{
+  "id": "lcp-authentication",
+  "runtime": "library",
+  "files": [
+    "src/renderer/library/components/dialog/LcpAuthentication.tsx",
+    "src/renderer/library/components/dialog/DialogManager.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T11:57:41.323Z",
+  "errors": [],
+  "actions": [],
+  "text": "Component fixture: lcp-authentication\nThis publication needs an LCP passphrase to be opened\n\nHint:\nAudit passphrase hint\n\nPassphrase\n\nThe supplied passphrase is incorrect.\n\nWhat is LCP?\nCancel\nOpen",
+  "html": "<div id=\"audit-root\" inert=\"\"><main><h1>Component fixture: lcp-authentication</h1></main></div>\n<span data-focus-scope-start=\"true\" hidden=\"\" inert=\"\"></span>\n<div class=\"modal_dialog_overlay\" data-rac=\"\" style=\"position: fixed; inset: 0px; z-index: 102; --visual-viewport-width: 1184px; --visual-viewport-height: 835px; --page-width: 1184px; --page-height: 834.84375px;\"><div class=\"react-aria-Modal\" data-rac=\"\" style=\"display: contents;\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><button id=\"react-aria7789981493-:r1p:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button></div><section class=\"modal_dialog\" data-rac=\"\" aria-labelledby=\":r1n:\" role=\"dialog\" tabindex=\"-1\" style=\"max-width: 600px;\"><div class=\"modal_dialog_header\"><h2 id=\":r1n:\">This publication needs an LCP passphrase to be opened</h2></div><form class=\"modal_dialog_body\"><p><span class=\"lcp_hint\"><svg aria-hidden=\"true\" viewBox=\"0 0 10 11\"><use xlink:href=\"#lightbulb-icon\"></use></svg><b>Hint:</b> Audit passphrase hint</span></p><div class=\"form_group form_group_catalog\" style=\"margin-top: 0px; width: 99%;\"><label for=\"passphrase\" style=\"font-size: 14px;\">Passphrase</label><input id=\"passphrase\" aria-label=\"Passphrase\" type=\"password\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\"><button type=\"button\" aria-label=\"Show passphrase\" style=\"width: 30px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#eye-password-hide-icon\"></use></svg></button></div><p class=\"passphrase_infos\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg><span>The supplied passphrase is incorrect.</span></p><details class=\"button_catalog_infos\"><summary>What is LCP?</summary><div class=\"catalog_infos_text\"><p>LCP stands for 'Licensed Content Protection'.</p><a href=\"\">To learn more, click this link to the EDRLab website.<svg aria-hidden=\"true\" viewBox=\"0 0 10 11\"><use xlink:href=\"#followLink-icon\"></use></svg></a></div></details><div class=\"modal_dialog_footer\"><button class=\"button_secondary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\">Cancel</button><button type=\"submit\" class=\"button_primary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#lock-icon\"></use></svg>Open</button></div></form></section></div></div>\n<span data-focus-scope-end=\"true\" hidden=\"\" inert=\"\"></span>",
+  "dimensions": {
+    "width": 1184,
+    "height": 835,
+    "scrollWidth": 1184
+  },
+  "focus": "<input id=\"passphrase\" aria-label=\"Passphrase\" type=\"password\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\">",
+  "controls": [
+    {
+      "html": "<button id=\"react-aria7789981493-:r1p:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button>",
+      "rect": {
+        "x": 591.5,
+        "y": 417,
+        "width": 1,
+        "height": 1,
+        "top": 417,
+        "right": 592.5,
+        "bottom": 418,
+        "left": 591.5
+      },
+      "visible": true
+    },
+    {
+      "html": "<input id=\"passphrase\" aria-label=\"Passphrase\" type=\"password\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\">",
+      "rect": {
+        "x": 331,
+        "y": 356,
+        "width": 507.40625,
+        "height": 27,
+        "top": 356,
+        "right": 838.40625,
+        "bottom": 383,
+        "left": 331
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"button\" aria-label=\"Show passphrase\" style=\"width: 30px;\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#eye-password-hide-icon\"></use></svg></button>",
+      "rect": {
+        "x": 838.40625,
+        "y": 354.5,
+        "width": 30,
+        "height": 30,
+        "top": 354.5,
+        "right": 868.40625,
+        "bottom": 384.5,
+        "left": 838.40625
+      },
+      "visible": true
+    },
+    {
+      "html": "<a href=\"\">To learn more, click this link to the EDRLab website.<svg aria-hidden=\"true\" viewBox=\"0 0 10 11\"><use xlink:href=\"#followLink-icon\"></use></svg></a>",
+      "rect": {
+        "x": 323,
+        "y": 546.5,
+        "width": 513,
+        "height": 16,
+        "top": 546.5,
+        "right": 836,
+        "bottom": 562.5,
+        "left": 323
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"button_secondary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\">Cancel</button>",
+      "rect": {
+        "x": 701,
+        "y": 567,
+        "width": 70,
+        "height": 30,
+        "top": 567,
+        "right": 771,
+        "bottom": 597,
+        "left": 701
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"submit\" class=\"button_primary_blue\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 18\"><use xlink:href=\"#lock-icon\"></use></svg>Open</button>",
+      "rect": {
+        "x": 781,
+        "y": 567,
+        "width": 70,
+        "height": 30,
+        "top": 567,
+        "right": 851,
+        "bottom": 597,
+        "left": 781
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [],
+    "incomplete": [],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 4
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 1
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 4
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 1
+      },
+      {
+        "id": "aria-dialog-name",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 6
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 4
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 1
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 1
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 4
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 4
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 4
+      },
+      {
+        "id": "button-name",
+        "nodes": 4
+      },
+      {
+        "id": "bypass",
+        "nodes": 1
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 1
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "duplicate-id-aria",
+        "nodes": 2
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 1
+      },
+      {
+        "id": "form-field-multiple-labels",
+        "nodes": 1
+      },
+      {
+        "id": "heading-order",
+        "nodes": 1
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "label-title-only",
+        "nodes": 1
+      },
+      {
+        "id": "label",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 5
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 22
+      },
+      {
+        "id": "summary-name",
+        "nodes": 1
+      },
+      {
+        "id": "tabindex",
+        "nodes": 4
+      },
+      {
+        "id": "target-size",
+        "nodes": 6
+      }
+    ]
+  },
+  "evidencePrefix": "continuation/library-lcp-authentication"
+}

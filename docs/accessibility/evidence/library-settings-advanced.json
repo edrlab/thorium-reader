@@ -1,0 +1,302 @@
+{
+  "label": "library-settings-advanced",
+  "timestamp": "2026-10-19T11:08:36.862Z",
+  "axeVersion": "4.13.0",
+  "targets": [
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/8870060FCC5D1B16FFD54EE19484FBF5",
+      "id": "8870060FCC5D1B16FFD54EE19484FBF5",
+      "title": "Thorium",
+      "type": "page",
+      "url": "http://localhost:8090/index_library.html",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/8870060FCC5D1B16FFD54EE19484FBF5"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/544959611FA569BE513035F0416FEFCA",
+      "id": "544959611FA569BE513035F0416FEFCA",
+      "title": "Service Worker chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/background.bundle.js",
+      "type": "service_worker",
+      "url": "chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/background.bundle.js",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/544959611FA569BE513035F0416FEFCA"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/BDBB000A04C54EA2D1411045EA7FA21B",
+      "id": "BDBB000A04C54EA2D1411045EA7FA21B",
+      "title": "Service Worker chrome-extension://ijmmnfpjnmlljdjbbfpdgodddghhmemm/build/background.js",
+      "type": "service_worker",
+      "url": "chrome-extension://ijmmnfpjnmlljdjbbfpdgodddghhmemm/build/background.js",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/BDBB000A04C54EA2D1411045EA7FA21B"
+    }
+  ],
+  "pages": [
+    {
+      "title": "Thorium",
+      "url": "http://localhost:8090/index_library.html",
+      "lang": "",
+      "dimensions": {
+        "width": 1133,
+        "height": 808,
+        "scrollWidth": 1133
+      },
+      "focus": "<div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria7386672771-:rj:\" data-key=\"tab-advanced\" data-react-aria-pressable=\"true\" id=\"react-aria7386672771-:rk:-tab-tab-advanced\" aria-selected=\"true\" role=\"tab\" aria-controls=\"react-aria7386672771-:rk:-tabpanel-tab-advanced\" data-selected=\"true\" data-focused=\"true\" data-focus-visible=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 16 14\"><use xlink:href=\"#advanced-icon\"></use></svg><span dir=\"ltr\">Advanced</span></div>",
+      "dialogs": [
+        {
+          "html": "<section id=\"react-aria7386672771-:r2:\" class=\"modal_dialog\" data-rac=\"\" aria-labelledby=\":r0:\" role=\"dialog\" tabindex=\"-1\" style=\"overflow-y: hidden;\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><h1 id=\":r0:\">Settings</h1></div><template><div dir=\"ltr\" class=\"settings_tab_title\"><h2 dir=\"ltr\">Advanced</h2></div><div class=\"settings_content\" style=\"margin-top: 70px;\"></div><div class=\"close_button_div\"><button dir=\"ltr\" data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></div></template><div data-orientation=\"vertical\" class=\"settings_container\" data-rac=\"\" data-focused=\"true\" data-focus-visible=\"true\"><div data-orientation=\"vertical\" class=\"settings_tabslist\" data-rac=\"\" data-collection=\"react-aria7386672771-:rj:\" id=\"react-aria7386672771-:rk:\" aria-label=\"Application Settings\" role=\"tablist\" aria-orientation=\"vertical\"><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"-1\" data-collection=\"react-aria7386672771-:rj:\" data-key=\"tab-general\" data-react-aria-pressable=\"true\" id=\"react-aria7386672771-:rk:-tab-tab-general\" aria-selected=\"false\" role=\"tab\"><svg aria-hidden=\"true\" viewBox=\"0 0 19 20\"><use xlink:href=\"#cog-icon\"></use></svg><span dir=\"ltr\">General</span></div><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"-1\" data-collection=\"react-aria7386672771-:rj:\" dat"
+        }
+      ],
+      "sliders": [],
+      "evidencePrefix": "library-settings-advanced-0",
+      "axe": {
+        "violations": [
+          {
+            "id": "html-has-lang",
+            "impact": "serious",
+            "tags": [
+              "cat.language",
+              "wcag2a",
+              "wcag311",
+              "TTv5",
+              "TT11.a",
+              "EN-301-549",
+              "EN-9.3.1.1",
+              "ACT",
+              "RGAAv4",
+              "RGAA-8.3.1"
+            ],
+            "description": "Ensure every HTML document has a lang attribute",
+            "help": "<html> element must have a lang attribute",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/html-has-lang?application=axeAPI",
+            "nodes": [
+              {
+                "any": [
+                  {
+                    "id": "has-lang",
+                    "data": {
+                      "messageKey": "noLang"
+                    },
+                    "relatedNodes": [],
+                    "impact": "serious",
+                    "message": "The <html> element does not have a lang attribute"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "serious",
+                "html": "<html id=\"library_html\" style=\"overflow: hidden;\" class=\"R2_CSS_CLASS__KEYBOARD_INTERACT\">",
+                "target": [
+                  "#library_html"
+                ],
+                "failureSummary": "Fix any of the following:\n  The <html> element does not have a lang attribute"
+              }
+            ]
+          }
+        ],
+        "incomplete": [],
+        "passes": [
+          {
+            "id": "aria-allowed-attr",
+            "nodes": 16
+          },
+          {
+            "id": "aria-allowed-role",
+            "nodes": 26
+          },
+          {
+            "id": "aria-conditional-attr",
+            "nodes": 16
+          },
+          {
+            "id": "aria-deprecated-role",
+            "nodes": 13
+          },
+          {
+            "id": "aria-dialog-name",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-body",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-focus",
+            "nodes": 40
+          },
+          {
+            "id": "aria-prohibited-attr",
+            "nodes": 16
+          },
+          {
+            "id": "aria-required-attr",
+            "nodes": 13
+          },
+          {
+            "id": "aria-required-children",
+            "nodes": 1
+          },
+          {
+            "id": "aria-required-parent",
+            "nodes": 5
+          },
+          {
+            "id": "aria-roles",
+            "nodes": 13
+          },
+          {
+            "id": "aria-tab-name",
+            "nodes": 5
+          },
+          {
+            "id": "aria-toggle-field-name",
+            "nodes": 4
+          },
+          {
+            "id": "aria-valid-attr-value",
+            "nodes": 16
+          },
+          {
+            "id": "aria-valid-attr",
+            "nodes": 16
+          },
+          {
+            "id": "avoid-inline-spacing",
+            "nodes": 2
+          },
+          {
+            "id": "button-name",
+            "nodes": 4
+          },
+          {
+            "id": "bypass",
+            "nodes": 1
+          },
+          {
+            "id": "color-contrast",
+            "nodes": 1
+          },
+          {
+            "id": "document-title",
+            "nodes": 1
+          },
+          {
+            "id": "duplicate-id-aria",
+            "nodes": 9
+          },
+          {
+            "id": "empty-heading",
+            "nodes": 8
+          },
+          {
+            "id": "form-field-multiple-labels",
+            "nodes": 3
+          },
+          {
+            "id": "heading-order",
+            "nodes": 8
+          },
+          {
+            "id": "label-title-only",
+            "nodes": 3
+          },
+          {
+            "id": "label",
+            "nodes": 3
+          },
+          {
+            "id": "landmark-one-main",
+            "nodes": 1
+          },
+          {
+            "id": "meta-viewport-large",
+            "nodes": 1
+          },
+          {
+            "id": "meta-viewport",
+            "nodes": 1
+          },
+          {
+            "id": "nested-interactive",
+            "nodes": 15
+          },
+          {
+            "id": "page-has-heading-one",
+            "nodes": 1
+          },
+          {
+            "id": "region",
+            "nodes": 73
+          },
+          {
+            "id": "scrollable-region-focusable",
+            "nodes": 1
+          },
+          {
+            "id": "tabindex",
+            "nodes": 14
+          },
+          {
+            "id": "target-size",
+            "nodes": 16
+          }
+        ],
+        "inapplicable": [
+          "accesskeys",
+          "area-alt",
+          "aria-braille-equivalent",
+          "aria-command-name",
+          "aria-input-field-name",
+          "aria-meter-name",
+          "aria-progressbar-name",
+          "aria-text",
+          "aria-tooltip-name",
+          "aria-treeitem-name",
+          "autocomplete-valid",
+          "blink",
+          "definition-list",
+          "dlitem",
+          "empty-table-header",
+          "frame-focusable-content",
+          "frame-tested",
+          "frame-title-unique",
+          "frame-title",
+          "html-lang-valid",
+          "html-xml-lang-mismatch",
+          "image-alt",
+          "image-redundant-alt",
+          "input-button-name",
+          "input-image-alt",
+          "landmark-banner-is-top-level",
+          "landmark-contentinfo-is-top-level",
+          "landmark-main-is-top-level",
+          "landmark-no-duplicate-banner",
+          "landmark-no-duplicate-contentinfo",
+          "landmark-no-duplicate-main",
+          "landmark-unique",
+          "link-in-text-block",
+          "link-name",
+          "list",
+          "listitem",
+          "marquee",
+          "meta-refresh",
+          "object-alt",
+          "presentation-role-conflict",
+          "role-img-alt",
+          "scope-attr-valid",
+          "select-name",
+          "server-side-image-map",
+          "skip-link",
+          "summary-name",
+          "svg-img-alt",
+          "table-duplicate-name",
+          "td-headers-attr",
+          "th-has-data-cells",
+          "valid-lang",
+          "video-caption",
+          "no-autoplay-audio"
+        ]
+      }
+    }
+  ]
+}

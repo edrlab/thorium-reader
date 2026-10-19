@@ -1,0 +1,59 @@
+- heading "toolbar"
+- button "Skip to content"
+- navigation "toolbar":
+  - list:
+    - list:
+      - listitem:
+        - button "Close this reading window (back to bookshelf)"
+      - listitem:
+        - button "Information" [disabled]
+    - list:
+      - listitem:
+        - button "Print" [expanded] [pressed]
+      - listitem:
+        - button "Search publication"
+      - listitem:
+        - checkbox "Bookmark (Add)"
+      - listitem:
+        - checkbox "Annotation"
+      - listitem:
+        - button "Navigation"
+      - listitem:
+        - button "Reader settings"
+      - listitem:
+        - checkbox "Page fit or width"
+      - listitem:
+        - button "Zen mode"
+- main "main content":
+  - heading "main content"
+  - iframe
+- navigation "Navigation history":
+  - button "Jump back in navigation history" [disabled]
+  - button "Jump forward in navigation history" [disabled]
+- button "Dismiss"
+- dialog "Selection of printable pages":
+  - heading "Selection of printable pages" [level=2]
+  - button "Close"
+  - textbox "Pages": 1-101
+  - text: Pages Printables pages (total)
+  - paragraph: 1-101 (101)
+  - heading "Preview" [level=3]
+  - img "1"
+  - text: "1"
+  - img "2"
+  - text: "2"
+  - img "3"
+  - text: "3"
+  - img "4"
+  - text: "4"
+  - img "5"
+  - text: "5"
+  - img "6"
+  - text: "6"
+  - img "7"
+  - text: "7"
+  - img "8"
+  - text: "8"
+  - button "How to select a range of pages to print"
+  - button "Cancel"
+  - button "Print"

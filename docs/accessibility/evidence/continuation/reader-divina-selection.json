@@ -1,0 +1,206 @@
+{
+  "id": "divina-modes",
+  "runtime": "reader",
+  "files": [
+    "src/renderer/reader/components/ReaderSettings/DivinaSetReadingMode.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T11:58:31.146Z",
+  "errors": [],
+  "actions": [],
+  "text": "Component fixture: divina-modes\ndouble\nguided\nscroll\nsingle",
+  "html": "<div id=\"audit-root\"><main><h1>Component fixture: divina-modes</h1><div id=\"themes_list\" aria-label=\"Layout\" role=\"radiogroup\"><div><input id=\"radio-double\" type=\"radio\" name=\"divinaReadingMode\"><label aria-disabled=\"false\" for=\"radio-double\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#done\"></use></svg>double</label></div><div><input disabled=\"\" id=\"radio-guided\" type=\"radio\" name=\"divinaReadingMode\"><label aria-disabled=\"true\" for=\"radio-guided\">guided</label></div><div><input id=\"radio-scroll\" type=\"radio\" name=\"divinaReadingMode\"><label aria-disabled=\"false\" for=\"radio-scroll\">scroll</label></div><div><input id=\"radio-single\" type=\"radio\" name=\"divinaReadingMode\" checked=\"\"><label aria-disabled=\"false\" for=\"radio-single\">single</label></div></div></main></div>",
+  "dimensions": {
+    "width": 1184,
+    "height": 835,
+    "scrollWidth": 1184
+  },
+  "focus": "<input id=\"radio-double\" type=\"radio\" name=\"divinaReadingMode\">",
+  "controls": [
+    {
+      "html": "<input id=\"radio-double\" type=\"radio\" name=\"divinaReadingMode\">",
+      "rect": {
+        "x": -1995,
+        "y": 63.15625,
+        "width": 13,
+        "height": 13,
+        "top": 63.15625,
+        "right": -1982,
+        "bottom": 76.15625,
+        "left": -1995
+      },
+      "visible": true
+    },
+    {
+      "html": "<input disabled=\"\" id=\"radio-guided\" type=\"radio\" name=\"divinaReadingMode\">",
+      "rect": {
+        "x": -1995,
+        "y": 95.34375,
+        "width": 13,
+        "height": 13,
+        "top": 95.34375,
+        "right": -1982,
+        "bottom": 108.34375,
+        "left": -1995
+      },
+      "visible": true
+    },
+    {
+      "html": "<input id=\"radio-scroll\" type=\"radio\" name=\"divinaReadingMode\">",
+      "rect": {
+        "x": -1995,
+        "y": 127.53125,
+        "width": 13,
+        "height": 13,
+        "top": 127.53125,
+        "right": -1982,
+        "bottom": 140.53125,
+        "left": -1995
+      },
+      "visible": true
+    },
+    {
+      "html": "<input id=\"radio-single\" type=\"radio\" name=\"divinaReadingMode\" checked=\"\">",
+      "rect": {
+        "x": -1995,
+        "y": 159.71875,
+        "width": 13,
+        "height": 13,
+        "top": 159.71875,
+        "right": -1982,
+        "bottom": 172.71875,
+        "left": -1995
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [],
+    "incomplete": [],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 5
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 1
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 5
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 2
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 5
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 1
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 1
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 5
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 5
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 2
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 4
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "duplicate-id-aria",
+        "nodes": 4
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 1
+      },
+      {
+        "id": "form-field-multiple-labels",
+        "nodes": 4
+      },
+      {
+        "id": "heading-order",
+        "nodes": 1
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "label-title-only",
+        "nodes": 4
+      },
+      {
+        "id": "label",
+        "nodes": 4
+      },
+      {
+        "id": "landmark-main-is-top-level",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-no-duplicate-main",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-unique",
+        "nodes": 1
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 4
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 16
+      },
+      {
+        "id": "target-size",
+        "nodes": 3
+      }
+    ]
+  },
+  "evidencePrefix": "continuation/reader-divina-selection"
+}

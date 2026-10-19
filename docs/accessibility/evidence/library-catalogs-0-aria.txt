@@ -1,0 +1,76 @@
+- region "toolbar":
+  - heading "toolbar"
+  - button "Skip to content"
+  - navigation "Bookshelf menu":
+    - heading "Thorium" [level=1]
+    - list:
+      - listitem:
+        - button "Home":
+          - heading "Home" [level=3]
+      - listitem:
+        - button "All publications":
+          - heading "All publications" [level=3]
+      - listitem:
+        - button "Catalogs" [pressed]:
+          - heading "Catalogs" [level=3]
+      - listitem:
+        - button "Application Settings":
+          - heading "Application Settings" [level=3]: Settings
+  - main "main content":
+    - button "Add OPDS feed"
+    - button "Search catalogs"
+    - heading "main content"
+    - heading "My catalogs" [level=2]
+    - list:
+      - listitem:
+        - link "De Openbare bibliotheek Vlaanderen en Brussel":
+          - /url: "#/opds/9a924969-76a0-4191-be5e-084a772ad555/browse/1/RGUgT3BlbmJhcmUgYmlibGlvdGhlZWsgVmxhYW5kZXJlbiBlbiBCcnVzc2Vs/aHR0cHM6Ly9kZWJpYi5jYW50b29rc3RhdGlvbi5ldS92MS9ob21lLm9wZHMy"
+          - paragraph: De Openbare bibliotheek Vlaanderen en Brussel
+        - button
+        - button "Account"
+        - button "Edit"
+        - button "Delete"
+      - listitem:
+        - link "http://127.0.0.1:4873/opds/v2/catalog.json":
+          - /url: "#/opds/8c5772bb-2e60-406c-ad4e-2c2ee0cee8e7/browse/1/aHR0cDovLzEyNy4wLjAuMTo0ODczL29wZHMvdjIvY2F0YWxvZy5qc29u/aHR0cDovLzEyNy4wLjAuMTo0ODczL29wZHMvdjIvY2F0YWxvZy5qc29u"
+          - paragraph: http://127.0.0.1:4873/opds/v2/catalog.json
+        - button
+        - button "Edit"
+        - button "Delete"
+      - listitem:
+        - link "https://banq.pretnumerique.ca/v1/home.opds2":
+          - /url: "#/opds/3a885174-0b76-48f4-9053-b4fc6f4500d0/browse/1/aHR0cHM6Ly9iYW5xLnByZXRudW1lcmlxdWUuY2EvdjEvaG9tZS5vcGRzMg/aHR0cHM6Ly9iYW5xLnByZXRudW1lcmlxdWUuY2EvdjEvaG9tZS5vcGRzMg"
+          - paragraph: https://banq.pretnumerique.ca/v1/home.opds2
+        - button
+        - button "Account"
+        - button "Edit"
+        - button "Delete"
+      - listitem:
+        - link "https://opds-auth-test-server-aplqpqv3wa-ey.a.run.app/":
+          - /url: "#/opds/203a3fd2-7226-473a-abaa-354b7f8b7ca9/browse/1/aHR0cHM6Ly9vcGRzLWF1dGgtdGVzdC1zZXJ2ZXItYXBscXBxdjN3YS1leS5hLnJ1bi5hcHAv/aHR0cHM6Ly9vcGRzLWF1dGgtdGVzdC1zZXJ2ZXItYXBscXBxdjN3YS1leS5hLnJ1bi5hcHAv"
+          - paragraph: https://opds-auth-test-server-aplqpqv3wa-ey.a.run.app/
+        - button
+        - button "Edit"
+        - button "Delete"
+      - listitem:
+        - link "https://opds.wol.moe/zh_CN":
+          - /url: "#/opds/4ee3fdd9-8849-406c-9201-b7b7143a305d/browse/1/aHR0cHM6Ly9vcGRzLndvbC5tb2UvemhfQ04/aHR0cHM6Ly9vcGRzLndvbC5tb2UvemhfQ04"
+          - paragraph: https://opds.wol.moe/zh_CN
+        - button
+        - button "Edit"
+        - button "Delete"
+      - listitem:
+        - link "https://www.lirtuel.be/v1/home.opds2":
+          - /url: "#/opds/a526d0ad-7fb1-4347-ab07-00b6f39e9d0d/browse/1/aHR0cHM6Ly93d3cubGlydHVlbC5iZS92MS9ob21lLm9wZHMy/aHR0cHM6Ly93d3cubGlydHVlbC5iZS92MS9ob21lLm9wZHMy"
+          - paragraph: https://www.lirtuel.be/v1/home.opds2
+        - button
+        - button "Account"
+        - button "Edit"
+        - button "Delete"
+      - listitem:
+        - link "Liber Liber":
+          - /url: "#/opds/4ec96fc1-a73a-4bef-98ff-4b3141320cb2/browse/1/TGliZXIgTGliZXI/aHR0cHM6Ly9saWJlcmxpYmVyLml0L29wZXJlL2xpYnJpL2FyZ29tZW50by9lcHViLw"
+          - paragraph: Liber Liber
+        - button
+        - button "Edit"
+        - button "Delete"

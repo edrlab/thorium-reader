@@ -1,0 +1,552 @@
+{
+  "label": "library-theme-options",
+  "timestamp": "2026-10-19T11:18:04.063Z",
+  "axeVersion": "4.13.0",
+  "targets": [
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/8870060FCC5D1B16FFD54EE19484FBF5",
+      "id": "8870060FCC5D1B16FFD54EE19484FBF5",
+      "title": "Thorium",
+      "type": "page",
+      "url": "http://localhost:8090/index_library.html#/home",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/8870060FCC5D1B16FFD54EE19484FBF5"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/544959611FA569BE513035F0416FEFCA",
+      "id": "544959611FA569BE513035F0416FEFCA",
+      "title": "Service Worker chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/background.bundle.js",
+      "type": "service_worker",
+      "url": "chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/background.bundle.js",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/544959611FA569BE513035F0416FEFCA"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/CB839B62BD849FA23E0C7F3CE140D5EF",
+      "id": "CB839B62BD849FA23E0C7F3CE140D5EF",
+      "title": "Service Worker chrome-extension://ijmmnfpjnmlljdjbbfpdgodddghhmemm/build/background.js",
+      "type": "service_worker",
+      "url": "chrome-extension://ijmmnfpjnmlljdjbbfpdgodddghhmemm/build/background.js",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/CB839B62BD849FA23E0C7F3CE140D5EF"
+    }
+  ],
+  "pages": [
+    {
+      "title": "Thorium",
+      "url": "http://localhost:8090/index_library.html#/home",
+      "lang": "",
+      "dimensions": {
+        "width": 1133,
+        "height": 808,
+        "scrollWidth": 1133
+      },
+      "focus": "<input type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria7386672771-:rgr:\" aria-labelledby=\"react-aria7386672771-:rgs:\" role=\"combobox\" aria-expanded=\"true\" class=\"react_aria_Input R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" value=\"Automatic\" title=\"\" aria-controls=\"react-aria7386672771-:rgo:\" aria-activedescendant=\"react-aria7386672771-:rgo:-option-3\">",
+      "dialogs": [
+        {
+          "html": "<section id=\"react-aria7386672771-:re5:\" class=\"modal_dialog\" data-rac=\"\" aria-labelledby=\":re3:\" role=\"dialog\" tabindex=\"-1\" style=\"overflow-y: hidden;\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\" aria-hidden=\"true\"><h1 id=\":re3:\">Settings</h1></div><template aria-hidden=\"true\"><div dir=\"ltr\" class=\"settings_tab_title\"><h2 dir=\"ltr\">General</h2></div><div class=\"settings_content\" style=\"margin-top: 70px;\"></div><div class=\"close_button_div\"><button dir=\"ltr\" data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></div></template><div data-orientation=\"vertical\" class=\"settings_container\" data-rac=\"\"><div data-orientation=\"vertical\" class=\"settings_tabslist\" data-rac=\"\" data-collection=\"react-aria7386672771-:rg6:\" id=\"react-aria7386672771-:rg7:\" aria-label=\"Application Settings\" role=\"tablist\" aria-orientation=\"vertical\" aria-hidden=\"true\"><div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria7386672771-:rg6:\" data-key=\"tab-general\" data-react-aria-pressable=\"true\" id=\"react-aria7386672771-:rg7:-tab-tab-general\" aria-selected=\"true\" aria-controls=\"react-aria7386672771-:rg7:-tabpanel-tab-general\" role=\"tab\" data-selected=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 19 20\"><use xlink:href=\"#cog-icon\"></use></svg><span dir=\"ltr\">General</span></div><"
+        }
+      ],
+      "sliders": [],
+      "evidencePrefix": "library-theme-options-0",
+      "axe": {
+        "violations": [
+          {
+            "id": "html-has-lang",
+            "impact": "serious",
+            "tags": [
+              "cat.language",
+              "wcag2a",
+              "wcag311",
+              "TTv5",
+              "TT11.a",
+              "EN-301-549",
+              "EN-9.3.1.1",
+              "ACT",
+              "RGAAv4",
+              "RGAA-8.3.1"
+            ],
+            "description": "Ensure every HTML document has a lang attribute",
+            "help": "<html> element must have a lang attribute",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/html-has-lang?application=axeAPI",
+            "nodes": [
+              {
+                "any": [
+                  {
+                    "id": "has-lang",
+                    "data": {
+                      "messageKey": "noLang"
+                    },
+                    "relatedNodes": [],
+                    "impact": "serious",
+                    "message": "The <html> element does not have a lang attribute"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "serious",
+                "html": "<html id=\"library_html\" style=\"overflow: hidden;\" class=\"\">",
+                "target": [
+                  "#library_html"
+                ],
+                "failureSummary": "Fix any of the following:\n  The <html> element does not have a lang attribute"
+              }
+            ]
+          },
+          {
+            "id": "region",
+            "impact": "moderate",
+            "tags": [
+              "cat.keyboard",
+              "best-practice",
+              "RGAAv4",
+              "RGAA-9.2.1"
+            ],
+            "description": "Ensure all page content is contained by landmarks",
+            "help": "All page content should be contained by landmarks",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/region?application=axeAPI",
+            "nodes": [
+              {
+                "any": [
+                  {
+                    "id": "region",
+                    "data": {
+                      "isIframe": false
+                    },
+                    "relatedNodes": [],
+                    "impact": "moderate",
+                    "message": "Some page content is not contained by landmarks"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "moderate",
+                "html": "<div id=\"react-aria7386672771...\" class=\"react_aria_ListBox\" data-rac=\"\" aria-labelledby=\"react-aria7386672771...\" aria-label=\"Suggestions\" role=\"listbox\" aria-orientation=\"vertical\" data-collection=\"react-aria7386672771...\" data-layout=\"stack\" data-orientation=\"vertical\">",
+                "target": [
+                  "#react-aria7386672771-\\:rgo\\:"
+                ],
+                "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+              }
+            ]
+          }
+        ],
+        "incomplete": [
+          {
+            "id": "aria-hidden-focus",
+            "impact": "serious",
+            "tags": [
+              "cat.name-role-value",
+              "wcag2a",
+              "wcag412",
+              "TTv5",
+              "TT6.a",
+              "EN-301-549",
+              "EN-9.4.1.2",
+              "RGAAv4",
+              "RGAA-10.8.1"
+            ],
+            "description": "Ensure aria-hidden elements are not focusable nor contain focusable elements",
+            "help": "ARIA hidden element must not be focusable or contain focusable elements",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-hidden-focus?application=axeAPI",
+            "nodes": [
+              {
+                "any": [],
+                "all": [
+                  {
+                    "id": "focusable-modal-open",
+                    "data": null,
+                    "relatedNodes": [
+                      {
+                        "html": "<div class=\"react-aria-Tab\" data-rac=\"\" tabindex=\"0\" data-collection=\"react-aria7386672771...\" data-key=\"tab-general\" data-react-aria-pres...=\"true\" id=\"react-aria7386672771...\" aria-selected=\"true\" aria-controls=\"react-aria7386672771...\" role=\"tab\" data-selected=\"true\">",
+                        "target": [
+                          "#react-aria7386672771-\\:rg7\\:-tab-tab-general"
+                        ]
+                      }
+                    ],
+                    "impact": "serious",
+                    "message": "Check that focusable elements are not tabbable in the current state"
+                  }
+                ],
+                "none": [],
+                "impact": "serious",
+                "html": "<div data-orientation=\"vertical\" class=\"settings_tabslist\" data-rac=\"\" data-collection=\"react-aria7386672771-:rg6:\" id=\"react-aria7386672771-:rg7:\" aria-label=\"Application Settings\" role=\"tablist\" aria-orientation=\"vertical\" aria-hidden=\"true\">",
+                "target": [
+                  "#react-aria7386672771-\\:rg7\\:"
+                ],
+                "failureSummary": "Fix all of the following:\n  Check that focusable elements are not tabbable in the current state"
+              },
+              {
+                "any": [],
+                "all": [
+                  {
+                    "id": "focusable-modal-open",
+                    "data": null,
+                    "relatedNodes": [
+                      {
+                        "html": "<input type=\"text\" aria-autocomplete=\"list\" autocomplete=\"off\" autocorrect=\"off\" spellcheck=\"false\" tabindex=\"0\" id=\"react-aria7386672771...\" aria-labelledby=\"react-aria7386672771...\" role=\"combobox\" aria-expanded=\"false\" class=\"react_aria_Input R2_...\" data-rac=\"\" value=\"English\" title=\"\">",
+                        "target": [
+                          "#react-aria7386672771-\\:rge\\:"
+                        ]
+                      }
+                    ],
+                    "impact": "serious",
+                    "message": "Check that focusable elements are not tabbable in the current state"
+                  }
+                ],
+                "none": [],
+                "impact": "serious",
+                "html": "<div class=\"react_aria_ComboBox\" data-rac=\"\" aria-hidden=\"true\">",
+                "target": [
+                  ".section:nth-child(1) > .react_aria_ComboBox[data-rac=\"\"]"
+                ],
+                "failureSummary": "Fix all of the following:\n  Check that focusable elements are not tabbable in the current state"
+              },
+              {
+                "any": [],
+                "all": [
+                  {
+                    "id": "focusable-modal-open",
+                    "data": null,
+                    "relatedNodes": [
+                      {
+                        "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Enhance screen reader experience\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+                        "target": [
+                          "label[for=\"screenReaderSettings\"] > .checkbox_custom[role=\"checkbox\"]"
+                        ]
+                      }
+                    ],
+                    "impact": "serious",
+                    "message": "Check that focusable elements are not tabbable in the current state"
+                  }
+                ],
+                "none": [],
+                "impact": "serious",
+                "html": "<section class=\"section\" style=\"position: relative;\" aria-hidden=\"true\">",
+                "target": [
+                  ".section:nth-child(2)"
+                ],
+                "failureSummary": "Fix all of the following:\n  Check that focusable elements are not tabbable in the current state"
+              },
+              {
+                "any": [],
+                "all": [
+                  {
+                    "id": "focusable-modal-open",
+                    "data": null,
+                    "relatedNodes": [
+                      {
+                        "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Minimize the library to the system tray\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+                        "target": [
+                          "label[for=\"minimizeLibraryToTray\"] > .checkbox_custom[role=\"checkbox\"]"
+                        ]
+                      },
+                      {
+                        "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Minimize the library after opening reader windows\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+                        "target": [
+                          ".section:nth-child(3) > .annotations_checkbox[dir=\"ltr\"]:nth-child(3) > .checkbox_custom_label > .checkbox_custom[role=\"checkbox\"]"
+                        ]
+                      },
+                      {
+                        "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Keep the library in the background after closing reader windows\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+                        "target": [
+                          ".annotations_checkbox[dir=\"ltr\"]:nth-child(4) > .checkbox_custom_label > .checkbox_custom[role=\"checkbox\"]"
+                        ]
+                      },
+                      {
+                        "html": "<div tabindex=\"0\" role=\"checkbox\" aria-checked=\"false\" aria-label=\"Use one reader window per publication\" class=\"checkbox_custom\" style=\"border: 2px solid var(--color-text-primary); background-color: transparent;\"></div>",
+                        "target": [
+                          "label[for=\"oneReaderWindowPerPublication\"] > .checkbox_custom[role=\"checkbox\"]"
+                        ]
+                      }
+                    ],
+                    "impact": "serious",
+                    "message": "Check that focusable elements are not tabbable in the current state"
+                  }
+                ],
+                "none": [],
+                "impact": "serious",
+                "html": "<section class=\"section\" style=\"gap: 10px;\" aria-hidden=\"true\">",
+                "target": [
+                  ".section:nth-child(3)"
+                ],
+                "failureSummary": "Fix all of the following:\n  Check that focusable elements are not tabbable in the current state"
+              },
+              {
+                "any": [],
+                "all": [
+                  {
+                    "id": "focusable-modal-open",
+                    "data": null,
+                    "relatedNodes": [
+                      {
+                        "html": "<button dir=\"ltr\" data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button>",
+                        "target": [
+                          "button[data-css-override=\"\"]"
+                        ]
+                      }
+                    ],
+                    "impact": "serious",
+                    "message": "Check that focusable elements are not tabbable in the current state"
+                  }
+                ],
+                "none": [],
+                "impact": "serious",
+                "html": "<div class=\"close_button_div\" aria-hidden=\"true\"><button dir=\"ltr\" data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></div>",
+                "target": [
+                  ".close_button_div"
+                ],
+                "failureSummary": "Fix all of the following:\n  Check that focusable elements are not tabbable in the current state"
+              }
+            ]
+          },
+          {
+            "id": "bypass",
+            "impact": "serious",
+            "tags": [
+              "cat.keyboard",
+              "wcag2a",
+              "wcag241",
+              "section508",
+              "section508.22.o",
+              "TTv5",
+              "TT9.a",
+              "EN-301-549",
+              "EN-9.2.4.1",
+              "RGAAv4",
+              "RGAA-12.7.1"
+            ],
+            "description": "Ensure each page has at least one mechanism for a user to bypass navigation and jump straight to the content",
+            "help": "Page must have means to bypass repeated blocks",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/bypass?application=axeAPI",
+            "nodes": [
+              {
+                "any": [
+                  {
+                    "id": "internal-link-present",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "serious",
+                    "message": "No valid skip link found"
+                  },
+                  {
+                    "id": "header-present",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "serious",
+                    "message": "Page does not have a heading"
+                  },
+                  {
+                    "id": "landmark",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "serious",
+                    "message": "Page does not have a landmark region"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "serious",
+                "html": "<html id=\"library_html\" style=\"overflow: hidden;\" class=\"\">",
+                "target": [
+                  "#library_html"
+                ],
+                "failureSummary": "Fix any of the following:\n  No valid skip link found\n  Page does not have a heading\n  Page does not have a landmark region"
+              }
+            ]
+          }
+        ],
+        "passes": [
+          {
+            "id": "aria-allowed-attr",
+            "nodes": 10
+          },
+          {
+            "id": "aria-allowed-role",
+            "nodes": 36
+          },
+          {
+            "id": "aria-conditional-attr",
+            "nodes": 10
+          },
+          {
+            "id": "aria-deprecated-role",
+            "nodes": 10
+          },
+          {
+            "id": "aria-dialog-name",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-body",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-focus",
+            "nodes": 37
+          },
+          {
+            "id": "aria-prohibited-attr",
+            "nodes": 10
+          },
+          {
+            "id": "aria-required-attr",
+            "nodes": 10
+          },
+          {
+            "id": "aria-required-children",
+            "nodes": 1
+          },
+          {
+            "id": "aria-required-parent",
+            "nodes": 3
+          },
+          {
+            "id": "aria-roles",
+            "nodes": 10
+          },
+          {
+            "id": "aria-toggle-field-name",
+            "nodes": 3
+          },
+          {
+            "id": "aria-valid-attr-value",
+            "nodes": 10
+          },
+          {
+            "id": "aria-valid-attr",
+            "nodes": 10
+          },
+          {
+            "id": "autocomplete-valid",
+            "nodes": 1
+          },
+          {
+            "id": "avoid-inline-spacing",
+            "nodes": 3
+          },
+          {
+            "id": "button-name",
+            "nodes": 1
+          },
+          {
+            "id": "color-contrast",
+            "nodes": 2
+          },
+          {
+            "id": "document-title",
+            "nodes": 1
+          },
+          {
+            "id": "duplicate-id-aria",
+            "nodes": 17
+          },
+          {
+            "id": "form-field-multiple-labels",
+            "nodes": 1
+          },
+          {
+            "id": "label-title-only",
+            "nodes": 1
+          },
+          {
+            "id": "label",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-one-main",
+            "nodes": 1
+          },
+          {
+            "id": "meta-viewport-large",
+            "nodes": 1
+          },
+          {
+            "id": "meta-viewport",
+            "nodes": 1
+          },
+          {
+            "id": "nested-interactive",
+            "nodes": 4
+          },
+          {
+            "id": "page-has-heading-one",
+            "nodes": 1
+          },
+          {
+            "id": "region",
+            "nodes": 24
+          },
+          {
+            "id": "scrollable-region-focusable",
+            "nodes": 1
+          },
+          {
+            "id": "tabindex",
+            "nodes": 3
+          },
+          {
+            "id": "target-size",
+            "nodes": 2
+          }
+        ],
+        "inapplicable": [
+          "accesskeys",
+          "area-alt",
+          "aria-braille-equivalent",
+          "aria-command-name",
+          "aria-input-field-name",
+          "aria-meter-name",
+          "aria-progressbar-name",
+          "aria-tab-name",
+          "aria-text",
+          "aria-tooltip-name",
+          "aria-treeitem-name",
+          "blink",
+          "definition-list",
+          "dlitem",
+          "empty-heading",
+          "empty-table-header",
+          "frame-focusable-content",
+          "frame-tested",
+          "frame-title-unique",
+          "frame-title",
+          "heading-order",
+          "html-lang-valid",
+          "html-xml-lang-mismatch",
+          "image-alt",
+          "image-redundant-alt",
+          "input-button-name",
+          "input-image-alt",
+          "landmark-banner-is-top-level",
+          "landmark-contentinfo-is-top-level",
+          "landmark-main-is-top-level",
+          "landmark-no-duplicate-banner",
+          "landmark-no-duplicate-contentinfo",
+          "landmark-no-duplicate-main",
+          "landmark-unique",
+          "link-in-text-block",
+          "link-name",
+          "list",
+          "listitem",
+          "marquee",
+          "meta-refresh",
+          "object-alt",
+          "presentation-role-conflict",
+          "role-img-alt",
+          "scope-attr-valid",
+          "select-name",
+          "server-side-image-map",
+          "skip-link",
+          "summary-name",
+          "svg-img-alt",
+          "table-duplicate-name",
+          "td-headers-attr",
+          "th-has-data-cells",
+          "valid-lang",
+          "video-caption",
+          "no-autoplay-audio"
+        ]
+      }
+    }
+  ]
+}

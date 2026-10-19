@@ -1,0 +1,13 @@
+- main:
+  - 'heading "Component fixture: lcp-authentication" [level=1]'
+- button "Dismiss"
+- dialog "This publication needs an LCP passphrase to be opened":
+  - heading "This publication needs an LCP passphrase to be opened" [level=2]
+  - paragraph: "Hint: Audit passphrase hint"
+  - text: Passphrase
+  - textbox "Passphrase"
+  - button "Show passphrase"
+  - paragraph: The supplied passphrase is incorrect.
+  - group: What is LCP? ‹
+  - button "Cancel"
+  - button "Open"

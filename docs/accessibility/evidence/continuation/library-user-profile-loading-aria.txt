@@ -1,0 +1,3 @@
+- main:
+  - 'heading "Component fixture: user-profile" [level=1]'
+  - status: Loading account…

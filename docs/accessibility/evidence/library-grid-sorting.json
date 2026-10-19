@@ -1,0 +1,427 @@
+{
+  "label": "library-grid-sorting",
+  "timestamp": "2026-10-19T11:21:21.502Z",
+  "axeVersion": "4.13.0",
+  "targets": [
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/8870060FCC5D1B16FFD54EE19484FBF5",
+      "id": "8870060FCC5D1B16FFD54EE19484FBF5",
+      "title": "Thorium",
+      "type": "page",
+      "url": "http://localhost:8090/index_library.html#/library",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/8870060FCC5D1B16FFD54EE19484FBF5"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/544959611FA569BE513035F0416FEFCA",
+      "id": "544959611FA569BE513035F0416FEFCA",
+      "title": "Service Worker chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/background.bundle.js",
+      "type": "service_worker",
+      "url": "chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/background.bundle.js",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/544959611FA569BE513035F0416FEFCA"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/9349226D127C9C3D484CADC1698DBD30",
+      "id": "9349226D127C9C3D484CADC1698DBD30",
+      "title": "Service Worker chrome-extension://ijmmnfpjnmlljdjbbfpdgodddghhmemm/build/background.js",
+      "type": "service_worker",
+      "url": "chrome-extension://ijmmnfpjnmlljdjbbfpdgodddghhmemm/build/background.js",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/9349226D127C9C3D484CADC1698DBD30"
+    }
+  ],
+  "pages": [
+    {
+      "title": "Thorium",
+      "url": "http://localhost:8090/index_library.html#/library",
+      "lang": "",
+      "dimensions": {
+        "width": 1133,
+        "height": 808,
+        "scrollWidth": 1133
+      },
+      "focus": "<button style=\"font-weight: normal; cursor: pointer;\">Title<span></span></button>",
+      "dialogs": [
+        {
+          "html": "<section id=\"react-aria7386672771-:rng:\" class=\"react-aria-Dialog\" data-rac=\"\" aria-labelledby=\"react-aria7386672771-:rnh:\" role=\"dialog\" tabindex=\"-1\"><span data-focus-scope-start=\"true\" hidden=\"\"></span><div class=\"sorting_container\"><p>Sort by: </p><ul style=\"display: flex; gap: 10px; list-style: none; padding: 0px; flex-direction: column;\"><li><button style=\"font-weight: normal; cursor: pointer;\">Title<span></span></button></li><li><button style=\"font-weight: normal; cursor: pointer;\">Author<span></span></button></li><li><button style=\"font-weight: normal; cursor: pointer;\">Language<span></span></button></li><li><button style=\"font-weight: normal; cursor: pointer;\">Reading State<span></span></button></li></ul></div><div class=\"react-aria-OverlayArrow\" data-rac=\"\" data-placement=\"bottom\" style=\"position: absolute; transform: translateX(-50%); bottom: 100%; left: 212px;\"><svg class=\"PopoverArrow\" aria-hidden=\"true\" width=\"10\" height=\"5\" viewBox=\"0 0 30 10\" preserveAspectRatio=\"none\" style=\"display: block; transform: rotate(180deg);\"><polygon points=\"0,0 30,0 15,10\"></polygon></svg></div><span data-focus-scope-end=\"true\" hidden=\"\"></span></section>"
+        }
+      ],
+      "sliders": [],
+      "evidencePrefix": "library-grid-sorting-0",
+      "axe": {
+        "violations": [
+          {
+            "id": "html-has-lang",
+            "impact": "serious",
+            "tags": [
+              "cat.language",
+              "wcag2a",
+              "wcag311",
+              "TTv5",
+              "TT11.a",
+              "EN-301-549",
+              "EN-9.3.1.1",
+              "ACT",
+              "RGAAv4",
+              "RGAA-8.3.1"
+            ],
+            "description": "Ensure every HTML document has a lang attribute",
+            "help": "<html> element must have a lang attribute",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/html-has-lang?application=axeAPI",
+            "nodes": [
+              {
+                "any": [
+                  {
+                    "id": "has-lang",
+                    "data": {
+                      "messageKey": "noLang"
+                    },
+                    "relatedNodes": [],
+                    "impact": "serious",
+                    "message": "The <html> element does not have a lang attribute"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "serious",
+                "html": "<html id=\"library_html\" style=\"overflow: hidden;\" class=\"\">",
+                "target": [
+                  "#library_html"
+                ],
+                "failureSummary": "Fix any of the following:\n  The <html> element does not have a lang attribute"
+              }
+            ]
+          },
+          {
+            "id": "landmark-one-main",
+            "impact": "moderate",
+            "tags": [
+              "cat.semantics",
+              "best-practice"
+            ],
+            "description": "Ensure the document has a main landmark",
+            "help": "Document should have one main landmark",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/landmark-one-main?application=axeAPI",
+            "nodes": [
+              {
+                "any": [],
+                "all": [
+                  {
+                    "id": "page-has-main",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "moderate",
+                    "message": "Document does not have a main landmark"
+                  }
+                ],
+                "none": [],
+                "impact": "moderate",
+                "html": "<html id=\"library_html\" style=\"overflow: hidden;\" class=\"\">",
+                "target": [
+                  "#library_html"
+                ],
+                "failureSummary": "Fix all of the following:\n  Document does not have a main landmark"
+              }
+            ]
+          },
+          {
+            "id": "page-has-heading-one",
+            "impact": "moderate",
+            "tags": [
+              "cat.semantics",
+              "best-practice"
+            ],
+            "description": "Ensure that the page, or at least one of its frames contains a level-one heading",
+            "help": "Page should contain a level-one heading",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/page-has-heading-one?application=axeAPI",
+            "nodes": [
+              {
+                "any": [],
+                "all": [
+                  {
+                    "id": "page-has-heading-one",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "moderate",
+                    "message": "Page must have a level-one heading"
+                  }
+                ],
+                "none": [],
+                "impact": "moderate",
+                "html": "<html id=\"library_html\" style=\"overflow: hidden;\" class=\"\">",
+                "target": [
+                  "#library_html"
+                ],
+                "failureSummary": "Fix all of the following:\n  Page must have a level-one heading"
+              }
+            ]
+          }
+        ],
+        "incomplete": [
+          {
+            "id": "aria-prohibited-attr",
+            "impact": "serious",
+            "tags": [
+              "cat.aria",
+              "wcag2a",
+              "wcag412",
+              "EN-301-549",
+              "EN-9.4.1.2",
+              "RGAAv4",
+              "RGAA-7.1.1"
+            ],
+            "description": "Ensure ARIA attributes are not prohibited for an element's role",
+            "help": "Elements must only use permitted ARIA attributes",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-prohibited-attr?application=axeAPI",
+            "nodes": [
+              {
+                "any": [],
+                "all": [],
+                "none": [
+                  {
+                    "id": "aria-prohibited-attr",
+                    "data": {
+                      "role": null,
+                      "nodeName": "div",
+                      "messageKey": "noRoleSingular",
+                      "prohibited": [
+                        "aria-labelledby"
+                      ]
+                    },
+                    "relatedNodes": [],
+                    "impact": "serious",
+                    "message": "aria-labelledby attribute is not well supported on a div with no valid role attribute."
+                  }
+                ],
+                "impact": "serious",
+                "html": "<div dir=\"ltr\" class=\"annotation_form\" data-rac=\"\" aria-labelledby=\"react-aria7386672771...\" data-trigger=\"DialogTrigger\" style=\"position: absolute; ...\" data-placement=\"bottom\">",
+                "target": [
+                  ".annotation_form"
+                ],
+                "failureSummary": "Fix all of the following:\n  aria-labelledby attribute is not well supported on a div with no valid role attribute."
+              }
+            ]
+          },
+          {
+            "id": "bypass",
+            "impact": "serious",
+            "tags": [
+              "cat.keyboard",
+              "wcag2a",
+              "wcag241",
+              "section508",
+              "section508.22.o",
+              "TTv5",
+              "TT9.a",
+              "EN-301-549",
+              "EN-9.2.4.1",
+              "RGAAv4",
+              "RGAA-12.7.1"
+            ],
+            "description": "Ensure each page has at least one mechanism for a user to bypass navigation and jump straight to the content",
+            "help": "Page must have means to bypass repeated blocks",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/bypass?application=axeAPI",
+            "nodes": [
+              {
+                "any": [
+                  {
+                    "id": "internal-link-present",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "serious",
+                    "message": "No valid skip link found"
+                  },
+                  {
+                    "id": "header-present",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "serious",
+                    "message": "Page does not have a heading"
+                  },
+                  {
+                    "id": "landmark",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "serious",
+                    "message": "Page does not have a landmark region"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "serious",
+                "html": "<html id=\"library_html\" style=\"overflow: hidden;\" class=\"\">",
+                "target": [
+                  "#library_html"
+                ],
+                "failureSummary": "Fix any of the following:\n  No valid skip link found\n  Page does not have a heading\n  Page does not have a landmark region"
+              }
+            ]
+          }
+        ],
+        "passes": [
+          {
+            "id": "aria-allowed-attr",
+            "nodes": 6
+          },
+          {
+            "id": "aria-allowed-role",
+            "nodes": 21
+          },
+          {
+            "id": "aria-conditional-attr",
+            "nodes": 6
+          },
+          {
+            "id": "aria-deprecated-role",
+            "nodes": 3
+          },
+          {
+            "id": "aria-dialog-name",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-body",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-focus",
+            "nodes": 31
+          },
+          {
+            "id": "aria-prohibited-attr",
+            "nodes": 5
+          },
+          {
+            "id": "aria-required-attr",
+            "nodes": 3
+          },
+          {
+            "id": "aria-roles",
+            "nodes": 3
+          },
+          {
+            "id": "aria-valid-attr-value",
+            "nodes": 6
+          },
+          {
+            "id": "aria-valid-attr",
+            "nodes": 6
+          },
+          {
+            "id": "avoid-inline-spacing",
+            "nodes": 2
+          },
+          {
+            "id": "button-name",
+            "nodes": 6
+          },
+          {
+            "id": "document-title",
+            "nodes": 1
+          },
+          {
+            "id": "duplicate-id-aria",
+            "nodes": 5
+          },
+          {
+            "id": "list",
+            "nodes": 1
+          },
+          {
+            "id": "listitem",
+            "nodes": 4
+          },
+          {
+            "id": "meta-viewport-large",
+            "nodes": 1
+          },
+          {
+            "id": "meta-viewport",
+            "nodes": 1
+          },
+          {
+            "id": "nested-interactive",
+            "nodes": 6
+          },
+          {
+            "id": "region",
+            "nodes": 26
+          },
+          {
+            "id": "tabindex",
+            "nodes": 3
+          },
+          {
+            "id": "target-size",
+            "nodes": 6
+          }
+        ],
+        "inapplicable": [
+          "accesskeys",
+          "area-alt",
+          "aria-braille-equivalent",
+          "aria-command-name",
+          "aria-input-field-name",
+          "aria-meter-name",
+          "aria-progressbar-name",
+          "aria-required-children",
+          "aria-required-parent",
+          "aria-tab-name",
+          "aria-text",
+          "aria-toggle-field-name",
+          "aria-tooltip-name",
+          "aria-treeitem-name",
+          "autocomplete-valid",
+          "blink",
+          "color-contrast",
+          "definition-list",
+          "dlitem",
+          "empty-heading",
+          "empty-table-header",
+          "form-field-multiple-labels",
+          "frame-focusable-content",
+          "frame-tested",
+          "frame-title-unique",
+          "frame-title",
+          "heading-order",
+          "html-lang-valid",
+          "html-xml-lang-mismatch",
+          "image-alt",
+          "image-redundant-alt",
+          "input-button-name",
+          "input-image-alt",
+          "label-title-only",
+          "label",
+          "landmark-banner-is-top-level",
+          "landmark-contentinfo-is-top-level",
+          "landmark-main-is-top-level",
+          "landmark-no-duplicate-banner",
+          "landmark-no-duplicate-contentinfo",
+          "landmark-no-duplicate-main",
+          "landmark-unique",
+          "link-in-text-block",
+          "link-name",
+          "marquee",
+          "meta-refresh",
+          "object-alt",
+          "presentation-role-conflict",
+          "role-img-alt",
+          "scope-attr-valid",
+          "scrollable-region-focusable",
+          "select-name",
+          "server-side-image-map",
+          "skip-link",
+          "summary-name",
+          "svg-img-alt",
+          "table-duplicate-name",
+          "td-headers-attr",
+          "th-has-data-cells",
+          "valid-lang",
+          "video-caption",
+          "no-autoplay-audio"
+        ]
+      }
+    }
+  ]
+}

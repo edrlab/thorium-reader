@@ -1,0 +1,51 @@
+- heading "toolbar"
+- button "Skip to content"
+- navigation "toolbar":
+  - list:
+    - list:
+      - listitem:
+        - button "Close this reading window (back to bookshelf)"
+      - listitem:
+        - button "Information" [disabled]
+    - list:
+      - listitem:
+        - button "Print"
+      - listitem:
+        - button "Search publication"
+      - listitem:
+        - checkbox "Bookmark (Add)"
+      - listitem:
+        - checkbox "Annotation"
+      - listitem:
+        - button "Navigation"
+      - listitem:
+        - button "Reader settings" [expanded] [pressed]
+      - listitem:
+        - checkbox "Page fit or width"
+      - listitem:
+        - button "Zen mode"
+- main "main content":
+  - heading "main content"
+  - iframe
+- navigation "Navigation history":
+  - button "Jump back in navigation history" [disabled]
+  - button "Jump forward in navigation history" [disabled]
+- button "Dismiss"
+- heading "Reader settings" [level=1]
+- dialog "Reader settings":
+  - tablist "Reader settings":
+    - tab "Zoom"
+    - tab "Display" [selected]
+  - checkbox "Customize text formatting"
+  - heading "Display" [level=2]
+  - tabpanel "Display":
+    - heading "Columns" [level=3]
+    - radiogroup "Columns":
+      - radio "1 col" [checked]
+      - text: 1 col
+      - radio "2 cols"
+      - text: 2 cols
+  - button "Dock panel to the left"
+  - button "Dock panel to the right"
+  - button "Show panel as a modal popup" [disabled]
+  - button "Close"

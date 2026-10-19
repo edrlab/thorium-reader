@@ -1,0 +1,4 @@
+- main:
+  - 'heading "Component fixture: authentication-settings" [level=1]'
+  - heading "Login" [level=2]
+  - button "Clear login data"
