@@ -78,7 +78,7 @@
         "deleteBook": "Διαγραφή",
         "deleteTag": "Διαγραφή ετικέτας",
         "description": "Περιγραφή",
-        "downloaded": "",
+        "downloaded": "Κατέβηκε",
         "emptyTagList": "Καμμιά δημοσίευση με ετικέτα.",
         "entry": {
             "continueReading": "Συνέχεια ανάγνωσης",
@@ -144,16 +144,16 @@
         "tags": "Ετικέτες",
         "update": "Επεξεργασία",
         "userProfile": {
-            "available": "",
-            "bookshelf": "",
-            "edit": "",
-            "holds": "",
-            "loading": "",
-            "loans": "",
-            "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "available": "Διαθεσιμα: {{count}}",
+            "bookshelf": "Μετάβαση στη βιβλιοθήκη",
+            "edit": "Επεξεργασία προφίλ",
+            "holds": "Κρατήσεις",
+            "loading": "Σύνδεση στον λογαριασμό…",
+            "loans": "Δανεισμοί",
+            "title": "Λογαριασμός",
+            "total": "Όριο: {{count}}",
+            "unavailable": "Μη διαθέσιμες πληροφορίες προφίλ.",
+            "used": "Χρησιμοποιούνται {{used}} από {{total}}"
         }
     },
     "dialog": {
@@ -323,13 +323,13 @@
         "menu": {
             "aboutBook": "Σχετικά με αυτήν τη δημοσίευση",
             "addExtract": "Εισαγωγή αποσπάσματος",
-            "cancelHold": "",
-            "cancelHoldError": "",
+            "cancelHold": "Ακύρωση κράτησης",
+            "cancelHoldError": "Αδυναμία ακύρωσης αυτής της κράτησης. Παρακαλώ δοκίμασε ξανά.",
             "goBuyBook": "Αγορά δημοσίευσης",
             "goLoanBook": "Δανεισμός δημοσίευσης",
             "goRevokeLoanBook": "Ανάκληση δανεισμού",
             "goSubBook": "Εγγραφή",
-            "placeHold": ""
+            "placeHold": "Κράτηση"
         },
         "network": {
             "error": "Σφάλμα πρόσβασης στη ροή",
@@ -341,11 +341,11 @@
         "next": "Επόμενο",
         "previous": "Προηγούμενο",
         "registry": {
-            "empty": "",
-            "error": "",
-            "loading": "",
-            "prompt": "",
-            "title": ""
+            "empty": "Δεν βρέθηκαν κατάλογοι.",
+            "error": "Αδυναμία αναζήτησης στο μητρώο. Παρακαλώ δοκίμασε ξανά.",
+            "loading": "Αναζήτηση σε καταλόγους…",
+            "prompt": "Όνομα, χώρα ή περιοχή",
+            "title": "Αναζήτηση καταλόγων"
         },
         "resumeBrowsing": "Συνέχιση περιήγησης",
         "shelf": "Ράφι",
@@ -713,21 +713,21 @@
         "notStarted": "Δεν έχει αρχίσει",
         "onGoing": "Σε εξέλιξη",
         "progression": {
-            "remoteDescription": "",
-            "remoteTitle": "",
+            "remoteDescription": "Υπάρχει νεότερη θέση ανάγνωσης από τη συσκευή {{- device}} στο {{- progression}}%.",
+            "remoteTitle": "Συνέχεια από άλλη συσκευή;",
             "title": "Εξέλιξη",
-            "useRemote": ""
+            "useRemote": "Μετάβαση στη θέση"
         },
         "read": "Ολοκληρώθηκε",
         "remainingTime": "Δανεισμός (υπολείπεται χρόνος)",
         "remoteProgression": {
-            "checking": "",
-            "disabled": "",
-            "empty": "",
-            "position": "",
-            "ready": "",
-            "title": "",
-            "unavailable": ""
+            "checking": "Ενεργοποιήθηκε και γίνεται έλεγχος υπηρεσίας…",
+            "disabled": "Δεν υποστηρίζεται για αυτή τη δημοσίευση.",
+            "empty": "Χωρίς αποθηκευμένη απομακρυσμένη πρόοδο.",
+            "position": "Απομακρυσμένη πρόοδος: {{percent}}% ({{device}}).",
+            "ready": "Ενεργοποιημένο και έτοιμο.",
+            "title": "Συγχρονισμός προόδου ανάγνωσης:",
+            "unavailable": "Ενεργοποιήθηκε, αλλά η υπηρεσία δεν είναι διαθέσιμη."
         },
         "renewButton": "Ανανέωση",
         "returnButton": "Επιστροφή",
@@ -1376,7 +1376,7 @@
             }
         },
         "tabs": {
-            "advanced": "",
+            "advanced": "Σύνθετη",
             "general": "Γενικά",
             "keyboardShortcuts": "Συντομεύσεις πληκτρολογίου",
             "profiles": "Προφίλ",
