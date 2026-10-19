@@ -670,6 +670,7 @@ export class LcpManager {
                     this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
                         `LCP [${this.translator.translate("publication.renewButton")}]: ${err}`,
                         ));
+                    return newPubDocument;
                 }
                 if (renewResponseLsd) {
                     debug(renewResponseLsd);
@@ -793,6 +794,7 @@ export class LcpManager {
                     this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
                         `LCP [${this.translator.translate("publication.returnButton")}]: ${err}`,
                         ));
+                    return newPubDocument;
                 }
                 if (returnResponseLsd) {
                     debug(returnResponseLsd);

@@ -10,11 +10,11 @@ import { ToastType } from "readium-desktop/common/models/toast";
 import isURL from "readium-desktop/common/utils/isURL";
 import { httpGet } from "readium-desktop/main/network/http";
 import { diMainGet } from "readium-desktop/main/di";
-import { error } from "readium-desktop/main/tools/error";
+import debug_ from "debug";
 import { call as callTyped, put as putTyped } from "typed-redux-saga/macro";
 import { contentTypeisOpdsAuth, parseContentType } from "readium-desktop/utils/contentType";
 
-const filename_ = "readium-desktop:main:redux:sagas:opdsAuthentication";
+const debug = debug_("readium-desktop:main:redux:sagas:opdsAuthentication");
 
 export function* triggerCatalogOpdsAuthentication(action: customizationActions.triggerOpdsAuth.TAction) {
     const { opdsAuthenticationHref, catalogHref } = action.payload;
@@ -41,7 +41,7 @@ export function* triggerCatalogOpdsAuthentication(action: customizationActions.t
         }
         yield* putTyped(opdsActions.refresh.build());
     } catch (e) {
-        error(filename_, e);
+        debug("OPDS authentication failed", e);
         yield* putTyped(toastActions.openRequest.build(ToastType.Error, String(e)));
     }
 }
