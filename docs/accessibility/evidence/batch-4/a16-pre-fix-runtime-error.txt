@@ -1,0 +1,5 @@
+Observed during the live PDF navigation assessment before the ReaderLinkTree repair:
+React: Rendered more hooks than during the previous render.
+Stack: updateWorkInProgressHook -> updateRef -> React.useRef -> RenderLinkTree -> ReaderMenu.
+Effect: the Reader host becomes blank when asynchronous PDF TOC data changes the number of direct recursive hook calls.
+Recorded from CDP Runtime exception and console events. The source repair renders recursive trees as separate React components; the changing-PDF-contents fixture and live PDF navigation retest cover the regression.

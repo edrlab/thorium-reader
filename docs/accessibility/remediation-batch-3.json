@@ -2,7 +2,8 @@
   "batch": 3,
   "branch": "codex/a11y-batch-3-reflow-targets",
   "parentCommit": "937d9d5bc4656a8abd15c462c18d5bc48adc2383",
-  "implementationState": "A26/A31 implemented and dynamically validated; uncommitted on batch 3 branch",
+  "publishedCommit": "1515e70058bfdbbf25dbe3f3125c883d2f42cab6",
+  "implementationState": "A26/A31 committed and pushed to origin/codex/a11y-batch-3-reflow-targets",
   "inventory": "docs/accessibility/evidence/batch-3/static-inventory.json",
   "findings": {
     "A26": {

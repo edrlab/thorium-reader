@@ -20,7 +20,10 @@
         "resetSetting": "Réinitialiser {{- setting}}",
         "rightSlideButton": "Faire défiler vers la droite",
         "skipLink": "Aller directement au contenu",
-        "toolbar": "Barre d'outils"
+        "toolbar": "Barre d'outils",
+        "loading": "Chargement…",
+        "searching": "Recherche en cours…",
+        "printPage": "Page {{page}}"
     },
     "apiapp": {
         "documentation": "Documentation Thorium",

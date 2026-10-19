@@ -40,12 +40,15 @@ import LibraryLayout from 'readium-desktop/renderer/library/components/layout/Li
 import * as stylesSettings from 'readium-desktop/renderer/assets/styles/components/settings.scss';
 import { Settings } from 'readium-desktop/renderer/library/components/settings/Settings';
 import TagManager from 'readium-desktop/renderer/library/components/dialog/publicationInfos/TagManager';
+import BrowserResult from 'readium-desktop/renderer/library/components/opds/BrowserResult';
 
 const common = (p: string) => 'src/renderer/common/components/' + p;
 const lib = (p: string) => 'src/renderer/library/components/' + p;
 const cases: Record<string, AuditCase> = {};
 const add = (id: string, files: string[], render: () => React.ReactNode, state?: (s: any) => void, after?: () => void) => cases[id] = { files, render, state, after };
 const patch = (payload: any) => (window as any).auditStore.dispatch({ type: 'AUDIT_SET', payload });
+add('opds-status', [lib('opds/BrowserResult.tsx'), lib('opds/MessageOpdBrowserResult.tsx'), common('Loader.tsx')], () => <BrowserResult />);
+add('main-load-status', [lib('LoaderMainLoad.tsx'), common('Loader.tsx')], () => <LoaderMainLoad />);
 add('library-settings', [lib('settings/Settings.tsx')], () => <Settings />, s => { s.publication.directory = { defaultDirectory: 'C:/Audit/Thorium/Publications/Library', userDirectory: '' }; });
 add('publication-tags', [lib('dialog/publicationInfos/TagManager.tsx'), common('dialog/publicationInfos/tag/tagButton.tsx'), common('dialog/publicationInfos/tag/tagList.tsx')], () => <TagManager />, s => s.dialog = { open: true, type: 'publication-info-lib', data: { publication } });
 const button = (text: string) => <button>{text}</button>;

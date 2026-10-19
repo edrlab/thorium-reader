@@ -1,0 +1,5 @@
+- main:
+  - 'heading "Component fixture: opds-status" [level=1]'
+  - status: Sorry, unexpected error!. Audit network failure
+  - heading "Sorry, unexpected error!" [level=3]
+  - paragraph: Audit network failure

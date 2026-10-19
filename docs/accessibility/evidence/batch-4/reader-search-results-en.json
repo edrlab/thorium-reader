@@ -1,0 +1,285 @@
+{
+  "id": "search-status",
+  "runtime": "reader",
+  "files": [
+    "src/renderer/reader/components/picker/Search.tsx",
+    "src/renderer/reader/components/picker/SearchFormPicker.tsx",
+    "src/renderer/reader/components/picker/LoaderSearch.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T13:54:14.244Z",
+  "lang": "en",
+  "errors": [],
+  "actions": [
+    [
+      "dispatch",
+      {
+        "type": "AUDIT_SET",
+        "payload": {
+          "i18n": {
+            "locale": "en"
+          }
+        }
+      }
+    ],
+    [
+      "dispatch",
+      {
+        "type": "AUDIT_SET",
+        "payload": {
+          "search": {
+            "enable": false,
+            "state": "busy",
+            "textSearch": "audit",
+            "newFocusUUId": "",
+            "oldFocusUUId": "",
+            "foundArray": []
+          }
+        }
+      }
+    ],
+    [
+      "dispatch",
+      {
+        "type": "AUDIT_SET",
+        "payload": {
+          "search": {
+            "enable": false,
+            "state": "idle",
+            "textSearch": "audit",
+            "newFocusUUId": "",
+            "oldFocusUUId": "",
+            "foundArray": [
+              {},
+              {},
+              {}
+            ]
+          }
+        }
+      }
+    ]
+  ],
+  "text": "Component fixture: search-status\n3 matches\n3 matches",
+  "html": "<div id=\"audit-root\"><main><h1>Component fixture: search-status</h1><div class=\"searchHeader_container\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><span role=\"status\" aria-atomic=\"true\">3 matches</span></div><form role=\"search\" class=\"form_group\"><input type=\"search\" id=\"menu_search\" aria-label=\"Search publication\" placeholder=\"text to match\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" value=\"Selected passage\"><button class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" title=\"Find\" style=\"width: 25px; padding: 4px; margin-left: 0.4em; position: absolute; left: 0px;\">                <svg aria-hidden=\"true\" viewBox=\"0 0 20 14\"><use xlink:href=\"#search-icon\"></use></svg></button></form><div class=\"searchActions\"><span style=\"width: 1px; height: 30px; background-color: var(--color-gray-200); margin: auto 10px auto 20px;\"></span><button aria-label=\"3 matches\" title=\"3 matches\" class=\"button_nav_primary\" style=\"width: auto; font-size: 1em; text-wrap: nowrap;\"><span>3 matches</span></button><button aria-label=\"Previous\" title=\"Previous\" style=\"width: 30px; padding: 4px; margin: 0px; color: var(--color-brand-primary); fill: var(--color-brand-primary);\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-arrow_left_ios-24px\"></use></svg></button><button aria-label=\"Next\" title=\"Next\" style=\"width: 30px; padding: 4px; margin: 0px; color: var(--color-brand-primary); fill: var(--color-brand-primary);\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-arrow_forward_ios-24px\"></use></svg></button></div></div></main></div>",
+  "dimensions": {
+    "width": 1200,
+    "height": 850,
+    "scrollWidth": 1200
+  },
+  "focus": "<input type=\"search\" id=\"menu_search\" aria-label=\"Search publication\" placeholder=\"text to match\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" value=\"Selected passage\">",
+  "controls": [
+    {
+      "html": "<span role=\"status\" aria-atomic=\"true\">3 matches</span>",
+      "rect": {
+        "x": -1,
+        "y": 77.65625,
+        "width": 55.359375,
+        "height": 14,
+        "top": 77.65625,
+        "right": 54.359375,
+        "bottom": 91.65625,
+        "left": -1
+      },
+      "visible": true
+    },
+    {
+      "html": "<input type=\"search\" id=\"menu_search\" aria-label=\"Search publication\" placeholder=\"text to match\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" value=\"Selected passage\">",
+      "rect": {
+        "x": 33,
+        "y": 65.65625,
+        "width": 170.640625,
+        "height": 25,
+        "top": 65.65625,
+        "right": 203.640625,
+        "bottom": 90.65625,
+        "left": 33
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" title=\"Find\" style=\"width: 25px; padding: 4px; margin-left: 0.4em; position: absolute; left: 0px;\">                <svg aria-hidden=\"true\" viewBox=\"0 0 20 14\"><use xlink:href=\"#search-icon\"></use></svg></button>",
+      "rect": {
+        "x": 6.59375,
+        "y": 68.203125,
+        "width": 25,
+        "height": 19.890625,
+        "top": 68.203125,
+        "right": 31.59375,
+        "bottom": 88.09375,
+        "left": 6.59375
+      },
+      "visible": true
+    },
+    {
+      "html": "<button aria-label=\"3 matches\" title=\"3 matches\" class=\"button_nav_primary\" style=\"width: auto; font-size: 1em; text-wrap: nowrap;\"><span>3 matches</span></button>",
+      "rect": {
+        "x": 252.640625,
+        "y": 62.15625,
+        "width": 67.359375,
+        "height": 32,
+        "top": 62.15625,
+        "right": 320,
+        "bottom": 94.15625,
+        "left": 252.640625
+      },
+      "visible": true
+    },
+    {
+      "html": "<button aria-label=\"Previous\" title=\"Previous\" style=\"width: 30px; padding: 4px; margin: 0px; color: var(--color-brand-primary); fill: var(--color-brand-primary);\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-arrow_left_ios-24px\"></use></svg></button>",
+      "rect": {
+        "x": 330,
+        "y": 63.15625,
+        "width": 30,
+        "height": 30,
+        "top": 63.15625,
+        "right": 360,
+        "bottom": 93.15625,
+        "left": 330
+      },
+      "visible": true
+    },
+    {
+      "html": "<button aria-label=\"Next\" title=\"Next\" style=\"width: 30px; padding: 4px; margin: 0px; color: var(--color-brand-primary); fill: var(--color-brand-primary);\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#baseline-arrow_forward_ios-24px\"></use></svg></button>",
+      "rect": {
+        "x": 370,
+        "y": 63.15625,
+        "width": 30,
+        "height": 30,
+        "top": 63.15625,
+        "right": 400,
+        "bottom": 93.15625,
+        "left": 370
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [],
+    "incomplete": [],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 5
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 2
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 5
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 2
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 4
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 5
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 2
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 2
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 5
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 5
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 6
+      },
+      {
+        "id": "button-name",
+        "nodes": 4
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 3
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 1
+      },
+      {
+        "id": "form-field-multiple-labels",
+        "nodes": 1
+      },
+      {
+        "id": "heading-order",
+        "nodes": 1
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "label-title-only",
+        "nodes": 1
+      },
+      {
+        "id": "label",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-main-is-top-level",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-no-duplicate-main",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-unique",
+        "nodes": 2
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 4
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 15
+      },
+      {
+        "id": "target-size",
+        "nodes": 5
+      }
+    ]
+  },
+  "evidencePrefix": "batch-4/reader-search-results-en"
+}

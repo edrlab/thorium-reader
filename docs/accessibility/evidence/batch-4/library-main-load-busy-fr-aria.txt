@@ -1,0 +1,3 @@
+- main:
+  - 'heading "Component fixture: main-load-status" [level=1]'
+  - status: Chargement…

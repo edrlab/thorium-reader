@@ -170,167 +170,136 @@ const renderLinkList = (isRTLfn: (_link: ILink) => [rtl: boolean, lang: string],
     return T;
 };
 
-const renderLinkTree = (currentLocation: MiniLocatorExtended, isRTLfn: (_link: ILink) => [rtl: boolean, lang: string], handleLinkClick: IBaseProps["handleLinkClick"], dockedMode: boolean) => {
-    const RenderLinkTree = (label: string | undefined, links: TToc, level: number, headingTrailLink: ILink | undefined): JSX.Element => {
-        // VoiceOver support breaks when using the propoer tree[item] ARIA role :(
-        const useTree = false;
+interface IReaderLinkTreeProps {
+    currentLocation: MiniLocatorExtended;
+    isRTLfn: (_link: ILink) => [rtl: boolean, lang: string];
+    handleLinkClick: IBaseProps["handleLinkClick"];
+    dockedMode: boolean;
+    label?: string;
+    links: TToc;
+    level: number;
+    headingTrailLink?: ILink;
+}
 
-        const linkRef = React.useRef<HTMLAnchorElement>();
+const ReaderLinkTree = ({ currentLocation, isRTLfn, handleLinkClick, dockedMode, label, links, level, headingTrailLink }: IReaderLinkTreeProps): JSX.Element => {
+    // VoiceOver support breaks when using the propoer tree[item] ARIA role :(
+    const useTree = false;
 
-        React.useEffect(() => {
-            setTimeout(() => {
-                if (linkRef.current) {
-                    // no "structural" focus steal here, just visual scroll into view
-                    // linkRef.current.focus();
-                    linkRef.current.scrollIntoView({
-                        behavior: "instant",
-                        block: "nearest", // "center" | "end" | "nearest" | "start",
-                        inline: "nearest",
-                    });
+    const linkRef = React.useRef<HTMLAnchorElement>();
+
+    React.useEffect(() => {
+        setTimeout(() => {
+            if (linkRef.current) {
+                // no "structural" focus steal here, just visual scroll into view
+                // linkRef.current.focus();
+                linkRef.current.scrollIntoView({
+                    behavior: "instant",
+                    block: "nearest", // "center" | "end" | "nearest" | "start",
+                    inline: "nearest",
+                });
+            }
+        }, 1);
+    });
+
+    const treeReset = (t: TToc) => {
+        for (const link of t) {
+            if ((link as any).__inHeadingsTrail) {
+                delete (link as any).__inHeadingsTrail;
+            }
+            if (link.Children) {
+                treeReset(link.Children);
+            }
+        }
+    };
+    const headingsTrail: TToc = [];
+    const treePass = (t: TToc) => {
+        for (const link of t) {
+            if (currentLocation?.locator?.href && link.Href) {
+                let href1 = currentLocation.locator.href;
+                const i_href1 = href1.lastIndexOf("#");
+                if (i_href1 >= 0) {
+                    href1 = href1.substring(0, i_href1);
                 }
-            }, 1);
-        });
-
-        const treeReset = (t: TToc) => {
-            for (const link of t) {
-                if ((link as any).__inHeadingsTrail) {
-                    delete (link as any).__inHeadingsTrail;
+                let href2 = link.Href;
+                const i_href2 = href2.lastIndexOf("#");
+                if (i_href2 >= 0) {
+                    href2 = href2.substring(0, i_href2);
                 }
-                if (link.Children) {
-                    treeReset(link.Children);
+                if (href1 && href2) {
+                    if (href1 === href2) {
+                        (link as any).__inHeadingsTrail = true;
+                        headingsTrail.push(link);
+                    }
                 }
             }
-        };
-        const headingsTrail: TToc = [];
-        const treePass = (t: TToc) => {
-            for (const link of t) {
-                if (currentLocation?.locator?.href && link.Href) {
-                    let href1 = currentLocation.locator.href;
-                    const i_href1 = href1.lastIndexOf("#");
-                    if (i_href1 >= 0) {
-                        href1 = href1.substring(0, i_href1);
-                    }
-                    let href2 = link.Href;
-                    const i_href2 = href2.lastIndexOf("#");
-                    if (i_href2 >= 0) {
-                        href2 = href2.substring(0, i_href2);
-                    }
-                    if (href1 && href2) {
-                        if (href1 === href2) {
-                            (link as any).__inHeadingsTrail = true;
-                            headingsTrail.push(link);
+            if (link.Children) {
+                treePass(link.Children);
+            }
+        }
+    };
+
+    if (level === 1 && headingTrailLink === undefined) {
+        treeReset(links);
+
+        // headingsTrail = [];
+        treePass(links);
+        headingsTrail.reverse();
+
+        if (currentLocation?.headings) {
+            let iH = -1;
+            for (const h of currentLocation.headings) {
+                iH++;
+                let iHH = -1;
+                for (const hh of headingsTrail) {
+                    iHH++;
+                    if (hh.Href) {
+                        const i_hash = hh.Href.lastIndexOf("#");
+                        const hash = i_hash >= 0 && i_hash < (hh.Href.length - 1) ?
+                            hh.Href.substring(i_hash + 1) :
+                            undefined;
+                        if (hash && h.id === hash ||
+                            iH === (currentLocation.headings.length - 1) &&
+                            iHH === (headingsTrail.length - 1)) {
+                            headingTrailLink = hh;
+                            break;
                         }
                     }
                 }
-                if (link.Children) {
-                    treePass(link.Children);
-                }
-            }
-        };
-
-        if (level === 1 && headingTrailLink === undefined) {
-            treeReset(links);
-
-            // headingsTrail = [];
-            treePass(links);
-            headingsTrail.reverse();
-
-            if (currentLocation?.headings) {
-                let iH = -1;
-                for (const h of currentLocation.headings) {
-                    iH++;
-                    let iHH = -1;
-                    for (const hh of headingsTrail) {
-                        iHH++;
-                        if (hh.Href) {
-                            const i_hash = hh.Href.lastIndexOf("#");
-                            const hash = i_hash >= 0 && i_hash < (hh.Href.length - 1) ?
-                                hh.Href.substring(i_hash + 1) :
-                                undefined;
-                            if (hash && h.id === hash ||
-                                iH === (currentLocation.headings.length - 1) &&
-                                iHH === (headingsTrail.length - 1)) {
-                                headingTrailLink = hh;
-                                break;
-                            }
-                        }
-                    }
-                    if (headingTrailLink) {
-                        break;
-                    }
+                if (headingTrailLink) {
+                    break;
                 }
             }
         }
+    }
 
-        const isRightToLeftTop = isRTLfn(undefined);
+    const isRightToLeftTop = isRTLfn(undefined);
 
-        return <ul
-            dir={isRightToLeftTop[0] ? "rtl" : "ltr"}
-            lang={isRightToLeftTop[1] ? isRightToLeftTop[1] : undefined}
+    return <ul
+        dir={isRightToLeftTop[0] ? "rtl" : "ltr"}
+        lang={isRightToLeftTop[1] ? isRightToLeftTop[1] : undefined}
 
-            role={useTree ? (level <= 1 ? "tree" : "group") : undefined}
-            aria-label={label}
-            className={classNames(stylesPopoverDialog.chapters_content, stylesPopoverDialog.toc_container)}
-        >
-            {links.map((link, i: number) => {
+        role={useTree ? (level <= 1 ? "tree" : "group") : undefined}
+        aria-label={label}
+        className={classNames(stylesPopoverDialog.chapters_content, stylesPopoverDialog.toc_container)}
+    >
+        {links.map((link, i: number) => {
 
-                const isRightToLeft = isRTLfn(link);
+            const isRightToLeft = isRTLfn(link);
 
-                let emphasis = undefined;
-                if (link === headingTrailLink) {
-                    emphasis = { backgroundColor: "var(--color-gray-50", borderLeft: "2px solid var(--color-brand-primary)" };
-                } else if ((link as any).__inHeadingsTrail) {
-                    emphasis = { border: "1px dashed silver" };
-                }
-                const label = link.Title ? link.Title : `#${level}-${i} ${link.Href}`;
-                return (
-                    <li key={`${level}-${i}`}
-                        role={useTree ? "treeitem" : undefined}
-                        aria-expanded={useTree ? "true" : undefined}
-                    >
-                        {link.Children ? (
-                            <>
-                                <div role={"heading"} aria-level={level}>
-                                    <a
-                                        ref={link === headingTrailLink ? linkRef : undefined}
-                                        id={link === headingTrailLink ? "headingFocus" : undefined}
-                                        aria-label={link === headingTrailLink ? label + " (***)" : undefined}
-                                        style={emphasis}
-                                        className={
-                                            classNames(stylesReader.subheading,
-                                                link.Href ? " " : stylesReader.inert,
-                                                isRightToLeft[0] ? stylesReader.rtlDir : " ")
-                                        }
-                                        onClick=
-                                        {link.Href ? (e) => {
-                                            const closeNavTOCTree = !dockedMode && !(e.shiftKey && e.altKey);
-                                            handleLinkClick(e, link.Href, closeNavTOCTree);
-                                        } : undefined}
-                                        onDoubleClick=
-                                        {link.Href ? (e) => handleLinkClick(e, link.Href, false) : undefined}
-                                        tabIndex={0}
-                                        onKeyUp=
-                                        {link.Href ?
-                                            (e) => {
-                                                if (e.key === "Enter") {
-                                                    const closeNavTOCTree = !dockedMode && !(e.shiftKey && e.altKey);
-                                                    handleLinkClick(e, link.Href, closeNavTOCTree);
-                                                }
-                                            }
-                                            : undefined
-                                        }
-                                        data-href={link.Href}
-                                    >
-                                        <span
-                                            dir={isRightToLeft[0] ? "rtl" : "ltr"}
-                                            lang={isRightToLeft[1] ? isRightToLeft[1] : undefined}
-                                        >{label}</span>
-                                    </a>
-                                </div>
-
-                                {RenderLinkTree(undefined, link.Children, level + 1, headingTrailLink)}
-                            </>
-                        ) : (
+            let emphasis = undefined;
+            if (link === headingTrailLink) {
+                emphasis = { backgroundColor: "var(--color-gray-50", borderLeft: "2px solid var(--color-brand-primary)" };
+            } else if ((link as any).__inHeadingsTrail) {
+                emphasis = { border: "1px dashed silver" };
+            }
+            const label = link.Title ? link.Title : `#${level}-${i} ${link.Href}`;
+            return (
+                <li key={`${level}-${i}`}
+                    role={useTree ? "treeitem" : undefined}
+                    aria-expanded={useTree ? "true" : undefined}
+                >
+                    {link.Children ? (
+                        <>
                             <div role={"heading"} aria-level={level}>
                                 <a
                                     ref={link === headingTrailLink ? linkRef : undefined}
@@ -338,8 +307,7 @@ const renderLinkTree = (currentLocation: MiniLocatorExtended, isRTLfn: (_link: I
                                     aria-label={link === headingTrailLink ? label + " (***)" : undefined}
                                     style={emphasis}
                                     className={
-                                        classNames(stylesReader.line,
-                                            stylesReader.active,
+                                        classNames(stylesReader.subheading,
                                             link.Href ? " " : stylesReader.inert,
                                             isRightToLeft[0] ? stylesReader.rtlDir : " ")
                                     }
@@ -352,31 +320,71 @@ const renderLinkTree = (currentLocation: MiniLocatorExtended, isRTLfn: (_link: I
                                     {link.Href ? (e) => handleLinkClick(e, link.Href, false) : undefined}
                                     tabIndex={0}
                                     onKeyUp=
-                                    {
-                                        link.Href ?
-                                            (e) => {
-                                                if (e.key === "Enter") {
-                                                    const closeNavTOCTree = !dockedMode && !(e.shiftKey && e.altKey);
-                                                    handleLinkClick(e, link.Href, closeNavTOCTree);
-                                                }
+                                    {link.Href ?
+                                        (e) => {
+                                            if (e.key === "Enter") {
+                                                const closeNavTOCTree = !dockedMode && !(e.shiftKey && e.altKey);
+                                                handleLinkClick(e, link.Href, closeNavTOCTree);
                                             }
-                                            : undefined
+                                        }
+                                        : undefined
                                     }
                                     data-href={link.Href}
                                 >
-                                        <span
-                                            dir={isRightToLeft[0] ? "rtl" : "ltr"}
-                                            lang={isRightToLeft[1] ? isRightToLeft[1] : undefined}
-                                        >{label}</span>
+                                    <span
+                                        dir={isRightToLeft[0] ? "rtl" : "ltr"}
+                                        lang={isRightToLeft[1] ? isRightToLeft[1] : undefined}
+                                    >{label}</span>
                                 </a>
                             </div>
-                        )}
-                    </li>
-                );
-            })}
-        </ul>;
-    };
-    return RenderLinkTree;
+
+                            <ReaderLinkTree currentLocation={currentLocation} isRTLfn={isRTLfn} handleLinkClick={handleLinkClick} dockedMode={dockedMode} links={link.Children} level={level + 1} headingTrailLink={headingTrailLink} />
+                        </>
+                    ) : (
+                        <div role={"heading"} aria-level={level}>
+                            <a
+                                ref={link === headingTrailLink ? linkRef : undefined}
+                                id={link === headingTrailLink ? "headingFocus" : undefined}
+                                aria-label={link === headingTrailLink ? label + " (***)" : undefined}
+                                style={emphasis}
+                                className={
+                                    classNames(stylesReader.line,
+                                        stylesReader.active,
+                                        link.Href ? " " : stylesReader.inert,
+                                        isRightToLeft[0] ? stylesReader.rtlDir : " ")
+                                }
+                                onClick=
+                                {link.Href ? (e) => {
+                                    const closeNavTOCTree = !dockedMode && !(e.shiftKey && e.altKey);
+                                    handleLinkClick(e, link.Href, closeNavTOCTree);
+                                } : undefined}
+                                onDoubleClick=
+                                {link.Href ? (e) => handleLinkClick(e, link.Href, false) : undefined}
+                                tabIndex={0}
+                                onKeyUp=
+                                {
+                                    link.Href ?
+                                        (e) => {
+                                            if (e.key === "Enter") {
+                                                const closeNavTOCTree = !dockedMode && !(e.shiftKey && e.altKey);
+                                                handleLinkClick(e, link.Href, closeNavTOCTree);
+                                            }
+                                        }
+                                        : undefined
+                                }
+                                data-href={link.Href}
+                            >
+                                    <span
+                                        dir={isRightToLeft[0] ? "rtl" : "ltr"}
+                                        lang={isRightToLeft[1] ? isRightToLeft[1] : undefined}
+                                    >{label}</span>
+                            </a>
+                        </div>
+                    )}
+                </li>
+            );
+        })}
+    </ul>;
 };
 
 // const HardWrapComment: React.FC<{ comment: string | undefined }> = (props) => {
@@ -625,7 +633,6 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const optionSelected = options.find(({ value }) => value === section)?.id ?? 0;
 
     const isRTLFunction_ = isRTLFunction(r2Publication);
-    const renderLinkTree_ = renderLinkTree(currentLocation, isRTLFunction_, handleLinkClick, dockedMode);
     const renderLinkList_ = renderLinkList(isRTLFunction_, handleLinkClick, dockedMode);
 
     const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: string, name: string, disabled: boolean, svg: {} }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
@@ -693,9 +700,9 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     <TabPanelsOrFragment dockedMode={dockedMode}>
                     <TabPanelOrRegion id="tab-toc" focusId="reader-menu-tab-toc" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-toc")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={dockedMode ? stylesSettings.docked_settings_tab : stylesSettings.settings_tab}>
-                            {(isPdf && pdfToc?.length && renderLinkTree_(__("reader.marks.toc"), pdfToc, 1, undefined)) ||
+                            {(isPdf && pdfToc?.length && <ReaderLinkTree currentLocation={currentLocation} isRTLfn={isRTLFunction_} handleLinkClick={handleLinkClick} dockedMode={dockedMode} label={__("reader.marks.toc")} links={pdfToc} level={1} />) ||
                                 (isPdf && !pdfToc?.length && <p>{__("reader.toc.publicationNoToc")}</p>) ||
-                                (!isPdf && r2Publication.TOC && renderLinkTree_(__("reader.marks.toc"), r2Publication.TOC, 1, undefined)) ||
+                                (!isPdf && r2Publication.TOC && <ReaderLinkTree currentLocation={currentLocation} isRTLfn={isRTLFunction_} handleLinkClick={handleLinkClick} dockedMode={dockedMode} label={__("reader.marks.toc")} links={r2Publication.TOC} level={1} />) ||
                                 (!isPdf && r2Publication.Spine && renderLinkList_(__("reader.marks.toc"), r2Publication.Spine))}
                         </div>
                     </TabPanelOrRegion>

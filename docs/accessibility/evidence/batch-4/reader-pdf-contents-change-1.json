@@ -1,0 +1,467 @@
+{
+  "id": "changing-pdf-contents",
+  "runtime": "reader",
+  "files": [
+    "src/renderer/reader/components/ReaderMenu/ReaderMenu.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T13:51:29.667Z",
+  "lang": "en",
+  "errors": [],
+  "actions": [
+    [
+      {
+        "_reactName": "onKeyUp",
+        "_targetInst": null,
+        "type": "keyup",
+        "nativeEvent": {
+          "isTrusted": true
+        },
+        "target": "ref: <Node>",
+        "currentTarget": null,
+        "eventPhase": 3,
+        "bubbles": true,
+        "cancelable": true,
+        "timeStamp": 1880.800000011921,
+        "defaultPrevented": false,
+        "isTrusted": true,
+        "view": "ref: <Window>",
+        "detail": 0,
+        "key": "Enter",
+        "code": "Enter",
+        "location": 0,
+        "ctrlKey": false,
+        "shiftKey": false,
+        "altKey": false,
+        "metaKey": false,
+        "repeat": false,
+        "charCode": 0,
+        "keyCode": 13,
+        "which": 13
+      },
+      "3",
+      false
+    ]
+  ],
+  "text": "Component fixture: changing-pdf-contents\nReplace PDF contents\nNavigation\nTable of Contents\n \nTable of Contents\nLandmarks\nGo to page\nBookmarks\nAnnotations\nAudit chapter\nAudit section 1\nAudit section 2",
+  "html": "<div id=\"audit-root\"><main><h1>Component fixture: changing-pdf-contents</h1><button>Replace PDF contents</button></main></div>\n<div id=\":r2:\" role=\"region\" aria-labelledby=\":r0:\"><div style=\"min-height: inherit;\"><h1 style=\"position: absolute; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px;\">Navigation</h1><div class=\"docked_header\"><template><div class=\"my_combobox_container\" data-rac=\"\" role=\"group\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 9\"><use xlink:href=\"#toc-icon\"></use></svg></div></template><div class=\"react_aria_ComboBox\" data-rac=\"\" style=\"margin: 0px; padding: 0px; flex-direction: row; background-color: var(--color-header-docked);\"><span class=\"react_aria_Label\" id=\"react-aria2876219963-:r6:\"></span><div class=\"my_combobox_container\" data-rac=\"\" role=\"group\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 9\"><use xlink:href=\"#toc-icon\"></use></svg><button id=\"reader-menu-nav\" data-focus-id=\"reader-menu-docked-trigger\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Navigation\" aria-labelledby=\"react-aria2876219963-:ra: reader-menu-nav react-aria2876219963-:r6:\" aria-haspopup=\"listbox\" aria-expanded=\"false\"><span id=\"react-aria2876219963-:ra:\" class=\"react-aria-SelectValue\" data-rac=\"\">Table of Contents</span><svg aria-hidden=\"true\" class=\"react_aria_Button\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg></button></div><div aria-hidden=\"true\" data-react-aria-prevent-focus=\"true\" data-a11y-ignore=\"aria-hidden-focus\" data-testid=\"hidden-select-container\" style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: fixed; width: 1px; white-space: nowrap; top: 0px; left: 0px;\"><label><select tabindex=\"-1\" title=\"\"><option value=\"\" label=\"&nbsp;\">&nbsp;</option><option value=\"0\">Table of Contents</option><option value=\"1\">Landmarks</option><option value=\"3\">Go to page</option><option value=\"4\">Bookmarks</option><option value=\"5\">Annotations</option></select></label></div></div><div class=\"docked_header_controls\"><button class=\"button_transparency_icon\" aria-label=\"Dock panel to the left\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 15\"><use xlink:href=\"#dockleft-icon\"></use></svg></button><button class=\"button_transparency_icon\" disabled=\"\" aria-label=\"Dock panel to the right\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 15\"><use xlink:href=\"#dockright-icon\"></use></svg></button><button class=\"button_transparency_icon\" aria-label=\"Show panel as a modal popup\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 16\"><use xlink:href=\"#dockmodal-icon\"></use></svg></button><button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></div></div><template><div class=\"settings_content\" role=\"region\" style=\"margin-top: 0px;\"><section class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-focus-id=\"reader-menu-tab-toc\" id=\"tab-toc\" role=\"region\" aria-label=\"Table of Contents\" tabindex=\"-1\"><div class=\"docked_settings_tab\"><ul dir=\"ltr\" aria-label=\"Table of Contents\" class=\"chapters_content toc_container\"><li><div role=\"heading\" aria-level=\"1\"><a class=\"subheading    \" tabindex=\"0\" data-href=\"1\" style=\"border: 1px dashed silver;\"><span dir=\"ltr\">Audit chapter</span></a></div><ul dir=\"ltr\" class=\"chapters_content toc_container\"><li><div role=\"heading\" aria-level=\"2\"><a class=\"line active    \" tabindex=\"0\" data-href=\"2\"><span dir=\"ltr\">Audit section 1</span></a></div></li><li><div role=\"heading\" aria-level=\"2\"><a class=\"line active    \" tabindex=\"0\" data-href=\"3\"><span dir=\"ltr\">Audit section 2</span></a></div></li></ul></li></ul></div></section></div></template><div data-orientation=\"vertical\" class=\"settings_container\" data-rac=\"\" data-focused=\"true\" data-focus-visible=\"true\"><div class=\"settings_content\" role=\"region\" style=\"margin-top: 0px;\"><section class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-focus-id=\"reader-menu-tab-toc\" id=\"tab-toc\" role=\"region\" aria-label=\"Table of Contents\" tabindex=\"-1\"><div class=\"docked_settings_tab\"><ul dir=\"ltr\" aria-label=\"Table of Contents\" class=\"chapters_content toc_container\"><li><div role=\"heading\" aria-level=\"1\"><a class=\"subheading    \" tabindex=\"0\" data-href=\"1\" style=\"border: 1px dashed silver;\"><span dir=\"ltr\">Audit chapter</span></a></div><ul dir=\"ltr\" class=\"chapters_content toc_container\"><li><div role=\"heading\" aria-level=\"2\"><a class=\"line active    \" tabindex=\"0\" data-href=\"2\"><span dir=\"ltr\">Audit section 1</span></a></div></li><li><div role=\"heading\" aria-level=\"2\"><a class=\"line active    \" tabindex=\"0\" data-href=\"3\"><span dir=\"ltr\">Audit section 2</span></a></div></li></ul></li></ul></div></section></div></div></div></div>",
+  "dimensions": {
+    "width": 1200,
+    "height": 850,
+    "scrollWidth": 1200
+  },
+  "focus": "<a class=\"line active    \" tabindex=\"0\" data-href=\"3\"><span dir=\"ltr\">Audit section 2</span></a>",
+  "controls": [
+    {
+      "html": "<button>Replace PDF contents</button>",
+      "rect": {
+        "x": 0,
+        "y": 60.15625,
+        "width": 140.078125,
+        "height": 16,
+        "top": 60.15625,
+        "right": 140.078125,
+        "bottom": 76.15625,
+        "left": 0
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"reader-menu-nav\" data-focus-id=\"reader-menu-docked-trigger\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pressable=\"true\" aria-label=\"Navigation\" aria-labelledby=\"react-aria2876219963-:ra: reader-menu-nav react-aria2876219963-:r6:\" aria-haspopup=\"listbox\" aria-expanded=\"false\"><span id=\"react-aria2876219963-:ra:\" class=\"react-aria-SelectValue\" data-rac=\"\">Table of Contents</span><svg aria-hidden=\"true\" class=\"react_aria_Button\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg></button>",
+      "rect": {
+        "x": 16,
+        "y": 90.71875,
+        "width": 110,
+        "height": 22.859375,
+        "top": 90.71875,
+        "right": 126,
+        "bottom": 113.578125,
+        "left": 16
+      },
+      "visible": true
+    },
+    {
+      "html": "<select tabindex=\"-1\" title=\"\"><option value=\"\" label=\"&nbsp;\">&nbsp;</option><option value=\"0\">Table of Contents</option><option value=\"1\">Landmarks</option><option value=\"3\">Go to page</option><option value=\"4\">Bookmarks</option><option value=\"5\">Annotations</option></select>",
+      "rect": {
+        "x": -1,
+        "y": 0,
+        "width": 96,
+        "height": 16,
+        "top": 0,
+        "right": 95,
+        "bottom": 16,
+        "left": -1
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"button_transparency_icon\" aria-label=\"Dock panel to the left\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 15\"><use xlink:href=\"#dockleft-icon\"></use></svg></button>",
+      "rect": {
+        "x": 1063,
+        "y": 88.15625,
+        "width": 28,
+        "height": 28,
+        "top": 88.15625,
+        "right": 1091,
+        "bottom": 116.15625,
+        "left": 1063
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"button_transparency_icon\" disabled=\"\" aria-label=\"Dock panel to the right\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 15\"><use xlink:href=\"#dockright-icon\"></use></svg></button>",
+      "rect": {
+        "x": 1096,
+        "y": 88.15625,
+        "width": 28,
+        "height": 28,
+        "top": 88.15625,
+        "right": 1124,
+        "bottom": 116.15625,
+        "left": 1096
+      },
+      "visible": true
+    },
+    {
+      "html": "<button class=\"button_transparency_icon\" aria-label=\"Show panel as a modal popup\"><svg aria-hidden=\"true\" viewBox=\"0 0 18 16\"><use xlink:href=\"#dockmodal-icon\"></use></svg></button>",
+      "rect": {
+        "x": 1129,
+        "y": 88.15625,
+        "width": 28,
+        "height": 28,
+        "top": 88.15625,
+        "right": 1157,
+        "bottom": 116.15625,
+        "left": 1129
+      },
+      "visible": true
+    },
+    {
+      "html": "<button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button>",
+      "rect": {
+        "x": 1162,
+        "y": 88.15625,
+        "width": 28,
+        "height": 28,
+        "top": 88.15625,
+        "right": 1190,
+        "bottom": 116.15625,
+        "left": 1162
+      },
+      "visible": true
+    },
+    {
+      "html": "<a class=\"subheading    \" tabindex=\"0\" data-href=\"1\" style=\"border: 1px dashed silver;\"><span dir=\"ltr\">Audit chapter</span></a>",
+      "rect": {
+        "x": 20,
+        "y": 159.15625,
+        "width": 102.234375,
+        "height": 33,
+        "top": 159.15625,
+        "right": 122.234375,
+        "bottom": 192.15625,
+        "left": 20
+      },
+      "visible": true
+    },
+    {
+      "html": "<a class=\"line active    \" tabindex=\"0\" data-href=\"2\"><span dir=\"ltr\">Audit section 1</span></a>",
+      "rect": {
+        "x": 30,
+        "y": 197.15625,
+        "width": 90.71875,
+        "height": 28,
+        "top": 197.15625,
+        "right": 120.71875,
+        "bottom": 225.15625,
+        "left": 30
+      },
+      "visible": true
+    },
+    {
+      "html": "<a class=\"line active    \" tabindex=\"0\" data-href=\"3\"><span dir=\"ltr\">Audit section 2</span></a>",
+      "rect": {
+        "x": 30,
+        "y": 230.15625,
+        "width": 90.71875,
+        "height": 28,
+        "top": 230.15625,
+        "right": 120.71875,
+        "bottom": 258.15625,
+        "left": 30
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [
+      {
+        "id": "landmark-unique",
+        "impact": "moderate",
+        "tags": [
+          "cat.semantics",
+          "best-practice"
+        ],
+        "description": "Ensure landmarks are unique",
+        "help": "Landmarks should have a unique role or role/label/title (i.e. accessible name) combination",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/landmark-unique?application=axeAPI",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "landmark-is-unique",
+                "data": {
+                  "role": "region",
+                  "accessibleText": null
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"settings_content\" role=\"region\" style=\"margin-top: 0px;\">",
+                    "target": [
+                      ".settings_content"
+                    ]
+                  }
+                ],
+                "impact": "moderate",
+                "message": "The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "moderate",
+            "html": "<div id=\":r2:\" role=\"region\" aria-labelledby=\":r0:\">",
+            "target": [
+              "#\\:r2\\:"
+            ],
+            "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+          }
+        ]
+      },
+      {
+        "id": "target-size",
+        "impact": "serious",
+        "tags": [
+          "cat.sensory-and-visual-cues",
+          "wcag22aa",
+          "wcag258"
+        ],
+        "description": "Ensure touch targets have sufficient size and space",
+        "help": "All touch targets must be 24px large, or leave sufficient space",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/target-size?application=axeAPI",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "target-size",
+                "data": {
+                  "minSize": 24,
+                  "width": 110,
+                  "height": 22.9
+                },
+                "relatedNodes": [],
+                "impact": "serious",
+                "message": "Target has insufficient size (110px by 22.9px, should be at least 24px by 24px)"
+              },
+              {
+                "id": "target-offset",
+                "data": {
+                  "closestOffset": 22.6,
+                  "minOffset": 24
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<button>Replace PDF contents</button>",
+                    "target": [
+                      "main > button"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22.6px instead of at least 24px."
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<button id=\"reader-menu-nav\" data-focus-id=\"reader-menu-docked-t...\" class=\"R2_CSS_CLASS__FORCE_...\" data-rac=\"\" type=\"button\" tabindex=\"0\" data-react-aria-pres...=\"true\" aria-label=\"Navigation\" aria-labelledby=\"react-aria2876219963...\" aria-haspopup=\"listbox\" aria-expanded=\"false\">",
+            "target": [
+              "#reader-menu-nav"
+            ],
+            "failureSummary": "Fix any of the following:\n  Target has insufficient size (110px by 22.9px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22.6px instead of at least 24px."
+          }
+        ]
+      }
+    ],
+    "incomplete": [
+      {
+        "id": "aria-valid-attr-value",
+        "impact": "critical",
+        "tags": [
+          "cat.aria",
+          "wcag2a",
+          "wcag412",
+          "EN-301-549",
+          "EN-9.4.1.2",
+          "RGAAv4",
+          "RGAA-7.1.1"
+        ],
+        "description": "Ensure all ARIA attributes have valid values",
+        "help": "ARIA attributes must conform to valid values",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-valid-attr-value?application=axeAPI",
+        "nodes": [
+          {
+            "any": [],
+            "all": [
+              {
+                "id": "aria-valid-attr-value",
+                "data": {
+                  "messageKey": "noId",
+                  "needsReview": "aria-labelledby=\":r0:\""
+                },
+                "relatedNodes": [],
+                "impact": "critical",
+                "message": "ARIA attribute element ID does not exist on the page: aria-labelledby=\":r0:\""
+              }
+            ],
+            "none": [],
+            "impact": "critical",
+            "html": "<div id=\":r2:\" role=\"region\" aria-labelledby=\":r0:\">",
+            "target": [
+              "#\\:r2\\:"
+            ],
+            "failureSummary": "Fix all of the following:\n  ARIA attribute element ID does not exist on the page: aria-labelledby=\":r0:\""
+          }
+        ]
+      }
+    ],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 11
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 7
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 11
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 7
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 8
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 11
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 7
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 7
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 10
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 11
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 5
+      },
+      {
+        "id": "button-name",
+        "nodes": 6
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 7
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "duplicate-id-aria",
+        "nodes": 3
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 5
+      },
+      {
+        "id": "heading-order",
+        "nodes": 5
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-main-is-top-level",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-no-duplicate-main",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-unique",
+        "nodes": 2
+      },
+      {
+        "id": "list",
+        "nodes": 2
+      },
+      {
+        "id": "listitem",
+        "nodes": 3
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 6
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 36
+      },
+      {
+        "id": "tabindex",
+        "nodes": 6
+      },
+      {
+        "id": "target-size",
+        "nodes": 4
+      }
+    ]
+  },
+  "evidencePrefix": "batch-4/reader-pdf-contents-change-1"
+}

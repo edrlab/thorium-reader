@@ -1,0 +1,13 @@
+{
+  "kind": "layout-measurement",
+  "initial": {
+    "width": 704,
+    "scrollWidth": 15655,
+    "left": 0,
+    "outline": "rgb(16, 83, 200) solid 2px"
+  },
+  "final": {
+    "left": 0,
+    "focused": true
+  }
+}

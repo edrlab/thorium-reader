@@ -1,0 +1,9 @@
+- main:
+  - 'heading "Component fixture: search-status" [level=1]'
+  - status: 3 correspondances
+  - search:
+    - searchbox "Recherche dans la publication": Selected passage
+    - button "Trouver"
+  - button "3 correspondances"
+  - button "Précédent"
+  - button "Suivant"

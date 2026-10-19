@@ -1,0 +1,6 @@
+- main:
+  - 'heading "Component fixture: search-status" [level=1]'
+  - status: Searching…
+  - search:
+    - searchbox "Search publication": Selected passage
+    - button "Find"

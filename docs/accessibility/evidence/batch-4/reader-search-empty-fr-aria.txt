@@ -1,0 +1,9 @@
+- main:
+  - 'heading "Component fixture: search-status" [level=1]'
+  - status: Auncune correspondance
+  - search:
+    - searchbox "Recherche dans la publication": Selected passage
+    - button "Trouver"
+  - button "Auncune correspondance" [disabled]
+  - button "Précédent" [disabled]
+  - button "Suivant" [disabled]

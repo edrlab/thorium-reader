@@ -1,0 +1,15 @@
+{
+  "kind": "local-network-measurement",
+  "requests": [
+    {
+      "method": "GET",
+      "url": "/opds/v2/catalog.json",
+      "mode": "empty"
+    },
+    {
+      "method": "GET",
+      "url": "/opds/v2/catalog.json",
+      "mode": "error"
+    }
+  ]
+}

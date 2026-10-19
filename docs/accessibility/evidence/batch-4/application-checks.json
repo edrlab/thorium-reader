@@ -1,0 +1,87 @@
+{
+  "batch": 4,
+  "startup": "npm run start:dev:quick",
+  "tests": [
+    {
+      "id": "live-local-opds-loading-and-error-status",
+      "status": "passed",
+      "findings": [
+        "A15"
+      ],
+      "evidence": [
+        "batch-4/library-opds-loading-live.json",
+        "batch-4/library-opds-empty-live.json",
+        "batch-4/library-opds-error-live.json"
+      ],
+      "limitation": "Existing loopback catalog only; delayed empty response then HTTP 503 problem response. No catalog saved, remote service, borrowing or authentication."
+    },
+    {
+      "id": "live-epub-equivalent-keyboard-navigation",
+      "status": "passed",
+      "findings": [
+        "A16"
+      ],
+      "evidence": [
+        "batch-4/reader-epub-chapter-next.json",
+        "batch-4/reader-epub-chapter-previous.json",
+        "batch-4/reader-epub-toc-keyboard.json"
+      ],
+      "spineItems": 21,
+      "limitation": "Existing EPUB: Tab/Enter TOC and next/previous spine shortcuts. Original resource/selector restored through Readium IPC; restoration is not counted as keyboard evidence. Other formats and exact pointer offsets not certified."
+    },
+    {
+      "id": "live-epub-search-status",
+      "status": "passed",
+      "findings": [
+        "A15"
+      ],
+      "evidence": [
+        "batch-4/reader-search-results-live.json",
+        "batch-4/reader-search-empty-live.json"
+      ],
+      "limitation": "Actual EPUB search and DOM status mutations, with input focus retained. Chromium semantics inspected; no native screen-reader announcement listening."
+    },
+    {
+      "id": "live-pdf-long-print-preview-keyboard",
+      "status": "passed",
+      "findings": [
+        "A27"
+      ],
+      "evidence": [
+        "batch-4/reader-pdf-print-start-live.json",
+        "batch-4/reader-pdf-print-end-live.json"
+      ],
+      "geometry": {
+        "width": 704,
+        "scrollWidth": 15655,
+        "left": 0,
+        "outline": "rgb(16, 83, 200) solid 2px"
+      },
+      "limitation": "Actual 101-page PDF and loaded endpoint thumbnails. Virtualization loads the visible windows, not all 101 thumbnails simultaneously. No print job submitted."
+    },
+    {
+      "id": "live-pdf-page-keyboard-alternative",
+      "status": "passed",
+      "findings": [
+        "A16"
+      ],
+      "evidence": [
+        "batch-4/reader-pdf-goto-page-101.json"
+      ],
+      "originalPage": 54,
+      "limitation": "Existing 101-page PDF. Native page combobox and Go to activated by keyboard; page restored. No claim for Divina or audiobook progress-track alternatives."
+    },
+    {
+      "id": "live-pdf-thumbnail-fallback-without-sidebar",
+      "status": "passed",
+      "findings": [
+        "A27"
+      ],
+      "evidence": [
+        "batch-4/reader-pdf-print-fallback-start-live.json",
+        "batch-4/reader-pdf-print-fallback-end-live.json"
+      ],
+      "limitation": "Real PDF pages and renderer; fresh cache. PDFViewerApplication.pdfThumbnailViewer temporarily hidden to force the fallback, restored in finally. This fault simulation is separate from the normal live preview case. No print job."
+    }
+  ]
+}

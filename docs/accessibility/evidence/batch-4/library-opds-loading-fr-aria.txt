@@ -1,0 +1,3 @@
+- main:
+  - 'heading "Component fixture: opds-status" [level=1]'
+  - status: Chargement…

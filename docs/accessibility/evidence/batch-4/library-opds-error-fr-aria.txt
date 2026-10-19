@@ -1,0 +1,5 @@
+- main:
+  - 'heading "Component fixture: opds-status" [level=1]'
+  - status: Désolé, une erreur est survenue lors de la tentative de traitement du catalogue !. Audit network failure
+  - heading "Désolé, une erreur est survenue lors de la tentative de traitement du catalogue !" [level=3]
+  - paragraph: Audit network failure

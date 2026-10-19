@@ -1,0 +1,33 @@
+- log: 1 option available. 1 option available.
+- log
+- heading "toolbar" [level=2]
+- button "Skip to content"
+- navigation "toolbar":
+  - list:
+    - listitem:
+      - button "Close this reading window (back to bookshelf)"
+    - listitem:
+      - button "Information"
+  - list:
+    - listitem:
+      - button "Print"
+    - listitem:
+      - button "Search publication"
+    - listitem:
+      - checkbox "Bookmark (Add)"
+    - listitem:
+      - checkbox "Annotation"
+    - listitem:
+      - button "Navigation"
+    - listitem:
+      - button "Reader settings"
+    - listitem:
+      - checkbox "Page fit or width"
+    - listitem:
+      - button "Zen mode"
+- main "main content":
+  - heading "main content" [level=2]
+  - iframe
+- navigation "Navigation history":
+  - button "Jump back in navigation history" [disabled]
+  - button "Jump forward in navigation history" [disabled]

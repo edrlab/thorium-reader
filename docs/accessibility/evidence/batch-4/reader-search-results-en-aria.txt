@@ -1,0 +1,9 @@
+- main:
+  - 'heading "Component fixture: search-status" [level=1]'
+  - status: 3 matches
+  - search:
+    - searchbox "Search publication": Selected passage
+    - button "Find"
+  - button "3 matches"
+  - button "Previous"
+  - button "Next"

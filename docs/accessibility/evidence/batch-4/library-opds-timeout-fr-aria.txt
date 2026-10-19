@@ -1,0 +1,5 @@
+- main:
+  - 'heading "Component fixture: opds-status" [level=1]'
+  - status: Le serveur distant met du temps à répondre, veuillez réessayer plus tard
+  - heading "Le serveur distant met du temps à répondre, veuillez réessayer plus tard" [level=3]
+  - paragraph: 🙈

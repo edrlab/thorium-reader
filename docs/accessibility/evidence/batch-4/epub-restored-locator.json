@@ -1,0 +1,42 @@
+{
+  "kind": "restoration-measurement",
+  "href": "EPUB/ch03s02.xhtml",
+  "restored": {
+    "locEventID": 2,
+    "docInfo": {
+      "isFixedLayout": false,
+      "isRightToLeft": false,
+      "isVerticalWritingMode": false
+    },
+    "headings": [
+      {
+        "level": 3,
+        "txt": "Note"
+      },
+      {
+        "level": 3,
+        "txt": "Note"
+      },
+      {
+        "id": "_talk_to_me_media_overlays",
+        "level": 2,
+        "txt": "Talk to Me: Media Overlays"
+      }
+    ],
+    "href": "",
+    "locations": {
+      "cfi": "/4/2/32",
+      "cssSelector": ".sect1 > p:nth-child(16)",
+      "progression": 0.25587684626586227,
+      "xpath": "/html[1]/body[1]/section[1]/p[13]"
+    },
+    "paginationInfo": {
+      "currentColumn": 19,
+      "isTwoPageSpread": false,
+      "spreadIndex": 19,
+      "totalColumns": 76
+    },
+    "title": "Talk to Me: Media Overlays",
+    "userInteract": false
+  }
+}

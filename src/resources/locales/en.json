@@ -20,7 +20,10 @@
         "resetSetting": "Reset {{- setting}}",
         "rightSlideButton": "Slide to the right",
         "skipLink": "Skip to content",
-        "toolbar": "toolbar"
+        "toolbar": "toolbar",
+        "loading": "Loading…",
+        "searching": "Searching…",
+        "printPage": "Page {{page}}"
     },
     "apiapp": {
         "documentation": "Thorium Documentation",

@@ -39,7 +39,7 @@ fs.writeFileSync(root + 'batch-3-state-results.csv', csv([['state', 'coverage_ki
 })]));
 for (const finding of Object.values(findings)) for (const file of finding.evidence) if (!fs.existsSync(root + file)) throw new Error('Missing capture: ' + file);
 const summary = {
-    batch: 3, branch: 'codex/a11y-batch-3-reflow-targets', parentCommit: '937d9d5bc4656a8abd15c462c18d5bc48adc2383', implementationState: 'A26/A31 implemented and dynamically validated; uncommitted on batch 3 branch',
+    batch: 3, branch: 'codex/a11y-batch-3-reflow-targets', parentCommit: '937d9d5bc4656a8abd15c462c18d5bc48adc2383', publishedCommit: '1515e70058bfdbbf25dbe3f3125c883d2f42cab6', implementationState: 'A26/A31 committed and pushed to origin/codex/a11y-batch-3-reflow-targets',
     inventory: 'docs/accessibility/evidence/batch-3/static-inventory.json', findings,
     validation: { fixtureScenarios: fixture.length, applicationScenarios: application.length, fixtureStates: states.filter(s => s.data.kind === 'component-fixture').length, applicationStates: states.filter(s => s.data.pages).length, allScenariosPassed: true },
     limitations: 'Per-finding scopes apply. Original audit and earlier batch evidence preserved. No publication metadata, notes, storage location, keyboard shortcut or preset was changed. Zoom, CSS viewport, text customization and docking were restored. Native screen-reader listening and comprehensive format/theme/locale conformance remain outside these checks.',

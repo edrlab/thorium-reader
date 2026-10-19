@@ -1,0 +1,82 @@
+{
+  "kind": "layout-measurement",
+  "geometry": {
+    "x": 747,
+    "y": 86,
+    "width": 184,
+    "height": 20,
+    "top": 86,
+    "right": 931,
+    "bottom": 106,
+    "left": 747
+  },
+  "violations": [],
+  "incomplete": [],
+  "passes": [
+    {
+      "id": "target-size",
+      "nodes": [
+        [
+          ".skip_link"
+        ],
+        [
+          "ul:nth-child(1) > li:nth-child(1) > .menu_button"
+        ],
+        [
+          "#react-aria1563549607-\\:r4\\:"
+        ],
+        [
+          "#react-aria1563549607-\\:r9\\:"
+        ],
+        [
+          "#search-button-trigger"
+        ],
+        [
+          "#bookmarkButton"
+        ],
+        [
+          "#annotationButton"
+        ],
+        [
+          "button[title=\"Navigation\"]"
+        ],
+        [
+          "button[aria-label=\"Reader settings\"]"
+        ],
+        [
+          "#pdfScaleButton"
+        ],
+        [
+          "button[aria-label=\"Zen mode\"]"
+        ],
+        [
+          ".disabled:nth-child(1)"
+        ],
+        [
+          ".disabled:nth-child(2)"
+        ],
+        [
+          "#reader-menu-nav"
+        ],
+        [
+          "button[aria-label=\"Dock panel to the left\"]"
+        ],
+        [
+          "button[aria-label=\"Show panel as a modal popup\"]"
+        ],
+        [
+          "button[data-css-override=\"\"]"
+        ],
+        [
+          "#reader-menu-tab-gotopage-input"
+        ],
+        [
+          "#react-aria1563549607-\\:r30\\:"
+        ],
+        [
+          ".button_primary_blue"
+        ]
+      ]
+    }
+  ]
+}

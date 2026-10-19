@@ -1,0 +1,23 @@
+- main:
+  - 'heading "Component fixture: changing-pdf-contents" [level=1]'
+  - button "Replace PDF contents"
+- region:
+  - heading "Navigation" [level=1]
+  - group:
+    - button "Table of Contents Navigation": Table of Contents
+  - button "Dock panel to the left"
+  - button "Dock panel to the right" [disabled]
+  - button "Show panel as a modal popup"
+  - button "Close"
+  - region:
+    - region "Table of Contents":
+      - list "Table of Contents":
+        - listitem:
+          - heading "Audit chapter" [level=1]
+          - list:
+            - listitem:
+              - heading "Audit section 1" [level=2]
+            - listitem:
+              - heading "Audit section 2" [level=2]
+            - listitem:
+              - heading "Audit section 3" [level=2]

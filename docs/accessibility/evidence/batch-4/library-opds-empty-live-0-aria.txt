@@ -1,0 +1,28 @@
+- region "toolbar":
+  - heading "toolbar" [level=2]
+  - button "Skip to content"
+  - navigation "Bookshelf menu":
+    - heading "Thorium" [level=1]
+    - list:
+      - listitem:
+        - button "Home":
+          - heading "Home" [level=3]
+      - listitem:
+        - button "All publications":
+          - heading "All publications" [level=3]
+      - listitem:
+        - button "Catalogs" [pressed]:
+          - heading "Catalogs" [level=3]
+      - listitem:
+        - button "Application Settings":
+          - heading "Application Settings" [level=3]: Settings
+  - main "main content":
+    - heading "-" [level=2]
+    - button "reload"
+    - link "Catalogs":
+      - /url: "#/opds"
+    - heading "http://127.0.0.1:4873/opds/v2/catalog.json" [level=4]
+    - heading "main content" [level=2]
+    - status
+    - button "Audit empty catalog"
+- status

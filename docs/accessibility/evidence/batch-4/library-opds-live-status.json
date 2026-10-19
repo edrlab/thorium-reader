@@ -1,0 +1,15 @@
+{
+  "kind": "status-transition-measurement",
+  "trace": [
+    {
+      "text": "Loading…",
+      "time": 11364.799999982119,
+      "focus": "<body id=\"body_element\" data-theme=\"system\"><svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" style=\"position: absolute; width: 0; height: 0\" aria-hidden=\"true\" id=\"__SVG_SPRITE_NODE__\"><symbol xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 14 12\" fill=\"none\" id=\"ho"
+    },
+    {
+      "text": "Sorry, unexpected error!. (http 503) Audit catalog unavailable",
+      "time": 15756.799999982119,
+      "focus": "<button type=\"button\" class=\"button_nav_tertiary button_refresh\" aria-label=\"reload\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 13\"><use xlink:href=\"#refresh-icon\"></use></svg></button>"
+    }
+  ]
+}

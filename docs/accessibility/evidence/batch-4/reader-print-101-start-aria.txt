@@ -1,0 +1,31 @@
+- main:
+  - 'heading "Component fixture: print-preview-101" [level=1]'
+  - button "Print preview" [expanded]
+- button "Dismiss"
+- dialog "Selection of printable pages":
+  - heading "Selection of printable pages" [level=2]
+  - button "Close"
+  - textbox "Pages": 1-101
+  - text: Pages Printables pages (total)
+  - paragraph: 1-101 (101)
+  - heading "Preview" [level=3]
+  - region "Preview":
+    - img "Page 1"
+    - text: "1"
+    - img "Page 2"
+    - text: "2"
+    - img "Page 3"
+    - text: "3"
+    - img "Page 4"
+    - text: "4"
+    - img "Page 5"
+    - text: "5"
+    - img "Page 6"
+    - text: "6"
+    - img "Page 7"
+    - text: "7"
+    - img "Page 8"
+    - text: "8"
+  - button "How to select a range of pages to print"
+  - button "Cancel"
+  - button "Print"

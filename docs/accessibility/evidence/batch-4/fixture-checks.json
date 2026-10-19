@@ -1,0 +1,129 @@
+{
+  "batch": 4,
+  "tests": [
+    {
+      "id": "main-load-status-en",
+      "status": "passed",
+      "findings": [
+        "A15"
+      ],
+      "evidence": [
+        "batch-4/library-main-load-busy-en.json",
+        "batch-4/library-main-load-idle-en.json"
+      ],
+      "limitation": "Real connected loader and reducer; synthetic load-state transitions. Stable polite status node, no focus movement."
+    },
+    {
+      "id": "opds-status-transitions-en",
+      "status": "passed",
+      "findings": [
+        "A15"
+      ],
+      "evidence": [
+        "batch-4/library-opds-loading-en.json",
+        "batch-4/library-opds-error-en.json",
+        "batch-4/library-opds-empty-en.json",
+        "batch-4/library-opds-timeout-en.json"
+      ],
+      "limitation": "Actual BrowserResult composition; synthetic network states, no remote requests. One persistent status avoids duplicate loader announcements."
+    },
+    {
+      "id": "main-load-status-fr",
+      "status": "passed",
+      "findings": [
+        "A15"
+      ],
+      "evidence": [
+        "batch-4/library-main-load-busy-fr.json",
+        "batch-4/library-main-load-idle-fr.json"
+      ],
+      "limitation": "Real connected loader and reducer; synthetic load-state transitions. Stable polite status node, no focus movement."
+    },
+    {
+      "id": "opds-status-transitions-fr",
+      "status": "passed",
+      "findings": [
+        "A15"
+      ],
+      "evidence": [
+        "batch-4/library-opds-loading-fr.json",
+        "batch-4/library-opds-error-fr.json",
+        "batch-4/library-opds-empty-fr.json",
+        "batch-4/library-opds-timeout-fr.json"
+      ],
+      "limitation": "Actual BrowserResult composition; synthetic network states, no remote requests. One persistent status avoids duplicate loader announcements."
+    },
+    {
+      "id": "print-preview-keyboard-101",
+      "status": "passed",
+      "findings": [
+        "A27"
+      ],
+      "evidence": [
+        "batch-4/reader-print-101-start.json",
+        "batch-4/reader-print-101-end.json"
+      ],
+      "geometry": {
+        "width": 702,
+        "scrollWidth": 15655,
+        "left": 0
+      },
+      "limitation": "101 preloaded synthetic thumbnails or one-page boundary; real virtualizer. Tab, arrows, Home/End and cancellation only. Print never activated."
+    },
+    {
+      "id": "print-preview-keyboard-1",
+      "status": "passed",
+      "findings": [
+        "A27"
+      ],
+      "evidence": [
+        "batch-4/reader-print-1-start.json"
+      ],
+      "geometry": {
+        "width": 702,
+        "scrollWidth": 702,
+        "left": 0
+      },
+      "limitation": "101 preloaded synthetic thumbnails or one-page boundary; real virtualizer. Tab, arrows, Home/End and cancellation only. Print never activated."
+    },
+    {
+      "id": "pdf-contents-arrives-and-changes-depth",
+      "status": "passed",
+      "findings": [
+        "A16"
+      ],
+      "evidence": [
+        "batch-4/reader-pdf-contents-change-1.json",
+        "batch-4/reader-pdf-contents-change-2.json",
+        "batch-4/reader-pdf-contents-change-3.json"
+      ],
+      "limitation": "Actual ReaderMenu: empty to nested TOC, changed child count, then empty. Keyboard activation recorded; no hook-order error. Synthetic PDF metadata."
+    },
+    {
+      "id": "search-status-transitions-en",
+      "status": "passed",
+      "findings": [
+        "A15"
+      ],
+      "evidence": [
+        "batch-4/reader-search-busy-en.json",
+        "batch-4/reader-search-results-en.json",
+        "batch-4/reader-search-empty-en.json"
+      ],
+      "limitation": "Actual EPUB SearchPicker and service-free reducer transitions. Search input keeps focus; no native screen-reader listening."
+    },
+    {
+      "id": "search-status-transitions-fr",
+      "status": "passed",
+      "findings": [
+        "A15"
+      ],
+      "evidence": [
+        "batch-4/reader-search-busy-fr.json",
+        "batch-4/reader-search-results-fr.json",
+        "batch-4/reader-search-empty-fr.json"
+      ],
+      "limitation": "Actual EPUB SearchPicker and service-free reducer transitions. Search input keeps focus; no native screen-reader listening."
+    }
+  ]
+}

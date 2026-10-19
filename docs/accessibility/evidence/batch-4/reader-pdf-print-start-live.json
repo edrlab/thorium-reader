@@ -1,0 +1,729 @@
+{
+  "label": "reader-pdf-print-start-live",
+  "timestamp": "2026-10-19T14:01:07.598Z",
+  "axeVersion": "4.13.0",
+  "targets": [
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/EA36D500B13D0EFB5A193035040E2D93",
+      "id": "EA36D500B13D0EFB5A193035040E2D93",
+      "parentId": "E4F88C15DB1C203B6C609DA0030616B7",
+      "title": "Untitled - publication.pdf",
+      "type": "webview",
+      "url": "thoriumhttps://0.0.0.0/pdfjs/web/viewer.html?file=thoriumhttps%3A%2F%2F0.0.0.0%2Fpub%2FYTVhMGM3YmQtMmExNS00OGFkLWFkMDctNzhmYzI2ZTkwYmY2%2Fmanifest.json%2F..%2Fpublication.pdf&thoriumpdfdata=eyJwYWdlIjoiMSIsInNjcm9sbFRvcCI6NzAyLCJ6b29tIjoicGFnZS1maXQifQ%3D%3D",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/EA36D500B13D0EFB5A193035040E2D93"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/E4F88C15DB1C203B6C609DA0030616B7",
+      "id": "E4F88C15DB1C203B6C609DA0030616B7",
+      "title": "Thorium - Untitled",
+      "type": "page",
+      "url": "http://localhost:8191/index_reader.html",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/E4F88C15DB1C203B6C609DA0030616B7"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/5364C86FDB3792CDE2594BE13414C898",
+      "id": "5364C86FDB3792CDE2594BE13414C898",
+      "title": "Thorium",
+      "type": "page",
+      "url": "http://localhost:8090/index_library.html#/home",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/5364C86FDB3792CDE2594BE13414C898"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/2A20FA90583E4512202E7157FF233159",
+      "id": "2A20FA90583E4512202E7157FF233159",
+      "title": "Service Worker chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/background.bundle.js",
+      "type": "service_worker",
+      "url": "chrome-extension://lmhkpmbekcpmknklioeibfkpmmfibljd/background.bundle.js",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/2A20FA90583E4512202E7157FF233159"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/F53BBBD648F13BB3401FA6375DD167BC",
+      "id": "F53BBBD648F13BB3401FA6375DD167BC",
+      "title": "Service Worker chrome-extension://ijmmnfpjnmlljdjbbfpdgodddghhmemm/build/background.js",
+      "type": "service_worker",
+      "url": "chrome-extension://ijmmnfpjnmlljdjbbfpdgodddghhmemm/build/background.js",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/F53BBBD648F13BB3401FA6375DD167BC"
+    },
+    {
+      "description": "",
+      "devtoolsFrontendUrl": "/devtools/inspector.html?ws=127.0.0.1:9223/devtools/page/251CE24B4DAB41DD6703B063CF1EDD62",
+      "id": "251CE24B4DAB41DD6703B063CF1EDD62",
+      "title": "thoriumhttps://0.0.0.0/pdfjs/build/pdf.worker.mjs",
+      "type": "worker",
+      "url": "thoriumhttps://0.0.0.0/pdfjs/build/pdf.worker.mjs",
+      "webSocketDebuggerUrl": "ws://127.0.0.1:9223/devtools/page/251CE24B4DAB41DD6703B063CF1EDD62"
+    }
+  ],
+  "pages": [
+    {
+      "title": "Thorium",
+      "url": "http://localhost:8090/index_library.html#/home",
+      "lang": "en",
+      "dimensions": {
+        "width": 1133,
+        "height": 808,
+        "scrollWidth": 1133
+      },
+      "focus": "<a aria-pressed=\"true\" role=\"button\" class=\"button_nav_primary\" title=\"Home\" href=\"#/home\" style=\"height: auto;\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 12\"><use xlink:href=\"#home-icon\"></use></svg><h3>Home</h3></a>",
+      "dialogs": [],
+      "sliders": [],
+      "evidencePrefix": "batch-4/reader-pdf-print-start-live-0",
+      "axe": {
+        "violations": [
+          {
+            "id": "heading-order",
+            "impact": "moderate",
+            "tags": [
+              "cat.semantics",
+              "best-practice"
+            ],
+            "description": "Ensure the order of headings is semantically correct",
+            "help": "Heading levels should only increase by one",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/heading-order?application=axeAPI",
+            "nodes": [
+              {
+                "any": [
+                  {
+                    "id": "heading-order",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "moderate",
+                    "message": "Heading order invalid"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "moderate",
+                "html": "<h3>Home</h3>",
+                "target": [
+                  "a[title=\"Home\"] > h3"
+                ],
+                "failureSummary": "Fix any of the following:\n  Heading order invalid"
+              }
+            ]
+          },
+          {
+            "id": "landmark-main-is-top-level",
+            "impact": "moderate",
+            "tags": [
+              "cat.semantics",
+              "best-practice"
+            ],
+            "description": "Ensure the main landmark is at top level",
+            "help": "Main landmark should not be contained in another landmark",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/landmark-main-is-top-level?application=axeAPI",
+            "nodes": [
+              {
+                "any": [
+                  {
+                    "id": "landmark-is-top-level",
+                    "data": {
+                      "role": "main"
+                    },
+                    "relatedNodes": [],
+                    "impact": "moderate",
+                    "message": "The main landmark is contained in another landmark."
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "moderate",
+                "html": "<main id=\"main\" aria-label=\"main content\" class=\"main\">",
+                "target": [
+                  "#main"
+                ],
+                "failureSummary": "Fix any of the following:\n  The main landmark is contained in another landmark."
+              }
+            ]
+          },
+          {
+            "id": "presentation-role-conflict",
+            "impact": "minor",
+            "tags": [
+              "cat.aria",
+              "best-practice",
+              "ACT"
+            ],
+            "description": "Ensure elements marked as presentational do not have global ARIA or tabindex so that all screen readers ignore them",
+            "help": "Elements marked as presentational should be consistently ignored",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/presentation-role-conflict?application=axeAPI",
+            "nodes": [
+              {
+                "any": [],
+                "all": [],
+                "none": [
+                  {
+                    "id": "is-element-focusable",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "minor",
+                    "message": "Element is not focusable."
+                  }
+                ],
+                "impact": "minor",
+                "html": "<img tabindex=\"-1\" class=\"cover_img\" role=\"presentation\" alt=\"\" src=\"store://a5a0c7bd-2a15-48ad-ad07-78fc26e90bf6/cover.png\">",
+                "target": [
+                  "a[title=\"Untitled\"] > .cover_wrapper > img"
+                ],
+                "failureSummary": "Fix all of the following:\n  Element is not focusable."
+              },
+              {
+                "any": [],
+                "all": [],
+                "none": [
+                  {
+                    "id": "is-element-focusable",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "minor",
+                    "message": "Element is not focusable."
+                  }
+                ],
+                "impact": "minor",
+                "html": "<img tabindex=\"-1\" class=\"cover_img\" role=\"presentation\" alt=\"\" src=\"store://77ac4faf-02c3-4b25-bdb4-be48d7d23a58/cover.jpeg\">",
+                "target": [
+                  "li:nth-child(2) > .publication_wrapper > .publication_main_container > .cover_wrapper > img"
+                ],
+                "failureSummary": "Fix all of the following:\n  Element is not focusable."
+              },
+              {
+                "any": [],
+                "all": [],
+                "none": [
+                  {
+                    "id": "is-element-focusable",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "minor",
+                    "message": "Element is not focusable."
+                  }
+                ],
+                "impact": "minor",
+                "html": "<img tabindex=\"-1\" class=\"cover_img\" role=\"presentation\" alt=\"\" src=\"store://3aa1ea23-16e3-45f8-ab1a-3b1b849100df/cover.jpeg\">",
+                "target": [
+                  "a[title=\"La Proie - Yrsa Sigurðardóttir\"] > .cover_wrapper > img"
+                ],
+                "failureSummary": "Fix all of the following:\n  Element is not focusable."
+              },
+              {
+                "any": [],
+                "all": [],
+                "none": [
+                  {
+                    "id": "is-element-focusable",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "minor",
+                    "message": "Element is not focusable."
+                  }
+                ],
+                "impact": "minor",
+                "html": "<img tabindex=\"-1\" class=\"cover_img\" role=\"presentation\" alt=\"\" src=\"store://bbbff5e4-6c89-4231-9b70-106e4cc9acc2/cover.png\">",
+                "target": [
+                  "li:nth-child(4) > .publication_wrapper > .publication_main_container > .cover_wrapper > img"
+                ],
+                "failureSummary": "Fix all of the following:\n  Element is not focusable."
+              },
+              {
+                "any": [],
+                "all": [],
+                "none": [
+                  {
+                    "id": "is-element-focusable",
+                    "data": null,
+                    "relatedNodes": [],
+                    "impact": "minor",
+                    "message": "Element is not focusable."
+                  }
+                ],
+                "impact": "minor",
+                "html": "<img tabindex=\"-1\" class=\"cover_img\" role=\"presentation\" alt=\"\" src=\"store://1864ea26-f0e4-444a-8dcb-a046f7193728/cover.jpeg\">",
+                "target": [
+                  "a[title=\"The Waste Land - T.S. Eliot\"] > .cover_wrapper > img"
+                ],
+                "failureSummary": "Fix all of the following:\n  Element is not focusable."
+              }
+            ]
+          }
+        ],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "tags": [
+              "cat.color",
+              "wcag2aa",
+              "wcag143",
+              "TTv5",
+              "TT13.c",
+              "EN-301-549",
+              "EN-9.1.4.3",
+              "ACT",
+              "RGAAv4",
+              "RGAA-3.2.1"
+            ],
+            "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "any": [
+                  {
+                    "id": "color-contrast",
+                    "data": {
+                      "contrastRatio": 0,
+                      "fontSize": "15.0pt (20px)",
+                      "fontWeight": "bold",
+                      "messageKey": "bgOverlap",
+                      "expectedContrastRatio": "3:1"
+                    },
+                    "relatedNodes": [],
+                    "impact": "serious",
+                    "message": "Element's background color could not be determined because it is overlapped by another element"
+                  }
+                ],
+                "all": [],
+                "none": [],
+                "impact": "serious",
+                "html": "<h2>Recently added</h2>",
+                "target": [
+                  ".continue_reading > h2"
+                ],
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              }
+            ]
+          }
+        ],
+        "passes": [
+          {
+            "id": "aria-allowed-attr",
+            "nodes": 20
+          },
+          {
+            "id": "aria-allowed-role",
+            "nodes": 14
+          },
+          {
+            "id": "aria-conditional-attr",
+            "nodes": 20
+          },
+          {
+            "id": "aria-deprecated-role",
+            "nodes": 14
+          },
+          {
+            "id": "aria-hidden-body",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-focus",
+            "nodes": 25
+          },
+          {
+            "id": "aria-prohibited-attr",
+            "nodes": 20
+          },
+          {
+            "id": "aria-required-attr",
+            "nodes": 14
+          },
+          {
+            "id": "aria-roles",
+            "nodes": 14
+          },
+          {
+            "id": "aria-valid-attr-value",
+            "nodes": 20
+          },
+          {
+            "id": "aria-valid-attr",
+            "nodes": 20
+          },
+          {
+            "id": "avoid-inline-spacing",
+            "nodes": 20
+          },
+          {
+            "id": "button-name",
+            "nodes": 12
+          },
+          {
+            "id": "bypass",
+            "nodes": 1
+          },
+          {
+            "id": "color-contrast",
+            "nodes": 22
+          },
+          {
+            "id": "document-title",
+            "nodes": 1
+          },
+          {
+            "id": "empty-heading",
+            "nodes": 9
+          },
+          {
+            "id": "heading-order",
+            "nodes": 8
+          },
+          {
+            "id": "html-has-lang",
+            "nodes": 1
+          },
+          {
+            "id": "html-lang-valid",
+            "nodes": 1
+          },
+          {
+            "id": "image-alt",
+            "nodes": 5
+          },
+          {
+            "id": "image-redundant-alt",
+            "nodes": 5
+          },
+          {
+            "id": "landmark-no-duplicate-main",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-one-main",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-unique",
+            "nodes": 3
+          },
+          {
+            "id": "link-name",
+            "nodes": 4
+          },
+          {
+            "id": "list",
+            "nodes": 3
+          },
+          {
+            "id": "listitem",
+            "nodes": 9
+          },
+          {
+            "id": "meta-viewport-large",
+            "nodes": 1
+          },
+          {
+            "id": "meta-viewport",
+            "nodes": 1
+          },
+          {
+            "id": "nested-interactive",
+            "nodes": 20
+          },
+          {
+            "id": "page-has-heading-one",
+            "nodes": 1
+          },
+          {
+            "id": "region",
+            "nodes": 131
+          },
+          {
+            "id": "scrollable-region-focusable",
+            "nodes": 2
+          },
+          {
+            "id": "tabindex",
+            "nodes": 20
+          },
+          {
+            "id": "target-size",
+            "nodes": 13
+          }
+        ],
+        "inapplicable": [
+          "accesskeys",
+          "area-alt",
+          "aria-braille-equivalent",
+          "aria-command-name",
+          "aria-dialog-name",
+          "aria-input-field-name",
+          "aria-meter-name",
+          "aria-progressbar-name",
+          "aria-required-children",
+          "aria-required-parent",
+          "aria-tab-name",
+          "aria-text",
+          "aria-toggle-field-name",
+          "aria-tooltip-name",
+          "aria-treeitem-name",
+          "autocomplete-valid",
+          "blink",
+          "definition-list",
+          "dlitem",
+          "duplicate-id-aria",
+          "empty-table-header",
+          "form-field-multiple-labels",
+          "frame-focusable-content",
+          "frame-tested",
+          "frame-title-unique",
+          "frame-title",
+          "html-xml-lang-mismatch",
+          "input-button-name",
+          "input-image-alt",
+          "label-title-only",
+          "label",
+          "landmark-banner-is-top-level",
+          "landmark-contentinfo-is-top-level",
+          "landmark-no-duplicate-banner",
+          "landmark-no-duplicate-contentinfo",
+          "link-in-text-block",
+          "marquee",
+          "meta-refresh",
+          "object-alt",
+          "role-img-alt",
+          "scope-attr-valid",
+          "select-name",
+          "server-side-image-map",
+          "skip-link",
+          "summary-name",
+          "svg-img-alt",
+          "table-duplicate-name",
+          "td-headers-attr",
+          "th-has-data-cells",
+          "valid-lang",
+          "video-caption",
+          "no-autoplay-audio"
+        ]
+      }
+    },
+    {
+      "title": "Thorium - Untitled",
+      "url": "http://localhost:8191/index_reader.html",
+      "lang": "en",
+      "dimensions": {
+        "width": 1089,
+        "height": 771,
+        "scrollWidth": 1089
+      },
+      "focus": "<div id=\"print-dialog-image-container\" class=\"print_dialog_image_container\" role=\"region\" aria-labelledby=\":r1r:\" tabindex=\"0\"><div style=\"height: 100%; width: 15655px; position: relative;\"><div class=\"print_dialog_thumbnail_container\" style=\"width: 145px; transform: translateX(0px);\"><img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAH4AAAC9CAIAAAD6PV7FAAAQAElEQVR4AeydD1yM2frAD1oz5c/2j1WRZIibYnejcqWojYjoxm1FobbbrtRYq93VknaxLVZFu1rK/pLS2jVNu/1HGhOmJklTUkYqMtaf/lBNQ+zvmcmfltyabZoz794zn2feznve532e93zP6TnnOW8f+v9BPpgI9Efkg4kAQY8JPEIEPUGPjQA2x2TUE/TYCGBzTEY9QY+NADbHZNQT9HISuHHjRmpq6qlTpx4+fCjnrb1UV9jtVB31Eonk0qVLfD4fdgEUBkO5hqiK3tDQ8P79+8bGxmTUK3XACIXCzZs3Dxky5MqVK2lpaeXl5Up1ryBnVBr1jx8/TkpK2rFjR3p6+sCBA8+fP5+bm2tgYJCYmBgcHLxz505q/QZQCf2TJ09YLNbRo0cHDRrk7e3d3NxcV1d37dq1R48ejRgxoqKiAvpGQSNSGWaohL6oqMjNzW337t2TJk2qrq6ePn36/PnzHzx44ODgMHTo0AkTJly4cEEZzBTkg0roz507d/r06eTk5B9//BEiDyxyaDTa2bNns7Oz2Ww2cM/Pz1cQFmWYoRL6mTNnDh8+fN68eSYmJk1NTRDlhw0b9sYbb4wcOXLjxo39+vUTi8XKYKYgH1RCz+PxMjMzYTkPIR6Og2UfKEOUhwmgtLT0+vXrCsKiDDOUQQ/rGZhmYTUJYaempsbFxQXCPawvbW1toRugPHXqVJh+IcVVBjZF+KAM+vj4eIgtkEnBZAuFyZMn6+jo6Ovrjxo1atq0adAxEO4BCFyFYxeielWUQW9mZgbRpqWlxcbGJi8vT1NTE+INrCyBfkNDw+zZs2F9CV0C04DqQe76iS",
+      "dialogs": [
+        {
+          "html": "<section id=\"react-aria9548534601-:r8:\" class=\"modal_dialog_reader modal_dialog_print\" data-rac=\"\" aria-labelledby=\":r5:\" role=\"dialog\" tabindex=\"-1\" style=\"z-index: 102; height: fit-content;\"><form class=\"print_dialog_form\"><div style=\"display: flex; justify-content: space-between;\"><h2 id=\":r5:\">Selection of printable pages</h2><button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></div><div style=\"margin: 10px; border-bottom: 2px solid var(--color-gray-50;\"></div><div style=\"display: flex; flex-direction: row; align-items: center; gap: 20px;\"><div class=\"form_group\" style=\"min-width: 360px; margin-left: 5px;\"><input id=\":r1s:\" type=\"text\" name=\"print-range\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" title=\"Pages\" value=\"1-101\" style=\"width: 100%; margin-left: 10px;\"><label for=\":r1s:\">Pages</label></div><div><label for=\"pages-to-print\">Printables pages (total)</label><p id=\"pages-to-print\" style=\"margin-top: 3px;\">1-101 (101)</p></div></div><h3 id=\":r1r:\">Preview</h3><div style=\"padding: 10px 15px 5px; background-color: var(--color-gray-50;\"><div id=\"print-dialog-image-container\" class=\"print_dialog_image_container\" role=\"region\" aria-labelledby=\":r1r:\" tabindex=\"0\"><div style=\"height: 100%; width: 15655px; position: relative;\"><div class=\"print_dialog_thumbnail_container\" style=\"width: 145px; transform: translateX(0px);\"><img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAH4AAAC9CAIAAAD6PV7FAAAQAEl"
+        }
+      ],
+      "sliders": [],
+      "evidencePrefix": "batch-4/reader-pdf-print-start-live-1",
+      "axe": {
+        "violations": [],
+        "incomplete": [],
+        "passes": [
+          {
+            "id": "aria-allowed-attr",
+            "nodes": 6
+          },
+          {
+            "id": "aria-allowed-role",
+            "nodes": 38
+          },
+          {
+            "id": "aria-conditional-attr",
+            "nodes": 6
+          },
+          {
+            "id": "aria-deprecated-role",
+            "nodes": 2
+          },
+          {
+            "id": "aria-dialog-name",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-body",
+            "nodes": 1
+          },
+          {
+            "id": "aria-hidden-focus",
+            "nodes": 19
+          },
+          {
+            "id": "aria-prohibited-attr",
+            "nodes": 6
+          },
+          {
+            "id": "aria-required-attr",
+            "nodes": 2
+          },
+          {
+            "id": "aria-roles",
+            "nodes": 2
+          },
+          {
+            "id": "aria-valid-attr-value",
+            "nodes": 6
+          },
+          {
+            "id": "aria-valid-attr",
+            "nodes": 6
+          },
+          {
+            "id": "avoid-inline-spacing",
+            "nodes": 2
+          },
+          {
+            "id": "button-name",
+            "nodes": 5
+          },
+          {
+            "id": "color-contrast",
+            "nodes": 1
+          },
+          {
+            "id": "document-title",
+            "nodes": 1
+          },
+          {
+            "id": "duplicate-id-aria",
+            "nodes": 8
+          },
+          {
+            "id": "empty-heading",
+            "nodes": 2
+          },
+          {
+            "id": "form-field-multiple-labels",
+            "nodes": 1
+          },
+          {
+            "id": "heading-order",
+            "nodes": 2
+          },
+          {
+            "id": "html-has-lang",
+            "nodes": 1
+          },
+          {
+            "id": "html-lang-valid",
+            "nodes": 1
+          },
+          {
+            "id": "image-alt",
+            "nodes": 8
+          },
+          {
+            "id": "image-redundant-alt",
+            "nodes": 8
+          },
+          {
+            "id": "label-title-only",
+            "nodes": 1
+          },
+          {
+            "id": "label",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-one-main",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-unique",
+            "nodes": 1
+          },
+          {
+            "id": "meta-viewport-large",
+            "nodes": 1
+          },
+          {
+            "id": "meta-viewport",
+            "nodes": 1
+          },
+          {
+            "id": "nested-interactive",
+            "nodes": 13
+          },
+          {
+            "id": "page-has-heading-one",
+            "nodes": 1
+          },
+          {
+            "id": "region",
+            "nodes": 49
+          },
+          {
+            "id": "scrollable-region-focusable",
+            "nodes": 1
+          },
+          {
+            "id": "tabindex",
+            "nodes": 6
+          },
+          {
+            "id": "target-size",
+            "nodes": 6
+          }
+        ],
+        "inapplicable": [
+          "accesskeys",
+          "area-alt",
+          "aria-braille-equivalent",
+          "aria-command-name",
+          "aria-input-field-name",
+          "aria-meter-name",
+          "aria-progressbar-name",
+          "aria-required-children",
+          "aria-required-parent",
+          "aria-tab-name",
+          "aria-text",
+          "aria-toggle-field-name",
+          "aria-tooltip-name",
+          "aria-treeitem-name",
+          "autocomplete-valid",
+          "blink",
+          "bypass",
+          "definition-list",
+          "dlitem",
+          "empty-table-header",
+          "frame-focusable-content",
+          "frame-tested",
+          "frame-title-unique",
+          "frame-title",
+          "html-xml-lang-mismatch",
+          "input-button-name",
+          "input-image-alt",
+          "landmark-banner-is-top-level",
+          "landmark-contentinfo-is-top-level",
+          "landmark-main-is-top-level",
+          "landmark-no-duplicate-banner",
+          "landmark-no-duplicate-contentinfo",
+          "landmark-no-duplicate-main",
+          "link-in-text-block",
+          "link-name",
+          "list",
+          "listitem",
+          "marquee",
+          "meta-refresh",
+          "object-alt",
+          "presentation-role-conflict",
+          "role-img-alt",
+          "scope-attr-valid",
+          "select-name",
+          "server-side-image-map",
+          "skip-link",
+          "summary-name",
+          "svg-img-alt",
+          "table-duplicate-name",
+          "td-headers-attr",
+          "th-has-data-cells",
+          "valid-lang",
+          "video-caption",
+          "no-autoplay-audio"
+        ]
+      }
+    }
+  ]
+}

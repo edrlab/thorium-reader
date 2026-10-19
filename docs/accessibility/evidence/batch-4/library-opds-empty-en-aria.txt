@@ -1,0 +1,5 @@
+- main:
+  - 'heading "Component fixture: opds-status" [level=1]'
+  - status: No publication found
+  - heading "No publication found" [level=3]
+  - paragraph: 🙈

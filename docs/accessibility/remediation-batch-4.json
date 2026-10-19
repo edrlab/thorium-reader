@@ -1,0 +1,98 @@
+{
+  "batch": 4,
+  "branch": "codex/a11y-batch-4-status-navigation-print",
+  "parentCommit": "1515e70058bfdbbf25dbe3f3125c883d2f42cab6",
+  "implementationState": "A15/A16/A27 implemented and dynamically validated; uncommitted on batch 4 branch",
+  "inventory": "docs/accessibility/evidence/batch-4/static-inventory.json",
+  "findings": {
+    "A15": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/common/components/Loader.tsx",
+        "src/renderer/library/components/LoaderMainLoad.tsx",
+        "src/renderer/library/components/opds/BrowserResult.tsx",
+        "src/renderer/library/components/opds/MessageOpdBrowserResult.tsx",
+        "src/renderer/reader/components/picker/Search.tsx",
+        "src/renderer/reader/components/picker/SearchFormPicker.tsx",
+        "src/renderer/reader/components/picker/LoaderSearch.tsx"
+      ],
+      "evidence": [
+        "evidence/batch-4/library-main-load-busy-en.json",
+        "evidence/batch-4/library-main-load-idle-en.json",
+        "evidence/batch-4/library-main-load-busy-fr.json",
+        "evidence/batch-4/library-main-load-idle-fr.json",
+        "evidence/batch-4/library-opds-loading-en.json",
+        "evidence/batch-4/library-opds-error-en.json",
+        "evidence/batch-4/library-opds-empty-en.json",
+        "evidence/batch-4/library-opds-timeout-en.json",
+        "evidence/batch-4/library-opds-loading-fr.json",
+        "evidence/batch-4/library-opds-error-fr.json",
+        "evidence/batch-4/library-opds-empty-fr.json",
+        "evidence/batch-4/library-opds-timeout-fr.json",
+        "evidence/batch-4/reader-search-busy-en.json",
+        "evidence/batch-4/reader-search-results-en.json",
+        "evidence/batch-4/reader-search-empty-en.json",
+        "evidence/batch-4/reader-search-busy-fr.json",
+        "evidence/batch-4/reader-search-results-fr.json",
+        "evidence/batch-4/reader-search-empty-fr.json",
+        "evidence/batch-4/reader-search-results-live.json",
+        "evidence/batch-4/reader-search-empty-live.json",
+        "evidence/batch-4/library-opds-loading-live.json",
+        "evidence/batch-4/library-opds-empty-live.json",
+        "evidence/batch-4/library-opds-error-live.json"
+      ],
+      "observation": "Shared loading indicators expose localized status text. Main loading, OPDS response feedback and Reader search use persistent polite status nodes; decorative search spinners are covered at operation level. Actual EPUB search reports Searching, 95 matches and no matches with input focus retained. Existing loopback OPDS loading and HTTP 503 response verified live. Removed the search field blur handler that immediately reclaimed focus; Tab can leave the input. English/French fixture transitions pass.",
+      "limitations": "DOM mutations and Chromium accessibility semantics verified, without native screen-reader listening. Covers these loader/OPDS/EPUB search operations, not every asynchronous process or native notification. PDF search status and other locale/theme states need further coverage."
+    },
+    "A16": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/reader/components/ReaderFooter.tsx",
+        "src/renderer/reader/components/ReaderMenu/ReaderMenu.tsx",
+        "src/renderer/reader/components/ReaderMenu/GoToPageSection.tsx"
+      ],
+      "evidence": [
+        "evidence/batch-4/reader-pdf-contents-change-1.json",
+        "evidence/batch-4/reader-pdf-contents-change-2.json",
+        "evidence/batch-4/reader-pdf-contents-change-3.json",
+        "evidence/batch-4/reader-epub-chapter-next.json",
+        "evidence/batch-4/reader-epub-chapter-previous.json",
+        "evidence/batch-4/reader-epub-toc-keyboard.json",
+        "evidence/batch-4/reader-pdf-goto-page-101.json"
+      ],
+      "observation": "The visual progress track remains redundant in the tested EPUB/PDF: next/previous spine shortcuts, Tab/Enter TOC activation and PDF page-combobox navigation work. Assessment exposed a PDF Reader crash when asynchronous TOC data changed recursive hook count. Each recursive tree now renders as a separate stable React component. Empty/nested/changed/empty TOC fixture transitions and live PDF navigation pass without that crash.",
+      "limitations": "EPUB and PDF equivalents are verified in sampled publications. Divina and audiobook navigation, exact arbitrary pointer offsets and end-to-end native AT remain untested. EPUB resource/selector restored via Readium IPC; PDF page restored. Programmatic restoration is not counted as keyboard evidence."
+    },
+    "A27": {
+      "status": "fixed",
+      "files": [
+        "src/renderer/reader/components/Print.tsx"
+      ],
+      "styles": [
+        "src/renderer/assets/styles/components/print.scss"
+      ],
+      "runtimeFiles": [
+        "src/renderer/reader/pdf/webview/index_pdf.ts"
+      ],
+      "evidence": [
+        "evidence/batch-4/reader-print-101-start.json",
+        "evidence/batch-4/reader-print-101-end.json",
+        "evidence/batch-4/reader-print-1-start.json",
+        "evidence/batch-4/reader-pdf-print-start-live.json",
+        "evidence/batch-4/reader-pdf-print-end-live.json",
+        "evidence/batch-4/reader-pdf-print-fallback-start-live.json",
+        "evidence/batch-4/reader-pdf-print-fallback-end-live.json"
+      ],
+      "observation": "Print preview is a named focusable region with a visible focus outline. Tab reaches it after Pages; arrows scroll and explicit Home/End/PageUp/PageDown support horizontal virtualized preview navigation. Fully loaded visible endpoint thumbnails in the actual 101-page PDF verified, plus 101 preloaded synthetic thumbnails and the one-page boundary. A serial page-rendering fallback supplies thumbnails when PDF.js has no sidebar thumbnail viewer. Page labels now identify preview images; the visible Pages label targets its unique input ID. Cancel restores Print focus and no print action is submitted.",
+      "limitations": "Live PDF virtualization loads visible windows rather than all 101 thumbnails simultaneously. Native-thumbnail-viewer absence also tested separately by temporarily hiding/restoring the viewer with a fresh real PDF cache. This checks preview keyboard access, not PDF document alternatives, native print dialogs, print jobs or full dialog reflow. No native screen-reader listening."
+    }
+  },
+  "validation": {
+    "fixtureScenarios": 9,
+    "applicationScenarios": 6,
+    "fixtureStates": 24,
+    "applicationStates": 13,
+    "allScenariosPassed": true
+  },
+  "limitations": "Per-finding scopes apply. Original audit and earlier batch evidence preserved. No publication tags, notes, storage location, keyboard shortcut or preset was changed and no print job was submitted. EPUB resource/selector and PDF page restored; audit panels closed. Native screen-reader listening and comprehensive format/theme/locale conformance remain outside these checks."
+}

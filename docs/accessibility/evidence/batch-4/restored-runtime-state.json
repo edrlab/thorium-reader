@@ -1,0 +1,28 @@
+{
+  "kind": "restoration-measurement",
+  "windows": [
+    {
+      "url": "http://localhost:8191/index_reader.html",
+      "viewport": {
+        "width": 1089,
+        "height": 771
+      },
+      "zoom": 1,
+      "dialogs": 0,
+      "pdf": {
+        "page": 54,
+        "pages": 101,
+        "temporaryViewerStubPresent": false
+      }
+    },
+    {
+      "url": "http://localhost:8090/index_library.html#/home",
+      "viewport": {
+        "width": 1133,
+        "height": 808
+      },
+      "zoom": 1,
+      "dialogs": 0
+    }
+  ]
+}

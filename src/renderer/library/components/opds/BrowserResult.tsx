@@ -10,6 +10,7 @@ import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/componen
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 
 import * as React from "react";
+import { VisuallyHidden } from "react-aria-components";
 import { connect } from "react-redux";
 import {
     TranslatorProps, withTranslator,
@@ -44,21 +45,20 @@ export class BrowserResult extends React.Component<IProps, undefined> {
 
     public render(): React.ReactElement<{}> {
         const { __, browserData } = this.props;
-        let content = (<Loader />);
+        let status = __("accessibility.loading");
+        const message = (title: string, detail?: string) => {
+            status = [title, detail].filter(Boolean).join(". ");
+            return <MessageOpdBrowserResult title={title} message={detail} />;
+        };
+        let content = (<Loader announce={false} />);
 
         if (!navigator.onLine) {
             content = (
-                <MessageOpdBrowserResult
-                    title={__("opds.network.noInternet")}
-                    message={__("opds.network.noInternetMessage")}
-                />
+                message(__("opds.network.noInternet"), __("opds.network.noInternetMessage"))
             );
         } else if (browserData?.error) { // reject in opds api // network don't reject now
             content = (
-                <MessageOpdBrowserResult
-                    title={__("opds.network.reject")}
-                    message={browserData.errorMessage.message}
-                />
+                message(__("opds.network.reject"), browserData.errorMessage.message)
             );
         } else if (browserData?.result) {
             const browserResult = browserData.result;
@@ -73,10 +73,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                 } } } = browserResult;
 
                 content = (
-                    <MessageOpdBrowserResult
-                        title={__("opds.network.reject")}
-                        message={`(http ${status}) ${title || type}`}
-                    />
+                    message(__("opds.network.reject"), `(http ${status}) ${title || type}`)
                 );
 
             } else if (
@@ -84,12 +81,13 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                 parseContentType(browserResult.contentType) === ContentType.Html
             ) {
                 // The route saga hands Web Catalogs off to the system browser.
-                content = (<Loader />);
+                content = (<Loader announce={false} />);
             } else if (
                 browserResult.isSuccess
                 || (browserResult.isFailure && browserResult.statusCode === 401 && browserResult?.data?.opds?.auth)
             ) {
 
+                status = "";
                 const { data: { opds } } = browserResult;
 
                 if (opds.navigation &&
@@ -190,24 +188,22 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                     );
                 } else {
                     content = (
-                        <MessageOpdBrowserResult title={__("opds.empty")} />
+                        message(__("opds.empty"))
                     );
                 }
             } else if (browserResult.isTimeout) {
                 content = (
-                    <MessageOpdBrowserResult title={__("opds.network.timeout")} />
+                    message(__("opds.network.timeout"))
                 );
             } else {
                 content = (
-                    <MessageOpdBrowserResult
-                        title={__("opds.network.error")}
-                        message={`${browserResult.statusCode ? `${browserResult.statusCode} : ` : ""}${browserResult.statusMessage || ""}`}
-                    />
+                    message(__("opds.network.error"), `${browserResult.statusCode ? `${browserResult.statusCode} : ` : ""}${browserResult.statusMessage || ""}`)
                 );
             }
         }
 
         return <div className={stylesCatalogs.opds_browserResults} id="opds_browserResults">
+            <VisuallyHidden><span role="status" aria-atomic="true">{status}</span></VisuallyHidden>
             {content}
         </div>;
     }

@@ -19,9 +19,24 @@ import * as FilterIcon from 'readium-desktop/renderer/assets/icons/filter3-icon.
 import type { Selection } from 'react-aria-components';
 import { ReaderSettings } from 'readium-desktop/renderer/reader/components/ReaderSettings/ReaderSettings';
 import * as stylesPopover from 'readium-desktop/renderer/assets/styles/components/popoverDialog.scss';
+import SearchPicker from 'readium-desktop/renderer/reader/components/picker/Search';
+import { PrintContainer } from 'readium-desktop/renderer/reader/components/Print';
+import { ReaderMenu } from 'readium-desktop/renderer/reader/components/ReaderMenu/ReaderMenu';
+function ChangingPdfContents() {
+    const [count, setCount] = React.useState(0);
+    const toc = count ? [{ Href: '1', Title: 'Audit chapter', Children: Array.from({ length: count }, (_, i) => ({ Href: String(i + 2), Title: 'Audit section ' + (i + 1) })) }] : [];
+    return <><button onClick={() => setCount(count === 0 ? 2 : count === 2 ? 3 : 0)}>Replace PDF contents</button><Dialog.Root isOpen modal={false}><Dialog.Portal><Dialog.DockedContent><ReaderMenu pdfToc={toc} isPdf isDivina={false} isAudiobook={false} pdfNumberOfPages={101} currentLocation={{ ...locator, locator: { href: '1' } }} handleLinkClick={record} goToLocator={record} goToPdfAnnotation={record} focusMainAreaLandmarkAndCloseMenu={record} /></Dialog.DockedContent></Dialog.Portal></Dialog.Root></>;
+}
+function PrintModal({ count = 101 }: { count?: number }) {
+    const thumbnails = React.useMemo(() => Array.from({ length: count }, (_, i) => 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="145" height="200"><rect width="145" height="200" fill="white"/><text x="20" y="50" fill="black">Page ${i + 1}</text></svg>`)), [count]);
+    return <Dialog.Root><Dialog.Trigger>Print preview</Dialog.Trigger><Dialog.Portal><Dialog.Content className={stylesPopover.modal_dialog_reader}><PrintContainer pdfPageRange={[1, count]} pdfThumbnailImageCacheArray={thumbnails} /></Dialog.Content></Dialog.Portal></Dialog.Root>;
+}
 const reader = (p: string) => 'src/renderer/reader/components/' + p;
 const cases: Record<string, AuditCase> = {};
 const add = (id: string, files: string[], render: () => React.ReactNode, state?: (s: any) => void) => cases[id] = { files, render, state };
+add('changing-pdf-contents', [reader('ReaderMenu/ReaderMenu.tsx')], () => <ChangingPdfContents />, s => { s.reader.config.readerDockingMode = 'right'; s.reader.config.readerMenuSection = 'tab-toc'; });
+add('search-status', [reader('picker/Search.tsx'), reader('picker/SearchFormPicker.tsx'), reader('picker/LoaderSearch.tsx')], () => <SearchPicker isPdf={false} currentLocation={locator} showSearchResults={record} />);
+for (const count of [1, 101]) add('print-preview-' + count, [reader('Print.tsx')], () => <PrintModal count={count} />, s => { s.reader.info.publicationView = { ...publication, lcp: undefined, lcpRightsPrints: [] }; });
 function SettingsModal() {
     const [open, setOpen] = React.useState(false);
     return <Dialog.Root isOpen={open} onOpenChange={setOpen}><Dialog.Trigger>Reader settings</Dialog.Trigger><Dialog.Portal><Dialog.Title>Reader settings</Dialog.Title><Dialog.Content className={stylesPopover.modal_dialog_reader}><ReaderSettings isPdf={false} isDivina={false} isFXL={false} divinaReadingMode="single" divinaReadingModeSupported={[]} handleDivinaReadingMode={record} disableRTLFlip={false} setDisableRTLFlip={record} fxlZoomPercent={100} zenMode={false} setZenModeAndFXLZoom={record} pdfPlayerZoom="page-fit" pdfPlayerSpreadMode={0} /></Dialog.Content></Dialog.Portal></Dialog.Root>;

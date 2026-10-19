@@ -1,0 +1,49 @@
+Batch 4: A15 loading/status feedback, A16 equivalent navigation and asynchronous PDF TOC, A27 print-preview access
+Branch: codex/a11y-batch-4-status-navigation-print (uncommitted)
+Parent: 1515e70058bfdbbf25dbe3f3125c883d2f42cab6 pushed to edrlab/thorium-reader on codex/a11y-batch-3-reflow-targets
+Full TypeScript: tsc6 --noEmit --project tsconfig-cli.json --pretty false (exit 0)
+Configured ESLint: seven changed app renderer TSX files (exit 0)
+Stylelint: print.scss (exit 0)
+Translation generation: npm run i18n-typed (exit 0); English/French new labels
+Fixture scenarios: 9 passed; 24 component-fixture captures
+Live scenarios: 6 passed; 13 intended-host captures, including a separate fault simulation of the absent native thumbnail viewer
+Main loading, OPDS loading/error/empty/timeout and EPUB search statuses tested in English/French fixtures
+Real EPUB search: Searching -> 95 matches -> Searching -> no matches, focus retained
+Search Tab reaches submit without delayed blur refocus
+Existing loopback catalog: delayed success and HTTP 503 problem response; only GET catalog requests handled
+EPUB chapter shortcuts and Tab/Enter TOC verified; original resource/selector restored by Readium IPC
+Actual PDF page picker: 54 -> 101 -> 54 verified
+101-page preview: loaded endpoint thumbnails, Tab, arrows/PageDown, End/Home, Cancel; no print job
+Fresh real PDF cache with PDFViewerApplication.pdfThumbnailViewer temporarily hidden: page 1 and 101 fallback images loaded; native viewer restored
+Normal live PDF preview also validated separately; page unchanged during preview
+Changed/nested/empty PDF TOC fixture no longer causes recursive hook-order failure
+Live docked selector measured 184x20; axe target-size has no violations in full Reader layout (isolated fixture result retained)
+Forced --no-ignore webview ESLint exposes three pre-existing errors outside the changed block: await debounceSave and two p.then calls. File is ignored by normal lint configuration. No new error in added thumbnail code; full TypeScript and PDF scope builds pass.
+Native screen-reader listening, full format/theme/locale conformance and native print UI remain untested.
+Development bundles with runtime scope checks:
+renderer pdf webview index (webpack 5.111.1) compiled successfully in 1605 ms
+renderer pdf extract webview index (webpack 5.111.1) compiled successfully in 1056 ms
+renderer webview preload (webpack 5.111.1) compiled successfully in 3285 ms
+[2] main (webpack 5.111.1) compiled successfully in 12749 ms
+[0] renderer index app (webpack 5.111.1) compiled successfully in 14001 ms
+[1] renderer index reader (webpack 5.111.1) compiled successfully in 14433 ms
+[0] renderer index app (webpack 5.111.1) compiled successfully in 675 ms
+[0] renderer index app (webpack 5.111.1) compiled successfully in 571 ms
+[1] renderer index reader (webpack 5.111.1) compiled successfully in 780 ms
+[1] renderer index reader (webpack 5.111.1) compiled successfully in 656 ms
+[0] renderer index app (webpack 5.111.1) compiled successfully in 528 ms
+[1] renderer index reader (webpack 5.111.1) compiled successfully in 591 ms
+[0] renderer index app (webpack 5.111.1) compiled successfully in 638 ms
+[1] renderer index reader (webpack 5.111.1) compiled successfully in 622 ms
+[1] renderer index reader (webpack 5.111.1) compiled successfully in 831 ms
+[1] renderer index reader (webpack 5.111.1) compiled successfully in 753 ms
+[1] renderer index reader (webpack 5.111.1) compiled successfully in 732 ms
+Rebuilt PDF runtime/extract after thumbnail changes:
+renderer pdf webview index (webpack 5.111.1) compiled successfully in 59389 ms
+renderer pdf extract webview index (webpack 5.111.1) compiled successfully in 49303 ms
+Final fixture builds:
+renderer index app:
+  renderer index app compiled in 15737 ms
+
+renderer index reader:
+  renderer index reader compiled in 15163 ms

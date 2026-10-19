@@ -1,0 +1,261 @@
+{
+  "id": "print-preview-1",
+  "runtime": "reader",
+  "files": [
+    "src/renderer/reader/components/Print.tsx"
+  ],
+  "kind": "component-fixture",
+  "services": "synthetic; no sagas or live API",
+  "timestamp": "2026-10-19T13:46:04.443Z",
+  "lang": "en",
+  "errors": [],
+  "actions": [],
+  "text": "Component fixture: print-preview-1\nPrint preview\nSelection of printable pages\nPages\nPrintables pages (total)\n\n1 (1)\n\nPreview\n1\nHow to select a range of pages to print\nCancel\nPrint",
+  "html": "<div id=\"audit-root\" inert=\"\"><main><h1>Component fixture: print-preview-1</h1><button type=\"button\" aria-expanded=\"true\" id=\"react-aria3846798649-:re:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria3846798649-:rd:\">Print preview</button></main></div>\n<span data-focus-scope-start=\"true\" hidden=\"\" inert=\"\"></span>\n<div class=\"thorium-dialog-overlay\" data-rac=\"\" style=\"position: fixed; inset: 0px; z-index: 102; --visual-viewport-width: 1200px; --visual-viewport-height: 850px; --page-width: 1200px; --page-height: 849.84375px;\"><div class=\"react-aria-Modal\" data-rac=\"\" style=\"display: contents;\"><div style=\"border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;\"><button id=\"react-aria3846798649-:rf:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button></div><section id=\"react-aria3846798649-:rd:\" class=\"modal_dialog_reader\" data-rac=\"\" aria-labelledby=\":ra:\" role=\"dialog\" tabindex=\"-1\"><form class=\"print_dialog_form\"><div style=\"display: flex; justify-content: space-between;\"><h2 id=\":ra:\">Selection of printable pages</h2><button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button></div><div style=\"margin: 10px; border-bottom: 2px solid var(--color-gray-50;\"></div><div style=\"display: flex; flex-direction: row; align-items: center; gap: 20px;\"><div class=\"form_group\" style=\"min-width: 360px; margin-left: 5px;\"><input id=\":rj:\" type=\"text\" name=\"print-range\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" title=\"Pages\" value=\"1-1\" style=\"width: 100%; margin-left: 10px;\"><label for=\":rj:\">Pages</label></div><div><label for=\"pages-to-print\">Printables pages (total)</label><p id=\"pages-to-print\" style=\"margin-top: 3px;\">1 (1)</p></div></div><h3 id=\":ri:\">Preview</h3><div style=\"padding: 10px 15px 5px; background-color: var(--color-gray-50;\"><div id=\"print-dialog-image-container\" class=\"print_dialog_image_container\" role=\"region\" aria-labelledby=\":ri:\" tabindex=\"0\"><div style=\"height: 100%; width: 155px; position: relative;\"><div class=\"print_dialog_thumbnail_container\" style=\"width: 145px; transform: translateX(0px);\"><img src=\"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22145%22%20height%3D%22200%22%3E%3Crect%20width%3D%22145%22%20height%3D%22200%22%20fill%3D%22white%22%2F%3E%3Ctext%20x%3D%2220%22%20y%3D%2250%22%20fill%3D%22black%22%3EPage%201%3C%2Ftext%3E%3C%2Fsvg%3E\" alt=\"Page 1\"><div class=\"print_dialog_thumbnail_pagination_bubble\">1</div></div></div></div></div><button type=\"button\" class=\"button_catalog_infos\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg>How to select a range of pages to print<svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg></button><div class=\"print_dialog_actions_buttons\"><button type=\"button\" class=\"button_secondary_blue\" aria-label=\"Cancel\" data-react-aria-pressable=\"true\" tabindex=\"0\">Cancel</button><button type=\"submit\" class=\"button_primary_blue\" aria-label=\"Print\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 20 17\"><use xlink:href=\"#printer-icon\"></use></svg>Print</button></div></form></section></div></div>\n<span data-focus-scope-end=\"true\" hidden=\"\" inert=\"\"></span>",
+  "dimensions": {
+    "width": 1200,
+    "height": 850,
+    "scrollWidth": 1200
+  },
+  "focus": "<div id=\"print-dialog-image-container\" class=\"print_dialog_image_container\" role=\"region\" aria-labelledby=\":ri:\" tabindex=\"0\"><div style=\"height: 100%; width: 155px; position: relative;\"><div class=\"print_dialog_thumbnail_container\" style=\"width: 145px; transform: translateX(0px);\"><img src=\"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22145%22%20height%3D%22200%22%3E%3Crect%20width%3D%22145%22%20height%3D%22200%22%20fill%3D%22white%22%2F%3E%3Ctext%20x%3D%2220%22%20y%3D%2250%22%20fill%3D%22black%22%3EPage%201%3C%2Ftext%3E%3C%2Fsvg%3E\" alt=\"Page 1\"><div class=\"print_dialog_thumbnail_pagination_bubble\">1</div></div></div></div>",
+  "controls": [
+    {
+      "html": "<button type=\"button\" aria-expanded=\"true\" id=\"react-aria3846798649-:re:\" data-react-aria-pressable=\"true\" tabindex=\"0\" aria-controls=\"react-aria3846798649-:rd:\">Print preview</button>",
+      "rect": {
+        "x": 0,
+        "y": 60.15625,
+        "width": 80.921875,
+        "height": 16,
+        "top": 60.15625,
+        "right": 80.921875,
+        "bottom": 76.15625,
+        "left": 0
+      },
+      "visible": true
+    },
+    {
+      "html": "<button id=\"react-aria3846798649-:rf:\" aria-label=\"Dismiss\" tabindex=\"-1\" style=\"width: 1px; height: 1px;\"></button>",
+      "rect": {
+        "x": -1,
+        "y": -1,
+        "width": 1,
+        "height": 1,
+        "top": -1,
+        "right": 0,
+        "bottom": 0,
+        "left": -1
+      },
+      "visible": true
+    },
+    {
+      "html": "<button data-css-override=\"\" class=\"button_transparency_icon\" aria-label=\"Close\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 12 12\"><use xlink:href=\"#close-icon\"></use></svg></button>",
+      "rect": {
+        "x": 936,
+        "y": 192,
+        "width": 30,
+        "height": 30,
+        "top": 192,
+        "right": 966,
+        "bottom": 222,
+        "left": 936
+      },
+      "visible": true
+    },
+    {
+      "html": "<input id=\":rj:\" type=\"text\" name=\"print-range\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" title=\"Pages\" value=\"1-1\" style=\"width: 100%; margin-left: 10px;\">",
+      "rect": {
+        "x": 252,
+        "y": 270,
+        "width": 350,
+        "height": 27,
+        "top": 270,
+        "right": 602,
+        "bottom": 297,
+        "left": 252
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"button\" class=\"button_catalog_infos\"><svg aria-hidden=\"true\" viewBox=\"0 0 14 14\"><use xlink:href=\"#info-icon\"></use></svg>How to select a range of pages to print<svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><use xlink:href=\"#chevron-down\"></use></svg></button>",
+      "rect": {
+        "x": 234,
+        "y": 563,
+        "width": 299.703125,
+        "height": 30,
+        "top": 563,
+        "right": 533.703125,
+        "bottom": 593,
+        "left": 234
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"button\" class=\"button_secondary_blue\" aria-label=\"Cancel\" data-react-aria-pressable=\"true\" tabindex=\"0\">Cancel</button>",
+      "rect": {
+        "x": 761,
+        "y": 613,
+        "width": 100,
+        "height": 30,
+        "top": 613,
+        "right": 861,
+        "bottom": 643,
+        "left": 761
+      },
+      "visible": true
+    },
+    {
+      "html": "<button type=\"submit\" class=\"button_primary_blue\" aria-label=\"Print\" data-react-aria-pressable=\"true\" tabindex=\"0\"><svg aria-hidden=\"true\" viewBox=\"0 0 20 17\"><use xlink:href=\"#printer-icon\"></use></svg>Print</button>",
+      "rect": {
+        "x": 866,
+        "y": 613,
+        "width": 100,
+        "height": 30,
+        "top": 613,
+        "right": 966,
+        "bottom": 643,
+        "left": 866
+      },
+      "visible": true
+    }
+  ],
+  "axe": {
+    "version": "4.13.0",
+    "violations": [],
+    "incomplete": [],
+    "passes": [
+      {
+        "id": "aria-allowed-attr",
+        "nodes": 6
+      },
+      {
+        "id": "aria-allowed-role",
+        "nodes": 2
+      },
+      {
+        "id": "aria-conditional-attr",
+        "nodes": 6
+      },
+      {
+        "id": "aria-deprecated-role",
+        "nodes": 2
+      },
+      {
+        "id": "aria-dialog-name",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-body",
+        "nodes": 1
+      },
+      {
+        "id": "aria-hidden-focus",
+        "nodes": 5
+      },
+      {
+        "id": "aria-prohibited-attr",
+        "nodes": 6
+      },
+      {
+        "id": "aria-required-attr",
+        "nodes": 2
+      },
+      {
+        "id": "aria-roles",
+        "nodes": 2
+      },
+      {
+        "id": "aria-valid-attr-value",
+        "nodes": 6
+      },
+      {
+        "id": "aria-valid-attr",
+        "nodes": 6
+      },
+      {
+        "id": "avoid-inline-spacing",
+        "nodes": 3
+      },
+      {
+        "id": "button-name",
+        "nodes": 5
+      },
+      {
+        "id": "color-contrast",
+        "nodes": 1
+      },
+      {
+        "id": "document-title",
+        "nodes": 1
+      },
+      {
+        "id": "duplicate-id-aria",
+        "nodes": 5
+      },
+      {
+        "id": "empty-heading",
+        "nodes": 2
+      },
+      {
+        "id": "form-field-multiple-labels",
+        "nodes": 1
+      },
+      {
+        "id": "heading-order",
+        "nodes": 2
+      },
+      {
+        "id": "html-has-lang",
+        "nodes": 1
+      },
+      {
+        "id": "html-lang-valid",
+        "nodes": 1
+      },
+      {
+        "id": "image-alt",
+        "nodes": 1
+      },
+      {
+        "id": "image-redundant-alt",
+        "nodes": 1
+      },
+      {
+        "id": "label-title-only",
+        "nodes": 1
+      },
+      {
+        "id": "label",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-one-main",
+        "nodes": 1
+      },
+      {
+        "id": "landmark-unique",
+        "nodes": 1
+      },
+      {
+        "id": "nested-interactive",
+        "nodes": 6
+      },
+      {
+        "id": "page-has-heading-one",
+        "nodes": 1
+      },
+      {
+        "id": "region",
+        "nodes": 28
+      },
+      {
+        "id": "tabindex",
+        "nodes": 6
+      },
+      {
+        "id": "target-size",
+        "nodes": 6
+      }
+    ]
+  },
+  "evidencePrefix": "batch-4/reader-print-1-start"
+}

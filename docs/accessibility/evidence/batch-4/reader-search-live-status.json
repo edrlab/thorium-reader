@@ -1,0 +1,25 @@
+{
+  "kind": "status-transition-measurement",
+  "trace": [
+    {
+      "text": "Searching…",
+      "time": 13069.5,
+      "focus": "<input type=\"search\" id=\"menu_search\" aria-label=\"Search publication\" placeholder=\"text to match\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" value=\"\">"
+    },
+    {
+      "text": "95 matches",
+      "time": 13492.5,
+      "focus": "<input type=\"search\" id=\"menu_search\" aria-label=\"Search publication\" placeholder=\"text to match\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" value=\"\">"
+    },
+    {
+      "text": "Searching…",
+      "time": 15250.699999988079,
+      "focus": "<input type=\"search\" id=\"menu_search\" aria-label=\"Search publication\" placeholder=\"text to match\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" value=\"\">"
+    },
+    {
+      "text": "no matches",
+      "time": 15373.199999988079,
+      "focus": "<input type=\"search\" id=\"menu_search\" aria-label=\"Search publication\" placeholder=\"text to match\" class=\"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE\" value=\"\">"
+    }
+  ]
+}
