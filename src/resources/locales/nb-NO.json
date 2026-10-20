@@ -1,6 +1,7 @@
 {
     "accessibility": {
         "bookMenu": "Meny",
+        "cancelDownload": "",
         "closeDialog": "Lukk",
         "leftSlideButton": "Flytt til venstre",
         "mainContent": "Hovedinnhold",
