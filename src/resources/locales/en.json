@@ -11,6 +11,7 @@
         "favoriteCatalog": "Favorite catalog: {{- title}}",
         "increaseSetting": "Increase {{- setting}}",
         "leftSlideButton": "Slide to the left",
+        "loading": "Loading…",
         "mainContent": "main content",
         "publicationDetails": "{{- field}}: {{- title}}",
         "resetSetting": "Reset {{- setting}}",
