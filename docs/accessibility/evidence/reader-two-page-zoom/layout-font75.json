@@ -1,0 +1,29 @@
+{
+  "scroll": {
+    "width": 910,
+    "height": 443,
+    "left": 0,
+    "top": 0,
+    "offsetWidth": 910,
+    "offsetHeight": 444
+  },
+  "body": {
+    "scrollWidth": 640,
+    "scrollHeight": 444,
+    "width": "640px",
+    "height": "443.5px",
+    "zoom": "0.75",
+    "padding": "20px 50px",
+    "margin": "0px 286.667px"
+  },
+  "html": {
+    "columnCount": "1",
+    "columnWidth": "720px",
+    "clientWidth": 910,
+    "clientHeight": 443
+  },
+  "textRects": 18,
+  "lastTextRight": 655.3203125,
+  "firstTextLeft": 252.5,
+  "lastTextBottom": 266.75
+}

@@ -149,6 +149,21 @@ if (fs.existsSync(progressEndFile)) {
     native.readerProgressEndRemediation = 'native-reader-progress-end-remediation.json';
     native.status += '; RHF02 near-end pagination repair natively verified in sampled EPUB';
 }
+const readerZoomFile = path.join(root, 'native-reader-two-page-zoom-validation.json');
+if (fs.existsSync(readerZoomFile)) {
+    const followUp = JSON.parse(fs.readFileSync(readerZoomFile, 'utf8'));
+    native.checks.push(...followUp.checks);
+    native.readerTwoPageZoomValidation = 'native-reader-two-page-zoom-validation.json';
+    native.status += '; sampled 75/100/200% text endpoints evaluated; actual two-page spread pending';
+}
+const columnsRepairFile = path.join(root, 'native-reader-columns-remediation.json');
+if (fs.existsSync(columnsRepairFile)) {
+    const repair = JSON.parse(fs.readFileSync(columnsRepairFile, 'utf8'));
+    assert.equal(repair.status, 'fixed in sampled scope');
+    native.checks.push(...repair.checks);
+    native.readerColumnsRemediation = 'native-reader-columns-remediation.json';
+    native.status += '; RHF03 Columns clipping repair natively verified';
+}
 native.recordedNativeChecks = native.checks.length;
 native.completedNativeScenarios = native.checks.filter(check => check.complete).length;
 native.startupHistory = ['Initial launcher execution blocked by approval timeouts and sandbox DLL relocation.', 'User started the temporary standalone runner.', 'Portable copy creation later succeeded (exit 0); isolated logging session started.', 'Two EPUB Reader windows timed out before a full development-app restart.', 'Restarted Reader loaded EPUB successfully; NVDA document identification captured.', 'Repeated approval-review timeouts prevented the remaining native checks.'];

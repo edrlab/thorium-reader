@@ -13,7 +13,7 @@
   "nativeValidationCompleted": false,
   "diagnosticLoggingCleanup": "Verified NVDA left running with --no-logging after the Reader progress-track session; full logs ignored under dist/.",
   "previousSetupStatus": "Not executed: automatic approval review timed out on initial attempt, retry, explicit-user-approved retry and supported native launcher action. Workspace-sandbox launch failed with Illegal System DLL Relocation. User requested recording the blocker and stopping.",
-  "nativeValidationStatus": "Partial: 13 checks recorded, 12 evaluated; N01/N02/N03 and RHF01 repaired in sampled scopes.",
+  "nativeValidationStatus": "Partial: 16 checks recorded, 14 evaluated; N01/N02/N03 and RHF01 repaired in sampled scopes.",
   "portableCreated": true,
   "screenReaderStarted": true,
   "operatingSystem": "Windows 11 25H2 (10.0.26200.9711) AMD64; reported by NVDA startup log",

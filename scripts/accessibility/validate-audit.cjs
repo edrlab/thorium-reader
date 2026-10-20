@@ -124,6 +124,29 @@ if (fs.existsSync(nativeFile)) {
         }
         assert.equal(fs.readdirSync(path.join(root, 'evidence/reader-progress-end')).filter(file => file.endsWith('.json')).length, repair.recordedCaptures);
     }
+    const readerZoomFile = path.join(root, 'native-reader-two-page-zoom-validation.json');
+    if (fs.existsSync(readerZoomFile)) {
+        const followUp = JSON.parse(fs.readFileSync(readerZoomFile, 'utf8'));
+        for (const check of followUp.checks) assert.deepEqual(native.checks.find(item => item.id === check.id), check);
+        const directory = path.join(root, 'evidence/reader-two-page-zoom');
+        const captures = fs.readdirSync(directory).filter(file => /^\d\d-.*\.json$/.test(file));
+        assert.equal(captures.length, followUp.recordedCaptures);
+        for (const file of captures) assert.equal(JSON.parse(fs.readFileSync(path.join(directory, file), 'utf8')).window.id, followUp.readerWindow);
+        assert.equal(followUp.checks.find(check => check.id === 'reader-two-page-layout').complete, false);
+    }
+    const columnsRepairFile = path.join(root, 'native-reader-columns-remediation.json');
+    if (fs.existsSync(columnsRepairFile)) {
+        const repair = JSON.parse(fs.readFileSync(columnsRepairFile, 'utf8'));
+        assert.equal(repair.status, 'fixed in sampled scope');
+        for (const check of repair.checks) assert.deepEqual(native.checks.find(item => item.id === check.id), check);
+        for (const [file, hash] of Object.entries(repair.sourceHashes)) {
+            assert.equal(crypto.createHash('sha256').update(fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n')).digest('hex'), hash, file);
+        }
+        const directory = path.join(root, 'evidence/reader-columns-fix');
+        const captures = fs.readdirSync(directory).filter(file => /^\d\d[a-z]?-.*\.json$/.test(file) && !file.startsWith('00-'));
+        assert.equal(captures.length, repair.recordedCaptures);
+        for (const file of captures) assert.equal(JSON.parse(fs.readFileSync(path.join(directory, file), 'utf8')).window.id, repair.readerWindow);
+    }
     for (const check of native.checks) {
         assert.equal(native.screenReader.started, true, 'NVDA checks require an actual NVDA session');
         assert.ok(check.files.length && check.evidence.length && check.observation && check.limitations, check.id);

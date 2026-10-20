@@ -1,0 +1,20 @@
+{
+  "label": "16-zen-width-check",
+  "at": "2026-10-20T12:21:38.649Z",
+  "input": {
+    "index": 285
+  },
+  "window": {
+    "app": "process:C:\\Users\\plero\\.codex\\worktrees\\8a0b\\thorium-reader\\node_modules\\electron\\dist\\electron.exe",
+    "id": 11602068,
+    "title": "Thorium - Accessible EPUB 3"
+  },
+  "tree": "Window: \"Thorium - Accessible EPUB 3\", App: electron.exe.\n\t0 window Thorium - Accessible EPUB 3 Secondary Actions: Raise\n\t\t1 pane (disabled)\n\t\t2 region Thorium - Accessible EPUB 3\n\t\t\t3 region\n\t\t\t\t4 region\n\t\t\t\t\t5 region\n\t\t\t\t\t\t6 region\n\t\t\t\t\t\t\t7 menu bar\n\t\t\t\t\t\t\t\t8 button DEV\n\t\t\t\t\t\t\t9 region\n\t\t\t\t\t\t\t\t10 region\n\t\t\t\t\t\t\t\t\t11 document Thorium - Accessible EPUB 3 Value: http://localhost:8191/index_reader.html ID: RootWebArea\n\t\t\t\t\t\t\t\t\t\t12 group ID: body_element\n\t\t\t\t\t\t\t\t\t\t\t259 group ID: app\n\t\t\t\t\t\t\t\t\t\t\t\t260 heading toolbar Description: toolbar ID: main-toolbar\n\t\t\t\t\t\t\t\t\t\t\t\t261 button Skip to content\n\t\t\t\t\t\t\t\t\t\t\t\t369 button Exit Zen mode Description: Exit Zen mode\n\t\t\t\t\t\t\t\t\t\t\t\t286 main main content ID: main\n\t\t\t\t\t\t\t\t\t\t\t\t\t287 heading main content Description: main content ID: main-content\n\t\t\t\t\t\t\t\t77 region\n\n",
+  "speech": [
+    "Speaking [LangChangeCommand ('en_GB'), 'Thorium - Accessible EPUB 3', 'document', CancellableSpeech (still valid)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'unknown', CancellableSpeech (still valid)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'Thorium - Accessible EPUB 3', 'document', CancellableSpeech (still valid)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'frame']"
+  ],
+  "method": "Native sky input and NVDA diagnostic text; screenshots reviewed for content visibility."
+}

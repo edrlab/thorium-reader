@@ -1,0 +1,74 @@
+{
+  "date": "2026-10-20",
+  "status": "fixed in sampled scope",
+  "branch": "codex/a11y-reader-columns-reflow",
+  "baseBranch": "codex/a11y-reader-progress-track-end",
+  "baseRevision": "b1f0f8a2cec27cab2169541f85b12f9c4755a805",
+  "sourceHashes": {
+    "src/renderer/assets/styles/components/settings.scss": "3262fb22b7df924f3d2662627ec3ecf6ddfb11bea5cee9e6c124731500ba63c4"
+  },
+  "implementation": "Allow existing settings radio groups to wrap within their container and let their option row grow vertically. Fixed-width radio cards, accessible names, roles, orientation and selection handlers are unchanged. Shared styles also address the same overflow pattern in Alignment.",
+  "baseline": "evidence/reader-two-page-zoom/02-one-column-focus.jpg",
+  "validationRecovery": "Old Reader retained stale CSS despite hot compilation. First authorized sample reopen timed out. Restarted npm run start:dev:quick, then retried the sample reopen to load fresh assets. Capture00 is historical stale-window evidence; repair captures start01 in a fresh Reader.",
+  "readerWindow": 3345306,
+  "recordedCaptures": 17,
+  "staticValidation": {
+    "stylelint": "passed",
+    "typescript": "passed",
+    "readerWebpackScope": "passed (15998ms)",
+    "libraryWebpackScope": "passed (15129ms)"
+  },
+  "checks": [
+    {
+      "id": "RHF03",
+      "complete": true,
+      "status": "Columns clipping fixed in sampled Reader; native NVDA verified",
+      "files": [
+        "src/renderer/reader/components/ReaderSettings/ReadingDisplayCol.tsx",
+        "src/renderer/reader/components/ReaderSettings/ReaderSettings.tsx"
+      ],
+      "evidence": [
+        "native-reader-columns-remediation.json",
+        "evidence/reader-columns-fix/00-settings-open.jpg",
+        "evidence/reader-columns-fix/00-settings-open.json",
+        "evidence/reader-columns-fix/01-settings-open.jpg",
+        "evidence/reader-columns-fix/01-settings-open.json",
+        "evidence/reader-columns-fix/02-custom-on.jpg",
+        "evidence/reader-columns-fix/02-custom-on.json",
+        "evidence/reader-columns-fix/02b-paginated-on.jpg",
+        "evidence/reader-columns-fix/02b-paginated-on.json",
+        "evidence/reader-columns-fix/03-docked-columns-visible.jpg",
+        "evidence/reader-columns-fix/03-docked-columns-visible.json",
+        "evidence/reader-columns-fix/04-two-columns-pointer.jpg",
+        "evidence/reader-columns-fix/04-two-columns-pointer.json",
+        "evidence/reader-columns-fix/05-two-columns-focus.json",
+        "evidence/reader-columns-fix/06-one-column-keyboard.jpg",
+        "evidence/reader-columns-fix/06-one-column-keyboard.json",
+        "evidence/reader-columns-fix/07-two-columns-keyboard.jpg",
+        "evidence/reader-columns-fix/07-two-columns-keyboard.json",
+        "evidence/reader-columns-fix/08-home-browse-scroll.jpg",
+        "evidence/reader-columns-fix/08-home-browse-scroll.json",
+        "evidence/reader-columns-fix/09-modal-layout.jpg",
+        "evidence/reader-columns-fix/09-modal-layout.json",
+        "evidence/reader-columns-fix/10-modal-default-restored.jpg",
+        "evidence/reader-columns-fix/10-modal-default-restored.json",
+        "evidence/reader-columns-fix/11-scrollable-attempt.jpg",
+        "evidence/reader-columns-fix/11-scrollable-attempt.json",
+        "evidence/reader-columns-fix/12-reopen-restoration.jpg",
+        "evidence/reader-columns-fix/12-reopen-restoration.json",
+        "evidence/reader-columns-fix/13-scrollable-pointer-restored.jpg",
+        "evidence/reader-columns-fix/13-scrollable-pointer-restored.json",
+        "evidence/reader-columns-fix/14-custom-formatting-restored.jpg",
+        "evidence/reader-columns-fix/14-custom-formatting-restored.json",
+        "evidence/reader-columns-fix/15-right-dock-restored.jpg",
+        "evidence/reader-columns-fix/15-right-dock-restored.json",
+        "evidence/reader-columns-fix/16-settings-closed.jpg",
+        "evidence/reader-columns-fix/16-settings-closed.json"
+      ],
+      "observation": "Columns choices wrap into the available docked-panel width. The complete 2 cols card and focus outline are visible after pointer selection, with no horizontal panel shift. NVDA identifies the named radio and checked state; ArrowLeft and ArrowRight move selection between 1 col and 2 cols. All three modal choices fit in one row; Default selection and its focus outline were verified.",
+      "limitations": "Sampled English EPUB Reader right-docked settings and modal layout only; screenshot visibility and native NVDA diagnostic text checked. Speech not assessed acoustically. Home scrolled the browse viewport and is not passed as radio selection. Actual publication two-page spreads, other locales/formats and full WCAG conformance remain unverified."
+    }
+  ],
+  "limitations": "Sampled English EPUB Reader right-docked settings and modal layout only; screenshot visibility and native NVDA diagnostic text checked. Speech not assessed acoustically. Home scrolled the browse viewport and is not passed as radio selection. Actual publication two-page spreads, other locales/formats and full WCAG conformance remain unverified.",
+  "cleanup": "Fresh Reader initial Scrollable layout, unchecked custom formatting, Columns Default and right docking restored; Reader left open. Exact pre-restart reading position not restored. NVDA diagnostic logging disabled after testing. Full logs remain ignored under dist."
+}
