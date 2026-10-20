@@ -15,7 +15,7 @@ import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/compo
 import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
 import classNames from "classnames";
 import * as React from "react";
-import { OVERLAY_Z_INDEX, PopoverArrow, CloseOnAnchorRemoval } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
 import { FocusScope } from "react-aria";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
@@ -249,7 +249,6 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
                                 <SVG svg={SortIcon} />
                             </button>
                         </Pressable>
-                        <CloseOnAnchorRemoval />
                         <Popover
                             placement="bottom end"
                             offset={5}
@@ -364,7 +363,6 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
                                 <SVG svg={SaveIcon} />
                             </button>
                         </Pressable>
-                        <CloseOnAnchorRemoval />
                         <Popover
                             placement="bottom end"
                             offset={5}
@@ -478,7 +476,6 @@ export const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAn
                         >
                             <SVG ariaHidden svg={OptionsIcon} />
                         </Button>
-                        <CloseOnAnchorRemoval />
                         <Popover
                             placement="bottom"
                             offset={5}

@@ -70,7 +70,7 @@ import DOMPurify from "dompurify";
 import moment from "moment";
 import { availableLanguages, I18nFunction } from "readium-desktop/common/services/translator";
 import * as React from "react";
-import { OVERLAY_Z_INDEX, PopoverArrow, CloseOnAnchorRemoval } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
 import { FocusScope } from "react-aria";
 import { DialogTrigger, Button, Popover, Dialog as PopoverDialog, Pressable } from "react-aria-components";
 import { connect } from "react-redux";
@@ -1101,7 +1101,6 @@ const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_Generic
                 <Popover placement="bottom end" offset={5} crossOffset={-10} containerPadding={0} style={{ zIndex: OVERLAY_Z_INDEX }}>
                     <PopoverDialog>
                         <FocusScope autoFocus>
-                            <CloseOnAnchorRemoval />
                             <p
                                 className={stylesDropDown.dropdown_description}
                                 dangerouslySetInnerHTML={{ __html: dangerousInnerHTML_DescriptionSanitized }}

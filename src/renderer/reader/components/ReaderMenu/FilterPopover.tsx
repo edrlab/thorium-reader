@@ -9,7 +9,7 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 import * as React from "react";
-import { OVERLAY_Z_INDEX, PopoverArrow, CloseOnAnchorRemoval } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
 import { FocusScope } from "react-aria";
 import type { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
 
@@ -67,7 +67,6 @@ const FilterPopover = (props: FilterPopoverProps) => {
                     )}
                 </button>
             </Pressable>
-            <CloseOnAnchorRemoval />
             <Popover
                 placement="bottom end"
                 offset={5}

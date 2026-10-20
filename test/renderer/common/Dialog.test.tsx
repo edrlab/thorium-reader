@@ -18,7 +18,6 @@ let useOverlayTriggerState: typeof import("react-stately").useOverlayTriggerStat
 let Button: typeof import("react-aria-components").Button;
 let FocusScope: typeof import("react-aria").FocusScope;
 let PopoverArrow: typeof import("readium-desktop/renderer/common/components/overlayHelpers").PopoverArrow;
-let CloseOnAnchorRemoval: typeof import("readium-desktop/renderer/common/components/overlayHelpers").CloseOnAnchorRemoval;
 let OVERLAY_Z_INDEX: typeof import("readium-desktop/renderer/common/components/overlayHelpers").OVERLAY_Z_INDEX;
 let root: Root;
 let host: HTMLDivElement;
@@ -89,7 +88,6 @@ beforeAll(() => {
     ({ FocusScope } = require("react-aria"));
     ({
         PopoverArrow,
-        CloseOnAnchorRemoval,
         OVERLAY_Z_INDEX,
     } = require("readium-desktop/renderer/common/components/overlayHelpers"));
     AlertDialog = require("readium-desktop/renderer/common/components/AlertDialog");
@@ -460,14 +458,13 @@ test("controlled toolbar popovers use list items as anchors without toggling the
     expect(onChange).toHaveBeenLastCalledWith(false);
 });
 
-test("default viewport popovers close when their anchor detaches", async () => {
+test("unmounting a trigger subtree removes its native popover portal", async () => {
     await React.act(async () =>
         root.render(
             <DialogTrigger>
                 <Pressable>
                     <button data-trigger>Options</button>
                 </Pressable>
-                <CloseOnAnchorRemoval />
                 <Popover
                     placement="bottom"
                     offset={0}
@@ -484,18 +481,10 @@ test("default viewport popovers close when their anchor detaches", async () => {
         ),
     );
     await click(document.querySelector("[data-trigger]")!);
-    const trigger = document.querySelector("[data-trigger]")!;
-    const parent = trigger.parentElement!;
-    await React.act(async () => {
-        trigger.remove();
-        await settle();
-    });
-    try {
-        expect(document.querySelector("[data-option]")).toBeNull();
-    } finally {
-        // Restore React's owned DOM even if the assertion fails.
-        parent.appendChild(trigger);
-    }
+    expect(document.querySelector("[data-option]")).not.toBeNull();
+    await React.act(async () => root.render(<div />));
+    expect(document.querySelector("[data-trigger]")).toBeNull();
+    expect(document.querySelector("[data-option]")).toBeNull();
 });
 
 test("controlled dialogs open programmatically and preserve deliberate focus on close", async () => {
