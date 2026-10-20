@@ -48,10 +48,9 @@ export class ToastManager extends React.Component<IProps> {
             const id = uuidv4();
             const toastList = Object.fromEntries(this.queue.visibleToasts.map((current) => [current.key, current.content]));
             if (addToastToQueue(toastList, id, toast, this.props.pubId) !== toastList) {
-                // Errors remain persistent. Other notices may explicitly opt into
-                // a timeout when their information is also available elsewhere.
-                const timeout = toast.type === ToastType.Error ? undefined :
-                    toast.timeout ?? (toast.type === ToastType.Success ? 5000 : undefined);
+                // Every notice is persistent by default, regardless of its color.
+                // Only messages available elsewhere may opt in; errors never expire.
+                const timeout = toast.type === ToastType.Error ? undefined : toast.timeout;
                 this.queue.add(toast, { timeout });
             }
         }

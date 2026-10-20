@@ -77,8 +77,8 @@ async function render(toast: ToastState, pubId?: string) {
     await React.act(async () => root.render(<ToastManager toast={toast} locale="en" pubId={pubId} __={(key) => key} />));
 }
 
-async function notify(type = ToastType.Error, data = "Download failed", publicationIdentifier?: string) {
-    await render({ open: true, type, data, publicationIdentifier });
+async function notify(type = ToastType.Error, data = "Download failed", publicationIdentifier?: string, timeout?: number) {
+    await render({ open: true, type, data, publicationIdentifier, timeout });
 }
 
 async function advance(milliseconds: number) {
@@ -132,7 +132,7 @@ test("Enter, Space, and clicking preserve copying and expansion, with accessible
     expect(Notification).not.toHaveBeenCalled();
 });
 
-test.each([ToastType.Error, ToastType.Default])("%s notifications persist until explicitly dismissed", async (type) => {
+test.each([ToastType.Error, ToastType.Default, ToastType.Success])("%s notifications persist until explicitly dismissed", async (type) => {
     await notify(type);
     await advance(60000);
     expect(dialogs()).toHaveLength(1);
@@ -141,8 +141,8 @@ test.each([ToastType.Error, ToastType.Default])("%s notifications persist until 
     expect(dialogs()).toHaveLength(0);
 });
 
-test("success confirmations expire after five seconds", async () => {
-    await notify(ToastType.Success, "Saved");
+test("success confirmations expire only when explicitly given a timeout", async () => {
+    await notify(ToastType.Success, "Saved", undefined, 5000);
     await advance(4999);
     expect(dialogs()).toHaveLength(1);
     await advance(1);
@@ -171,7 +171,7 @@ test("error notifications remain persistent even if a timeout is requested", asy
 });
 
 test("success timers pause while focused and resume with the remaining time", async () => {
-    await notify(ToastType.Success, "Saved");
+    await notify(ToastType.Success, "Saved", undefined, 5000);
     await advance(2000);
     await React.act(async () => messageButton().focus());
     await advance(60000);
@@ -186,7 +186,7 @@ test("success timers pause while focused and resume with the remaining time", as
 });
 
 test("success timers pause on hover without a shortened mouse-exit timeout", async () => {
-    await notify(ToastType.Success, "Saved");
+    await notify(ToastType.Success, "Saved", undefined, 5000);
     const region = document.querySelector("[role=region]")!;
     await advance(2000);
     await React.act(async () => region.dispatchEvent(new dom.window.MouseEvent("mouseover", { bubbles: true })));
@@ -202,7 +202,7 @@ test("success timers pause on hover without a shortened mouse-exit timeout", asy
 test("success confirmations arriving while the region is focused also pause", async () => {
     await notify();
     await React.act(async () => messageButton().focus());
-    await notify(ToastType.Success, "Saved");
+    await notify(ToastType.Success, "Saved", undefined, 5000);
     await advance(60000);
     expect(dialogs()).toHaveLength(2);
 });
@@ -211,7 +211,7 @@ test("success confirmations arriving while the region is hovered also pause", as
     await notify();
     const region = document.querySelector("[role=region]")!;
     await React.act(async () => region.dispatchEvent(new dom.window.MouseEvent("mouseover", { bubbles: true })));
-    await notify(ToastType.Success, "Saved");
+    await notify(ToastType.Success, "Saved", undefined, 5000);
     await advance(60000);
     expect(dialogs()).toHaveLength(2);
 });

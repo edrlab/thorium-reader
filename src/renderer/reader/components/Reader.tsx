@@ -2274,7 +2274,7 @@ class Reader extends React.Component<IProps, IState> {
             this.props.toasty(`${txtPagination ? `${txtPagination} -- ` : ""}${txtProgression ? `${this.props.__("publication.progression.title")} = ${txtProgression}` : ""}${txtHeadings ? ` -- ${txtHeadings}` : ""}`);
 
         } catch (_err) {
-            this.props.toasty("ERROR");
+            this.props.toastError("ERROR");
         }
     };
 
@@ -3246,7 +3246,7 @@ class Reader extends React.Component<IProps, IState> {
             }
             this.screenPreviousNextTimerDebounce = window.setTimeout(() => {
                 this.screenPreviousNextTimerDebounce = undefined;
-                this.props.toasty(str);
+                this.props.toasty(str, 5000); // The current page remains available in the reader navigation.
             }, 800);
         } else {
             this.screenPreviousNextTimerDebounce = undefined;
@@ -3776,8 +3776,8 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
                 dispatch(readerLocalActionLocatorHrefChanged.build(href1, href1, href2, href2));
             }
         },
-        toasty: (msg: string) => {
-            dispatch(toastActions.openRequest.build(ToastType.Success, msg));
+        toasty: (msg: string, timeout?: number) => {
+            dispatch(toastActions.openRequest.build(ToastType.Success, msg, undefined, undefined, timeout));
         },
         toastInfo: (msg: string) => {
             dispatch(toastActions.openRequest.build(ToastType.Default, msg));

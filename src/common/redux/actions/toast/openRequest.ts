@@ -15,7 +15,7 @@ export interface Payload {
     type: ToastType;
     data: string | undefined;
     publicationIdentifier: string | undefined;
-    /** Auto-dismiss nonessential information that is also available elsewhere. */
+    /** Opt into auto-dismissal only for information available elsewhere; omitted means persistent. */
     timeout?: number;
 }
 

@@ -68,7 +68,9 @@ export function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction
 
     clipboard.writeText(`${textToCopy}`, clipBoardType);
 
-    yield* putTyped(toastActions.openRequest.build(ToastType.Success,
+    // A partial copy is a warning. Full-copy usage can be reviewed in LCP information.
+    const partialCopy = nCharsToCopy < clipboardData.txt.length;
+    yield* putTyped(toastActions.openRequest.build(partialCopy ? ToastType.Default : ToastType.Success,
         `LCP [${translator.translate("app.edit.copy")}] ${newPublicationDocument.lcpRightsCopies} / ${publicationDocument.lcp.rights.copy}`,
-        publicationIdentifier, windowIdentifier));
+        publicationIdentifier, windowIdentifier, partialCopy ? undefined : 5000));
 }

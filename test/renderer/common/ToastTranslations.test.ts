@@ -20,6 +20,15 @@ const english = ["Copy notification and toggle details", "Notification copied", 
 afterAll(async () => { await setLocale("en"); });
 
 test.each([
+    ["en", "Another profile operation is in progress. Wait for it to finish, then try again."],
+    ["fr", "Une autre opération sur un profil est en cours. Attendez qu’elle se termine, puis réessayez."],
+    ["es", "Another profile operation is in progress. Wait for it to finish, then try again."],
+] as const)("profile-busy warnings are meaningful in %s", async (locale, expected) => {
+    await setLocale(locale);
+    expect(translate("message.notifications.profileBusy")).toBe(expected);
+});
+
+test.each([
     ["en", english],
     ["fr", ["Copier la notification et afficher ou masquer les détails", "Notification copiée", "Impossible de copier la notification"]],
     ["es", english], // Missing keys fall back to English.

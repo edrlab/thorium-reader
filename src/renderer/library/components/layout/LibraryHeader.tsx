@@ -181,7 +181,8 @@ const Header = () => {
 
     const screenReaderToggle = React.useCallback(() => {
         dispatch(screenReaderActions.save.build(!screenReaderActivate));
-        dispatch(toastActions.openRequest.build(ToastType.Success, __("settings.screenReaderActivate.invite", { keyboard: keyboardShortcutScreenReader, status: !screenReaderActivate ? __("app.session.exit.askBox.button.yes") : __("app.session.exit.askBox.button.no") })));
+        // The screen-reader setting and its shortcut remain available in Settings.
+        dispatch(toastActions.openRequest.build(ToastType.Success, __("settings.screenReaderActivate.invite", { keyboard: keyboardShortcutScreenReader, status: !screenReaderActivate ? __("app.session.exit.askBox.button.yes") : __("app.session.exit.askBox.button.no") }), undefined, undefined, 5000));
     }, [dispatch, __, screenReaderActivate, keyboardShortcutScreenReader]);
 
     const [isAccessibilitySupportEnabled, setAccessibilitySupportEnabled] = React.useState(false);

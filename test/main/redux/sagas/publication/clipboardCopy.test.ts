@@ -40,6 +40,18 @@ describe("LCP clipboard allowance", () => {
         expect(clipboard.writeText).toHaveBeenCalledWith("he", "clipboard");
         expect(repository.save).toHaveBeenCalledWith(expect.objectContaining({ lcpRightsCopies: 10 }));
         expect(dispatch).toHaveBeenCalledTimes(1);
-        expect(dispatch).toHaveBeenCalledWith(expect.objectContaining({ payload: expect.objectContaining({ type: "toast-success" }) }));
+        expect(dispatch).toHaveBeenCalledWith(expect.objectContaining({ payload: expect.objectContaining({ type: "toast-default" }) }));
+        expect(dispatch.mock.calls[0][0]).not.toHaveProperty("payload.timeout");
+    });
+
+    it("opts a full-copy confirmation into a timeout because LCP usage remains in publication information", async () => {
+        const repository = {
+            get: async () => ({ lcp: { rights: { copy: 10 } }, lcpRightsCopies: 1 }),
+            save: jest.fn(async (_document: unknown) => undefined),
+        };
+        jest.mocked(diMainGet).mockReturnValue(repository as never);
+        const dispatch = jest.fn();
+        await runSaga({ dispatch }, readerClipboardCopy, readerActions.clipboardCopy.build("publication-1", { txt: "hello", locator: undefined })).toPromise();
+        expect(dispatch).toHaveBeenCalledWith(expect.objectContaining({ payload: expect.objectContaining({ type: "toast-success", timeout: 5000 }) }));
     });
 });

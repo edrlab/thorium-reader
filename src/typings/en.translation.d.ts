@@ -665,6 +665,7 @@ declare namespace typed_i18n {
     readonly "openLinkFailed": string,
     readonly "printLimit": string,
     readonly "profileActivationFailed": string,
+    readonly "profileBusy": string,
     readonly "profileProvisionFailed": string,
     readonly "profileTimeout": string,
     readonly "publicationUnavailable": string,
@@ -755,6 +756,7 @@ declare namespace typed_i18n {
   readonly "openLinkFailed": string,
   readonly "printLimit": string,
   readonly "profileActivationFailed": string,
+  readonly "profileBusy": string,
   readonly "profileProvisionFailed": string,
   readonly "profileTimeout": string,
   readonly "publicationUnavailable": string,
@@ -777,6 +779,7 @@ declare namespace typed_i18n {
   (_: "message.notifications.openLinkFailed", __?: {}): string;
   (_: "message.notifications.printLimit", __?: {}): string;
   (_: "message.notifications.profileActivationFailed", __?: {}): string;
+  (_: "message.notifications.profileBusy", __?: {}): string;
   (_: "message.notifications.profileProvisionFailed", __?: {}): string;
   (_: "message.notifications.profileTimeout", __?: {}): string;
   (_: "message.notifications.publicationUnavailable", __?: {}): string;
