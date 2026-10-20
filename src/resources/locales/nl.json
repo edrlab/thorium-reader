@@ -78,7 +78,7 @@
         "deleteBook": "Verwijder",
         "deleteTag": "Verwijder label",
         "description": "Beschrijving",
-        "downloaded": "",
+        "downloaded": "Gedownload",
         "emptyTagList": "Je hebt geen boeken met een label.",
         "entry": {
             "continueReading": "Ga verder met lezen",
@@ -144,16 +144,16 @@
         "tags": "Labels",
         "update": "Wijzig",
         "userProfile": {
-            "available": "",
-            "bookshelf": "",
-            "edit": "",
-            "holds": "",
-            "loading": "",
-            "loans": "",
-            "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "available": "Beschikbaar: {{count}}",
+            "bookshelf": "Bekijk boekenplank",
+            "edit": "Wijzig profiel",
+            "holds": "Reserveringen",
+            "loading": "Het account wordt geladen…",
+            "loans": "Aantal geleend",
+            "title": "Account",
+            "total": "Limiet: {{count}}",
+            "unavailable": "Profielinformatie niet beschikbaar.",
+            "used": "{{used}} van {{total}} gebruikt"
         }
     },
     "dialog": {
@@ -323,13 +323,13 @@
         "menu": {
             "aboutBook": "Over dit boek",
             "addExtract": "Voeg de samenvatting toe",
-            "cancelHold": "",
-            "cancelHoldError": "",
+            "cancelHold": "Reservering annuleren",
+            "cancelHoldError": "Het lukt niet om deze reservering te annuleren. Probeer opnieuw.",
             "goBuyBook": "Koop dit boek",
             "goLoanBook": "Leen dit boek",
             "goRevokeLoanBook": "Uitlening intrekken",
             "goSubBook": "Abonneer",
-            "placeHold": ""
+            "placeHold": "Plaats reservering"
         },
         "network": {
             "error": "Het is niet mogelijk om toegang te krijgen tot de OPDS feed",
@@ -341,11 +341,11 @@
         "next": "Volgende",
         "previous": "Vorige",
         "registry": {
-            "empty": "",
-            "error": "",
-            "loading": "",
-            "prompt": "",
-            "title": ""
+            "empty": "Geen catalogi gevonden.",
+            "error": "Kan het register niet doorzoeken. Probeer opnieuw.",
+            "loading": "Catalogi doozoeken…",
+            "prompt": "Naam, land of regio",
+            "title": "Zoek catalogi"
         },
         "resumeBrowsing": "Terug naar bladeren",
         "shelf": "Plank",
@@ -713,21 +713,21 @@
         "notStarted": "Niet gestart",
         "onGoing": "Bezig",
         "progression": {
-            "remoteDescription": "",
-            "remoteTitle": "",
+            "remoteDescription": "Er is een recentere {{- device}} leespositie beschikbaar op {{- progression}}%.",
+            "remoteTitle": "Verder gaan vanaf een ander apparaat?",
             "title": "Voortgang",
-            "useRemote": ""
+            "useRemote": "Ga naar positie"
         },
         "read": "Klaar",
         "remainingTime": "Uitlening (resterende tijd)",
         "remoteProgression": {
-            "checking": "",
-            "disabled": "",
-            "empty": "",
-            "position": "",
-            "ready": "",
-            "title": "",
-            "unavailable": ""
+            "checking": "Ingeschakeld en service wordt gecontroleerd...",
+            "disabled": "Niet ingeschakeld voor deze publicatie.",
+            "empty": "Geen opgeslagen voortgang op afstand.",
+            "position": "Voortgang op afstand: {{percent}}% ({{device}}).",
+            "ready": "Ingeschakeld en gereed.",
+            "title": "Synchronisatie van leesvoortgang:",
+            "unavailable": "Ingeschakeld, maar de service is niet beschikbaar."
         },
         "renewButton": "Vernieuw",
         "returnButton": "Lever in",
@@ -1376,7 +1376,7 @@
             }
         },
         "tabs": {
-            "advanced": "",
+            "advanced": "Geavanceerd",
             "general": "Algemeen",
             "keyboardShortcuts": "Toetsenbord sneltoetsen",
             "profiles": "Profielen",
