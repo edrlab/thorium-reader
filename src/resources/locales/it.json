@@ -153,30 +153,30 @@
         "tags": "Tags",
         "update": "Modifica",
         "userProfile": {
-            "available": "",
-            "bookshelf": "",
-            "edit": "",
-            "holds": "",
-            "loading": "",
-            "loans": "",
-            "title": "",
-            "total": "",
-            "unavailable": "",
-            "used": ""
+            "available": "Disponibili: {{count}}",
+            "bookshelf": "Apri la biblioteca",
+            "edit": "Modifica il profilo",
+            "holds": "Prenotazioni",
+            "loading": "Caricamento dell'account…",
+            "loans": "Prestiti",
+            "title": "Account",
+            "total": "Limite: {{count}}",
+            "unavailable": "Le informazioni del profilo non sono disponibili.",
+            "used": "{{used}} di {{total}} utilizzati"
         }
     },
     "dialog": {
         "annotations": {
             "descAuthor": "di {{- author}}",
             "descCreator": "creata da",
-            "descList_one": "{{- count}} nota di {{- creator}} sarà associata a {{- title}} {{- author}}",
             "descList_many": "{{- count}} note di {{- creator}} saranno associate a {{- title}} {{- author}}",
+            "descList_one": "{{- count}} nota di {{- creator}} sarà associata a {{- title}} {{- author}}",
             "descList_other": "{{- count}} note di {{- creator}} saranno associate a {{- title}} {{- author}}",
-            "descNewer_one": "{{- count}} nuova versione di queste note è già associata alla pubblicazione",
             "descNewer_many": "{{- count}} nuove versioni di queste note sono già associate alla pubblicazione",
+            "descNewer_one": "{{- count}} nuova versione di queste note è già associata alla pubblicazione",
             "descNewer_other": "{{- count}} nuove versioni di queste note sono già associate alla pubblicazione",
-            "descOlder_one": "{{- count}} versione precedente di queste note è già associata alla pubblicazione",
             "descOlder_many": "{{- count}} versioni precedenti di queste note sono già associate alla pubblicazione",
+            "descOlder_one": "{{- count}} versione precedente di queste note è già associata alla pubblicazione",
             "descOlder_other": "{{- count}} versioni precedenti di queste note sono già associate alla pubblicazione",
             "descTitle": "Titolo delle note: ",
             "importAll": "Importa tutte le note",
@@ -194,12 +194,12 @@
             }
         },
         "deleteAnnotations": "Eliminare le note?",
-        "deleteAnnotationsText_one": "Vuoi eliminare {{- count}} nota?",
         "deleteAnnotationsText_many": "Vuoi eliminare {{- count}} note?",
+        "deleteAnnotationsText_one": "Vuoi eliminare {{- count}} nota?",
         "deleteAnnotationsText_other": "Vuoi eliminare {{- count}} note?",
         "deleteBookmarks": "Eliminare i segnalibri?",
-        "deleteBookmarksText_one": "Sei sicuro di voler eliminare {{- count}} segnalibro?",
         "deleteBookmarksText_many": "Sei sicuro di voler eliminare {{- count}} segnalibri?",
+        "deleteBookmarksText_one": "Sei sicuro di voler eliminare {{- count}} segnalibro?",
         "deleteBookmarksText_other": "Sei sicuro di voler eliminare {{- count}} segnalibri?",
         "deleteFeed": "Eliminare questo catalogo?",
         "deletePublication": "Eliminare questa pubblicazione?",
@@ -296,8 +296,8 @@
         "storage": {
             "recovery": {
                 "failure": "Recupero delle pubblicazioni fallito.",
-                "success_one": "{{- count}} pubblicazione recuperata.",
                 "success_many": "{{- count}} pubblicazioni recuperate.",
+                "success_one": "{{- count}} pubblicazione recuperata.",
                 "success_other": "{{- count}} pubblicazioni recuperate."
             },
             "removed": "Cartella della pubblicazione eliminata.",
@@ -338,13 +338,13 @@
         "menu": {
             "aboutBook": "Informazioni su questo libro",
             "addExtract": "Importa l'estratto",
-            "cancelHold": "",
-            "cancelHoldError": "",
+            "cancelHold": "Annulla prenotazione",
+            "cancelHoldError": "Impossibile annulare questa prenotazione. Si prega di riprovare.",
             "goBuyBook": "Compra questo libro",
             "goLoanBook": "Prendi in prestito la pubblicazione",
             "goRevokeLoanBook": "Termina il prestito",
             "goSubBook": "Iscriviti",
-            "placeHold": ""
+            "placeHold": "Fai una prenotazione"
         },
         "network": {
             "error": "Impossibile accedere al feed OPDS",
@@ -356,10 +356,11 @@
         "next": "Successivo",
         "previous": "Precedente",
         "registry": {
-            "empty": "",
-            "error": "",
-            "loading": "",
-            "title": ""
+            "empty": "Nessun catalogo trovato.",
+            "error": "Impossibile effettuare una ricerca nel registro. Si prega di riprovare.",
+            "loading": "Alla ricerca di cataloghi…",
+            "prompt": "Nome, nazione o regione",
+            "title": "Cerca cataloghi"
         },
         "resumeBrowsing": "Riprendi la navigazione",
         "shelf": "Scaffale",
@@ -894,8 +895,8 @@
         },
         "picker": {
             "search": {
-                "founds_one": "{{- count}} risultato",
                 "founds_many": "{{- count}} risultati",
+                "founds_one": "{{- count}} risultato",
                 "founds_other": "{{- count}} risultati",
                 "input": "testo da cercare",
                 "next": "Prossimo",
@@ -1379,14 +1380,14 @@
                 "description": "Verifica dello spazio d'archiviazione per reperire le pubblicazioni che possono essere recuperate.",
                 "dialog": {
                     "confirm": "Recupero",
-                    "description_one": "Thorium ha trovato {{- count}} pubblicazione in memoria mancante nel database. Desideri importarla nuovamente su Thorium?",
                     "description_many": "Thorium ha trovato {{- count}} pubblicazioni in memoria mancanti nel database. Desideri importarle nuovamente su Thorium?",
+                    "description_one": "Thorium ha trovato {{- count}} pubblicazione in memoria mancante nel database. Desideri importarla nuovamente su Thorium?",
                     "description_other": "Thorium ha trovato {{- count}} pubblicazioni in memoria mancanti nel database. Desideri importarle nuovamente su Thorium?",
                     "title": "Recupera le pubblicazioni"
                 },
                 "none": "Non è stata trovata alcuna pubblicazione da recuperare.",
-                "recoverableCount_one": "{{- count}} pubblicazione può essere recuperata con l'identificante originale d'archiviazione.",
                 "recoverableCount_many": "{{- count}} pubblicazioni possono essere recuperate con l'identificante originale d'archiviazione.",
+                "recoverableCount_one": "{{- count}} pubblicazione può essere recuperata con l'identificante originale d'archiviazione.",
                 "recoverableCount_other": "{{- count}} pubblicazioni possono essere recuperate con l'identificante originale d'archiviazione.",
                 "title": "Recupero delle pubblicazioni"
             }
