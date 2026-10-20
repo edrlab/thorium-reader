@@ -8,20 +8,22 @@
   left: 1rem;
   z-index: 999999999999;
   pointer-events: none;
+  max-height: calc(100dvh - 4rem);
+  overflow-y: auto;
 }
 
 .toast {
-  overflow: hidden;
+  overflow: auto;
+  max-height: calc(100dvh - 6rem);
   margin-bottom: 1rem;
   position: relative;
   padding: 1rem;
   border: 1px var(--color-success-text) solid;
   border-radius: 6px;
-  width: 15rem;
+  width: min(22rem, calc(100vw - 4rem));
   height: fit-content;
   background: white;
-  display: flex;
-  align-items: center;
+  display: block;
   animation-name: start;
   animation-duration: 0.5s;
   opacity: 0.9;
@@ -52,8 +54,8 @@
     overflow: hidden;
     user-select: text;
     text-overflow: ellipsis;
-    width: 100%;
-    height: 100%;
+    width: auto;
+    height: auto;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 4;
@@ -67,6 +69,24 @@
   .icon {
     height: 3rem;
     margin-right: 1rem;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+
+    button {
+      min-height: 32px;
+      height: auto;
+      padding: 6px 8px;
+    }
+  }
+
+  .copyStatus {
+    color: var(--color-text-primary);
+    margin-top: 5px;
   }
 
   .closeButton {
