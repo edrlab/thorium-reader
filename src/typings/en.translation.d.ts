@@ -669,6 +669,7 @@ declare namespace typed_i18n {
     readonly "profileProvisionFailed": string,
     readonly "profileTimeout": string,
     readonly "publicationUnavailable": string,
+    readonly "readingPositionFailed": string,
     readonly "recoveryPartialFailure": string,
     readonly "renewFailed": string,
     readonly "returnFailed": string,
@@ -760,6 +761,7 @@ declare namespace typed_i18n {
   readonly "profileProvisionFailed": string,
   readonly "profileTimeout": string,
   readonly "publicationUnavailable": string,
+  readonly "readingPositionFailed": string,
   readonly "recoveryPartialFailure": string,
   readonly "renewFailed": string,
   readonly "returnFailed": string,
@@ -783,6 +785,7 @@ declare namespace typed_i18n {
   (_: "message.notifications.profileProvisionFailed", __?: {}): string;
   (_: "message.notifications.profileTimeout", __?: {}): string;
   (_: "message.notifications.publicationUnavailable", __?: {}): string;
+  (_: "message.notifications.readingPositionFailed", __?: {}): string;
   (_: "message.notifications.recoveryPartialFailure", __?: {}): string;
   (_: "message.notifications.renewFailed", __?: {}): string;
   (_: "message.notifications.returnFailed", __?: {}): string;

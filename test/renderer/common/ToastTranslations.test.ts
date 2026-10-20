@@ -17,6 +17,15 @@ const keys = [
 
 const english = ["Copy notification and toggle details", "Notification copied", "Could not copy notification"];
 
+test.each([
+    ["en", "Unable to determine your reading position. Try again."],
+    ["fr", "Impossible de déterminer votre position de lecture. Réessayez."],
+    ["es", "Unable to determine your reading position. Try again."],
+] as const)("reading-position errors are meaningful in %s", async (locale, expected) => {
+    await setLocale(locale);
+    expect(translate("message.notifications.readingPositionFailed")).toBe(expected);
+});
+
 afterAll(async () => { await setLocale("en"); });
 
 test.each([

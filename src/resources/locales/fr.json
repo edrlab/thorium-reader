@@ -300,6 +300,7 @@
             "profileProvisionFailed": "Impossible d’installer ce profil. Vérifiez le fichier du profil ou contactez son fournisseur.",
             "profileTimeout": "Le délai d’installation du profil est dépassé. Vérifiez votre connexion et réessayez.",
             "publicationUnavailable": "Cette publication est indisponible. Essayez de la réimporter.",
+            "readingPositionFailed": "Impossible de déterminer votre position de lecture. Réessayez.",
             "recoveryPartialFailure": "{{- recovered}} publications récupérées ; {{- failed}} publications n’ont pas pu être récupérées.",
             "renewFailed": "Impossible de prolonger ce prêt. Réessayez ou contactez votre bibliothèque.",
             "returnFailed": "Impossible de rendre ce prêt. Réessayez ou contactez votre bibliothèque.",

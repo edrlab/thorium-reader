@@ -2274,7 +2274,7 @@ class Reader extends React.Component<IProps, IState> {
             this.props.toasty(`${txtPagination ? `${txtPagination} -- ` : ""}${txtProgression ? `${this.props.__("publication.progression.title")} = ${txtProgression}` : ""}${txtHeadings ? ` -- ${txtHeadings}` : ""}`);
 
         } catch (_err) {
-            this.props.toastError("ERROR");
+            this.props.toastError(this.props.__("message.notifications.readingPositionFailed"));
         }
     };
 
@@ -3246,7 +3246,7 @@ class Reader extends React.Component<IProps, IState> {
             }
             this.screenPreviousNextTimerDebounce = window.setTimeout(() => {
                 this.screenPreviousNextTimerDebounce = undefined;
-                this.props.toasty(str, 5000); // The current page remains available in the reader navigation.
+                this.props.toasty(str);
             }, 800);
         } else {
             this.screenPreviousNextTimerDebounce = undefined;
