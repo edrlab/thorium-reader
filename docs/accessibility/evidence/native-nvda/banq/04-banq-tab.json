@@ -1,0 +1,15 @@
+{
+  "label": "04-banq-tab",
+  "at": "2026-10-19T21:29:00.868Z",
+  "speech": [
+    "Input: kb(desktop):tab",
+    "Speaking [LangChangeCommand ('en_GB'), 'toolbar', 'region', CancellableSpeech (still valid)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'main content', 'main landmark', CancellableSpeech (still valid)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'search landmark', CancellableSpeech (still valid)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'Search', 'edit', CancellableSpeech (still valid), 'blank']"
+  ],
+  "method": "Native sky input; real NVDA debug speech output; no acoustic listening",
+  "logStart": 33812,
+  "logEnd": 34973,
+  "contentHandling": "Speech-only evidence. Initial helper used an older local snapshot binding; invalid contextual snapshot removed. See independent settled capture 07 or later corrected captures."
+}

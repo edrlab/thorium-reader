@@ -711,7 +711,8 @@
         "certificateRevoked": "Certificat LCP révoqué.",
         "certificateSignatureInvalid": "Signature de certificat LCP invalide.",
         "cover": {
-            "img": "image de couverture"
+            "img": "image de couverture",
+            "zoom": "Agrandir l’image de couverture"
         },
         "day": "jour",
         "days": "jours",

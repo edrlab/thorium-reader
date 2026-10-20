@@ -1,0 +1,55 @@
+{
+  "date": "2026-10-20",
+  "sourceBaseRevision": "b00c2c59756bb1a7105b5f9cfe0aad8302d1b128",
+  "branch": "codex/a11y-native-nvda-validation",
+  "deliveryBranch": "codex/a11y-native-n01-n03",
+  "stackBaseBranch": "codex/a11y-batch-5-profile-alternatives",
+  "stackBaseRevision": "c3467cd61399c9639837a6f0ace075beb07e0335",
+  "status": "fixed in sampled native Library states",
+  "baseline": "native-banq-validation.json",
+  "testedFeed": "https://banq.pretnumerique.ca/v1/home.opds2",
+  "method": "Rebuilt Library and Reader, restarted npm run start:dev:quick, and used native computer-use input with actual NVDA 2026.2 speech output. Speech inspected as text; no acoustic assessment. No acquisition or authentication performed.",
+  "findings": {
+    "N02": {
+      "status": "Fixed in sampled cover zoom; native NVDA verified",
+      "observation": "Publication details uses a native Enlarge cover image button instead of an interactive image. Its decorative cover stays outside the tab order. The enlarged dialog has a visible Close button and an informative, noninteractive cover image. English and French zoom labels are supplied. Native Tab announces Enlarge cover image, button, collapsed; Enter and Space each open the cover image dialog. Tab reaches Close, Enter closes it, Escape also dismisses it, and NVDA+Tab confirms focus returned to Enlarge cover image, button, focused, collapsed.",
+      "limitations": "Native validation covers the original Astronomie en 30 secondes BAnQ title in English Library UI. Shared Reader consumers compile but were not natively retested. Other locales fall back to English for the new zoom label; the French translation was added but not exercised with NVDA. Full reflow, all covers/formats and acoustic intelligibility are not certified. Closing the outer details dialog after a mouse-opened/nested cover flow still produced Unlabelled graphic speech, as in the baseline; no general outer-dialog focus pass is claimed.",
+      "evidence": [
+        "evidence/native-nvda/banq-fix/13-rebuilt-details-open.json",
+        "evidence/native-nvda/banq-fix/15-cover-trigger-tab.json",
+        "evidence/native-nvda/banq-fix/15-cover-trigger-tab.jpg",
+        "evidence/native-nvda/banq-fix/16-cover-enter-open.json",
+        "evidence/native-nvda/banq-fix/16-cover-enter-open.jpg",
+        "evidence/native-nvda/banq-fix/17-cover-zoom-close-tab.json",
+        "evidence/native-nvda/banq-fix/18-cover-close-enter.json",
+        "evidence/native-nvda/banq-fix/19-cover-space-open.json",
+        "evidence/native-nvda/banq-fix/20-cover-escape.json",
+        "evidence/native-nvda/banq-fix/21-cover-return-focus-query.json",
+        "evidence/native-nvda/banq-fix/build-summary.txt"
+      ]
+    },
+    "N03": {
+      "status": "Fixed in sampled empty OPDS results; native NVDA verified",
+      "observation": "BrowserResult now computes whether navigation, publications or grouped entries actually contain content. Successful empty arrays retain the localized empty-result text in the persistent atomic status, including the faceted empty-publications branch used by BAnQ, while facets and the existing visible message remain. Submitting the original zzqauditnovelxyz2026 query announces No publication found; Reload announces it again after loading. The native settled trees expose the message inside the status node as well as its visible paragraph.",
+      "limitations": "Native validation covers one live BAnQ empty query and repeated Reload in English. Other empty-array combinations are covered by source logic rather than new native scenarios. Prior A15 operation passes retain their original scope. Duplicate loading speech from the independent main-process loader remains an improvement observation; it is not claimed repaired. Errors, offline state, authenticated search and all locales remain outside this native retest.",
+      "evidence": [
+        "evidence/native-nvda/banq-fix/26-empty-query-submit.json",
+        "evidence/native-nvda/banq-fix/27-empty-query-settled.json",
+        "evidence/native-nvda/banq-fix/27-empty-query-settled.jpg",
+        "evidence/native-nvda/banq-fix/28-empty-reload.json",
+        "evidence/native-nvda/banq-fix/29-empty-reload-settled.json",
+        "evidence/native-nvda/banq-fix/build-summary.txt"
+      ]
+    }
+  },
+  "validation": {
+    "typescript": "passed: full noEmit",
+    "eslint": "passed: changed TSX files",
+    "stylelint": "passed: publicationInfos.scss",
+    "runtimeScopeBuilds": "Library and Reader passed; development restart also compiled main, PDF, PDF extract and preload",
+    "nativeScenarios": "Cover name/role, Enter/Space activation, explicit Close, Escape and trigger focus restoration; empty-result search and repeated Reload",
+    "screenshots": "Cover button, zoom dialog and empty result reviewed"
+  },
+  "startupAndEvidenceNotes": "The original loaded renderer retained the old module. Native preparation samples 01–06 are pre-restart observations and establish no remediation pass. Reload went blank; the full development app was restarted. Startup geometry/foreground errors were followed by fresh observation, without blind retry. Final fix samples 13–29 used the rebuilt Library and contain actual NVDA input/speech evidence. Immediate UIA snapshots may precede layout changes; settled observations and native speech substantiate the result.",
+  "diagnosticLoggingCleanup": "Portable NVDA left running with --no-logging; full session log remains ignored under dist/."
+}

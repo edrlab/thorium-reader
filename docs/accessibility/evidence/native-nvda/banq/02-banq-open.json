@@ -1,0 +1,15 @@
+{
+  "label": "02-banq-open",
+  "at": "2026-10-19T21:27:11.542Z",
+  "speech": [
+    "Speaking [LangChangeCommand ('en_GB'), 'Loading…  ']",
+    "Speaking [LangChangeCommand ('en_GB'), 'Thorium - Catalogs', 'document', CancellableSpeech (still valid)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'unknown', CancellableSpeech (still valid)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'Thorium - Catalogs', 'document', CancellableSpeech (still valid)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'out of list', 'out of region', 'toolbar', 'region', 'main content', 'main landmark', 'heading', 'level 4', 'https://banq.pretnumerique.ca/v1/home.opds2']"
+  ],
+  "method": "Native sky input; real NVDA debug speech output; no acoustic listening",
+  "logStart": 31137,
+  "logEnd": 33339,
+  "contentHandling": "Speech-only evidence. Initial helper used an older local snapshot binding; invalid contextual snapshot removed. See independent settled capture 07 or later corrected captures."
+}

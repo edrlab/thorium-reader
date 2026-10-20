@@ -1,0 +1,24 @@
+{
+  "label": "16-cover-zoom-open",
+  "at": "2026-10-19T21:32:36.294Z",
+  "window": {
+    "app": "process:C:\\Users\\plero\\.codex\\worktrees\\8a0b\\thorium-reader\\node_modules\\electron\\dist\\electron.exe",
+    "id": 2950604,
+    "title": "Thorium - Catalogs"
+  },
+  "accessibility": {
+    "document_text": "Dismiss\nAbout publication\n￼",
+    "focused_element": "0 window Thorium - Catalogs Secondary Actions: Raise",
+    "tree": "Window: \"Thorium - Catalogs\", App: electron.exe.\n\t0 window Thorium - Catalogs Secondary Actions: Raise\n\t\t1 pane (disabled)\n\t\t2 region Thorium - Catalogs\n\t\t\t3 region\n\t\t\t\t4 region\n\t\t\t\t\t5 region\n\t\t\t\t\t\t6 region\n\t\t\t\t\t\t\t7 menu bar\n\t\t\t\t\t\t\t\t8 button DEV\n\t\t\t\t\t\t\t9 region\n\t\t\t\t\t\t\t\t10 region\n\t\t\t\t\t\t\t\t\t11 document Thorium - Catalogs Value: http://localhost:8090/index_library.html#/opds/3a885174-0b76-48f4-9053-b4fc6f4500d0/browse/2/YXN0cm9ub21pZQ/aHR0cHM6Ly9iYW5xLnByZXRudW1lcmlxdWUuY2EvdjEvcmVzb3VyY2VzLm9wZHMyP3F1ZXJ5PWFzdHJvbm9taWU ID: RootWebArea\n\t\t\t\t\t\t\t\t\t\t334 group ID: body_element\n\t\t\t\t\t\t\t\t\t\t\t379 button Dismiss ID: react-aria9208265906-:r40q:\n\t\t\t\t\t\t\t\t\t\t\t380 dialogue About publication Secondary Actions: Raise ID: react-aria9208265906-:r40n:\n\t\t\t\t\t\t\t\t\t\t\t\t381 heading About publication ID: :r40k:\n\t\t\t\t\t\t\t\t\t\t\t\t382 graphic cover image\n\t\t\t\t\t\t\t\t73 region\n\nDocument text: ```\nDismiss\nAbout publication\n￼\n```"
+  },
+  "speech": [
+    "Speaking [LangChangeCommand ('en_GB'), 'graphic', CancellableSpeech (still valid)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'About publication', CancellableSpeech (still valid)]",
+    "Speaking [CallbackCommand(name=say-all:lineReached), LangChangeCommand ('en_GB'), 'heading', 'level 2', 'About publication', CallbackCommand(name=say-all:lineReached)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'cover image']",
+    "Speaking [CallbackCommand(name=say-all:stop)]"
+  ],
+  "method": "Native sky input; real NVDA debug speech output; no acoustic listening",
+  "logStart": 42559,
+  "logEnd": 45999
+}

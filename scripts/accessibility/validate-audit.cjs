@@ -37,6 +37,65 @@ if (fs.existsSync(nativeFile)) {
     assert.equal(native.recordedNativeChecks, native.checks.length);
     assert.equal(native.completedNativeScenarios, native.checks.filter(check => check.complete).length);
     assert.ok(fs.existsSync(path.join(root, native.environmentEvidence)));
+    const catalogFile = path.join(root, 'native-banq-validation.json');
+    if (fs.existsSync(catalogFile)) {
+        const catalog = JSON.parse(fs.readFileSync(catalogFile, 'utf8'));
+        assert.equal(catalog.screenReader.started, true);
+        assert.equal(catalog.recordedNativeChecks, catalog.checks.length);
+        assert.equal(catalog.completedNativeScenarios, catalog.checks.filter(check => check.complete).length);
+        const repairFile = path.join(root, 'native-banq-remediation.json');
+        const repair = fs.existsSync(repairFile) ? JSON.parse(fs.readFileSync(repairFile, 'utf8')) : undefined;
+        for (const check of catalog.checks) {
+            const fix = repair?.findings[check.id];
+            const expected = fix ? { ...check, baselineStatus: check.status, baselineObservation: check.observation,
+                status: fix.status, observation: fix.observation, limitations: fix.limitations,
+                evidence: [...check.evidence, ...fix.evidence] } : check;
+            assert.deepEqual(native.checks.find(item => item.id === check.id), expected, check.id);
+        }
+        if (repair) {
+            const readFix = name => JSON.parse(fs.readFileSync(path.join(root, 'evidence/native-nvda/banq-fix', name + '.json'), 'utf8'));
+            const speech = name => {
+                const record = readFix(name);
+                assert.ok(!record.actionError, name + ' must have an unambiguous native action result');
+                return record.speech.join('\n');
+            };
+            assert.ok(speech('15-cover-trigger-tab').includes("'Enlarge cover image', 'button', 'collapsed'"));
+            for (const name of ['16-cover-enter-open', '19-cover-space-open']) {
+                assert.ok(speech(name).includes("'cover image'"));
+                assert.ok(readFix(name).accessibility.tree.includes('dialogue cover image'));
+                assert.ok(readFix(name).accessibility.tree.includes('button Close'));
+            }
+            for (const name of ['18-cover-close-enter', '20-cover-escape']) assert.ok(speech(name).includes("'Enlarge cover image', 'button', 'collapsed'"));
+            assert.ok(speech('21-cover-return-focus-query').includes("'Enlarge cover image', 'button', 'focused', 'collapsed'"));
+            for (const [inputName, settledName] of [['26-empty-query-submit', '27-empty-query-settled'], ['28-empty-reload', '29-empty-reload-settled']]) {
+                const input = readFix(inputName), settled = readFix(settledName);
+                assert.equal(settled.logStart, input.logEnd);
+                assert.ok([...input.speech, ...settled.speech].some(line => line.includes('No publication found')), settledName);
+                assert.match(settled.accessibility.tree, /status\n\t+\d+ text No publication found/, settledName);
+            }
+            assert.deepEqual(native.catalogOpenFindingIds, []);
+        }
+        for (const id of catalog.openFindingIds) assert.ok(catalog.checks.some(check => check.id === id && check.status.startsWith('Open:')), id);
+        const readCatalog = name => JSON.parse(fs.readFileSync(path.join(root, 'evidence/native-nvda/banq', name + '.json'), 'utf8'));
+        const coverFocus = readCatalog('18-cover-trigger-focus-query').speech.join('\n');
+        assert.ok(coverFocus.includes("'cover image', 'graphic', 'focused'"), 'N02 native control-role evidence');
+        for (const [trigger, settled] of [
+            ['29-empty-search-submit', '30-empty-search-settled'],
+            ['31-empty-search-reload', '32-empty-reload-settled'],
+        ]) {
+            const input = readCatalog(trigger), result = readCatalog(settled);
+            assert.ok(input.speech.some(line => line.includes('Loading')), trigger);
+            assert.equal(result.logStart, input.logEnd, settled + ' continues input speech interval');
+            assert.ok(new Date(result.at) - new Date(input.at) >= 1000, settled + ' requires a later observation');
+            assert.ok(result.accessibility.tree.includes('text No publication found'), settled + ' visible result');
+            assert.ok(![...input.speech, ...result.speech].some(line => line.includes('No publication found')), settled + ' missing native status');
+        }
+        assert.ok(readCatalog('23-result-tab-first').speech.join('\n').includes('Astronomie en 30 secondes - François Fressin'));
+        assert.ok(readCatalog('39-paging-next-focus').speech.join('\n').includes("'Next', 'button'"));
+        const pageTwo = readCatalog('43-public-page-two-links');
+        assert.equal(pageTwo.metadata.currentPage, 2);
+        assert.ok(!pageTwo.links.some(link => ['first', 'previous', 'prev'].includes(link.rel)), 'Disabled reverse controls are a feed limitation');
+    }
     for (const check of native.checks) {
         assert.equal(native.screenReader.started, true, 'NVDA checks require an actual NVDA session');
         assert.ok(check.files.length && check.evidence.length && check.observation && check.limitations, check.id);

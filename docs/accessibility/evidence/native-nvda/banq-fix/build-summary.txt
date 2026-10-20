@@ -1,0 +1,8 @@
+20 October 2026 — N02/N03 remediation
+Full TypeScript noEmit: passed.
+Changed TSX ESLint: passed.
+publicationInfos.scss stylelint: passed.
+English translation types regenerated with npm run i18n-typed.
+Library and Reader Webpack builds with scope checkers: passed.
+npm run start:dev:quick restart: PDF, PDF extract, preload, main, Library and Reader compiled successfully.
+Pre-restart native samples 01–06 used the old loaded module; no remediation pass is based on them.

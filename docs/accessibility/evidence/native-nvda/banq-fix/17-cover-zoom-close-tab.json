@@ -1,0 +1,21 @@
+{
+  "label": "17-cover-zoom-close-tab",
+  "at": "2026-10-19T23:27:21.970Z",
+  "window": {
+    "app": "process:C:\\Users\\plero\\.codex\\worktrees\\8a0b\\thorium-reader\\node_modules\\electron\\dist\\electron.exe",
+    "id": 7472686,
+    "title": "Thorium - Catalogs"
+  },
+  "accessibility": {
+    "document_text": "Dismiss\ncover image\nClose\n￼",
+    "focused_element": "0 window Thorium - Catalogs Secondary Actions: Raise",
+    "tree": "Window: \"Thorium - Catalogs\", App: electron.exe.\n\t0 window Thorium - Catalogs Secondary Actions: Raise\n\t\t1 pane (disabled)\n\t\t2 region Thorium - Catalogs\n\t\t\t3 region\n\t\t\t\t4 region\n\t\t\t\t\t5 region\n\t\t\t\t\t\t6 region\n\t\t\t\t\t\t\t7 menu bar\n\t\t\t\t\t\t\t\t8 button DEV\n\t\t\t\t\t\t\t9 region\n\t\t\t\t\t\t\t\t10 region\n\t\t\t\t\t\t\t\t\t11 document Thorium - Catalogs Value: http://localhost:8090/index_library.html#/opds/3a885174-0b76-48f4-9053-b4fc6f4500d0/browse/2/YXN0cm9ub21pZQ/aHR0cHM6Ly9iYW5xLnByZXRudW1lcmlxdWUuY2EvdjEvcmVzb3VyY2VzLm9wZHMyP3F1ZXJ5PWFzdHJvbm9taWU ID: RootWebArea\n\t\t\t\t\t\t\t\t\t\t334 group ID: body_element\n\t\t\t\t\t\t\t\t\t\t\t379 button Dismiss ID: react-aria8451685058-:r40q:\n\t\t\t\t\t\t\t\t\t\t\t380 dialogue cover image Secondary Actions: Raise ID: react-aria8451685058-:r40n:\n\t\t\t\t\t\t\t\t\t\t\t\t381 heading cover image ID: :r40k:\n\t\t\t\t\t\t\t\t\t\t\t\t382 button Close\n\t\t\t\t\t\t\t\t\t\t\t\t383 graphic cover image\n\t\t\t\t\t\t\t\t73 region\n\nDocument text: ```\nDismiss\ncover image\nClose\n￼\n```"
+  },
+  "speech": [
+    "Input: kb(desktop):tab",
+    "Speaking [LangChangeCommand ('en_GB'), 'Close', 'button']"
+  ],
+  "logStart": 67479,
+  "logEnd": 67708,
+  "method": "Native sky input, immediate UIA context; real NVDA speech collected after 900 ms; action errors retained, focus claims require observed speech"
+}

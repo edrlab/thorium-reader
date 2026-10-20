@@ -87,8 +87,10 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                 || (browserResult.isFailure && browserResult.statusCode === 401 && browserResult?.data?.opds?.auth)
             ) {
 
-                status = "";
                 const { data: { opds } } = browserResult;
+                const hasEntries = !!(opds.navigation?.length || opds.publications?.length
+                    || opds.groups?.some(group => group.navigation?.length || group.publications?.length));
+                status = hasEntries ? "" : __("opds.empty");
 
                 if (opds.navigation &&
                     !opds.publications &&

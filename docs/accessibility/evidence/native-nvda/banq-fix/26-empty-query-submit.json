@@ -1,0 +1,23 @@
+{
+  "label": "26-empty-query-submit",
+  "at": "2026-10-19T23:28:10.515Z",
+  "window": {
+    "app": "process:C:\\Users\\plero\\.codex\\worktrees\\8a0b\\thorium-reader\\node_modules\\electron\\dist\\electron.exe",
+    "id": 7472686,
+    "title": "Thorium - Catalogs"
+  },
+  "accessibility": {
+    "document_text": "toolbar\nOptimize for screen reader (No) [SHIFT CTRL F12]\nSkip to content\nThorium\nHome\nAll publications\nCatalogs\nSettings\n-\nreload\n￼\nzzqauditnovelxyz2026\nmain content\nLoading…\n￼\nLoading…\n￼",
+    "focused_element": "11 document Thorium - Catalogs Value: http://localhost:8090/index_library.html#/opds/3a885174-0b76-48f4-9053-b4fc6f4500d0/browse/2/enpxYXVkaXRub3ZlbHh5ejIwMjY/aHR0cHM6Ly9iYW5xLnByZXRudW1lcmlxdWUuY2EvdjEvcmVzb3VyY2VzLm9wZHMyP3F1ZXJ5PXp6cWF1ZGl0bm92ZWx4eXoyMDI2 ID: RootWebArea",
+    "tree": "Window: \"Thorium - Catalogs\", App: electron.exe.\n\t0 window Thorium - Catalogs Secondary Actions: Raise\n\t\t1 pane (disabled)\n\t\t2 region Thorium - Catalogs\n\t\t\t3 region\n\t\t\t\t4 region\n\t\t\t\t\t5 region\n\t\t\t\t\t\t6 region\n\t\t\t\t\t\t\t7 menu bar\n\t\t\t\t\t\t\t\t8 button DEV\n\t\t\t\t\t\t\t9 region\n\t\t\t\t\t\t\t\t10 region\n\t\t\t\t\t\t\t\t\t11 document Thorium - Catalogs Value: http://localhost:8090/index_library.html#/opds/3a885174-0b76-48f4-9053-b4fc6f4500d0/browse/2/enpxYXVkaXRub3ZlbHh5ejIwMjY/aHR0cHM6Ly9iYW5xLnByZXRudW1lcmlxdWUuY2EvdjEvcmVzb3VyY2VzLm9wZHMyP3F1ZXJ5PXp6cWF1ZGl0bm92ZWx4eXoyMDI2 ID: RootWebArea\n\t\t\t\t\t\t\t\t\t\t334 group ID: body_element\n\t\t\t\t\t\t\t\t\t\t\t467 group ID: app\n\t\t\t\t\t\t\t\t\t\t\t\t468 group\n\t\t\t\t\t\t\t\t\t\t\t\t\t469 region toolbar\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t470 heading toolbar Description: toolbar ID: main-toolbar\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t471 button Optimize for screen reader (No) [SHIFT CTRL F12]\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t472 button Skip to content\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t473 navigation Bookshelf menu\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t474 heading Thorium\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t475 list\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t476 list item Home\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t477 button Home Description: Home\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t478 heading Home\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t479 list item All publications\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t480 button All publications Description: All publications\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t481 heading All publications\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t482 list item Catalogs\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t483 toggle button Catalogs Description: Catalogs\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t484 heading Catalogs\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t485 list item Settings\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t486 button Application Settings Description: Settings ID: react-aria8451685058-:r3v:\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t487 heading Application Settings\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t488 main main content ID: main\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t489 heading -\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t492 button reload\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t493 link Catalogs Description: Catalogs Value: http://localhost:8090/index_library.html#/opds\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t494 heading zzqauditnovelxyz2026\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t498 heading main content Description: main content ID: main-content\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t499 status\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t598 text Loading…\n\t\t\t\t\t\t\t\t\t\t\t\t\t597 status\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t599 text Loading…\n\t\t\t\t\t\t\t\t73 region\n\nDocument text: ```\ntoolbar\nOptimize for screen reader (No) [SHIFT CTRL F12]\nSkip to content\nThorium\nHome\nAll publications\nCatalogs\nSettings\n-\nreload\n￼\nzzqauditnovelxyz2026\nmain content\nLoading…\n￼\nLoading…\n￼\n```"
+  },
+  "speech": [
+    "Input: kb(desktop):enter",
+    "Speaking [LangChangeCommand ('en_GB'), 'Loading…  ']",
+    "Speaking [LangChangeCommand ('en_GB'), 'Loading… ']",
+    "Speaking [LangChangeCommand ('en_GB'), 'Thorium - Catalogs', 'document', CancellableSpeech (still valid), '￼']"
+  ],
+  "logStart": 78412,
+  "logEnd": 81048,
+  "method": "Native sky input, immediate UIA context; real NVDA speech collected after 900 ms; action errors retained, focus claims require observed speech"
+}

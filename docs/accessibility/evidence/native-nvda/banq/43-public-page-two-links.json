@@ -1,0 +1,60 @@
+{
+  "method": "Read-only public OPDS HTTP response; no credentials",
+  "url": "https://banq.pretnumerique.ca/v1/resources.opds2?available_now_for_opds=1&nature=ebook&page=2&sort_by=issued_on_desc",
+  "metadata": {
+    "title": "Livres numériques",
+    "numberOfItems": 95557,
+    "itemsPerPage": 40,
+    "currentPage": 2
+  },
+  "links": [
+    {
+      "rel": "self",
+      "href": "https://banq.pretnumerique.ca/v1/resources.opds2?available_now_for_opds=1&nature=ebook&page=2&sort_by=issued_on_desc",
+      "type": "application/opds+json",
+      "title": null
+    },
+    {
+      "rel": "next",
+      "href": "https://banq.pretnumerique.ca/v1/resources.opds2?available_now_for_opds=1&nature=ebook&page=3&sort_by=issued_on_desc",
+      "type": "application/opds+json",
+      "title": null
+    },
+    {
+      "rel": "last",
+      "href": "https://banq.pretnumerique.ca/v1/resources.opds2?available_now_for_opds=1&nature=ebook&page=25&sort_by=issued_on_desc",
+      "type": "application/opds+json",
+      "title": null
+    },
+    {
+      "rel": "search",
+      "href": "https://banq.pretnumerique.ca/v1/resources.opds2{?query}",
+      "type": "application/opds+json",
+      "title": null
+    },
+    {
+      "rel": "profile",
+      "href": "https://banq.pretnumerique.ca/v1/my_profile.opds2",
+      "type": "application/opds-profile+json",
+      "title": null
+    },
+    {
+      "rel": "http://opds-spec.org/history",
+      "href": "https://banq.pretnumerique.ca/v1/my_profile/history.opds2",
+      "type": "application/opds+json",
+      "title": "Historique"
+    },
+    {
+      "rel": "http://opds-spec.org/shelf",
+      "href": "https://banq.pretnumerique.ca/v1/my_profile/activity.opds2",
+      "type": "application/opds+json",
+      "title": "Prêts et réservations"
+    },
+    {
+      "rel": "http://opds-spec.org/wishlist",
+      "href": "https://banq.pretnumerique.ca/v1/my_profile/wishlist.opds2",
+      "type": "application/opds+json",
+      "title": "Liste de lecture"
+    }
+  ]
+}

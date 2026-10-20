@@ -111,6 +111,27 @@ if (fs.existsSync(repairFile)) {
     fixed.evidence = [...fixed.evidence, ...repair.evidence];
     native.status = 'partial native validation; N01 repaired and verified; remaining Reader scenarios pending';
 }
+const catalogFile = path.join(root, 'native-banq-validation.json');
+const catalogRepairFile = path.join(root, 'native-banq-remediation.json');
+const catalogRepair = fs.existsSync(catalogRepairFile) ? JSON.parse(fs.readFileSync(catalogRepairFile, 'utf8')) : undefined;
+if (fs.existsSync(catalogFile)) {
+    const catalog = JSON.parse(fs.readFileSync(catalogFile, 'utf8'));
+    assert.equal(catalog.screenReader.started, true);
+    assert.equal(catalog.recordedNativeChecks, catalog.checks.length);
+    for (const check of catalog.checks) {
+        assert.ok(!native.checks.some(existing => existing.id === check.id), check.id);
+        for (const item of check.evidence) assert.ok(fs.existsSync(path.join(root, item)), item);
+        const repair = catalogRepair?.findings[check.id];
+        native.checks.push(repair ? { ...check, baselineStatus: check.status, baselineObservation: check.observation,
+            status: repair.status, observation: repair.observation, limitations: repair.limitations,
+            evidence: [...check.evidence, ...repair.evidence] } : check);
+    }
+    native.catalogAudit = 'native-banq-validation.json';
+    native.catalogOpenFindingIds = catalog.openFindingIds.filter(id => !catalogRepair?.findings[id]?.status.startsWith('Fixed'));
+    native.status = 'partial native validation; N01 verified; BAnQ ' + (native.catalogOpenFindingIds.length ? native.catalogOpenFindingIds.join('/') + ' open' : 'N02/N03 repaired and verified in sampled states') + '; remaining Reader scenarios pending';
+    native.limitations = 'Partial native NVDA coverage. Original Library controls and subsequent public BAnQ search, details, cover and Next paging are sampled only. Broader Reader scenarios remain pending after earlier initialization/review timeouts. Account/authentication, acquisitions, other component branches and full format/theme/locale coverage remain unverified. Speech was inspected as text without acoustic assessment. See native-banq-validation.json and native-banq-remediation.json for catalog baseline and repair scope; no application-wide WCAG pass.';
+    if (catalogRepair) native.catalogRemediation = 'native-banq-remediation.json';
+}
 native.recordedNativeChecks = native.checks.length;
 native.completedNativeScenarios = native.checks.filter(check => check.complete).length;
 native.startupHistory = ['Initial launcher execution blocked by approval timeouts and sandbox DLL relocation.', 'User started the temporary standalone runner.', 'Portable copy creation later succeeded (exit 0); isolated logging session started.', 'Two EPUB Reader windows timed out before a full development-app restart.', 'Restarted Reader loaded EPUB successfully; NVDA document identification captured.', 'Repeated approval-review timeouts prevented the remaining native checks.'];
@@ -128,5 +149,11 @@ environment.portableCreated = true;
 environment.screenReaderStarted = true;
 environment.operatingSystem = 'Windows 11 25H2 (10.0.26200.9711) AMD64; reported by NVDA startup log';
 environment.synthesizer = 'Windows OneCore; en_GB speech';
+if (fs.existsSync(catalogFile)) {
+    environment.setupStatus = 'Resolved: native NVDA available. BAnQ public-catalog follow-up recorded; broader Reader validation remains pending.';
+    environment.nativeValidationStatus = 'Partial: original 4 Library checks plus 5 BAnQ checks evaluated; N01 verified, N02/N03 ' + (catalogRepair ? 'repaired and verified in sampled Library states' : 'open') + ', 1 Reader identification observation partial.';
+    environment.catalogSourceRevision = JSON.parse(fs.readFileSync(catalogFile, 'utf8')).sourceRevision;
+    environment.diagnosticLoggingCleanup = 'Verified portable NVDA running with --no-logging after the BAnQ remediation session. Only scoped speech records retained; full logs remain ignored under dist/.';
+}
 fs.writeFileSync(envFile, JSON.stringify(environment, null, 2) + '\n');
 console.log(JSON.stringify({ recordedNativeChecks: native.recordedNativeChecks, completedNativeScenarios: native.completedNativeScenarios, status: 'recorded evidence assertions passed; not a new UI run' }));

@@ -1,0 +1,20 @@
+{
+  "label": "08-result-open",
+  "at": "2026-10-19T21:30:22.074Z",
+  "speech": [
+    "Speaking [LangChangeCommand ('en_GB'), 'About publication', CancellableSpeech (still valid)]",
+    "Speaking [CallbackCommand(name=say-all:lineReached), LangChangeCommand ('en_GB'), 'heading', 'level 2', 'About publication', CallbackCommand(name=say-all:lineReached)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'heading', 'level 2', 'About publication', CallbackCommand(name=say-all:lineReached)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'button', 'Close', CallbackCommand(name=say-all:lineReached)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'cover image', CallbackCommand(name=say-all:lineReached)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'button', 'Import extract (EPUB)', CallbackCommand(name=say-all:lineReached)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'button', 'Borrow publication', CallbackCommand(name=say-all:lineReached)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'State:', CallbackCommand(name=say-all:lineReached)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'Available', CallbackCommand(name=say-all:lineReached)]",
+    "Speaking [CallbackCommand(name=say-all:lineReached), LangChangeCommand ('en_GB'), 'heading', 'level 2', 'French (not supported)', LangChangeCommand ('fr'), 'Astronomie en 30 secondes']"
+  ],
+  "method": "Native sky input; real NVDA debug speech output; no acoustic listening",
+  "logStart": 35745,
+  "logEnd": 40161,
+  "contentHandling": "Speech-only evidence. Initial helper used an older local snapshot binding; invalid contextual snapshot removed. See independent settled capture 07 or later corrected captures."
+}

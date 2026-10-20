@@ -1,0 +1,138 @@
+{
+  "date": "2026-10-19",
+  "sourceRevision": "b00c2c59756bb1a7105b5f9cfe0aad8302d1b128",
+  "branch": "codex/a11y-native-nvda-validation",
+  "startup": "npm run start:dev:quick",
+  "requestedHost": "banq.pretnumerique.com",
+  "testedFeed": "https://banq.pretnumerique.ca/v1/home.opds2",
+  "endpointSelection": "The existing Library catalog identifies Bibliothèque et Archives nationales du Québec and uses this .ca OPDS endpoint. The .com host was not substituted into or added to the Library. No .com accessibility result is claimed.",
+  "status": "Partial public-catalog native audit completed; N02 and N03 open",
+  "screenReader": {
+    "name": "NVDA",
+    "version": "2026.2 AMD64",
+    "started": true,
+    "synthesizer": "Windows OneCore",
+    "speechLanguage": "en_GB",
+    "addons": "Disabled",
+    "configuration": "Existing workspace-local portable audit config"
+  },
+  "method": "Native sky computer-use mouse/keyboard input and real NVDA diagnostic speech output. No CDP or scripted DOM input used. Speech inspected as text, not acoustic listening. Public feed links checked separately with a credential-free HTTP request.",
+  "environmentEvidence": "evidence/native-nvda/environment.json",
+  "recordedNativeChecks": 5,
+  "completedNativeScenarios": 5,
+  "openFindingIds": ["N02", "N03"],
+  "checks": [
+    {
+      "id": "banq-search-and-card-names",
+      "complete": true,
+      "status": "Passed for sampled public search and catalog card names",
+      "files": [
+        "src/renderer/library/components/opds/SearchForm.tsx",
+        "src/renderer/library/components/publication/PublicationCard.tsx"
+      ],
+      "evidence": [
+        "evidence/native-nvda/banq/04-banq-tab.json",
+        "evidence/native-nvda/banq/06-search-submit.json",
+        "evidence/native-nvda/banq/07-search-results-settled.json",
+        "evidence/native-nvda/banq/07-search-results-settled.jpg",
+        "evidence/native-nvda/banq/22-result-tab-next.json",
+        "evidence/native-nvda/banq/23-result-tab-first.json",
+        "evidence/native-nvda/banq/24-result-keyboard-open.json"
+      ],
+      "observation": "Tab announces Search, edit, blank. Enter submits astronomie and the settled feed exposes 31 named result buttons and named facet links. Native Tab/Shift+Tab announce Astronomie populaire (Tome 2) - Camille Flammarion and Astronomie en 30 secondes - François Fressin as collapsed buttons. Enter opens the latter's About publication dialog. This extends the N01 retest to two live catalog cards.",
+      "limitations": "Only two catalog card names received native focus checks; 31 result names were observed in UIA. Facet activation, every publication, all locales and the unavailable-local branch were not validated. The known source label htmlFor mismatch remains masked by aria-label; naming alone does not establish full Search conformance."
+    },
+    {
+      "id": "banq-publication-details",
+      "complete": true,
+      "status": "Passed for sampled details controls and direct keyboard return",
+      "files": [
+        "src/renderer/common/components/dialog/publicationInfos/publicationInfoContent.tsx",
+        "src/renderer/common/components/dialog/publicationInfos/PublicationInfoDescription.tsx",
+        "src/renderer/library/components/publication/PublicationCard.tsx"
+      ],
+      "evidence": [
+        "evidence/native-nvda/banq/09-details-tab-close.json",
+        "evidence/native-nvda/banq/09-details-tab-close.jpg",
+        "evidence/native-nvda/banq/11-details-extract-focus.json",
+        "evidence/native-nvda/banq/12-details-borrow-focus.json",
+        "evidence/native-nvda/banq/13-details-author-focus.json",
+        "evidence/native-nvda/banq/14-details-description-focus.json",
+        "evidence/native-nvda/banq/15-details-description-expand.json",
+        "evidence/native-nvda/banq/25-keyboard-details-dismiss.json"
+      ],
+      "observation": "NVDA reads About publication and the title. Tab reaches Close, Import extract (EPUB), Borrow publication, the author link and See more. See more is announced collapsed; Enter announces expanded. Opening the card with Enter and dismissing directly with Escape returns speech to the named collapsed card button.",
+      "limitations": "Read-only details for one public title. Borrow and Import extract were focused without activation. Cover behavior is evaluated separately as N02. Nested-cover dismissal produced an Unlabelled graphic focus observation; direct keyboard open/dismiss passed, so no general dialog-return defect is asserted. French language tags were announced but the selected OneCore voice reported French unsupported; pronunciation was not evaluated."
+    },
+    {
+      "id": "N02",
+      "complete": true,
+      "status": "Open: cover zoom controls expose graphic roles",
+      "severity": "Medium",
+      "criteria": ["4.1.2 Name, Role, Value (A)"],
+      "files": [
+        "src/renderer/common/components/Cover.tsx",
+        "src/renderer/common/components/dialog/publicationInfos/publicationInfoContent.tsx"
+      ],
+      "evidence": [
+        "evidence/native-nvda/banq/10-details-tab-extract.json",
+        "evidence/native-nvda/banq/16-cover-zoom-open.json",
+        "evidence/native-nvda/banq/16-cover-zoom-open.jpg",
+        "evidence/native-nvda/banq/17-cover-zoom-escape.json",
+        "evidence/native-nvda/banq/18-cover-trigger-focus-query.json",
+        "evidence/native-nvda/banq/19-cover-keyboard-open.json"
+      ],
+      "observation": "Tab reaches a cover image between Close and Import extract. Mouse activation opens an enlarged-cover dialog, whose clickable closing image also exposes a graphic role. Escape returns to the trigger; NVDA+Tab reports cover image, graphic, focused, read only, rather than an actionable zoom control. Enter in the observed NVDA mode does not open zoom. Source places handlers and tabindex on the image with role=presentation and generic alt=cover image; neither image communicates its control action.",
+      "recommendation": "Use a named native button to open cover zoom and an explicit named Close button in the enlarged dialog. Keep the image semantics separate from the action and verify Enter/Space, Escape and focus restoration with NVDA.",
+      "limitations": "One live BAnQ cover sampled. Missing action semantics is confirmed; the Enter observation does not establish failure in every NVDA focus mode or screen reader. Source is shared with other publication-details surfaces, but those surfaces were not tested in this pass."
+    },
+    {
+      "id": "N03",
+      "complete": true,
+      "status": "Open: empty OPDS publication results are not announced",
+      "severity": "Medium",
+      "criteria": ["4.1.3 Status Messages (AA)"],
+      "relatedFinding": "A15: additional real-feed empty-array branch not covered by prior remediation",
+      "files": [
+        "src/renderer/library/components/opds/BrowserResult.tsx",
+        "src/renderer/library/components/opds/EntryPublicationList.tsx"
+      ],
+      "evidence": [
+        "evidence/native-nvda/banq/29-empty-search-submit.json",
+        "evidence/native-nvda/banq/30-empty-search-settled.json",
+        "evidence/native-nvda/banq/30-empty-search-settled.jpg",
+        "evidence/native-nvda/banq/31-empty-search-reload.json",
+        "evidence/native-nvda/banq/32-empty-reload-settled.json"
+      ],
+      "observation": "Submitting zzqauditnovelxyz2026 produces visible No publication found text. NVDA announces Loading twice, but no empty-result message during submission or the subsequent passive settled interval. Reload repeats the same outcome. UIA exposes No publication found as plain text beside empty status nodes. Source clears BrowserResult status on success before delegating an empty publications array to EntryPublicationList, whose empty message is an ordinary paragraph.",
+      "recommendation": "Route empty publication arrays, including responses with facets, through the persistent contextual status message. Avoid duplicate loading announcements, and verify a loading-to-empty transition and repeat search/reload with native NVDA.",
+      "limitations": "Reproduced for one no-result query and Reload in the live BAnQ feed. Prior A15 fixtures and other operation passes remain historical evidence; they do not cover this branch. Feed errors, offline state and authenticated search were not tested here."
+    },
+    {
+      "id": "banq-pagination",
+      "complete": true,
+      "status": "Passed for Next activation; completion and focus observations retained",
+      "files": [
+        "src/renderer/library/components/opds/PageNavigation.tsx",
+        "src/renderer/library/components/opds/EntryPublicationList.tsx",
+        "src/renderer/library/components/opds/BrowserResult.tsx"
+      ],
+      "evidence": [
+        "evidence/native-nvda/banq/37-ebooks-settled.json",
+        "evidence/native-nvda/banq/38-ebooks-bottom.json",
+        "evidence/native-nvda/banq/38-ebooks-bottom.jpg",
+        "evidence/native-nvda/banq/39-paging-next-focus.json",
+        "evidence/native-nvda/banq/40-paging-next-activate.json",
+        "evidence/native-nvda/banq/41-page-two-settled.json",
+        "evidence/native-nvda/banq/41-page-two-settled.jpg",
+        "evidence/native-nvda/banq/42-page-two-focus-query.json",
+        "evidence/native-nvda/banq/43-public-page-two-links.json"
+      ],
+      "observation": "In Ebooks, NVDA Ctrl+End reads Last; Shift+Tab reaches Next, button. Enter loads a different publication set with current page 2. NVDA announces loading twice, gives no completion/page-number utterance in the passive interval, and NVDA+Tab reports document focus. First and Previous are disabled on page two. An independent credential-free public OPDS response confirms that this feed supplies next and last but no first or previous links, so disabled reverse controls are not attributed to Thorium.",
+      "limitations": "One page transition. Last, all keyboard shortcuts and reverse navigation were not activated. Completion/focus behavior is an improvement observation, not a separately proven WCAG failure. Public feed data is time-dependent and its default-language response differs from the application's English response."
+    }
+  ],
+  "limitations": "Representative public BAnQ Library catalog states only. Shelf/account authentication, loan/hold/return/import operations, other media categories, facet activation, all carousel sections, complete focus order, zoom/reflow/contrast, all locales and acoustic intelligibility remain untested. No Reader tests or application-wide WCAG conformance claim. Screen-reader optimization remained No. No credentials were entered or acquisitions performed.",
+  "evidenceHandling": "Only per-action scoped NVDA speech is retained. Records 01-06 and 08 retain speech only: a capture helper initially stored an older local snapshot binding. Those invalid context fields and screenshots were removed; record 07 is an independent settled capture, and records 09 onward use the returned capture directly. Negative-announcement claims include passive settled intervals with no additional input. Full diagnostic logs and NVDA binaries remain ignored under dist/.",
+  "diagnosticLoggingCleanup": "Verified portable NVDA running with --no-logging after tests; separate audit configuration retained."
+}

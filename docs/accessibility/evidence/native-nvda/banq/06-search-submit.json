@@ -1,0 +1,14 @@
+{
+  "label": "06-search-submit",
+  "at": "2026-10-19T21:29:26.344Z",
+  "speech": [
+    "Input: kb(desktop):enter",
+    "Speaking [LangChangeCommand ('en_GB'), 'Loading…  ']",
+    "Speaking [LangChangeCommand ('en_GB'), 'Loading… ']",
+    "Speaking [LangChangeCommand ('en_GB'), 'Thorium - Catalogs', 'document', CancellableSpeech (still valid), '￼']"
+  ],
+  "method": "Native sky input; real NVDA debug speech output; no acoustic listening",
+  "logStart": 35085,
+  "logEnd": 35745,
+  "contentHandling": "Speech-only evidence. Initial helper used an older local snapshot binding; invalid contextual snapshot removed. See independent settled capture 07 or later corrected captures."
+}

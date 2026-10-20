@@ -1,0 +1,24 @@
+{
+  "label": "01-catalogs-open",
+  "at": "2026-10-19T21:26:47.268Z",
+  "speech": [
+    "Speaking [LangChangeCommand ('en_GB'), 'Loading…  ']",
+    "Speaking [LangChangeCommand ('en_GB'), 'Thorium', 'document', CancellableSpeech (still valid)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'unknown', CancellableSpeech (still valid)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'Thorium', CancellableSpeech (still valid)]",
+    "Speaking [CallbackCommand(name=say-all:lineReached), LangChangeCommand ('en_GB'), 'clickable', 'toolbar', 'region', 'heading', 'level 2', 'toolbar', CallbackCommand(name=say-all:lineReached)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'button', 'Optimize for screen reader (No) [SHIFT CTRL F12]', CallbackCommand(name=say-all:lineReached)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'button', 'Skip to content', CallbackCommand(name=say-all:lineReached)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'Bookshelf menu', 'navigation landmark', 'heading', 'level 1', 'Thorium', CallbackCommand(name=say-all:lineReached)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'list', 'with 4 items', 'button', 'heading', 'level 3', 'Home', CallbackCommand(name=say-all:lineReached)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'button', 'heading', 'level 3', 'All publications', CallbackCommand(name=say-all:lineReached)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'toggle button', 'pressed', 'heading', 'level 3', 'Catalogs', CallbackCommand(name=say-all:lineReached)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'button', 'collapsed', 'heading', 'level 3', 'Application Settings', CallbackCommand(name=say-all:lineReached), 'out of list']",
+    "Speaking [LangChangeCommand ('en_GB'), 'main content', 'main landmark', 'button', 'collapsed', 'Add OPDS feed', CallbackCommand(name=say-all:lineReached)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'button', 'collapsed', 'Search catalogs']"
+  ],
+  "method": "Native sky input; real NVDA debug speech output; no acoustic listening",
+  "logStart": 25244,
+  "logEnd": 30936,
+  "contentHandling": "Speech-only evidence. Initial helper used an older local snapshot binding; invalid contextual snapshot removed. See independent settled capture 07 or later corrected captures."
+}

@@ -1,0 +1,12 @@
+{
+  "label": "03-banq-focus",
+  "at": "2026-10-19T21:28:04.017Z",
+  "speech": [
+    "Input: kb(desktop):NVDA+tab",
+    "Speaking [LangChangeCommand ('en_GB'), 'Thorium - Catalogs', 'document', 'focused', 'read only']"
+  ],
+  "method": "Native sky input; real NVDA debug speech output; no acoustic listening",
+  "logStart": 33540,
+  "logEnd": 33812,
+  "contentHandling": "Speech-only evidence. Initial helper used an older local snapshot binding; invalid contextual snapshot removed. See independent settled capture 07 or later corrected captures."
+}
