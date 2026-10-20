@@ -1,9 +1,18 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Valikko",
+        "bookmarkNote": "",
         "closeDialog": "Sulje",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Siirry listalla vasemmalle",
         "mainContent": "Pääsisältö",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Siirry listalla oikealle",
         "skipLink": "Hyppää sisältöön",
         "toolbar": "Työkalurivi"
@@ -344,7 +353,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "Palaa selailuun",
@@ -918,7 +926,6 @@
             },
             "customFontSelected": "Olet valinnut oman fontin",
             "customizeReader": "Mukauta tekstin ulkoasua",
-            "defaultValue": "oletusarvo",
             "disabled": "ei käytössä",
             "display": "Näyttöasetukset",
             "disposition": {

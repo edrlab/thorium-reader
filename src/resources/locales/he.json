@@ -1,9 +1,18 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "תפריט",
+        "bookmarkNote": "",
         "closeDialog": "סגור",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "",
         "mainContent": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "",
         "skipLink": "",
         "toolbar": ""
@@ -350,7 +359,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "",
@@ -925,7 +933,6 @@
             },
             "customFontSelected": "",
             "customizeReader": "",
-            "defaultValue": "",
             "disabled": "",
             "display": "",
             "disposition": {

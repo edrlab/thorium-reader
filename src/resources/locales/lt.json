@@ -1,9 +1,18 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Meniu",
+        "bookmarkNote": "",
         "closeDialog": "Užverti",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Paslinkti į kairę",
         "mainContent": "pagrindinis turinys",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Paslinkti į dešinę",
         "skipLink": "Peršokti į turinį",
         "toolbar": "įrankių juosta"
@@ -350,7 +359,6 @@
             "empty": "Katalogų nerasta.",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "Tęsti naršymą",
@@ -925,7 +933,6 @@
             },
             "customFontSelected": "Pasirinkote asmeninį šriftą",
             "customizeReader": "Tinkinti teksto formatavimą",
-            "defaultValue": "numatytoji reikšmė",
             "disabled": "išjungta",
             "display": "Atvaizdavimas",
             "disposition": {

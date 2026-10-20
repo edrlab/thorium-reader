@@ -1,9 +1,18 @@
 {
     "accessibility": {
+        "annotationNote": "Note d’annotation",
         "bookMenu": "Menu",
+        "bookmarkNote": "Note du marque-page",
         "closeDialog": "Fermer",
+        "decreaseSetting": "Diminuer {{- setting}}",
+        "downloadProgress": "Progression du téléchargement : {{- title}}",
+        "editTag": "Modifier l’étiquette : {{- tag}}",
+        "favoriteCatalog": "Catalogue favori : {{- title}}",
+        "increaseSetting": "Augmenter {{- setting}}",
         "leftSlideButton": "Faire défiler vers la gauche",
         "mainContent": "Contenu principal",
+        "publicationDetails": "{{- field}} : {{- title}}",
+        "resetSetting": "Réinitialiser {{- setting}}",
         "rightSlideButton": "Faire défiler vers la droite",
         "skipLink": "Aller directement au contenu",
         "toolbar": "Barre d'outils"
@@ -350,7 +359,6 @@
             "empty": "Aucun catalogue trouvé.",
             "error": "Impossible de rechercher dans le registre. Veuillez réessayer.",
             "loading": "Recherche de catalogues…",
-            "prompt": "Nom, pays ou région",
             "title": "Rechercher des catalogues"
         },
         "resumeBrowsing": "Reprendre le parcours",
@@ -925,7 +933,6 @@
             },
             "customFontSelected": "Vous avez sélectionné une police personnelle",
             "customizeReader": "Personnaliser la mise en forme",
-            "defaultValue": "Valeur par défaut",
             "disabled": "Désactivé",
             "display": "Affichage",
             "disposition": {

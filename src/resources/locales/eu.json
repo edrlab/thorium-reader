@@ -1,9 +1,18 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menu nagusia",
+        "bookmarkNote": "",
         "closeDialog": "Itxi",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Mugitu zerrenda ezkerrera",
         "mainContent": "Eduki nagusia",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Mugitu zerrenda eskuinera",
         "skipLink": "Pasatu edukira",
         "toolbar": "Tresna-barra"
@@ -344,7 +353,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "",
@@ -918,7 +926,6 @@
             },
             "customFontSelected": "",
             "customizeReader": "Pertsonalizatu testuaren formatua",
-            "defaultValue": "",
             "disabled": "desgaituta",
             "display": "Bistaratzea",
             "disposition": {

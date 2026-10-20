@@ -1,9 +1,18 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menu",
+        "bookmarkNote": "",
         "closeDialog": "Luk",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Flyt listen til venstre",
         "mainContent": "hovedindhold",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Flyt listen til højre",
         "skipLink": "Spring til indholdet",
         "toolbar": "værktøjslinje"
@@ -344,7 +353,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "Genoptag browsing",
@@ -918,7 +926,6 @@
             },
             "customFontSelected": "Du har valgt en personlig skrifttype",
             "customizeReader": "Tilpas tekstformatering",
-            "defaultValue": "standard værdi",
             "disabled": "slået fra",
             "display": "Visning",
             "disposition": {

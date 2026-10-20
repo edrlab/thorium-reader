@@ -1,9 +1,18 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Valmynd",
+        "bookmarkNote": "",
         "closeDialog": "Loka",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Færa til vinstri",
         "mainContent": "meginefni",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Færa til hægri",
         "skipLink": "Fara í efni",
         "toolbar": "tækjastika"
@@ -344,7 +353,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "Halda áfram að skoða",
@@ -918,7 +926,6 @@
             },
             "customFontSelected": "Þú hefur valið eigin leturgerð",
             "customizeReader": "Sérsníða textasnið",
-            "defaultValue": "sjálfgefið gildi",
             "disabled": "óvirkt",
             "display": "Birting",
             "disposition": {

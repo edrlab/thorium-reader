@@ -1,9 +1,18 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Μενού",
+        "bookmarkNote": "",
         "closeDialog": "Κλείσιμο",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Μετακίνηση προς τα αριστερά",
         "mainContent": "κυρίως περιεχόμενο",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Μετακίνηση προς τα δεξιά",
         "skipLink": "Μεταπήδηση στο περιεχόμενο",
         "toolbar": "Γραμμή εργαλείων"
@@ -918,7 +927,6 @@
             },
             "customFontSelected": "Έχεις επιλέξει μια προσωπική γραμματοσειρά",
             "customizeReader": "Προσαρμογή μορφοποίησης κειμένου",
-            "defaultValue": "προκαθορισμένη τιμή",
             "disabled": "απενεργοποιημένο",
             "display": "Εμφάνιση",
             "disposition": {

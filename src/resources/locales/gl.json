@@ -1,9 +1,18 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menú",
+        "bookmarkNote": "",
         "closeDialog": "Pechar",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Desprazar lista á esquerda",
         "mainContent": "Contido principal",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Desprazar lista á dereita",
         "skipLink": "Pasar ao contido",
         "toolbar": "Barra de ferramentas"
@@ -344,7 +353,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "",
@@ -918,7 +926,6 @@
             },
             "customFontSelected": "",
             "customizeReader": "Personalizar o estilo do texto",
-            "defaultValue": "",
             "disabled": "desactivado",
             "display": "Visualización",
             "disposition": {

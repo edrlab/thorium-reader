@@ -1070,11 +1070,15 @@ const CellTags: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & 
         : <></>;
 };
 
-const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_StringValue> = (props) => {
+const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_StringValue & { row: Row<IColumns> }> = (props) => {
 
     const textNeedToBeSanitized = props.value || "";
     const dangerousInnerHTML_DescriptionSanitized = DOMPurify.sanitize(textNeedToBeSanitized).replace(/font-size:/g, "font-sizexx:");
     const [isOpen, setIsOpen] = React.useState(false);
+    const detailsLabel = props.__("accessibility.publicationDetails", {
+        field: typeof props.column.Header === "string" ? props.column.Header : props.__("catalog.description"),
+        title: props.row.original.colTitle.label,
+    });
 
     return (<div
         className={stylesPublication.cell_description}
@@ -1095,11 +1099,11 @@ const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_Generic
         <p dangerouslySetInnerHTML={{ __html: dangerousInnerHTML_DescriptionSanitized }}></p>
         {props.value ?
             <DialogTrigger onOpenChange={setIsOpen}>
-                <Button style={{ maxWidth: "15px" }}>
+                <Button aria-label={detailsLabel} style={{ maxWidth: "15px" }}>
                     {isOpen ? <SVG ariaHidden svg={CloseIcon} /> : <SVG ariaHidden svg={ChevronDown} />}
                 </Button>
                 <Popover placement="bottom end" offset={5} crossOffset={-10} containerPadding={0} style={{ zIndex: OVERLAY_Z_INDEX }}>
-                    <PopoverDialog>
+                    <PopoverDialog aria-label={detailsLabel}>
                         <FocusScope autoFocus>
                             <p
                                 className={stylesDropDown.dropdown_description}

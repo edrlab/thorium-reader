@@ -1,9 +1,18 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "メニュー",
+        "bookmarkNote": "",
         "closeDialog": "閉じる",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "左にスライド",
         "mainContent": "メインコンテンツ",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "右にスライド",
         "skipLink": "コンテンツに移動",
         "toolbar": "ツールバー"
@@ -336,7 +345,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "",
@@ -909,7 +917,6 @@
             },
             "customFontSelected": "利用するフォントを選択しました",
             "customizeReader": "本文のスタイル",
-            "defaultValue": "",
             "disabled": "無効",
             "display": "画面表示",
             "disposition": {

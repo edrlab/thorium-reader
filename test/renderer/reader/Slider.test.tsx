@@ -11,7 +11,7 @@ jest.mock("readium-desktop/renderer/assets/icons/Minus-Bold.svg", () => ({}));
 jest.mock("readium-desktop/renderer/assets/icons/Plus-bold.svg", () => ({}));
 jest.mock("readium-desktop/renderer/common/components/SVG", () => ({ __esModule: true, default: () => <span /> }));
 jest.mock("readium-desktop/renderer/common/hooks/useTranslator", () => ({
-    useTranslator: () => [(key: string) => key],
+    useTranslator: () => [(key: string, args?: { setting: string }) => (args ? `${key}: ${args.setting}` : key)],
 }));
 
 let dom: JSDOM;
