@@ -1,9 +1,21 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "მენიუ",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "დახურვა",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "სიის მარცხნივ ჩაწევა",
+        "loading": "",
         "mainContent": "ძირითადი შიგთავსი",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "სიის მარჯვნივ ჩაწევა",
         "skipLink": "შიგთავსზე გადახტომა",
         "toolbar": "ინსტრუმენტთა პანელი"
@@ -709,7 +721,8 @@
         "certificateRevoked": "LCP ლიცენზიის სერტიფიკატი გაუქმებულია.",
         "certificateSignatureInvalid": "არასწორი LCP ლიცენზიის სერტიფიკატის ხელმოწერა.",
         "cover": {
-            "img": "ყდის სურათი"
+            "img": "ყდის სურათი",
+            "zoom": ""
         },
         "day": "",
         "days": "",
@@ -939,7 +952,6 @@
             },
             "customFontSelected": "",
             "customizeReader": "",
-            "defaultValue": "",
             "disabled": "",
             "display": "გამოსახულება",
             "disposition": {

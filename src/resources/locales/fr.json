@@ -1,9 +1,21 @@
 {
     "accessibility": {
+        "annotationNote": "Note d’annotation",
         "bookMenu": "Menu",
+        "bookmarkNote": "Note du marque-page",
+        "cancelDownload": "Annuler le téléchargement : {{- title}}",
         "closeDialog": "Fermer",
+        "decreaseSetting": "Diminuer {{- setting}}",
+        "downloadProgress": "Progression du téléchargement : {{- title}}",
+        "editTag": "Modifier l’étiquette : {{- tag}}",
+        "favoriteCatalog": "Catalogue favori : {{- title}}",
+        "increaseSetting": "Augmenter {{- setting}}",
         "leftSlideButton": "Faire défiler vers la gauche",
+        "loading": "Chargement…",
         "mainContent": "Contenu principal",
+        "printPage": "Page {{page}}",
+        "publicationDetails": "{{- field}} : {{- title}}",
+        "resetSetting": "Réinitialiser {{- setting}}",
         "rightSlideButton": "Faire défiler vers la droite",
         "skipLink": "Aller directement au contenu",
         "toolbar": "Barre d'outils"
@@ -715,7 +727,8 @@
         "certificateRevoked": "Certificat LCP révoqué.",
         "certificateSignatureInvalid": "Signature de certificat LCP invalide.",
         "cover": {
-            "img": "image de couverture"
+            "img": "image de couverture",
+            "zoom": "Agrandir l’image de couverture"
         },
         "day": "jour",
         "days": "jours",
@@ -946,7 +959,6 @@
             },
             "customFontSelected": "Vous avez sélectionné une police personnelle",
             "customizeReader": "Personnaliser la mise en forme",
-            "defaultValue": "Valeur par défaut",
             "disabled": "Désactivé",
             "display": "Affichage",
             "disposition": {

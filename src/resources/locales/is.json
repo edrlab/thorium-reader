@@ -1,9 +1,21 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Valmynd",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Loka",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Færa til vinstri",
+        "loading": "",
         "mainContent": "meginefni",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Færa til hægri",
         "skipLink": "Fara í efni",
         "toolbar": "tækjastika"
@@ -709,7 +721,8 @@
         "certificateRevoked": "Vottorð LCP-leyfisins hefur verið afturkallað.",
         "certificateSignatureInvalid": "Undirskrift vottorðs LCP-leyfisins er ógild.",
         "cover": {
-            "img": "kápumynd"
+            "img": "kápumynd",
+            "zoom": ""
         },
         "day": "dagur",
         "days": "dagar",
@@ -939,7 +952,6 @@
             },
             "customFontSelected": "Þú hefur valið eigin leturgerð",
             "customizeReader": "Sérsníða textasnið",
-            "defaultValue": "sjálfgefið gildi",
             "disabled": "óvirkt",
             "display": "Birting",
             "disposition": {

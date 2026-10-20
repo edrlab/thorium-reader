@@ -1,9 +1,21 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "選單",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "關閉",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "將列表移至左側",
+        "loading": "",
         "mainContent": "主要內容",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "將列表移至右側",
         "skipLink": "跳轉至內容",
         "toolbar": "工具欄"
@@ -702,7 +714,8 @@
         "certificateRevoked": "LCP 授權已被撤銷。",
         "certificateSignatureInvalid": "LCP 授權憑證簽章無效。",
         "cover": {
-            "img": "封面圖像"
+            "img": "封面圖像",
+            "zoom": ""
         },
         "day": "天",
         "days": "天",
@@ -931,7 +944,6 @@
             },
             "customFontSelected": "您已選擇個人字體",
             "customizeReader": "自訂文字格式",
-            "defaultValue": "",
             "disabled": "停用",
             "display": "顯示",
             "disposition": {

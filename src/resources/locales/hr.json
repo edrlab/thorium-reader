@@ -1,9 +1,21 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Izbornik",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Zatvori",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Povuci popis ulijevo",
+        "loading": "",
         "mainContent": "glavni sadržaj",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Povuci popis udesno",
         "skipLink": "Preskoči do sadržaja",
         "toolbar": "alatna traka"
@@ -715,7 +727,8 @@
         "certificateRevoked": "Certifikat je poništen",
         "certificateSignatureInvalid": "Potpis certifikata je netočan",
         "cover": {
-            "img": "slika naslovnice"
+            "img": "slika naslovnice",
+            "zoom": ""
         },
         "day": "",
         "days": "",
@@ -946,7 +959,6 @@
             },
             "customFontSelected": "",
             "customizeReader": "",
-            "defaultValue": "",
             "disabled": "",
             "display": "Prikaz",
             "disposition": {

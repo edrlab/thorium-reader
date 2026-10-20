@@ -1,9 +1,21 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "قائمة",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "إغلاق",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "سحب إلى اليسار",
+        "loading": "",
         "mainContent": "المحتوى الرئيسي",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "سحب إلى اليمين",
         "skipLink": "تخطَّ إلى المحتوى",
         "toolbar": "شريط الأدوات"
@@ -733,7 +745,8 @@
         "certificateRevoked": "تم إبطال شهادة ترخيص LCP.",
         "certificateSignatureInvalid": "توقيع شهادة ترخيص LCP غير صالح.",
         "cover": {
-            "img": "صورة الغلاف"
+            "img": "صورة الغلاف",
+            "zoom": ""
         },
         "day": "يوم",
         "days": "أيام",
@@ -967,7 +980,6 @@
             },
             "customFontSelected": "لقد اخترت خطاً شخصياً",
             "customizeReader": "تخصيص تنسيق النص",
-            "defaultValue": "الوضع الافتراضي",
             "disabled": "تم تعطيله",
             "display": "العرض",
             "disposition": {

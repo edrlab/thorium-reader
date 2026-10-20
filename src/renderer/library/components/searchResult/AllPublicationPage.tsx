@@ -70,7 +70,7 @@ import DOMPurify from "dompurify";
 import moment from "moment";
 import { availableLanguages, I18nFunction } from "readium-desktop/common/services/translator";
 import * as React from "react";
-import { OVERLAY_Z_INDEX, PopoverArrow, CloseOnAnchorRemoval } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
 import { FocusScope } from "react-aria";
 import { DialogTrigger, Button, Popover, Dialog as PopoverDialog, Pressable } from "react-aria-components";
 import { connect } from "react-redux";
@@ -1070,11 +1070,15 @@ const CellTags: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & 
         : <></>;
 };
 
-const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_StringValue> = (props) => {
+const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_StringValue & { row: Row<IColumns> }> = (props) => {
 
     const textNeedToBeSanitized = props.value || "";
     const dangerousInnerHTML_DescriptionSanitized = DOMPurify.sanitize(textNeedToBeSanitized).replace(/font-size:/g, "font-sizexx:");
     const [isOpen, setIsOpen] = React.useState(false);
+    const detailsLabel = props.__("accessibility.publicationDetails", {
+        field: typeof props.column.Header === "string" ? props.column.Header : props.__("catalog.description"),
+        title: props.row.original.colTitle.label,
+    });
 
     return (<div
         className={stylesPublication.cell_description}
@@ -1095,13 +1099,12 @@ const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_Generic
         <p dangerouslySetInnerHTML={{ __html: dangerousInnerHTML_DescriptionSanitized }}></p>
         {props.value ?
             <DialogTrigger onOpenChange={setIsOpen}>
-                <Button style={{ maxWidth: "15px" }}>
+                <Button aria-label={detailsLabel} style={{ maxWidth: "15px" }}>
                     {isOpen ? <SVG ariaHidden svg={CloseIcon} /> : <SVG ariaHidden svg={ChevronDown} />}
                 </Button>
                 <Popover placement="bottom end" offset={5} crossOffset={-10} containerPadding={0} style={{ zIndex: OVERLAY_Z_INDEX }}>
-                    <PopoverDialog>
+                    <PopoverDialog aria-label={detailsLabel}>
                         <FocusScope autoFocus>
-                            <CloseOnAnchorRemoval />
                             <p
                                 className={stylesDropDown.dropdown_description}
                                 dangerouslySetInnerHTML={{ __html: dangerousInnerHTML_DescriptionSanitized }}
@@ -2684,14 +2687,16 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 </button>
                 <select
                     id="pageSelect"
-                    aria-label={`${__("reader.navigation.currentPageTotal", { current: tableInstance.state.pageIndex + 1, total: tableInstance.pageOptions.length })}`}
+                    aria-label={`${__("reader.navigation.currentPageTotal", { current: tableInstance.pageOptions.length ? tableInstance.state.pageIndex + 1 : 0, total: tableInstance.pageOptions.length })}`}
                     className={stylesPublication.allBooks_header_pagination_select}
+                    disabled={tableInstance.pageOptions.length === 0}
                     value={tableInstance.state.pageIndex}
                     onChange={(e) => {
                         const pageIndex = e.target.value ? Number(e.target.value) : 0;
                         tableInstance.gotoPage(pageIndex);
                     }}
                 >
+                    {tableInstance.pageOptions.length === 0 && <option value={0}>0 / 0</option>}
                     {
                         ".".repeat(tableInstance.pageOptions.length).split("").map((_s, i) => (
                             <option

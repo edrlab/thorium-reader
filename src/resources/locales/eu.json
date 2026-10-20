@@ -1,9 +1,21 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menu nagusia",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Itxi",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Mugitu zerrenda ezkerrera",
+        "loading": "",
         "mainContent": "Eduki nagusia",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Mugitu zerrenda eskuinera",
         "skipLink": "Pasatu edukira",
         "toolbar": "Tresna-barra"
@@ -709,7 +721,8 @@
         "certificateRevoked": "Ziurtagiria ezeztatuta dago",
         "certificateSignatureInvalid": "Ziurtagiriaren sinadura ez da baliozkoa",
         "cover": {
-            "img": "Azaleko irudia"
+            "img": "Azaleko irudia",
+            "zoom": ""
         },
         "day": "eguna",
         "days": "egunak",
@@ -939,7 +952,6 @@
             },
             "customFontSelected": "",
             "customizeReader": "Pertsonalizatu testuaren formatua",
-            "defaultValue": "",
             "disabled": "desgaituta",
             "display": "Bistaratzea",
             "disposition": {

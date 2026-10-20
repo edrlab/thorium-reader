@@ -18,8 +18,6 @@ import { AdjustableSettingsStrings } from "readium-desktop/renderer/reader/compo
 
 interface ITable {
     title: string,
-    ariaLabel: string,
-    ariaValuemin: number,
     defaultValue: string,
     parameter: keyof AdjustableSettingsStrings;
     altParameter: string,
@@ -36,8 +34,6 @@ export const ReadingSpacing = () => {
     const spacingOptions: ITable[] = [
         {
             title: `${__("reader.settings.margin")}`,
-            ariaLabel: "label_pageMargins",
-            ariaValuemin: 0,
             defaultValue: pageMargins,
             parameter: "pageMargins",
             altParameter: `${readerConfigInitialState.pageMargins}`,
@@ -45,8 +41,6 @@ export const ReadingSpacing = () => {
         },
         {
             title: `${__("reader.settings.wordSpacing")}`,
-            ariaLabel: "label_wordSpacing",
-            ariaValuemin: 0,
             defaultValue: wordSpacing,
             parameter: "wordSpacing",
             altParameter: `${readerConfigInitialState.wordSpacing}`,
@@ -54,8 +48,6 @@ export const ReadingSpacing = () => {
         },
         {
             title: `${__("reader.settings.letterSpacing")}`,
-            ariaLabel: "label_letterSpacing",
-            ariaValuemin: 0,
             defaultValue: letterSpacing,
             parameter: "letterSpacing",
             altParameter: `${readerConfigInitialState.letterSpacing}`,
@@ -63,8 +55,6 @@ export const ReadingSpacing = () => {
         },
         {
             title: `${__("reader.settings.paraSpacing")}`,
-            ariaLabel: "label_paraSpacing",
-            ariaValuemin: 0,
             defaultValue: paraSpacing,
             parameter: "paraSpacing",
             altParameter: `${readerConfigInitialState.paraSpacing}`,
@@ -72,8 +62,6 @@ export const ReadingSpacing = () => {
         },
         {
             title: `${__("reader.settings.lineSpacing")}`,
-            ariaLabel: "label_lineHeight",
-            ariaValuemin: 0,
             defaultValue: lineHeight,
             parameter: "lineHeight",
             altParameter: `${readerConfigInitialState.lineHeight}`,

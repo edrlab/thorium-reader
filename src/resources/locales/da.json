@@ -1,9 +1,21 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menu",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Luk",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Flyt listen til venstre",
+        "loading": "",
         "mainContent": "hovedindhold",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Flyt listen til højre",
         "skipLink": "Spring til indholdet",
         "toolbar": "værktøjslinje"
@@ -709,7 +721,8 @@
         "certificateRevoked": "LCP-licensens certifikat er blevet annuleret.",
         "certificateSignatureInvalid": "Ugyldig certifikat-signatur på LCP-licensen.",
         "cover": {
-            "img": "forsidebillede"
+            "img": "forsidebillede",
+            "zoom": ""
         },
         "day": "dag",
         "days": "dage",
@@ -939,7 +952,6 @@
             },
             "customFontSelected": "Du har valgt en personlig skrifttype",
             "customizeReader": "Tilpas tekstformatering",
-            "defaultValue": "standard værdi",
             "disabled": "slået fra",
             "display": "Visning",
             "disposition": {

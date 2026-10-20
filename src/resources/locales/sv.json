@@ -1,9 +1,21 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Meny",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Stäng",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Gå till vänster",
+        "loading": "",
         "mainContent": "huvudinnehåll",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Gå till höger",
         "skipLink": "Hoppa till innehåll",
         "toolbar": "verktygsfält"
@@ -709,7 +721,8 @@
         "certificateRevoked": "LCP-certifikatet är återkallat.",
         "certificateSignatureInvalid": "LCP-certifikatets signatur är ogiltig.",
         "cover": {
-            "img": "omslagsbild"
+            "img": "omslagsbild",
+            "zoom": ""
         },
         "day": "dag",
         "days": "dagar",
@@ -939,7 +952,6 @@
             },
             "customFontSelected": "Du har valt ett eget typsnitt",
             "customizeReader": "Anpassa textformatering",
-            "defaultValue": "standard",
             "disabled": "inaktiverad",
             "display": "Visning",
             "disposition": {

@@ -1,9 +1,21 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Меню",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Закрыть",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Сдвиньте список влево",
+        "loading": "",
         "mainContent": "основное содержимое",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Сдвиньте список вправо",
         "skipLink": "Перейти к содержимому",
         "toolbar": "панель инструментов"
@@ -375,10 +387,10 @@
         "next": "Следующая",
         "previous": "Предыдущая",
         "registry": {
-            "empty": "",
-            "error": "",
-            "loading": "",
-            "title": ""
+            "empty": "Каталоги не найдены.",
+            "error": "Не удалось выполнить поиск в реестре. Пожалуйста, попробуйте ещё раз.",
+            "loading": "Поиск по каталогам…",
+            "title": "Поиск в каталогах"
         },
         "resumeBrowsing": "Продолжить просмотр",
         "shelf": "Полка",
@@ -721,7 +733,8 @@
         "certificateRevoked": "Сертификат LCP отозван.",
         "certificateSignatureInvalid": "Неверная подпись сертификата лицензии LCP.",
         "cover": {
-            "img": "обложка"
+            "img": "обложка",
+            "zoom": ""
         },
         "day": "день",
         "days": "дней",
@@ -953,7 +966,6 @@
             },
             "customFontSelected": "Вы выбрали персональный шрифт",
             "customizeReader": "Настройка форматирования текста",
-            "defaultValue": "значение по умолчанию",
             "disabled": "отключено",
             "display": "Отображение",
             "disposition": {

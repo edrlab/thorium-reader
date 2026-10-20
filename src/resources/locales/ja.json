@@ -1,9 +1,21 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "メニュー",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "閉じる",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "左にスライド",
+        "loading": "",
         "mainContent": "メインコンテンツ",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "右にスライド",
         "skipLink": "コンテンツに移動",
         "toolbar": "ツールバー"
@@ -701,7 +713,8 @@
         "certificateRevoked": "LCPライセンス証明書が取り消されています。",
         "certificateSignatureInvalid": "LCPライセンス証明書の署名が無効です。",
         "cover": {
-            "img": "カバー画像"
+            "img": "カバー画像",
+            "zoom": ""
         },
         "day": "日",
         "days": "日中",
@@ -930,7 +943,6 @@
             },
             "customFontSelected": "利用するフォントを選択しました",
             "customizeReader": "本文のスタイル",
-            "defaultValue": "",
             "disabled": "無効",
             "display": "画面表示",
             "disposition": {

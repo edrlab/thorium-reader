@@ -1,9 +1,21 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menu",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Fechar",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Deslizar para a esquerda",
+        "loading": "",
         "mainContent": "Conteúdo principal",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Deslizar para a direita",
         "skipLink": "Ir para o conteúdo",
         "toolbar": "Barra de ferramentas"
@@ -715,7 +727,8 @@
         "certificateRevoked": "O certificado PCL foi revogado.",
         "certificateSignatureInvalid": "A assinatura do certificado da licença PCL é inválida.",
         "cover": {
-            "img": "Imagem de capa"
+            "img": "Imagem de capa",
+            "zoom": ""
         },
         "day": "dia",
         "days": "dias",
@@ -946,7 +959,6 @@
             },
             "customFontSelected": "Escolheu um tipo de letra pessoal",
             "customizeReader": "Personalizar formatação do texto",
-            "defaultValue": "Valor predefinido",
             "disabled": "desativado",
             "display": "Visualização",
             "disposition": {

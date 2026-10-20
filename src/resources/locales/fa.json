@@ -1,5 +1,6 @@
 {
     "accessibility": {
+        "cancelDownload": "",
         "closeDialog": "بستن",
         "toolbar": "نوار ابزار"
     },
@@ -63,6 +64,10 @@
                     "ready": "آماده"
                 }
             }
+        },
+        "userProfile": {
+            "holds": "",
+            "loans": ""
         }
     }
 }

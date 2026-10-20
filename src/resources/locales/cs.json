@@ -1,9 +1,21 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menu",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Zavřít",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Posunout doleva",
+        "loading": "",
         "mainContent": "hlavní obsah",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Posunout doprava",
         "skipLink": "Přeskočit na obsah",
         "toolbar": "panel nástrojů"
@@ -721,7 +733,8 @@
         "certificateRevoked": "",
         "certificateSignatureInvalid": "",
         "cover": {
-            "img": "titulní obrázek"
+            "img": "titulní obrázek",
+            "zoom": ""
         },
         "day": "den",
         "days": "dny",
@@ -953,7 +966,6 @@
             },
             "customFontSelected": "Zvolili jste osobní písmo",
             "customizeReader": "Přizpůsobit formátování textu",
-            "defaultValue": "",
             "disabled": "vypnuto",
             "display": "Zobrazení",
             "disposition": {

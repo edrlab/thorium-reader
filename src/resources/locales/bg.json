@@ -1,9 +1,21 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Меню",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Затвори",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Плъзни списъка наляво",
+        "loading": "",
         "mainContent": "главно съдържание",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Плъзни списъка надясно",
         "skipLink": "Преминете към съдържанието",
         "toolbar": "лента с инструменти"
@@ -709,7 +721,8 @@
         "certificateRevoked": "Сертификатът е анулиран.",
         "certificateSignatureInvalid": "Ключа за сертификата е невалиден.",
         "cover": {
-            "img": "корица"
+            "img": "корица",
+            "zoom": ""
         },
         "day": "",
         "days": "",
@@ -939,7 +952,6 @@
             },
             "customFontSelected": "",
             "customizeReader": "",
-            "defaultValue": "",
             "disabled": "",
             "display": "Екран",
             "disposition": {

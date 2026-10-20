@@ -1,9 +1,21 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Meniu",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Užverti",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Paslinkti į kairę",
+        "loading": "",
         "mainContent": "pagrindinis turinys",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Paslinkti į dešinę",
         "skipLink": "Peršokti į turinį",
         "toolbar": "įrankių juosta"
@@ -145,12 +157,12 @@
         "update": "Keisti",
         "userProfile": {
             "available": "",
-            "bookshelf": "",
-            "edit": "",
+            "bookshelf": "Atverti knygų lentyną",
+            "edit": "Keisti profilį",
             "holds": "",
             "loading": "",
             "loans": "",
-            "title": "",
+            "title": "Paskyra",
             "total": "",
             "unavailable": "",
             "used": ""
@@ -375,7 +387,7 @@
         "next": "Tolesnis",
         "previous": "Ankstesnis",
         "registry": {
-            "empty": "",
+            "empty": "Katalogų nerasta.",
             "error": "",
             "loading": "",
             "title": ""
@@ -721,7 +733,8 @@
         "certificateRevoked": "LCP licencijos sertifikato galiojimas sustabdytas.",
         "certificateSignatureInvalid": "Negaliojantis LCP licencijos sertifikato parašas.",
         "cover": {
-            "img": "viršelio paveikslas"
+            "img": "viršelio paveikslas",
+            "zoom": ""
         },
         "day": "diena",
         "days": "dienos",
@@ -953,7 +966,6 @@
             },
             "customFontSelected": "Pasirinkote asmeninį šriftą",
             "customizeReader": "Tinkinti teksto formatavimą",
-            "defaultValue": "numatytoji reikšmė",
             "disabled": "išjungta",
             "display": "Atvaizdavimas",
             "disposition": {

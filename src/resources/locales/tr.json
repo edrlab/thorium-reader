@@ -1,9 +1,21 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menü",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Kapat",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Sola kaydır",
+        "loading": "",
         "mainContent": "ana içerik",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Sağa kaydır",
         "skipLink": "İçeriğe atla",
         "toolbar": "araç çubuğu"
@@ -709,7 +721,8 @@
         "certificateRevoked": "LCP lisans sertifikası geçersizleştirildi.",
         "certificateSignatureInvalid": "Geçersiz LCP lisans sertifikası imzası",
         "cover": {
-            "img": "kapak görseli"
+            "img": "kapak görseli",
+            "zoom": ""
         },
         "day": "gün",
         "days": "gün",
@@ -939,7 +952,6 @@
             },
             "customFontSelected": "Kişisel bir yazı tipi seçtiniz",
             "customizeReader": "Metin biçimlendirmesini özelleştir",
-            "defaultValue": "varsayılan değer",
             "disabled": "geçersiz",
             "display": "Görüntüleme",
             "disposition": {

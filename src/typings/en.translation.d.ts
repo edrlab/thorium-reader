@@ -1,18 +1,42 @@
 declare namespace typed_i18n {
   interface TFunction {
   (_: "accessibility", __?: {}): {
+  readonly "annotationNote": string,
   readonly "bookMenu": string,
+  readonly "bookmarkNote": string,
+  readonly "cancelDownload": string,
   readonly "closeDialog": string,
+  readonly "decreaseSetting": string,
+  readonly "downloadProgress": string,
+  readonly "editTag": string,
+  readonly "favoriteCatalog": string,
+  readonly "increaseSetting": string,
   readonly "leftSlideButton": string,
+  readonly "loading": string,
   readonly "mainContent": string,
+  readonly "printPage": string,
+  readonly "publicationDetails": string,
+  readonly "resetSetting": string,
   readonly "rightSlideButton": string,
   readonly "skipLink": string,
   readonly "toolbar": string
 };
+  (_: "accessibility.annotationNote", __?: {}): string;
   (_: "accessibility.bookMenu", __?: {}): string;
+  (_: "accessibility.bookmarkNote", __?: {}): string;
+  (_: "accessibility.cancelDownload", __?: {}): string;
   (_: "accessibility.closeDialog", __?: {}): string;
+  (_: "accessibility.decreaseSetting", __?: {}): string;
+  (_: "accessibility.downloadProgress", __?: {}): string;
+  (_: "accessibility.editTag", __?: {}): string;
+  (_: "accessibility.favoriteCatalog", __?: {}): string;
+  (_: "accessibility.increaseSetting", __?: {}): string;
   (_: "accessibility.leftSlideButton", __?: {}): string;
+  (_: "accessibility.loading", __?: {}): string;
   (_: "accessibility.mainContent", __?: {}): string;
+  (_: "accessibility.printPage", __?: {}): string;
+  (_: "accessibility.publicationDetails", __?: {}): string;
+  (_: "accessibility.resetSetting", __?: {}): string;
   (_: "accessibility.rightSlideButton", __?: {}): string;
   (_: "accessibility.skipLink", __?: {}): string;
   (_: "accessibility.toolbar", __?: {}): string;
@@ -1769,7 +1793,7 @@ declare namespace typed_i18n {
   readonly "cancelledLcp": string,
   readonly "certificateRevoked": string,
   readonly "certificateSignatureInvalid": string,
-  readonly "cover": { readonly "img": string },
+  readonly "cover": { readonly "img": string, readonly "zoom": string },
   readonly "day": string,
   readonly "days": string,
   readonly "duration": { readonly "title": string },
@@ -1895,8 +1919,9 @@ declare namespace typed_i18n {
   (_: "publication.cancelledLcp", __?: {}): string;
   (_: "publication.certificateRevoked", __?: {}): string;
   (_: "publication.certificateSignatureInvalid", __?: {}): string;
-  (_: "publication.cover", __?: {}): { readonly "img": string };
+  (_: "publication.cover", __?: {}): { readonly "img": string, readonly "zoom": string };
   (_: "publication.cover.img", __?: {}): string;
+  (_: "publication.cover.zoom", __?: {}): string;
   (_: "publication.day", __?: {}): string;
   (_: "publication.days", __?: {}): string;
   (_: "publication.duration", __?: {}): { readonly "title": string };
@@ -2124,7 +2149,6 @@ declare namespace typed_i18n {
     },
     readonly "customFontSelected": string,
     readonly "customizeReader": string,
-    readonly "defaultValue": string,
     readonly "disabled": string,
     readonly "display": string,
     readonly "disposition": { readonly "title": string },
@@ -2544,7 +2568,6 @@ declare namespace typed_i18n {
   },
   readonly "customFontSelected": string,
   readonly "customizeReader": string,
-  readonly "defaultValue": string,
   readonly "disabled": string,
   readonly "display": string,
   readonly "disposition": { readonly "title": string },
@@ -2621,7 +2644,6 @@ declare namespace typed_i18n {
   (_: "reader.settings.column.two", __?: {}): string;
   (_: "reader.settings.customFontSelected", __?: {}): string;
   (_: "reader.settings.customizeReader", __?: {}): string;
-  (_: "reader.settings.defaultValue", __?: {}): string;
   (_: "reader.settings.disabled", __?: {}): string;
   (_: "reader.settings.display", __?: {}): string;
   (_: "reader.settings.disposition", __?: {}): { readonly "title": string };

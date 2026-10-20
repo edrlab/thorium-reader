@@ -10,8 +10,9 @@ import {
     Button, Dialog, DialogProps, DialogTrigger, DialogTriggerProps, Modal, ModalOverlay,
     OverlayTriggerStateContext, Pressable,
 } from "react-aria-components";
-import { mergeProps, Overlay } from "react-aria";
+import { FocusScope, mergeProps, Overlay } from "react-aria";
 import { OVERLAY_Z_INDEX } from "./overlayHelpers";
+import { useOverlayTriggerState } from "react-stately";
 
 export interface RootProps extends DialogTriggerProps {
     modal?: boolean;
@@ -24,6 +25,7 @@ interface DialogContextValue {
     alert: boolean;
     titleId: string;
     descriptionId: string;
+    panelId?: string;
     overlayProps?: Omit<DialogTriggerProps, "children">;
 }
 const Context = React.createContext<DialogContextValue>({ modal: true, alert: false, titleId: "", descriptionId: "" });
@@ -32,9 +34,12 @@ const Context = React.createContext<DialogContextValue>({ modal: true, alert: fa
 export function Root({ modal = true, alert = false, triggerless = false, ...props }: RootProps) {
     const titleId = React.useId();
     const descriptionId = React.useId();
+    const panelId = React.useId();
+    const dockedState = useOverlayTriggerState(props);
     const { children, ...overlayProps } = props;
-    return <Context.Provider value={{ modal, alert, titleId, descriptionId, overlayProps: triggerless ? overlayProps : undefined }}>
-        {triggerless ? children : <DialogTrigger {...props} />}
+    return <Context.Provider value={{ modal, alert, titleId, descriptionId, panelId, overlayProps: triggerless ? overlayProps : undefined }}>
+        {!modal ? <OverlayTriggerStateContext.Provider value={dockedState}>{children}</OverlayTriggerStateContext.Provider>
+            : triggerless ? children : <DialogTrigger {...props} />}
     </Context.Provider>;
 }
 
@@ -48,14 +53,37 @@ function buttonChild({ asChild, children, ...props }: ButtonProps) {
     return <button type="button" {...props}>{children}</button>;
 }
 
+/** Use RAC's button semantics for native controls, including inside inert background dialogs. */
+function DialogButton({ onPress, ...props }: ButtonProps & { onPress?: () => void }) {
+    const child = buttonChild(props);
+    if (child.type !== "button") {
+        return <Pressable onPress={onPress}>{child}</Pressable>;
+    }
+    const childRef = (child as React.ReactElement & { ref?: React.Ref<HTMLButtonElement> }).ref;
+    return <Button ref={childRef} isDisabled={child.props.disabled} onPress={onPress}
+        render={(buttonProps) => React.cloneElement(child, mergeProps(child.props, buttonProps))}>
+        {child.props.children}
+    </Button>;
+}
+
 export function Trigger(props: ButtonProps) {
-    return <Pressable>{buttonChild(props)}</Pressable>;
+    const { modal, panelId } = React.useContext(Context);
+    const state = React.useContext(OverlayTriggerStateContext);
+    if (!modal) {
+        // Docked panels use native button activation for mouse, Enter and Space.
+        return buttonChild(mergeProps(props, {
+            onClick: () => state?.toggle(),
+            "aria-expanded": state?.isOpen,
+            "aria-controls": state?.isOpen ? panelId : undefined,
+        }));
+    }
+    return <DialogButton {...props} />;
 }
 Trigger.displayName = "DialogTrigger";
 
 export function Close(props: ButtonProps) {
     const state = React.useContext(OverlayTriggerStateContext);
-    return <Pressable onPress={() => state?.close()}>{buttonChild(props)}</Pressable>;
+    return <DialogButton {...props} onPress={() => state?.close()} />;
 }
 
 interface PortalProps extends React.PropsWithChildren {
@@ -65,9 +93,9 @@ interface PortalProps extends React.PropsWithChildren {
 export function Portal({ children, className }: PortalProps) {
     const { modal, alert, overlayProps } = React.useContext(Context);
     const state = React.useContext(OverlayTriggerStateContext);
-    // Docked reader panels are ordinary persistent panels, without modal focus or dismissal.
+    // Restore focus on close, while allowing focus to move freely outside docked panels.
     if (!modal) {
-        return state?.isOpen ? <Overlay disableFocusManagement>{children}</Overlay> : undefined;
+        return state?.isOpen ? <Overlay disableFocusManagement><FocusScope restoreFocus>{children}</FocusScope></Overlay> : undefined;
     }
     return <ModalOverlay
         {...overlayProps}
@@ -86,6 +114,13 @@ export const Content = React.forwardRef<HTMLElement, DialogProps>((props, ref) =
         aria-describedby={props["aria-describedby"] ?? (alert ? descriptionId : undefined)} />;
 });
 Content.displayName = "DialogContent";
+
+/** Docked content is a named region, without dialog semantics or modal focus management. */
+export const DockedContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>((props, ref) => {
+    const { panelId, titleId } = React.useContext(Context);
+    return <div {...props} ref={ref} id={panelId} role="region" aria-labelledby={props["aria-labelledby"] ?? titleId} />;
+});
+DockedContent.displayName = "DialogDockedContent";
 
 type TextProps = React.HTMLAttributes<HTMLElement> & { asChild?: boolean };
 

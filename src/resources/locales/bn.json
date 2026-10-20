@@ -1,9 +1,21 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "",
+        "loading": "",
         "mainContent": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "",
         "skipLink": "",
         "toolbar": ""
@@ -709,7 +721,8 @@
         "certificateRevoked": "",
         "certificateSignatureInvalid": "",
         "cover": {
-            "img": ""
+            "img": "",
+            "zoom": ""
         },
         "day": "",
         "days": "",
@@ -939,7 +952,6 @@
             },
             "customFontSelected": "",
             "customizeReader": "",
-            "defaultValue": "",
             "disabled": "",
             "display": "",
             "disposition": {

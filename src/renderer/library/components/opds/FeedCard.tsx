@@ -133,6 +133,8 @@ export const FeedCard: React.FC<IFeedCardProps> = (props) => {
                 </div>
             </Link>
             <button onClick={setFeedFavoriteButton}
+                aria-label={__("accessibility.favoriteCatalog", { title: feed.title })}
+                aria-pressed={!!feed.favorite}
                 className={stylesCatalogs.button_favorites}>
                 <SVG svg={StarIcon} ariaHidden className={feed.favorite ? stylesCatalogs.catalog_favorite_icon_true : stylesCatalogs.catalog_favorite_icon_false} />
             </button>

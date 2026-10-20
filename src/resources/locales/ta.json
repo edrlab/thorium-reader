@@ -1,9 +1,21 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "பட்டியல்",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "மூடு",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "இடதுபுறத்தில் ச்லைடு",
+        "loading": "",
         "mainContent": "முக்கிய உள்ளடக்கம்",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "வலதுபுறம் சரிய",
         "skipLink": "உள்ளடக்கத்தைத் தவிர்க்கவும்",
         "toolbar": "கருவிப்பட்டி"
@@ -709,7 +721,8 @@
         "certificateRevoked": "ரத்து செய்யப்பட்ட எல்.சி.பி உரிம சான்றிதழ்.",
         "certificateSignatureInvalid": "தவறான எல்.சி.பி உரிம சான்றிதழ் கையொப்பம்.",
         "cover": {
-            "img": "கவர் படம்"
+            "img": "கவர் படம்",
+            "zoom": ""
         },
         "day": "நாள்",
         "days": "நாட்கள்",
@@ -939,7 +952,6 @@
             },
             "customFontSelected": "நீங்கள் ஒரு தனிப்பட்ட எழுத்துருவைத் தேர்ந்தெடுத்துள்ளீர்கள்",
             "customizeReader": "உரை வடிவமைப்பைத் தனிப்பயனாக்குங்கள்",
-            "defaultValue": "",
             "disabled": "முடக்கப்பட்டது",
             "display": "காட்சி",
             "disposition": {

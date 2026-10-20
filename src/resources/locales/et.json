@@ -1,9 +1,21 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menüü",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Sulge",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Viipa vasakule",
+        "loading": "",
         "mainContent": "põhiline sisu",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Viipa paremale",
         "skipLink": "Mine sisu juurde",
         "toolbar": "tööriistariba"
@@ -709,7 +721,8 @@
         "certificateRevoked": "LCP-litsentsi sertifikaat on tühistatud.",
         "certificateSignatureInvalid": "Vigane LCP-litsentsi sertifikaadi allkiri.",
         "cover": {
-            "img": "kaanepilt"
+            "img": "kaanepilt",
+            "zoom": ""
         },
         "day": "päev",
         "days": "päeva",
@@ -939,7 +952,6 @@
             },
             "customFontSelected": "sa oled eelistanud kasutada isiklikku kirjatüüpi",
             "customizeReader": "Kohenda teksti vormindust",
-            "defaultValue": "vaikmisi väärtus",
             "disabled": "pole kasutusel",
             "display": "Ekraanivaade",
             "disposition": {

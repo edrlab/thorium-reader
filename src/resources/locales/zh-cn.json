@@ -1,9 +1,21 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "菜单",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "关闭",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "将列表划至左侧",
+        "loading": "",
         "mainContent": "主要内容",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "将列表划至右侧",
         "skipLink": "跳转至内容",
         "toolbar": "工具栏"
@@ -702,7 +714,8 @@
         "certificateRevoked": "LCP 授权已被撤销。",
         "certificateSignatureInvalid": "无效的 LCP 许可证证书签名。",
         "cover": {
-            "img": "封面图像"
+            "img": "封面图像",
+            "zoom": ""
         },
         "day": "天",
         "days": "天",
@@ -931,7 +944,6 @@
             },
             "customFontSelected": "您已选择自定义字体",
             "customizeReader": "自定义文本格式",
-            "defaultValue": "默认值",
             "disabled": "已禁用",
             "display": "显示",
             "disposition": {

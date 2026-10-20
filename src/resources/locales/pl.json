@@ -1,9 +1,21 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menu",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Zamknij",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Przesuń w lewo",
+        "loading": "",
         "mainContent": "główna treść",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Przesuń w prawo",
         "skipLink": "Przejdź do treści",
         "toolbar": "pasek narzędzi"
@@ -721,7 +733,8 @@
         "certificateRevoked": "Certyfikat licencji LCP został unieważniony.",
         "certificateSignatureInvalid": "Nieprawidłowy podpis certyfikatu licencji LCP.",
         "cover": {
-            "img": "okładka"
+            "img": "okładka",
+            "zoom": ""
         },
         "day": "dzień",
         "days": "dni",
@@ -953,7 +966,6 @@
             },
             "customFontSelected": "Wybrano własną czcionkę",
             "customizeReader": "Dostosuj formatowanie tekstu",
-            "defaultValue": "domyślna wartość",
             "disabled": "wyłączone",
             "display": "Wyświetlanie",
             "disposition": {

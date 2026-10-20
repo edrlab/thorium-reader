@@ -1,9 +1,21 @@
 {
     "accessibility": {
+        "annotationNote": "Annotation note",
         "bookMenu": "Menu",
+        "bookmarkNote": "Bookmark note",
+        "cancelDownload": "Cancel download: {{- title}}",
         "closeDialog": "Close",
+        "decreaseSetting": "Decrease {{- setting}}",
+        "downloadProgress": "Download progress: {{- title}}",
+        "editTag": "Edit tag: {{- tag}}",
+        "favoriteCatalog": "Favorite catalog: {{- title}}",
+        "increaseSetting": "Increase {{- setting}}",
         "leftSlideButton": "Slide to the left",
+        "loading": "Loading…",
         "mainContent": "main content",
+        "printPage": "Page {{page}}",
+        "publicationDetails": "{{- field}}: {{- title}}",
+        "resetSetting": "Reset {{- setting}}",
         "rightSlideButton": "Slide to the right",
         "skipLink": "Skip to content",
         "toolbar": "toolbar"
@@ -709,7 +721,8 @@
         "certificateRevoked": "Revoked LCP license certificate.",
         "certificateSignatureInvalid": "Invalid LCP license certificate signature.",
         "cover": {
-            "img": "cover image"
+            "img": "cover image",
+            "zoom": "Enlarge cover image"
         },
         "day": "day",
         "days": "days",
@@ -939,7 +952,6 @@
             },
             "customFontSelected": "You have chosen a personal font",
             "customizeReader": "Customize text formatting",
-            "defaultValue": "default value",
             "disabled": "disabled",
             "display": "Display",
             "disposition": {

@@ -1,9 +1,21 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "메뉴",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "닫기",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "목록 왼쪽으로 밀기 ",
+        "loading": "",
         "mainContent": "메인 콘텐츠",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "목록 오른쪽으로 밀기",
         "skipLink": "콘텐츠로 건너뛰기",
         "toolbar": "툴바"
@@ -697,7 +709,8 @@
         "certificateRevoked": "인증서가 취소되었습니다",
         "certificateSignatureInvalid": "인증서 서명이 유효하지 않습니다",
         "cover": {
-            "img": "표지"
+            "img": "표지",
+            "zoom": ""
         },
         "day": "",
         "days": "",
@@ -926,7 +939,6 @@
             },
             "customFontSelected": "",
             "customizeReader": "",
-            "defaultValue": "",
             "disabled": "",
             "display": "디스플레이",
             "disposition": {
