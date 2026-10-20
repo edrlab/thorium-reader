@@ -43,12 +43,12 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 
 const context = React.createContext<{
     selectSearchResult: IApiappSearchResultView;
-    setSelectSearchResult: React.Dispatch<React.SetStateAction<IApiappSearchResultView>>;
+    selectResult: (result: IApiappSearchResultView) => void;
     submitAction: () => void;
 }>(undefined);
 
 const Item = ({v}: {v: IApiappSearchResultView}) => {
-    const {selectSearchResult, setSelectSearchResult, submitAction } = React.useContext(context);
+    const {selectSearchResult, selectResult, submitAction } = React.useContext(context);
     return <li>
                 <button type="button" style={{
                     display: "block",
@@ -64,9 +64,9 @@ const Item = ({v}: {v: IApiappSearchResultView}) => {
                     borderRadius: "8px",
                 }}
                     aria-pressed={selectSearchResult === v}
-                    onClick={() => setSelectSearchResult(v)}
+                    onClick={() => selectResult(v)}
                     onDoubleClick={() => {
-                        setSelectSearchResult(v);
+                        selectResult(v);
                         setTimeout(() => submitAction(), 0);
                     }}
                 >
@@ -198,7 +198,11 @@ export const ApiappAddFormDialog = () => {
     }, [selectSearchResult, apiAddFeedAction]);
 
     const submitButtonRef = React.useRef<HTMLButtonElement>();
-    const contextValue = {selectSearchResult, setSelectSearchResult, submitAction: () => submitButtonRef.current.click()};
+    const selectResult = (result: IApiappSearchResultView) => {
+        setSelectSearchResult(result);
+        submitButtonRef.current?.focus();
+    };
+    const contextValue = {selectSearchResult, selectResult, submitAction: () => submitButtonRef.current.click()};
 
     const enableAPIAPP = useSelector((state: ILibraryRootState) => state.settings.enableAPIAPP);
 
