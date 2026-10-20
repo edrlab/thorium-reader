@@ -25,27 +25,26 @@ interface ITable {
 }
 
 export const Slider = ({ value, option, set }: { value: string, option: ITable, set: (a: Pick<ReaderConfig, "pageMargins" | "wordSpacing" | "letterSpacing" | "paraSpacing" | "lineHeight">) => void }) => {
+    const values = optionsValues[option.parameter] || [];
+    const indexForValue = (candidate: string) => Math.max(0, values.indexOf(candidate));
+    const [currentIndex, setCurrentIndex] = React.useState(() => indexForValue(value));
+    const currentSliderValue = values[currentIndex] || "0";
     const labelId = React.useId();
-    const [currentSliderValue, setCurrentSliderValue] = React.useState(option.defaultValue);
-    const [currentIndex, setCurrentIndex] = React.useState(() => Math.max(0, (optionsValues[option.parameter] || []).findIndex((el) => el === option.defaultValue)));
     const [__] = useTranslator();
 
     React.useEffect(() => {
-        setCurrentSliderValue(value);
-        const newIndex = Math.max(0, (optionsValues[option.parameter] || []).findIndex((el) => el === value));
-        setCurrentIndex(newIndex);
+        setCurrentIndex(Math.max(0, (optionsValues[option.parameter] || []).indexOf(value)));
     }, [value, option.parameter]);
 
     const updateValue = (index: number) => {
         const newValue = (optionsValues[option.parameter] || [])[index] || "0";
-        setCurrentSliderValue(newValue);
         setCurrentIndex(index);
         set({ [option.parameter]: newValue } as Pick<ReaderConfig, "pageMargins" | "wordSpacing" | "letterSpacing" | "paraSpacing" | "lineHeight">);
     };
 
     const click = (direction: string) => {
         const newIndex = direction === "out" ? currentIndex - 1 : currentIndex + 1;
-        if (newIndex >= 0 && newIndex < optionsValues[option.parameter].length) {
+        if (newIndex >= 0 && newIndex < values.length) {
             updateValue(newIndex);
         }
     };

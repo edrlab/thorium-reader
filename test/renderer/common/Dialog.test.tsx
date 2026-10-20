@@ -18,7 +18,6 @@ let useOverlayTriggerState: typeof import("react-stately").useOverlayTriggerStat
 let Button: typeof import("react-aria-components").Button;
 let FocusScope: typeof import("react-aria").FocusScope;
 let PopoverArrow: typeof import("readium-desktop/renderer/common/components/overlayHelpers").PopoverArrow;
-let CloseOnAnchorRemoval: typeof import("readium-desktop/renderer/common/components/overlayHelpers").CloseOnAnchorRemoval;
 let OVERLAY_Z_INDEX: typeof import("readium-desktop/renderer/common/components/overlayHelpers").OVERLAY_Z_INDEX;
 let root: Root;
 let host: HTMLDivElement;
@@ -89,7 +88,6 @@ beforeAll(() => {
     ({ FocusScope } = require("react-aria"));
     ({
         PopoverArrow,
-        CloseOnAnchorRemoval,
         OVERLAY_Z_INDEX,
     } = require("readium-desktop/renderer/common/components/overlayHelpers"));
     AlertDialog = require("readium-desktop/renderer/common/components/AlertDialog");
@@ -460,7 +458,7 @@ test("controlled toolbar popovers use list items as anchors without toggling the
     expect(onChange).toHaveBeenLastCalledWith(false);
 });
 
-test("default viewport popovers close when their anchor detaches", async () => {
+test("unmounting a trigger subtree removes its native popover portal", async () => {
     await React.act(async () =>
         root.render(
             <DialogTrigger>
@@ -475,7 +473,6 @@ test("default viewport popovers close when their anchor detaches", async () => {
                 >
                     <PopoverDialog>
                         <FocusScope autoFocus>
-                            <CloseOnAnchorRemoval />
                             <button data-option>Option</button>
                         </FocusScope>
                     </PopoverDialog>
@@ -484,15 +481,10 @@ test("default viewport popovers close when their anchor detaches", async () => {
         ),
     );
     await click(document.querySelector("[data-trigger]")!);
-    const trigger = document.querySelector("[data-trigger]")!;
-    const parent = trigger.parentElement!;
-    await React.act(async () => {
-        trigger.remove();
-        await settle();
-    });
+    expect(document.querySelector("[data-option]")).not.toBeNull();
+    await React.act(async () => root.render(<div />));
+    expect(document.querySelector("[data-trigger]")).toBeNull();
     expect(document.querySelector("[data-option]")).toBeNull();
-    // Restore React's owned DOM before unmounting the test tree.
-    parent.appendChild(trigger);
 });
 
 test("controlled dialogs open programmatically and preserve deliberate focus on close", async () => {
@@ -568,7 +560,7 @@ test("native popovers support keyboard opening, tab navigation, and focus restor
 for (const initialKey of ["lastCreated", undefined]) {
     test(
         "sorting popovers focus " +
-            (initialKey ? "the selected option" : "the first option without changing the sort") +
+            (initialKey ? "the selected option" : "and select the first option when no sort is selected") +
             " and dismiss independently",
         async () => {
             const onSelectionChange = jest.fn();
@@ -624,7 +616,13 @@ for (const initialKey of ["lastCreated", undefined]) {
             await React.act(settle);
             const options = Array.from(document.querySelectorAll<HTMLElement>("[role=\"option\"]"));
             expect(document.activeElement).toBe(options[initialKey ? 1 : 0]);
-            expect(onSelectionChange).not.toHaveBeenCalled();
+            if (initialKey) {
+                expect(onSelectionChange).not.toHaveBeenCalled();
+            } else {
+                // React Aria's replace selection chooses the autofocused item when empty.
+                expect(onSelectionChange).toHaveBeenCalledTimes(1);
+                expect(Array.from(onSelectionChange.mock.calls[0][0] as Set<string>)).toEqual(["progression"]);
+            }
             await React.act(async () => {
                 document.activeElement?.dispatchEvent(
                     new KeyboardEvent("keydown", {

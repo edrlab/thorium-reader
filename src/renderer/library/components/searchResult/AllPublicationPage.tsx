@@ -70,7 +70,7 @@ import DOMPurify from "dompurify";
 import moment from "moment";
 import { availableLanguages, I18nFunction } from "readium-desktop/common/services/translator";
 import * as React from "react";
-import { OVERLAY_Z_INDEX, PopoverArrow, CloseOnAnchorRemoval } from "readium-desktop/renderer/common/components/overlayHelpers";
+import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
 import { FocusScope } from "react-aria";
 import { DialogTrigger, Button, Popover, Dialog as PopoverDialog, Pressable } from "react-aria-components";
 import { connect } from "react-redux";
@@ -1105,7 +1105,6 @@ const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_Generic
                 <Popover placement="bottom end" offset={5} crossOffset={-10} containerPadding={0} style={{ zIndex: OVERLAY_Z_INDEX }}>
                     <PopoverDialog aria-label={detailsLabel}>
                         <FocusScope autoFocus>
-                            <CloseOnAnchorRemoval />
                             <p
                                 className={stylesDropDown.dropdown_description}
                                 dangerouslySetInnerHTML={{ __html: dangerousInnerHTML_DescriptionSanitized }}
@@ -2688,14 +2687,16 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 </button>
                 <select
                     id="pageSelect"
-                    aria-label={`${__("reader.navigation.currentPageTotal", { current: tableInstance.state.pageIndex + 1, total: tableInstance.pageOptions.length })}`}
+                    aria-label={`${__("reader.navigation.currentPageTotal", { current: tableInstance.pageOptions.length ? tableInstance.state.pageIndex + 1 : 0, total: tableInstance.pageOptions.length })}`}
                     className={stylesPublication.allBooks_header_pagination_select}
+                    disabled={tableInstance.pageOptions.length === 0}
                     value={tableInstance.state.pageIndex}
                     onChange={(e) => {
                         const pageIndex = e.target.value ? Number(e.target.value) : 0;
                         tableInstance.gotoPage(pageIndex);
                     }}
                 >
+                    {tableInstance.pageOptions.length === 0 && <option value={0}>0 / 0</option>}
                     {
                         ".".repeat(tableInstance.pageOptions.length).split("").map((_s, i) => (
                             <option
