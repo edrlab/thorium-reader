@@ -2,8 +2,11 @@
     "accessibility": {
         "bookMenu": "Menu",
         "closeDialog": "Fermer",
+        "copyNotificationAndToggleDetails": "Copier la notification et afficher ou masquer les détails",
         "leftSlideButton": "Faire défiler vers la gauche",
         "mainContent": "Contenu principal",
+        "notificationCopied": "Notification copiée",
+        "notificationCopyFailed": "Impossible de copier la notification",
         "rightSlideButton": "Faire défiler vers la droite",
         "skipLink": "Aller directement au contenu",
         "toolbar": "Barre d'outils"

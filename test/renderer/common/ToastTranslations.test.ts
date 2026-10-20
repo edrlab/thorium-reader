@@ -1,0 +1,30 @@
+import { afterAll, expect, jest, test } from "@jest/globals";
+import { setLocale, translate } from "readium-desktop/common/services/translator";
+
+jest.mock("readium-desktop/resources/locales/de.json", () => ({
+    accessibility: {
+        copyNotificationAndToggleDetails: "",
+        notificationCopied: "",
+        notificationCopyFailed: "",
+    },
+}));
+
+const keys = [
+    "accessibility.copyNotificationAndToggleDetails",
+    "accessibility.notificationCopied",
+    "accessibility.notificationCopyFailed",
+] as const;
+
+const english = ["Copy notification and toggle details", "Notification copied", "Could not copy notification"];
+
+afterAll(async () => { await setLocale("en"); });
+
+test.each([
+    ["en", english],
+    ["fr", ["Copier la notification et afficher ou masquer les détails", "Notification copiée", "Impossible de copier la notification"]],
+    ["es", english], // Missing keys fall back to English.
+    ["de", english], // Empty translations also fall back to English.
+] as const)("notification labels are meaningful in %s", async (locale, expected) => {
+    await setLocale(locale);
+    expect(keys.map((key) => translate(key))).toEqual(expected);
+});

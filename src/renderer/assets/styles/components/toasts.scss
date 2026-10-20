@@ -7,21 +7,24 @@
   bottom: 2rem;
   left: 1rem;
   z-index: 999999999999;
-  pointer-events: none;
+  pointer-events: auto;
+  max-height: calc(100dvh - 4rem);
+  overflow-y: auto;
 }
 
 .toast {
-  overflow: hidden;
+  overflow: auto;
+  max-height: calc(100dvh - 6rem);
   margin-bottom: 1rem;
   position: relative;
   padding: 1rem;
   border: 1px var(--color-success-text) solid;
   border-radius: 6px;
-  width: 15rem;
+  width: min(15rem, calc(100vw - 4rem));
   height: fit-content;
   background: white;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   animation-name: start;
   animation-duration: 0.5s;
   opacity: 0.9;
@@ -45,7 +48,29 @@
     background: var(--color-success-bg);
   }
 
-  p {
+  .content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .messageButton {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: 12px;
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .message {
+    box-sizing: border-box;
     margin: 0;
     flex: 1;
     padding-right: 1em;

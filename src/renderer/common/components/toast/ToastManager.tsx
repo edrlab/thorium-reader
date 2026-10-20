@@ -9,6 +9,8 @@ import * as stylesToasts from "readium-desktop/renderer/assets/styles/components
 
 import * as React from "react";
 import { connect } from "react-redux";
+import { I18nProvider, UNSTABLE_ToastQueue as ToastQueue, UNSTABLE_ToastRegion as ToastRegion } from "react-aria-components";
+import { ToastType } from "readium-desktop/common/models/toast";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { ToastState } from "readium-desktop/common/redux/states/toast";
@@ -29,67 +31,46 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
-interface IState {
-    toastList: {
-        [id: string]: ToastState;
-    };
-}
-
-export class ToastManager extends React.Component<IProps, IState> {
-
-    constructor(props: IProps) {
-        super(props);
-
-        this.state = {
-            toastList: {},
-        };
-
-        this.close = this.close.bind(this);
-    }
+export class ToastManager extends React.Component<IProps> {
+    // Each window owns its queue. Persistent errors must not hide later notices.
+    private queue = new ToastQueue<ToastState>({ maxVisibleToasts: Infinity });
 
     public componentDidUpdate(oldProps: IProps) {
         const { toast } = this.props;
+        if (this.props.pubId !== oldProps.pubId && this.props.pubId) {
+            for (const current of this.queue.visibleToasts) {
+                if (current.content.publicationIdentifier && current.content.publicationIdentifier !== this.props.pubId) {
+                    this.queue.close(current.key);
+                }
+            }
+        }
         if (toast !== oldProps.toast) {
             const id = uuidv4();
-            this.setState((prevState) => {
-                const toastList = addToastToQueue(prevState.toastList, id, toast, this.props.pubId);
-                return toastList === prevState.toastList ? undefined : { toastList };
-            });
+            const toastList = Object.fromEntries(this.queue.visibleToasts.map((current) => [current.key, current.content]));
+            if (addToastToQueue(toastList, id, toast, this.props.pubId) !== toastList) {
+                // Errors and prerequisite notices may be the only explanation of a
+                // failed operation. Only nonessential success confirmations expire.
+                this.queue.add(toast, { timeout: toast.type === ToastType.Success ? 5000 : undefined });
+            }
         }
     }
 
-    public render(): React.ReactElement<{}> {
-        const { toastList } = this.state;
-        const { pubId } = this.props;
+    public componentWillUnmount() {
+        this.queue.pauseAll();
+        this.queue.clear();
+    }
 
+    public render(): React.ReactElement<{}> {
         return (
-            <div className={stylesToasts.toasts_wrapper}>
-                {Object.keys(toastList).map((id) => {
-                    const toast = toastList[id];
-                    if (toast && (!toast.publicationIdentifier || !pubId || toast.publicationIdentifier === pubId)) {
-                        return (
-                            <Toast
-                                key={id}
-                                id={id}
-                                message={toast.data}
-                                type={toast.type}
-                                close={this.close}
-                                displaySystemNotification={false}
-                            />
-                        );
-                    }
-                    return null;
-                })}
-            </div>
+            <I18nProvider locale={this.props.locale}>
+                <ToastRegion queue={this.queue} className={stylesToasts.toasts_wrapper}>
+                    {({ toast }) => <Toast toast={toast} close={this.close} />}
+                </ToastRegion>
+            </I18nProvider>
         );
     }
 
-    private close(id: string) {
-        this.setState((prevState) => {
-            const { [id]: _, ...rest } = prevState.toastList;
-            return { toastList: rest };
-        });
-    }
+    private close = (id: string) => this.queue.close(id);
 }
 
 const mapStateToProps = (state: IRendererCommonRootState & IReaderRootState, _props: IBaseProps) => {

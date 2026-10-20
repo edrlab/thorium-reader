@@ -10,237 +10,139 @@ import * as stylesToasts from "readium-desktop/renderer/assets/styles/components
 import { clipboard } from "electron";
 import classNames from "classnames";
 import * as React from "react";
+import {
+    Button,
+    Text,
+    VisuallyHidden,
+    UNSTABLE_Toast as AriaToast,
+    UNSTABLE_ToastContent as ToastContent,
+    QueuedToast,
+} from "react-aria-components";
 import { ToastType } from "readium-desktop/common/models/toast";
+import { ToastState } from "readium-desktop/common/redux/states/toast";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
-import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as ChevronDownIcon from "readium-desktop/renderer/assets/icons/chevron-down.svg";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 import { TranslatorProps, withTranslator } from "../hoc/translator";
-import { connect } from "react-redux";
-import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
-
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps extends TranslatorProps {
+interface IProps extends TranslatorProps {
+    toast: QueuedToast<ToastState>;
     close: (id: string) => void;
-    className?: string;
-    id?: string;
-    // icon?: ISVGProps;
-    message?: string;
-    displaySystemNotification?: boolean;
-    type?: ToastType;
 }
 
-// IProps may typically extend:
-// RouteComponentProps
-// ReturnType<typeof mapStateToProps>
-// ReturnType<typeof mapDispatchToProps>
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps {
-}
+export function Toast({ toast, close, __ }: IProps) {
+    const [opened, setOpened] = React.useState(false);
+    const [willLeave, setWillLeave] = React.useState(false);
+    const [copyFeedback, setCopyFeedback] = React.useState({ message: "", sequence: 0 });
+    const messageId = React.useId();
+    const actionId = React.useId();
+    const ref = React.useRef<HTMLDivElement>(undefined);
+    const closing = React.useRef(false);
+    const removed = React.useRef(false);
+    const { data: message, type } = toast.content;
 
-interface IState {
-    willLeave: boolean;
-    toRemove: boolean;
-    opened: boolean;
-}
-
-export class Toast extends React.Component<IProps, IState> {
-    private ref: React.RefObject<HTMLDivElement>;
-    private timer: number | undefined;
-    private ignoreTimer: boolean | undefined;
-    private fallbackTimer: number | undefined;
-    private isRemoving = false;
-
-    constructor(props: IProps) {
-        super(props);
-
-        this.ref = React.createRef<HTMLDivElement>();
-
-        this.state = {
-            willLeave: false,
-            toRemove: false,
-            opened: false,
-        };
-
-        this.handleTransitionEnd = this.handleTransitionEnd.bind(this);
-        this.handleClose = this.handleClose.bind(this);
-    }
-
-    public cancelTimer(ignoreTimer: boolean) {
-        if (this.timer) {
-            window.clearTimeout(this.timer);
-            this.timer = undefined;
+    React.useEffect(() => {
+        // React Aria starts each timer on mount. Notices added to a region that
+        // is already being read must pause too, without another hover/focus event.
+        const region = ref.current?.closest("[role=region]");
+        if (region?.contains(document.activeElement) || region?.hasAttribute("data-hovered")) {
+            toast.timer?.pause();
         }
-        if (this.fallbackTimer) {
-            window.clearTimeout(this.fallbackTimer);
-            this.fallbackTimer = undefined;
+    }, [toast.timer]);
+
+    const finishClose = React.useCallback(() => {
+        if (removed.current) return;
+        removed.current = true;
+        close(toast.key);
+    }, [close, toast.key]);
+
+    React.useEffect(() => {
+        if (!willLeave) return undefined;
+        // Keep the existing slide-out animation, including when transitions are disabled.
+        const timer = window.setTimeout(finishClose, 500);
+        return () => window.clearTimeout(timer);
+    }, [willLeave, finishClose]);
+
+    const copyAndExpand = () => {
+        if (closing.current) return;
+        setOpened((value) => !value);
+        let feedback: string;
+        let copied = false;
+        try {
+            clipboard.writeText(message, "clipboard");
+            copied = true;
+            feedback = __("accessibility.notificationCopied");
+        } catch (_error) {
+            feedback = __("accessibility.notificationCopyFailed");
         }
-        if (ignoreTimer) {
-            this.ignoreTimer = true;
+        setCopyFeedback((value) => ({ message: feedback, sequence: value.sequence + 1 }));
+
+        if (copied) {
+            try {
+                new Notification(capitalizedAppName, { body: `${__("app.edit.copy")} [${message}]` });
+            } catch (_error) {
+                // Copying still succeeded if system notifications are unavailable.
+            }
         }
-    }
-    public triggerTimer(fast: boolean) {
-        this.cancelTimer(false);
-        if (this.ignoreTimer) {
-            return;
-        }
+    };
 
-        this.timer = window.setTimeout(() => {
-            this.timer = undefined;
-            this.handleClose();
-        }, fast ? 500 : 5000);
-    }
-
-    public componentDidMount() {
-        this.triggerTimer(false);
-
-        // https://www.electronjs.org/docs/latest/tutorial/notifications
-        if (this.props.displaySystemNotification) {
-            new Notification(capitalizedAppName, {
-                body: this.props.message,
-            });
-        }
-    }
-
-    public componentWillUnmount() {
-        this.cancelTimer(false);
-    }
-
-    public render(): React.ReactElement<{}> {
-
-        if (this.props.displaySystemNotification) {
-            return (<></>);
-        }
-
-        const { type, __ } = this.props;
-        const { willLeave, toRemove } = this.state;
-
-        let typeClassName: string;
-        switch (type) {
-            case ToastType.Error:
-                typeClassName = stylesToasts.error;
-                break;
-            case ToastType.Success:
-                typeClassName = stylesToasts.success;
-                break;
-            default:
-                break;
-        }
-
-        return (
-            <div
-                onTransitionEnd={this.handleTransitionEnd}
-                ref={this.ref}
-                onMouseMove={() => {
-                    this.cancelTimer(false);
-                }}
-                onClick={() => {
-                    this.cancelTimer(true);
-                    this.setState({ opened : !this.state.opened });
-                }}
-                onMouseOut={() => {
-                    this.triggerTimer(true);
-
-                }}
-                onBlur={() => {
-                    this.ignoreTimer = false;
-                    this.setState({ opened : false });
-                    this.triggerTimer(true);
-                }}
-                className={classNames(
-                    stylesToasts.toast,
-                    willLeave && stylesToasts.leave,
-                    toRemove && stylesToasts.toRemove,
-                    typeClassName,
-                )}
-            >
-                {
-                // icon && <SVG className={styles.icon} svg={icon} />
+    return (
+        <AriaToast
+            ref={ref}
+            toast={toast}
+            className={classNames(
+                stylesToasts.toast,
+                willLeave && stylesToasts.leave,
+                type === ToastType.Error && stylesToasts.error,
+                type === ToastType.Success && stylesToasts.success,
+            )}
+            onTransitionEnd={(event) => {
+                if (willLeave && event.target === event.currentTarget && event.propertyName === "transform") {
+                    finishClose();
                 }
-                <p
-                    aria-live="assertive"
-                    aria-relevant="all"
-                    role="alert"
-                    tabIndex={0}
-                    className={ this.state.opened ? stylesToasts.toast_open : ""}
-                    onFocus={() => {
-                        this.cancelTimer(true);
-                    }}
-                    onClick={() => {
-                        const clipBoardType = "clipboard";
-                        try {
-                            clipboard.writeText(this.props.message, clipBoardType);
-
-                            // https://www.electronjs.org/docs/latest/tutorial/notifications
-                            new Notification(capitalizedAppName, {
-                                body: `${__("app.edit.copy")} [${this.props.message}]`,
-                            });
-                            // this.triggerTimer(true);
-                            // this.handleClose();
-                        } catch (_e) {
-                            // ignore
-                        }
-                    }
-                }>{ this.props.message }</p>
-                {/*
-                    onBlur={() => {
-                        this.triggerTimer(true);
-                    }}
-                */}
-                <button
-                    onFocus={() => {
-                        this.cancelTimer(true);
-                    }}
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        this.handleClose();
-                    }}
-                    className={stylesToasts.closeButton}
-                    title={this.props.__("accessibility.closeDialog")}
+            }}
+        >
+            <ToastContent className={stylesToasts.content}>
+                <Button
+                    className={stylesToasts.messageButton}
+                    aria-labelledby={`${messageId} ${actionId}`}
+                    aria-expanded={opened}
+                    aria-controls={messageId}
+                    onPress={copyAndExpand}
+                    onBlur={() => setOpened(false)}
                 >
-                    {this.state.opened ?
-                    <SVG ariaHidden={true} svg={ChevronDownIcon}/>
-                    :
-                    <SVG ariaHidden={true} svg={QuitIcon}/>}
-                </button>
-            </div>
-        );
-    }
-
-    private handleClose() {
-        this.setState({ willLeave: true, opened: false });
-        this.fallbackTimer = window.setTimeout(() => {
-            if (!this.state.toRemove) {
-                console.log("Fallback: Transitionend missed, forcing removal.");
-                this.handleTransitionEnd();
-            }
-        }, 400);
-    }
-
-    private handleTransitionEnd() {
-        // Focus and expansion also transition the toast border. Only a leaving
-        // toast may consume the removal guard.
-        if (!this.state.willLeave || this.isRemoving) return;
-        this.isRemoving = true;
-        if (this.fallbackTimer) {
-            window.clearTimeout(this.fallbackTimer);
-            this.fallbackTimer = undefined;
-        }
-        if (this.state.willLeave) {
-            if (!this.state.toRemove) {
-                this.setState({ toRemove: true }, () => {
-                    this.props.close(this.props.id);
-                });
-            }
-        }
-    }
+                    <Text
+                        slot="title"
+                        id={messageId}
+                        className={classNames(stylesToasts.message, opened && stylesToasts.toast_open)}
+                    >
+                        {message}
+                    </Text>
+                </Button>
+            </ToastContent>
+            <VisuallyHidden>
+                <span id={actionId}>{__("accessibility.copyNotificationAndToggleDetails")}</span>
+                <div role="status" aria-atomic="true">
+                    <span key={copyFeedback.sequence}>{copyFeedback.message}</span>
+                </div>
+            </VisuallyHidden>
+            <Button
+                aria-label={__("accessibility.closeDialog")}
+                className={stylesToasts.closeButton}
+                onPress={() => {
+                    if (closing.current) return;
+                    closing.current = true;
+                    setOpened(false);
+                    setWillLeave(true);
+                }}
+            >
+                <SVG ariaHidden svg={opened ? ChevronDownIcon : QuitIcon} />
+            </Button>
+        </AriaToast>
+    );
 }
 
-const mapStateToProps = (state: IRendererCommonRootState) => ({
-    locale: state.i18n.locale, // refresh
-});
-
-export default connect(mapStateToProps)(withTranslator(Toast));
+export default withTranslator(Toast);

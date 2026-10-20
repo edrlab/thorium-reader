@@ -3,16 +3,22 @@ declare namespace typed_i18n {
   (_: "accessibility", __?: {}): {
   readonly "bookMenu": string,
   readonly "closeDialog": string,
+  readonly "copyNotificationAndToggleDetails": string,
   readonly "leftSlideButton": string,
   readonly "mainContent": string,
+  readonly "notificationCopied": string,
+  readonly "notificationCopyFailed": string,
   readonly "rightSlideButton": string,
   readonly "skipLink": string,
   readonly "toolbar": string
 };
   (_: "accessibility.bookMenu", __?: {}): string;
   (_: "accessibility.closeDialog", __?: {}): string;
+  (_: "accessibility.copyNotificationAndToggleDetails", __?: {}): string;
   (_: "accessibility.leftSlideButton", __?: {}): string;
   (_: "accessibility.mainContent", __?: {}): string;
+  (_: "accessibility.notificationCopied", __?: {}): string;
+  (_: "accessibility.notificationCopyFailed", __?: {}): string;
   (_: "accessibility.rightSlideButton", __?: {}): string;
   (_: "accessibility.skipLink", __?: {}): string;
   (_: "accessibility.toolbar", __?: {}): string;

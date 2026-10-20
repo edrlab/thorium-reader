@@ -1,9 +1,12 @@
 export declare const closeButton: string;
+export declare const content: string;
 export declare const CSS_END_components_toasts: string;
 export declare const CSS_START_components_toasts: string;
 export declare const error: string;
 export declare const icon: string;
 export declare const leave: string;
+export declare const message: string;
+export declare const messageButton: string;
 export declare const start: string;
 export declare const success: string;
 export declare const toast: string;
