@@ -10,7 +10,7 @@ import {
     Button, Dialog, DialogProps, DialogTrigger, DialogTriggerProps, Modal, ModalOverlay,
     OverlayTriggerStateContext, Pressable,
 } from "react-aria-components";
-import { mergeProps, Overlay } from "react-aria";
+import { FocusScope, mergeProps, Overlay } from "react-aria";
 import { OVERLAY_Z_INDEX } from "./overlayHelpers";
 import { useOverlayTriggerState } from "react-stately";
 
@@ -57,10 +57,12 @@ export function Trigger(props: ButtonProps) {
     const { modal, panelId } = React.useContext(Context);
     const state = React.useContext(OverlayTriggerStateContext);
     if (!modal) {
-        return <Pressable onPress={() => state?.toggle()}>{buttonChild({ ...props,
+        // Docked panels use native button activation for mouse, Enter and Space.
+        return buttonChild(mergeProps(props, {
+            onClick: () => state?.toggle(),
             "aria-expanded": state?.isOpen,
             "aria-controls": state?.isOpen ? panelId : undefined,
-        })}</Pressable>;
+        }));
     }
     return <Pressable>{buttonChild(props)}</Pressable>;
 }
@@ -78,9 +80,9 @@ interface PortalProps extends React.PropsWithChildren {
 export function Portal({ children, className }: PortalProps) {
     const { modal, alert, overlayProps } = React.useContext(Context);
     const state = React.useContext(OverlayTriggerStateContext);
-    // Docked reader panels are ordinary persistent panels, without modal focus or dismissal.
+    // Restore focus on close, while allowing focus to move freely outside docked panels.
     if (!modal) {
-        return state?.isOpen ? <Overlay disableFocusManagement>{children}</Overlay> : undefined;
+        return state?.isOpen ? <Overlay disableFocusManagement><FocusScope restoreFocus>{children}</FocusScope></Overlay> : undefined;
     }
     return <ModalOverlay
         {...overlayProps}
