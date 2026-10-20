@@ -12,6 +12,7 @@ import {
 } from "../../common/readium-css-inject";
 import { EXTRA_COLUMN_PAD_ID, FOOTNOTE_FORCE_SHOW, POPUP_DIALOG_CLASS, ROOT_CLASS_NO_FOOTNOTES } from "../../common/styles";
 import { ReadiumElectronWebviewWindow } from "./state";
+import { calculateContentColumns, clampPaginatedScrollShift } from "./pagination";
 
 import {
     POPOUTIMAGE_CONTAINER_ID, R2_MO_CLASS_PAUSED, R2_MO_CLASS_PLAYING, TTS_CLASS_PAUSED, TTS_CLASS_PLAYING,
@@ -141,6 +142,15 @@ export const calculateMaxScrollShift = ():
             maxScrollShift :
             maxScrollShift));
 
+    if (isPaged) {
+        const columns = calculateTotalColumns();
+        const twoPage = isTwoPageSpread();
+        const unit = isVWM ? (scrollElement as HTMLElement).offsetHeight : (scrollElement as HTMLElement).offsetWidth;
+        return {
+            maxScrollShift: clampPaginatedScrollShift(maxScrollShift, unit, columns, twoPage),
+            maxScrollShiftAdjusted: clampPaginatedScrollShift(maxScrollShiftAdjusted, unit, columns, twoPage),
+        };
+    }
     return { maxScrollShift, maxScrollShiftAdjusted };
 };
 
@@ -193,9 +203,13 @@ export const calculateTotalColumns = (): number => {
 
     let totalColumns = 0;
     if (isVerticalWritingMode()) {
-        totalColumns = Math.ceil((win.document.body.scrollWidth * zoomFactor) / scrollElement.scrollWidth);
+        totalColumns = calculateContentColumns(win.document.body.scrollWidth,
+            parseFloat(bodyComputedStyle.paddingLeft), parseFloat(bodyComputedStyle.paddingRight),
+            zoomFactor, scrollElement.scrollWidth);
     } else {
-        totalColumns = Math.ceil((win.document.body.scrollHeight * zoomFactor) / scrollElement.scrollHeight);
+        totalColumns = calculateContentColumns(win.document.body.scrollHeight,
+            parseFloat(bodyComputedStyle.paddingTop), parseFloat(bodyComputedStyle.paddingBottom),
+            zoomFactor, scrollElement.scrollHeight);
     }
 
     return totalColumns;

@@ -114,6 +114,16 @@ if (fs.existsSync(nativeFile)) {
             assert.equal(capture.window.id, 7343082, 'Reader-only repair scope');
         }
     }
+    const progressEndFile = path.join(root, 'native-reader-progress-end-remediation.json');
+    if (fs.existsSync(progressEndFile)) {
+        const repair = JSON.parse(fs.readFileSync(progressEndFile, 'utf8'));
+        assert.equal(repair.status, 'fixed in sampled scope');
+        for (const check of repair.checks) assert.deepEqual(native.checks.find(item => item.id === check.id), check);
+        for (const [file, hash] of Object.entries(repair.sourceHashes)) {
+            assert.equal(crypto.createHash('sha256').update(fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n')).digest('hex'), hash, file);
+        }
+        assert.equal(fs.readdirSync(path.join(root, 'evidence/reader-progress-end')).filter(file => file.endsWith('.json')).length, repair.recordedCaptures);
+    }
     for (const check of native.checks) {
         assert.equal(native.screenReader.started, true, 'NVDA checks require an actual NVDA session');
         assert.ok(check.files.length && check.evidence.length && check.observation && check.limitations, check.id);

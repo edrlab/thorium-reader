@@ -7,6 +7,7 @@
 
 
 import debounce from "debounce";
+import { progressionUnitIndex } from "./pagination";
 import debug_ from "debug";
 import { ipcRenderer } from "electron";
 import { isFocusable } from "tabbable";
@@ -1805,8 +1806,7 @@ const scrollToHashRaw = (animate: boolean, skipRedraw?: boolean) => {
                 if (isPaged) {
                     const isTwoPage = isTwoPageSpread();
                     const nColumns = calculateTotalColumns();
-                    const nUnits = isTwoPage ? Math.ceil(nColumns / 2) : nColumns;
-                    const unitIndex = Math.floor(gotoProgression * nUnits);
+                    const unitIndex = progressionUnitIndex(gotoProgression, nColumns, isTwoPage);
 
                     const unit = isVWM ?
                         (scrollElement as HTMLElement).offsetHeight :

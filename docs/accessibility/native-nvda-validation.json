@@ -2,7 +2,7 @@
   "date": "2026-10-19",
   "sourceRevision": "c3467cd61399c9639837a6f0ace075beb07e0335",
   "branch": "codex/a11y-native-nvda-validation",
-  "status": "partial native validation; N01 verified; BAnQ N02/N03 repaired and verified in sampled states; remaining Reader scenarios pending; sampled Reader header evaluated and RHF01 progress-track repair natively verified",
+  "status": "partial native validation; N01 verified; BAnQ N02/N03 repaired and verified in sampled states; remaining Reader scenarios pending; sampled Reader header evaluated and RHF01 progress-track repair natively verified; RHF02 near-end pagination repair natively verified in sampled EPUB",
   "screenReader": {
     "name": "NVDA",
     "version": "2026.2 AMD64",
@@ -15,7 +15,7 @@
   },
   "startup": "npm run start:dev:quick",
   "environmentEvidence": "evidence/native-nvda/environment.json",
-  "completedNativeScenarios": 11,
+  "completedNativeScenarios": 12,
   "checks": [
     {
       "id": "library-navigation",
@@ -295,6 +295,49 @@
       ],
       "observation": "All21 rendered destinations are named in UIA. Native Tab enters Progression after history, announces ordinal/title/button, and Shift+Tab reverses destination order. Enter/Space navigate and announce current location; NVDA+Tab confirms named focus/current state. Final Enter and virtual Enter display the section start; representative middle pointer click displays a later page. Focus styling is screenshot-reviewed. Original Talk to Me section restored.",
       "limitations": "One English EPUB/default paginated view. No PDF/Divina/audio, RTL, all locales, collapsed marker sets in long spines, ending mark-as-read action, full contrast/reflow/target-size assessment or acoustic assessment. Mode-dependent preparation is retained; no global keyboard/conformance pass."
+    },
+    {
+      "id": "RHF02",
+      "complete": true,
+      "status": "Fixed in sampled EPUB; native NVDA verified",
+      "files": [
+        "src/renderer/reader/components/ReaderFooter.tsx"
+      ],
+      "runtimeDependencies": [
+        "src/r2-xxx-js/r2-navigator-js/electron/renderer/webview/pagination.ts",
+        "src/r2-xxx-js/r2-navigator-js/electron/renderer/webview/readium-css.ts",
+        "src/r2-xxx-js/r2-navigator-js/electron/renderer/webview/preload.ts"
+      ],
+      "evidence": [
+        "native-reader-progress-end-remediation.json",
+        "evidence/reader-progress-end/00-start.jpg",
+        "evidence/reader-progress-end/00-start.json",
+        "evidence/reader-progress-end/01-near-end-baseline.jpg",
+        "evidence/reader-progress-end/01-near-end-baseline.json",
+        "evidence/reader-progress-end/02-baseline-focus-query.json",
+        "evidence/reader-progress-end/03-adjacent-resource.jpg",
+        "evidence/reader-progress-end/03-adjacent-resource.json",
+        "evidence/reader-progress-end/04-near-end-repaired.jpg",
+        "evidence/reader-progress-end/04-near-end-repaired.json",
+        "evidence/reader-progress-end/05-near-end-focus.json",
+        "evidence/reader-progress-end/06-forward-boundary.jpg",
+        "evidence/reader-progress-end/06-forward-boundary.json",
+        "evidence/reader-progress-end/07-segment-right-edge.jpg",
+        "evidence/reader-progress-end/07-segment-right-edge.json",
+        "evidence/reader-progress-end/08-keyboard-next-destination.json",
+        "evidence/reader-progress-end/09-keyboard-previous-destination.json",
+        "evidence/reader-progress-end/10-keyboard-activate-start.jpg",
+        "evidence/reader-progress-end/10-keyboard-activate-start.json",
+        "evidence/reader-progress-end/11-segment-middle.jpg",
+        "evidence/reader-progress-end/11-segment-middle.json",
+        "evidence/reader-progress-end/12-restore-original-section.jpg",
+        "evidence/reader-progress-end/12-restore-original-section.json",
+        "evidence/reader-progress-end/13-restore-section-start.jpg",
+        "evidence/reader-progress-end/13-restore-section-start.json",
+        "evidence/reader-progress-end/baseline-layout.json"
+      ],
+      "observation": "Near-end progress clicks no longer navigate to a padding-only page. Screenshots show content, forward navigation reaches the next resource, and NVDA reports the named current destination and page 2/2. The fix is in shared navigator preload pagination math used by the Reader footer.",
+      "limitations": "Speech inspected as diagnostic text, without acoustic assessment. Exact numeric progression 1, zoom, RTL, vertical writing, odd spreads and other formats have unit coverage where applicable but no native repair pass. No application-wide WCAG assertion."
     }
   ],
   "limitations": "Partial native NVDA coverage. Original Library controls and subsequent public BAnQ search, details, cover and Next paging are sampled only. Broader Reader scenarios remain pending after earlier initialization/review timeouts. Account/authentication, acquisitions, other component branches and full format/theme/locale coverage remain unverified. Speech was inspected as text without acoustic assessment. See native-banq-validation.json and native-banq-remediation.json for catalog baseline and repair scope; no application-wide WCAG pass. Reader header and progress-track samples are now recorded separately; broader Reader scenarios remain pending. See native-reader-progress-track-remediation.json for mode, pointer-position and format limitations.",
@@ -412,7 +455,7 @@
     }
   ],
   "method": "Native SendInput through the computer-use skill, with real NVDA speech.speech.speak diagnostic records. Speech output was inspected as text; acoustic listening, pronunciation and timing intelligibility were not assessed. No simulated screen-reader output or fixture controls are counted.",
-  "recordedNativeChecks": 12,
+  "recordedNativeChecks": 13,
   "startupHistory": [
     "Initial launcher execution blocked by approval timeouts and sandbox DLL relocation.",
     "User started the temporary standalone runner.",
@@ -424,5 +467,6 @@
   "catalogAudit": "native-banq-validation.json",
   "catalogOpenFindingIds": [],
   "catalogRemediation": "native-banq-remediation.json",
-  "readerProgressTrackRemediation": "native-reader-progress-track-remediation.json"
+  "readerProgressTrackRemediation": "native-reader-progress-track-remediation.json",
+  "readerProgressEndRemediation": "native-reader-progress-end-remediation.json"
 }

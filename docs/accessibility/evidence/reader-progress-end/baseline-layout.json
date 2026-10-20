@@ -1,0 +1,29 @@
+{
+  "scroll": {
+    "width": 1483,
+    "height": 253,
+    "left": 988,
+    "top": 0,
+    "offsetWidth": 495,
+    "offsetHeight": 254
+  },
+  "body": {
+    "scrollWidth": 495,
+    "scrollHeight": 521,
+    "width": "494.5px",
+    "height": "520.5px",
+    "zoom": "1",
+    "padding": "20px 50px",
+    "margin": "0px"
+  },
+  "html": {
+    "columnCount": "1",
+    "columnWidth": "720px",
+    "clientWidth": 494,
+    "clientHeight": 253
+  },
+  "textRects": 23,
+  "lastTextRight": -60.7265625,
+  "firstTextLeft": -938,
+  "lastTextBottom": 246
+}

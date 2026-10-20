@@ -141,6 +141,14 @@ if (fs.existsSync(progressRepairFile)) {
     native.status += '; sampled Reader header evaluated and RHF01 progress-track repair natively verified';
     native.limitations += ' Reader header and progress-track samples are now recorded separately; broader Reader scenarios remain pending. See native-reader-progress-track-remediation.json for mode, pointer-position and format limitations.';
 }
+const progressEndFile = path.join(root, 'native-reader-progress-end-remediation.json');
+if (fs.existsSync(progressEndFile)) {
+    const repair = JSON.parse(fs.readFileSync(progressEndFile, 'utf8'));
+    assert.equal(repair.status, 'fixed in sampled scope');
+    native.checks.push(...repair.checks);
+    native.readerProgressEndRemediation = 'native-reader-progress-end-remediation.json';
+    native.status += '; RHF02 near-end pagination repair natively verified in sampled EPUB';
+}
 native.recordedNativeChecks = native.checks.length;
 native.completedNativeScenarios = native.checks.filter(check => check.complete).length;
 native.startupHistory = ['Initial launcher execution blocked by approval timeouts and sandbox DLL relocation.', 'User started the temporary standalone runner.', 'Portable copy creation later succeeded (exit 0); isolated logging session started.', 'Two EPUB Reader windows timed out before a full development-app restart.', 'Restarted Reader loaded EPUB successfully; NVDA document identification captured.', 'Repeated approval-review timeouts prevented the remaining native checks.'];

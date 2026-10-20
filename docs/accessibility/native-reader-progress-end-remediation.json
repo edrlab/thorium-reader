@@ -1,0 +1,98 @@
+{
+  "date": "2026-10-20",
+  "status": "fixed in sampled scope",
+  "branch": "codex/a11y-reader-progress-track-end",
+  "baseBranch": "codex/a11y-reader-progress-track",
+  "baseRevision": "530ffbde105211cd7b3dc604f212f4417e70501d",
+  "symptom": "Near-end native pointer click x337/y806 in Using Code Examples shows a blank publication page.",
+  "baselineEvidence": [
+    "evidence/reader-progress-end/01-near-end-baseline.json",
+    "evidence/reader-progress-end/01-near-end-baseline.jpg",
+    "evidence/reader-progress-end/02-baseline-focus-query.json",
+    "evidence/reader-progress-end/baseline-layout.json"
+  ],
+  "diagnosis": "Live read-only Electron CDP layout inspection observed body scrollHeight521, vertical body padding20+20, viewport height253, viewport width495, scrollLeft988, and all text rectangles left of the visible viewport. Existing ceil(521/253) counts3 columns; excluding padding yields2 content columns. Native input used only computer use; CDP was read-only layout diagnostics.",
+  "implementation": [
+    "Count content columns without body padding, accounting for zoom and both writing axes.",
+    "Clamp progression1 and excessive progressions to the last valid page/spread index.",
+    "Clamp paginated physical and adjusted scrolling limits to the last content page/spread, preserving odd-spread physical limits.",
+    "Generic navigator webview math stays inside the existing preload runtime; no Thorium app-runtime imports added."
+  ],
+  "files": [
+    "src/r2-xxx-js/r2-navigator-js/electron/renderer/webview/pagination.ts",
+    "src/r2-xxx-js/r2-navigator-js/electron/renderer/webview/readium-css.ts",
+    "src/r2-xxx-js/r2-navigator-js/electron/renderer/webview/preload.ts"
+  ],
+  "staticValidation": {
+    "unitTests": "6 passed in test/renderer/reader/webviewPagination.test.ts",
+    "typescript": "passed",
+    "changedFileEslint": "passed",
+    "preloadWebpackScope": "compiled successfully in41783ms",
+    "diffCheck": "passed"
+  },
+  "nativeRepairValidation": {
+    "status": "passed in sampled reflowable EPUB scope",
+    "recovery": "User foregrounded a fresh Reader; selected returned window 11602068. Adjacent resource navigation loaded the rebuilt preload.",
+    "scope": "Accessible EPUB 3, Using Code Examples; Windows portable NVDA 2026.2; all repair inputs in Reader 11602068 via sky.",
+    "results": [
+      "Original x337/y806 near-end click, x342/y806 right-edge click and x323/y806 middle click show publication content in retained screenshots.",
+      "NVDA+Tab reports Go to 5 / 21: Using Code Examples, button, focused, current location.",
+      "Go forward from the last content page reaches Safari Books Online with visible content, without a padding-only page.",
+      "Tab and Shift+Tab reach adjacent named destinations; NVDA reports Current page: 2/2. Enter returns Using Code Examples to its visible heading.",
+      "Returned to Talk to Me: Media Overlays and remained in Reader. Final Enter announced its heading, but screenshot retained later content; visual start-position restoration is not claimed."
+    ],
+    "limitations": "Speech inspected as diagnostic text, without acoustic assessment. Exact numeric progression 1, zoom, RTL, vertical writing, odd spreads and other formats have unit coverage where applicable but no native repair pass. No application-wide WCAG assertion."
+  },
+  "cleanup": "NVDA left running with --no-logging; full diagnostic logs remain ignored under dist.",
+  "sourceHashes": {
+    "src/r2-xxx-js/r2-navigator-js/electron/renderer/webview/pagination.ts": "ea47f00edd130b9154795c13ba326e0da896a93e5c96d2994a98667b6297f9b7",
+    "src/r2-xxx-js/r2-navigator-js/electron/renderer/webview/readium-css.ts": "7a03de9372f0e1ee68ccd183f6bc608d059aa0834a998239ddf5a75e8a0bb1ed",
+    "src/r2-xxx-js/r2-navigator-js/electron/renderer/webview/preload.ts": "c7259c2810641027e7bb212da85f52b328aa9c8025803512b965d2db80cbfa58"
+  },
+  "recordedCaptures": 15,
+  "checks": [
+    {
+      "id": "RHF02",
+      "complete": true,
+      "status": "Fixed in sampled EPUB; native NVDA verified",
+      "files": [
+        "src/renderer/reader/components/ReaderFooter.tsx"
+      ],
+      "runtimeDependencies": [
+        "src/r2-xxx-js/r2-navigator-js/electron/renderer/webview/pagination.ts",
+        "src/r2-xxx-js/r2-navigator-js/electron/renderer/webview/readium-css.ts",
+        "src/r2-xxx-js/r2-navigator-js/electron/renderer/webview/preload.ts"
+      ],
+      "evidence": [
+        "native-reader-progress-end-remediation.json",
+        "evidence/reader-progress-end/00-start.jpg",
+        "evidence/reader-progress-end/00-start.json",
+        "evidence/reader-progress-end/01-near-end-baseline.jpg",
+        "evidence/reader-progress-end/01-near-end-baseline.json",
+        "evidence/reader-progress-end/02-baseline-focus-query.json",
+        "evidence/reader-progress-end/03-adjacent-resource.jpg",
+        "evidence/reader-progress-end/03-adjacent-resource.json",
+        "evidence/reader-progress-end/04-near-end-repaired.jpg",
+        "evidence/reader-progress-end/04-near-end-repaired.json",
+        "evidence/reader-progress-end/05-near-end-focus.json",
+        "evidence/reader-progress-end/06-forward-boundary.jpg",
+        "evidence/reader-progress-end/06-forward-boundary.json",
+        "evidence/reader-progress-end/07-segment-right-edge.jpg",
+        "evidence/reader-progress-end/07-segment-right-edge.json",
+        "evidence/reader-progress-end/08-keyboard-next-destination.json",
+        "evidence/reader-progress-end/09-keyboard-previous-destination.json",
+        "evidence/reader-progress-end/10-keyboard-activate-start.jpg",
+        "evidence/reader-progress-end/10-keyboard-activate-start.json",
+        "evidence/reader-progress-end/11-segment-middle.jpg",
+        "evidence/reader-progress-end/11-segment-middle.json",
+        "evidence/reader-progress-end/12-restore-original-section.jpg",
+        "evidence/reader-progress-end/12-restore-original-section.json",
+        "evidence/reader-progress-end/13-restore-section-start.jpg",
+        "evidence/reader-progress-end/13-restore-section-start.json",
+        "evidence/reader-progress-end/baseline-layout.json"
+      ],
+      "observation": "Near-end progress clicks no longer navigate to a padding-only page. Screenshots show content, forward navigation reaches the next resource, and NVDA reports the named current destination and page 2/2. The fix is in shared navigator preload pagination math used by the Reader footer.",
+      "limitations": "Speech inspected as diagnostic text, without acoustic assessment. Exact numeric progression 1, zoom, RTL, vertical writing, odd spreads and other formats have unit coverage where applicable but no native repair pass. No application-wide WCAG assertion."
+    }
+  ]
+}
