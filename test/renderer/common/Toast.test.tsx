@@ -102,10 +102,19 @@ test("Enter, Space, and clicking preserve copying and expansion, with accessible
     expect(document.querySelector("[role=region]")?.getAttribute("aria-label")).toBeTruthy();
     const alert = document.querySelector("[role=alert]")!;
     expect(alert.textContent).toBe("Download failed");
+    expect(alert.querySelector("button, [role=button], [aria-expanded]")).toBeNull();
+    expect(alert.getAttribute("aria-atomic")).toBe("true");
+    expect(alert.getAttribute("aria-hidden")).not.toBe("true");
     const button = messageButton();
+    expect(button.closest("[role=alert], [aria-live]")).toBeNull();
+    expect(closeButton().closest("[role=alert], [aria-live]")).toBeNull();
+    expect(document.activeElement).not.toBe(button);
     const label = button.getAttribute("aria-labelledby")!.split(" ")
         .map((id) => document.getElementById(id)?.textContent).join(" ");
     expect(label).toBe("Download failed accessibility.copyNotificationAndToggleDetails");
+    for (const id of button.getAttribute("aria-labelledby")!.split(" ")) {
+        expect(alert.contains(document.getElementById(id))).toBe(false);
+    }
     expect(button.getAttribute("aria-expanded")).toBe("false");
     const message = document.getElementById(button.getAttribute("aria-controls")!);
     expect(message?.textContent).toBe("Download failed");

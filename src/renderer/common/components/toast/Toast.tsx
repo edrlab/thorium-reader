@@ -35,6 +35,7 @@ export function Toast({ toast, close, __ }: IProps) {
     const [willLeave, setWillLeave] = React.useState(false);
     const [copyFeedback, setCopyFeedback] = React.useState({ message: "", sequence: 0 });
     const messageId = React.useId();
+    const announcementId = React.useId();
     const actionId = React.useId();
     const ref = React.useRef<HTMLDivElement>(undefined);
     const closing = React.useRef(false);
@@ -92,28 +93,31 @@ export function Toast({ toast, close, __ }: IProps) {
                 }
             }}
         >
+            <VisuallyHidden>
+                <ToastContent>
+                    <Text slot="title" id={announcementId}>{message}</Text>
+                </ToastContent>
+            </VisuallyHidden>
             <div className={stylesToasts.content}>
                 <div role="status" aria-live="polite" aria-atomic="true" className={stylesToasts.copyStatus}>
                     {copyFeedback.message && <span key={copyFeedback.sequence}>{copyFeedback.message}</span>}
                 </div>
-                <ToastContent>
-                    <Button
-                        className={stylesToasts.messageButton}
-                        aria-labelledby={`${messageId} ${actionId}`}
-                        aria-expanded={opened}
-                        aria-controls={messageId}
-                        onPress={copyAndExpand}
-                        onBlur={() => setOpened(false)}
+                {/* Controls stay outside the alert so arrival announces only the message. */}
+                <Button
+                    className={stylesToasts.messageButton}
+                    aria-labelledby={`${messageId} ${actionId}`}
+                    aria-expanded={opened}
+                    aria-controls={messageId}
+                    onPress={copyAndExpand}
+                    onBlur={() => setOpened(false)}
+                >
+                    <Text
+                        id={messageId}
+                        className={classNames(stylesToasts.message, opened && stylesToasts.toast_open)}
                     >
-                        <Text
-                            slot="title"
-                            id={messageId}
-                            className={classNames(stylesToasts.message, opened && stylesToasts.toast_open)}
-                        >
-                            {message}
-                        </Text>
-                    </Button>
-                </ToastContent>
+                        {message}
+                    </Text>
+                </Button>
             </div>
             <VisuallyHidden>
                 <span id={actionId}>{__("accessibility.copyNotificationAndToggleDetails")}</span>
