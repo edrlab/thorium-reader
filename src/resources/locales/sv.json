@@ -697,7 +697,8 @@
         "certificateRevoked": "LCP-certifikatet är återkallat.",
         "certificateSignatureInvalid": "LCP-certifikatets signatur är ogiltig.",
         "cover": {
-            "img": "omslagsbild"
+            "img": "omslagsbild",
+            "zoom": ""
         },
         "day": "dag",
         "days": "dagar",

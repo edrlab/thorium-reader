@@ -709,7 +709,8 @@
         "certificateRevoked": "Certyfikat licencji LCP został unieważniony.",
         "certificateSignatureInvalid": "Nieprawidłowy podpis certyfikatu licencji LCP.",
         "cover": {
-            "img": "okładka"
+            "img": "okładka",
+            "zoom": ""
         },
         "day": "dzień",
         "days": "dni",

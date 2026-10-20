@@ -697,7 +697,8 @@
         "certificateRevoked": "O certificado está cancelado",
         "certificateSignatureInvalid": "A firma do certificado non é válida",
         "cover": {
-            "img": "Imaxe de portada"
+            "img": "Imaxe de portada",
+            "zoom": ""
         },
         "day": "día",
         "days": "días",

@@ -709,7 +709,8 @@
         "certificateRevoked": "",
         "certificateSignatureInvalid": "",
         "cover": {
-            "img": "titulní obrázek"
+            "img": "titulní obrázek",
+            "zoom": ""
         },
         "day": "den",
         "days": "dny",

@@ -697,7 +697,8 @@
         "certificateRevoked": "Το πιστοποιητικό LCP ανακλήθηκε.",
         "certificateSignatureInvalid": "Η υπογραφή του πιστοποιητικού LCP είναι άκυρη.",
         "cover": {
-            "img": "εικόνα εξωφύλλου"
+            "img": "εικόνα εξωφύλλου",
+            "zoom": ""
         },
         "day": "ημέρα",
         "days": "ημέρες",

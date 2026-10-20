@@ -690,7 +690,8 @@
         "certificateRevoked": "LCP 授權已被撤銷。",
         "certificateSignatureInvalid": "LCP 授權憑證簽章無效。",
         "cover": {
-            "img": "封面圖像"
+            "img": "封面圖像",
+            "zoom": ""
         },
         "day": "天",
         "days": "天",

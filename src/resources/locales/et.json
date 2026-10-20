@@ -697,7 +697,8 @@
         "certificateRevoked": "LCP-litsentsi sertifikaat on tühistatud.",
         "certificateSignatureInvalid": "Vigane LCP-litsentsi sertifikaadi allkiri.",
         "cover": {
-            "img": "kaanepilt"
+            "img": "kaanepilt",
+            "zoom": ""
         },
         "day": "päev",
         "days": "päeva",

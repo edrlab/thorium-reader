@@ -703,7 +703,8 @@
         "certificateRevoked": "Certifikat je poništen",
         "certificateSignatureInvalid": "Potpis certifikata je netočan",
         "cover": {
-            "img": "slika naslovnice"
+            "img": "slika naslovnice",
+            "zoom": ""
         },
         "day": "",
         "days": "",

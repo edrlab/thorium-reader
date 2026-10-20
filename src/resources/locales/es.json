@@ -703,7 +703,8 @@
         "certificateRevoked": "El certificado de la licencia LCP está cancelado.",
         "certificateSignatureInvalid": "La firma del certificado de la licencia LCP no es válida.",
         "cover": {
-            "img": "Imagen de portada"
+            "img": "Imagen de portada",
+            "zoom": ""
         },
         "day": "día",
         "days": "días",

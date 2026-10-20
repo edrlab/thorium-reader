@@ -703,7 +703,8 @@
         "certificateRevoked": "O certificado PCL foi revogado.",
         "certificateSignatureInvalid": "A assinatura do certificado da licença PCL é inválida.",
         "cover": {
-            "img": "Imagem de capa"
+            "img": "Imagem de capa",
+            "zoom": ""
         },
         "day": "dia",
         "days": "dias",

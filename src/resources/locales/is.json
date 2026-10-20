@@ -697,7 +697,8 @@
         "certificateRevoked": "Vottorð LCP-leyfisins hefur verið afturkallað.",
         "certificateSignatureInvalid": "Undirskrift vottorðs LCP-leyfisins er ógild.",
         "cover": {
-            "img": "kápumynd"
+            "img": "kápumynd",
+            "zoom": ""
         },
         "day": "dagur",
         "days": "dagar",

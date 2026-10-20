@@ -709,7 +709,8 @@
         "certificateRevoked": "LCP licencijos sertifikato galiojimas sustabdytas.",
         "certificateSignatureInvalid": "Negaliojantis LCP licencijos sertifikato parašas.",
         "cover": {
-            "img": "viršelio paveikslas"
+            "img": "viršelio paveikslas",
+            "zoom": ""
         },
         "day": "diena",
         "days": "dienos",

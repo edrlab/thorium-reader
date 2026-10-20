@@ -703,7 +703,8 @@
         "certificateRevoked": "El certificat està cancel·lat",
         "certificateSignatureInvalid": "La firma del certificat no és vàlida",
         "cover": {
-            "img": "Imatge de portada"
+            "img": "Imatge de portada",
+            "zoom": ""
         },
         "day": "dia",
         "days": "dies",

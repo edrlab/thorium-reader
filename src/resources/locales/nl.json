@@ -697,7 +697,8 @@
         "certificateRevoked": "LCP licentie certificaat is ingetrokken.",
         "certificateSignatureInvalid": "LCP licentie certificaat handtekening is ongeldig.",
         "cover": {
-            "img": "cover afbeelding"
+            "img": "cover afbeelding",
+            "zoom": ""
         },
         "day": "dag",
         "days": "dagen",

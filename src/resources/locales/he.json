@@ -703,7 +703,8 @@
         "certificateRevoked": "",
         "certificateSignatureInvalid": "",
         "cover": {
-            "img": ""
+            "img": "",
+            "zoom": ""
         },
         "day": "",
         "days": "",
