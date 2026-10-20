@@ -2683,14 +2683,16 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 </button>
                 <select
                     id="pageSelect"
-                    aria-label={`${__("reader.navigation.currentPageTotal", { current: tableInstance.state.pageIndex + 1, total: tableInstance.pageOptions.length })}`}
+                    aria-label={`${__("reader.navigation.currentPageTotal", { current: tableInstance.pageOptions.length ? tableInstance.state.pageIndex + 1 : 0, total: tableInstance.pageOptions.length })}`}
                     className={stylesPublication.allBooks_header_pagination_select}
+                    disabled={tableInstance.pageOptions.length === 0}
                     value={tableInstance.state.pageIndex}
                     onChange={(e) => {
                         const pageIndex = e.target.value ? Number(e.target.value) : 0;
                         tableInstance.gotoPage(pageIndex);
                     }}
                 >
+                    {tableInstance.pageOptions.length === 0 && <option value={0}>0 / 0</option>}
                     {
                         ".".repeat(tableInstance.pageOptions.length).split("").map((_s, i) => (
                             <option
