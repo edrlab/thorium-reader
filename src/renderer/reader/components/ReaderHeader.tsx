@@ -992,7 +992,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         </Dialog.Title>
                                     </VisuallyHidden>
                                     {isDockedMode ? (
-                                        <div
+                                        <Dialog.DockedContent
                                             className={containerClassName}
                                             style={{
                                                 borderLeft:
@@ -1014,7 +1014,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 // focusNaviguationMenu={this.focusNaviguationMenuButton}
                                                 // handleMenuClick={this.props.handleMenuClick}
                                             />
-                                        </div>
+                                        </Dialog.DockedContent>
                                     ) : (
                                         <Dialog.Content
                                             // onFocusOutside={(e) => {
@@ -1100,7 +1100,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         </Dialog.Title>
                                     </VisuallyHidden>
                                     {isDockedMode ? (
-                                        <div
+                                        <Dialog.DockedContent
                                             className={containerClassName}
                                             style={{
                                                 borderLeft:
@@ -1119,7 +1119,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 {...this.props.ReaderSettingsProps}
                                                 // handleSettingsClick={this.props.handleSettingsClick}
                                             />
-                                        </div>
+                                        </Dialog.DockedContent>
                                     ) : (
                                         <Dialog.Content
                                             // onPointerDownOutside={(e) => { e.preventDefault(); console.log("settingsModal onPointerDownOutside"); }}
