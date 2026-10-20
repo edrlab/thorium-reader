@@ -16,6 +16,7 @@ declare namespace typed_i18n {
   readonly "publicationDetails": string,
   readonly "resetSetting": string,
   readonly "rightSlideButton": string,
+  readonly "searching": string,
   readonly "skipLink": string,
   readonly "toolbar": string
 };
@@ -34,6 +35,7 @@ declare namespace typed_i18n {
   (_: "accessibility.publicationDetails", __?: {}): string;
   (_: "accessibility.resetSetting", __?: {}): string;
   (_: "accessibility.rightSlideButton", __?: {}): string;
+  (_: "accessibility.searching", __?: {}): string;
   (_: "accessibility.skipLink", __?: {}): string;
   (_: "accessibility.toolbar", __?: {}): string;
   (_: "apiapp", __?: {}): {

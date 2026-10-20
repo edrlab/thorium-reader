@@ -15,6 +15,7 @@
         "publicationDetails": "{{- field}} : {{- title}}",
         "resetSetting": "Réinitialiser {{- setting}}",
         "rightSlideButton": "Faire défiler vers la droite",
+        "searching": "Recherche en cours…",
         "skipLink": "Aller directement au contenu",
         "toolbar": "Barre d'outils"
     },
