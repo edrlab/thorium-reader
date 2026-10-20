@@ -12,6 +12,7 @@
         "increaseSetting": "Increase {{- setting}}",
         "leftSlideButton": "Slide to the left",
         "mainContent": "main content",
+        "printPage": "Page {{page}}",
         "publicationDetails": "{{- field}}: {{- title}}",
         "resetSetting": "Reset {{- setting}}",
         "rightSlideButton": "Slide to the right",

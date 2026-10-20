@@ -13,6 +13,7 @@ declare namespace typed_i18n {
   readonly "increaseSetting": string,
   readonly "leftSlideButton": string,
   readonly "mainContent": string,
+  readonly "printPage": string,
   readonly "publicationDetails": string,
   readonly "resetSetting": string,
   readonly "rightSlideButton": string,
@@ -31,6 +32,7 @@ declare namespace typed_i18n {
   (_: "accessibility.increaseSetting", __?: {}): string;
   (_: "accessibility.leftSlideButton", __?: {}): string;
   (_: "accessibility.mainContent", __?: {}): string;
+  (_: "accessibility.printPage", __?: {}): string;
   (_: "accessibility.publicationDetails", __?: {}): string;
   (_: "accessibility.resetSetting", __?: {}): string;
   (_: "accessibility.rightSlideButton", __?: {}): string;
