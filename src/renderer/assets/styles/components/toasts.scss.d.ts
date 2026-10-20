@@ -1,5 +1,6 @@
 export declare const closeButton: string;
 export declare const content: string;
+export declare const copyStatus: string;
 export declare const CSS_END_components_toasts: string;
 export declare const CSS_START_components_toasts: string;
 export declare const error: string;

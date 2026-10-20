@@ -89,6 +89,17 @@
     -webkit-line-clamp: unset;
   }
 
+  .copyStatus {
+    color: var(--color-text-primary);
+    font-size: 12px;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+
+    &:not(:empty) {
+      margin-bottom: 8px;
+    }
+  }
+
   .icon {
     height: 3rem;
     margin-right: 1rem;

@@ -20,13 +20,10 @@ import {
 } from "react-aria-components";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { ToastState } from "readium-desktop/common/redux/states/toast";
-import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as ChevronDownIcon from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { TranslatorProps, withTranslator } from "../hoc/translator";
-
-const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
 interface IProps extends TranslatorProps {
     toast: QueuedToast<ToastState>;
@@ -70,23 +67,13 @@ export function Toast({ toast, close, __ }: IProps) {
         if (closing.current) return;
         setOpened((value) => !value);
         let feedback: string;
-        let copied = false;
         try {
             clipboard.writeText(message, "clipboard");
-            copied = true;
             feedback = __("accessibility.notificationCopied");
         } catch (_error) {
             feedback = __("accessibility.notificationCopyFailed");
         }
         setCopyFeedback((value) => ({ message: feedback, sequence: value.sequence + 1 }));
-
-        if (copied) {
-            try {
-                new Notification(capitalizedAppName, { body: `${__("app.edit.copy")} [${message}]` });
-            } catch (_error) {
-                // Copying still succeeded if system notifications are unavailable.
-            }
-        }
     };
 
     return (
@@ -105,29 +92,31 @@ export function Toast({ toast, close, __ }: IProps) {
                 }
             }}
         >
-            <ToastContent className={stylesToasts.content}>
-                <Button
-                    className={stylesToasts.messageButton}
-                    aria-labelledby={`${messageId} ${actionId}`}
-                    aria-expanded={opened}
-                    aria-controls={messageId}
-                    onPress={copyAndExpand}
-                    onBlur={() => setOpened(false)}
-                >
-                    <Text
-                        slot="title"
-                        id={messageId}
-                        className={classNames(stylesToasts.message, opened && stylesToasts.toast_open)}
+            <div className={stylesToasts.content}>
+                <div role="status" aria-live="polite" aria-atomic="true" className={stylesToasts.copyStatus}>
+                    {copyFeedback.message && <span key={copyFeedback.sequence}>{copyFeedback.message}</span>}
+                </div>
+                <ToastContent>
+                    <Button
+                        className={stylesToasts.messageButton}
+                        aria-labelledby={`${messageId} ${actionId}`}
+                        aria-expanded={opened}
+                        aria-controls={messageId}
+                        onPress={copyAndExpand}
+                        onBlur={() => setOpened(false)}
                     >
-                        {message}
-                    </Text>
-                </Button>
-            </ToastContent>
+                        <Text
+                            slot="title"
+                            id={messageId}
+                            className={classNames(stylesToasts.message, opened && stylesToasts.toast_open)}
+                        >
+                            {message}
+                        </Text>
+                    </Button>
+                </ToastContent>
+            </div>
             <VisuallyHidden>
                 <span id={actionId}>{__("accessibility.copyNotificationAndToggleDetails")}</span>
-                <div role="status" aria-atomic="true">
-                    <span key={copyFeedback.sequence}>{copyFeedback.message}</span>
-                </div>
             </VisuallyHidden>
             <Button
                 aria-label={__("accessibility.closeDialog")}

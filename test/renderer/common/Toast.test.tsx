@@ -51,6 +51,7 @@ beforeAll(() => {
 beforeEach(async () => {
     jest.useFakeTimers();
     jest.mocked(clipboard.writeText).mockReset();
+    jest.mocked(Notification).mockClear();
     host = document.createElement("div");
     document.body.appendChild(host);
     // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -113,13 +114,22 @@ test("Enter, Space, and clicking preserve copying and expansion, with accessible
     expect(button.getAttribute("aria-expanded")).toBe("true");
     expect(clipboard.writeText).toHaveBeenCalledTimes(1);
     expect(clipboard.writeText).toHaveBeenCalledWith("Download failed", "clipboard");
-    expect(document.querySelector("[role=status]")?.textContent).toBe("accessibility.notificationCopied");
+    const status = document.querySelector("[role=status]")!;
+    expect(status.textContent).toBe("accessibility.notificationCopied");
+    expect(status.getAttribute("aria-live")).toBe("polite");
+    expect(status.closest("[role=alert]")).toBeNull();
+    expect(document.activeElement).toBe(button);
+    const firstFeedback = status.firstElementChild;
     await press(button, " ");
     expect(button.getAttribute("aria-expanded")).toBe("false");
     expect(clipboard.writeText).toHaveBeenCalledTimes(2);
+    expect(document.querySelector("[role=status]")).toBe(status);
+    expect(status.firstElementChild).not.toBe(firstFeedback);
+    expect(document.activeElement).toBe(button);
     await React.act(async () => button.click());
     expect(button.getAttribute("aria-expanded")).toBe("true");
     expect(clipboard.writeText).toHaveBeenCalledTimes(3);
+    expect(Notification).not.toHaveBeenCalled();
 });
 
 test.each([ToastType.Error, ToastType.Default])("%s notifications persist until explicitly dismissed", async (type) => {
@@ -212,6 +222,8 @@ test("clipboard failures are announced without preventing expansion", async () =
     await press(messageButton(), "Enter");
     expect(messageButton().getAttribute("aria-expanded")).toBe("true");
     expect(document.querySelector("[role=status]")?.textContent).toBe("accessibility.notificationCopyFailed");
+    expect(document.activeElement).toBe(messageButton());
+    expect(Notification).not.toHaveBeenCalled();
 });
 
 test("duplicate errors are suppressed while visible and can appear again after dismissal", async () => {
