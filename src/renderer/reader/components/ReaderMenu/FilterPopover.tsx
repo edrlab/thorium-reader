@@ -47,7 +47,7 @@ const FilterPopover = (props: FilterPopoverProps) => {
         <DialogTrigger isOpen={props.filterOpen} onOpenChange={(open) => props.setFilterOpen(open)}>
             <Pressable>
                 <button
-                                            type="button"
+                    type="button"
                     aria-label={__("reader.annotations.filter.filterOptions")}
                     className={stylesAnnotations.annotations_filter_trigger_button}
                     title={__("reader.annotations.filter.filterOptions")}
@@ -92,7 +92,7 @@ const FilterPopover = (props: FilterPopoverProps) => {
                             aria-label={__("reader.annotations.filter.filterByTag")}
                             style={{ marginBottom: "20px" }}
                         >
-                            <details open id="annotationListTagDetails">
+                            <details className={stylesAnnotations.annotations_filter_section} open id="annotationListTagDetails">
                                 <summary
                                     className={stylesAnnotations.annotations_filter_tagGroup}
                                     style={{
@@ -105,7 +105,7 @@ const FilterPopover = (props: FilterPopoverProps) => {
                                         {__("reader.annotations.filter.filterByTag")}
                                     </Label>
                                 </summary>
-                                <div style={{ display: "flex", gap: "10px", marginRight: "10px" }}>
+                                <div className={stylesAnnotations.annotations_filter_actions}>
                                     <button
                                         type="button"
                                         aria-label={`${__("reader.annotations.filter.all")}: ${__("reader.annotations.filter.filterByTag")}`}
@@ -163,13 +163,13 @@ const FilterPopover = (props: FilterPopoverProps) => {
                             aria-label={__("reader.annotations.filter.filterByColor")}
                             style={{ marginBottom: "20px" }}
                         >
-                            <details open id="annotationListColorDetails">
+                            <details className={stylesAnnotations.annotations_filter_section} open id="annotationListColorDetails">
                                 <summary className={stylesAnnotations.annotations_filter_tagGroup}>
                                     <Label style={{ fontSize: "13px" }}>
                                         {__("reader.annotations.filter.filterByColor")}
                                     </Label>
                                 </summary>
-                                <div style={{ display: "flex", gap: "10px", marginRight: "10px" }}>
+                                <div className={stylesAnnotations.annotations_filter_actions}>
                                     <button
                                         type="button"
                                         aria-label={`${__("reader.annotations.filter.all")}: ${__("reader.annotations.filter.filterByColor")}`}
@@ -222,13 +222,13 @@ const FilterPopover = (props: FilterPopoverProps) => {
                                 aria-label={__("reader.annotations.filter.filterByDrawtype")}
                                 style={{ marginBottom: "20px" }}
                             >
-                                <details open id="annotationListDrawDetails">
+                                <details className={stylesAnnotations.annotations_filter_section} open id="annotationListDrawDetails">
                                     <summary className={stylesAnnotations.annotations_filter_tagGroup}>
                                         <Label style={{ fontSize: "13px" }}>
                                             {__("reader.annotations.filter.filterByDrawtype")}
                                         </Label>
                                     </summary>
-                                    <div style={{ display: "flex", gap: "10px", marginRight: "10px" }}>
+                                    <div className={stylesAnnotations.annotations_filter_actions}>
                                         <button
                                             type="button"
                                             aria-label={`${__("reader.annotations.filter.all")}: ${__("reader.annotations.filter.filterByDrawtype")}`}
@@ -282,7 +282,7 @@ const FilterPopover = (props: FilterPopoverProps) => {
                             aria-label={__("reader.annotations.filter.filterByCreator")}
                             style={{ marginBottom: "20px" }}
                         >
-                            <details id="annotationListCreator" open={!!props.selectCreatorOptions.length}>
+                            <details className={stylesAnnotations.annotations_filter_section} id="annotationListCreator" open={!!props.selectCreatorOptions.length}>
                                 <summary
                                     className={stylesAnnotations.annotations_filter_tagGroup}
                                     style={{
@@ -295,7 +295,7 @@ const FilterPopover = (props: FilterPopoverProps) => {
                                         {__("reader.annotations.filter.filterByCreator")}
                                     </Label>
                                 </summary>
-                                <div style={{ display: "flex", gap: "10px", marginRight: "10px" }}>
+                                <div className={stylesAnnotations.annotations_filter_actions}>
                                     <button
                                         type="button"
                                         aria-label={`${__("reader.annotations.filter.all")}: ${__("reader.annotations.filter.filterByCreator")}`}
