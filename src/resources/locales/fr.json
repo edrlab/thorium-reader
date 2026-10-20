@@ -11,6 +11,7 @@
         "favoriteCatalog": "Catalogue favori : {{- title}}",
         "increaseSetting": "Augmenter {{- setting}}",
         "leftSlideButton": "Faire défiler vers la gauche",
+        "loading": "Chargement…",
         "mainContent": "Contenu principal",
         "printPage": "Page {{page}}",
         "publicationDetails": "{{- field}} : {{- title}}",

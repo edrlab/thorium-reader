@@ -12,6 +12,7 @@ declare namespace typed_i18n {
   readonly "favoriteCatalog": string,
   readonly "increaseSetting": string,
   readonly "leftSlideButton": string,
+  readonly "loading": string,
   readonly "mainContent": string,
   readonly "printPage": string,
   readonly "publicationDetails": string,
@@ -31,6 +32,7 @@ declare namespace typed_i18n {
   (_: "accessibility.favoriteCatalog", __?: {}): string;
   (_: "accessibility.increaseSetting", __?: {}): string;
   (_: "accessibility.leftSlideButton", __?: {}): string;
+  (_: "accessibility.loading", __?: {}): string;
   (_: "accessibility.mainContent", __?: {}): string;
   (_: "accessibility.printPage", __?: {}): string;
   (_: "accessibility.publicationDetails", __?: {}): string;
