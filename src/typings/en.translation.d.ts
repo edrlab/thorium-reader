@@ -803,7 +803,6 @@ declare namespace typed_i18n {
     readonly "empty": string,
     readonly "error": string,
     readonly "loading": string,
-    readonly "prompt": string,
     readonly "title": string
   },
   readonly "resumeBrowsing": string,
@@ -893,13 +892,11 @@ declare namespace typed_i18n {
   readonly "empty": string,
   readonly "error": string,
   readonly "loading": string,
-  readonly "prompt": string,
   readonly "title": string
 };
   (_: "opds.registry.empty", __?: {}): string;
   (_: "opds.registry.error", __?: {}): string;
   (_: "opds.registry.loading", __?: {}): string;
-  (_: "opds.registry.prompt", __?: {}): string;
   (_: "opds.registry.title", __?: {}): string;
   (_: "opds.resumeBrowsing", __?: {}): string;
   (_: "opds.shelf", __?: {}): string;
@@ -2081,7 +2078,6 @@ declare namespace typed_i18n {
     },
     readonly "customFontSelected": string,
     readonly "customizeReader": string,
-    readonly "defaultValue": string,
     readonly "disabled": string,
     readonly "display": string,
     readonly "disposition": { readonly "title": string },
@@ -2501,7 +2497,6 @@ declare namespace typed_i18n {
   },
   readonly "customFontSelected": string,
   readonly "customizeReader": string,
-  readonly "defaultValue": string,
   readonly "disabled": string,
   readonly "display": string,
   readonly "disposition": { readonly "title": string },
@@ -2578,7 +2573,6 @@ declare namespace typed_i18n {
   (_: "reader.settings.column.two", __?: {}): string;
   (_: "reader.settings.customFontSelected", __?: {}): string;
   (_: "reader.settings.customizeReader", __?: {}): string;
-  (_: "reader.settings.defaultValue", __?: {}): string;
   (_: "reader.settings.disabled", __?: {}): string;
   (_: "reader.settings.display", __?: {}): string;
   (_: "reader.settings.disposition", __?: {}): { readonly "title": string };
