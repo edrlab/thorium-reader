@@ -10,7 +10,7 @@ import { toastReducer } from "readium-desktop/common/redux/reducers/toast";
 
 jest.mock("electron", () => ({ clipboard: { writeText: jest.fn() } }));
 jest.mock("readium-desktop/renderer/assets/styles/components/toasts.scss", () => ({
-    toast: "toast", closeButton: "closeButton", messageButton: "messageButton", leave: "leave",
+    toast: "toast", closeButton: "closeButton", messageButton: "messageButton", leave: "leave", copyStatus: "copyStatus",
 }));
 jest.mock("readium-desktop/renderer/assets/icons/baseline-close-24px.svg", () => ({}));
 jest.mock("readium-desktop/renderer/assets/icons/chevron-down.svg", () => ({}));
@@ -124,12 +124,18 @@ test("Enter, Space, and clicking preserve copying and expansion, with accessible
     expect(clipboard.writeText).toHaveBeenCalledTimes(1);
     expect(clipboard.writeText).toHaveBeenCalledWith("Download failed", "clipboard");
     const status = document.querySelector("[role=status]")!;
+    expect(document.querySelector(".copyStatus")?.textContent).toBe("accessibility.notificationCopied");
+    expect(status.textContent).toBe("");
+    await advance(100);
     expect(status.textContent).toBe("accessibility.notificationCopied");
     expect(status.getAttribute("aria-live")).toBe("polite");
     expect(status.closest("[role=alert]")).toBeNull();
+    expect(status.closest("[role=alertdialog], [role=region]")).toBeNull();
     expect(document.activeElement).toBe(button);
     const firstFeedback = status.firstElementChild;
     await press(button, " ");
+    expect(status.textContent).toBe("");
+    await advance(100);
     expect(button.getAttribute("aria-expanded")).toBe("false");
     expect(clipboard.writeText).toHaveBeenCalledTimes(2);
     expect(document.querySelector("[role=status]")).toBe(status);
@@ -230,6 +236,8 @@ test("clipboard failures are announced without preventing expansion", async () =
     await notify();
     await press(messageButton(), "Enter");
     expect(messageButton().getAttribute("aria-expanded")).toBe("true");
+    expect(document.querySelector(".copyStatus")?.textContent).toBe("accessibility.notificationCopyFailed");
+    await advance(100);
     expect(document.querySelector("[role=status]")?.textContent).toBe("accessibility.notificationCopyFailed");
     expect(document.activeElement).toBe(messageButton());
     expect(Notification).not.toHaveBeenCalled();
