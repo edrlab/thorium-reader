@@ -16,6 +16,7 @@ import { usePublisherReaderConfig, useSavePublisherReaderConfigDebounced } from 
 
 export const FontSize = () => {
     const [__] = useTranslator();
+    const labelId = React.useId();
 
     const fontSize = usePublisherReaderConfig("fontSize");
     const set = useSavePublisherReaderConfigDebounced();
@@ -43,7 +44,7 @@ export const FontSize = () => {
 
     return (
         <section>
-            <h3>{__("reader.settings.fontSize")} ({fontSize})</h3>
+            <h3><span id={labelId}>{__("reader.settings.fontSize")}</span> ({fontSize})</h3>
             <div className={stylesSettings.size_range}>
                 <button 
                 onClick={() => {
@@ -51,7 +52,7 @@ export const FontSize = () => {
                     setCurrentSliderValue(newValue.replace(/%/g, ""));
                     set({ fontSize: newValue });
                 }
-                } className={stylesSettings.reset_button} title={__("reader.settings.defaultValue")}>
+                } className={stylesSettings.reset_button} title={__("accessibility.resetSetting", { setting: __("reader.settings.fontSize") })}>
                     <SVG ariaHidden svg={ResetIcon} />
                 </button>
                 <button 
@@ -61,11 +62,11 @@ export const FontSize = () => {
                 ><SVG ariaHidden svg={MinusIcon} /></button>
                 <input
                     type="range"
-                    aria-labelledby="label_fontSize"
+                    aria-labelledby={labelId}
                     min={75}
                     max={400}
                     step={12.5}
-                    aria-valuemin={0}
+                    aria-valuetext={`${currentSliderValue}%`}
                     value={currentSliderValue}
                     onChange={(e) => {
                         const newValue = e.target?.value || "100";

@@ -59,12 +59,12 @@ class DownloadsPanel extends React.Component<IProps, undefined> {
                             progress === 0 ? // indeterminate
                             (<>
                                 <span className={stylesApp.percent}>? %</span>
-                                <progress value={undefined}>{"..."}</progress>
+                                <progress aria-label={__("accessibility.downloadProgress", { title: dl.downloadLabel })} value={undefined}>{"..."}</progress>
                             </>)
                             :
                             (<>
                                 <span className={stylesApp.percent}>{progress}%</span>
-                                <progress max="100" value={progress}>{progress}</progress>
+                                <progress aria-label={__("accessibility.downloadProgress", { title: dl.downloadLabel })} max="100" value={progress}>{progress}</progress>
                             </>)
                         }
                         <span className={stylesApp.title}>{dl.downloadLabel}</span>

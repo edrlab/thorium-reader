@@ -1,9 +1,18 @@
 {
     "accessibility": {
+        "annotationNote": "Note d’annotation",
         "bookMenu": "Menu",
+        "bookmarkNote": "Note du marque-page",
         "closeDialog": "Fermer",
+        "decreaseSetting": "Diminuer {{- setting}}",
+        "downloadProgress": "Progression du téléchargement : {{- title}}",
+        "editTag": "Modifier l’étiquette : {{- tag}}",
+        "favoriteCatalog": "Catalogue favori : {{- title}}",
+        "increaseSetting": "Augmenter {{- setting}}",
         "leftSlideButton": "Faire défiler vers la gauche",
         "mainContent": "Contenu principal",
+        "publicationDetails": "{{- field}} : {{- title}}",
+        "resetSetting": "Réinitialiser {{- setting}}",
         "rightSlideButton": "Faire défiler vers la droite",
         "skipLink": "Aller directement au contenu",
         "toolbar": "Barre d'outils"

@@ -1,18 +1,36 @@
 declare namespace typed_i18n {
   interface TFunction {
   (_: "accessibility", __?: {}): {
+  readonly "annotationNote": string,
   readonly "bookMenu": string,
+  readonly "bookmarkNote": string,
   readonly "closeDialog": string,
+  readonly "decreaseSetting": string,
+  readonly "downloadProgress": string,
+  readonly "editTag": string,
+  readonly "favoriteCatalog": string,
+  readonly "increaseSetting": string,
   readonly "leftSlideButton": string,
   readonly "mainContent": string,
+  readonly "publicationDetails": string,
+  readonly "resetSetting": string,
   readonly "rightSlideButton": string,
   readonly "skipLink": string,
   readonly "toolbar": string
 };
+  (_: "accessibility.annotationNote", __?: {}): string;
   (_: "accessibility.bookMenu", __?: {}): string;
+  (_: "accessibility.bookmarkNote", __?: {}): string;
   (_: "accessibility.closeDialog", __?: {}): string;
+  (_: "accessibility.decreaseSetting", __?: {}): string;
+  (_: "accessibility.downloadProgress", __?: {}): string;
+  (_: "accessibility.editTag", __?: {}): string;
+  (_: "accessibility.favoriteCatalog", __?: {}): string;
+  (_: "accessibility.increaseSetting", __?: {}): string;
   (_: "accessibility.leftSlideButton", __?: {}): string;
   (_: "accessibility.mainContent", __?: {}): string;
+  (_: "accessibility.publicationDetails", __?: {}): string;
+  (_: "accessibility.resetSetting", __?: {}): string;
   (_: "accessibility.rightSlideButton", __?: {}): string;
   (_: "accessibility.skipLink", __?: {}): string;
   (_: "accessibility.toolbar", __?: {}): string;

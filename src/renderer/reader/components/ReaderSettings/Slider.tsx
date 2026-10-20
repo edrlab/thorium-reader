@@ -18,8 +18,6 @@ import { ReaderConfig } from "readium-desktop/common/models/reader";
 
 interface ITable {
     title: string,
-    ariaLabel: string,
-    ariaValuemin: number,
     defaultValue: string,
     parameter: keyof AdjustableSettingsStrings;
     altParameter: string,
@@ -27,13 +25,14 @@ interface ITable {
 }
 
 export const Slider = ({ value, option, set }: { value: string, option: ITable, set: (a: Pick<ReaderConfig, "pageMargins" | "wordSpacing" | "letterSpacing" | "paraSpacing" | "lineHeight">) => void }) => {
+    const labelId = React.useId();
     const [currentSliderValue, setCurrentSliderValue] = React.useState(option.defaultValue);
-    const [currentIndex, setCurrentIndex] = React.useState(() => (optionsValues[option.parameter] ||  [] ).findIndex((el) => el === option.defaultValue) || 0);
+    const [currentIndex, setCurrentIndex] = React.useState(() => Math.max(0, (optionsValues[option.parameter] || []).findIndex((el) => el === option.defaultValue)));
     const [__] = useTranslator();
 
     React.useEffect(() => {
         setCurrentSliderValue(value);
-        const newIndex = (optionsValues[option.parameter] || [] ).findIndex((el) => el === value) || 0;
+        const newIndex = Math.max(0, (optionsValues[option.parameter] || []).findIndex((el) => el === value));
         setCurrentIndex(newIndex);
     }, [value, option.parameter]);
 
@@ -45,46 +44,43 @@ export const Slider = ({ value, option, set }: { value: string, option: ITable, 
     };
 
     const click = (direction: string) => {
-        setCurrentIndex((prevIndex) => {
-            const newIndex = direction === "out" ? prevIndex - 1 : prevIndex + 1;
-            if (newIndex >= 0 && newIndex < optionsValues[option.parameter].length) {
-                updateValue(newIndex);
-            }
-            return prevIndex;
-        });
+        const newIndex = direction === "out" ? currentIndex - 1 : currentIndex + 1;
+        if (newIndex >= 0 && newIndex < optionsValues[option.parameter].length) {
+            updateValue(newIndex);
+        }
     };
 
     return (
         <section className={stylesSettings.section} key={option.title}>
             <div className={stylesSettings.spacing_heading}>
-                <h3>{option.title}</h3>
+                <h3 id={labelId}>{option.title}</h3>
                 <p>
-                    {currentSliderValue === "0" ? "auto" : currentSliderValue}
+                    {currentSliderValue === "0" ? __("reader.settings.column.auto") : currentSliderValue}
                 </p>
             </div>
             <div className={stylesSettings.size_range}>
                 <button
                     onClick={() => updateValue(0)}
                     className={stylesSettings.reset_button}
-                    title={__("reader.settings.defaultValue")}
+                    title={__("accessibility.resetSetting", { setting: option.title })}
                 >
                     <SVG ariaHidden svg={ResetIcon} />
                 </button>
-                <button onClick={() => click("out")} className={stylesSettings.scale_button}>
+                <button onClick={() => click("out")} className={stylesSettings.scale_button} aria-label={__("accessibility.decreaseSetting", { setting: option.title })}>
                     <SVG ariaHidden svg={MinusIcon} />
                 </button>
                 <input
-                    id={option.title}
+                    id={`${labelId}-range`}
                     type="range"
-                    aria-labelledby={option.ariaLabel}
+                    aria-labelledby={labelId}
                     min="0"
                     max={optionsValues[option.parameter].length - 1}
                     value={currentIndex}
-                    aria-valuemin={option.ariaValuemin}
+                    aria-valuetext={currentSliderValue === "0" ? __("reader.settings.column.auto") : currentSliderValue}
                     onChange={(e) => updateValue(parseInt(e.target.value, 10))}
                     className={currentSliderValue === "0" ? stylesSettings.range_inactive : ""}
                 />
-                <button onClick={() => click("in")} className={stylesSettings.scale_button}>
+                <button onClick={() => click("in")} className={stylesSettings.scale_button} aria-label={__("accessibility.increaseSetting", { setting: option.title })}>
                     <SVG ariaHidden svg={PlusIcon} />
                 </button>
             </div>
