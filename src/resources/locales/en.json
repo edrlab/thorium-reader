@@ -2,9 +2,11 @@
     "accessibility": {
         "bookMenu": "Menu",
         "closeDialog": "Close",
+        "closeNotification": "Close notification",
         "copyNotificationAndToggleDetails": "Copy notification and toggle details",
         "leftSlideButton": "Slide to the left",
         "mainContent": "main content",
+        "notification": "Notification",
         "notificationCopied": "Notification copied",
         "notificationCopyFailed": "Could not copy notification",
         "rightSlideButton": "Slide to the right",

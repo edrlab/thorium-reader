@@ -38,6 +38,7 @@ export function Toast({ toast, close, __ }: IProps) {
     const [announcedFeedback, setAnnouncedFeedback] = React.useState({ message: "", sequence: 0 });
     const messageId = React.useId();
     const announcementId = React.useId();
+    const containerLabelId = React.useId();
     const actionId = React.useId();
     const ref = React.useRef<HTMLDivElement>(undefined);
     const closing = React.useRef(false);
@@ -93,6 +94,7 @@ export function Toast({ toast, close, __ }: IProps) {
             <AriaToast
                 ref={ref}
                 toast={toast}
+                aria-labelledby={containerLabelId}
                 className={classNames(
                     stylesToasts.toast,
                     willLeave && stylesToasts.leave,
@@ -106,6 +108,7 @@ export function Toast({ toast, close, __ }: IProps) {
                 }}
             >
                 <VisuallyHidden>
+                    <span id={containerLabelId}>{__("accessibility.notification")}</span>
                     <ToastContent>
                         <Text slot="title" id={announcementId}>{message}</Text>
                     </ToastContent>
@@ -135,7 +138,7 @@ export function Toast({ toast, close, __ }: IProps) {
                     <span id={actionId}>{__("accessibility.copyNotificationAndToggleDetails")}</span>
                 </VisuallyHidden>
                 <Button
-                    aria-label={__("accessibility.closeDialog")}
+                    aria-label={__("accessibility.closeNotification")}
                     className={stylesToasts.closeButton}
                     onPress={() => {
                         if (closing.current) return;

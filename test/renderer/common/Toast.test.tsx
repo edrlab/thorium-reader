@@ -118,7 +118,10 @@ test("Enter, Space, and clicking preserve copying and expansion, with accessible
     expect(button.getAttribute("aria-expanded")).toBe("false");
     const message = document.getElementById(button.getAttribute("aria-controls")!);
     expect(message?.textContent).toBe("Download failed");
-    expect(document.getElementById(dialogs()[0].getAttribute("aria-labelledby")!)?.textContent).toBe("Download failed");
+    const containerLabel = document.getElementById(dialogs()[0].getAttribute("aria-labelledby")!);
+    expect(containerLabel?.textContent).toBe("accessibility.notification");
+    expect(alert.contains(containerLabel)).toBe(false);
+    expect(closeButton().getAttribute("aria-label")).toBe("accessibility.closeNotification");
     await press(button, "Enter");
     expect(button.getAttribute("aria-expanded")).toBe("true");
     expect(clipboard.writeText).toHaveBeenCalledTimes(1);
