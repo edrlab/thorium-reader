@@ -1623,6 +1623,7 @@ function AnnotationButton({
 }) {
     const { __ } = props;
     const annotationPopoverTriggerRef = React.useRef<HTMLLIElement>(null);
+    const selectionRequirementId = React.useId();
     const annotationPopoverState = useOverlayTriggerState({
         isOpen: annotationPopoverOpen,
         onOpenChange: (open) => {
@@ -1641,6 +1642,7 @@ function AnnotationButton({
                     disabled={props.isDivina || isAudioBook}
                     id="annotationButton"
                     aria-label={__("reader.navigation.annotationTitle")}
+                    aria-describedby={selectionRequirementId}
                     className={stylesReader.bookmarkButton}
                     type="checkbox"
                     checked={annotationPopoverOpen}
@@ -1669,7 +1671,7 @@ function AnnotationButton({
                     aria-hidden="true"
                     className={stylesReader.menu_button}
                     id="annotationLabel"
-                    title={__("reader.navigation.annotationTitle")}
+                    title={`${__("reader.navigation.annotationTitle")} — ${__("reader.annotations.noSelectionToast")}`}
                 >
                     <SVG
                         ariaHidden
@@ -1680,6 +1682,9 @@ function AnnotationButton({
                         )}
                     />
                 </label>
+                <VisuallyHidden id={selectionRequirementId}>
+                    {__("reader.annotations.noSelectionToast")}
+                </VisuallyHidden>
             </li>
             <Popover
                 triggerRef={annotationPopoverTriggerRef}

@@ -5,6 +5,8 @@ import type { Root } from "react-dom/client";
 import { clipboard } from "electron";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { ToastState } from "readium-desktop/common/redux/states/toast";
+import { build as openToast } from "readium-desktop/common/redux/actions/toast/openRequest";
+import { toastReducer } from "readium-desktop/common/redux/reducers/toast";
 
 jest.mock("electron", () => ({ clipboard: { writeText: jest.fn() } }));
 jest.mock("readium-desktop/renderer/assets/styles/components/toasts.scss", () => ({
@@ -135,6 +137,27 @@ test("success confirmations expire after five seconds", async () => {
     expect(dialogs()).toHaveLength(1);
     await advance(1);
     expect(dialogs()).toHaveLength(0);
+});
+
+test("the no-selection hint carries its explicit five-second timeout through Redux", async () => {
+    const action = openToast(ToastType.Default, "Select text before creating an annotation.", undefined, undefined, 5000);
+    const state = toastReducer(undefined, action);
+    await render(state);
+    await advance(4999);
+    expect(dialogs()).toHaveLength(1);
+    await advance(1);
+    expect(dialogs()).toHaveLength(0);
+
+    // A later prerequisite notice must not inherit the previous hint's timeout.
+    await render(toastReducer(state, openToast(ToastType.Default, "Stop playback first")));
+    await advance(60000);
+    expect(dialogs()).toHaveLength(1);
+});
+
+test("error notifications remain persistent even if a timeout is requested", async () => {
+    await render(toastReducer(undefined, openToast(ToastType.Error, "Failed", undefined, undefined, 5000)));
+    await advance(60000);
+    expect(dialogs()).toHaveLength(1);
 });
 
 test("success timers pause while focused and resume with the remaining time", async () => {

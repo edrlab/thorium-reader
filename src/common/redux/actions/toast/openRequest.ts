@@ -15,9 +15,11 @@ export interface Payload {
     type: ToastType;
     data: string | undefined;
     publicationIdentifier: string | undefined;
+    /** Auto-dismiss nonessential information that is also available elsewhere. */
+    timeout?: number;
 }
 
-export function build(type: ToastType, data: string, publicationIdentifier?: string, windowIdentifier?: string):
+export function build(type: ToastType, data: string, publicationIdentifier?: string, windowIdentifier?: string, timeout?: number):
     Action<typeof ID, Payload> & Partial<WithDestination<WindowReaderDestination>> {
 
     return {
@@ -27,6 +29,7 @@ export function build(type: ToastType, data: string, publicationIdentifier?: str
             type,
             data,
             publicationIdentifier,
+            ...(timeout !== undefined ? { timeout } : {}),
         },
     };
 }

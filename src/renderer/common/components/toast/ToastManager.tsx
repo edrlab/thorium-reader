@@ -48,9 +48,11 @@ export class ToastManager extends React.Component<IProps> {
             const id = uuidv4();
             const toastList = Object.fromEntries(this.queue.visibleToasts.map((current) => [current.key, current.content]));
             if (addToastToQueue(toastList, id, toast, this.props.pubId) !== toastList) {
-                // Errors and prerequisite notices may be the only explanation of a
-                // failed operation. Only nonessential success confirmations expire.
-                this.queue.add(toast, { timeout: toast.type === ToastType.Success ? 5000 : undefined });
+                // Errors remain persistent. Other notices may explicitly opt into
+                // a timeout when their information is also available elsewhere.
+                const timeout = toast.type === ToastType.Error ? undefined :
+                    toast.timeout ?? (toast.type === ToastType.Success ? 5000 : undefined);
+                this.queue.add(toast, { timeout });
             }
         }
     }
