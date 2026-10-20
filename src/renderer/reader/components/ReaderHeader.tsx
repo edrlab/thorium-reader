@@ -567,7 +567,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                 role="navigation"
                 aria-label={__("accessibility.toolbar")}
             >
-                <ul>
+                <div>
                     <ul>
                         <li >
                             <button
@@ -1254,7 +1254,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 </li>
                                 : <></>
                         }
-                        <span style={{width: "1px", height: "30px", backgroundColor: "var(--color-gray-200)", margin: "auto 5px"}}></span>
+                        <li role="presentation" aria-hidden="true" style={{width: "1px", height: "30px", backgroundColor: "var(--color-gray-200)", margin: "auto 5px"}}></li>
                         <li className={classNames(stylesReader.blue)}>
                             <button
                                 className={classNames(stylesReader.menu_button)}
@@ -1270,7 +1270,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             </button>
                         </li>
                     </ul>
-                </ul>
+                </div>
             </nav>
         );
     }
