@@ -13,6 +13,7 @@
         "leftSlideButton": "Slide to the left",
         "loading": "Loading…",
         "mainContent": "main content",
+        "printPage": "Page {{page}}",
         "publicationDetails": "{{- field}}: {{- title}}",
         "resetSetting": "Reset {{- setting}}",
         "rightSlideButton": "Slide to the right",

@@ -13,6 +13,7 @@
         "leftSlideButton": "Faire défiler vers la gauche",
         "loading": "Chargement…",
         "mainContent": "Contenu principal",
+        "printPage": "Page {{page}}",
         "publicationDetails": "{{- field}} : {{- title}}",
         "resetSetting": "Réinitialiser {{- setting}}",
         "rightSlideButton": "Faire défiler vers la droite",
