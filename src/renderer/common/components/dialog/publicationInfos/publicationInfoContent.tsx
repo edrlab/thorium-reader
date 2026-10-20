@@ -434,7 +434,7 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                                 />
                             </Dialog.Trigger>
                             <Dialog.Portal>
-                                <Dialog.Content className={stylesModals.modal_dialog} aria-describedby={undefined}>
+                                <Dialog.Content className={classNames(stylesModals.modal_dialog, stylesModals.modal_dialog_cover)} aria-describedby={undefined}>
                                     <div className={stylesModals.modal_dialog_header}>
                                         <Dialog.Title>{__("publication.cover.img")}</Dialog.Title>
                                         <Dialog.Close>{__("accessibility.closeDialog")}</Dialog.Close>
