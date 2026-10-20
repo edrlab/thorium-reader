@@ -3246,7 +3246,7 @@ class Reader extends React.Component<IProps, IState> {
             }
             this.screenPreviousNextTimerDebounce = window.setTimeout(() => {
                 this.screenPreviousNextTimerDebounce = undefined;
-                this.props.toasty(str);
+                this.props.toasty(str, 5000);
             }, 800);
         } else {
             this.screenPreviousNextTimerDebounce = undefined;
