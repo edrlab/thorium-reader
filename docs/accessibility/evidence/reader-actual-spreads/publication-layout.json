@@ -1,0 +1,39 @@
+{
+  "scroll": {
+    "width": 18200,
+    "height": 443,
+    "left": 0,
+    "top": 0,
+    "offsetWidth": 910,
+    "offsetHeight": 444
+  },
+  "body": {
+    "scrollWidth": 640,
+    "scrollHeight": 8489,
+    "width": "640px",
+    "height": "8488.5px",
+    "zoom": "1",
+    "padding": "20px 50px",
+    "margin": "0px 135px"
+  },
+  "viewport": {
+    "innerWidth": 910,
+    "outerWidth": 1920,
+    "devicePixelRatio": 2,
+    "screenWidth": 1920,
+    "availableWidth": 1920,
+    "userColumnCount": "2",
+    "rootFont": "16px",
+    "breakpoint": false
+  },
+  "html": {
+    "columnCount": "1",
+    "columnWidth": "720px",
+    "clientWidth": 910,
+    "clientHeight": 443
+  },
+  "textRects": 574,
+  "lastTextRight": 18012.3125,
+  "firstTextLeft": 185,
+  "lastTextBottom": 442
+}

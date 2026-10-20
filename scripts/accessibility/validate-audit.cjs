@@ -147,6 +147,19 @@ if (fs.existsSync(nativeFile)) {
         assert.equal(captures.length, repair.recordedCaptures);
         for (const file of captures) assert.equal(JSON.parse(fs.readFileSync(path.join(directory, file), 'utf8')).window.id, repair.readerWindow);
     }
+    const actualSpreadsFile = path.join(root, 'native-reader-actual-spreads-validation.json');
+    if (fs.existsSync(actualSpreadsFile)) {
+        const followUp = JSON.parse(fs.readFileSync(actualSpreadsFile, 'utf8'));
+        for (const check of followUp.checks) assert.deepEqual(native.checks.find(item => item.id === check.id), check);
+        const directory = path.join(root, 'evidence/reader-actual-spreads');
+        const captures = fs.readdirSync(directory).filter(file => /^\d\d-.*\.json$/.test(file));
+        assert.equal(captures.length, followUp.recordedCaptures);
+        for (const file of captures) assert.equal(JSON.parse(fs.readFileSync(path.join(directory, file), 'utf8')).window.id, followUp.readerWindow);
+        const setup = JSON.parse(fs.readFileSync(path.join(directory, 'zoom-setup.json'), 'utf8'));
+        const restored = JSON.parse(fs.readFileSync(path.join(directory, 'zoom-restored.json'), 'utf8'));
+        assert.equal(setup.before, 2); assert.equal(setup.after, 1);
+        assert.equal(restored.before, 1); assert.equal(restored.after, 2);
+    }
     for (const check of native.checks) {
         assert.equal(native.screenReader.started, true, 'NVDA checks require an actual NVDA session');
         assert.ok(check.files.length && check.evidence.length && check.observation && check.limitations, check.id);

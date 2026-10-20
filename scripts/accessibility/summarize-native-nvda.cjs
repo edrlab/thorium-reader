@@ -164,6 +164,13 @@ if (fs.existsSync(columnsRepairFile)) {
     native.readerColumnsRemediation = 'native-reader-columns-remediation.json';
     native.status += '; RHF03 Columns clipping repair natively verified';
 }
+const actualSpreadsFile = path.join(root, 'native-reader-actual-spreads-validation.json');
+if (fs.existsSync(actualSpreadsFile)) {
+    const followUp = JSON.parse(fs.readFileSync(actualSpreadsFile, 'utf8'));
+    native.checks.push(...followUp.checks);
+    native.readerActualSpreadsValidation = 'native-reader-actual-spreads-validation.json';
+    native.status += '; actual75/100/200% spreads sampled; RHF04/RHF05 observations open';
+}
 native.recordedNativeChecks = native.checks.length;
 native.completedNativeScenarios = native.checks.filter(check => check.complete).length;
 native.startupHistory = ['Initial launcher execution blocked by approval timeouts and sandbox DLL relocation.', 'User started the temporary standalone runner.', 'Portable copy creation later succeeded (exit 0); isolated logging session started.', 'Two EPUB Reader windows timed out before a full development-app restart.', 'Restarted Reader loaded EPUB successfully; NVDA document identification captured.', 'Repeated approval-review timeouts prevented the remaining native checks.'];
