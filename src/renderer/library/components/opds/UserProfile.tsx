@@ -40,7 +40,7 @@ export const UserProfileDetails = ({ profile, __ }: { profile: IOpdsUserProfile;
         {(["loans", "holds"] as const).map((kind) => {
             const quota = profile[kind];
             return quota && (quota.available !== undefined || quota.total !== undefined) ? <div key={kind} style={{ margin: "16px 0" }}>
-                <h4 style={{ margin: "0 0 8px" }}>{__(`catalog.userProfile.${kind}`)}</h4>
+                <h4 style={{ margin: "0 0 8px" }}>{kind === "loans" ? __("catalog.userProfile.loans") : __("catalog.userProfile.holds")}</h4>
                 {quota.available !== undefined && quota.total !== undefined && quota.available <= quota.total ?
                     <p>{__("catalog.userProfile.used", { used: quota.total - quota.available, total: quota.total })}</p> : <>
                 {quota.available !== undefined && <p>{__("catalog.userProfile.available", { count: quota.available })}</p>}

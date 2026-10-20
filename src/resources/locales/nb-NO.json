@@ -132,7 +132,11 @@
         "sort": "Sorter etter",
         "tag": "Tagg",
         "tags": "Tagger",
-        "update": "Rediger"
+        "update": "Rediger",
+        "userProfile": {
+            "holds": "",
+            "loans": ""
+        }
     },
     "dialog": {
         "annotations": {
