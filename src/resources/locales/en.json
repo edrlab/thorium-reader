@@ -697,7 +697,8 @@
         "certificateRevoked": "Revoked LCP license certificate.",
         "certificateSignatureInvalid": "Invalid LCP license certificate signature.",
         "cover": {
-            "img": "cover image"
+            "img": "cover image",
+            "zoom": "Enlarge cover image"
         },
         "day": "day",
         "days": "days",

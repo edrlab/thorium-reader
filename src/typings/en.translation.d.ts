@@ -1725,7 +1725,7 @@ declare namespace typed_i18n {
   readonly "cancelledLcp": string,
   readonly "certificateRevoked": string,
   readonly "certificateSignatureInvalid": string,
-  readonly "cover": { readonly "img": string },
+  readonly "cover": { readonly "img": string, readonly "zoom": string },
   readonly "day": string,
   readonly "days": string,
   readonly "duration": { readonly "title": string },
@@ -1851,8 +1851,9 @@ declare namespace typed_i18n {
   (_: "publication.cancelledLcp", __?: {}): string;
   (_: "publication.certificateRevoked", __?: {}): string;
   (_: "publication.certificateSignatureInvalid", __?: {}): string;
-  (_: "publication.cover", __?: {}): { readonly "img": string };
+  (_: "publication.cover", __?: {}): { readonly "img": string, readonly "zoom": string };
   (_: "publication.cover.img", __?: {}): string;
+  (_: "publication.cover.zoom", __?: {}): string;
   (_: "publication.day", __?: {}): string;
   (_: "publication.days", __?: {}): string;
   (_: "publication.duration", __?: {}): { readonly "title": string };

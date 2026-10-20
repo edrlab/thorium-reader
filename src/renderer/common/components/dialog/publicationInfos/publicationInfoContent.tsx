@@ -24,7 +24,7 @@ import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locator
 
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
-import Cover, { CoverWithForwardedRef } from "../../Cover";
+import Cover from "../../Cover";
 import { FormatContributorWithLink } from "./FormatContributorWithLink";
 import { FormatPublicationLanguage } from "./formatPublicationLanguage";
 import { FormatPublisherDate } from "./formatPublisherDate";
@@ -47,7 +47,6 @@ import {
     createReadiumPositionIndex, getReadiumPositionProgression, isEpubPositionListPublication,
 } from "readium-desktop/common/readium/positions";
 
-import { VisuallyHidden } from "react-aria-components";
 import { PublicationInfoA11y2 } from "./PublicationInfoA11y2";
 
 
@@ -428,36 +427,23 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                         <Dialog.Root isOpen={openCoverDialog} onOpenChange={(open) => {
                             setOpenCoverDialog(open);
                         }}>
-                            <Dialog.Trigger asChild>
-                                <CoverWithForwardedRef
+                            <Dialog.Trigger className={stylePublication.cover_zoom} aria-label={__("publication.cover.zoom")}>
+                                <Cover
                                     publicationViewMaybeOpds={props.publicationViewMaybeOpds}
                                     coverType="cover"
-                                    onKeyUp={
-                                        (e) => {
-                                            if (e.key === "Enter") {
-                                                setOpenCoverDialog(true);
-                                            }
-                                        }
-                                    }
                                 />
                             </Dialog.Trigger>
                             <Dialog.Portal>
                                 <Dialog.Content className={stylesModals.modal_dialog} aria-describedby={undefined}>
-                                    <VisuallyHidden>
-                                        <Dialog.Title>{__("catalog.bookInfo")}</Dialog.Title>
-                                    </VisuallyHidden>
+                                    <div className={stylesModals.modal_dialog_header}>
+                                        <Dialog.Title>{__("publication.cover.img")}</Dialog.Title>
+                                        <Dialog.Close>{__("accessibility.closeDialog")}</Dialog.Close>
+                                    </div>
                                     <div className={stylesModals.modal_dialog_body_cover}>
                                         <Cover
                                             publicationViewMaybeOpds={props.publicationViewMaybeOpds}
                                             coverType="cover"
-                                            onClick={() => setOpenCoverDialog(false)}
-                                            onKeyUp={
-                                                (e) => {
-                                                    if (e.key === "Enter") {
-                                                        setOpenCoverDialog(false);
-                                                    }
-                                                }
-                                            }
+                                            imageAlt={__("publication.cover.img")}
                                         />
                                     </div>
                                 </Dialog.Content>
