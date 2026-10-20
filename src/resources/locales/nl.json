@@ -354,7 +354,6 @@
             "empty": "Geen catalogi gevonden.",
             "error": "Kan het register niet doorzoeken. Probeer opnieuw.",
             "loading": "Catalogi doozoeken…",
-            "prompt": "Naam, land of regio",
             "title": "Zoek catalogi"
         },
         "resumeBrowsing": "Terug naar bladeren",
