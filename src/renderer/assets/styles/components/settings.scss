@@ -703,14 +703,8 @@ div[data-radix-popper-content-wrapper] {
 .display_options {
     display: flex;
     font-size: 14px;
-    height: auto;
+    height: 80px;
     list-style-type: none;
-
-    > [role="radiogroup"] {
-        min-width: 0;
-        max-width: 100%;
-        flex-wrap: wrap;
-    }
 
     svg {
         width: 30px;
