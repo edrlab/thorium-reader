@@ -1,9 +1,18 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "菜单",
+        "bookmarkNote": "",
         "closeDialog": "关闭",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "将列表划至左侧",
         "mainContent": "主要内容",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "将列表划至右侧",
         "skipLink": "跳转至内容",
         "toolbar": "工具栏"
@@ -147,9 +156,7 @@
             "available": "",
             "bookshelf": "",
             "edit": "",
-            "holds": "",
             "loading": "",
-            "loans": "",
             "title": "",
             "total": "",
             "unavailable": "",
@@ -337,7 +344,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "继续浏览",
@@ -910,7 +916,6 @@
             },
             "customFontSelected": "您已选择自定义字体",
             "customizeReader": "自定义文本格式",
-            "defaultValue": "默认值",
             "disabled": "已禁用",
             "display": "显示",
             "disposition": {

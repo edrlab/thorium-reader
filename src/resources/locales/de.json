@@ -1,9 +1,18 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menü",
+        "bookmarkNote": "",
         "closeDialog": "Schließen",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Scrolle nach links",
         "mainContent": "Hauptinhalt",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Scrolle nach rechts",
         "skipLink": "Gehe zum Inhalt",
         "toolbar": "Symbolleiste"
@@ -147,9 +156,7 @@
             "available": "",
             "bookshelf": "",
             "edit": "",
-            "holds": "",
             "loading": "",
-            "loans": "",
             "title": "",
             "total": "",
             "unavailable": "",
@@ -344,7 +351,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "Weiter stöbern",
@@ -918,7 +924,6 @@
             },
             "customFontSelected": "Sie haben eine persönliche Schriftart gewählt",
             "customizeReader": "Anpassen der Textformatierung",
-            "defaultValue": "Standardwert",
             "disabled": "deaktiviert",
             "display": "Lesefluss",
             "disposition": {

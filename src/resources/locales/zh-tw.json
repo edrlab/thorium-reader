@@ -1,9 +1,18 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "選單",
+        "bookmarkNote": "",
         "closeDialog": "關閉",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "將列表移至左側",
         "mainContent": "主要內容",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "將列表移至右側",
         "skipLink": "跳轉至內容",
         "toolbar": "工具欄"
@@ -147,9 +156,7 @@
             "available": "",
             "bookshelf": "",
             "edit": "",
-            "holds": "",
             "loading": "",
-            "loans": "",
             "title": "",
             "total": "",
             "unavailable": "",
@@ -337,7 +344,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "",
@@ -910,7 +916,6 @@
             },
             "customFontSelected": "您已選擇個人字體",
             "customizeReader": "自訂文字格式",
-            "defaultValue": "",
             "disabled": "停用",
             "display": "顯示",
             "disposition": {

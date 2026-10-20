@@ -1,9 +1,18 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Меню",
+        "bookmarkNote": "",
         "closeDialog": "Закрыть",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Сдвиньте список влево",
         "mainContent": "основное содержимое",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Сдвиньте список вправо",
         "skipLink": "Перейти к содержимому",
         "toolbar": "панель инструментов"
@@ -147,9 +156,7 @@
             "available": "",
             "bookshelf": "",
             "edit": "",
-            "holds": "",
             "loading": "",
-            "loans": "",
             "title": "",
             "total": "",
             "unavailable": "",
@@ -356,7 +363,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "Продолжить просмотр",
@@ -932,7 +938,6 @@
             },
             "customFontSelected": "Вы выбрали персональный шрифт",
             "customizeReader": "Настройка форматирования текста",
-            "defaultValue": "значение по умолчанию",
             "disabled": "отключено",
             "display": "Отображение",
             "disposition": {

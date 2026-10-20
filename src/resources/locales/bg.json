@@ -1,9 +1,18 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Меню",
+        "bookmarkNote": "",
         "closeDialog": "Затвори",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Плъзни списъка наляво",
         "mainContent": "главно съдържание",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Плъзни списъка надясно",
         "skipLink": "Преминете към съдържанието",
         "toolbar": "лента с инструменти"
@@ -147,9 +156,7 @@
             "available": "",
             "bookshelf": "",
             "edit": "",
-            "holds": "",
             "loading": "",
-            "loans": "",
             "title": "",
             "total": "",
             "unavailable": "",
@@ -344,7 +351,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "",
@@ -918,7 +924,6 @@
             },
             "customFontSelected": "",
             "customizeReader": "",
-            "defaultValue": "",
             "disabled": "",
             "display": "Екран",
             "disposition": {

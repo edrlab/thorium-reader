@@ -1,9 +1,18 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "பட்டியல்",
+        "bookmarkNote": "",
         "closeDialog": "மூடு",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "இடதுபுறத்தில் ச்லைடு",
         "mainContent": "முக்கிய உள்ளடக்கம்",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "வலதுபுறம் சரிய",
         "skipLink": "உள்ளடக்கத்தைத் தவிர்க்கவும்",
         "toolbar": "கருவிப்பட்டி"
@@ -147,9 +156,7 @@
             "available": "",
             "bookshelf": "",
             "edit": "",
-            "holds": "",
             "loading": "",
-            "loans": "",
             "title": "",
             "total": "",
             "unavailable": "",
@@ -344,7 +351,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "",
@@ -918,7 +924,6 @@
             },
             "customFontSelected": "நீங்கள் ஒரு தனிப்பட்ட எழுத்துருவைத் தேர்ந்தெடுத்துள்ளீர்கள்",
             "customizeReader": "உரை வடிவமைப்பைத் தனிப்பயனாக்குங்கள்",
-            "defaultValue": "",
             "disabled": "முடக்கப்பட்டது",
             "display": "காட்சி",
             "disposition": {

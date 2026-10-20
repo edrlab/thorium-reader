@@ -156,9 +156,7 @@
             "available": "Disponibles : {{count}}",
             "bookshelf": "Ouvrir les prêts et réservations",
             "edit": "Modifier le profil",
-            "holds": "Réservations",
             "loading": "Chargement du compte…",
-            "loans": "Prêts",
             "title": "Compte",
             "total": "Limite : {{count}}",
             "unavailable": "Les informations du profil sont indisponibles.",
@@ -359,7 +357,6 @@
             "empty": "Aucun catalogue trouvé.",
             "error": "Impossible de rechercher dans le registre. Veuillez réessayer.",
             "loading": "Recherche de catalogues…",
-            "prompt": "Nom, pays ou région",
             "title": "Rechercher des catalogues"
         },
         "resumeBrowsing": "Reprendre le parcours",
@@ -934,7 +931,6 @@
             },
             "customFontSelected": "Vous avez sélectionné une police personnelle",
             "customizeReader": "Personnaliser la mise en forme",
-            "defaultValue": "Valeur par défaut",
             "disabled": "Désactivé",
             "display": "Affichage",
             "disposition": {

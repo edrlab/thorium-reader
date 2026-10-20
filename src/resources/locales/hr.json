@@ -1,9 +1,18 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Izbornik",
+        "bookmarkNote": "",
         "closeDialog": "Zatvori",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Povuci popis ulijevo",
         "mainContent": "glavni sadržaj",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Povuci popis udesno",
         "skipLink": "Preskoči do sadržaja",
         "toolbar": "alatna traka"
@@ -147,9 +156,7 @@
             "available": "",
             "bookshelf": "",
             "edit": "",
-            "holds": "",
             "loading": "",
-            "loans": "",
             "title": "",
             "total": "",
             "unavailable": "",
@@ -350,7 +357,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "",
@@ -925,7 +931,6 @@
             },
             "customFontSelected": "",
             "customizeReader": "",
-            "defaultValue": "",
             "disabled": "",
             "display": "Prikaz",
             "disposition": {

@@ -1,9 +1,18 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menú",
+        "bookmarkNote": "",
         "closeDialog": "Tancar",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Lliscar llista a l'esquerra",
         "mainContent": "Contingut principal",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Lliscar llista a la dreta",
         "skipLink": "Passar el contingut",
         "toolbar": "Barra d'eines"
@@ -147,9 +156,7 @@
             "available": "",
             "bookshelf": "",
             "edit": "",
-            "holds": "",
             "loading": "",
-            "loans": "",
             "title": "",
             "total": "",
             "unavailable": "",
@@ -350,7 +357,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "",
@@ -925,7 +931,6 @@
             },
             "customFontSelected": "",
             "customizeReader": "Personalitza el format del text",
-            "defaultValue": "",
             "disabled": "desactivat",
             "display": "Visualització",
             "disposition": {

@@ -156,9 +156,7 @@
             "available": "Available: {{count}}",
             "bookshelf": "Open bookshelf",
             "edit": "Edit profile",
-            "holds": "Holds",
             "loading": "Loading account…",
-            "loans": "Loans",
             "title": "Account",
             "total": "Limit: {{count}}",
             "unavailable": "Profile information is unavailable.",
@@ -353,7 +351,6 @@
             "empty": "No catalogs found.",
             "error": "Unable to search the registry. Please try again.",
             "loading": "Searching catalogs…",
-            "prompt": "Name, country or region",
             "title": "Search catalogs"
         },
         "resumeBrowsing": "Resume browsing",
@@ -927,7 +924,6 @@
             },
             "customFontSelected": "You have chosen a personal font",
             "customizeReader": "Customize text formatting",
-            "defaultValue": "default value",
             "disabled": "disabled",
             "display": "Display",
             "disposition": {

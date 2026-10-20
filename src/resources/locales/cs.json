@@ -1,9 +1,18 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menu",
+        "bookmarkNote": "",
         "closeDialog": "Zavřít",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Posunout doleva",
         "mainContent": "hlavní obsah",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Posunout doprava",
         "skipLink": "Přeskočit na obsah",
         "toolbar": "panel nástrojů"
@@ -147,9 +156,7 @@
             "available": "",
             "bookshelf": "",
             "edit": "",
-            "holds": "",
             "loading": "",
-            "loans": "",
             "title": "",
             "total": "",
             "unavailable": "",
@@ -356,7 +363,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "Pokračovat v prohlížení",
@@ -932,7 +938,6 @@
             },
             "customFontSelected": "Zvolili jste osobní písmo",
             "customizeReader": "Přizpůsobit formátování textu",
-            "defaultValue": "",
             "disabled": "vypnuto",
             "display": "Zobrazení",
             "disposition": {

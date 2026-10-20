@@ -1,9 +1,18 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menu",
+        "bookmarkNote": "",
         "closeDialog": "Sluit",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Schuif naar links",
         "mainContent": "hoofdinhoud",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Schuif naar rechts",
         "skipLink": "Ga naar inhoud",
         "toolbar": "werkbalk"
@@ -147,9 +156,7 @@
             "available": "",
             "bookshelf": "",
             "edit": "",
-            "holds": "",
             "loading": "",
-            "loans": "",
             "title": "",
             "total": "",
             "unavailable": "",
@@ -344,7 +351,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "Terug naar bladeren",
@@ -918,7 +924,6 @@
             },
             "customFontSelected": "Je hebt een eigen lettertype gekozen",
             "customizeReader": "Pas de tekstopmaak aan",
-            "defaultValue": "standaardwaarde",
             "disabled": "uitgeschakeld",
             "display": "Weergave",
             "disposition": {

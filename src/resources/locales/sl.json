@@ -1,9 +1,18 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Meni",
+        "bookmarkNote": "",
         "closeDialog": "Zapri",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Podrsaj v levo",
         "mainContent": "glavna vsebina",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Podrsaj v desno",
         "skipLink": "Skoči na vsebino",
         "toolbar": "orodna vrstica"
@@ -147,9 +156,7 @@
             "available": "",
             "bookshelf": "",
             "edit": "",
-            "holds": "",
             "loading": "",
-            "loans": "",
             "title": "",
             "total": "",
             "unavailable": "",
@@ -356,7 +363,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "Nadaljuj z brskanjem",
@@ -932,7 +938,6 @@
             },
             "customFontSelected": "Izbrana je pisava po meri",
             "customizeReader": "Prilagodi oblikovanje besedila",
-            "defaultValue": "privzeta vrednost",
             "disabled": "onemogočeno",
             "display": "Zaslon",
             "disposition": {

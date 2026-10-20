@@ -1,9 +1,18 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "메뉴",
+        "bookmarkNote": "",
         "closeDialog": "닫기",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "목록 왼쪽으로 밀기 ",
         "mainContent": "메인 콘텐츠",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "목록 오른쪽으로 밀기",
         "skipLink": "콘텐츠로 건너뛰기",
         "toolbar": "툴바"
@@ -147,9 +156,7 @@
             "available": "",
             "bookshelf": "",
             "edit": "",
-            "holds": "",
             "loading": "",
-            "loans": "",
             "title": "",
             "total": "",
             "unavailable": "",
@@ -332,7 +339,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "",
@@ -905,7 +911,6 @@
             },
             "customFontSelected": "",
             "customizeReader": "",
-            "defaultValue": "",
             "disabled": "",
             "display": "디스플레이",
             "disposition": {

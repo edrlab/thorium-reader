@@ -1,9 +1,18 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menüü",
+        "bookmarkNote": "",
         "closeDialog": "Sulge",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Viipa vasakule",
         "mainContent": "põhiline sisu",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Viipa paremale",
         "skipLink": "Mine sisu juurde",
         "toolbar": "tööriistariba"
@@ -147,9 +156,7 @@
             "available": "",
             "bookshelf": "",
             "edit": "",
-            "holds": "",
             "loading": "",
-            "loans": "",
             "title": "",
             "total": "",
             "unavailable": "",
@@ -344,7 +351,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "Jätka sirvimist",
@@ -918,7 +924,6 @@
             },
             "customFontSelected": "sa oled eelistanud kasutada isiklikku kirjatüüpi",
             "customizeReader": "Kohenda teksti vormindust",
-            "defaultValue": "vaikmisi väärtus",
             "disabled": "pole kasutusel",
             "display": "Ekraanivaade",
             "disposition": {

@@ -1,9 +1,18 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "قائمة",
+        "bookmarkNote": "",
         "closeDialog": "إغلاق",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "سحب إلى اليسار",
         "mainContent": "المحتوى الرئيسي",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "سحب إلى اليمين",
         "skipLink": "تخطَّ إلى المحتوى",
         "toolbar": "شريط الأدوات"
@@ -147,9 +156,7 @@
             "available": "",
             "bookshelf": "",
             "edit": "",
-            "holds": "",
             "loading": "",
-            "loans": "",
             "title": "",
             "total": "",
             "unavailable": "",
@@ -368,7 +375,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "استئناف التصفح",
@@ -946,7 +952,6 @@
             },
             "customFontSelected": "لقد اخترت خطاً شخصياً",
             "customizeReader": "تخصيص تنسيق النص",
-            "defaultValue": "الوضع الافتراضي",
             "disabled": "تم تعطيله",
             "display": "العرض",
             "disposition": {
