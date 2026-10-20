@@ -10,6 +10,7 @@ import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/componen
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 
 import * as React from "react";
+import { VisuallyHidden } from "react-aria-components";
 import { connect } from "react-redux";
 import {
     TranslatorProps, withTranslator,
@@ -44,6 +45,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
 
     public render(): React.ReactElement<{}> {
         const { __, browserData } = this.props;
+        let status = "";
         let content = (<Loader />);
 
         if (!navigator.onLine) {
@@ -91,6 +93,9 @@ export class BrowserResult extends React.Component<IProps, undefined> {
             ) {
 
                 const { data: { opds } } = browserResult;
+                const hasEntries = !!(opds.navigation?.length || opds.publications?.length
+                    || opds.groups?.some(group => group.navigation?.length || group.publications?.length));
+                status = hasEntries ? "" : __("opds.empty");
 
                 if (opds.navigation &&
                     !opds.publications &&
@@ -208,6 +213,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
         }
 
         return <div className={stylesCatalogs.opds_browserResults} id="opds_browserResults">
+            <VisuallyHidden><span role="status" aria-atomic="true">{status}</span></VisuallyHidden>
             {content}
         </div>;
     }
