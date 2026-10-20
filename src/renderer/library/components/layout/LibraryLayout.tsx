@@ -114,6 +114,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
             <div role="region" aria-label={__("accessibility.toolbar")}>
                 <a
                     role="heading"
+                    aria-level={2}
                     className={stylesGlobal.anchor_link}
                     ref={this.refToolbar}
                     id="main-toolbar"
@@ -160,6 +161,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         : <></>}
                         <a
                             role="heading"
+                            aria-level={2}
                             className={stylesGlobal.anchor_link}
                             ref={this.fastLinkRef}
                             id="main-content"

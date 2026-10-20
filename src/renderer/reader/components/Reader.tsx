@@ -1146,6 +1146,7 @@ class Reader extends React.Component<IProps, IState> {
                 {/* Reader Lock DEMO !!! */}
                 <a
                     role="heading"
+                    aria-level={2}
                     className={stylesReader.anchor_link}
                     ref={this.refToolbar}
                     id="main-toolbar"
@@ -1247,6 +1248,7 @@ class Reader extends React.Component<IProps, IState> {
                                 >
                                 <a
                                     role="heading"
+                                    aria-level={2}
                                     className={stylesReader.anchor_link}
                                     ref={this.fastLinkRef}
                                     id="main-content"
