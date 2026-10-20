@@ -3,6 +3,7 @@
         "annotationNote": "Note d’annotation",
         "bookMenu": "Menu",
         "bookmarkNote": "Note du marque-page",
+        "cancelDownload": "Annuler le téléchargement : {{- title}}",
         "closeDialog": "Fermer",
         "decreaseSetting": "Diminuer {{- setting}}",
         "downloadProgress": "Progression du téléchargement : {{- title}}",
