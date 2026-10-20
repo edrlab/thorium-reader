@@ -1,0 +1,19 @@
+{
+  "label": "04-information-focus",
+  "at": "2026-10-20T10:12:09.390Z",
+  "input": {
+    "key": "Tab"
+  },
+  "window": {
+    "app": "process:C:\\Users\\plero\\.codex\\worktrees\\8a0b\\thorium-reader\\node_modules\\electron\\dist\\electron.exe",
+    "id": 146147222,
+    "title": "Thorium - Accessible EPUB 3"
+  },
+  "focused": "0 window Thorium - Accessible EPUB 3 Secondary Actions: Raise",
+  "tree": "Window: \"Thorium - Accessible EPUB 3\", App: electron.exe.\n\t0 window Thorium - Accessible EPUB 3 Secondary Actions: Raise\n\t\t1 pane (disabled)\n\t\t2 region Thorium - Accessible EPUB 3\n\t\t\t3 region\n\t\t\t\t4 region\n\t\t\t\t\t5 region\n\t\t\t\t\t\t6 region\n\t\t\t\t\t\t\t7 menu bar\n\t\t\t\t\t\t\t\t15 button DEV\n\t\t\t\t\t\t\t12 region\n\t\t\t\t\t\t\t\t13 region\n\t\t\t\t\t\t\t\t\t16 document Thorium - Accessible EPUB 3 Value: http://localhost:8191/index_reader.html ID: RootWebArea\n\t\t\t\t\t\t\t\t\t\t17 group ID: app\n\t\t\t\t\t\t\t\t\t\t\t18 heading toolbar Description: toolbar ID: main-toolbar\n\t\t\t\t\t\t\t\t\t\t\t19 button Skip to content\n\t\t\t\t\t\t\t\t\t\t\t20 navigation toolbar\n\t\t\t\t\t\t\t\t\t\t\t\t21 list\n\t\t\t\t\t\t\t\t\t\t\t\t\t22 list\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t23 list item\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t24 button Close this reading window (back to bookshelf) Description: Close this reading window (back to bookshelf)\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t25 list item\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t26 button Information Description: Information ID: react-aria4433407639-:r3:\n\t\t\t\t\t\t\t\t\t\t\t\t\t27 list\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t28 list item\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t29 button Activate Text To Speech (TTS) Description: Activate Text To Speech (TTS)\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t30 list item\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t31 button TTS options Description: TTS options ID: react-aria4433407639-:r5:\n\t\t\t\t\t\t\t\t\t\t\t\t\t32 list\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t33 list item\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t34 toggle button Search publication Description: Search publication ID: search-button-trigger\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t35 list item\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t36 checkbox (settable, string) Bookmark (Add) Description: Bookmark (Add) ID: bookmarkButton\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t37 list item\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t38 checkbox (settable, string) Annotation ID: annotationButton\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t39 list item\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t40 toggle button Navigation Description: Navigation ID: react-aria4433407639-:r9:\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t41 list item\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t42 toggle button Reader settings Description: Reader settings ID: react-aria4433407639-:rd:\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t43 list item\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t44 toggle button Zen mode Description: Zen mode\n\t\t\t\t\t\t\t\t\t\t\t45 main main content ID: main\n\t\t\t\t\t\t\t\t\t\t\t\t46 heading main content Description: main content ID: main-content\n\t\t\t\t\t\t\t\t\t\t\t\t47 navigation Navigation\n\t\t\t\t\t\t\t\t\t\t\t\t\t48 button Go backward Description: Go backward\n\t\t\t\t\t\t\t\t\t\t\t\t\t49 button Go forward Description: Go forward\n\t\t\t\t\t\t\t\t\t\t\t56 navigation Navigation history\n\t\t\t\t\t\t\t\t\t\t\t\t57 button (disabled) Jump back in navigation history Description: Jump back in navigation history\n\t\t\t\t\t\t\t\t\t\t\t\t58 button (disabled) Jump forward in navigation history Description: Jump forward in navigation history\n\t\t\t\t\t\t\t\t14 region\n\n",
+  "speech": [
+    "Input: kb(desktop):tab",
+    "Speaking [LangChangeCommand ('en_GB'), 'Information', 'button', 'collapsed']"
+  ],
+  "method": "Native sky input and NVDA diagnostic speech inspected as text; no acoustic listening. Publication webview subtree omitted."
+}

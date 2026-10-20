@@ -132,6 +132,15 @@ if (fs.existsSync(catalogFile)) {
     native.limitations = 'Partial native NVDA coverage. Original Library controls and subsequent public BAnQ search, details, cover and Next paging are sampled only. Broader Reader scenarios remain pending after earlier initialization/review timeouts. Account/authentication, acquisitions, other component branches and full format/theme/locale coverage remain unverified. Speech was inspected as text without acoustic assessment. See native-banq-validation.json and native-banq-remediation.json for catalog baseline and repair scope; no application-wide WCAG pass.';
     if (catalogRepair) native.catalogRemediation = 'native-banq-remediation.json';
 }
+const progressRepairFile = path.join(root, 'native-reader-progress-track-remediation.json');
+if (fs.existsSync(progressRepairFile)) {
+    const repair = JSON.parse(fs.readFileSync(progressRepairFile, 'utf8'));
+    assert.equal(repair.status, 'fixed in sampled scope');
+    native.checks.push(...repair.checks);
+    native.readerProgressTrackRemediation = 'native-reader-progress-track-remediation.json';
+    native.status += '; sampled Reader header evaluated and RHF01 progress-track repair natively verified';
+    native.limitations += ' Reader header and progress-track samples are now recorded separately; broader Reader scenarios remain pending. See native-reader-progress-track-remediation.json for mode, pointer-position and format limitations.';
+}
 native.recordedNativeChecks = native.checks.length;
 native.completedNativeScenarios = native.checks.filter(check => check.complete).length;
 native.startupHistory = ['Initial launcher execution blocked by approval timeouts and sandbox DLL relocation.', 'User started the temporary standalone runner.', 'Portable copy creation later succeeded (exit 0); isolated logging session started.', 'Two EPUB Reader windows timed out before a full development-app restart.', 'Restarted Reader loaded EPUB successfully; NVDA document identification captured.', 'Repeated approval-review timeouts prevented the remaining native checks.'];
@@ -154,6 +163,12 @@ if (fs.existsSync(catalogFile)) {
     environment.nativeValidationStatus = 'Partial: original 4 Library checks plus 5 BAnQ checks evaluated; N01 verified, N02/N03 ' + (catalogRepair ? 'repaired and verified in sampled Library states' : 'open') + ', 1 Reader identification observation partial.';
     environment.catalogSourceRevision = JSON.parse(fs.readFileSync(catalogFile, 'utf8')).sourceRevision;
     environment.diagnosticLoggingCleanup = 'Verified portable NVDA running with --no-logging after the BAnQ remediation session. Only scoped speech records retained; full logs remain ignored under dist/.';
+}
+if (fs.existsSync(progressRepairFile)) {
+    environment.setupStatus = 'Resolved: native NVDA available; sampled Reader header and progress-track validation completed. Broader Reader/format coverage remains pending.';
+    environment.nativeValidationStatus = `Partial: ${native.recordedNativeChecks} checks recorded, ${native.completedNativeScenarios} evaluated; N01/N02/N03 and RHF01 repaired in sampled scopes.`;
+    environment.readerProgressTrackRemediation = 'native-reader-progress-track-remediation.json';
+    environment.diagnosticLoggingCleanup = 'Verified NVDA left running with --no-logging after the Reader progress-track session; full logs ignored under dist/.';
 }
 fs.writeFileSync(envFile, JSON.stringify(environment, null, 2) + '\n');
 console.log(JSON.stringify({ recordedNativeChecks: native.recordedNativeChecks, completedNativeScenarios: native.completedNativeScenarios, status: 'recorded evidence assertions passed; not a new UI run' }));

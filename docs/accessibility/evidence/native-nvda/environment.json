@@ -8,15 +8,16 @@
   "sha256": "F3F8D29974A88D687B3C4809BE192219EC579C5BDABCDA5AAF53635288BCA824",
   "sourceRevision": "c3467cd61399c9639837a6f0ace075beb07e0335",
   "branch": "codex/a11y-native-nvda-validation",
-  "setupStatus": "Resolved: native NVDA available. BAnQ public-catalog follow-up recorded; broader Reader validation remains pending.",
+  "setupStatus": "Resolved: native NVDA available; sampled Reader header and progress-track validation completed. Broader Reader/format coverage remains pending.",
   "explicitUserApproval": "Yes, create and run portable NVDA",
   "nativeValidationCompleted": false,
-  "diagnosticLoggingCleanup": "Verified portable NVDA running with --no-logging after the BAnQ remediation session. Only scoped speech records retained; full logs remain ignored under dist/.",
+  "diagnosticLoggingCleanup": "Verified NVDA left running with --no-logging after the Reader progress-track session; full logs ignored under dist/.",
   "previousSetupStatus": "Not executed: automatic approval review timed out on initial attempt, retry, explicit-user-approved retry and supported native launcher action. Workspace-sandbox launch failed with Illegal System DLL Relocation. User requested recording the blocker and stopping.",
-  "nativeValidationStatus": "Partial: original 4 Library checks plus 5 BAnQ checks evaluated; N01 verified, N02/N03 repaired and verified in sampled Library states, 1 Reader identification observation partial.",
+  "nativeValidationStatus": "Partial: 12 checks recorded, 11 evaluated; N01/N02/N03 and RHF01 repaired in sampled scopes.",
   "portableCreated": true,
   "screenReaderStarted": true,
   "operatingSystem": "Windows 11 25H2 (10.0.26200.9711) AMD64; reported by NVDA startup log",
   "synthesizer": "Windows OneCore; en_GB speech",
-  "catalogSourceRevision": "b00c2c59756bb1a7105b5f9cfe0aad8302d1b128"
+  "catalogSourceRevision": "b00c2c59756bb1a7105b5f9cfe0aad8302d1b128",
+  "readerProgressTrackRemediation": "native-reader-progress-track-remediation.json"
 }

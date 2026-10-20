@@ -46,7 +46,7 @@ const rows = inventory.files.map(file => {
     continuation[file.file]?.limitations || "Representative application states only; all branches and native AT not verified",
     fixes.length ? fixes.map(([id, finding]) => `${id}: ${finding.status} (batch ${finding.batch}); ${finding.observation}`).join(" | ") : "No remediation yet; historical evidence retained",
     fixEvidence.join("; "), remaining.join(" "),
-    nativeChecks.filter(check => /^N\d+$/.test(check.id)).map(check => check.id).join(" "),
+    nativeChecks.filter(check => /^(?:N\d+|RHF\d+)$/.test(check.id)).map(check => check.id).join(" "),
     nativeChecks.length ? [...new Set(nativeChecks.map(check => check.status))].join("; ") : "Not evaluated in native NVDA",
     [...new Set(nativeChecks.flatMap(check => check.evidence))].join("; "),
     nativeChecks.map(check => `${check.id}: ${check.observation}`).join(" | "),

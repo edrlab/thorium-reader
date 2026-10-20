@@ -2,7 +2,7 @@
   "date": "2026-10-19",
   "sourceRevision": "c3467cd61399c9639837a6f0ace075beb07e0335",
   "branch": "codex/a11y-native-nvda-validation",
-  "status": "partial native validation; N01 verified; BAnQ N02/N03 repaired and verified in sampled states; remaining Reader scenarios pending",
+  "status": "partial native validation; N01 verified; BAnQ N02/N03 repaired and verified in sampled states; remaining Reader scenarios pending; sampled Reader header evaluated and RHF01 progress-track repair natively verified",
   "screenReader": {
     "name": "NVDA",
     "version": "2026.2 AMD64",
@@ -15,7 +15,7 @@
   },
   "startup": "npm run start:dev:quick",
   "environmentEvidence": "evidence/native-nvda/environment.json",
-  "completedNativeScenarios": 9,
+  "completedNativeScenarios": 11,
   "checks": [
     {
       "id": "library-navigation",
@@ -250,9 +250,54 @@
       ],
       "observation": "In Ebooks, NVDA Ctrl+End reads Last; Shift+Tab reaches Next, button. Enter loads a different publication set with current page 2. NVDA announces loading twice, gives no completion/page-number utterance in the passive interval, and NVDA+Tab reports document focus. First and Previous are disabled on page two. An independent credential-free public OPDS response confirms that this feed supplies next and last but no first or previous links, so disabled reverse controls are not attributed to Thorium.",
       "limitations": "One page transition. Last, all keyboard shortcuts and reverse navigation were not activated. Completion/focus behavior is an improvement observation, not a separately proven WCAG failure. Public feed data is time-dependent and its default-language response differs from the application's English response."
+    },
+    {
+      "id": "reader-header-native-sample",
+      "complete": true,
+      "status": "Evaluated sampled native Reader header on spacing branch; scope remains historical",
+      "files": [
+        "src/renderer/reader/components/ReaderHeader.tsx",
+        "src/renderer/reader/components/Reader.tsx"
+      ],
+      "evidence": [
+        "reader-header-footer-native-validation.json",
+        "evidence/reader-header-footer-nvda/07-information-focus-return.json",
+        "evidence/reader-header-footer-nvda/59-skip-activate.json"
+      ],
+      "observation": "Historical dbb8a136f native header sample names controls, verifies Information dismissal/focus return, panel toggle states, Zen exit and Skip to content. TTS initial-rate display and mode/shortcut observations remain qualified in the baseline record.",
+      "limitations": "Historical spacing-branch sample, not a retest of every header repair on this stacked branch. No bookmark/annotation mutation, TTS playback, all dialog actions, formats/locales or acoustic assessment."
+    },
+    {
+      "id": "RHF01",
+      "complete": true,
+      "status": "Fixed and native NVDA verified in sampled EPUB progress track",
+      "criteria": [
+        "4.1.2 Name Role Value"
+      ],
+      "files": [
+        "src/renderer/reader/components/ReaderFooter.tsx"
+      ],
+      "evidence": [
+        "native-reader-progress-track-remediation.json",
+        "evidence/reader-progress-track-fix/00-fixed-reader-baseline.json",
+        "evidence/reader-progress-track-fix/04-track-first-tab.json",
+        "evidence/reader-progress-track-fix/08-track-code-tab.json",
+        "evidence/reader-progress-track-fix/10-track-enter-focus-query.json",
+        "evidence/reader-progress-track-fix/25-final-tab-mode-check.json",
+        "evidence/reader-progress-track-fix/26-final-space-activate.json",
+        "evidence/reader-progress-track-fix/27-final-reverse-tab.json",
+        "evidence/reader-progress-track-fix/28-final-enter-activate.json",
+        "evidence/reader-progress-track-fix/30-final-virtual-enter.json",
+        "evidence/reader-progress-track-fix/33-pointer-middle.json",
+        "evidence/reader-progress-track-fix/39-restore-focus-query.json",
+        "evidence/reader-progress-track-fix/41-final-original-section.json",
+        "evidence/reader-progress-track-fix/42-final-focus-style.json"
+      ],
+      "observation": "All21 rendered destinations are named in UIA. Native Tab enters Progression after history, announces ordinal/title/button, and Shift+Tab reverses destination order. Enter/Space navigate and announce current location; NVDA+Tab confirms named focus/current state. Final Enter and virtual Enter display the section start; representative middle pointer click displays a later page. Focus styling is screenshot-reviewed. Original Talk to Me section restored.",
+      "limitations": "One English EPUB/default paginated view. No PDF/Divina/audio, RTL, all locales, collapsed marker sets in long spines, ending mark-as-read action, full contrast/reflow/target-size assessment or acoustic assessment. Mode-dependent preparation is retained; no global keyboard/conformance pass."
     }
   ],
-  "limitations": "Partial native NVDA coverage. Original Library controls and subsequent public BAnQ search, details, cover and Next paging are sampled only. Broader Reader scenarios remain pending after earlier initialization/review timeouts. Account/authentication, acquisitions, other component branches and full format/theme/locale coverage remain unverified. Speech was inspected as text without acoustic assessment. See native-banq-validation.json and native-banq-remediation.json for catalog baseline and repair scope; no application-wide WCAG pass.",
+  "limitations": "Partial native NVDA coverage. Original Library controls and subsequent public BAnQ search, details, cover and Next paging are sampled only. Broader Reader scenarios remain pending after earlier initialization/review timeouts. Account/authentication, acquisitions, other component branches and full format/theme/locale coverage remain unverified. Speech was inspected as text without acoustic assessment. See native-banq-validation.json and native-banq-remediation.json for catalog baseline and repair scope; no application-wide WCAG pass. Reader header and progress-track samples are now recorded separately; broader Reader scenarios remain pending. See native-reader-progress-track-remediation.json for mode, pointer-position and format limitations.",
   "plannedScenarios": [
     {
       "id": "library-navigation",
@@ -367,7 +412,7 @@
     }
   ],
   "method": "Native SendInput through the computer-use skill, with real NVDA speech.speech.speak diagnostic records. Speech output was inspected as text; acoustic listening, pronunciation and timing intelligibility were not assessed. No simulated screen-reader output or fixture controls are counted.",
-  "recordedNativeChecks": 10,
+  "recordedNativeChecks": 12,
   "startupHistory": [
     "Initial launcher execution blocked by approval timeouts and sandbox DLL relocation.",
     "User started the temporary standalone runner.",
@@ -378,5 +423,6 @@
   ],
   "catalogAudit": "native-banq-validation.json",
   "catalogOpenFindingIds": [],
-  "catalogRemediation": "native-banq-remediation.json"
+  "catalogRemediation": "native-banq-remediation.json",
+  "readerProgressTrackRemediation": "native-reader-progress-track-remediation.json"
 }

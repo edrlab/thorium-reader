@@ -217,7 +217,7 @@
     }
 
     &:hover {
-        span:has(span) {
+        .progressChunkSpineItem:has(span) {
             border-left: 1px solid var(--color-gray-50);
 
             span {
@@ -233,6 +233,25 @@
     .progressChunkSpineItem {
         transition: 200ms;
         background-color: transparent;
+        padding: 0;
+        border: 0;
+        border-left: 1px solid transparent;
+        border-radius: 0;
+        min-width: 0;
+        min-height: 0;
+        cursor: pointer;
+
+        &:focus-visible,
+        &[data-focus-visible] {
+            outline: var(--color-text-primary) solid 2px;
+            outline-offset: -2px;
+            background-color: var(--color-neutral-base);
+            z-index: 10;
+
+            span {
+                opacity: 0.35;
+            }
+        }
 
         span {
             opacity: 1;
@@ -251,7 +270,7 @@
         }
     }
 
-    &.more_information > span {
+    &.more_information > .progressChunkSpineItem {
         &.currentSpineItem {
             border-radius: 6px;
             outline: var(--color-brand-primary) solid 1px;
@@ -264,7 +283,7 @@
         }
     }
 
-    & > span {
+    & > .progressChunkSpineItem {
         flex-grow: 1;
         margin: 2px 0;
         height: 12px;

@@ -1,0 +1,211 @@
+{
+  "date": "2026-10-20",
+  "branch": "codex/fix-spacing-slider",
+  "revision": "dbb8a136f4e526ee7866345d881c7734c5ae8cee",
+  "scope": "Accessible EPUB 3 Reader header and footer navigation; sample opened from Library, then all recorded inputs target the newly opened Reader window146147222.",
+  "environment": {
+    "app": "3.5.2-beta.1 development",
+    "startup": "Existing npm run start:dev:quick session",
+    "nvda": "2026.2 portable AMD64, OneCore en_GB, add-ons disabled, isolated audit configuration",
+    "locale": "English",
+    "screenReaderOptimization": "No",
+    "method": "Native computer-use sky keyboard/mouse input and actual NVDA diagnostic speech read as text; no acoustic listening; no DOM/CDP input",
+    "logging": "Temporary diagnostic logging disabled after tests; NVDA left running"
+  },
+  "result": "One confirmed Name Role Value defect in the sampled progress-track interaction; remaining observations are qualified below. No application-wide conformance claim.",
+  "header": [
+    {
+      "check": "Sequential names and states",
+      "result": "sampled pass",
+      "detail": "Skip, Close Reader, Information, TTS, TTS options, Search, Bookmark, Annotation, Navigation, Reader settings and Zen mode are named. Bookmark/Annotation announce unchecked; toggles expose sampled pressed/expanded states. Close Reader, TTS playback, Bookmark and Annotation were focused only.",
+      "evidence": [
+        "02-skip-focus",
+        "03-close-focus-only",
+        "04-information-focus",
+        "08-tts-focus",
+        "09-tts-options-focus",
+        "16-search-focus",
+        "20-bookmark-focus-only",
+        "21-annotation-focus-only",
+        "22-navigation-focus",
+        "25-settings-focus",
+        "28-zen-focus"
+      ]
+    },
+    {
+      "check": "Information open/dismiss/focus return",
+      "result": "sampled pass",
+      "detail": "Enter opens About publication, Close is announced, Escape dismisses, and NVDA+Tab confirms Information focused/collapsed.",
+      "evidence": [
+        "05-information-open",
+        "06-information-escape",
+        "07-information-focus-return"
+      ]
+    },
+    {
+      "check": "Search and panel triggers",
+      "result": "sampled pass with scope limits",
+      "detail": "Search opens a named edit; two observed Escapes return to its unpressed trigger. Navigation/Settings Enter toggles announce expanded and collapsed; opening Navigation displayed the last Search section. Deep panel actions and search results were not tested.",
+      "evidence": [
+        "17-search-open",
+        "18-search-dismiss",
+        "19-search-dismiss-repeat",
+        "23-navigation-open",
+        "24-navigation-collapse",
+        "26-settings-open",
+        "27-settings-collapse"
+      ]
+    },
+    {
+      "check": "Zen entry and exit",
+      "result": "keyboard path works; focus advisory",
+      "detail": "Enter activates Zen; NVDA+Tab reports document focus. Tab reaches named Exit Zen mode; Enter restores chrome. Entry/exit itself produced no mode speech in the scoped interval. Subsequent Tab starts at Close Reader rather than restoring the Zen trigger.",
+      "evidence": [
+        "29-zen-activate",
+        "30-zen-focus-query",
+        "31-zen-exit-tab",
+        "32-zen-exit",
+        "33-after-zen-tab"
+      ]
+    },
+    {
+      "check": "Skip to content",
+      "result": "sampled pass",
+      "detail": "Enter announces main content, main landmark and publication frame.",
+      "evidence": [
+        "58-skip-focus",
+        "59-skip-activate"
+      ]
+    }
+  ],
+  "footer": [
+    {
+      "check": "History names, states and keyboard order",
+      "result": "sampled pass",
+      "detail": "Back/Forward are named and initially unavailable. Tab/Shift+Tab reach them, and Enter on unavailable Back leaves the sampled chapter unchanged. After a mouse progress jump, Back becomes available; Enter returns to Talk to Me, Forward becomes available, Space revisits Using Code Examples, and Back restores Talk to Me.",
+      "evidence": [
+        "35-footer-previous-focus",
+        "36-history-disabled-activation",
+        "37-history-forward-focus",
+        "39-footer-reverse-history-forward",
+        "40-footer-reverse-history-back",
+        "49-history-forward-after-jump",
+        "50-history-back-enabled-focus",
+        "51-history-back-enter",
+        "52-history-forward-enabled-focus",
+        "53-history-forward-space",
+        "55-history-back-restore"
+      ]
+    },
+    {
+      "check": "Page navigation controls adjacent to publication",
+      "result": "sampled pass",
+      "detail": "Go forward is keyboard reachable, Enter visibly changes page, NVDA+Tab confirms retained Go forward focus, Shift+Tab reaches Go backward, and Space returns to the previous page. These are side arrows, evaluated alongside footer navigation.",
+      "evidence": [
+        "41-go-forward-focus",
+        "42-go-forward-enter",
+        "43-forward-focus-query",
+        "44-go-backward-focus",
+        "45-go-backward-space"
+      ]
+    },
+    {
+      "check": "Progress track",
+      "result": "confirmed naming defect; keyboard-equivalence coverage unresolved",
+      "detail": "Ordinary Tab from history Forward wraps to Skip to content, omitting the track. A mouse click changes chapter and exposes unnamed buttons. NVDA+Tab announces only button focused.",
+      "evidence": [
+        "38-footer-tab-after-history",
+        "46-progress-track-mouse-jump",
+        "47-progress-track-focus-query",
+        "48-progress-keyboard-next"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "RHF01",
+      "severity": "Medium",
+      "status": "D/S confirmed in sampled current-branch scope",
+      "component": "src/renderer/reader/components/ReaderFooter.tsx",
+      "criterion": "4.1.2 Name, Role, Value (A)",
+      "source": "track_reading_wrapper has aria-hidden=true (line288). Each track segment is a span role=button within Focusable excludeFromTabOrder (lines373-375), with an onClick navigation handler but no accessible destination name.",
+      "observed": "Mouse click at x300/y806 jumps from Talk to Me: Media Overlays to Using Code Examples. Native focus query says button focused with no name. Captured UIA exposes a group of unnamed buttons after activation.",
+      "impact": "A screen-reader user who lands on the segment cannot identify its purpose or destination. Normal Tab navigation skips it.",
+      "recommendation": "Provide a named keyboard-operable progress/destination control with accurate current position, or a fully equivalent accessible navigation path; remove interactive content from aria-hidden. Label each destination and verify keyboard focus/value announcements.",
+      "evidence": [
+        "46-progress-track-mouse-jump.json",
+        "46-progress-track-mouse-jump.jpg",
+        "47-progress-track-focus-query.json",
+        "38-footer-tab-after-history.json"
+      ],
+      "wcagReference": "https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html",
+      "qualification": "Only the missing-name failure is assigned here. TOC alternatives, all progress-track functions and effective customized shortcuts were not exhaustively evaluated, so no additional general2.1.1 failure is assigned."
+    }
+  ],
+  "observations": [
+    {
+      "id": "tts-rate-initial-display",
+      "status": "reproduced advisory; cause unresolved",
+      "detail": "First TTS options opening shows a blank playback-rate field and speaks its label twice plus blank. Down exposes1x, option9 of59. After list dismissal the collapsed input speaks1x. ReaderHeader.tsx supplies both label and aria-label. No rate option was committed and playback was not started.",
+      "evidence": [
+        "10-tts-options-open",
+        "11-tts-rate-open",
+        "13-tts-options-dismiss"
+      ]
+    },
+    {
+      "id": "escape-mode",
+      "status": "observed NVDA interaction behavior",
+      "detail": "Some initial Escapes do not dismiss a list/panel; subsequent Escape does. No general Escape failure is assigned without separating focus/browse-mode interception.",
+      "evidence": [
+        "12-tts-rate-dismiss",
+        "13-tts-options-dismiss",
+        "14-tts-options-final-dismiss",
+        "15-tts-options-final-dismiss-repeat",
+        "18-search-dismiss",
+        "19-search-dismiss-repeat"
+      ]
+    },
+    {
+      "id": "chapter-shortcuts",
+      "status": "unresolved",
+      "detail": "Ctrl+PageDown from history and after Skip to content, plus Ctrl+Alt+Shift+Right from content, caused no observed chapter change. These defaults exist in src/common/keyboard.ts, but effective customization and NVDA interception were not ruled out. No shortcut pass or general keyboard failure is claimed.",
+      "evidence": [
+        "56-chapter-shortcut-next",
+        "60-content-chapter-shortcut",
+        "61-primary-chapter-shortcut"
+      ]
+    },
+    {
+      "id": "navigation-completion",
+      "status": "improvement observation",
+      "detail": "Page/history changes are visible, but the sampled action speech intervals contain no destination/page completion announcement beyond control availability. No4.1.3 failure assigned solely from this observation."
+    }
+  ],
+  "boundaries": [
+    "All recorded audit actions stay in Reader146147222 after Library launch. Another pre-existing Reader27723318 remains open; it was only observed during initial window selection, with no input sent.",
+    "Close Reader is focus-only to honor Reader-only scope. No bookmark/annotation creation, deletion, TTS playback, acquisitions or external communication.",
+    "One English EPUB, paginated default view; no PDF/fixed-layout/audio, RTL, all themes/locales, complete reflow/contrast or acoustic assessment.",
+    "No source changes, commit or push performed."
+  ],
+  "finalState": {
+    "readerOpen": true,
+    "chapter": "Talk to Me: Media Overlays",
+    "headerPanelsClosed": true,
+    "zenMode": false,
+    "history": "Forward entry retained from the test; no history deletion attempted",
+    "publicationPosition": "Restored to the same chapter/start page; exact caret position not guaranteed"
+  },
+  "evidence": {
+    "directory": "docs/accessibility/evidence/reader-header-footer-nvda",
+    "captures": 63,
+    "assertions": "Passed against recorded native speech and trees; this summarizer does not run fresh UI tests",
+    "contentHandling": "Publication webview subtree/document prose omitted; control trees and scoped speech retained",
+    "last": "62-reader-final.json"
+  },
+  "remediation": {
+    "record": "native-reader-progress-track-remediation.json",
+    "findingId": "RHF01",
+    "status": "Fixed in sampled scope on codex/a11y-reader-progress-track; baseline findings and evidence preserved below."
+  }
+}

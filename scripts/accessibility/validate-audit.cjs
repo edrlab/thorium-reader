@@ -1,6 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const assert = require('node:assert/strict');
+const crypto = require('node:crypto');
 const root = path.resolve('docs/accessibility');
 function csv(file) {
     const text = fs.readFileSync(path.join(root, file), 'utf8');
@@ -96,6 +97,23 @@ if (fs.existsSync(nativeFile)) {
         assert.equal(pageTwo.metadata.currentPage, 2);
         assert.ok(!pageTwo.links.some(link => ['first', 'previous', 'prev'].includes(link.rel)), 'Disabled reverse controls are a feed limitation');
     }
+    const progressFile = path.join(root, 'native-reader-progress-track-remediation.json');
+    if (fs.existsSync(progressFile)) {
+        const repair = JSON.parse(fs.readFileSync(progressFile, 'utf8'));
+        assert.equal(repair.status, 'fixed in sampled scope');
+        for (const check of repair.checks) {
+            assert.deepEqual(native.checks.find(item => item.id === check.id), check);
+        }
+        for (const [file, hash] of Object.entries(repair.sourceHashes)) {
+            assert.equal(crypto.createHash('sha256').update(fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n')).digest('hex'), hash, file + ' must match recorded repair source');
+        }
+        const captures = fs.readdirSync(path.join(root, 'evidence/reader-progress-track-fix')).filter(file => file.endsWith('.json'));
+        assert.equal(captures.length, repair.recordedCaptures);
+        for (const file of captures) {
+            const capture = JSON.parse(fs.readFileSync(path.join(root, 'evidence/reader-progress-track-fix', file), 'utf8'));
+            assert.equal(capture.window.id, 7343082, 'Reader-only repair scope');
+        }
+    }
     for (const check of native.checks) {
         assert.equal(native.screenReader.started, true, 'NVDA checks require an actual NVDA session');
         assert.ok(check.files.length && check.evidence.length && check.observation && check.limitations, check.id);
@@ -104,7 +122,7 @@ if (fs.existsSync(nativeFile)) {
     }
     for (const row of matrix) {
         const checks = native.checks.filter(check => check.files.includes(row.file));
-        assert.equal(row.native_finding_IDs, checks.filter(check => /^N\d+$/.test(check.id)).map(check => check.id).join(' '), row.file);
+        assert.equal(row.native_finding_IDs, checks.filter(check => /^(?:N\d+|RHF\d+)$/.test(check.id)).map(check => check.id).join(' '), row.file);
         assert.equal(row.native_NVDA_status, checks.length ? [...new Set(checks.map(check => check.status))].join('; ') : 'Not evaluated in native NVDA', row.file);
         for (const evidence of row.native_NVDA_evidence.split('; ').filter(Boolean)) assert.ok(fs.existsSync(path.join(root, evidence)), evidence);
     }

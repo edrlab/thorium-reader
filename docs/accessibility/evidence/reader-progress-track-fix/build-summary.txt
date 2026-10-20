@@ -1,0 +1,7 @@
+Full TypeScript: passed (tsc --noEmit).
+Changed ReaderFooter.tsx ESLint: passed.
+Changed readerFooter.scss stylelint: passed, including final focus styling.
+Reader Webpack/runtime scope check: passed; final TSX compiled successfully in49051ms.
+Final focus stylesheet: running Reader webpack-dev-server recompiled successfully.
+Native NVDA: actual scoped speech inspected as text; not acoustic listening.
+Recorded-evidence assertions: scripts/accessibility/summarize-reader-progress-track.cjs.

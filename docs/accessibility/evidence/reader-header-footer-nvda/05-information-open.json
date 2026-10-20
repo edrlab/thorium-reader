@@ -1,0 +1,23 @@
+{
+  "label": "05-information-open",
+  "at": "2026-10-20T10:12:13.888Z",
+  "input": {
+    "key": "Return"
+  },
+  "window": {
+    "app": "process:C:\\Users\\plero\\.codex\\worktrees\\8a0b\\thorium-reader\\node_modules\\electron\\dist\\electron.exe",
+    "id": 146147222,
+    "title": "Thorium - Accessible EPUB 3"
+  },
+  "focused": "0 window Thorium - Accessible EPUB 3 Secondary Actions: Raise",
+  "tree": "Window: \"Thorium - Accessible EPUB 3\", App: electron.exe.\n\t0 window Thorium - Accessible EPUB 3 Secondary Actions: Raise\n\t\t1 pane (disabled)\n\t\t2 region Thorium - Accessible EPUB 3\n\t\t\t3 region\n\t\t\t\t4 region\n\t\t\t\t\t5 region\n\t\t\t\t\t\t6 region\n\t\t\t\t\t\t\t7 menu bar\n\t\t\t\t\t\t\t\t15 button DEV\n\t\t\t\t\t\t\t12 region\n\t\t\t\t\t\t\t\t13 region\n\t\t\t\t\t\t\t\t\t16 document Thorium - Accessible EPUB 3 Value: http://localhost:8191/index_reader.html ID: RootWebArea\n\t\t\t\t\t\t\t\t\t\t59 group ID: body_element\n\t\t\t\t\t\t\t\t\t\t\t60 button Dismiss ID: react-aria4433407639-:r17:\n\t\t\t\t\t\t\t\t\t\t\t61 dialogue About publication Secondary Actions: Raise ID: react-aria4433407639-:r2:\n\t\t\t\t\t\t\t\t\t\t\t\t62 heading About publication ID: :r0:\n\t\t\t\t\t\t\t\t\t\t\t\t63 heading About publication\n\t\t\t\t\t\t\t\t\t\t\t\t64 button Close\n\t\t\t\t\t\t\t\t\t\t\t\t65 graphic cover image ID: react-aria4433407639-:r1d:\n\t\t\t\t\t\t\t\t\t\t\t\t66 heading Accessible EPUB 3\n\t\t\t\t\t\t\t\t\t\t\t\t67 text Matt Garrish\n\t\t\t\t\t\t\t\t\t\t\t\t68 heading Publication Details\n\t\t\t\t\t\t\t\t\t\t\t\t69 text Published on\n\t\t\t\t\t\t\t\t\t\t\t\t70 text :\n\t\t\t\t\t\t\t\t\t\t\t\t71 text 02/20/2012\n\t\t\t\t\t\t\t\t\t\t\t\t72 text Publisher:\n\t\t\t\t\t\t\t\t\t\t\t\t73 text O’Reilly Media, Inc.\n\t\t\t\t\t\t\t\t\t\t\t\t74 text \n\t\t\t\t\t\t\t\t\t\t\t\t75 text Language:\n\t\t\t\t\t\t\t\t\t\t\t\t76 text English (en)\n\t\t\t\t\t\t\t\t\t\t\t\t77 text \n\t\t\t\t\t\t\t\t\t\t\t\t78 heading Accessibility\n\t\t\t\t\t\t\t\t\t\t\t\t79 heading Ways of reading\n\t\t\t\t\t\t\t\t\t\t\t\t80 list\n\t\t\t\t\t\t\t\t\t\t\t\t\t81 list item No information about appearance modifiability is available Description: No information about appearance modifiability is available\n\t\t\t\t\t\t\t\t\t\t\t\t\t82 list item All content can be read as read aloud speech or dynamic braille Description: All content can be read as read aloud speech or dynamic braille\n\t\t\t\t\t\t\t\t\t\t\t\t\t83 list item Has alternative text descriptions for images Description: Has alternative text descriptions for images\n\t\t\t\t\t\t\t\t\t\t\t\t84 heading Navigation\n\t\t\t\t\t\t\t\t\t\t\t\t85 list\n\t\t\t\t\t\t\t\t\t\t\t\t\t86 list item Table of contents to all chapters of the text via links Description: Table of contents to all chapters of the text via links\n\t\t\t\t\t\t\t\t\t\t\t\t87 details\n\t\t\t\t\t\t\t\t\t\t\t\t\t88 disclosure triangle More information ‹\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t89 text More information\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t90 text ‹\n\t\t\t\t\t\t\t\t\t\t\t\t91 status\n\t\t\t\t\t\t\t\t\t\t\t\t\t92 text Reading progress sync:\n\t\t\t\t\t\t\t\t\t\t\t\t\t93 text \n\t\t\t\t\t\t\t\t\t\t\t\t\t94 text Enabled but service unavailable.\n\t\t\t\t\t\t\t\t\t\t\t\t95 heading Tags\n\t\t\t\t\t\t\t\t\t\t\t\t96 text Tag\n\t\t\t\t\t\t\t\t\t\t\t\t97 group\n\t\t\t\t\t\t\t\t\t\t\t\t\t98 combo box (settable, string) Tag ID: react-aria4433407639-:r1i:\n\t\t\t\t\t\t\t\t\t\t\t\t\t99 button Show suggestions Tag ID: react-aria4433407639-:r1e:\n\t\t\t\t\t\t\t\t\t\t\t\t100 button Add\n\t\t\t\t\t\t\t\t\t\t\t\t101 heading Progression\n\t\t\t\t\t\t\t\t\t\t\t\t102 text 15/21 (Talk to Me: Media Overlays) [0%]\n\t\t\t\t\t\t\t\t\t\t\t\t103 details\n\t\t\t\t\t\t\t\t\t\t\t\t\t104 disclosure triangle h2 Talk to Me: Media Overlays\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t105 text h\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t106 text 2\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t107 text Talk to Me: Media Overlays\n\t\t\t\t\t\t\t\t14 region\n\n",
+  "speech": [
+    "Input: kb(desktop):enter",
+    "Speaking [LangChangeCommand ('en_GB'), 'About publication', CancellableSpeech (still valid)]",
+    "Speaking [CallbackCommand(name=say-all:lineReached), LangChangeCommand ('en_GB'), 'heading', 'level 2', 'About publication', CallbackCommand(name=say-all:lineReached)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'heading', 'level 1', 'About publication', CallbackCommand(name=say-all:lineReached)]",
+    "Speaking [LangChangeCommand ('en_GB'), 'button', 'Close']",
+    "Speaking [CallbackCommand(name=say-all:stop)]"
+  ],
+  "method": "Native sky input and NVDA diagnostic speech inspected as text; no acoustic listening. Publication webview subtree omitted."
+}
