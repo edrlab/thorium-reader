@@ -467,6 +467,7 @@ test("default viewport popovers close when their anchor detaches", async () => {
                 <Pressable>
                     <button data-trigger>Options</button>
                 </Pressable>
+                <CloseOnAnchorRemoval />
                 <Popover
                     placement="bottom"
                     offset={0}
@@ -475,7 +476,6 @@ test("default viewport popovers close when their anchor detaches", async () => {
                 >
                     <PopoverDialog>
                         <FocusScope autoFocus>
-                            <CloseOnAnchorRemoval />
                             <button data-option>Option</button>
                         </FocusScope>
                     </PopoverDialog>
@@ -490,9 +490,12 @@ test("default viewport popovers close when their anchor detaches", async () => {
         trigger.remove();
         await settle();
     });
-    expect(document.querySelector("[data-option]")).toBeNull();
-    // Restore React's owned DOM before unmounting the test tree.
-    parent.appendChild(trigger);
+    try {
+        expect(document.querySelector("[data-option]")).toBeNull();
+    } finally {
+        // Restore React's owned DOM even if the assertion fails.
+        parent.appendChild(trigger);
+    }
 });
 
 test("controlled dialogs open programmatically and preserve deliberate focus on close", async () => {
@@ -568,7 +571,7 @@ test("native popovers support keyboard opening, tab navigation, and focus restor
 for (const initialKey of ["lastCreated", undefined]) {
     test(
         "sorting popovers focus " +
-            (initialKey ? "the selected option" : "the first option without changing the sort") +
+            (initialKey ? "the selected option" : "and select the first option when no sort is selected") +
             " and dismiss independently",
         async () => {
             const onSelectionChange = jest.fn();
@@ -624,7 +627,13 @@ for (const initialKey of ["lastCreated", undefined]) {
             await React.act(settle);
             const options = Array.from(document.querySelectorAll<HTMLElement>("[role=\"option\"]"));
             expect(document.activeElement).toBe(options[initialKey ? 1 : 0]);
-            expect(onSelectionChange).not.toHaveBeenCalled();
+            if (initialKey) {
+                expect(onSelectionChange).not.toHaveBeenCalled();
+            } else {
+                // React Aria's replace selection chooses the autofocused item when empty.
+                expect(onSelectionChange).toHaveBeenCalledTimes(1);
+                expect(Array.from(onSelectionChange.mock.calls[0][0] as Set<string>)).toEqual(["progression"]);
+            }
             await React.act(async () => {
                 document.activeElement?.dispatchEvent(
                     new KeyboardEvent("keydown", {

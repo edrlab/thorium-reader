@@ -67,6 +67,7 @@ const FilterPopover = (props: FilterPopoverProps) => {
                     )}
                 </button>
             </Pressable>
+            <CloseOnAnchorRemoval />
             <Popover
                 placement="bottom end"
                 offset={5}
@@ -78,7 +79,6 @@ const FilterPopover = (props: FilterPopoverProps) => {
             >
                 <PopoverDialog>
                     <FocusScope autoFocus>
-                        <CloseOnAnchorRemoval />
                         <PopoverArrow
                             className={stylesDropDown.PopoverArrow}
                             aria-hidden

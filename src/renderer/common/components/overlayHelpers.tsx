@@ -11,13 +11,13 @@ import { OverlayArrow, OverlayTriggerStateContext, PopoverContext, useSlottedCon
 // Default portals share a layer; later-mounted overlays appear above their parents.
 export const OVERLAY_Z_INDEX = 102;
 
-/** Mounted inside a native popover only while open, for virtualized/scrolled lists. */
+/** Mount beside Popover inside DialogTrigger, before Popover clears its context. */
 export function CloseOnAnchorRemoval(): undefined {
     const context = useSlottedContext(PopoverContext);
     const state = React.useContext(OverlayTriggerStateContext);
     React.useEffect(() => {
         const trigger = context?.triggerRef?.current;
-        if (!trigger || !state) {
+        if (!trigger || !state?.isOpen) {
             return undefined;
         }
         const observer = new MutationObserver(() => {

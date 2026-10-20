@@ -238,6 +238,7 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
                                 <SVG svg={SortIcon} />
                             </button>
                         </Pressable>
+                        <CloseOnAnchorRemoval />
                         <Popover
                             placement="bottom end"
                             offset={5}
@@ -249,7 +250,6 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
                         >
                             <PopoverDialog>
                                 <FocusScope autoFocus>
-                                    <CloseOnAnchorRemoval />
                                     <PopoverArrow
                                         className={stylesDropDown.PopoverArrow}
                                         aria-hidden
@@ -349,6 +349,7 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
                                 <SVG svg={SaveIcon} />
                             </button>
                         </Pressable>
+                        <CloseOnAnchorRemoval />
                         <Popover
                             placement="bottom end"
                             offset={5}
@@ -360,7 +361,6 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
                         >
                             <PopoverDialog>
                                 <FocusScope autoFocus>
-                                    <CloseOnAnchorRemoval />
                                     <PopoverArrow
                                         className={stylesDropDown.PopoverArrow}
                                         aria-hidden
@@ -462,6 +462,7 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
                         >
                             <SVG ariaHidden svg={OptionsIcon} />
                         </Button>
+                        <CloseOnAnchorRemoval />
                         <Popover
                             placement="bottom end"
                             offset={5}
@@ -473,7 +474,6 @@ export const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookm
                         >
                             <PopoverDialog>
                                 <FocusScope autoFocus>
-                                    <CloseOnAnchorRemoval />
                                     <div className={stylesAnnotations.annotations_checkbox}>
                                         <input
                                             type="checkbox"
