@@ -132,7 +132,6 @@ class Slider extends React.Component<IProps, IState> {
                         className={classNames(stylesSlider.slider_button_prev, stylesButtons.button_transparency_icon)}
                         onClick={() => this.handleMove("left")}
                         disabled={this.state.disableLeft}
-                        aria-hidden
                     >
                     <SVG ariaHidden={true} svg={ArrowRightIcon} />
                 </button>
@@ -154,7 +153,6 @@ class Slider extends React.Component<IProps, IState> {
                         aria-label={__("accessibility.rightSlideButton")}
                         className={classNames(stylesSlider.slider_button_next, stylesButtons.button_transparency_icon)}
                         disabled={this.state.disableRight}
-                        aria-hidden
                     >
                         <SVG ariaHidden={true} svg={ArrowRightIcon}/>
                     </button>

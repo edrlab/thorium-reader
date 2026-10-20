@@ -442,7 +442,6 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
                             </div>
                             <div style={{ flexBasis: "100%", height: 0 }}></div>
                             <details
-                                aria-hidden={true}
                                 open={false}>
                                 <summary style={
                                     {

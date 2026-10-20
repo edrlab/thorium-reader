@@ -4,6 +4,7 @@ declare namespace typed_i18n {
   readonly "annotationNote": string,
   readonly "bookMenu": string,
   readonly "bookmarkNote": string,
+  readonly "cancelDownload": string,
   readonly "closeDialog": string,
   readonly "decreaseSetting": string,
   readonly "downloadProgress": string,
@@ -21,6 +22,7 @@ declare namespace typed_i18n {
   (_: "accessibility.annotationNote", __?: {}): string;
   (_: "accessibility.bookMenu", __?: {}): string;
   (_: "accessibility.bookmarkNote", __?: {}): string;
+  (_: "accessibility.cancelDownload", __?: {}): string;
   (_: "accessibility.closeDialog", __?: {}): string;
   (_: "accessibility.decreaseSetting", __?: {}): string;
   (_: "accessibility.downloadProgress", __?: {}): string;
@@ -803,7 +805,6 @@ declare namespace typed_i18n {
     readonly "empty": string,
     readonly "error": string,
     readonly "loading": string,
-    readonly "prompt": string,
     readonly "title": string
   },
   readonly "resumeBrowsing": string,
@@ -893,13 +894,11 @@ declare namespace typed_i18n {
   readonly "empty": string,
   readonly "error": string,
   readonly "loading": string,
-  readonly "prompt": string,
   readonly "title": string
 };
   (_: "opds.registry.empty", __?: {}): string;
   (_: "opds.registry.error", __?: {}): string;
   (_: "opds.registry.loading", __?: {}): string;
-  (_: "opds.registry.prompt", __?: {}): string;
   (_: "opds.registry.title", __?: {}): string;
   (_: "opds.resumeBrowsing", __?: {}): string;
   (_: "opds.shelf", __?: {}): string;
@@ -2081,7 +2080,6 @@ declare namespace typed_i18n {
     },
     readonly "customFontSelected": string,
     readonly "customizeReader": string,
-    readonly "defaultValue": string,
     readonly "disabled": string,
     readonly "display": string,
     readonly "disposition": { readonly "title": string },
@@ -2501,7 +2499,6 @@ declare namespace typed_i18n {
   },
   readonly "customFontSelected": string,
   readonly "customizeReader": string,
-  readonly "defaultValue": string,
   readonly "disabled": string,
   readonly "display": string,
   readonly "disposition": { readonly "title": string },
@@ -2578,7 +2575,6 @@ declare namespace typed_i18n {
   (_: "reader.settings.column.two", __?: {}): string;
   (_: "reader.settings.customFontSelected", __?: {}): string;
   (_: "reader.settings.customizeReader", __?: {}): string;
-  (_: "reader.settings.defaultValue", __?: {}): string;
   (_: "reader.settings.disabled", __?: {}): string;
   (_: "reader.settings.display", __?: {}): string;
   (_: "reader.settings.disposition", __?: {}): { readonly "title": string };
