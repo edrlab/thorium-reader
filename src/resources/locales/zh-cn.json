@@ -690,7 +690,8 @@
         "certificateRevoked": "LCP 授权已被撤销。",
         "certificateSignatureInvalid": "无效的 LCP 许可证证书签名。",
         "cover": {
-            "img": "封面图像"
+            "img": "封面图像",
+            "zoom": ""
         },
         "day": "天",
         "days": "天",

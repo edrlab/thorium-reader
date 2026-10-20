@@ -697,7 +697,8 @@
         "certificateRevoked": "Сертификатът е анулиран.",
         "certificateSignatureInvalid": "Ключа за сертификата е невалиден.",
         "cover": {
-            "img": "корица"
+            "img": "корица",
+            "zoom": ""
         },
         "day": "",
         "days": "",

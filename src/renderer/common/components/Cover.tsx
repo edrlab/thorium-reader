@@ -36,6 +36,7 @@ import * as FileBroken from "readium-desktop/renderer/assets/icons/file-broken-i
 interface IBaseProps {
     publicationViewMaybeOpds: TPublication;
     coverType?: "cover" | "thumbnail" | undefined;
+    imageAlt?: string;
     onClick?: () => void;
     onKeyUp?: (e: React.KeyboardEvent<HTMLImageElement>) => void;
     forwardedRef?:  React.ForwardedRef<HTMLImageElement>;
@@ -141,8 +142,8 @@ class Cover extends React.Component<IProps, IState> {
                     className={stylesPublications.cover_img}
                     onClick={this.props.onClick}
                     onKeyUp={this.props.onKeyUp}
-                    role="presentation"
-                    alt={(this.props.imgRadixProp || this.props.onKeyUp) ? this.props.__("publication.cover.img") : ""}
+                    role={this.props.imageAlt ? undefined : "presentation"}
+                    alt={this.props.imageAlt ?? ((this.props.imgRadixProp || this.props.onKeyUp) ? this.props.__("publication.cover.img") : "")}
                     // aria-hidden={(this.props.imgRadixProp || this.props.onKeyUp) ? undefined : true}
                     ref={this.props.forwardedRef}
                     src={this.state.imgUrl}

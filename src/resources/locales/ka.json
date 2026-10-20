@@ -697,7 +697,8 @@
         "certificateRevoked": "LCP ლიცენზიის სერტიფიკატი გაუქმებულია.",
         "certificateSignatureInvalid": "არასწორი LCP ლიცენზიის სერტიფიკატის ხელმოწერა.",
         "cover": {
-            "img": "ყდის სურათი"
+            "img": "ყდის სურათი",
+            "zoom": ""
         },
         "day": "",
         "days": "",

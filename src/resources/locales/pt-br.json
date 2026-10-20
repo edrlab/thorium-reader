@@ -703,7 +703,8 @@
         "certificateRevoked": "O certificado foi revogado.",
         "certificateSignatureInvalid": "A assinatura do certificado é inválida.",
         "cover": {
-            "img": "imagem de capa"
+            "img": "imagem de capa",
+            "zoom": ""
         },
         "day": "dia",
         "days": "dias",

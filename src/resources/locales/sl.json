@@ -709,7 +709,8 @@
         "certificateRevoked": "Preklicano potrdilo o licenci LCP.",
         "certificateSignatureInvalid": "Neveljaven podpis potrdila o licenci LCP.",
         "cover": {
-            "img": "naslovnica"
+            "img": "naslovnica",
+            "zoom": ""
         },
         "day": "dan",
         "days": "dni",

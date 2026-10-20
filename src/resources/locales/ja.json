@@ -689,7 +689,8 @@
         "certificateRevoked": "LCPライセンス証明書が取り消されています。",
         "certificateSignatureInvalid": "LCPライセンス証明書の署名が無効です。",
         "cover": {
-            "img": "カバー画像"
+            "img": "カバー画像",
+            "zoom": ""
         },
         "day": "日",
         "days": "日中",

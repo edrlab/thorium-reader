@@ -685,7 +685,8 @@
         "certificateRevoked": "인증서가 취소되었습니다",
         "certificateSignatureInvalid": "인증서 서명이 유효하지 않습니다",
         "cover": {
-            "img": "표지"
+            "img": "표지",
+            "zoom": ""
         },
         "day": "",
         "days": "",

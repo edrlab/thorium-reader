@@ -697,7 +697,8 @@
         "certificateRevoked": "Ziurtagiria ezeztatuta dago",
         "certificateSignatureInvalid": "Ziurtagiriaren sinadura ez da baliozkoa",
         "cover": {
-            "img": "Azaleko irudia"
+            "img": "Azaleko irudia",
+            "zoom": ""
         },
         "day": "eguna",
         "days": "egunak",

@@ -703,7 +703,8 @@
         "certificateRevoked": "Certificato LCP revocato.",
         "certificateSignatureInvalid": "La firma del certificato LCP non è valida.",
         "cover": {
-            "img": "immagine di copertina"
+            "img": "immagine di copertina",
+            "zoom": ""
         },
         "day": "giorno",
         "days": "giorni",

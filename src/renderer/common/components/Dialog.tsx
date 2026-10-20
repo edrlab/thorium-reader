@@ -53,6 +53,19 @@ function buttonChild({ asChild, children, ...props }: ButtonProps) {
     return <button type="button" {...props}>{children}</button>;
 }
 
+/** Use RAC's button semantics for native controls, including inside inert background dialogs. */
+function DialogButton({ onPress, ...props }: ButtonProps & { onPress?: () => void }) {
+    const child = buttonChild(props);
+    if (child.type !== "button") {
+        return <Pressable onPress={onPress}>{child}</Pressable>;
+    }
+    const childRef = (child as React.ReactElement & { ref?: React.Ref<HTMLButtonElement> }).ref;
+    return <Button ref={childRef} isDisabled={child.props.disabled} onPress={onPress}
+        render={(buttonProps) => React.cloneElement(child, mergeProps(child.props, buttonProps))}>
+        {child.props.children}
+    </Button>;
+}
+
 export function Trigger(props: ButtonProps) {
     const { modal, panelId } = React.useContext(Context);
     const state = React.useContext(OverlayTriggerStateContext);
@@ -64,13 +77,13 @@ export function Trigger(props: ButtonProps) {
             "aria-controls": state?.isOpen ? panelId : undefined,
         }));
     }
-    return <Pressable>{buttonChild(props)}</Pressable>;
+    return <DialogButton {...props} />;
 }
 Trigger.displayName = "DialogTrigger";
 
 export function Close(props: ButtonProps) {
     const state = React.useContext(OverlayTriggerStateContext);
-    return <Pressable onPress={() => state?.close()}>{buttonChild(props)}</Pressable>;
+    return <DialogButton {...props} onPress={() => state?.close()} />;
 }
 
 interface PortalProps extends React.PropsWithChildren {

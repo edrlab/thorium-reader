@@ -709,7 +709,8 @@
         "certificateRevoked": "Сертификат LCP отозван.",
         "certificateSignatureInvalid": "Неверная подпись сертификата лицензии LCP.",
         "cover": {
-            "img": "обложка"
+            "img": "обложка",
+            "zoom": ""
         },
         "day": "день",
         "days": "дней",

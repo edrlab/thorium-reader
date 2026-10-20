@@ -697,7 +697,8 @@
         "certificateRevoked": "LCP-licensens certifikat er blevet annuleret.",
         "certificateSignatureInvalid": "Ugyldig certifikat-signatur på LCP-licensen.",
         "cover": {
-            "img": "forsidebillede"
+            "img": "forsidebillede",
+            "zoom": ""
         },
         "day": "dag",
         "days": "dage",

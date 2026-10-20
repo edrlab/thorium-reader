@@ -697,7 +697,8 @@
         "certificateRevoked": "LCP lisans sertifikası geçersizleştirildi.",
         "certificateSignatureInvalid": "Geçersiz LCP lisans sertifikası imzası",
         "cover": {
-            "img": "kapak görseli"
+            "img": "kapak görseli",
+            "zoom": ""
         },
         "day": "gün",
         "days": "gün",

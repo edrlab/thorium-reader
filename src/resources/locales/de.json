@@ -697,7 +697,8 @@
         "certificateRevoked": "LCP-Lizenzzertifikat wurde widerrufen.",
         "certificateSignatureInvalid": "Ungültige LCP-Lizenzzertifikatssignatur.",
         "cover": {
-            "img": "Titelbild"
+            "img": "Titelbild",
+            "zoom": ""
         },
         "day": "Tag",
         "days": "Tage",
