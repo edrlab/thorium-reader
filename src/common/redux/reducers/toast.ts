@@ -36,6 +36,7 @@ function toastReducer_(
                     type: action.payload.type,
                     data: action.payload.data,
                     publicationIdentifier: action.payload.publicationIdentifier,
+                    timeout: action.payload.timeout,
                 },
             );
         case toastActions.closeRequest.ID:

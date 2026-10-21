@@ -122,12 +122,16 @@ async function activate(element: HTMLElement) {
 }
 
 test("selecting any result moves focus to Add without submitting, including reselection", async () => {
-    const add = document.querySelector<HTMLButtonElement>("button[type=submit]")!;
+    // Find the action by its label, independently of the dialog wrapper's button type.
+    const add = Array.from(document.querySelectorAll<HTMLButtonElement>("button")).find(
+        (button) => button.textContent === "opds.addForm.addButton",
+    )!;
+    expect(add).toBeDefined();
     for (const name of ["Library A", "Library B", "Library B"]) {
         const result = Array.from(document.querySelectorAll<HTMLButtonElement>("button[aria-pressed]")).find(
             (button) => button.querySelector("strong")?.textContent === name,
         )!;
-        result.focus();
+        await React.act(async () => result.focus());
         await activate(result);
         expect(document.activeElement).toBe(add);
         expect(document.querySelector("button[aria-pressed=true] strong")?.textContent).toBe(name);

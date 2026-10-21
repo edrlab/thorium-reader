@@ -6,6 +6,8 @@ declare namespace typed_i18n {
   readonly "bookmarkNote": string,
   readonly "cancelDownload": string,
   readonly "closeDialog": string,
+  readonly "closeNotification": string,
+  readonly "copyNotificationInstruction": string,
   readonly "decreaseSetting": string,
   readonly "downloadProgress": string,
   readonly "editTag": string,
@@ -14,6 +16,9 @@ declare namespace typed_i18n {
   readonly "leftSlideButton": string,
   readonly "loading": string,
   readonly "mainContent": string,
+  readonly "notification": string,
+  readonly "notificationCopied": string,
+  readonly "notificationCopyFailed": string,
   readonly "printPage": string,
   readonly "publicationDetails": string,
   readonly "resetSetting": string,
@@ -26,6 +31,8 @@ declare namespace typed_i18n {
   (_: "accessibility.bookmarkNote", __?: {}): string;
   (_: "accessibility.cancelDownload", __?: {}): string;
   (_: "accessibility.closeDialog", __?: {}): string;
+  (_: "accessibility.closeNotification", __?: {}): string;
+  (_: "accessibility.copyNotificationInstruction", __?: {}): string;
   (_: "accessibility.decreaseSetting", __?: {}): string;
   (_: "accessibility.downloadProgress", __?: {}): string;
   (_: "accessibility.editTag", __?: {}): string;
@@ -34,6 +41,9 @@ declare namespace typed_i18n {
   (_: "accessibility.leftSlideButton", __?: {}): string;
   (_: "accessibility.loading", __?: {}): string;
   (_: "accessibility.mainContent", __?: {}): string;
+  (_: "accessibility.notification", __?: {}): string;
+  (_: "accessibility.notificationCopied", __?: {}): string;
+  (_: "accessibility.notificationCopyFailed", __?: {}): string;
   (_: "accessibility.printPage", __?: {}): string;
   (_: "accessibility.publicationDetails", __?: {}): string;
   (_: "accessibility.resetSetting", __?: {}): string;
@@ -683,9 +693,11 @@ declare namespace typed_i18n {
     readonly "openLinkFailed": string,
     readonly "printLimit": string,
     readonly "profileActivationFailed": string,
+    readonly "profileBusy": string,
     readonly "profileProvisionFailed": string,
     readonly "profileTimeout": string,
     readonly "publicationUnavailable": string,
+    readonly "readingPositionFailed": string,
     readonly "recoveryPartialFailure": string,
     readonly "renewFailed": string,
     readonly "returnFailed": string,
@@ -773,9 +785,11 @@ declare namespace typed_i18n {
   readonly "openLinkFailed": string,
   readonly "printLimit": string,
   readonly "profileActivationFailed": string,
+  readonly "profileBusy": string,
   readonly "profileProvisionFailed": string,
   readonly "profileTimeout": string,
   readonly "publicationUnavailable": string,
+  readonly "readingPositionFailed": string,
   readonly "recoveryPartialFailure": string,
   readonly "renewFailed": string,
   readonly "returnFailed": string,
@@ -795,9 +809,11 @@ declare namespace typed_i18n {
   (_: "message.notifications.openLinkFailed", __?: {}): string;
   (_: "message.notifications.printLimit", __?: {}): string;
   (_: "message.notifications.profileActivationFailed", __?: {}): string;
+  (_: "message.notifications.profileBusy", __?: {}): string;
   (_: "message.notifications.profileProvisionFailed", __?: {}): string;
   (_: "message.notifications.profileTimeout", __?: {}): string;
   (_: "message.notifications.publicationUnavailable", __?: {}): string;
+  (_: "message.notifications.readingPositionFailed", __?: {}): string;
   (_: "message.notifications.recoveryPartialFailure", __?: {}): string;
   (_: "message.notifications.renewFailed", __?: {}): string;
   (_: "message.notifications.returnFailed", __?: {}): string;

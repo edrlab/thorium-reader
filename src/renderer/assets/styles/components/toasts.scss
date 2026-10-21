@@ -7,29 +7,38 @@
   bottom: 2rem;
   left: 1rem;
   z-index: 999999999999;
-  pointer-events: none;
+  pointer-events: auto;
+  max-height: calc(100dvh - 4rem);
+  overflow-y: auto;
 }
 
 .toast {
-  overflow: hidden;
+  overflow: auto;
+  max-height: calc(100dvh - 6rem);
   margin-bottom: 1rem;
   position: relative;
   padding: 1rem;
   border: 1px var(--color-success-text) solid;
   border-radius: 6px;
-  width: 15rem;
+  width: min(15rem, calc(100vw - 4rem));
   height: fit-content;
   background: white;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   animation-name: start;
   animation-duration: 0.5s;
   opacity: 0.9;
   pointer-events: auto;
   transition: 300ms ease-in-out;
+  cursor: pointer;
 
   &:focus-within {
     border-width: 4px;
+  }
+
+  &:has(.messageButton:focus) {
+    outline: 2px solid var(--color-brand-primary);
+    outline-offset: -2px;
   }
 
   &.error {
@@ -45,7 +54,35 @@
     background: var(--color-success-bg);
   }
 
-  p {
+  .content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  button.messageButton {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: start;
+    cursor: pointer;
+
+    &:focus {
+      // Override Thorium's global :focus outline without affecting Close.
+      outline: none !important;
+    }
+  }
+
+  .message {
+    font-size: 12px;
+    text-align: start;
+    box-sizing: border-box;
     margin: 0;
     flex: 1;
     padding-right: 1em;
@@ -62,6 +99,18 @@
 
   .toast_open {
     -webkit-line-clamp: unset;
+  }
+
+  .copyStatus {
+    display: block;
+    color: var(--color-text-primary);
+    font-size: 12px;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+
+    &:not(:empty) {
+      margin-bottom: 8px;
+    }
   }
 
   .icon {
