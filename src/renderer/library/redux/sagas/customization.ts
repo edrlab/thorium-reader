@@ -205,7 +205,7 @@ function* profileActivatingAction(action: customizationActions.activating.TActio
 
         } else {
             debug(`profile "${id || "thorium default profile"}" cannot be activate because LOCK is enabled on ${lock.state} with ${lock.lockInfo.id || lock.lockInfo.uuid}`);
-            yield* putTyped(toastActions.openRequest.build(ToastType.Default, getTranslator().translate("message.notifications.profileBusy")));
+            yield* putTyped(toastActions.openRequest.build(ToastType.Success, getTranslator().translate("message.notifications.profileBusy")));
         }
     }
 }

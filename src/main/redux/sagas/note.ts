@@ -156,7 +156,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
 
         if (!annotationsIncommingArray.length) {
             debug("there are no annotations in the file, exit");
-            yield* putTyped(toastActions.openRequest.build(ToastType.Default, __("message.annotations.emptyFile"), readerPublicationIdentifier, winId));
+            yield* putTyped(toastActions.openRequest.build(ToastType.Success, __("message.annotations.emptyFile"), readerPublicationIdentifier, winId));
             return;
         }
 
@@ -321,7 +321,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         if (!annotationsParsedAllArray.length) {
 
             debug("there are no annotations ready to be imported, exit");
-            yield* putTyped(toastActions.openRequest.build(ToastType.Default, __("message.annotations.nothing"), readerPublicationIdentifier, winId));
+            yield* putTyped(toastActions.openRequest.build(ToastType.Success, __("message.annotations.nothing"), readerPublicationIdentifier, winId));
             return;
 
         }
@@ -329,7 +329,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         if (!(annotationsParsedConflictNewerArray.length || annotationsParsedConflictOlderArray.length || annotationsParsedNoConflictArray.length)) {
 
             debug("all annotations are already imported, exit");
-            yield* putTyped(toastActions.openRequest.build(ToastType.Default, __("message.annotations.alreadyImported"), readerPublicationIdentifier, winId));
+            yield* putTyped(toastActions.openRequest.build(ToastType.Success, __("message.annotations.alreadyImported"), readerPublicationIdentifier, winId));
             return;
         }
 

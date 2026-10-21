@@ -20,7 +20,6 @@ const debug = debug_("readium-desktop:main:saga:clipboardCopy");
 export function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction) {
 
     const { publicationIdentifier, clipboardData } = action.payload;
-    const windowIdentifier = (action as unknown as ActionWithSender).sender?.identifier;
     const clipBoardType = "clipboard";
 
     let textToCopy = clipboardData.txt;
@@ -49,7 +48,7 @@ export function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction
     if (lcpRightsCopiesRemain <= 0) {
         yield* putTyped(toastActions.openRequest.build(ToastType.Error,
             translator.translate("message.notifications.copyLimit"),
-            publicationIdentifier, windowIdentifier));
+            publicationIdentifier, (action as unknown as ActionWithSender).sender?.identifier));
         return;
     }
     const nCharsToCopy = textToCopy.length > lcpRightsCopiesRemain ?
@@ -68,9 +67,7 @@ export function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction
 
     clipboard.writeText(`${textToCopy}`, clipBoardType);
 
-    // A partial copy is a warning. Full-copy usage can be reviewed in LCP information.
-    const partialCopy = nCharsToCopy < clipboardData.txt.length;
-    yield* putTyped(toastActions.openRequest.build(partialCopy ? ToastType.Default : ToastType.Success,
+    yield* putTyped(toastActions.openRequest.build(ToastType.Success,
         `LCP [${translator.translate("app.edit.copy")}] ${newPublicationDocument.lcpRightsCopies} / ${publicationDocument.lcp.rights.copy}`,
-        publicationIdentifier, windowIdentifier));
+        publicationIdentifier, (action as unknown as ActionWithSender).sender?.identifier));
 }

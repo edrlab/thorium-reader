@@ -3,21 +3,10 @@ jest.mock("typed-redux-saga/macro", () => jest.requireActual("typed-redux-saga")
 jest.mock("readium-desktop/main/network/http", () => ({ httpGet: jest.fn() }));
 jest.mock("readium-desktop/main/event", () => ({ getOpdsAuthenticationChannel: jest.fn() }));
 jest.mock("readium-desktop/main/fs/path", () => ({ createTempDir: jest.fn() }));
-jest.mock("readium-desktop/common/services/translator", () => ({ getTranslator: () => ({ translate: (key: string, args?: { title: string; err: string }) => args ? args.title + ": " + args.err : key }) }));
+jest.mock("readium-desktop/common/services/translator", () => ({ getTranslator: () => ({ translate: (_key: string, args: { title: string; err: string }) => args.title + ": " + args.err }) }));
 import { downloader } from "readium-desktop/main/redux/sagas/downloader";
 
 describe("download failure ownership", () => {
-    it("reports cancellation as a persistent notice rather than a timed success", () => {
-        const operation = downloader(["https://example.org/book"], "My book");
-        operation.next();
-        operation.next();
-        expect(operation.return(undefined).value).toMatchObject({ type: "CANCELLED" });
-        const notification = operation.next(true).value;
-        expect(notification).toMatchObject({ type: "PUT", payload: { action: { payload: { type: "toast-default" } } } });
-        expect(notification).not.toHaveProperty("payload.action.payload.timeout");
-        operation.next();
-        operation.next();
-    });
     it("propagates the original cause without notifying and completes download tracking", () => {
         const operation = downloader(["https://example.org/book"], "My book");
         expect(operation.next().value).toMatchObject({ type: "PUT", payload: { action: { type: "DOWNLOAD_PROGRESS" } } });

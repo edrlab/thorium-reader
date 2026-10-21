@@ -376,8 +376,7 @@ function* readerPrint(action: readerActions.print.TAction) {
         const actionToSend = readerActions.print.build(publicationIdentifier, pagesToPrint, (action as unknown as ActionWithSender)?.sender?.identifier);
         yield* putTyped(actionToSend);
 
-        const partialPrint = pagesToPrint.length < pageRange.length;
-        yield* putTyped(toastActions.openRequest.build(partialPrint ? ToastType.Default : ToastType.Success,
+        yield* putTyped(toastActions.openRequest.build(ToastType.Success,
             `LCP [${translator.translate("app.edit.print")}] [${pagesToPrint}] / ${publicationDocument.lcp.rights.print}`,
             publicationIdentifier, (action as unknown as ActionWithSender).sender?.identifier));
     } else {
@@ -386,6 +385,7 @@ function* readerPrint(action: readerActions.print.TAction) {
             publicationIdentifier, (action as unknown as ActionWithSender).sender?.identifier));
     }
 }
+
 
 
 export function saga() {
