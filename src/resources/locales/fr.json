@@ -293,10 +293,15 @@
             "success": "L'ajout de {{- title}} est achevé."
         },
         "notifications": {
+            "catalogUpdateFailed": "Impossible de modifier ce catalogue. Vérifiez ses paramètres et réessayez.",
             "copyLimit": "Le quota de copie de cette publication est épuisé.",
+            "deleteFailed": "Impossible de supprimer cette publication. Réessayez.",
+            "exportFailed": "Impossible d’exporter cette publication. Vérifiez le dossier de destination et l’espace disque disponible.",
+            "openFileFailed": "Impossible d’ouvrir ce fichier. Vérifiez sa disponibilité et son format.",
             "printLimit": "Le quota d’impression de cette publication est épuisé.",
             "renewFailed": "Impossible de prolonger ce prêt. Réessayez ou contactez votre bibliothèque.",
-            "returnFailed": "Impossible de rendre ce prêt. Réessayez ou contactez votre bibliothèque."
+            "returnFailed": "Impossible de rendre ce prêt. Réessayez ou contactez votre bibliothèque.",
+            "tagsFailed": "Impossible d’enregistrer les étiquettes de la publication. Réessayez."
         },
         "open": {
             "error": "Le livre ne peut pas être ouvert : {{- err}}",
