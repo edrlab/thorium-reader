@@ -13,7 +13,13 @@ jest.mock("electron", () => {
     return { clipboard: { writeText: jest.fn() }, ipcRenderer: Object.assign(new EventEmitter(), { send: jest.fn() }) };
 });
 jest.mock("readium-desktop/renderer/assets/styles/components/toasts.scss", () => ({
-    toast: "toast", closeButton: "closeButton", message: "message", toast_open: "toast_open", leave: "leave", copyStatus: "copyStatus", messageButton: "messageButton",
+    toast: "toast",
+    closeButton: "closeButton",
+    message: "message",
+    toast_open: "toast_open",
+    leave: "leave",
+    copyStatus: "copyStatus",
+    messageButton: "messageButton",
 }));
 jest.mock("readium-desktop/renderer/assets/icons/baseline-close-24px.svg", () => ({}));
 jest.mock("readium-desktop/renderer/common/components/SVG", () => ({ __esModule: true, default: (): null => null }));
@@ -32,13 +38,34 @@ const initialToast: ToastState = { open: false, data: "", type: ToastType.Defaul
 beforeAll(() => {
     dom = new JSDOM("<!doctype html><html><body></body></html>", { pretendToBeVisual: true });
     for (const key of [
-        "window", "document", "navigator", "HTMLElement", "HTMLButtonElement", "HTMLInputElement",
-        "HTMLTextAreaElement", "HTMLSelectElement", "SVGElement", "DOMRect",
-        "Element", "Node", "NodeFilter", "MutationObserver", "Event", "CustomEvent", "MouseEvent", "KeyboardEvent",
-        "getComputedStyle", "requestAnimationFrame", "cancelAnimationFrame",
+        "window",
+        "document",
+        "navigator",
+        "HTMLElement",
+        "HTMLButtonElement",
+        "HTMLInputElement",
+        "HTMLTextAreaElement",
+        "HTMLSelectElement",
+        "SVGElement",
+        "DOMRect",
+        "Element",
+        "Node",
+        "NodeFilter",
+        "MutationObserver",
+        "Event",
+        "CustomEvent",
+        "MouseEvent",
+        "KeyboardEvent",
+        "getComputedStyle",
+        "requestAnimationFrame",
+        "cancelAnimationFrame",
     ]) {
         savedGlobals.set(key, Object.getOwnPropertyDescriptor(globalThis, key));
-        Object.defineProperty(globalThis, key, { configurable: true, writable: true, value: dom.window[key as keyof Window] });
+        Object.defineProperty(globalThis, key, {
+            configurable: true,
+            writable: true,
+            value: dom.window[key as keyof Window],
+        });
     }
     for (const [key, value] of Object.entries({ IS_REACT_ACT_ENVIRONMENT: true, Notification: jest.fn() })) {
         savedGlobals.set(key, Object.getOwnPropertyDescriptor(globalThis, key));
@@ -79,11 +106,13 @@ afterAll(() => {
 });
 
 async function render(toast: ToastState, pubId?: string) {
-    await React.act(async () => root.render(<ToastManager toast={toast} locale="en" pubId={pubId} __={(key) => key} />));
+    await React.act(async () =>
+        root.render(<ToastManager toast={toast} locale="en" pubId={pubId} __={(key) => key} />),
+    );
 }
 
-async function notify(type = ToastType.Error, data = "Download failed", publicationIdentifier?: string, timeout?: number) {
-    await render({ open: true, type, data, publicationIdentifier, timeout });
+async function notify(type = ToastType.Error, data = "Download failed", publicationIdentifier?: string) {
+    await render({ open: true, type, data, publicationIdentifier });
 }
 
 async function advance(milliseconds: number) {
@@ -110,25 +139,33 @@ test("F6 enters the message button, followed by Close, and only the message is a
     outside.focus();
     await notify();
     const container = dialogs()[0];
-    const tabStops = [container, ...Array.from(container.querySelectorAll<HTMLElement>("button, [tabindex]"))]
-        .filter((element) => element.tabIndex >= 0);
+    const tabStops = [container, ...Array.from(container.querySelectorAll<HTMLElement>("button, [tabindex]"))].filter(
+        (element) => element.tabIndex >= 0,
+    );
     expect(container.tabIndex).toBe(-1);
     expect(tabStops).toEqual([messageAction(), closeButton()]);
     expect(messageAction().tagName).toBe("BUTTON");
     expect(messageAction().type).toBe("button");
-    expect(document.getElementById(messageAction().getAttribute("aria-labelledby")!)?.textContent).toBe("Download failed");
+    expect(document.getElementById(messageAction().getAttribute("aria-labelledby")!)?.textContent).toBe(
+        "Download failed",
+    );
     const alert = document.querySelector("[role=alert]")!;
     expect(alert.textContent).toBe("Download failed");
     expect(alert.querySelector("button, [aria-expanded]")).toBeNull();
     expect(container.querySelectorAll("button")).toHaveLength(2);
     expect(container.querySelector("[aria-expanded]")).toBeNull();
-    const description = messageAction().getAttribute("aria-describedby")!.split(" ")
-        .map((id) => document.getElementById(id)?.textContent).join(" ");
+    const description = messageAction()
+        .getAttribute("aria-describedby")!
+        .split(" ")
+        .map((id) => document.getElementById(id)?.textContent)
+        .join(" ");
     expect(description).toBe("accessibility.copyNotificationInstruction");
     const instruction = document.getElementById(messageAction().getAttribute("aria-describedby")!);
     expect(instruction?.hasAttribute("aria-hidden")).toBe(false);
     expect(alert.contains(instruction)).toBe(false);
-    expect(document.getElementById(container.getAttribute("aria-labelledby")!)?.textContent).toBe("accessibility.notification");
+    expect(document.getElementById(container.getAttribute("aria-labelledby")!)?.textContent).toBe(
+        "accessibility.notification",
+    );
     expect(closeButton().getAttribute("aria-label")).toBe("accessibility.closeNotification");
     expect(document.activeElement).toBe(outside);
     await press(outside, "F6");
@@ -176,7 +213,7 @@ test("dismissing a focused toast moves to the remaining toast's message button",
     expect(document.activeElement).toBe(remainingAction);
 });
 
-test.each([ToastType.Error, ToastType.Default, ToastType.Success])("%s notifications persist until explicitly dismissed", async (type) => {
+test.each([ToastType.Error])("%s notifications persist until explicitly dismissed", async (type) => {
     await notify(type);
     await advance(60000);
     expect(dialogs()).toHaveLength(1);
@@ -185,8 +222,8 @@ test.each([ToastType.Error, ToastType.Default, ToastType.Success])("%s notificat
     expect(dialogs()).toHaveLength(0);
 });
 
-test("success confirmations expire only when explicitly given a timeout", async () => {
-    await notify(ToastType.Success, "Saved", undefined, 5000);
+test.each([ToastType.Success, ToastType.Default])("%s confirmations use a fixed five-second timeout", async (type) => {
+    await notify(type, "Saved");
     await advance(4999);
     expect(dialogs()).toHaveLength(1);
     await advance(1);
@@ -194,13 +231,17 @@ test("success confirmations expire only when explicitly given a timeout", async 
 });
 
 test("notifications arriving in screen-reader mode remain until dismissed", async () => {
-    await React.act(async () => { ipcRenderer.emit("accessibility-support-changed", {}, true); });
-    await notify(ToastType.Success, "Saved", undefined, 5000);
+    await React.act(async () => {
+        ipcRenderer.emit("accessibility-support-changed", {}, true);
+    });
+    await notify(ToastType.Success, "Saved");
     await advance(60000);
     expect(dialogs()).toHaveLength(1);
     const region = document.querySelector("[role=region]")!;
     await React.act(async () => region.dispatchEvent(new dom.window.MouseEvent("mouseover", { bubbles: true })));
-    await React.act(async () => region.dispatchEvent(new dom.window.MouseEvent("mouseout", { bubbles: true, relatedTarget: host })));
+    await React.act(async () =>
+        region.dispatchEvent(new dom.window.MouseEvent("mouseout", { bubbles: true, relatedTarget: host })),
+    );
     await advance(60000);
     expect(dialogs()).toHaveLength(1);
     await press(closeButton(), "Enter");
@@ -209,24 +250,28 @@ test("notifications arriving in screen-reader mode remain until dismissed", asyn
 });
 
 test("enabling screen-reader mode pauses existing timers through focus changes", async () => {
-    await notify(ToastType.Success, "Saved", undefined, 5000);
+    await notify(ToastType.Success, "Saved");
     await advance(2000);
-    await React.act(async () => { ipcRenderer.emit("accessibility-support-changed", {}, true); });
+    await React.act(async () => {
+        ipcRenderer.emit("accessibility-support-changed", {}, true);
+    });
     await React.act(async () => messageAction().focus());
     const outside = document.createElement("button");
     host.appendChild(outside);
     await React.act(async () => outside.focus());
     await advance(60000);
     expect(dialogs()).toHaveLength(1);
-    await React.act(async () => { ipcRenderer.emit("accessibility-support-changed", {}, false); });
+    await React.act(async () => {
+        ipcRenderer.emit("accessibility-support-changed", {}, false);
+    });
     await advance(2999);
     expect(dialogs()).toHaveLength(1);
     await advance(1);
     expect(dialogs()).toHaveLength(0);
 });
 
-test("the no-selection hint carries its explicit five-second timeout through Redux", async () => {
-    const action = openToast(ToastType.Default, "Select text before creating an annotation.", undefined, undefined, 5000);
+test("the no-selection hint uses the fixed five-second timeout after Redux", async () => {
+    const action = openToast(ToastType.Default, "Select text before creating an annotation.");
     const state = toastReducer(undefined, action);
     await render(state);
     await advance(4999);
@@ -234,20 +279,20 @@ test("the no-selection hint carries its explicit five-second timeout through Red
     await advance(1);
     expect(dialogs()).toHaveLength(0);
 
-    // A later prerequisite notice must not inherit the previous hint's timeout.
-    await render(toastReducer(state, openToast(ToastType.Default, "Stop playback first")));
+    // Errors remain persistent after an informational toast expires.
+    await render(toastReducer(state, openToast(ToastType.Error, "Failed")));
     await advance(60000);
     expect(dialogs()).toHaveLength(1);
 });
 
-test("error notifications remain persistent even if a timeout is requested", async () => {
-    await render(toastReducer(undefined, openToast(ToastType.Error, "Failed", undefined, undefined, 5000)));
+test("error notifications remain persistent", async () => {
+    await render(toastReducer(undefined, openToast(ToastType.Error, "Failed")));
     await advance(60000);
     expect(dialogs()).toHaveLength(1);
 });
 
 test("success timers pause while focused and resume with the remaining time", async () => {
-    await notify(ToastType.Success, "Saved", undefined, 5000);
+    await notify(ToastType.Success, "Saved");
     await advance(2000);
     await React.act(async () => messageAction().focus());
     await advance(60000);
@@ -262,13 +307,15 @@ test("success timers pause while focused and resume with the remaining time", as
 });
 
 test("success timers pause on hover without a shortened mouse-exit timeout", async () => {
-    await notify(ToastType.Success, "Saved", undefined, 5000);
+    await notify(ToastType.Success, "Saved");
     const region = document.querySelector("[role=region]")!;
     await advance(2000);
     await React.act(async () => region.dispatchEvent(new dom.window.MouseEvent("mouseover", { bubbles: true })));
     await advance(60000);
     expect(dialogs()).toHaveLength(1);
-    await React.act(async () => region.dispatchEvent(new dom.window.MouseEvent("mouseout", { bubbles: true, relatedTarget: host })));
+    await React.act(async () =>
+        region.dispatchEvent(new dom.window.MouseEvent("mouseout", { bubbles: true, relatedTarget: host })),
+    );
     await advance(2999);
     expect(dialogs()).toHaveLength(1);
     await advance(1);
@@ -278,7 +325,7 @@ test("success timers pause on hover without a shortened mouse-exit timeout", asy
 test("success confirmations arriving while the region is focused also pause", async () => {
     await notify();
     await React.act(async () => messageAction().focus());
-    await notify(ToastType.Success, "Saved", undefined, 5000);
+    await notify(ToastType.Success, "Saved");
     await advance(60000);
     expect(dialogs()).toHaveLength(2);
 });
@@ -287,13 +334,15 @@ test("success confirmations arriving while the region is hovered also pause", as
     await notify();
     const region = document.querySelector("[role=region]")!;
     await React.act(async () => region.dispatchEvent(new dom.window.MouseEvent("mouseover", { bubbles: true })));
-    await notify(ToastType.Success, "Saved", undefined, 5000);
+    await notify(ToastType.Success, "Saved");
     await advance(60000);
     expect(dialogs()).toHaveLength(2);
 });
 
 test("clipboard failures are announced without preventing expansion", async () => {
-    jest.mocked(clipboard.writeText).mockImplementation(() => { throw new Error("Clipboard unavailable"); });
+    jest.mocked(clipboard.writeText).mockImplementation(() => {
+        throw new Error("Clipboard unavailable");
+    });
     await notify();
     await press(messageAction(), "Enter");
     expect(expanded()).toBe(true);

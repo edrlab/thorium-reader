@@ -60,7 +60,7 @@ function* keyboardReload(action: keyboardActions.reloadShortcuts.TAction) {
         yield* putTyped(keyboardActions.setShortcuts.build(currentKeyboardShortcuts, true)); // !action.payload.defaults
 
         yield* putTyped(toastActions.openRequest.build(ToastType.Success,
-            `${getTranslator().__("settings.keyboard.keyboardShortcuts")}`, undefined, undefined, 5000));
+            `${getTranslator().__("settings.keyboard.keyboardShortcuts")}`));
     }
 }
 

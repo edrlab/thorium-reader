@@ -392,7 +392,6 @@ export function saga() {
                         nextUserDirectory
                             ? getTranslator().translate("message.storage.updated")
                             : getTranslator().translate("message.storage.removed"),
-                        undefined, undefined, 5000, // Storage settings retain the updated location.
                     ));
                 } catch (e) {
                     const message = e instanceof Error ? e.message : `${e}`;

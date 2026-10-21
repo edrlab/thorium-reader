@@ -251,7 +251,6 @@ export function* importFromLink(
                     ToastType.Success,
                     translate("message.import.success",
                         { title: publicationView.documentTitle }),
-                    undefined, undefined, 5000, // The imported book remains in the library.
                 ),
             );
             yield* logPublicationImport(publicationView);
@@ -404,7 +403,6 @@ export function* importFromFs(
                                 ToastType.Success,
                                 translate("message.import.success",
                                     { title: publicationView.documentTitle }),
-                                undefined, undefined, 5000, // The imported book remains in the library.
                             ),
                         );
                         yield* logPublicationImport(publicationView);

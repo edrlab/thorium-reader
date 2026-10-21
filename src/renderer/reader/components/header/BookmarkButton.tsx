@@ -183,7 +183,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
         ]));
     }, [dispatch]);
 
-    const toasty = React.useCallback((msg: string, timeout?: number) => dispatch(toastActions.openRequest.build(ToastType.Success, msg, undefined, undefined, timeout)), [dispatch]);
+    const toasty = React.useCallback((msg: string) => dispatch(toastActions.openRequest.build(ToastType.Success, msg)), [dispatch]);
 
     const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
     const addBookmark = React.useCallback((bookmark: Omit<INoteState, "uuid">): boolean => {
@@ -237,7 +237,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                     group: "bookmark",
                     drawType: EDrawType.bookmark,
                 })) {
-                    toasty(msg, 5000); // The added bookmark remains available in the bookmark list.
+                    toasty(msg);
                     logEvent(readerAnalyticsEvents.bookmarkToggle);
                 }
             }
@@ -264,7 +264,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                         group: "bookmark",
                         drawType: EDrawType.bookmark,
                     })) {
-                        toasty(`${__("catalog.addTagsButton")} - ${name ? name : `${__("reader.marks.bookmarks")} [${noteTotalCount + 1}]`}`, 5000);
+                        toasty(`${__("catalog.addTagsButton")} - ${name ? name : `${__("reader.marks.bookmarks")} [${noteTotalCount + 1}]`}`);
                         logEvent(readerAnalyticsEvents.bookmarkToggle);
                     }
                 }

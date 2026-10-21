@@ -72,5 +72,5 @@ export function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction
     const partialCopy = nCharsToCopy < clipboardData.txt.length;
     yield* putTyped(toastActions.openRequest.build(partialCopy ? ToastType.Default : ToastType.Success,
         `LCP [${translator.translate("app.edit.copy")}] ${newPublicationDocument.lcpRightsCopies} / ${publicationDocument.lcp.rights.copy}`,
-        publicationIdentifier, windowIdentifier, partialCopy ? undefined : 5000));
+        publicationIdentifier, windowIdentifier));
 }

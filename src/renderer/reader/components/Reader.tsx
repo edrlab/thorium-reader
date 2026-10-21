@@ -3248,7 +3248,7 @@ class Reader extends React.Component<IProps, IState> {
             }
             this.screenPreviousNextTimerDebounce = window.setTimeout(() => {
                 this.screenPreviousNextTimerDebounce = undefined;
-                this.props.toasty(str, 5000);
+                this.props.toasty(str);
             }, 800);
         } else {
             this.screenPreviousNextTimerDebounce = undefined;
@@ -3778,8 +3778,8 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
                 dispatch(readerLocalActionLocatorHrefChanged.build(href1, href1, href2, href2));
             }
         },
-        toasty: (msg: string, timeout?: number) => {
-            dispatch(toastActions.openRequest.build(ToastType.Success, msg, undefined, undefined, timeout));
+        toasty: (msg: string) => {
+            dispatch(toastActions.openRequest.build(ToastType.Success, msg));
         },
         toastInfo: (msg: string) => {
             dispatch(toastActions.openRequest.build(ToastType.Default, msg));

@@ -382,8 +382,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
 
     debug("Annotations importer success and exit");
     yield* spawnPublicationAnalyticsEvent(publicationAnalyticsEvents.importAnnotations, analyticsParams);
-    // Imported annotations remain available in the reader's annotation list.
-    yield* putTyped(toastActions.openRequest.build(ToastType.Success, __("message.annotations.success"), readerPublicationIdentifier, winId, 5000));
+    yield* putTyped(toastActions.openRequest.build(ToastType.Success, __("message.annotations.success"), readerPublicationIdentifier, winId));
     return;
 }
 

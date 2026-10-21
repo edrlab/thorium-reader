@@ -367,12 +367,10 @@ function* annotationButtonTrigger(action: readerLocalActionAnnotations.trigger.T
     const { locatorExtended } = __selectionInfoGlobal;
     if (!locatorExtended?.selectionInfo) {
         debug("annotationBtnTriggerRequestedAction received");
-        // The same requirement is permanently described on the annotation control.
         yield* putTyped(
             toastActions.openRequest.build(
                 ToastType.Default,
                 getTranslator().__("reader.annotations.noSelectionToast"),
-                undefined, undefined, 5000,
             ),
         );
         return ;

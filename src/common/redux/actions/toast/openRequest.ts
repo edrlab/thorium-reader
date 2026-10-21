@@ -15,11 +15,9 @@ export interface Payload {
     type: ToastType;
     data: string | undefined;
     publicationIdentifier: string | undefined;
-    /** Opt into auto-dismissal only for information available elsewhere; omitted means persistent. */
-    timeout?: number;
 }
 
-export function build(type: ToastType, data: string, publicationIdentifier?: string, windowIdentifier?: string, timeout?: number):
+export function build(type: ToastType, data: string, publicationIdentifier?: string, windowIdentifier?: string):
     Action<typeof ID, Payload> & Partial<WithDestination<WindowReaderDestination>> {
 
     return {
@@ -29,7 +27,6 @@ export function build(type: ToastType, data: string, publicationIdentifier?: str
             type,
             data,
             publicationIdentifier,
-            ...(timeout !== undefined ? { timeout } : {}),
         },
     };
 }
