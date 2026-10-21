@@ -298,11 +298,16 @@
             "success": "Importowanie [{{- title}}] zakończone."
         },
         "notifications": {
+            "catalogUpdateFailed": "",
             "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
             "printLimit": "",
             "recoveryPartialFailure": "",
             "renewFailed": "",
-            "returnFailed": ""
+            "returnFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Ładowanie publikacji nie powiodło się: [{{- err}}]",

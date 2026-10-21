@@ -298,11 +298,16 @@
             "success": "Import publikace „{{- title}}“ dokončen."
         },
         "notifications": {
+            "catalogUpdateFailed": "",
             "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
             "printLimit": "",
             "recoveryPartialFailure": "",
             "renewFailed": "",
-            "returnFailed": ""
+            "returnFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Načítání publikace sehlalo: [{{- err}}]",

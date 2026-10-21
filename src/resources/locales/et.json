@@ -288,11 +288,16 @@
             "success": "„{{- title}}“ väljaande importimine sai kenasti tehtud."
         },
         "notifications": {
+            "catalogUpdateFailed": "",
             "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
             "printLimit": "",
             "recoveryPartialFailure": "",
             "renewFailed": "",
-            "returnFailed": ""
+            "returnFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Väljaande/teise laadimine ei õnnestunud: {{- err}}",

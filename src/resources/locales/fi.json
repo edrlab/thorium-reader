@@ -288,11 +288,16 @@
             "success": "Julkaisun {{- title}} tuonti on valmis."
         },
         "notifications": {
+            "catalogUpdateFailed": "",
             "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
             "printLimit": "",
             "recoveryPartialFailure": "",
             "renewFailed": "",
-            "returnFailed": ""
+            "returnFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Julkaisua ei voi avata: {{- err}}",

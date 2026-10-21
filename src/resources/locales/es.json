@@ -293,11 +293,16 @@
             "success": "La importación de {{- title}} ha finalizado."
         },
         "notifications": {
+            "catalogUpdateFailed": "",
             "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
             "printLimit": "",
             "recoveryPartialFailure": "",
             "renewFailed": "",
-            "returnFailed": ""
+            "returnFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "No se puede abrir la publicación: {{- err}}",
