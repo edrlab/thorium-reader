@@ -287,6 +287,11 @@
             "fail": "Importing [{{- path}}] failed: [{{- err}}]",
             "success": "Importing [{{- title}}] completed."
         },
+        "notifications": {
+            "profileActivationFailed": "Unable to activate this profile. Check the profile package or contact its provider.",
+            "profileProvisionFailed": "Unable to install this profile. Check the profile package or contact its provider.",
+            "profileTimeout": "Profile installation timed out. Check your connection and try again."
+        },
         "open": {
             "error": "Loading publication failed: [{{- err}}]",
             "folderNotFound": "The publication directory cannot be found. Re-import it, or configure the additional storage in Settings > Storage."

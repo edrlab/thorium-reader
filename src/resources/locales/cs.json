@@ -297,6 +297,11 @@
             "fail": "Import [{{- path}}] selhal: [{{- err}}]",
             "success": "Import publikace „{{- title}}“ dokončen."
         },
+        "notifications": {
+            "profileActivationFailed": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": ""
+        },
         "open": {
             "error": "Načítání publikace sehlalo: [{{- err}}]",
             "folderNotFound": ""

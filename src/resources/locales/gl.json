@@ -287,6 +287,11 @@
             "fail": "A importación de {{-  path}} fallou. {{-  err}}",
             "success": "A importación de {{-  title}} finalizou."
         },
+        "notifications": {
+            "profileActivationFailed": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": ""
+        },
         "open": {
             "error": "Non se pode abrir a publicación: {{-  err}}",
             "folderNotFound": ""

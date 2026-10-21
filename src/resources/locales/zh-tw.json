@@ -282,6 +282,11 @@
             "fail": "匯入 [{{- path}}] 失敗：[{{- err}}]",
             "success": "匯入 [{{- title}}] 完成。"
         },
+        "notifications": {
+            "profileActivationFailed": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": ""
+        },
         "open": {
             "error": "無法打開出版物：[{{- err}}]",
             "folderNotFound": ""

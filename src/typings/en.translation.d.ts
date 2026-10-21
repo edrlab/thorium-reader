@@ -670,6 +670,11 @@ declare namespace typed_i18n {
     readonly "fail": string,
     readonly "success": string
   },
+  readonly "notifications": {
+    readonly "profileActivationFailed": string,
+    readonly "profileProvisionFailed": string,
+    readonly "profileTimeout": string
+  },
   readonly "open": {
     readonly "error": string,
     readonly "folderNotFound": string
@@ -739,6 +744,14 @@ declare namespace typed_i18n {
   (_: "message.import.alreadyImport", __?: {}): string;
   (_: "message.import.fail", __?: {}): string;
   (_: "message.import.success", __?: {}): string;
+  (_: "message.notifications", __?: {}): {
+  readonly "profileActivationFailed": string,
+  readonly "profileProvisionFailed": string,
+  readonly "profileTimeout": string
+};
+  (_: "message.notifications.profileActivationFailed", __?: {}): string;
+  (_: "message.notifications.profileProvisionFailed", __?: {}): string;
+  (_: "message.notifications.profileTimeout", __?: {}): string;
   (_: "message.open", __?: {}): { readonly "error": string, readonly "folderNotFound": string };
   (_: "message.open.error", __?: {}): string;
   (_: "message.open.folderNotFound", __?: {}): string;

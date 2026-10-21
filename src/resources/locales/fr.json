@@ -292,6 +292,11 @@
             "fail": "L'ajout de {{- path}} a échoué : {{- err}}",
             "success": "L'ajout de {{- title}} est achevé."
         },
+        "notifications": {
+            "profileActivationFailed": "Impossible d’activer ce profil. Vérifiez le fichier du profil ou contactez son fournisseur.",
+            "profileProvisionFailed": "Impossible d’installer ce profil. Vérifiez le fichier du profil ou contactez son fournisseur.",
+            "profileTimeout": "Le délai d’installation du profil est dépassé. Vérifiez votre connexion et réessayez."
+        },
         "open": {
             "error": "Le livre ne peut pas être ouvert : {{- err}}",
             "folderNotFound": "Le répertoire des publications est introuvable. Réimportez-le ou configurez le stockage additionnel dans Paramètres > Stockage."

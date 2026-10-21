@@ -292,6 +292,11 @@
             "fail": "",
             "success": ""
         },
+        "notifications": {
+            "profileActivationFailed": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": ""
+        },
         "open": {
             "error": "",
             "folderNotFound": ""
