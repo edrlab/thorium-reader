@@ -293,6 +293,8 @@
             "success": "Uvoz {{- title}} je završen."
         },
         "notifications": {
+            "copyLimit": "",
+            "printLimit": "",
             "renewFailed": "",
             "returnFailed": ""
         },

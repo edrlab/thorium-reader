@@ -288,6 +288,8 @@
             "success": "{{- title}} შემოტანა წარმატებით დასრულდა."
         },
         "notifications": {
+            "copyLimit": "",
+            "printLimit": "",
             "renewFailed": "",
             "returnFailed": ""
         },

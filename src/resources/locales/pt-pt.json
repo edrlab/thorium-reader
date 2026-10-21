@@ -293,6 +293,8 @@
             "success": "Foi concluída a importação de {{- title}}."
         },
         "notifications": {
+            "copyLimit": "",
+            "printLimit": "",
             "renewFailed": "",
             "returnFailed": ""
         },

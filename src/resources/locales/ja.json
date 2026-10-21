@@ -282,6 +282,8 @@
             "success": "『{{- title}}』の追加が完了しました。"
         },
         "notifications": {
+            "copyLimit": "",
+            "printLimit": "",
             "renewFailed": "",
             "returnFailed": ""
         },

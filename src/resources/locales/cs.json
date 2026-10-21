@@ -298,6 +298,8 @@
             "success": "Import publikace „{{- title}}“ dokončen."
         },
         "notifications": {
+            "copyLimit": "",
+            "printLimit": "",
             "renewFailed": "",
             "returnFailed": ""
         },

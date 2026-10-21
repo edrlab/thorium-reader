@@ -278,6 +278,8 @@
             "success": "{{- title}} 열기를 성공하였습니다."
         },
         "notifications": {
+            "copyLimit": "",
+            "printLimit": "",
             "renewFailed": "",
             "returnFailed": ""
         },

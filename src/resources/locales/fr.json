@@ -293,6 +293,8 @@
             "success": "L'ajout de {{- title}} est achevé."
         },
         "notifications": {
+            "copyLimit": "Le quota de copie de cette publication est épuisé.",
+            "printLimit": "Le quota d’impression de cette publication est épuisé.",
             "renewFailed": "Impossible de prolonger ce prêt. Réessayez ou contactez votre bibliothèque.",
             "returnFailed": "Impossible de rendre ce prêt. Réessayez ou contactez votre bibliothèque."
         },

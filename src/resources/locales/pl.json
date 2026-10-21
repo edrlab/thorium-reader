@@ -298,6 +298,8 @@
             "success": "Importowanie [{{- title}}] zakończone."
         },
         "notifications": {
+            "copyLimit": "",
+            "printLimit": "",
             "renewFailed": "",
             "returnFailed": ""
         },

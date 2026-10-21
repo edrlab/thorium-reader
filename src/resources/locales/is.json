@@ -288,6 +288,8 @@
             "success": "[{{- title}}] hefur verið bætt við."
         },
         "notifications": {
+            "copyLimit": "",
+            "printLimit": "",
             "renewFailed": "",
             "returnFailed": ""
         },

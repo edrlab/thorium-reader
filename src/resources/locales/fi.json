@@ -288,6 +288,8 @@
             "success": "Julkaisun {{- title}} tuonti on valmis."
         },
         "notifications": {
+            "copyLimit": "",
+            "printLimit": "",
             "renewFailed": "",
             "returnFailed": ""
         },

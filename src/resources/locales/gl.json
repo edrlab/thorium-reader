@@ -288,6 +288,8 @@
             "success": "A importación de {{-  title}} finalizou."
         },
         "notifications": {
+            "copyLimit": "",
+            "printLimit": "",
             "renewFailed": "",
             "returnFailed": ""
         },

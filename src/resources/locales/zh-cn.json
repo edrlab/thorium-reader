@@ -283,6 +283,8 @@
             "success": "导入{{- title}}完成。"
         },
         "notifications": {
+            "copyLimit": "",
+            "printLimit": "",
             "renewFailed": "",
             "returnFailed": ""
         },

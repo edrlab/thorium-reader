@@ -288,6 +288,8 @@
             "success": "Добавянето на {{- title}} завърши."
         },
         "notifications": {
+            "copyLimit": "",
+            "printLimit": "",
             "renewFailed": "",
             "returnFailed": ""
         },

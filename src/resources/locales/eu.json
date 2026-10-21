@@ -288,6 +288,8 @@
             "success": "{- title}}-ren inportazioa amaitu da."
         },
         "notifications": {
+            "copyLimit": "",
+            "printLimit": "",
             "renewFailed": "",
             "returnFailed": ""
         },

@@ -293,6 +293,8 @@
             "success": "La importació de {{- title}} ha acabat."
         },
         "notifications": {
+            "copyLimit": "",
+            "printLimit": "",
             "renewFailed": "",
             "returnFailed": ""
         },

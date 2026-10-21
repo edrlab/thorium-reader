@@ -288,6 +288,8 @@
             "success": "„{{- title}}“ väljaande importimine sai kenasti tehtud."
         },
         "notifications": {
+            "copyLimit": "",
+            "printLimit": "",
             "renewFailed": "",
             "returnFailed": ""
         },

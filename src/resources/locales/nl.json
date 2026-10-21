@@ -288,6 +288,8 @@
             "success": "Het toevoegen van {{- title}} is gelukt."
         },
         "notifications": {
+            "copyLimit": "",
+            "printLimit": "",
             "renewFailed": "",
             "returnFailed": ""
         },

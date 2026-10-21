@@ -308,6 +308,8 @@
             "success": "اكتمل استيراد [{{- title}}]."
         },
         "notifications": {
+            "copyLimit": "",
+            "printLimit": "",
             "renewFailed": "",
             "returnFailed": ""
         },

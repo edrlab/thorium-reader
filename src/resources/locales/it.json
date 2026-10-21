@@ -293,6 +293,8 @@
             "success": "L'importazione di {{- title}} è terminata."
         },
         "notifications": {
+            "copyLimit": "",
+            "printLimit": "",
             "renewFailed": "",
             "returnFailed": ""
         },

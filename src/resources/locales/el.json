@@ -288,6 +288,8 @@
             "success": "Η εισαγωγή του {{- title}} έχει ολοκληρωθεί."
         },
         "notifications": {
+            "copyLimit": "",
+            "printLimit": "",
             "renewFailed": "",
             "returnFailed": ""
         },

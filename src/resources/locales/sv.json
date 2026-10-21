@@ -288,6 +288,8 @@
             "success": "Importen av {{- title}} är slutförd."
         },
         "notifications": {
+            "copyLimit": "",
+            "printLimit": "",
             "renewFailed": "",
             "returnFailed": ""
         },

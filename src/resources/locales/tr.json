@@ -288,6 +288,8 @@
             "success": "[{{- title}}]: İçe aktarımı tamamlandı."
         },
         "notifications": {
+            "copyLimit": "",
+            "printLimit": "",
             "renewFailed": "",
             "returnFailed": ""
         },

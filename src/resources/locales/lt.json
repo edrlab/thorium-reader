@@ -298,6 +298,8 @@
             "success": "[{{- title}}] importas baigtas."
         },
         "notifications": {
+            "copyLimit": "",
+            "printLimit": "",
             "renewFailed": "",
             "returnFailed": ""
         },

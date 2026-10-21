@@ -298,6 +298,8 @@
             "success": "Импорт {{- title}} закончен."
         },
         "notifications": {
+            "copyLimit": "",
+            "printLimit": "",
             "renewFailed": "",
             "returnFailed": ""
         },
