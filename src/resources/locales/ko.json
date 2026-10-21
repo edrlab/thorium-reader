@@ -280,7 +280,25 @@
         "notifications": {
             "annotationImportFailed": "",
             "annotationPublicationUnavailable": "",
-            "annotationStopPlayback": ""
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "지원하지 않는 형식의 출판물입니다: {{- err}}",

@@ -129,7 +129,7 @@ export function saga() {
 
                     debug("ERROR to importFromFs and to open the publication");
                     debug(e);
-                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, `CLI open file ${e}`));
+                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, getTranslator().translate("message.notifications.openFileFailed")));
                 }
             }
 
@@ -249,7 +249,7 @@ export function saga() {
 
                     debug("ERROR to importFromLink and to open the publication");
                     debug(e);
-                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, `THORIUM Deep link ${e}`));
+                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, getTranslator().translate("message.notifications.openLinkFailed")));
                 }
             }
 
@@ -360,7 +360,7 @@ export function saga() {
                 } catch (e) {
                     debug("OPDS Deep link error");
                     debug(e);
-                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, `OPDS Deep link ${e}`));
+                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, getTranslator().translate("message.notifications.catalogLinkFailed")));
                 } finally {
                     try { appendFileSyncWithRotation(appLogs, dump); } catch { }
                 }

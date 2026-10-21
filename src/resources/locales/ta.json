@@ -290,7 +290,25 @@
         "notifications": {
             "annotationImportFailed": "",
             "annotationPublicationUnavailable": "",
-            "annotationStopPlayback": ""
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "வெளியீட்டை ஏற்றுவது தோல்வியுற்றது: [{{- err}}]",
