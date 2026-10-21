@@ -297,6 +297,10 @@
             "fail": "Import [{{- path}}] selhal: [{{- err}}]",
             "success": "Import publikace „{{- title}}“ dokončen."
         },
+        "notifications": {
+            "renewFailed": "",
+            "returnFailed": ""
+        },
         "open": {
             "error": "Načítání publikace sehlalo: [{{- err}}]",
             "folderNotFound": ""

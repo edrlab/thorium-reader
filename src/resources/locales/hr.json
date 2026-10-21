@@ -292,6 +292,10 @@
             "fail": "Neuspjeli uvoz {{- path}}. {{- err}}",
             "success": "Uvoz {{- title}} je završen."
         },
+        "notifications": {
+            "renewFailed": "",
+            "returnFailed": ""
+        },
         "open": {
             "error": "Građa se ne može otvoriti: {{- err}}",
             "folderNotFound": ""

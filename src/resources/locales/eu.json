@@ -287,6 +287,10 @@
             "fail": "{- path}}-ren inportazioak huts egin du. {{- Err}}",
             "success": "{- title}}-ren inportazioa amaitu da."
         },
+        "notifications": {
+            "renewFailed": "",
+            "returnFailed": ""
+        },
         "open": {
             "error": "Ezin da argitalpena ireki: {{- err}}",
             "folderNotFound": ""

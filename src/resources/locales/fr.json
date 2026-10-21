@@ -292,6 +292,10 @@
             "fail": "L'ajout de {{- path}} a échoué : {{- err}}",
             "success": "L'ajout de {{- title}} est achevé."
         },
+        "notifications": {
+            "renewFailed": "Impossible de prolonger ce prêt. Réessayez ou contactez votre bibliothèque.",
+            "returnFailed": "Impossible de rendre ce prêt. Réessayez ou contactez votre bibliothèque."
+        },
         "open": {
             "error": "Le livre ne peut pas être ouvert : {{- err}}",
             "folderNotFound": "Le répertoire des publications est introuvable. Réimportez-le ou configurez le stockage additionnel dans Paramètres > Stockage."

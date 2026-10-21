@@ -287,6 +287,10 @@
             "fail": "Het toevoegen van {{- path}} is mislukt. {{- err}}",
             "success": "Het toevoegen van {{- title}} is gelukt."
         },
+        "notifications": {
+            "renewFailed": "",
+            "returnFailed": ""
+        },
         "open": {
             "error": "De publicatie kan niet worden geopend: {{- err}}",
             "folderNotFound": "De publicatiemap kan niet worden gevonden. Importeer deze opnieuw of configureer de extra opslagruimte in Instellingen > Opslag."

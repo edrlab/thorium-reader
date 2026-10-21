@@ -277,6 +277,10 @@
             "fail": "{{- path}} 열기를 실패하였습니다. {{- err}}",
             "success": "{{- title}} 열기를 성공하였습니다."
         },
+        "notifications": {
+            "renewFailed": "",
+            "returnFailed": ""
+        },
         "open": {
             "error": "지원하지 않는 형식의 출판물입니다: {{- err}}",
             "folderNotFound": ""

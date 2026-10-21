@@ -292,6 +292,10 @@
             "fail": "",
             "success": ""
         },
+        "notifications": {
+            "renewFailed": "",
+            "returnFailed": ""
+        },
         "open": {
             "error": "",
             "folderNotFound": ""

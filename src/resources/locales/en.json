@@ -287,6 +287,10 @@
             "fail": "Importing [{{- path}}] failed: [{{- err}}]",
             "success": "Importing [{{- title}}] completed."
         },
+        "notifications": {
+            "renewFailed": "Unable to renew this loan. Try again or contact your library.",
+            "returnFailed": "Unable to return this loan. Try again or contact your library."
+        },
         "open": {
             "error": "Loading publication failed: [{{- err}}]",
             "folderNotFound": "The publication directory cannot be found. Re-import it, or configure the additional storage in Settings > Storage."
