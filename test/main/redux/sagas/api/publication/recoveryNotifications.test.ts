@@ -33,7 +33,7 @@ describe("recovery outcome notifications", () => {
         const dispatch = jest.fn();
         await runSaga({ dispatch }, recover).toPromise();
         expect(dispatch).toHaveBeenCalledTimes(1);
-        expect(dispatch).toHaveBeenCalledWith(expect.objectContaining({ payload: expect.objectContaining({ type: "toast-default", data: "message.notifications.recoveryPartialFailure" }) }));
+        expect(dispatch).toHaveBeenCalledWith(expect.objectContaining({ payload: expect.objectContaining({ type: "toast-info", data: "message.notifications.recoveryPartialFailure" }) }));
     });
     it("reports an entirely successful batch as success", async () => {
         jest.mocked(importFromFsService).mockImplementation(function* (file): ReturnType<typeof importFromFsService> {

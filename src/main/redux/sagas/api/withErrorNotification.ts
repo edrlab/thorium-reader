@@ -31,10 +31,7 @@ export function withErrorNotification<Args extends unknown[], Result>(
             const owner = yield* getContextTyped<unknown>("apiNotificationOwner");
             if (owner === notifyOperation) {
                 const windowIdentifier = yield* getContextTyped<string | undefined>("toastWindowIdentifier");
-                yield* putTyped({
-                    ...toastActions.openRequest.build(ToastType.Error, getTranslator().translate(message)),
-                    ...(windowIdentifier ? { destination: { identifier: windowIdentifier } } : {}),
-                });
+                yield* putTyped(toastActions.openRequest.build(ToastType.Error, getTranslator().translate(message), undefined, windowIdentifier));
             }
             throw error;
         }

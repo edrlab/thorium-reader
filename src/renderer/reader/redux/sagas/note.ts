@@ -343,7 +343,7 @@ function* annotationButtonTrigger(action: readerLocalActionAnnotations.trigger.T
     ) {
         yield* putTyped(
             toastActions.openRequest.build(
-                ToastType.Default,
+                ToastType.Info,
                 getTranslator().__("message.notifications.annotationStopPlayback"),
             ),
         );
@@ -370,7 +370,7 @@ function* annotationButtonTrigger(action: readerLocalActionAnnotations.trigger.T
         // trigger a Toast notification to user
         yield* putTyped(
             toastActions.openRequest.build(
-                ToastType.Default,
+                ToastType.Info,
                 getTranslator().__("reader.annotations.noSelectionToast"),
             ),
         );

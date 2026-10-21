@@ -6,7 +6,7 @@ import { addToastToQueue } from "readium-desktop/renderer/common/components/toas
 const failure: ToastState = { open: true, data: "Unable to download book", type: ToastType.Error, publicationIdentifier: undefined };
 
 describe("toast queue", () => {
-    it.each([ToastType.Error, ToastType.Default])("suppresses visible duplicates of %s", (type) => {
+    it.each([ToastType.Error, ToastType.Info])("suppresses visible duplicates of %s", (type) => {
         const toast = { ...failure, type };
         const queue = addToastToQueue({}, "first", toast);
         expect(addToastToQueue(queue, "second", { ...toast })).toBe(queue);

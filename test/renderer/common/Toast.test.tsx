@@ -33,7 +33,7 @@ let host: HTMLDivElement;
 let dom: JSDOM;
 let ToastManager: typeof import("readium-desktop/renderer/common/components/toast/ToastManager").ToastManager;
 const savedGlobals = new Map<string, PropertyDescriptor | undefined>();
-const initialToast: ToastState = { open: false, data: "", type: ToastType.Default, publicationIdentifier: undefined };
+const initialToast: ToastState = { open: false, data: "", type: ToastType.Info, publicationIdentifier: undefined };
 
 beforeAll(() => {
     dom = new JSDOM("<!doctype html><html><body></body></html>", { pretendToBeVisual: true });
@@ -222,7 +222,7 @@ test.each([ToastType.Error])("%s notifications persist until explicitly dismisse
     expect(dialogs()).toHaveLength(0);
 });
 
-test.each([ToastType.Success, ToastType.Default])("%s confirmations use a fixed five-second timeout", async (type) => {
+test.each([ToastType.Success, ToastType.Info])("%s confirmations use a fixed five-second timeout", async (type) => {
     await notify(type, "Saved");
     await advance(4999);
     expect(dialogs()).toHaveLength(1);
@@ -271,7 +271,7 @@ test("enabling screen-reader mode pauses existing timers through focus changes",
 });
 
 test("the no-selection hint uses the fixed five-second timeout after Redux", async () => {
-    const action = openToast(ToastType.Default, "Select text before creating an annotation.");
+    const action = openToast(ToastType.Info, "Select text before creating an annotation.");
     const state = toastReducer(undefined, action);
     await render(state);
     await advance(4999);

@@ -2276,7 +2276,7 @@ class Reader extends React.Component<IProps, IState> {
             this.props.toasty(`${txtPagination ? `${txtPagination} -- ` : ""}${txtProgression ? `${this.props.__("publication.progression.title")} = ${txtProgression}` : ""}${txtHeadings ? ` -- ${txtHeadings}` : ""}`);
 
         } catch (_err) {
-            this.props.toasty("ERROR");
+            this.props.toastError(this.props.__("message.notifications.readingPositionFailed"));
         }
     };
 
@@ -3782,7 +3782,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             dispatch(toastActions.openRequest.build(ToastType.Success, msg));
         },
         toastInfo: (msg: string) => {
-            dispatch(toastActions.openRequest.build(ToastType.Default, msg));
+            dispatch(toastActions.openRequest.build(ToastType.Info, msg));
         },
         toastError: (msg: string) => {
             dispatch(toastActions.openRequest.build(ToastType.Error, msg));
