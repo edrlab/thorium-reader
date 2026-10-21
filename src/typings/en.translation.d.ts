@@ -677,6 +677,7 @@ declare namespace typed_i18n {
     readonly "exportFailed": string,
     readonly "openFileFailed": string,
     readonly "printLimit": string,
+    readonly "recoveryPartialFailure": string,
     readonly "renewFailed": string,
     readonly "returnFailed": string,
     readonly "tagsFailed": string
@@ -757,6 +758,7 @@ declare namespace typed_i18n {
   readonly "exportFailed": string,
   readonly "openFileFailed": string,
   readonly "printLimit": string,
+  readonly "recoveryPartialFailure": string,
   readonly "renewFailed": string,
   readonly "returnFailed": string,
   readonly "tagsFailed": string
@@ -767,6 +769,7 @@ declare namespace typed_i18n {
   (_: "message.notifications.exportFailed", __?: {}): string;
   (_: "message.notifications.openFileFailed", __?: {}): string;
   (_: "message.notifications.printLimit", __?: {}): string;
+  (_: "message.notifications.recoveryPartialFailure", __?: {}): string;
   (_: "message.notifications.renewFailed", __?: {}): string;
   (_: "message.notifications.returnFailed", __?: {}): string;
   (_: "message.notifications.tagsFailed", __?: {}): string;

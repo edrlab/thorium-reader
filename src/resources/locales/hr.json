@@ -299,6 +299,7 @@
             "exportFailed": "",
             "openFileFailed": "",
             "printLimit": "",
+            "recoveryPartialFailure": "",
             "renewFailed": "",
             "returnFailed": "",
             "tagsFailed": ""

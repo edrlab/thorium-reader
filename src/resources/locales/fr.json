@@ -299,6 +299,7 @@
             "exportFailed": "Impossible d’exporter cette publication. Vérifiez le dossier de destination et l’espace disque disponible.",
             "openFileFailed": "Impossible d’ouvrir ce fichier. Vérifiez sa disponibilité et son format.",
             "printLimit": "Le quota d’impression de cette publication est épuisé.",
+            "recoveryPartialFailure": "{{- recovered}} publications récupérées ; {{- failed}} publications n’ont pas pu être récupérées.",
             "renewFailed": "Impossible de prolonger ce prêt. Réessayez ou contactez votre bibliothèque.",
             "returnFailed": "Impossible de rendre ce prêt. Réessayez ou contactez votre bibliothèque.",
             "tagsFailed": "Impossible d’enregistrer les étiquettes de la publication. Réessayez."
