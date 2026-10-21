@@ -6,10 +6,9 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { registerAccessibilitySupport } from "readium-desktop/main/accessibilitySupport";
-import { app } from "electron";
+import { app, ipcMain } from "electron";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { closeProcessLock, diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
+import { closeProcessLock, diMainGet, getLibraryWindowFromDi, getAllReaderWindowFromDi } from "readium-desktop/main/di";
 import { getOpdsNewCatalogsStringUrlChannel } from "readium-desktop/main/event";
 import {
     absorbDBToJson as absorbDBToJsonCookieJar, fetchCookieJarPersistence,
@@ -98,7 +97,68 @@ export function* init() {
     //     setTimeout(() => app.exit(0), 2000);
     // });
 
-    registerAccessibilitySupport();
+    app.on("accessibility-support-changed", (_e, accessibilitySupportEnabled) => {
+        const accessibilitySupportFeatureScreenReader = app.getAccessibilitySupportFeatures().includes("screenReader");
+        console.log("app.on - accessibility-support-changed: ", accessibilitySupportEnabled, accessibilitySupportFeatureScreenReader);
+        if (app.accessibilitySupportEnabled !== accessibilitySupportEnabled) { // .isAccessibilitySupportEnabled()
+            console.log("!!?? app.accessibilitySupportEnabled !== app.on - accessibility-support-changed");
+        }
+        const browserWindows = [];
+        try {
+            const libraryWin = getLibraryWindowFromDi();
+            if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
+                browserWindows.push(libraryWin);
+            }
+        } catch (e) {
+            debug("getLibraryWindowFromDi ERROR?", e);
+        }
+        try {
+            const readerWins = getAllReaderWindowFromDi();
+            if (readerWins?.length) {
+                for (const readerWin of readerWins) {
+                    if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
+                        browserWindows.push(readerWin);
+                    }
+                }
+            }
+        } catch (e) {
+            debug("getAllReaderWindowFromDi ERROR?", e);
+        }
+        browserWindows.forEach((win) => {
+            if (!win.isDestroyed() && !win.webContents.isDestroyed()) {
+                const store = diMainGet("store");
+                const screenReaderActivated = store.getState().screenReader.activate;
+                console.log("webContents.send - accessibility-support-changed: ", accessibilitySupportEnabled, accessibilitySupportFeatureScreenReader, screenReaderActivated, win.id);
+                try {
+                    win.webContents.send("accessibility-support-changed", accessibilitySupportEnabled && accessibilitySupportFeatureScreenReader && screenReaderActivated);
+                    win.webContents.send("accessibility-support-changed-raw", accessibilitySupportEnabled && accessibilitySupportFeatureScreenReader);
+                } catch (e) {
+                    debug("webContents.send - accessibility-support-changed ERROR?", e);
+                }
+            }
+        });
+    });
+    // note that "@r2-navigator-js/electron/main/browser-window-tracker"
+    // uses "accessibility-support-changed" instead of "accessibility-support-query",
+    // so there is no duplicate event handler.
+    ipcMain.on("accessibility-support-query", (e) => {
+        const accessibilitySupportEnabled = app.accessibilitySupportEnabled; // .isAccessibilitySupportEnabled()
+        const accessibilitySupportFeatureScreenReader = app.getAccessibilitySupportFeatures().includes("screenReader");
+        const store = diMainGet("store");
+        const screenReaderActivated = store.getState().screenReader.activate;
+        console.log("ipcMain.on - accessibility-support-query, sender.send - accessibility-support-changed: ", accessibilitySupportEnabled, accessibilitySupportFeatureScreenReader, screenReaderActivated);
+        const v = accessibilitySupportEnabled && accessibilitySupportFeatureScreenReader && screenReaderActivated;
+        e.sender.send("accessibility-support-changed", v);
+        e.returnValue = v; // for .sendSync()
+    });
+    ipcMain.on("accessibility-support-query-raw", (e) => {
+        const accessibilitySupportEnabled = app.accessibilitySupportEnabled; // .isAccessibilitySupportEnabled()
+        const accessibilitySupportFeatureScreenReader = app.getAccessibilitySupportFeatures().includes("screenReader");
+        console.log("ipcMain.on - accessibility-support-query-raw, sender.send - accessibility-support-changed: ", accessibilitySupportEnabled, accessibilitySupportFeatureScreenReader);
+        const v = accessibilitySupportEnabled && accessibilitySupportFeatureScreenReader;
+        e.sender.send("accessibility-support-changed-raw", v);
+        e.returnValue = v; // for .sendSync()
+    });
 
     yield call(() => app.whenReady());
 
