@@ -36,6 +36,11 @@
     border-width: 4px;
   }
 
+  &:has(.messageButton:focus) {
+    outline: 2px solid var(--color-brand-primary);
+    outline-offset: -2px;
+  }
+
   &.error {
     background: var(--color-error-bg);
     border-color: var(--color-text-primary);
@@ -54,7 +59,7 @@
     min-width: 0;
   }
 
-  .messageButton {
+  button.messageButton {
     display: block;
     width: 100%;
     height: auto;
@@ -67,6 +72,11 @@
     font: inherit;
     text-align: start;
     cursor: pointer;
+
+    &:focus {
+      // Override Thorium's global :focus outline without affecting Close.
+      outline: none !important;
+    }
   }
 
   .message {
