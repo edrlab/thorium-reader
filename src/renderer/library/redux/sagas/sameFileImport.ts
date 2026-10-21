@@ -44,7 +44,7 @@ export function* sameFileImport(action: importActions.verify.TAction) {
     ) {
         yield put(
             toastActions.openRequest.build(
-                ToastType.Success,
+                ToastType.Default,
                 getTranslator().__("message.import.alreadyImport",
                     {
                         title: pub.documentTitle || "",
