@@ -153,6 +153,7 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
                 toastActions.openRequest.build(
                     ToastType.Error,
                     getTranslator().translate("message.open.error", { err: getTranslator().translate("publication.encryptedNoLicense") }),
+                    undefined, (action as unknown as ActionWithSender).sender?.identifier,
                 ),
             );
         } else if (errMsg !== ERROR_MESSAGE_ON_USERKEYCHECKREQUEST) {
@@ -166,6 +167,7 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
                 toastActions.openRequest.build(
                     ToastType.Error,
                     getTranslator().translate("message.open.error", { err: errMsg }),
+                    undefined, (action as unknown as ActionWithSender).sender?.identifier,
                 ),
             );
         }
@@ -376,13 +378,14 @@ function* readerPrint(action: readerActions.print.TAction) {
 
         yield* putTyped(toastActions.openRequest.build(ToastType.Success,
             `LCP [${translator.translate("app.edit.print")}] [${pagesToPrint}] / ${publicationDocument.lcp.rights.print}`,
-            publicationIdentifier));
+            publicationIdentifier, (action as unknown as ActionWithSender).sender?.identifier));
     } else {
         yield* putTyped(toastActions.openRequest.build(ToastType.Error,
             translator.translate("message.notifications.printLimit"),
-            publicationIdentifier));
+            publicationIdentifier, (action as unknown as ActionWithSender).sender?.identifier));
     }
 }
+
 
 
 export function saga() {

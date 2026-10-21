@@ -607,6 +607,7 @@ export class LcpManager {
 
     public async renewPublicationLicense(
         publicationDocument: PublicationDocument,
+        windowIdentifier?: string,
     ): Promise<PublicationDocument> {
 
         const rootState = this.store.getState();
@@ -631,6 +632,7 @@ export class LcpManager {
                     debug("!renewLink");
                     this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
                         this.translator.translate("message.notifications.renewFailed"),
+                        undefined, windowIdentifier,
                     ));
                     return newPubDocument;
                 }
@@ -648,6 +650,7 @@ export class LcpManager {
                     debug(`renewLink.Type: ${renewLink.Type}`);
                     this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
                         this.translator.translate("message.notifications.renewFailed"),
+                        undefined, windowIdentifier,
                     ));
                     return newPubDocument;
                 }
@@ -669,6 +672,7 @@ export class LcpManager {
 
                     this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
                         this.translator.translate("message.notifications.renewFailed"),
+                        undefined, windowIdentifier,
                     ));
                     return newPubDocument;
                 }
@@ -720,6 +724,7 @@ export class LcpManager {
                         await this.finalizePublicationFilesReplacement(publicationFilesReplacement);
                         this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
                             `LCP [${this.translator.translate("publication.renewButton")}] ${newEndDate}`,
+                            undefined, windowIdentifier,
                         ));
                     } catch (err) {
                         await this.rollbackPublicationFilesReplacement(publicationFilesReplacement);
@@ -728,6 +733,7 @@ export class LcpManager {
                 } else {
                     this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
                         this.translator.translate("message.notifications.renewFailed"),
+                        undefined, windowIdentifier,
                     ));
                 }
             }
@@ -740,6 +746,7 @@ export class LcpManager {
 
     public async returnPublication(
         publicationDocument: PublicationDocument,
+        windowIdentifier?: string,
     ): Promise<PublicationDocument> {
 
         const rootState = this.store.getState();
@@ -764,6 +771,7 @@ export class LcpManager {
                     debug("!returnLink");
                     this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
                         this.translator.translate("message.notifications.returnFailed"),
+                        undefined, windowIdentifier,
                     ));
                     return newPubDocument;
                 }
@@ -781,6 +789,7 @@ export class LcpManager {
                     debug(`returnLink.Type: ${returnLink.Type}`);
                     this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
                         this.translator.translate("message.notifications.returnFailed"),
+                        undefined, windowIdentifier,
                     ));
                     return newPubDocument;
                 }
@@ -793,6 +802,7 @@ export class LcpManager {
                     debug(err);
                     this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
                         this.translator.translate("message.notifications.returnFailed"),
+                        undefined, windowIdentifier,
                     ));
                     return newPubDocument;
                 }
@@ -844,6 +854,7 @@ export class LcpManager {
                         await this.finalizePublicationFilesReplacement(publicationFilesReplacement);
                         this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
                             `LCP [${this.translator.translate("publication.returnButton")}] ${newEndDate}`,
+                            undefined, windowIdentifier,
                         ));
                     } catch (err) {
                         await this.rollbackPublicationFilesReplacement(publicationFilesReplacement);
@@ -852,6 +863,7 @@ export class LcpManager {
                 } else {
                     this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
                         this.translator.translate("message.notifications.returnFailed"),
+                        undefined, windowIdentifier,
                     ));
                 }
             }

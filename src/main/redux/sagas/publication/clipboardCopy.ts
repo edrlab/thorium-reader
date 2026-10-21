@@ -7,6 +7,7 @@
 
 import debug_ from "debug";
 import { clipboard } from "electron";
+import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { getTranslator } from "readium-desktop/common/services/translator";
@@ -47,7 +48,7 @@ export function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction
     if (lcpRightsCopiesRemain <= 0) {
         yield* putTyped(toastActions.openRequest.build(ToastType.Error,
             translator.translate("message.notifications.copyLimit"),
-            publicationIdentifier));
+            publicationIdentifier, (action as unknown as ActionWithSender).sender?.identifier));
         return;
     }
     const nCharsToCopy = textToCopy.length > lcpRightsCopiesRemain ?
@@ -68,5 +69,5 @@ export function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction
 
     yield* putTyped(toastActions.openRequest.build(ToastType.Success,
         `LCP [${translator.translate("app.edit.copy")}] ${newPublicationDocument.lcpRightsCopies} / ${publicationDocument.lcp.rights.copy}`,
-        publicationIdentifier));
+        publicationIdentifier, (action as unknown as ActionWithSender).sender?.identifier));
 }
