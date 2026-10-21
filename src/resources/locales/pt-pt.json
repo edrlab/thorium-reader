@@ -292,6 +292,13 @@
             "fail": "Falha ao importar {{- path}}. Erro: {{- err}}",
             "success": "Foi concluída a importação de {{- title}}."
         },
+        "notifications": {
+            "catalogUpdateFailed": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "tagsFailed": ""
+        },
         "open": {
             "error": "Não foi possível carregar o documento: {{- err}}",
             "folderNotFound": "A pasta da publicação não foi encontrada. Importe-a novamente ou configure o armazenamento adicional em Configurações > Armazenamento."

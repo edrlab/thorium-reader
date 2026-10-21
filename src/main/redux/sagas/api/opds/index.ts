@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { withErrorNotification } from "../withErrorNotification";
 import { IOpdsApi } from "readium-desktop/common/api/interface/opdsApi.interface";
 
 import { getFeed, addFeed, findAllFeeds, deleteFeed, setFeedFavorite, updateFeed } from "./feed";
@@ -19,10 +20,10 @@ export const opdsApi: IOpdsApi = {
     searchRegistry,
     getProgressionServiceStatus,
     getFeed,
-    addFeed,
-    updateFeed,
-    setFeedFavorite,
+    addFeed: withErrorNotification(addFeed, "message.notifications.catalogUpdateFailed"),
+    updateFeed: withErrorNotification(updateFeed, "message.notifications.catalogUpdateFailed"),
+    setFeedFavorite: withErrorNotification(setFeedFavorite, "message.notifications.catalogUpdateFailed"),
     findAllFeeds,
-    deleteFeed,
+    deleteFeed: withErrorNotification(deleteFeed, "message.notifications.catalogUpdateFailed"),
     getUrlWithSearchLinks,
 };

@@ -287,6 +287,13 @@
             "fail": "{- path}}-ren inportazioak huts egin du. {{- Err}}",
             "success": "{- title}}-ren inportazioa amaitu da."
         },
+        "notifications": {
+            "catalogUpdateFailed": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "tagsFailed": ""
+        },
         "open": {
             "error": "Ezin da argitalpena ireki: {{- err}}",
             "folderNotFound": ""

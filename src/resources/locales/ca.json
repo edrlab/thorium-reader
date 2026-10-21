@@ -292,6 +292,13 @@
             "fail": "La importació de {{- path}} ha fallat. {{- err}}",
             "success": "La importació de {{- title}} ha acabat."
         },
+        "notifications": {
+            "catalogUpdateFailed": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "tagsFailed": ""
+        },
         "open": {
             "error": "No es pot obrir la publicació: {{- err}}",
             "folderNotFound": ""

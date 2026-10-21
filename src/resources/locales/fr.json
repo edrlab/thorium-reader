@@ -292,6 +292,13 @@
             "fail": "L'ajout de {{- path}} a échoué : {{- err}}",
             "success": "L'ajout de {{- title}} est achevé."
         },
+        "notifications": {
+            "catalogUpdateFailed": "Impossible de modifier ce catalogue. Vérifiez ses paramètres et réessayez.",
+            "deleteFailed": "Impossible de supprimer cette publication. Réessayez.",
+            "exportFailed": "Impossible d’exporter cette publication. Vérifiez le dossier de destination et l’espace disque disponible.",
+            "openFileFailed": "Impossible d’ouvrir ce fichier. Vérifiez sa disponibilité et son format.",
+            "tagsFailed": "Impossible d’enregistrer les étiquettes de la publication. Réessayez."
+        },
         "open": {
             "error": "Le livre ne peut pas être ouvert : {{- err}}",
             "folderNotFound": "Le répertoire des publications est introuvable. Réimportez-le ou configurez le stockage additionnel dans Paramètres > Stockage."

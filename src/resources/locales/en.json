@@ -287,6 +287,13 @@
             "fail": "Importing [{{- path}}] failed: [{{- err}}]",
             "success": "Importing [{{- title}}] completed."
         },
+        "notifications": {
+            "catalogUpdateFailed": "Unable to update this catalog. Check its settings and try again.",
+            "deleteFailed": "Unable to delete this publication. Try again.",
+            "exportFailed": "Unable to export this publication. Check the destination folder and available disk space.",
+            "openFileFailed": "Unable to open this file. Check that it is available and uses a supported format.",
+            "tagsFailed": "Unable to save the publication tags. Try again."
+        },
         "open": {
             "error": "Loading publication failed: [{{- err}}]",
             "folderNotFound": "The publication directory cannot be found. Re-import it, or configure the additional storage in Settings > Storage."

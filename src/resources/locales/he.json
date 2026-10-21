@@ -292,6 +292,13 @@
             "fail": "",
             "success": ""
         },
+        "notifications": {
+            "catalogUpdateFailed": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "tagsFailed": ""
+        },
         "open": {
             "error": "",
             "folderNotFound": ""

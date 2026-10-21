@@ -287,6 +287,13 @@
             "fail": "„{{- path}}“ objekti importimine ei õnnestunud: {{- err}}",
             "success": "„{{- title}}“ väljaande importimine sai kenasti tehtud."
         },
+        "notifications": {
+            "catalogUpdateFailed": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "tagsFailed": ""
+        },
         "open": {
             "error": "Väljaande/teise laadimine ei õnnestunud: {{- err}}",
             "folderNotFound": "Valjaande kausta leidmine ei õnnestu. Impordi ta uuesti või seadista andmeruumi siit „Seadistused“ → „Andmeruum“."

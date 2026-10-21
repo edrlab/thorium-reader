@@ -297,6 +297,13 @@
             "fail": "Uvoz {{- path}} ni uspel: {{- err}}",
             "success": "Uvoz {{- title}} je končan."
         },
+        "notifications": {
+            "catalogUpdateFailed": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "tagsFailed": ""
+        },
         "open": {
             "error": "Publikacije ni mogoče odpreti: {{- err}}",
             "folderNotFound": "Imenika publikacije ni mogoče najti. Ponovno jo uvozite ali konfigurirajte dodatni prostor za shranjevanje v Nastavitve > Shramba."
