@@ -8,6 +8,7 @@
 import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.scss";
 
 import * as React from "react";
+import { ipcRenderer } from "electron";
 import { connect } from "react-redux";
 import { I18nProvider, UNSTABLE_ToastQueue as ToastQueue, UNSTABLE_ToastRegion as ToastRegion } from "react-aria-components";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -31,9 +32,33 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
+class AccessibleToastQueue extends ToastQueue<ToastState> {
+    public accessibilitySupportEnabled = false;
+
+    public resumeAll() {
+        if (!this.accessibilitySupportEnabled) super.resumeAll();
+    }
+}
+
 export class ToastManager extends React.Component<IProps> {
+    private regionRef = React.createRef<HTMLDivElement>();
     // Each window owns its queue. Persistent errors must not hide later notices.
-    private queue = new ToastQueue<ToastState>({ maxVisibleToasts: Infinity });
+    private queue = new AccessibleToastQueue({ maxVisibleToasts: Infinity });
+
+    public componentDidMount() {
+        ipcRenderer.on("accessibility-support-changed", this.accessibilitySupportChanged);
+        ipcRenderer.send("accessibility-support-query");
+    }
+
+    private accessibilitySupportChanged = (_event: Electron.IpcRendererEvent, enabled: boolean) => {
+        this.queue.accessibilitySupportEnabled = enabled;
+        if (enabled) {
+            this.queue.pauseAll();
+        } else {
+            const region = this.regionRef.current;
+            if (!region?.contains(document.activeElement) && !region?.hasAttribute("data-hovered")) this.queue.resumeAll();
+        }
+    };
 
     public componentDidUpdate(oldProps: IProps) {
         const { toast } = this.props;
@@ -50,13 +75,14 @@ export class ToastManager extends React.Component<IProps> {
             if (addToastToQueue(toastList, id, toast, this.props.pubId) !== toastList) {
                 // Every notice is persistent by default, regardless of its color.
                 // Only messages available elsewhere may opt in; errors never expire.
-                const timeout = toast.type === ToastType.Error ? undefined : toast.timeout;
+                const timeout = toast.type === ToastType.Error || this.queue.accessibilitySupportEnabled ? undefined : toast.timeout;
                 this.queue.add(toast, { timeout });
             }
         }
     }
 
     public componentWillUnmount() {
+        ipcRenderer.off("accessibility-support-changed", this.accessibilitySupportChanged);
         this.queue.pauseAll();
         this.queue.clear();
     }
@@ -64,7 +90,20 @@ export class ToastManager extends React.Component<IProps> {
     public render(): React.ReactElement<{}> {
         return (
             <I18nProvider locale={this.props.locale}>
-                <ToastRegion queue={this.queue} className={stylesToasts.toasts_wrapper}>
+                <ToastRegion
+                    ref={this.regionRef}
+                    queue={this.queue}
+                    className={stylesToasts.toasts_wrapper}
+                    render={(props) => <div
+                        {...props}
+                        onFocus={(event) => {
+                            props.onFocus?.(event);
+                            if (event.target === event.currentTarget) {
+                                event.currentTarget.querySelector<HTMLElement>("[role=alertdialog]")?.focus();
+                            }
+                        }}
+                    />}
+                >
                     {({ toast }) => <Toast toast={toast} close={this.close} />}
                 </ToastRegion>
             </I18nProvider>

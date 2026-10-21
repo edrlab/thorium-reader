@@ -3,7 +3,7 @@ import { setLocale, translate } from "readium-desktop/common/services/translator
 
 jest.mock("readium-desktop/resources/locales/de.json", () => ({
     accessibility: {
-        copyNotificationAndToggleDetails: "",
+        copyNotificationInstruction: "",
         notificationCopied: "",
         notificationCopyFailed: "",
         notification: "",
@@ -12,14 +12,14 @@ jest.mock("readium-desktop/resources/locales/de.json", () => ({
 }));
 
 const keys = [
-    "accessibility.copyNotificationAndToggleDetails",
+    "accessibility.copyNotificationInstruction",
     "accessibility.notificationCopied",
     "accessibility.notificationCopyFailed",
     "accessibility.notification",
     "accessibility.closeNotification",
 ] as const;
 
-const english = ["Copy notification and toggle details", "Notification copied", "Could not copy notification", "Notification", "Close notification"];
+const english = ["Press Enter to copy the notification", "Notification copied", "Could not copy notification", "Notification", "Close notification"];
 
 test.each([
     ["en", "Unable to determine your reading position. Try again."],
@@ -43,7 +43,7 @@ test.each([
 
 test.each([
     ["en", english],
-    ["fr", ["Copier la notification et afficher ou masquer les détails", "Notification copiée", "Impossible de copier la notification", "Notification", "Fermer la notification"]],
+    ["fr", ["Appuyez sur Entrée pour copier la notification", "Notification copiée", "Impossible de copier la notification", "Notification", "Fermer la notification"]],
     ["es", english], // Missing keys fall back to English.
     ["de", english], // Empty translations also fall back to English.
 ] as const)("notification labels are meaningful in %s", async (locale, expected) => {

@@ -4,7 +4,7 @@ declare namespace typed_i18n {
   readonly "bookMenu": string,
   readonly "closeDialog": string,
   readonly "closeNotification": string,
-  readonly "copyNotificationAndToggleDetails": string,
+  readonly "copyNotificationInstruction": string,
   readonly "leftSlideButton": string,
   readonly "mainContent": string,
   readonly "notification": string,
@@ -17,7 +17,7 @@ declare namespace typed_i18n {
   (_: "accessibility.bookMenu", __?: {}): string;
   (_: "accessibility.closeDialog", __?: {}): string;
   (_: "accessibility.closeNotification", __?: {}): string;
-  (_: "accessibility.copyNotificationAndToggleDetails", __?: {}): string;
+  (_: "accessibility.copyNotificationInstruction", __?: {}): string;
   (_: "accessibility.leftSlideButton", __?: {}): string;
   (_: "accessibility.mainContent", __?: {}): string;
   (_: "accessibility.notification", __?: {}): string;
