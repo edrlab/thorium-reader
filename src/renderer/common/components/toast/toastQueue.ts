@@ -8,22 +8,21 @@
 import { ToastType } from "readium-desktop/common/models/toast";
 import { ToastState } from "readium-desktop/common/redux/states/toast";
 
-export function addToastToQueue(
-    queue: Record<string, ToastState>,
-    id: string,
+export function shouldAddToast(
+    visibleToasts: readonly { content: ToastState }[],
     toast: ToastState,
     publicationIdentifier?: string,
-): Record<string, ToastState> {
+): boolean {
     if (!toast.open || !toast.data?.trim()
         || (toast.publicationIdentifier && publicationIdentifier && toast.publicationIdentifier !== publicationIdentifier)) {
-        return queue;
+        return false;
     }
     // Suppress repeated errors/prerequisites only while they are visible. Once
     // dismissed, another attempt must be able to report the same failure again.
-    if (toast.type !== ToastType.Success && Object.values(queue).some((current) =>
+    if (toast.type !== ToastType.Success && visibleToasts.some(({ content: current }) =>
         current.type === toast.type && current.data === toast.data
         && current.publicationIdentifier === toast.publicationIdentifier)) {
-        return queue;
+        return false;
     }
-    return { ...queue, [id]: toast };
+    return true;
 }

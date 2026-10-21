@@ -10,7 +10,6 @@ import * as stylesToasts from "readium-desktop/renderer/assets/styles/components
 import { clipboard } from "electron";
 import classNames from "classnames";
 import * as React from "react";
-import { createPortal } from "react-dom";
 import {
     Button,
     Text,
@@ -163,14 +162,11 @@ export function Toast({ toast, close, __ }: IProps) {
                     <SVG ariaHidden svg={QuitIcon} />
                 </Button>
             </AriaToast>
-            {createPortal(
-                <VisuallyHidden>
-                    <div role="status" aria-live="polite" aria-atomic="true">
-                        {announcedFeedback.message && <span key={announcedFeedback.sequence}>{announcedFeedback.message}</span>}
-                    </div>
-                </VisuallyHidden>,
-                document.body,
-            )}
+            <VisuallyHidden>
+                <div role="status" aria-live="polite" aria-atomic="true">
+                    {announcedFeedback.message && <span key={announcedFeedback.sequence}>{announcedFeedback.message}</span>}
+                </div>
+            </VisuallyHidden>
         </>
     );
 }

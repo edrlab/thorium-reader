@@ -381,3 +381,22 @@ test("persistent notices do not block later notices and another publication is f
     await render({ open: true, type: ToastType.Error, data: "Other book", publicationIdentifier: "book-2" }, "book-1");
     expect(dialogs()).toHaveLength(2);
 });
+
+test("repeated accessibility responses cannot dismiss a focused toast", async () => {
+    await notify(ToastType.Success, "Saved");
+    await advance(2000);
+    await React.act(async () => {
+        ipcRenderer.emit("accessibility-support-changed", {}, false);
+        ipcRenderer.emit("accessibility-support-changed", {}, false);
+    });
+    await React.act(async () => messageAction().focus());
+    await advance(60000);
+    expect(dialogs()).toHaveLength(1);
+    const outside = document.createElement("button");
+    host.appendChild(outside);
+    await React.act(async () => outside.focus());
+    await advance(2999);
+    expect(dialogs()).toHaveLength(1);
+    await advance(1);
+    expect(dialogs()).toHaveLength(0);
+});

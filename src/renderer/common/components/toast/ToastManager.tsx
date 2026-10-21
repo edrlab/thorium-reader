@@ -15,10 +15,9 @@ import { ToastType } from "readium-desktop/common/models/toast";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { ToastState } from "readium-desktop/common/redux/states/toast";
-import { uuidv4 } from "readium-desktop/utils/uuid";
 
 import Toast from "./Toast";
-import { addToastToQueue } from "./toastQueue";
+import { shouldAddToast } from "./toastQueue";
 import { TranslatorProps, withTranslator } from "../hoc/translator";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -36,7 +35,12 @@ class AccessibleToastQueue extends ToastQueue<ToastState> {
     public accessibilitySupportEnabled = false;
 
     public resumeAll() {
-        if (!this.accessibilitySupportEnabled) super.resumeAll();
+        if (!this.accessibilitySupportEnabled) {
+            // React Aria's timers do not cancel an existing timeout on resume.
+            // Pausing first preserves the remaining time and makes repeated resumes safe.
+            super.pauseAll();
+            super.resumeAll();
+        }
     }
 }
 
@@ -51,6 +55,7 @@ export class ToastManager extends React.Component<IProps> {
     }
 
     private accessibilitySupportChanged = (_event: Electron.IpcRendererEvent, enabled: boolean) => {
+        if (this.queue.accessibilitySupportEnabled === enabled) return;
         this.queue.accessibilitySupportEnabled = enabled;
         if (enabled) {
             this.queue.pauseAll();
@@ -70,9 +75,7 @@ export class ToastManager extends React.Component<IProps> {
             }
         }
         if (toast !== oldProps.toast) {
-            const id = uuidv4();
-            const toastList = Object.fromEntries(this.queue.visibleToasts.map((current) => [current.key, current.content]));
-            if (addToastToQueue(toastList, id, toast, this.props.pubId) !== toastList) {
+            if (shouldAddToast(this.queue.visibleToasts, toast, this.props.pubId)) {
                 // Errors remain persistent; other notices use a fixed five-second timeout.
                 const timeout = toast.type === ToastType.Error || this.queue.accessibilitySupportEnabled ? undefined : 5000;
                 this.queue.add(toast, { timeout });
