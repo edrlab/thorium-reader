@@ -677,6 +677,9 @@ declare namespace typed_i18n {
     readonly "exportFailed": string,
     readonly "openFileFailed": string,
     readonly "printLimit": string,
+    readonly "profileActivationFailed": string,
+    readonly "profileProvisionFailed": string,
+    readonly "profileTimeout": string,
     readonly "recoveryPartialFailure": string,
     readonly "renewFailed": string,
     readonly "returnFailed": string,
@@ -759,6 +762,9 @@ declare namespace typed_i18n {
   readonly "exportFailed": string,
   readonly "openFileFailed": string,
   readonly "printLimit": string,
+  readonly "profileActivationFailed": string,
+  readonly "profileProvisionFailed": string,
+  readonly "profileTimeout": string,
   readonly "recoveryPartialFailure": string,
   readonly "renewFailed": string,
   readonly "returnFailed": string,
@@ -771,6 +777,9 @@ declare namespace typed_i18n {
   (_: "message.notifications.exportFailed", __?: {}): string;
   (_: "message.notifications.openFileFailed", __?: {}): string;
   (_: "message.notifications.printLimit", __?: {}): string;
+  (_: "message.notifications.profileActivationFailed", __?: {}): string;
+  (_: "message.notifications.profileProvisionFailed", __?: {}): string;
+  (_: "message.notifications.profileTimeout", __?: {}): string;
   (_: "message.notifications.recoveryPartialFailure", __?: {}): string;
   (_: "message.notifications.renewFailed", __?: {}): string;
   (_: "message.notifications.returnFailed", __?: {}): string;
