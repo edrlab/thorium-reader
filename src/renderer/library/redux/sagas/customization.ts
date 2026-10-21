@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import { getTranslator } from "readium-desktop/common/services/translator";
 import { nanoid } from "nanoid";
 import { customizationActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
@@ -165,7 +166,7 @@ function* profileActivatingAction(action: customizationActions.activating.TActio
 
         } catch (e) {
 
-            yield* putTyped(toastActions.openRequest.build(ToastType.Error, `${e}`));
+            yield* putTyped(toastActions.openRequest.build(ToastType.Error, getTranslator().translate("message.notifications.profileActivationFailed")));
             debug("Critical ERROR to activate the profile", id);
             debug(e);
 
@@ -193,7 +194,7 @@ function* profileActivatingAction(action: customizationActions.activating.TActio
 
             } catch (e) {
 
-                yield* putTyped(toastActions.openRequest.build(ToastType.Error, `${e}`));
+                yield* putTyped(toastActions.openRequest.build(ToastType.Error, getTranslator().translate("message.notifications.profileActivationFailed")));
                 debug("Critical ERROR to activate the profile", id);
                 debug(e);
 

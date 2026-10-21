@@ -8,16 +8,19 @@
   left: 1rem;
   z-index: 999999999999;
   pointer-events: none;
+  max-height: calc(100dvh - 4rem);
+  overflow-y: auto;
 }
 
 .toast {
-  overflow: hidden;
+  overflow: auto;
+  max-height: calc(100dvh - 6rem);
   margin-bottom: 1rem;
   position: relative;
   padding: 1rem;
   border: 1px var(--color-success-text) solid;
   border-radius: 6px;
-  width: 15rem;
+  width: min(22rem, calc(100vw - 4rem));
   height: fit-content;
   background: white;
   display: flex;
