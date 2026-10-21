@@ -287,6 +287,11 @@
             "fail": "Der Import von {{- path}} ist fehlgeschlagen. {{- err}}",
             "success": "Der Import von {{- title}} ist abgeschlossen."
         },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": ""
+        },
         "open": {
             "error": "Die Publikation kann nicht geöffnet werden: {{- err}}",
             "folderNotFound": "Das Publikationsverzeichnis wurde nicht gefunden. Importieren Sie es erneut oder richten Sie den zusätzlichen Speicher unter Einstellungen > Speicher ein."

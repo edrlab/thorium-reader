@@ -957,7 +957,7 @@ class Reader extends React.Component<IProps, IState> {
     private onPdfAnnotationSelectionError(payload: TPdfAnnotationSelectionErrorPayload) {
         this.skipNextPdfAnnotationEditor = false;
         debugPdfAnnotationsHost("annotation:selection-error", payload);
-        this.props.toastError(getTranslator().__("reader.annotations.error.pdf.validationSelection"));
+        this.props.toastInfo(getTranslator().__("reader.annotations.error.pdf.validationSelection"));
     }
 
     private syncPdfAnnotations(extraNote?: INoteState) {
@@ -2488,7 +2488,7 @@ class Reader extends React.Component<IProps, IState> {
         ) {
             this.setState({ printDialogOpen: true });
         } else if (this.props.isPdf) {
-            this.props.toastError(this.props.__("reader.navigation.printDisabled"));
+            this.props.toastInfo(this.props.__("reader.navigation.printDisabled"));
         }
     };
 
@@ -3780,6 +3780,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         },
         toasty: (msg: string) => {
             dispatch(toastActions.openRequest.build(ToastType.Success, msg));
+        },
+        toastInfo: (msg: string) => {
+            dispatch(toastActions.openRequest.build(ToastType.Default, msg));
         },
         toastError: (msg: string) => {
             dispatch(toastActions.openRequest.build(ToastType.Error, msg));

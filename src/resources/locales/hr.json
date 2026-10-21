@@ -292,6 +292,11 @@
             "fail": "Neuspjeli uvoz {{- path}}. {{- err}}",
             "success": "Uvoz {{- title}} je završen."
         },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": ""
+        },
         "open": {
             "error": "Građa se ne može otvoriti: {{- err}}",
             "folderNotFound": ""

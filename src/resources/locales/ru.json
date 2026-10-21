@@ -297,6 +297,11 @@
             "fail": "Импорт {{- path}} не удался. {{- err}}",
             "success": "Импорт {{- title}} закончен."
         },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": ""
+        },
         "open": {
             "error": "Книга не может быть открыта : {{- err}}",
             "folderNotFound": "Каталог публикации не найден. Повторно импортируйте его или настройте дополнительное хранилище в разделе Настройки > Хранилище."

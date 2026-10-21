@@ -287,6 +287,11 @@
             "fail": "[{{- path}}] İçe aktarması başarısız: [{{- err}}]",
             "success": "[{{- title}}]: İçe aktarımı tamamlandı."
         },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": ""
+        },
         "open": {
             "error": "Eser yüklemesi başarısız: [{{- err}}]",
             "folderNotFound": "Eser dizini bulunamıyor. Yeniden içe aktarın veya Ayarlar > Depolama'dan ilave depolamayı yapılandırın."

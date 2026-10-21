@@ -670,6 +670,11 @@ declare namespace typed_i18n {
     readonly "fail": string,
     readonly "success": string
   },
+  readonly "notifications": {
+    readonly "annotationImportFailed": string,
+    readonly "annotationPublicationUnavailable": string,
+    readonly "annotationStopPlayback": string
+  },
   readonly "open": {
     readonly "error": string,
     readonly "folderNotFound": string
@@ -739,6 +744,14 @@ declare namespace typed_i18n {
   (_: "message.import.alreadyImport", __?: {}): string;
   (_: "message.import.fail", __?: {}): string;
   (_: "message.import.success", __?: {}): string;
+  (_: "message.notifications", __?: {}): {
+  readonly "annotationImportFailed": string,
+  readonly "annotationPublicationUnavailable": string,
+  readonly "annotationStopPlayback": string
+};
+  (_: "message.notifications.annotationImportFailed", __?: {}): string;
+  (_: "message.notifications.annotationPublicationUnavailable", __?: {}): string;
+  (_: "message.notifications.annotationStopPlayback", __?: {}): string;
   (_: "message.open", __?: {}): { readonly "error": string, readonly "folderNotFound": string };
   (_: "message.open.error", __?: {}): string;
   (_: "message.open.folderNotFound", __?: {}): string;

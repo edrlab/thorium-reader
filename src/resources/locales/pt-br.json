@@ -292,6 +292,11 @@
             "fail": "A importação de {{- path}} falhou: [{{- err}}]",
             "success": "A importação de {{- title}} terminou."
         },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": ""
+        },
         "open": {
             "error": "Erro na abertura da publicação: {{- err}}",
             "folderNotFound": ""

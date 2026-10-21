@@ -307,6 +307,11 @@
             "fail": "فشل استيراد [{{- path}}]: [{{- err}}]",
             "success": "اكتمل استيراد [{{- title}}]."
         },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": ""
+        },
         "open": {
             "error": "فشل تحميل المنشور: [{{- err}}]",
             "folderNotFound": "لم نتمكن من العثور على مجلد الكتاب. أعد جلبه أو عدل إعدادات ذاكرة التخزين الإضافية في الإعدادات > التخزين."

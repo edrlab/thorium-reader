@@ -292,6 +292,11 @@
             "fail": "L'ajout de {{- path}} a échoué : {{- err}}",
             "success": "L'ajout de {{- title}} est achevé."
         },
+        "notifications": {
+            "annotationImportFailed": "Impossible d’importer les annotations. Vérifiez que le fichier est un export d’annotations valide.",
+            "annotationPublicationUnavailable": "Impossible d’importer les annotations car la publication est indisponible. Essayez de réimporter la publication.",
+            "annotationStopPlayback": "Arrêtez la lecture vocale ou audio avant de créer une annotation."
+        },
         "open": {
             "error": "Le livre ne peut pas être ouvert : {{- err}}",
             "folderNotFound": "Le répertoire des publications est introuvable. Réimportez-le ou configurez le stockage additionnel dans Paramètres > Stockage."
@@ -785,7 +790,7 @@
             },
             "hide": "Ne pas afficher",
             "highlight": "Surligner",
-            "noSelectionToast": "Aucun texte sélectionné",
+            "noSelectionToast": "Sélectionnez du texte avant de créer une annotation.",
             "note": "Note {{- color}}",
             "quickAnnotations": "Création rapide (sans édition)",
             "saveNote": "Sauvegarder",

@@ -287,6 +287,11 @@
             "fail": "",
             "success": ""
         },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": ""
+        },
         "open": {
             "error": "",
             "folderNotFound": ""

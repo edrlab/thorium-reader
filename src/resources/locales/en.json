@@ -287,6 +287,11 @@
             "fail": "Importing [{{- path}}] failed: [{{- err}}]",
             "success": "Importing [{{- title}}] completed."
         },
+        "notifications": {
+            "annotationImportFailed": "Unable to import annotations. Check that the file is a valid annotation export.",
+            "annotationPublicationUnavailable": "Unable to import annotations because the publication is unavailable. Try re-importing the publication.",
+            "annotationStopPlayback": "Stop read aloud or audio playback before creating an annotation."
+        },
         "open": {
             "error": "Loading publication failed: [{{- err}}]",
             "folderNotFound": "The publication directory cannot be found. Re-import it, or configure the additional storage in Settings > Storage."
@@ -779,7 +784,7 @@
             },
             "hide": "Do not display",
             "highlight": "Highlight",
-            "noSelectionToast": "No selection",
+            "noSelectionToast": "Select text before creating an annotation.",
             "note": "{{- color}} Note",
             "quickAnnotations": "Quick create (skip editor)",
             "saveNote": "Save",

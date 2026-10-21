@@ -127,7 +127,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         }
     } catch (e) {
         debug("Error!!! to open a file, exit", e);
-        yield* putTyped(toastActions.openRequest.build(ToastType.Error, "" + e, readerPublicationIdentifier));
+        yield* putTyped(toastActions.openRequest.build(ToastType.Error, __("message.notifications.annotationImportFailed"), readerPublicationIdentifier));
         return;
     }
 
@@ -145,7 +145,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         if (!isIReadiumAnnotationSet(readiumAnnotationFormat)) {
 
             debug("Error: ", __READIUM_ANNOTATION_AJV_ERRORS);
-            yield* putTyped(toastActions.openRequest.build(ToastType.Error, __("message.annotations.errorParsing") + __READIUM_ANNOTATION_AJV_ERRORS, readerPublicationIdentifier));
+            yield* putTyped(toastActions.openRequest.build(ToastType.Error, __("message.notifications.annotationImportFailed"), readerPublicationIdentifier));
             return;
         }
 
@@ -199,7 +199,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
             });
         } else {
             debug("ERROR: the publication doesn't have an r2PublicationJson value !!");
-            yield* putTyped(toastActions.openRequest.build(ToastType.Error, "The publication is corrupted", readerPublicationIdentifier));
+            yield* putTyped(toastActions.openRequest.build(ToastType.Error, __("message.notifications.annotationPublicationUnavailable"), readerPublicationIdentifier));
             return;
         }
 
@@ -375,7 +375,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
     } catch (e: any) {
         debug("Error to read the file: ", e);
         if (e?.path !== "") {
-            yield* putTyped(toastActions.openRequest.build(ToastType.Error, "" + e, readerPublicationIdentifier));
+            yield* putTyped(toastActions.openRequest.build(ToastType.Error, __("message.notifications.annotationImportFailed"), readerPublicationIdentifier));
         }
         return;
     }

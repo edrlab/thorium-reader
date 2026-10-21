@@ -297,6 +297,11 @@
             "fail": "[{{- path}}] importas nepavyko: [{{- err}}]",
             "success": "[{{- title}}] importas baigtas."
         },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": ""
+        },
         "open": {
             "error": "Nepavyko atverti leidinio : [{{- err}}]",
             "folderNotFound": "Nepavyksta rasti leidinio aplanko. Importuokite leidinį iš naujo arba sukonfigūruokite papildomą saugyklą skiltyje „Nuostatos“ > „Saugykla“."

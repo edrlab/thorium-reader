@@ -287,6 +287,11 @@
             "fail": "{{- path}} მისამართის შემოტანა უშედეგოდ დასრულდა. {{- err}}",
             "success": "{{- title}} შემოტანა წარმატებით დასრულდა."
         },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": ""
+        },
         "open": {
             "error": "პუბლიკაცია ვერ იხსნება: {{- err}}",
             "folderNotFound": ""

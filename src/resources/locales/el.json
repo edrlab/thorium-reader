@@ -287,6 +287,11 @@
             "fail": "Η εισαγωγή του {{- path}} απέτυχε. {{- err}}",
             "success": "Η εισαγωγή του {{- title}} έχει ολοκληρωθεί."
         },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": ""
+        },
         "open": {
             "error": "Η δημοσίευση δεν μπορεί να ανοίξει: {{- err}}",
             "folderNotFound": "Δεν εντοπίστηκε ο φάκελος δημοσιεύσεων. Εισάγετέ τον ξανά ή ρυθμίστε τον επιπλέον χώρο αποθήκευσης από τις Ρυθμίσεις > Αποθήκευση."
