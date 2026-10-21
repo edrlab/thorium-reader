@@ -293,6 +293,9 @@
             "success": "La importació de {{- title}} ha acabat."
         },
         "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
             "authenticationFailed": "",
             "catalogLinkFailed": "",
             "catalogUpdateFailed": "",

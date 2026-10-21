@@ -288,6 +288,9 @@
             "success": "Julkaisun {{- title}} tuonti on valmis."
         },
         "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
             "authenticationFailed": "",
             "catalogLinkFailed": "",
             "catalogUpdateFailed": "",

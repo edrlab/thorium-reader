@@ -288,6 +288,9 @@
             "success": "A importación de {{-  title}} finalizou."
         },
         "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
             "authenticationFailed": "",
             "catalogLinkFailed": "",
             "catalogUpdateFailed": "",

@@ -671,6 +671,9 @@ declare namespace typed_i18n {
     readonly "success": string
   },
   readonly "notifications": {
+    readonly "annotationImportFailed": string,
+    readonly "annotationPublicationUnavailable": string,
+    readonly "annotationStopPlayback": string,
     readonly "authenticationFailed": string,
     readonly "catalogLinkFailed": string,
     readonly "catalogUpdateFailed": string,
@@ -760,6 +763,9 @@ declare namespace typed_i18n {
   (_: "message.import.fail", __?: {}): string;
   (_: "message.import.success", __?: {}): string;
   (_: "message.notifications", __?: {}): {
+  readonly "annotationImportFailed": string,
+  readonly "annotationPublicationUnavailable": string,
+  readonly "annotationStopPlayback": string,
   readonly "authenticationFailed": string,
   readonly "catalogLinkFailed": string,
   readonly "catalogUpdateFailed": string,
@@ -779,6 +785,9 @@ declare namespace typed_i18n {
   readonly "storageRefreshFailed": string,
   readonly "tagsFailed": string
 };
+  (_: "message.notifications.annotationImportFailed", __?: {}): string;
+  (_: "message.notifications.annotationPublicationUnavailable", __?: {}): string;
+  (_: "message.notifications.annotationStopPlayback", __?: {}): string;
   (_: "message.notifications.authenticationFailed", __?: {}): string;
   (_: "message.notifications.catalogLinkFailed", __?: {}): string;
   (_: "message.notifications.catalogUpdateFailed", __?: {}): string;

@@ -288,6 +288,9 @@
             "success": "Importen av {{- title}} är slutförd."
         },
         "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
             "authenticationFailed": "",
             "catalogLinkFailed": "",
             "catalogUpdateFailed": "",

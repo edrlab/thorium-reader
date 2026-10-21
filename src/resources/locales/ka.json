@@ -288,6 +288,9 @@
             "success": "{{- title}} შემოტანა წარმატებით დასრულდა."
         },
         "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
             "authenticationFailed": "",
             "catalogLinkFailed": "",
             "catalogUpdateFailed": "",

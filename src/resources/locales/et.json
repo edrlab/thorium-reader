@@ -288,6 +288,9 @@
             "success": "„{{- title}}“ väljaande importimine sai kenasti tehtud."
         },
         "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
             "authenticationFailed": "",
             "catalogLinkFailed": "",
             "catalogUpdateFailed": "",

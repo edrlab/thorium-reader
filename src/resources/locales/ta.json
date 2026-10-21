@@ -288,6 +288,9 @@
             "success": "இறக்குமதி [{{- title}}] நிறைவு செய்யப்பட்டது."
         },
         "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
             "authenticationFailed": "",
             "catalogLinkFailed": "",
             "catalogUpdateFailed": "",

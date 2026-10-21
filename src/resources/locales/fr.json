@@ -293,6 +293,9 @@
             "success": "L'ajout de {{- title}} est achevé."
         },
         "notifications": {
+            "annotationImportFailed": "Impossible d’importer les annotations. Vérifiez que le fichier est un export d’annotations valide.",
+            "annotationPublicationUnavailable": "Impossible d’importer les annotations car la publication est indisponible. Essayez de réimporter la publication.",
+            "annotationStopPlayback": "Arrêtez la lecture vocale ou audio avant de créer une annotation.",
             "authenticationFailed": "Impossible de se connecter à ce catalogue. Vérifiez votre connexion et réessayez.",
             "catalogLinkFailed": "Impossible d’ajouter ce catalogue. Vérifiez le lien et votre connexion.",
             "catalogUpdateFailed": "Impossible de modifier ce catalogue. Vérifiez ses paramètres et réessayez.",
@@ -805,7 +808,7 @@
             },
             "hide": "Ne pas afficher",
             "highlight": "Surligner",
-            "noSelectionToast": "Aucun texte sélectionné",
+            "noSelectionToast": "Sélectionnez du texte avant de créer une annotation.",
             "note": "Note {{- color}}",
             "quickAnnotations": "Création rapide (sans édition)",
             "saveNote": "Sauvegarder",

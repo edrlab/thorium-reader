@@ -288,6 +288,9 @@
             "success": "Importing [{{- title}}] completed."
         },
         "notifications": {
+            "annotationImportFailed": "Unable to import annotations. Check that the file is a valid annotation export.",
+            "annotationPublicationUnavailable": "Unable to import annotations because the publication is unavailable. Try re-importing the publication.",
+            "annotationStopPlayback": "Stop read aloud or audio playback before creating an annotation.",
             "authenticationFailed": "Unable to sign in to this catalog. Check your connection and try again.",
             "catalogLinkFailed": "Unable to add this catalog. Check the link and your connection.",
             "catalogUpdateFailed": "Unable to update this catalog. Check its settings and try again.",
@@ -799,7 +802,7 @@
             },
             "hide": "Do not display",
             "highlight": "Highlight",
-            "noSelectionToast": "No selection",
+            "noSelectionToast": "Select text before creating an annotation.",
             "note": "{{- color}} Note",
             "quickAnnotations": "Quick create (skip editor)",
             "saveNote": "Save",

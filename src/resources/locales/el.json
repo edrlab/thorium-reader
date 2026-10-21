@@ -288,6 +288,9 @@
             "success": "Η εισαγωγή του {{- title}} έχει ολοκληρωθεί."
         },
         "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
             "authenticationFailed": "",
             "catalogLinkFailed": "",
             "catalogUpdateFailed": "",
