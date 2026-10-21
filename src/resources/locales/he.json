@@ -292,6 +292,9 @@
             "fail": "",
             "success": ""
         },
+        "notifications": {
+            "recoveryPartialFailure": ""
+        },
         "open": {
             "error": "",
             "folderNotFound": ""

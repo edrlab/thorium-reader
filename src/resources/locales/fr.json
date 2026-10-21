@@ -292,6 +292,9 @@
             "fail": "L'ajout de {{- path}} a échoué : {{- err}}",
             "success": "L'ajout de {{- title}} est achevé."
         },
+        "notifications": {
+            "recoveryPartialFailure": "{{- recovered}} publications récupérées ; {{- failed}} publications n’ont pas pu être récupérées."
+        },
         "open": {
             "error": "Le livre ne peut pas être ouvert : {{- err}}",
             "folderNotFound": "Le répertoire des publications est introuvable. Réimportez-le ou configurez le stockage additionnel dans Paramètres > Stockage."

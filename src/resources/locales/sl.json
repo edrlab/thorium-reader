@@ -297,6 +297,9 @@
             "fail": "Uvoz {{- path}} ni uspel: {{- err}}",
             "success": "Uvoz {{- title}} je končan."
         },
+        "notifications": {
+            "recoveryPartialFailure": ""
+        },
         "open": {
             "error": "Publikacije ni mogoče odpreti: {{- err}}",
             "folderNotFound": "Imenika publikacije ni mogoče najti. Ponovno jo uvozite ali konfigurirajte dodatni prostor za shranjevanje v Nastavitve > Shramba."
