@@ -287,6 +287,10 @@
             "fail": "",
             "success": ""
         },
+        "notifications": {
+            "copyLimit": "",
+            "printLimit": ""
+        },
         "open": {
             "error": "",
             "folderNotFound": ""
