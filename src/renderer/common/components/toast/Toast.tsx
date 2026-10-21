@@ -221,7 +221,10 @@ export class Toast extends React.Component<IProps, IState> {
     }
 
     private handleTransitionEnd() {
-        if (this.isRemoving) return;
+        // Focus and expansion also transition the toast border. Only a leaving
+        // toast may consume the removal guard.
+        if (!this.state.willLeave || this.isRemoving) return;
+        this.isRemoving = true;
         if (this.fallbackTimer) {
             window.clearTimeout(this.fallbackTimer);
             this.fallbackTimer = undefined;
@@ -233,7 +236,6 @@ export class Toast extends React.Component<IProps, IState> {
                 });
             }
         }
-        this.isRemoving = true;
     }
 }
 
