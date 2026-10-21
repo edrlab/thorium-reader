@@ -232,7 +232,7 @@ export function* importFromLink(
 
                     yield put(
                         toastActions.openRequest.build(
-                            ToastType.Success,
+                            ToastType.Info,
                             translate("message.import.alreadyImport",
                                 { title: publicationView.documentTitle }),
                         ),
@@ -385,7 +385,7 @@ export function* importFromFs(
 
                                 yield put(
                                     toastActions.openRequest.build(
-                                        ToastType.Success,
+                                        ToastType.Info,
                                         translate("message.import.alreadyImport",
                                             { title: publicationView.documentTitle }),
                                     ),

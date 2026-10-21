@@ -67,7 +67,9 @@ export function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction
 
     clipboard.writeText(`${textToCopy}`, clipBoardType);
 
-    yield* putTyped(toastActions.openRequest.build(ToastType.Success,
+    // A partial copy is informational; reserve success for a complete copy.
+    const partialCopy = nCharsToCopy < clipboardData.txt.length;
+    yield* putTyped(toastActions.openRequest.build(partialCopy ? ToastType.Info : ToastType.Success,
         `LCP [${translator.translate("app.edit.copy")}] ${newPublicationDocument.lcpRightsCopies} / ${publicationDocument.lcp.rights.copy}`,
         publicationIdentifier, (action as unknown as ActionWithSender).sender?.identifier));
 }

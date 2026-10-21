@@ -3782,7 +3782,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             dispatch(toastActions.openRequest.build(ToastType.Success, msg));
         },
         toastInfo: (msg: string) => {
-            dispatch(toastActions.openRequest.build(ToastType.Default, msg));
+            dispatch(toastActions.openRequest.build(ToastType.Info, msg));
         },
         toastError: (msg: string) => {
             dispatch(toastActions.openRequest.build(ToastType.Error, msg));
