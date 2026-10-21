@@ -6,6 +6,7 @@ declare namespace typed_i18n {
   readonly "bookmarkNote": string,
   readonly "cancelDownload": string,
   readonly "closeDialog": string,
+  readonly "copyNotification": string,
   readonly "decreaseSetting": string,
   readonly "downloadProgress": string,
   readonly "editTag": string,
@@ -14,6 +15,9 @@ declare namespace typed_i18n {
   readonly "leftSlideButton": string,
   readonly "loading": string,
   readonly "mainContent": string,
+  readonly "notificationCopied": string,
+  readonly "notificationCopyFailed": string,
+  readonly "notificationDetails": string,
   readonly "printPage": string,
   readonly "publicationDetails": string,
   readonly "resetSetting": string,
@@ -26,6 +30,7 @@ declare namespace typed_i18n {
   (_: "accessibility.bookmarkNote", __?: {}): string;
   (_: "accessibility.cancelDownload", __?: {}): string;
   (_: "accessibility.closeDialog", __?: {}): string;
+  (_: "accessibility.copyNotification", __?: {}): string;
   (_: "accessibility.decreaseSetting", __?: {}): string;
   (_: "accessibility.downloadProgress", __?: {}): string;
   (_: "accessibility.editTag", __?: {}): string;
@@ -34,6 +39,9 @@ declare namespace typed_i18n {
   (_: "accessibility.leftSlideButton", __?: {}): string;
   (_: "accessibility.loading", __?: {}): string;
   (_: "accessibility.mainContent", __?: {}): string;
+  (_: "accessibility.notificationCopied", __?: {}): string;
+  (_: "accessibility.notificationCopyFailed", __?: {}): string;
+  (_: "accessibility.notificationDetails", __?: {}): string;
   (_: "accessibility.printPage", __?: {}): string;
   (_: "accessibility.publicationDetails", __?: {}): string;
   (_: "accessibility.resetSetting", __?: {}): string;
