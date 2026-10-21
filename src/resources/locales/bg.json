@@ -288,7 +288,11 @@
             "success": "Добавянето на {{- title}} завърши."
         },
         "notifications": {
-            "recoveryPartialFailure": ""
+            "copyLimit": "",
+            "printLimit": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": ""
         },
         "open": {
             "error": "Книгата не може да бъде отворена: {{- err}}",

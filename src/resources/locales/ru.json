@@ -298,7 +298,11 @@
             "success": "Импорт {{- title}} закончен."
         },
         "notifications": {
-            "recoveryPartialFailure": ""
+            "copyLimit": "",
+            "printLimit": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": ""
         },
         "open": {
             "error": "Книга не может быть открыта : {{- err}}",

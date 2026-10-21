@@ -293,7 +293,11 @@
             "success": ""
         },
         "notifications": {
-            "recoveryPartialFailure": ""
+            "copyLimit": "",
+            "printLimit": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": ""
         },
         "open": {
             "error": "",

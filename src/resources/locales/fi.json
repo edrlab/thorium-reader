@@ -288,7 +288,11 @@
             "success": "Julkaisun {{- title}} tuonti on valmis."
         },
         "notifications": {
-            "recoveryPartialFailure": ""
+            "copyLimit": "",
+            "printLimit": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": ""
         },
         "open": {
             "error": "Julkaisua ei voi avata: {{- err}}",

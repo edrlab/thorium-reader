@@ -293,7 +293,11 @@
             "success": "La importación de {{- title}} ha finalizado."
         },
         "notifications": {
-            "recoveryPartialFailure": ""
+            "copyLimit": "",
+            "printLimit": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": ""
         },
         "open": {
             "error": "No se puede abrir la publicación: {{- err}}",

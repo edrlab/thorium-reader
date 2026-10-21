@@ -288,7 +288,11 @@
             "success": "Het toevoegen van {{- title}} is gelukt."
         },
         "notifications": {
-            "recoveryPartialFailure": ""
+            "copyLimit": "",
+            "printLimit": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": ""
         },
         "open": {
             "error": "De publicatie kan niet worden geopend: {{- err}}",

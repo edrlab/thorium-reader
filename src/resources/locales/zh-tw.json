@@ -283,7 +283,11 @@
             "success": "匯入 [{{- title}}] 完成。"
         },
         "notifications": {
-            "recoveryPartialFailure": ""
+            "copyLimit": "",
+            "printLimit": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": ""
         },
         "open": {
             "error": "無法打開出版物：[{{- err}}]",

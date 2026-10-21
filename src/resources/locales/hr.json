@@ -293,7 +293,11 @@
             "success": "Uvoz {{- title}} je završen."
         },
         "notifications": {
-            "recoveryPartialFailure": ""
+            "copyLimit": "",
+            "printLimit": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": ""
         },
         "open": {
             "error": "Građa se ne može otvoriti: {{- err}}",

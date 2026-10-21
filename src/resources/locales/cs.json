@@ -298,7 +298,11 @@
             "success": "Import publikace „{{- title}}“ dokončen."
         },
         "notifications": {
-            "recoveryPartialFailure": ""
+            "copyLimit": "",
+            "printLimit": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": ""
         },
         "open": {
             "error": "Načítání publikace sehlalo: [{{- err}}]",

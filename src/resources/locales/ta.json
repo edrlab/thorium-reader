@@ -288,7 +288,11 @@
             "success": "இறக்குமதி [{{- title}}] நிறைவு செய்யப்பட்டது."
         },
         "notifications": {
-            "recoveryPartialFailure": ""
+            "copyLimit": "",
+            "printLimit": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": ""
         },
         "open": {
             "error": "வெளியீட்டை ஏற்றுவது தோல்வியுற்றது: [{{- err}}]",

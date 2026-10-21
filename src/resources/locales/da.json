@@ -288,7 +288,11 @@
             "success": "{{- title}} er nu importeret."
         },
         "notifications": {
-            "recoveryPartialFailure": ""
+            "copyLimit": "",
+            "printLimit": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": ""
         },
         "open": {
             "error": "Bogen kan ikke åbnes: {{- err}}",

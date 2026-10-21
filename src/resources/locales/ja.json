@@ -282,7 +282,11 @@
             "success": "『{{- title}}』の追加が完了しました。"
         },
         "notifications": {
-            "recoveryPartialFailure": ""
+            "copyLimit": "",
+            "printLimit": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": ""
         },
         "open": {
             "error": "本を開けません：{{- err}}",

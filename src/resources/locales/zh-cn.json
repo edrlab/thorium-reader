@@ -283,7 +283,11 @@
             "success": "导入{{- title}}完成。"
         },
         "notifications": {
-            "recoveryPartialFailure": ""
+            "copyLimit": "",
+            "printLimit": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": ""
         },
         "open": {
             "error": "无法打开出版物: {{- err}}",

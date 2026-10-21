@@ -298,7 +298,11 @@
             "success": "[{{- title}}] importas baigtas."
         },
         "notifications": {
-            "recoveryPartialFailure": ""
+            "copyLimit": "",
+            "printLimit": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": ""
         },
         "open": {
             "error": "Nepavyko atverti leidinio : [{{- err}}]",

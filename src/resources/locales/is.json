@@ -288,7 +288,11 @@
             "success": "[{{- title}}] hefur verið bætt við."
         },
         "notifications": {
-            "recoveryPartialFailure": ""
+            "copyLimit": "",
+            "printLimit": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": ""
         },
         "open": {
             "error": "Ekki tókst að opna bókina: [{{- err}}]",

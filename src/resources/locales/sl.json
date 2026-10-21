@@ -298,7 +298,11 @@
             "success": "Uvoz {{- title}} je končan."
         },
         "notifications": {
-            "recoveryPartialFailure": ""
+            "copyLimit": "",
+            "printLimit": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": ""
         },
         "open": {
             "error": "Publikacije ni mogoče odpreti: {{- err}}",

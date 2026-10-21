@@ -288,7 +288,11 @@
             "success": "Der Import von {{- title}} ist abgeschlossen."
         },
         "notifications": {
-            "recoveryPartialFailure": ""
+            "copyLimit": "",
+            "printLimit": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": ""
         },
         "open": {
             "error": "Die Publikation kann nicht geöffnet werden: {{- err}}",

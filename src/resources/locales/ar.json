@@ -308,7 +308,11 @@
             "success": "اكتمل استيراد [{{- title}}]."
         },
         "notifications": {
-            "recoveryPartialFailure": ""
+            "copyLimit": "",
+            "printLimit": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": ""
         },
         "open": {
             "error": "فشل تحميل المنشور: [{{- err}}]",

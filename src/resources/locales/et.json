@@ -288,7 +288,11 @@
             "success": "„{{- title}}“ väljaande importimine sai kenasti tehtud."
         },
         "notifications": {
-            "recoveryPartialFailure": ""
+            "copyLimit": "",
+            "printLimit": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": ""
         },
         "open": {
             "error": "Väljaande/teise laadimine ei õnnestunud: {{- err}}",

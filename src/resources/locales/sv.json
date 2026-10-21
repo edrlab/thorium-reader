@@ -288,7 +288,11 @@
             "success": "Importen av {{- title}} är slutförd."
         },
         "notifications": {
-            "recoveryPartialFailure": ""
+            "copyLimit": "",
+            "printLimit": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": ""
         },
         "open": {
             "error": "Publikationen kan inte öppnas: {{- err}}",

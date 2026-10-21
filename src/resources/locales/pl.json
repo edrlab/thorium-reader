@@ -298,7 +298,11 @@
             "success": "Importowanie [{{- title}}] zakończone."
         },
         "notifications": {
-            "recoveryPartialFailure": ""
+            "copyLimit": "",
+            "printLimit": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": ""
         },
         "open": {
             "error": "Ładowanie publikacji nie powiodło się: [{{- err}}]",
