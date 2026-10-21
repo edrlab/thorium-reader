@@ -295,9 +295,22 @@
         "notifications": {
             "authenticationFailed": "",
             "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
             "openFileFailed": "",
             "openLinkFailed": "",
-            "publicationUnavailable": ""
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "La pubblicazione non può essere aperta: {{- err}}",

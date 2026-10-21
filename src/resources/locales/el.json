@@ -290,9 +290,22 @@
         "notifications": {
             "authenticationFailed": "",
             "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
             "openFileFailed": "",
             "openLinkFailed": "",
-            "publicationUnavailable": ""
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Η δημοσίευση δεν μπορεί να ανοίξει: {{- err}}",
