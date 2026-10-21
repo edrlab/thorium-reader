@@ -377,7 +377,7 @@ function* readerPrint(action: readerActions.print.TAction) {
         yield* putTyped(actionToSend);
 
         const partialPrint = pagesToPrint.length < pageRange.length;
-        yield* putTyped(toastActions.openRequest.build(partialPrint ? ToastType.Default : ToastType.Success,
+        yield* putTyped(toastActions.openRequest.build(partialPrint ? ToastType.Info : ToastType.Success,
             `LCP [${translator.translate("app.edit.print")}] [${pagesToPrint}] / ${publicationDocument.lcp.rights.print}`,
             publicationIdentifier, (action as unknown as ActionWithSender).sender?.identifier));
     } else {

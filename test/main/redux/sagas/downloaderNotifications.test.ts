@@ -13,7 +13,7 @@ describe("download failure ownership", () => {
         operation.next();
         expect(operation.return(undefined).value).toMatchObject({ type: "CANCELLED" });
         const notification = operation.next(true).value;
-        expect(notification).toMatchObject({ type: "PUT", payload: { action: { payload: { type: "toast-default" } } } });
+        expect(notification).toMatchObject({ type: "PUT", payload: { action: { payload: { type: "toast-info" } } } });
         expect(notification).not.toHaveProperty("payload.action.payload.timeout");
         operation.next();
         operation.next();

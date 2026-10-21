@@ -396,7 +396,7 @@ export function saga() {
                 } catch (e) {
                     const message = e instanceof Error ? e.message : `${e}`;
                     yield* putTyped(toastActions.openRequest.build(
-                        directoryUpdated ? ToastType.Default : ToastType.Error,
+                        directoryUpdated ? ToastType.Info : ToastType.Error,
                         directoryUpdated ? getTranslator().translate("message.notifications.storageRefreshFailed")
                             : getTranslator().translate("message.storage.updateFailed", { message }),
                     ));

@@ -191,7 +191,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
         if (ttsState !== TTSStateEnum.STOPPED ||
             mediaOverlaysState !== MediaOverlaysStateEnum.STOPPED
         ) {
-            dispatch(toastActions.openRequest.build(ToastType.Default, `${__("reader.tts.stop")} / ${__("reader.media-overlays.stop")}`));
+            dispatch(toastActions.openRequest.build(ToastType.Info, `${__("reader.tts.stop")} / ${__("reader.media-overlays.stop")}`));
             return false;
         }
 

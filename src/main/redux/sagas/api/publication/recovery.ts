@@ -123,7 +123,7 @@ export function* recover(identifiers?: string[]): SagaGenerator<PublicationView[
 
     if (failed && publicationViews.length) {
         yield* putTyped(toastActions.openRequest.build(
-            ToastType.Default,
+            ToastType.Info,
             getTranslator().translate("message.notifications.recoveryPartialFailure", { recovered: publicationViews.length, failed }),
         ));
     } else if (publicationViews.length) {

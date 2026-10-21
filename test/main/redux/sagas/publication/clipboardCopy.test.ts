@@ -51,7 +51,7 @@ describe("LCP clipboard allowance", () => {
         expect(repository.save).toHaveBeenCalledWith(expect.objectContaining({ lcpRightsCopies: 10 }));
         expect(dispatch).toHaveBeenCalledTimes(1);
         expect(dispatch).toHaveBeenCalledWith(
-            expect.objectContaining({ payload: expect.objectContaining({ type: "toast-default" }) }),
+            expect.objectContaining({ payload: expect.objectContaining({ type: "toast-info" }) }),
         );
         expect(dispatch.mock.calls[0][0]).not.toHaveProperty("payload.timeout");
     });

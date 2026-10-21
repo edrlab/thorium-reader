@@ -95,7 +95,7 @@ export function* downloader(linkHrefArray: IDownloaderLink[], downloadLabel?: st
         if (yield cancelled()) {
 
             yield* putTyped(toastActions.openRequest.build(
-                ToastType.Default,
+                ToastType.Info,
                 getTranslator().translate("message.download.cancelled"),
             ));
         }
