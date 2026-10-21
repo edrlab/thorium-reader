@@ -46,4 +46,3 @@ export function* triggerCatalogOpdsAuthentication(action: customizationActions.t
         yield* putTyped(toastActions.openRequest.build(ToastType.Error, getTranslator().translate("message.notifications.authenticationFailed")));
     }
 }
-

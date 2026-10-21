@@ -35,4 +35,23 @@ describe("recovery outcome notifications", () => {
         expect(dispatch).toHaveBeenCalledTimes(1);
         expect(dispatch).toHaveBeenCalledWith(expect.objectContaining({ payload: expect.objectContaining({ type: "toast-default", data: "message.notifications.recoveryPartialFailure" }) }));
     });
+    it("reports an entirely successful batch as success", async () => {
+        jest.mocked(importFromFsService).mockImplementation(function* (file): ReturnType<typeof importFromFsService> {
+            return [{ identifier: file } as never, false];
+        });
+        const dispatch = jest.fn();
+        await runSaga({ dispatch }, recover).toPromise();
+        expect(dispatch).toHaveBeenCalledTimes(1);
+        expect(dispatch).toHaveBeenCalledWith(expect.objectContaining({ payload: expect.objectContaining({ type: "toast-success", data: "message.storage.recovery.success" }) }));
+    });
+    it("reports a wholly failed batch as an error", async () => {
+        jest.mocked(importFromFsService).mockImplementation(function* (): ReturnType<typeof importFromFsService> {
+            throw new Error("Unreadable publication");
+        });
+        const dispatch = jest.fn();
+        await runSaga({ dispatch }, recover).toPromise();
+        expect(dispatch).toHaveBeenCalledTimes(1);
+        expect(dispatch).toHaveBeenCalledWith(expect.objectContaining({ payload: expect.objectContaining({ type: "toast-error", data: "message.storage.recovery.failure" }) }));
+    });
+
 });
