@@ -279,9 +279,11 @@
         },
         "notifications": {
             "catalogUpdateFailed": "",
+            "copyLimit": "",
             "deleteFailed": "",
             "exportFailed": "",
             "openFileFailed": "",
+            "printLimit": "",
             "tagsFailed": ""
         },
         "open": {
