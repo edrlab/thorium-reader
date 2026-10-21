@@ -293,7 +293,17 @@
             "success": ""
         },
         "notifications": {
-            "storageRefreshFailed": ""
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "printLimit": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "",

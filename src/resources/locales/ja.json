@@ -282,7 +282,17 @@
             "success": "『{{- title}}』の追加が完了しました。"
         },
         "notifications": {
-            "storageRefreshFailed": ""
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "printLimit": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "本を開けません：{{- err}}",

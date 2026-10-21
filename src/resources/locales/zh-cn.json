@@ -283,7 +283,17 @@
             "success": "导入{{- title}}完成。"
         },
         "notifications": {
-            "storageRefreshFailed": ""
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "printLimit": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "无法打开出版物: {{- err}}",

@@ -298,7 +298,17 @@
             "success": "Импорт {{- title}} закончен."
         },
         "notifications": {
-            "storageRefreshFailed": ""
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "printLimit": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Книга не может быть открыта : {{- err}}",

@@ -288,7 +288,17 @@
             "success": "Η εισαγωγή του {{- title}} έχει ολοκληρωθεί."
         },
         "notifications": {
-            "storageRefreshFailed": ""
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "printLimit": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Η δημοσίευση δεν μπορεί να ανοίξει: {{- err}}",

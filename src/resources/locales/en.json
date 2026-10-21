@@ -288,7 +288,17 @@
             "success": "Importing [{{- title}}] completed."
         },
         "notifications": {
-            "storageRefreshFailed": "The storage setting was saved, but the library could not be refreshed. Try refreshing the library."
+            "catalogUpdateFailed": "Unable to update this catalog. Check its settings and try again.",
+            "copyLimit": "The copy allowance for this publication has been exhausted.",
+            "deleteFailed": "Unable to delete this publication. Try again.",
+            "exportFailed": "Unable to export this publication. Check the destination folder and available disk space.",
+            "openFileFailed": "Unable to open this file. Check that it is available and uses a supported format.",
+            "printLimit": "The print allowance for this publication has been exhausted.",
+            "recoveryPartialFailure": "Recovered {{- recovered}} publications; {{- failed}} publications could not be recovered.",
+            "renewFailed": "Unable to renew this loan. Try again or contact your library.",
+            "returnFailed": "Unable to return this loan. Try again or contact your library.",
+            "storageRefreshFailed": "The storage setting was saved, but the library could not be refreshed. Try refreshing the library.",
+            "tagsFailed": "Unable to save the publication tags. Try again."
         },
         "open": {
             "error": "Loading publication failed: [{{- err}}]",
