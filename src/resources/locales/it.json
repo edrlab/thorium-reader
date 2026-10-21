@@ -292,6 +292,10 @@
             "fail": "L'importazione di {{- path}} è fallita. {{- err}}",
             "success": "L'importazione di {{- title}} è terminata."
         },
+        "notifications": {
+            "copyLimit": "",
+            "printLimit": ""
+        },
         "open": {
             "error": "La pubblicazione non può essere aperta: {{- err}}",
             "folderNotFound": "La cartella della pubblicazione non si trova. Reimportala o configura uno spazio d'archiviazione aggiuntivo in Impostazioni > Spazio d'archiviazione."

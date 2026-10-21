@@ -287,6 +287,10 @@
             "fail": "Julkaisun {{- path}} tuonti epäonnistui. {{- err}}",
             "success": "Julkaisun {{- title}} tuonti on valmis."
         },
+        "notifications": {
+            "copyLimit": "",
+            "printLimit": ""
+        },
         "open": {
             "error": "Julkaisua ei voi avata: {{- err}}",
             "folderNotFound": "Julkaisuhakemistoa ei löydy. Tuo se uudelleen tai määritä lisätallennustilaa kohdassa Asetukset > Tallennustila."

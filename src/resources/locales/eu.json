@@ -287,6 +287,10 @@
             "fail": "{- path}}-ren inportazioak huts egin du. {{- Err}}",
             "success": "{- title}}-ren inportazioa amaitu da."
         },
+        "notifications": {
+            "copyLimit": "",
+            "printLimit": ""
+        },
         "open": {
             "error": "Ezin da argitalpena ireki: {{- err}}",
             "folderNotFound": ""
