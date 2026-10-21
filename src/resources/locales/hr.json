@@ -294,7 +294,9 @@
         },
         "notifications": {
             "copyLimit": "",
-            "printLimit": ""
+            "printLimit": "",
+            "renewFailed": "",
+            "returnFailed": ""
         },
         "open": {
             "error": "Građa se ne može otvoriti: {{- err}}",

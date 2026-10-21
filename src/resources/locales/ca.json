@@ -294,7 +294,9 @@
         },
         "notifications": {
             "copyLimit": "",
-            "printLimit": ""
+            "printLimit": "",
+            "renewFailed": "",
+            "returnFailed": ""
         },
         "open": {
             "error": "No es pot obrir la publicació: {{- err}}",

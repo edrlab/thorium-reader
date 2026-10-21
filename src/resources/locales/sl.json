@@ -299,7 +299,9 @@
         },
         "notifications": {
             "copyLimit": "",
-            "printLimit": ""
+            "printLimit": "",
+            "renewFailed": "",
+            "returnFailed": ""
         },
         "open": {
             "error": "Publikacije ni mogoče odpreti: {{- err}}",

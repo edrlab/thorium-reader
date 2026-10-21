@@ -289,7 +289,9 @@
         },
         "notifications": {
             "copyLimit": "",
-            "printLimit": ""
+            "printLimit": "",
+            "renewFailed": "",
+            "returnFailed": ""
         },
         "open": {
             "error": "வெளியீட்டை ஏற்றுவது தோல்வியுற்றது: [{{- err}}]",

@@ -289,7 +289,9 @@
         },
         "notifications": {
             "copyLimit": "The copy allowance for this publication has been exhausted.",
-            "printLimit": "The print allowance for this publication has been exhausted."
+            "printLimit": "The print allowance for this publication has been exhausted.",
+            "renewFailed": "Unable to renew this loan. Try again or contact your library.",
+            "returnFailed": "Unable to return this loan. Try again or contact your library."
         },
         "open": {
             "error": "Loading publication failed: [{{- err}}]",

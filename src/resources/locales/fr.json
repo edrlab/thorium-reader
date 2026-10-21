@@ -294,7 +294,9 @@
         },
         "notifications": {
             "copyLimit": "Le quota de copie de cette publication est épuisé.",
-            "printLimit": "Le quota d’impression de cette publication est épuisé."
+            "printLimit": "Le quota d’impression de cette publication est épuisé.",
+            "renewFailed": "Impossible de prolonger ce prêt. Réessayez ou contactez votre bibliothèque.",
+            "returnFailed": "Impossible de rendre ce prêt. Réessayez ou contactez votre bibliothèque."
         },
         "open": {
             "error": "Le livre ne peut pas être ouvert : {{- err}}",
