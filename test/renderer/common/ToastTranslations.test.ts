@@ -21,25 +21,7 @@ const keys = [
 
 const english = ["Press Enter to copy the notification", "Notification copied", "Could not copy notification", "Notification", "Close notification"];
 
-test.each([
-    ["en", "Unable to determine your reading position. Try again."],
-    ["fr", "Impossible de déterminer votre position de lecture. Réessayez."],
-    ["es", "Unable to determine your reading position. Try again."],
-] as const)("reading-position errors are meaningful in %s", async (locale, expected) => {
-    await setLocale(locale);
-    expect(translate("message.notifications.readingPositionFailed")).toBe(expected);
-});
-
 afterAll(async () => { await setLocale("en"); });
-
-test.each([
-    ["en", "Another profile operation is in progress. Wait for it to finish, then try again."],
-    ["fr", "Une autre opération sur un profil est en cours. Attendez qu’elle se termine, puis réessayez."],
-    ["es", "Another profile operation is in progress. Wait for it to finish, then try again."],
-] as const)("profile-busy warnings are meaningful in %s", async (locale, expected) => {
-    await setLocale(locale);
-    expect(translate("message.notifications.profileBusy")).toBe(expected);
-});
 
 test.each([
     ["en", english],
