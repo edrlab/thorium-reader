@@ -1,8 +1,8 @@
 {
     "accessibility": {
         "annotationNote": "Annotation note",
-        "bookmarkNote": "Bookmark note",
         "bookMenu": "Menu",
+        "bookmarkNote": "Bookmark note",
         "cancelDownload": "Cancel download: {{- title}}",
         "closeDialog": "Close",
         "closeNotification": "Close notification",

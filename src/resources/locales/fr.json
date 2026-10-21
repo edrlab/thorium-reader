@@ -1,8 +1,8 @@
 {
     "accessibility": {
         "annotationNote": "Note d’annotation",
-        "bookmarkNote": "Note du marque-page",
         "bookMenu": "Menu",
+        "bookmarkNote": "Note du marque-page",
         "cancelDownload": "Annuler le téléchargement : {{- title}}",
         "closeDialog": "Fermer",
         "closeNotification": "Fermer la notification",
