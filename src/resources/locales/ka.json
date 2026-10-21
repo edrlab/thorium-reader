@@ -287,6 +287,13 @@
             "fail": "{{- path}} მისამართის შემოტანა უშედეგოდ დასრულდა. {{- err}}",
             "success": "{{- title}} შემოტანა წარმატებით დასრულდა."
         },
+        "notifications": {
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "publicationUnavailable": ""
+        },
         "open": {
             "error": "პუბლიკაცია ვერ იხსნება: {{- err}}",
             "folderNotFound": ""

@@ -287,6 +287,13 @@
             "fail": "A importación de {{-  path}} fallou. {{-  err}}",
             "success": "A importación de {{-  title}} finalizou."
         },
+        "notifications": {
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "publicationUnavailable": ""
+        },
         "open": {
             "error": "Non se pode abrir a publicación: {{-  err}}",
             "folderNotFound": ""

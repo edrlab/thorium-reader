@@ -292,6 +292,13 @@
             "fail": "La importación de {{- path}} falló. {{- err}}",
             "success": "La importación de {{- title}} ha finalizado."
         },
+        "notifications": {
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "publicationUnavailable": ""
+        },
         "open": {
             "error": "No se puede abrir la publicación: {{- err}}",
             "folderNotFound": "No se encuentra el directorio de esta publicación. Vuelve a importarla, o configura el almacenamiento adicional en Opciones > Almacenamiento."

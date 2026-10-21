@@ -670,6 +670,13 @@ declare namespace typed_i18n {
     readonly "fail": string,
     readonly "success": string
   },
+  readonly "notifications": {
+    readonly "authenticationFailed": string,
+    readonly "catalogLinkFailed": string,
+    readonly "openFileFailed": string,
+    readonly "openLinkFailed": string,
+    readonly "publicationUnavailable": string
+  },
   readonly "open": {
     readonly "error": string,
     readonly "folderNotFound": string
@@ -739,6 +746,18 @@ declare namespace typed_i18n {
   (_: "message.import.alreadyImport", __?: {}): string;
   (_: "message.import.fail", __?: {}): string;
   (_: "message.import.success", __?: {}): string;
+  (_: "message.notifications", __?: {}): {
+  readonly "authenticationFailed": string,
+  readonly "catalogLinkFailed": string,
+  readonly "openFileFailed": string,
+  readonly "openLinkFailed": string,
+  readonly "publicationUnavailable": string
+};
+  (_: "message.notifications.authenticationFailed", __?: {}): string;
+  (_: "message.notifications.catalogLinkFailed", __?: {}): string;
+  (_: "message.notifications.openFileFailed", __?: {}): string;
+  (_: "message.notifications.openLinkFailed", __?: {}): string;
+  (_: "message.notifications.publicationUnavailable", __?: {}): string;
   (_: "message.open", __?: {}): { readonly "error": string, readonly "folderNotFound": string };
   (_: "message.open.error", __?: {}): string;
   (_: "message.open.folderNotFound", __?: {}): string;

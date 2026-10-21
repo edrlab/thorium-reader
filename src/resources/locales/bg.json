@@ -287,6 +287,13 @@
             "fail": "Добавянето на {{- path}} се провали. {{- err}}",
             "success": "Добавянето на {{- title}} завърши."
         },
+        "notifications": {
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "publicationUnavailable": ""
+        },
         "open": {
             "error": "Книгата не може да бъде отворена: {{- err}}",
             "folderNotFound": ""

@@ -287,6 +287,13 @@
             "fail": "Importen av {{- path}} misslyckades. {{- err}}",
             "success": "Importen av {{- title}} är slutförd."
         },
+        "notifications": {
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "publicationUnavailable": ""
+        },
         "open": {
             "error": "Publikationen kan inte öppnas: {{- err}}",
             "folderNotFound": "Mappen för boken kan inte hittas. Importera den igen eller ändra i Inställningar > Lagring."

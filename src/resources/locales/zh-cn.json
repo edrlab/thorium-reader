@@ -282,6 +282,13 @@
             "fail": "导入{{- path}}失败。{{- err}}",
             "success": "导入{{- title}}完成。"
         },
+        "notifications": {
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "publicationUnavailable": ""
+        },
         "open": {
             "error": "无法打开出版物: {{- err}}",
             "folderNotFound": "出版物文件路径无法找到。重新导入，或者在“设置>储存”选项中调整附加储存位置。"

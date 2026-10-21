@@ -292,6 +292,13 @@
             "fail": "L'ajout de {{- path}} a échoué : {{- err}}",
             "success": "L'ajout de {{- title}} est achevé."
         },
+        "notifications": {
+            "authenticationFailed": "Impossible de se connecter à ce catalogue. Vérifiez votre connexion et réessayez.",
+            "catalogLinkFailed": "Impossible d’ajouter ce catalogue. Vérifiez le lien et votre connexion.",
+            "openFileFailed": "Impossible d’ouvrir ce fichier. Vérifiez sa disponibilité et son format.",
+            "openLinkFailed": "Impossible d’ouvrir ce lien de publication. Vérifiez le lien et réessayez.",
+            "publicationUnavailable": "Cette publication est indisponible. Essayez de la réimporter."
+        },
         "open": {
             "error": "Le livre ne peut pas être ouvert : {{- err}}",
             "folderNotFound": "Le répertoire des publications est introuvable. Réimportez-le ou configurez le stockage additionnel dans Paramètres > Stockage."

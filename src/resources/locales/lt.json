@@ -297,6 +297,13 @@
             "fail": "[{{- path}}] importas nepavyko: [{{- err}}]",
             "success": "[{{- title}}] importas baigtas."
         },
+        "notifications": {
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "publicationUnavailable": ""
+        },
         "open": {
             "error": "Nepavyko atverti leidinio : [{{- err}}]",
             "folderNotFound": "Nepavyksta rasti leidinio aplanko. Importuokite leidinį iš naujo arba sukonfigūruokite papildomą saugyklą skiltyje „Nuostatos“ > „Saugykla“."
