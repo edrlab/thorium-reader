@@ -49,8 +49,6 @@ interface IState {
 
 export class Toast extends React.Component<IProps, IState> {
     private ref: React.RefObject<HTMLDivElement>;
-    private timer: number | undefined;
-    private ignoreTimer: boolean | undefined;
     private fallbackTimer: number | undefined;
     private isRemoving = false;
 
@@ -69,44 +67,20 @@ export class Toast extends React.Component<IProps, IState> {
         this.handleClose = this.handleClose.bind(this);
     }
 
-    public cancelTimer(ignoreTimer: boolean) {
-        if (this.timer) {
-            window.clearTimeout(this.timer);
-            this.timer = undefined;
-        }
-        if (this.fallbackTimer) {
-            window.clearTimeout(this.fallbackTimer);
-            this.fallbackTimer = undefined;
-        }
-        if (ignoreTimer) {
-            this.ignoreTimer = true;
-        }
-    }
-    public triggerTimer(fast: boolean) {
-        this.cancelTimer(false);
-        if (this.ignoreTimer) {
-            return;
-        }
-
-        this.timer = window.setTimeout(() => {
-            this.timer = undefined;
-            this.handleClose();
-        }, fast ? 500 : 5000);
-    }
-
     public componentDidMount() {
-        this.triggerTimer(false);
+        // Visible notifications remain available until explicitly dismissed.
 
         // https://www.electronjs.org/docs/latest/tutorial/notifications
         if (this.props.displaySystemNotification) {
             new Notification(capitalizedAppName, {
                 body: this.props.message,
             });
+            this.props.close(this.props.id);
         }
     }
 
     public componentWillUnmount() {
-        this.cancelTimer(false);
+        if (this.fallbackTimer) window.clearTimeout(this.fallbackTimer);
     }
 
     public render(): React.ReactElement<{}> {
@@ -134,21 +108,11 @@ export class Toast extends React.Component<IProps, IState> {
             <div
                 onTransitionEnd={this.handleTransitionEnd}
                 ref={this.ref}
-                onMouseMove={() => {
-                    this.cancelTimer(false);
-                }}
                 onClick={() => {
-                    this.cancelTimer(true);
                     this.setState({ opened : !this.state.opened });
                 }}
-                onMouseOut={() => {
-                    this.triggerTimer(true);
-
-                }}
                 onBlur={() => {
-                    this.ignoreTimer = false;
                     this.setState({ opened : false });
-                    this.triggerTimer(true);
                 }}
                 className={classNames(
                     stylesToasts.toast,
@@ -166,9 +130,6 @@ export class Toast extends React.Component<IProps, IState> {
                     role="alert"
                     tabIndex={0}
                     className={ this.state.opened ? stylesToasts.toast_open : ""}
-                    onFocus={() => {
-                        this.cancelTimer(true);
-                    }}
                     onClick={() => {
                         const clipBoardType = "clipboard";
                         try {
@@ -178,22 +139,12 @@ export class Toast extends React.Component<IProps, IState> {
                             new Notification(capitalizedAppName, {
                                 body: `${__("app.edit.copy")} [${this.props.message}]`,
                             });
-                            // this.triggerTimer(true);
-                            // this.handleClose();
                         } catch (_e) {
                             // ignore
                         }
                     }
                 }>{ this.props.message }</p>
-                {/*
-                    onBlur={() => {
-                        this.triggerTimer(true);
-                    }}
-                */}
                 <button
-                    onFocus={() => {
-                        this.cancelTimer(true);
-                    }}
                     onClick={(e) => {
                         e.stopPropagation();
                         this.handleClose();
@@ -211,6 +162,7 @@ export class Toast extends React.Component<IProps, IState> {
     }
 
     private handleClose() {
+        if (this.state.willLeave) return;
         this.setState({ willLeave: true, opened: false });
         this.fallbackTimer = window.setTimeout(() => {
             if (!this.state.toRemove) {
@@ -221,7 +173,8 @@ export class Toast extends React.Component<IProps, IState> {
     }
 
     private handleTransitionEnd() {
-        if (this.isRemoving) return;
+        if (!this.state.willLeave || this.isRemoving) return;
+        this.isRemoving = true;
         if (this.fallbackTimer) {
             window.clearTimeout(this.fallbackTimer);
             this.fallbackTimer = undefined;
@@ -233,7 +186,6 @@ export class Toast extends React.Component<IProps, IState> {
                 });
             }
         }
-        this.isRemoving = true;
     }
 }
 
