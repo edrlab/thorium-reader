@@ -67,7 +67,7 @@ export class ToastManager extends React.Component<IProps, IState> {
             <div className={stylesToasts.toasts_wrapper}>
                 {Object.keys(toastList).map((id) => {
                     const toast = toastList[id];
-                    if (toast && (!toast.publicationIdentifier || toast.publicationIdentifier === pubId)) {
+                    if (toast && (!toast.publicationIdentifier || !pubId || toast.publicationIdentifier === pubId)) {
                         return (
                             <Toast
                                 key={id}

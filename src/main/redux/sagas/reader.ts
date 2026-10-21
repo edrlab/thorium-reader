@@ -153,6 +153,7 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
                 toastActions.openRequest.build(
                     ToastType.Error,
                     getTranslator().translate("message.open.error", { err: getTranslator().translate("publication.encryptedNoLicense") }),
+                    undefined, (action as unknown as ActionWithSender).sender?.identifier,
                 ),
             );
         } else if (errMsg !== ERROR_MESSAGE_ON_USERKEYCHECKREQUEST) {
@@ -166,6 +167,7 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
                 toastActions.openRequest.build(
                     ToastType.Error,
                     getTranslator().translate("message.open.error", { err: errMsg }),
+                    undefined, (action as unknown as ActionWithSender).sender?.identifier,
                 ),
             );
         }
@@ -376,11 +378,11 @@ function* readerPrint(action: readerActions.print.TAction) {
 
         yield* putTyped(toastActions.openRequest.build(ToastType.Success,
             `LCP [${translator.translate("app.edit.print")}] [${pagesToPrint}] / ${publicationDocument.lcp.rights.print}`,
-            publicationIdentifier));
+            publicationIdentifier, (action as unknown as ActionWithSender).sender?.identifier));
     } else {
         yield* putTyped(toastActions.openRequest.build(ToastType.Error,
             `LCP [${translator.translate("app.edit.print")}] ${publicationDocument.lcpRightsPrints.length} / ${publicationDocument.lcp.rights.print}`,
-            publicationIdentifier));
+            publicationIdentifier, (action as unknown as ActionWithSender).sender?.identifier));
     }
 }
 
@@ -415,7 +417,7 @@ function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction) {
     if (lcpRightsCopiesRemain <= 0) {
         yield* putTyped(toastActions.openRequest.build(ToastType.Error,
             `LCP [${translator.translate("app.edit.copy")}] ${publicationDocument.lcpRightsCopies} / ${publicationDocument.lcp.rights.copy}`,
-            publicationIdentifier));
+            publicationIdentifier, (action as unknown as ActionWithSender).sender?.identifier));
     }
     const nCharsToCopy = textToCopy.length > lcpRightsCopiesRemain ?
         lcpRightsCopiesRemain : textToCopy.length;
@@ -435,7 +437,7 @@ function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction) {
 
     yield* putTyped(toastActions.openRequest.build(ToastType.Success,
         `LCP [${translator.translate("app.edit.copy")}] ${newPublicationDocument.lcpRightsCopies} / ${publicationDocument.lcp.rights.copy}`,
-        publicationIdentifier));
+        publicationIdentifier, (action as unknown as ActionWithSender).sender?.identifier));
 }
 
 export function saga() {
