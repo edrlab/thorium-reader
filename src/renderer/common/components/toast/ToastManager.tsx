@@ -8,13 +8,17 @@
 import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.scss";
 
 import * as React from "react";
+import { ipcRenderer } from "electron";
 import { connect } from "react-redux";
+import { I18nProvider, UNSTABLE_ToastQueue as ToastQueue, UNSTABLE_ToastRegion as ToastRegion } from "react-aria-components";
+import { ToastType } from "readium-desktop/common/models/toast";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { ToastState } from "readium-desktop/common/redux/states/toast";
 import { uuidv4 } from "readium-desktop/utils/uuid";
 
 import Toast from "./Toast";
+import { addToastToQueue } from "./toastQueue";
 import { TranslatorProps, withTranslator } from "../hoc/translator";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -28,69 +32,84 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
-interface IState {
-    toastList: {
-        [id: string]: ToastState;
-    };
+class AccessibleToastQueue extends ToastQueue<ToastState> {
+    public accessibilitySupportEnabled = false;
+
+    public resumeAll() {
+        if (!this.accessibilitySupportEnabled) super.resumeAll();
+    }
 }
 
-export class ToastManager extends React.Component<IProps, IState> {
+export class ToastManager extends React.Component<IProps> {
+    private regionRef = React.createRef<HTMLDivElement>();
+    // Each window owns its queue. Persistent errors must not hide later notices.
+    private queue = new AccessibleToastQueue({ maxVisibleToasts: Infinity });
 
-    constructor(props: IProps) {
-        super(props);
-
-        this.state = {
-            toastList: {},
-        };
-
-        this.close = this.close.bind(this);
+    public componentDidMount() {
+        ipcRenderer.on("accessibility-support-changed", this.accessibilitySupportChanged);
+        ipcRenderer.send("accessibility-support-query");
     }
+
+    private accessibilitySupportChanged = (_event: Electron.IpcRendererEvent, enabled: boolean) => {
+        this.queue.accessibilitySupportEnabled = enabled;
+        if (enabled) {
+            this.queue.pauseAll();
+        } else {
+            const region = this.regionRef.current;
+            if (!region?.contains(document.activeElement) && !region?.hasAttribute("data-hovered")) this.queue.resumeAll();
+        }
+    };
 
     public componentDidUpdate(oldProps: IProps) {
         const { toast } = this.props;
+        if (this.props.pubId !== oldProps.pubId && this.props.pubId) {
+            for (const current of this.queue.visibleToasts) {
+                if (current.content.publicationIdentifier && current.content.publicationIdentifier !== this.props.pubId) {
+                    this.queue.close(current.key);
+                }
+            }
+        }
         if (toast !== oldProps.toast) {
             const id = uuidv4();
-            this.setState((prevState) => ({
-                toastList: {
-                    ...prevState.toastList,
-                    [id]: toast,
-                },
-            }));
+            const toastList = Object.fromEntries(this.queue.visibleToasts.map((current) => [current.key, current.content]));
+            if (addToastToQueue(toastList, id, toast, this.props.pubId) !== toastList) {
+                // Errors remain persistent; other notices use a fixed five-second timeout.
+                const timeout = toast.type === ToastType.Error || this.queue.accessibilitySupportEnabled ? undefined : 5000;
+                this.queue.add(toast, { timeout });
+            }
         }
     }
 
-    public render(): React.ReactElement<{}> {
-        const { toastList } = this.state;
-        const { pubId } = this.props;
+    public componentWillUnmount() {
+        ipcRenderer.off("accessibility-support-changed", this.accessibilitySupportChanged);
+        this.queue.pauseAll();
+        this.queue.clear();
+    }
 
+    public render(): React.ReactElement<{}> {
         return (
-            <div className={stylesToasts.toasts_wrapper}>
-                {Object.keys(toastList).map((id) => {
-                    const toast = toastList[id];
-                    if (toast && (!toast.publicationIdentifier || !pubId || toast.publicationIdentifier === pubId)) {
-                        return (
-                            <Toast
-                                key={id}
-                                id={id}
-                                message={toast.data}
-                                type={toast.type}
-                                close={this.close}
-                                displaySystemNotification={false}
-                            />
-                        );
-                    }
-                    return null;
-                })}
-            </div>
+            <I18nProvider locale={this.props.locale}>
+                <ToastRegion
+                    ref={this.regionRef}
+                    queue={this.queue}
+                    className={stylesToasts.toasts_wrapper}
+                    render={(props) => <div
+                        {...props}
+                        onFocus={(event) => {
+                            props.onFocus?.(event);
+                            if (event.target === event.currentTarget) {
+                                event.currentTarget.querySelector<HTMLElement>("[role=alertdialog]")?.focus();
+                            }
+                        }}
+                    />}
+                >
+                    {({ toast }) => <Toast toast={toast} close={this.close} />}
+                </ToastRegion>
+            </I18nProvider>
         );
     }
 
-    private close(id: string) {
-        this.setState((prevState) => {
-            const { [id]: _, ...rest } = prevState.toastList;
-            return { toastList: rest };
-        });
-    }
+    private close = (id: string) => this.queue.close(id);
 }
 
 const mapStateToProps = (state: IRendererCommonRootState & IReaderRootState, _props: IBaseProps) => {
