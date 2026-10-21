@@ -287,6 +287,9 @@
             "fail": "A importación de {{-  path}} fallou. {{-  err}}",
             "success": "A importación de {{-  title}} finalizou."
         },
+        "notifications": {
+            "storageRefreshFailed": ""
+        },
         "open": {
             "error": "Non se pode abrir a publicación: {{-  err}}",
             "folderNotFound": ""

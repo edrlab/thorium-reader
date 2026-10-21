@@ -287,6 +287,9 @@
             "fail": "Import af {{- path}} fejlede. {{- err}}",
             "success": "{{- title}} er nu importeret."
         },
+        "notifications": {
+            "storageRefreshFailed": ""
+        },
         "open": {
             "error": "Bogen kan ikke åbnes: {{- err}}",
             "folderNotFound": "Bogmappen kan ikke findes. Importer den igen, eller konfigurer ekstra lagerplads i Indstillinger under Lagerplads."

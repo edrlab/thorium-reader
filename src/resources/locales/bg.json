@@ -287,6 +287,9 @@
             "fail": "Добавянето на {{- path}} се провали. {{- err}}",
             "success": "Добавянето на {{- title}} завърши."
         },
+        "notifications": {
+            "storageRefreshFailed": ""
+        },
         "open": {
             "error": "Книгата не може да бъде отворена: {{- err}}",
             "folderNotFound": ""

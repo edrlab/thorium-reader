@@ -292,6 +292,9 @@
             "fail": "",
             "success": ""
         },
+        "notifications": {
+            "storageRefreshFailed": ""
+        },
         "open": {
             "error": "",
             "folderNotFound": ""

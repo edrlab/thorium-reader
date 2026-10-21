@@ -670,6 +670,7 @@ declare namespace typed_i18n {
     readonly "fail": string,
     readonly "success": string
   },
+  readonly "notifications": { readonly "storageRefreshFailed": string },
   readonly "open": {
     readonly "error": string,
     readonly "folderNotFound": string
@@ -739,6 +740,8 @@ declare namespace typed_i18n {
   (_: "message.import.alreadyImport", __?: {}): string;
   (_: "message.import.fail", __?: {}): string;
   (_: "message.import.success", __?: {}): string;
+  (_: "message.notifications", __?: {}): { readonly "storageRefreshFailed": string };
+  (_: "message.notifications.storageRefreshFailed", __?: {}): string;
   (_: "message.open", __?: {}): { readonly "error": string, readonly "folderNotFound": string };
   (_: "message.open.error", __?: {}): string;
   (_: "message.open.folderNotFound", __?: {}): string;

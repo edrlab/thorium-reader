@@ -287,6 +287,9 @@
             "fail": "Ekki tókst að bæta [{{- path}}] við: [{{- err}}]",
             "success": "[{{- title}}] hefur verið bætt við."
         },
+        "notifications": {
+            "storageRefreshFailed": ""
+        },
         "open": {
             "error": "Ekki tókst að opna bókina: [{{- err}}]",
             "folderNotFound": "Mappa bókarinnar fannst ekki. Bættu bókinni við aftur eða stilltu viðbótargeymslu í Stillingar > Geymsla."
