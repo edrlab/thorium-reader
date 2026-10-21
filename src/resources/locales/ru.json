@@ -307,6 +307,7 @@
             "recoveryPartialFailure": "",
             "renewFailed": "",
             "returnFailed": "",
+            "storageRefreshFailed": "",
             "tagsFailed": ""
         },
         "open": {

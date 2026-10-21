@@ -680,6 +680,7 @@ declare namespace typed_i18n {
     readonly "recoveryPartialFailure": string,
     readonly "renewFailed": string,
     readonly "returnFailed": string,
+    readonly "storageRefreshFailed": string,
     readonly "tagsFailed": string
   },
   readonly "open": {
@@ -761,6 +762,7 @@ declare namespace typed_i18n {
   readonly "recoveryPartialFailure": string,
   readonly "renewFailed": string,
   readonly "returnFailed": string,
+  readonly "storageRefreshFailed": string,
   readonly "tagsFailed": string
 };
   (_: "message.notifications.catalogUpdateFailed", __?: {}): string;
@@ -772,6 +774,7 @@ declare namespace typed_i18n {
   (_: "message.notifications.recoveryPartialFailure", __?: {}): string;
   (_: "message.notifications.renewFailed", __?: {}): string;
   (_: "message.notifications.returnFailed", __?: {}): string;
+  (_: "message.notifications.storageRefreshFailed", __?: {}): string;
   (_: "message.notifications.tagsFailed", __?: {}): string;
   (_: "message.open", __?: {}): { readonly "error": string, readonly "folderNotFound": string };
   (_: "message.open.error", __?: {}): string;

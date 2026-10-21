@@ -297,6 +297,7 @@
             "recoveryPartialFailure": "Recovered {{- recovered}} publications; {{- failed}} publications could not be recovered.",
             "renewFailed": "Unable to renew this loan. Try again or contact your library.",
             "returnFailed": "Unable to return this loan. Try again or contact your library.",
+            "storageRefreshFailed": "The storage setting was saved, but the library could not be refreshed. Try refreshing the library.",
             "tagsFailed": "Unable to save the publication tags. Try again."
         },
         "open": {
