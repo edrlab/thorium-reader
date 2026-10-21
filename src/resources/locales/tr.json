@@ -288,9 +288,20 @@
             "success": "[{{- title}}]: İçe aktarımı tamamlandı."
         },
         "notifications": {
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "printLimit": "",
             "profileActivationFailed": "",
             "profileProvisionFailed": "",
-            "profileTimeout": ""
+            "profileTimeout": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Eser yüklemesi başarısız: [{{- err}}]",

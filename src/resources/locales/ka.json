@@ -288,9 +288,20 @@
             "success": "{{- title}} შემოტანა წარმატებით დასრულდა."
         },
         "notifications": {
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "printLimit": "",
             "profileActivationFailed": "",
             "profileProvisionFailed": "",
-            "profileTimeout": ""
+            "profileTimeout": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "პუბლიკაცია ვერ იხსნება: {{- err}}",

@@ -283,9 +283,20 @@
             "success": "匯入 [{{- title}}] 完成。"
         },
         "notifications": {
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "printLimit": "",
             "profileActivationFailed": "",
             "profileProvisionFailed": "",
-            "profileTimeout": ""
+            "profileTimeout": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "無法打開出版物：[{{- err}}]",

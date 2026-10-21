@@ -293,9 +293,20 @@
             "success": "L'ajout de {{- title}} est achevé."
         },
         "notifications": {
+            "catalogUpdateFailed": "Impossible de modifier ce catalogue. Vérifiez ses paramètres et réessayez.",
+            "copyLimit": "Le quota de copie de cette publication est épuisé.",
+            "deleteFailed": "Impossible de supprimer cette publication. Réessayez.",
+            "exportFailed": "Impossible d’exporter cette publication. Vérifiez le dossier de destination et l’espace disque disponible.",
+            "openFileFailed": "Impossible d’ouvrir ce fichier. Vérifiez sa disponibilité et son format.",
+            "printLimit": "Le quota d’impression de cette publication est épuisé.",
             "profileActivationFailed": "Impossible d’activer ce profil. Vérifiez le fichier du profil ou contactez son fournisseur.",
             "profileProvisionFailed": "Impossible d’installer ce profil. Vérifiez le fichier du profil ou contactez son fournisseur.",
-            "profileTimeout": "Le délai d’installation du profil est dépassé. Vérifiez votre connexion et réessayez."
+            "profileTimeout": "Le délai d’installation du profil est dépassé. Vérifiez votre connexion et réessayez.",
+            "recoveryPartialFailure": "{{- recovered}} publications récupérées ; {{- failed}} publications n’ont pas pu être récupérées.",
+            "renewFailed": "Impossible de prolonger ce prêt. Réessayez ou contactez votre bibliothèque.",
+            "returnFailed": "Impossible de rendre ce prêt. Réessayez ou contactez votre bibliothèque.",
+            "storageRefreshFailed": "Le réglage de stockage a été enregistré, mais la bibliothèque n’a pas pu être actualisée. Essayez de l’actualiser.",
+            "tagsFailed": "Impossible d’enregistrer les étiquettes de la publication. Réessayez."
         },
         "open": {
             "error": "Le livre ne peut pas être ouvert : {{- err}}",

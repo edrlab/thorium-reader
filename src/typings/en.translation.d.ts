@@ -671,9 +671,20 @@ declare namespace typed_i18n {
     readonly "success": string
   },
   readonly "notifications": {
+    readonly "catalogUpdateFailed": string,
+    readonly "copyLimit": string,
+    readonly "deleteFailed": string,
+    readonly "exportFailed": string,
+    readonly "openFileFailed": string,
+    readonly "printLimit": string,
     readonly "profileActivationFailed": string,
     readonly "profileProvisionFailed": string,
-    readonly "profileTimeout": string
+    readonly "profileTimeout": string,
+    readonly "recoveryPartialFailure": string,
+    readonly "renewFailed": string,
+    readonly "returnFailed": string,
+    readonly "storageRefreshFailed": string,
+    readonly "tagsFailed": string
   },
   readonly "open": {
     readonly "error": string,
@@ -745,13 +756,35 @@ declare namespace typed_i18n {
   (_: "message.import.fail", __?: {}): string;
   (_: "message.import.success", __?: {}): string;
   (_: "message.notifications", __?: {}): {
+  readonly "catalogUpdateFailed": string,
+  readonly "copyLimit": string,
+  readonly "deleteFailed": string,
+  readonly "exportFailed": string,
+  readonly "openFileFailed": string,
+  readonly "printLimit": string,
   readonly "profileActivationFailed": string,
   readonly "profileProvisionFailed": string,
-  readonly "profileTimeout": string
+  readonly "profileTimeout": string,
+  readonly "recoveryPartialFailure": string,
+  readonly "renewFailed": string,
+  readonly "returnFailed": string,
+  readonly "storageRefreshFailed": string,
+  readonly "tagsFailed": string
 };
+  (_: "message.notifications.catalogUpdateFailed", __?: {}): string;
+  (_: "message.notifications.copyLimit", __?: {}): string;
+  (_: "message.notifications.deleteFailed", __?: {}): string;
+  (_: "message.notifications.exportFailed", __?: {}): string;
+  (_: "message.notifications.openFileFailed", __?: {}): string;
+  (_: "message.notifications.printLimit", __?: {}): string;
   (_: "message.notifications.profileActivationFailed", __?: {}): string;
   (_: "message.notifications.profileProvisionFailed", __?: {}): string;
   (_: "message.notifications.profileTimeout", __?: {}): string;
+  (_: "message.notifications.recoveryPartialFailure", __?: {}): string;
+  (_: "message.notifications.renewFailed", __?: {}): string;
+  (_: "message.notifications.returnFailed", __?: {}): string;
+  (_: "message.notifications.storageRefreshFailed", __?: {}): string;
+  (_: "message.notifications.tagsFailed", __?: {}): string;
   (_: "message.open", __?: {}): { readonly "error": string, readonly "folderNotFound": string };
   (_: "message.open.error", __?: {}): string;
   (_: "message.open.folderNotFound", __?: {}): string;

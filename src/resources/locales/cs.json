@@ -298,9 +298,20 @@
             "success": "Import publikace „{{- title}}“ dokončen."
         },
         "notifications": {
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "printLimit": "",
             "profileActivationFailed": "",
             "profileProvisionFailed": "",
-            "profileTimeout": ""
+            "profileTimeout": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Načítání publikace sehlalo: [{{- err}}]",

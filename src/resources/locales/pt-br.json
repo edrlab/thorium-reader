@@ -293,9 +293,20 @@
             "success": "A importação de {{- title}} terminou."
         },
         "notifications": {
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "printLimit": "",
             "profileActivationFailed": "",
             "profileProvisionFailed": "",
-            "profileTimeout": ""
+            "profileTimeout": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Erro na abertura da publicação: {{- err}}",

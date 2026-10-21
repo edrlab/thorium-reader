@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { dialog } from "electron";
 import * as fs from "node:fs";
 import { injectable } from "inversify";
 import * as path from "node:path";
@@ -751,18 +750,8 @@ export class PublicationStorage {
             throw new Error("no filePath !");
         }
         const publicationPath = await this.getPublicationEpubPath(publicationView.identifier);
-        try {
-            await fs.promises.copyFile(publicationPath, filePath /*, constants.COPYFILE_EXCL */);
-        } catch (err: any) {
-
-            // TODO: Toast!? i18n!?
-            await dialog.showMessageBox({
-                type: "error",
-                message: err?.message,
-                title: err?.name,
-                buttons: ["OK"],
-            });
-        }
+        // The export operation presents the failure and returns an API error.
+        await fs.promises.copyFile(publicationPath, filePath /*, constants.COPYFILE_EXCL */);
     }
 
     // Publication location lookup and cache
