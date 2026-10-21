@@ -287,6 +287,10 @@
             "fail": "இறக்குமதி [{{- path}}] தோல்வியுற்றது: [{{- err}}]",
             "success": "இறக்குமதி [{{- title}}] நிறைவு செய்யப்பட்டது."
         },
+        "notifications": {
+            "copyLimit": "",
+            "printLimit": ""
+        },
         "open": {
             "error": "வெளியீட்டை ஏற்றுவது தோல்வியுற்றது: [{{- err}}]",
             "folderNotFound": ""
