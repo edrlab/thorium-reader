@@ -4,16 +4,6 @@
     display: none;
 }
 
-.annotation_selection_hint {
-    max-width: min(300px, calc(100vw - 20px));
-    padding: 5px;
-    border: 1px solid var(--color-text-primary);
-    border-radius: 6px;
-    background: var(--color-neutral-base);
-    color: var(--color-text-primary);
-    font-size: 12px;
-}
-
 [data-theme="dark"] {
     .toolbar_navigation, .picker_container {
         background-color: var(--color-neutral-base);

@@ -17,7 +17,7 @@ import * as React from "react";
 import { OVERLAY_Z_INDEX, PopoverArrow } from "readium-desktop/renderer/common/components/overlayHelpers";
 import { FocusScope } from "react-aria";
 import { useOverlayTriggerState } from "react-stately";
-import { OverlayTriggerStateContext, DialogTrigger, Pressable, Popover, Dialog as PopoverDialog, VisuallyHidden, Tooltip, TooltipTrigger, Focusable } from "react-aria-components";
+import { OverlayTriggerStateContext, DialogTrigger, Pressable, Popover, Dialog as PopoverDialog, VisuallyHidden } from "react-aria-components";
 import * as Dialog from "readium-desktop/renderer/common/components/Dialog";
 
 // import * as ReactDOM from "react-dom";
@@ -1623,7 +1623,6 @@ function AnnotationButton({
 }) {
     const { __ } = props;
     const annotationPopoverTriggerRef = React.useRef<HTMLLIElement>(null);
-    const selectionRequirementId = React.useId();
     const annotationPopoverState = useOverlayTriggerState({
         isOpen: annotationPopoverOpen,
         onOpenChange: (open) => {
@@ -1634,71 +1633,54 @@ function AnnotationButton({
     });
     return (
         <OverlayTriggerStateContext.Provider value={annotationPopoverState}>
-            <TooltipTrigger trigger="focus" closeDelay={0}>
-                <li
-                    ref={annotationPopoverTriggerRef}
-                    {...(annotationPopoverOpen && { style: { backgroundColor: "var(--color-brand-primary)" } })}
+            <li
+                ref={annotationPopoverTriggerRef}
+                {...(annotationPopoverOpen && { style: { backgroundColor: "var(--color-brand-primary)" } })}
+            >
+                <input
+                    disabled={props.isDivina || isAudioBook}
+                    id="annotationButton"
+                    aria-label={__("reader.navigation.annotationTitle")}
+                    className={stylesReader.bookmarkButton}
+                    type="checkbox"
+                    checked={annotationPopoverOpen}
+                    onKeyUp={(e) => {
+                        if (e.key === "Enter") {
+                            if (annotationPopoverOpen) {
+                                closeAnnotationPopover();
+                            } else {
+                                triggerAnnotation();
+                            }
+                        }
+                    }}
+                    onChange={() => {
+                        if (annotationPopoverOpen) {
+                            closeAnnotationPopover();
+                        } else {
+                            triggerAnnotation();
+                        }
+                    }}
+                />
+                {
+                    // "htmlFor" is necessary as input is NOT located suitably for mouse hit testing
+                }
+                <label
+                    htmlFor="annotationButton"
+                    aria-hidden="true"
+                    className={stylesReader.menu_button}
+                    id="annotationLabel"
+                    title={__("reader.navigation.annotationTitle")}
                 >
-                    <Focusable isDisabled={props.isDivina || isAudioBook}>
-                        <input
-                            disabled={props.isDivina || isAudioBook}
-                            id="annotationButton"
-                            aria-label={__("reader.navigation.annotationTitle")}
-                            aria-describedby={selectionRequirementId}
-                            className={stylesReader.bookmarkButton}
-                            type="checkbox"
-                            checked={annotationPopoverOpen}
-                            onKeyUp={(e) => {
-                                if (e.key === "Enter") {
-                                    if (annotationPopoverOpen) {
-                                        closeAnnotationPopover();
-                                    } else {
-                                        triggerAnnotation();
-                                    }
-                                }
-                            }}
-                            onChange={() => {
-                                if (annotationPopoverOpen) {
-                                    closeAnnotationPopover();
-                                } else {
-                                    triggerAnnotation();
-                                }
-                            }}
-                        />
-                    </Focusable>
-                    {
-                        // "htmlFor" is necessary as input is NOT located suitably for mouse hit testing
-                    }
-                    <label
-                        htmlFor="annotationButton"
-                        aria-hidden="true"
-                        className={stylesReader.menu_button}
-                        id="annotationLabel"
-                        title={`${__("reader.navigation.annotationTitle")} — ${__("reader.annotations.noSelectionToast")}`}
-                    >
-                        <SVG
-                            ariaHidden
-                            svg={AnnotationsIcon}
-                            className={classNames(
-                                stylesReaderHeader.annotationsIcon,
-                                annotationPopoverOpen ? stylesReaderHeader.active_svg : "",
-                            )}
-                        />
-                    </label>
-                    <VisuallyHidden id={selectionRequirementId}>
-                        {__("reader.annotations.noSelectionToast")}
-                    </VisuallyHidden>
-                </li>
-                <Tooltip
-                    triggerRef={annotationPopoverTriggerRef}
-                    placement="bottom"
-                    offset={8}
-                    className={stylesReaderHeader.annotation_selection_hint}
-                    style={{ zIndex: OVERLAY_Z_INDEX }}
-                >
-                    {__("reader.annotations.noSelectionToast")}
-                </Tooltip>
-            </TooltipTrigger>
+                    <SVG
+                        ariaHidden
+                        svg={AnnotationsIcon}
+                        className={classNames(
+                            stylesReaderHeader.annotationsIcon,
+                            annotationPopoverOpen ? stylesReaderHeader.active_svg : "",
+                        )}
+                    />
+                </label>
+            </li>
             <Popover
                 triggerRef={annotationPopoverTriggerRef}
 
