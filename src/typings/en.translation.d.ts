@@ -677,6 +677,8 @@ declare namespace typed_i18n {
     readonly "exportFailed": string,
     readonly "openFileFailed": string,
     readonly "printLimit": string,
+    readonly "renewFailed": string,
+    readonly "returnFailed": string,
     readonly "tagsFailed": string
   },
   readonly "open": {
@@ -755,6 +757,8 @@ declare namespace typed_i18n {
   readonly "exportFailed": string,
   readonly "openFileFailed": string,
   readonly "printLimit": string,
+  readonly "renewFailed": string,
+  readonly "returnFailed": string,
   readonly "tagsFailed": string
 };
   (_: "message.notifications.catalogUpdateFailed", __?: {}): string;
@@ -763,6 +767,8 @@ declare namespace typed_i18n {
   (_: "message.notifications.exportFailed", __?: {}): string;
   (_: "message.notifications.openFileFailed", __?: {}): string;
   (_: "message.notifications.printLimit", __?: {}): string;
+  (_: "message.notifications.renewFailed", __?: {}): string;
+  (_: "message.notifications.returnFailed", __?: {}): string;
   (_: "message.notifications.tagsFailed", __?: {}): string;
   (_: "message.open", __?: {}): { readonly "error": string, readonly "folderNotFound": string };
   (_: "message.open.error", __?: {}): string;

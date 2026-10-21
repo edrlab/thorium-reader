@@ -294,6 +294,8 @@
             "exportFailed": "Unable to export this publication. Check the destination folder and available disk space.",
             "openFileFailed": "Unable to open this file. Check that it is available and uses a supported format.",
             "printLimit": "The print allowance for this publication has been exhausted.",
+            "renewFailed": "Unable to renew this loan. Try again or contact your library.",
+            "returnFailed": "Unable to return this loan. Try again or contact your library.",
             "tagsFailed": "Unable to save the publication tags. Try again."
         },
         "open": {

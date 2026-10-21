@@ -289,6 +289,8 @@
             "exportFailed": "",
             "openFileFailed": "",
             "printLimit": "",
+            "renewFailed": "",
+            "returnFailed": "",
             "tagsFailed": ""
         },
         "open": {
