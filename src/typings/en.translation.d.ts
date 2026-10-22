@@ -6,6 +6,8 @@ declare namespace typed_i18n {
   readonly "bookmarkNote": string,
   readonly "cancelDownload": string,
   readonly "closeDialog": string,
+  readonly "closeNotification": string,
+  readonly "copyNotificationInstruction": string,
   readonly "decreaseSetting": string,
   readonly "downloadProgress": string,
   readonly "editTag": string,
@@ -14,6 +16,8 @@ declare namespace typed_i18n {
   readonly "leftSlideButton": string,
   readonly "loading": string,
   readonly "mainContent": string,
+  readonly "notificationCopied": string,
+  readonly "notificationCopyFailed": string,
   readonly "printPage": string,
   readonly "publicationDetails": string,
   readonly "resetSetting": string,
@@ -26,6 +30,8 @@ declare namespace typed_i18n {
   (_: "accessibility.bookmarkNote", __?: {}): string;
   (_: "accessibility.cancelDownload", __?: {}): string;
   (_: "accessibility.closeDialog", __?: {}): string;
+  (_: "accessibility.closeNotification", __?: {}): string;
+  (_: "accessibility.copyNotificationInstruction", __?: {}): string;
   (_: "accessibility.decreaseSetting", __?: {}): string;
   (_: "accessibility.downloadProgress", __?: {}): string;
   (_: "accessibility.editTag", __?: {}): string;
@@ -34,6 +40,8 @@ declare namespace typed_i18n {
   (_: "accessibility.leftSlideButton", __?: {}): string;
   (_: "accessibility.loading", __?: {}): string;
   (_: "accessibility.mainContent", __?: {}): string;
+  (_: "accessibility.notificationCopied", __?: {}): string;
+  (_: "accessibility.notificationCopyFailed", __?: {}): string;
   (_: "accessibility.printPage", __?: {}): string;
   (_: "accessibility.publicationDetails", __?: {}): string;
   (_: "accessibility.resetSetting", __?: {}): string;
@@ -647,7 +655,6 @@ declare namespace typed_i18n {
   readonly "annotations": {
     readonly "alreadyImported": string,
     readonly "emptyFile": string,
-    readonly "errorParsing": string,
     readonly "nothing": string,
     readonly "success": string
   },
@@ -713,13 +720,11 @@ declare namespace typed_i18n {
   (_: "message.annotations", __?: {}): {
   readonly "alreadyImported": string,
   readonly "emptyFile": string,
-  readonly "errorParsing": string,
   readonly "nothing": string,
   readonly "success": string
 };
   (_: "message.annotations.alreadyImported", __?: {}): string;
   (_: "message.annotations.emptyFile", __?: {}): string;
-  (_: "message.annotations.errorParsing", __?: {}): string;
   (_: "message.annotations.nothing", __?: {}): string;
   (_: "message.annotations.success", __?: {}): string;
   (_: "message.download", __?: {}): {
