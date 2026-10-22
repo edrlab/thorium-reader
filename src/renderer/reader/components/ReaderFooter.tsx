@@ -285,11 +285,11 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                     </div>
                 } */}
                 {!this.props.fullscreen &&
-                    <div aria-hidden="true" className={classNames(stylesReaderFooter.track_reading_wrapper,
+                    <div className={classNames(stylesReaderFooter.track_reading_wrapper,
                         isAudioBook ? stylesReaderFooter.track_reading_wrapper_noArrows : undefined)}>
 
                         { // <div id={stylesReader.current}></div>
-                            <div id={stylesReaderFooter.track_reading}>
+                            <div aria-hidden="true" id={stylesReaderFooter.track_reading}>
                                 <div id={stylesReaderFooter.chapters_markers}
                                     className={classNames(isRTL ? stylesReaderFooter.RTL_FLIP : undefined /* , moreInfo ? stylesReaderFooter.more_information : undefined */)}
                                     ref={(divEl) => {
@@ -489,8 +489,9 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                 </div>
                             </div>
                         }
-                        {isEnding ? <button className={stylesReaderFooter.finishedIcon}
+                        {isEnding ? <button type="button" className={stylesReaderFooter.finishedIcon}
                              onClick={() => this.props.finishReading(this.props.publicationView.identifier)}
+                             aria-label={__("publication.markAsRead")}
                              title={__("publication.markAsRead")}
                              ><SVG ariaHidden svg={ValidatedIcon} /></button> : <></>}
                     </div>
