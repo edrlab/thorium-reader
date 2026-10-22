@@ -42,11 +42,12 @@ export function Toast({ toast, close, __ }: IProps) {
     const closing = React.useRef(false);
     const removed = React.useRef(false);
     const { data: message, type } = toast.content;
+    const copied = !!copyFeedback.message && !copyFeedback.failed;
 
     React.useEffect(() => {
         setAnnouncedFeedback({ message: "", sequence: copyFeedback.sequence });
-        // Successful copies stay quiet. Failures still need accessible feedback.
-        if (!copyFeedback.failed) return undefined;
+        // Clear before announcing so repeated copies also receive feedback.
+        if (!copyFeedback.message) return undefined;
         const timer = window.setTimeout(() => setAnnouncedFeedback(copyFeedback), 100);
         return () => window.clearTimeout(timer);
     }, [copyFeedback]);
@@ -132,7 +133,7 @@ export function Toast({ toast, close, __ }: IProps) {
                     ref={messageActionRef}
                     className={classNames(stylesToasts.content, stylesToasts.messageButton)}
                     aria-labelledby={announcementId}
-                    aria-describedby={actionId}
+                    aria-describedby={copied ? undefined : actionId}
                     onPress={copyAndExpand}
                     onBlur={() => setOpened(false)}
                 >
@@ -146,9 +147,9 @@ export function Toast({ toast, close, __ }: IProps) {
                         {message}
                     </Text>
                 </Button>
-                <VisuallyHidden>
+                {!copied && <VisuallyHidden>
                     <span id={actionId}>{__("accessibility.copyNotificationInstruction")}</span>
-                </VisuallyHidden>
+                </VisuallyHidden>}
                 <Button
                     aria-label={__("accessibility.closeNotification")}
                     className={stylesToasts.closeButton}

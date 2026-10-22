@@ -177,7 +177,7 @@ test("F6 enters the message button, followed by Close, and only the message is a
     expect(document.activeElement).toBe(outside);
 });
 
-test("Enter, Space and clicking copy and expand quietly while focus remains on the message button", async () => {
+test("Enter, Space and clicking copy and expand with accessible confirmation while focus remains on the message button", async () => {
     await notify();
     const action = messageAction();
     await press(action, "Enter");
@@ -185,11 +185,17 @@ test("Enter, Space and clicking copy and expand quietly while focus remains on t
     expect(clipboard.writeText).toHaveBeenCalledWith("Download failed", "clipboard");
     expect(document.querySelector(".copyStatus")?.textContent).toBe("accessibility.notificationCopied");
     await advance(100);
-    expect(document.querySelector("[role=status]")?.textContent).toBe("");
+    expect(document.querySelector("[role=status]")?.textContent).toBe("accessibility.notificationCopied");
+    expect(action.hasAttribute("aria-describedby")).toBe(false);
+    expect(document.body.textContent).not.toContain("accessibility.copyNotificationInstruction");
     expect(document.activeElement).toBe(action);
     await press(action, " ");
     expect(expanded()).toBe(false);
     expect(clipboard.writeText).toHaveBeenCalledTimes(2);
+    expect(document.querySelector("[role=status]")?.textContent).toBe("");
+    await advance(100);
+    expect(document.querySelector("[role=status]")?.textContent).toBe("accessibility.notificationCopied");
+    expect(action.hasAttribute("aria-describedby")).toBe(false);
     await React.act(async () => (document.querySelector(".message") as HTMLElement).click());
     expect(expanded()).toBe(true);
     expect(clipboard.writeText).toHaveBeenCalledTimes(3);
@@ -305,6 +311,9 @@ test("clipboard failures are announced without preventing expansion", async () =
     await press(messageAction(), "Enter");
     expect(expanded()).toBe(true);
     expect(document.querySelector(".copyStatus")?.textContent).toBe("accessibility.notificationCopyFailed");
+    expect(document.getElementById(messageAction().getAttribute("aria-describedby")!)?.textContent).toBe(
+        "accessibility.copyNotificationInstruction",
+    );
     await advance(100);
     expect(document.querySelector("[role=status]")?.textContent).toBe("accessibility.notificationCopyFailed");
     expect(document.activeElement).toBe(messageAction());
