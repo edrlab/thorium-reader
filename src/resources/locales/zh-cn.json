@@ -259,7 +259,6 @@
         "annotations": {
             "alreadyImported": "所有笔记已经导入。",
             "emptyFile": "文件中没有可用的笔记。",
-            "errorParsing": "文件解析时发生错误： ",
             "nothing": "没有可导入的笔记，导入已终止",
             "success": "导入已成功完成。"
         },

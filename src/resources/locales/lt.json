@@ -274,7 +274,6 @@
         "annotations": {
             "alreadyImported": "Visos pastabos jau importuotos.",
             "emptyFile": "Faile nėra jokių pastabų.",
-            "errorParsing": "Klaida analizuojant failą: ",
             "nothing": "Nėra importui paruoštų pastabų, importas nutraukiamas",
             "success": "Importavimas sėkmingai užbaigtas."
         },

@@ -269,7 +269,6 @@
         "annotations": {
             "alreadyImported": "Ya están importadas todas las anotaciones, cancelando la importación.",
             "emptyFile": "El fichero no tiene anotaciones disponibles.",
-            "errorParsing": "Error al validar el formato del fichero: ",
             "nothing": "No hay anotaciones listas para importar, cancelando la importación",
             "success": "¡Correcto!"
         },

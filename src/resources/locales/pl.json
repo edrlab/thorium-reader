@@ -274,7 +274,6 @@
         "annotations": {
             "alreadyImported": "Wszystkie notatki są już zaimportowane.",
             "emptyFile": "Brak notatek w pliku.",
-            "errorParsing": "Błąd podczas analizowania pliku: ",
             "nothing": "Brak notatek gotowych do zaimportowania, przerywam import",
             "success": "Import zakończony pomyślnie."
         },

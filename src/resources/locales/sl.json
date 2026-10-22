@@ -274,7 +274,6 @@
         "annotations": {
             "alreadyImported": "Vse opombe so že uvožene.",
             "emptyFile": "V datoteki ni na voljo nobenih opomb.",
-            "errorParsing": "Napaka med razčlenjevanjem datoteke: ",
             "nothing": "Ni opombe, pripravljene za uvoz, zato se uvoz prekine",
             "success": "Uvoz uspešno zaključen."
         },

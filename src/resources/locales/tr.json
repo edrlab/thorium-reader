@@ -264,7 +264,6 @@
         "annotations": {
             "alreadyImported": "Tüm notlar zaten içe aktarılmış.",
             "emptyFile": "Dosyada not mevcut değil.",
-            "errorParsing": "Dosya işlenirken hata oluştu: ",
             "nothing": "İçe aktarmaya hazır hiç not yok, içe aktarım durduruluyor",
             "success": "İçe aktarma başarıyla tamamlandı."
         },

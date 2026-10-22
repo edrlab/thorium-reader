@@ -269,7 +269,6 @@
         "annotations": {
             "alreadyImported": "Toutes les notes sont déjà importées, importation annulée.",
             "emptyFile": "Aucune note n'est disponible dans ce fichier.",
-            "errorParsing": "Erreur lors de la lecture du fichier : ",
             "nothing": "Aucune note disponible, ajout annulé",
             "success": "Importation réussie."
         },

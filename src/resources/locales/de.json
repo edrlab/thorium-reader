@@ -264,7 +264,6 @@
         "annotations": {
             "alreadyImported": "Alle Notizen wurden bereits importiert.",
             "emptyFile": "Keine Notizen in der Datei vorhanden.",
-            "errorParsing": "Fehler beim Einlesen der Datei: ",
             "nothing": "Keine Notizen sind für den Import bereit. Import wird abgebrochen.",
             "success": "Import vollständig abgeschlossen."
         },

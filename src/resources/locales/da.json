@@ -264,7 +264,6 @@
         "annotations": {
             "alreadyImported": "Alle noter eksisterer i forvejen, afslutter import.",
             "emptyFile": "Ingen noter blev fundet i filen.",
-            "errorParsing": "Fejl under læsning af filen: ",
             "nothing": "Ingen noter kunne importeres, afslutter import",
             "success": "Import færdig."
         },
