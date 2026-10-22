@@ -108,6 +108,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
     const [__] = useTranslator();
     const dispatch = useDispatch();
     const [infoOpen, setInfoOpen] = React.useState(false);
+    const helpId = React.useId();
     const previewTitleId = React.useId();
     const rangeId = React.useId();
     const pdfThumbnailRequestedSetRef = React.useRef<Set<number>>(new Set());
@@ -279,22 +280,26 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
 
                 </div>
             </div>
-            <button type="button" className={classNames("button_catalog_infos")} onClick={(e) => { e.preventDefault(); setInfoOpen(!infoOpen); }}>
+            <button
+                type="button"
+                aria-expanded={infoOpen}
+                aria-controls={helpId}
+                className={classNames("button_catalog_infos")}
+                onClick={() => setInfoOpen(open => !open)}
+            >
                 <SVG ariaHidden svg={InfoIcon} />
                 {__("reader.print.howTo")}
                 <SVG ariaHidden svg={infoOpen ? ChevronUp : ChevronDown} />
             </button>
-            {infoOpen ?
-                <div className={stylesPrint.print_dialog_help_container}>
-                    <p>{__("reader.print.pageHelpInfo")}</p>
-                    <ul>
-                        <li>{__("reader.print.pageHelpInfo1")}</li>
-                        <li>{__("reader.print.pageHelpInfo2")}</li>
-                        <li>{__("reader.print.pageHelpInfo3")}</li>
-                        <li>{__("reader.print.pageHelpInfo4")}</li>
-                    </ul>
-                </div>
-                : <></>}
+            <div id={helpId} hidden={!infoOpen} className={stylesPrint.print_dialog_help_container}>
+                <p>{__("reader.print.pageHelpInfo")}</p>
+                <ul>
+                    <li>{__("reader.print.pageHelpInfo1")}</li>
+                    <li>{__("reader.print.pageHelpInfo2")}</li>
+                    <li>{__("reader.print.pageHelpInfo3")}</li>
+                    <li>{__("reader.print.pageHelpInfo4")}</li>
+                </ul>
+            </div>
 
             <div className={stylesPrint.print_dialog_actions_buttons}>
                 <Dialog.Close className={stylesButtons.button_secondary_blue} aria-label={__("dialog.cancel")}>{__("dialog.cancel")}</Dialog.Close>

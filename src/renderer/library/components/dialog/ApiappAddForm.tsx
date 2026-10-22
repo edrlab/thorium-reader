@@ -85,32 +85,37 @@ export const ApiappHowDoesItWorkInfoBox = () => {
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
     const isRTL = langStringIsRTL(locale);
     const [infoOpen, setInfoOpen] = React.useState(false);
+    const helpId = React.useId();
 
     return (
         <div>
-            <button dir={isRTL ? "rtl" : "ltr"} className={classNames("button_catalog_infos")} onClick={(e) => { e.preventDefault(); setInfoOpen(!infoOpen); }}>
+            <button
+                type="button"
+                aria-expanded={infoOpen}
+                aria-controls={helpId}
+                dir={isRTL ? "rtl" : "ltr"} className={classNames("button_catalog_infos")}
+                onClick={() => setInfoOpen(open => !open)}
+            >
                 <SVG ariaHidden svg={InfoIcon} />
                 {__("apiapp.howItWorks")}
                 <SVG ariaHidden svg={infoOpen ? ChevronUp : ChevronDown} />
             </button>
-            {infoOpen ?
-                <div className={classNames("catalog_infos_text")}>
-                    <p dir={isRTL ? "rtl" : "ltr"}>
-                        {__("apiapp.informations")}
-                    </p>
-                    <a dir={isRTL ? "rtl" : "ltr"} href=""
-                        onClick={(ev) => {
-                            ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
-                            const href = "https://support.thoriumreader.com/";
-                            // if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                            shell.openExternal(href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ })
-                            // }
-                        }}>
-                        {__("apiapp.documentation")}
-                        <SVG ariaHidden svg={FollowLinkIcon} />
-                    </a>
-                </div>
-                : <></>}
+            <div id={helpId} hidden={!infoOpen} className={classNames("catalog_infos_text")}>
+                <p dir={isRTL ? "rtl" : "ltr"}>
+                    {__("apiapp.informations")}
+                </p>
+                <a dir={isRTL ? "rtl" : "ltr"} href=""
+                    onClick={(ev) => {
+                        ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
+                        const href = "https://support.thoriumreader.com/";
+                        // if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
+                        shell.openExternal(href).then(() => { /* noop */ }).catch((err: unknown) => { console.log(err); }); // .finally(() => { /* noop */ })
+                        // }
+                    }}>
+                    {__("apiapp.documentation")}
+                    <SVG ariaHidden svg={FollowLinkIcon} />
+                </a>
+            </div>
         </div>
     );
 };
