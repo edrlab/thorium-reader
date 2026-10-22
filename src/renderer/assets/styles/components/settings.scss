@@ -703,7 +703,7 @@ div[data-radix-popper-content-wrapper] {
 .display_options {
     display: flex;
     font-size: 14px;
-    height: 80px;
+    min-height: 80px;
     list-style-type: none;
 
     svg {
@@ -718,12 +718,20 @@ div[data-radix-popper-content-wrapper] {
         align-items: center;
         justify-content: center;
         width: 95px;
+        min-width: 0;
+        flex-shrink: 1;
         padding-top: 5px;
         border: 1px solid transparent;
         border-radius: 6px;
         transition: 200ms linear;
         min-height: 70px;
         background-color: var(--color-gray-50);
+
+        span {
+            max-width: 100%;
+            text-align: center;
+            overflow-wrap: anywhere;
+        }
 
         &[data-disabled] {
             color: var(--color-disabled);
@@ -740,6 +748,10 @@ div[data-radix-popper-content-wrapper] {
     }
 
     div[role="radiogroup"] {
+        min-width: 0;
+        max-width: 100%;
+        flex-wrap: nowrap;
+
         label[data-input-type="radio"] {
             transition: 200ms linear;
 
@@ -1274,16 +1286,6 @@ details {
             > input {
                 min-width: 0;
                 flex: 1;
-            }
-        }
-
-        .display_options {
-            height: auto;
-
-            > [role="radiogroup"] {
-                min-width: 0;
-                max-width: 100%;
-                flex-wrap: wrap;
             }
         }
 
