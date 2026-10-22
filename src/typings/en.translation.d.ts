@@ -1,18 +1,50 @@
 declare namespace typed_i18n {
   interface TFunction {
   (_: "accessibility", __?: {}): {
+  readonly "annotationNote": string,
   readonly "bookMenu": string,
+  readonly "bookmarkNote": string,
+  readonly "cancelDownload": string,
   readonly "closeDialog": string,
+  readonly "closeNotification": string,
+  readonly "copyNotificationInstruction": string,
+  readonly "decreaseSetting": string,
+  readonly "downloadProgress": string,
+  readonly "editTag": string,
+  readonly "favoriteCatalog": string,
+  readonly "increaseSetting": string,
   readonly "leftSlideButton": string,
+  readonly "loading": string,
   readonly "mainContent": string,
+  readonly "notificationCopied": string,
+  readonly "notificationCopyFailed": string,
+  readonly "printPage": string,
+  readonly "publicationDetails": string,
+  readonly "resetSetting": string,
   readonly "rightSlideButton": string,
   readonly "skipLink": string,
   readonly "toolbar": string
 };
+  (_: "accessibility.annotationNote", __?: {}): string;
   (_: "accessibility.bookMenu", __?: {}): string;
+  (_: "accessibility.bookmarkNote", __?: {}): string;
+  (_: "accessibility.cancelDownload", __?: {}): string;
   (_: "accessibility.closeDialog", __?: {}): string;
+  (_: "accessibility.closeNotification", __?: {}): string;
+  (_: "accessibility.copyNotificationInstruction", __?: {}): string;
+  (_: "accessibility.decreaseSetting", __?: {}): string;
+  (_: "accessibility.downloadProgress", __?: {}): string;
+  (_: "accessibility.editTag", __?: {}): string;
+  (_: "accessibility.favoriteCatalog", __?: {}): string;
+  (_: "accessibility.increaseSetting", __?: {}): string;
   (_: "accessibility.leftSlideButton", __?: {}): string;
+  (_: "accessibility.loading", __?: {}): string;
   (_: "accessibility.mainContent", __?: {}): string;
+  (_: "accessibility.notificationCopied", __?: {}): string;
+  (_: "accessibility.notificationCopyFailed", __?: {}): string;
+  (_: "accessibility.printPage", __?: {}): string;
+  (_: "accessibility.publicationDetails", __?: {}): string;
+  (_: "accessibility.resetSetting", __?: {}): string;
   (_: "accessibility.rightSlideButton", __?: {}): string;
   (_: "accessibility.skipLink", __?: {}): string;
   (_: "accessibility.toolbar", __?: {}): string;
@@ -623,7 +655,6 @@ declare namespace typed_i18n {
   readonly "annotations": {
     readonly "alreadyImported": string,
     readonly "emptyFile": string,
-    readonly "errorParsing": string,
     readonly "nothing": string,
     readonly "success": string
   },
@@ -646,6 +677,31 @@ declare namespace typed_i18n {
     readonly "fail": string,
     readonly "success": string
   },
+  readonly "notifications": {
+    readonly "annotationImportFailed": string,
+    readonly "annotationPublicationUnavailable": string,
+    readonly "annotationStopPlayback": string,
+    readonly "authenticationFailed": string,
+    readonly "catalogLinkFailed": string,
+    readonly "catalogUpdateFailed": string,
+    readonly "copyLimit": string,
+    readonly "deleteFailed": string,
+    readonly "exportFailed": string,
+    readonly "openFileFailed": string,
+    readonly "openLinkFailed": string,
+    readonly "printLimit": string,
+    readonly "profileActivationFailed": string,
+    readonly "profileBusy": string,
+    readonly "profileProvisionFailed": string,
+    readonly "profileTimeout": string,
+    readonly "publicationUnavailable": string,
+    readonly "readingPositionFailed": string,
+    readonly "recoveryPartialFailure": string,
+    readonly "renewFailed": string,
+    readonly "returnFailed": string,
+    readonly "storageRefreshFailed": string,
+    readonly "tagsFailed": string
+  },
   readonly "open": {
     readonly "error": string,
     readonly "folderNotFound": string
@@ -664,13 +720,11 @@ declare namespace typed_i18n {
   (_: "message.annotations", __?: {}): {
   readonly "alreadyImported": string,
   readonly "emptyFile": string,
-  readonly "errorParsing": string,
   readonly "nothing": string,
   readonly "success": string
 };
   (_: "message.annotations.alreadyImported", __?: {}): string;
   (_: "message.annotations.emptyFile", __?: {}): string;
-  (_: "message.annotations.errorParsing", __?: {}): string;
   (_: "message.annotations.nothing", __?: {}): string;
   (_: "message.annotations.success", __?: {}): string;
   (_: "message.download", __?: {}): {
@@ -715,6 +769,54 @@ declare namespace typed_i18n {
   (_: "message.import.alreadyImport", __?: {}): string;
   (_: "message.import.fail", __?: {}): string;
   (_: "message.import.success", __?: {}): string;
+  (_: "message.notifications", __?: {}): {
+  readonly "annotationImportFailed": string,
+  readonly "annotationPublicationUnavailable": string,
+  readonly "annotationStopPlayback": string,
+  readonly "authenticationFailed": string,
+  readonly "catalogLinkFailed": string,
+  readonly "catalogUpdateFailed": string,
+  readonly "copyLimit": string,
+  readonly "deleteFailed": string,
+  readonly "exportFailed": string,
+  readonly "openFileFailed": string,
+  readonly "openLinkFailed": string,
+  readonly "printLimit": string,
+  readonly "profileActivationFailed": string,
+  readonly "profileBusy": string,
+  readonly "profileProvisionFailed": string,
+  readonly "profileTimeout": string,
+  readonly "publicationUnavailable": string,
+  readonly "readingPositionFailed": string,
+  readonly "recoveryPartialFailure": string,
+  readonly "renewFailed": string,
+  readonly "returnFailed": string,
+  readonly "storageRefreshFailed": string,
+  readonly "tagsFailed": string
+};
+  (_: "message.notifications.annotationImportFailed", __?: {}): string;
+  (_: "message.notifications.annotationPublicationUnavailable", __?: {}): string;
+  (_: "message.notifications.annotationStopPlayback", __?: {}): string;
+  (_: "message.notifications.authenticationFailed", __?: {}): string;
+  (_: "message.notifications.catalogLinkFailed", __?: {}): string;
+  (_: "message.notifications.catalogUpdateFailed", __?: {}): string;
+  (_: "message.notifications.copyLimit", __?: {}): string;
+  (_: "message.notifications.deleteFailed", __?: {}): string;
+  (_: "message.notifications.exportFailed", __?: {}): string;
+  (_: "message.notifications.openFileFailed", __?: {}): string;
+  (_: "message.notifications.openLinkFailed", __?: {}): string;
+  (_: "message.notifications.printLimit", __?: {}): string;
+  (_: "message.notifications.profileActivationFailed", __?: {}): string;
+  (_: "message.notifications.profileBusy", __?: {}): string;
+  (_: "message.notifications.profileProvisionFailed", __?: {}): string;
+  (_: "message.notifications.profileTimeout", __?: {}): string;
+  (_: "message.notifications.publicationUnavailable", __?: {}): string;
+  (_: "message.notifications.readingPositionFailed", __?: {}): string;
+  (_: "message.notifications.recoveryPartialFailure", __?: {}): string;
+  (_: "message.notifications.renewFailed", __?: {}): string;
+  (_: "message.notifications.returnFailed", __?: {}): string;
+  (_: "message.notifications.storageRefreshFailed", __?: {}): string;
+  (_: "message.notifications.tagsFailed", __?: {}): string;
   (_: "message.open", __?: {}): { readonly "error": string, readonly "folderNotFound": string };
   (_: "message.open.error", __?: {}): string;
   (_: "message.open.folderNotFound", __?: {}): string;
@@ -785,7 +887,6 @@ declare namespace typed_i18n {
     readonly "empty": string,
     readonly "error": string,
     readonly "loading": string,
-    readonly "prompt": string,
     readonly "title": string
   },
   readonly "resumeBrowsing": string,
@@ -875,13 +976,11 @@ declare namespace typed_i18n {
   readonly "empty": string,
   readonly "error": string,
   readonly "loading": string,
-  readonly "prompt": string,
   readonly "title": string
 };
   (_: "opds.registry.empty", __?: {}): string;
   (_: "opds.registry.error", __?: {}): string;
   (_: "opds.registry.loading", __?: {}): string;
-  (_: "opds.registry.prompt", __?: {}): string;
   (_: "opds.registry.title", __?: {}): string;
   (_: "opds.resumeBrowsing", __?: {}): string;
   (_: "opds.shelf", __?: {}): string;
@@ -1708,7 +1807,7 @@ declare namespace typed_i18n {
   readonly "cancelledLcp": string,
   readonly "certificateRevoked": string,
   readonly "certificateSignatureInvalid": string,
-  readonly "cover": { readonly "img": string },
+  readonly "cover": { readonly "img": string, readonly "zoom": string },
   readonly "day": string,
   readonly "days": string,
   readonly "duration": { readonly "title": string },
@@ -1834,8 +1933,9 @@ declare namespace typed_i18n {
   (_: "publication.cancelledLcp", __?: {}): string;
   (_: "publication.certificateRevoked", __?: {}): string;
   (_: "publication.certificateSignatureInvalid", __?: {}): string;
-  (_: "publication.cover", __?: {}): { readonly "img": string };
+  (_: "publication.cover", __?: {}): { readonly "img": string, readonly "zoom": string };
   (_: "publication.cover.img", __?: {}): string;
+  (_: "publication.cover.zoom", __?: {}): string;
   (_: "publication.day", __?: {}): string;
   (_: "publication.days", __?: {}): string;
   (_: "publication.duration", __?: {}): { readonly "title": string };
@@ -2063,7 +2163,6 @@ declare namespace typed_i18n {
     },
     readonly "customFontSelected": string,
     readonly "customizeReader": string,
-    readonly "defaultValue": string,
     readonly "disabled": string,
     readonly "display": string,
     readonly "disposition": { readonly "title": string },
@@ -2483,7 +2582,6 @@ declare namespace typed_i18n {
   },
   readonly "customFontSelected": string,
   readonly "customizeReader": string,
-  readonly "defaultValue": string,
   readonly "disabled": string,
   readonly "display": string,
   readonly "disposition": { readonly "title": string },
@@ -2560,7 +2658,6 @@ declare namespace typed_i18n {
   (_: "reader.settings.column.two", __?: {}): string;
   (_: "reader.settings.customFontSelected", __?: {}): string;
   (_: "reader.settings.customizeReader", __?: {}): string;
-  (_: "reader.settings.defaultValue", __?: {}): string;
   (_: "reader.settings.disabled", __?: {}): string;
   (_: "reader.settings.display", __?: {}): string;
   (_: "reader.settings.disposition", __?: {}): { readonly "title": string };

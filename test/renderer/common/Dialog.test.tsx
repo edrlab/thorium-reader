@@ -678,3 +678,122 @@ test.each(["accept", "cancel"])("OPDS resume prompt opens without a trigger and 
     expect(cancelled).toHaveBeenCalledTimes(action === "cancel" ? 1 : 0);
     expect(document.querySelector('[role="alertdialog"]')).toBeNull();
 });
+
+test("docked triggers expose a named region and toggle without modal semantics", async () => {
+    await React.act(async () =>
+        root.render(
+            <Dialog.Root modal={false}>
+                <Dialog.Trigger asChild>
+                    <button>Settings panel</button>
+                </Dialog.Trigger>
+                <Dialog.Portal>
+                    <Dialog.Title>Reader settings</Dialog.Title>
+                    <Dialog.DockedContent>
+                        <button>Setting</button>
+                    </Dialog.DockedContent>
+                </Dialog.Portal>
+            </Dialog.Root>,
+        ),
+    );
+    const trigger = host.querySelector("button")!;
+    expect(trigger.getAttribute("aria-expanded")).toBe("false");
+    expect(trigger.hasAttribute("aria-haspopup")).toBe(false);
+    await click(trigger);
+    const panel = document.querySelector("[role=region]")!;
+    expect(trigger.getAttribute("aria-expanded")).toBe("true");
+    expect(trigger.getAttribute("aria-controls")).toBe(panel.id);
+    expect(document.getElementById(panel.getAttribute("aria-labelledby")!)?.textContent).toBe("Reader settings");
+    expect(document.querySelector("[role=dialog], [aria-modal=true]")).toBeNull();
+    const outside = document.createElement("button");
+    document.body.append(outside);
+    outside.focus();
+    expect(document.activeElement).toBe(outside);
+    await escape();
+    expect(panel.isConnected).toBe(true);
+    await click(trigger);
+    expect(panel.isConnected).toBe(false);
+    expect(trigger.getAttribute("aria-expanded")).toBe("false");
+    outside.remove();
+});
+
+test("closing a docked panel restores focus to its trigger without trapping focus", async () => {
+    await React.act(async () =>
+        root.render(
+            <Dialog.Root modal={false}>
+                <Dialog.Trigger asChild>
+                    <button>Navigation</button>
+                </Dialog.Trigger>
+                <Dialog.Portal>
+                    <Dialog.Title>Navigation</Dialog.Title>
+                    <Dialog.DockedContent>
+                        <Dialog.Close asChild>
+                            <button>Close panel</button>
+                        </Dialog.Close>
+                    </Dialog.DockedContent>
+                </Dialog.Portal>
+            </Dialog.Root>,
+        ),
+    );
+    const trigger = host.querySelector("button")!;
+    trigger.focus();
+    await click(trigger);
+    // Opening a docked panel should leave focus on the toolbar.
+    expect(document.activeElement).toBe(trigger);
+    const close = document.querySelector('[role="region"] button') as HTMLButtonElement;
+    close.focus();
+    await click(close);
+    expect(document.querySelector('[role="region"]')).toBeNull();
+    expect(document.activeElement).toBe(trigger);
+});
+
+test.each([
+    ["Enter", "Enter"],
+    [" ", "Space"],
+])("docked trigger toggles once per %s activation", async (key, code) => {
+    const changes = jest.fn();
+    function DockedPanel() {
+        const [open, setOpen] = React.useState(false);
+        return (
+            <Dialog.Root
+                modal={false}
+                isOpen={open}
+                onOpenChange={(value) => {
+                    changes(value);
+                    setOpen(value);
+                }}
+            >
+                <Dialog.Trigger asChild>
+                    <button>Navigation</button>
+                </Dialog.Trigger>
+                <Dialog.Portal>
+                    <Dialog.Title>Navigation</Dialog.Title>
+                    <Dialog.DockedContent>
+                        <button>Panel control</button>
+                    </Dialog.DockedContent>
+                </Dialog.Portal>
+            </Dialog.Root>
+        );
+    }
+    await React.act(async () => root.render(<DockedPanel />));
+    const trigger = host.querySelector("button")!;
+    trigger.focus();
+    for (const open of [true, false]) {
+        await React.act(async () => {
+            const down = new KeyboardEvent("keydown", { key, code, bubbles: true, cancelable: true });
+            trigger.dispatchEvent(down);
+            // JSDOM does not generate the browser's native button activation click.
+            if (key === "Enter" && !down.defaultPrevented) {
+                trigger.click();
+            }
+            const up = new KeyboardEvent("keyup", { key, code, bubbles: true, cancelable: true });
+            trigger.dispatchEvent(up);
+            if (key === " " && !down.defaultPrevented && !up.defaultPrevented) {
+                trigger.click();
+            }
+            await settle();
+        });
+        expect(trigger.getAttribute("aria-expanded")).toBe(String(open));
+        expect(changes).toHaveBeenLastCalledWith(open);
+    }
+    expect(changes).toHaveBeenCalledTimes(2);
+});

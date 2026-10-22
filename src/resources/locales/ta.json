@@ -1,9 +1,25 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "பட்டியல்",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "மூடு",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "இடதுபுறத்தில் ச்லைடு",
+        "loading": "",
         "mainContent": "முக்கிய உள்ளடக்கம்",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "வலதுபுறம் சரிய",
         "skipLink": "உள்ளடக்கத்தைத் தவிர்க்கவும்",
         "toolbar": "கருவிப்பட்டி"
@@ -252,7 +268,6 @@
         "annotations": {
             "alreadyImported": "எல்லா குறிப்புகளும் ஏற்கனவே இறக்குமதி செய்யப்பட்டுள்ளன.",
             "emptyFile": "கோப்பில் குறிப்புகள் எதுவும் கிடைக்கவில்லை.",
-            "errorParsing": "கோப்பு பாகுபடுத்தலின் போது பிழை: ",
             "nothing": "இறக்குமதியை நிறுத்தி, இறக்குமதி செய்ய எந்த குறிப்பும் தயாராக இல்லை",
             "success": "இறக்குமதி வெற்றிகரமாக முடிந்தது."
         },
@@ -274,6 +289,31 @@
             "alreadyImport": "[{{- title}}] ஏற்கனவே இறக்குமதி செய்யப்பட்டது.",
             "fail": "இறக்குமதி [{{- path}}] தோல்வியுற்றது: [{{- err}}]",
             "success": "இறக்குமதி [{{- title}}] நிறைவு செய்யப்பட்டது."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "வெளியீட்டை ஏற்றுவது தோல்வியுற்றது: [{{- err}}]",
@@ -344,7 +384,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "",
@@ -688,7 +727,8 @@
         "certificateRevoked": "ரத்து செய்யப்பட்ட எல்.சி.பி உரிம சான்றிதழ்.",
         "certificateSignatureInvalid": "தவறான எல்.சி.பி உரிம சான்றிதழ் கையொப்பம்.",
         "cover": {
-            "img": "கவர் படம்"
+            "img": "கவர் படம்",
+            "zoom": ""
         },
         "day": "நாள்",
         "days": "நாட்கள்",
@@ -918,7 +958,6 @@
             },
             "customFontSelected": "நீங்கள் ஒரு தனிப்பட்ட எழுத்துருவைத் தேர்ந்தெடுத்துள்ளீர்கள்",
             "customizeReader": "உரை வடிவமைப்பைத் தனிப்பயனாக்குங்கள்",
-            "defaultValue": "",
             "disabled": "முடக்கப்பட்டது",
             "display": "காட்சி",
             "disposition": {

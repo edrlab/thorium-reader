@@ -1,9 +1,25 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "قائمة",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "إغلاق",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "سحب إلى اليسار",
+        "loading": "",
         "mainContent": "المحتوى الرئيسي",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "سحب إلى اليمين",
         "skipLink": "تخطَّ إلى المحتوى",
         "toolbar": "شريط الأدوات"
@@ -272,7 +288,6 @@
         "annotations": {
             "alreadyImported": "تم استيراد جميع الملاحظات مسبقاً.",
             "emptyFile": "لا توجد ملاحظات جاهزة للاستيراد، سيتم إلغاء العملية.",
-            "errorParsing": "حدث خطأ أثناء تحليل الملف: ",
             "nothing": "لا توجد أي ملاحظة جاهزة للاستيراد، جاري إلغاء عملية الاستيراد",
             "success": "اكتمل الاستيراد بنجاح."
         },
@@ -294,6 +309,31 @@
             "alreadyImport": "تم استيراد [{{- title}}] مسبقًا.",
             "fail": "فشل استيراد [{{- path}}]: [{{- err}}]",
             "success": "اكتمل استيراد [{{- title}}]."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "فشل تحميل المنشور: [{{- err}}]",
@@ -368,7 +408,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "استئناف التصفح",
@@ -712,7 +751,8 @@
         "certificateRevoked": "تم إبطال شهادة ترخيص LCP.",
         "certificateSignatureInvalid": "توقيع شهادة ترخيص LCP غير صالح.",
         "cover": {
-            "img": "صورة الغلاف"
+            "img": "صورة الغلاف",
+            "zoom": ""
         },
         "day": "يوم",
         "days": "أيام",
@@ -946,7 +986,6 @@
             },
             "customFontSelected": "لقد اخترت خطاً شخصياً",
             "customizeReader": "تخصيص تنسيق النص",
-            "defaultValue": "الوضع الافتراضي",
             "disabled": "تم تعطيله",
             "display": "العرض",
             "disposition": {

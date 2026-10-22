@@ -83,7 +83,7 @@ export const TagButton: React.FC<React.PropsWithChildren<IProps>> = (props) => {
                 </Link>
                 <DialogTrigger>
                     <Pressable>
-                        <button>
+                        <button type="button" aria-label={__("accessibility.editTag", { tag: tagString })}>
                             <SVG ariaHidden={true} svg={EditIcon} />
                         </button>
                     </Pressable>
@@ -95,7 +95,7 @@ export const TagButton: React.FC<React.PropsWithChildren<IProps>> = (props) => {
                         className={stylesTags.Popover_delete_tag}
                         style={{ zIndex: OVERLAY_Z_INDEX }}
                     >
-                        <PopoverDialog>
+                        <PopoverDialog aria-label={__("accessibility.editTag", { tag: tagString })}>
                             <FocusScope autoFocus>
                                 <Button
                                     slot="close"

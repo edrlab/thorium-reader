@@ -87,19 +87,15 @@ export function* downloader(linkHrefArray: IDownloaderLink[], downloadLabel?: st
 
         const translate = getTranslator().translate;
 
-        yield* putTyped(toastActions.openRequest.build(
-            ToastType.Error,
-            translate("message.download.error", { title: downloadLabel, err: getErrorMessage(err) }),
-        ));
-
-        return [];
+        // The import operation owns the user-facing failure notification.
+        throw new Error(translate("message.download.error", { title: downloadLabel || "", err: getErrorMessage(err) }), { cause: err });
 
     } finally {
 
         if (yield cancelled()) {
 
             yield* putTyped(toastActions.openRequest.build(
-                ToastType.Success,
+                ToastType.Info,
                 getTranslator().translate("message.download.cancelled"),
             ));
         }

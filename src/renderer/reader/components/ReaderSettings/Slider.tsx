@@ -18,8 +18,6 @@ import { ReaderConfig } from "readium-desktop/common/models/reader";
 
 interface ITable {
     title: string,
-    ariaLabel?: string,
-    ariaValuemin?: number,
     defaultValue: string,
     parameter: keyof AdjustableSettingsStrings;
     altParameter: string,
@@ -56,22 +54,22 @@ export const Slider = ({ value, option, set }: { value: string, option: ITable, 
             <div className={stylesSettings.spacing_heading}>
                 <h3 id={labelId}>{option.title}</h3>
                 <p>
-                    {currentSliderValue === "0" ? "auto" : currentSliderValue}
+                    {currentSliderValue === "0" ? __("reader.settings.column.auto") : currentSliderValue}
                 </p>
             </div>
             <div className={stylesSettings.size_range}>
                 <button
                     onClick={() => updateValue(0)}
                     className={stylesSettings.reset_button}
-                    title={__("reader.settings.defaultValue")}
+                    title={__("accessibility.resetSetting", { setting: option.title })}
                 >
                     <SVG ariaHidden svg={ResetIcon} />
                 </button>
-                <button aria-label={`${option.title}: −`} onClick={() => click("out")} className={stylesSettings.scale_button}>
+                <button onClick={() => click("out")} className={stylesSettings.scale_button} aria-label={__("accessibility.decreaseSetting", { setting: option.title })}>
                     <SVG ariaHidden svg={MinusIcon} />
                 </button>
                 <input
-                    id={option.title}
+                    id={`${labelId}-range`}
                     type="range"
                     aria-labelledby={labelId}
                     min="0"
@@ -81,7 +79,7 @@ export const Slider = ({ value, option, set }: { value: string, option: ITable, 
                     onChange={(e) => updateValue(parseInt(e.target.value, 10))}
                     className={currentSliderValue === "0" ? stylesSettings.range_inactive : ""}
                 />
-                <button aria-label={`${option.title}: +`} onClick={() => click("in")} className={stylesSettings.scale_button}>
+                <button onClick={() => click("in")} className={stylesSettings.scale_button} aria-label={__("accessibility.increaseSetting", { setting: option.title })}>
                     <SVG ariaHidden svg={PlusIcon} />
                 </button>
             </div>

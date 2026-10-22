@@ -1,9 +1,25 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menu",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Fechar",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Deslizar para a esquerda",
+        "loading": "",
         "mainContent": "conteúdo principal",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Deslizar para a direita",
         "skipLink": "Ir para o conteúdo",
         "toolbar": "barra de ferramentas"
@@ -257,7 +273,6 @@
         "annotations": {
             "alreadyImported": "Todas as notas já estão importadas.",
             "emptyFile": "Não há notas disponíveis no arquivo.",
-            "errorParsing": "Erro durante a análise do arquivo: ",
             "nothing": "Não há nota pronta para ser importada, abortando a importação",
             "success": "Importação concluída com sucesso."
         },
@@ -279,6 +294,31 @@
             "alreadyImport": "{{- title}} já foi importado.",
             "fail": "A importação de {{- path}} falhou: [{{- err}}]",
             "success": "A importação de {{- title}} terminou."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Erro na abertura da publicação: {{- err}}",
@@ -350,7 +390,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "Retornar à navegação",
@@ -694,7 +733,8 @@
         "certificateRevoked": "O certificado foi revogado.",
         "certificateSignatureInvalid": "A assinatura do certificado é inválida.",
         "cover": {
-            "img": "imagem de capa"
+            "img": "imagem de capa",
+            "zoom": ""
         },
         "day": "dia",
         "days": "dias",
@@ -925,7 +965,6 @@
             },
             "customFontSelected": "Você escolheu uma fonte personalizada",
             "customizeReader": "Personalize a formatação do texto",
-            "defaultValue": "",
             "disabled": "desabilitado",
             "display": "Exibição",
             "disposition": {

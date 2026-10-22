@@ -81,6 +81,12 @@
       padding: 3px;
       color: var(--color-text-primary);
 
+      button {
+        min-width: 24px;
+        min-height: 24px;
+        cursor: pointer;
+      }
+
       svg {
         width: 12px;
         height: 12px;

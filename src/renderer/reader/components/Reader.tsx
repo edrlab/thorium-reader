@@ -957,7 +957,7 @@ class Reader extends React.Component<IProps, IState> {
     private onPdfAnnotationSelectionError(payload: TPdfAnnotationSelectionErrorPayload) {
         this.skipNextPdfAnnotationEditor = false;
         debugPdfAnnotationsHost("annotation:selection-error", payload);
-        this.props.toastError(getTranslator().__("reader.annotations.error.pdf.validationSelection"));
+        this.props.toastInfo(getTranslator().__("reader.annotations.error.pdf.validationSelection"));
     }
 
     private syncPdfAnnotations(extraNote?: INoteState) {
@@ -1146,6 +1146,7 @@ class Reader extends React.Component<IProps, IState> {
                 {/* Reader Lock DEMO !!! */}
                 <a
                     role="heading"
+                    aria-level={2}
                     className={stylesReader.anchor_link}
                     ref={this.refToolbar}
                     id="main-toolbar"
@@ -1247,6 +1248,7 @@ class Reader extends React.Component<IProps, IState> {
                                 >
                                 <a
                                     role="heading"
+                                    aria-level={2}
                                     className={stylesReader.anchor_link}
                                     ref={this.fastLinkRef}
                                     id="main-content"
@@ -2274,7 +2276,7 @@ class Reader extends React.Component<IProps, IState> {
             this.props.toasty(`${txtPagination ? `${txtPagination} -- ` : ""}${txtProgression ? `${this.props.__("publication.progression.title")} = ${txtProgression}` : ""}${txtHeadings ? ` -- ${txtHeadings}` : ""}`);
 
         } catch (_err) {
-            this.props.toasty("ERROR");
+            this.props.toastError(this.props.__("message.notifications.readingPositionFailed"));
         }
     };
 
@@ -2486,7 +2488,7 @@ class Reader extends React.Component<IProps, IState> {
         ) {
             this.setState({ printDialogOpen: true });
         } else if (this.props.isPdf) {
-            this.props.toastError(this.props.__("reader.navigation.printDisabled"));
+            this.props.toastInfo(this.props.__("reader.navigation.printDisabled"));
         }
     };
 
@@ -3778,6 +3780,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         },
         toasty: (msg: string) => {
             dispatch(toastActions.openRequest.build(ToastType.Success, msg));
+        },
+        toastInfo: (msg: string) => {
+            dispatch(toastActions.openRequest.build(ToastType.Info, msg));
         },
         toastError: (msg: string) => {
             dispatch(toastActions.openRequest.build(ToastType.Error, msg));

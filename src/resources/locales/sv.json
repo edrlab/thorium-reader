@@ -1,9 +1,25 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Meny",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Stäng",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Gå till vänster",
+        "loading": "",
         "mainContent": "huvudinnehåll",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Gå till höger",
         "skipLink": "Hoppa till innehåll",
         "toolbar": "verktygsfält"
@@ -252,7 +268,6 @@
         "annotations": {
             "alreadyImported": "Alla anteckningar har redan importerats.",
             "emptyFile": "Det finns inga anteckningar i filen.",
-            "errorParsing": "Fel vid tolkning av fil: ",
             "nothing": "Det finns inga anteckningar tillgängliga för import, avbryter importen",
             "success": "Importen lyckades."
         },
@@ -274,6 +289,31 @@
             "alreadyImport": "{{- title}} var redan importerad.",
             "fail": "Importen av {{- path}} misslyckades. {{- err}}",
             "success": "Importen av {{- title}} är slutförd."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Publikationen kan inte öppnas: {{- err}}",
@@ -344,7 +384,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "Fortsätt bläddra",
@@ -688,7 +727,8 @@
         "certificateRevoked": "LCP-certifikatet är återkallat.",
         "certificateSignatureInvalid": "LCP-certifikatets signatur är ogiltig.",
         "cover": {
-            "img": "omslagsbild"
+            "img": "omslagsbild",
+            "zoom": ""
         },
         "day": "dag",
         "days": "dagar",
@@ -918,7 +958,6 @@
             },
             "customFontSelected": "Du har valt ett eget typsnitt",
             "customizeReader": "Anpassa textformatering",
-            "defaultValue": "standard",
             "disabled": "inaktiverad",
             "display": "Visning",
             "disposition": {

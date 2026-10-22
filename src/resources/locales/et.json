@@ -1,9 +1,25 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menüü",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Sulge",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Viipa vasakule",
+        "loading": "",
         "mainContent": "põhiline sisu",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Viipa paremale",
         "skipLink": "Mine sisu juurde",
         "toolbar": "tööriistariba"
@@ -252,7 +268,6 @@
         "annotations": {
             "alreadyImported": "Kõik märkmed on juba imporditud.",
             "emptyFile": "Failis pole märkmeid.",
-            "errorParsing": "Viga faili töötlemisel: ",
             "nothing": "Pole ühtegi imporditavat märget, katkestan impordi",
             "success": "Importimine õnnestus kenasti."
         },
@@ -274,6 +289,31 @@
             "alreadyImport": "„{{- title}}“ on juba imporditud.",
             "fail": "„{{- path}}“ objekti importimine ei õnnestunud: {{- err}}",
             "success": "„{{- title}}“ väljaande importimine sai kenasti tehtud."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Väljaande/teise laadimine ei õnnestunud: {{- err}}",
@@ -344,7 +384,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "Jätka sirvimist",
@@ -688,7 +727,8 @@
         "certificateRevoked": "LCP-litsentsi sertifikaat on tühistatud.",
         "certificateSignatureInvalid": "Vigane LCP-litsentsi sertifikaadi allkiri.",
         "cover": {
-            "img": "kaanepilt"
+            "img": "kaanepilt",
+            "zoom": ""
         },
         "day": "päev",
         "days": "päeva",
@@ -918,7 +958,6 @@
             },
             "customFontSelected": "sa oled eelistanud kasutada isiklikku kirjatüüpi",
             "customizeReader": "Kohenda teksti vormindust",
-            "defaultValue": "vaikmisi väärtus",
             "disabled": "pole kasutusel",
             "display": "Ekraanivaade",
             "disposition": {

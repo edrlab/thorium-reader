@@ -35,6 +35,7 @@ const Profiles = () => {
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
     const isRTL = langStringIsRTL(locale);
+    const groupId = React.useId();
 
     return (
         <>
@@ -45,6 +46,7 @@ const Profiles = () => {
             <div
                 className={stylesSettings.profile_selection_form}
                 role="radiogroup"
+                aria-label={__("settings.tabs.profiles")}
             >
                 {
                     packageProfileProvisioned.map((profile, index) => {
@@ -58,34 +60,20 @@ const Profiles = () => {
                             >
                                 <input
                                     type="radio"
-                                    id={profile.id}
+                                    id={`${groupId}-${index}`}
                                     value={profile.fileName}
-                                    name={profileTitle}
+                                    name={groupId}
                                     checked={selectedProfile?.id === profile.id}
                                     onChange={(e) => {
                                         console.log("PROFILE Input change", e);
                                         dispatch(customizationActions.activating.build(profile.id));
                                     }}
-                                    aria-label={profile.id}
+                                    aria-label={profileTitle}
                                 />
-                                <label htmlFor={profile.id} className={stylesSettings.profile_selection_label}>
+                                <label htmlFor={`${groupId}-${index}`} className={stylesSettings.profile_selection_label}>
                                     { profile.logoUrl ? <img src={profile.logoUrl} alt="" /> : <></> }
                                     <div
                                         className={stylesSettings.profile_selection_description}
-                                        role="radio"
-                                        onKeyDown={(e) => {
-                                            if (e.key === " ") {
-                                                console.log("PROFILE Input change", e);
-                                                dispatch(customizationActions.activating.build(profile.id));
-                                            }
-                                        }}
-                                        onKeyUp={(e) => {
-                                            if (e.key === " ") {
-                                                e.preventDefault();
-                                                console.log("PROFILE Input change", e);
-                                                dispatch(customizationActions.activating.build(profile.id));
-                                            }
-                                        }}
                                     >
                                         <div>
                                             <h3>{profileTitle}</h3>
@@ -142,9 +130,9 @@ const Profiles = () => {
                 >
                     <input
                         type="radio"
-                        id="customization-thorium-vanilla"
+                        id={`${groupId}-vanilla`}
                         value={__("settings.profiles.thorium.title")}
-                        name={__("settings.profiles.thorium.title")}
+                        name={groupId}
                         checked={!selectedProfile}
                         onChange={(e) => {
                             console.log("PROFILE Input change", e);
@@ -152,24 +140,10 @@ const Profiles = () => {
                         }}
                         aria-label={__("settings.profiles.thorium.title")}
                     />
-                    <label htmlFor="customization-thorium-vanilla" className={stylesSettings.profile_selection_label}>
+                    <label htmlFor={`${groupId}-vanilla`} className={stylesSettings.profile_selection_label}>
                         <SVG ariaHidden svg={ThoriumIcon} />
                         <div
                             className={stylesSettings.profile_selection_description}
-                            role="radio"
-                            onKeyDown={(e) => {
-                                if (e.key === " ") {
-                                    console.log("PROFILE Input change", e);
-                                    dispatch(customizationActions.activating.build(""));
-                                }
-                            }}
-                            onKeyUp={(e) => {
-                                if (e.key === " ") {
-                                    e.preventDefault();
-                                    console.log("PROFILE Input change", e);
-                                    dispatch(customizationActions.activating.build(""));
-                                }
-                            }}
                         >
                             <div>
                                 <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.profiles.thorium.title")}</h3>

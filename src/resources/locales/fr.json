@@ -1,9 +1,25 @@
 {
     "accessibility": {
+        "annotationNote": "Note d’annotation",
         "bookMenu": "Menu",
+        "bookmarkNote": "Note du marque-page",
+        "cancelDownload": "Annuler le téléchargement : {{- title}}",
         "closeDialog": "Fermer",
+        "closeNotification": "Fermer la notification",
+        "copyNotificationInstruction": "Copier la notification",
+        "decreaseSetting": "Diminuer {{- setting}}",
+        "downloadProgress": "Progression du téléchargement : {{- title}}",
+        "editTag": "Modifier l’étiquette : {{- tag}}",
+        "favoriteCatalog": "Catalogue favori : {{- title}}",
+        "increaseSetting": "Augmenter {{- setting}}",
         "leftSlideButton": "Faire défiler vers la gauche",
+        "loading": "Chargement…",
         "mainContent": "Contenu principal",
+        "notificationCopied": "Notification copiée",
+        "notificationCopyFailed": "Impossible de copier la notification",
+        "printPage": "Page {{page}}",
+        "publicationDetails": "{{- field}} : {{- title}}",
+        "resetSetting": "Réinitialiser {{- setting}}",
         "rightSlideButton": "Faire défiler vers la droite",
         "skipLink": "Aller directement au contenu",
         "toolbar": "Barre d'outils"
@@ -257,7 +273,6 @@
         "annotations": {
             "alreadyImported": "Toutes les notes sont déjà importées, importation annulée.",
             "emptyFile": "Aucune note n'est disponible dans ce fichier.",
-            "errorParsing": "Erreur lors de la lecture du fichier : ",
             "nothing": "Aucune note disponible, ajout annulé",
             "success": "Importation réussie."
         },
@@ -279,6 +294,31 @@
             "alreadyImport": "{{- title}} a déjà été ajouté.",
             "fail": "L'ajout de {{- path}} a échoué : {{- err}}",
             "success": "L'ajout de {{- title}} est achevé."
+        },
+        "notifications": {
+            "annotationImportFailed": "Impossible d’importer les annotations. Vérifiez que le fichier est un export d’annotations valide.",
+            "annotationPublicationUnavailable": "Impossible d’importer les annotations car la publication est indisponible. Essayez de réimporter la publication.",
+            "annotationStopPlayback": "Arrêtez la lecture vocale ou audio avant de créer une annotation.",
+            "authenticationFailed": "Impossible de se connecter à ce catalogue. Vérifiez votre connexion et réessayez.",
+            "catalogLinkFailed": "Impossible d’ajouter ce catalogue. Vérifiez le lien et votre connexion.",
+            "catalogUpdateFailed": "Impossible de modifier ce catalogue. Vérifiez ses paramètres et réessayez.",
+            "copyLimit": "Le quota de copie de cette publication est épuisé.",
+            "deleteFailed": "Impossible de supprimer cette publication. Réessayez.",
+            "exportFailed": "Impossible d’exporter cette publication. Vérifiez le dossier de destination et l’espace disque disponible.",
+            "openFileFailed": "Impossible d’ouvrir ce fichier. Vérifiez sa disponibilité et son format.",
+            "openLinkFailed": "Impossible d’ouvrir ce lien de publication. Vérifiez le lien et réessayez.",
+            "printLimit": "Le quota d’impression de cette publication est épuisé.",
+            "profileActivationFailed": "Impossible d’activer ce profil. Vérifiez le fichier du profil ou contactez son fournisseur.",
+            "profileBusy": "Une autre opération sur un profil est en cours. Attendez qu’elle se termine, puis réessayez.",
+            "profileProvisionFailed": "Impossible d’installer ce profil. Vérifiez le fichier du profil ou contactez son fournisseur.",
+            "profileTimeout": "Le délai d’installation du profil est dépassé. Vérifiez votre connexion et réessayez.",
+            "publicationUnavailable": "Cette publication est indisponible. Essayez de la réimporter.",
+            "readingPositionFailed": "Impossible de déterminer votre position de lecture. Réessayez.",
+            "recoveryPartialFailure": "{{- recovered}} publications récupérées ; {{- failed}} publications n’ont pas pu être récupérées.",
+            "renewFailed": "Impossible de prolonger ce prêt. Réessayez ou contactez votre bibliothèque.",
+            "returnFailed": "Impossible de rendre ce prêt. Réessayez ou contactez votre bibliothèque.",
+            "storageRefreshFailed": "Le réglage de stockage a été enregistré, mais la bibliothèque n’a pas pu être actualisée. Essayez de l’actualiser.",
+            "tagsFailed": "Impossible d’enregistrer les étiquettes de la publication. Réessayez."
         },
         "open": {
             "error": "Le livre ne peut pas être ouvert : {{- err}}",
@@ -350,7 +390,6 @@
             "empty": "Aucun catalogue trouvé.",
             "error": "Impossible de rechercher dans le registre. Veuillez réessayer.",
             "loading": "Recherche de catalogues…",
-            "prompt": "Nom, pays ou région",
             "title": "Rechercher des catalogues"
         },
         "resumeBrowsing": "Reprendre le parcours",
@@ -694,7 +733,8 @@
         "certificateRevoked": "Certificat LCP révoqué.",
         "certificateSignatureInvalid": "Signature de certificat LCP invalide.",
         "cover": {
-            "img": "image de couverture"
+            "img": "image de couverture",
+            "zoom": "Agrandir l’image de couverture"
         },
         "day": "jour",
         "days": "jours",
@@ -773,7 +813,7 @@
             },
             "hide": "Ne pas afficher",
             "highlight": "Surligner",
-            "noSelectionToast": "Aucun texte sélectionné",
+            "noSelectionToast": "Sélectionnez du texte avant de créer une annotation.",
             "note": "Note {{- color}}",
             "quickAnnotations": "Création rapide (sans édition)",
             "saveNote": "Sauvegarder",
@@ -925,7 +965,6 @@
             },
             "customFontSelected": "Vous avez sélectionné une police personnelle",
             "customizeReader": "Personnaliser la mise en forme",
-            "defaultValue": "Valeur par défaut",
             "disabled": "Désactivé",
             "display": "Affichage",
             "disposition": {

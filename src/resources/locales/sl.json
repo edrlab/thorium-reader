@@ -1,9 +1,25 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Meni",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Zapri",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Podrsaj v levo",
+        "loading": "",
         "mainContent": "glavna vsebina",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Podrsaj v desno",
         "skipLink": "Skoči na vsebino",
         "toolbar": "orodna vrstica"
@@ -262,7 +278,6 @@
         "annotations": {
             "alreadyImported": "Vse opombe so že uvožene.",
             "emptyFile": "V datoteki ni na voljo nobenih opomb.",
-            "errorParsing": "Napaka med razčlenjevanjem datoteke: ",
             "nothing": "Ni opombe, pripravljene za uvoz, zato se uvoz prekine",
             "success": "Uvoz uspešno zaključen."
         },
@@ -284,6 +299,31 @@
             "alreadyImport": "{{- title}} je že uvožen.",
             "fail": "Uvoz {{- path}} ni uspel: {{- err}}",
             "success": "Uvoz {{- title}} je končan."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Publikacije ni mogoče odpreti: {{- err}}",
@@ -356,7 +396,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "Nadaljuj z brskanjem",
@@ -700,7 +739,8 @@
         "certificateRevoked": "Preklicano potrdilo o licenci LCP.",
         "certificateSignatureInvalid": "Neveljaven podpis potrdila o licenci LCP.",
         "cover": {
-            "img": "naslovnica"
+            "img": "naslovnica",
+            "zoom": ""
         },
         "day": "dan",
         "days": "dni",
@@ -932,7 +972,6 @@
             },
             "customFontSelected": "Izbrana je pisava po meri",
             "customizeReader": "Prilagodi oblikovanje besedila",
-            "defaultValue": "privzeta vrednost",
             "disabled": "onemogočeno",
             "display": "Zaslon",
             "disposition": {

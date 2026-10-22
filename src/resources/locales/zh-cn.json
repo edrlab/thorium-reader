@@ -1,9 +1,25 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "菜单",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "关闭",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "将列表划至左侧",
+        "loading": "",
         "mainContent": "主要内容",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "将列表划至右侧",
         "skipLink": "跳转至内容",
         "toolbar": "工具栏"
@@ -247,7 +263,6 @@
         "annotations": {
             "alreadyImported": "所有笔记已经导入。",
             "emptyFile": "文件中没有可用的笔记。",
-            "errorParsing": "文件解析时发生错误： ",
             "nothing": "没有可导入的笔记，导入已终止",
             "success": "导入已成功完成。"
         },
@@ -269,6 +284,31 @@
             "alreadyImport": "[{{- title}}] 已被导入。",
             "fail": "导入{{- path}}失败。{{- err}}",
             "success": "导入{{- title}}完成。"
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "无法打开出版物: {{- err}}",
@@ -337,7 +377,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "继续浏览",
@@ -681,7 +720,8 @@
         "certificateRevoked": "LCP 授权已被撤销。",
         "certificateSignatureInvalid": "无效的 LCP 许可证证书签名。",
         "cover": {
-            "img": "封面图像"
+            "img": "封面图像",
+            "zoom": ""
         },
         "day": "天",
         "days": "天",
@@ -910,7 +950,6 @@
             },
             "customFontSelected": "您已选择自定义字体",
             "customizeReader": "自定义文本格式",
-            "defaultValue": "默认值",
             "disabled": "已禁用",
             "display": "显示",
             "disposition": {

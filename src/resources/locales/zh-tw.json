@@ -1,9 +1,25 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "選單",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "關閉",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "將列表移至左側",
+        "loading": "",
         "mainContent": "主要內容",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "將列表移至右側",
         "skipLink": "跳轉至內容",
         "toolbar": "工具欄"
@@ -247,7 +263,6 @@
         "annotations": {
             "alreadyImported": "所有註解均已匯入。",
             "emptyFile": "文件中沒有可用的註解。",
-            "errorParsing": "文件解析時發生錯誤： ",
             "nothing": "沒有可供匯入的註解，正在中止匯入",
             "success": "匯入已成功完成。"
         },
@@ -269,6 +284,31 @@
             "alreadyImport": "{{- title}} 已被匯入。",
             "fail": "匯入 [{{- path}}] 失敗：[{{- err}}]",
             "success": "匯入 [{{- title}}] 完成。"
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "無法打開出版物：[{{- err}}]",
@@ -337,7 +377,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "",
@@ -681,7 +720,8 @@
         "certificateRevoked": "LCP 授權已被撤銷。",
         "certificateSignatureInvalid": "LCP 授權憑證簽章無效。",
         "cover": {
-            "img": "封面圖像"
+            "img": "封面圖像",
+            "zoom": ""
         },
         "day": "天",
         "days": "天",
@@ -910,7 +950,6 @@
             },
             "customFontSelected": "您已選擇個人字體",
             "customizeReader": "自訂文字格式",
-            "defaultValue": "",
             "disabled": "停用",
             "display": "顯示",
             "disposition": {

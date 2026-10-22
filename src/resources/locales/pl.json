@@ -1,9 +1,25 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menu",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Zamknij",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Przesuń w lewo",
+        "loading": "",
         "mainContent": "główna treść",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Przesuń w prawo",
         "skipLink": "Przejdź do treści",
         "toolbar": "pasek narzędzi"
@@ -262,7 +278,6 @@
         "annotations": {
             "alreadyImported": "Wszystkie notatki są już zaimportowane.",
             "emptyFile": "Brak notatek w pliku.",
-            "errorParsing": "Błąd podczas analizowania pliku: ",
             "nothing": "Brak notatek gotowych do zaimportowania, przerywam import",
             "success": "Import zakończony pomyślnie."
         },
@@ -284,6 +299,31 @@
             "alreadyImport": "[{{- title}}] został już zaimportowany.",
             "fail": "Importowanie [{{- path}}] nie powiodło się: [{{- err}}]",
             "success": "Importowanie [{{- title}}] zakończone."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Ładowanie publikacji nie powiodło się: [{{- err}}]",
@@ -356,7 +396,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "Wznów przeglądanie",
@@ -700,7 +739,8 @@
         "certificateRevoked": "Certyfikat licencji LCP został unieważniony.",
         "certificateSignatureInvalid": "Nieprawidłowy podpis certyfikatu licencji LCP.",
         "cover": {
-            "img": "okładka"
+            "img": "okładka",
+            "zoom": ""
         },
         "day": "dzień",
         "days": "dni",
@@ -932,7 +972,6 @@
             },
             "customFontSelected": "Wybrano własną czcionkę",
             "customizeReader": "Dostosuj formatowanie tekstu",
-            "defaultValue": "domyślna wartość",
             "disabled": "wyłączone",
             "display": "Wyświetlanie",
             "disposition": {

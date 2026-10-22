@@ -1,9 +1,25 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menú",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Tancar",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Lliscar llista a l'esquerra",
+        "loading": "",
         "mainContent": "Contingut principal",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Lliscar llista a la dreta",
         "skipLink": "Passar el contingut",
         "toolbar": "Barra d'eines"
@@ -257,7 +273,6 @@
         "annotations": {
             "alreadyImported": "",
             "emptyFile": "",
-            "errorParsing": "",
             "nothing": "",
             "success": ""
         },
@@ -279,6 +294,31 @@
             "alreadyImport": "{{- title}} ja estava importat",
             "fail": "La importació de {{- path}} ha fallat. {{- err}}",
             "success": "La importació de {{- title}} ha acabat."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "No es pot obrir la publicació: {{- err}}",
@@ -350,7 +390,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "",
@@ -694,7 +733,8 @@
         "certificateRevoked": "El certificat està cancel·lat",
         "certificateSignatureInvalid": "La firma del certificat no és vàlida",
         "cover": {
-            "img": "Imatge de portada"
+            "img": "Imatge de portada",
+            "zoom": ""
         },
         "day": "dia",
         "days": "dies",
@@ -925,7 +965,6 @@
             },
             "customFontSelected": "",
             "customizeReader": "Personalitza el format del text",
-            "defaultValue": "",
             "disabled": "desactivat",
             "display": "Visualització",
             "disposition": {

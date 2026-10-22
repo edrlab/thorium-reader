@@ -1,9 +1,25 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Menü",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Kapat",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Sola kaydır",
+        "loading": "",
         "mainContent": "ana içerik",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Sağa kaydır",
         "skipLink": "İçeriğe atla",
         "toolbar": "araç çubuğu"
@@ -252,7 +268,6 @@
         "annotations": {
             "alreadyImported": "Tüm notlar zaten içe aktarılmış.",
             "emptyFile": "Dosyada not mevcut değil.",
-            "errorParsing": "Dosya işlenirken hata oluştu: ",
             "nothing": "İçe aktarmaya hazır hiç not yok, içe aktarım durduruluyor",
             "success": "İçe aktarma başarıyla tamamlandı."
         },
@@ -274,6 +289,31 @@
             "alreadyImport": "[{{- title}}] zaten içe aktarılmış.",
             "fail": "[{{- path}}] İçe aktarması başarısız: [{{- err}}]",
             "success": "[{{- title}}]: İçe aktarımı tamamlandı."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Eser yüklemesi başarısız: [{{- err}}]",
@@ -344,7 +384,6 @@
             "empty": "",
             "error": "",
             "loading": "",
-            "prompt": "",
             "title": ""
         },
         "resumeBrowsing": "Göz atmaya kaldığınız yerden devam edin",
@@ -688,7 +727,8 @@
         "certificateRevoked": "LCP lisans sertifikası geçersizleştirildi.",
         "certificateSignatureInvalid": "Geçersiz LCP lisans sertifikası imzası",
         "cover": {
-            "img": "kapak görseli"
+            "img": "kapak görseli",
+            "zoom": ""
         },
         "day": "gün",
         "days": "gün",
@@ -918,7 +958,6 @@
             },
             "customFontSelected": "Kişisel bir yazı tipi seçtiniz",
             "customizeReader": "Metin biçimlendirmesini özelleştir",
-            "defaultValue": "varsayılan değer",
             "disabled": "geçersiz",
             "display": "Görüntüleme",
             "disposition": {

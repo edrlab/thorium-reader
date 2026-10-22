@@ -1,9 +1,25 @@
 {
     "accessibility": {
+        "annotationNote": "",
         "bookMenu": "Меню",
+        "bookmarkNote": "",
+        "cancelDownload": "",
         "closeDialog": "Закрыть",
+        "closeNotification": "",
+        "copyNotificationInstruction": "",
+        "decreaseSetting": "",
+        "downloadProgress": "",
+        "editTag": "",
+        "favoriteCatalog": "",
+        "increaseSetting": "",
         "leftSlideButton": "Сдвиньте список влево",
+        "loading": "",
         "mainContent": "основное содержимое",
+        "notificationCopied": "",
+        "notificationCopyFailed": "",
+        "printPage": "",
+        "publicationDetails": "",
+        "resetSetting": "",
         "rightSlideButton": "Сдвиньте список вправо",
         "skipLink": "Перейти к содержимому",
         "toolbar": "панель инструментов"
@@ -257,7 +273,6 @@
         "annotations": {
             "alreadyImported": "Все заметки уже импортированы.",
             "emptyFile": "В этом файле нет заметок.",
-            "errorParsing": "Ошибка при анализе файла: ",
             "nothing": "Нет ни одной готовой к импорту заметки, импорт прерван",
             "success": "Импорт успешно завершён."
         },
@@ -279,6 +294,31 @@
             "alreadyImport": "[{{- title}}] уже импортировано.",
             "fail": "Импорт {{- path}} не удался. {{- err}}",
             "success": "Импорт {{- title}} закончен."
+        },
+        "notifications": {
+            "annotationImportFailed": "",
+            "annotationPublicationUnavailable": "",
+            "annotationStopPlayback": "",
+            "authenticationFailed": "",
+            "catalogLinkFailed": "",
+            "catalogUpdateFailed": "",
+            "copyLimit": "",
+            "deleteFailed": "",
+            "exportFailed": "",
+            "openFileFailed": "",
+            "openLinkFailed": "",
+            "printLimit": "",
+            "profileActivationFailed": "",
+            "profileBusy": "",
+            "profileProvisionFailed": "",
+            "profileTimeout": "",
+            "publicationUnavailable": "",
+            "readingPositionFailed": "",
+            "recoveryPartialFailure": "",
+            "renewFailed": "",
+            "returnFailed": "",
+            "storageRefreshFailed": "",
+            "tagsFailed": ""
         },
         "open": {
             "error": "Книга не может быть открыта : {{- err}}",
@@ -350,7 +390,6 @@
             "empty": "Каталоги не найдены.",
             "error": "Не удалось выполнить поиск в реестре. Пожалуйста, попробуйте ещё раз.",
             "loading": "Поиск по каталогам…",
-            "prompt": "Название, страна или регион",
             "title": "Поиск в каталогах"
         },
         "resumeBrowsing": "Продолжить просмотр",
@@ -694,7 +733,8 @@
         "certificateRevoked": "Сертификат LCP отозван.",
         "certificateSignatureInvalid": "Неверная подпись сертификата лицензии LCP.",
         "cover": {
-            "img": "обложка"
+            "img": "обложка",
+            "zoom": ""
         },
         "day": "день",
         "days": "дней",
@@ -925,7 +965,6 @@
             },
             "customFontSelected": "Вы выбрали персональный шрифт",
             "customizeReader": "Настройка форматирования текста",
-            "defaultValue": "значение по умолчанию",
             "disabled": "отключено",
             "display": "Отображение",
             "disposition": {
