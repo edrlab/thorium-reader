@@ -9,6 +9,7 @@
         "copyNotificationInstruction": "Copier la notification",
         "decreaseSetting": "Diminuer {{- setting}}",
         "downloadProgress": "Progression du téléchargement : {{- title}}",
+        "downloadProgressUnknown": "La progression du téléchargement est inconnue.",
         "editTag": "Modifier l’étiquette : {{- tag}}",
         "favoriteCatalog": "Catalogue favori : {{- title}}",
         "increaseSetting": "Augmenter {{- setting}}",

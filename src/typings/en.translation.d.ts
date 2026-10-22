@@ -10,6 +10,7 @@ declare namespace typed_i18n {
   readonly "copyNotificationInstruction": string,
   readonly "decreaseSetting": string,
   readonly "downloadProgress": string,
+  readonly "downloadProgressUnknown": string,
   readonly "editTag": string,
   readonly "favoriteCatalog": string,
   readonly "increaseSetting": string,
@@ -34,6 +35,7 @@ declare namespace typed_i18n {
   (_: "accessibility.copyNotificationInstruction", __?: {}): string;
   (_: "accessibility.decreaseSetting", __?: {}): string;
   (_: "accessibility.downloadProgress", __?: {}): string;
+  (_: "accessibility.downloadProgressUnknown", __?: {}): string;
   (_: "accessibility.editTag", __?: {}): string;
   (_: "accessibility.favoriteCatalog", __?: {}): string;
   (_: "accessibility.increaseSetting", __?: {}): string;
