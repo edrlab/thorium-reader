@@ -213,62 +213,24 @@ test("dismissing a focused toast moves to the remaining toast's message button",
     expect(document.activeElement).toBe(remainingAction);
 });
 
-test.each([ToastType.Error])("%s notifications persist until explicitly dismissed", async (type) => {
-    await notify(type);
-    await advance(60000);
-    expect(dialogs()).toHaveLength(1);
-    await press(closeButton(), "Enter");
-    await advance(500);
-    expect(dialogs()).toHaveLength(0);
-});
-
-test.each([ToastType.Success, ToastType.Info])("%s confirmations use a fixed five-second timeout", async (type) => {
-    await notify(type, "Saved");
-    await advance(4999);
-    expect(dialogs()).toHaveLength(1);
-    await advance(1);
-    expect(dialogs()).toHaveLength(0);
-});
-
-test("notifications arriving in screen-reader mode remain until dismissed", async () => {
-    await React.act(async () => {
-        ipcRenderer.emit("accessibility-support-changed", {}, true);
-    });
-    await notify(ToastType.Success, "Saved");
-    await advance(60000);
-    expect(dialogs()).toHaveLength(1);
-    const region = document.querySelector("[role=region]")!;
-    await React.act(async () => region.dispatchEvent(new dom.window.MouseEvent("mouseover", { bubbles: true })));
-    await React.act(async () =>
-        region.dispatchEvent(new dom.window.MouseEvent("mouseout", { bubbles: true, relatedTarget: host })),
-    );
-    await advance(60000);
-    expect(dialogs()).toHaveLength(1);
-    await press(closeButton(), "Enter");
-    await advance(500);
-    expect(dialogs()).toHaveLength(0);
-});
-
-test("enabling screen-reader mode pauses existing timers through focus changes", async () => {
-    await notify(ToastType.Success, "Saved");
-    await advance(2000);
-    await React.act(async () => {
-        ipcRenderer.emit("accessibility-support-changed", {}, true);
-    });
-    await React.act(async () => messageAction().focus());
-    const outside = document.createElement("button");
-    host.appendChild(outside);
-    await React.act(async () => outside.focus());
-    await advance(60000);
-    expect(dialogs()).toHaveLength(1);
-    await React.act(async () => {
-        ipcRenderer.emit("accessibility-support-changed", {}, false);
-    });
-    await advance(2999);
-    expect(dialogs()).toHaveLength(1);
-    await advance(1);
-    expect(dialogs()).toHaveLength(0);
-});
+test.each([ToastType.Success, ToastType.Info, ToastType.Error])(
+    "%s notifications expire after five seconds regardless of screen-reader support",
+    async (type) => {
+        await React.act(async () => {
+            ipcRenderer.emit("accessibility-support-changed", {}, true);
+        });
+        await notify(type, "Notification");
+        await advance(2000);
+        await React.act(async () => {
+            ipcRenderer.emit("accessibility-support-changed", {}, false);
+            ipcRenderer.emit("accessibility-support-changed", {}, true);
+        });
+        await advance(2999);
+        expect(dialogs()).toHaveLength(1);
+        await advance(1);
+        expect(dialogs()).toHaveLength(0);
+    },
+);
 
 test("the no-selection hint uses the fixed five-second timeout after Redux", async () => {
     const action = openToast(ToastType.Info, "Select text before creating an annotation.");
@@ -279,16 +241,12 @@ test("the no-selection hint uses the fixed five-second timeout after Redux", asy
     await advance(1);
     expect(dialogs()).toHaveLength(0);
 
-    // Errors remain persistent after an informational toast expires.
+    // Errors use the same timeout after an informational toast expires.
     await render(toastReducer(state, openToast(ToastType.Error, "Failed")));
-    await advance(60000);
+    await advance(4999);
     expect(dialogs()).toHaveLength(1);
-});
-
-test("error notifications remain persistent", async () => {
-    await render(toastReducer(undefined, openToast(ToastType.Error, "Failed")));
-    await advance(60000);
-    expect(dialogs()).toHaveLength(1);
+    await advance(1);
+    expect(dialogs()).toHaveLength(0);
 });
 
 test("success timers pause while focused and resume with the remaining time", async () => {
@@ -374,7 +332,7 @@ test("closing a focused toast restores focus to the original control", async () 
     expect(document.activeElement).toBe(outside);
 });
 
-test("persistent notices do not block later notices and another publication is filtered", async () => {
+test("independent notices do not block later notices and another publication is filtered", async () => {
     await notify(ToastType.Error, "First failure");
     await notify(ToastType.Error, "Second failure");
     expect(dialogs()).toHaveLength(2);

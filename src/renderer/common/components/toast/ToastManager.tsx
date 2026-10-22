@@ -8,10 +8,8 @@
 import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.scss";
 
 import * as React from "react";
-import { ipcRenderer } from "electron";
 import { connect } from "react-redux";
 import { I18nProvider, UNSTABLE_ToastQueue as ToastQueue, UNSTABLE_ToastRegion as ToastRegion } from "react-aria-components";
-import { ToastType } from "readium-desktop/common/models/toast";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { ToastState } from "readium-desktop/common/redux/states/toast";
@@ -31,39 +29,18 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
-class AccessibleToastQueue extends ToastQueue<ToastState> {
-    public accessibilitySupportEnabled = false;
-
+class ResumableToastQueue extends ToastQueue<ToastState> {
     public resumeAll() {
-        if (!this.accessibilitySupportEnabled) {
-            // React Aria's timers do not cancel an existing timeout on resume.
-            // Pausing first preserves the remaining time and makes repeated resumes safe.
-            super.pauseAll();
-            super.resumeAll();
-        }
+        // React Aria's timers do not cancel an existing timeout on resume.
+        // Pausing first preserves the remaining time and makes repeated resumes safe.
+        super.pauseAll();
+        super.resumeAll();
     }
 }
 
 export class ToastManager extends React.Component<IProps> {
-    private regionRef = React.createRef<HTMLDivElement>();
-    // Each window owns its queue. Persistent errors must not hide later notices.
-    private queue = new AccessibleToastQueue({ maxVisibleToasts: Infinity });
-
-    public componentDidMount() {
-        ipcRenderer.on("accessibility-support-changed", this.accessibilitySupportChanged);
-        ipcRenderer.send("accessibility-support-query");
-    }
-
-    private accessibilitySupportChanged = (_event: Electron.IpcRendererEvent, enabled: boolean) => {
-        if (this.queue.accessibilitySupportEnabled === enabled) return;
-        this.queue.accessibilitySupportEnabled = enabled;
-        if (enabled) {
-            this.queue.pauseAll();
-        } else {
-            const region = this.regionRef.current;
-            if (!region?.contains(document.activeElement) && !region?.hasAttribute("data-hovered")) this.queue.resumeAll();
-        }
-    };
+    // Each window owns its queue so notices stay independent.
+    private queue = new ResumableToastQueue({ maxVisibleToasts: Infinity });
 
     public componentDidUpdate(oldProps: IProps) {
         const { toast } = this.props;
@@ -76,15 +53,12 @@ export class ToastManager extends React.Component<IProps> {
         }
         if (toast !== oldProps.toast) {
             if (shouldAddToast(this.queue.visibleToasts, toast, this.props.pubId)) {
-                // Errors remain persistent; other notices use a fixed five-second timeout.
-                const timeout = toast.type === ToastType.Error || this.queue.accessibilitySupportEnabled ? undefined : 5000;
-                this.queue.add(toast, { timeout });
+                this.queue.add(toast, { timeout: 5000 });
             }
         }
     }
 
     public componentWillUnmount() {
-        ipcRenderer.off("accessibility-support-changed", this.accessibilitySupportChanged);
         this.queue.pauseAll();
         this.queue.clear();
     }
@@ -93,7 +67,6 @@ export class ToastManager extends React.Component<IProps> {
         return (
             <I18nProvider locale={this.props.locale}>
                 <ToastRegion
-                    ref={this.regionRef}
                     queue={this.queue}
                     className={stylesToasts.toasts_wrapper}
                     render={(props) => <div
