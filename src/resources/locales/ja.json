@@ -15,7 +15,6 @@
         "leftSlideButton": "左にスライド",
         "loading": "",
         "mainContent": "メインコンテンツ",
-        "notification": "",
         "notificationCopied": "",
         "notificationCopyFailed": "",
         "printPage": "",
@@ -263,7 +262,6 @@
         "annotations": {
             "alreadyImported": "すべてのメモがすでに取り込まれています。",
             "emptyFile": "ファイル内にメモはありません。",
-            "errorParsing": "ファイル解析中にエラーが発生しました： ",
             "nothing": "取りこめる状態のメモがないため、取りこみを中止します",
             "success": "取り込みが正常に完了しました。"
         },

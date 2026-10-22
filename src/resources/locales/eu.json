@@ -15,7 +15,6 @@
         "leftSlideButton": "Mugitu zerrenda ezkerrera",
         "loading": "",
         "mainContent": "Eduki nagusia",
-        "notification": "",
         "notificationCopied": "",
         "notificationCopyFailed": "",
         "printPage": "",
@@ -269,7 +268,6 @@
         "annotations": {
             "alreadyImported": "",
             "emptyFile": "",
-            "errorParsing": "",
             "nothing": "",
             "success": ""
         },

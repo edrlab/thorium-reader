@@ -15,7 +15,6 @@
         "leftSlideButton": "Deslizar para a esquerda",
         "loading": "",
         "mainContent": "Conteúdo principal",
-        "notification": "",
         "notificationCopied": "",
         "notificationCopyFailed": "",
         "printPage": "",
@@ -274,7 +273,6 @@
         "annotations": {
             "alreadyImported": "Todas as anotações já foram importadas.",
             "emptyFile": "Nenhuma anotação disponível no ficheiro.",
-            "errorParsing": "Erro ao analisar o formato do ficheiro: ",
             "nothing": "Não existem anotações prontas para serem importadas. A abortar a importação",
             "success": "Importação concluída com sucesso."
         },

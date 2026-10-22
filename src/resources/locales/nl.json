@@ -15,7 +15,6 @@
         "leftSlideButton": "Schuif naar links",
         "loading": "",
         "mainContent": "hoofdinhoud",
-        "notification": "",
         "notificationCopied": "",
         "notificationCopyFailed": "",
         "printPage": "",
@@ -269,7 +268,6 @@
         "annotations": {
             "alreadyImported": "Alle aantekeningen zijn reeds geïmporteerd.",
             "emptyFile": "Geen aantekeningen beschikbaar in het bestand.",
-            "errorParsing": "Fout tijdens het parsen van het bestand: ",
             "nothing": "Er is geen aantekening om geïmporteerd te worden, de import wordt afgebroken",
             "success": "Import succesvol voltooid."
         },

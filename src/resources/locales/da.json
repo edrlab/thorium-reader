@@ -15,7 +15,6 @@
         "leftSlideButton": "Flyt listen til venstre",
         "loading": "",
         "mainContent": "hovedindhold",
-        "notification": "",
         "notificationCopied": "",
         "notificationCopyFailed": "",
         "printPage": "",
@@ -269,7 +268,6 @@
         "annotations": {
             "alreadyImported": "Alle noter eksisterer i forvejen, afslutter import.",
             "emptyFile": "Ingen noter blev fundet i filen.",
-            "errorParsing": "Fejl under læsning af filen: ",
             "nothing": "Ingen noter kunne importeres, afslutter import",
             "success": "Import færdig."
         },

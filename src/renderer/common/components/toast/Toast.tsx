@@ -33,24 +33,13 @@ export function Toast({ toast, close, __ }: IProps) {
     const [opened, setOpened] = React.useState(false);
     const [willLeave, setWillLeave] = React.useState(false);
     const [copyFeedback, setCopyFeedback] = React.useState({ message: "", sequence: 0, failed: false });
-    const [announcedFeedback, setAnnouncedFeedback] = React.useState({ message: "", sequence: 0 });
     const announcementId = React.useId();
-    const containerLabelId = React.useId();
-    const actionId = React.useId();
     const ref = React.useRef<HTMLDivElement>(undefined);
     const messageActionRef = React.useRef<HTMLButtonElement>(undefined);
     const closing = React.useRef(false);
     const removed = React.useRef(false);
     const { data: message, type } = toast.content;
     const copied = !!copyFeedback.message && !copyFeedback.failed;
-
-    React.useEffect(() => {
-        setAnnouncedFeedback({ message: "", sequence: copyFeedback.sequence });
-        // Clear before announcing so repeated copies also receive feedback.
-        if (!copyFeedback.message) return undefined;
-        const timer = window.setTimeout(() => setAnnouncedFeedback(copyFeedback), 100);
-        return () => window.clearTimeout(timer);
-    }, [copyFeedback]);
 
     React.useEffect(() => {
         // React Aria starts each timer on mount. Notices added to a region that
@@ -94,23 +83,6 @@ export function Toast({ toast, close, __ }: IProps) {
             <AriaToast
                 ref={ref}
                 toast={toast}
-                aria-labelledby={containerLabelId}
-                render={(props) => <div
-                    {...props}
-                    tabIndex={-1}
-                    onClick={(event) => {
-                        props.onClick?.(event);
-                        if (event.defaultPrevented || (event.target as Element).closest("button")) return;
-                        messageActionRef.current?.focus();
-                        messageActionRef.current?.click();
-                    }}
-                    onFocus={(event) => {
-                        props.onFocus?.(event);
-                        // React Aria targets this wrapper for landmark entry and
-                        // focus restoration. The actual action is the native button.
-                        if (event.target === event.currentTarget) messageActionRef.current?.focus();
-                    }}
-                />}
                 className={classNames(
                     stylesToasts.toast,
                     willLeave && stylesToasts.leave,
@@ -124,33 +96,31 @@ export function Toast({ toast, close, __ }: IProps) {
                 }}
             >
                 <VisuallyHidden>
-                    <span id={containerLabelId}>{__("accessibility.notification")}</span>
+                    <div role="status" aria-live="polite" aria-atomic="true">
+                        {copyFeedback.message && <span key={copyFeedback.sequence}>{copyFeedback.message}</span>}
+                    </div>
                     <ToastContent>
                         <Text slot="title" id={announcementId}>{message}</Text>
                     </ToastContent>
                 </VisuallyHidden>
+
                 <Button
                     ref={messageActionRef}
                     className={classNames(stylesToasts.content, stylesToasts.messageButton)}
-                    aria-labelledby={announcementId}
-                    aria-describedby={copied ? undefined : actionId}
+                    aria-label={__("accessibility.copyNotificationInstruction")}
+                    aria-disabled={copied ? true : false}
                     onPress={copyAndExpand}
                     onBlur={() => setOpened(false)}
                 >
-                    <span className={stylesToasts.copyStatus}>
-                        {copyFeedback.message && <span key={copyFeedback.sequence}>{copyFeedback.message}</span>}
-                    </span>
-                    <Text
-                        aria-hidden="true"
-                        className={classNames(stylesToasts.message, opened && stylesToasts.toast_open)}
-                    >
-                        {message}
-                    </Text>
+                        <span className={stylesToasts.copyStatus}>
+                            {copyFeedback.message && <span key={copyFeedback.sequence}>{copyFeedback.message}</span>}
+                        </span>
+                        <span className={classNames(stylesToasts.message, opened && stylesToasts.toast_open)}>
+                            {message}
+                        </span>
                 </Button>
-                {!copied && <VisuallyHidden>
-                    <span id={actionId}>{__("accessibility.copyNotificationInstruction")}</span>
-                </VisuallyHidden>}
                 <Button
+                    slot="close"
                     aria-label={__("accessibility.closeNotification")}
                     className={stylesToasts.closeButton}
                     onPress={() => {
@@ -163,11 +133,6 @@ export function Toast({ toast, close, __ }: IProps) {
                     <SVG ariaHidden svg={QuitIcon} />
                 </Button>
             </AriaToast>
-            <VisuallyHidden>
-                <div role="status" aria-live="polite" aria-atomic="true">
-                    {announcedFeedback.message && <span key={announcedFeedback.sequence}>{announcedFeedback.message}</span>}
-                </div>
-            </VisuallyHidden>
         </>
     );
 }

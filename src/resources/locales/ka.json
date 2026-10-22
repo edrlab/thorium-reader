@@ -15,7 +15,6 @@
         "leftSlideButton": "სიის მარცხნივ ჩაწევა",
         "loading": "",
         "mainContent": "ძირითადი შიგთავსი",
-        "notification": "",
         "notificationCopied": "",
         "notificationCopyFailed": "",
         "printPage": "",
@@ -269,7 +268,6 @@
         "annotations": {
             "alreadyImported": "",
             "emptyFile": "",
-            "errorParsing": "",
             "nothing": "",
             "success": ""
         },

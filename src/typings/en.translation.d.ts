@@ -16,7 +16,6 @@ declare namespace typed_i18n {
   readonly "leftSlideButton": string,
   readonly "loading": string,
   readonly "mainContent": string,
-  readonly "notification": string,
   readonly "notificationCopied": string,
   readonly "notificationCopyFailed": string,
   readonly "printPage": string,
@@ -41,7 +40,6 @@ declare namespace typed_i18n {
   (_: "accessibility.leftSlideButton", __?: {}): string;
   (_: "accessibility.loading", __?: {}): string;
   (_: "accessibility.mainContent", __?: {}): string;
-  (_: "accessibility.notification", __?: {}): string;
   (_: "accessibility.notificationCopied", __?: {}): string;
   (_: "accessibility.notificationCopyFailed", __?: {}): string;
   (_: "accessibility.printPage", __?: {}): string;
@@ -657,7 +655,6 @@ declare namespace typed_i18n {
   readonly "annotations": {
     readonly "alreadyImported": string,
     readonly "emptyFile": string,
-    readonly "errorParsing": string,
     readonly "nothing": string,
     readonly "success": string
   },
@@ -723,13 +720,11 @@ declare namespace typed_i18n {
   (_: "message.annotations", __?: {}): {
   readonly "alreadyImported": string,
   readonly "emptyFile": string,
-  readonly "errorParsing": string,
   readonly "nothing": string,
   readonly "success": string
 };
   (_: "message.annotations.alreadyImported", __?: {}): string;
   (_: "message.annotations.emptyFile", __?: {}): string;
-  (_: "message.annotations.errorParsing", __?: {}): string;
   (_: "message.annotations.nothing", __?: {}): string;
   (_: "message.annotations.success", __?: {}): string;
   (_: "message.download", __?: {}): {

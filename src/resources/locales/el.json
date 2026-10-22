@@ -15,7 +15,6 @@
         "leftSlideButton": "Μετακίνηση προς τα αριστερά",
         "loading": "",
         "mainContent": "κυρίως περιεχόμενο",
-        "notification": "",
         "notificationCopied": "",
         "notificationCopyFailed": "",
         "printPage": "",
@@ -269,7 +268,6 @@
         "annotations": {
             "alreadyImported": "Όλες οι σημειώσεις έχουν ήδη εισαχθεί.",
             "emptyFile": "Δεν διατίθενται σημειώσεις μέσα στο αρχείο.",
-            "errorParsing": "Σφάλμα κατά την ανάλυση αρχείου: ",
             "nothing": "Δεν υπάρχει καμία σημείωση για εισαγωγή· παράκαμψη εισαγωγής",
             "success": "Επιτυχής ολοκλήρωση εισαγωγής."
         },

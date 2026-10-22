@@ -15,7 +15,6 @@
         "leftSlideButton": "Viipa vasakule",
         "loading": "",
         "mainContent": "põhiline sisu",
-        "notification": "",
         "notificationCopied": "",
         "notificationCopyFailed": "",
         "printPage": "",
@@ -269,7 +268,6 @@
         "annotations": {
             "alreadyImported": "Kõik märkmed on juba imporditud.",
             "emptyFile": "Failis pole märkmeid.",
-            "errorParsing": "Viga faili töötlemisel: ",
             "nothing": "Pole ühtegi imporditavat märget, katkestan impordi",
             "success": "Importimine õnnestus kenasti."
         },

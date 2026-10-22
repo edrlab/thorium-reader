@@ -69,15 +69,6 @@ export class ToastManager extends React.Component<IProps> {
                 <ToastRegion
                     queue={this.queue}
                     className={stylesToasts.toasts_wrapper}
-                    render={(props) => <div
-                        {...props}
-                        onFocus={(event) => {
-                            props.onFocus?.(event);
-                            if (event.target === event.currentTarget) {
-                                event.currentTarget.querySelector<HTMLElement>("[role=alertdialog]")?.focus();
-                            }
-                        }}
-                    />}
                 >
                     {({ toast }) => <Toast toast={toast} close={this.close} />}
                 </ToastRegion>

@@ -15,7 +15,6 @@
         "leftSlideButton": "목록 왼쪽으로 밀기 ",
         "loading": "",
         "mainContent": "메인 콘텐츠",
-        "notification": "",
         "notificationCopied": "",
         "notificationCopyFailed": "",
         "printPage": "",
@@ -259,7 +258,6 @@
         "annotations": {
             "alreadyImported": "",
             "emptyFile": "",
-            "errorParsing": "",
             "nothing": "",
             "success": ""
         },

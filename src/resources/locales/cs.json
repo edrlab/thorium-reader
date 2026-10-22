@@ -15,7 +15,6 @@
         "leftSlideButton": "Posunout doleva",
         "loading": "",
         "mainContent": "hlavní obsah",
-        "notification": "",
         "notificationCopied": "",
         "notificationCopyFailed": "",
         "printPage": "",
@@ -279,7 +278,6 @@
         "annotations": {
             "alreadyImported": "Všechny poznámky byly již importovány.",
             "emptyFile": "V souboru nejsou dostupné žádné poznámky.",
-            "errorParsing": "Chyba při analýze souboru: ",
             "nothing": "Žádná poznámka k importu, přerušuji import",
             "success": "Import úspěšně dokončen."
         },

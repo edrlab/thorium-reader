@@ -6,7 +6,7 @@
         "cancelDownload": "Cancel download: {{- title}}",
         "closeDialog": "Close",
         "closeNotification": "Close notification",
-        "copyNotificationInstruction": "Press Enter to copy the notification",
+        "copyNotificationInstruction": "Copy notification",
         "decreaseSetting": "Decrease {{- setting}}",
         "downloadProgress": "Download progress: {{- title}}",
         "editTag": "Edit tag: {{- tag}}",
@@ -15,7 +15,6 @@
         "leftSlideButton": "Slide to the left",
         "loading": "Loading…",
         "mainContent": "main content",
-        "notification": "Notification",
         "notificationCopied": "Notification copied",
         "notificationCopyFailed": "Could not copy notification",
         "printPage": "Page {{page}}",
@@ -269,7 +268,6 @@
         "annotations": {
             "alreadyImported": "All notes are already imported.",
             "emptyFile": "No notes available in the file.",
-            "errorParsing": "Error during file parsing: ",
             "nothing": "There is no note ready to be imported, aborting the import",
             "success": "Import completed successfully."
         },

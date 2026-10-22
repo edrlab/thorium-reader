@@ -15,7 +15,6 @@
         "leftSlideButton": "Плъзни списъка наляво",
         "loading": "",
         "mainContent": "главно съдържание",
-        "notification": "",
         "notificationCopied": "",
         "notificationCopyFailed": "",
         "printPage": "",
@@ -269,7 +268,6 @@
         "annotations": {
             "alreadyImported": "",
             "emptyFile": "",
-            "errorParsing": "",
             "nothing": "",
             "success": ""
         },

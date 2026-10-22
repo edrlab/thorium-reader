@@ -15,7 +15,6 @@
         "leftSlideButton": "Færa til vinstri",
         "loading": "",
         "mainContent": "meginefni",
-        "notification": "",
         "notificationCopied": "",
         "notificationCopyFailed": "",
         "printPage": "",
@@ -269,7 +268,6 @@
         "annotations": {
             "alreadyImported": "Allar glósur hafa þegar verið fluttar inn.",
             "emptyFile": "Engar glósur eru í skránni.",
-            "errorParsing": "Villa við lestur skráar: ",
             "nothing": "Engin glósa er tilbúin til innflutnings. Hætt er við.",
             "success": "Innflutningi lokið."
         },

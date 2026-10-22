@@ -6,7 +6,7 @@
         "cancelDownload": "Annuler le téléchargement : {{- title}}",
         "closeDialog": "Fermer",
         "closeNotification": "Fermer la notification",
-        "copyNotificationInstruction": "Appuyez sur Entrée pour copier la notification",
+        "copyNotificationInstruction": "Copier la notification",
         "decreaseSetting": "Diminuer {{- setting}}",
         "downloadProgress": "Progression du téléchargement : {{- title}}",
         "editTag": "Modifier l’étiquette : {{- tag}}",
@@ -15,7 +15,6 @@
         "leftSlideButton": "Faire défiler vers la gauche",
         "loading": "Chargement…",
         "mainContent": "Contenu principal",
-        "notification": "Notification",
         "notificationCopied": "Notification copiée",
         "notificationCopyFailed": "Impossible de copier la notification",
         "printPage": "Page {{page}}",
@@ -274,7 +273,6 @@
         "annotations": {
             "alreadyImported": "Toutes les notes sont déjà importées, importation annulée.",
             "emptyFile": "Aucune note n'est disponible dans ce fichier.",
-            "errorParsing": "Erreur lors de la lecture du fichier : ",
             "nothing": "Aucune note disponible, ajout annulé",
             "success": "Importation réussie."
         },
