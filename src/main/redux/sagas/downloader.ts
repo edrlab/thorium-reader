@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import { getUrlHost } from "readium-desktop/utils/url";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { acceptedExtension, acceptedExtensionObject } from "readium-desktop/common/extension";
@@ -85,10 +86,8 @@ export function* downloader(linkHrefArray: IDownloaderLink[], downloadLabel?: st
 
         debug(getErrorMessage(err));
 
-        const translate = getTranslator().translate;
-
         // The import operation owns the user-facing failure notification.
-        throw new Error(translate("message.download.error", { title: downloadLabel || "", err: getErrorMessage(err) }), { cause: err });
+        throw err;
 
     } finally {
 
@@ -600,7 +599,7 @@ function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number, type?:
     ok(data?.isSuccess, getTranslator().translate("message.download.errors.httpGet", {
         statusMessage: data?.statusMessage,
         statusCode: data?.statusCode,
-        url: data?.url,
+        url: getUrlHost(data.url),
     }));
 
     // const url = data.responseUrl;

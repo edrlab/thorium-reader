@@ -283,7 +283,6 @@
         },
         "download": {
             "cancelled": "Pobieranie pliku zostało anulowane.",
-            "error": "Pobieranie [{{- title}}] nie powiodło się: [{{- err}}]",
             "errors": {
                 "hashMismatch": "Sprawdzenie integralności pobranego pliku zakończyło się niepowodzeniem: spodziewana wartość hasha SHA-256 to {{- expected}}, a obliczona to {{- actual}}.",
                 "httpGet": "Nie udało się pobrać pliku przez HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",

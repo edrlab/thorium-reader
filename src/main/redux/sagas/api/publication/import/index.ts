@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
+import { getUrlHost } from "readium-desktop/utils/url";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
 import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
@@ -266,7 +267,7 @@ export function* importFromLink(
             toastActions.openRequest.build(
                 ToastType.Error,
                 translate("message.import.fail",
-                    { path: link.url, err: e?.toString() }),
+                    { path: getUrlHost(link.url) || link.url, err: e instanceof Error ? e.message : String(e) }),
             ),
         );
     }

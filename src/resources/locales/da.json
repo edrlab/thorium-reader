@@ -273,7 +273,6 @@
         },
         "download": {
             "cancelled": "Download annulleret.",
-            "error": "Download af {{- title}} er stødt på en fejl: [{{- err}}]",
             "errors": {
                 "hashMismatch": "Den downloadede fil kunne ikke valideres: Forventet SHA-256 hash: {{- expected}}, fik i stedet {{- actual}}.",
                 "httpGet": "HTTP download mislykkedes: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",

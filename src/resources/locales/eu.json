@@ -273,7 +273,6 @@
         },
         "download": {
             "cancelled": "",
-            "error": "{- title}}-ren deskargak huts egin du [{- err}]",
             "errors": {
                 "hashMismatch": "",
                 "httpGet": "",

@@ -278,7 +278,6 @@
         },
         "download": {
             "cancelled": "Téléchargement annulé.",
-            "error": "Le téléchargement de {{- title}} a échoué : [{{- err}}]",
             "errors": {
                 "hashMismatch": "Erreur de vérification de l'intégrité du fichier téléchargé  : SHA-256 attendu {{- expected}}, obtenu {{- actual}}.",
                 "httpGet": "Téléchargement HTTP échoué : {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
