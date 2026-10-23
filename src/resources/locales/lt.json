@@ -283,7 +283,6 @@
         },
         "download": {
             "cancelled": "Atsiuntimas atšauktas.",
-            "error": "[{{- title}}] atsiuntimas nepavyko: [{{- err}}]",
             "errors": {
                 "hashMismatch": "Atsisiųsto failo vientisumo patikra nepavyko: tikėtasi {{- expected}} SHA-256 maišos reikšmės , gauta {{- actual}}.",
                 "httpGet": "HTTP atsiuntimas nepavyko: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",

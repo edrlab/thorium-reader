@@ -19,6 +19,7 @@ import {
 import { findHtmlTocInRessources } from "readium-desktop/main/w3c/audiobooks/toc";
 import { createWebpubZip, TResourcesFSCreateZip } from "readium-desktop/main/zip/create";
 import { tryCatchSync } from "readium-desktop/utils/tryCatch";
+import { contentTypeisApiProblem, parseContentType } from "readium-desktop/utils/contentType";
 import { SagaGenerator } from "typed-redux-saga";
 import { call as callTyped } from "typed-redux-saga/macro";
 
@@ -330,6 +331,9 @@ export function* packageGetManifestBuffer(
 
     const rawData = yield* callTyped(() => response?.text());
     if (isFailure) {
+        if (contentTypeisApiProblem(parseContentType(data.contentType))) {
+            throw new Error(`HTTP ${data.statusCode}: ${data.statusMessage || "Unable to fetch publication manifest"}`);
+        }
         throw new Error("fetch error [" + href + "](" + response?.status + " " + response?.statusText + " " + rawData + "]");
         // we can add a toast notification here like the downloader
     }

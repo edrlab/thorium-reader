@@ -283,7 +283,6 @@
         },
         "download": {
             "cancelled": "Загрузка отменена.",
-            "error": "Загрузка {{- title}} не удалась: [{{- err}}]",
             "errors": {
                 "hashMismatch": "Ошибка проверки целостности загруженного файла: ожидаемый хэш SHA-256 {{- expected}}, полученный {{- actual}}.",
                 "httpGet": "Ошибка загрузки по протоколу HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",

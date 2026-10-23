@@ -273,7 +273,6 @@
         },
         "download": {
             "cancelled": "",
-            "error": "{{- title}} გადმოტვირთვა უშედეგოდ დასრულდა: [{{- err}}]",
             "errors": {
                 "hashMismatch": "",
                 "httpGet": "",

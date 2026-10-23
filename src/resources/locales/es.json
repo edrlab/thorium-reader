@@ -278,7 +278,6 @@
         },
         "download": {
             "cancelled": "Descarga cancelada.",
-            "error": "La descarga de {{- title}} ha fallado: [{{- err}}]",
             "errors": {
                 "hashMismatch": "Falló la comprobación de integridad para el archivo descargado: hash SHA-256 esperado {{- expected}}, obtenido {{- actual}}.",
                 "httpGet": "\"Falló la descarga HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",

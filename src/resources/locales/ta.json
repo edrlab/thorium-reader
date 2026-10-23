@@ -273,7 +273,6 @@
         },
         "download": {
             "cancelled": "",
-            "error": "பதிவிறக்கம் [{{- title}}] தோல்வியுற்றது: [{{- err}}]",
             "errors": {
                 "hashMismatch": "",
                 "httpGet": "",

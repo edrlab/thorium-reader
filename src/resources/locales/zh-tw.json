@@ -268,7 +268,6 @@
         },
         "download": {
             "cancelled": "下載已取消。",
-            "error": "下載 [{{- title}}] 失敗：[{{- err}}]",
             "errors": {
                 "hashMismatch": "",
                 "httpGet": "",

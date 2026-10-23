@@ -263,7 +263,6 @@
         },
         "download": {
             "cancelled": "",
-            "error": "{{- title}} 다운로드 실패하였습니다: [{{- err}}]",
             "errors": {
                 "hashMismatch": "",
                 "httpGet": "",

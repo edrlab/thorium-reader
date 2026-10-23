@@ -283,7 +283,6 @@
         },
         "download": {
             "cancelled": "Prenos preklican.",
-            "error": "Prenos {{- title}} ni uspel: [{{- err}}]",
             "errors": {
                 "hashMismatch": "Preverjanje celovitosti prenesene datoteke ni uspelo: pričakovani izvleček SHA-256 je {{- expected}}, pridobljeni {{- actual}}.",
                 "httpGet": "Prenos HTTP ni uspel: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",

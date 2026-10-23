@@ -273,7 +273,6 @@
         },
         "download": {
             "cancelled": "",
-            "error": "Изтеглянето на {{- title}} е неуспешно: [{{- err}}]",
             "errors": {
                 "hashMismatch": "",
                 "httpGet": "",

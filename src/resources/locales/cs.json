@@ -283,7 +283,6 @@
         },
         "download": {
             "cancelled": "",
-            "error": "Stahování publikace „{{- title}}“ selhalo: [{{- err}}]",
             "errors": {
                 "hashMismatch": "",
                 "httpGet": "",
