@@ -53,6 +53,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     downloadActions.progress.ID,
     downloadActions.done.ID,
+    downloadActions.lifecycle.ID,
 
     // authActions.done.ID, // not used
     authActions.cancel.ID,

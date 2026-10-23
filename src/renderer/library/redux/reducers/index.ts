@@ -73,6 +73,10 @@ export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reduc
         dialog: dialogReducer,
         router: routerReducer,
         toast: toastReducer,
+        downloadLifecycle: ((state: Array<downloadActions.lifecycle.Payload & { sequence: number }> = [], action: downloadActions.lifecycle.TAction) =>
+            action.type === downloadActions.lifecycle.ID
+                ? [...state.slice(-49), { ...action.payload, sequence: (state[state.length - 1]?.sequence ?? 0) + 1 }]
+                : state) as Reducer<Array<downloadActions.lifecycle.Payload & { sequence: number }>>,
         download: priorityQueueReducer
             <
                 downloadActions.progress.TAction,

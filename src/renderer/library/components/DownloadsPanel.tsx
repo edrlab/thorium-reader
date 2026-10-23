@@ -29,6 +29,26 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
+function DownloadStatus({ events, __ }: { events: ILibraryRootState["downloadLifecycle"]; __: TranslatorProps["__"] }) {
+    const lastSequence = React.useRef(events[events.length - 1]?.sequence ?? 0);
+    const [message, setMessage] = React.useState("");
+    React.useEffect(() => {
+        const pending = events.filter((event) => event.sequence > lastSequence.current);
+        if (!pending.length) return;
+        lastSequence.current = pending[pending.length - 1].sequence;
+        setMessage(pending.map((event) => {
+            const args = { title: event.label };
+            switch (event.status) {
+                case "started": return __("accessibility.downloadStarted", args);
+                case "completed": return __("accessibility.downloadCompleted", args);
+                case "failed": return __("accessibility.downloadFailed", args);
+                case "cancelled": return __("accessibility.downloadCancelled", args);
+            }
+        }).join(" "));
+    }, [events, __]);
+    return <div className={stylesApp.downloadStatus} role="status" aria-live="polite" aria-atomic="true">{message}</div>;
+}
+
 class DownloadsPanel extends React.Component<IProps, undefined> {
 
     constructor(props: IProps) {
@@ -36,15 +56,13 @@ class DownloadsPanel extends React.Component<IProps, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __, downloadState, abortDownload } = this.props;
-        if (!downloadState || !downloadState.length) {
-            return <></>;
-        }
-        return (<div className={stylesApp.downloadsPanel}
-            aria-live="polite"
-            role="alert"
+        const { __, downloadState, downloadLifecycle, abortDownload } = this.props;
+        return (<>
+            <DownloadStatus events={downloadLifecycle} __={__} />
+            {!!downloadState?.length && <section className={stylesApp.downloadsPanel}
+            aria-labelledby="downloads-panel-heading"
             >
-            <div>{ __("header.downloads")}</div>
+            <h2 id="downloads-panel-heading">{ __("header.downloads")}</h2>
             <ul>
                 {
                 downloadState.map(([dl, id]) => {
@@ -75,13 +93,15 @@ class DownloadsPanel extends React.Component<IProps, undefined> {
                 })
                 }
             </ul>
-        </div>);
+        </section>}
+        </>);
     }
 }
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
     return {
         downloadState: state.download,
+        downloadLifecycle: state.downloadLifecycle,
         locale: state.i18n.locale, // refresh
     };
 };

@@ -6,11 +6,13 @@
 // ==LICENSE-END==
 
 import * as abort from "./abort";
+import * as lifecycle from "./lifecycle";
 import * as done from "./done";
 import * as progress from "./progress";
 
 export {
     done,
+    lifecycle,
     abort,
     progress,
 };

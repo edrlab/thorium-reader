@@ -65,6 +65,7 @@ export function* downloader(linkHrefArray: IDownloaderLink[], downloadLabel?: st
     const id = Number(new Date());
 
     debug("Downloader ID=", id);
+    let outcome: downloadActions.lifecycle.Payload["status"] = "completed";
 
     try {
         yield* putTyped(downloadActions.progress.build({
@@ -76,14 +77,18 @@ export function* downloader(linkHrefArray: IDownloaderLink[], downloadLabel?: st
             contentLengthHumanReadable: "",
         }));
 
+        yield* putTyped(downloadActions.lifecycle.build({ id, label: downloadLabel || "", status: "started" }));
+
         // redux-saga : use call to execute sagaGenerator tasked (forked)
         const pathArray = yield* callTyped(downloaderService, linkHrefArray, id);
         debug("filePath Array to return from downloader", pathArray);
 
+        if (pathArray.some((filePath) => !filePath)) outcome = "cancelled";
         return pathArray;
 
     } catch (err) {
 
+        outcome = "failed";
         debug(getErrorMessage(err));
 
         // The import operation owns the user-facing failure notification.
@@ -92,6 +97,7 @@ export function* downloader(linkHrefArray: IDownloaderLink[], downloadLabel?: st
     } finally {
 
         if (yield cancelled()) {
+            outcome = "cancelled";
 
             yield* putTyped(toastActions.openRequest.build(
                 ToastType.Info,
@@ -100,6 +106,7 @@ export function* downloader(linkHrefArray: IDownloaderLink[], downloadLabel?: st
         }
 
         debug("download service closed for", id, downloadLabel);
+        yield* putTyped(downloadActions.lifecycle.build({ id, label: downloadLabel || "", status: outcome }));
         yield* putTyped(downloadActions.done.build(id));
     }
 }

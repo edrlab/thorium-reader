@@ -27,6 +27,7 @@ export interface ILibraryRootState extends IRendererCommonRootState {
         };
     };
     router: RouterState;
+    downloadLifecycle: Array<downloadActions.lifecycle.Payload & { sequence: number }>;
     download: TPQueueState<downloadActions.progress.Payload, number>;
     history: THistoryState;
     load: ILoadState;

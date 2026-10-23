@@ -9,7 +9,11 @@ declare namespace typed_i18n {
   readonly "closeNotification": string,
   readonly "copyNotificationInstruction": string,
   readonly "decreaseSetting": string,
+  readonly "downloadCancelled": string,
+  readonly "downloadCompleted": string,
+  readonly "downloadFailed": string,
   readonly "downloadProgress": string,
+  readonly "downloadStarted": string,
   readonly "editTag": string,
   readonly "favoriteCatalog": string,
   readonly "increaseSetting": string,
@@ -33,7 +37,11 @@ declare namespace typed_i18n {
   (_: "accessibility.closeNotification", __?: {}): string;
   (_: "accessibility.copyNotificationInstruction", __?: {}): string;
   (_: "accessibility.decreaseSetting", __?: {}): string;
+  (_: "accessibility.downloadCancelled", __?: {}): string;
+  (_: "accessibility.downloadCompleted", __?: {}): string;
+  (_: "accessibility.downloadFailed", __?: {}): string;
   (_: "accessibility.downloadProgress", __?: {}): string;
+  (_: "accessibility.downloadStarted", __?: {}): string;
   (_: "accessibility.editTag", __?: {}): string;
   (_: "accessibility.favoriteCatalog", __?: {}): string;
   (_: "accessibility.increaseSetting", __?: {}): string;

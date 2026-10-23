@@ -238,8 +238,7 @@
             "nothing": "Det finnes ingen notater som kan importeres. Importen avbrytes.",
             "success": "Importen er fullført."
         },
-        "download": {
-        },
+        "download": {},
         "import": {
             "alreadyImport": "{{- title}} er allerede importert",
             "fail": "Importen av {{- path}} mislyktes. {{- err}}",
