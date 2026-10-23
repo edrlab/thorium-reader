@@ -538,7 +538,10 @@ async function httpFetchFormattedResponse<TData = undefined>(
         // debug(errStr);
         debug(err);
         debug("url: ", url);
-        debug("options: ", options);
+        debug("options: ", {
+            ...options,
+            agent: options.agent?.constructor.name,
+        });
 
         if (errStr.includes("timeout") || (options?.signal as any)?.__abortReasonTimeout) { // err.name === "FetchError"
             result = {
