@@ -298,6 +298,7 @@
             "errors": {
                 "hashMismatch": "فشل التحقق من الملف المحمَّل: شفرة SHA-256 المتوقعة هي: {{- expected}}، لكن الفعلية: {{- actual}}.",
                 "httpGet": "فشل التحميل عبر HTTP: [{{- statusMessage}}] ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "الاسم المؤلف للملف المحمل غير صحيح.",
                 "invalidLink": "رابط التحميل غير صالح.",
                 "invalidTempDirectory": "مجلد التحميل المؤقت غير صالح.",

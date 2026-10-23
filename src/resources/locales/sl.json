@@ -288,6 +288,7 @@
             "errors": {
                 "hashMismatch": "Preverjanje celovitosti prenesene datoteke ni uspelo: pričakovani izvleček SHA-256 je {{- expected}}, pridobljeni {{- actual}}.",
                 "httpGet": "Prenos HTTP ni uspel: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "Ime začasne datoteke za prenos ni veljavno.",
                 "invalidLink": "Povezava za prenos ni veljavna.",
                 "invalidTempDirectory": "Začasni direktorij za prenose ni veljaven.",

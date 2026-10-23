@@ -278,6 +278,7 @@
             "errors": {
                 "hashMismatch": "Downloaded file integrity check failed: expected SHA-256 hash {{- expected}}, got {{- actual}}.",
                 "httpGet": "HTTP download failed: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "Download stalled: no data received for 30 seconds. Please try again.",
                 "invalidFilename": "The temporary download filename is invalid.",
                 "invalidLink": "The download link is invalid.",
                 "invalidTempDirectory": "The temporary download directory is invalid.",

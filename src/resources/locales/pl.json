@@ -288,6 +288,7 @@
             "errors": {
                 "hashMismatch": "Sprawdzenie integralności pobranego pliku zakończyło się niepowodzeniem: spodziewana wartość hasha SHA-256 to {{- expected}}, a obliczona to {{- actual}}.",
                 "httpGet": "Nie udało się pobrać pliku przez HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "Tymczasowa nazwa pliku do pobrania jest nieprawidłowa.",
                 "invalidLink": "Link do pobrania jest nieprawidłowy.",
                 "invalidTempDirectory": "Tymczasowy katalog do pobierania jest nieprawidłowy.",

@@ -183,45 +183,51 @@ function* downloaderServiceProcessTaskStreamPipeline(readStream: NodeJS.ReadStre
 
     if (!readStream || !writeStream) return;
 
-    readStream.pipe(writeStream);
+    const chan = eventChannel<number | Error>((emit) => {
+        let idleTimeout: NodeJS.Timeout | undefined;
+        const clearIdleTimeout = () => {
+            clearTimeout(idleTimeout);
+            idleTimeout = undefined;
+        };
+        const resetIdleTimeout = () => {
+            clearIdleTimeout();
+            idleTimeout = setTimeout(() => {
+                idleTimeout = undefined;
+                readStream.destroy(new Error(getTranslator().translate("message.download.errors.idleTimeout")));
+            }, 30000);
+        };
+        const onError = (error: Error) => emit(error);
+        const onFinish = () => emit(0);
 
-    const chan = eventChannel((emit) => {
-        const f = () => emit(0);
-
-        // when 'read' stream finishes,
-        // 'write' stream may not have finished
-        // flushing its filesystem buffers yet!
-
-        // readStream.on("end", f);
-        // readStream.on("close", f);
-        readStream.on("error", f);
-
-        writeStream.on("finish", f);
-        writeStream.on("close", f);
-        writeStream.on("error", f);
+        readStream.on("data", resetIdleTimeout);
+        readStream.on("end", clearIdleTimeout);
+        readStream.on("close", clearIdleTimeout);
+        readStream.on("error", onError);
+        writeStream.on("finish", onFinish);
+        writeStream.on("close", onFinish);
+        writeStream.on("error", onError);
+        resetIdleTimeout();
 
         return () => {
-
-            debug("DESTROY FROM CHANNEL");
-
+            clearIdleTimeout();
+            readStream.off("data", resetIdleTimeout);
+            readStream.off("end", clearIdleTimeout);
+            readStream.off("close", clearIdleTimeout);
+            readStream.off("error", onError);
+            writeStream.off("finish", onFinish);
+            writeStream.off("close", onFinish);
+            writeStream.off("error", onError);
             readStream.destroy();
-
-            // readStream.off("end", f);
-            // readStream.off("close", f);
-            readStream.off("error", f);
-
-            writeStream.off("finish", f);
-            writeStream.off("close", f);
-            writeStream.off("error", f);
+            writeStream.destroy();
         };
     });
 
     try {
-
+        readStream.pipe(writeStream);
         yield take(chan);
         debug("pipeline done");
     } finally {
-        if (yield cancelled()) chan.close();
+        chan.close();
     }
 }
 

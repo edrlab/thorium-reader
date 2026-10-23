@@ -278,6 +278,7 @@
             "errors": {
                 "hashMismatch": "İndirilen dosyanın bütünlük denetimi başarısız: Beklenen SHA-256 değeri {{- expected}}, alınan {{- actual}}.",
                 "httpGet": "HTTP indirme hatası: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "Geçici indirme dosya adı geçersiz.",
                 "invalidLink": "İndirme bağlantısı geçersiz.",
                 "invalidTempDirectory": "Geçici indirme dizini geçersiz.",
