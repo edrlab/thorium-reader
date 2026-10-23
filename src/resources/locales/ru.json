@@ -286,6 +286,7 @@
             "errors": {
                 "hashMismatch": "Ошибка проверки целостности загруженного файла: ожидаемый хэш SHA-256 {{- expected}}, полученный {{- actual}}.",
                 "httpGet": "Ошибка загрузки по протоколу HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "Неверное имя временного загружаемого файла.",
                 "invalidLink": "Ссылка для скачивания недействительна.",
                 "invalidTempDirectory": "Временный каталог загрузки недействителен.",

@@ -276,6 +276,7 @@
             "errors": {
                 "hashMismatch": "Integritetskontroll för filen misslyckades. Förväntad SHA-256-hash: {{- expected}}, fick {{- actual}}.",
                 "httpGet": "HTTP-nedladdning misslyckades: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "Det tillfälliga filnamnet för den nedladdade filen är ogiltigt.",
                 "invalidLink": "Nedladdningslänken är ogiltig.",
                 "invalidTempDirectory": "Mappen för den tillfälliga nedladdningen är ogiltig.",

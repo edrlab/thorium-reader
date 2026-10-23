@@ -281,6 +281,7 @@
             "errors": {
                 "hashMismatch": "Falló la comprobación de integridad para el archivo descargado: hash SHA-256 esperado {{- expected}}, obtenido {{- actual}}.",
                 "httpGet": "\"Falló la descarga HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "El nombre del archivo temporal de descarga no es válido.",
                 "invalidLink": "El enlace de descarga no es válido.",
                 "invalidTempDirectory": "El directorio temporal de descarga no es válido.",

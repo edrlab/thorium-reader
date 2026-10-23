@@ -663,6 +663,7 @@ declare namespace typed_i18n {
     readonly "errors": {
       readonly "hashMismatch": string,
       readonly "httpGet": string,
+      readonly "idleTimeout": string,
       readonly "invalidFilename": string,
       readonly "invalidLink": string,
       readonly "invalidTempDirectory": string,
@@ -731,6 +732,7 @@ declare namespace typed_i18n {
   readonly "errors": {
     readonly "hashMismatch": string,
     readonly "httpGet": string,
+    readonly "idleTimeout": string,
     readonly "invalidFilename": string,
     readonly "invalidLink": string,
     readonly "invalidTempDirectory": string,
@@ -743,6 +745,7 @@ declare namespace typed_i18n {
   (_: "message.download.errors", __?: {}): {
   readonly "hashMismatch": string,
   readonly "httpGet": string,
+  readonly "idleTimeout": string,
   readonly "invalidFilename": string,
   readonly "invalidLink": string,
   readonly "invalidTempDirectory": string,
@@ -752,6 +755,7 @@ declare namespace typed_i18n {
 };
   (_: "message.download.errors.hashMismatch", __?: {}): string;
   (_: "message.download.errors.httpGet", __?: {}): string;
+  (_: "message.download.errors.idleTimeout", __?: {}): string;
   (_: "message.download.errors.invalidFilename", __?: {}): string;
   (_: "message.download.errors.invalidLink", __?: {}): string;
   (_: "message.download.errors.invalidTempDirectory", __?: {}): string;
