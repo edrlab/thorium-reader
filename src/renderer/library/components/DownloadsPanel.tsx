@@ -18,58 +18,66 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import * as CloseIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps extends TranslatorProps {
-}
-// IProps may typically extend:
-// RouteComponentProps
-// ReturnType<typeof mapStateToProps>
-// ReturnType<typeof mapDispatchToProps>
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
+/** Individual file transfer, identified by its stable index within its parent batch. */
+export type SubDownloadPanelItem = downloadActions.progress.SubDownloadProgress;
+
+/** One active batch with aggregate progress and individual file transfers. */
+export interface DownloadPanelItem {
+    id: number;
+    label: string;
+    urls: readonly string[];
+    /** Percentage in [0, 100]; undefined means indeterminate. */
+    progress: number | undefined;
+    /** Transfer rate in KiB/s. */
+    speedKiBPerSecond: number;
+    sizeLabel: string;
+    subDownloads: readonly SubDownloadPanelItem[];
 }
 
-class DownloadsPanel extends React.Component<IProps, undefined> {
+/** Presentation API for replacement download UIs; no Redux or translator context required. */
+export interface DownloadsPanelProps {
+    downloads: readonly DownloadPanelItem[];
+    onCancel: (id: number) => void;
+    labels: {
+        heading: string;
+        cancel: (download: DownloadPanelItem) => string;
+        progress: (download: DownloadPanelItem) => string;
+    };
+}
 
-    constructor(props: IProps) {
-        super(props);
-    }
+export class DownloadsPanelView extends React.Component<DownloadsPanelProps> {
 
     public render(): React.ReactElement<{}> {
-        const { __, downloadState, abortDownload } = this.props;
-        if (!downloadState || !downloadState.length) {
+        const { downloads, onCancel, labels } = this.props;
+        if (!downloads.length) {
             return <></>;
         }
         return (<div className={stylesApp.downloadsPanel}
             aria-live="polite"
             role="alert"
             >
-            <div>{ __("header.downloads")}</div>
+            <div>{ labels.heading}</div>
             <ul>
                 {
-                downloadState.map(([dl, id]) => {
-                    // console.log(JSON.stringify(dl, null, 4));
-                    let progress = dl.progress;
-                    if (isNaN(progress)) {
-                        progress = 0;
-                    }
+                downloads.map((dl) => {
+                    const { id, progress } = dl;
                     return <li key={id}>
-                        <span className={stylesApp.title}><button type="button" aria-label={__("accessibility.cancelDownload", { title: dl.downloadLabel })} onClick={() => abortDownload(id)}><SVG ariaHidden svg={CloseIcon} /></button></span>
+                        <span className={stylesApp.title}><button type="button" aria-label={labels.cancel(dl)} onClick={() => onCancel(id)}><SVG ariaHidden svg={CloseIcon} /></button></span>
                         {
-                            progress === 0 ? // indeterminate
+                            progress === undefined ? // indeterminate
                             (<>
                                 <span className={stylesApp.percent}>? %</span>
-                                <progress aria-label={__("accessibility.downloadProgress", { title: dl.downloadLabel })} value={undefined}>{"..."}</progress>
+                                <progress aria-label={labels.progress(dl)} value={undefined}>{"..."}</progress>
                             </>)
                             :
                             (<>
                                 <span className={stylesApp.percent}>{progress}%</span>
-                                <progress aria-label={__("accessibility.downloadProgress", { title: dl.downloadLabel })} max="100" value={progress}>{progress}</progress>
+                                <progress aria-label={labels.progress(dl)} max="100" value={progress}>{progress}</progress>
                             </>)
                         }
-                        <span className={stylesApp.title}>{dl.downloadLabel}</span>
-                        <span className={stylesApp.title}>{dl.contentLengthHumanReadable}</span>
-                        <span className={stylesApp.title}>{Math.trunc(dl.speed || 0) + " Kb/s"}</span>
+                        <span className={stylesApp.title}>{dl.label}</span>
+                        <span className={stylesApp.title}>{dl.sizeLabel}</span>
+                        <span className={stylesApp.title}>{Math.trunc(dl.speedKiBPerSecond || 0) + " Kb/s"}</span>
 
                     </li>;
                 })
@@ -79,18 +87,32 @@ class DownloadsPanel extends React.Component<IProps, undefined> {
     }
 }
 
-const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
-    return {
-        downloadState: state.download,
-        locale: state.i18n.locale, // refresh
-    };
-};
+const mapStateToProps = (state: ILibraryRootState) => ({
+    downloads: state.download.map(([download, id]): DownloadPanelItem => ({
+        id,
+        label: download.downloadLabel,
+        urls: download.downloadUrls,
+        progress: Number.isFinite(download.progress)
+            ? Math.min(100, Math.max(0, download.progress)) : undefined,
+        speedKiBPerSecond: download.speed,
+        sizeLabel: download.contentLengthHumanReadable,
+        subDownloads: download.subDownloads || [],
+    })),
+    locale: state.i18n.locale, // refresh translated labels when the locale changes
+});
 
-const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
-    return {
-        // doStuff: (arg: any) => dispatch(downloadActions.doStuff.build(arg)),
-        abortDownload: (id: number) => dispatch(downloadActions.abort.build(id)),
-    };
-};
+const mapDispatchToProps = (dispatch: TDispatch) => ({
+    onCancel: (id: number) => dispatch(downloadActions.abort.build(id)),
+});
+
+type ConnectedProps = TranslatorProps & ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+
+const DownloadsPanel = ({ __, downloads, onCancel }: ConnectedProps) => (
+    <DownloadsPanelView downloads={downloads} onCancel={onCancel} labels={{
+        heading: __("header.downloads"),
+        cancel: (download) => __("accessibility.cancelDownload", { title: download.label }),
+        progress: (download) => __("accessibility.downloadProgress", { title: download.label }),
+    }} />
+);
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(DownloadsPanel));
