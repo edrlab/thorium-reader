@@ -176,6 +176,8 @@ const StorageSettings: React.FC<{}> = () => {
                                 <p style={{ margin: 0 }}><strong>{__("settings.storage.locations.defaultInternal")}</strong></p>
                                 <p style={{ margin: 0 }}>{__("settings.storage.locations.defaultDescription")}</p>
                                 <button
+                                    type="button"
+                                    aria-description={__("catalog.openFolder")}
                                     className={stylesButtons.button_nav_tertiary}
                                     onClick={() => dispatch(catalogActions.openDefaultDirectory.build())}
                                 >
@@ -193,6 +195,8 @@ const StorageSettings: React.FC<{}> = () => {
                                 <div className={stylesSettings.storage_location} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                                     <p style={{ margin: 0 }}><strong>{__("settings.storage.locations.externalStorage")}</strong></p>
                                     <button className={stylesButtons.button_nav_tertiary} title={userDirectory}
+                                        type="button"
+                                        aria-description={__("catalog.openFolder")}
                                         onClick={() => dispatch(catalogActions.openUserDirectory.build())}
                                     >
                                         {userDirectory}
