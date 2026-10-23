@@ -25,8 +25,7 @@ export const ReadingDisplayLayout = ({ isFXL }: { isFXL: boolean }) => {
     const layout = useReaderConfig("paged");
     const set = useSaveReaderConfigDebounced();
     return (
-        <div className={stylesSettings.section}>
-            <h3>{__("reader.settings.disposition.title")}</h3>
+        <section className={stylesSettings.settings_display_section}>
             <div className={stylesSettings.display_options} style={{marginBottom: "20px"}}>
                 <RadioGroup aria-label={__("reader.settings.disposition.title")} orientation="horizontal" style={{ display: "flex", gap: "10px" }} value={(layout || isFXL) ? "page_option" : "scroll_option"}
                     onValueChange={(v) => {
@@ -40,6 +39,6 @@ export const ReadingDisplayLayout = ({ isFXL }: { isFXL: boolean }) => {
                     <RadioGroupItem value="page_option" description={`${__("reader.settings.paginated")}`} svg={PaginatedIcon} disabled={false} />
                 </RadioGroup>
             </div>
-        </div>
+        </section>
     );
 };

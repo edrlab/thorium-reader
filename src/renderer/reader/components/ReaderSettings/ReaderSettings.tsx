@@ -13,7 +13,6 @@ import { Tab, TabList, TabPanelOrRegion, TabPanelsOrFragment, Tabs } from "readi
 import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
 import * as GuearIcon from "readium-desktop/renderer/assets/icons/gear-icon.svg";
 import * as TextAreaIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg";
-import * as LayoutIcon from "readium-desktop/renderer/assets/icons/layout-icon.svg";
 import * as AlignLeftIcon from "readium-desktop/renderer/assets/icons/alignleft-icon.svg";
 import * as VolumeUpIcon from "readium-desktop/renderer/assets/icons/volume-icon.svg";
 
@@ -27,7 +26,7 @@ import { useDiffBoolBetweenReaderConfigAndDefaultConfig, useReaderConfig, useSav
 import { Theme } from "readium-desktop/renderer/reader/components/ReaderSettings/Themes";
 import { FontSize } from "readium-desktop/renderer/reader/components/ReaderSettings/FontSize";
 import { FontFamily } from "readium-desktop/renderer/reader/components/ReaderSettings/FontFamily";
-import { ReadingSpacing } from "readium-desktop/renderer/reader/components/ReaderSettings/ReadingSpacing";
+import ReaderSpacingPresets, { ReaderSpacingAdvanced } from "readium-desktop/renderer/reader/components/ReaderSettings/ReadingSpacing";
 import { ReadingDisplayLayout } from "readium-desktop/renderer/reader/components/ReaderSettings/ReadingDisplayLayout";
 import { ReadingDisplayCol } from "readium-desktop/renderer/reader/components/ReaderSettings/ReadingDisplayCol";
 import { ReadingDisplayAlign } from "readium-desktop/renderer/reader/components/ReaderSettings/ReadingDisplayAlign";
@@ -38,6 +37,7 @@ import { AllowCustom } from "readium-desktop/renderer/reader/components/ReaderSe
 import { SaveResetApplyPreset } from "readium-desktop/renderer/reader/components/ReaderSettings/SaveResetApplyPreset";
 import { ModalControlButtons } from "readium-desktop/renderer/reader/components/ModalControlButtons";
 import { DockedHeader } from "readium-desktop/renderer/reader/components/DockedHeader";
+import * as AdvancedIcon from "readium-desktop/renderer/assets/icons/advanced-icon.svg";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -49,32 +49,20 @@ interface IBaseProps extends IReaderSettingsProps {
 }
 
 const TabTitle = ({ value }: { value: string }) => {
-    let title: string;
     const [__] = useTranslator();
+    const titleByTabValue: Record<string, string> = {
+        "tab-divina": __("reader.settings.disposition.title"),
+        "tab-pdfzoom": __("reader.settings.disposition.title"),
+        "tab-text": __("reader.settings.text"),
+        "tab-spacing": __("reader.settings.spacing"),
+        "tab-display": __("reader.settings.display"),
+        "tab-advanced": __("settings.tabs.advanced"),
+        "tab-audio": __("reader.media-overlays.title"),
+        "tab-preset": __("reader.settings.preset.title"),
+    };
 
-    switch (value) {
-        case "tab-divina":
-            title = __("reader.settings.disposition.title");
-            break;
-        case "tab-pdfzoom":
-            title = __("reader.settings.disposition.title");
-            break;
-        case "tab-text":
-            title = __("reader.settings.text");
-            break;
-        case "tab-spacing":
-            title = __("reader.settings.spacing");
-            break;
-        case "tab-display":
-            title = __("reader.settings.display");
-            break;
-        case "tab-audio":
-            title = __("reader.media-overlays.title");
-            break;
-        case "tab-preset":
-            title = __("reader.settings.preset.title");
-            break;
-    }
+    const title = titleByTabValue[value] ?? "";
+
     return (
         <div className={stylesSettings.settings_tab_title}>
             <h2>{title}</h2>
@@ -90,6 +78,17 @@ interface IRadioGroupItemProps {
     className?: string;
     style?: any;
 };
+
+interface ITabItem {
+    id: number;
+    value: string;
+    name: string;
+    disabled: boolean;
+    svg: ISVGProps;
+    show: boolean;
+    separatorBefore?: boolean;
+    extra?: React.ReactNode;
+}
 
 export const RadioGroupItem = (props: IRadioGroupItemProps) => {
     return (
@@ -118,9 +117,10 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const dockedMode = dockingMode !== "full";
     const setReaderConfig = useSaveReaderConfig();
     const section = useReaderConfig("readerSettingsSection");
-    const setSection = (value: string) => {
-        setReaderConfig({ readerSettingsSection: value});
-    };
+    const setSection = React.useCallback((value: string) => {
+        setReaderConfig({ readerSettingsSection: value });
+    }, [setReaderConfig]);
+    const [isSpacingAdvancedOpen, setIsSpacingAdvancedOpen] = React.useState(false);
 
     const diffBetweenDefaultConfigAndConfig = useDiffBoolBetweenReaderConfigAndDefaultConfig();
 
@@ -231,65 +231,62 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
             <AllowCustom />
         </div>;
 
-    const TabItem = [
-    {
-        id: 0,
-        value: "tab-divina",
-        name: __("reader.settings.disposition.title"),
-        disabled: false,
-        svg: TextAreaIcon,
-        show: isDivina,
-    },
-    {
-        id: 1,
-        value: "tab-pdfzoom",
-        name: __("reader.settings.pdfZoom.title"),
-        disabled: false,
-        svg: VolumeUpIcon,
-        show: isPdf,
-    },
-    {
-        id: 2,
-        value: "tab-display",
-        name: __("reader.settings.display"),
-        disabled: false,
-        svg: AlignLeftIcon,
-        show: isPdf || isEpub,
-    },
-    {
-        id: 3,
-        value: "tab-text",
-        name: __("reader.settings.text"),
-        disabled: !overridePublisherDefault,
-        svg: TextAreaIcon,
-        show: isEpub,
-        elementBefore: <AllowCustom />,
-        extra: !overridePublisherDefault ? <i>{__("reader.settings.disabled")}</i> : null,
-    },
-    {
-        id: 4,
-        value: "tab-spacing",
-        name: __("reader.settings.spacing"),
-        disabled: !overridePublisherDefault,
-        svg: LayoutIcon,
-        show: isEpub,
-        extra: !overridePublisherDefault ? <i>{__("reader.settings.disabled")}</i> : null,
-    },
-    {
-        id: 5,
-        value: "tab-preset",
-        name: __("reader.settings.preset.title"),
-        disabled: false,
-        svg: GuearIcon,
-        show: isEpub,
-        separatorBefore: true,
-        extra: diffBetweenDefaultConfigAndConfig ? <span className={stylesSettings.notification_preset}></span> : null,
-    },
-];
+    const tabItems = React.useMemo<ITabItem[]>(() => [
+        {
+            id: 0,
+            value: "tab-divina",
+            name: __("reader.settings.disposition.title"),
+            disabled: false,
+            svg: TextAreaIcon,
+            show: isDivina,
+        },
+        {
+            id: 1,
+            value: "tab-pdfzoom",
+            name: __("reader.settings.pdfZoom.title"),
+            disabled: false,
+            svg: VolumeUpIcon,
+            show: isPdf,
+        },
+        {
+            id: 2,
+            value: "tab-text",
+            name: __("reader.settings.text"),
+            disabled: false,
+            svg: TextAreaIcon,
+            show: isEpub,
+        },
+        {
+            id: 3,
+            value: "tab-display",
+            name: __("reader.settings.display"),
+            disabled: false,
+            svg: AlignLeftIcon,
+            show: isPdf || isEpub,
+        },
+        {
+            id: 4,
+            value: "tab-advanced",
+            name: __("settings.tabs.advanced"),
+            disabled: false,
+            svg: AdvancedIcon,
+            show: isEpub,
+        },
+        {
+            id: 5,
+            value: "tab-preset",
+            name: __("reader.settings.preset.title"),
+            disabled: false,
+            svg: GuearIcon,
+            show: isEpub,
+            separatorBefore: true,
+            extra: diffBetweenDefaultConfigAndConfig ? <span className={stylesSettings.notification_preset}></span> : undefined,
+        },
+    ], [__, diffBetweenDefaultConfigAndConfig, isDivina, isEpub, isPdf]);
 
-const visibleTabs = TabItem.filter(tab => tab.show);
+    const visibleTabs = React.useMemo(() => tabItems.filter((tab) => tab.show), [tabItems]);
 
-const TabTriggers = visibleTabs.map(tab => (
+    const tabTriggers = React.useMemo(() => visibleTabs.map((tab) => (
         <Tab
             key={tab.value}
             id={tab.value}
@@ -300,74 +297,116 @@ const TabTriggers = visibleTabs.map(tab => (
         >
             <SVG ariaHidden svg={tab.svg} />
             <span>{tab.name}</span>
-            {tab.extra ?? <></>}
+            {tab.extra ?? null}
         </Tab>
-));
+    )), [section, visibleTabs]);
 
-const options = visibleTabs.map(({ id, value, name, disabled, svg }) => ({ id, value, name, disabled, svg }));
+    const options = React.useMemo(() => (
+        visibleTabs.map(({ id, value, name, disabled, svg }) => ({ id, value, name, disabled, svg }))
+    ), [visibleTabs]);
 
-const optionSelected = options.find(({ value }) => value === section)?.id;
-const optionDisabled = options.filter(({ disabled }) => disabled).map(({ id }) => id);
-const optionSelectedIsOnOptionDisabled = optionDisabled.includes(optionSelected);
-if (optionSelectedIsOnOptionDisabled) {
-    setSection("tab-display");
-}
+    const optionLabelsByValue = React.useMemo(() => (
+        new Map(options.map((option) => [option.value, option.name]))
+    ), [options]);
+
+    const getOptionLabel = React.useCallback((value: string) => (
+        optionLabelsByValue.get(value) ?? ""
+    ), [optionLabelsByValue]);
+
+    const optionSelected = options.find(({ value }) => value === section)?.id;
+    const optionDisabled = options.filter(({ disabled }) => disabled).map(({ id }) => id);
+
+    React.useEffect(() => {
+        if (optionSelected !== undefined && optionDisabled.includes(optionSelected)) {
+            setSection("tab-display");
+        }
+    }, [optionDisabled, optionSelected, setSection]);
 
     // console.log("RENDER");
 
     return (
-        <div style={{minHeight: "inherit"}}>
-            { dockedMode ? <DockedHeader dockedMode={dockedMode} dockingMode={dockingMode} isEpub={isEpub} setSection={setSection} dockedModeRef={dockedModeRef} options={options} optionSelected={optionSelected} optionDisabled={optionDisabled} section={section} allowCustomContainer={AllowCustomContainer} panel={"settings"} /> : <></>}
+        <div style={{ minHeight: "inherit" }}>
+            {dockedMode && (
+                <DockedHeader dockedMode={dockedMode} dockingMode={dockingMode} isEpub={isEpub} setSection={setSection} dockedModeRef={dockedModeRef} options={options} optionSelected={optionSelected} optionDisabled={optionDisabled} section={section} allowCustomContainer={AllowCustomContainer} panel={"settings"} />
+            )}
             <Tabs selectedKey={section} onSelectionChange={(key) => dockedMode ? undefined : setSection(key.toString())} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
-                {
-                    dockedMode ? <></> :
+                {!dockedMode && (
                     <>
                         <div className={stylesSettings.settings_tabslist}>
                             <TabList aria-label={__("reader.navigation.settingsTitle")} ref={tabModeRef} aria-orientation="vertical" data-orientation="vertical">
-                                {TabTriggers}
+                                {tabTriggers}
                             </TabList>
-                            <AllowCustomContainer />
                         </div>
                         <TabTitle value={section} />
                     </>
-                }
+                )}
                 <div className={stylesSettings.settings_content}
                     style={{ marginTop: dockedMode && "0" }}>
                     <TabPanelsOrFragment dockedMode={dockedMode}>
-                    <TabPanelOrRegion id="tab-divina" focusId="readerSettings_tabs-tab-divina" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-divina")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanelOrRegion id="tab-divina" focusId="readerSettings_tabs-tab-divina" selectedKey={section} dockedMode={dockedMode} label={getOptionLabel("tab-divina")} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={stylesSettings.settings_tab}>
                             <DivinaSetReadingMode handleDivinaReadingMode={handleDivinaReadingMode} divinaReadingMode={divinaReadingMode} divinaReadingModeSupported={divinaReadingModeSupported} />
                         </div>
                     </TabPanelOrRegion>
-                    <TabPanelOrRegion id="tab-pdfzoom" focusId="readerSettings_tabs-tab-pdfzoom" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-pdfzoom")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanelOrRegion id="tab-pdfzoom" focusId="readerSettings_tabs-tab-pdfzoom" selectedKey={section} dockedMode={dockedMode} label={getOptionLabel("tab-pdfzoom")} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={stylesSettings.settings_tab}>
                             <PdfZoom pdfScale={props.pdfPlayerZoom} /*pdfView={pdfView}*/ />
                         </div>
                     </TabPanelOrRegion>
-                    <TabPanelOrRegion id="tab-text" focusId="readerSettings_tabs-tab-text" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-text")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <div
-                            className={classNames(stylesSettings.settings_tab, stylesSettings.settings_reading_text)}
-                            // style={{ marginLeft: "20px" }}
-                        >
-                            <FontSize />
-                            <FontFamily />
-                        </div>
-                    </TabPanelOrRegion>
-                    <TabPanelOrRegion id="tab-spacing" focusId="readerSettings_tabs-tab-spacing" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-spacing")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <div className={stylesSettings.settings_tab}>
-                            <ReadingSpacing />
-                        </div>
-                    </TabPanelOrRegion>
-                    <TabPanelOrRegion id="tab-display" focusId="readerSettings_tabs-tab-display" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-display")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanelOrRegion id="tab-text" focusId="readerSettings_tabs-tab-text" selectedKey={section} dockedMode={dockedMode} label={getOptionLabel("tab-text")} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <section className={stylesSettings.settings_tab}>
-                            {isPdf ? <></> : <Theme dockedMode={dockedMode} />}
-                            {isPdf ? <></> : <ReadingDisplayLayout isFXL={props.isFXL} />}
-                            {isPdf ? <></> : <ReadingDisplayAlign />}
-                            <ReadingDisplayCol isPdf={props.isPdf} pdfCol={props.pdfPlayerSpreadMode === 0 ? "1" : props.pdfPlayerSpreadMode > 0 ? "2" : "1" /* OR "auto" */} spreadModeEven={props.pdfPlayerSpreadMode === 2} />
-                            {isPdf ? <></> : <ReadingDisplayCheckboxSettings disableRTLFlip={props.disableRTLFlip} setDisableRTLFlip={props.setDisableRTLFlip} />}
+                            <h3>{__("reader.settings.font")}</h3>
+                            <section className={stylesSettings.settings_display_section}>
+                                <FontSize overridePublisherDefault={overridePublisherDefault} />
+                                <FontFamily overridePublisherDefault={overridePublisherDefault} />
+                            </section>
+                            {!isPdf && 
+                            <>
+                            <h3>{__("reader.settings.justification")}</h3>
+                            <section className={stylesSettings.settings_display_section}>
+                                <ReadingDisplayAlign overridePublisherDefault={overridePublisherDefault} />
+                            </section>
+                            </>
+                            }
+                           
+                            <h3 style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                                {__("reader.settings.spacing")}
+                                <button onClick={() => { setIsSpacingAdvancedOpen((isOpen) => !isOpen); }}>
+                                    <SVG aria-hidden svg={GuearIcon} />
+                                </button>
+                            </h3>
+                            <section className={stylesSettings.settings_display_section}>
+                            {isSpacingAdvancedOpen ? <ReaderSpacingAdvanced overridePublisherDefault={overridePublisherDefault} /> : <ReaderSpacingPresets overridePublisherDefault={overridePublisherDefault} />}
+                            </section>
+                            <AllowCustomContainer />
                         </section>
                     </TabPanelOrRegion>
-                    <TabPanelOrRegion id="tab-preset" focusId="readerSettings_tabs-tab-preset" selectedKey={section} dockedMode={dockedMode} label={options.find(({ value }) => value === "tab-preset")?.name ?? ""} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <TabPanelOrRegion id="tab-display" focusId="readerSettings_tabs-tab-display" selectedKey={section} dockedMode={dockedMode} label={getOptionLabel("tab-display")} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                        <section className={stylesSettings.settings_tab}>
+                            {!isPdf && (
+                                <>
+                                    <h3>{__("reader.settings.theme.title")}</h3>
+                                    <Theme dockedMode={dockedMode} />
+                                </>
+                            )}
+                            {!isPdf && 
+                            <>
+                                <h3>{__("reader.settings.disposition.title")}</h3>
+                                <ReadingDisplayLayout isFXL={props.isFXL} />
+                            </>
+                            }
+                            <h3>{__("reader.settings.column.title")}</h3>
+                            <ReadingDisplayCol isPdf={props.isPdf} pdfCol={props.pdfPlayerSpreadMode === 0 ? "1" : props.pdfPlayerSpreadMode > 0 ? "2" : "1" /* OR "auto" */} spreadModeEven={props.pdfPlayerSpreadMode === 2} />
+                        </section>
+                    </TabPanelOrRegion>
+                    {!isPdf && (
+                        <TabPanelOrRegion id="tab-advanced" focusId="readerSettings_tabs-tab-advanced" selectedKey={section} dockedMode={dockedMode} label={getOptionLabel("tab-advanced")} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                            <section className={stylesSettings.settings_tab}>
+                                <ReadingDisplayCheckboxSettings disableRTLFlip={props.disableRTLFlip} setDisableRTLFlip={props.setDisableRTLFlip} />
+                            </section>
+                        </TabPanelOrRegion>
+                    )}
+                    <TabPanelOrRegion id="tab-preset" focusId="readerSettings_tabs-tab-preset" selectedKey={section} dockedMode={dockedMode} label={getOptionLabel("tab-preset")} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <section className={stylesSettings.settings_tab}>
                             <SaveResetApplyPreset />
                         </section>

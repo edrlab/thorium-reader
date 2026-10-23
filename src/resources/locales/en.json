@@ -960,7 +960,8 @@
                 "two": "2 cols"
             },
             "customFontSelected": "You have chosen a personal font",
-            "customizeReader": "Customize text formatting",
+            "deactivateTextFormatting": "Deactivate text formatting",
+            "customizeReader": "Deactivate text formatting",
             "disabled": "disabled",
             "display": "Display",
             "disposition": {

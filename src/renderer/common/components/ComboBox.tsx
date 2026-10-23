@@ -12,10 +12,11 @@ import { langStringIsRTL } from "@r2-shared-js/_utils/language-string";
 import * as React from "react";
 import { OVERLAY_Z_INDEX } from "./overlayHelpers";
 import { Button, ComboBox as ComboBoxReactAria, Input, Label, ListBox, ListBoxItem, Popover, ValidationResult, Group } from "react-aria-components";
-import { FieldError, Text } from "react-aria-components";
+import { FieldError, Text, Tooltip, TooltipTrigger } from "react-aria-components";
 import SVG, { ISVGProps } from "./SVG";
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import classNames from "classnames";
+import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 
 type TComboBoxReactAriaProps<T extends object> = Parameters<typeof ComboBoxReactAria<T>>[0];
 export interface MyComboBoxProps<T extends object>
@@ -30,6 +31,7 @@ export interface MyComboBoxProps<T extends object>
     placeholder?: string;
     customWidth?: number;
     inputId?: string;
+    labelInfos?: React.ReactNode;
 }
 
 // function forwardRef<T extends object>(
@@ -70,17 +72,29 @@ export function ComboBox<T extends object>(
 
     //  dir={isRTL ? "rtl" : "ltr"} BREAKS ReactARIA ComboBox
     return (
-        <ComboBoxReactAria {...props} className={StylesCombobox.react_aria_ComboBox} style={{width: customWidth ? `${customWidth + 20}px` : ""}}>
+        <ComboBoxReactAria {...props} className={props.className ? props.className : StylesCombobox.react_aria_ComboBox} style={{ width: customWidth ? `${customWidth + 20}px` : "" }}>
             {
                 label ?
-                    <Label dir={isRTL ? "rtl" : "ltr"} className={StylesCombobox.react_aria_Label}>{label}</Label>
+                    <Label dir={isRTL ? "rtl" : "ltr"} className={StylesCombobox.react_aria_Label}>
+                        {label}
+                        {props.labelInfos &&
+                            <TooltipTrigger>
+                                <Button style={{ width: "15px", height: "15px", marginLeft: "3px" }}>
+                                    <SVG ariaHidden svg={InfoIcon} />
+                                </Button>
+                                <Tooltip dir={isRTL ? "rtl" : "ltr"} style={{ border: "1px solid var(--color-text-primary)", maxWidth: "300px", width: "fit-content", zIndex: "1000", backgroundColor: "var(--color-gray-100)", borderRadius: "6px", padding: "5px", color: "var(--color-text-primary)", margin: "0", height: "fit-content" }}>
+                                    {props.labelInfos}
+                                </Tooltip>
+                            </TooltipTrigger>
+                        }
+                    </Label>
                     : <></>
             }
-            <Group className={classNames(StylesCombobox.my_combobox_container, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} style={{width: customWidth ? `${customWidth}px` : ""}}>
+            <Group className={classNames(StylesCombobox.my_combobox_container, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} style={{ width: customWidth ? `${customWidth}px` : "" }}>
                 {svg ? <SVG ariaHidden svg={svg} /> : <></>}
                 <Input id={inputId} className={classNames(StylesCombobox.react_aria_Input, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} ref={refInputEl} placeholder={placeholder} />
                 {(!props.defaultItems || !!Array(...(props.defaultItems || [])).length) &&
-                    <Button className={StylesCombobox.react_aria_Button} style={{width: "unset"}}>
+                    <Button className={StylesCombobox.react_aria_Button} style={{ width: "unset" }}>
                         <SVG ariaHidden svg={ChevronDown} />
                     </Button>}
             </Group>
