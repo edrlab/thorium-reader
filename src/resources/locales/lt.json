@@ -1,26 +1,26 @@
 {
     "accessibility": {
-        "annotationNote": "",
+        "annotationNote": "Pastabos užrašai",
         "bookMenu": "Meniu",
-        "bookmarkNote": "",
-        "cancelDownload": "Atšaukti atsiuntimą: {{- title}}",
+        "bookmarkNote": "Skirtuko pastaba",
+        "cancelDownload": "Nutraukti atsiuntimą: {{- title}}",
         "closeDialog": "Užverti",
-        "closeNotification": "",
-        "copyNotificationInstruction": "",
-        "decreaseSetting": "",
-        "downloadProgress": "",
-        "downloadProgressUnknown": "",
-        "editTag": "",
-        "favoriteCatalog": "",
-        "increaseSetting": "",
+        "closeNotification": "Užverti pranešimą",
+        "copyNotificationInstruction": "Kopijuoti pranešimą",
+        "decreaseSetting": "Sumažinti {{- setting}}",
+        "downloadProgress": "Atsiuntimo eiga: {{- title}}",
+        "downloadProgressUnknown": "Atsiuntimo eiga nežinoma.",
+        "editTag": "Keisti žymę: {{- tag}}",
+        "favoriteCatalog": "Pridėti katalogą prie mėgstamiausių: {{- title}}",
+        "increaseSetting": "Padidinti {{- setting}}",
         "leftSlideButton": "Paslinkti į kairę",
-        "loading": "",
+        "loading": "Įkeliama…",
         "mainContent": "pagrindinis turinys",
-        "notificationCopied": "",
-        "notificationCopyFailed": "",
-        "printPage": "",
-        "publicationDetails": "",
-        "resetSetting": "",
+        "notificationCopied": "Pranešimas nukopijuotas",
+        "notificationCopyFailed": "Nepavyko nukopijuoti pranešimo",
+        "printPage": "Puslapis {{page}}",
+        "publicationDetails": "{{- field}}: {{- title}}",
+        "resetSetting": "Nustatyti {{- setting}} iš naujo",
         "rightSlideButton": "Paslinkti į dešinę",
         "skipLink": "Peršokti į turinį",
         "toolbar": "įrankių juosta"
@@ -120,7 +120,7 @@
         "numberOfPages": "Puslapių skaičius",
         "opds": {
             "auth": {
-                "cancel": "Atšaukti",
+                "cancel": "Nutraukti",
                 "external": "Jūsų interneto naršyklėje atsidarys prisijungimo puslapis, sekite instrukcijas. Kai prisijungsite, interneto naršyklė grąžins jus į šią programą.",
                 "fallback": "Pastaba: jei kyla problemų prisijungiant naudojant numatytąjį žiniatinklio naršyklės metodą, bandykite dar kartą naudodami alternatyvų programos metodą.",
                 "login": "Prisijungim/as",
@@ -164,8 +164,8 @@
             "available": "",
             "bookshelf": "Atverti knygų lentyną",
             "edit": "Keisti profilį",
-            "holds": "",
-            "loading": "",
+            "holds": "Rezervacijos",
+            "loading": "Įkeliama paskyra…",
             "loans": "",
             "title": "Paskyra",
             "total": "",
@@ -278,7 +278,7 @@
             "success": "Importavimas sėkmingai užbaigtas."
         },
         "download": {
-            "cancelled": "Atsiuntimas atšauktas.",
+            "cancelled": "Atsiuntimas nutrauktas.",
             "errors": {
                 "hashMismatch": "Atsisiųsto failo vientisumo patikra nepavyko: tikėtasi {{- expected}} SHA-256 maišos reikšmės , gauta {{- actual}}.",
                 "httpGet": "HTTP atsiuntimas nepavyko: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
@@ -290,7 +290,7 @@
                 "readStreamMissing": "Neprieinamas atsiuntimo srautas.",
                 "tooManyFilenameAttempts": "Nepavyko sukurti unikalaus laikino atsiuntimo failo pavadinimo: {{- path}}"
             },
-            "started": "",
+            "started": "Atsiuntimas pradėtas.",
             "startedWithTitle": ""
         },
         "import": {
@@ -306,7 +306,7 @@
             "catalogLinkFailed": "",
             "catalogUpdateFailed": "",
             "copyLimit": "",
-            "deleteFailed": "",
+            "deleteFailed": "Nepavyko pašalinti šio leidinio. Bandykite dar kartą.",
             "exportFailed": "",
             "openFileFailed": "",
             "openLinkFailed": "",
@@ -1358,7 +1358,7 @@
         },
         "sharedComputer": {
             "lcpAutoDeleteExpiredPublications": "Automatiškai pašalinti pasibaigusio galiojimo leidinius ir susijusius naudotojo duomenis",
-            "lcpAutoDeleteExpiredPublicationsDescription": "Užtikrina, kad pasibaigus leidinio skolinimo terminui jie būtų automatiškai ištrinami (įskaitant asmenines pastabas, skirtukus ir kt.). Tai naudinga bendro naudojimo kompiuterių aplinkoje, pavyzdžiui, bibliotekoje ar universiteto auditorijose.",
+            "lcpAutoDeleteExpiredPublicationsDescription": "Užtikrina, kad pasibaigus leidinio skolinimo terminui jie būtų automatiškai pašalinti (įskaitant asmenines pastabas, skirtukus ir kt.). Tai naudinga bendro naudojimo kompiuterių aplinkoje, pavyzdžiui, bibliotekoje ar universiteto auditorijose.",
             "title": "Bendro naudojimo kompiuterio režimas"
         },
         "storage": {
