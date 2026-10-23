@@ -83,13 +83,12 @@ const Duration = (props: {
 
     return (
         sentence
-            ? <>
+            ? <div>
                 <strong>{`${__("publication.duration.title")}: `}</strong>
                 <i className={stylesBookDetailsDialog.allowUserSelect}>
                     {sentence}
                 </i>
-                <br />
-            </>
+            </div>
             : <></>);
 };
 
@@ -490,7 +489,6 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                                                 onClickLinkCb={onClickLinkCb}
                                             />
                                         </span>
-                                        <br />
                                     </div> : undefined
                             }
                             {
@@ -498,7 +496,6 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                                     <div>
                                         <strong>{`${__("catalog.lang")}: `}</strong>
                                         <FormatPublicationLanguage publicationViewMaybeOpds={publicationViewMaybeOpds} />
-                                        <br />
                                     </div> : undefined
                             }
                             {
@@ -508,7 +505,6 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                                         <span className={stylesBookDetailsDialog.allowUserSelect}>
                                             {publicationViewMaybeOpds.numberOfPages}
                                         </span>
-                                        <br />
 
                                     </div> : undefined
                             }
@@ -523,7 +519,6 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                                         <i className={stylesBookDetailsDialog.allowUserSelect}>
                                             {publicationViewMaybeOpds.nbOfTracks}
                                         </i>
-                                        <br />
 
                                     </div> : undefined
                             }
