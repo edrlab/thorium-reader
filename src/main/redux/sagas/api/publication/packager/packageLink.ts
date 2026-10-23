@@ -215,7 +215,7 @@ function updateManifest(
 
 }
 
-function* BufferManifestToR2Publication(r2PublicationBuffer: Buffer, href: string): SagaGenerator<R2Publication | undefined> {
+function* BufferManifestToR2Publication(r2PublicationBuffer: Buffer, href: string, manifestUrl: string): SagaGenerator<R2Publication | undefined> {
 
     let r2Publication: R2Publication;
 
@@ -229,8 +229,7 @@ function* BufferManifestToR2Publication(r2PublicationBuffer: Buffer, href: strin
 
     } catch (e) {
 
-        debug("error to parse manifest", e, r2PublicationBuffer);
-        return undefined;
+        throw new Error(`Invalid JSON in publication manifest at ${manifestUrl}: ${String(e)}`);
     }
 
     const [isR2, isW3] = manifestContext(r2PublicationJson);
@@ -248,6 +247,8 @@ function* BufferManifestToR2Publication(r2PublicationBuffer: Buffer, href: strin
         debug("readium manifest found");
 
         r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
+    } else {
+        throw new Error(`Unrecognized publication manifest @context at ${manifestUrl}: ${JSON.stringify(r2PublicationJson?.["@context"]) ?? "missing"}`);
     }
 
     return r2Publication;
@@ -271,19 +272,19 @@ export function* packageFromManifestBuffer(
     manifest: Buffer,
     manifestPath?: string,
 ) {
-    const r2Publication = yield* callTyped(BufferManifestToR2Publication, manifest, baseUrl);
+    // DEPRECATED API (watch for the inverse function parameter order!):
+    // url.resolve(baseUrl, manifestPath)
+    const manifestUrlAbsolutized = manifestPath ?
+        tryCatchSync(() => new URL(manifestPath, baseUrl).toString(), filename_) ?? baseUrl :
+        baseUrl;
+    const r2Publication = yield* callTyped(BufferManifestToR2Publication, manifest, baseUrl, manifestUrlAbsolutized);
     if (!r2Publication) {
-        throw new Error("r2Publication parsing failed");
+        throw new Error("r2Publication parsing failed at " + manifestUrlAbsolutized);
     }
 
     debug("ready to package the r2Publication");
     debug(r2Publication);
 
-    // DEPRECATED API (watch for the inverse function parameter order!):
-    // url.resolve(baseUrl, manifestPath)
-    const manifestUrlAbsolutized = manifestPath ?
-        tryCatchSync(() => new URL(manifestPath, baseUrl).toString(), filename_) :
-        baseUrl;
     debug("manifestUrl", manifestUrlAbsolutized, manifestPath, baseUrl);
 
     const resourcesHrefMap = yield* callTyped(
