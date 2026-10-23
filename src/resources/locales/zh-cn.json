@@ -271,6 +271,7 @@
             "errors": {
                 "hashMismatch": "下载文件完整性检查失败：预期SHA-256哈希值为 {{- expected}}，实际为 {{- actual}}。",
                 "httpGet": "HTTP协议下载失败： {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "当前下载文件的文件名无效。",
                 "invalidLink": "下载链接无效。",
                 "invalidTempDirectory": "当前下载文件的路径无效。",
