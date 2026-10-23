@@ -278,7 +278,6 @@
         },
         "download": {
             "cancelled": "",
-            "error": "Falha ao descarregar {{- title}}: [{{- err}}]",
             "errors": {
                 "hashMismatch": "",
                 "httpGet": "",

@@ -273,7 +273,6 @@
         },
         "download": {
             "cancelled": "Allalaadimine on katkestatud.",
-            "error": "„{{- title}}“ väljaande allalaadimine ei õnnestunud: {{- err}}",
             "errors": {
                 "hashMismatch": "Allalaaditud faili tervikluse kontroll tuvastas vea: faili eeldatud SHA-256 räsi oleks pidanud olema {{- expected}}, kuid tegelikult oli {{- actual}}.",
                 "httpGet": "Allalaadimine ei õnnestunud: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",

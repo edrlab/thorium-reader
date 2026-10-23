@@ -278,7 +278,6 @@
         },
         "download": {
             "cancelled": "Download annullato.",
-            "error": "Il download di {{- title}} è fallito: [{{- err}}]",
             "errors": {
                 "hashMismatch": "Verifica di integrità del file scaricato non riuscita: previsto SHA-256 hash {{- expected}}, ottenuto {{- actual}}.",
                 "httpGet": "Download HTTP fallito: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",

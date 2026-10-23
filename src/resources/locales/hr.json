@@ -278,7 +278,6 @@
         },
         "download": {
             "cancelled": "",
-            "error": "Preuzimanje {{- title}} nije uspjelo: [{{- err}}]",
             "errors": {
                 "hashMismatch": "",
                 "httpGet": "",

@@ -273,7 +273,6 @@
         },
         "download": {
             "cancelled": "Lataus peruttu.",
-            "error": "Julkaisun {{- title}} lataus epäonnistui: [{{- err}}]",
             "errors": {
                 "hashMismatch": "Ladatun tiedoston eheystarkistus epäonnistui: odotettu SHA-256-hash-arvo {{- expected}}, todellinen {{- actual}}.",
                 "httpGet": "HTTP-lataus epäonnistui: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",

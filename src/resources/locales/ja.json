@@ -267,7 +267,6 @@
         },
         "download": {
             "cancelled": "",
-            "error": "『{{- title}}』のダウンロードに失敗しました：{{- err}}",
             "errors": {
                 "hashMismatch": "",
                 "httpGet": "",

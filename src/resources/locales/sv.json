@@ -273,7 +273,6 @@
         },
         "download": {
             "cancelled": "Nedladdning avbruten.",
-            "error": "Nedladdningen av {{- title}} misslyckades: [{{- err}}]",
             "errors": {
                 "hashMismatch": "Integritetskontroll för filen misslyckades. Förväntad SHA-256-hash: {{- expected}}, fick {{- actual}}.",
                 "httpGet": "HTTP-nedladdning misslyckades: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",

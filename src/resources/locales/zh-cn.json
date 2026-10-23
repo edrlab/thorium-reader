@@ -268,7 +268,6 @@
         },
         "download": {
             "cancelled": "下载已取消。",
-            "error": "下载{{- title}}失败: [{{- err}}]",
             "errors": {
                 "hashMismatch": "下载文件完整性检查失败：预期SHA-256哈希值为 {{- expected}}，实际为 {{- actual}}。",
                 "httpGet": "HTTP协议下载失败： {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",

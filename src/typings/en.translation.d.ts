@@ -660,7 +660,6 @@ declare namespace typed_i18n {
   },
   readonly "download": {
     readonly "cancelled": string,
-    readonly "error": string,
     readonly "errors": {
       readonly "hashMismatch": string,
       readonly "httpGet": string,
@@ -729,7 +728,6 @@ declare namespace typed_i18n {
   (_: "message.annotations.success", __?: {}): string;
   (_: "message.download", __?: {}): {
   readonly "cancelled": string,
-  readonly "error": string,
   readonly "errors": {
     readonly "hashMismatch": string,
     readonly "httpGet": string,
@@ -742,7 +740,6 @@ declare namespace typed_i18n {
   }
 };
   (_: "message.download.cancelled", __?: {}): string;
-  (_: "message.download.error", __?: {}): string;
   (_: "message.download.errors", __?: {}): {
   readonly "hashMismatch": string,
   readonly "httpGet": string,

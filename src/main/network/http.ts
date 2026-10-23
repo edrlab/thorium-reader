@@ -39,6 +39,7 @@ import {
 import { decryptPersist, encryptPersist } from "readium-desktop/main/fs/persistCrypto";
 import { createOpdsPkceRefreshTokenRequest } from "readium-desktop/main/network/opdsPkce";
 import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
+import { contentTypeisApiProblem, parseContentType } from "readium-desktop/utils/contentType";
 
 import { diMainGet, opdsAuthFilePath } from "../di";
 import { fetchWithCookie } from "./fetch";
@@ -514,6 +515,24 @@ async function httpFetchFormattedResponse<TData = undefined>(
         debug({ ...response.headers.raw() });
         debug("###");
 
+        let statusMessage = response.statusText;
+        if ((!response.ok || debug.enabled) && contentTypeisApiProblem(parseContentType(response.headers.get("Content-Type")))) {
+            try {
+                const problem = await response.clone().json();
+                debug("Problem Details response JSON:", problem);
+                const title = problem && typeof problem === "object" && "title" in problem ? problem.title : undefined;
+                const detail = problem && typeof problem === "object" && "detail" in problem ? problem.detail : undefined;
+                const messages = [title, detail]
+                    .filter((value): value is string => typeof value === "string" && !!value.trim())
+                    .map((value) => value.trim());
+                if (!response.ok && messages.length) {
+                    statusMessage = [...new Set(messages)].join(": ");
+                }
+            } catch (error) {
+                debug("Unable to parse Problem Details response JSON:", error);
+            }
+        }
+
         result = {
             isAbort: false,
             isNetworkError: false,
@@ -523,7 +542,7 @@ async function httpFetchFormattedResponse<TData = undefined>(
             url,
             responseUrl: response.url,
             statusCode: response.status,
-            statusMessage: response.statusText,
+            statusMessage,
             body: response.body,
             response,
             data: undefined,
