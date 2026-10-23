@@ -2904,7 +2904,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                                 {
                                                     column.render("Header")
                                                 }
-                                                <span>{(column.isSorted ? (column.isSortedDesc ? " ↓" : " ↑") : "")}</span>
+                                                <span aria-hidden="true">{(column.isSorted ? (column.isSortedDesc ? " ↓" : " ↑") : "")}</span>
                                             </button>
                                                 {
                                                     column.canFilter ?
@@ -3143,13 +3143,17 @@ const SortComponent = ({ tableInstance }: SortComponentProps) => {
                     return (
                         <li key={option.id}>
                             <button
+                                type="button"
+                                aria-label={isSorted
+                                    ? `${option.label} (${isDesc ? __("catalog.column.descending") : __("catalog.column.ascending")})`
+                                    : option.label}
                                 onClick={() => handleSort(option.id)}
                                 // className={`${stylesPublication.sortButton} ${isSorted ? stylesPublication.active : ''}`}
                                 style={{
                                     fontWeight: isSorted ? "bold" : "normal", cursor: "pointer"}}
                             >
                                 {option.label}
-                                <span>
+                                <span aria-hidden="true">
                                     {isSorted ? (isDesc ? " ↓" : " ↑") : ""}
                                 </span>
                             </button>
