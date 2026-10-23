@@ -7,6 +7,14 @@
 $settings_bg: var(--color-brand-secondary);
 $setting_color: var(--color-brand-primary);
 
+.section_separator {
+    display: inline-block;
+    background-color: var(--color-gray-100);
+    height: 1px;
+    width: 100%;
+
+}
+
 .settings_container {
     display: flex;
     height: min(597px, calc(100dvh - 32px));
@@ -232,11 +240,6 @@ $setting_color: var(--color-brand-primary);
         margin: 10px 10%;
         gap: 5px;
     }
-
-    .react-aria-Tab[data-value="tab-text"],
-    .react-aria-Tab[data-value="tab-spacing"] {
-        margin-left: 20%;
-    }
 }
 
 .allowCustom {
@@ -401,36 +404,20 @@ $setting_color: var(--color-brand-primary);
 .settings_tab {
     margin: 30px 25px 0;
 
+    h3 {
+        padding: 0 10px;
+
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
     &_container {
         margin: 35px;
 
         &_reading {
             margin: 0 25px;
-
-            .size_range {
-                display: flex;
-                align-items: center;
-                height: 30px;
-                gap: 10px;
-
-                input {
-                    cursor: pointer;
-                }
-
-                button {
-                    width: 20px;
-                    height: 20px;
-                    padding: auto;
-                }
-
-                p {
-                    padding: 5px;
-                    width: 50px;
-                    text-align: center;
-                    background-color: $settings_bg;
-                    border-radius: 5px;
-                }
-            }
 
             &_spacing {
                 display: grid;
@@ -442,32 +429,6 @@ $setting_color: var(--color-brand-primary);
 
                 .section {
                     width: 90% !important;
-
-                    .size_range {
-                        display: flex;
-                        align-items: center;
-                        gap: 5px;
-                        height: 30px;
-
-                        .range_inactive {
-                            accent-color: grey;
-
-                            &::-webkit-slider-thumb {
-                                width: 2em;
-                                padding: 0.25em;
-                                border: 1px solid var(--color-disabled);
-                                border-radius: 50%;
-                                box-shadow: 0 0 .5em #FFF inset;
-                                background: linear-gradient(#888, #FFF) content-box,
-                                    linear-gradient(-90deg, #888, #DDD) border-box;
-                            }
-                        }
-
-                        input[type="range"] {
-                            width: 150px;
-                            height: 5px;
-                        }
-                    }
 
                     label {
                         font-weight: 600;
@@ -625,18 +586,47 @@ div[data-radix-popper-content-wrapper] {
     position: fixed !important;
 }
 
-.scale_button {
+.scale_button_left {
     scale: 1.3;
     color: var(--color-brand-primary);
-    border-radius: 4px;
-    width: 15px;
+    border-radius: 10px 0 0 10px;
+    width: 20px;
     height: 15px;
     text-align: center;
-    border: 1px solid transparent;
+    border: 1px solid var(--color-brand-primary);
     position: relative;
     padding: 3px;
     box-sizing: content-box;
     transition: 200ms;
+    background-color: var(--color-brand-secondary);
+
+    span {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        left: 50%;
+        top: 50%;
+    }
+
+    &:active,
+    &:hover {
+        border: 1px solid var(--color-brand-primary);
+        background-color: var(--color-brand-secondary) !important;
+    }
+}
+
+.scale_button_right {
+    scale: 1.3;
+    color: var(--color-brand-primary);
+    border-radius: 0 10px 10px 0;
+    width: 20px;
+    height: 15px;
+    text-align: center;
+    border: 1px solid var(--color-brand-primary);
+    position: relative;
+    padding: 3px;
+    box-sizing: content-box;
+    transition: 200ms;
+    background-color: var(--color-brand-secondary);
 
     span {
         position: absolute;
@@ -685,17 +675,6 @@ div[data-radix-popper-content-wrapper] {
             width: 300px;
         }
 
-        .size_range {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-
-            p {
-                padding: 0;
-                text-align: center;
-                background-color: transparent;
-            }
-        }
     }
 }
 
@@ -705,6 +684,7 @@ div[data-radix-popper-content-wrapper] {
     font-size: 14px;
     min-height: 80px;
     list-style-type: none;
+    flex-wrap: wrap;
 
     svg {
         width: 30px;
@@ -974,18 +954,6 @@ div[data-radix-popper-content-wrapper] {
         opacity: 0.6;
     }
 
-    &::after {
-        content: "";
-        width: inherit;
-        height: inherit;
-        position: absolute;
-        top: -6px;
-        right: -8px;
-        border-radius: 6px;
-        border-right: 1px solid var(--color-gray-300);
-        border-top: 1px solid var(--color-gray-300);
-    }
-
     svg {
         width: 12px;
         height: 12px;
@@ -1217,6 +1185,53 @@ details {
     max-height: calc(100dvh - 32px);
 }
 
+.settings_display_section {
+    border-bottom: 1px solid var(--color-gray-100);
+    width: 100%;
+    max-width: 400px;
+    padding: 10px 20px;
+
+    .react_aria_Label {
+        display: flex;
+        align-items: center;
+    }
+}
+
+.range_size_container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    height: 35px;
+
+    label {
+        margin: 0;
+        height: unset!important;
+    }
+
+    .my_combobox_container {
+        display: flex;
+        align-items: center;
+
+        svg {
+            height: 20px;
+        }
+    }
+}
+
+.size_range {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    &_buttons {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+}
+
 @media (width <= 600px) {
     .settings_dialog, .modal_dialog_reader {
         .settings_container {
@@ -1273,10 +1288,6 @@ details {
         .settings_tab_container_reading_spacing {
             grid-template-columns: minmax(0, 1fr);
             margin: 0;
-        }
-
-        .settings_reading_text .size_range {
-            flex-wrap: wrap;
         }
 
         .form_group {

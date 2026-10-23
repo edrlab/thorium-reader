@@ -58,10 +58,7 @@ export const ReadingDisplayCol = ({ isPdf, spreadModeEven, pdfCol }: Pick<IBaseP
     // console.log("ReadingDisplayCol spreadModeEven", spreadModeEven);
     // console.log("ReadingDisplayCol pdfCol", pdfCol);
     return (
-        <section className={stylesSettings.section}>
-            <div>
-                <h3>{__("reader.settings.column.title")}</h3>
-            </div>
+        <section className={stylesSettings.settings_display_section}>
             <div className={stylesSettings.display_options} style={{marginBottom: "20px"}}>
                 <RadioGroup aria-label={__("reader.settings.column.title")} orientation="horizontal" style={{ display: "flex", gap: "10px" }} value={isPdf ? (pdfCol ? pdfCol : "1") : state}
                     onValueChange={(v) => {

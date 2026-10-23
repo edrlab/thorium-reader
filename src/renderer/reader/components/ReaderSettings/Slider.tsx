@@ -65,7 +65,7 @@ export const Slider = ({ value, option, set }: { value: string, option: ITable, 
                 >
                     <SVG ariaHidden svg={ResetIcon} />
                 </button>
-                <button onClick={() => click("out")} className={stylesSettings.scale_button} aria-label={__("accessibility.decreaseSetting", { setting: option.title })}>
+                <button onClick={() => click("out")} className={stylesSettings.scale_button_left} aria-label={__("accessibility.decreaseSetting", { setting: option.title })}>
                     <SVG ariaHidden svg={MinusIcon} />
                 </button>
                 <input
@@ -79,7 +79,7 @@ export const Slider = ({ value, option, set }: { value: string, option: ITable, 
                     onChange={(e) => updateValue(parseInt(e.target.value, 10))}
                     className={currentSliderValue === "0" ? stylesSettings.range_inactive : ""}
                 />
-                <button onClick={() => click("in")} className={stylesSettings.scale_button} aria-label={__("accessibility.increaseSetting", { setting: option.title })}>
+                <button onClick={() => click("in")} className={stylesSettings.scale_button_right} aria-label={__("accessibility.increaseSetting", { setting: option.title })}>
                     <SVG ariaHidden svg={PlusIcon} />
                 </button>
             </div>
