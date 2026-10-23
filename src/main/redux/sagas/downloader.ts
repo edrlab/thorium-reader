@@ -60,6 +60,11 @@ export type IDownloaderLink = string | {
     hash?: string, // SHA-256 hash of the resource
 };
 
+const shouldAnnounceDownload = (link: IDownloaderLink): boolean => {
+    const type = typeof link === "string" ? undefined : link.type?.split(";")[0].trim().toLowerCase();
+    return type !== "application/json" && !type?.endsWith("+json");
+};
+
 export function* downloader(linkHrefArray: IDownloaderLink[], downloadLabel?: string): SagaGenerator<string[]> {
 
     const id = Number(new Date());
@@ -76,7 +81,7 @@ export function* downloader(linkHrefArray: IDownloaderLink[], downloadLabel?: st
             contentLengthHumanReadable: "",
         }));
 
-        if (linkHrefArray.length) {
+        if (linkHrefArray.some(shouldAnnounceDownload)) {
             const translate = getTranslator().translate;
             yield* putTyped(toastActions.openRequest.build(
                 ToastType.Info,
