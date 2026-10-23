@@ -40,11 +40,10 @@ class DownloadsPanel extends React.Component<IProps, undefined> {
         if (!downloadState || !downloadState.length) {
             return <></>;
         }
-        return (<div className={stylesApp.downloadsPanel}
-            aria-live="polite"
-            role="alert"
+        return (<section className={stylesApp.downloadsPanel}
+            aria-labelledby="downloads-panel-heading"
             >
-            <div>{ __("header.downloads")}</div>
+            <h2 id="downloads-panel-heading">{ __("header.downloads")}</h2>
             <ul>
                 {
                 downloadState.map(([dl, id]) => {
@@ -58,8 +57,8 @@ class DownloadsPanel extends React.Component<IProps, undefined> {
                         {
                             progress === 0 ? // indeterminate
                             (<>
-                                <span className={stylesApp.percent}>? %</span>
-                                <progress aria-label={__("accessibility.downloadProgress", { title: dl.downloadLabel })} value={undefined}>{"..."}</progress>
+                                <span aria-hidden="true" className={stylesApp.percent}>? %</span>
+                                <progress aria-label={__("accessibility.downloadProgress", { title: dl.downloadLabel })} aria-description={__("accessibility.downloadProgressUnknown")} value={undefined}>{"..."}</progress>
                             </>)
                             :
                             (<>
@@ -75,7 +74,7 @@ class DownloadsPanel extends React.Component<IProps, undefined> {
                 })
                 }
             </ul>
-        </div>);
+        </section>);
     }
 }
 

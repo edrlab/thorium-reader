@@ -239,7 +239,8 @@
             "success": "Importen er fullført."
         },
         "download": {
-            "error": "Nedlasting av {{- title}} mislyktes: [{{- err}}]"
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} er allerede importert",

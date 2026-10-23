@@ -9,6 +9,7 @@
         "copyNotificationInstruction": "",
         "decreaseSetting": "",
         "downloadProgress": "",
+        "downloadProgressUnknown": "",
         "editTag": "",
         "favoriteCatalog": "",
         "increaseSetting": "",
@@ -272,11 +273,13 @@
             "success": "Innflutningi lokið."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "Hætt við niðurhal.",
-            "error": "Niðurhal á [{{- title}}] mistókst: [{{- err}}]",
             "errors": {
                 "hashMismatch": "Heilleikapróf niðurhalaðrar skrár mistókst: búist var við SHA-256-gildinu {{- expected}}, en niðurstaðan var {{- actual}}.",
                 "httpGet": "HTTP-niðurhal mistókst: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "Bráðabirgðaskráarheitið er ógilt.",
                 "invalidLink": "Niðurhalstengillinn er ógildur.",
                 "invalidTempDirectory": "Bráðabirgðamappan er ógild.",

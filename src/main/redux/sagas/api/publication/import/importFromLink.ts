@@ -23,7 +23,7 @@ import { PublicationDocument } from "readium-desktop/main/db/document/publicatio
 import { diMainGet } from "readium-desktop/main/di";
 import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 import { SagaGenerator } from "typed-redux-saga";
-import { delay as delayTyped, call as callTyped, race as raceTyped } from "typed-redux-saga/macro";
+import { call as callTyped } from "typed-redux-saga/macro";
 
 import { downloader } from "../../../downloader";
 import { packageFromLink } from "../packager/packageLink";
@@ -58,17 +58,14 @@ function* importLinkFromPath(
         authors: pub.authorsLangString?.map((author) => author.nameLangString),
     } : undefined;
 
-    const { b: [publicationDocument, alreadyImported] } = yield* raceTyped({
-        a: delayTyped(30000),
-        b: callTyped(
-            importFromFsService,
-            downloadPath,
-            willBeImmediatelyFollowedByOpen,
-            lcpHashedPassphrase,
-            undefined,
-            pdfMetadataFallback,
-        ),
-    });
+    const [publicationDocument, alreadyImported] = yield* callTyped(
+        importFromFsService,
+        downloadPath,
+        willBeImmediatelyFollowedByOpen,
+        lcpHashedPassphrase,
+        undefined,
+        pdfMetadataFallback,
+    );
 
     let publicationDocumentWithCover = publicationDocument;
     const publicationIsEpub = publicationDocument?.files?.some(

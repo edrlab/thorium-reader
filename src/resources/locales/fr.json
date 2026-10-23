@@ -9,6 +9,7 @@
         "copyNotificationInstruction": "Copier la notification",
         "decreaseSetting": "Diminuer {{- setting}}",
         "downloadProgress": "Progression du téléchargement : {{- title}}",
+        "downloadProgressUnknown": "La progression du téléchargement est inconnue.",
         "editTag": "Modifier l’étiquette : {{- tag}}",
         "favoriteCatalog": "Catalogue favori : {{- title}}",
         "increaseSetting": "Augmenter {{- setting}}",
@@ -277,11 +278,13 @@
             "success": "Importation réussie."
         },
         "download": {
+            "started": "Téléchargement commencé.",
+            "startedWithTitle": "Téléchargement de {{- title}}.",
             "cancelled": "Téléchargement annulé.",
-            "error": "Le téléchargement de {{- title}} a échoué : [{{- err}}]",
             "errors": {
                 "hashMismatch": "Erreur de vérification de l'intégrité du fichier téléchargé  : SHA-256 attendu {{- expected}}, obtenu {{- actual}}.",
                 "httpGet": "Téléchargement HTTP échoué : {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "Le téléchargement est bloqué : aucune donnée reçue depuis 30 secondes. Veuillez réessayer.",
                 "invalidFilename": "Le nom du fichier temporaire téléchargé est invalide.",
                 "invalidLink": "Le lien de téléchargement est invalide.",
                 "invalidTempDirectory": "Le répertoire de téléchargement temporaire est invalide.",

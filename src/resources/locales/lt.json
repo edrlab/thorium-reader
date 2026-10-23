@@ -9,6 +9,7 @@
         "copyNotificationInstruction": "",
         "decreaseSetting": "",
         "downloadProgress": "",
+        "downloadProgressUnknown": "",
         "editTag": "",
         "favoriteCatalog": "",
         "increaseSetting": "",
@@ -282,11 +283,13 @@
             "success": "Importavimas sėkmingai užbaigtas."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "Atsiuntimas atšauktas.",
-            "error": "[{{- title}}] atsiuntimas nepavyko: [{{- err}}]",
             "errors": {
                 "hashMismatch": "Atsisiųsto failo vientisumo patikra nepavyko: tikėtasi {{- expected}} SHA-256 maišos reikšmės , gauta {{- actual}}.",
                 "httpGet": "HTTP atsiuntimas nepavyko: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "Laikino atsiuntimo failo pavadinimas netaisyklingas.",
                 "invalidLink": "Atsiuntimo nuoroda netaisyklinga.",
                 "invalidTempDirectory": "Netaisyklingas laikinas atsiuntimo aplankas.",

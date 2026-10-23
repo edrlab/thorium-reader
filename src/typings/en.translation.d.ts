@@ -10,6 +10,7 @@ declare namespace typed_i18n {
   readonly "copyNotificationInstruction": string,
   readonly "decreaseSetting": string,
   readonly "downloadProgress": string,
+  readonly "downloadProgressUnknown": string,
   readonly "editTag": string,
   readonly "favoriteCatalog": string,
   readonly "increaseSetting": string,
@@ -34,6 +35,7 @@ declare namespace typed_i18n {
   (_: "accessibility.copyNotificationInstruction", __?: {}): string;
   (_: "accessibility.decreaseSetting", __?: {}): string;
   (_: "accessibility.downloadProgress", __?: {}): string;
+  (_: "accessibility.downloadProgressUnknown", __?: {}): string;
   (_: "accessibility.editTag", __?: {}): string;
   (_: "accessibility.favoriteCatalog", __?: {}): string;
   (_: "accessibility.increaseSetting", __?: {}): string;
@@ -660,17 +662,19 @@ declare namespace typed_i18n {
   },
   readonly "download": {
     readonly "cancelled": string,
-    readonly "error": string,
     readonly "errors": {
       readonly "hashMismatch": string,
       readonly "httpGet": string,
+      readonly "idleTimeout": string,
       readonly "invalidFilename": string,
       readonly "invalidLink": string,
       readonly "invalidTempDirectory": string,
       readonly "lengthMismatch": string,
       readonly "readStreamMissing": string,
       readonly "tooManyFilenameAttempts": string
-    }
+    },
+    readonly "started": string,
+    readonly "startedWithTitle": string
   },
   readonly "import": {
     readonly "alreadyImport": string,
@@ -729,23 +733,25 @@ declare namespace typed_i18n {
   (_: "message.annotations.success", __?: {}): string;
   (_: "message.download", __?: {}): {
   readonly "cancelled": string,
-  readonly "error": string,
   readonly "errors": {
     readonly "hashMismatch": string,
     readonly "httpGet": string,
+    readonly "idleTimeout": string,
     readonly "invalidFilename": string,
     readonly "invalidLink": string,
     readonly "invalidTempDirectory": string,
     readonly "lengthMismatch": string,
     readonly "readStreamMissing": string,
     readonly "tooManyFilenameAttempts": string
-  }
+  },
+  readonly "started": string,
+  readonly "startedWithTitle": string
 };
   (_: "message.download.cancelled", __?: {}): string;
-  (_: "message.download.error", __?: {}): string;
   (_: "message.download.errors", __?: {}): {
   readonly "hashMismatch": string,
   readonly "httpGet": string,
+  readonly "idleTimeout": string,
   readonly "invalidFilename": string,
   readonly "invalidLink": string,
   readonly "invalidTempDirectory": string,
@@ -755,12 +761,15 @@ declare namespace typed_i18n {
 };
   (_: "message.download.errors.hashMismatch", __?: {}): string;
   (_: "message.download.errors.httpGet", __?: {}): string;
+  (_: "message.download.errors.idleTimeout", __?: {}): string;
   (_: "message.download.errors.invalidFilename", __?: {}): string;
   (_: "message.download.errors.invalidLink", __?: {}): string;
   (_: "message.download.errors.invalidTempDirectory", __?: {}): string;
   (_: "message.download.errors.lengthMismatch", __?: {}): string;
   (_: "message.download.errors.readStreamMissing", __?: {}): string;
   (_: "message.download.errors.tooManyFilenameAttempts", __?: {}): string;
+  (_: "message.download.started", __?: {}): string;
+  (_: "message.download.startedWithTitle", __?: {}): string;
   (_: "message.import", __?: {}): {
   readonly "alreadyImport": string,
   readonly "fail": string,
