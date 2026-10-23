@@ -10,6 +10,7 @@ import { IVersionUpdateState } from "readium-desktop/common/redux/states/version
 import { IRTLFlipState } from "readium-desktop/common/redux/states/renderer/rtlFlip";
 import { IKeyboardState } from "readium-desktop/common/redux/states/keyboard";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
+import { ReaderConfigByPublicationFormat } from "readium-desktop/common/readerConfig/resolveEffectiveReaderConfig";
 import { ITheme } from "./theme";
 import { INoteCreator } from "./creator";
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
@@ -27,6 +28,7 @@ export interface ICommonRootState {
     keyboard: IKeyboardState;
     reader: {
         defaultConfig: ReaderConfig,
+        defaultConfigByFormat: ReaderConfigByPublicationFormat,
         disableRTLFlip: IRTLFlipState,
     };
     theme: ITheme;

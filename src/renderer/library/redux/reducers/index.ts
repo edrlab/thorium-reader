@@ -27,6 +27,7 @@ import { screenReaderReducer } from "readium-desktop/common/redux/reducers/scree
 import { catalogViewReducer } from "./catalog";
 import { tagReducer } from "readium-desktop/common/redux/reducers/tag";
 import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducers/reader/defaultConfig";
+import { readerDefaultConfigByFormatReducer } from "readium-desktop/common/redux/reducers/reader/defaultConfigByFormat";
 import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
 
 // import { ReaderConfig } from "readium-desktop/common/models/reader";
@@ -54,6 +55,7 @@ export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reduc
         theme: themeReducer,
         reader: combineReducers({
             defaultConfig: readerDefaultConfigReducer,
+            defaultConfigByFormat: readerDefaultConfigByFormatReducer,
             disableRTLFlip: readerRTLFlipReducer,
         }),
         session: sessionReducer,

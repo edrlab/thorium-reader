@@ -18,6 +18,7 @@ import { combineReducers } from "redux";
 import { publicationActions } from "../actions";
 import { customizationActions, publicationActions as publicationActionsFromCommonAction, readerActions } from "readium-desktop/common/redux/actions";
 import { readerDefaultConfigReducer } from "../../../common/redux/reducers/reader/defaultConfig";
+import { readerDefaultConfigByFormatReducer } from "readium-desktop/common/redux/reducers/reader/defaultConfigByFormat";
 // import { winRegistryReaderReducer } from "./win/registry/reader";
 import { winSessionLibraryReducer } from "./win/session/library";
 import { winSessionReaderReducer } from "./win/session/reader";
@@ -58,6 +59,7 @@ export const rootReducer = combineReducers({ // RootState
     i18n: i18nReducer,
     reader: combineReducers({
         defaultConfig: readerDefaultConfigReducer,
+        defaultConfigByFormat: readerDefaultConfigByFormatReducer,
         disableRTLFlip: readerRTLFlipReducer,
     }),
     // net: netReducer,

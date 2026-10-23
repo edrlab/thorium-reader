@@ -27,6 +27,7 @@ import { IBookmarkTotalCountState } from "readium-desktop/common/redux/states/re
 import { DockState } from "../dock";
 import { INoteState } from "./note";
 import { IOpdsProgressionState } from "./opdsProgression";
+import { ReaderConfigByPublicationFormat } from "readium-desktop/common/readerConfig/resolveEffectiveReaderConfig";
 
 export interface IReaderPdfConfig{
         scale: "page-fit" | "page-width" | number;
@@ -58,6 +59,7 @@ export interface IReaderStateReader {
 
     disableRTLFlip: IRTLFlipState;
     defaultConfig: ReaderConfig; // sync across all app
+    defaultConfigByFormat: ReaderConfigByPublicationFormat;
     tts: ITTSState;
     mediaOverlay: IMediaOverlayState;
     allowCustomConfig: IAllowCustomConfigState;
