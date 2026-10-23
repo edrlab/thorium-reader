@@ -273,8 +273,6 @@
             "success": "Importen lyckades."
         },
         "download": {
-            "started": "",
-            "startedWithTitle": "",
             "cancelled": "Nedladdning avbruten.",
             "errors": {
                 "hashMismatch": "Integritetskontroll för filen misslyckades. Förväntad SHA-256-hash: {{- expected}}, fick {{- actual}}.",
@@ -286,7 +284,9 @@
                 "lengthMismatch": "Integritetskontroll för den nedladdade filen misslyckades. Förväntade {{- expected}} bytes, fick {{- actual}} bytes.",
                 "readStreamMissing": "Nedladdningsströmmen går inte att nå.",
                 "tooManyFilenameAttempts": "Kunde inte skapa ett unikt filnamn för den nedladdade filen: {{- path}}"
-            }
+            },
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} var redan importerad.",
@@ -810,7 +810,7 @@
             },
             "hide": "Visa inte",
             "highlight": "Markering",
-            "noSelectionToast": "Ingen markering",
+            "noSelectionToast": "Välj text innan du skapar en markering.",
             "note": "{{- color}} anteckning",
             "quickAnnotations": "Snabbskapa (hoppa över redigeraren)",
             "saveNote": "Spara",
