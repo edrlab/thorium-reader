@@ -102,7 +102,7 @@ function* downloadResources(
     baseUrl: string,
 ): SagaGenerator<TResources> {
 
-    const uResources = getUniqueResourcesFromR2Publication(r2Publication, "icon");
+    const uResources = getUniqueResourcesFromR2Publication(r2Publication);
     debug(uResources);
 
     const resourcesHref = [...new Set(linksToArray(uResources))];

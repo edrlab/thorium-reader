@@ -522,12 +522,12 @@ export async function w3cPublicationManifestToReadiumPublicationManifest(
     return publication;
 }
 
-export function getUniqueResourcesFromR2Publication(publication: R2Publication, linksRel?: string): Link[] {
+export function getUniqueResourcesFromR2Publication(publication: R2Publication): Link[] {
 
     const uniqueResources = [
         ...(
             Array.isArray(publication.Links)
-                ? publication.Links.filter((link) => !linksRel || link.Rel?.includes(linksRel))
+                ? publication.Links.filter((link) => link.Rel?.includes("self") || link.Rel?.includes("icon"))
                 : []),
         ...(
             Array.isArray(publication.Spine)
