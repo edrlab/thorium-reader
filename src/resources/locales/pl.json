@@ -282,6 +282,8 @@
             "success": "Import zakończony pomyślnie."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "Pobieranie pliku zostało anulowane.",
             "errors": {
                 "hashMismatch": "Sprawdzenie integralności pobranego pliku zakończyło się niepowodzeniem: spodziewana wartość hasha SHA-256 to {{- expected}}, a obliczona to {{- actual}}.",

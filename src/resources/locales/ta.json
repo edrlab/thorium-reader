@@ -272,6 +272,8 @@
             "success": "இறக்குமதி வெற்றிகரமாக முடிந்தது."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "",
             "errors": {
                 "hashMismatch": "",

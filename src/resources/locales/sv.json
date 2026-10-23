@@ -272,6 +272,8 @@
             "success": "Importen lyckades."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "Nedladdning avbruten.",
             "errors": {
                 "hashMismatch": "Integritetskontroll för filen misslyckades. Förväntad SHA-256-hash: {{- expected}}, fick {{- actual}}.",

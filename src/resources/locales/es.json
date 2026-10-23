@@ -277,6 +277,8 @@
             "success": "¡Correcto!"
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "Descarga cancelada.",
             "errors": {
                 "hashMismatch": "Falló la comprobación de integridad para el archivo descargado: hash SHA-256 esperado {{- expected}}, obtenido {{- actual}}.",

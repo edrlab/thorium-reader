@@ -272,6 +272,8 @@
             "success": "Import færdig."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "Download annulleret.",
             "errors": {
                 "hashMismatch": "Den downloadede fil kunne ikke valideres: Forventet SHA-256 hash: {{- expected}}, fik i stedet {{- actual}}.",

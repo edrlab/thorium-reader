@@ -670,7 +670,9 @@ declare namespace typed_i18n {
       readonly "lengthMismatch": string,
       readonly "readStreamMissing": string,
       readonly "tooManyFilenameAttempts": string
-    }
+    },
+    readonly "started": string,
+    readonly "startedWithTitle": string
   },
   readonly "import": {
     readonly "alreadyImport": string,
@@ -739,7 +741,9 @@ declare namespace typed_i18n {
     readonly "lengthMismatch": string,
     readonly "readStreamMissing": string,
     readonly "tooManyFilenameAttempts": string
-  }
+  },
+  readonly "started": string,
+  readonly "startedWithTitle": string
 };
   (_: "message.download.cancelled", __?: {}): string;
   (_: "message.download.errors", __?: {}): {
@@ -762,6 +766,8 @@ declare namespace typed_i18n {
   (_: "message.download.errors.lengthMismatch", __?: {}): string;
   (_: "message.download.errors.readStreamMissing", __?: {}): string;
   (_: "message.download.errors.tooManyFilenameAttempts", __?: {}): string;
+  (_: "message.download.started", __?: {}): string;
+  (_: "message.download.startedWithTitle", __?: {}): string;
   (_: "message.import", __?: {}): {
   readonly "alreadyImport": string,
   readonly "fail": string,

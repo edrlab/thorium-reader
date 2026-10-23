@@ -282,6 +282,8 @@
             "success": "Uvoz uspešno zaključen."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "Prenos preklican.",
             "errors": {
                 "hashMismatch": "Preverjanje celovitosti prenesene datoteke ni uspelo: pričakovani izvleček SHA-256 je {{- expected}}, pridobljeni {{- actual}}.",
