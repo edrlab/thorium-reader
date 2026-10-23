@@ -272,6 +272,8 @@
             "success": "Tuonti onnistui."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "Lataus peruttu.",
             "errors": {
                 "hashMismatch": "Ladatun tiedoston eheystarkistus epäonnistui: odotettu SHA-256-hash-arvo {{- expected}}, todellinen {{- actual}}.",

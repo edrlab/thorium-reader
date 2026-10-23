@@ -277,6 +277,8 @@
             "success": "Importation réussie."
         },
         "download": {
+            "started": "Téléchargement commencé.",
+            "startedWithTitle": "Téléchargement de {{- title}}.",
             "cancelled": "Téléchargement annulé.",
             "errors": {
                 "hashMismatch": "Erreur de vérification de l'intégrité du fichier téléchargé  : SHA-256 attendu {{- expected}}, obtenu {{- actual}}.",

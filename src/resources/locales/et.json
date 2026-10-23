@@ -272,6 +272,8 @@
             "success": "Importimine õnnestus kenasti."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "Allalaadimine on katkestatud.",
             "errors": {
                 "hashMismatch": "Allalaaditud faili tervikluse kontroll tuvastas vea: faili eeldatud SHA-256 räsi oleks pidanud olema {{- expected}}, kuid tegelikult oli {{- actual}}.",

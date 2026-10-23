@@ -272,6 +272,8 @@
             "success": "Import vollständig abgeschlossen."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "",
             "errors": {
                 "hashMismatch": "",

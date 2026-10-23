@@ -267,6 +267,8 @@
             "success": "导入已成功完成。"
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "下载已取消。",
             "errors": {
                 "hashMismatch": "下载文件完整性检查失败：预期SHA-256哈希值为 {{- expected}}，实际为 {{- actual}}。",

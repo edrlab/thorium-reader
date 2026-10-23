@@ -272,6 +272,8 @@
             "success": "Import completed successfully."
         },
         "download": {
+            "started": "Download started.",
+            "startedWithTitle": "Downloading {{- title}}.",
             "cancelled": "Download cancelled.",
             "errors": {
                 "hashMismatch": "Downloaded file integrity check failed: expected SHA-256 hash {{- expected}}, got {{- actual}}.",

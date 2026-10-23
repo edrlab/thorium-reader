@@ -272,6 +272,8 @@
             "success": "Innflutningi lokið."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "Hætt við niðurhal.",
             "errors": {
                 "hashMismatch": "Heilleikapróf niðurhalaðrar skrár mistókst: búist var við SHA-256-gildinu {{- expected}}, en niðurstaðan var {{- actual}}.",

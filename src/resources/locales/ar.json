@@ -292,6 +292,8 @@
             "success": "اكتمل الاستيراد بنجاح."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "تم إلغاء التحميل.",
             "errors": {
                 "hashMismatch": "فشل التحقق من الملف المحمَّل: شفرة SHA-256 المتوقعة هي: {{- expected}}، لكن الفعلية: {{- actual}}.",

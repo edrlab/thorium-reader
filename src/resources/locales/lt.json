@@ -282,6 +282,8 @@
             "success": "Importavimas sėkmingai užbaigtas."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "Atsiuntimas atšauktas.",
             "errors": {
                 "hashMismatch": "Atsisiųsto failo vientisumo patikra nepavyko: tikėtasi {{- expected}} SHA-256 maišos reikšmės , gauta {{- actual}}.",

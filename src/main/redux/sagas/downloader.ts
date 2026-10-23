@@ -76,6 +76,16 @@ export function* downloader(linkHrefArray: IDownloaderLink[], downloadLabel?: st
             contentLengthHumanReadable: "",
         }));
 
+        if (linkHrefArray.length) {
+            const translate = getTranslator().translate;
+            yield* putTyped(toastActions.openRequest.build(
+                ToastType.Info,
+                downloadLabel
+                    ? translate("message.download.startedWithTitle", { title: downloadLabel })
+                    : translate("message.download.started"),
+            ));
+        }
+
         // redux-saga : use call to execute sagaGenerator tasked (forked)
         const pathArray = yield* callTyped(downloaderService, linkHrefArray, id);
         debug("filePath Array to return from downloader", pathArray);

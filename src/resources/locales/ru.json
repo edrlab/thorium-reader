@@ -282,6 +282,8 @@
             "success": "Импорт успешно завершён."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "Загрузка отменена.",
             "errors": {
                 "hashMismatch": "Ошибка проверки целостности загруженного файла: ожидаемый хэш SHA-256 {{- expected}}, полученный {{- actual}}.",

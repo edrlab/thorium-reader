@@ -266,6 +266,8 @@
             "success": "取り込みが正常に完了しました。"
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "",
             "errors": {
                 "hashMismatch": "",
