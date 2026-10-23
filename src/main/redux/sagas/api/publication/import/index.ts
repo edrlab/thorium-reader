@@ -261,7 +261,7 @@ export function* importFromLink(
 
     } catch (e: any) {
 
-        debug("importFromLink failed", e.toString(), e.trace);
+        debug("importFromLink failed", link.url, e.toString(), e.stack ?? e.trace);
         yield put(
             toastActions.openRequest.build(
                 ToastType.Error,
