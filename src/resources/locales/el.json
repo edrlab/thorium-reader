@@ -273,11 +273,13 @@
             "success": "Επιτυχής ολοκλήρωση εισαγωγής."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "Ακύρωση λήψης.",
-            "error": "Η λήψη του {{- title}} απέτυχε: [{{- err}}]",
             "errors": {
                 "hashMismatch": "Αποτυχία ελέγχου ακεραιότητας του αρχείου που κατεβάστηκε: αναμενόμενος κωδικός SHA-256 {{- expected}}, βρέθηκε {{- actual}}.",
                 "httpGet": "Αποτυχία λήψης μέσω HTTP: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "Το προσωρινό όνομα του αρχείου λήψης δεν είναι έγκυρο.",
                 "invalidLink": "Ο σύνδεσμος λήψης δεν είναι έγκυρος.",
                 "invalidTempDirectory": "Ο προσωρινός φάκελος λήψης δεν είναι έγκυρος.",

@@ -273,11 +273,13 @@
             "success": "Tuonti onnistui."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "Lataus peruttu.",
-            "error": "Julkaisun {{- title}} lataus epäonnistui: [{{- err}}]",
             "errors": {
                 "hashMismatch": "Ladatun tiedoston eheystarkistus epäonnistui: odotettu SHA-256-hash-arvo {{- expected}}, todellinen {{- actual}}.",
                 "httpGet": "HTTP-lataus epäonnistui: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "Väliaikaisen lataustiedoston nimi ei kelpaa.",
                 "invalidLink": "Latauslinkki ei kelpaa.",
                 "invalidTempDirectory": "Väliaikainen lataushakemisto ei kelpaa.",

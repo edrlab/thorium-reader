@@ -273,11 +273,13 @@
             "success": "Importimine õnnestus kenasti."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "Allalaadimine on katkestatud.",
-            "error": "„{{- title}}“ väljaande allalaadimine ei õnnestunud: {{- err}}",
             "errors": {
                 "hashMismatch": "Allalaaditud faili tervikluse kontroll tuvastas vea: faili eeldatud SHA-256 räsi oleks pidanud olema {{- expected}}, kuid tegelikult oli {{- actual}}.",
                 "httpGet": "Allalaadimine ei õnnestunud: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "Allalaadimise ajutine failinimi on vale või vigane.",
                 "invalidLink": "Allalaadimislink pole õige.",
                 "invalidTempDirectory": "Allalaaditava sisu ajutine kaust on vale või vigane.",

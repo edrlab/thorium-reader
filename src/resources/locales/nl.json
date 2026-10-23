@@ -273,11 +273,13 @@
             "success": "Import succesvol voltooid."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "Download geannuleerd.",
-            "error": "Het downloaden van{{- title}} is mislukt: [{{- err}}]",
             "errors": {
                 "hashMismatch": "Integriteitscontrole van gedownload bestand mislukt: verwachte SHA-256 hash {{- expected}}, ontvangen {{- actual}}.",
                 "httpGet": "HTTP download mislukt: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "De tijdelijke download bestandsnaam is ongeldig.",
                 "invalidLink": "De download link is ongeldig.",
                 "invalidTempDirectory": "De tijdelijke downloadmap is ongeldig.",

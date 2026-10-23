@@ -278,11 +278,13 @@
             "success": "Importazione completata."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "Download annullato.",
-            "error": "Il download di {{- title}} è fallito: [{{- err}}]",
             "errors": {
                 "hashMismatch": "Verifica di integrità del file scaricato non riuscita: previsto SHA-256 hash {{- expected}}, ottenuto {{- actual}}.",
                 "httpGet": "Download HTTP fallito: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "Il nome temporaneo del file di download non è valido.",
                 "invalidLink": "Il link per il download non è valido.",
                 "invalidTempDirectory": "La directory di download temporanea non è valida.",
