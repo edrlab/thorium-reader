@@ -53,6 +53,7 @@ import {
     ensureKeyboardListenerIsInstalled, keyDownEventHandler, keyUpEventHandler,
     registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
+import { NavigationAnnouncement, NavigationAnnouncementHandle } from "readium-desktop/renderer/reader/components/NavigationAnnouncement";
 import ReaderFooter from "readium-desktop/renderer/reader/components/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/reader/components/ReaderHeader";
 import { normalizeLocatorProgressionForPublication } from "readium-desktop/renderer/reader/locatorProgression";
@@ -323,13 +324,12 @@ class Reader extends React.Component<IProps, IState> {
     // private resizeObserver: ResizeObserver;
     // private blackoutDebounced: () => void;
 
-    private screenPreviousNextTimerDebounce: number | undefined;
+    private navigationAnnouncementRef = React.createRef<NavigationAnnouncementHandle>();
     private readiumPositionList: IReadiumPositionList | undefined;
 
     constructor(props: IProps) {
         super(props);
 
-        this.screenPreviousNextTimerDebounce = undefined;
         this.readiumPositionList = isEpubPositionListPublication(props.r2Publication) ?
             createReadiumPositionList(props.r2Publication) : undefined;
 
@@ -1131,6 +1131,7 @@ class Reader extends React.Component<IProps, IState> {
 
         return (
             <>
+                <NavigationAnnouncement ref={this.navigationAnnouncementRef} enabled={this.state.accessibilitySupportEnabled} />
             <div className={classNames(
                 this.props.readerConfig.theme === "night" ? stylesReader.nightMode :
                 this.props.readerConfig.theme === "sepia" ? stylesReader.sepiaMode :
@@ -3242,16 +3243,7 @@ class Reader extends React.Component<IProps, IState> {
             const str = isRTL ?
                 (left ? this.props.__("reader.navigation.screenNext") : this.props.__("reader.navigation.screenPrevious")) :
                 (left ? this.props.__("reader.navigation.screenPrevious") : this.props.__("reader.navigation.screenNext"));
-            if (typeof this.screenPreviousNextTimerDebounce !== "undefined") {
-                clearTimeout(this.screenPreviousNextTimerDebounce);
-                this.screenPreviousNextTimerDebounce = undefined;
-            }
-            this.screenPreviousNextTimerDebounce = window.setTimeout(() => {
-                this.screenPreviousNextTimerDebounce = undefined;
-                this.props.toasty(str);
-            }, 800);
-        } else {
-            this.screenPreviousNextTimerDebounce = undefined;
+            this.navigationAnnouncementRef.current?.announce(str);
         }
 
         if (this.props.isPdf) {
