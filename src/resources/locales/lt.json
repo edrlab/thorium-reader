@@ -291,7 +291,7 @@
                 "tooManyFilenameAttempts": "Nepavyko sukurti unikalaus laikino atsiuntimo failo pavadinimo: {{- path}}"
             },
             "started": "Atsiuntimas pradėtas.",
-            "startedWithTitle": ""
+            "startedWithTitle": "Atsiunčiama „{{- title}}“."
         },
         "import": {
             "alreadyImport": "[{{- title}}] jau importuotas.",
@@ -303,8 +303,8 @@
             "annotationPublicationUnavailable": "",
             "annotationStopPlayback": "",
             "authenticationFailed": "",
-            "catalogLinkFailed": "",
-            "catalogUpdateFailed": "",
+            "catalogLinkFailed": "Nepavyko pridėti šio katalogo. Patikrinkite nuorodą ir savo ryšį.",
+            "catalogUpdateFailed": "Nepavyko atnaujinti šio katalogo. Patikrinkite jo nuostatas ir bandykite dar kartą.",
             "copyLimit": "",
             "deleteFailed": "Nepavyko pašalinti šio leidinio. Bandykite dar kartą.",
             "exportFailed": "",
