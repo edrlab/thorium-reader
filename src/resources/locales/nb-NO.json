@@ -239,6 +239,8 @@
             "success": "Importen er fullført."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": ""
         },
         "import": {
             "alreadyImport": "{{- title}} er allerede importert",

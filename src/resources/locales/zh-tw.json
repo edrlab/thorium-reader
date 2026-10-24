@@ -9,6 +9,7 @@
         "copyNotificationInstruction": "",
         "decreaseSetting": "",
         "downloadProgress": "",
+        "downloadProgressUnknown": "",
         "editTag": "",
         "favoriteCatalog": "",
         "increaseSetting": "",
@@ -267,10 +268,13 @@
             "success": "匯入已成功完成。"
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "下載已取消。",
             "errors": {
                 "hashMismatch": "",
                 "httpGet": "",
+                "idleTimeout": "",
                 "invalidFilename": "",
                 "invalidLink": "",
                 "invalidTempDirectory": "",

@@ -25,6 +25,11 @@
   z-index: 110;
   color: var(--color-text-primary);
 
+  > h2 {
+    margin: 0;
+    font: inherit;
+  }
+
   li {
     display: inline-block;
     width: 100%;

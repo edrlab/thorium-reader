@@ -9,6 +9,7 @@
         "copyNotificationInstruction": "",
         "decreaseSetting": "",
         "downloadProgress": "",
+        "downloadProgressUnknown": "",
         "editTag": "",
         "favoriteCatalog": "",
         "increaseSetting": "",
@@ -272,10 +273,13 @@
             "success": "Import færdig."
         },
         "download": {
+            "started": "",
+            "startedWithTitle": "",
             "cancelled": "Download annulleret.",
             "errors": {
                 "hashMismatch": "Den downloadede fil kunne ikke valideres: Forventet SHA-256 hash: {{- expected}}, fik i stedet {{- actual}}.",
                 "httpGet": "HTTP download mislykkedes: {{- statusMessage}} ({{- statusCode}}) [{{- url}}]",
+                "idleTimeout": "",
                 "invalidFilename": "Det midlertidige filnavn til downloaden er ugyldigt.",
                 "invalidLink": "Download linket er ugyldigt.",
                 "invalidTempDirectory": "Den midlertidige mappe til downloads er ugyldig.",

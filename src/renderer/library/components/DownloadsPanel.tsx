@@ -42,6 +42,7 @@ export interface DownloadsPanelProps {
         heading: string;
         cancel: (download: DownloadPanelItem) => string;
         progress: (download: DownloadPanelItem) => string;
+        progressUnknown?: string;
     };
 }
 
@@ -52,11 +53,10 @@ export class DownloadsPanelView extends React.Component<DownloadsPanelProps> {
         if (!downloads.length) {
             return <></>;
         }
-        return (<div className={stylesApp.downloadsPanel}
-            aria-live="polite"
-            role="alert"
+        return (<section className={stylesApp.downloadsPanel}
+            aria-labelledby="downloads-panel-heading"
             >
-            <div>{ labels.heading}</div>
+            <h2 id="downloads-panel-heading">{labels.heading}</h2>
             <ul>
                 {
                 downloads.map((dl) => {
@@ -66,12 +66,12 @@ export class DownloadsPanelView extends React.Component<DownloadsPanelProps> {
                         {
                             progress === undefined ? // indeterminate
                             (<>
-                                <span className={stylesApp.percent}>? %</span>
-                                <progress aria-label={labels.progress(dl)} value={undefined}>{"..."}</progress>
+                                <span aria-hidden="true" className={stylesApp.percent}>? %</span>
+                                <progress aria-label={labels.progress(dl)} aria-description={labels.progressUnknown} value={undefined}>{"..."}</progress>
                             </>)
                             :
                             (<>
-                                <span className={stylesApp.percent}>{progress}%</span>
+                                <span aria-hidden="true" className={stylesApp.percent}>{progress}%</span>
                                 <progress aria-label={labels.progress(dl)} max="100" value={progress}>{progress}</progress>
                             </>)
                         }
@@ -83,7 +83,7 @@ export class DownloadsPanelView extends React.Component<DownloadsPanelProps> {
                 })
                 }
             </ul>
-        </div>);
+        </section>);
     }
 }
 
@@ -110,6 +110,7 @@ type ConnectedProps = TranslatorProps & ReturnType<typeof mapStateToProps> & Ret
 const DownloadsPanel = ({ __, downloads, onCancel }: ConnectedProps) => (
     <DownloadsPanelView downloads={downloads} onCancel={onCancel} labels={{
         heading: __("header.downloads"),
+        progressUnknown: __("accessibility.downloadProgressUnknown"),
         cancel: (download) => __("accessibility.cancelDownload", { title: download.label }),
         progress: (download) => __("accessibility.downloadProgress", { title: download.label }),
     }} />
