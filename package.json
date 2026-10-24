@@ -33,6 +33,7 @@
     "test:pdf-annotations:harness:install": "playwright install chromium",
     "test:pdf-annotations:harness": "playwright test --config=projects/pdf-annotations/harness/playwright.config.ts",
     "start:opds-progression-server": "node projects/opds-progression/server.mjs",
+    "start:opds-downloader-test-server": "node projects/opds-downloader-test-server/server.mjs",
     "test:opds-progression-server": "node --test projects/opds-progression/server.test.mjs",
     "start:opds-pkce-test-server": "node projects/opds-pkce-test-server/server.mjs",
     "test:opds-pkce-test-server": "node --test projects/opds-pkce-test-server/server.test.mjs",
