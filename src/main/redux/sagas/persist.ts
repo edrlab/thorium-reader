@@ -11,7 +11,7 @@ import { diMainGet, stateFilePath, patchFilePath, closeProcessLock } from "readi
 import { PersistRootState } from "readium-desktop/main/redux/states";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call, debounce, all } from "redux-saga/effects";
-import { flush as flushTyped, call as callTyped } from "typed-redux-saga/macro";
+import { flush as flushTyped, call as callTyped, put as putTyped, select as selectTyped } from "typed-redux-saga/macro";
 import { winActions } from "../actions";
 
 import { patchChannel } from "./patch";
@@ -29,6 +29,9 @@ import { extractWindowMaximized } from "./win/session/browserWindowState";
 // import { rmrf } from "readium-desktop/utils/fs";
 
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
+import { detectReaderConfigPublicationFormat } from "readium-desktop/common/readerConfig/publicationFormat";
+import { splitReaderConfigUpdateByScope } from "readium-desktop/common/readerConfig/updateScopes";
+import { RootState } from "../states";
 
 // Persist state diffs regularly now that win.registry is disabled.
 // Only publication.db and opds remain unbounded (arrays with N elements).
@@ -443,7 +446,6 @@ export function saga() {
         takeSpawnLeading(
             readerActions.setConfig.ID,
             function* (action: readerActions.setConfig.TAction) {
-                const configJsonObj = action.payload as unknown as object;
                 const sender = action.sender as EventPayload["sender"];
 
                 if (sender?.type !== SenderType.Renderer) {
@@ -458,9 +460,23 @@ export function saga() {
                 // }
                 // const pubId = reader.publicationIdentifier;
 
+                const update = { ...action.payload };
+                if (update.annotation_defaultDrawView === "hide") {
+                    update.annotation_defaultDrawView = readerConfigInitialState.annotation_defaultDrawView;
+                }
+
+                const { globalUpdate, localUpdate } = splitReaderConfigUpdateByScope(update);
+
                 const config: Partial<ReaderConfig> = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "config"))) || {};
-                const configUnion = { ...config, ...configJsonObj, ...{ annotation_defaultDrawView: action.payload.annotation_defaultDrawView === "hide" ? readerConfigInitialState.annotation_defaultDrawView : action.payload.annotation_defaultDrawView } };
+                const configUnion = { ...config, ...localUpdate };
                 yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "config", configUnion));
+
+                if (Object.keys(globalUpdate).length) {
+                    const readerSession = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
+                    const publicationView = readerSession?.reduxState?.info?.publicationView;
+                    const format = detectReaderConfigPublicationFormat(publicationView, undefined);
+                    yield* putTyped(readerActions.configSetDefaultByFormat.build(format, globalUpdate));
+                }
             },
             (e) => debug(e),
         ),

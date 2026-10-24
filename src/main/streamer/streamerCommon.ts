@@ -9,6 +9,7 @@ import debug_ from "debug";
 import * as path from "node:path";
 import { computeReadiumCssJsonMessage } from "readium-desktop/common/computeReadiumCssJsonMessage";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
+import { resolveEffectiveReaderConfig } from "readium-desktop/common/readerConfig/resolveEffectiveReaderConfig";
 import { diMainGet } from "readium-desktop/main/di";
 import { _APP_NAME, _APP_VERSION, _NODE_MODULE_RELATIVE_URL } from "readium-desktop/preprocessor-directives";
 
@@ -37,7 +38,15 @@ export async function computeReadiumCssJsonMessageInStreamer(
         debug("computeReadiumCssJsonMessageInStreamer winId:", winId);
 
         try {
-            settings = { ...state.reader.defaultConfig, ...(await diMainGet("publication-data").readJsonObj(pubId, "config") || {}) };
+            const publicationConfig = await diMainGet("publication-data").readJsonObj(pubId, "config") as Partial<ReaderConfig> | undefined;
+            const publicationView = state.win.session.reader[winId]?.reduxState.info.publicationView;
+            settings = resolveEffectiveReaderConfig({
+                globalConfig: state.reader.defaultConfig,
+                globalConfigByFormat: state.reader.defaultConfigByFormat,
+                publicationConfig,
+                publicationView,
+                r2Publication: _r2Publication,
+            });
 
             debug("PAGED: ", settings.paged, "colCount:", settings.colCount);
 
@@ -101,7 +110,15 @@ export function setupMathJaxTransformer(getUrl: () => string) {
             const state = store.getState();
 
             try {
-                settings = { ...state.reader.defaultConfig, ...(await diMainGet("publication-data").readJsonObj(pubId, "config") || {}) };
+                const publicationConfig = await diMainGet("publication-data").readJsonObj(pubId, "config") as Partial<ReaderConfig> | undefined;
+                const publicationView = state.win.session.reader[winId]?.reduxState.info.publicationView;
+                settings = resolveEffectiveReaderConfig({
+                    globalConfig: state.reader.defaultConfig,
+                    globalConfigByFormat: state.reader.defaultConfigByFormat,
+                    publicationConfig,
+                    publicationView,
+                    r2Publication: _publication,
+                });
 
             } catch (err) {
                 settings = state.reader.defaultConfig;

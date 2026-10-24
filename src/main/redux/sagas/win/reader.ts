@@ -22,8 +22,11 @@ import { readerConfigInitialState } from "readium-desktop/common/redux/states/re
 import { settingsKeepLibraryWindowInBackgroundOnReaderCloseIsEnabled } from "readium-desktop/common/redux/states/settings";
 // import { comparePublisherReaderConfig } from "readium-desktop/common/publisherConfig";
 import { readerActions, winCommonActions } from "readium-desktop/common/redux/actions";
+import { ReaderConfig } from "readium-desktop/common/models/reader";
+import { resolveEffectiveReaderConfig } from "readium-desktop/common/readerConfig/resolveEffectiveReaderConfig";
 import { sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
 import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { IAllowCustomConfigState } from "readium-desktop/common/redux/states/renderer/allowCustom";
 import { dialog } from "electron";
 import { debounceOpdsProgression } from "readium-desktop/main/redux/sagas/opdsProgression";
 import { sameReadingLocator } from "readium-desktop/main/tools/readingLocator";
@@ -68,7 +71,24 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     // const readerRegistry = yield* selectTyped((_state: RootState) => _state.win.registry.reader[winId])
 
     const readerDefaultConfig = yield* selectTyped((_state: RootState) => _state.reader.defaultConfig);
-    const config = { ...readerDefaultConfig, ...(pubId ? yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "config")) : {}) };
+    const readerDefaultConfigByFormat = yield* selectTyped((_state: RootState) => _state.reader.defaultConfigByFormat);
+    const allowCustomConfig = (pubId
+        ? yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "allowCustomConfig"))
+        : undefined) as IAllowCustomConfigState | undefined;
+    const publicationConfig = (pubId
+        ? yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "config"))
+        : undefined) as Partial<ReaderConfig> | undefined;
+    const config = resolveEffectiveReaderConfig({
+        globalConfig: readerDefaultConfig,
+        globalConfigByFormat: readerDefaultConfigByFormat,
+        publicationConfig,
+        publicationView: readerSession.reduxState.info.publicationView,
+    });
+    if (pubId && !publicationConfig) {
+        // Persist first-open local settings snapshot so later global changes do not
+        // alter publications that already have a local config.
+        yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "config", config));
+    }
     const locator = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "locator"))) as MiniLocatorExtended | undefined; // TODO: type object and not locator
     const locatorModifiedTime = yield* callTyped(() =>
         diMainGet("publication-data").getFileLastModifiedTime(pubId, "locator"));
@@ -86,9 +106,6 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const noteTotalCount = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "noteTotalCount"))) || undefined; // TODO: type object
     const pdfConfig = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "pdfConfig"))) || undefined; // TODO: type object
     
-    // not used by default, no need to persist 
-    const allowCustomConfig = pubId ? yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "allowCustomConfig")) : undefined; // TODO: type object
-
     const keyboard = yield* selectTyped((_state: RootState) => _state.keyboard);
     const theme = yield* selectTyped((state: RootState) => state.theme);
     const transientConfigMerge = {...readerConfigInitialState, ...config};
@@ -149,6 +166,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
                     ttsVoices: [], // disable ttsVoice global preference for readium/speech lib
                     ttsVoice: null, // old key, need to migrate to ttsVoices 25/02/2025
                 },
+                defaultConfigByFormat: readerDefaultConfigByFormat,
                 transientConfig: {
                     font: transientConfigMerge.font,
                     fontSize: transientConfigMerge.fontSize,
